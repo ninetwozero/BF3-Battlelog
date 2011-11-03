@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_bf3_main"
+>
+	<RelativeLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_centerInParent="true"
+	>
+		<EditText
+		    android:id="@+id/field_email"
+		    android:layout_width="250dp"
+		    android:layout_height="wrap_content"
+		    android:hint="Origin™ Account E-mail"
+		    android:inputType="textEmailAddress"
+		    android:layout_marginBottom="5dp"
+		/>
+		<EditText
+		    android:id="@+id/field_password"
+		    android:layout_width="250dp"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@id/field_email"
+		    android:hint="Password"
+		    android:inputType="textPassword"
+		    android:layout_marginBottom="5dp"
+		/>
+		<RelativeLayout
+		    android:layout_width="210dp"
+		    android:layout_height="wrap_content"
+		    android:layout_centerInParent="true"
+			android:layout_below="@id/field_password"
+		>
+			<Button
+			    style="@style/RegularButton"
+			    android:layout_width="125dp"
+			    android:id="@+id/button_login"
+				android:text="Login"
+				android:layout_alignParentRight="true"
+			/>	    
+   			<CheckBox
+			    android:id="@+id/checkbox_save"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="Save"
+				android:textColor="#FFFFFF"
+				android:layout_toLeftOf="@id/button_login"
+				android:layout_alignBaseline="@id/button_login"
+				android:layout_alignParentLeft="true"
+				android:layout_marginRight="10dp"
+			/>
+		</RelativeLayout>
+	</RelativeLayout>
+</RelativeLayout>

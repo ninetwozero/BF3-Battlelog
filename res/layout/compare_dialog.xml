@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:id="@+id/dialog_root"
+    android:padding="10dp"
+>
+    <EditText
+        android:id="@+id/field_username"
+        android:layout_height="wrap_content"
+        android:layout_width="250dp" 
+ 		android:hint="Your friends name here"
+ 		android:singleLine="true"
+        android:layout_centerHorizontal="true"
+ 	/> 
+    <TextView
+      	android:id="@+id/string001"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" 
+ 		android:text=" or choose a friend below"
+ 		android:layout_below="@id/field_username"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFFFF"
+ 	/>
+    <Spinner
+        android:id="@+id/spinner_username"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/string001"
+        android:layout_centerHorizontal="true"
+        android:enabled="false"
+	/>
+    
+</RelativeLayout>

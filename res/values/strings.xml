@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, Main!</string>
+    <string name="app_name">BF3 Battlelog</string>
+    <string name="changelog_103">
+        * Renamed the menu items&lt;br /&gt;
+        * Added the ability to compare statistics &lt;br /&gt;
+        * Added a changelog-popup&lt;br /&gt;
+        * Added a stats-widget (thanks Chokzor) &lt;br /&gt;
+	</string>
+</resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ninetwozero.battlelog"
+    android:versionCode="5"
+    android:versionName="1.0.3"
+	android:installLocation="auto"
+> 
+
+    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="8" />
+
+    <application
+        android:icon="@drawable/app_logo"
+        android:label="@string/app_name" 
+       	android:theme="@android:style/Theme.Light"
+   	>
+        <activity
+            android:label="@string/app_name"
+            android:name=".Main"
+            android:orientation="vertical"
+		>
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="BF3 Battlelog - Main menu"
+            android:name=".Dashboard"
+            android:orientation="vertical"
+        />
+        <activity
+            android:label="BF3 Battlelog - Your performance"
+            android:name=".ProfileView"
+        />
+        <activity
+            android:label="BF3 Battlelog - Comparing battle scarsk"
+            android:name=".CompareView"
+        />
+    </application>
+	<uses-permission android:name="android.permission.INTERNET" />
+</manifest>

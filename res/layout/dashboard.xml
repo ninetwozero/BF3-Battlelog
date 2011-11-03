@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+	android:background="@drawable/bg_bf3_main"
+>
+	<RelativeLayout
+	    android:id="@+id/bar_status"
+		android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentTop="true"
+		android:padding="5dp"
+	>  
+		<Button
+		    style="@style/RegularButton"
+		    android:id="@+id/button_status"
+		    android:text="Update"
+		    android:layout_alignParentRight="true"
+		    android:layout_centerVertical="true"
+		/>
+		<EditText
+		  	android:id="@+id/field_status"
+		  	android:layout_width="fill_parent"
+		  	android:layout_height="wrap_content"
+		  	android:hint="Update your status text"
+		  	android:layout_toLeftOf="@id/button_status"
+		    android:layout_marginRight="6dp"
+		    android:layout_centerVertical="true"
+		    android:singleLine="true"
+		 />
+	</RelativeLayout>
+	<RelativeLayout
+	   android:layout_width="fill_parent"
+	   android:layout_height="fill_parent"
+    	android:layout_below="@id/bar_status"
+	   android:layout_marginTop="20dp"
+   >    
+		<RelativeLayout
+			android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerInParent="true"
+			android:paddingTop="20dp"
+			android:paddingRight="20dp"
+			android:paddingBottom="20dp"
+			android:paddingLeft="20dp"
+		>
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_view_self"
+			    android:text="My performance"
+		    	android:layout_height="50dp"
+			/>
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_compare"
+			    android:text="Compare battle scars"
+				android:layout_marginTop="10dp"
+		    	android:layout_height="50dp"
+				android:layout_below="@id/button_view_self"
+			/>
+			<!-- 
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_compare"
+			    android:text="Find soldier"
+				android:layout_marginTop="10dp"
+		    	android:layout_height="50dp"
+				android:layout_below="@id/button_view_self"
+			/>
+			 -->
+			
+		</RelativeLayout>
+	</RelativeLayout>
+</RelativeLayout>
