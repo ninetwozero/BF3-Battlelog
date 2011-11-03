@@ -29,11 +29,13 @@
 		    android:singleLine="true"
 		 />
 	</RelativeLayout>
+	<include android:id="@+id/com_center_slider" layout="@layout/com_center_slider" />
 	<RelativeLayout
-	   android:layout_width="fill_parent"
-	   android:layout_height="fill_parent"
-    	android:layout_below="@id/bar_status"
-	   android:layout_marginTop="20dp"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_below="@id/bar_status"
+		android:layout_marginTop="20dp"
+		android:layout_above="@id/com_center_slider"
    >    
 		<RelativeLayout
 			android:layout_width="wrap_content"
