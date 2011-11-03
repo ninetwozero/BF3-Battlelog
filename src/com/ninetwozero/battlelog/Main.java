@@ -48,7 +48,7 @@ public class Main extends Activity {
 	SharedPreferences sharedPreferences;
 	
 	//Changelog v
-	final int changelogVersion = 3;
+	final int changelogVersion = 4;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
