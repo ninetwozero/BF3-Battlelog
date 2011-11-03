@@ -5,14 +5,27 @@
     android:versionName="1.0.3"
 	android:installLocation="auto"
 > 
-
-    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="8" />
+	<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="8" />
 
     <application
         android:icon="@drawable/app_logo"
         android:label="@string/app_name" 
        	android:theme="@android:style/Theme.Light"
    	>
+		<receiver android:name="com.ninetwozero.battlelog.widgets.BattlelogAppWidgetProvider" android:label="@string/widget_name">
+			
+			<intent-filter>
+			    
+		         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+		         <action android:name="android.appwidget.action.ACTION_WIDGET_RECEIVER" />
+			
+			</intent-filter>
+			<meta-data
+				android:name="android.appwidget.provider"
+				android:resource="@xml/appwidget">  
+			</meta-data>
+			
+		</receiver>
         <activity
             android:label="@string/app_name"
             android:name=".Main"
@@ -34,7 +47,7 @@
             android:name=".ProfileView"
         />
         <activity
-            android:label="BF3 Battlelog - Comparing battle scarsk"
+            android:label="BF3 Battlelog - Comparing battle scars"
             android:name=".CompareView"
         />
     </application>

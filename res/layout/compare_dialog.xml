@@ -10,7 +10,7 @@
         android:id="@+id/field_username"
         android:layout_height="wrap_content"
         android:layout_width="250dp" 
- 		android:hint="Your friends name here"
+ 		android:hint="Type a username here"
  		android:singleLine="true"
         android:layout_centerHorizontal="true"
  	/> 
@@ -22,6 +22,7 @@
  		android:layout_below="@id/field_username"
         android:layout_centerHorizontal="true"
         android:textColor="#FFFFFF"
+        android:padding="5dp"
  	/>
     <Spinner
         android:id="@+id/spinner_username"

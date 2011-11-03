@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/full_widget"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView
+        android:id="@+id/dogtag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/widget_dogtag" />
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/dogtag"
+        android:layout_alignLeft="@id/dogtag"
+        android:paddingLeft="55dp"
+        android:paddingTop="25dp"
+        android:text="Error:"
+        android:textColor="@android:color/black"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="55dp"
+        android:layout_alignLeft="@id/label"
+        android:layout_below="@id/label"
+        android:paddingTop="5dp"
+        android:text="No data found."
+        android:textColor="@android:color/black"
+        android:textSize="11sp" />
+
+    <TextView
+        android:id="@+id/stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/title"
+        android:layout_below="@id/title"
+        android:paddingLeft="55dp"
+        android:paddingTop="5dp"
+        android:text="Connect Battlelog"
+        android:textColor="@android:color/black"
+        android:textSize="11sp" />
+
+    <TextView
+        android:id="@+id/friendsstatic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/stats"
+        android:layout_below="@id/stats"
+        android:paddingLeft="55dp"
+        android:paddingTop="5dp"
+        android:text="Friends online:"
+        android:textColor="@android:color/black"
+        android:textSize="13sp" />
+    <TextView
+        android:id="@+id/friends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/friendsstatic"
+        android:layout_below="@id/stats"
+        android:paddingLeft="148dp"
+        android:paddingTop="3dp"
+        android:text="0"
+        android:textColor="#ff0000"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/widget_button"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_alignRight="@+id/dogtag"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="25dp"
+        android:background="@drawable/widget_updatebutton"
+  		android:gravity="left|center_vertical"
+        android:text=""
+        android:textSize="8sp" />
+
+</RelativeLayout>

@@ -180,7 +180,7 @@ public class Dashboard extends Activity {
 	    final View layout = inflater.inflate(R.layout.compare_dialog, (ViewGroup) findViewById(R.id.dialog_root));
 		
 	    //Set the title and the view
-		builder.setTitle("Select a username");
+		builder.setTitle("Compare battle scars");
 		builder.setView(layout);
 
 		//Grab the fields
