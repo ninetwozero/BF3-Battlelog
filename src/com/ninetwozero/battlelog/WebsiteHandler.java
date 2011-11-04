@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.PostData;
@@ -353,7 +354,7 @@ public class WebsiteHandler {
 					for( int i = 0; i < requestsObject.length(); i++ ) {
 						
 						//Grab the object
-						tempObj = friendsObject.optJSONObject( i );
+						tempObj = requestsObject.optJSONObject( i );
 						
 						//Save it
 						profileRow.add( 
@@ -398,7 +399,9 @@ public class WebsiteHandler {
 								tempObj.getString( "username" ),
 								0,
 								Long.parseLong( tempObj.getString( "userId" ) ),
-								0
+								0,
+								tempObj.getJSONObject( "presence").getBoolean( "isOnline" ),
+								tempObj.getJSONObject( "presence").getBoolean( "isPlaying" )
 							
 							) 
 							
@@ -485,6 +488,87 @@ public class WebsiteHandler {
 				throw new WebsiteHandlerException("Could not retrieve the ProfileIDs.");
 			
 		}
+		
+		} catch ( JSONException e ) {
+		
+			throw new WebsiteHandlerException(e.getMessage());
+		
+		} catch ( RequestHandlerException ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+		
+	}
+
+	public static boolean answerFriendRequest( long pId, Boolean accepting, String checksum) throws WebsiteHandlerException {
+
+		try {
+			
+			//Let's login everybody!
+			RequestHandler wh = new RequestHandler();
+			String httpContent;
+			ArrayList<ProfileData> profileArray = new ArrayList<ProfileData>();
+			
+			//Get the content
+			if( accepting ) {
+
+				httpContent = wh.post( 
+						
+					Config.urlFriendAccept.replace( 
+						
+						"{PID}", 
+						pId + ""
+					), 
+					new PostData[] { 
+					
+						new PostData(
+							
+							Config.fieldNamesFriends[0], 
+							checksum
+						
+						) 
+						
+					}
+			
+				);
+			
+			} else {
+
+				httpContent = wh.post( 
+						
+						Config.urlFriendDecline.replace( 
+							
+							"{PID}", 
+							pId + ""
+						), 
+						new PostData[] { 
+						
+							new PostData(
+								
+								Config.fieldNamesFriends[0], 
+								checksum
+							
+							) 
+							
+						}
+				
+					);
+				
+			}
+			
+			//Did we manage?
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+			
+				//Check the status
+				if( new JSONObject(httpContent).getString( "type" ).equals( "success" ) ) return true;
+				else return false;
+				
+			} else {
+			
+				throw new WebsiteHandlerException("Could not respond to the friend request.");
+			
+			}	
 		
 		} catch ( JSONException e ) {
 		

@@ -25,6 +25,7 @@ public class ProfileData implements Serializable {
 	//Attributes
 	private String personaName;
 	private long personaId, profileId, platformId;
+	private boolean isPlaying, isOnline;
 	
 	//Construct
 	public ProfileData(String pn, long p, long pf, long n) {
@@ -33,6 +34,17 @@ public class ProfileData implements Serializable {
 		this.personaId = p;
 		this.profileId = pf;
 		this.platformId = n;
+
+		this.isOnline = false;
+		this.isPlaying = false;
+		
+	}
+	
+	public ProfileData(String pn, long p, long pf, long n, boolean io, boolean ip ) {
+		
+		this(pn, p, pf, n);
+		this.isOnline = io;
+		this.isPlaying = ip;
 		
 	}
 	
@@ -41,5 +53,9 @@ public class ProfileData implements Serializable {
 	public long getPersonaId() { return this.personaId; }
 	public long getProfileId() { return this.profileId; }
 	public long getPlatformId() { return this.platformId; }
+	
+	//is ... ?
+	public boolean isOnline() { return this.isOnline; }
+	public boolean isPlaying() { return this.isPlaying; }
 	
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+>
+	<TextView 
+	    android:id="@+id/text_persona"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+		android:text="NINETWOZERO"
+		android:textSize="16sp"
+		android:layout_centerVertical="true"
+	/>
+	<ImageView 
+	    android:id="@+id/button_decline"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"     
+		android:src="@drawable/button_decline_xml"
+		android:layout_alignParentRight="true"
+		android:layout_marginLeft="10dp"
+		android:layout_centerVertical="true"
+		android:clickable="true"
+    	android:onClick="onRequestActionClick"
+    />
+	<ImageView 
+	    android:id="@+id/button_accept"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"    
+		android:src="@drawable/button_accept_xml"
+		android:layout_toLeftOf="@id/button_decline"
+		android:layout_centerVertical="true"
+    	android:clickable="true"
+    	android:onClick="onRequestActionClick"
+    />
+</RelativeLayout>

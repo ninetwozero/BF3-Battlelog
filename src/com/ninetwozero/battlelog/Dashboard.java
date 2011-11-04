@@ -45,6 +45,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.FriendSpinnerAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRefresh;
+import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
 import com.ninetwozero.battlelog.datatypes.PostData;
@@ -60,6 +61,7 @@ public class Dashboard extends Activity {
 	private String[] valueFields;
 	private PostData[] postDataArray;
 	private SharedPreferences sharedPreferences;
+	private LayoutInflater layoutInflater;
 	
 	//COM-related
 	private SlidingDrawer slidingDrawer;
@@ -75,6 +77,7 @@ public class Dashboard extends Activity {
     	
     	//Set the content view
         setContentView(R.layout.dashboard);
+        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         
         //Set the attirbutes
         fieldStatusUpdate = (EditText) findViewById(R.id.field_status);
@@ -482,9 +485,43 @@ public class Dashboard extends Activity {
 		listRequests = (ListView) findViewById( R.id.list_requests );
 		listFriends = (ListView) findViewById( R.id.list_friends );
 		
+		//refresh the COM
+		refreshCOM();
+		
+	}
+	
+	private void refreshCOM() {
+
 		//Done? No? Let's populate in an async task!
-		AsyncComRefresh acr = new AsyncComRefresh(context, listRequests, listFriends);
+		AsyncComRefresh acr = new AsyncComRefresh(context, listRequests, listFriends, layoutInflater);
 		acr.execute();
+		
+	}
+	
+	private void onRequestActionClick(View v) {
+	
+		Toast.makeText( this, "Clicked the " + getResources().getResourceName(v.getId()), Toast.LENGTH_SHORT).show();
+		
+		//...
+		if( v.getId() == R.id.button_accept ) { 
+			
+			new AsyncComRequest(
+					
+				context, 
+				((ProfileData)v.getTag()).getProfileId()
+			
+			).execute(true); 
+			
+		} else { 
+			
+			new AsyncComRequest(
+					
+				context, 
+				((ProfileData)v.getTag()).getProfileId()
+			
+			).execute(false); 
+		
+		}
 		
 	}
 

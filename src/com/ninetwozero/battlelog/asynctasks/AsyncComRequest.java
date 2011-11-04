@@ -33,24 +33,20 @@ import com.ninetwozero.battlelog.adapters.RequestListAdapter;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 
-public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
+public class AsyncComRequest extends AsyncTask<Boolean, Integer, Boolean> {
 
 	//Attribute
 	Context context;
 	SharedPreferences sharedPreferences;
-	ArrayList<ArrayList<ProfileData>> profileArray = new ArrayList<ArrayList<ProfileData>>();
-	ListView listRequests, listFriends;
-	LayoutInflater layoutInflater;
-	
+	long profileId;
+
 	//Constructor
-	public AsyncComRefresh( Context c, ListView r, ListView f, LayoutInflater l ) { 
+	public AsyncComRequest( Context c, long p ) { 
 		
 		this.context = c;
-		this.listRequests = r;
-		this.listFriends = f;
-		this.layoutInflater = l;
-		this.sharedPreferences = context.getSharedPreferences(Config.fileSharedPrefs, 0);
-		
+		this.profileId = p;
+		this.sharedPreferences = context.getSharedPreferences( "battlelog", 0 );
+
 	}	
 	
 	@Override
@@ -62,12 +58,12 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 	}
 	
 	@Override
-	protected Boolean doInBackground( Void... arg0) {
+	protected Boolean doInBackground( Boolean... arg0) {
 		
 		try {
 		
 			//Let's get this!!
-			profileArray = WebsiteHandler.getFriendsCOM( sharedPreferences.getString( "battlelog_post_checksum", "") );
+			WebsiteHandler.answerFriendRequest( profileId, arg0[0], sharedPreferences.getString( "battlelog_post_checksum", "") );
 			return true;
 			
 		} catch ( WebsiteHandlerException e ) {
@@ -80,42 +76,17 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 	
 	@Override
 	protected void onPostExecute(Boolean results) {
-
-		//Fill the listviews!!
-		if( profileArray.size() > 0 ) {
-			
-			if( profileArray.get( 0 ) == null || profileArray.get( 0 ).size() == 0 ) {
-			
-				((Activity)context).findViewById(R.id.wrap_requests).setVisibility( View.GONE );
-			
-			} else {
-				
-				//Set the adapter
-				listRequests.setAdapter( new RequestListAdapter(context, profileArray.get(0), layoutInflater) );
-				
-			}
-			
-			if( profileArray.get( 1 ) == null || profileArray.get( 1 ).size() > 0 ) {
-				
-				//Set the adapter
-				listFriends.setAdapter( new FriendListAdapter(context, profileArray.get(1), layoutInflater) );
-				
-				
-			} else {
-				
-				//No friends found :-(
-				
-			}
+		
+		//How did go?
+		if( results ) { 
+		
+			Toast.makeText( context, "COM CENTER updated.", Toast.LENGTH_SHORT).show();
 		
 		} else {
 			
-			results = false;
-			
-		}
+			Toast.makeText( context, "COM CENTER could not be updated.", Toast.LENGTH_SHORT).show();				
 		
-		//How did go?
-		if( results ) Toast.makeText( context, "COM CENTER updated.", Toast.LENGTH_SHORT).show();
-		else Toast.makeText( context, "COM CENTER could not be updated.", Toast.LENGTH_SHORT).show();				
+		}
 		return;
 		
 	}	

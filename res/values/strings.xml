@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="hello">Hello World, Main!</string>
     <string name="app_name">BF3 Battlelog</string>
-    <string name="changelog_103">
-        * N/A&lt;br /&gt;
-        &lt;br /&gt;
-        &lt;br /&gt;
-        Please report any errors you may encounter to &lt;u&gt;support@ninetwozero.com&lt;/u&gt; and/or 
-        &lt;u&gt;@karllindmark&lt;/u&gt; on Twitter.&lt;br /&gt;&lt;br /&gt;
-        Thank you for your support!
-	</string>
-    <string name="widget_name">Battlelog - Stats+Friends</string>
+	<string name="widget_name">Battlelog - Stats+Friends</string>
+        
+    <!-- Strings to be translated -->
+    
+	    <string name="changelog_103">
+	        * Added a slimmed COM CENTER&lt;br /&gt;
+	        * Fixed the widget (hopefully) &lt;br /&gt;
+	        &lt;br /&gt;
+	        Please report any errors you may encounter to &lt;u&gt;support@ninetwozero.com&lt;/u&gt; and/or 
+	        &lt;u&gt;@karllindmark&lt;/u&gt; on Twitter.&lt;br /&gt;&lt;br /&gt;
+	        Thank you for your support!
+		</string>
 </resources>

@@ -45,12 +45,7 @@ public class RequestHandler {
 
 	//Attributes
 	public static DefaultHttpClient httpClient = new DefaultHttpClient();	
-	public static RequestHandler.RedirectHandler redirectHandler = new RequestHandler.RedirectHandler();
-	static {
-		
-		httpClient.setRedirectHandler( redirectHandler );
-		
-	}
+
 	// Constructor
 	public RequestHandler() {}
 	
@@ -215,24 +210,6 @@ public class RequestHandler {
 	
 		if( httpClient.getConnectionManager() != null ) { httpClient.getConnectionManager().closeExpiredConnections(); }
 		
-	}
-
-	public static class RedirectHandler extends DefaultRedirectHandler {
-	    
-		public URI getLocationURI(HttpResponse response, HttpContext context) {
-
-			if( response.getHeaders( "Location" ).toString().contains( "|" ) ) {
-			
-				return URI.create( Config.urlMain );
-				
-			} else {
-				
-				return URI.create( response.getHeaders( "Location" ).toString() );
-				
-			}
-
-		}
-			
 	}
 	
 }
