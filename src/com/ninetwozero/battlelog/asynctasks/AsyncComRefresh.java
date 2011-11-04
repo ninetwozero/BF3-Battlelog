@@ -14,52 +14,54 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import android.app.ProgressDialog;
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.Config;
 import com.ninetwozero.battlelog.WebsiteHandler;
-import com.ninetwozero.battlelog.datatypes.PostData;
+import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 
-public class AsyncComRefresh extends AsyncTask<PostData, Integer, Boolean> {
+public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 
 	//Attribute
-	ProgressDialog progressDialog;
 	Context context;
-	boolean fromWidget;
-	boolean savePassword;
 	SharedPreferences sharedPreferences;
-	SharedPreferences.Editor spEdit;
+	ArrayList<ArrayList<ProfileData>> profileArray = new ArrayList<ArrayList<ProfileData>>();
+	ListView listRequests, listFriends;
 	
 	//Constructor
-	public AsyncComRefresh( Context c ) { 
+	public AsyncComRefresh( Context c, ListView r, ListView f ) { 
 		
 		this.context = c;
-	
+		this.listRequests = r;
+		this.listFriends = f;
+		this.sharedPreferences = context.getSharedPreferences(Config.fileSharedPrefs, 0);
+		
 	}	
 	
 	@Override
 	protected void onPreExecute() {
 		
 		//Let's see
-		if( !fromWidget ) {
-		
-			Toast.makeText( context, "Updating the COM", Toast.LENGTH_SHORT).show();
-		
-		}
+		Toast.makeText( context, "Updating the COM", Toast.LENGTH_SHORT).show();
 		
 	}
 	
 	@Override
-	protected Boolean doInBackground( PostData... arg0 ) {
+	protected Boolean doInBackground( Void... arg0) {
 		
 		try {
 		
-			return WebsiteHandler.doLogin( context, arg0, savePassword );
-		
+			//Let's get this!!
+			profileArray = WebsiteHandler.getFriendsCOM( sharedPreferences.getString( "battlelog_post_checksum", "") );
+			return true;
+			
 		} catch ( WebsiteHandlerException e ) {
 			
 			return false;
@@ -71,12 +73,10 @@ public class AsyncComRefresh extends AsyncTask<PostData, Integer, Boolean> {
 	@Override
 	protected void onPostExecute(Boolean results) {
 
-		if( !fromWidget ) {
-			
-			if( results ) Toast.makeText( context, "COM updated.", Toast.LENGTH_SHORT).show();
-			else Toast.makeText( context, "COM could not be updated.", Toast.LENGTH_SHORT).show();
-				
-		}
+		//Fill the listviews!!
+		
+		if( results ) Toast.makeText( context, "COM updated.", Toast.LENGTH_SHORT).show();
+		else Toast.makeText( context, "COM could not be updated.", Toast.LENGTH_SHORT).show();				
 		return;
 		
 	}	

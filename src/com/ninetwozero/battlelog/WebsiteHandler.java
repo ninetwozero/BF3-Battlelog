@@ -319,7 +319,123 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static final ArrayList<ProfileData> getFriendList(String checksum, boolean onlyOnlineFriends) throws WebsiteHandlerException {
+	public static final ArrayList<ArrayList<ProfileData>> getFriendsCOM(String checksum) throws WebsiteHandlerException {
+		
+		try {
+				
+			//Let's login everybody!
+			RequestHandler wh = new RequestHandler();
+			String httpContent;
+			ArrayList<ArrayList<ProfileData>> profileArray = new ArrayList<ArrayList<ProfileData>>();
+			
+			//Get the content
+			httpContent = wh.post( Config.urlFriends, new PostData[] { new PostData(Config.fieldNamesFriends[0], checksum) });
+
+			//Did we manage?
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+			
+				//Generate an object
+				JSONObject comData = new JSONObject(httpContent).getJSONObject( "data" );
+				JSONArray friendsObject = comData.getJSONArray( "friendscomcenter" );
+				JSONArray requestsObject = comData.getJSONArray( "friendrequests" );
+				JSONObject tempObj;
+
+				//Arraylists!
+				ArrayList<ProfileData> profileRow = new ArrayList<ProfileData>();
+				
+				//Grab the lengths
+				int numRequests = requestsObject.length(), numFriends = friendsObject.length();
+				
+				//Got requests?
+				if( numRequests  > 0 ) {
+					
+					//Iterate baby!
+					for( int i = 0; i < requestsObject.length(); i++ ) {
+						
+						//Grab the object
+						tempObj = friendsObject.optJSONObject( i );
+						
+						//Save it
+						profileRow.add( 
+								
+							new ProfileData(
+									
+								tempObj.getString( "username" ),
+								0,
+								Long.parseLong( tempObj.getString( "userId" ) ),
+								0
+							
+							) 
+							
+						);
+				
+					}
+					
+					profileArray.add( profileRow );
+					
+				} else {
+					
+					profileArray.add( null );
+					
+				}
+				
+				if( numFriends > 0 ) {
+				
+					//Init/Clear profileRow
+					profileRow = new ArrayList<ProfileData>();
+					
+					//Iterate baby!
+					for( int i = 0; i < friendsObject.length(); i++ ) {
+						
+						//Grab the object
+						tempObj = friendsObject.optJSONObject( i );
+												
+						//Save it
+						profileRow.add( 
+								
+							new ProfileData(
+									
+								tempObj.getString( "username" ),
+								0,
+								Long.parseLong( tempObj.getString( "userId" ) ),
+								0
+							
+							) 
+							
+						);
+				
+					}
+					
+					//Add it man!
+					profileArray.add( profileRow );
+				
+				} else {
+					
+					profileArray.add( null );
+					
+				}
+				
+				return profileArray;
+			
+			} else {
+			
+				throw new WebsiteHandlerException("Could not retrieve the ProfileIDs.");
+			
+			}
+		
+		} catch ( JSONException e ) {
+		
+			throw new WebsiteHandlerException(e.getMessage());
+		
+		} catch ( RequestHandlerException ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+		
+	}
+
+	public static final ArrayList<ProfileData> getFriends(String checksum, boolean noOffline) throws WebsiteHandlerException {
 		
 		try {
 				
@@ -330,7 +446,7 @@ public class WebsiteHandler {
 			
 			//Get the content
 			httpContent = wh.post( Config.urlFriends, new PostData[] { new PostData(Config.fieldNamesFriends[0], checksum) });
-
+	
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
 			
@@ -345,11 +461,7 @@ public class WebsiteHandler {
 					tempObj = profileObject.optJSONObject( i );
 					
 					//Only online friends?
-					if( onlyOnlineFriends ) { 
-						
-						if( !tempObj.getJSONObject( "presence").getBoolean( "isOnline") ) { continue; }
-					
-					}
+					if( noOffline && !tempObj.getJSONObject( "presence").getBoolean( "isOnline") ) { continue; }
 					
 					//Save it
 					profileArray.add( 
@@ -372,7 +484,7 @@ public class WebsiteHandler {
 			
 				throw new WebsiteHandlerException("Could not retrieve the ProfileIDs.");
 			
-			}
+		}
 		
 		} catch ( JSONException e ) {
 		

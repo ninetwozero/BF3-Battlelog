@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -25,14 +26,14 @@ import java.util.List;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.ByteArrayBuffer;
 
 import android.util.Log;
@@ -43,13 +44,18 @@ import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 public class RequestHandler {
 
 	//Attributes
-	public static HttpClient httpclient = new DefaultHttpClient();
-	
+	public static DefaultHttpClient httpClient = new DefaultHttpClient();	
+	public static RequestHandler.RedirectHandler redirectHandler = new RequestHandler.RedirectHandler();
+	static {
+		
+		httpClient.setRedirectHandler( redirectHandler );
+		
+	}
 	// Constructor
 	public RequestHandler() {}
 	
 	public String get( String link ) throws RequestHandlerException {
-
+		
 		// Check defaults
 		if ( link.equals( "" ) ) throw new RequestHandlerException("No link found.");
 		
@@ -60,7 +66,7 @@ public class RequestHandler {
 			
 			//Init the HTTP-related attributes
 			HttpGet httpGet = new HttpGet(link);
-			HttpResponse httpResponse = RequestHandler.httpclient.execute(httpGet);
+			HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);
 			HttpEntity httpEntity = httpResponse.getEntity();
 			httpContent = this.getStringFromStream( httpEntity.getContent() );
 			
@@ -113,7 +119,7 @@ public class RequestHandler {
 			
 			//Set the entity
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
-			httpResponse = httpclient.execute(httpPost);
+			httpResponse = httpClient.execute(httpPost);
 			httpEntity = httpResponse.getEntity();
 
 			//Anything?
@@ -204,11 +210,29 @@ public class RequestHandler {
 			return null;
 		}
 	}
-	
+
 	public void close() {
 	
-		if( httpclient.getConnectionManager() != null ) { httpclient.getConnectionManager().closeExpiredConnections(); }
+		if( httpClient.getConnectionManager() != null ) { httpClient.getConnectionManager().closeExpiredConnections(); }
 		
 	}
 
+	public static class RedirectHandler extends DefaultRedirectHandler {
+	    
+		public URI getLocationURI(HttpResponse response, HttpContext context) {
+
+			if( response.getHeaders( "Location" ).toString().contains( "|" ) ) {
+			
+				return URI.create( Config.urlMain );
+				
+			} else {
+				
+				return URI.create( response.getHeaders( "Location" ).toString() );
+				
+			}
+
+		}
+			
+	}
+	
 }

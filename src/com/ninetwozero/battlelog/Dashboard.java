@@ -35,13 +35,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.FriendSpinnerAdapter;
@@ -66,6 +65,7 @@ public class Dashboard extends Activity {
 	private SlidingDrawer slidingDrawer;
 	private OnDrawerOpenListener onDrawerOpenListener;
 	private OnDrawerCloseListener onDrawerCloseListener;
+	private ListView listRequests, listFriends;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -418,7 +418,7 @@ public class Dashboard extends Activity {
 			
 			try {
 				
-				this.profileArray = WebsiteHandler.getFriendList(arg0[0], false);
+				this.profileArray = WebsiteHandler.getFriends(arg0[0], false);
 				return true;
 				
 			} catch ( WebsiteHandlerException ex ) {
@@ -478,10 +478,14 @@ public class Dashboard extends Activity {
 			
 		};
 		
+		//Grab the ListViews
+		listRequests = (ListView) findViewById( R.id.list_requests );
+		listFriends = (ListView) findViewById( R.id.list_friends );
+		
 		//Done? No? Let's populate in an async task!
-		/*AsyncComRefresh acr = AsyncComRefresh(this);
+		AsyncComRefresh acr = new AsyncComRefresh(context, listRequests, listFriends);
 		acr.execute();
-	*/
+		
 	}
 
 }

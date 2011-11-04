@@ -17,6 +17,8 @@ package com.ninetwozero.battlelog.widgets;
 
 import java.util.ArrayList;
 
+import net.sf.andhsli.hotspotlogin.SimpleCrypto;
+
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -75,12 +77,12 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 			   remoteView.setTextViewText(R.id.label, "Name: "+ playerData.getPersonaName());
 			   remoteView.setTextViewText(R.id.title, "Rank: " + playerData.getRankId() + " (" + playerData.getPointsProgressLvl() + "/" + playerData.getPointsNeededToLvlUp() + ")");
 			   remoteView.setTextViewText(R.id.stats, "W/L: " + playerData.getWLRatio() + "  K/D: " + playerData.getKDRatio());
-			   profileDataArray = WebsiteHandler.getFriendList( sharedPreferences.getString("battlelog_post_checksum", ""), true);
+			   profileDataArray = WebsiteHandler.getFriends( sharedPreferences.getString("battlelog_post_checksum", ""), true);
 			   numFriendsOnline = profileDataArray.size();
 			   
 		   } catch (WebsiteHandlerException e) {
 				
-			   e.printStackTrace();
+			    e.printStackTrace();
 			   	
 				if( !sharedPreferences.getBoolean("remember_password", false) ) {
 					
@@ -89,43 +91,54 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 					
 				} else {
 					
-					//Init
-					PostData[] postDataArray = new PostData[Config.fieldNamesLogin.length];
-		    		String[] valueFields = new String[] { 
-	    				
-	    				sharedPreferences.getString( "origin_email", ""), 
-	    				sharedPreferences.getString( "origin_password", "")
-	    				
-		    		};
-		    		
-					//Iterate and conquer
-		    		for( int i = 0; i < Config.fieldNamesLogin.length; i++ ) {
-
-		    			postDataArray[i] =	new PostData(
-			    			
-		    				Config.fieldNamesLogin[i],
-			    			(Config.fieldValuesLogin[i] == null) ? valueFields[i] : Config.fieldValuesLogin[i] 
-			    		);
-		    		
-		    		}
-					   
-					AsyncLogin al = new AsyncLogin(context, true, true);
-					al.execute(postDataArray);
-					
 					try {
+						
+						//Init
+						PostData[] postDataArray = new PostData[Config.fieldNamesLogin.length];
+			    		String[] valueFields = new String[] { 
+							
+						sharedPreferences.getString( "origin_email", ""), 
+						SimpleCrypto.decrypt( 
+										
+							sharedPreferences.getString( 
+								"origin_email", 
+								"" 
+							), 
+							sharedPreferences.getString( 
+								"origin_password", 
+									""
+								)
+							)
+							
+			    		}; 
+
+						//Iterate and conquer
+			    		for( int i = 0; i < Config.fieldNamesLogin.length; i++ ) {
+	
+			    			postDataArray[i] =	new PostData(
+				    			
+			    				Config.fieldNamesLogin[i],
+				    			(Config.fieldValuesLogin[i] == null) ? valueFields[i] : Config.fieldValuesLogin[i] 
+				    		);
+			    		
+			    		}
+						   
+						AsyncLogin al = new AsyncLogin(context, true, true);
+						al.execute(postDataArray);
 					
 						playerData = WebsiteHandler.getStatsForUser(profileData);
 						remoteView.setTextViewText(R.id.label, "Name: "+ playerData.getPersonaName());
 						remoteView.setTextViewText(R.id.title, "Rank: " + playerData.getRankId() + " (" + playerData.getPointsProgressLvl() + "/" + playerData.getPointsNeededToLvlUp() + ")");
 						remoteView.setTextViewText(R.id.stats, "W/L: " + playerData.getWLRatio() + "  K/D: " + playerData.getKDRatio());
-						profileDataArray = WebsiteHandler.getFriendList( sharedPreferences.getString("battlelog_post_checksum", ""), true);
+						profileDataArray = WebsiteHandler.getFriends( sharedPreferences.getString("battlelog_post_checksum", ""), true );
 						numFriendsOnline = profileDataArray.size();
 						
-					} catch (WebsiteHandlerException e2) {
+					} catch (Exception ex ) {
 
-						e2.printStackTrace();
+						ex.printStackTrace();
 
 					}
+					
 				}
 		   }
 		

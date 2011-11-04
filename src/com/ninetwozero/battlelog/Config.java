@@ -25,6 +25,7 @@ public final class Config {
 	public static final String urlSearch = urlMain + "search/getMatches/";
 	public static final String urlFriends = urlMain + "comcenter/sync/";
 	public static final String urlFriendAccept = urlMain + "friend/acceptFriendship/{PID}/";
+	public static final String urlFriendDecline = urlMain + "friend/declineFriendship/{PID}/";
 	public static final String urlLogout = urlMain + "session/logout/";
 	
 	//URLs to JSON-files
