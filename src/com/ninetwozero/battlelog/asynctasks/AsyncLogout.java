@@ -75,6 +75,7 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
 				spEdit.commit();
 				
     		}
+    		wh.close();
     		
 		} catch ( RequestHandlerException ex ) {
 			

@@ -29,15 +29,16 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.ByteArrayBuffer;
 
+import android.util.Log;
+
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
-
-import android.util.Log;
 
 public class RequestHandler {
 
@@ -202,6 +203,12 @@ public class RequestHandler {
 			Log.e( "com.ninetwozero.shared", ex.getMessage(), ex );
 			return null;
 		}
+	}
+	
+	public void close() {
+	
+		if( httpclient.getConnectionManager() != null ) { httpclient.getConnectionManager().closeExpiredConnections(); }
+		
 	}
 
 }

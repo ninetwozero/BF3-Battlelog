@@ -37,11 +37,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SlidingDrawer;
+import android.widget.SlidingDrawer.OnDrawerCloseListener;
+import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.FriendSpinnerAdapter;
+import com.ninetwozero.battlelog.asynctasks.AsyncComRefresh;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
 import com.ninetwozero.battlelog.datatypes.PostData;
@@ -54,10 +58,14 @@ public class Dashboard extends Activity {
 	//Attributes
 	final private Context context = this;
 	private EditText fieldStatusUpdate;
-	private Button buttonStatusUpdate;
 	private String[] valueFields;
 	private PostData[] postDataArray;
 	private SharedPreferences sharedPreferences;
+	
+	//COM-related
+	private SlidingDrawer slidingDrawer;
+	private OnDrawerOpenListener onDrawerOpenListener;
+	private OnDrawerCloseListener onDrawerCloseListener;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,13 +78,14 @@ public class Dashboard extends Activity {
         
         //Set the attirbutes
         fieldStatusUpdate = (EditText) findViewById(R.id.field_status);
-        buttonStatusUpdate = (Button) findViewById(R.id.button_status);
         valueFields = new String[2];
         postDataArray = new PostData[2];
         
         //Set sharedPreferences
         sharedPreferences = getSharedPreferences( Config.fileSharedPrefs, 0);
 
+        //Setup COM
+        setupCOM();
 	}	
 	
 	public void onClick(View v) {
@@ -449,4 +458,30 @@ public class Dashboard extends Activity {
 		
 	}
 	
+	
+	private void setupCOM() {
+		
+        //Define the SlidingDrawer
+		slidingDrawer = (SlidingDrawer) findViewById( R.id.com_slider);
+		
+		//Set the drawer listeners
+		onDrawerCloseListener = new OnDrawerCloseListener() {
+
+			@Override
+			public void onDrawerClosed() { slidingDrawer.setClickable( false ); }
+		
+		};
+		onDrawerOpenListener = new OnDrawerOpenListener() { 
+		
+			@Override 
+			public void onDrawerOpened() { slidingDrawer.setClickable( true ); } 
+			
+		};
+		
+		//Done? No? Let's populate in an async task!
+		/*AsyncComRefresh acr = AsyncComRefresh(this);
+		acr.execute();
+	*/
+	}
+
 }

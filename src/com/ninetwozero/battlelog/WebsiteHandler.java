@@ -16,11 +16,15 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
+import net.sf.andhsli.hotspotlogin.SimpleCrypto;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.PostData;
@@ -33,7 +37,79 @@ import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
  */
 
 public class WebsiteHandler {
+	
+	public static boolean doLogin(Context context, PostData[] postDataArray, boolean savePassword) throws WebsiteHandlerException {
+	
+		//Init
+		SharedPreferences sharedPreferences = context.getSharedPreferences( Config.fileSharedPrefs, 0);
+		SharedPreferences.Editor spEdit = sharedPreferences.edit();
+		String[] tempString = new String[10];
+		String httpContent;
+	
+		try {
+			
+			//Let's login everybody!
+			RequestHandler wh = new RequestHandler();
+    		httpContent = wh.post( Config.urlLogin, postDataArray );
 
+    		//Did we manage?
+    		if( httpContent != null && !httpContent.equals( "" ) ) {
+    			
+    			//Set the int
+    			int startPosition = httpContent.indexOf( Config.elementUIDLink );
+    			String[] bits;
+    			
+    			//Did we find it?
+    			if( startPosition == -1 ) {
+    				
+    				return false;
+
+    			}
+    			
+    			//Cut out the appropriate bits (<a class="SOME CLASS HERE" href="A LONG LINK HERE">NINETWOZERO
+	    		httpContent = httpContent.substring( startPosition );
+				tempString[0] = httpContent.substring( 0, httpContent.indexOf("\">") ); 
+				bits = TextUtils.split( tempString[0].replace( Config.elementUIDLink, ""), "/");
+				
+				//Get the checksum
+				tempString[1] = httpContent.substring( httpContent.indexOf( Config.elementStatusChecksumLink ) );
+				tempString[1] = tempString[1].substring( 0, tempString[1].indexOf( "\" />") ).replace( Config.elementStatusChecksumLink, "" );
+				
+				//Further more, we would actually like to store the userid and name
+				spEdit.putString( "origin_email", postDataArray[0].getValue() );
+				
+				//Should we remember the password?
+				if( savePassword ) {
+
+					spEdit.putString( "origin_password", SimpleCrypto.encrypt( postDataArray[0].getValue(), postDataArray[1].getValue() ) );
+					spEdit.putBoolean( "remember_password", true );
+					
+				} else {
+					
+					spEdit.putString( "origin_password", "" );
+					spEdit.putBoolean( "remember_password", false);
+				}
+				
+				spEdit.putString( "battlelog_persona",  bits[0]);
+				spEdit.putLong( "battlelog_persona_id",  Long.parseLong( bits[2] ));				
+				spEdit.putLong( "battlelog_platform_id",  Config.getPlatformId(bits[3]) );
+				spEdit.putString( "battlelog_post_checksum", tempString[1]);
+				
+				//Co-co-co-commit
+				spEdit.commit();
+				
+    		}
+    		
+		} catch( Exception ex ) {
+			
+			throw new WebsiteHandlerException("Failed to log-in.");
+			
+		}
+
+		return true;
+		
+	}
+	
 	public static ProfileData getIDFromSearch(final String keyword, final String checksum) throws WebsiteHandlerException {
 		
 		try {

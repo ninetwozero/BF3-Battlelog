@@ -16,17 +16,15 @@ package com.ninetwozero.battlelog.asynctasks;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Dashboard;
 import com.ninetwozero.battlelog.WebsiteHandler;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 
-public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
+public class AsyncComRefresh extends AsyncTask<PostData, Integer, Boolean> {
 
 	//Attribute
 	ProgressDialog progressDialog;
@@ -37,32 +35,19 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 	SharedPreferences.Editor spEdit;
 	
 	//Constructor
-	public AsyncLogin( Context c, boolean w ) { 
+	public AsyncComRefresh( Context c ) { 
 		
-		this.context = c; 
-		this.fromWidget = w;
+		this.context = c;
 	
-	}	
-	
-	//Constructor
-	public AsyncLogin( Context c, boolean w, boolean s) { 
-		
-		this(c, w);
-		this.savePassword = s;
-		
 	}	
 	
 	@Override
 	protected void onPreExecute() {
-	
 		
 		//Let's see
 		if( !fromWidget ) {
 		
-			this.progressDialog = new ProgressDialog(this.context);
-			this.progressDialog.setTitle("Please wait");
-			this.progressDialog.setMessage( "Logging in..." );
-			this.progressDialog.show();
+			Toast.makeText( context, "Updating the COM", Toast.LENGTH_SHORT).show();
 		
 		}
 		
@@ -88,11 +73,9 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
 		if( !fromWidget ) {
 			
-			if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
-			
-			if( results ) { this.context.startActivity( new Intent(this.context, Dashboard.class) ); }
-			else { Toast.makeText( this.context, "Login failed.", Toast.LENGTH_SHORT).show(); }
-			
+			if( results ) Toast.makeText( context, "COM updated.", Toast.LENGTH_SHORT).show();
+			else Toast.makeText( context, "COM could not be updated.", Toast.LENGTH_SHORT).show();
+				
 		}
 		return;
 		

@@ -20,6 +20,6 @@ public class WebsiteHandlerException extends Exception {
 
 	public WebsiteHandlerException() { super( "WebsiteHandlerException" ); }
 
-	public WebsiteHandlerException( String detailMessage ) { super( detailMessage ); }
+	public WebsiteHandlerException( String detailMessage ) { super( ( detailMessage == null ) ? "No error message found" : detailMessage ); }
 
 }

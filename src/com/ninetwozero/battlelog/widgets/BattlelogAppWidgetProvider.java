@@ -26,12 +26,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.ninetwozero.battlelog.Config;
-import com.ninetwozero.battlelog.Main;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.WebsiteHandler;
+import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
+import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 
@@ -78,7 +80,53 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 			   
 		   } catch (WebsiteHandlerException e) {
 				
-				e.printStackTrace();
+			   e.printStackTrace();
+			   	
+				if( !sharedPreferences.getBoolean("remember_password", false) ) {
+					
+					Toast.makeText(context, "Could not log in - Is your password saved?", Toast.LENGTH_SHORT).show();
+					return;
+					
+				} else {
+					
+					//Init
+					PostData[] postDataArray = new PostData[Config.fieldNamesLogin.length];
+		    		String[] valueFields = new String[] { 
+	    				
+	    				sharedPreferences.getString( "origin_email", ""), 
+	    				sharedPreferences.getString( "origin_password", "")
+	    				
+		    		};
+		    		
+					//Iterate and conquer
+		    		for( int i = 0; i < Config.fieldNamesLogin.length; i++ ) {
+
+		    			postDataArray[i] =	new PostData(
+			    			
+		    				Config.fieldNamesLogin[i],
+			    			(Config.fieldValuesLogin[i] == null) ? valueFields[i] : Config.fieldValuesLogin[i] 
+			    		);
+		    		
+		    		}
+					   
+					AsyncLogin al = new AsyncLogin(context, true, true);
+					al.execute(postDataArray);
+					
+					try {
+					
+						playerData = WebsiteHandler.getStatsForUser(profileData);
+						remoteView.setTextViewText(R.id.label, "Name: "+ playerData.getPersonaName());
+						remoteView.setTextViewText(R.id.title, "Rank: " + playerData.getRankId() + " (" + playerData.getPointsProgressLvl() + "/" + playerData.getPointsNeededToLvlUp() + ")");
+						remoteView.setTextViewText(R.id.stats, "W/L: " + playerData.getWLRatio() + "  K/D: " + playerData.getKDRatio());
+						profileDataArray = WebsiteHandler.getFriendList( sharedPreferences.getString("battlelog_post_checksum", ""), true);
+						numFriendsOnline = profileDataArray.size();
+						
+					} catch (WebsiteHandlerException e2) {
+
+						e2.printStackTrace();
+
+					}
+				}
 		   }
 		
 		   if (numFriendsOnline > 0) { 
