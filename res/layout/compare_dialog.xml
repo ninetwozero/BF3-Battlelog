@@ -12,25 +12,6 @@
         android:layout_width="250dp" 
  		android:hint="Type a username here"
  		android:singleLine="true"
-        android:layout_centerHorizontal="true"
- 	/> 
-    <TextView
-      	android:id="@+id/string001"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content" 
- 		android:text=" or choose a friend below"
- 		android:layout_below="@id/field_username"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
-        android:padding="5dp"
- 	/>
-    <Spinner
-        android:id="@+id/spinner_username"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/string001"
-        android:layout_centerHorizontal="true"
-        android:enabled="false"
-	/>
-    
+        android:layout_centerHorizontal="true">
+    </EditText>
 </RelativeLayout>

@@ -21,9 +21,9 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.ninetwozero.battlelog.Config;
-import com.ninetwozero.battlelog.RequestHandler;
+import com.ninetwozero.battlelog.datatypes.Config;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
+import com.ninetwozero.battlelog.misc.RequestHandler;
 
 
 public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
@@ -50,6 +50,7 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
 		this.progressDialog = new ProgressDialog(this.context);
 		this.progressDialog.setTitle("Please wait");
 		this.progressDialog.setMessage( "Logging out..." );
+		this.progressDialog.setCancelable( false );
 		this.progressDialog.show();
 		
 	}

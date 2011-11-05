@@ -22,9 +22,9 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.Dashboard;
-import com.ninetwozero.battlelog.WebsiteHandler;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 

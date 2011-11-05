@@ -46,7 +46,7 @@
         />
         <activity
             android:label="BF3 Battlelog - Your performance"
-            android:name=".ProfileView"
+            android:name=".StatsView"
           	android:configChanges="orientation"
         />
         <activity

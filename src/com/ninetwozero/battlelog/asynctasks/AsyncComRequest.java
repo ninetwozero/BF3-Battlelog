@@ -19,8 +19,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.WebsiteHandler;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncComRequest extends AsyncTask<Boolean, Integer, Boolean> {
 

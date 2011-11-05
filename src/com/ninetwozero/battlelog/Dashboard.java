@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -24,10 +22,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,26 +32,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
-import android.widget.TextView;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.adapters.FriendSpinnerAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRefresh;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
+import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
+import com.ninetwozero.battlelog.datatypes.Config;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
 public class Dashboard extends Activity {
@@ -72,6 +67,9 @@ public class Dashboard extends Activity {
 	private OnDrawerOpenListener onDrawerOpenListener;
 	private OnDrawerCloseListener onDrawerCloseListener;
 	private ListView listFriendsRequests, listFriendsOnline, listFriendsOffline;
+
+	//Async
+	AsyncLogout asyncLogout = null;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +97,7 @@ public class Dashboard extends Activity {
 		
 		if( v.getId() == R.id.button_view_self ) {
 			
-			 startActivity( new Intent(this, ProfileView.class) );
+			 startActivity( new Intent(this, StatsView.class) );
 		
 		} else if( v.getId() == R.id.button_status ) {
 			
@@ -187,7 +185,15 @@ public class Dashboard extends Activity {
 				
 			} else {
 				
-				new AsyncLogout(this).execute();
+				if( asyncLogout == null ) {
+					
+					(asyncLogout = new AsyncLogout(this)).execute();
+				
+				} else {
+					
+					return true;
+					
+				}
 			
 			}	
 			return true;
@@ -208,34 +214,7 @@ public class Dashboard extends Activity {
 		builder.setView(layout);
 
 		//Grab the fields
-		final Spinner spinnerFriends = (Spinner) layout.findViewById(R.id.spinner_username);
 		final EditText fieldUsername = (EditText) layout.findViewById(R.id.field_username);
-		
-		//ASYNCTASK THE POPULATION
-		new AsyncFriendListForSpinner(this, spinnerFriends).execute(this.sharedPreferences.getString( "battlelog_post_checksum", ""));
-
-		//What to do upon selection?
-		spinnerFriends.setOnItemSelectedListener(
-				
-			new OnItemSelectedListener() {
-			 
-				@Override
-				public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-				
-					fieldUsername.setText( "" );
-					
-				}
-	
-				 @Override
-				 public void onNothingSelected(AdapterView<?> arg0) {
-					 
-					 spinnerFriends.performItemClick( arg0, 0, 0 );
-					 
-				 }
-				    
-			}
-		
-		);
 		
 		//Dialog options
 		builder.setNegativeButton(
@@ -262,7 +241,7 @@ public class Dashboard extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 			      
 					
-					new AsyncFetchDataToCompare(context, spinnerFriends).execute(fieldUsername.getText().toString());
+					new AsyncFetchDataToCompare(context).execute(fieldUsername.getText().toString());
 						
 			   
 				}
@@ -276,202 +255,6 @@ public class Dashboard extends Activity {
 		
 	}
 	
-	private class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
-	    
-    	//Context
-		private Context context;
-		private Activity origin;
-		    	
-    	//Elements
-    	private Spinner spinnerFriends;
-    	
-		//Data
-    	ProfileData userData;
-    	
-    	//Error message
-    	private String error;
-    	
-    	public AsyncFetchDataToCompare(Context c, Spinner s) {
-    		
-    		context = c;
-    		origin = (Activity) context;
-    		
-    		userData = null;
-    		error = "";
-    		spinnerFriends = s;
-    		
-    	}
-    	
-    	@Override
-    	protected void onPreExecute() {}
-
-		@Override
-		protected Boolean doInBackground( String... arg0 ) {
-			
-			//Did the user pick one of his friends?
-			if( arg0[0].equals( "" ) ) {
-				
-				try {
-
-					//Grab the position in the Spinner
-					ProfileData selectedFriend = (ProfileData) spinnerFriends.getAdapter().getItem( spinnerFriends.getSelectedItemPosition() );
-					
-					//Get the ID son!
-					userData = WebsiteHandler.getIDFromProfile( selectedFriend.getProfileId() );
-					
-					//Did we get an actual user?
-					if( userData == null|| userData.getPersonaId() == 0 ) { 
-						
-						error = "No user data found for the selected friend.";
-						return false;
-					
-					}
-					
-					//Set the name too yo
-					
-				} catch(Exception ex) {
-					
-					//
-					error = "No user data found for the selected friend.";
-					return false;
-					
-				}
-				
-			} else {
-				
-				//We got to do it the hard way - let's see if we can find a user with that name.
-				String searchString = arg0[0];
-				
-				//Try&Catch
-				try {
-					
-					//Post the world!
-					userData = WebsiteHandler.getIDFromSearch(
-						
-						searchString, 
-						sharedPreferences.getString( "battlelog_post_checksum", "" ) 
-					
-					);
-
-					//Did we get an actual user?
-					if( userData == null || userData.getPersonaId() == 0 ) { 
-						
-						//Persona
-						error = "No user found matching the following keyword: " + searchString;
-						return false; 
-						
-					}
-					
-				} catch(Exception ex) {
-					
-					//D'oh	
-					error = "No user found matching the following keyword: " + searchString;
-					return false;
-					
-				}
-			}
-
-			return true;
-
-		}
-		
-		@Override
-		protected void onPostExecute(Boolean result) {
-			
-			//How copy?
-			if( result ) {
-			
-				//To the Batmobile!
-				startActivity(
-					
-					new Intent(
-						
-						context,
-						CompareView.class
-						
-					).putExtra(
-							
-						"profile", 
-						userData	
-					
-					)
-					
-				);
-				
-			} else {
-				
-				Toast.makeText( context, error, Toast.LENGTH_SHORT ).show();
-				
-			}
-			
-			return;
-		}
-    	
-    }
-
-	private class AsyncFriendListForSpinner extends AsyncTask<String, Void, Boolean> {
-	    
-		//Attributes
-		Context context;
-		Spinner friendSpinner;
-		ArrayList<ProfileData> profileArray;
-		
-		public AsyncFriendListForSpinner(Context c, Spinner s) {
-			
-			this.context = c;
-			this.friendSpinner = s;
-			this.profileArray = new ArrayList<ProfileData>();
-	
-		}
-		
-		@Override
-		protected void onPreExecute() {}
-		
-	
-		@Override
-		protected Boolean doInBackground( String... arg0 ) {
-			
-			try {
-				
-				this.profileArray = WebsiteHandler.getFriends(arg0[0], false);
-				return true;
-				
-			} catch ( WebsiteHandlerException ex ) {
-				
-				Log.d("com.ninetwozero.battlelog", ex.getMessage() );
-				return false;
-				
-			}
-	
-		}
-		
-		@Override
-		protected void onPostExecute(Boolean result) {
-			
-			//How copy?
-			if( result ) {
-			
-				//The adapter
-				FriendSpinnerAdapter fsAdapter = new FriendSpinnerAdapter(
-						
-					context, 
-					profileArray,
-					(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)
-					
-				);
-				
-				//Set the adapter
-				friendSpinner.setAdapter( fsAdapter );
-			
-				//Enable it!
-				friendSpinner.setEnabled( true );
-				
-			}
-			
-			return;
-		}
-		
-	}
 	
 	
 	private void setupCOM() {
@@ -492,6 +275,10 @@ public class Dashboard extends Activity {
 			public void onDrawerOpened() { slidingDrawer.setClickable( true ); } 
 			
 		};
+		
+		//Attach the listeners
+		slidingDrawer.setOnDrawerOpenListener( onDrawerOpenListener );
+		slidingDrawer.setOnDrawerCloseListener( onDrawerCloseListener );
 		
 		//Grab the ListViews
 		listFriendsRequests = (ListView) findViewById( R.id.list_requests );

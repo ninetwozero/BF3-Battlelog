@@ -29,14 +29,14 @@ import android.graphics.Color;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Config;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.WebsiteHandler;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
+import com.ninetwozero.battlelog.datatypes.Config;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
 public class BattlelogAppWidgetProvider extends AppWidgetProvider {

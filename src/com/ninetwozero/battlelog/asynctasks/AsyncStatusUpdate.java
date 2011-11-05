@@ -22,11 +22,11 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Config;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.RequestHandler;
+import com.ninetwozero.battlelog.datatypes.Config;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
+import com.ninetwozero.battlelog.misc.RequestHandler;
 
 
 public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
