@@ -113,7 +113,7 @@ public class RequestHandler {
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 			httpResponse = httpClient.execute(httpPost);
 			httpEntity = httpResponse.getEntity();
-
+			
 			//Anything?
 			if (httpEntity != null) {
 				
@@ -123,6 +123,10 @@ public class RequestHandler {
 				
 				//Clear the entity
 				httpEntity.consumeContent();
+				
+			} else {
+				
+				Log.d("com.ninetwozero.battlelog", "The response was null. Weird.");
 				
 			}
 		

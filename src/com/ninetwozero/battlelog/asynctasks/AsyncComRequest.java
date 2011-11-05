@@ -53,8 +53,8 @@ public class AsyncComRequest extends AsyncTask<Boolean, Integer, Boolean> {
 		try {
 		
 			//Let's get this!!
-			WebsiteHandler.answerFriendRequest( profileId, arg0[0], sharedPreferences.getString( "battlelog_post_checksum", "") );
-			return true;
+			return WebsiteHandler.answerFriendRequest( profileId, arg0[0], sharedPreferences.getString( "battlelog_post_checksum", "") );
+			
 			
 		} catch ( WebsiteHandlerException e ) {
 			
@@ -70,13 +70,15 @@ public class AsyncComRequest extends AsyncTask<Boolean, Integer, Boolean> {
 		//How did go?
 		if( results ) { 
 		
-			refreshMethod.execute();
+			Toast.makeText( context, "Friend request responded to.", Toast.LENGTH_SHORT).show();				
 			
 		} else {
 			
 			Toast.makeText( context, "Friend request could not be responded to.", Toast.LENGTH_SHORT).show();				
 		
 		}
+		
+		refreshMethod.execute();
 		return;
 		
 	}	

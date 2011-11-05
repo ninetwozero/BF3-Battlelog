@@ -23,9 +23,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,11 +35,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
+import android.widget.TextView;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.Spinner;
@@ -67,7 +71,7 @@ public class Dashboard extends Activity {
 	private SlidingDrawer slidingDrawer;
 	private OnDrawerOpenListener onDrawerOpenListener;
 	private OnDrawerCloseListener onDrawerCloseListener;
-	private ListView listRequests, listFriends;
+	private ListView listFriendsRequests, listFriendsOnline, listFriendsOffline;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -177,7 +181,15 @@ public class Dashboard extends Activity {
 		// Hotkeys
 		if ( keyCode == KeyEvent.KEYCODE_BACK ) {
 		
-			new AsyncLogout(this).execute();
+			if( slidingDrawer.isOpened() ) {
+			
+				slidingDrawer.animateClose();
+				
+			} else {
+				
+				new AsyncLogout(this).execute();
+			
+			}	
 			return true;
 			
 		}
@@ -482,9 +494,14 @@ public class Dashboard extends Activity {
 		};
 		
 		//Grab the ListViews
-		listRequests = (ListView) findViewById( R.id.list_requests );
-		listRequests.setChoiceMode( ListView.CHOICE_MODE_NONE );
-		listFriends = (ListView) findViewById( R.id.list_friends );
+		listFriendsRequests = (ListView) findViewById( R.id.list_requests );
+		listFriendsRequests.setChoiceMode( ListView.CHOICE_MODE_NONE );
+		listFriendsOnline = (ListView) findViewById( R.id.list_friends_online );
+		listFriendsOffline = (ListView) findViewById( R.id.list_friends_offline );
+
+		//Set the context menus
+		registerForContextMenu( listFriendsOnline );
+		registerForContextMenu( listFriendsOffline );
 		
 		//refresh the COM
 		refreshCOM();
@@ -494,15 +511,13 @@ public class Dashboard extends Activity {
 	private void refreshCOM() {
 
 		//Done? No? Let's populate in an async task!
-		AsyncComRefresh acr = new AsyncComRefresh(context, listRequests, listFriends, layoutInflater);
+		AsyncComRefresh acr = new AsyncComRefresh(context, listFriendsRequests, listFriendsOnline, listFriendsOffline, layoutInflater);
 		acr.execute();
 		
 	}
 	
 	public void onRequestActionClick(View v) {
-	
-		Toast.makeText( this, "Clicked the " + getResources().getResourceName(v.getId()), Toast.LENGTH_SHORT).show();
-		
+
 		//...
 		if( v.getId() == R.id.button_accept ) { 
 			
@@ -510,7 +525,7 @@ public class Dashboard extends Activity {
 					
 				this, 
 				((ProfileData)v.getTag()).getProfileId(),
-				new AsyncComRefresh(this, listRequests, listFriends, layoutInflater)
+				new AsyncComRefresh(this, listFriendsRequests, listFriendsOnline, listFriendsOffline, layoutInflater)
 			
 			).execute(true); 
 			
@@ -520,12 +535,160 @@ public class Dashboard extends Activity {
 					
 				this, 
 				((ProfileData)v.getTag()).getProfileId(),
-				new AsyncComRefresh(this, listRequests, listFriends, layoutInflater)
+				new AsyncComRefresh(this, listFriendsRequests, listFriendsOnline, listFriendsOffline, layoutInflater)
 			
 			).execute(false); 
 		
 		}
 		
+	}
+    
+	@Override
+	public void onPause() {
+		
+		super.onPause();
+		//if( slidingDrawer.isOpened() ) { slidingDrawer.close(); }
+		
+	}
+	
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){        
+        super.onConfigurationChanged(newConfig);
+    }
+    
+    @Override
+	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
+
+    	if( view.getId() == R.id.list_requests ) {
+
+			menu.add( 0, 0, 0, "Compare battle scars against");
+    		
+    	} else if( view.getId() == R.id.list_friends_online ) {
+    		
+			menu.add( 1, 0, 0, "Compare battle scars against");
+
+    	} else if( view.getId() == R.id.list_friends_offline ) {
+    		
+			menu.add( 2, 0, 0, "Compare battle scars against");
+    		
+    	}
+		return;
+	
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+
+		//Declare...
+		AdapterView.AdapterContextMenuInfo info;
+
+		//Let's try to get some menu information via a try/catch
+		try {
+			
+		    info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+		
+		} catch (ClassCastException e) {
+		
+			e.printStackTrace();
+			return false;
+		
+		}
+		
+		try {
+			
+			//Divide & conquer 
+			if( item.getGroupId() == 0 ) {
+				
+				//REQUESTS
+				if( item.getItemId() == 0 ) {
+					
+					startActivity(
+							
+						new Intent( 
+								
+							this, 
+							CompareView.class
+							
+						).putExtra( 
+							
+							"profile", 
+							WebsiteHandler.getIDFromProfile(
+								
+								((ProfileData) info.targetView.getTag()).getProfileId() 
+						
+							)
+							
+						)
+					
+					);
+					
+				}
+				
+	    	} else if( item.getGroupId() == 1 ) {
+	    		
+	    		
+	    		//ONLINE FRIENDS
+				if( item.getItemId() == 0 ) {
+					
+					startActivity(
+							
+						new Intent( 
+								
+							this, 
+							CompareView.class
+							
+						).putExtra( 
+							
+							"profile", 
+							WebsiteHandler.getIDFromProfile(
+								
+								((ProfileData) info.targetView.getTag()).getProfileId() 
+						
+							)
+							
+						)
+					
+					);
+					
+				}
+	    		
+	    	} else if( item.getGroupId() == 2 ) {
+	    		
+	    		
+	    		//OFFLINE FRIENDS
+				if( item.getItemId() == 0 ) {
+	
+					startActivity(
+					
+						new Intent( 
+								
+							this, 
+							CompareView.class
+							
+						).putExtra( 
+							
+							"profile", 
+							WebsiteHandler.getIDFromProfile(
+								
+								((ProfileData) info.targetView.getTag()).getProfileId() 
+						
+							)
+							
+						)
+					
+					);
+				
+				}
+					
+	    	} else {}
+		
+		} catch ( WebsiteHandlerException e ) {
+				
+			e.printStackTrace();
+		
+		}
+		
+		return true;
 	}
 
 }

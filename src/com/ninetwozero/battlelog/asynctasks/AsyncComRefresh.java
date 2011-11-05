@@ -15,14 +15,11 @@
 package com.ninetwozero.battlelog.asynctasks;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.TreeMap;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
@@ -42,27 +39,23 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 	Context context;
 	SharedPreferences sharedPreferences;
 	ArrayList<ArrayList<ProfileData>> profileArray = new ArrayList<ArrayList<ProfileData>>();
-	ListView listRequests, listFriends;
+	ListView listRequests, listFriendsOnline, listFriendsOffline;
 	LayoutInflater layoutInflater;
 	
 	//Constructor
-	public AsyncComRefresh( Context c, ListView r, ListView f, LayoutInflater l ) { 
+	public AsyncComRefresh( Context c, ListView r, ListView fon, ListView fof, LayoutInflater l ) { 
 		
 		this.context = c;
 		this.listRequests = r;
-		this.listFriends = f;
+		this.listFriendsOnline = fon;
+		this.listFriendsOffline = fof;
 		this.layoutInflater = l;
 		this.sharedPreferences = context.getSharedPreferences(Config.fileSharedPrefs, 0);
 		
 	}	
 	
 	@Override
-	protected void onPreExecute() {
-		
-		//Let's see
-		Toast.makeText( context, "Updating the COM CENTER", Toast.LENGTH_SHORT).show();
-		
-	}
+	protected void onPreExecute() {}
 	
 	@Override
 	protected Boolean doInBackground( Void... arg0) {
@@ -89,7 +82,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 			
 			if( profileArray.get( 0 ) == null || profileArray.get( 0 ).size() == 0 ) {
 			
-				((Activity)context).findViewById(R.id.wrap_requests).setVisibility( View.GONE );
+				((Activity)context).findViewById(R.id.wrap_friends_requests).setVisibility( View.GONE );
 			
 			} else {
 				
@@ -97,16 +90,28 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 				listRequests.setAdapter( new RequestListAdapter(context, profileArray.get(0), layoutInflater) );
 				
 			}
-			
+
 			if( profileArray.get( 1 ) == null || profileArray.get( 1 ).size() > 0 ) {
 				
 				//Set the adapter
-				listFriends.setAdapter( new FriendListAdapter(context, profileArray.get(1), layoutInflater) );
+				listFriendsOnline.setAdapter( new FriendListAdapter(context, profileArray.get(1), layoutInflater) );
 				
 				
 			} else {
 				
-				//No friends found :-(
+				//No online friends found :-(
+				
+			}
+			
+			if( profileArray.get( 2 ) == null || profileArray.get( 2 ).size() > 0 ) {
+				
+				//Set the adapter
+				listFriendsOffline.setAdapter( new FriendListAdapter(context, profileArray.get(2), layoutInflater) );
+				
+				
+			} else {
+				
+				//No offline friends found :-( and :-) at the same time
 				
 			}
 		
@@ -117,8 +122,8 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 		}
 		
 		//How did go?
-		if( results ) Toast.makeText( context, "COM CENTER updated.", Toast.LENGTH_SHORT).show();
-		else Toast.makeText( context, "COM CENTER could not be updated.", Toast.LENGTH_SHORT).show();				
+		if( results ) Toast.makeText( context, "COM CENTER up to date.", Toast.LENGTH_SHORT).show();
+		else Toast.makeText( context, "COM CENTER could not be refreshed.", Toast.LENGTH_SHORT).show();				
 		return;
 		
 	}	

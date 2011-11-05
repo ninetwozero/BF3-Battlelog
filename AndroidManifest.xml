@@ -30,6 +30,7 @@
             android:label="@string/app_name"
             android:name=".Main"
             android:orientation="vertical"
+          	android:configChanges="orientation"
 		>
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
@@ -41,14 +42,17 @@
             android:label="BF3 Battlelog - Main menu"
             android:name=".Dashboard"
             android:orientation="vertical"
+          	android:configChanges="orientation"
         />
         <activity
             android:label="BF3 Battlelog - Your performance"
             android:name=".ProfileView"
+          	android:configChanges="orientation"
         />
         <activity
             android:label="BF3 Battlelog - Comparing battle scars"
             android:name=".CompareView"
+          	android:configChanges="orientation"
         />
     </application>
 	<uses-permission android:name="android.permission.INTERNET" />

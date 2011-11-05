@@ -57,7 +57,7 @@ public class FriendSpinnerAdapter extends BaseAdapter implements SpinnerAdapter 
 	public View getView( int position, View convertView, ViewGroup parent ) {
 
 		// Declare the current array
-		ProfileData current_item = profileArray.get( position );
+		ProfileData currentItem = profileArray.get( position );
 
 		//Recycle view - it's good for Mother Nature!
 		if ( convertView == null ) {
@@ -67,8 +67,8 @@ public class FriendSpinnerAdapter extends BaseAdapter implements SpinnerAdapter 
 		}
 
 		//Set the TextView
-		( (TextView) convertView.findViewById( android.R.id.text1 ) ).setText( current_item.getPersonaName() );
-
+		( (TextView) convertView.findViewById( android.R.id.text1 ) ).setText( currentItem.getPersonaName() );
+		
 		//Return the view
 		return convertView;
 	}

@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -124,7 +126,7 @@ public class ProfileView extends Activity {
 			//Fail?
 			if( !result ) { 
 				
-				this.progressDialog.dismiss();
+				if( this.progressDialog != null ) this.progressDialog.dismiss();
 				Toast.makeText( this.context, "No data found.", Toast.LENGTH_SHORT).show(); 
 				((Activity) this.context).finish();
 				return; 
@@ -138,8 +140,8 @@ public class ProfileView extends Activity {
 	        
 	        //Progress
 	        progressBar = ( (ProgressBar) findViewById(R.id.progress_level));
-	        progressBar.setMax( (int) playerData.getPointsNextLvl()  );
-	        progressBar.setProgress( (int) playerData.getScoreTotal() );
+	        progressBar.setMax( (int) playerData.getPointsNeededToLvlUp()  );
+	        progressBar.setProgress( (int) playerData.getPointsProgressLvl() );
 	        ((TextView) findViewById(R.id.string_progress_curr)).setText( playerData.getPointsProgressLvl() + "" );
 	        ((TextView) findViewById(R.id.string_progress_max)).setText( playerData.getPointsNeededToLvlUp() + "" );
 	        ((TextView) findViewById(R.id.string_progress_left)).setText( playerData.getPointsLeft() + "" );
@@ -171,7 +173,7 @@ public class ProfileView extends Activity {
 	        ((TextView) findViewById(R.id.string_stats_lks)).setText( playerData.getLongestKS() + "" );
 	        ((TextView) findViewById(R.id.string_stats_lhs)).setText( playerData.getLongestHS() + " m");		
 		
-			this.progressDialog.dismiss();
+	        if( this.progressDialog != null ) this.progressDialog.dismiss();
 			return;
 		}
     	
@@ -203,6 +205,11 @@ public class ProfileView extends Activity {
 		// Return true yo
 		return true;
 
-	}    
+	}  
+    
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){        
+        super.onConfigurationChanged(newConfig);
+    }  
     
 }

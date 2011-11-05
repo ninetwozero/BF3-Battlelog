@@ -29,7 +29,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="37dp"
 	        android:background="@drawable/gradient_greytodarkgrey"
-	    	android:text="COM-center"
+	    	android:text="COM CENTER"
 	    	android:textColor="#FFFFFF"
 	    	android:gravity="center"
 	    />
@@ -46,12 +46,12 @@
 			android:layout_height="0dp"
 		/>
 	    <RelativeLayout
-	    	android:id="@+id/wrap_requests"  
+	    	android:id="@+id/wrap_friends_requests"  
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content" 
 		>
 			<TextView
-				android:id="@+id/header_requests"
+				android:id="@+id/header_friends_requests"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:background="#EBEBEB"
@@ -63,31 +63,62 @@
 		    	android:id="@+id/list_requests"  
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:layout_below="@id/header_requests"
+				android:layout_below="@id/header_friends_requests"
 		    />
 	    </RelativeLayout>
+	    <View 
+			android:id="@+id/centeralign"  
+			android:layout_width="fill_parent"
+			android:layout_height="0dp"
+			android:layout_below="@id/wrap_friends_requests"
+			android:layout_alignWithParentIfMissing="@id/topalign" 
+		/>
 	    <RelativeLayout
-	    	android:id="@+id/wrap_friends"  
+	    	android:id="@+id/wrap_friends_online"  
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/wrap_requests"
+			android:layout_below="@id/wrap_friends_requests"
 			android:layout_alignWithParentIfMissing="@id/topalign" 
 		>
 		
 			<TextView
-				android:id="@+id/header_friends"
+				android:id="@+id/header_friends_online"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:background="#EBEBEB"
 				android:textColor="#5A5A5A"
 				android:padding="5dp"
-				android:text="Friends (0/10)"    
+				android:text="Online friends"    
 	    	/>    
 		    <ListView
-		    	android:id="@+id/list_friends"  
+		    	android:id="@+id/list_friends_online"  
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:layout_below="@id/header_friends"
+				android:layout_below="@id/header_friends_online"
+		    />
+	    </RelativeLayout>
+		<RelativeLayout
+	    	android:id="@+id/wrap_friends_offline"  
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/wrap_friends_online"
+			android:layout_alignWithParentIfMissing="@id/centeralign" 
+		>
+		
+			<TextView
+				android:id="@+id/header_friends_offline"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:background="#EBEBEB"
+				android:textColor="#5A5A5A"
+				android:padding="5dp"
+				android:text="Offline friends"    
+	    	/>    
+		    <ListView
+		    	android:id="@+id/list_friends_offline"  
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/header_friends_offline"
 		    />
 	    </RelativeLayout>
 	</RelativeLayout>

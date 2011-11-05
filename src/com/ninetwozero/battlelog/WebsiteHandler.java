@@ -16,7 +16,7 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.TreeMap;
+import java.util.Comparator;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
@@ -29,9 +29,9 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.ninetwozero.battlelog.datatypes.IgnoreCaseComparator;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.PostData;
+import com.ninetwozero.battlelog.datatypes.ProfileComparator;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -333,7 +333,7 @@ public class WebsiteHandler {
 			ArrayList<ArrayList<ProfileData>> profileArray = new ArrayList<ArrayList<ProfileData>>();
 			
 			//Get the content
-			httpContent = wh.post( Config.urlFriends, new PostData[] { new PostData(Config.fieldNamesFriends[0], checksum) });
+			httpContent = wh.post( Config.urlFriends, new PostData[] { new PostData(Config.fieldNamesCHSUM[0], checksum) });
 
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -342,11 +342,13 @@ public class WebsiteHandler {
 				JSONObject comData = new JSONObject(httpContent).getJSONObject( "data" );
 				JSONArray friendsObject = comData.getJSONArray( "friendscomcenter" );
 				JSONArray requestsObject = comData.getJSONArray( "friendrequests" );
-				JSONObject tempObj;
+				JSONObject tempObj, presenceObj;
 
 				//Arraylists!
-				ArrayList<ProfileData> profileRow = new ArrayList<ProfileData>();
-				TreeMap<String, ProfileData> tempRow = new TreeMap<String, ProfileData>();
+				ArrayList<ProfileData> profileRowRequests = new ArrayList<ProfileData>();
+				ArrayList<ProfileData> profileRowOnline = new ArrayList<ProfileData>();
+				ArrayList<ProfileData> profileRowOffline = new ArrayList<ProfileData>();
+				//TreeMap<String, ProfileData> tempRow = new TreeMap<String, ProfileData>();
 				
 				//Grab the lengths
 				int numRequests = requestsObject.length(), numFriends = friendsObject.length();
@@ -361,7 +363,7 @@ public class WebsiteHandler {
 						tempObj = requestsObject.optJSONObject( i );
 						
 						//Save it
-						profileRow.add(
+						profileRowRequests.add(
 								
 							new ProfileData(
 									
@@ -375,8 +377,11 @@ public class WebsiteHandler {
 						);
 				
 					}
-					
-					profileArray.add( profileRow );
+
+					//Sort it out
+					Collections.sort( profileRowOnline, new ProfileComparator() );
+			 
+					profileArray.add( profileRowRequests );
 					
 				} else {
 					
@@ -385,37 +390,63 @@ public class WebsiteHandler {
 				}
 				
 				if( numFriends > 0 ) {
-				
-					//Init/Clear profileRow
-					profileRow = new ArrayList<ProfileData>();
 					
 					//Iterate baby!
 					for( int i = 0; i < friendsObject.length(); i++ ) {
 						
 						//Grab the object
 						tempObj = friendsObject.optJSONObject( i );
-												
+						presenceObj = tempObj.getJSONObject( "presence" );
+						
 						//Save it
-						profileRow.add(
+						if( presenceObj.getBoolean( "isOnline" ) ) {
+							
+							
+							profileRowOnline.add(								
+							
+								new ProfileData(
+										
+									tempObj.getString( "username" ),
+									0,
+									Long.parseLong( tempObj.getString( "userId" ) ),
+									0,
+									true,
+									tempObj.getJSONObject( "presence" ).getBoolean( "isPlaying" )
 								
-							new ProfileData(
-									
-								tempObj.getString( "username" ),
-								0,
-								Long.parseLong( tempObj.getString( "userId" ) ),
-								0
-							
-							) 
-							
-						);
+								) 
+								
+							);
 				
+						} else {
+						
+							profileRowOffline.add(								
+									
+								new ProfileData(
+											
+									tempObj.getString( "username" ),
+									0,
+									Long.parseLong( tempObj.getString( "userId" ) ),
+									0
+									
+								) 
+									
+							);
+							
+						}
+					
 					}
 					
+					//Sort it out
+					Collections.sort( profileRowOnline, new ProfileComparator() );
+					Collections.sort( profileRowOffline, new ProfileComparator() );
+					
 					//Add it man!
-					profileArray.add( profileRow );
+					profileArray.add( profileRowOnline );
+					profileArray.add( profileRowOffline );
 				
 				} else {
 					
+					profileArray.add( null );
 					profileArray.add( null );
 					
 				}
@@ -450,7 +481,7 @@ public class WebsiteHandler {
 			ArrayList<ProfileData> profileArray = new ArrayList<ProfileData>();
 			
 			//Get the content
-			httpContent = wh.post( Config.urlFriends, new PostData[] { new PostData(Config.fieldNamesFriends[0], checksum) });
+			httpContent = wh.post( Config.urlFriends, new PostData[] { new PostData(Config.fieldNamesCHSUM[0], checksum) });
 	
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -510,7 +541,6 @@ public class WebsiteHandler {
 			//Let's login everybody!
 			RequestHandler wh = new RequestHandler();
 			String httpContent;
-			ArrayList<ProfileData> profileArray = new ArrayList<ProfileData>();
 			
 			//Get the content
 			if( accepting ) {
@@ -526,7 +556,7 @@ public class WebsiteHandler {
 					
 						new PostData(
 							
-							Config.fieldNamesFriends[0], 
+							Config.fieldNamesCHSUM[0], 
 							checksum
 						
 						) 
@@ -538,43 +568,37 @@ public class WebsiteHandler {
 			} else {
 
 				httpContent = wh.post( 
+					
+					Config.urlFriendDecline.replace( 
 						
-						Config.urlFriendDecline.replace( 
+						"{PID}", 
+						pId + ""
+					), 
+					new PostData[] { 
+					
+						new PostData(
 							
-							"{PID}", 
-							pId + ""
-						), 
-						new PostData[] { 
+							Config.fieldNamesCHSUM[0], 
+							checksum
 						
-							new PostData(
-								
-								Config.fieldNamesFriends[0], 
-								checksum
-							
-							) 
-							
-						}
-				
-					);
+						) 
+						
+					}
+			
+				);
 				
 			}
 			
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
 			
-				//Check the status
-				if( new JSONObject(httpContent).getString( "type" ).equals( "success" ) ) return true;
-				else return false;
+				return true;
 				
 			} else {
 			
 				throw new WebsiteHandlerException("Could not respond to the friend request.");
 			
 			}	
-		
-		} catch ( JSONException e ) {
-		
-			throw new WebsiteHandlerException(e.getMessage());
 		
 		} catch ( RequestHandlerException ex ) {
 			

@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,7 +61,6 @@ public class CompareView extends Activity {
 			this.sharedPreferences.getLong( "battlelog_platform_id", 1)
 		
 		);
-        
         playerTwo = (ProfileData) getIntent().getSerializableExtra( "profile" );
         
         this.reloadLayout();
@@ -136,7 +136,7 @@ public class CompareView extends Activity {
 			//Fail?
 			if( !result ) { 
 				
-				this.progressDialog.dismiss();
+				if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
 				Toast.makeText( this.context, "No data found.", Toast.LENGTH_SHORT).show(); 
 				((Activity) this.context).finish();
 				return; 
@@ -255,5 +255,9 @@ public class CompareView extends Activity {
 		return true;
 
 	}    
-    
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){        
+        super.onConfigurationChanged(newConfig);
+    }
 }

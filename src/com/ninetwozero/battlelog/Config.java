@@ -26,6 +26,8 @@ public final class Config {
 	public static final String urlFriends = urlMain + "comcenter/sync/";
 	public static final String urlFriendAccept = urlMain + "friend/acceptFriendship/{PID}/";
 	public static final String urlFriendDecline = urlMain + "friend/declineFriendship/{PID}/";
+	public static final String urlNotifications = urlMain + "notification/loadNotifications/";
+	
 	public static final String urlLogout = urlMain + "session/logout/";
 	
 	//URLs to JSON-files
@@ -47,9 +49,9 @@ public final class Config {
 	public static final String[] fieldNamesSearch = new String[] { "username", "post-check-sum" };
 	public static final String[] fieldValuesSearch = new String[] { null, null };
 
-	public static final String[] fieldNamesFriends = new String[] { "post-check-sum" };
-	public static final String[] fieldValuesFriends = new String[] { null };
-	
+	public static final String[] fieldNamesCHSUM = new String[] { "post-check-sum" };
+	public static final String[] fieldValuesCHSUM = new String[] { null };
+		
 	//HTML-elements to grab
 	public static final String elementUIDLink = "<a class=\"main-loggedin-leftcolumn-active-soldier-name\" href=\"/bf3/soldier/";
 	public static final String elementStatusOK = "";

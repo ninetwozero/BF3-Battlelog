@@ -21,6 +21,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -199,6 +200,11 @@ public class Main extends Activity {
 		//CREATE
 		return builder.create();
     	
+    }
+    
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){        
+        super.onConfigurationChanged(newConfig);
     }
     
 }

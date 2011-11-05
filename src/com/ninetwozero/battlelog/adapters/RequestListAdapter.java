@@ -71,9 +71,14 @@ public class RequestListAdapter extends BaseAdapter {
 
 		//Set the TextView
 		( (TextView) convertView.findViewById( R.id.text_persona ) ).setText( currentProfile.getPersonaName() );
+		
+		//Hot-wire the views
 		( (ImageView) convertView.findViewById(R.id.button_accept) ).setTag( currentProfile );
 		( (ImageView) convertView.findViewById(R.id.button_decline) ).setTag( currentProfile );
-
+		
+		//Set the tag so it's up for grabs
+		convertView.setTag( currentProfile );
+		
 		return convertView;
 	}
 	
