@@ -15,6 +15,8 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.TreeMap;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
@@ -27,6 +29,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.ninetwozero.battlelog.datatypes.IgnoreCaseComparator;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
@@ -343,6 +346,7 @@ public class WebsiteHandler {
 
 				//Arraylists!
 				ArrayList<ProfileData> profileRow = new ArrayList<ProfileData>();
+				TreeMap<String, ProfileData> tempRow = new TreeMap<String, ProfileData>();
 				
 				//Grab the lengths
 				int numRequests = requestsObject.length(), numFriends = friendsObject.length();
@@ -357,7 +361,7 @@ public class WebsiteHandler {
 						tempObj = requestsObject.optJSONObject( i );
 						
 						//Save it
-						profileRow.add( 
+						profileRow.add(
 								
 							new ProfileData(
 									
@@ -392,16 +396,14 @@ public class WebsiteHandler {
 						tempObj = friendsObject.optJSONObject( i );
 												
 						//Save it
-						profileRow.add( 
+						profileRow.add(
 								
 							new ProfileData(
 									
 								tempObj.getString( "username" ),
 								0,
 								Long.parseLong( tempObj.getString( "userId" ) ),
-								0,
-								tempObj.getJSONObject( "presence").getBoolean( "isOnline" ),
-								tempObj.getJSONObject( "presence").getBoolean( "isPlaying" )
+								0
 							
 							) 
 							

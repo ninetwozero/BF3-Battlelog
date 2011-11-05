@@ -14,23 +14,12 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import java.util.ArrayList;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Config;
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.WebsiteHandler;
-import com.ninetwozero.battlelog.adapters.FriendListAdapter;
-import com.ninetwozero.battlelog.adapters.RequestListAdapter;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 
 public class AsyncComRequest extends AsyncTask<Boolean, Integer, Boolean> {
@@ -39,14 +28,15 @@ public class AsyncComRequest extends AsyncTask<Boolean, Integer, Boolean> {
 	Context context;
 	SharedPreferences sharedPreferences;
 	long profileId;
+	AsyncComRefresh refreshMethod;
 
 	//Constructor
-	public AsyncComRequest( Context c, long p ) { 
+	public AsyncComRequest( Context c, long p, AsyncComRefresh acr ) { 
 		
 		this.context = c;
 		this.profileId = p;
 		this.sharedPreferences = context.getSharedPreferences( "battlelog", 0 );
-
+		this.refreshMethod = acr;
 	}	
 	
 	@Override
@@ -80,11 +70,11 @@ public class AsyncComRequest extends AsyncTask<Boolean, Integer, Boolean> {
 		//How did go?
 		if( results ) { 
 		
-			Toast.makeText( context, "COM CENTER updated.", Toast.LENGTH_SHORT).show();
-		
+			refreshMethod.execute();
+			
 		} else {
 			
-			Toast.makeText( context, "COM CENTER could not be updated.", Toast.LENGTH_SHORT).show();				
+			Toast.makeText( context, "Friend request could not be responded to.", Toast.LENGTH_SHORT).show();				
 		
 		}
 		return;

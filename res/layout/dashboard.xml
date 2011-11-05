@@ -29,7 +29,6 @@
 		    android:singleLine="true"
 		 />
 	</RelativeLayout>
-	<include android:id="@+id/com_center_slider" layout="@layout/com_center_slider" />
 	<RelativeLayout
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
@@ -43,7 +42,7 @@
 		    android:layout_centerInParent="true"
 			android:paddingTop="20dp"
 			android:paddingRight="20dp"
-			android:paddingBottom="20dp"
+			android:paddingBottom="40dp"
 			android:paddingLeft="20dp"
 		>
 			<Button
@@ -73,4 +72,5 @@
 			
 		</RelativeLayout>
 	</RelativeLayout>
+	<include layout="@layout/com_center_slider" />
 </RelativeLayout>

@@ -18,7 +18,6 @@ package com.ninetwozero.battlelog.widgets;
 import java.util.ArrayList;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;

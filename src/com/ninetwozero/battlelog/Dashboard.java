@@ -483,6 +483,7 @@ public class Dashboard extends Activity {
 		
 		//Grab the ListViews
 		listRequests = (ListView) findViewById( R.id.list_requests );
+		listRequests.setChoiceMode( ListView.CHOICE_MODE_NONE );
 		listFriends = (ListView) findViewById( R.id.list_friends );
 		
 		//refresh the COM
@@ -498,7 +499,7 @@ public class Dashboard extends Activity {
 		
 	}
 	
-	private void onRequestActionClick(View v) {
+	public void onRequestActionClick(View v) {
 	
 		Toast.makeText( this, "Clicked the " + getResources().getResourceName(v.getId()), Toast.LENGTH_SHORT).show();
 		
@@ -507,8 +508,9 @@ public class Dashboard extends Activity {
 			
 			new AsyncComRequest(
 					
-				context, 
-				((ProfileData)v.getTag()).getProfileId()
+				this, 
+				((ProfileData)v.getTag()).getProfileId(),
+				new AsyncComRefresh(this, listRequests, listFriends, layoutInflater)
 			
 			).execute(true); 
 			
@@ -516,8 +518,9 @@ public class Dashboard extends Activity {
 			
 			new AsyncComRequest(
 					
-				context, 
-				((ProfileData)v.getTag()).getProfileId()
+				this, 
+				((ProfileData)v.getTag()).getProfileId(),
+				new AsyncComRefresh(this, listRequests, listFriends, layoutInflater)
 			
 			).execute(false); 
 		

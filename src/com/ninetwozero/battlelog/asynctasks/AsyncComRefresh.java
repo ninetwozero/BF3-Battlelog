@@ -15,11 +15,14 @@
 package com.ninetwozero.battlelog.asynctasks;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.TreeMap;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;

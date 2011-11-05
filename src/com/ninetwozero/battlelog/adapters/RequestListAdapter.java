@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
@@ -70,7 +71,8 @@ public class RequestListAdapter extends BaseAdapter {
 
 		//Set the TextView
 		( (TextView) convertView.findViewById( R.id.text_persona ) ).setText( currentProfile.getPersonaName() );
-		convertView.setTag( currentProfile );
+		( (ImageView) convertView.findViewById(R.id.button_accept) ).setTag( currentProfile );
+		( (ImageView) convertView.findViewById(R.id.button_decline) ).setTag( currentProfile );
 
 		return convertView;
 	}

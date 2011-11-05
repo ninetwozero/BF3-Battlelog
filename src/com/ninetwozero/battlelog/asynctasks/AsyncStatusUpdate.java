@@ -14,13 +14,6 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import com.ninetwozero.battlelog.Config;
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.RequestHandler;
-import com.ninetwozero.battlelog.R.id;
-import com.ninetwozero.battlelog.datatypes.PostData;
-import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -28,6 +21,12 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.ninetwozero.battlelog.Config;
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.RequestHandler;
+import com.ninetwozero.battlelog.datatypes.PostData;
+import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 
 
 public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
