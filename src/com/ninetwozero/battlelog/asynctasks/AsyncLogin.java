@@ -62,6 +62,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 			this.progressDialog = new ProgressDialog(this.context);
 			this.progressDialog.setTitle("Please wait");
 			this.progressDialog.setMessage( "Logging in..." );
+			this.progressDialog.setCancelable( false );
 			this.progressDialog.show();
 		
 		}

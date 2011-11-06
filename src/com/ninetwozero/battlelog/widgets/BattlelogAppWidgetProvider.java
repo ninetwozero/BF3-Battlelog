@@ -42,7 +42,7 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
 	public static final String DEBUG_TAG = "WidgetProvider";
-	public static String ACTION_WIDGET_RECEIVER = "ActionReceiverWidget";
+	public static final String ACTION_WIDGET_RECEIVER = "ActionReceiverWidget";
 	
 	   @Override
 	   public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -57,7 +57,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 		   SharedPreferences sharedPreferences = null;
 		   ComponentName BattlelogListWidget;
 		   int numFriendsOnline = 0;
-		   
+	   
 		   //Set the values
 		   sharedPreferences = context.getSharedPreferences( Config.fileSharedPrefs, 0);  
 		   profileData = new ProfileData(
@@ -69,9 +69,9 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 		   
 		   );
 		   remoteView = new RemoteViews(context.getPackageName(), R.layout.appwidget_layout);
-		
+		   
 		   try {
-			   
+			    
 			   playerData = WebsiteHandler.getStatsForUser(profileData);
 			   remoteView.setTextViewText(R.id.label, "Name: "+ playerData.getPersonaName());
 			   remoteView.setTextViewText(R.id.title, "Rank: " + playerData.getRankId() + " (" + playerData.getPointsProgressLvl() + "/" + playerData.getPointsNeededToLvlUp() + ")");
@@ -85,7 +85,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 			   	
 				if( !sharedPreferences.getBoolean("remember_password", false) ) {
 					
-					Toast.makeText(context, "Could not log in - Is your password saved?", Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "Authentication failed - is your password saved?", Toast.LENGTH_SHORT).show();
 					return;
 					
 				} else {
@@ -121,21 +121,25 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 				    		);
 			    		
 			    		}
-						   
+						
+			    		//Login!
 						AsyncLogin al = new AsyncLogin(context, true, true);
 						al.execute(postDataArray);
-					
+
+						//Get our stats and output them
 						playerData = WebsiteHandler.getStatsForUser(profileData);
 						remoteView.setTextViewText(R.id.label, "Name: "+ playerData.getPersonaName());
 						remoteView.setTextViewText(R.id.title, "Rank: " + playerData.getRankId() + " (" + playerData.getPointsProgressLvl() + "/" + playerData.getPointsNeededToLvlUp() + ")");
 						remoteView.setTextViewText(R.id.stats, "W/L: " + playerData.getWLRatio() + "  K/D: " + playerData.getKDRatio());
+						
+						//Get the friends
 						profileDataArray = WebsiteHandler.getFriends( sharedPreferences.getString("battlelog_post_checksum", ""), true );
 						numFriendsOnline = profileDataArray.size();
 						
 					} catch (Exception ex ) {
 
 						ex.printStackTrace();
-
+						
 					}
 					
 				}
@@ -163,25 +167,8 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 	   @Override
 	   public void onReceive(Context context, Intent intent) {
 
-			// v1.5 fix that doesn't call onDelete Action
-			final String action = intent.getAction();
-			if (AppWidgetManager.ACTION_APPWIDGET_DELETED.equals(action)) {
+		   	super.onReceive(context, intent);
 				
-				final int appWidgetId = intent.getExtras().getInt(
-						
-					AppWidgetManager.EXTRA_APPWIDGET_ID,
-					AppWidgetManager.INVALID_APPWIDGET_ID
-				
-				);
-				if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) { this.onDeleted(context, new int[] { appWidgetId }); }
-				
-			} else {
-			 
-				super.onReceive(context, intent);
-				
-			}
-			
-			//
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 			ComponentName thisAppWidget = new ComponentName(context, BattlelogAppWidgetProvider.class);
 			int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
@@ -189,5 +176,6 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 			//UPDATE IT !!!!
 			onUpdate(context, appWidgetManager, appWidgetIds); 
 	    } 
+	   
 }
 	

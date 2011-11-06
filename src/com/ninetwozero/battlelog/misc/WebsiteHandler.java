@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.misc;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
@@ -29,6 +28,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.ninetwozero.battlelog.UnlockData;
 import com.ninetwozero.battlelog.datatypes.Config;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.PostData;
@@ -258,7 +258,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static PlayerData getStatsForUser(ProfileData pd) throws WebsiteHandlerException {
+public static PlayerData getStatsForUser(ProfileData pd) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -323,6 +323,41 @@ public class WebsiteHandler {
 		}
 		
 	}
+
+public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws WebsiteHandlerException {
+	
+	try {
+		
+    	//Get the data
+    	RequestHandler wh = new RequestHandler();
+    	String content = wh.get( 
+	
+			Config.urlStatsUpcoming.replace(
+					
+				"{UID}", pd.getPersonaId() + ""
+			
+			).replace( 
+			
+				"{PLATFORM_ID}", pd.getPlatformId() + ""
+			)
+			
+		);
+    	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
+    	JSONArray unlocksArray = dataObject.getJSONArray( "unlocks" );
+
+    	//Iterate over the unlocksArray
+    	Log.d("com.ninetwozero.battlelog", unlocksArray.toString( 4 ) );
+    	
+        //Yay
+        return null;
+    
+	} catch ( Exception ex ) {
+		
+		throw new WebsiteHandlerException(ex.getMessage());
+		
+	}
+	
+}
 	
 	public static final ArrayList<ArrayList<ProfileData>> getFriendsCOM(String checksum) throws WebsiteHandlerException {
 		

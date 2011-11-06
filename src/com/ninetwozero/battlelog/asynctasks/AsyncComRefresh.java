@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -41,9 +42,10 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 	ArrayList<ArrayList<ProfileData>> profileArray = new ArrayList<ArrayList<ProfileData>>();
 	ListView listRequests, listFriendsOnline, listFriendsOffline;
 	LayoutInflater layoutInflater;
+	Button buttonRefresh;
 	
 	//Constructor
-	public AsyncComRefresh( Context c, ListView r, ListView fon, ListView fof, LayoutInflater l ) { 
+	public AsyncComRefresh( Context c, ListView r, ListView fon, ListView fof, LayoutInflater l, Button b ) { 
 		
 		this.context = c;
 		this.listRequests = r;
@@ -51,11 +53,17 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 		this.listFriendsOffline = fof;
 		this.layoutInflater = l;
 		this.sharedPreferences = context.getSharedPreferences(Config.fileSharedPrefs, 0);
+		this.buttonRefresh = b;
 		
 	}	
 	
 	@Override
-	protected void onPreExecute() {}
+	protected void onPreExecute() {
+		
+		this.buttonRefresh.setEnabled(false);
+		this.buttonRefresh.setText( "Please wait..." );
+		
+	}
 	
 	@Override
 	protected Boolean doInBackground( Void... arg0) {
@@ -120,6 +128,11 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 			results = false;
 			
 		}
+		
+
+		//Update the button y'all
+		this.buttonRefresh.setEnabled(true);
+		this.buttonRefresh.setText( "Refresh now" );
 		
 		//How did go?
 		if( results ) Toast.makeText( context, "COM CENTER up to date.", Toast.LENGTH_SHORT).show();

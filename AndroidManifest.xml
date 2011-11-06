@@ -54,6 +54,11 @@
             android:name=".CompareView"
           	android:configChanges="orientation"
         />
+        <activity
+            android:label="BF3 Battlelog - Your upcoming unlocks"
+            android:name=".UnlocksView"
+          	android:configChanges="orientation"
+        />
     </application>
 	<uses-permission android:name="android.permission.INTERNET" />
 </manifest>

@@ -5,9 +5,10 @@
         
     <!-- Strings to be translated -->
     
-	    <string name="changelog_103">
+	    <string name="changelog">
 	        * Added an initial version of the COM CENTER&lt;br /&gt;
-	        * Fixed the widget (hopefully) &lt;br /&gt;
+	        * A few bugfixes here and there &lt;br /&gt;
+	        * Fixed the widget (refresh via the image to the right) &lt;br /&gt;
 	        * Fixed the f/c upon changing orientation &lt;br /&gt;
 	        &lt;br /&gt;
 	        Please report any errors you may encounter to &lt;u&gt;support@ninetwozero.com&lt;/u&gt; and/or 

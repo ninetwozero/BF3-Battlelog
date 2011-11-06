@@ -75,4 +75,30 @@ public final class Config {
 
 	}
 	
+	public static String getKitTitle( int number ) {
+	
+		switch( number ) {
+
+			case 2:	
+				return "Engineer";
+				
+			case 8:	
+				return "Recon";
+				
+			case 16: 
+				return "Vehicle";
+				
+			case 32: 
+				return "Support";
+				
+			case 64: 
+				return "General";
+				
+			default:
+				return "Misc";
+			
+		}
+		
+	}
+	
 }

@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
@@ -67,7 +68,9 @@ public class Dashboard extends Activity {
 	private OnDrawerOpenListener onDrawerOpenListener;
 	private OnDrawerCloseListener onDrawerCloseListener;
 	private ListView listFriendsRequests, listFriendsOnline, listFriendsOffline;
-
+	private Button buttonRefresh;
+	private AsyncComRefresh asyncComRefresh;
+	
 	//Async
 	AsyncLogout asyncLogout = null;
 	
@@ -95,7 +98,15 @@ public class Dashboard extends Activity {
 	
 	public void onClick(View v) {
 		
-		if( v.getId() == R.id.button_view_self ) {
+		if( v.getId() == R.id.button_refresh ) {
+			
+			refreshCOM();
+			
+		} else if ( v.getId() == R.id.button_unlocks ) {
+		
+			 startActivity( new Intent(this, UnlocksView.class) );
+			 
+		} else if( v.getId() == R.id.button_view_self ) {
 			
 			 startActivity( new Intent(this, StatsView.class) );
 		
@@ -261,6 +272,7 @@ public class Dashboard extends Activity {
 		
         //Define the SlidingDrawer
 		slidingDrawer = (SlidingDrawer) findViewById( R.id.com_slider);
+		buttonRefresh = (Button) findViewById( R.id.button_refresh );
 		
 		//Set the drawer listeners
 		onDrawerCloseListener = new OnDrawerCloseListener() {
@@ -298,8 +310,17 @@ public class Dashboard extends Activity {
 	private void refreshCOM() {
 
 		//Done? No? Let's populate in an async task!
-		AsyncComRefresh acr = new AsyncComRefresh(context, listFriendsRequests, listFriendsOnline, listFriendsOffline, layoutInflater);
-		acr.execute();
+		asyncComRefresh = new AsyncComRefresh(
+			
+			context, 
+			listFriendsRequests, 
+			listFriendsOnline, 
+			listFriendsOffline, 
+			layoutInflater,
+			buttonRefresh
+			
+		);
+		asyncComRefresh.execute();
 		
 	}
 	
@@ -312,7 +333,16 @@ public class Dashboard extends Activity {
 					
 				this, 
 				((ProfileData)v.getTag()).getProfileId(),
-				new AsyncComRefresh(this, listFriendsRequests, listFriendsOnline, listFriendsOffline, layoutInflater)
+				new AsyncComRefresh(
+						
+					this, 
+					listFriendsRequests, 
+					listFriendsOnline, 
+					listFriendsOffline, 
+					layoutInflater,
+					buttonRefresh
+					
+				)
 			
 			).execute(true); 
 			
@@ -322,8 +352,17 @@ public class Dashboard extends Activity {
 					
 				this, 
 				((ProfileData)v.getTag()).getProfileId(),
-				new AsyncComRefresh(this, listFriendsRequests, listFriendsOnline, listFriendsOffline, layoutInflater)
-			
+				new AsyncComRefresh(
+						
+					this, 
+					listFriendsRequests, 
+					listFriendsOnline, 
+					listFriendsOffline, 
+					layoutInflater,
+					buttonRefresh
+					
+				)
+				
 			).execute(false); 
 		
 		}
@@ -348,15 +387,15 @@ public class Dashboard extends Activity {
 
     	if( view.getId() == R.id.list_requests ) {
 
-			menu.add( 0, 0, 0, "Compare battle scars against");
+			menu.add( 0, 0, 0, "Compare battle scars");
     		
     	} else if( view.getId() == R.id.list_friends_online ) {
     		
-			menu.add( 1, 0, 0, "Compare battle scars against");
+			menu.add( 1, 0, 0, "Compare battle scars");
 
     	} else if( view.getId() == R.id.list_friends_offline ) {
     		
-			menu.add( 2, 0, 0, "Compare battle scars against");
+			menu.add( 2, 0, 0, "Compare battle scars");
     		
     	}
 		return;
