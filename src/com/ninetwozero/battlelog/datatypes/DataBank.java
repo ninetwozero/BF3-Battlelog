@@ -33,7 +33,13 @@ public class DataBank {
 	public static String getKitUnlockTitle( String key ) { return KIT_ITEMS.containsKey( key )? KIT_ITEMS.get( key ): ""; }
 	
 	static HashMap<String, String> RANKS;
-    static {
+	static HashMap<String, VehicleType> VEHICLES;
+	static HashMap<String, String> KIT_ITEMS;
+	static HashMap<String, String> SKILLS;
+	static HashMap<String, String> VEHICLE_ADDONS;
+	static HashMap<String, String> WEAPON_ATTACHMENTS;
+	static HashMap<String, WeaponType> WEAPONS;
+	static {
   
     	RANKS = new HashMap<String, String>();
     	RANKS.put("ID_P_RANK00_NAME", "RECRUIT");
@@ -182,11 +188,7 @@ public class DataBank {
     	RANKS.put("ID_P_RANK143_NAME", "COLONEL SERVICE STAR 98");
     	RANKS.put("ID_P_RANK144_NAME", "COLONEL SERVICE STAR 99");
     	RANKS.put("ID_P_RANK145_NAME", "COLONEL SERVICE STAR 100");
-    	
-    }
-	
-	static HashMap<String, VehicleType> VEHICLES;
-	static {
+
 		VEHICLES.put("trITV", new VehicleType("trITV", "GROWLER ITV", "Vehicle Jeep Growler ITV"));
 		VEHICLES.put("shAH6", new VehicleType("shAH6", "AH-6J LITTLE BIRD", "Vehicle Air Helicopter Scout AH6"));
 		VEHICLES.put("mbtT90", new VehicleType("mbtT90", "T-90A", "Vehicle MBT T90"));
@@ -215,10 +217,7 @@ public class DataBank {
 		VEHICLES.put("seqEOD", new VehicleType("seqEOD", "EOD BOT", "EODBot"));
 		VEHICLES.put("trAAV", new VehicleType("trAAV", "AAV-7A1 AMTRAC", "Vehicle Transport AAV-7A1"));
 		VEHICLES.put("ifvLAV", new VehicleType("ifvLAV", "LAV-25", "Vehicle IFV LAV-25"));
-	}
-	
-	static HashMap<String, WeaponType> WEAPONS;
-	static {
+
 		WEAPONS.put("smP90", new WeaponType("smP90", "P90", "P90", 900, "SHORT", "50 [5.7x28mm]", true, false, true));
 		WEAPONS.put("pM1911", new WeaponType("pM1911", "M1911", "M1911", "SEMIAUTO", "SHORT", "9 [.45ACP]", false, false, true));
 		WEAPONS.put("pM1911L", new WeaponType("pM1911L", "M1911 TACT.", "M1911 LIT", "SEMIAUTO", "SHORT", "9 [.45ACP]", false, false, true));
@@ -295,9 +294,7 @@ public class DataBank {
 		WEAPONS.put("sgDAO", new WeaponType("sgDAO", "DAO-12", "DAO", "SEMIAUTO", "SHORT", "ID_P_AMMO_DAO12", false, false, true));
 		WEAPONS.put("srM98", new WeaponType("srM98", "M98B", "M98B", "BOLT ACTION", "VERY LONG", "ID_P_AMMO_M98B", false, false, true));
 		WEAPONS.put("ID_P_WNAME_M39", new WeaponType("ID_P_WNAME_M39", "M39 EMR", "M39", "SEMIAUTO", "VERY LONG", "20 [7.62x51mm NATO]", false, false, true));
-	}
-	static HashMap<String, String> WEAPON_ATTACHMENTS;
-	static {
+
 		WEAPON_ATTACHMENTS.put("ID_P_ANAME_LASER", "Laser Sight");
 		WEAPON_ATTACHMENTS.put("ID_P_ANAME_FOREGRIP", "Foregrip");
 		WEAPON_ATTACHMENTS.put("ID_P_ANAME_RX01", "Reflex ");
@@ -329,10 +326,7 @@ public class DataBank {
 		WEAPON_ATTACHMENTS.put("ID_P_ANAME_KOBRA", "KOBRA ");
 		WEAPON_ATTACHMENTS.put("ID_P_ANAME_NOPRIMARYRAIL", "Underslung rail");
 		WEAPON_ATTACHMENTS.put("ID_P_ANAME_EOTECH", "Holographic ");
-	}
-	
-	static HashMap<String, String> VEHICLE_ADDONS;
-	static {
+
 		VEHICLE_ADDONS.put("ID_P_VUNAME_IFVWPNEFF", "BELT SPEED");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_AHSTEALTH", "STEALTH");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_IFVENVG", "THERMAL OPTICS");
@@ -412,10 +406,7 @@ public class DataBank {
 		VEHICLE_ADDONS.put("ID_P_VUNAME_SHFLARE", "IR FLARES");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_MBTATGM", "GUIDED SHELL");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_SHPREV", "MAINTENANCE");
-	}
-	
-	static HashMap<String, String> SKILLS;
-	static {
+
 		VEHICLE_ADDONS.put("ID_P_SNAME_ExplRes", "FLAK");
 		VEHICLE_ADDONS.put("ID_P_SNAME_Expl", "EXPL");
 		VEHICLE_ADDONS.put("ID_P_SNAME_Heal", "HEAL");
@@ -433,10 +424,7 @@ public class DataBank {
 		VEHICLE_ADDONS.put("ID_P_SNAME_Heal2", "SQD HEAL");
 		VEHICLE_ADDONS.put("ID_P_SNAME_Sprint", "SPRNT");
 		VEHICLE_ADDONS.put("ID_P_SNAME_NoSpec", "NONE");
-	}
-	
-	static HashMap<String, String> KIT_ITEMS;
-	static {
+
 		KIT_ITEMS.put("ID_P_INAME_C4", "C4 EXPLOSIVES");
 		KIT_ITEMS.put("ID_P_INAME_SOFLAM", "SOFLAM");
 		KIT_ITEMS.put("ID_P_INAME_MEDKIT", "MEDIC KIT");
