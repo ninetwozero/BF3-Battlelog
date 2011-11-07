@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="70dp"
+    android:layout_height="80dp"
 >
 	<View
 	    android:id="@+id/divider_left"
 	    android:layout_width="10dp"
-	    android:layout_height="70dp"
+	    android:layout_height="fill_parent"
 		android:layout_alignParentLeft="true"
 		android:background="#FF0000"
 	/>
@@ -14,15 +14,15 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/divider_left"
-		android:padding="5dp"
+		android:padding="10dp"
 		android:layout_centerVertical="true"
 	>	
 		<TextView
 			android:id="@+id/text_unlock_title"
 			android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-			android:text="[TITLE]"
-			android:textSize="20sp"
+			android:text="AK47-M"
+			android:textSize="18sp"
 		/>
 		<TextView
 			android:id="@+id/text_unlock_type"
@@ -38,6 +38,7 @@
 		    android:text="97%"
 			android:layout_alignParentBottom="true"
 			android:layout_alignParentRight="true"
+			android:paddingLeft="10dp"
 		/>
 		<ProgressBar
 		    android:id="@+id/progress_unlock"

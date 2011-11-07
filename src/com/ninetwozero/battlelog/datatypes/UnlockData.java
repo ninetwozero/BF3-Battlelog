@@ -82,17 +82,69 @@ public class UnlockData {
 	public String getName() { 
 		
 		//Check how it went
-		if( this.parentIdentifier != null ) {
+		if( this.type.equals( "weapon" ) ) {
 			
-			return getParent() + " " + getTitle(); 
+			return getTitle(); 
 		
+		} else if( this.type.equals( "weapon+" ) ) {
+			
+			return getParent() + " " + getTitle();
+			
+		} else if( this.type.equals( "vehicle+" ) ) {
+			
+			return getParent() + " " + getTitle();
+			
+		} else if( this.type.equals( "kit+" ) ) {
+			
+			return getTitle();
+			
+		} else if( this.type.equals( "skill" ) ) {
+			
+			return getTitle();
+			
 		} else {
-		
-			return DataBank.getWeaponTitle( this.unlockIdentifier );
+			
+			return "";
 			
 		}
 		
 	}
-	public String getObjective() { return this.objective; }
+	public String getObjective() {
+		
+		if( this.objective.startsWith( "sc_" ) ) {
+			
+			return DataBank.getUnlockGoal( this.objective ).replace( 
+				
+				"{scoreCurr}/{scoreNeeded}", 
+				this.scoreCurrent + "/" + this.scoreNeeded
+			
+			);
+			
+		} else if ( "rank".equals( this.objective ) ) {
+			
+			return DataBank.getUnlockGoal( this.objective ).replace( "{rank}", this.getScoreNeeded() + "" );
+			
+		} else if( this.objective.startsWith( "c_" ) ) {
+			
+			return DataBank.getUnlockGoal( this.objective ).replace( 
+					
+				"{scoreCurr}/{scoreNeeded} {name}", 
+				this.scoreCurrent + "/" + this.scoreNeeded + " " + getTitle()
+				
+			);
+			
+		}
+		
+		return this.objective; }
 	public String getType() { return this.type; }
+	public String getTypeTitle() {
+		
+		if( this.type.equals("weapon") ) return "Weapon";
+		else if( this.type.equals( "weapon+" ) ) return "Attachment";
+		else if( this.type.equals( "vehicle+" ) ) return "Upgrade";
+		else if( this.type.equals( "skill" ) ) return "Skill";
+		else if( this.type.equals( "kit+" ) ) return "Kit";
+		else return "N/A";
+		
+	}
 }

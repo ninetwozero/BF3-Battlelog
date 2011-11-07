@@ -27,6 +27,7 @@
 		    android:layout_marginRight="6dp"
 		    android:layout_centerVertical="true"
 		    android:singleLine="true"
+		    android:maxLength="90"
 		 />
 	</RelativeLayout>
 	<RelativeLayout

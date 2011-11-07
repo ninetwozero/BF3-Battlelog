@@ -23,18 +23,18 @@ public class PlayerData implements Serializable {
 	private static final long serialVersionUID = -4227286910413194182L;
 
 	//Base-section
-	String personaName, rankTitle;
-	long rankId, personaId, playerId, platformId, timePlayed;
+	private String personaName, rankTitle;
+	private long rankId, personaId, playerId, platformId, timePlayed;
 	
 	//EXP-section
-	long pointsThisLvl, pointsNextLvl;
+	private long pointsThisLvl, pointsNextLvl;
 	
 	//STATS-section
-	int numKills, numAssists, numHeals, numRevives, numDeaths, numWins, numLosses;
-	double kdRatio, accuracy, longestHS, longestKS, scorePerMinute;
+	private int numKills, numAssists, numHeals, numRevives, numDeaths, numWins, numLosses;
+	private double kdRatio, accuracy, longestHS, longestKS, scorePerMinute;
 	
 	//SCORE-section
-	long scoreAssault, scoreEngineer, scoreSupport, scoreRecon, scoreVehicle, scoreCombat, scoreAwards, scoreUnlocks, scoreTotal;
+	private long scoreAssault, scoreEngineer, scoreSupport, scoreRecon, scoreVehicle, scoreCombat, scoreAwards, scoreUnlocks, scoreTotal;
 	
 	//Construct
 	public PlayerData(

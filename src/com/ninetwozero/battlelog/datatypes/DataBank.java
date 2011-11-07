@@ -31,17 +31,43 @@ public class DataBank {
 	public static String getVehicleAddon( String key ) { return VEHICLE_ADDONS.containsKey( key )? VEHICLE_ADDONS.get( key ): ""; }
 	public static String getSkillTitle( String key ) { return SKILLS.containsKey( key )? SKILLS.get( key ): ""; }
 	public static String getKitUnlockTitle( String key ) { return KIT_ITEMS.containsKey( key )? KIT_ITEMS.get( key ): ""; }
+	public static String getUnlockGoal( String key ) { return UNLOCK_GOALS.containsKey( key )? UNLOCK_GOALS.get( key ): ""; }
 	
-	static HashMap<String, String> RANKS;
-	static HashMap<String, VehicleType> VEHICLES;
-	static HashMap<String, String> KIT_ITEMS;
-	static HashMap<String, String> SKILLS;
-	static HashMap<String, String> VEHICLE_ADDONS;
-	static HashMap<String, String> WEAPON_ATTACHMENTS;
-	static HashMap<String, WeaponType> WEAPONS;
+	private static HashMap<String, String> RANKS;
+	private static HashMap<String, VehicleType> VEHICLES;
+	private static HashMap<String, String> KIT_ITEMS;
+	private static HashMap<String, String> SKILLS;
+	private static HashMap<String, String> VEHICLE_ADDONS;
+	private static HashMap<String, String> WEAPON_ATTACHMENTS;
+	private static HashMap<String, WeaponType> WEAPONS;
+	private static HashMap<String, String> UNLOCK_GOALS;
 	static {
   
+    	WEAPONS = new HashMap<String, WeaponType>();
+    	VEHICLES = new HashMap<String, VehicleType>();
     	RANKS = new HashMap<String, String>();
+    	KIT_ITEMS = new HashMap<String, String>();
+    	SKILLS = new HashMap<String, String>();
+    	VEHICLE_ADDONS = new HashMap<String, String>();
+    	WEAPON_ATTACHMENTS = new HashMap<String, String>();
+    	UNLOCK_GOALS = new HashMap<String, String>();
+
+    	//UNLOCKS
+    	UNLOCK_GOALS.put( "rank", "Reach rank {rank}");
+    	UNLOCK_GOALS.put( "sc_assault", "{scoreCurr}/{scoreNeeded} Assault Score");
+    	UNLOCK_GOALS.put( "sc_engineer", "{scoreCurr}/{scoreNeeded} Engineer Score");
+    	UNLOCK_GOALS.put( "sc_recon", "{scoreCurr}/{scoreNeeded} Recon Score");
+    	UNLOCK_GOALS.put( "sc_support", "{scoreCurr}/{scoreNeeded} Support Score");
+    	UNLOCK_GOALS.put( "sc_coop", "{scoreCurr}/{scoreNeeded} CO-OP Score");
+    	UNLOCK_GOALS.put( "sc_vehicleah", "{scoreCurr}/{scoreNeeded} Vehicle Air Helicopter Attack Score");
+    	UNLOCK_GOALS.put( "sc_vehicleaa", "{scoreCurr}/{scoreNeeded} Vehicle Anti Air Score");
+    	UNLOCK_GOALS.put( "sc_vehiclejet", "{scoreCurr}/{scoreNeeded} Vehicle Air Jet Attack Score");
+    	UNLOCK_GOALS.put( "sc_vehicleifv", "{scoreCurr}/{scoreNeeded} Vehicle Infantry Fighting Vehicle Score");
+    	UNLOCK_GOALS.put( "sc_vehiclesh", "{scoreCurr}/{scoreNeeded} Vehicle Air Helicopter Scout Score");
+    	UNLOCK_GOALS.put( "sc_vehiclembt", "{scoreCurr}/{scoreNeeded} Vehicle Main Battle Tanks Score");
+    	UNLOCK_GOALS.put( "c_", "{scoreCurr}/{scoreNeeded} {name} kills");
+    	
+    	//RANKS
     	RANKS.put("ID_P_RANK00_NAME", "RECRUIT");
     	RANKS.put("ID_P_RANK01_NAME", "PRIVATE FIRST CLASS");
     	RANKS.put("ID_P_RANK02_NAME", "PRIVATE FIRST CLASS 1 STAR");

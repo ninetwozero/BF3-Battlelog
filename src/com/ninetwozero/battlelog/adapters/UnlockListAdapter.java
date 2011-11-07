@@ -88,7 +88,7 @@ public class UnlockListAdapter extends BaseAdapter {
 		//Set the TextViews
 		((View) convertView.findViewById(R.id.divider_left)).setBackgroundColor( context.getResources().getColor( getColorForKit(currentUnlock.getKitId()) ) );
 		((TextView) convertView.findViewById( R.id.text_unlock_percent )).setText(currentUnlock.getUnlockPercentage() + "%");
-		((TextView) convertView.findViewById( R.id.text_unlock_type )).setText( "Yo" );
+		((TextView) convertView.findViewById( R.id.text_unlock_type )).setText( currentUnlock.getTypeTitle() );
 		
 		//Title
 		((TextView) convertView.findViewById( R.id.text_unlock_title )).setText( currentUnlock.getName() );
