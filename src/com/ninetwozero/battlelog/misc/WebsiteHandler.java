@@ -28,13 +28,14 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.ninetwozero.battlelog.UnlockData;
 import com.ninetwozero.battlelog.datatypes.Config;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileComparator;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
+import com.ninetwozero.battlelog.datatypes.UnlockComparator;
+import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 
 /* 
@@ -330,6 +331,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 		
     	//Get the data
     	RequestHandler wh = new RequestHandler();
+    	ArrayList<UnlockData> unlockArray = new ArrayList<UnlockData>();
     	String content = wh.get( 
 	
 			Config.urlStatsUpcoming.replace(
@@ -343,13 +345,154 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 			
 		);
     	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
-    	JSONArray unlocksArray = dataObject.getJSONArray( "unlocks" );
-
+    	JSONArray unlockResults = dataObject.getJSONArray( "unlocks" );
+    	JSONObject unlockRow, detailObject;
+    	int unlockKit;
+    	
     	//Iterate over the unlocksArray
-    	Log.d("com.ninetwozero.battlelog", unlocksArray.toString( 4 ) );
+    	for( int i = 0; i < unlockResults.length(); i++ ) {
+    	
+    		//Get the temporary object
+    		unlockRow = unlockResults.optJSONObject( i );
+
+    		//Empty?
+    		if( unlockRow.getDouble( "unlockPercentage" ) < 1.0 ) { continue; }
+    		
+    		try {
+
+    			unlockKit = unlockRow.getInt( "kit" );
+    		
+    		} catch( Exception ex ) {
+    			
+    			unlockKit = 0;
+    			
+    		}
+    		
+    		//What did we get?
+    		if( !unlockRow.isNull( "weaponAddonUnlock" ) ) {
+    			
+    			//Get the object
+    			detailObject = unlockRow.getJSONObject( "weaponAddonUnlock" );
+    			
+    			//Add them to the array
+    			unlockArray.add( 
+    				
+    				new UnlockData(
+    				
+						unlockKit,
+						unlockRow.getDouble( "unlockPercentage" ),
+						detailObject.getLong( "valueNeeded" ),
+						detailObject.getLong( "actualValue" ),
+						unlockRow.getString( "parentId" ),
+						detailObject.getString( "unlockId" ),
+						detailObject.getString( "codeNeeded" ),
+						"weapon+"
+    						
+					)	
+    					
+				);
+    			
+    		} else if( !unlockRow.isNull( "kitItemUnlock" ) ) {
+
+    			//Get the object
+    			detailObject = unlockRow.getJSONObject( "kitItemUnlock" );
+    			
+    			//Add them to the array
+    			unlockArray.add( 
+    				
+    				new UnlockData(
+    				
+						unlockKit,
+						unlockRow.getDouble( "unlockPercentage" ),
+						detailObject.getLong( "valueNeeded" ),
+						detailObject.getLong( "actualValue" ),
+						unlockRow.getString( "parentId" ),
+						detailObject.getString( "unlockId" ),
+						detailObject.getString( "codeNeeded" ),
+						"kit+"
+    						
+					)	
+    					
+				);
+    			
+    		} else if( !unlockRow.isNull( "vehicleAddonUnlock" ) ) {
+
+    			//Get the object
+    			detailObject = unlockRow.getJSONObject( "vehicleAddonUnlock" );
+    			
+    			//Add them to the array
+    			unlockArray.add( 
+    				
+    				new UnlockData(
+    				
+						unlockKit,
+						unlockRow.getDouble( "unlockPercentage" ),
+						detailObject.getLong( "valueNeeded" ),
+						detailObject.getLong( "actualValue" ),
+						unlockRow.getString( "parentId" ),
+						detailObject.getString( "unlockId" ),
+						detailObject.getString( "codeNeeded" ),
+						"vehicle+"
+    						
+					)	
+    					
+				);
+    			
+    		} else if( !unlockRow.isNull( "weaponUnlock" ) ) {
+
+    			//Get the object
+    			detailObject = unlockRow.getJSONObject( "weaponUnlock" );
+    			
+    			//Add them to the array
+    			unlockArray.add( 
+    				
+    				new UnlockData(
+    				
+						unlockKit,
+						unlockRow.getDouble( "unlockPercentage" ),
+						detailObject.getLong( "valueNeeded" ),
+						detailObject.getLong( "actualValue" ),
+						unlockRow.getString( "parentId" ),
+						detailObject.getString( "unlockId" ),
+						detailObject.getString( "codeNeeded" ),
+						"weapon"
+    						
+					)	
+    					
+				);
+    			
+    		} else if( !unlockRow.isNull( "soldierSpecializationUnlock" ) ) {
+
+    			//Get the object
+    			detailObject = unlockRow.getJSONObject( "soldierSpecializationUnlock" );
+    			
+    			//Add them to the array
+    			unlockArray.add( 
+    				
+    				new UnlockData(
+    				
+						unlockKit,
+						unlockRow.getDouble( "unlockPercentage" ),
+						detailObject.getLong( "valueNeeded" ),
+						detailObject.getLong( "actualValue" ),
+						unlockRow.getString( "parentId" ),
+						detailObject.getString( "unlockId" ),
+						detailObject.getString( "codeNeeded" ),
+						"skill"
+    						
+					)	
+    					
+				);
+    			
+    		} else {}
+    	}
     	
         //Yay
-        return null;
+    	Collections.sort( unlockArray, new UnlockComparator() );
+    	
+    	for( int i = 0; i < unlockArray.size(); i++ ) Log.d("com.ninetwozero.battlelog", "Type[" + i + "]: " + unlockArray.get( i ).getType());
+    	
+        return unlockArray;
     
 	} catch ( Exception ex ) {
 		

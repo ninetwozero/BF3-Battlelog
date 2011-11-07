@@ -28,8 +28,11 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.ByteArrayBuffer;
 
@@ -41,7 +44,7 @@ import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 public class RequestHandler {
 
 	//Attributes
-	public static DefaultHttpClient httpClient = new DefaultHttpClient();	
+	public static DefaultHttpClient httpClient = getThreadSafeClient();	
 
 	// Constructor
 	public RequestHandler() {}
@@ -212,5 +215,17 @@ public class RequestHandler {
 		if( httpClient.getConnectionManager() != null ) { httpClient.getConnectionManager().closeExpiredConnections(); }
 		
 	}
+
+	public static DefaultHttpClient getThreadSafeClient() {
+	     DefaultHttpClient client = new DefaultHttpClient();
+	     ClientConnectionManager mgr = client.getConnectionManager();
+	     HttpParams params = client.getParams();
+	  
+	     client = new DefaultHttpClient(new ThreadSafeClientConnManager(params, 
+	             mgr.getSchemeRegistry()), params);
+	  
+	     return client;
+	 }
+
 	
 }

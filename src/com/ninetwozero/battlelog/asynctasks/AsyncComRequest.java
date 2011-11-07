@@ -67,17 +67,8 @@ public class AsyncComRequest extends AsyncTask<Boolean, Integer, Boolean> {
 	@Override
 	protected void onPostExecute(Boolean results) {
 		
-		//How did go?
-		if( results ) { 
-		
-			Toast.makeText( context, "Friend request responded to.", Toast.LENGTH_SHORT).show();				
-			
-		} else {
-			
-			Toast.makeText( context, "Friend request could not be responded to.", Toast.LENGTH_SHORT).show();				
-		
-		}
-		
+		//Let the user know and then refresh!
+		Toast.makeText( context, "Friend request responded to.", Toast.LENGTH_SHORT).show();				
 		refreshMethod.execute();
 		return;
 		

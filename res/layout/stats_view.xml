@@ -12,6 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
  -->
+ 
  <ScrollView 
     android:id="@+id/the_scroll"
     xmlns:android="http://schemas.android.com/apk/res/android"

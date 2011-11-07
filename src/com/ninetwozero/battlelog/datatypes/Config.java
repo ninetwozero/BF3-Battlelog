@@ -79,6 +79,9 @@ public final class Config {
 	
 		switch( number ) {
 
+			case 1:
+				return "Assault";
+				
 			case 2:	
 				return "Engineer";
 				
@@ -95,7 +98,7 @@ public final class Config {
 				return "General";
 				
 			default:
-				return "Misc";
+				return "";
 			
 		}
 		

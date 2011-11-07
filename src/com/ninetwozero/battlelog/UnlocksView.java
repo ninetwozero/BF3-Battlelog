@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -23,18 +24,22 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.adapters.UnlockListAdapter;
 import com.ninetwozero.battlelog.datatypes.Config;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class UnlocksView extends Activity {
+public class UnlocksView extends ListActivity {
 
 	//SharedPreferences for shizzle
 	SharedPreferences sharedPreferences;
@@ -62,7 +67,7 @@ public class UnlocksView extends Activity {
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new GetDataSelfAsync(this).execute(
+    	new GetDataSelfAsync(this, getListView(), (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).execute(
     		
     		new ProfileData(
 				this.sharedPreferences.getString( "battlelog_persona", "" ),
@@ -84,11 +89,15 @@ public class UnlocksView extends Activity {
     	Context context;
     	ProgressDialog progressDialog;
     	ArrayList<UnlockData> unlockData;
+    	ListView listView;
+    	LayoutInflater layoutInflater;
     	
-    	public GetDataSelfAsync(Context c) {
+    	public GetDataSelfAsync(Context c, ListView lv, LayoutInflater l) {
     		
     		this.context = c;
     		this.progressDialog = null;
+    		this.listView = lv;
+    		this.layoutInflater = l;
     		
     	}
     	
@@ -98,7 +107,7 @@ public class UnlocksView extends Activity {
     		//Let's see
 			this.progressDialog = new ProgressDialog(this.context);
 			this.progressDialog.setTitle("Please wait");
-			this.progressDialog.setMessage( "Downloading the data..." );
+			this.progressDialog.setMessage( "Downloading your unlock-information (may take a few seconds)..." );
 			this.progressDialog.show();
     		
     	}
@@ -135,7 +144,9 @@ public class UnlocksView extends Activity {
 			}
 
 			//Do actual stuff, like sending to an adapter		
-		
+			listView.setAdapter( new UnlockListAdapter(context, unlockData, layoutInflater) );
+			
+			//Go go go
 	        if( this.progressDialog != null ) this.progressDialog.dismiss();
 			return;
 		}

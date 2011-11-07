@@ -85,6 +85,9 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 	@Override
 	protected void onPostExecute(Boolean results) {
 
+		//Boolean
+		int emptyLists = 0;
+		
 		//Fill the listviews!!
 		if( profileArray.size() > 0 ) {
 			
@@ -94,12 +97,18 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 			
 			} else {
 				
+				//VISIBILITY!!!
+				((Activity)context).findViewById(R.id.wrap_friends_requests).setVisibility( View.VISIBLE );
+				
 				//Set the adapter
 				listRequests.setAdapter( new RequestListAdapter(context, profileArray.get(0), layoutInflater) );
 				
 			}
 
 			if( profileArray.get( 1 ) == null || profileArray.get( 1 ).size() > 0 ) {
+
+				//Set the visibilty (could've been hidden)
+				((Activity)context).findViewById(R.id.wrap_friends_online).setVisibility( View.VISIBLE );
 				
 				//Set the adapter
 				listFriendsOnline.setAdapter( new FriendListAdapter(context, profileArray.get(1), layoutInflater) );
@@ -108,10 +117,15 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 			} else {
 				
 				//No online friends found :-(
+				emptyLists++;
+				((Activity)context).findViewById(R.id.wrap_friends_online).setVisibility( View.GONE );
 				
 			}
 			
 			if( profileArray.get( 2 ) == null || profileArray.get( 2 ).size() > 0 ) {
+
+				//Set the visibilty (could've been hidden)
+				((Activity)context).findViewById(R.id.wrap_friends_offline).setVisibility( View.VISIBLE );
 				
 				//Set the adapter
 				listFriendsOffline.setAdapter( new FriendListAdapter(context, profileArray.get(2), layoutInflater) );
@@ -120,7 +134,12 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 			} else {
 				
 				//No offline friends found :-( and :-) at the same time
+				emptyLists++;
+				((Activity)context).findViewById(R.id.wrap_friends_offline).setVisibility( View.GONE );
 				
+				//No friends at all? What the fork... :-(
+				if( emptyLists > 1 ) { ((Activity) context).findViewById( R.id.text_empty_com ).setVisibility( View.VISIBLE ); }
+			
 			}
 		
 		} else {

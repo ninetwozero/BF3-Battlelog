@@ -64,6 +64,14 @@
 	     	android:layout_alignParentBottom="true"
 	     	android:onClick="onClick"
 	     />
+		<TextView 
+		    android:id="@+id/text_empty_com"
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="No friends found. :-("
+			android:layout_centerInParent="true"
+			android:visibility="gone"
+	    />
 	    <View 
 			android:id="@+id/topalign"  
 			android:layout_width="fill_parent"
