@@ -53,18 +53,18 @@ public class DataBank {
     	UNLOCK_GOALS = new HashMap<String, String>();
 
     	//UNLOCKS
-    	UNLOCK_GOALS.put( "rank", "Reach rank {rank}");
+    	UNLOCK_GOALS.put( "rank", "Reach rank {rank} (you are rank {rankCurr})");
     	UNLOCK_GOALS.put( "sc_assault", "{scoreCurr}/{scoreNeeded} Assault Score");
     	UNLOCK_GOALS.put( "sc_engineer", "{scoreCurr}/{scoreNeeded} Engineer Score");
     	UNLOCK_GOALS.put( "sc_recon", "{scoreCurr}/{scoreNeeded} Recon Score");
     	UNLOCK_GOALS.put( "sc_support", "{scoreCurr}/{scoreNeeded} Support Score");
     	UNLOCK_GOALS.put( "sc_coop", "{scoreCurr}/{scoreNeeded} CO-OP Score");
-    	UNLOCK_GOALS.put( "sc_vehicleah", "{scoreCurr}/{scoreNeeded} Vehicle Air Helicopter Attack Score");
-    	UNLOCK_GOALS.put( "sc_vehicleaa", "{scoreCurr}/{scoreNeeded} Vehicle Anti Air Score");
-    	UNLOCK_GOALS.put( "sc_vehiclejet", "{scoreCurr}/{scoreNeeded} Vehicle Air Jet Attack Score");
-    	UNLOCK_GOALS.put( "sc_vehicleifv", "{scoreCurr}/{scoreNeeded} Vehicle Infantry Fighting Vehicle Score");
-    	UNLOCK_GOALS.put( "sc_vehiclesh", "{scoreCurr}/{scoreNeeded} Vehicle Air Helicopter Scout Score");
-    	UNLOCK_GOALS.put( "sc_vehiclembt", "{scoreCurr}/{scoreNeeded} Vehicle Main Battle Tanks Score");
+    	UNLOCK_GOALS.put( "sc_vehicleah", "{scoreCurr}/{scoreNeeded} Attack Helicopter Score"); //Vehicle Air
+    	UNLOCK_GOALS.put( "sc_vehicleaa", "{scoreCurr}/{scoreNeeded} Anti Air Score");
+    	UNLOCK_GOALS.put( "sc_vehiclejet", "{scoreCurr}/{scoreNeeded} Jetplane Score"); //Vehicle Air
+    	UNLOCK_GOALS.put( "sc_vehicleifv", "{scoreCurr}/{scoreNeeded} Infantry Fighting Vehicle Score");
+    	UNLOCK_GOALS.put( "sc_vehiclesh", "{scoreCurr}/{scoreNeeded}  Scout Helicopter Score"); //Vehicle Air
+    	UNLOCK_GOALS.put( "sc_vehiclembt", "{scoreCurr}/{scoreNeeded} Battle Tanks Score"); //Vehicle Main
     	UNLOCK_GOALS.put( "c_", "{scoreCurr}/{scoreNeeded} {name} kills");
     	
     	//RANKS
@@ -433,23 +433,23 @@ public class DataBank {
 		VEHICLE_ADDONS.put("ID_P_VUNAME_MBTATGM", "GUIDED SHELL");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_SHPREV", "MAINTENANCE");
 
-		VEHICLE_ADDONS.put("ID_P_SNAME_ExplRes", "FLAK");
-		VEHICLE_ADDONS.put("ID_P_SNAME_Expl", "EXPL");
-		VEHICLE_ADDONS.put("ID_P_SNAME_Heal", "HEAL");
-		VEHICLE_ADDONS.put("ID_P_SNAME_Gren", "FRAG");
-		VEHICLE_ADDONS.put("ID_P_SNAME_Clips2", "SQD AMMO");
-		VEHICLE_ADDONS.put("ID_P_SNAME_SuppRes", "COVR");
-		VEHICLE_ADDONS.put("ID_P_SNAME_SuppRes2", "SQD COVR");
-		VEHICLE_ADDONS.put("ID_P_SNAME_Clips", "AMMO");
-		VEHICLE_ADDONS.put("ID_P_SNAME_Gren2", "SQD FRAG");
-		VEHICLE_ADDONS.put("ID_P_SNAME_Suppr2", "SQD SUPR");
-		VEHICLE_ADDONS.put("ID_P_SNAME_Sprint2", "SQD SPRNT");
-		VEHICLE_ADDONS.put("ID_P_SNAME_Suppr", "SUPR");
-		VEHICLE_ADDONS.put("ID_P_SNAME_Expl2", "SQD EXPL");
-		VEHICLE_ADDONS.put("ID_P_SNAME_ExplRes2", "SQD FLAK");
-		VEHICLE_ADDONS.put("ID_P_SNAME_Heal2", "SQD HEAL");
-		VEHICLE_ADDONS.put("ID_P_SNAME_Sprint", "SPRNT");
-		VEHICLE_ADDONS.put("ID_P_SNAME_NoSpec", "NONE");
+		SKILLS.put("ID_P_SNAME_ExplRes", "FLAK JACKET");
+		SKILLS.put("ID_P_SNAME_Expl", "EXPLOSIVES");
+		SKILLS.put("ID_P_SNAME_Heal", "HEAL");
+		SKILLS.put("ID_P_SNAME_Gren", "GRENADES");
+		SKILLS.put("ID_P_SNAME_Clips2", "AMMO (SQUAD)");
+		SKILLS.put("ID_P_SNAME_SuppRes", "SUPPRESION RESIST");
+		SKILLS.put("ID_P_SNAME_SuppRes2", "SUPPRESSION RESIST (SQUAD)");
+		SKILLS.put("ID_P_SNAME_Clips", "AMMO");
+		SKILLS.put("ID_P_SNAME_Gren2", "GRENADES (SQUAD)");
+		SKILLS.put("ID_P_SNAME_Suppr2", "SUPRESSION (SQUAD)");
+		SKILLS.put("ID_P_SNAME_Sprint2", "SPRINT (SQUAD)");
+		SKILLS.put("ID_P_SNAME_Suppr", "SUPRESSION");
+		SKILLS.put("ID_P_SNAME_Expl2", " EXPLOSIVES (SQUAD)");
+		SKILLS.put("ID_P_SNAME_ExplRes2", "FLAK JACKET (SQUAD)");
+		SKILLS.put("ID_P_SNAME_Heal2", "HEAL (SQUAD)");
+		SKILLS.put("ID_P_SNAME_Sprint", "SPRINT");
+		SKILLS.put("ID_P_SNAME_NoSpec", "NO");
 
 		KIT_ITEMS.put("ID_P_INAME_C4", "C4 EXPLOSIVES");
 		KIT_ITEMS.put("ID_P_INAME_SOFLAM", "SOFLAM");

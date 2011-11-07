@@ -73,7 +73,6 @@ public class UnlockListAdapter extends BaseAdapter {
 
 		//Get the current item
 		UnlockData currentUnlock = getItem(position);
-		String unlockTitle;
 		
 		//Recycle
 		if ( convertView == null ) {
@@ -97,8 +96,8 @@ public class UnlockListAdapter extends BaseAdapter {
 		((TextView) convertView.findViewById(R.id.text_unlock_desc)).setText( currentUnlock.getObjective() );
 		
 		//Update the progress
-		progressBar.setMax( (int) currentUnlock.getScoreNeeded() );
-		progressBar.setProgress( (int) currentUnlock.getScoreCurrent() );
+		progressBar.setMax( 1000 );
+		progressBar.setProgress( (int) (currentUnlock.getUnlockPercentage()*10) );
 		
 		//Tag it!
 		convertView.setTag( currentUnlock );

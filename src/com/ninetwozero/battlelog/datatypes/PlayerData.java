@@ -30,7 +30,7 @@ public class PlayerData implements Serializable {
 	private long pointsThisLvl, pointsNextLvl;
 	
 	//STATS-section
-	private int numKills, numAssists, numHeals, numRevives, numDeaths, numWins, numLosses;
+	private int numKills, numAssists, numHeals, numRevives, numRepairs, numResupplies, numDeaths, numWins, numLosses;
 	private double kdRatio, accuracy, longestHS, longestKS, scorePerMinute;
 	
 	//SCORE-section
@@ -40,7 +40,7 @@ public class PlayerData implements Serializable {
 	public PlayerData(
 		String pName, String rTitle, long rId, long prsId, long plyrId, long pltfId, long tPlayed,
 		long ptsThisLvl, long ptsNxtLvl, 
-		int nKills, int nAssists, int nHeals, int nRevives, int nDeaths, int nWins, int nLosses,
+		int nKills, int nAssists, int nHeals, int nRevives, int nRepairs, int nResup, int nDeaths, int nWins, int nLosses,
 		double kdRatio, double nAccuracy, double lHS, double lKS, double spm,
 		long scrAssault, long scrEngineer, long scrSupport, long scrRecon, long scrVehicle, long scrCombat, 
 		long scrAwards, long scrUnlocks, long scrTotal
@@ -59,6 +59,8 @@ public class PlayerData implements Serializable {
 		this.numAssists = nAssists;
 		this.numHeals = nHeals;
 		this.numRevives = nRevives;
+		this.numRepairs = nRepairs;
+		this.numResupplies = nResup;
 		this.numDeaths = nDeaths;
 		this.numWins = nWins;
 		this.numLosses = nLosses;
@@ -100,6 +102,8 @@ public class PlayerData implements Serializable {
 	public final int getNumAssists() { return numAssists; }	
 	public final int getNumHeals() { return numHeals; }	
 	public final int getNumRevives() { return numRevives; }	
+	public final int getNumRepairs() { return numRepairs; }	
+	public final int getNumResupplies() { return numResupplies; }	
 	public final int getNumDeaths() { return numDeaths; }	
 	public final double getKDRatio() { return Math.floor( kdRatio * 1000 ) / 1000; }
 	

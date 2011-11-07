@@ -14,6 +14,8 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
+import android.util.Log;
+
 
 public class UnlockData {
 
@@ -32,7 +34,7 @@ public class UnlockData {
 		this.parentIdentifier = pi;
 		this.unlockIdentifier = ui;
 		this.objective = o;
-		this.type = t;
+		this.type = t;		
 		
 	}
 	
@@ -56,20 +58,25 @@ public class UnlockData {
 	}
 	public String getTitle() { 
 	
-		if( this.type == "weapon" || this.type == "weapon+" ) {
+		if( this.type.equals( "weapon" ) ) {
 			
 			return DataBank.getWeaponTitle( this.unlockIdentifier );
 			
-		} else if( this.type == "vehicle+" ) {
+		} else if ( this.type.equals( "weapon+" ) ) {
+		
+			return DataBank.getAttachmentTitle( this.unlockIdentifier );
+			
+		} else if( this.type.equals( "vehicle+" ) ) {
 
 			return DataBank.getVehicleAddon( this.unlockIdentifier );
 			
-		} else if( this.type == "kit+" ) {
+		} else if( this.type.equals( "kit+" ) ) {
 			
-			return DataBank.getVehicleAddon( this.unlockIdentifier );
+			return DataBank.getKitUnlockTitle( this.unlockIdentifier );
 			
-		} else if( this.type == "skill" ) {
+		} else if( this.type.equals( "skill" ) ) {
 			
+			Log.d("com.ninetwozero.battlelog", this.unlockIdentifier + "");
 			return DataBank.getSkillTitle( this.unlockIdentifier );
 			
 		} else {
@@ -110,7 +117,7 @@ public class UnlockData {
 		
 	}
 	public String getObjective() {
-		
+
 		if( this.objective.startsWith( "sc_" ) ) {
 			
 			return DataBank.getUnlockGoal( this.objective ).replace( 
@@ -122,20 +129,30 @@ public class UnlockData {
 			
 		} else if ( "rank".equals( this.objective ) ) {
 			
-			return DataBank.getUnlockGoal( this.objective ).replace( "{rank}", this.getScoreNeeded() + "" );
+			return DataBank.getUnlockGoal( this.objective ).replace( 
+					
+				"{rank}", this.getScoreNeeded() + "" 
+				
+			).replace(
+						
+				"{rankCurr}", this.getScoreCurrent() + "" 
+					
+			);
 			
 		} else if( this.objective.startsWith( "c_" ) ) {
 			
-			return DataBank.getUnlockGoal( this.objective ).replace( 
+			return DataBank.getUnlockGoal( "c_" ).replace( 
 					
 				"{scoreCurr}/{scoreNeeded} {name}", 
-				this.scoreCurrent + "/" + this.scoreNeeded + " " + getTitle()
+				this.scoreCurrent + "/" + this.scoreNeeded + " " + getParent()
 				
 			);
 			
 		}
 		
-		return this.objective; }
+		return this.objective;
+		
+	}
 	public String getType() { return this.type; }
 	public String getTypeTitle() {
 		

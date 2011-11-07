@@ -30,6 +30,7 @@
 		    android:layout_height="wrap_content"
 			android:text="Weapon attachment"
 			android:layout_alignParentRight="true"
+			android:layout_alignBaseline="@id/text_unlock_title"
 		/>
 		<TextView
 		    android:id="@+id/text_unlock_percent"

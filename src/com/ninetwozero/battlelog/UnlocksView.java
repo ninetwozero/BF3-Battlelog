@@ -107,7 +107,7 @@ public class UnlocksView extends ListActivity {
     		//Let's see
 			this.progressDialog = new ProgressDialog(this.context);
 			this.progressDialog.setTitle("Please wait");
-			this.progressDialog.setMessage( "Downloading your unlock-information (may take a few seconds)..." );
+			this.progressDialog.setMessage( "Downloading your unlocks (may take a few seconds)..." );
 			this.progressDialog.show();
     		
     	}

@@ -164,6 +164,8 @@ public class StatsView extends Activity {
 	        ((TextView) findViewById(R.id.string_stats_assists)).setText( playerData.getNumAssists() + "" );
 	        ((TextView) findViewById(R.id.string_stats_heals)).setText( playerData.getNumHeals() + "" );
 	        ((TextView) findViewById(R.id.string_stats_revives)).setText( playerData.getNumRevives() + "" );
+	        ((TextView) findViewById(R.id.string_stats_repairs)).setText( playerData.getNumRepairs() + "" );
+	        ((TextView) findViewById(R.id.string_stats_resupplies)).setText( playerData.getNumResupplies() + "" );
 	        ((TextView) findViewById(R.id.string_stats_deaths)).setText( playerData.getNumDeaths() + "" );
 	        ((TextView) findViewById(R.id.string_stats_kdr)).setText( playerData.getKDRatio() + "" );
 	        ((TextView) findViewById(R.id.string_stats_wins)).setText( playerData.getNumWins() + "" );

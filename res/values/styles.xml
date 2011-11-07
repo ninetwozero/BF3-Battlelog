@@ -49,9 +49,9 @@
 		<item name="android:layout_width">200dp</item>
         <item name="android:layout_centerHorizontal">true</item>
     </style>
-    <color name="kit_recon">#a1562e</color>
+    <color name="kit_recon">#bf4949</color>
     <color name="kit_assault">#308DBF</color>
-    <color name="kit_engineer">#c4b469</color>
+    <color name="kit_engineer">#efff40</color>
     <color name="kit_support">#86ae31</color>
     <color name="kit_general">#8d8d8d</color>
     <color name="green">#309030</color>

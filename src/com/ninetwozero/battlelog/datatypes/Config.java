@@ -65,6 +65,9 @@ public final class Config {
 	//Files
 	public static final String fileSharedPrefs = "battlelog";
 
+	//Misc
+	public static final String userAgent = "Mozilla/5.0 (X11; Linux i686; rv:7.0.1) Gecko/20100101 Firefox/7.0.1";
+	
 	//Static methods
 	public static long getPlatformId( String p ) {
 			

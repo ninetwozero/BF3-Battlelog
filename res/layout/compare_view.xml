@@ -275,10 +275,62 @@
 				<!-- END_STATS_ITEM -->
 				<!-- START_STATS_ITEM -->
 					<TextView
+				  		style="@style/InfoRowCompare"
+						android:id="@+id/string_center_repairs"
+						android:text="Repairs"
+					    android:layout_below="@id/string_stats_revives_0"
+					/>
+					<TextView
+						android:id="@+id/string_stats_repairs_0"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Player 0"
+						android:layout_alignParentLeft="true"
+					    android:layout_below="@id/string_stats_revives_0"
+				    	android:layout_alignBaseline="@id/string_center_repairs"
+					/>
+					<TextView
+						android:id="@+id/string_stats_repairs_1"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Player 1"
+						android:layout_alignParentRight="true"
+					    android:layout_below="@id/string_stats_revives_0"
+				    	android:layout_alignBaseline="@id/string_center_repairs"
+					/>
+				<!-- END_STATS_ITEM -->
+				<!-- START_STATS_ITEM -->
+					<TextView
+				  		style="@style/InfoRowCompare"
+						android:id="@+id/string_center_resupplies"
+						android:text="Resupplies"
+					    android:layout_below="@id/string_stats_repairs_0"
+					/>
+					<TextView
+						android:id="@+id/string_stats_resupplies_0"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Player 0"
+						android:layout_alignParentLeft="true"
+					    android:layout_below="@id/string_stats_repairs_0"
+				    	android:layout_alignBaseline="@id/string_center_resupplies"
+					/>
+					<TextView
+						android:id="@+id/string_stats_resupplies_1"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Player 1"
+						android:layout_alignParentRight="true"
+					    android:layout_below="@id/string_stats_repairs_0"
+				    	android:layout_alignBaseline="@id/string_center_resupplies"
+					/>
+				<!-- END_STATS_ITEM -->
+				<!-- START_STATS_ITEM -->
+					<TextView
 				    	style="@style/InfoRowCompare"
 						android:id="@+id/string_center_deaths"
 						android:text="Deaths"
-					    android:layout_below="@id/string_stats_revives_0"
+					    android:layout_below="@id/string_stats_resupplies_0"
 					/>
 					<TextView
 						android:id="@+id/string_stats_deaths_0"
@@ -286,7 +338,7 @@
 						android:layout_height="wrap_content"
 						android:text="Player 0"
 						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_revives_0"
+					    android:layout_below="@id/string_stats_resupplies_0"
 				    	android:layout_alignBaseline="@id/string_center_deaths"
 					/>
 					<TextView
@@ -295,7 +347,7 @@
 						android:layout_height="wrap_content"
 						android:text="Player 1"
 						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_revives_0"
+					    android:layout_below="@id/string_stats_resupplies_0"
 				    	android:layout_alignBaseline="@id/string_center_deaths"
 					/>
 				<!-- END_STATS_ITEM -->

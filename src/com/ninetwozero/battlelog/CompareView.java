@@ -174,6 +174,8 @@ public class CompareView extends Activity {
 	        ((TextView) findViewById(R.id.string_stats_assists_0)).setText( playerData[0].getNumAssists() + "" );
 	        ((TextView) findViewById(R.id.string_stats_heals_0)).setText( playerData[0].getNumHeals() + "" );
 	        ((TextView) findViewById(R.id.string_stats_revives_0)).setText( playerData[0].getNumRevives() + "" );
+	        ((TextView) findViewById(R.id.string_stats_repairs_0)).setText( playerData[0].getNumRepairs() + "" );
+	        ((TextView) findViewById(R.id.string_stats_resupplies_0)).setText( playerData[0].getNumResupplies() + "" );
 	        ((TextView) findViewById(R.id.string_stats_deaths_0)).setText( playerData[0].getNumDeaths() + "" );
 	        ((TextView) findViewById(R.id.string_stats_kdr_0)).setText( playerData[0].getKDRatio() + "" );
 	        ((TextView) findViewById(R.id.string_stats_wins_0)).setText( playerData[0].getNumWins() + "" );
@@ -211,6 +213,8 @@ public class CompareView extends Activity {
 	        ((TextView) findViewById(R.id.string_stats_kills_1)).setText( playerData[1].getNumKills() + "" );
 	        ((TextView) findViewById(R.id.string_stats_assists_1)).setText( playerData[1].getNumAssists() + "" );
 	        ((TextView) findViewById(R.id.string_stats_heals_1)).setText( playerData[1].getNumHeals() + "" );
+	        ((TextView) findViewById(R.id.string_stats_repairs_1)).setText( playerData[1].getNumRepairs() + "" );
+	        ((TextView) findViewById(R.id.string_stats_resupplies_1)).setText( playerData[1].getNumResupplies() + "" );
 	        ((TextView) findViewById(R.id.string_stats_revives_1)).setText( playerData[1].getNumRevives() + "" );
 	        ((TextView) findViewById(R.id.string_stats_deaths_1)).setText( playerData[1].getNumDeaths() + "" );
 	        ((TextView) findViewById(R.id.string_stats_kdr_1)).setText( playerData[1].getKDRatio() + "" );

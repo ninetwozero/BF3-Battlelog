@@ -299,6 +299,8 @@ public static PlayerData getStatsForUser(ProfileData pd) throws WebsiteHandlerEx
 	        	statsOverview.getInt( "killAssists" ),
 	        	statsOverview.getInt( "heals" ),
 	        	statsOverview.getInt( "revives" ),
+	        	statsOverview.getInt( "repairs" ),
+	        	statsOverview.getInt( "resupplies" ),
 	        	statsOverview.getInt( "deaths" ),
 	        	statsOverview.getInt( "numWins" ),
 	        	statsOverview.getInt( "numLosses" ),
@@ -349,16 +351,15 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
     	JSONArray unlockResults = dataObject.getJSONArray( "unlocks" );
     	JSONObject unlockRow, detailObject;
     	int unlockKit;
-    	HashMap<String, String> foo = new HashMap<String, String>();
-
+    	
     	//Iterate over the unlocksArray
     	for( int i = 0; i < unlockResults.length(); i++ ) {
     	
     		//Get the temporary object
     		unlockRow = unlockResults.optJSONObject( i );
 
-    		//Empty?
-    		//if( unlockRow.getDouble( "unlockPercentage" ) < 1.0 ) { continue; }
+    		//Less than 1.0?
+    		if( unlockRow.getDouble( "unlockPercentage" ) < 1.0 ) { continue; }
     		
     		try {
 
@@ -393,7 +394,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 					)	
     					
 				);
-    	    	if( !foo.containsKey( detailObject.getString( "codeNeeded" ) ) ) { foo.put( detailObject.getString( "codeNeeded" ), "" ); }
+  
     		} else if( !unlockRow.isNull( "kitItemUnlock" ) ) {
 
     			//Get the object
@@ -416,7 +417,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 					)	
     					
 				);
-    	    	if( !foo.containsKey( detailObject.getString( "codeNeeded" ) ) ) { foo.put( detailObject.getString( "codeNeeded" ), "" ); }
+    	    	
     		} else if( !unlockRow.isNull( "vehicleAddonUnlock" ) ) {
 
     			//Get the object
@@ -439,7 +440,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 					)	
     					
 				);
-    	    	if( !foo.containsKey( detailObject.getString( "codeNeeded" ) ) ) { foo.put( detailObject.getString( "codeNeeded" ), "" ); }
+    	    	
     		} else if( !unlockRow.isNull( "weaponUnlock" ) ) {
 
     			//Get the object
@@ -462,7 +463,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 					)	
     					
 				);
-    	    	if( !foo.containsKey( detailObject.getString( "codeNeeded" ) ) ) { foo.put( detailObject.getString( "codeNeeded" ), "" ); }
+    	    	
     		} else if( !unlockRow.isNull( "soldierSpecializationUnlock" ) ) {
 
     			//Get the object

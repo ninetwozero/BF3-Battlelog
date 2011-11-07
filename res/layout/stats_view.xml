@@ -193,15 +193,47 @@
 					<TextView
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:text="Deaths"
+						android:text="Repairs"
 					    android:layout_below="@id/string_stats_revives"
+					/>
+					<TextView
+						android:id="@+id/string_stats_repairs"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="10"
+					    android:layout_below="@id/string_stats_revives"
+						android:layout_toRightOf="@id/string_left_kills"
+					/>
+				<!-- END_STATS_ITEM -->
+				<!-- START_STATS_ITEM -->
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Resupplies"
+					    android:layout_below="@id/string_stats_repairs"
+					/>
+					<TextView
+						android:id="@+id/string_stats_resupplies"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="10"
+					    android:layout_below="@id/string_stats_repairs"
+						android:layout_toRightOf="@id/string_left_kills"
+					/>
+				<!-- END_STATS_ITEM -->
+				<!-- START_STATS_ITEM -->
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Deaths"
+					    android:layout_below="@id/string_stats_resupplies"
 					/>
 					<TextView
 						android:id="@+id/string_stats_deaths"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="10"
-					    android:layout_below="@id/string_stats_revives"
+					    android:layout_below="@id/string_stats_resupplies"
 						android:layout_toRightOf="@id/string_left_kills"
 					/>
 				<!-- END_STATS_ITEM -->
