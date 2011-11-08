@@ -22,15 +22,19 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
@@ -40,6 +44,7 @@ import android.util.Log;
 
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
+import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 
 public class RequestHandler {
 
@@ -56,12 +61,13 @@ public class RequestHandler {
 		
 		//Default
 		String httpContent = "";
-		
+		Log.d("com.ninetwozero.battlelog", "httpClient => " + httpClient);
 		try {
 			
 			//Init the HTTP-related attributes
 			HttpGet httpGet = new HttpGet(link);
 			HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);
+			
 			HttpEntity httpEntity = httpResponse.getEntity();
 			httpContent = this.getStringFromStream( httpEntity.getContent() );
 			
@@ -91,6 +97,7 @@ public class RequestHandler {
 		// Check so it's not empty
 		if ( link.equals( "" ) ) throw new RequestHandlerException("No link found.");
 
+		Log.d("com.ninetwozero.battlelog", "httpClient => " + httpClient);
 		//Init yo
 		HttpPost httpPost = new HttpPost(link);
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
@@ -116,7 +123,7 @@ public class RequestHandler {
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 			httpResponse = httpClient.execute(httpPost);
 			httpEntity = httpResponse.getEntity();
-			
+
 			//Anything?
 			if (httpEntity != null) {
 				
@@ -227,5 +234,46 @@ public class RequestHandler {
 	     return client;
 	 }
 
+	public static ArrayList<SerializedCookie> getSerializedCookies() {
+	
+		//Get our cookie storage
+		List<Cookie> cookies = RequestHandler.httpClient.getCookieStore().getCookies();
+		ArrayList<SerializedCookie> serializedCookies = new ArrayList<SerializedCookie>();
+
+		//Empty?
+		if (!cookies.isEmpty()){
+			
+			for( Cookie c : cookies ) { serializedCookies.add( new SerializedCookie(c) ); }
+		
+		}
+
+		return serializedCookies;
+	}
+	
+	public static void setSerializedCookies( ArrayList<SerializedCookie> sc ) {
+		
+		//Init
+    	CookieStore cookieStore = RequestHandler.httpClient.getCookieStore();
+    	
+    	//Did we have an icicle?
+    	if( cookieStore.getCookies().isEmpty() ) {
+	    	
+			//Set it up
+			ArrayList<SerializedCookie> serializedCookies = sc;
+			
+			//Loop & add
+			for( SerializedCookie sCookie : serializedCookies ) {
+
+				BasicClientCookie tempCookie = new BasicClientCookie(sCookie.getName(), sCookie.getValue());
+				tempCookie.setDomain(sCookie.getDomain());
+				cookieStore.addCookie( tempCookie );
+				
+			}
+			
+    		RequestHandler.httpClient.setCookieStore( cookieStore );
+	    		 
+    	}
+		
+	}
 	
 }

@@ -13,6 +13,11 @@
 */   
 package com.ninetwozero.battlelog;
 
+import java.util.ArrayList;
+
+import org.apache.http.client.CookieStore;
+import org.apache.http.impl.cookie.BasicClientCookie;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -32,7 +37,9 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.Config;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class StatsView extends Activity {
@@ -44,11 +51,18 @@ public class StatsView extends Activity {
 	private static int instances = 0;
 	
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle icicle) {
     
     	//onCreate - save the instance state
-    	super.onCreate(savedInstanceState);
-
+    	super.onCreate(icicle);	
+    	
+    	//Did it get passed on?
+    	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
+    		
+    		RequestHandler.setSerializedCookies( (ArrayList<SerializedCookie> ) icicle.getSerializable("serializedCookies") );
+    	
+    	}
+    	
     	//Instances += 1
     	instances = 1;
     	
@@ -216,4 +230,11 @@ public class StatsView extends Activity {
         super.onConfigurationChanged(newConfig);
     }  
     
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("serializedCookies", RequestHandler.getSerializedCookies());
+	
+	}
 }

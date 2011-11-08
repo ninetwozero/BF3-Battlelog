@@ -14,6 +14,13 @@
 
 package com.ninetwozero.battlelog;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.client.CookieStore;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.cookie.BasicClientCookie;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -49,7 +56,9 @@ import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
 import com.ninetwozero.battlelog.datatypes.Config;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
@@ -75,10 +84,17 @@ public class Dashboard extends Activity {
 	AsyncLogout asyncLogout = null;
 	
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle icicle) {
     
     	//onCreate - save the instance state
-    	super.onCreate(savedInstanceState);
+    	super.onCreate(icicle);
+    	
+    	//Did it get passed on?
+    	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
+    		
+    		RequestHandler.setSerializedCookies( (ArrayList<SerializedCookie> ) icicle.getSerializable("serializedCookies") );
+    	
+    	}
     	
     	//Set the content view
         setContentView(R.layout.dashboard);
@@ -368,14 +384,16 @@ public class Dashboard extends Activity {
 		}
 		
 	}
-    
+	
+	
 	@Override
-	public void onPause() {
+	protected void onSaveInstanceState(Bundle outState) {
 		
-		super.onPause();
-		//if( slidingDrawer.isOpened() ) { slidingDrawer.close(); }
-		
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("serializedCookies", RequestHandler.getSerializedCookies());
+	
 	}
+
 	
     @Override
     public void onConfigurationChanged(Configuration newConfig){        
@@ -407,7 +425,7 @@ public class Dashboard extends Activity {
 
 		//Declare...
 		AdapterView.AdapterContextMenuInfo info;
-
+		
 		//Let's try to get some menu information via a try/catch
 		try {
 			

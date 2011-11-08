@@ -30,9 +30,9 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 public class RequestListAdapter extends BaseAdapter {
 	
 	//Attributes
-	Context context;
-	ArrayList<ProfileData> profileArray;
-	LayoutInflater layoutInflater;
+	private Context context;
+	private ArrayList<ProfileData> profileArray;
+	private LayoutInflater layoutInflater;
 	
 	//Construct
 	public RequestListAdapter(Context c, ArrayList<ProfileData> p, LayoutInflater l) {

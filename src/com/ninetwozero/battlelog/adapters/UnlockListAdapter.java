@@ -96,8 +96,8 @@ public class UnlockListAdapter extends BaseAdapter {
 		((TextView) convertView.findViewById(R.id.text_unlock_desc)).setText( currentUnlock.getObjective() );
 		
 		//Update the progress
-		progressBar.setMax( 1000 );
-		progressBar.setProgress( (int) (currentUnlock.getUnlockPercentage()*10) );
+		progressBar.setMax( 100 );
+		progressBar.setProgress( (int) Math.round(currentUnlock.getUnlockPercentage()) );
 		
 		//Tag it!
 		convertView.setTag( currentUnlock );

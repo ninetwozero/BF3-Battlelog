@@ -76,7 +76,6 @@ public class UnlockData {
 			
 		} else if( this.type.equals( "skill" ) ) {
 			
-			Log.d("com.ninetwozero.battlelog", this.unlockIdentifier + "");
 			return DataBank.getSkillTitle( this.unlockIdentifier );
 			
 		} else {
