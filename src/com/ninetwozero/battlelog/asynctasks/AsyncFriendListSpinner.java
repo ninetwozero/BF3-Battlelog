@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.widget.Spinner;
 
 import com.ninetwozero.battlelog.adapters.FriendSpinnerAdapter;
+import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
@@ -43,7 +44,7 @@ public class AsyncFriendListSpinner extends AsyncTask<String, Void, Boolean> {
 			
 		} catch ( WebsiteHandlerException ex ) {
 			
-			Log.d("com.ninetwozero.battlelog", ex.getMessage() );
+			Log.d(Constants.debugTag, ex.getMessage() );
 			return false;
 			
 		}

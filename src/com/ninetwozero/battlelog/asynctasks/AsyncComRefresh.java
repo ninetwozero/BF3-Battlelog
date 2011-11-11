@@ -29,7 +29,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.FriendListAdapter;
 import com.ninetwozero.battlelog.adapters.RequestListAdapter;
-import com.ninetwozero.battlelog.datatypes.Config;
+import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
@@ -52,7 +52,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 		this.listFriendsOnline = fon;
 		this.listFriendsOffline = fof;
 		this.layoutInflater = l;
-		this.sharedPreferences = context.getSharedPreferences(Config.fileSharedPrefs, 0);
+		this.sharedPreferences = context.getSharedPreferences(Constants.fileSharedPrefs, 0);
 		this.buttonRefresh = b;
 		
 	}	

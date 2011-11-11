@@ -15,9 +15,6 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
-import org.apache.http.client.CookieStore;
-import org.apache.http.impl.cookie.BasicClientCookie;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -33,7 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.datatypes.Config;
+import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
@@ -66,7 +63,7 @@ public class CompareView extends Activity {
         setContentView(R.layout.compare_view);
 
         //Prepare to tango
-        this.sharedPreferences = this.getSharedPreferences( Config.fileSharedPrefs, 0);
+        this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
     
         //Let's set them straight
         playerOne = new ProfileData(
@@ -139,7 +136,7 @@ public class CompareView extends Activity {
 				
 			} catch ( WebsiteHandlerException ex ) {
 				
-				Log.d("com.ninetwozero.battlelog", ex.getMessage() );
+				Log.d(Constants.debugTag, ex.getMessage() );
 				return false;
 				
 			}

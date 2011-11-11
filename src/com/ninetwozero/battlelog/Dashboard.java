@@ -15,11 +15,6 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.client.CookieStore;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.cookie.BasicClientCookie;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,6 +35,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -53,7 +49,7 @@ import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
-import com.ninetwozero.battlelog.datatypes.Config;
+import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
@@ -106,7 +102,7 @@ public class Dashboard extends Activity {
         postDataArray = new PostData[2];
         
         //Set sharedPreferences
-        sharedPreferences = getSharedPreferences( Config.fileSharedPrefs, 0);
+        sharedPreferences = getSharedPreferences( Constants.fileSharedPrefs, 0);
 
         //Setup COM
         setupCOM();
@@ -145,12 +141,12 @@ public class Dashboard extends Activity {
     			
     		}
     		//Iterate and conquer
-    		for( int i = 0; i < Config.fieldNamesStatus.length; i++ ) {
+    		for( int i = 0; i < Constants.fieldNamesStatus.length; i++ ) {
 
     			postDataArray[i] =	new PostData(
 	    			
-    				Config.fieldNamesStatus[i],
-	    			(Config.fieldValuesStatus[i] == null) ? valueFields[i] : Config.fieldValuesStatus[i] 
+    				Constants.fieldNamesStatus[i],
+	    			(Constants.fieldValuesStatus[i] == null) ? valueFields[i] : Constants.fieldValuesStatus[i] 
 	    		
     			);
     		
@@ -318,6 +314,21 @@ public class Dashboard extends Activity {
 		registerForContextMenu( listFriendsOnline );
 		registerForContextMenu( listFriendsOffline );
 		
+		//Setup the onClicks
+		OnItemClickListener onItemClickListener = new OnItemClickListener() {
+
+			@Override public void onItemClick( AdapterView<?> a, View v, int p, long i ) {
+
+				onCOMRowClick(a, v, p, i);
+				
+			}
+			
+		};
+
+		listFriendsRequests.setOnItemClickListener( onItemClickListener );
+		listFriendsOnline.setOnItemClickListener( onItemClickListener );
+		listFriendsOffline.setOnItemClickListener( onItemClickListener );
+		
 		//refresh the COM
 		refreshCOM();
 		
@@ -403,19 +414,19 @@ public class Dashboard extends Activity {
     @Override
 	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
 
-    	if( view.getId() == R.id.list_requests ) {
-
-			menu.add( 0, 0, 0, "Compare battle scars");
-    		
-    	} else if( view.getId() == R.id.list_friends_online ) {
-    		
-			menu.add( 1, 0, 0, "Compare battle scars");
-
-    	} else if( view.getId() == R.id.list_friends_offline ) {
-    		
-			menu.add( 2, 0, 0, "Compare battle scars");
-    		
-    	}
+    	
+    	//init
+    	int menuId = 2;
+    	
+    	//Get it right
+    	if( view.getId()  == R.id.list_requests ) { menuId = 0;  } 
+    	else if( view.getId() == R.id.list_friends_online ) { menuId = 1; } 
+    	else if( view.getId() == R.id.list_friends_offline ) { menuId = 2; }
+    	
+    	//Show the menu
+		menu.add( menuId, 0, 0, "Use radio");
+		menu.add( menuId, 1, 0, "Compare battle scars");
+    	
 		return;
 	
 	}
@@ -451,12 +462,30 @@ public class Dashboard extends Activity {
 						new Intent( 
 								
 							this, 
+							ChatView.class
+							
+						).putExtra( 
+							
+							"profile", 
+							(ProfileData) info.targetView.getTag()
+							
+						)
+					
+					);
+					
+				} else if( item.getItemId() == 1 ) {
+					
+					startActivity(
+							
+						new Intent( 
+								
+							this, 
 							CompareView.class
 							
 						).putExtra( 
 							
 							"profile", 
-							WebsiteHandler.getIDFromProfile(
+							WebsiteHandler.getPersonaIdFromProfile(
 								
 								((ProfileData) info.targetView.getTag()).getProfileId() 
 						
@@ -479,12 +508,30 @@ public class Dashboard extends Activity {
 						new Intent( 
 								
 							this, 
+							ChatView.class
+							
+						).putExtra( 
+							
+							"profile", 
+							(ProfileData) info.targetView.getTag()
+							
+						)
+					
+					);
+					
+				} else if( item.getItemId() == 1 ) {
+					
+					startActivity(
+							
+						new Intent( 
+								
+							this, 
 							CompareView.class
 							
 						).putExtra( 
 							
 							"profile", 
-							WebsiteHandler.getIDFromProfile(
+							WebsiteHandler.getPersonaIdFromProfile(
 								
 								((ProfileData) info.targetView.getTag()).getProfileId() 
 						
@@ -501,6 +548,24 @@ public class Dashboard extends Activity {
 	    		
 	    		//OFFLINE FRIENDS
 				if( item.getItemId() == 0 ) {
+					
+					startActivity(
+							
+						new Intent( 
+								
+							this, 
+							ChatView.class
+							
+						).putExtra( 
+							
+							"profile", 
+							(ProfileData) info.targetView.getTag()
+							
+						)
+					
+					);
+					
+				} else if( item.getItemId() == 1 ) {
 	
 					startActivity(
 					
@@ -512,7 +577,7 @@ public class Dashboard extends Activity {
 						).putExtra( 
 							
 							"profile", 
-							WebsiteHandler.getIDFromProfile(
+							WebsiteHandler.getPersonaIdFromProfile(
 								
 								((ProfileData) info.targetView.getTag()).getProfileId() 
 						
@@ -535,4 +600,10 @@ public class Dashboard extends Activity {
 		return true;
 	}
 
+	
+	public void onCOMRowClick(AdapterView<?> a, View view, int position, long id) {
+	
+		startActivity( new Intent(this, ProfileView.class).putExtra( "profile", (ProfileData) a.getItemAtPosition( position )));
+		
+	}
 }

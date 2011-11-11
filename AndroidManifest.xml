@@ -12,30 +12,19 @@
         android:label="@string/app_name" 
        	android:theme="@android:style/Theme.Light"
    	>
-		<receiver android:name="com.ninetwozero.battlelog.widgets.BattlelogAppWidgetProvider" android:label="@string/widget_name">
-			
-			<intent-filter>
-			    
-		         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-		         <action android:name="android.appwidget.action.ACTION_WIDGET_RECEIVER" />
-			
-			</intent-filter>
-			<meta-data
-				android:name="android.appwidget.provider"
-				android:resource="@xml/appwidget">  
-			</meta-data>
-			
-		</receiver>
         <activity
             android:label="@string/app_name"
             android:name=".Main"
             android:orientation="vertical"
           	android:configChanges="orientation"
 		>
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+				<action android:name="com.ninetwozero.battlelog.widgets.BattlelogAppWidgetProvider.ACTION_WIDGET_OPENAPP"/>
+            	<category android:name="android.intent.category.LAUNCHER" />    
             </intent-filter>
         </activity>
         <activity
@@ -45,8 +34,18 @@
           	android:configChanges="orientation"
         />
         <activity
+            android:label="BF3 Battlelog - Profile"
+            android:name=".ProfileView"
+          	android:configChanges="orientation"
+        />
+        <activity
             android:label="BF3 Battlelog - Your performance"
             android:name=".StatsView"
+          	android:configChanges="orientation"
+        />
+        <activity
+            android:label="BF3 Battlelog - Chatting with ..."
+            android:name=".ChatView"
           	android:configChanges="orientation"
         />
         <activity
@@ -59,6 +58,16 @@
             android:name=".UnlocksView"
           	android:configChanges="orientation"
         />
+		<receiver android:name="com.ninetwozero.battlelog.widgets.BattlelogAppWidgetProvider" android:label="@string/widget_name">
+			<intent-filter>
+		         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+		         <action android:name="android.appwidget.action.ACTION_WIDGET_RECEIVER" />
+			</intent-filter>
+			<meta-data
+				android:name="android.appwidget.provider"
+				android:resource="@xml/appwidget">  
+			</meta-data>
+		</receiver>
     </application>
 	<uses-permission android:name="android.permission.INTERNET" />
 </manifest>

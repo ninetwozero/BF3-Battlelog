@@ -14,27 +14,27 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import java.io.Serializable;
-
-
-public class VehicleType implements Serializable {
+public class ChatMessage {
 
 	//Attributes
-	private static final long serialVersionUID = -6682902181714468486L;
-	private String identifier, name, label;
+	private long chatId, timestamp;
+	private String sender, message;
+	
 	
 	//Construct
-	public VehicleType(String i, String n, String l) {
+	public ChatMessage(long c, long t, String s, String m) {
 		
-		this.identifier = i;
-		this.name = n;
-		this.label = l;
+		this.chatId = c;
+		this.timestamp = t;
+		this.sender = s;
+		this.message = m;
 		
 	}
 	
 	//Getters
-	public String getIdentifier() { return this.identifier; }
-	public String getName() { return this.name; }
-	public String getLabel() { return this.label; }
+	public long getChatId() { return this.chatId; }
+	public long getTimestamp() { return this.timestamp; }
+	public String getSender() { return this.sender; }
+	public String getMessage() { return this.message; }
 	
 }

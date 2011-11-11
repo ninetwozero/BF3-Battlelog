@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.misc;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
@@ -29,11 +28,15 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.ninetwozero.battlelog.datatypes.Config;
+import com.ninetwozero.battlelog.datatypes.ChatMessage;
+import com.ninetwozero.battlelog.datatypes.Constants;
+import com.ninetwozero.battlelog.datatypes.DataBank;
+import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileComparator;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.datatypes.UnlockComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
@@ -48,7 +51,7 @@ public class WebsiteHandler {
 	public static boolean doLogin(Context context, PostData[] postDataArray, boolean savePassword) throws WebsiteHandlerException {
 	
 		//Init
-		SharedPreferences sharedPreferences = context.getSharedPreferences( Config.fileSharedPrefs, 0);
+		SharedPreferences sharedPreferences = context.getSharedPreferences( Constants.fileSharedPrefs, 0);
 		SharedPreferences.Editor spEdit = sharedPreferences.edit();
 		String[] tempString = new String[10];
 		String httpContent;
@@ -57,13 +60,13 @@ public class WebsiteHandler {
 			
 			//Let's login everybody!
 			RequestHandler wh = new RequestHandler();
-    		httpContent = wh.post( Config.urlLogin, postDataArray );
+    		httpContent = wh.post( Constants.urlLogin, postDataArray, false);
 
     		//Did we manage?
     		if( httpContent != null && !httpContent.equals( "" ) ) {
     			
     			//Set the int
-    			int startPosition = httpContent.indexOf( Config.elementUIDLink );
+    			int startPosition = httpContent.indexOf( Constants.elementUIDLink );
     			String[] bits;
     			
     			//Did we find it?
@@ -76,11 +79,11 @@ public class WebsiteHandler {
     			//Cut out the appropriate bits (<a class="SOME CLASS HERE" href="A LONG LINK HERE">NINETWOZERO
 	    		httpContent = httpContent.substring( startPosition );
 				tempString[0] = httpContent.substring( 0, httpContent.indexOf("\">") ); 
-				bits = TextUtils.split( tempString[0].replace( Config.elementUIDLink, ""), "/");
+				bits = TextUtils.split( tempString[0].replace( Constants.elementUIDLink, ""), "/");
 				
 				//Get the checksum
-				tempString[1] = httpContent.substring( httpContent.indexOf( Config.elementStatusChecksumLink ) );
-				tempString[1] = tempString[1].substring( 0, tempString[1].indexOf( "\" />") ).replace( Config.elementStatusChecksumLink, "" );
+				tempString[1] = httpContent.substring( httpContent.indexOf( Constants.elementStatusChecksumLink ) );
+				tempString[1] = tempString[1].substring( 0, tempString[1].indexOf( "\" />") ).replace( Constants.elementStatusChecksumLink, "" );
 				
 				//Further more, we would actually like to store the userid and name
 				spEdit.putString( "origin_email", postDataArray[0].getValue() );
@@ -99,7 +102,7 @@ public class WebsiteHandler {
 				
 				spEdit.putString( "battlelog_persona",  bits[0]);
 				spEdit.putLong( "battlelog_persona_id",  Long.parseLong( bits[2] ));				
-				spEdit.putLong( "battlelog_platform_id",  Config.getPlatformId(bits[3]) );
+				spEdit.putLong( "battlelog_platform_id",  DataBank.getPlatformId(bits[3]) );
 				spEdit.putString( "battlelog_post_checksum", tempString[1]);
 				
 				//Co-co-co-commit
@@ -129,13 +132,14 @@ public class WebsiteHandler {
 			//Get the content
 			httpContent = wh.post( 
 				
-				Config.urlSearch, 
+				Constants.urlSearch, 
 				new PostData[] {
 						 
-					new PostData(Config.fieldNamesSearch[0], keyword),
-					new PostData(Config.fieldNamesSearch[1], checksum)
+					new PostData(Constants.fieldNamesSearch[0], keyword),
+					new PostData(Constants.fieldNamesSearch[1], checksum)
 					
-				}
+				}, 
+				false
 				
 			);
 
@@ -193,7 +197,7 @@ public class WebsiteHandler {
 						
 					}
 					
-					return WebsiteHandler.getIDFromProfile( profile.getProfileId() );
+					return WebsiteHandler.getPersonaIdFromProfile( profile.getProfileId() );
 
 				}
 				
@@ -217,7 +221,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static ProfileData getIDFromProfile(long profileId) throws WebsiteHandlerException {
+	public static ProfileData getPersonaIdFromProfile(long profileId) throws WebsiteHandlerException {
 
 		try {
 			
@@ -226,7 +230,7 @@ public class WebsiteHandler {
 			String httpContent;
 			
 			//Get the content
-			httpContent = wh.get( Config.urlIDGrabber.replace( "{PID}", profileId + "") );
+			httpContent = wh.get( Constants.urlProfile.replace( "{PID}", profileId + ""), false);
 
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -238,7 +242,7 @@ public class WebsiteHandler {
 					personaObject.getString("personaName"),
 					personaObject.getLong( "personaId" ), 
 					profileId,
-					Config.getPlatformId( personaObject.getString( "namespace" ) ) 
+					DataBank.getPlatformId( personaObject.getString( "namespace" ) ) 
 				);
 			
 			} else {
@@ -268,16 +272,19 @@ public static PlayerData getStatsForUser(ProfileData pd) throws WebsiteHandlerEx
 	    	RequestHandler wh = new RequestHandler();
 	    	String content = wh.get( 
     	
-    			Config.urlStatsOverview.replace(
+    			Constants.urlStatsOverview.replace(
     					
 					"{UID}", pd.getPersonaId() + ""
 				
 				).replace( 
 				
 					"{PLATFORM_ID}", pd.getPlatformId() + ""
-				)
-				
+				),
+				false
+			
 			);
+	    	
+	    	//JSON Objects
 	    	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
 	    	JSONObject statsOverview = dataObject.getJSONObject( "overviewStats" );
 	    	JSONObject kitScores = statsOverview.getJSONObject( "kitScores" );
@@ -286,7 +293,7 @@ public static PlayerData getStatsForUser(ProfileData pd) throws WebsiteHandlerEx
 	   
 	        //Yay
 	        return new PlayerData(
-	        	pd.getPersonaName(),
+	        	pd.getAccountName(),
 	        	currRankInfo.getString( "name" ),
 	        	statsOverview.getLong( "rank" ),
 	        	pd.getPersonaId(),
@@ -337,16 +344,19 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
     	ArrayList<UnlockData> unlockArray = new ArrayList<UnlockData>();
     	String content = wh.get( 
 	
-			Config.urlStatsUpcoming.replace(
+			Constants.urlStatsUpcoming.replace(
 					
 				"{UID}", pd.getPersonaId() + ""
 			
 			).replace( 
 			
 				"{PLATFORM_ID}", pd.getPlatformId() + ""
-			)
+			), 
+			false
 			
 		);
+    	
+    	//JSON Objects
     	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
     	JSONArray unlockResults = dataObject.getJSONArray( "unlocks" );
     	JSONObject unlockRow, detailObject;
@@ -514,7 +524,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 			ArrayList<ArrayList<ProfileData>> profileArray = new ArrayList<ArrayList<ProfileData>>();
 			
 			//Get the content
-			httpContent = wh.post( Config.urlFriends, new PostData[] { new PostData(Config.fieldNamesCHSUM[0], checksum) });
+			httpContent = wh.post( Constants.urlFriends, new PostData[] { new PostData(Constants.fieldNamesCHSUM[0], checksum) }, false);
 
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -662,7 +672,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 			ArrayList<ProfileData> profileArray = new ArrayList<ProfileData>();
 			
 			//Get the content
-			httpContent = wh.post( Config.urlFriends, new PostData[] { new PostData(Config.fieldNamesCHSUM[0], checksum) });
+			httpContent = wh.post( Constants.urlFriends, new PostData[] { new PostData(Constants.fieldNamesCHSUM[0], checksum) }, false);
 	
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -728,7 +738,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 
 				httpContent = wh.post( 
 						
-					Config.urlFriendAccept.replace( 
+					Constants.urlFriendAccept.replace( 
 						
 						"{PID}", 
 						pId + ""
@@ -737,20 +747,21 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 					
 						new PostData(
 							
-							Config.fieldNamesCHSUM[0], 
+							Constants.fieldNamesCHSUM[0], 
 							checksum
 						
 						) 
 						
-					}
-			
+					}, 
+					false
+
 				);
 			
 			} else {
 
 				httpContent = wh.post( 
 					
-					Config.urlFriendDecline.replace( 
+					Constants.urlFriendDecline.replace( 
 						
 						"{PID}", 
 						pId + ""
@@ -759,12 +770,13 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 					
 						new PostData(
 							
-							Config.fieldNamesCHSUM[0], 
+							Constants.fieldNamesCHSUM[0], 
 							checksum
 						
 						) 
 						
-					}
+					}, 
+					false
 			
 				);
 				
@@ -789,4 +801,204 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 		
 	}
 	
+	public static ArrayList<ChatMessage> getChatMessages(long profileId, String checksum) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Let's do this!
+			RequestHandler wh = new RequestHandler();
+			ArrayList<ChatMessage> messageArray = new ArrayList<ChatMessage>();
+			String httpContent;
+			
+			//Get the content
+			httpContent = wh.post( 
+					
+				Constants.urlChatContents.replace( 
+					
+					"{PID}", 
+					profileId + ""
+				), 
+				new PostData[] { 
+				
+					new PostData(
+						
+						Constants.fieldNamesCHSUM[0], 
+						checksum
+					
+					) 
+					
+				},
+				true
+		
+			);
+						
+			//Did we manage?
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+			
+				//Get the messages
+				JSONArray messages = new JSONObject(httpContent).getJSONObject( "data" ).getJSONObject( "chat" ).getJSONArray( "messages" );
+				JSONObject tempObject;
+				
+				//Iterate
+				for( int i = 0; i < messages.length(); i++ ) {
+					
+					tempObject = messages.optJSONObject( i );
+					Log.d(Constants.debugTag, tempObject.toString(4));
+					messageArray.add( 
+					
+						new ChatMessage(
+						
+							profileId,
+							tempObject.getLong( "timestamp" ),
+							tempObject.getString( "fromUsername" ),
+							tempObject.getString( "message" )
+								
+						)
+							
+					);
+
+				}
+				
+				return messageArray;
+				
+			} else {
+			
+				throw new WebsiteHandlerException("Could not get the chat messages.");
+			
+			}	
+		
+		} catch ( Exception ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+
+	}
+	
+	public static boolean sendChatMessages(long profileId, String checksum, String message) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Let's login everybody!
+			RequestHandler wh = new RequestHandler();
+			String httpContent;
+			
+			//Get the content
+			httpContent = wh.post( 
+					
+				Constants.urlChatSend, 
+				new PostData[] { 
+					 new PostData(
+								
+						Constants.fieldNamesChat[2], 
+						checksum
+					
+					),
+					new PostData(
+							
+						Constants.fieldNamesChat[1], 
+						profileId
+						
+					),
+					new PostData(
+							
+						Constants.fieldNamesChat[0], 
+						message
+					
+					)
+					 
+				},
+				true
+		
+			);
+						
+			//Did we manage?
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+			
+				Log.d(Constants.debugTag, httpContent);
+				return true;
+				
+			} else {
+			
+				throw new WebsiteHandlerException("Could not send the chat message.");
+				
+			}	
+		
+		} catch ( RequestHandlerException ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+
+	}
+	
+	public static ProfileInformation getProfileInformationForUser( ProfileData profileData ) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Let's go!
+			RequestHandler wh = new RequestHandler();
+			ArrayList<FeedItem> feedItemArray = new ArrayList<FeedItem>();
+			String httpContent;
+			
+			//Get the content
+			httpContent = wh.get( Constants.urlProfileInfo.replace( "{UNAME}", profileData.getAccountName() ), true );
+		
+			Log.d(Constants.debugTag, httpContent);
+			
+			//Did we manage?
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+			
+				//JSON Objects
+				JSONObject contextObject = new JSONObject(httpContent).optJSONObject( "context" );
+				JSONObject userInfo = contextObject.optJSONObject( "userInfo" );
+				JSONArray gameReports = contextObject.getJSONArray( "gameReportPreviewGroups" );
+				JSONArray feedItems = contextObject.getJSONArray( "feed" );
+				
+				//Iterate over the feed
+				for( int i = 0; i < feedItems.length(); i++ ) {
+					
+					//Each loop is an object
+					feedItemArray.add(
+						
+						new FeedItem(
+						
+								
+								
+						)
+							
+					);
+					
+				}
+				
+				return new ProfileInformation(
+					
+					userInfo.getInt( "age" ), 
+					profileData.getProfileId(), 
+					userInfo.getLong("birthdate"), 
+					userInfo.getLong("lastLogin"),
+					userInfo.optJSONObject( "userStatusMessage" ).getLong("statusMessageChanged"), 
+					userInfo.getString( "name" ), 
+					userInfo.getString( "location" ),  
+					userInfo.getString( "presentation" ),  
+					userInfo.optJSONObject( "userStatusMessage" ).getString( "statusMessage" ), 
+					userInfo.getBoolean( "allowFriendRequests" ), 
+					null
+					
+				);
+				
+			} else {
+			
+				throw new WebsiteHandlerException("Could not get the profile.");
+				
+			}	
+		
+		} catch ( Exception ex ) {
+			
+			ex.printStackTrace();
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+		
+	}
 }

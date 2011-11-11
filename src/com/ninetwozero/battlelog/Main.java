@@ -33,8 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
-import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
-import com.ninetwozero.battlelog.datatypes.Config;
+import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.PostData;
 
 public class Main extends Activity {
@@ -63,10 +62,10 @@ public class Main extends Activity {
         setContentView(R.layout.main);
         
         //Get the sharedPreferences
-        sharedPreferences = getSharedPreferences( Config.fileSharedPrefs, 0 );
+        sharedPreferences = getSharedPreferences( Constants.fileSharedPrefs, 0 );
         		
         //Initialize the attributes
-        postDataArray = new PostData[Config.fieldNamesLogin.length];
+        postDataArray = new PostData[Constants.fieldNamesLogin.length];
         valueFields = new String[2];
         
         //Get the fields
@@ -146,12 +145,12 @@ public class Main extends Activity {
     		}
     		
     		//Iterate and conquer
-    		for( int i = 0; i < Config.fieldNamesLogin.length; i++ ) {
+    		for( int i = 0; i < Constants.fieldNamesLogin.length; i++ ) {
 
     			postDataArray[i] =	new PostData(
 	    			
-    				Config.fieldNamesLogin[i],
-	    			(Config.fieldValuesLogin[i] == null) ? valueFields[i] : Config.fieldValuesLogin[i] 
+    				Constants.fieldNamesLogin[i],
+	    			(Constants.fieldValuesLogin[i] == null) ? valueFields[i] : Constants.fieldValuesLogin[i] 
 	    		);
     		
     		}

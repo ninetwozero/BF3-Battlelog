@@ -42,6 +42,7 @@ import org.apache.http.util.ByteArrayBuffer;
 
 import android.util.Log;
 
+import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
@@ -54,20 +55,30 @@ public class RequestHandler {
 	// Constructor
 	public RequestHandler() {}
 	
-	public String get( String link ) throws RequestHandlerException {
+	public String get( String link, boolean extraHeaders ) throws RequestHandlerException {
 		
 		// Check defaults
 		if ( link.equals( "" ) ) throw new RequestHandlerException("No link found.");
 		
 		//Default
 		String httpContent = "";
-		Log.d("com.ninetwozero.battlelog", "httpClient => " + httpClient);
 		try {
 			
 			//Init the HTTP-related attributes
 			HttpGet httpGet = new HttpGet(link);
-			HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);
 			
+			//Do we need those extra headers?
+			if( extraHeaders ) {
+			
+				httpGet.setHeader( "X-Requested-With", "XMLHttpRequest");
+				httpGet.setHeader( "X-AjaxNavigation", "1");
+				httpGet.setHeader( "Referer", link);
+				httpGet.setHeader( "Accept", "application/json, text/javascript, */*" );
+				httpGet.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
+			
+			}
+			
+			HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);	
 			HttpEntity httpEntity = httpResponse.getEntity();
 			httpContent = this.getStringFromStream( httpEntity.getContent() );
 			
@@ -92,14 +103,26 @@ public class RequestHandler {
 		
 	}
 
-	public String post( String link, PostData[] postDataArray ) throws RequestHandlerException {
+	public String post( String link, PostData[] postDataArray, boolean extraHeaders ) throws RequestHandlerException {
 
 		// Check so it's not empty
 		if ( link.equals( "" ) ) throw new RequestHandlerException("No link found.");
 
-		Log.d("com.ninetwozero.battlelog", "httpClient => " + httpClient);
-		//Init yo
+		//Init...
 		HttpPost httpPost = new HttpPost(link);
+		
+		//Do we need 'em?
+		if( extraHeaders ) {
+			
+			httpPost.setHeader( "X-Requested-With", "XMLHttpRequest");
+			httpPost.setHeader( "X-AjaxNavigation", "1");
+			httpPost.setHeader( "Referer", link);
+			httpPost.setHeader( "Accept", "application/json, text/javascript, */*" );
+			httpPost.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
+			
+		}
+			
+		//More init
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 		HttpEntity httpEntity;
 		HttpResponse httpResponse;
@@ -136,7 +159,7 @@ public class RequestHandler {
 				
 			} else {
 				
-				Log.d("com.ninetwozero.battlelog", "The response was null. Weird.");
+				Log.d(Constants.debugTag, "The response was null. Weird.");
 				
 			}
 		

@@ -29,9 +29,10 @@ import android.graphics.Color;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.Main;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
-import com.ninetwozero.battlelog.datatypes.Config;
+import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
@@ -43,13 +44,18 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
 	public static final String DEBUG_TAG = "WidgetProvider";
 	public static final String ACTION_WIDGET_RECEIVER = "ActionReceiverWidget";
+	public static final String ACTION_WIDGET_OPENAPP = "Main";
 	
 	   @Override
 	   public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		  
+		   
 		   //Attributes
 		   Intent active = new Intent(context, BattlelogAppWidgetProvider.class).setAction(ACTION_WIDGET_RECEIVER);
 		   PendingIntent actionPendingIntent = PendingIntent.getBroadcast(context, 0, active, 0);
+		   Intent appIntent = new Intent(context, Main.class);
+		   PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0, appIntent, 0);
+		   appIntent.setAction(ACTION_WIDGET_OPENAPP);
+		   
 		   RemoteViews remoteView = null;
 		   ProfileData profileData = null;
 		   PlayerData playerData = null;
@@ -59,7 +65,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 		   int numFriendsOnline = 0;
 	   
 		   //Set the values
-		   sharedPreferences = context.getSharedPreferences( Config.fileSharedPrefs, 0);  
+		   sharedPreferences = context.getSharedPreferences( Constants.fileSharedPrefs, 0);  
 		   profileData = new ProfileData(
 				
 			    sharedPreferences.getString( "battlelog_persona", "" ),
@@ -93,7 +99,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 					try {
 						
 						//Init
-						PostData[] postDataArray = new PostData[Config.fieldNamesLogin.length];
+						PostData[] postDataArray = new PostData[Constants.fieldNamesLogin.length];
 			    		String[] valueFields = new String[] { 
 							
 						sharedPreferences.getString( "origin_email", ""), 
@@ -112,12 +118,12 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 			    		}; 
 
 						//Iterate and conquer
-			    		for( int i = 0; i < Config.fieldNamesLogin.length; i++ ) {
+			    		for( int i = 0; i < Constants.fieldNamesLogin.length; i++ ) {
 	
 			    			postDataArray[i] =	new PostData(
 				    			
-			    				Config.fieldNamesLogin[i],
-				    			(Config.fieldValuesLogin[i] == null) ? valueFields[i] : Config.fieldValuesLogin[i] 
+			    				Constants.fieldNamesLogin[i],
+				    			(Constants.fieldValuesLogin[i] == null) ? valueFields[i] : Constants.fieldValuesLogin[i] 
 				    		);
 			    		
 			    		}
@@ -158,6 +164,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 		   }  
 		      
 		    remoteView.setOnClickPendingIntent(R.id.widget_button, actionPendingIntent);
+		    remoteView.setOnClickPendingIntent(R.id.widget_button2, appPendingIntent);
 		    BattlelogListWidget = new ComponentName(
 	    		context,
 		        BattlelogAppWidgetProvider.class

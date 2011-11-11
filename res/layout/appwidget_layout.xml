@@ -1,85 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/full_widget"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
-
-    <ImageView
-        android:id="@+id/dogtag"
-        android:layout_width="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="210dp"
+    android:gravity="center" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout3"
+        android:layout_width="258dip"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/widget_dogtag" />
+        android:gravity="bottom" >
 
-    <TextView
-        android:id="@+id/label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/dogtag"
-        android:layout_alignLeft="@id/dogtag"
-        android:paddingLeft="55dp"
-        android:paddingTop="25dp"
-        android:text="Error:"
-        android:textColor="@android:color/black"
-        android:textSize="12sp" />
+        <ImageView
+            android:id="@+id/dogtag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/widget_dogtag" />
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="55dp"
-        android:layout_alignLeft="@id/label"
-        android:layout_below="@id/label"
-        android:paddingTop="5dp"
-        android:text="No data found."
-        android:textColor="@android:color/black"
-        android:textSize="11sp" />
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="124dip"
+            android:layout_height="90dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50dip" >
 
-    <TextView
-        android:id="@+id/stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/title"
-        android:layout_below="@id/title"
-        android:paddingLeft="55dp"
-        android:paddingTop="5dp"
-        android:text="Connect Battlelog"
-        android:textColor="@android:color/black"
-        android:textSize="11sp" />
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="180dip"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/friendsstatic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/stats"
-        android:layout_below="@id/stats"
-        android:paddingLeft="55dp"
-        android:paddingTop="5dp"
-        android:text="Friends online:"
-        android:textColor="@android:color/black"
-        android:textSize="13sp" />
-    <TextView
-        android:id="@+id/friends"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/friendsstatic"
-        android:layout_below="@id/stats"
-        android:paddingLeft="148dp"
-        android:paddingTop="3dp"
-        android:text="0"
-        android:textColor="#ff0000"
-        android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Error:"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" android:padding="3dip"/>
 
-    <Button
-        android:id="@+id/widget_button"
-        android:layout_width="40dip"
-        android:layout_height="40dip"
-        android:layout_alignRight="@+id/dogtag"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="25dp"
-        android:background="@drawable/widget_updatebutton"
-  		android:gravity="left|center_vertical"
-        android:text=""
-        android:textSize="8sp" />
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No data found."
+                    android:textColor="@android:color/black"
+                    android:textSize="11sp" android:padding="3dip"/>
+
+                <TextView
+                    android:id="@+id/stats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Connect Battlelog"
+                    android:textColor="@android:color/black"
+                    android:textSize="11sp" android:padding="3dip"/>
+
+                <TextView
+                    android:id="@+id/friendsstatic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Friends online:"
+                    android:textColor="@android:color/black"
+                    android:textSize="13sp" android:padding="3dip"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout4"
+                android:layout_width="30dip"
+                android:layout_height="89dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" >
+
+                <TextView
+                    android:id="@+id/friends"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:text="0"
+                    android:textColor="#ff0000"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="40dip"
+            android:layout_height="90dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="25dp" >
+
+            <Button
+                android:id="@+id/widget_button"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:background="@drawable/widget_updatebutton"
+                android:textSize="8sp" />
+
+            <Button
+                android:id="@+id/widget_button2"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/bg_bf3_main"
+                android:textSize="9sp" android:text="BF3 Battlelog" android:textColor="#ffffff"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

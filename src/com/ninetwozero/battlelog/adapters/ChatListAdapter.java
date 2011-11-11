@@ -21,24 +21,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatypes.ChatMessage;
 
-public class RequestListAdapter extends BaseAdapter {
+public class ChatListAdapter extends BaseAdapter {
 	
 	//Attributes
-	private Context context;
-	private ArrayList<ProfileData> profileArray;
-	private LayoutInflater layoutInflater;
+	Context context;
+	ArrayList<ChatMessage> messageArray;
+	LayoutInflater layoutInflater;
+	TextView textMessage;
 	
 	//Construct
-	public RequestListAdapter(Context c, ArrayList<ProfileData> p, LayoutInflater l) {
+	public ChatListAdapter(Context c, ArrayList<ChatMessage> m, LayoutInflater l) {
 	
 		context = c;
-		profileArray = p;
+		messageArray = m;
 		layoutInflater = l;
 		
 	}
@@ -46,27 +46,21 @@ public class RequestListAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 
-		return ( profileArray != null )? profileArray.size() : 0;
+		return ( messageArray != null )? messageArray.size() : 0;
 		
 	}
 
 	@Override
-	public ProfileData getItem( int position ) {
+	public ChatMessage getItem( int position ) {
 
-		return this.profileArray.get( position );
+		return this.messageArray.get( position );
 
 	}
 
 	@Override
 	public long getItemId( int position ) {
 
-		return this.profileArray.get( position ).getProfileId();
-		
-	}
-
-	public long getPersonaId( int position ) {
-	
-		return this.profileArray.get( position ).getPersonaId();
+		return this.messageArray.get( position ).getChatId();
 		
 	}
 	
@@ -74,25 +68,20 @@ public class RequestListAdapter extends BaseAdapter {
 	public View getView( int position, View convertView, ViewGroup parent ) {
 
 		//Get the current item
-		ProfileData currentProfile = getItem(position);
+		ChatMessage currentMessage = getItem(position);
 		
 		//Recycle
 		if ( convertView == null ) {
 
-			convertView = layoutInflater.inflate( R.layout.list_item_request, parent, false );
+			convertView = layoutInflater.inflate( R.layout.list_item_chat, parent, false );
 
 		}
 
-		//Set the TextView
-		( (TextView) convertView.findViewById( R.id.text_persona ) ).setText( currentProfile.getAccountName() );
+		//Set the TextViews
+		textMessage = (TextView) convertView.findViewById( R.id.text_message);
 		
-		//Hot-wire the views
-		( (ImageView) convertView.findViewById(R.id.button_accept) ).setTag( currentProfile );
-		( (ImageView) convertView.findViewById(R.id.button_decline) ).setTag( currentProfile );
-		
-		//Set the tag so it's up for grabs
-		convertView.setTag( currentProfile );
-		
+		convertView.setTag( currentMessage );
+
 		return convertView;
 	}
 	

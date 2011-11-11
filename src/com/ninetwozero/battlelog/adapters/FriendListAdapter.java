@@ -86,7 +86,7 @@ public class FriendListAdapter extends BaseAdapter {
 
 		//Set the TextViews
 		textPersona = (TextView) convertView.findViewById( R.id.text_persona );
-		textPersona.setText( currentProfile.getPersonaName() );
+		textPersona.setText( currentProfile.getAccountName() );
 		textStatus = (TextView) convertView.findViewById( R.id.text_status );
 
 		

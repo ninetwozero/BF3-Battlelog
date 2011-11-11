@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,36 +23,32 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.adapters.UnlockListAdapter;
 import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
-import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class UnlocksView extends ListActivity {
+public class ProfileView extends Activity {
 
-	//SharedPreferences for shizzle
-	SharedPreferences sharedPreferences;
-	ProgressBar progressBar;
-	GetDataSelfAsync getDataAsync;
-	private static int instances = 0;
+	//Attributes
+	private SharedPreferences sharedPreferences;
+	private ProgressBar progressBar;
+	private ProfileData profileData;
 	
 	@Override
     public void onCreate(Bundle icicle) {
     
     	//onCreate - save the instance state
-    	super.onCreate(icicle);
+    	super.onCreate(icicle);	
     	
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
@@ -62,29 +57,48 @@ public class UnlocksView extends ListActivity {
     	
     	}
     	
-    	//Instances += 1
-    	instances = 1;
-    	
     	//Set the content view
-        setContentView(R.layout.unlocks_view);
+        setContentView(R.layout.profile_view);
 
         //Prepare to tango
         this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
-    	if( instances == 1 ) { this.reloadLayout(); }
-	}        
-
-    public void reloadLayout() {
     	
-    	//ASYNC!!!
-    	new GetDataSelfAsync(this, getListView(), (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).execute(
-    		
-    		new ProfileData(
-				this.sharedPreferences.getString( "battlelog_persona", "" ),
+        //Get the intent
+        if( !getIntent().hasExtra( "profile" ) ) {
+        	
+        	profileData = new ProfileData(
+				
+    			this.sharedPreferences.getString( "battlelog_persona", "" ),
 				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
 				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
 				this.sharedPreferences.getLong( "battlelog_platform_id", 1)
-			)
+			
+			);
+        	
+        } else {
+        	
+        	profileData = (ProfileData) getIntent().getSerializableExtra( "profile" );
+        	
+        }
+
+		Log.d(Constants.debugTag, profileData.toString());
+        initLayout();
+	}        
+
+	public void initLayout() {
 		
+		//Eventually get a *cached* version instead
+		reloadLayout();
+		
+	}
+	
+    public void reloadLayout() {
+    	
+    	//ASYNC!!!
+    	new GetDataSelfAsync(this).execute(
+    		
+    		profileData
+
 		);
     	
     	
@@ -97,16 +111,12 @@ public class UnlocksView extends ListActivity {
     	//Attributes
     	Context context;
     	ProgressDialog progressDialog;
-    	ArrayList<UnlockData> unlockData;
-    	ListView listView;
-    	LayoutInflater layoutInflater;
+    	ProfileInformation playerData;
     	
-    	public GetDataSelfAsync(Context c, ListView lv, LayoutInflater l) {
+    	public GetDataSelfAsync(Context c) {
     		
     		this.context = c;
     		this.progressDialog = null;
-    		this.listView = lv;
-    		this.layoutInflater = l;
     		
     	}
     	
@@ -116,7 +126,7 @@ public class UnlocksView extends ListActivity {
     		//Let's see
 			this.progressDialog = new ProgressDialog(this.context);
 			this.progressDialog.setTitle("Please wait");
-			this.progressDialog.setMessage( "Downloading your unlocks (may take a few seconds)..." );
+			this.progressDialog.setMessage( "Downloading the data..." );
 			this.progressDialog.show();
     		
     	}
@@ -127,7 +137,7 @@ public class UnlocksView extends ListActivity {
 			
 			try {
 				
-				this.unlockData = WebsiteHandler.getUnlocksForUser( arg0[0] );
+				this.playerData = WebsiteHandler.getProfileInformationForUser( arg0[0] );
 				return true;
 				
 			} catch ( WebsiteHandlerException ex ) {
@@ -152,10 +162,9 @@ public class UnlocksView extends ListActivity {
 			
 			}
 
-			//Do actual stuff, like sending to an adapter		
-			listView.setAdapter( new UnlockListAdapter(context, unlockData, layoutInflater) );
-			
-			//Go go go
+			//Assign values
+		
+			//Done!
 	        if( this.progressDialog != null ) this.progressDialog.dismiss();
 			return;
 		}
@@ -202,5 +211,4 @@ public class UnlocksView extends ListActivity {
 		outState.putSerializable("serializedCookies", RequestHandler.getSerializedCookies());
 	
 	}
-    
 }

@@ -8,7 +8,7 @@ public class ProfileComparator implements Comparator<ProfileData> {
         
     	ProfileData p1 = (ProfileData) o1;
     	ProfileData p2 = (ProfileData) o2;
-        return p1.getPersonaName().compareToIgnoreCase(p2.getPersonaName());
+        return p1.getAccountName().compareToIgnoreCase(p2.getAccountName());
     
     }				 
 

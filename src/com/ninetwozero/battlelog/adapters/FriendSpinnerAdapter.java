@@ -81,7 +81,7 @@ public class FriendSpinnerAdapter extends BaseAdapter implements SpinnerAdapter 
 		}
 
 		//Set the TextView
-		( (TextView) convertView.findViewById( android.R.id.text1 ) ).setText( currentItem.getPersonaName() );
+		( (TextView) convertView.findViewById( android.R.id.text1 ) ).setText( currentItem.getAccountName() );
 		
 		//Return the view
 		return convertView;

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+>
+	<RelativeLayout
+	    android:id="@+id/bar_form"
+		android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+		android:padding="5dp"
+	>  
+		<Button
+		    style="@style/RegularButton"
+		    android:id="@+id/button_send"
+		    android:text="Send"
+		    android:layout_alignParentRight="true"
+		    android:layout_centerVertical="true"
+		    android:onClick="onClick"
+		/>
+		<EditText
+		  	android:id="@+id/field_message"
+		  	android:layout_width="fill_parent"
+		  	android:layout_height="wrap_content"
+		  	android:hint="Type a message"
+		  	android:layout_toLeftOf="@id/button_send"
+		    android:layout_marginRight="6dp"
+		    android:layout_centerVertical="true"
+		    android:singleLine="true"
+		    android:maxLength="90"
+		 />
+	</RelativeLayout>
+	<ListView
+	    android:id="@android:id/list"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+		android:layout_above="@id/bar_form"
+	/>
+	<TextView
+	  	android:id="@android:id/empty"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+	    android:text="No messages found"
+	    android:layout_centerInParent="true"
+	    android:paddingBottom="20dp"
+	/>
+</RelativeLayout>

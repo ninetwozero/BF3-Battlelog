@@ -20,8 +20,13 @@ import java.util.HashMap;
 
 public class DataBank {
 
-	//Construct
+	//Construct = none
 	public DataBank() {}
+	
+	//Platform ID:s
+	public static final long platformIdPC = 1;
+	public static final long platformIdX360 = 2;
+	public static final long platformIdPS3 = 4; //What the he...	
 	
 	//Getters
 	public static String getRankTitle( String key ) { return RANKS.containsKey( key )? RANKS.get( key ): ""; }
@@ -469,5 +474,43 @@ public class DataBank {
 		KIT_ITEMS.put("ID_P_INAME_NOGADGET2", "No Gadget");
 		KIT_ITEMS.put("ID_P_INAME_NOGADGET1", "No Gadget");
 		KIT_ITEMS.put("ID_P_INAME_M67", "M67 GRENADE");
+	}
+	//Static methods
+	public static long getPlatformId( String p ) {
+			
+		if( p.equals( "" ) ) return DataBank.platformIdPC;
+		else if( p.equals( "xbox" ) ) return DataBank.platformIdX360;
+		else if( p.equals( "ps3" ) ) return DataBank.platformIdPS3;
+		else return DataBank.platformIdPC;
+	
+	}
+
+	public static String getKitTitle( int number ) {
+	
+		switch( number ) {
+	
+			case 1:
+				return "Assault";
+				
+			case 2:	
+				return "Engineer";
+				
+			case 8:	
+				return "Recon";
+				
+			case 16: 
+				return "Vehicle";
+				
+			case 32: 
+				return "Support";
+				
+			case 64: 
+				return "General";
+				
+			default:
+				return "";
+			
+		}
+		
 	}
 }

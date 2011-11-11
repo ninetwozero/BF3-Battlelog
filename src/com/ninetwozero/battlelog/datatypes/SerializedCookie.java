@@ -1,12 +1,8 @@
 package com.ninetwozero.battlelog.datatypes;
 
 import java.io.Serializable;
-import java.util.List;
 
-import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
-
-import com.ninetwozero.battlelog.misc.RequestHandler;
 
 
 public class SerializedCookie implements Serializable {

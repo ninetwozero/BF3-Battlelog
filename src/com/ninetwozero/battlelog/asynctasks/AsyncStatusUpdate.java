@@ -23,7 +23,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.Config;
+import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -70,13 +70,13 @@ public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
 			
     		//Let's login everybody!
 			RequestHandler wh = new RequestHandler();
-    		httpContent = wh.post( Config.urlStatusSend, arg0 );
+    		httpContent = wh.post( Constants.urlStatusSend, arg0, false);
     		
     		//Did we manage?
     		if( httpContent != null && !httpContent.equals( "" ) ) {
     			
     			//Set the int
-    			int startPosition = httpContent.indexOf( Config.elementStatusOK );
+    			int startPosition = httpContent.indexOf( Constants.elementStatusOK );
     			String[] bits;
     			
     			//Did we find it?
@@ -90,12 +90,12 @@ public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
     		
 		} catch ( RequestHandlerException ex ) {
 			
-			Log.e("com.ninetwozero.battlelog", "", ex);
+			Log.e(Constants.debugTag, "", ex);
 			return 1;
 		
 		} catch( Exception ex ) {
 			
-			Log.e("com.ninetwozero.battlelog", "", ex);
+			Log.e(Constants.debugTag, "", ex);
 			return 1;
 			
 		}
