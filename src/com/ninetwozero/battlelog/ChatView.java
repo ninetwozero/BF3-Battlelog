@@ -29,9 +29,9 @@ import android.widget.ListView;
 
 import com.ninetwozero.battlelog.asynctasks.AsyncChatRefresh;
 import com.ninetwozero.battlelog.asynctasks.AsyncChatSend;
-import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
 

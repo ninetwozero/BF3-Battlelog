@@ -14,6 +14,8 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
+import com.ninetwozero.battlelog.misc.DataBank;
+
 
 
 public class UnlockData {

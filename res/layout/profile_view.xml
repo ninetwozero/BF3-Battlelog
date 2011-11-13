@@ -7,67 +7,74 @@
 		android:id="@+id/wrap_top"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:padding="10dp"	    
+		android:paddingTop="5dp"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:paddingBottom="10dp"
     >
 		<TextView 
-		    android:id="@+id/text_name"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
+		    style="@style/InfoHeading"
+		    android:id="@+id/text_username"
 		    android:text="NINETWOZERO"
-		    android:textSize="30sp"
-		/>			
-		<TextView
-		    android:id="@+id/text_age"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="20"
-		    android:textSize="14sp"
-		    android:layout_below="@id/text_name"
+			android:padding="5dp"
 		/>
-		<TextView
-		    android:id="@+id/string000"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text=" year old soldier from "
-		    android:textSize="14sp"
-		    android:layout_below="@id/text_name"
-		    android:layout_toRightOf="@id/text_age"
-		/>		
 		<TextView
 		    android:id="@+id/text_country"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:text="Sweden"
+		    android:text=" from Sweden"
 		    android:textSize="14sp"
-		    android:layout_below="@id/text_name"
-		    android:layout_toRightOf="@id/string000"
+		    android:layout_toRightOf="@id/text_username"
+		    android:layout_alignBaseline="@id/text_username"
+		/>			
+		<TextView
+		    android:id="@+id/text_online"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Last seen online 2 days ago"
+		    android:textSize="14sp"
+		    android:layout_below="@id/text_username"
 		/>
-		<View 
-		 	android:id="@+id/separator000"
+		<TextView 
+		    style="@style/InfoSubHeading"
 		    android:layout_width="fill_parent"
-		    android:layout_height="1dp"  
-		    android:background="#2c2c2c"
-		    android:layout_below="@id/text_country"
-		    android:layout_marginTop="5dp"
-		    android:layout_marginBottom="5dp"
-	    />
+		    android:id="@+id/text_header_status"
+		    android:text="Latest Status Message"
+			android:padding="5dp"
+			android:layout_below="@id/text_online"
+		/>
 		<TextView 
 		    android:id="@+id/text_status"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:text="''ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ!ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ!ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ!'' - 5 hours ago."
+		    android:text="''I sure like to program Dalvik-java!''"
 		    android:textSize="14sp"
-	    	android:layout_below="@id/separator000"
+			android:layout_below="@id/text_header_status"
 		/>
-		<View 
-		 	android:id="@+id/separator001"
+		<TextView 
+		    style="@style/InfoSubHeading"
 		    android:layout_width="fill_parent"
-		    android:layout_height="1dp"  
-		    android:background="#2c2c2c"
-		    android:layout_below="@id/text_status"
-		    android:layout_marginTop="5dp"
-		    android:layout_marginBottom="5dp"
-	    />
+		    android:id="@+id/text_header_presentation"
+		    android:text="Presentation"
+			android:padding="5dp"
+			android:layout_below="@id/text_status"
+		/>
+		<TextView 
+		    android:id="@+id/text_presentation"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="I like dirt, I like dirt...\nI like dirt, I like dirt\nG, Dm, Am, Em (4/4)"
+		    android:textSize="14sp"
+		    android:layout_below="@id/text_header_presentation"
+		/>
+		<TextView 
+		    style="@style/InfoSubHeading"
+		    android:layout_width="fill_parent"
+		    android:id="@+id/text_header_presentation"
+		    android:text="Presentation"
+			android:padding="5dp"
+			android:layout_below="@id/text_status"
+		/>
 	</RelativeLayout>
 	<ListView
 	    android:id="@android:id/list"

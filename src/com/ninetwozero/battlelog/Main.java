@@ -33,8 +33,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
-import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.PostData;
+import com.ninetwozero.battlelog.misc.Constants;
 
 public class Main extends Activity {
 

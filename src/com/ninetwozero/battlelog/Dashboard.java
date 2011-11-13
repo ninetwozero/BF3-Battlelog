@@ -49,11 +49,11 @@ import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
-import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -170,7 +170,6 @@ public class Dashboard extends Activity {
 		}
 		
 	}
-	
     
     @Override
 	public boolean onCreateOptionsMenu( Menu menu ) {
@@ -543,8 +542,7 @@ public class Dashboard extends Activity {
 					
 				}
 	    		
-	    	} else if( item.getGroupId() == 2 ) {
-	    		
+	    	} else if( item.getGroupId() == 2 ) {    		
 	    		
 	    		//OFFLINE FRIENDS
 				if( item.getItemId() == 0 ) {

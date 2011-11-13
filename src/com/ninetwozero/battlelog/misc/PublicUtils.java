@@ -19,66 +19,179 @@ package com.ninetwozero.battlelog.misc;
 
 public class PublicUtils {
 
-
-	  /**
-	   * <p>Find the Levenshtein distance between two Strings.</p>
-	   * <p>Credit: <a href="http://www.merriampark.com/ldjava.htm">http://www.merriampark.com/ldjava.htm</a> </p>
-	   *
-	   * @param s  the first String, must not be null
-	   * @param t  the second String, must not be null
-	   * @return result distance
-	   * @throws IllegalArgumentException if either String input <code>null</code>
-	   */
+	/**
+	 * <p>Get the "relative" Date-string</p>
+	 * 
+	 * @param date	the Date to be formatted in the {X} {unit}
+	 * @return String
+	 */
 	
-	  public static int getLevenshteinDistance(String s, String t) {
-	      
-		  if (s == null || t == null) { throw new IllegalArgumentException("Strings must not be null"); }
+	public static String getRelativeDate(final Long d) {
+		
+		//Let's just expect it to be millis seconds already
+		Long dateStart = d;
+		Long dateNow = System.currentTimeMillis()/1000;
+		Long dateDiff = dateNow - dateStart;
+		String dateString = null;
+		
+		//What's the difference (in seconds) y'all?
+		if( (dateDiff / Constants.minuteInSeconds) < 1 ) {
+			
+			//Diff is in seconds
+			if( dateDiff == 1 ) {
+			
+				dateString = "{seconds} second ago".replace( "{seconds}", String.valueOf(1) );
+				
+				
+			} else {
+				
+				dateString = "{seconds} seconds ago".replace( "{seconds}", String.valueOf(dateDiff % Constants.minuteInSeconds) );
+			
+			}
+			
+		} else if( (dateDiff / Constants.hourInSeconds) < 1 ) {
+			
+			//Diff is in minutes
+			if( (dateDiff / Constants.minuteInSeconds) == 1 ) {
+				
+				dateString = "{minutes} minute ago".replace( "{minutes}", String.valueOf(1) );
+			
+			} else {
+				
+				dateString = "{minutes} minutes ago".replace( "{minutes}", String.valueOf(dateDiff / Constants.minuteInSeconds) );
+				
+			}
+		} else if( (dateDiff / Constants.dayInSeconds) < 1 ) {
+			
+			//Diff is in hours
+			if( (dateDiff / Constants.hourInSeconds) == 1 ) {
+				
+				dateString = "{hours} hour ago".replace( "{hours}", String.valueOf(1) );
+			
+			} else {
+			
+				dateString = "{hours} hours ago".replace( "{hours}", String.valueOf(dateDiff / Constants.hourInSeconds) );	
+				
+			}
 
-	      int n = s.length();
-	      int m = t.length();
+		} else if( (dateDiff / Constants.weekInSeconds) < 1 ) {
+		
+			//Diff is in days
+			if( (dateDiff / Constants.dayInSeconds) == 1 ) {
+			
+				dateString = "{days} day ago".replace( "{days}", String.valueOf(1) );
+				
+			} else {
+				
+				dateString = "{days} days ago".replace( "{days}", String.valueOf(dateDiff / Constants.dayInSeconds) );
+			
+			}
+				
+		} else if( (dateDiff / Constants.yearInSeconds) < 1 ) {
+			
+			//Diff is in weeks
+			if( (dateDiff / Constants.weekInSeconds) == 1 ) {
+			
+				dateString = "{weeks} week ago".replace( "{weeks}", String.valueOf(1) );
+				
+			} else {
+				
+				dateString = "{weeks} weeks ago".replace( "{weeks}", String.valueOf(dateDiff / Constants.weekInSeconds) );
+			
+			}	
+			
+		} else {
+		
+			//Diff is probably in years
+			if( (dateDiff / Constants.yearInSeconds) == 1 ) {
+			
+				dateString = "{years} year ago".replace( "{years}", String.valueOf(1) );
+				
+			} else {
+				
+				dateString = "{years} years ago".replace( "{years}", String.valueOf(dateDiff / Constants.yearInSeconds ) );
+		
+			}
+		
+		}
+		
+		return dateString;
+		
+	}
 
-	      if (n == 0) return m;
-	      else if (m == 0) return n;
+  /**
+   * <p>Get the "relative" date</p>
+   *
+   * @param d  the first String, must not be null
+   * @param s  the second String, must not be null
+   * @return String the relative date
+   */
+	public static final String getRelativeDate(long d, String s) {
+		
+		return s + " " + getRelativeDate(d);
+		
+	}
+	
+  /**
+   * <p>Find the Levenshtein distance between two Strings.</p>
+   * <p>Credit: <a href="http://www.merriampark.com/ldjava.htm">http://www.merriampark.com/ldjava.htm</a> </p>
+   *
+   * @param s  the first String, must not be null
+   * @param t  the second String, must not be null
+   * @return result distance
+   * @throws IllegalArgumentException if either String input <code>null</code>
+   */
 
-	      if (n > m) {
+	public static int getLevenshteinDistance(String s, String t) {
+      
+		if (s == null || t == null) { throw new IllegalArgumentException("Strings must not be null"); }
 
-	          String tmp = s;
-	          s = t;
-	          t = tmp;
-	          n = m;
-	          m = t.length();
-	      
-	      }
+		int n = s.length();
+		int m = t.length();
 
-	      int p[] = new int[n+1];
-	      int d[] = new int[n+1];
-	      int _d[];
+		if (n == 0) return m;
+		else if (m == 0) return n;
 
-	      int i;
-	      int j;
+		if (n > m) {
 
-	      char t_j;
-	      int cost;
+			String tmp = s;
+			s = t;
+			t = tmp;
+			n = m;
+			m = t.length();
+      
+		}
 
-	      for (i = 0; i <= n; i++) { p[i] = i; }
-	      for (j = 1; j <= m; j++) {
-	    	  
-	          t_j = t.charAt(j-1);
-	          d[0] = j;
+		int p[] = new int[n+1];
+		int d[] = new int[n+1];
+		int _d[];
 
-	          for (i = 1; i <= n; i++) {
-	          
-	        	  cost = s.charAt(i-1) == t_j ? 0 : 1;
-	              d[i] = Math.min(Math.min(d[i-1]+1, p[i]+1),  p[i-1]+cost);
-	          
-	          }
+		int i;
+		int j;
 
-	          _d = p;
-	          p = d;
-	          d = _d;
-	      }
-	      
-	      return p[n];
-	  }
+		char t_j;
+		int cost;
+
+		for (i = 0; i <= n; i++) { p[i] = i; }
+		for (j = 1; j <= m; j++) {
+    	  
+			t_j = t.charAt(j-1);
+			d[0] = j;
+
+			for (i = 1; i <= n; i++) {
+          
+				cost = s.charAt(i-1) == t_j ? 0 : 1;
+				d[i] = Math.min(Math.min(d[i-1]+1, p[i]+1),  p[i-1]+cost);
+          
+			}
+
+			_d = p;
+			p = d;
+			d = _d;
+		}
+      
+		return p[n];
+	
+	}
 
 }

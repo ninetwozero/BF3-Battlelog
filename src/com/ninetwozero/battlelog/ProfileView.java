@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -23,26 +24,32 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.datatypes.Constants;
+import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class ProfileView extends Activity {
+public class ProfileView extends ListActivity {
 
 	//Attributes
 	private SharedPreferences sharedPreferences;
 	private ProgressBar progressBar;
 	private ProfileData profileData;
+	private LayoutInflater layoutInflater;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -62,7 +69,8 @@ public class ProfileView extends Activity {
 
         //Prepare to tango
         this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
-    	
+        this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        
         //Get the intent
         if( !getIntent().hasExtra( "profile" ) ) {
         	
@@ -111,7 +119,7 @@ public class ProfileView extends Activity {
     	//Attributes
     	Context context;
     	ProgressDialog progressDialog;
-    	ProfileInformation playerData;
+    	ProfileInformation profileInformation;
     	
     	public GetDataSelfAsync(Context c) {
     		
@@ -137,7 +145,7 @@ public class ProfileView extends Activity {
 			
 			try {
 				
-				this.playerData = WebsiteHandler.getProfileInformationForUser( arg0[0] );
+				this.profileInformation = WebsiteHandler.getProfileInformationForUser( arg0[0] );
 				return true;
 				
 			} catch ( WebsiteHandlerException ex ) {
@@ -163,12 +171,65 @@ public class ProfileView extends Activity {
 			}
 
 			//Assign values
-		
+			drawLayout(this.profileInformation);
+			
 			//Done!
 	        if( this.progressDialog != null ) this.progressDialog.dismiss();
 			return;
 		}
     	
+    }
+    
+    public final void drawLayout(ProfileInformation data) {
+    	
+    	//Let's start drawing the... layout
+    	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
+
+    	//When did was the users last login?
+    	if( !data.isOnline() ) { 
+    		
+    		((TextView) findViewById(R.id.text_online)).setText( data.getLastLogin() ); 
+    		
+    	} else { 
+    		
+    		((TextView) findViewById(R.id.text_online)).setVisibility(View.GONE); 
+    		
+    	}
+    	
+    	//Is the status ""?
+    	if( !data.getStatusMessage().equals( "" ) ) {
+			
+    		//Set the status
+    		((TextView) findViewById(R.id.text_status)).setText( data.getStatusMessage() );
+        	//((TextView) findViewById(R.id.text_online)).setText( PublicUtils.getRelativeDate( data.getStatusMessageChanged(), "Last updated ") );
+
+    	
+    	} else {
+    		
+    		//Hide the view
+    		((TextView) findViewById(R.id.text_status)).setVisibility(View.GONE);
+    		
+    	}
+    	
+    	//Do we have a presentation?
+    	if( !data.getPresentation().equals( "" ) ) {
+    		
+    		((TextView) findViewById(R.id.text_presentation)).setText( data.getPresentation() );
+		
+    	} else {
+    		
+    		((TextView) findViewById(R.id.text_presentation)).setVisibility(View.GONE);
+	
+    	}
+    		
+    	//Set the username
+    	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
+    	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
+    	getListView().setAdapter( 
+    			
+			new FeedListAdapter(this, data.getFeedItems(), layoutInflater) 
+			
+		);
     }
     
     @Override

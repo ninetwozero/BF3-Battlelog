@@ -20,7 +20,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.datatypes.Constants;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 

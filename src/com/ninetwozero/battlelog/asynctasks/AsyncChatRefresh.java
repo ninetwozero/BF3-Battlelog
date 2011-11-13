@@ -25,8 +25,8 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ChatListAdapter;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
-import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {

@@ -16,21 +16,23 @@ package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
 
+import com.ninetwozero.battlelog.misc.PublicUtils;
+
 public class ProfileInformation {
 
 	//Attributes
 	private int age;
 	private long profileId, dateOfBirth, lastlogin, statusMessageChanged;
-	private String name, presentation, location, statusMessage;
-	private boolean allowFriendRequests;
+	private String name, username, presentation, location, statusMessage;
+	private boolean allowFriendRequests, online;
 	private ArrayList<FeedItem> feedItems;
 	
 	//Construct(s)
 	public ProfileInformation(
 		
 		int a, long pid, long dob, long l, long sc,
-		String n, String p, String loc, String s,
-		boolean af, ArrayList<FeedItem> f
+		String n, String u, String p, String loc, String s,
+		boolean af, boolean o, ArrayList<FeedItem> f
 		
 	) {
 		
@@ -40,10 +42,12 @@ public class ProfileInformation {
 		this.lastlogin = l;
 		this.statusMessageChanged = sc;
 		this.name = n;
+		this.username = u;
 		this.presentation = p;
 		this.location = loc; 
 		this.statusMessage = s;
 		this.allowFriendRequests = af;
+		this.online = o;
 		this.feedItems = f;
 		
 	}
@@ -52,13 +56,15 @@ public class ProfileInformation {
 	public int getAge() { return this.age; }
 	public long getProfileId() { return this.profileId; }
 	public long getDOB() { return this.dateOfBirth; }
-	public long getLastLogin() { return this.lastlogin; }
+	public String getLastLogin() { return PublicUtils.getRelativeDate( this.lastlogin, "Last logged in"); }
 	public long getStatusMessageChanged() { return this.statusMessageChanged; }
 	public String getName() { return this.name; }
+	public String getUsername() { return this.username; }
 	public String getPresentation() { return this.presentation; }
 	public String getLocation() { return this.location; }
 	public String getStatusMessage() { return this.statusMessage; }
 	public boolean getAllowFriendRequests() { return this.allowFriendRequests; }
+	public boolean isOnline() { return online; }
 	public ArrayList<FeedItem> getFeedItems() { return this.feedItems; }
 
 }

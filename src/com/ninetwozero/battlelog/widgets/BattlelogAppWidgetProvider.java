@@ -32,11 +32,11 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.Main;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
-import com.ninetwozero.battlelog.datatypes.Constants;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
