@@ -16,14 +16,13 @@ package com.ninetwozero.battlelog;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.app.TabActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,6 +31,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TabHost;
+import android.widget.TabHost.TabContentFactory;
+import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,13 +47,14 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class ProfileView extends ListActivity {
+public class ProfileView extends TabActivity {
 
 	//Attributes
 	private SharedPreferences sharedPreferences;
 	private ProgressBar progressBar;
 	private ProfileData profileData;
 	private LayoutInflater layoutInflater;
+	private TabHost mTabHost;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -69,9 +72,14 @@ public class ProfileView extends ListActivity {
     	//Set the content view
         setContentView(R.layout.profile_view);
 
+        //Fix the tabs
+    	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+    	setupTab("Overview", R.layout.tab_content_overview);
+    	setupTab("Battlefeed", R.layout.tab_content_feed);
+        
         //Prepare to tango
         this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
-        this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         
         //Get the intent
         if( !getIntent().hasExtra( "profile" ) ) {
@@ -114,6 +122,37 @@ public class ProfileView extends ListActivity {
     	
     }
     
+    private void setupTab(final String tag, final int layout) {
+
+		//Init
+    	TabHost.TabSpec spec;
+		View tabview = createTabView(mTabHost.getContext(), tag);
+		
+		//Let's set the content
+		spec = mTabHost.newTabSpec(tag).setIndicator(tabview).setContent(
+        		
+    		new TabContentFactory() {
+    			
+            	public View createTabContent(String tag) {
+            		
+            		Log.d(Constants.debugTag, "layoutInflater => " + layoutInflater);
+            		View v = layoutInflater.inflate( layout, null );
+            		return v;
+            	}
+            
+            }
+    		
+        );
+		mTabHost.addTab( spec ); 
+    }
+
+    private static View createTabView(final Context context, final String text) {
+    	View view = LayoutInflater.from(context).inflate(R.layout.profile_tab_layout, null);
+    	TextView tv = (TextView) view.findViewById(R.id.tabsText);
+    	tv.setText(text);
+    	return view;
+    }
+    
     public void doFinish() {}
     
     private class GetDataSelfAsync extends AsyncTask<ProfileData, Void, Boolean> {
@@ -140,7 +179,6 @@ public class ProfileView extends ListActivity {
 			this.progressDialog.show();
     		
     	}
-    	
 
 		@Override
 		protected Boolean doInBackground( ProfileData... arg0 ) {
@@ -184,13 +222,14 @@ public class ProfileView extends ListActivity {
     
     public final void drawLayout(ProfileInformation data) {
     	
+    	if( "".equals( "" ) ) return;
     	//Let's start drawing the... layout
     	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
 
     	//When did was the users last login?
     	if( data.isPlaying() && data.isOnline() ) { 
     		
-    		((TextView) findViewById(R.id.text_online)).setText( 
+    		/*((TextView) findViewById(R.id.text_online)).setText( 
     				
 				"Playing on {SERVER_NAME}".replace(
 					
@@ -199,15 +238,15 @@ public class ProfileView extends ListActivity {
 					
 				)
     				
-			); 
+			);*/ 
         	
     	} else if( data.isOnline() ) {
     	
-    		((TextView) findViewById(R.id.text_online)).setText( "Online but not currently playing" ); 
+    		//((TextView) findViewById(R.id.text_online)).setText( "Online but not currently playing" ); 
     		
     	} else {
     		
-    		((TextView) findViewById(R.id.text_online)).setText( data.getLastLogin() ); 
+    	//	((TextView) findViewById(R.id.text_online)).setText( data.getLastLogin() ); 
     		
     	}
     	
@@ -222,29 +261,29 @@ public class ProfileView extends ListActivity {
     	} else {
     		
     		//Hide the view
-    		((TextView) findViewById(R.id.wrap_status)).setVisibility(View.GONE);
+    		//((TextView) findViewById(R.id.wrap_status)).setVisibility(View.GONE);
     		
     	}
     	
     	//Do we have a presentation?
     	if( !data.getPresentation().equals( "" ) ) {
     		
-    		((TextView) findViewById(R.id.text_presentation)).setText( data.getPresentation() );
+    		//((TextView) findViewById(R.id.text_presentation)).setText( data.getPresentation() );
 		
     	} else {
     		
-    		((TextView) findViewById(R.id.wrap_presentation)).setVisibility(View.GONE);
+    		//((TextView) findViewById(R.id.wrap_presentation)).setVisibility(View.GONE);
 	
     	}
     		
     	//Set the username
     	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
     	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
-    	getListView().setAdapter( 
+    	/*((ListView) findViewById(R.id.list_feed).setAdapter( 
     			
 			new FeedListAdapter(this, data.getFeedItems(), layoutInflater) 
 			
-		);
+		);*/
     }
     
     @Override
@@ -275,7 +314,6 @@ public class ProfileView extends ListActivity {
 
 	}  
     
-	@Override
     public void onListItemClick(ListView l, View v, int p, long i) {
 		
 		//Do we have content to display?

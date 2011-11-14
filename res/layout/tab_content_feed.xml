@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+>
+	<ListView
+	    android:id="@+id/list_feed"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+		android:layout_marginLeft="5dp"
+		android:layout_marginRight="5dp"
+	/>
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+	>
+		<TextView
+		  	android:id="@+id/status_feed"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+		    android:text="No items found in the feed"	
+		    android:layout_centerInParent="true"
+		/>
+	</RelativeLayout>
+</RelativeLayout>
