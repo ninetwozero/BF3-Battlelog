@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,32 +82,10 @@ public class FeedListAdapter extends BaseAdapter {
 		//Set the views
 		((TextView) convertView.findViewById(R.id.text_title)).setText( currentItem.getTitle() );
 		if( !currentItem.getContent().equals( "" ) ) {
-			
-			//How many characters?
-			if( currentItem.getContent().length() > 90 ) {
 
-				((TextView) convertView.findViewById(R.id.text_content)).setText( 
-					
-					currentItem.getContent().substring( 
-							
-						0, 
-						85
-						
-					).concat( "[...]" ) 
-					
-				);
-			
-			} else {
-				
-				((TextView) convertView.findViewById(R.id.text_content)).setText( currentItem.getContent() );
-				
-			}
-			
+			((TextView) convertView.findViewById(R.id.text_content)).setText( currentItem.getContent() );
+			((TextView) convertView.findViewById(R.id.text_content)).setEllipsize( TextUtils.TruncateAt.END );			
 		
-		} else {
-			
-			((TextView) convertView.findViewById(R.id.text_content)).setVisibility(View.GONE);
-			
 		}
 		
 		//Hook it up on the tag

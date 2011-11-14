@@ -23,16 +23,16 @@ public class ProfileInformation {
 	//Attributes
 	private int age;
 	private long profileId, dateOfBirth, lastlogin, statusMessageChanged;
-	private String name, username, presentation, location, statusMessage;
-	private boolean allowFriendRequests, online;
+	private String name, username, presentation, location, statusMessage, currentServer;
+	private boolean allowFriendRequests, online, playing;
 	private ArrayList<FeedItem> feedItems;
 	
 	//Construct(s)
 	public ProfileInformation(
 		
 		int a, long pid, long dob, long l, long sc,
-		String n, String u, String p, String loc, String s,
-		boolean af, boolean o, ArrayList<FeedItem> f
+		String n, String u, String p, String loc, String s, String c,
+		boolean af, boolean o, boolean pl, ArrayList<FeedItem> f
 		
 	) {
 		
@@ -46,8 +46,10 @@ public class ProfileInformation {
 		this.presentation = p;
 		this.location = loc; 
 		this.statusMessage = s;
+		this.currentServer = c;
 		this.allowFriendRequests = af;
 		this.online = o;
+		this.playing = pl;
 		this.feedItems = f;
 		
 	}
@@ -63,8 +65,10 @@ public class ProfileInformation {
 	public String getPresentation() { return this.presentation; }
 	public String getLocation() { return this.location; }
 	public String getStatusMessage() { return this.statusMessage; }
+	public String getCurrentServer() { return this.currentServer; }
 	public boolean getAllowFriendRequests() { return this.allowFriendRequests; }
-	public boolean isOnline() { return online; }
+	public boolean isOnline() { return this.online; }
+	public boolean isPlaying() { return this.playing; }
 	public ArrayList<FeedItem> getFeedItems() { return this.feedItems; }
 
 }

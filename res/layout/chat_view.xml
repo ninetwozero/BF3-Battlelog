@@ -17,6 +17,7 @@
 		    android:layout_alignParentRight="true"
 		    android:layout_centerVertical="true"
 		    android:onClick="onClick"
+		    android:enabled="false"
 		/>
 		<EditText
 		  	android:id="@+id/field_message"
@@ -35,6 +36,7 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 		android:layout_above="@id/bar_form"
+		android:stackFromBottom="true"
 	/>
 	<TextView
 	  	android:id="@android:id/empty"

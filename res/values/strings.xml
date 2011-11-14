@@ -6,13 +6,10 @@
     <!-- Strings to be translated -->
     
 	    <string name="changelog">
-	        * Added an initial version of the COM CENTER&lt;br /&gt;
-	        * Added UPCOMING UNLOCKS, showing each upcoming unlock with a progress of 1% or more
+	        * You should now be able to chat with your comrades! &lt;br /&gt;
+	        * Added the ability to view profiles
 	        &lt;br /&gt;&lt;br /&gt;
-	        * Fixed the widget (hopefully) &lt;br /&gt;
-	        * Fixed the f/c upon changing orientation &lt;br /&gt;
 	        * A few minor bugfixes here and there &lt;br /&gt;
-	        * Added repairs/resupplies to the stats-screens &lt;br /&gt;
 	        &lt;br /&gt;
 	        Please report any errors you may encounter to &lt;u&gt;support@ninetwozero.com&lt;/u&gt; and/or 
 	        &lt;u&gt;@karllindmark&lt;/u&gt; on Twitter.&lt;br /&gt;&lt;br /&gt;

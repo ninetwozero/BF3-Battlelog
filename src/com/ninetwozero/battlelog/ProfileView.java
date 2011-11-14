@@ -23,23 +23,25 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
+import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -186,13 +188,26 @@ public class ProfileView extends ListActivity {
     	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
 
     	//When did was the users last login?
-    	if( !data.isOnline() ) { 
+    	if( data.isPlaying() && data.isOnline() ) { 
+    		
+    		((TextView) findViewById(R.id.text_online)).setText( 
+    				
+				"Playing on {SERVER_NAME}".replace(
+					
+					"{SERVER_NAME}",
+					data.getCurrentServer()
+					
+				)
+    				
+			); 
+        	
+    	} else if( data.isOnline() ) {
+    	
+    		((TextView) findViewById(R.id.text_online)).setText( "Online but not currently playing" ); 
+    		
+    	} else {
     		
     		((TextView) findViewById(R.id.text_online)).setText( data.getLastLogin() ); 
-    		
-    	} else { 
-    		
-    		((TextView) findViewById(R.id.text_online)).setVisibility(View.GONE); 
     		
     	}
     	
@@ -207,7 +222,7 @@ public class ProfileView extends ListActivity {
     	} else {
     		
     		//Hide the view
-    		((TextView) findViewById(R.id.text_status)).setVisibility(View.GONE);
+    		((TextView) findViewById(R.id.wrap_status)).setVisibility(View.GONE);
     		
     	}
     	
@@ -218,7 +233,7 @@ public class ProfileView extends ListActivity {
 		
     	} else {
     		
-    		((TextView) findViewById(R.id.text_presentation)).setVisibility(View.GONE);
+    		((TextView) findViewById(R.id.wrap_presentation)).setVisibility(View.GONE);
 	
     	}
     		
@@ -260,6 +275,21 @@ public class ProfileView extends ListActivity {
 
 	}  
     
+	@Override
+    public void onListItemClick(ListView l, View v, int p, long i) {
+		
+		//Do we have content to display?
+		if( !((FeedItem) l.getItemAtPosition( p ) ).getContent().equals( "" ) ) {
+			
+			View viewContainer = (View) v.findViewById(R.id.text_content);
+			viewContainer.setVisibility( ( viewContainer.getVisibility() == View.GONE ) ? View.VISIBLE : View.GONE );
+		
+		}
+		
+		return;
+    	
+    }	
+	
     @Override
     public void onConfigurationChanged(Configuration newConfig){        
         super.onConfigurationChanged(newConfig);

@@ -112,9 +112,11 @@ public class RequestHandler {
 		//Do we need 'em?
 		if( extraHeaders ) {
 			
+			httpPost.setHeader( "Host", "battlelog.battlefield.com" );
 			httpPost.setHeader( "X-Requested-With", "XMLHttpRequest");
 			httpPost.setHeader( "X-AjaxNavigation", "1");
-			httpPost.setHeader( "Referer", link);
+			httpPost.setHeader( "Accept-Encoding", "gzip, deflate" );
+			httpPost.setHeader( "Referer", Constants.urlMain);
 			httpPost.setHeader( "Accept", "application/json, text/javascript, */*" );
 			httpPost.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
 			

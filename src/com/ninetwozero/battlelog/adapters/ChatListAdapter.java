@@ -78,7 +78,8 @@ public class ChatListAdapter extends BaseAdapter {
 		}
 
 		//Set the TextViews
-		textMessage = (TextView) convertView.findViewById( R.id.text_message);
+		((TextView) convertView.findViewById( R.id.text_username)).setText( currentMessage.getSender() );
+		((TextView) convertView.findViewById( R.id.text_message)).setText( currentMessage.getMessage() );
 		
 		convertView.setTag( currentMessage );
 

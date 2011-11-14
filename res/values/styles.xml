@@ -49,6 +49,13 @@
 		<item name="android:layout_width">200dp</item>
         <item name="android:layout_centerHorizontal">true</item>
     </style>
+    <style name="FriendHeadingRow">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:background">#EBEBEB</item>
+		<item name="android:textColor">#3A3A3A</item>
+		<item name="android:padding">5dp</item>
+    </style>
     <color name="kit_recon">#bf4949</color>
     <color name="kit_assault">#308DBF</color>
     <color name="kit_engineer">#efff40</color>

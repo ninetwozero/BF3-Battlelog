@@ -52,12 +52,12 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
 	protected void onPreExecute() {}
 	
 	@Override
-	protected Boolean doInBackground( Long... profileId) {
+	protected Boolean doInBackground( Long... chatId) {
 		
 		try {
 		
 			//Let's get this!!
-			messageArray = WebsiteHandler.getChatMessages( profileId[0], sharedPreferences.getString( "battlelog_post_checksum", "") );
+			messageArray = WebsiteHandler.getChatMessages( chatId[0], sharedPreferences.getString( "battlelog_post_checksum", "") );
 			return true;
 			
 		} catch ( WebsiteHandlerException e ) {

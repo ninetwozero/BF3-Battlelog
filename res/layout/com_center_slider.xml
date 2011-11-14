@@ -83,12 +83,8 @@
 			android:layout_height="wrap_content" 
 		>
 			<TextView
+			    style="@style/FriendHeadingRow"
 				android:id="@+id/header_friends_requests"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:background="#EBEBEB"
-				android:textColor="#3A3A3A"
-				android:padding="5dp"    
 				android:text="Friend requests"
 	    	/>
 		    <ListView
@@ -114,12 +110,8 @@
 		>
 		
 			<TextView
+			    style="@style/FriendHeadingRow"
 				android:id="@+id/header_friends_online"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:background="#EBEBEB"
-				android:textColor="#5A5A5A"
-				android:padding="5dp"
 				android:text="Online friends"    
 	    	/>    
 		    <ListView
@@ -139,12 +131,8 @@
 		>
 		
 			<TextView
+			    style="@style/FriendHeadingRow"
 				android:id="@+id/header_friends_offline"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:background="#EBEBEB"
-				android:textColor="#5A5A5A"
-				android:padding="5dp"
 				android:text="Offline friends"    
 	    	/>    
 		    <ListView

@@ -20,6 +20,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -29,19 +30,30 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
 	//Attribute
 	Context context;
 	Button buttonSend;
-	long profileId;
+	long chatId, profileId;
 	boolean fromWidget;
 	String httpContent;
+	AsyncChatRefresh asyncChatRefresh;
 	
 	
 	//Constructor
-	public AsyncChatSend( Context c, long p, Button b, boolean w ) { 
+	public AsyncChatSend( Context c, long cId, Button b, boolean w, AsyncChatRefresh acr ) { 
 		
 		this.context = c; 
-		this.profileId = p;
+		this.chatId = cId;
+		this.profileId = 0;
 		this.fromWidget = w;
 		this.buttonSend = b;
-	}	
+		this.asyncChatRefresh = acr;
+	
+	}
+	
+	public AsyncChatSend( Context c, long pId, long cId, Button b, boolean w, AsyncChatRefresh acr) {
+		
+		this(c, cId, b, w, acr);
+		this.profileId = pId;
+		
+	}
 	
 	@Override
 	protected void onPreExecute() {
@@ -62,7 +74,7 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
 		try {
 		
     		//Did we manage?
-    		if( WebsiteHandler.sendChatMessages(profileId, arg0[0], arg0[1]) ) { return true; } 
+    		if( WebsiteHandler.sendChatMessages(chatId, arg0[0], arg0[1]) ) { return true; } 
     		else { return false; }
     		
 		} catch( Exception ex ) {
@@ -81,6 +93,9 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
 			
 			buttonSend.setEnabled( true );
 			buttonSend.setText( "Send" );
+			
+			//Reload
+			asyncChatRefresh.execute( profileId );
 			
 			if( results ) Toast.makeText( context, "Message sent!", Toast.LENGTH_SHORT).show();
 			else Toast.makeText( context, "Message could not be sent!", Toast.LENGTH_SHORT).show();

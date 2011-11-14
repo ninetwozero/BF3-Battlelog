@@ -30,21 +30,16 @@
 		    android:maxLength="90"
 		 />
 	</RelativeLayout>
-	<RelativeLayout
+	<ScrollView
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:layout_below="@id/bar_status"
-		android:layout_marginTop="20dp"
-		android:layout_marginBottom="40dp"
-   >    
+		android:layout_height="wrap_content"
+		android:paddingTop="40dp"
+		android:paddingBottom="40dp"
+		android:layout_centerInParent="true"
+	>
 		<RelativeLayout
-			android:layout_width="wrap_content"
+			android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
-		    android:layout_centerInParent="true"
-			android:paddingTop="20dp"
-			android:paddingRight="20dp"
-			android:paddingBottom="40dp"
-			android:paddingLeft="20dp"
 		>
 			<Button
 			    style="@style/MenuButton"
@@ -80,6 +75,6 @@
 			 -->
 			
 		</RelativeLayout>
-	</RelativeLayout>
+	</ScrollView>
 	<include layout="@layout/com_center_slider" />
 </RelativeLayout>

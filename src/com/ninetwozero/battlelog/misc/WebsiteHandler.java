@@ -800,6 +800,56 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 		
 	}
 	
+	public static Long getChatId(long profileId, String checksum) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Let's do this!
+			RequestHandler wh = new RequestHandler();
+			String httpContent;
+			
+			//Get the content
+			httpContent = wh.post( 
+					
+				Constants.urlChatContents.replace( 
+					
+					"{PID}", 
+					profileId + ""
+				), 
+				new PostData[] { 
+				
+					new PostData(
+						
+						Constants.fieldNamesCHSUM[0], 
+						checksum
+					
+					) 
+					
+				},
+				false
+		
+			);
+						
+			//Did we manage?
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+			
+				//Get the messages
+				return new JSONObject(httpContent).getJSONObject( "data" ).getLong("chatId");
+				
+			} else {
+			
+				throw new WebsiteHandlerException("Could not get the chatId");
+			
+			}	
+		
+		} catch ( Exception ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+
+	}
+	
 	public static ArrayList<ChatMessage> getChatMessages(long profileId, String checksum) throws WebsiteHandlerException {
 		
 		try {
@@ -827,7 +877,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 					) 
 					
 				},
-				true
+				false
 		
 			);
 						
@@ -835,8 +885,9 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 			if( httpContent != null && !httpContent.equals( "" ) ) {
 			
 				//Get the messages
-				JSONArray messages = new JSONObject(httpContent).getJSONObject( "data" ).getJSONObject( "chat" ).getJSONArray( "messages" );
+				JSONArray messages = new JSONObject(httpContent).getJSONObject("data").getJSONObject( "chat" ).getJSONArray( "messages" );
 				JSONObject tempObject;
+				Log.d(Constants.debugTag, messages.toString(4));
 				
 				//Iterate
 				for( int i = 0; i < messages.length(); i++ ) {
@@ -874,7 +925,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 
 	}
 	
-	public static boolean sendChatMessages(long profileId, String checksum, String message) throws WebsiteHandlerException {
+	public static boolean sendChatMessages(long chatId, String checksum, String message) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -896,7 +947,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 					new PostData(
 							
 						Constants.fieldNamesChat[1], 
-						profileId
+						chatId
 						
 					),
 					new PostData(
@@ -950,6 +1001,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 				JSONObject contextObject = new JSONObject(httpContent).optJSONObject( "context" );
 				JSONObject profileCommonObject = contextObject.optJSONObject( "profileCommon" );
 				JSONObject userInfo = profileCommonObject.optJSONObject( "userinfo" );
+				JSONObject presenceObject = profileCommonObject.getJSONObject( "user" ).getJSONObject("presence");
 				JSONArray gameReports = contextObject.getJSONArray( "gameReportPreviewGroups" );
 				JSONArray feedItems = contextObject.getJSONArray( "feed" );
 				JSONObject statusMessage = profileCommonObject.optJSONObject( "userStatusMessage" );
@@ -1070,6 +1122,8 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 						//Grab the specific object
 						tempSubItem = currItem.optJSONObject( "GAMEREPORT" );
 						
+						Log.d(Constants.debugTag, tempSubItem.toString( 4 ));
+						
 						//Temporary storage						
 						tempFeedItem = new FeedItem(
 							
@@ -1104,7 +1158,9 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 					userInfo.optString( "presentation", "" ),  
 					userInfo.optString( "location", "us" ),  
 					statusMessage.optString( "statusMessage", "" ), 
-					profileCommonObject.getJSONObject( "user" ).getJSONObject("presence").getBoolean("isOnline"),
+					presenceObject.optString("serverName", ""),
+					presenceObject.getBoolean("isOnline"),
+					presenceObject.getBoolean("isPlaying"),
 					userInfo.optBoolean( "allowFriendRequests", true ), 
 					feedItemArray
 					

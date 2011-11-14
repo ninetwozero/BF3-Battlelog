@@ -32,6 +32,7 @@
             android:name=".Dashboard"
             android:orientation="vertical"
           	android:configChanges="orientation"
+          	android:windowSoftInputMode="stateHidden"
         />
         <activity
             android:label="BF3 Battlelog - Profile"
