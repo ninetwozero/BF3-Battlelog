@@ -25,12 +25,14 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileComparator;
@@ -263,9 +265,16 @@ public class WebsiteHandler {
 		
 	}
 	
-public static PlayerData getStatsForUser(ProfileData pd) throws WebsiteHandlerException {
+	public static PlayerData getStatsForUser(ProfileData pd) throws WebsiteHandlerException {
 		
 		try {
+			
+			//Do we have a personaId?
+			if( pd.getPersonaId() == 0 ) {
+				
+				pd = getPersonaIdFromProfile(pd.getProfileId());
+				
+			}
 			
 	    	//Get the data
 	    	RequestHandler wh = new RequestHandler();
@@ -987,12 +996,13 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 		try {
 			
 			//Let's go!
-			RequestHandler wh = new RequestHandler();
+			RequestHandler rh = new RequestHandler();
 			ArrayList<FeedItem> feedItemArray = new ArrayList<FeedItem>();
+			ArrayList<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
 			String httpContent;
 			
 			//Get the content
-			httpContent = wh.get( Constants.urlProfileInfo.replace( "{UNAME}", profileData.getAccountName() ), true );
+			httpContent = rh.get( Constants.urlProfileInfo.replace( "{UNAME}", profileData.getAccountName() ), true );
 
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -1004,6 +1014,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 				JSONObject presenceObject = profileCommonObject.getJSONObject( "user" ).getJSONObject("presence");
 				JSONArray gameReports = contextObject.getJSONArray( "gameReportPreviewGroups" );
 				JSONArray feedItems = contextObject.getJSONArray( "feed" );
+				JSONArray platoonArray = profileCommonObject.getJSONArray( "platoons" );
 				JSONObject statusMessage = profileCommonObject.optJSONObject( "userStatusMessage" );
 				JSONObject currItem;
 				JSONObject tempSubItem;
@@ -1015,7 +1026,34 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 				
 				//Re-usable variable!!
 				FeedItem tempFeedItem = null;
+				PlatoonData tempPlatoonData = null;
 				ArrayList<CommentData> comments = new ArrayList<CommentData>();
+				
+				//Iterate over the platoons
+				for( int i = 0; i < platoonArray.length(); i++ ) {
+					
+					//Each loop is an object
+					currItem = platoonArray.getJSONObject( i );
+					
+					//Store the data
+					platoonDataArray.add(
+
+						new PlatoonData(
+						
+							Long.parseLong( currItem.getString( "id" ) ),
+							currItem.getInt( "fanCounter" ),
+							currItem.getInt( "memberCounter" ),
+							currItem.getInt( "platform" ),
+							currItem.getString( "name" ),
+							currItem.getString( "tag" ),
+							rh.getImageFromStream( Constants.urlPlatoonThumbs + currItem.getString( "badgePath" ), false),
+							!currItem.getBoolean("hidden")
+								
+						)
+					
+					);
+
+				}
 				
 				//Iterate over the feed
 				for( int i = 0; i < feedItems.length(); i++ ) {
@@ -1120,9 +1158,44 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 					} else if( !currItem.isNull( "GAMEREPORT" )) {
 					
 						//Grab the specific object
-						tempSubItem = currItem.optJSONObject( "GAMEREPORT" );
+						JSONArray tempStatsArray = currItem.optJSONObject( "GAMEREPORT" ).optJSONArray( "statItems" );
+						tempSubItem = tempStatsArray.optJSONObject( 0 );
+						String itemTitle;
 						
-						Log.d(Constants.debugTag, tempSubItem.toString( 4 ));
+						//Weapon? Attachment?
+						if( !tempSubItem.isNull( "parentLangKeyTitle" ) ) {
+							
+							//Let's see
+							itemTitle = DataBank.getWeaponTitle( tempSubItem.getString( "parentLangKeyTitle") );
+							
+							//Is it empty?
+							if( !itemTitle.equals( "" ) ) {
+								
+								itemTitle += " - " + DataBank.getAttachmentTitle( tempSubItem.getString( "langKeyTitle" ) );
+								
+							} else {
+								
+								//Grab a vehicle title then
+								itemTitle = DataBank.getVehicleTitle( tempSubItem.getString("parentLangKeyTitle") );
+								
+								//Validate
+								if( !itemTitle.equals( "" ) ) {
+									
+									itemTitle += " - " + DataBank.getVehicleAddon( tempSubItem.getString( "langKeyTitle" ) );
+									
+								} else {
+									
+									itemTitle = tempSubItem.getString("parentLangKeyTitle");
+									
+								} 
+								
+							}
+							
+						} else {
+							
+							itemTitle = DataBank.getWeaponTitle( "langKeyTitle" );
+							
+						}
 						
 						//Temporary storage						
 						tempFeedItem = new FeedItem(
@@ -1131,8 +1204,8 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
 							currItem.getInt( "numLikes" ),
-							tempSubItem.optString( "parentLangKeyTitle", "Yo mama unlocked something"),
-							tempSubItem.optString( "langKeyTitle", "Yeah man, it's a weapon I tell you!!" ),
+							itemTitle,
+							"",
 							currItem.getString("section"),
 							new String[] { profileData.getAccountName(), null },
 							comments
@@ -1159,11 +1232,11 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 					userInfo.optString( "location", "us" ),  
 					statusMessage.optString( "statusMessage", "" ), 
 					presenceObject.optString("serverName", ""),
+					userInfo.optBoolean( "allowFriendRequests", true ), 
 					presenceObject.getBoolean("isOnline"),
 					presenceObject.getBoolean("isPlaying"),
-					userInfo.optBoolean( "allowFriendRequests", true ), 
-					feedItemArray
-					
+					feedItemArray,
+					platoonDataArray
 				);
 				
 			} else {

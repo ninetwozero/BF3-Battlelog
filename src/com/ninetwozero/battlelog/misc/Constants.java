@@ -20,6 +20,7 @@ public final class Constants {
 	//The base urls
 	public static final String urlMain = "http://battlelog.battlefield.com/bf3/";
 	public static final String urlMainSecure = "https://battlelog.battlefield.com/bf3/";
+	public static final String urlStaticContent = "http://static.cdn.ea.com/battlelog/";
 	
 	//URLs that REQUIRE POST-DATA
 	public static final String urlLogin = urlMainSecure + "gate/login/";
@@ -37,6 +38,7 @@ public final class Constants {
 	
 	//URLS for PROFILE
 	public static final String urlProfilePost = urlMain + "wall/postmessage";
+	public static final String urlPlatoonThumbs = urlStaticContent + "prod/emblems/60/";
 	
 	//URLs to JSON-files (FEED-related)
 	public static final String urlFeed = urlMain + "feed/?start={NUMSTART}"; /* TODO */

@@ -26,13 +26,14 @@ public class ProfileInformation {
 	private String name, username, presentation, location, statusMessage, currentServer;
 	private boolean allowFriendRequests, online, playing;
 	private ArrayList<FeedItem> feedItems;
+	private ArrayList<PlatoonData> platoons;
 	
 	//Construct(s)
 	public ProfileInformation(
 		
 		int a, long pid, long dob, long l, long sc,
 		String n, String u, String p, String loc, String s, String c,
-		boolean af, boolean o, boolean pl, ArrayList<FeedItem> f
+		boolean af, boolean o, boolean pl, ArrayList<FeedItem> f, ArrayList<PlatoonData> pd
 		
 	) {
 		
@@ -51,7 +52,8 @@ public class ProfileInformation {
 		this.online = o;
 		this.playing = pl;
 		this.feedItems = f;
-		
+		this.platoons = pd;
+	
 	}
 	
 	//Getters
@@ -70,5 +72,6 @@ public class ProfileInformation {
 	public boolean isOnline() { return this.online; }
 	public boolean isPlaying() { return this.playing; }
 	public ArrayList<FeedItem> getFeedItems() { return this.feedItems; }
+	public ArrayList<PlatoonData> getPlatoons() { return this.platoons; }
 
 }

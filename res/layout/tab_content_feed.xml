@@ -4,13 +4,20 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" 
->
+    android:padding="5dp"
+>		
+
+	<TextView 
+		    style="@style/InfoHeading"
+		    android:id="@+id/feed_username"
+		    android:text="NINETWOZERO"
+			android:padding="5dp"
+	/>	
 	<ListView
 	    android:id="@+id/list_feed"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-		android:layout_marginLeft="5dp"
-		android:layout_marginRight="5dp"
+		android:layout_below="@id/feed_username"
 	/>
 	<RelativeLayout
 		android:layout_width="fill_parent"
@@ -22,6 +29,7 @@
 			android:layout_height="wrap_content"
 		    android:text="No items found in the feed"	
 		    android:layout_centerInParent="true"
+		    android:visibility="gone"
 		/>
 	</RelativeLayout>
 </RelativeLayout>

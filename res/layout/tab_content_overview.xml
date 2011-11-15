@@ -1,69 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/wrap_top"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-	android:paddingTop="5dp"
-	android:paddingLeft="10dp"
-	android:paddingRight="10dp"
-	android:paddingBottom="10dp"
-   >
-	<TextView 
-	    style="@style/InfoHeading"
-	    android:id="@+id/text_username"
-	    android:text="NINETWOZERO"
-		android:padding="5dp"
-	/>	
-	<TextView
-	    android:id="@+id/text_online"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="Last seen online 2 days ago"
-	    android:textSize="14sp"
-		android:layout_below="@id/text_username"
-		android:padding="5dp"
-	/>	
-	<RelativeLayout 
-		android:id="@+id/wrap_status"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-		android:layout_below="@id/text_online"
-	>
+	android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+>
+	<RelativeLayout
+		android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+		android:paddingTop="5dp"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:paddingBottom="10dp"
+    >
 		<TextView 
- 			    style="@style/FriendHeadingRow"
-		    android:id="@+id/text_header_status"
-		    android:text="Latest Status Message"
-		/>
-		<TextView 
-		    android:id="@+id/text_status"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="''I sure like to program Dalvik-java!''"
-		    android:textSize="14sp"
-			android:layout_below="@id/text_header_status"
-		android:padding="5dp"
-		/>
-	</RelativeLayout>
-	<RelativeLayout 
-		android:id="@+id/wrap_presentation"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-		android:layout_below="@id/wrap_status"
-	>
-		<TextView 
-		    style="@style/FriendHeadingRow"
-		    android:id="@+id/text_header_presentation"
-		    android:text="Presentation"
-		/>
-		<TextView 
-	    	android:gravity="center"
-		    android:id="@+id/text_presentation"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="I like dirt, I like dirt...\nI like dirt, I like dirt\nG, Dm, Am, Em (4/4)"
-		    android:textSize="14sp"
-		    android:layout_below="@id/text_header_presentation"
+		    style="@style/InfoHeading"
+		    android:id="@+id/text_username"
+		    android:text="NINETWOZERO"
 			android:padding="5dp"
-		/>
+		/>	
+		<TextView
+		    android:id="@+id/text_online"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Last seen online 2 days ago"
+		    android:textSize="14sp"
+			android:layout_below="@id/text_username"
+			android:paddingLeft="5dp"
+			android:paddingRight="5dp"
+			android:paddingBottom="5dp"
+		/>	
+		<RelativeLayout 
+			android:id="@+id/wrap_status"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+			android:layout_below="@id/text_online"
+		>
+			<TextView 
+ 			    style="@style/FriendHeadingRow"
+			    android:id="@+id/text_header_status"
+			    android:text="Latest Status Message"
+			/>
+			<TextView 
+			    android:id="@+id/text_status"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="''I sure like to program Dalvik-java!''"
+			    android:textSize="14sp"
+				android:layout_below="@id/text_header_status"
+				android:padding="5dp"
+			/>
+			<TextView 
+			    android:id="@+id/text_status_date"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="^Last updated 5 days ago"
+				android:layout_below="@id/text_status"
+				android:paddingLeft="5dp"
+				android:paddingRight="5dp"
+				android:paddingBottom="5dp"
+				android:textColor="#c3c3c3"
+			    android:textSize="12sp"
+			/>
+		</RelativeLayout>
+		<RelativeLayout 
+			android:id="@+id/wrap_presentation"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+			android:layout_below="@id/wrap_status"
+		>
+			<TextView 
+			    style="@style/FriendHeadingRow"
+			    android:id="@+id/text_header_presentation"
+			    android:text="Presentation"
+			/>
+			<TextView 
+		    	android:gravity="center"
+			    android:id="@+id/text_presentation"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="I like dirt, I like dirt...\nI like dirt, I like dirt\nG, Dm, Am, Em (4/4)"
+			    android:textSize="14sp"
+			    android:layout_below="@id/text_header_presentation"
+				android:padding="5dp"
+			/>
+		</RelativeLayout>
+		<RelativeLayout 
+			android:id="@+id/wrap_platoon"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+			android:layout_below="@id/wrap_presentation"
+		>
+			<TextView 
+			    style="@style/FriendHeadingRow"
+			    android:id="@+id/text_header_platoon"
+			    android:text="Platoons"
+			/>
+			<ListView 
+			    android:id="@+id/list_platoons"
+			    android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+			    android:layout_below="@id/text_header_platoon"
+				android:padding="5dp"
+				android:divider="#FFFFFF"
+				android:dividerHeight="0px"
+				android:fadingEdge="none"
+				android:fadingEdgeLength="0px"
+			/>
+			<TextView 
+		    	android:gravity="center"
+			    android:id="@+id/text_platoon"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="No platoons joined."
+			    android:textSize="14sp"
+			    android:layout_below="@id/text_header_platoon"
+				android:padding="5dp"
+				android:visibility="gone"
+			/>
+		</RelativeLayout>
 	</RelativeLayout>
-</RelativeLayout>
+</ScrollView>

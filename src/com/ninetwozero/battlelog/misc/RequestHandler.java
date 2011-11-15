@@ -39,6 +39,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.ByteArrayBuffer;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.ninetwozero.battlelog.datatypes.PostData;
@@ -98,6 +99,54 @@ public class RequestHandler {
 		}
 		
 		return httpContent;
+		
+	}
+	
+	public Drawable getImageFromStream( String link, boolean extraHeaders ) throws RequestHandlerException {
+		
+		// Check defaults
+		if ( link.equals( "" ) ) throw new RequestHandlerException("No link found.");
+		
+		//Default
+		InputStream httpContent = null;
+		Drawable image;
+		try {
+			
+			//Init the HTTP-related attributes
+			HttpGet httpGet = new HttpGet(link);
+			
+			//Do we need those extra headers?
+			if( extraHeaders ) {
+			
+				httpGet.setHeader( "X-Requested-With", "XMLHttpRequest");
+				httpGet.setHeader( "X-AjaxNavigation", "1");
+				httpGet.setHeader( "Referer", link);
+				httpGet.setHeader( "Accept", "application/json, text/javascript, */*" );
+				httpGet.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
+			
+			}
+			
+			HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);	
+			HttpEntity httpEntity = httpResponse.getEntity();
+			httpContent = httpEntity.getContent();
+			
+			//Create the image
+			image = Drawable.createFromStream( httpContent, "src" );
+			
+			//Is the entity <> null?
+			if( httpEntity != null ) {
+				
+				httpEntity.consumeContent();
+				
+			}
+			
+		} catch ( Exception ex ) {
+
+			ex.printStackTrace();
+			return null;
+		}
+		
+		return image;
 		
 	}
 

@@ -48,6 +48,7 @@
             android:label="BF3 Battlelog - Chatting with ..."
             android:name=".ChatView"
           	android:configChanges="orientation"
+          	android:windowSoftInputMode="adjustResize"
         />
         <activity
             android:label="BF3 Battlelog - Comparing battle scars"

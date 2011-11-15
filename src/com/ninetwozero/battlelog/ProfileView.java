@@ -29,21 +29,27 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
-import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
+import com.ninetwozero.battlelog.adapters.PlatoonListAdapter;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
+import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -55,6 +61,9 @@ public class ProfileView extends TabActivity {
 	private ProfileData profileData;
 	private LayoutInflater layoutInflater;
 	private TabHost mTabHost;
+	
+	//Elements
+	private ListView listFeed;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -71,16 +80,15 @@ public class ProfileView extends TabActivity {
     	
     	//Set the content view
         setContentView(R.layout.profile_view);
-
-        //Fix the tabs
-    	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
-    	setupTab("Overview", R.layout.tab_content_overview);
-    	setupTab("Battlefeed", R.layout.tab_content_feed);
         
         //Prepare to tango
         this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         
+        //Fix the tabs
+    	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+    	setupTabs(new String[] { "Home", "Stats", "Feed" }, new int[] {R.layout.tab_content_overview, R.layout.tab_content_stats, R.layout.tab_content_feed} );
+    	
         //Get the intent
         if( !getIntent().hasExtra( "profile" ) ) {
         	
@@ -99,7 +107,6 @@ public class ProfileView extends TabActivity {
         	
         }
 
-		Log.d(Constants.debugTag, profileData.toString());
         initLayout();
 	}        
 
@@ -122,35 +129,47 @@ public class ProfileView extends TabActivity {
     	
     }
     
-    private void setupTab(final String tag, final int layout) {
+    private void setupTabs(final String[] tags, final int[] layouts) {
 
 		//Init
     	TabHost.TabSpec spec;
-		View tabview = createTabView(mTabHost.getContext(), tag);
-		
-		//Let's set the content
-		spec = mTabHost.newTabSpec(tag).setIndicator(tabview).setContent(
-        		
-    		new TabContentFactory() {
-    			
-            	public View createTabContent(String tag) {
-            		
-            		Log.d(Constants.debugTag, "layoutInflater => " + layoutInflater);
-            		View v = layoutInflater.inflate( layout, null );
-            		return v;
-            	}
-            
-            }
-    		
-        );
-		mTabHost.addTab( spec ); 
+    	
+    	//Iterate them tabs
+    	for(int i = 0; i < tags.length; i++) {
+
+    		//Num
+    		final int num = i;
+			View tabview = createTabView(mTabHost.getContext(), tags[num]);
+			
+			//Let's set the content
+			spec = mTabHost.newTabSpec(tags[num]).setIndicator(tabview).setContent(
+	        		
+	    		new TabContentFactory() {
+	    			
+	            	public View createTabContent(String tag) {
+	            		
+	            		return layoutInflater.inflate( layouts[num], null );
+	    
+	            	}
+	            
+	            }
+	    		
+	        );
+			
+			//Add the tab
+			mTabHost.addTab( spec ); 
+    	
+    	}
+    	
     }
 
     private static View createTabView(final Context context, final String text) {
+    	
     	View view = LayoutInflater.from(context).inflate(R.layout.profile_tab_layout, null);
     	TextView tv = (TextView) view.findViewById(R.id.tabsText);
     	tv.setText(text);
     	return view;
+    
     }
     
     public void doFinish() {}
@@ -161,6 +180,7 @@ public class ProfileView extends TabActivity {
     	Context context;
     	ProgressDialog progressDialog;
     	ProfileInformation profileInformation;
+    	PlayerData playerData;
     	
     	public GetDataSelfAsync(Context c) {
     		
@@ -186,6 +206,7 @@ public class ProfileView extends TabActivity {
 			try {
 				
 				this.profileInformation = WebsiteHandler.getProfileInformationForUser( arg0[0] );
+				this.playerData = WebsiteHandler.getStatsForUser( arg0[0] );
 				return true;
 				
 			} catch ( WebsiteHandlerException ex ) {
@@ -211,6 +232,38 @@ public class ProfileView extends TabActivity {
 			}
 
 			//Assign values
+			mTabHost.setOnTabChangedListener(
+					
+				new OnTabChangeListener() {
+
+					@Override
+					public void onTabChanged(String tabId) {
+	
+						switch( getTabHost().getCurrentTab() ) {
+							
+							case 0:
+								drawLayout(profileInformation);
+								break;
+								
+							case 1:
+								drawStats(playerData);
+								break;
+							
+							case 2:
+								drawFeed(profileInformation);
+								break;
+								
+							default:
+								break;
+					
+						}
+		
+					}
+					
+				}
+				
+			);
+
 			drawLayout(this.profileInformation);
 			
 			//Done!
@@ -222,14 +275,13 @@ public class ProfileView extends TabActivity {
     
     public final void drawLayout(ProfileInformation data) {
     	
-    	if( "".equals( "" ) ) return;
     	//Let's start drawing the... layout
     	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
-
+    	
     	//When did was the users last login?
     	if( data.isPlaying() && data.isOnline() ) { 
     		
-    		/*((TextView) findViewById(R.id.text_online)).setText( 
+    		((TextView) findViewById(R.id.text_online)).setText( 
     				
 				"Playing on {SERVER_NAME}".replace(
 					
@@ -238,15 +290,15 @@ public class ProfileView extends TabActivity {
 					
 				)
     				
-			);*/ 
+			);
         	
     	} else if( data.isOnline() ) {
     	
-    		//((TextView) findViewById(R.id.text_online)).setText( "Online but not currently playing" ); 
+    		((TextView) findViewById(R.id.text_online)).setText( "Online but not currently playing" ); 
     		
     	} else {
     		
-    	//	((TextView) findViewById(R.id.text_online)).setText( data.getLastLogin() ); 
+    		((TextView) findViewById(R.id.text_online)).setText( data.getLastLogin() ); 
     		
     	}
     	
@@ -255,35 +307,132 @@ public class ProfileView extends TabActivity {
 			
     		//Set the status
     		((TextView) findViewById(R.id.text_status)).setText( data.getStatusMessage() );
-        	//((TextView) findViewById(R.id.text_online)).setText( PublicUtils.getRelativeDate( data.getStatusMessageChanged(), "Last updated ") );
-
+    		((TextView) findViewById(R.id.text_status_date)).setText( PublicUtils.getRelativeDate( data.getStatusMessageChanged(), "Last updated ") );
     	
     	} else {
     		
     		//Hide the view
-    		//((TextView) findViewById(R.id.wrap_status)).setVisibility(View.GONE);
+    		((RelativeLayout) findViewById(R.id.wrap_status)).setVisibility(View.GONE);
     		
     	}
     	
     	//Do we have a presentation?
     	if( !data.getPresentation().equals( "" ) ) {
     		
-    		//((TextView) findViewById(R.id.text_presentation)).setText( data.getPresentation() );
+    		((TextView) findViewById(R.id.text_presentation)).setText( data.getPresentation() );
 		
     	} else {
     		
-    		//((TextView) findViewById(R.id.wrap_presentation)).setVisibility(View.GONE);
-	
+    		((RelativeLayout) findViewById(R.id.wrap_presentation)).setVisibility(View.GONE);
+
     	}
+    	
+    	//Any platoons?
+    	if( data.getPlatoons().size() > 0 ) {
+
+    		((ListView) findViewById(R.id.list_platoons)).setAdapter(  
     		
+    			new PlatoonListAdapter(this, data.getPlatoons(), layoutInflater)
+    			
+    		);
+    		
+    	} else {
+        	
+    		((TextView) findViewById(R.id.text_platoon)).setVisibility( View.VISIBLE );
+    	
+    	}
+    	
     	//Set the username
     	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
-    	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
-    	/*((ListView) findViewById(R.id.list_feed).setAdapter( 
-    			
+    }
+    
+    public void drawStats(PlayerData pd) {
+    	
+		//Persona & rank
+        ((TextView) findViewById(R.id.string_persona)).setText( pd.getPersonaName() );
+        ((TextView) findViewById(R.id.string_rank_title)).setText( pd.getRankTitle() );
+        ((TextView) findViewById(R.id.string_rank_short)).setText( pd.getRankId() + "" );
+        
+        //Progress
+        progressBar = ( (ProgressBar) findViewById(R.id.progress_level));
+        progressBar.setMax( (int) pd.getPointsNeededToLvlUp()  );
+        progressBar.setProgress( (int) pd.getPointsProgressLvl() );
+        ((TextView) findViewById(R.id.string_progress_curr)).setText( pd.getPointsProgressLvl() + "" );
+        ((TextView) findViewById(R.id.string_progress_max)).setText( pd.getPointsNeededToLvlUp() + "" );
+        ((TextView) findViewById(R.id.string_progress_left)).setText( pd.getPointsLeft() + "" );
+        
+        //Score
+        ((TextView) findViewById(R.id.string_score_assault)).setText( pd.getScoreAssault() + "" );
+        ((TextView) findViewById(R.id.string_score_engineer)).setText( pd.getScoreEngineer() + "" );
+        ((TextView) findViewById(R.id.string_score_support)).setText( pd.getScoreSupport() + "" );
+        ((TextView) findViewById(R.id.string_score_recon)).setText( pd.getScoreRecon() + "" );
+        ((TextView) findViewById(R.id.string_score_vehicles)).setText( pd.getScoreVehicle() + "" );
+        ((TextView) findViewById(R.id.string_score_combat)).setText( pd.getScoreCombat() + "" );
+        ((TextView) findViewById(R.id.string_score_award)).setText( pd.getScoreAwards() + "" );
+        ((TextView) findViewById(R.id.string_score_unlock)).setText( pd.getScoreUnlocks() + "" );
+        ((TextView) findViewById(R.id.string_score_total)).setText( pd.getScoreTotal() + "" );
+        
+        //Stats
+        ((TextView) findViewById(R.id.string_stats_kills)).setText( pd.getNumKills() + "" );
+        ((TextView) findViewById(R.id.string_stats_assists)).setText( pd.getNumAssists() + "" );
+        ((TextView) findViewById(R.id.string_stats_heals)).setText( pd.getNumHeals() + "" );
+        ((TextView) findViewById(R.id.string_stats_revives)).setText( pd.getNumRevives() + "" );
+        ((TextView) findViewById(R.id.string_stats_repairs)).setText( pd.getNumRepairs() + "" );
+        ((TextView) findViewById(R.id.string_stats_resupplies)).setText( pd.getNumResupplies() + "" );
+        ((TextView) findViewById(R.id.string_stats_deaths)).setText( pd.getNumDeaths() + "" );
+        ((TextView) findViewById(R.id.string_stats_kdr)).setText( pd.getKDRatio() + "" );
+        ((TextView) findViewById(R.id.string_stats_wins)).setText( pd.getNumWins() + "" );
+        ((TextView) findViewById(R.id.string_stats_losses)).setText( pd.getNumLosses() + "" );
+        ((TextView) findViewById(R.id.string_stats_wlr)).setText( pd.getWLRatio() + "" );
+        ((TextView) findViewById(R.id.string_stats_accuracy)).setText( pd.getAccuracy() + "%" );
+        ((TextView) findViewById(R.id.string_stats_time)).setText( pd.getTimePlayedString() + "" );
+        ((TextView) findViewById(R.id.string_stats_spm)).setText( pd.getScorePerMinute() + "" );
+        ((TextView) findViewById(R.id.string_stats_lks)).setText( pd.getLongestKS() + "" );
+        ((TextView) findViewById(R.id.string_stats_lhs)).setText( pd.getLongestHS() + " m");
+    	
+    }
+    
+    public void drawFeed(ProfileInformation data) {
+    	
+    	//Do we have it already?
+		if( listFeed == null ) { listFeed = ((ListView) findViewById(R.id.list_feed)); }
+        
+		((TextView) findViewById(R.id.feed_username)).setText( data.getUsername() );
+        
+		//Always and forever
+		listFeed.setAdapter( 
+				
 			new FeedListAdapter(this, data.getFeedItems(), layoutInflater) 
 			
-		);*/
+		);
+		
+		//Do we have the onClick?
+		if( listFeed.getOnItemLongClickListener() == null ) {
+			
+			listFeed.setOnItemClickListener( 
+					
+				new OnItemClickListener() {
+
+					@Override
+					public void onItemClick( AdapterView<?> a, View v, int pos, long id ) {
+
+						if( !((FeedItem) a.getItemAtPosition( pos ) ).getContent().equals( "" ) ) {
+							
+							View viewContainer = (View) v.findViewById(R.id.text_content);
+							viewContainer.setVisibility( ( viewContainer.getVisibility() == View.GONE ) ? View.VISIBLE : View.GONE );
+						
+						}
+						
+					}
+					
+					
+					
+				}
+					
+			);
+			
+		}
+    	
     }
     
     @Override
@@ -313,20 +462,6 @@ public class ProfileView extends TabActivity {
 		return true;
 
 	}  
-    
-    public void onListItemClick(ListView l, View v, int p, long i) {
-		
-		//Do we have content to display?
-		if( !((FeedItem) l.getItemAtPosition( p ) ).getContent().equals( "" ) ) {
-			
-			View viewContainer = (View) v.findViewById(R.id.text_content);
-			viewContainer.setVisibility( ( viewContainer.getVisibility() == View.GONE ) ? View.VISIBLE : View.GONE );
-		
-		}
-		
-		return;
-    	
-    }	
 	
     @Override
     public void onConfigurationChanged(Configuration newConfig){        
