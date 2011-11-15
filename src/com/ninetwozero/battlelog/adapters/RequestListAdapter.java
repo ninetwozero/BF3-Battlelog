@@ -84,7 +84,7 @@ public class RequestListAdapter extends BaseAdapter {
 		}
 
 		//Set the TextView
-		( (TextView) convertView.findViewById( R.id.text_persona ) ).setText( currentProfile.getAccountName() );
+		( (TextView) convertView.findViewById( R.id.text_user ) ).setText( currentProfile.getAccountName() );
 		
 		//Hot-wire the views
 		( (ImageView) convertView.findViewById(R.id.button_accept) ).setTag( currentProfile );

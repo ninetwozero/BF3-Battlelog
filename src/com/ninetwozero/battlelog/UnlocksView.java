@@ -79,6 +79,7 @@ public class UnlocksView extends ListActivity {
     	new GetDataSelfAsync(this, getListView(), (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).execute(
     		
     		new ProfileData(
+				this.sharedPreferences.getString( "battlelog_username", "" ),
 				this.sharedPreferences.getString( "battlelog_persona", "" ),
 				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
 				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),

@@ -93,13 +93,14 @@ public class ProfileView extends TabActivity {
         if( !getIntent().hasExtra( "profile" ) ) {
         	
         	profileData = new ProfileData(
-				
-    			this.sharedPreferences.getString( "battlelog_persona", "" ),
-				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-				this.sharedPreferences.getLong( "battlelog_platform_id", 1)
-			
-			);
+
+        		this.sharedPreferences.getString( "battlelog_username", "" ),
+        		this.sharedPreferences.getString( "battlelog_persona", "" ),
+    			this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
+    			this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
+    			this.sharedPreferences.getLong( "battlelog_platform_id", 1)
+    		
+    		);
         	
         } else {
         	
@@ -375,6 +376,8 @@ public class ProfileView extends TabActivity {
         //Stats
         ((TextView) findViewById(R.id.string_stats_kills)).setText( pd.getNumKills() + "" );
         ((TextView) findViewById(R.id.string_stats_assists)).setText( pd.getNumAssists() + "" );
+        ((TextView) findViewById(R.id.string_stats_vkills)).setText( pd.getNumVehicles() + "" );
+        ((TextView) findViewById(R.id.string_stats_vassists)).setText( pd.getNumVehicleAssists() + "" );
         ((TextView) findViewById(R.id.string_stats_heals)).setText( pd.getNumHeals() + "" );
         ((TextView) findViewById(R.id.string_stats_revives)).setText( pd.getNumRevives() + "" );
         ((TextView) findViewById(R.id.string_stats_repairs)).setText( pd.getNumRepairs() + "" );
@@ -385,10 +388,11 @@ public class ProfileView extends TabActivity {
         ((TextView) findViewById(R.id.string_stats_losses)).setText( pd.getNumLosses() + "" );
         ((TextView) findViewById(R.id.string_stats_wlr)).setText( pd.getWLRatio() + "" );
         ((TextView) findViewById(R.id.string_stats_accuracy)).setText( pd.getAccuracy() + "%" );
-        ((TextView) findViewById(R.id.string_stats_time)).setText( pd.getTimePlayedString() + "" );
-        ((TextView) findViewById(R.id.string_stats_spm)).setText( pd.getScorePerMinute() + "" );
         ((TextView) findViewById(R.id.string_stats_lks)).setText( pd.getLongestKS() + "" );
         ((TextView) findViewById(R.id.string_stats_lhs)).setText( pd.getLongestHS() + " m");
+        ((TextView) findViewById(R.id.string_stats_skill)).setText( pd.getNumVehicles() + "" );
+        ((TextView) findViewById(R.id.string_stats_time)).setText( pd.getTimePlayedString() + "" );
+        ((TextView) findViewById(R.id.string_stats_spm)).setText( pd.getScorePerMinute() + "" );
     	
     }
     

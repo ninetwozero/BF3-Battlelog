@@ -223,10 +223,63 @@
 				<!-- END_STATS_ITEM -->
 				<!-- START_STATS_ITEM -->
 					<TextView
+				   		style="@style/InfoRowCompare"
+						android:id="@+id/string_center_vkills"
+						android:text="Vehicles destroyed"
+					    android:layout_below="@id/string_center_assists"
+					/>
+					<TextView
+						android:id="@+id/string_stats_vkills_0"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Player 0"
+					    android:layout_below="@id/string_center_assists"
+						android:layout_alignParentLeft="true"
+				    	android:layout_alignBaseline="@id/string_center_vkills"
+					/>
+					<TextView
+						android:id="@+id/string_stats_vkills_1"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Player 1"
+						android:layout_alignParentRight="true"
+				    	android:layout_alignBaseline="@id/string_center_vkills"
+					    android:layout_below="@id/string_center_assists"
+					/>
+				<!-- END_STATS_ITEM -->
+				<!-- START_STATS_ITEM -->
+					<TextView
+				   		style="@style/InfoRowCompare"
+						android:id="@+id/string_center_vassists"
+						android:text="Vehicles assisted with"
+					    android:layout_below="@id/string_stats_vkills_0"
+				    	android:layout_alignBaseline="@id/string_center_vassists"
+					/>
+					<TextView
+						android:id="@+id/string_stats_vassists_0"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Player 0"
+						android:layout_alignParentLeft="true"
+					    android:layout_below="@id/string_stats_vkills_0"
+				    	android:layout_alignBaseline="@id/string_center_vassists"
+					/>
+					<TextView
+						android:id="@+id/string_stats_vassists_1"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Player 1"
+						android:layout_alignParentRight="true"
+					    android:layout_below="@id/string_stats_vkills_0"
+				    	android:layout_alignBaseline="@id/string_center_vassists"
+					/>
+				<!-- END_STATS_ITEM -->
+				<!-- START_STATS_ITEM -->
+					<TextView
 				    	style="@style/InfoRowCompare"
 						android:id="@+id/string_center_heals"
 						android:text="Heals"
-					    android:layout_below="@id/string_stats_assists_0"
+					    android:layout_below="@id/string_stats_vassists_0"
 					/>
 					<TextView
 						android:id="@+id/string_stats_heals_0"
@@ -234,7 +287,7 @@
 						android:layout_height="wrap_content"
 						android:text="Player 0"
 						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_assists_0"
+					    android:layout_below="@id/string_stats_vassists_0"
 				    	android:layout_alignBaseline="@id/string_center_heals"
 					/>
 					<TextView
@@ -243,7 +296,7 @@
 						android:layout_height="wrap_content"
 						android:text="Player 1"
 						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_assists_0"
+					    android:layout_below="@id/string_stats_vassists_0"
 				    	android:layout_alignBaseline="@id/string_center_heals"
 					/>
 				<!-- END_STATS_ITEM -->
@@ -536,9 +589,35 @@
 				<!-- START_STATS_ITEM -->
 					<TextView
 				    	style="@style/InfoRowCompare"
+						android:id="@+id/string_center_skill"
+						android:text="Skill rating"
+						android:layout_below="@id/string_stats_lks_0"
+					/>
+					<TextView
+						android:id="@+id/string_stats_skill_0"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Player 0"
+						android:layout_alignParentLeft="true"
+					    android:layout_below="@id/string_stats_lks_0"
+				    	android:layout_alignBaseline="@id/string_center_skill"
+					/>
+					<TextView
+						android:id="@+id/string_stats_skill_1"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Player 1"
+						android:layout_alignParentRight="true"
+					    android:layout_below="@id/string_stats_lks_0"
+				    	android:layout_alignBaseline="@id/string_center_skill"
+					/>
+				<!-- END_STATS_ITEM -->
+				<!-- START_STATS_ITEM -->
+					<TextView
+				    	style="@style/InfoRowCompare"
 						android:id="@+id/string_center_time"
 						android:text="Time played"
-						android:layout_below="@id/string_stats_lks_0"
+						android:layout_below="@id/string_stats_skill_0"
 					/>
 					<TextView
 						android:id="@+id/string_stats_time_0"
@@ -546,7 +625,7 @@
 						android:layout_height="wrap_content"
 						android:text="Player 0"
 						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_lks_0"
+					    android:layout_below="@id/string_stats_skill_0"
 				    	android:layout_alignBaseline="@id/string_center_time"
 					/>
 					<TextView
@@ -555,7 +634,7 @@
 						android:layout_height="wrap_content"
 						android:text="Player 1"
 						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_lks_0"
+					    android:layout_below="@id/string_stats_skill_0"
 				    	android:layout_alignBaseline="@id/string_center_time"
 					/>
 				<!-- END_STATS_ITEM -->

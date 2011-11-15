@@ -79,6 +79,7 @@ public final class Constants {
 		
 	//HTML-elements to grab
 	public static final String elementUIDLink = "<a class=\"main-loggedin-leftcolumn-active-soldier-name\" href=\"/bf3/soldier/";
+	public static final String elementUsernameLink = "<a href=\"/bf3/user/";
 	public static final String elementStatusOK = "";
 	public static final String elementStatusChecksumLink = "<input type=\"hidden\" name=\"post-check-sum\" value=\"";
 	

@@ -67,7 +67,8 @@ public class CompareView extends Activity {
     
         //Let's set them straight
         playerOne = new ProfileData(
-		
+
+    		this.sharedPreferences.getString( "battlelog_username", "" ),
     		this.sharedPreferences.getString( "battlelog_persona", "" ),
 			this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
 			this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
@@ -183,6 +184,8 @@ public class CompareView extends Activity {
 	        //Stats
 	        ((TextView) findViewById(R.id.string_stats_kills_0)).setText( playerData[0].getNumKills() + "" );
 	        ((TextView) findViewById(R.id.string_stats_assists_0)).setText( playerData[0].getNumAssists() + "" );
+	        ((TextView) findViewById(R.id.string_stats_vkills_0)).setText( playerData[0].getNumVehicles() + "" );
+	        ((TextView) findViewById(R.id.string_stats_vassists_0)).setText( playerData[0].getNumVehicleAssists() + "" );
 	        ((TextView) findViewById(R.id.string_stats_heals_0)).setText( playerData[0].getNumHeals() + "" );
 	        ((TextView) findViewById(R.id.string_stats_revives_0)).setText( playerData[0].getNumRevives() + "" );
 	        ((TextView) findViewById(R.id.string_stats_repairs_0)).setText( playerData[0].getNumRepairs() + "" );
@@ -194,6 +197,7 @@ public class CompareView extends Activity {
 	        ((TextView) findViewById(R.id.string_stats_wlr_0)).setText( playerData[0].getWLRatio() + "" );
 	        ((TextView) findViewById(R.id.string_stats_accuracy_0)).setText( playerData[0].getAccuracy() + "%" );
 	        ((TextView) findViewById(R.id.string_stats_time_0)).setText( playerData[0].getTimePlayedString() + "" );
+	        ((TextView) findViewById(R.id.string_stats_skill_0)).setText( playerData[0].getSkill() + "" );
 	        ((TextView) findViewById(R.id.string_stats_spm_0)).setText( playerData[0].getScorePerMinute() + "" );
 	        ((TextView) findViewById(R.id.string_stats_lks_0)).setText( playerData[0].getLongestKS() + "" );
 	        ((TextView) findViewById(R.id.string_stats_lhs_0)).setText( playerData[0].getLongestHS() + " m");		
@@ -223,6 +227,8 @@ public class CompareView extends Activity {
 	        //Stats
 	        ((TextView) findViewById(R.id.string_stats_kills_1)).setText( playerData[1].getNumKills() + "" );
 	        ((TextView) findViewById(R.id.string_stats_assists_1)).setText( playerData[1].getNumAssists() + "" );
+	        ((TextView) findViewById(R.id.string_stats_vkills_1)).setText( playerData[1].getNumVehicles() + "" );
+	        ((TextView) findViewById(R.id.string_stats_vassists_1)).setText( playerData[1].getNumVehicleAssists() + "" );
 	        ((TextView) findViewById(R.id.string_stats_heals_1)).setText( playerData[1].getNumHeals() + "" );
 	        ((TextView) findViewById(R.id.string_stats_repairs_1)).setText( playerData[1].getNumRepairs() + "" );
 	        ((TextView) findViewById(R.id.string_stats_resupplies_1)).setText( playerData[1].getNumResupplies() + "" );
@@ -234,6 +240,7 @@ public class CompareView extends Activity {
 	        ((TextView) findViewById(R.id.string_stats_wlr_1)).setText( playerData[1].getWLRatio() + "" );
 	        ((TextView) findViewById(R.id.string_stats_accuracy_1)).setText( playerData[1].getAccuracy() + "%" );
 	        ((TextView) findViewById(R.id.string_stats_time_1)).setText( playerData[1].getTimePlayedString() + "" );
+	        ((TextView) findViewById(R.id.string_stats_skill_1)).setText( playerData[1].getSkill() + "" );
 	        ((TextView) findViewById(R.id.string_stats_spm_1)).setText( playerData[1].getScorePerMinute() + "" );
 	        ((TextView) findViewById(R.id.string_stats_lks_1)).setText( playerData[1].getLongestKS() + "" );
 	        ((TextView) findViewById(R.id.string_stats_lhs_1)).setText( playerData[1].getLongestHS() + " m");		

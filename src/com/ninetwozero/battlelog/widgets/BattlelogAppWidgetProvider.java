@@ -67,7 +67,8 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 		   //Set the values
 		   sharedPreferences = context.getSharedPreferences( Constants.fileSharedPrefs, 0);  
 		   profileData = new ProfileData(
-				
+
+				sharedPreferences.getString( "battlelog_username", "" ),
 			    sharedPreferences.getString( "battlelog_persona", "" ),
 			    sharedPreferences.getLong( "battlelog_persona_id", 0 ),
 			    sharedPreferences.getLong( "battlelog_persona_id", 0 ),

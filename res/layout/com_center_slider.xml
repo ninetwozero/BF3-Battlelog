@@ -101,46 +101,14 @@
 			android:layout_below="@id/wrap_friends_requests"
 			android:layout_alignWithParentIfMissing="@id/topalign" 
 		/>
-	    <RelativeLayout
-	    	android:id="@+id/wrap_friends_online"  
+	   <ListView
+	    	android:id="@+id/list_friends"  
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/wrap_friends_requests"
-			android:layout_alignWithParentIfMissing="@id/topalign" 
-		>
-		
-			<TextView
-			    style="@style/FriendHeadingRow"
-				android:id="@+id/header_friends_online"
-				android:text="Online friends"    
-	    	/>    
-		    <ListView
-		    	android:id="@+id/list_friends_online"  
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_below="@id/header_friends_online"
-		    />
-	    </RelativeLayout>
-		<RelativeLayout
-	    	android:id="@+id/wrap_friends_offline"  
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="fill_parent"
+			android:layout_alignWithParentIfMissing="@id/topalign"
 			android:layout_above="@id/button_refresh"
-			android:layout_below="@id/wrap_friends_online"
-			android:layout_alignWithParentIfMissing="@id/centeralign" 
-		>
-		
-			<TextView
-			    style="@style/FriendHeadingRow"
-				android:id="@+id/header_friends_offline"
-				android:text="Offline friends"    
-	    	/>    
-		    <ListView
-		    	android:id="@+id/list_friends_offline"  
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_below="@id/header_friends_offline"
-		    />
-	    </RelativeLayout>
+			android:layout_below="@id/wrap_friends_requests"
+			android:fastScrollEnabled="true"
+	    />
 	</RelativeLayout>
 </SlidingDrawer>

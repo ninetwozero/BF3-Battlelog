@@ -201,7 +201,7 @@ public class ChatView extends ListActivity {
     	//Send?
     	if( v.getId() == R.id.button_send ) {
     	
-    		
+    		//Send it!
     		new AsyncChatSend(
     				
 				this,
@@ -217,6 +217,9 @@ public class ChatView extends ListActivity {
 				fieldMessage.getText().toString()
     				
 			);
+    		
+    		//Clear the field
+    		fieldMessage.setText( "" );
     		
     	}
     	

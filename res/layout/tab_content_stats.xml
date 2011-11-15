@@ -129,7 +129,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Kills"
-						android:paddingRight="100dp"
+						android:paddingRight="125dp"
 					    android:layout_below="@id/string100"
 					/>
 					<TextView
@@ -159,17 +159,51 @@
 				<!-- END_STATS_ITEM -->
 				<!-- START_STATS_ITEM -->
 					<TextView
+						android:id="@+id/string_left_vehicles"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Vehicles destroyed"
+						android:paddingRight="100dp"
+					    android:layout_below="@id/string_stats_assists"
+					/>
+					<TextView
+						android:id="@+id/string_stats_vkills"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="100"
+					    android:layout_below="@id/string_stats_assists"
+						android:layout_toRightOf="@id/string_left_kills"
+					/>
+				<!-- END_STATS_ITEM -->
+				<!-- START_STATS_ITEM -->
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Vehicles assisted with"
+					    android:layout_below="@id/string_stats_vkills"
+					/>
+					<TextView
+						android:id="@+id/string_stats_vassists"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="10"
+					    android:layout_below="@id/string_stats_vkills"
+						android:layout_toRightOf="@id/string_left_kills"
+					/>
+				<!-- END_STATS_ITEM -->
+				<!-- START_STATS_ITEM -->
+					<TextView
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Heals"
-					    android:layout_below="@id/string_stats_assists"
+					    android:layout_below="@id/string_stats_vassists"
 					/>
 					<TextView
 						android:id="@+id/string_stats_heals"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="10"
-					    android:layout_below="@id/string_stats_assists"
+					    android:layout_below="@id/string_stats_vassists"
 						android:layout_toRightOf="@id/string_left_kills"
 					/>
 				<!-- END_STATS_ITEM -->
@@ -245,7 +279,7 @@
 						android:layout_height="wrap_content"
 						android:text="K/D-ratio"
 					    android:layout_below="@id/string_stats_deaths"
-					    android:paddingRight="58dp"
+					    android:paddingRight="83dp"
 					/>
 					<TextView
 					    style="@style/InfoSubHeading"
@@ -295,7 +329,7 @@
 						android:id="@+id/string106"
 						android:text="W/L-ratio"
 						android:layout_below="@id/string_stats_losses"
-					    android:paddingRight="58dp"
+					    android:paddingRight="83dp"
 					/>
 					<TextView
 					    style="@style/InfoSubHeading"
@@ -358,15 +392,31 @@
 					<TextView
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:text="Time played"
+						android:text="Skill rating"
 						android:layout_below="@id/string_stats_lks"
+					/>
+					<TextView
+						android:id="@+id/string_stats_skill"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="1000"
+						android:layout_below="@id/string_stats_lks"
+						android:layout_toRightOf="@id/string_left_kills"
+					/>
+				<!-- END_STATS_ITEM -->
+				<!-- START_STATS_ITEM -->
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Time played"
+						android:layout_below="@id/string_stats_skill"
 					/>
 					<TextView
 						android:id="@+id/string_stats_time"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="1H 59M 28S"
-						android:layout_below="@id/string_stats_lks"
+						android:layout_below="@id/string_stats_skill"
 						android:layout_toRightOf="@id/string_left_kills"
 					/>
 				<!-- END_STATS_ITEM -->
@@ -376,7 +426,7 @@
 						android:id="@+id/string1110"
 						android:text="Score/minute"
 						android:layout_below="@id/string_stats_time"
-					    android:paddingRight="50dp"
+					    android:paddingRight="83dp"
 					/>
 					<TextView
 					    style="@style/InfoSubHeading"
@@ -420,7 +470,7 @@
 					android:text="Assault "
 					android:layout_toRightOf="@id/image_score"
 				    android:layout_below="@id/string200"
-				    android:paddingRight="58dp"
+				    android:paddingRight="83dp"
 				/>
 				<TextView
 					android:id="@+id/string_score_assault"
@@ -583,7 +633,7 @@
 					android:id="@+id/string209"
 					android:text="Total score"
 				    android:layout_below="@id/string_score_unlock"
-				    android:paddingRight="50dp"
+				    android:paddingRight="83dp"
 				/>
 				<TextView
 				    style="@style/InfoSubHeading"

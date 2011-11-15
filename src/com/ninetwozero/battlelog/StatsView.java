@@ -63,7 +63,7 @@ public class StatsView extends Activity {
     	instances = 1;
     	
     	//Set the content view
-        setContentView(R.layout.stats_view);
+        setContentView(R.layout.tab_content_stats);
 
         //Prepare to tango
         this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
@@ -76,6 +76,7 @@ public class StatsView extends Activity {
     	new GetDataSelfAsync(this).execute(
     		
     		new ProfileData(
+				this.sharedPreferences.getString( "battlelog_username", "" ),
 				this.sharedPreferences.getString( "battlelog_persona", "" ),
 				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
 				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
@@ -158,20 +159,11 @@ public class StatsView extends Activity {
 	        ((TextView) findViewById(R.id.string_progress_max)).setText( playerData.getPointsNeededToLvlUp() + "" );
 	        ((TextView) findViewById(R.id.string_progress_left)).setText( playerData.getPointsLeft() + "" );
 	        
-	        //Score
-	        ((TextView) findViewById(R.id.string_score_assault)).setText( playerData.getScoreAssault() + "" );
-	        ((TextView) findViewById(R.id.string_score_engineer)).setText( playerData.getScoreEngineer() + "" );
-	        ((TextView) findViewById(R.id.string_score_support)).setText( playerData.getScoreSupport() + "" );
-	        ((TextView) findViewById(R.id.string_score_recon)).setText( playerData.getScoreRecon() + "" );
-	        ((TextView) findViewById(R.id.string_score_vehicles)).setText( playerData.getScoreVehicle() + "" );
-	        ((TextView) findViewById(R.id.string_score_combat)).setText( playerData.getScoreCombat() + "" );
-	        ((TextView) findViewById(R.id.string_score_award)).setText( playerData.getScoreAwards() + "" );
-	        ((TextView) findViewById(R.id.string_score_unlock)).setText( playerData.getScoreUnlocks() + "" );
-	        ((TextView) findViewById(R.id.string_score_total)).setText( playerData.getScoreTotal() + "" );
-	        
 	        //Stats
 	        ((TextView) findViewById(R.id.string_stats_kills)).setText( playerData.getNumKills() + "" );
 	        ((TextView) findViewById(R.id.string_stats_assists)).setText( playerData.getNumAssists() + "" );
+	        ((TextView) findViewById(R.id.string_stats_vkills)).setText( playerData.getNumVehicles() + "" );
+	        ((TextView) findViewById(R.id.string_stats_vassists)).setText( playerData.getNumVehicleAssists() + "" );
 	        ((TextView) findViewById(R.id.string_stats_heals)).setText( playerData.getNumHeals() + "" );
 	        ((TextView) findViewById(R.id.string_stats_revives)).setText( playerData.getNumRevives() + "" );
 	        ((TextView) findViewById(R.id.string_stats_repairs)).setText( playerData.getNumRepairs() + "" );
@@ -182,11 +174,23 @@ public class StatsView extends Activity {
 	        ((TextView) findViewById(R.id.string_stats_losses)).setText( playerData.getNumLosses() + "" );
 	        ((TextView) findViewById(R.id.string_stats_wlr)).setText( playerData.getWLRatio() + "" );
 	        ((TextView) findViewById(R.id.string_stats_accuracy)).setText( playerData.getAccuracy() + "%" );
-	        ((TextView) findViewById(R.id.string_stats_time)).setText( playerData.getTimePlayedString() + "" );
 	        ((TextView) findViewById(R.id.string_stats_spm)).setText( playerData.getScorePerMinute() + "" );
 	        ((TextView) findViewById(R.id.string_stats_lks)).setText( playerData.getLongestKS() + "" );
-	        ((TextView) findViewById(R.id.string_stats_lhs)).setText( playerData.getLongestHS() + " m");		
-		
+	        ((TextView) findViewById(R.id.string_stats_lhs)).setText( playerData.getLongestHS() + " m");	
+	        ((TextView) findViewById(R.id.string_stats_skill)).setText( playerData.getSkill() + "");	
+	        ((TextView) findViewById(R.id.string_stats_time)).setText( playerData.getTimePlayedString() + "" );	
+		 
+	        //Score
+	        ((TextView) findViewById(R.id.string_score_assault)).setText( playerData.getScoreAssault() + "" );
+	        ((TextView) findViewById(R.id.string_score_engineer)).setText( playerData.getScoreEngineer() + "" );
+	        ((TextView) findViewById(R.id.string_score_support)).setText( playerData.getScoreSupport() + "" );
+	        ((TextView) findViewById(R.id.string_score_recon)).setText( playerData.getScoreRecon() + "" );
+	        ((TextView) findViewById(R.id.string_score_vehicles)).setText( playerData.getScoreVehicle() + "" );
+	        ((TextView) findViewById(R.id.string_score_combat)).setText( playerData.getScoreCombat() + "" );
+	        ((TextView) findViewById(R.id.string_score_award)).setText( playerData.getScoreAwards() + "" );
+	        ((TextView) findViewById(R.id.string_score_unlock)).setText( playerData.getScoreUnlocks() + "" );
+	        ((TextView) findViewById(R.id.string_score_total)).setText( playerData.getScoreTotal() + "" );
+
 	        if( this.progressDialog != null ) this.progressDialog.dismiss();
 			return;
 		}

@@ -25,7 +25,6 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -55,7 +54,8 @@ public class WebsiteHandler {
 		SharedPreferences sharedPreferences = context.getSharedPreferences( Constants.fileSharedPrefs, 0);
 		SharedPreferences.Editor spEdit = sharedPreferences.edit();
 		String[] tempString = new String[10];
-		String httpContent;
+		String httpContent = "";
+		long profileId = 0;
 	
 		try {
 			
@@ -78,14 +78,19 @@ public class WebsiteHandler {
     			}
     			
     			//Cut out the appropriate bits (<a class="SOME CLASS HERE" href="A LONG LINK HERE">NINETWOZERO
-	    		httpContent = httpContent.substring( startPosition );
-				tempString[0] = httpContent.substring( 0, httpContent.indexOf("\">") ); 
+	    		tempString[0] = httpContent.substring( startPosition );
+				tempString[0] = tempString[0].substring( 0, tempString[0].indexOf("\">") ); 
 				bits = TextUtils.split( tempString[0].replace( Constants.elementUIDLink, ""), "/");
 				
 				//Get the checksum
 				tempString[1] = httpContent.substring( httpContent.indexOf( Constants.elementStatusChecksumLink ) );
 				tempString[1] = tempString[1].substring( 0, tempString[1].indexOf( "\" />") ).replace( Constants.elementStatusChecksumLink, "" );
 				
+				//Let's work on getting the "username", not persona name --> profileId
+				tempString[2] = httpContent.substring( httpContent.indexOf( Constants.elementUsernameLink ) );
+				tempString[2] = tempString[2].substring( 0, tempString[2].indexOf( "/\">") ).replace( Constants.elementUsernameLink, "" );
+				profileId = WebsiteHandler.getIDFromSearch( tempString[2], tempString[1]).getProfileId();
+
 				//Further more, we would actually like to store the userid and name
 				spEdit.putString( "origin_email", postDataArray[0].getValue() );
 				
@@ -101,7 +106,10 @@ public class WebsiteHandler {
 					spEdit.putBoolean( "remember_password", false);
 				}
 				
+				//This we keep!!!
+				spEdit.putString( "battlelog_username", tempString[2] );
 				spEdit.putString( "battlelog_persona",  bits[0]);
+				spEdit.putLong( "battlelog_profile_id", profileId);
 				spEdit.putLong( "battlelog_persona_id",  Long.parseLong( bits[2] ));				
 				spEdit.putLong( "battlelog_platform_id",  DataBank.getPlatformIdFromName(bits[3]) );
 				spEdit.putString( "battlelog_post_checksum", tempString[1]);
@@ -113,6 +121,7 @@ public class WebsiteHandler {
     		
 		} catch( Exception ex ) {
 			
+			ex.printStackTrace();
 			throw new WebsiteHandlerException("Failed to log-in.");
 			
 		}
@@ -167,6 +176,7 @@ public class WebsiteHandler {
 							
 							profile = new ProfileData(
 								tempObj.getString( "username" ),
+								tempObj.getString( "username" ),
 								0,
 								Long.parseLong( tempObj.getString( "userId" ) ),
 								0
@@ -184,6 +194,7 @@ public class WebsiteHandler {
 	
 							profile = new ProfileData(
 								
+								tempObj.getString( "username" ),
 								tempObj.getString( "username" ),
 								0,
 								Long.parseLong( tempObj.getString( "userId" ) ),
@@ -240,6 +251,7 @@ public class WebsiteHandler {
 				JSONObject personaObject = new JSONObject(httpContent).getJSONObject( "data" ).getJSONArray( "soldiersBox" ).optJSONObject( 0 ).getJSONObject( "persona" );
 				
 				return new ProfileData( 
+					personaObject.getString("personaName"),
 					personaObject.getString("personaName"),
 					personaObject.getLong( "personaId" ), 
 					profileId,
@@ -302,6 +314,7 @@ public class WebsiteHandler {
 	        //Yay
 	        return new PlayerData(
 	        	pd.getAccountName(),
+	        	pd.getPersonaName(),
 	        	currRankInfo.getString( "name" ),
 	        	statsOverview.getLong( "rank" ),
 	        	pd.getPersonaId(),
@@ -312,6 +325,8 @@ public class WebsiteHandler {
 	        	nextRankInfo.getLong( "pointsNeeded" ),
 	        	statsOverview.getInt( "kills" ),
 	        	statsOverview.getInt( "killAssists" ),
+	        	statsOverview.getInt( "vehiclesDestroyed" ),
+	        	statsOverview.getInt( "vehiclesDestroyedAssists" ),
 	        	statsOverview.getInt( "heals" ),
 	        	statsOverview.getInt( "revives" ),
 	        	statsOverview.getInt( "repairs" ),
@@ -323,6 +338,7 @@ public class WebsiteHandler {
 	        	statsOverview.getDouble( "accuracy" ),
 	        	statsOverview.getDouble( "longestHeadshot" ),
 	        	statsOverview.getDouble( "killStreakBonus" ),
+	        	statsOverview.getDouble( "elo" ),
 	        	statsOverview.getDouble( "scorePerMinute" ),
 	        	kitScores.getLong( "1" ),
 	        	kitScores.getLong( "2" ),
@@ -343,184 +359,184 @@ public class WebsiteHandler {
 		
 	}
 
-public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws WebsiteHandlerException {
-	
-	try {
+	public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws WebsiteHandlerException {
 		
-    	//Get the data
-    	RequestHandler wh = new RequestHandler();
-    	ArrayList<UnlockData> unlockArray = new ArrayList<UnlockData>();
-    	String content = wh.get( 
-	
-			Constants.urlStatsUpcoming.replace(
-					
-				"{UID}", pd.getPersonaId() + ""
+		try {
 			
-			).replace( 
-			
-				"{PLATFORM_ID}", pd.getPlatformId() + ""
-			), 
-			false
-			
-		);
-    	
-    	//JSON Objects
-    	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
-    	JSONArray unlockResults = dataObject.getJSONArray( "unlocks" );
-    	JSONObject unlockRow, detailObject;
-    	int unlockKit;
-    	
-    	//Iterate over the unlocksArray
-    	for( int i = 0; i < unlockResults.length(); i++ ) {
-    	
-    		//Get the temporary object
-    		unlockRow = unlockResults.optJSONObject( i );
-
-    		//Less than 1.0?
-    		if( unlockRow.getDouble( "unlockPercentage" ) < 1.0 ) { continue; }
-    		
-    		try {
-
-    			unlockKit = unlockRow.getInt( "kit" );
-    		
-    		} catch( Exception ex ) {
-    			
-    			unlockKit = 0;
-    			
-    		}
-    		
-    		//What did we get?
-    		if( !unlockRow.isNull( "weaponAddonUnlock" ) ) {
-    			
-    			//Get the object
-    			detailObject = unlockRow.getJSONObject( "weaponAddonUnlock" );
-    			
-    			//Add them to the array
-    			unlockArray.add( 
-    				
-    				new UnlockData(
-    				
-						unlockKit,
-						unlockRow.getDouble( "unlockPercentage" ),
-						detailObject.getLong( "valueNeeded" ),
-						detailObject.getLong( "actualValue" ),
-						detailObject.getString( "weaponCode" ),
-						detailObject.getString( "unlockId" ),
-						detailObject.getString( "codeNeeded" ),
-						"weapon+"
-    						
-					)	
-    					
-				);
-  
-    		} else if( !unlockRow.isNull( "kitItemUnlock" ) ) {
-
-    			//Get the object
-    			detailObject = unlockRow.getJSONObject( "kitItemUnlock" );
-    			
-    			//Add them to the array
-    			unlockArray.add( 
-    				
-    				new UnlockData(
-    				
-						unlockKit,
-						unlockRow.getDouble( "unlockPercentage" ),
-						detailObject.getLong( "valueNeeded" ),
-						detailObject.getLong( "actualValue" ),
-						unlockRow.getString( "parentId" ),
-						detailObject.getString( "unlockId" ),
-						detailObject.getString( "codeNeeded" ),
-						"kit+"
-    						
-					)	
-    					
-				);
-    	    	
-    		} else if( !unlockRow.isNull( "vehicleAddonUnlock" ) ) {
-
-    			//Get the object
-    			detailObject = unlockRow.getJSONObject( "vehicleAddonUnlock" );
-    			
-    			//Add them to the array
-    			unlockArray.add( 
-    				
-    				new UnlockData(
-    				
-						unlockKit,
-						unlockRow.getDouble( "unlockPercentage" ),
-						detailObject.getLong( "valueNeeded" ),
-						detailObject.getLong( "actualValue" ),
-						unlockRow.getString( "parentId" ),
-						detailObject.getString( "unlockId" ),
-						detailObject.getString( "codeNeeded" ),
-						"vehicle+"
-    						
-					)	
-    					
-				);
-    	    	
-    		} else if( !unlockRow.isNull( "weaponUnlock" ) ) {
-
-    			//Get the object
-    			detailObject = unlockRow.getJSONObject( "weaponUnlock" );
-    			
-    			//Add them to the array
-    			unlockArray.add( 
-    				
-    				new UnlockData(
-    				
-						unlockKit,
-						unlockRow.getDouble( "unlockPercentage" ),
-						detailObject.getLong( "valueNeeded" ),
-						detailObject.getLong( "actualValue" ),
-						unlockRow.getString( "parentId" ),
-						detailObject.getString( "unlockId" ),
-						detailObject.getString( "codeNeeded" ),
-						"weapon"
-    						
-					)	
-    					
-				);
-    	    	
-    		} else if( !unlockRow.isNull( "soldierSpecializationUnlock" ) ) {
-
-    			//Get the object
-    			detailObject = unlockRow.getJSONObject( "soldierSpecializationUnlock" );
-    			
-    			//Add them to the array
-    			unlockArray.add( 
-    				
-    				new UnlockData(
-    				
-						unlockKit,
-						unlockRow.getDouble( "unlockPercentage" ),
-						detailObject.getLong( "valueNeeded" ),
-						detailObject.getLong( "actualValue" ),
-						unlockRow.getString( "parentId" ),
-						detailObject.getString( "unlockId" ),
-						detailObject.getString( "codeNeeded" ),
-						"skill"
-    						
-					)	
-    					
-				);
-    			
-    		} else {}
-    	}
-    	
-        //Yay
-    	Collections.sort( unlockArray, new UnlockComparator() );
-
-    	//RETURN TO SENDER
-        return unlockArray;
-    
-	} catch ( Exception ex ) {
+	    	//Get the data
+	    	RequestHandler wh = new RequestHandler();
+	    	ArrayList<UnlockData> unlockArray = new ArrayList<UnlockData>();
+	    	String content = wh.get( 
 		
-		throw new WebsiteHandlerException(ex.getMessage());
+				Constants.urlStatsUpcoming.replace(
+						
+					"{UID}", pd.getPersonaId() + ""
+				
+				).replace( 
+				
+					"{PLATFORM_ID}", pd.getPlatformId() + ""
+				), 
+				false
+				
+			);
+	    	
+	    	//JSON Objects
+	    	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
+	    	JSONArray unlockResults = dataObject.getJSONArray( "unlocks" );
+	    	JSONObject unlockRow, detailObject;
+	    	int unlockKit;
+	    	
+	    	//Iterate over the unlocksArray
+	    	for( int i = 0; i < unlockResults.length(); i++ ) {
+	    	
+	    		//Get the temporary object
+	    		unlockRow = unlockResults.optJSONObject( i );
+	
+	    		//Less than 1.0?
+	    		if( unlockRow.getDouble( "unlockPercentage" ) < 1.0 ) { continue; }
+	    		
+	    		try {
+	
+	    			unlockKit = unlockRow.getInt( "kit" );
+	    		
+	    		} catch( Exception ex ) {
+	    			
+	    			unlockKit = 0;
+	    			
+	    		}
+	    		
+	    		//What did we get?
+	    		if( !unlockRow.isNull( "weaponAddonUnlock" ) ) {
+	    			
+	    			//Get the object
+	    			detailObject = unlockRow.getJSONObject( "weaponAddonUnlock" );
+	    			
+	    			//Add them to the array
+	    			unlockArray.add( 
+	    				
+	    				new UnlockData(
+	    				
+							unlockKit,
+							unlockRow.getDouble( "unlockPercentage" ),
+							detailObject.getLong( "valueNeeded" ),
+							detailObject.getLong( "actualValue" ),
+							detailObject.getString( "weaponCode" ),
+							detailObject.getString( "unlockId" ),
+							detailObject.getString( "codeNeeded" ),
+							"weapon+"
+	    						
+						)	
+	    					
+					);
+	  
+	    		} else if( !unlockRow.isNull( "kitItemUnlock" ) ) {
+	
+	    			//Get the object
+	    			detailObject = unlockRow.getJSONObject( "kitItemUnlock" );
+	    			
+	    			//Add them to the array
+	    			unlockArray.add( 
+	    				
+	    				new UnlockData(
+	    				
+							unlockKit,
+							unlockRow.getDouble( "unlockPercentage" ),
+							detailObject.getLong( "valueNeeded" ),
+							detailObject.getLong( "actualValue" ),
+							unlockRow.getString( "parentId" ),
+							detailObject.getString( "unlockId" ),
+							detailObject.getString( "codeNeeded" ),
+							"kit+"
+	    						
+						)	
+	    					
+					);
+	    	    	
+	    		} else if( !unlockRow.isNull( "vehicleAddonUnlock" ) ) {
+	
+	    			//Get the object
+	    			detailObject = unlockRow.getJSONObject( "vehicleAddonUnlock" );
+	    			
+	    			//Add them to the array
+	    			unlockArray.add( 
+	    				
+	    				new UnlockData(
+	    				
+							unlockKit,
+							unlockRow.getDouble( "unlockPercentage" ),
+							detailObject.getLong( "valueNeeded" ),
+							detailObject.getLong( "actualValue" ),
+							unlockRow.getString( "parentId" ),
+							detailObject.getString( "unlockId" ),
+							detailObject.getString( "codeNeeded" ),
+							"vehicle+"
+	    						
+						)	
+	    					
+					);
+	    	    	
+	    		} else if( !unlockRow.isNull( "weaponUnlock" ) ) {
+	
+	    			//Get the object
+	    			detailObject = unlockRow.getJSONObject( "weaponUnlock" );
+	    			
+	    			//Add them to the array
+	    			unlockArray.add( 
+	    				
+	    				new UnlockData(
+	    				
+							unlockKit,
+							unlockRow.getDouble( "unlockPercentage" ),
+							detailObject.getLong( "valueNeeded" ),
+							detailObject.getLong( "actualValue" ),
+							unlockRow.getString( "parentId" ),
+							detailObject.getString( "unlockId" ),
+							detailObject.getString( "codeNeeded" ),
+							"weapon"
+	    						
+						)	
+	    					
+					);
+	    	    	
+	    		} else if( !unlockRow.isNull( "soldierSpecializationUnlock" ) ) {
+	
+	    			//Get the object
+	    			detailObject = unlockRow.getJSONObject( "soldierSpecializationUnlock" );
+	    			
+	    			//Add them to the array
+	    			unlockArray.add( 
+	    				
+	    				new UnlockData(
+	    				
+							unlockKit,
+							unlockRow.getDouble( "unlockPercentage" ),
+							detailObject.getLong( "valueNeeded" ),
+							detailObject.getLong( "actualValue" ),
+							unlockRow.getString( "parentId" ),
+							detailObject.getString( "unlockId" ),
+							detailObject.getString( "codeNeeded" ),
+							"skill"
+	    						
+						)	
+	    					
+					);
+	    			
+	    		} else {}
+	    	}
+	    	
+	        //Yay
+	    	Collections.sort( unlockArray, new UnlockComparator() );
+	
+	    	//RETURN TO SENDER
+	        return unlockArray;
+	    
+		} catch ( Exception ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
 		
 	}
-	
-}
 	
 	public static final ArrayList<ArrayList<ProfileData>> getFriendsCOM(String checksum) throws WebsiteHandlerException {
 		
@@ -545,9 +561,9 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 
 				//Arraylists!
 				ArrayList<ProfileData> profileRowRequests = new ArrayList<ProfileData>();
+				ArrayList<ProfileData> profileRowPlaying = new ArrayList<ProfileData>();
 				ArrayList<ProfileData> profileRowOnline = new ArrayList<ProfileData>();
 				ArrayList<ProfileData> profileRowOffline = new ArrayList<ProfileData>();
-				//TreeMap<String, ProfileData> tempRow = new TreeMap<String, ProfileData>();
 				
 				//Grab the lengths
 				int numRequests = requestsObject.length(), numFriends = friendsObject.length();
@@ -565,7 +581,8 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 						profileRowRequests.add(
 								
 							new ProfileData(
-									
+
+								tempObj.getString( "username" ),
 								tempObj.getString( "username" ),
 								0,
 								Long.parseLong( tempObj.getString( "userId" ) ),
@@ -578,7 +595,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 					}
 
 					//Sort it out
-					Collections.sort( profileRowOnline, new ProfileComparator() );
+					Collections.sort( profileRowRequests, new ProfileComparator() );
 			 
 					profileArray.add( profileRowRequests );
 					
@@ -601,27 +618,51 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 						if( presenceObj.getBoolean( "isOnline" ) ) {
 							
 							
-							profileRowOnline.add(								
+							if( presenceObj.getBoolean( "isPlaying" ) ) {
+								
+								profileRowPlaying.add(								
 							
-								new ProfileData(
-										
-									tempObj.getString( "username" ),
-									0,
-									Long.parseLong( tempObj.getString( "userId" ) ),
-									0,
-									true,
-									tempObj.getJSONObject( "presence" ).getBoolean( "isPlaying" )
-								
-								) 
-								
-							);
+									new ProfileData(
+
+										tempObj.getString( "username" ),
+										tempObj.getString( "username" ),
+										0,
+										Long.parseLong( tempObj.getString( "userId" ) ),
+										0,
+										true,
+										true
+									
+									) 
+									
+								);
 				
+							} else {
+							
+								profileRowOnline.add(								
+										
+									new ProfileData(
+											
+										tempObj.getString( "username" ),
+										tempObj.getString( "username" ),
+										0,
+										Long.parseLong( tempObj.getString( "userId" ) ),
+										0,
+										true,
+										false
+									
+									) 
+									
+								);
+								
+							}
+							
 						} else {
 						
 							profileRowOffline.add(								
 									
 								new ProfileData(
 											
+									tempObj.getString( "username" ),
 									tempObj.getString( "username" ),
 									0,
 									Long.parseLong( tempObj.getString( "userId" ) ),
@@ -635,17 +676,34 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 					
 					}
 					
-					//Sort it out
+					//First add the separators)...
+					
+					if( (profileRowPlaying.size() + profileRowOnline.size()) > 0 ){
+						
+						profileRowPlaying.add(  new ProfileData( "00000000", "Online friends", 0, 0, 0 ) );
+					}
+					
+					
+					if( profileRowOffline.size() > 0 ) {
+						
+						profileRowOffline.add(  new ProfileData( "00000001", "Offline friends", 0, 0, 0 ) );
+					
+					}
+					
+					//...then we sort it out...
+					Collections.sort( profileRowPlaying, new ProfileComparator() );
 					Collections.sort( profileRowOnline, new ProfileComparator() );
 					Collections.sort( profileRowOffline, new ProfileComparator() );
 					
-					//Add it man!
-					profileArray.add( profileRowOnline );
-					profileArray.add( profileRowOffline );
+					//...sprinkle a little merging here and there...
+					profileRowPlaying.addAll( profileRowOnline );
+					profileRowPlaying.addAll( profileRowOffline );
+					
+					//...and add it to the list!
+					profileArray.add( profileRowPlaying );
 				
 				} else {
 					
-					profileArray.add( null );
 					profileArray.add( null );
 					
 				}
@@ -703,6 +761,7 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 							
 						new ProfileData(
 								
+							tempObj.getString( "username" ),
 							tempObj.getString( "username" ),
 							0,
 							Long.parseLong( tempObj.getString( "userId" ) ),
@@ -896,13 +955,11 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 				//Get the messages
 				JSONArray messages = new JSONObject(httpContent).getJSONObject("data").getJSONObject( "chat" ).getJSONArray( "messages" );
 				JSONObject tempObject;
-				Log.d(Constants.debugTag, messages.toString(4));
 				
 				//Iterate
 				for( int i = 0; i < messages.length(); i++ ) {
 					
 					tempObject = messages.optJSONObject( i );
-					Log.d(Constants.debugTag, tempObject.toString(4));
 					messageArray.add( 
 					
 						new ChatMessage(
@@ -974,7 +1031,6 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
 			
-				Log.d(Constants.debugTag, httpContent);
 				return true;
 				
 			} else {
@@ -1000,6 +1056,8 @@ public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws Web
 			ArrayList<FeedItem> feedItemArray = new ArrayList<FeedItem>();
 			ArrayList<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
 			String httpContent;
+			
+			Log.d(Constants.debugTag, Constants.urlProfileInfo.replace( "{UNAME}", profileData.getAccountName()));
 			
 			//Get the content
 			httpContent = rh.get( Constants.urlProfileInfo.replace( "{UNAME}", profileData.getAccountName() ), true );

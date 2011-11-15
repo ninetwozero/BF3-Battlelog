@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.misc.Constants;
 
 public class FriendListAdapter extends BaseAdapter {
 	
@@ -33,7 +35,7 @@ public class FriendListAdapter extends BaseAdapter {
 	ArrayList<ProfileData> profileArray;
 	LayoutInflater layoutInflater;
 	String tempStatus;
-	TextView textPersona, textStatus;
+	TextView textUser, textStatus;
 	
 	//Construct
 	public FriendListAdapter(Context c, ArrayList<ProfileData> p, LayoutInflater l) {
@@ -49,6 +51,28 @@ public class FriendListAdapter extends BaseAdapter {
 
 		return ( profileArray != null )? profileArray.size() : 0;
 		
+	}
+	
+	@Override
+	public int getItemViewType(int position) {
+	    
+		if( getItem(position).getAccountName().startsWith( "0000000" ) ) {
+			
+			return 1;
+		
+		} else {
+			
+			return 0;
+		
+		}
+	
+	}
+
+	@Override
+	public int getViewTypeCount() {
+	   
+		return 2;
+	
 	}
 
 	@Override
@@ -77,39 +101,60 @@ public class FriendListAdapter extends BaseAdapter {
 		//Get the current item
 		ProfileData currentProfile = getItem(position);
 		
-		//Recycle
-		if ( convertView == null ) {
-
-			convertView = layoutInflater.inflate( R.layout.list_item_friend, parent, false );
-
-		}
-
-		//Set the TextViews
-		textPersona = (TextView) convertView.findViewById( R.id.text_persona );
-		textPersona.setText( currentProfile.getAccountName() );
-		textStatus = (TextView) convertView.findViewById( R.id.text_status );
-
-		
-		//Oh-oh
-		if( currentProfile.isPlaying() && currentProfile.isOnline() ) {
+		//Let's see what we found
+		if( getItemViewType(position) == 1 ) {
 			
-			textPersona.setTextColor( context.getResources().getColor(R.color.blue) );
-			textStatus.setText( "Playing" );
-			textStatus.setTextColor( context.getResources().getColor(R.color.blue) );
+			//Can we recycle?
+			if( convertView == null ) {
+
+				convertView = layoutInflater.inflate( R.layout.list_friends_divider, parent, false);
 			
-		} else if( currentProfile.isOnline() ) {
+			} 
 			
-			textPersona.setTextColor( context.getResources().getColor(R.color.green) );
-			textStatus.setText( "Online" );
-			textStatus.setTextColor( context.getResources().getColor(R.color.green) );
-						
+			//Set the fields
+			((TextView) convertView.findViewById( R.id.text_title )).setText( currentProfile.getPersonaName() );
+			convertView.setOnClickListener( null );
+			convertView.setOnLongClickListener( null );
+			
 		} else {
-			
-			textStatus.setText( "Offline" );
-			
-		}
 		
-		convertView.setTag( currentProfile );
+			//Recycle
+			if ( convertView == null ) {
+	
+				convertView = layoutInflater.inflate( R.layout.list_item_friend, parent, false );
+	
+			}
+	
+			Log.d(Constants.debugTag, currentProfile.toString());
+			//Set the TextViews
+			textUser = (TextView) convertView.findViewById( R.id.text_user );
+			textUser.setText( 
+					currentProfile.getAccountName() 
+			);
+			textStatus = (TextView) convertView.findViewById( R.id.text_status );
+			
+			//Oh-oh
+			if( currentProfile.isPlaying() && currentProfile.isOnline() ) {
+				
+				textUser.setTextColor( context.getResources().getColor(R.color.blue) );
+				textStatus.setText( "Playing" );
+				textStatus.setTextColor( context.getResources().getColor(R.color.blue) );
+				
+			} else if( currentProfile.isOnline() ) {
+				
+				textUser.setTextColor( context.getResources().getColor(R.color.green) );
+				textStatus.setText( "Online" );
+				textStatus.setTextColor( context.getResources().getColor(R.color.green) );
+							
+			} else {
+				
+				textStatus.setText( "Offline" );
+				
+			}
+			
+			convertView.setTag( currentProfile );
+		
+		}
 
 		return convertView;
 	}

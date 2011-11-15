@@ -25,29 +25,31 @@ public class PlayerData implements Serializable {
 	private static final long serialVersionUID = -4227286910413194182L;
 
 	//Base-section
-	private String personaName, rankTitle;
+	private String accountName, personaName, rankTitle;
 	private long rankId, personaId, playerId, platformId, timePlayed;
 	
 	//EXP-section
 	private long pointsThisLvl, pointsNextLvl;
 	
 	//STATS-section
-	private int numKills, numAssists, numHeals, numRevives, numRepairs, numResupplies, numDeaths, numWins, numLosses;
-	private double kdRatio, accuracy, longestHS, longestKS, scorePerMinute;
+	private int numKills, numAssists, numVehicles, numVehicleAssists;
+	private int numHeals, numRevives, numRepairs, numResupplies, numDeaths, numWins, numLosses;
+	private double kdRatio, accuracy, longestHS, longestKS, skill, scorePerMinute;
 	
 	//SCORE-section
 	private long scoreAssault, scoreEngineer, scoreSupport, scoreRecon, scoreVehicle, scoreCombat, scoreAwards, scoreUnlocks, scoreTotal;
 	
 	//Construct
 	public PlayerData(
-		String pName, String rTitle, long rId, long prsId, long plyrId, long pltfId, long tPlayed,
+		String aName, String pName, String rTitle, long rId, long prsId, long plyrId, long pltfId, long tPlayed,
 		long ptsThisLvl, long ptsNxtLvl, 
-		int nKills, int nAssists, int nHeals, int nRevives, int nRepairs, int nResup, int nDeaths, int nWins, int nLosses,
-		double kdRatio, double nAccuracy, double lHS, double lKS, double spm,
+		int nKills, int nAssists, int nVDestroyed, int nVDestroyedAssists, int nHeals, int nRevives, int nRepairs, int nResup, int nDeaths, int nWins, int nLosses,
+		double kdRatio, double nAccuracy, double lHS, double lKS, double nSkill, double spm,
 		long scrAssault, long scrEngineer, long scrSupport, long scrRecon, long scrVehicle, long scrCombat, 
 		long scrAwards, long scrUnlocks, long scrTotal
 	) {
 		
+		this.accountName = aName;
 		this.personaName = pName;
 		this.rankId = rId;
 		this.rankTitle = rTitle;
@@ -59,6 +61,8 @@ public class PlayerData implements Serializable {
 		this.pointsNextLvl = ptsNxtLvl;
 		this.numKills = nKills;
 		this.numAssists = nAssists;
+		this.numVehicles = nVDestroyed;
+		this.numVehicleAssists = nVDestroyedAssists;
 		this.numHeals = nHeals;
 		this.numRevives = nRevives;
 		this.numRepairs = nRepairs;
@@ -66,6 +70,7 @@ public class PlayerData implements Serializable {
 		this.numDeaths = nDeaths;
 		this.numWins = nWins;
 		this.numLosses = nLosses;
+		this.skill = nSkill;
 		this.kdRatio = kdRatio;
 		this.accuracy = nAccuracy;
 		this.longestHS = lHS;
@@ -84,6 +89,7 @@ public class PlayerData implements Serializable {
 	}
 
 	//Getters	
+	public final String getAccountName() { return accountName; }
 	public final String getPersonaName() { return personaName; }
 	public final String getRankTitle() { return DataBank.getRankTitle(rankTitle); }
 	public final long getRankId() { return rankId; }
@@ -99,14 +105,16 @@ public class PlayerData implements Serializable {
 	public final long getPointsProgressLvl() { return scoreTotal - pointsThisLvl; }
 	public final long getPointsNeededToLvlUp() { return pointsNextLvl - pointsThisLvl; }
 	public final long getPointsLeft() { return getPointsNeededToLvlUp() - getPointsProgressLvl() ; }
-	
+
 	public final int getNumKills() { return numKills; }
-	public final int getNumAssists() { return numAssists; }	
+	public final int getNumAssists() { return numAssists; }
+	public final int getNumVehicles() { return numVehicles; }
+	public final int getNumVehicleAssists() { return numVehicleAssists; }	
 	public final int getNumHeals() { return numHeals; }	
 	public final int getNumRevives() { return numRevives; }	
 	public final int getNumRepairs() { return numRepairs; }	
 	public final int getNumResupplies() { return numResupplies; }	
-	public final int getNumDeaths() { return numDeaths; }	
+	public final int getNumDeaths() { return numDeaths; }
 	public final double getKDRatio() { return Math.floor( kdRatio * 1000 ) / 1000; }
 	
 	public final int getNumWins() { return numWins; }	
@@ -117,6 +125,7 @@ public class PlayerData implements Serializable {
 	
 	public final double getLongestHS() { return longestHS; }	
 	public final double getLongestKS() { return longestKS; }	
+	public final double getSkill() { return this.skill; } 	
 	public final double getScorePerMinute() { return scorePerMinute; }	
 	public final long getScoreAssault() { return scoreAssault; }	
 	public final long getScoreEngineer() { return scoreEngineer; }

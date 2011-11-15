@@ -54,6 +54,7 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -72,7 +73,7 @@ public class Dashboard extends Activity {
 	private SlidingDrawer slidingDrawer;
 	private OnDrawerOpenListener onDrawerOpenListener;
 	private OnDrawerCloseListener onDrawerCloseListener;
-	private ListView listFriendsRequests, listFriendsOnline, listFriendsOffline;
+	private ListView listFriendsRequests, listFriends;
 	private Button buttonRefresh;
 	private AsyncComRefresh asyncComRefresh;
 	
@@ -120,7 +121,29 @@ public class Dashboard extends Activity {
 			 
 		} else if( v.getId() == R.id.button_view_self ) {
 			
-			 startActivity( new Intent(this, StatsView.class) );
+			startActivity( 
+					
+				new Intent(
+					
+					this, 
+					ProfileView.class
+					
+				).putExtra( 
+						
+					"profile",
+					new ProfileData(
+
+						sharedPreferences.getString( "battlelog_username", "" ),
+						sharedPreferences.getString( "battlelog_persona", "" ),
+						sharedPreferences.getLong( "battlelog_profile_id", 0 ),
+						sharedPreferences.getLong( "battlelog_persona_id", 0 ),		
+						sharedPreferences.getLong( "battlelog_platform_id", 0 )
+						
+					)
+				
+				)
+				
+			);
 		
 		} else if( v.getId() == R.id.button_status ) {
 			
@@ -306,12 +329,10 @@ public class Dashboard extends Activity {
 		//Grab the ListViews
 		listFriendsRequests = (ListView) findViewById( R.id.list_requests );
 		listFriendsRequests.setChoiceMode( ListView.CHOICE_MODE_NONE );
-		listFriendsOnline = (ListView) findViewById( R.id.list_friends_online );
-		listFriendsOffline = (ListView) findViewById( R.id.list_friends_offline );
+		listFriends = (ListView) findViewById( R.id.list_friends);
 
 		//Set the context menus
-		registerForContextMenu( listFriendsOnline );
-		registerForContextMenu( listFriendsOffline );
+		registerForContextMenu( listFriends );
 		
 		//Setup the onClicks
 		OnItemClickListener onItemClickListener = new OnItemClickListener() {
@@ -325,8 +346,7 @@ public class Dashboard extends Activity {
 		};
 
 		listFriendsRequests.setOnItemClickListener( onItemClickListener );
-		listFriendsOnline.setOnItemClickListener( onItemClickListener );
-		listFriendsOffline.setOnItemClickListener( onItemClickListener );
+		listFriends.setOnItemClickListener( onItemClickListener );
 		
 		//refresh the COM
 		refreshCOM();
@@ -340,8 +360,8 @@ public class Dashboard extends Activity {
 			
 			context, 
 			listFriendsRequests, 
-			listFriendsOnline, 
-			listFriendsOffline, 
+			listFriends, 
+			listFriends, 
 			layoutInflater,
 			buttonRefresh
 			
@@ -363,8 +383,8 @@ public class Dashboard extends Activity {
 						
 					this, 
 					listFriendsRequests, 
-					listFriendsOnline, 
-					listFriendsOffline, 
+					listFriends, 
+					listFriends, 
 					layoutInflater,
 					buttonRefresh
 					
@@ -382,8 +402,8 @@ public class Dashboard extends Activity {
 						
 					this, 
 					listFriendsRequests, 
-					listFriendsOnline, 
-					listFriendsOffline, 
+					listFriends, 
+					listFriends, 
 					layoutInflater,
 					buttonRefresh
 					
@@ -419,8 +439,7 @@ public class Dashboard extends Activity {
     	
     	//Get it right
     	if( view.getId()  == R.id.list_requests ) { menuId = 0;  } 
-    	else if( view.getId() == R.id.list_friends_online ) { menuId = 1; } 
-    	else if( view.getId() == R.id.list_friends_offline ) { menuId = 2; }
+    	else if( view.getId() == R.id.list_friends) { menuId = 1; }
     	
     	//Show the menu
 		menu.add( menuId, 0, 0, "Use radio");
