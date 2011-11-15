@@ -53,7 +53,7 @@
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:background">#EBEBEB</item>
-		<item name="android:textColor">#3A3A3A</item>
+		<item name="android:textColor">@color/grey</item>
 		<item name="android:padding">5dp</item>
     </style>
     <color name="kit_recon">#bf4949</color>
@@ -62,5 +62,6 @@
     <color name="kit_support">#86ae31</color>
     <color name="kit_general">#8d8d8d</color>
     <color name="green">#309030</color>
-    <color name="blue">#308DBF</color>    
+    <color name="blue">#308DBF</color>   
+    <color name="grey">#3A3A3A</color>    
 </resources>

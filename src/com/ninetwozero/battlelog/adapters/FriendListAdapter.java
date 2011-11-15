@@ -147,8 +147,10 @@ public class FriendListAdapter extends BaseAdapter {
 				textStatus.setTextColor( context.getResources().getColor(R.color.green) );
 							
 			} else {
-				
-				textStatus.setText( "Offline" );
+
+				textUser.setTextColor( context.getResources().getColor(R.color.grey) );
+				textStatus.setText( "Offline" );				
+				textStatus.setTextColor( context.getResources().getColor(R.color.grey) );
 				
 			}
 			
