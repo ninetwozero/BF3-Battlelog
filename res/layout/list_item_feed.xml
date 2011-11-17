@@ -27,7 +27,7 @@
 			<View
 			    android:layout_width="fill_parent"
 			    android:layout_height="0.5dp"
-			    android:background="#AAAAAA"
+			    android:background="#BBBBBB"
 			    android:layout_marginTop="5dp"
 			    android:layout_marginBottom="5dp"
 			/>  
@@ -36,12 +36,11 @@
 				android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 				android:text="Yo text in the content is so 2012"
-				android:paddingLeft="10dp"
 			/>
 			<View
 			    android:layout_width="fill_parent"
 			    android:layout_height="0.5dp"
-			    android:background="#AAAAAA"
+			    android:background="#BBBBBB"
 			    android:layout_marginTop="5dp"
 			/>  
 		</LinearLayout>
@@ -59,7 +58,7 @@
 		    android:layout_height="wrap_content"
 		    android:text="23 minutes ago" 
 		    android:layout_alignParentLeft="true"
-		    android:textColor="#AAAAAA"
+		    android:textColor="#BBBBBB"
 		/>
 		<TextView
 		    android:id="@+id/text_comment"
@@ -67,7 +66,7 @@
 		    android:layout_height="wrap_content"
 		    android:text="5 comments" 
 		    android:layout_alignParentRight="true"
-		    android:textColor="#AAAAAA"
+		    android:textColor="#BBBBBB"
 		/>
 		<TextView
 		    android:id="@+id/text_hooah"
@@ -77,7 +76,7 @@
 		    android:layout_toLeftOf="@id/text_comment"
 		    android:layout_toRightOf="@id/text_date"  
 		    android:gravity="center"
-		    android:textColor="#AAAAAA"
+		    android:textColor="#BBBBBB"
 		/>
 	</RelativeLayout>
 </RelativeLayout>
