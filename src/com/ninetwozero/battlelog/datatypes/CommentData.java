@@ -41,4 +41,6 @@ public class CommentData {
 	public String getAuthor() { return this.author; }
 	public String getContent() { return this.content; }
 	
+	@Override
+	public String toString() { return getId() + ":" + getAuthorId() + ":" + getAuthor() + ":" + getContent(); }
 }

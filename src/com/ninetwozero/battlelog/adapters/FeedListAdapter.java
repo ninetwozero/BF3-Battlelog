@@ -18,15 +18,16 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class FeedListAdapter extends BaseAdapter {
@@ -100,4 +101,12 @@ public class FeedListAdapter extends BaseAdapter {
 		return convertView;
 	}
 	
+	@Override
+	public void notifyDataSetChanged() {
+		
+		super.notifyDataSetChanged();
+		
+		Log.d(Constants.debugTag, "This is me doing a notification of it!!");
+		
+	}
 }

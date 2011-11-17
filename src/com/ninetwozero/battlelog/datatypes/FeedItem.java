@@ -131,16 +131,7 @@ public class FeedItem {
 						
 			); 
 			
-		} else if( type.equals( "recievedplatoonwallpost" ) ) {
-			
-			return this.title.replace( 
-					
-				"{username}", 
-				this.username[0]
-				
-			);
-			
-		} else if( type.equals( "joinedplatoon" ) ) {
+		} else if( type.equals( "joinedplatoon" ) || type.equals( "leftplatoon" ) || type.equals( "recievedplatoonwallpost" ) ) {
 			
 			return this.title.replace( 
 					
@@ -168,6 +159,15 @@ public class FeedItem {
 					
 				"{username2}", this.username[1]
 						
+			);
+			
+		} else if( type.equals( "commentedgamereport" ) ) {
+			
+			return this.title.replace( 
+				
+				"{username}", 
+				this.username[0]
+				
 			);
 			
 		} else {

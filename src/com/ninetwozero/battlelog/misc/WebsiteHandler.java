@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.misc;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
@@ -1052,6 +1051,46 @@ public class WebsiteHandler {
 
 	}
 	
+	public static boolean closeChatWindow(long chatId) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Let's login everybody!
+			RequestHandler rh = new RequestHandler();
+			String httpContent;
+			
+			//Get the content
+			httpContent = rh.get(
+					
+				Constants.urlChatClose.replace(
+						
+					"{CID}", 
+					chatId + ""
+					
+				),
+				true
+					
+			);
+						
+			//Did we manage?
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+			
+				return true;
+				
+			} else {
+			
+				throw new WebsiteHandlerException("Could not close the chat.");
+				
+			}	
+		
+		} catch ( RequestHandlerException ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+
+	}
+	
 	public static ProfileInformation getProfileInformationForUser( ProfileData profileData ) throws WebsiteHandlerException {
 		
 		try {
@@ -1080,7 +1119,6 @@ public class WebsiteHandler {
 				JSONObject currItem;
 				JSONObject tempSubItem;
 				JSONObject tempCommentItem;
-				JSONArray commentArray;
 				String playingOn;
 
 				FeedItem tempFeedItem = null;
@@ -1139,7 +1177,8 @@ public class WebsiteHandler {
 					//Let's get the comments
 					if( currItem.getInt("numComments") > 2 ) {
 						
-						/* TODO: WebsiteHandler.getCommentForPost(long postId); */ 
+						comments = WebsiteHandler.getCommentsForPost( Long.parseLong(currItem.getString("id")) );
+						
 						
 					} else if( currItem.getInt( "numComments" ) == 0 ) {
 						
@@ -1215,7 +1254,7 @@ public class WebsiteHandler {
 					
 						//Grab the specific object
 						tempSubItem = currItem.optJSONObject( "WROTEFORUMPOST" );
-						itemTitle = "<b>{username}</b> wrote a forum post in the thread \"{thread}\":".replace( 
+						itemTitle = "<b>{username}</b> wrote a forum post in the thread <b>\"{thread}\"</b>".replace( 
 							
 							"{thread}", 
 							tempSubItem.getString( "threadTitle" )
@@ -1242,13 +1281,13 @@ public class WebsiteHandler {
 						//Grab the specific object
 						JSONArray tempStatsArray = currItem.optJSONObject( "GAMEREPORT" ).optJSONArray( "statItems" );
 						tempSubItem = tempStatsArray.optJSONObject( 0 );
-						itemTitle = "<b>{username}</b> unlocked a new item";
+						itemTitle = "<b>{username}</b> unlocked a new item: <b>{item}</b>";
 						
 						//Weapon? Attachment?
 						if( !tempSubItem.isNull( "parentLangKeyTitle" ) ) {
 							
 							//Let's see
-							itemContent = DataBank.getWeaponTitle( tempSubItem.getString( "parentLangKeyTitle") );
+							itemContent = DataBank.getWeaponTitleShort( tempSubItem.getString( "parentLangKeyTitle") );
 							
 							//Is it empty?
 							if( !itemContent.equals( "" ) ) {
@@ -1273,9 +1312,9 @@ public class WebsiteHandler {
 								
 							}
 							
-						}else {
+						} else {
 							
-							itemContent = DataBank.getWeaponTitle( "langKeyTitle" );
+							itemContent = DataBank.getWeaponTitleShort( tempSubItem.getString("langKeyTitle") );
 							
 						}
 						
@@ -1287,8 +1326,8 @@ public class WebsiteHandler {
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
 							currItem.getInt( "numLikes" ),
-							itemTitle,
-							itemContent,
+							itemTitle.replace( "{item}", itemContent),
+							"",
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
 							comments
@@ -1329,7 +1368,7 @@ public class WebsiteHandler {
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
 							currItem.getInt( "numLikes" ),
-							"<b>{username}</b> favorited a server: " + tempSubItem.getString( "serverName" ),
+							"<b>{username}</b> favorited a server: <b>" + tempSubItem.getString( "serverName" ) + "</b>",
 							"",
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
@@ -1344,7 +1383,7 @@ public class WebsiteHandler {
 						tempSubItem = currItem.getJSONObject( "RANKEDUP" );
 						
 						//Set it!
-						itemTitle = "<b>{username}</b> ranked up<br />{rank title} (rank{rank})".replace( 
+						itemTitle = "<b>{username}</b> got promoted to <b>{rank title}</b> (rank{rank})".replace( 
 							
 							"{rank title}", 
 							DataBank.getRankTitle( tempSubItem.getString( "langKeyTitle" ) )
@@ -1371,12 +1410,59 @@ public class WebsiteHandler {
 							comments
 								
 						);
-						
-					} else if( !currItem.isNull( "RECIEVEDPLATOONWALLPOST" )) {
-						
 
-						/*//Get it!
-						tempSubItem = currItem.getJSONObject( "RECIEVEDPLATOONWALLPOST" );
+					} else if( !currItem.isNull( "COMMENTEDGAMEREPORT" )) {
+					
+	
+						//Get it!
+						tempSubItem = currItem.getJSONObject( "COMMENTEDGAMEREPORT" );
+						
+						//Set it!
+						itemTitle = "<b>{username}</b> commented on Battle Report <b>{server name} {map} {game mode}</b>".replace(
+								
+							"{server name}",
+							tempSubItem.getString( "serverName" )
+							
+						).replace(
+								
+							"{map}",
+							DataBank.getMapTitle( tempSubItem.getString( "map" ) )
+							
+						).replace(
+								
+							"{game mode}",
+							DataBank.getGameModeFromId( tempSubItem.getInt("gameMode") )
+							
+						);
+						
+						//Temporary storage						
+						tempFeedItem = new FeedItem(
+	
+							Long.parseLong( currItem.getString("id") ),
+							profileData.getProfileId(),
+							Long.parseLong( currItem.getString("itemId") ),
+							currItem.getLong( "creationDate" ),
+							currItem.getInt( "numLikes" ),
+							itemTitle,
+							tempSubItem.getString( "gameReportComment" ),
+							currItem.getString("event"),
+							new String[] { profileData.getAccountName(), null },
+							comments
+								
+						);
+					
+					} else if( !currItem.isNull( "JOINEDPLATOON" )) {
+
+						//Get it!
+						tempSubItem = currItem.getJSONObject( "JOINEDPLATOON" ).getJSONObject( "platoon" );
+						
+						//Set it!
+						itemTitle = "<b>{username}</b> joined the platoon <b>{platoon}</b>".replace( 
+					
+							"{platoon}",
+							tempSubItem.getString("name")
+					
+						);
 						
 						//Temporary storage						
 						tempFeedItem = new FeedItem(
@@ -1386,25 +1472,82 @@ public class WebsiteHandler {
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
 							currItem.getInt( "numLikes" ),
-							"{username} favorited a server:\n" + tempSubItem.getString( "serverName" ),
+							itemTitle,
 							"",
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
 							comments
 								
 						);
-						*/
+					
+					} else if( !currItem.isNull( "LEFTPLATOON" )) {
+
+						//Get it!
+						tempSubItem = currItem.getJSONObject( "LEFTPLATOON" ).getJSONObject( "platoon" );
 						
-						tempFeedItem = null;
+						//Set it!
+						itemTitle = "<b>{username}</b> left the platoon <b>{platoon}</b>".replace( 
+					
+							"{platoon}",
+							tempSubItem.getString("name")
+					
+						);
+						
+						//Temporary storage						
+						tempFeedItem = new FeedItem(
+
+							Long.parseLong( currItem.getString("id") ),
+							profileData.getProfileId(),
+							Long.parseLong( currItem.getString("itemId") ),
+							currItem.getLong( "creationDate" ),
+							currItem.getInt( "numLikes" ),
+							itemTitle,
+							"",
+							currItem.getString("event"),
+							new String[] { profileData.getAccountName(), null },
+							comments
+								
+						);
+						
+					} else if( !currItem.isNull( "RECEIVEDPLATOONWALLPOST" )) {
+						
+	
+						//Get it!
+						tempSubItem = currItem.getJSONObject( "RECEIVEDPLATOONWALLPOST" );
+						
+						//Set it!
+						itemTitle = "<b>{username}</b> wrote on the wall for <b>{platoon}</b>".replace(
+								
+							"{platoon}", 
+							tempSubItem.getJSONObject("platoon").getString( "name" )
+							
+						);
+								
+						
+						//Temporary storage						
+						tempFeedItem = new FeedItem(
+	
+							Long.parseLong( currItem.getString("id") ),
+							profileData.getProfileId(),
+							Long.parseLong( currItem.getString("itemId") ),
+							currItem.getLong( "creationDate" ),
+							currItem.getInt( "numLikes" ),
+							itemTitle,
+							tempSubItem.getString( "wallBody" ),
+							currItem.getString("event"),
+							new String[] { profileData.getAccountName(), null },
+							comments
+								
+						);
 						
 					} else if( !currItem.isNull( "LEVELCOMPLETE" )) {
-						
-
+							
+	
 						//Get it!
 						tempSubItem = currItem.getJSONObject( "LEVELCOMPLETE" );
 						
 						//Set it!
-						itemTitle = "<b>{username1}</b> and <b>{username2}</b> completed a co-op level:<br /> {level} on {difficulty}".replace(
+						itemTitle = "<b>{username1}</b> and <b>{username2}</b> completed a co-op level<br /> <b>{level}</b> on <b>{difficulty}</b>".replace(
 								
 							"level", 
 							tempSubItem.getString( "level" )
@@ -1432,34 +1575,6 @@ public class WebsiteHandler {
 								
 						);
 						
-					} else if( !currItem.isNull( "JOINEDPLATOON" )) {
-
-						//Get it!
-						tempSubItem = currItem.getJSONObject( "JOINEDPLATOON" ).getJSONObject( "platoon" );
-						
-						//Set it!
-						itemTitle = "<b>{username}</b> joined a new platoon:\n" + 
-							tempSubItem.getString("name") + 
-							"[" +
-							tempSubItem.getString( "tag" ) +
-							"]";
-						
-						//Temporary storage						
-						tempFeedItem = new FeedItem(
-
-							Long.parseLong( currItem.getString("id") ),
-							profileData.getProfileId(),
-							Long.parseLong( currItem.getString("itemId") ),
-							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
-							itemTitle,
-							"",
-							currItem.getString("event"),
-							new String[] { profileData.getAccountName(), null },
-							comments
-								
-						);
-					
 					} else if( !currItem.isNull( "RECEIVEDAWARD" )) {
 						
 
@@ -1469,7 +1584,7 @@ public class WebsiteHandler {
 						Log.d(Constants.debugTag, "=>" + tempSubItem.getString( "langKeyTitle" ) + "<=");
 						
 						//Set it!
-						itemTitle = "<b>{username}</b> recieved a new award: {award}".replace( 
+						itemTitle = "<b>{username}</b> recieved a new award: <b>{award}</b>".replace( 
 								
 							"{award}", 
 							DataBank.getAwardTitle( tempSubItem.getString( "langKeyTitle" ) )
@@ -1529,6 +1644,7 @@ public class WebsiteHandler {
 						
 					} else {
 						
+						Log.d(Constants.debugTag, "event => " + currItem.getString( "event" ) );
 						tempFeedItem = null;
 					
 					}
@@ -1547,7 +1663,7 @@ public class WebsiteHandler {
 					statusMessage.optLong("statusMessageChanged", 0), 
 					userInfo.optString( "name", "N/A" ), 
 					profileCommonObject.getJSONObject( "user" ).getString( "username" ),
-					userInfo.optString( "presentation", "" ),  
+					userInfo.isNull( "presentation" ) ? null : userInfo.getString( "presentation" ),  
 					userInfo.optString( "location", "us" ),  
 					statusMessage.optString( "statusMessage", "" ), 
 					playingOn,
@@ -1573,7 +1689,72 @@ public class WebsiteHandler {
 		
 	}
 	
-public static boolean doHooahInFeed(long postId, String checksum ) throws WebsiteHandlerException {
+	private static ArrayList<CommentData> getCommentsForPost( long postId ) throws WebsiteHandlerException {
+			
+		try {
+			
+			//Let's do this!
+			RequestHandler wh = new RequestHandler();
+			ArrayList<CommentData> comments = new ArrayList<CommentData>();
+			String httpContent;
+			
+			//Get the content
+			httpContent = wh.get( 
+					
+				Constants.urlFeedComments.replace( 
+					
+					"{PID}", 
+					postId + ""
+				
+				),
+				false
+		
+			);
+						
+			//Did we manage?
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+			
+				//Get the messages
+				JSONArray commentArray = new JSONObject(httpContent).getJSONObject("data").getJSONArray( "comments" );
+				JSONObject tempObject;
+				
+				//Iterate
+				for( int i = 0; i < commentArray.length(); i++ ) {
+					
+					tempObject = commentArray.optJSONObject( i );
+					comments.add( 
+
+						new CommentData(
+						
+							postId,
+							Long.parseLong(tempObject.getString( "itemId" )),
+							Long.parseLong(tempObject.getString("creationDate")),
+							Long.parseLong(tempObject.getString( "ownerId" )),
+							tempObject.getJSONObject( "owner" ).getString( "username" ),
+							tempObject.getString( "body" )
+								
+						)
+							
+					);
+
+				}
+				
+				return comments;
+				
+			} else {
+			
+				throw new WebsiteHandlerException("Could not get the comments.");
+			
+			}	
+		
+		} catch ( Exception ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+	}
+
+	public static boolean doHooahInFeed(long postId, String checksum ) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -1617,7 +1798,51 @@ public static boolean doHooahInFeed(long postId, String checksum ) throws Websit
 
 	}
 
-public static boolean commentOnFeedPost(long postId, String checksum, String comment ) throws WebsiteHandlerException {
+	public static boolean unHooahInFeed(long postId, String checksum ) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Let's login everybody!
+			RequestHandler wh = new RequestHandler();
+			String httpContent;
+			
+			//Get the content
+			httpContent = wh.post( 
+					
+				Constants.urlUnHooah.replace( "{ID}", postId + "" ), 
+				new PostData[] { 
+					 
+					new PostData(
+								
+						Constants.fieldNamesCHSUM[0], 
+						checksum
+					
+					)	 
+				},
+				true
+		
+			);
+						
+			//Did we manage?
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+			
+				return true;
+				
+			} else {
+			
+				throw new WebsiteHandlerException("Could not un-hooah the message.");
+				
+			}	
+		
+		} catch ( RequestHandlerException ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+
+	}
+	
+	public static boolean commentOnFeedPost(long postId, String checksum, String comment ) throws WebsiteHandlerException {
 		
 		try {
 			

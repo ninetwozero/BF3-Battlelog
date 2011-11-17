@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -61,9 +62,11 @@ public class ProfileView extends TabActivity {
 
 	//Attributes
 	private SharedPreferences sharedPreferences;
+	private LayoutInflater layoutInflater;
 	private ProgressBar progressBar;
 	private ProfileData profileData;
-	private LayoutInflater layoutInflater;
+	private PlayerData playerData;
+	private ProfileInformation profileInformation;
 	private TabHost mTabHost;
 	
 	//Elements
@@ -117,15 +120,15 @@ public class ProfileView extends TabActivity {
 
 	public void initLayout() {
 		
-		//Eventually get a *cached* version instead
-		reloadLayout();
+		//Eventually get a *cached* version instead    
+		new AsyncFeedRefresh(this, false, profileData).execute();
 		
 	}
 	
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new AsyncFeedRefresh(this, profileData).execute();
+    	new AsyncFeedRefresh(this, true, profileData).execute();
     	
     	
     }
@@ -181,26 +184,30 @@ public class ProfileView extends TabActivity {
     	Context context;
     	ProgressDialog progressDialog;
     	ProfileData profileData;
-    	ProfileInformation profileInformation;
-    	PlayerData playerData;
+    	boolean hideDialog;
     	
-    	public AsyncFeedRefresh(Context c, ProfileData pd) {
+    	public AsyncFeedRefresh(Context c, boolean f, ProfileData pd) {
     		
     		this.context = c;
+    		this.hideDialog = f;
     		this.profileData = pd;
     		this.progressDialog = null;
-    		
     	}
     	
     	@Override
     	protected void onPreExecute() {
     		
-    		//Let's see
-			this.progressDialog = new ProgressDialog(this.context);
-			this.progressDialog.setTitle("Please wait");
-			this.progressDialog.setMessage( "Downloading the data..." );
-			this.progressDialog.show();
+    		//Do we?
+    		if( !hideDialog ) {
+
+    			//Let's see
+				this.progressDialog = new ProgressDialog(this.context);
+				this.progressDialog.setTitle("Please wait");
+				this.progressDialog.setMessage( "Downloading the data..." );
+				this.progressDialog.show();
     		
+    		}	
+    	
     	}
 
 		@Override
@@ -208,8 +215,8 @@ public class ProfileView extends TabActivity {
 			
 			try {
 				
-				this.playerData = WebsiteHandler.getStatsForUser( this.profileData );
-				this.profileInformation = WebsiteHandler.getProfileInformationForUser( this.profileData );
+				playerData = WebsiteHandler.getStatsForUser( this.profileData );
+				profileInformation = WebsiteHandler.getProfileInformationForUser( this.profileData );
 				return true;
 				
 			} catch ( WebsiteHandlerException ex ) {
@@ -223,9 +230,9 @@ public class ProfileView extends TabActivity {
 		
 		@Override
 		protected void onPostExecute(Boolean result) {
-		
+					
 			//Fail?
-			if( !result ) { 
+			if( !result && !hideDialog ) { 
 				
 				if( this.progressDialog != null ) this.progressDialog.dismiss();
 				Toast.makeText( this.context, "No data found.", Toast.LENGTH_SHORT).show(); 
@@ -266,14 +273,35 @@ public class ProfileView extends TabActivity {
 				}
 				
 			);
-
-			drawHome(this.profileInformation);
+Log.d(Constants.debugTag, "Yo => " + mTabHost.getCurrentTab());
+			//Let's see what we need to update *directly*
+			switch( mTabHost.getCurrentTab() ) {
+				
+				case 0:
+					drawHome(profileInformation);
+					break;
+					
+				case 1:
+					drawStats(playerData);
+					break;
+				
+				case 2:
+					drawFeed(profileInformation);
+					break;
+					
+				default:
+					break;
+		
+			}
 			
 			//Done!
-	        if( this.progressDialog != null ) this.progressDialog.dismiss();
-			return;
+	        if( this.progressDialog != null && !hideDialog ) this.progressDialog.dismiss();
+	        
+	        //Get back here!
+	        return;
+		        
 		}
-    	
+		
     }
     
     public final void drawHome(ProfileInformation data) {
@@ -320,7 +348,7 @@ public class ProfileView extends TabActivity {
     	}
     	
     	//Do we have a presentation?
-    	if( !data.getPresentation().equals( "" ) && data.getPresentation() != null ) {
+    	if( data.getPresentation() != null && !data.getPresentation().equals( "" ) ) {
     		
     		((TextView) findViewById(R.id.text_presentation)).setText( data.getPresentation() );
 		
@@ -336,6 +364,9 @@ public class ProfileView extends TabActivity {
     		//Init
     		View convertView;
     		LinearLayout platoonWrapper = (LinearLayout) findViewById(R.id.list_platoons);
+    		
+    		//Clear the platoonWrapper
+    		platoonWrapper.removeAllViews();
     		
     		//Iterate over the platoons
     		for( PlatoonData currentPlatoon : data.getPlatoons() ) {
@@ -435,39 +466,47 @@ public class ProfileView extends TabActivity {
 		((TextView) findViewById(R.id.feed_username)).setText( data.getUsername() );
         
 		//Always and forever
-		listFeed.setAdapter( 
+		if( listFeed.getAdapter() == null ) {
+			
+			listFeed.setAdapter( 
 				
-			new FeedListAdapter(this, data.getFeedItems(), layoutInflater) 
-			
-		);
-		
-		//Do we have the onClick?
-		if( listFeed.getOnItemClickListener() == null ) {
-			
-			listFeed.setOnItemClickListener( 
-					
-				new OnItemClickListener() {
-
-					@Override
-					public void onItemClick( AdapterView<?> a, View v, int pos, long id ) {
-
-						if( !((FeedItem) a.getItemAtPosition( pos ) ).getContent().equals( "" ) ) {
-							
-							View viewContainer = (View) v.findViewById(R.id.wrap_contentbox);
-							viewContainer.setVisibility( ( viewContainer.getVisibility() == View.GONE ) ? View.VISIBLE : View.GONE );
-						
-						}
-						
-					}
-					
-					
-					
-				}
-					
+				new FeedListAdapter(this, data.getFeedItems(), layoutInflater) 
+				
 			);
 			
+			//Do we have the onClick?
+			if( listFeed.getOnItemClickListener() == null ) {
+				
+				listFeed.setOnItemClickListener( 
+						
+					new OnItemClickListener() {
+	
+						@Override
+						public void onItemClick( AdapterView<?> a, View v, int pos, long id ) {
+	
+							if( !((FeedItem) a.getItemAtPosition( pos ) ).getContent().equals( "" ) ) {
+								
+								View viewContainer = (View) v.findViewById(R.id.wrap_contentbox);
+								viewContainer.setVisibility( ( viewContainer.getVisibility() == View.GONE ) ? View.VISIBLE : View.GONE );
+							
+							}
+							
+						}
+						
+						
+						
+					}
+						
+				);
+				
+			}
+		
+		} else {
+			
+			((FeedListAdapter) listFeed.getAdapter()).notifyDataSetChanged();
+			
 		}
-    	
+    
     }
     
     @Override
@@ -548,7 +587,7 @@ public class ProfileView extends TabActivity {
 				//REQUESTS
 				if( item.getItemId() == 0 ) {
 
-					new AsyncFeedHooah(this, info.id, false, new AsyncFeedRefresh(this, profileData)).execute( 
+					new AsyncFeedHooah(this, info.id, false, new AsyncFeedRefresh(this, true, profileData)).execute( 
 							
 						sharedPreferences.getString( 
 								

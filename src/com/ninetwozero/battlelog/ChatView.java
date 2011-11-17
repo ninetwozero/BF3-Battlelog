@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.ninetwozero.battlelog.asynctasks.AsyncChatClose;
 import com.ninetwozero.battlelog.asynctasks.AsyncChatRefresh;
 import com.ninetwozero.battlelog.asynctasks.AsyncChatSend;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
@@ -187,6 +188,7 @@ public class ChatView extends ListActivity {
     	
     	super.onDestroy();
     	if( timerReload != null ) timerReload.cancel();
+    	new AsyncChatClose(this, chatId).execute();
     	
     }
     

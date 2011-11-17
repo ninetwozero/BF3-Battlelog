@@ -30,11 +30,11 @@ public final class Constants {
 	public static final String urlFriendDecline = urlMain + "friend/declineFriendship/{PID}/";
 	public static final String urlNotifications = urlMain + "notification/loadNotifications/";
 	public static final String urlLogout = urlMain + "session/logout/";
-	
 	//URLs for CHAT
 	public static final String urlFriends = urlMain + "comcenter/sync/";
 	public static final String urlChatContents = urlMain + "comcenter/getChatId/{PID}/";
 	public static final String urlChatSend = urlMain + "comcenter/sendChatMessage/";
+	public static final String urlChatClose = urlMain + "comcenter/hideChat/{CID}/";
 	
 	//URLS for PROFILE
 	public static final String urlProfilePost = urlMain + "wall/postmessage";
@@ -42,9 +42,10 @@ public final class Constants {
 	
 	//URLs to JSON-files (FEED-related)
 	public static final String urlFeed = urlMain + "feed/?start={NUMSTART}"; /* TODO */
-	public static final String urlFeedComments = urlMain + "feed/getComments/{ID}/"; /* TODO */
+	public static final String urlFeedComments = urlMain + "feed/getComments/{PID}/"; /* TODO */
 	public static final String urlUserFeed = urlMain + "feed/profileevents/{PID}/?start={NUMSTART}"; /* TODO */
 	public static final String urlHooah = urlMain + "like/postlike/{ID}/feed-item-like/";
+	public static final String urlUnHooah = urlMain + "like/postunlike/{ID}/feed-item-like/";
 	public static final String urlComment = urlMain + "comment/postcomment/{ID}/feed-item-comment/";
 	
 	//URL to JSON-files (PROFILE-related)

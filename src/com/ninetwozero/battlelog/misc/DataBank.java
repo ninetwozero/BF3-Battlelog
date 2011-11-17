@@ -30,6 +30,7 @@ public class DataBank {
 	//Getters
 	public static String getRankTitle( String key ) { return RANKS.containsKey( key )? RANKS.get( key ): ""; }
 	public static String getWeaponTitle( String key ) { return WEAPONS.containsKey( key )? WEAPONS.get( key ).getName(): ""; }
+	public static String getWeaponTitleShort( String key ) { return WEAPONS_SHORT.containsKey( key )? WEAPONS_SHORT.get( key ): ""; }
 	public static String getAttachmentTitle( String key ) { return WEAPON_ATTACHMENTS.containsKey( key )? WEAPON_ATTACHMENTS.get( key ): ""; }
 	public static String getVehicleTitle( String key ) { return VEHICLES.containsKey( key )? VEHICLES.get( key ).getName(): ""; }
 	public static String getVehicleAddon( String key ) { return VEHICLE_ADDONS.containsKey( key )? VEHICLE_ADDONS.get( key ): ""; }
@@ -37,6 +38,7 @@ public class DataBank {
 	public static String getKitUnlockTitle( String key ) { return KIT_ITEMS.containsKey( key )? KIT_ITEMS.get( key ): ""; }
 	public static String getUnlockGoal( String key ) { return UNLOCK_GOALS.containsKey( key )? UNLOCK_GOALS.get( key ): ""; }
 	public static String getAwardTitle( String key ) { return AWARDS.containsKey( key ) ? AWARDS.get( key ) : ""; }
+	public static String getMapTitle( String key ) { return MAPS.containsKey( key ) ? MAPS.get( key ) : ""; }
 	
 	private static PlatformData[] PLATFORMS;
 	private static HashMap<String, String> RANKS;
@@ -46,9 +48,12 @@ public class DataBank {
 	private static HashMap<String, String> VEHICLE_ADDONS;
 	private static HashMap<String, String> WEAPON_ATTACHMENTS;
 	private static HashMap<String, WeaponType> WEAPONS;
+	private static HashMap<String, String> WEAPONS_SHORT;
 	private static HashMap<String, String> UNLOCK_GOALS;		
 	private static HashMap<String, String> AWARDS;
-	static {
+	private static HashMap<String, String> MAPS;
+	
+	static{
   
 		PLATFORMS = new PlatformData[4];
     	WEAPONS = new HashMap<String, WeaponType>();
@@ -57,15 +62,28 @@ public class DataBank {
     	KIT_ITEMS = new HashMap<String, String>();
     	SKILLS = new HashMap<String, String>();
     	VEHICLE_ADDONS = new HashMap<String, String>();
+    	WEAPONS_SHORT = new HashMap<String, String>();
     	WEAPON_ATTACHMENTS = new HashMap<String, String>();
     	UNLOCK_GOALS = new HashMap<String, String>();
     	AWARDS = new HashMap<String, String>();
+    	MAPS = new HashMap<String, String>();
     	
     	//PLATFORMS
     	PLATFORMS[0] = new PlatformData(1, "pc");
     	PLATFORMS[1] = new PlatformData(2, "xbox");
     	PLATFORMS[2] = new PlatformData(1, "");
     	PLATFORMS[3] = new PlatformData(4, "ps3");
+    	
+    	//MAPS
+		MAPS.put("MP_007", "CASPIAN BORDER");
+		MAPS.put("MP_013", "DAMAVAND PEAK");
+		MAPS.put("MP_012", "OPERATION FIRESTORM");
+		MAPS.put("MP_011", "SEINE CROSSING");
+		MAPS.put("MP_017", "NOSHAHR CANALS");
+		MAPS.put("MP_018", "KHARG ISLAND");
+		MAPS.put("MP_019", "OMAHA");
+		MAPS.put("MP_001", "GRAND BAZAAR");
+		MAPS.put("MP_003", "TEHRAN HIGHWAY");
     	
     	//UNLOCKS
     	UNLOCK_GOALS.put( "rank", "Reach rank {rank} (you are rank {rankCurr})");
@@ -259,6 +277,86 @@ public class DataBank {
 		VEHICLES.put("trAAV", new VehicleType("trAAV", "AAV-7A1 AMTRAC", "Vehicle Transport AAV-7A1"));
 		VEHICLES.put("ifvLAV", new VehicleType("ifvLAV", "LAV-25", "Vehicle IFV LAV-25"));
 
+		WEAPONS_SHORT.put("ID_P_WNAME_PDR", "PDW-R");
+		WEAPONS_SHORT.put("ID_P_WNAME_TYPE88SNIPER", "QBU-88");
+		WEAPONS_SHORT.put("ID_P_WNAME_M98B", "M98B");
+		WEAPONS_SHORT.put("ID_P_WNAME_A91", "A-91");
+		WEAPONS_SHORT.put("ID_P_WNAME_UMP45", "UMP-45");
+		WEAPONS_SHORT.put("ID_P_WNAME_M93R", "93R");
+		WEAPONS_SHORT.put("ID_P_WNAME_GP30", "GP-30");
+		WEAPONS_SHORT.put("ID_P_WNAME_G36C", "G36C");
+		WEAPONS_SHORT.put("ID_P_WNAME_FAMAS", "FAMAS");
+		WEAPONS_SHORT.put("ID_P_WNAME_MG36", "MG36");
+		WEAPONS_SHORT.put("ID_P_WNAME_RPK", "RPK-74M");
+		WEAPONS_SHORT.put("ID_P_WNAME_M412Rex", "MP412 REX");
+		WEAPONS_SHORT.put("ID_P_WNAME_QBZ95B", "QBZ-95B");
+		WEAPONS_SHORT.put("ID_P_WNAME_L85A2", "L85A2");
+		WEAPONS_SHORT.put("ID_P_WNAME_USAS12", "USAS-12");
+		WEAPONS_SHORT.put("ID_P_WNAME_SKS", "SKS");
+		WEAPONS_SHORT.put("ID_P_WNAME_SVD", "SVD");
+		WEAPONS_SHORT.put("ID_P_WNAME_Javelin", "FGM-148 JAVELIN");
+		WEAPONS_SHORT.put("ID_P_WNAME_SMAW", "SMAW");
+		WEAPONS_SHORT.put("ID_P_WNAME_553", "SG553");
+		WEAPONS_SHORT.put("ID_P_WNAME_M9", "M9");
+		WEAPONS_SHORT.put("ID_P_WNAME_M4", "M4");
+		WEAPONS_SHORT.put("ID_P_WNAME_M1014", "M1014");
+		WEAPONS_SHORT.put("ID_P_WNAME_M1911LIT", "M1911 TACT");
+		WEAPONS_SHORT.put("ID_P_WNAME_Mk11", "MK11 MOD 0");
+		WEAPONS_SHORT.put("ID_P_WNAME_M416", "M416");
+		WEAPONS_SHORT.put("ID_P_WNAME_Saiga12", "SAIGA 12K");
+		WEAPONS_SHORT.put("ID_P_WNAME_AEK971", "AEK-971");
+		WEAPONS_SHORT.put("ID_P_WNAME_Glock18", "G18");
+		WEAPONS_SHORT.put("ID_P_WNAME_Glock17", "G17C");
+		WEAPONS_SHORT.put("ID_P_WNAME_M4A1", "M4A1");
+		WEAPONS_SHORT.put("ID_P_WNAME_G3", "G3A3");
+		WEAPONS_SHORT.put("ID_P_WNAME_AK74M", "AK-74M");
+		WEAPONS_SHORT.put("ID_P_WNAME_Pecheng", "PKP PECHENEG");
+		WEAPONS_SHORT.put("ID_P_WNAME_M26Mass", "M26 MASS");
+		WEAPONS_SHORT.put("ID_P_WNAME_DAO12", "DAO-12");
+		WEAPONS_SHORT.put("ID_P_WNAME_M240", "M240B");
+		WEAPONS_SHORT.put("ID_P_WNAME_GLOCK18SILENCED", "G18 SUPP");
+		WEAPONS_SHORT.put("ID_P_WNAME_M249", "M249");
+		WEAPONS_SHORT.put("ID_P_WNAME_JACKHAMMER", "Jackhammer");
+		WEAPONS_SHORT.put("ID_P_WNAME_Stinger", "FIM-92 STINGER");
+		WEAPONS_SHORT.put("ID_P_WNAME_M1911TACTICAL", "M1911 S-TAC");
+		WEAPONS_SHORT.put("ID_P_WNAME_GLOCK17SILENCED", "G17C SUPP");
+		WEAPONS_SHORT.put("ID_P_WNAME_RPG7", "RPG-7V2");
+		WEAPONS_SHORT.put("ID_P_WNAME_PP2000", "PP-2000");
+		WEAPONS_SHORT.put("ID_P_WNAME_KH2002", "KH2002");
+		WEAPONS_SHORT.put("ID_P_WNAME_40MM", "M320");
+		WEAPONS_SHORT.put("ID_P_WNAME_M136", "M136");
+		WEAPONS_SHORT.put("ID_P_WNAME_M9SILENCED", "M9 SUPP");
+		WEAPONS_SHORT.put("ID_P_WNAME_AKS74u", "AKS-74u");
+		WEAPONS_SHORT.put("ID_P_WNAME_HK53", "HK53");
+		WEAPONS_SHORT.put("ID_P_WNAME_MP443SILENCED", "MP443 SUPP");
+		WEAPONS_SHORT.put("ID_P_WNAME_L96", "L96");
+		WEAPONS_SHORT.put("ID_P_WNAME_MP443", "MP443");
+		WEAPONS_SHORT.put("ID_P_WNAME_IGLA", "SA-18 IGLA");
+		WEAPONS_SHORT.put("ID_P_WNAME_SV98", "SV98");
+		WEAPONS_SHORT.put("ID_P_WNAME_870", "870MCS");
+		WEAPONS_SHORT.put("ID_P_WNAME_AN94", "AN-94");
+		WEAPONS_SHORT.put("ID_P_WNAME_Type88", "TYPE 88 LMG");
+		WEAPONS_SHORT.put("ID_P_WNAME_ASVal", "AS VAL");
+		WEAPONS_SHORT.put("ID_P_WNAME_MP7", "MP7");
+		WEAPONS_SHORT.put("ID_P_WNAME_M1911", "M1911");
+		WEAPONS_SHORT.put("ID_P_WNAME_M1911SILENCED", "M1911 SUPP");
+		WEAPONS_SHORT.put("ID_P_WNAME_M82A3", "M82A3");
+		WEAPONS_SHORT.put("ID_P_WNAME_knife", "KNIFE");
+		WEAPONS_SHORT.put("ID_P_WNAME_M60", "M60E4");
+		WEAPONS_SHORT.put("ID_P_WNAME_M27", "M27 IAR");
+		WEAPONS_SHORT.put("ID_P_WNAME_M16", "M16A4");
+		WEAPONS_SHORT.put("ID_P_WNAME_M39", "M39 EMR");
+		WEAPONS_SHORT.put("ID_P_WNAME_F2000", "F2000");
+		WEAPONS_SHORT.put("ID_P_WNAME_P90", "P90");
+		WEAPONS_SHORT.put("ID_P_WNAME_QBU88", "QBU-88");
+		WEAPONS_SHORT.put("ID_P_WNAME_PP19", "PP-19 Bizon");
+		WEAPONS_SHORT.put("ID_P_WNAME_M16A4", "M16A3");
+		WEAPONS_SHORT.put("ID_P_WNAME_MP443LIT", "MP443 TACT");
+		WEAPONS_SHORT.put("ID_P_WNAME_M40A5", "M40A5");
+		WEAPONS_SHORT.put("ID_P_WNAME_M9LIT", "M9 TACT");
+		WEAPONS_SHORT.put("ID_P_WNAME_QBB95", "QBB-95");
+		WEAPONS_SHORT.put("ID_P_WNAME_SCARH", "SCAR-H");
+		
 		WEAPONS.put("smP90", new WeaponType("smP90", "P90", "P90", 900, "SHORT", "50 [5.7x28mm]", true, false, true));
 		WEAPONS.put("pM1911", new WeaponType("pM1911", "M1911", "M1911", "SEMIAUTO", "SHORT", "9 [.45ACP]", false, false, true));
 		WEAPONS.put("pM1911L", new WeaponType("pM1911L", "M1911 TACT.", "M1911 LIT", "SEMIAUTO", "SHORT", "9 [.45ACP]", false, false, true));
@@ -705,6 +803,28 @@ public class DataBank {
 			default:
 				return "";
 			
+		}
+		
+	}
+	
+	public static String getGameModeFromId( int number ) {
+	
+		switch( number ) {
+			
+			case 1:
+				return "Conquest";
+				
+			case 2: 
+				return "Rush";
+				
+			case 32:
+				return "TDM";
+				
+			case 64:
+				return "Conquest Large";
+			
+			default:
+				return "(unknown game mode)";
 		}
 		
 	}
