@@ -125,7 +125,6 @@ public class FriendListAdapter extends BaseAdapter {
 	
 			}
 	
-			Log.d(Constants.debugTag, currentProfile.toString());
 			//Set the TextViews
 			textUser = (TextView) convertView.findViewById( R.id.text_user );
 			textUser.setText( 

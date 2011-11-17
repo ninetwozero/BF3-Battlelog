@@ -54,10 +54,8 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
-
 
 public class Dashboard extends Activity {
 
@@ -135,8 +133,8 @@ public class Dashboard extends Activity {
 
 						sharedPreferences.getString( "battlelog_username", "" ),
 						sharedPreferences.getString( "battlelog_persona", "" ),
-						sharedPreferences.getLong( "battlelog_profile_id", 0 ),
-						sharedPreferences.getLong( "battlelog_persona_id", 0 ),		
+						sharedPreferences.getLong( "battlelog_persona_id", 0 ),	
+						sharedPreferences.getLong( "battlelog_profile_id", 0 ),	
 						sharedPreferences.getLong( "battlelog_platform_id", 0 )
 						
 					)
@@ -442,7 +440,7 @@ public class Dashboard extends Activity {
     	else if( view.getId() == R.id.list_friends) { menuId = 1; }
     	
     	//Show the menu
-		menu.add( menuId, 0, 0, "Use radio");
+		menu.add( menuId, 0, 0, "Open chat");
 		menu.add( menuId, 1, 0, "Compare battle scars");
     	
 		return;

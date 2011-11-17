@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog.misc;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
@@ -117,6 +118,10 @@ public class WebsiteHandler {
 				//Co-co-co-commit
 				spEdit.commit();
 				
+    		} else {
+    			
+    			return false;
+    			
     		}
     		
 		} catch( Exception ex ) {
@@ -1057,8 +1062,6 @@ public class WebsiteHandler {
 			ArrayList<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
 			String httpContent;
 			
-			Log.d(Constants.debugTag, Constants.urlProfileInfo.replace( "{UNAME}", profileData.getAccountName()));
-			
 			//Get the content
 			httpContent = rh.get( Constants.urlProfileInfo.replace( "{UNAME}", profileData.getAccountName() ), true );
 
@@ -1078,14 +1081,25 @@ public class WebsiteHandler {
 				JSONObject tempSubItem;
 				JSONObject tempCommentItem;
 				JSONArray commentArray;
+				String playingOn;
+
+				FeedItem tempFeedItem = null;
+				PlatoonData tempPlatoonData = null;
+				ArrayList<CommentData> comments = new ArrayList<CommentData>();
 				
 				//Is status messages null?
 				if( statusMessage == null ) { statusMessage = new JSONObject("{'statusMessage':'', 'statusMessageChanged':0}"); }
 				
-				//Re-usable variable!!
-				FeedItem tempFeedItem = null;
-				PlatoonData tempPlatoonData = null;
-				ArrayList<CommentData> comments = new ArrayList<CommentData>();
+				//What's up with the user?
+				if( presenceObject.isNull( "serverName") && presenceObject.getBoolean( "isPlaying" ) ) {
+					
+					playingOn = ( presenceObject.getInt("platform") == 2 ) ? "Xbox Live": "Playstation Network";
+					
+				} else {
+					
+					playingOn = presenceObject.optString("serverName", null);
+					
+				}
 				
 				//Iterate over the platoons
 				for( int i = 0; i < platoonArray.length(); i++ ) {
@@ -1115,7 +1129,7 @@ public class WebsiteHandler {
 				
 				//Iterate over the feed
 				for( int i = 0; i < feedItems.length(); i++ ) {
-
+					
 					//Once per loop
 					comments.clear();
 					
@@ -1159,6 +1173,9 @@ public class WebsiteHandler {
 						}
 						
 					}
+					//Variables if *modification* is needed
+					String itemTitle = null;
+					String itemContent = null;
 					
 					//What do we have *here*?
 					if( !currItem.isNull( "BECAMEFRIENDS" )) {
@@ -1180,12 +1197,13 @@ public class WebsiteHandler {
 						
 						//Temporary storage						
 						tempFeedItem = new FeedItem(
-							
+
+							Long.parseLong( currItem.getString("id") ),
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
 							currItem.getInt( "numLikes" ),
-							"{player1} and {player2} are now friends",
+							"<b>{username1}</b> and <b>{username2}</b> are now friends",
 							"",
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), username },
@@ -1197,17 +1215,23 @@ public class WebsiteHandler {
 					
 						//Grab the specific object
 						tempSubItem = currItem.optJSONObject( "WROTEFORUMPOST" );
-						
+						itemTitle = "<b>{username}</b> wrote a forum post in the thread \"{thread}\":".replace( 
+							
+							"{thread}", 
+							tempSubItem.getString( "threadTitle" )
+							
+						);
 						//Temporary storage						
 						tempFeedItem = new FeedItem(
-							
+
+							Long.parseLong( currItem.getString("id") ),
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
 							currItem.getInt( "numLikes" ),
-							tempSubItem.getString( "threadTitle" ),
+							itemTitle,
 							tempSubItem.getString( "postBody" ),
-							currItem.getString("section"),
+							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
 							comments
 								
@@ -1218,58 +1242,295 @@ public class WebsiteHandler {
 						//Grab the specific object
 						JSONArray tempStatsArray = currItem.optJSONObject( "GAMEREPORT" ).optJSONArray( "statItems" );
 						tempSubItem = tempStatsArray.optJSONObject( 0 );
-						String itemTitle;
+						itemTitle = "<b>{username}</b> unlocked a new item";
 						
 						//Weapon? Attachment?
 						if( !tempSubItem.isNull( "parentLangKeyTitle" ) ) {
 							
 							//Let's see
-							itemTitle = DataBank.getWeaponTitle( tempSubItem.getString( "parentLangKeyTitle") );
+							itemContent = DataBank.getWeaponTitle( tempSubItem.getString( "parentLangKeyTitle") );
 							
 							//Is it empty?
-							if( !itemTitle.equals( "" ) ) {
+							if( !itemContent.equals( "" ) ) {
 								
-								itemTitle += " - " + DataBank.getAttachmentTitle( tempSubItem.getString( "langKeyTitle" ) );
+								itemContent +=  " " + DataBank.getAttachmentTitle( tempSubItem.getString( "langKeyTitle" ) );
 								
 							} else {
 								
 								//Grab a vehicle title then
-								itemTitle = DataBank.getVehicleTitle( tempSubItem.getString("parentLangKeyTitle") );
+								itemContent = DataBank.getVehicleTitle( tempSubItem.getString("parentLangKeyTitle") );
 								
 								//Validate
-								if( !itemTitle.equals( "" ) ) {
+								if( !itemContent.equals( "" ) ) {
 									
-									itemTitle += " - " + DataBank.getVehicleAddon( tempSubItem.getString( "langKeyTitle" ) );
+									itemContent += " " + DataBank.getVehicleAddon( tempSubItem.getString( "langKeyTitle" ) );
 									
 								} else {
 									
-									itemTitle = tempSubItem.getString("parentLangKeyTitle");
+									itemContent = tempSubItem.getString("parentLangKeyTitle");
 									
 								} 
 								
 							}
 							
-						} else {
+						}else {
 							
-							itemTitle = DataBank.getWeaponTitle( "langKeyTitle" );
+							itemContent = DataBank.getWeaponTitle( "langKeyTitle" );
 							
 						}
 						
 						//Temporary storage						
 						tempFeedItem = new FeedItem(
+
+							Long.parseLong( currItem.getString("id") ),
+							profileData.getProfileId(),
+							Long.parseLong( currItem.getString("itemId") ),
+							currItem.getLong( "creationDate" ),
+							currItem.getInt( "numLikes" ),
+							itemTitle,
+							itemContent,
+							currItem.getString("event"),
+							new String[] { profileData.getAccountName(), null },
+							comments
+								
+						);
+						
+					} else if( !currItem.isNull( "STATUSMESSAGE" )) {
+						
+						//Get the JSON-Object
+						tempSubItem = currItem.optJSONObject( "STATUSMESSAGE" );
+						
+						//Temporary storage						
+						tempFeedItem = new FeedItem(
+
+							Long.parseLong( currItem.getString("id") ),
+							profileData.getProfileId(),
+							Long.parseLong( currItem.getString("itemId") ),
+							currItem.getLong( "creationDate" ),
+							currItem.getInt( "numLikes" ),
+							"<b>{username}</b> " + tempSubItem.getString( "statusMessage" ),
+							"",
+							currItem.getString("event"),
+							new String[] { profileData.getAccountName(), null },
+							comments
+								
+						);
+					
+					} else if( !currItem.isNull( "ADDEDFAVSERVER" )) {
+						
+						//Get it!
+						tempSubItem = currItem.getJSONObject( "ADDEDFAVSERVER" );
+						
+						//Temporary storage						
+						tempFeedItem = new FeedItem(
+
+							Long.parseLong( currItem.getString("id") ),
+							profileData.getProfileId(),
+							Long.parseLong( currItem.getString("itemId") ),
+							currItem.getLong( "creationDate" ),
+							currItem.getInt( "numLikes" ),
+							"<b>{username}</b> favorited a server: " + tempSubItem.getString( "serverName" ),
+							"",
+							currItem.getString("event"),
+							new String[] { profileData.getAccountName(), null },
+							comments
+								
+						);
+						
+					} else if( !currItem.isNull( "RANKEDUP" )) {
+						
+
+						//Get it!
+						tempSubItem = currItem.getJSONObject( "RANKEDUP" );
+						
+						//Set it!
+						itemTitle = "<b>{username}</b> ranked up<br />{rank title} (rank{rank})".replace( 
 							
+							"{rank title}", 
+							DataBank.getRankTitle( tempSubItem.getString( "langKeyTitle" ) )
+						
+						).replace( 
+
+							"{rank}", 
+							tempSubItem.getString("rank")
+						
+						);	
+						
+						//Temporary storage						
+						tempFeedItem = new FeedItem(
+
+							Long.parseLong( currItem.getString("id") ),
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
 							currItem.getInt( "numLikes" ),
 							itemTitle,
 							"",
-							currItem.getString("section"),
+							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
 							comments
 								
 						);
 						
+					} else if( !currItem.isNull( "RECIEVEDPLATOONWALLPOST" )) {
+						
+
+						/*//Get it!
+						tempSubItem = currItem.getJSONObject( "RECIEVEDPLATOONWALLPOST" );
+						
+						//Temporary storage						
+						tempFeedItem = new FeedItem(
+
+							Long.parseLong( currItem.getString("id") ),
+							profileData.getProfileId(),
+							Long.parseLong( currItem.getString("itemId") ),
+							currItem.getLong( "creationDate" ),
+							currItem.getInt( "numLikes" ),
+							"{username} favorited a server:\n" + tempSubItem.getString( "serverName" ),
+							"",
+							currItem.getString("event"),
+							new String[] { profileData.getAccountName(), null },
+							comments
+								
+						);
+						*/
+						
+						tempFeedItem = null;
+						
+					} else if( !currItem.isNull( "LEVELCOMPLETE" )) {
+						
+
+						//Get it!
+						tempSubItem = currItem.getJSONObject( "LEVELCOMPLETE" );
+						
+						//Set it!
+						itemTitle = "<b>{username1}</b> and <b>{username2}</b> completed a co-op level:<br /> {level} on {difficulty}".replace(
+								
+							"level", 
+							tempSubItem.getString( "level" )
+							
+						).replace(
+							
+							"difficulty",	
+							tempSubItem.getString( "difficulty" )
+
+						);
+						
+						//Temporary storage						
+						tempFeedItem = new FeedItem(
+
+							Long.parseLong( currItem.getString("id") ),
+							profileData.getProfileId(),
+							Long.parseLong( currItem.getString("itemId") ),
+							currItem.getLong( "creationDate" ),
+							currItem.getInt( "numLikes" ),
+							itemTitle,
+							"",
+							currItem.getString("event"),
+							new String[] { profileData.getAccountName(), null },
+							comments
+								
+						);
+						
+					} else if( !currItem.isNull( "JOINEDPLATOON" )) {
+
+						//Get it!
+						tempSubItem = currItem.getJSONObject( "JOINEDPLATOON" ).getJSONObject( "platoon" );
+						
+						//Set it!
+						itemTitle = "<b>{username}</b> joined a new platoon:\n" + 
+							tempSubItem.getString("name") + 
+							"[" +
+							tempSubItem.getString( "tag" ) +
+							"]";
+						
+						//Temporary storage						
+						tempFeedItem = new FeedItem(
+
+							Long.parseLong( currItem.getString("id") ),
+							profileData.getProfileId(),
+							Long.parseLong( currItem.getString("itemId") ),
+							currItem.getLong( "creationDate" ),
+							currItem.getInt( "numLikes" ),
+							itemTitle,
+							"",
+							currItem.getString("event"),
+							new String[] { profileData.getAccountName(), null },
+							comments
+								
+						);
+					
+					} else if( !currItem.isNull( "RECEIVEDAWARD" )) {
+						
+
+						//Get it!
+						tempSubItem = currItem.optJSONObject( "RECEIVEDAWARD" ).optJSONArray( "statItems" ).getJSONObject( 0 );
+						
+						Log.d(Constants.debugTag, "=>" + tempSubItem.getString( "langKeyTitle" ) + "<=");
+						
+						//Set it!
+						itemTitle = "<b>{username}</b> recieved a new award: {award}".replace( 
+								
+							"{award}", 
+							DataBank.getAwardTitle( tempSubItem.getString( "langKeyTitle" ) )
+	
+						);
+						
+						//Temporary storage						
+						tempFeedItem = new FeedItem(
+
+							Long.parseLong( currItem.getString("id") ),
+							profileData.getProfileId(),
+							Long.parseLong( currItem.getString("itemId") ),
+							currItem.getLong( "creationDate" ),
+							currItem.getInt( "numLikes" ),
+							itemTitle,
+							"",
+							currItem.getString("event"),
+							new String[] { profileData.getAccountName(), null },
+							comments
+								
+						);
+						
+					} else if( !currItem.isNull( "RECEIVEDWALLPOST" )) {
+						
+
+						//Get it!
+						tempSubItem = currItem.optJSONObject( "RECEIVEDWALLPOST" );
+						
+						//Set it!
+						itemTitle = "<b>{username1} » {username2}:</b> {message}".replace( 
+								
+							"{message}", 
+							tempSubItem.getString( "wallBody" )
+	
+						);
+						
+						//Temporary storage						
+						tempFeedItem = new FeedItem(
+
+							Long.parseLong( currItem.getString("id") ),
+							profileData.getProfileId(),
+							Long.parseLong( currItem.getString("itemId") ),
+							currItem.getLong( "creationDate" ),
+							currItem.getInt( "numLikes" ),
+							itemTitle,
+							"",
+							currItem.getString("event"),
+							new String[] { 
+								
+								tempSubItem.getJSONObject( "writerUser" ).getString( "username" ), 
+								profileData.getAccountName()
+								
+							},
+							comments
+								
+						);
+						
+					} else {
+						
+						tempFeedItem = null;
+					
 					}
 					
 					//Append it to the array
@@ -1289,7 +1550,7 @@ public class WebsiteHandler {
 					userInfo.optString( "presentation", "" ),  
 					userInfo.optString( "location", "us" ),  
 					statusMessage.optString( "statusMessage", "" ), 
-					presenceObject.optString("serverName", ""),
+					playingOn,
 					userInfo.optBoolean( "allowFriendRequests", true ), 
 					presenceObject.getBoolean("isOnline"),
 					presenceObject.getBoolean("isPlaying"),
@@ -1311,4 +1572,100 @@ public class WebsiteHandler {
 		}
 		
 	}
+	
+public static boolean doHooahInFeed(long postId, String checksum ) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Let's login everybody!
+			RequestHandler wh = new RequestHandler();
+			String httpContent;
+			
+			//Get the content
+			httpContent = wh.post( 
+					
+				Constants.urlHooah.replace( "{ID}", postId + "" ), 
+				new PostData[] { 
+					 
+					new PostData(
+								
+						Constants.fieldNamesCHSUM[0], 
+						checksum
+					
+					)	 
+				},
+				true
+		
+			);
+						
+			//Did we manage?
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+			
+				return true;
+				
+			} else {
+			
+				throw new WebsiteHandlerException("Could not hooah the message.");
+				
+			}	
+		
+		} catch ( RequestHandlerException ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+
+	}
+
+public static boolean commentOnFeedPost(long postId, String checksum, String comment ) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Let's login everybody!
+			RequestHandler wh = new RequestHandler();
+			String httpContent;
+			
+			//Get the content
+			httpContent = wh.post( 
+					
+				Constants.urlComment.replace( "{ID}", postId + "" ), 
+				new PostData[] { 
+					 
+					new PostData(
+								
+						Constants.fieldNamesFeedComment[0], 
+						comment
+					
+					),
+					new PostData(
+							
+						Constants.fieldNamesFeedComment[1], 
+						checksum
+					
+					)	
+				},
+				true
+		
+			);
+						
+			//Did we manage?
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+				
+				Log.d(Constants.debugTag, httpContent);
+				return true;
+				
+			} else {
+			
+				throw new WebsiteHandlerException("Could not post the comment.");
+				
+			}	
+		
+		} catch ( RequestHandlerException ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+
+	}
+	
 }

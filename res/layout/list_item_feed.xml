@@ -4,20 +4,80 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
 >
-	<TextView 
-	    android:id="@+id/text_title"
-	    android:layout_width="wrap_content"
+	<RelativeLayout
+	   	android:id="@+id/wrap_text"
+		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-		android:text="NINETWOZERO and Chokzor are now friends"
-		android:textSize="14sp"
-	/>
-	<TextView
-		android:id="@+id/text_content"
-		android:layout_width="wrap_content"
+	>
+		<TextView 
+		    android:id="@+id/text_title"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+			android:text="NINETWOZERO and Chokzor are now friends"
+			android:textSize="14sp"
+		/>
+		<LinearLayout
+		    android:id="@+id/wrap_contentbox"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+			android:layout_below="@id/text_title"
+			android:orientation="vertical"
+		    android:visibility="gone"
+		>   
+			<View
+			    android:layout_width="fill_parent"
+			    android:layout_height="0.5dp"
+			    android:background="#AAAAAA"
+			    android:layout_marginTop="5dp"
+			    android:layout_marginBottom="5dp"
+			/>  
+			<TextView
+				android:id="@+id/text_content"
+				android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+				android:text="Yo text in the content is so 2012"
+				android:paddingLeft="10dp"
+			/>
+			<View
+			    android:layout_width="fill_parent"
+			    android:layout_height="0.5dp"
+			    android:background="#AAAAAA"
+			    android:layout_marginTop="5dp"
+			/>  
+		</LinearLayout>
+	</RelativeLayout>
+	<RelativeLayout
+		android:id="@+id/wrap_info"
+		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-		android:text="Yo text in the content is so 2012"
-		android:layout_centerVertical="true"
-		android:layout_below="@id/text_title"
-		android:visibility="gone"
-	/>
+	    android:layout_below="@id/wrap_text"
+	    android:layout_marginTop="5dp"
+	>
+		<TextView
+		    android:id="@+id/text_date"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="23 minutes ago" 
+		    android:layout_alignParentLeft="true"
+		    android:textColor="#AAAAAA"
+		/>
+		<TextView
+		    android:id="@+id/text_comment"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="5 comments" 
+		    android:layout_alignParentRight="true"
+		    android:textColor="#AAAAAA"
+		/>
+		<TextView
+		    android:id="@+id/text_hooah"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="10 hooah" 
+		    android:layout_toLeftOf="@id/text_comment"
+		    android:layout_toRightOf="@id/text_date"  
+		    android:gravity="center"
+		    android:textColor="#AAAAAA"
+		/>
+	</RelativeLayout>
 </RelativeLayout>

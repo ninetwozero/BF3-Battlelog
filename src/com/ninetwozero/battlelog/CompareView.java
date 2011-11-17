@@ -78,9 +78,7 @@ public class CompareView extends Activity {
         playerTwo = (ProfileData) getIntent().getSerializableExtra( "profile" );
         
         this.reloadLayout();
-    	
-    	
-    	
+        
 	}        
 
     public void reloadLayout() {
@@ -137,7 +135,7 @@ public class CompareView extends Activity {
 				
 			} catch ( WebsiteHandlerException ex ) {
 				
-				Log.d(Constants.debugTag, ex.getMessage() );
+				ex.printStackTrace();
 				return false;
 				
 			}

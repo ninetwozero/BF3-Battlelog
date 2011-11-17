@@ -17,15 +17,17 @@ package com.ninetwozero.battlelog.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.text.TextUtils;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class FeedListAdapter extends BaseAdapter {
 	
@@ -62,7 +64,7 @@ public class FeedListAdapter extends BaseAdapter {
 	@Override
 	public long getItemId( int position ) {
 
-		return this.itemArray.get( position ).getItemId();
+		return this.itemArray.get( position ).getId();
 		
 	}
 	
@@ -80,13 +82,16 @@ public class FeedListAdapter extends BaseAdapter {
 		}
 	
 		//Set the views
-		((TextView) convertView.findViewById(R.id.text_title)).setText( currentItem.getTitle() );
+		((TextView) convertView.findViewById(R.id.text_title)).setText( Html.fromHtml( currentItem.getTitle() ) );
 		if( !currentItem.getContent().equals( "" ) ) {
 
 			((TextView) convertView.findViewById(R.id.text_content)).setText( currentItem.getContent() );
-			((TextView) convertView.findViewById(R.id.text_content)).setEllipsize( TextUtils.TruncateAt.END );			
 		
 		}
+		
+		((TextView) convertView.findViewById(R.id.text_date)).setText( PublicUtils.getRelativeDate( currentItem.getDate() ) );
+		((TextView) convertView.findViewById(R.id.text_hooah)).setText( currentItem.getNumLikes() + " hoahs" );
+		((TextView) convertView.findViewById(R.id.text_comment)).setText( currentItem.getComments().size() + " comments");
 		
 		//Hook it up on the tag
 		convertView.setTag( currentItem );

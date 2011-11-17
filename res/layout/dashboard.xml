@@ -44,7 +44,7 @@
 			<Button
 			    style="@style/MenuButton"
 			    android:id="@+id/button_view_self"
-			    android:text="My performance"
+			    android:text="My profile"
 		    	android:layout_height="50dp"
 			/>
 			<Button

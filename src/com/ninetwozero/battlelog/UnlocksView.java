@@ -133,7 +133,7 @@ public class UnlocksView extends ListActivity {
 				
 			} catch ( WebsiteHandlerException ex ) {
 				
-				Log.d(Constants.debugTag, ex.getMessage() );
+				ex.printStackTrace();
 				return false;
 				
 			}

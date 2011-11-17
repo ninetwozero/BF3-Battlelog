@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/wrap_top"
 	android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
 >
 	<RelativeLayout
 		android:layout_width="fill_parent"
@@ -96,16 +97,14 @@
 			    android:id="@+id/text_header_platoon"
 			    android:text="Platoons"
 			/>
-			<ListView 
+
+			<LinearLayout
 			    android:id="@+id/list_platoons"
 			    android:layout_width="fill_parent"
 			    android:layout_height="fill_parent"
 			    android:layout_below="@id/text_header_platoon"
-				android:padding="5dp"
-				android:divider="#FFFFFF"
-				android:dividerHeight="0px"
-				android:fadingEdge="none"
-				android:fadingEdgeLength="0px"
+			    android:padding="5dp" 
+			    android:orientation="vertical"
 			/>
 			<TextView 
 		    	android:gravity="center"

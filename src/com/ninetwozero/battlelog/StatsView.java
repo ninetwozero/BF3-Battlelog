@@ -126,7 +126,7 @@ public class StatsView extends Activity {
 				
 			} catch ( WebsiteHandlerException ex ) {
 				
-				Log.d(Constants.debugTag, ex.getMessage() );
+				ex.printStackTrace();
 				return false;
 				
 			}

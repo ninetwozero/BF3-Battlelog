@@ -44,6 +44,8 @@ public final class Constants {
 	public static final String urlFeed = urlMain + "feed/?start={NUMSTART}"; /* TODO */
 	public static final String urlFeedComments = urlMain + "feed/getComments/{ID}/"; /* TODO */
 	public static final String urlUserFeed = urlMain + "feed/profileevents/{PID}/?start={NUMSTART}"; /* TODO */
+	public static final String urlHooah = urlMain + "like/postlike/{ID}/feed-item-like/";
+	public static final String urlComment = urlMain + "comment/postcomment/{ID}/feed-item-comment/";
 	
 	//URL to JSON-files (PROFILE-related)
 	public static final String urlProfile = urlMain + "user/overviewBoxStats/{PID}/";
@@ -71,8 +73,11 @@ public final class Constants {
 	public static final String[] fieldNamesChat = new String[] { "message", "chatId", "post-check-sum" };
 	public static final String[] fieldValuesChat = new String[] { null, null, null };
 	
-	public static final String[] fieldNamesProfilePost = new String[] {"message", "wall-ownerId", "post-check-sum"};
-	public static final String[] fieldValuesProfilePost = new String[] {null, null, null};
+	public static final String[] fieldNamesProfilePost = new String[] { "message", "wall-ownerId", "post-check-sum" };
+	public static final String[] fieldValuesProfilePost = new String[] { null, null, null };
+	
+	public static final String[] fieldNamesFeedComment = new String[] { "comment", "post-check-sum" };
+	public static final String[] fieldValuesFeedComment = new String[] { null, null };
 	
 	public static final String[] fieldNamesCHSUM = new String[] { "post-check-sum" };
 	public static final String[] fieldValuesCHSUM = new String[] { null };

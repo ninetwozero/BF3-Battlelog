@@ -16,12 +16,16 @@ package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
+import com.ninetwozero.battlelog.misc.Constants;
+
 
 
 public class FeedItem {
 
 	//Attributes
-	private long ownerId, itemId, date;
+	private long id, ownerId, itemId, date;
 	private int numLikes;
 	private String title, content, type;
 	private String[] username;
@@ -30,12 +34,13 @@ public class FeedItem {
 	//Construct
 	public FeedItem( 
 	
-		long oid, long iid, long nDate, int num,
+		long i, long oid, long iid, long nDate, int num,
 		String t, String c, String type, String[] u,
 		ArrayList<CommentData> cda
 		
 	) {
 		
+		this.id = i;
 		this.ownerId = oid;
 		this.itemId = iid;
 		this.date = nDate;
@@ -49,6 +54,7 @@ public class FeedItem {
 	}
 	
 	//Getters
+	public long getId() { return this.id; }
 	public long getOwnerId() { return this.ownerId; }
 	public long getItemId() { return this.itemId; }
 	public long getDate() { return this.date; }
@@ -56,18 +62,114 @@ public class FeedItem {
 	public String getTitle() { 
 		
 		//Get the correct format depending on the type
-		if( this.type.equals( "becamefriends" )  ) {
+		if( type.equals( "becamefriends" )  ) {
 			
 			return this.title.replace(
 					
-				"{player1}", this.username[0]
+				"{username1}", this.username[0]
 			
 			).replace( 
 					
-				"{player2}", this.username[1]
+				"{username2}", this.username[1]
 						
 			); 
 		
+		} else if( type.equals( "wroteforumpost" ) ) {
+			
+			return this.title.replace( 
+					
+				"{username}", 
+				this.username[0]
+				
+			);
+			
+		} else if( type.equals( "gamereport" ) ) {
+			
+			return this.title.replace( 
+					
+				"{username}", 
+				this.username[0]
+				
+			);
+			
+		} else if( type.equals( "statusmessage" ) ) {
+			
+			return this.title.replace( 
+					
+				"{username}", 
+				this.username[0]
+				
+			);
+			
+		} else if( type.equals( "addedfavserver" ) ) {
+			
+			return this.title.replace( 
+					
+				"{username}", 
+				this.username[0]
+				
+			);
+			
+		} else if( type.equals( "rankedup" ) ) {
+			
+			return this.title.replace( 
+					
+				"{username}", 
+				this.username[0]
+				
+			);
+			
+		} else if( type.equals( "levelcomplete" ) ) {
+			
+			return this.title.replace(
+					
+				"{username1}", this.username[0]
+			
+			).replace( 
+					
+				"{username2}", this.username[1]
+						
+			); 
+			
+		} else if( type.equals( "recievedplatoonwallpost" ) ) {
+			
+			return this.title.replace( 
+					
+				"{username}", 
+				this.username[0]
+				
+			);
+			
+		} else if( type.equals( "joinedplatoon" ) ) {
+			
+			return this.title.replace( 
+					
+				"{username}", 
+				this.username[0]
+				
+			);
+			
+		} else if( type.equals( "receivedaward" ) ) {
+			
+			return this.title.replace( 
+					
+				"{username}", 
+				this.username[0]
+				
+			);
+			
+		} else if( type.equals( "receivedwallpost" ) ) {
+			
+			return this.title.replace(
+					
+				"{username1}", this.username[0]
+			
+			).replace( 
+					
+				"{username2}", this.username[1]
+						
+			);
+			
 		} else {
 		
 			return this.title;

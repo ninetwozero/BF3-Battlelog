@@ -23,7 +23,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +32,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -41,8 +44,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
-import com.ninetwozero.battlelog.adapters.PlatoonListAdapter;
+import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
@@ -107,7 +111,7 @@ public class ProfileView extends TabActivity {
         	profileData = (ProfileData) getIntent().getSerializableExtra( "profile" );
         	
         }
-
+        
         initLayout();
 	}        
 
@@ -121,11 +125,7 @@ public class ProfileView extends TabActivity {
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new GetDataSelfAsync(this).execute(
-    		
-    		profileData
-
-		);
+    	new AsyncFeedRefresh(this, profileData).execute();
     	
     	
     }
@@ -175,17 +175,19 @@ public class ProfileView extends TabActivity {
     
     public void doFinish() {}
     
-    private class GetDataSelfAsync extends AsyncTask<ProfileData, Void, Boolean> {
+    public class AsyncFeedRefresh extends AsyncTask<Void, Void, Boolean> {
     
     	//Attributes
     	Context context;
     	ProgressDialog progressDialog;
+    	ProfileData profileData;
     	ProfileInformation profileInformation;
     	PlayerData playerData;
     	
-    	public GetDataSelfAsync(Context c) {
+    	public AsyncFeedRefresh(Context c, ProfileData pd) {
     		
     		this.context = c;
+    		this.profileData = pd;
     		this.progressDialog = null;
     		
     	}
@@ -202,17 +204,17 @@ public class ProfileView extends TabActivity {
     	}
 
 		@Override
-		protected Boolean doInBackground( ProfileData... arg0 ) {
+		protected Boolean doInBackground( Void... arg0 ) {
 			
 			try {
 				
-				this.profileInformation = WebsiteHandler.getProfileInformationForUser( arg0[0] );
-				this.playerData = WebsiteHandler.getStatsForUser( arg0[0] );
+				this.playerData = WebsiteHandler.getStatsForUser( this.profileData );
+				this.profileInformation = WebsiteHandler.getProfileInformationForUser( this.profileData );
 				return true;
 				
 			} catch ( WebsiteHandlerException ex ) {
 				
-				Log.d(Constants.debugTag, ex.getMessage() );
+				ex.printStackTrace();
 				return false;
 				
 			}
@@ -243,7 +245,7 @@ public class ProfileView extends TabActivity {
 						switch( getTabHost().getCurrentTab() ) {
 							
 							case 0:
-								drawLayout(profileInformation);
+								drawHome(profileInformation);
 								break;
 								
 							case 1:
@@ -265,7 +267,7 @@ public class ProfileView extends TabActivity {
 				
 			);
 
-			drawLayout(this.profileInformation);
+			drawHome(this.profileInformation);
 			
 			//Done!
 	        if( this.progressDialog != null ) this.progressDialog.dismiss();
@@ -274,7 +276,7 @@ public class ProfileView extends TabActivity {
     	
     }
     
-    public final void drawLayout(ProfileInformation data) {
+    public final void drawHome(ProfileInformation data) {
     	
     	//Let's start drawing the... layout
     	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
@@ -318,24 +320,48 @@ public class ProfileView extends TabActivity {
     	}
     	
     	//Do we have a presentation?
-    	if( !data.getPresentation().equals( "" ) ) {
+    	if( !data.getPresentation().equals( "" ) && data.getPresentation() != null ) {
     		
     		((TextView) findViewById(R.id.text_presentation)).setText( data.getPresentation() );
 		
     	} else {
     		
-    		((RelativeLayout) findViewById(R.id.wrap_presentation)).setVisibility(View.GONE);
+    		((TextView) findViewById(R.id.text_presentation)).setText( "No presentation found." );
 
     	}
     	
     	//Any platoons?
     	if( data.getPlatoons().size() > 0 ) {
 
-    		((ListView) findViewById(R.id.list_platoons)).setAdapter(  
+    		//Init
+    		View convertView;
+    		LinearLayout platoonWrapper = (LinearLayout) findViewById(R.id.list_platoons);
     		
-    			new PlatoonListAdapter(this, data.getPlatoons(), layoutInflater)
+    		//Iterate over the platoons
+    		for( PlatoonData currentPlatoon : data.getPlatoons() ) {
+
+	    		//Does it already exist?
+    			if( platoonWrapper.findViewWithTag( currentPlatoon ) != null ) { continue; }
     			
-    		);
+    			//Recycle
+	    		convertView = layoutInflater.inflate( R.layout.list_item_platoon, platoonWrapper, false );
+	
+	    		//Set the TextViews
+	    		((TextView) convertView.findViewById( R.id.text_name ) ).setText( currentPlatoon.getName() );
+	    		((TextView) convertView.findViewById( R.id.text_tag ) ).setText( "[" + currentPlatoon.getTag() + "]" );
+	    		((TextView) convertView.findViewById( R.id.text_members ) ).setText( currentPlatoon.getCountMembers() + "");
+	    		((TextView) convertView.findViewById( R.id.text_fans ) ).setText( currentPlatoon.getCountFans() + "");
+	    		
+	    		//Almost forgot - we got a Bitmap too!
+	    		((ImageView) convertView.findViewById( R.id.image_badge ) ).setImageDrawable( currentPlatoon.getImage() );
+	    		
+	    		//Store it in the tag
+	    		convertView.setTag( currentPlatoon );
+
+	    		//Add it!
+	    		platoonWrapper.addView( convertView );
+	    		
+    		}
     		
     	} else {
         	
@@ -399,7 +425,12 @@ public class ProfileView extends TabActivity {
     public void drawFeed(ProfileInformation data) {
     	
     	//Do we have it already?
-		if( listFeed == null ) { listFeed = ((ListView) findViewById(R.id.list_feed)); }
+		if( listFeed == null ) { 
+			
+			listFeed = ((ListView) findViewById(R.id.list_feed)); 
+			registerForContextMenu(listFeed);
+			
+		}
         
 		((TextView) findViewById(R.id.feed_username)).setText( data.getUsername() );
         
@@ -411,7 +442,7 @@ public class ProfileView extends TabActivity {
 		);
 		
 		//Do we have the onClick?
-		if( listFeed.getOnItemLongClickListener() == null ) {
+		if( listFeed.getOnItemClickListener() == null ) {
 			
 			listFeed.setOnItemClickListener( 
 					
@@ -422,7 +453,7 @@ public class ProfileView extends TabActivity {
 
 						if( !((FeedItem) a.getItemAtPosition( pos ) ).getContent().equals( "" ) ) {
 							
-							View viewContainer = (View) v.findViewById(R.id.text_content);
+							View viewContainer = (View) v.findViewById(R.id.wrap_contentbox);
 							viewContainer.setVisibility( ( viewContainer.getVisibility() == View.GONE ) ? View.VISIBLE : View.GONE );
 						
 						}
@@ -478,5 +509,72 @@ public class ProfileView extends TabActivity {
 		super.onSaveInstanceState(outState);
 		outState.putSerializable("serializedCookies", RequestHandler.getSerializedCookies());
 	
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
+
+       	//Show the menu
+		menu.add( 0, 0, 0, "Hooah!");
+//		menu.add( 0, 1, 0, "Comment");
+
+		return;
+	
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+
+		//Declare...
+		AdapterView.AdapterContextMenuInfo info;
+		
+		//Let's try to get some menu information via a try/catch
+		try {
+			
+		    info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+		
+		} catch (ClassCastException e) {
+		
+			e.printStackTrace();
+			return false;
+		
+		}
+		
+		try {
+			
+			//Divide & conquer 
+			if( item.getGroupId() == 0 ) {
+				
+				//REQUESTS
+				if( item.getItemId() == 0 ) {
+
+					new AsyncFeedHooah(this, info.id, false, new AsyncFeedRefresh(this, profileData)).execute( 
+							
+						sharedPreferences.getString( 
+								
+							"battlelog_post_checksum", 
+							""
+							
+						) 
+					
+					);
+				
+				} else if( item.getItemId() == 1 ){
+					
+					/* TODO 
+					 * WebsiteHandler.commentOnFeedPost( info.id, sharedPreferences.getString( "battlelog_post_checksum", ""), comment )
+					*/
+				}
+				
+			}
+			
+		} catch( Exception ex ) {
+		
+			ex.printStackTrace();
+			return false;
+			
+		}
+
+		return true;
 	}
 }
