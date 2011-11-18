@@ -37,15 +37,16 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
 	ArrayList<ChatMessage> messageArray = new ArrayList<ChatMessage>();
 	ListView listView;
 	LayoutInflater layoutInflater;
+	String username; //The user that's using the chat on "this" end
 	
 	//Constructor
-	public AsyncChatRefresh( Context c, ListView lv, LayoutInflater l ) { 
+	public AsyncChatRefresh( Context c, ListView lv, String u, LayoutInflater l ) { 
 		
 		this.context = c;
 		this.listView = lv;
 		this.layoutInflater = l;
 		this.sharedPreferences = context.getSharedPreferences(Constants.fileSharedPrefs, 0);
-		
+		this.username = u;
 	}	
 
 	@Override
@@ -77,7 +78,7 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
 			//Set the almighty adapter
 			listView.setAdapter( 
 					
-				new ChatListAdapter(context, messageArray, layoutInflater) 
+				new ChatListAdapter(context, messageArray, username, layoutInflater) 
 				
 			);
 			

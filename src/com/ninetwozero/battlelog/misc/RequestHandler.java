@@ -230,7 +230,7 @@ public class RequestHandler {
 	public String hash( String str ) {
 
 		try {
-			// Create MD5 Hash
+			// Create SHA-256
 			MessageDigest digest = MessageDigest.getInstance( "SHA-256" );
 			digest.update( str.getBytes() );
 			byte messageDigest[] = digest.digest();

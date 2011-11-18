@@ -18,7 +18,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.ProfileView.AsyncFeedRefresh;
+import com.ninetwozero.battlelog.ProfileView.AsyncProfileRefresh;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
@@ -29,10 +29,10 @@ public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
 	long postId;
 	boolean fromWidget;
 	String httpContent;
-	AsyncFeedRefresh asyncFeedRefresh;
+	AsyncProfileRefresh asyncFeedRefresh;
 	
 	//Constructor
-	public AsyncFeedHooah( Context c, long pId, boolean w, AsyncFeedRefresh acr ) { 
+	public AsyncFeedHooah( Context c, long pId, boolean w, AsyncProfileRefresh acr ) { 
 		
 		this.context = c; 
 		this.postId = pId;

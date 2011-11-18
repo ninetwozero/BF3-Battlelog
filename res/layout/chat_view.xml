@@ -28,7 +28,6 @@
 		    android:layout_marginRight="6dp"
 		    android:layout_centerVertical="true"
 		    android:singleLine="true"
-		    android:maxLength="90"
 		 />
 	</RelativeLayout>
 	<ListView
@@ -37,6 +36,8 @@
 	    android:layout_height="fill_parent"
 		android:layout_above="@id/bar_form"
 		android:stackFromBottom="true"
+		android:divider="#FFFFFF"
+		android:dividerHeight="0dp"
 	/>
 	<TextView
 	  	android:id="@android:id/empty"

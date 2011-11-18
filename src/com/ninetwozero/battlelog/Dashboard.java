@@ -437,11 +437,12 @@ public class Dashboard extends Activity {
     	
     	//Get it right
     	if( view.getId()  == R.id.list_requests ) { menuId = 0;  } 
-    	else if( view.getId() == R.id.list_friends) { menuId = 1; }
+    	else if( view.getId() == R.id.list_friends) { menuId = 0; }
     	
     	//Show the menu
 		menu.add( menuId, 0, 0, "Open chat");
-		menu.add( menuId, 1, 0, "Compare battle scars");
+		menu.add( menuId, 1, 0, "View soldier");
+		menu.add( menuId, 2, 0, "Compare battle scars");
     	
 		return;
 	
@@ -496,46 +497,18 @@ public class Dashboard extends Activity {
 						new Intent( 
 								
 							this, 
-							CompareView.class
+							ProfileView.class
 							
 						).putExtra( 
 							
 							"profile", 
-							WebsiteHandler.getPersonaIdFromProfile(
-								
-								((ProfileData) info.targetView.getTag()).getProfileId() 
-						
-							)
+							((ProfileData) info.targetView.getTag())
 							
 						)
 					
 					);
 					
-				}
-				
-	    	} else if( item.getGroupId() == 1 ) {
-	    		
-	    		
-	    		//ONLINE FRIENDS
-				if( item.getItemId() == 0 ) {
-					
-					startActivity(
-							
-						new Intent( 
-								
-							this, 
-							ChatView.class
-							
-						).putExtra( 
-							
-							"profile", 
-							(ProfileData) info.targetView.getTag()
-							
-						)
-					
-					);
-					
-				} else if( item.getItemId() == 1 ) {
+				} else if( item.getItemId() == 2 ) {
 					
 					startActivity(
 							
@@ -557,51 +530,6 @@ public class Dashboard extends Activity {
 					
 					);
 					
-				}
-	    		
-	    	} else if( item.getGroupId() == 2 ) {    		
-	    		
-	    		//OFFLINE FRIENDS
-				if( item.getItemId() == 0 ) {
-					
-					startActivity(
-							
-						new Intent( 
-								
-							this, 
-							ChatView.class
-							
-						).putExtra( 
-							
-							"profile", 
-							(ProfileData) info.targetView.getTag()
-							
-						)
-					
-					);
-					
-				} else if( item.getItemId() == 1 ) {
-	
-					startActivity(
-					
-						new Intent( 
-								
-							this, 
-							CompareView.class
-							
-						).putExtra( 
-							
-							"profile", 
-							WebsiteHandler.getPersonaIdFromProfile(
-								
-								((ProfileData) info.targetView.getTag()).getProfileId() 
-						
-							)
-							
-						)
-					
-					);
-				
 				}
 					
 	    	} else {}

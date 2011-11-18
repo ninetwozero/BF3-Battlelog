@@ -131,7 +131,7 @@ public class FeedItem {
 						
 			); 
 			
-		} else if( type.equals( "joinedplatoon" ) || type.equals( "leftplatoon" ) || type.equals( "recievedplatoonwallpost" ) ) {
+		} else if( type.equals( "joinedplatoon" ) || type.equals( "leftplatoon" ) || type.equals( "receivedplatoonwallpost" ) ) {
 			
 			return this.title.replace( 
 					

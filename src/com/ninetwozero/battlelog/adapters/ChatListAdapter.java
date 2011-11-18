@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ChatListAdapter extends BaseAdapter {
 	
@@ -32,15 +34,16 @@ public class ChatListAdapter extends BaseAdapter {
 	Context context;
 	ArrayList<ChatMessage> messageArray;
 	LayoutInflater layoutInflater;
-	TextView textMessage;
+	TextView textUsername, textMessage, textTimestamp;
+	String thisUser;
 	
 	//Construct
-	public ChatListAdapter(Context c, ArrayList<ChatMessage> m, LayoutInflater l) {
+	public ChatListAdapter(Context c, ArrayList<ChatMessage> m, String tu, LayoutInflater l) {
 	
 		context = c;
 		messageArray = m;
 		layoutInflater = l;
-		
+		thisUser = tu;
 	}
 
 	@Override
@@ -65,6 +68,28 @@ public class ChatListAdapter extends BaseAdapter {
 	}
 	
 	@Override
+	public int getItemViewType(int position) {
+	    
+		if( getItem(position).getSender().equals( thisUser )) {
+			
+			return 1;
+		
+		} else {
+			
+			return 0;
+		
+		}
+	
+	}
+
+	@Override
+	public int getViewTypeCount() {
+	   
+		return 2;
+	
+	}
+	
+	@Override
 	public View getView( int position, View convertView, ViewGroup parent ) {
 
 		//Get the current item
@@ -73,14 +98,46 @@ public class ChatListAdapter extends BaseAdapter {
 		//Recycle
 		if ( convertView == null ) {
 
-			convertView = layoutInflater.inflate( R.layout.list_item_chat, parent, false );
+			//Let's get the view type
+			if( getItemViewType(position) == 1 ) {
+				
+				convertView = layoutInflater.inflate( R.layout.list_item_chat_remote, parent, false );
 
+			} else {
+				
+				convertView = layoutInflater.inflate( R.layout.list_item_chat_local, parent, false );
+				
+			}
 		}
 
-		//Set the TextViews
-		((TextView) convertView.findViewById( R.id.text_username)).setText( currentMessage.getSender() );
-		((TextView) convertView.findViewById( R.id.text_message)).setText( currentMessage.getMessage() );
+		//Grab the fields
+		textUsername = (TextView) convertView.findViewById( R.id.text_username);
+		textTimestamp = (TextView) convertView.findViewById( R.id.text_timestamp);
+		textMessage = (TextView) convertView.findViewById( R.id.text_message);
 		
+		//Either set or hide it
+		/*if( 0 < position && currentMessage.getSender().equals( getItem(position-1).getSender() ) ) {
+			
+			if( position < (getCount()-1) && (currentMessage.getTimestamp()+300) > getItem(position).getTimestamp() ) {
+				
+				textUsername.setVisibility( View.GONE );
+				textTimestamp.setVisibility(View.GONE);			
+			
+			}
+			
+		} else {
+			
+			textUsername.setVisibility( View.VISIBLE );
+			textTimestamp.setVisibility(View.VISIBLE);
+			
+		}*/
+		
+		//Set the TextViews
+		textUsername.setText( currentMessage.getSender() );
+		textMessage.setText( Html.fromHtml( currentMessage.getMessage() ) );
+		textTimestamp.setText( PublicUtils.getRelativeDate(currentMessage.getTimestamp()) );
+		
+		//Store the object
 		convertView.setTag( currentMessage );
 
 		return convertView;

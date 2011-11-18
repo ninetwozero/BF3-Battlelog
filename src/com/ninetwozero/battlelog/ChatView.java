@@ -86,7 +86,10 @@ public class ChatView extends ListActivity {
         //Prepare to tango
         this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
         this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        
+        //Get the ListView
         listView = getListView();
+        listView.setChoiceMode( ListView.CHOICE_MODE_NONE );
         
         //Let's get the other chat participant
         profileData = (ProfileData) getIntent().getSerializableExtra( "profile" );
@@ -115,7 +118,7 @@ public class ChatView extends ListActivity {
 				}
 			}, 
     		0,
-    		30000
+    		25000
     	
         ); 
         
@@ -194,7 +197,7 @@ public class ChatView extends ListActivity {
     
     public void reloadChat() {
     	
-    	new AsyncChatRefresh(this, listView, layoutInflater).execute( profileData.getProfileId() );
+    	new AsyncChatRefresh(this, listView, profileData.getAccountName(), layoutInflater).execute( profileData.getProfileId() );
     
     }
     
@@ -211,7 +214,7 @@ public class ChatView extends ListActivity {
 				chatId, 
 				buttonSend, 
 				false, 
-				new AsyncChatRefresh(this, listView, layoutInflater)
+				new AsyncChatRefresh(this, listView, profileData.getAccountName(), layoutInflater)
 			
     		).execute(
 

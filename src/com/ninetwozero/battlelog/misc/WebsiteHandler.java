@@ -1254,7 +1254,7 @@ public class WebsiteHandler {
 					
 						//Grab the specific object
 						tempSubItem = currItem.optJSONObject( "WROTEFORUMPOST" );
-						itemTitle = "<b>{username}</b> wrote a forum post in the thread <b>\"{thread}\"</b>".replace( 
+						itemTitle = "<b>{username}</b> wrote a forum post in the thread <b>\"{thread}\"</b>.".replace( 
 							
 							"{thread}", 
 							tempSubItem.getString( "threadTitle" )
@@ -1281,7 +1281,7 @@ public class WebsiteHandler {
 						//Grab the specific object
 						JSONArray tempStatsArray = currItem.optJSONObject( "GAMEREPORT" ).optJSONArray( "statItems" );
 						tempSubItem = tempStatsArray.optJSONObject( 0 );
-						itemTitle = "<b>{username}</b> unlocked a new item: <b>{item}</b>";
+						itemTitle = "<b>{username}</b> unlocked a new item: <b>{item}</b>.";
 						
 						//Weapon? Attachment?
 						if( !tempSubItem.isNull( "parentLangKeyTitle" ) ) {
@@ -1383,7 +1383,7 @@ public class WebsiteHandler {
 						tempSubItem = currItem.getJSONObject( "RANKEDUP" );
 						
 						//Set it!
-						itemTitle = "<b>{username}</b> got promoted to <b>{rank title}</b> (rank{rank})".replace( 
+						itemTitle = "<b>{username}</b> got promoted to <b>{rank title}</b> (rank{rank}).".replace( 
 							
 							"{rank title}", 
 							DataBank.getRankTitle( tempSubItem.getString( "langKeyTitle" ) )
@@ -1418,7 +1418,7 @@ public class WebsiteHandler {
 						tempSubItem = currItem.getJSONObject( "COMMENTEDGAMEREPORT" );
 						
 						//Set it!
-						itemTitle = "<b>{username}</b> commented on Battle Report <b>{server name} {map} {game mode}</b>".replace(
+						itemTitle = "<b>{username}</b> commented on Battle Report <b>{server name} {map} {game mode}</b>.".replace(
 								
 							"{server name}",
 							tempSubItem.getString( "serverName" )
@@ -1457,7 +1457,7 @@ public class WebsiteHandler {
 						tempSubItem = currItem.getJSONObject( "JOINEDPLATOON" ).getJSONObject( "platoon" );
 						
 						//Set it!
-						itemTitle = "<b>{username}</b> joined the platoon <b>{platoon}</b>".replace( 
+						itemTitle = "<b>{username}</b> joined the platoon <b>{platoon}</b>.".replace( 
 					
 							"{platoon}",
 							tempSubItem.getString("name")
@@ -1486,7 +1486,7 @@ public class WebsiteHandler {
 						tempSubItem = currItem.getJSONObject( "LEFTPLATOON" ).getJSONObject( "platoon" );
 						
 						//Set it!
-						itemTitle = "<b>{username}</b> left the platoon <b>{platoon}</b>".replace( 
+						itemTitle = "<b>{username}</b> left the platoon <b>{platoon}</b>.".replace( 
 					
 							"{platoon}",
 							tempSubItem.getString("name")
@@ -1516,7 +1516,7 @@ public class WebsiteHandler {
 						tempSubItem = currItem.getJSONObject( "RECEIVEDPLATOONWALLPOST" );
 						
 						//Set it!
-						itemTitle = "<b>{username}</b> wrote on the wall for <b>{platoon}</b>".replace(
+						itemTitle = "<b>{username}</b> wrote on the wall for <b>{platoon}</b>.".replace(
 								
 							"{platoon}", 
 							tempSubItem.getJSONObject("platoon").getString( "name" )
@@ -1547,7 +1547,7 @@ public class WebsiteHandler {
 						tempSubItem = currItem.getJSONObject( "LEVELCOMPLETE" );
 						
 						//Set it!
-						itemTitle = "<b>{username1}</b> and <b>{username2}</b> completed a co-op level<br /> <b>{level}</b> on <b>{difficulty}</b>".replace(
+						itemTitle = "<b>{username1}</b> and <b>{username2}</b> completed a co-op level<br /> <b>{level}</b> on <b>{difficulty}</b>.".replace(
 								
 							"level", 
 							tempSubItem.getString( "level" )
@@ -1584,7 +1584,7 @@ public class WebsiteHandler {
 						Log.d(Constants.debugTag, "=>" + tempSubItem.getString( "langKeyTitle" ) + "<=");
 						
 						//Set it!
-						itemTitle = "<b>{username}</b> recieved a new award: <b>{award}</b>".replace( 
+						itemTitle = "<b>{username}</b> recieved a new award: <b>{award}</b>.".replace( 
 								
 							"{award}", 
 							DataBank.getAwardTitle( tempSubItem.getString( "langKeyTitle" ) )

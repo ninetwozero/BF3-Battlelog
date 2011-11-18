@@ -69,6 +69,8 @@ public class FeedListAdapter extends BaseAdapter {
 		
 	}
 	
+	public void setItemArray( ArrayList<FeedItem> ia ) { this.itemArray = ia; }
+	
 	@Override
 	public View getView( int position, View convertView, ViewGroup parent ) {
 

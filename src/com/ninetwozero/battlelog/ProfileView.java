@@ -23,7 +23,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -68,6 +67,7 @@ public class ProfileView extends TabActivity {
 	private PlayerData playerData;
 	private ProfileInformation profileInformation;
 	private TabHost mTabHost;
+	private FeedListAdapter feedListAdapter;
 	
 	//Elements
 	private ListView listFeed;
@@ -121,14 +121,14 @@ public class ProfileView extends TabActivity {
 	public void initLayout() {
 		
 		//Eventually get a *cached* version instead    
-		new AsyncFeedRefresh(this, false, profileData).execute();
+		new AsyncProfileRefresh(this, false, profileData).execute();
 		
 	}
 	
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new AsyncFeedRefresh(this, true, profileData).execute();
+    	new AsyncProfileRefresh(this, true, profileData).execute();
     	
     	
     }
@@ -178,7 +178,7 @@ public class ProfileView extends TabActivity {
     
     public void doFinish() {}
     
-    public class AsyncFeedRefresh extends AsyncTask<Void, Void, Boolean> {
+    public class AsyncProfileRefresh extends AsyncTask<Void, Void, Boolean> {
     
     	//Attributes
     	Context context;
@@ -186,7 +186,7 @@ public class ProfileView extends TabActivity {
     	ProfileData profileData;
     	boolean hideDialog;
     	
-    	public AsyncFeedRefresh(Context c, boolean f, ProfileData pd) {
+    	public AsyncProfileRefresh(Context c, boolean f, ProfileData pd) {
     		
     		this.context = c;
     		this.hideDialog = f;
@@ -273,7 +273,7 @@ public class ProfileView extends TabActivity {
 				}
 				
 			);
-Log.d(Constants.debugTag, "Yo => " + mTabHost.getCurrentTab());
+
 			//Let's see what we need to update *directly*
 			switch( mTabHost.getCurrentTab() ) {
 				
@@ -314,9 +314,9 @@ Log.d(Constants.debugTag, "Yo => " + mTabHost.getCurrentTab());
     		
     		((TextView) findViewById(R.id.text_online)).setText( 
     				
-				"Playing on {SERVER_NAME}".replace(
+				"Playing on {server name}".replace(
 					
-					"{SERVER_NAME}",
+					"{server name}",
 					data.getCurrentServer()
 					
 				)
@@ -465,14 +465,12 @@ Log.d(Constants.debugTag, "Yo => " + mTabHost.getCurrentTab());
         
 		((TextView) findViewById(R.id.feed_username)).setText( data.getUsername() );
         
-		//Always and forever
+		//If we don't have it defined, then we need to set it
 		if( listFeed.getAdapter() == null ) {
 			
-			listFeed.setAdapter( 
-				
-				new FeedListAdapter(this, data.getFeedItems(), layoutInflater) 
-				
-			);
+			//Create a new FeedListAdapter
+			feedListAdapter = new FeedListAdapter(this, data.getFeedItems(), layoutInflater);
+			listFeed.setAdapter( feedListAdapter );
 			
 			//Do we have the onClick?
 			if( listFeed.getOnItemClickListener() == null ) {
@@ -498,15 +496,14 @@ Log.d(Constants.debugTag, "Yo => " + mTabHost.getCurrentTab());
 					}
 						
 				);
-				
+			
 			}
-		
+			
 		} else {
 			
-			((FeedListAdapter) listFeed.getAdapter()).notifyDataSetChanged();
-			
+			feedListAdapter.setItemArray( profileInformation.getFeedItems() );
+			feedListAdapter.notifyDataSetChanged();
 		}
-    
     }
     
     @Override
@@ -555,7 +552,7 @@ Log.d(Constants.debugTag, "Yo => " + mTabHost.getCurrentTab());
 
        	//Show the menu
 		menu.add( 0, 0, 0, "Hooah!");
-//		menu.add( 0, 1, 0, "Comment");
+//		menu.add( 0, 1, 0, "View comments");
 
 		return;
 	
@@ -587,7 +584,7 @@ Log.d(Constants.debugTag, "Yo => " + mTabHost.getCurrentTab());
 				//REQUESTS
 				if( item.getItemId() == 0 ) {
 
-					new AsyncFeedHooah(this, info.id, false, new AsyncFeedRefresh(this, true, profileData)).execute( 
+					new AsyncFeedHooah(this, info.id, false, new AsyncProfileRefresh(this, true, profileData)).execute( 
 							
 						sharedPreferences.getString( 
 								
@@ -601,6 +598,8 @@ Log.d(Constants.debugTag, "Yo => " + mTabHost.getCurrentTab());
 				} else if( item.getItemId() == 1 ){
 					
 					/* TODO 
+					 * startActivity( new Intent(this, ViewFeedComments.class).putExtra("postId", postId);
+					 * -vv-
 					 * WebsiteHandler.commentOnFeedPost( info.id, sharedPreferences.getString( "battlelog_post_checksum", ""), comment )
 					*/
 				}
