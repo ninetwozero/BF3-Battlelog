@@ -17,6 +17,8 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import android.util.Log;
+
 public class PublicUtils {
 
 	/**
@@ -33,6 +35,9 @@ public class PublicUtils {
 		Long dateNow = System.currentTimeMillis()/1000;
 		Long dateDiff = dateNow - dateStart;
 		String dateString = null;
+		
+		//When did we start? 0 == just one login (if I haven't understood it too wrong)
+		if( d == 0 ) { return "an unknown amount of time ago."; }
 		
 		//What's the difference (in seconds) y'all?
 		if( (dateDiff / Constants.minuteInSeconds) < 1 ) {

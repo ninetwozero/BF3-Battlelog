@@ -254,7 +254,7 @@ public class CompareView extends Activity {
 	public boolean onCreateOptionsMenu( Menu menu ) {
 
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate( R.menu.option_profileview, menu );
+		inflater.inflate( R.menu.option_basic, menu );
 		return super.onCreateOptionsMenu( menu );
 	
     }

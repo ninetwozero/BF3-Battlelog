@@ -14,11 +14,14 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
+import java.io.Serializable;
 
-public class CommentData {
+
+public class CommentData implements Serializable {
 
 	//Attributes
-	private long id, itemId, creationDate, authorId;
+	private static final long serialVersionUID = -6685250652253512690L;
+	private long id, itemId, timestamp, authorId;
 	private String author, content;
 	
 	//Constructs
@@ -26,7 +29,7 @@ public class CommentData {
 		
 		this.id = id;
 		this.itemId = iId;
-		this.creationDate = cDate;
+		this.timestamp = cDate;
 		this.authorId = aId;
 		this.author = a;
 		this.content = c;
@@ -36,7 +39,7 @@ public class CommentData {
 	//Getters
 	public long getId() { return this.id; }
 	public long getItemId() { return this.itemId; }
-	public long getCreationDate() { return this.creationDate; }
+	public long getTimestamp() { return this.timestamp; }
 	public long getAuthorId() { return this.authorId; }
 	public String getAuthor() { return this.author; }
 	public String getContent() { return this.content; }

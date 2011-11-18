@@ -28,8 +28,10 @@ public final class Constants {
 	public static final String urlSearch = urlMain + "search/getMatches/";
 	public static final String urlFriendAccept = urlMain + "friend/acceptFriendship/{PID}/";
 	public static final String urlFriendDecline = urlMain + "friend/declineFriendship/{PID}/";
-	public static final String urlNotifications = urlMain + "notification/loadNotifications/";
+	public static final String urlNotifications = urlMain + "notification/";
+//	public static final String urlNotifications = urlMain + "notification/loadNotifications/";
 	public static final String urlLogout = urlMain + "session/logout/";
+	
 	//URLs for CHAT
 	public static final String urlFriends = urlMain + "comcenter/sync/";
 	public static final String urlChatContents = urlMain + "comcenter/getChatId/{PID}/";
@@ -39,14 +41,19 @@ public final class Constants {
 	//URLS for PROFILE
 	public static final String urlProfilePost = urlMain + "wall/postmessage";
 	public static final String urlPlatoonThumbs = urlStaticContent + "prod/emblems/60/";
+	public static final String urlFriendRequest = urlMain + "friend/requestFriendship/{PID}/";
+	
+	//URLS for FEED
+	public static final String urlFeedReport = urlMain + "viewcontent/reportFeedItemAbuse/{PID}/0/"; /* TODO */
+	public static final String urlFeedCommentReport = urlMain + "viewcontent/reportFeedItemAbuse/{PID}/{CID}/"; /* TODO */
+	public static final String urlHooah = urlMain + "like/postlike/{ID}/feed-item-like/";
+	public static final String urlUnHooah = urlMain + "like/postunlike/{ID}/feed-item-like/";
+	public static final String urlComment = urlMain + "comment/postcomment/{ID}/feed-item-comment/";
 	
 	//URLs to JSON-files (FEED-related)
 	public static final String urlFeed = urlMain + "feed/?start={NUMSTART}"; /* TODO */
 	public static final String urlFeedComments = urlMain + "feed/getComments/{PID}/"; /* TODO */
 	public static final String urlUserFeed = urlMain + "feed/profileevents/{PID}/?start={NUMSTART}"; /* TODO */
-	public static final String urlHooah = urlMain + "like/postlike/{ID}/feed-item-like/";
-	public static final String urlUnHooah = urlMain + "like/postunlike/{ID}/feed-item-like/";
-	public static final String urlComment = urlMain + "comment/postcomment/{ID}/feed-item-comment/";
 	
 	//URL to JSON-files (PROFILE-related)
 	public static final String urlProfile = urlMain + "user/overviewBoxStats/{PID}/";

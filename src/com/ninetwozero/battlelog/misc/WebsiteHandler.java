@@ -61,7 +61,7 @@ public class WebsiteHandler {
 			
 			//Let's login everybody!
 			RequestHandler wh = new RequestHandler();
-    		httpContent = wh.post( Constants.urlLogin, postDataArray, false);
+    		httpContent = wh.post( Constants.urlLogin, postDataArray, 0);
 
     		//Did we manage?
     		if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -153,7 +153,7 @@ public class WebsiteHandler {
 					new PostData(Constants.fieldNamesSearch[1], checksum)
 					
 				}, 
-				false
+				0
 				
 			);
 
@@ -552,7 +552,22 @@ public class WebsiteHandler {
 			ArrayList<ArrayList<ProfileData>> profileArray = new ArrayList<ArrayList<ProfileData>>();
 			
 			//Get the content
-			httpContent = wh.post( Constants.urlFriends, new PostData[] { new PostData(Constants.fieldNamesCHSUM[0], checksum) }, false);
+			httpContent = wh.post( 
+					
+				Constants.urlFriends, 
+				new PostData[] { 
+						
+					new PostData(
+							
+						Constants.fieldNamesCHSUM[0], 
+						checksum
+						
+					) 
+					
+				}, 
+				0
+				
+			);
 
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -742,7 +757,7 @@ public class WebsiteHandler {
 			ArrayList<ProfileData> profileArray = new ArrayList<ProfileData>();
 			
 			//Get the content
-			httpContent = wh.post( Constants.urlFriends, new PostData[] { new PostData(Constants.fieldNamesCHSUM[0], checksum) }, false);
+			httpContent = wh.post( Constants.urlFriends, new PostData[] { new PostData(Constants.fieldNamesCHSUM[0], checksum) }, 0);
 	
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -824,7 +839,7 @@ public class WebsiteHandler {
 						) 
 						
 					}, 
-					false
+					0
 
 				);
 			
@@ -847,7 +862,7 @@ public class WebsiteHandler {
 						) 
 						
 					}, 
-					false
+					0
 			
 				);
 				
@@ -898,7 +913,7 @@ public class WebsiteHandler {
 					) 
 					
 				},
-				false
+				0
 		
 			);
 						
@@ -949,7 +964,7 @@ public class WebsiteHandler {
 					) 
 					
 				},
-				false
+				0
 		
 			);
 						
@@ -1028,7 +1043,7 @@ public class WebsiteHandler {
 					)
 					 
 				},
-				true
+				1
 		
 			);
 						
@@ -1123,7 +1138,7 @@ public class WebsiteHandler {
 
 				FeedItem tempFeedItem = null;
 				PlatoonData tempPlatoonData = null;
-				ArrayList<CommentData> comments = new ArrayList<CommentData>();
+				ArrayList<CommentData> comments;
 				
 				//Is status messages null?
 				if( statusMessage == null ) { statusMessage = new JSONObject("{'statusMessage':'', 'statusMessageChanged':0}"); }
@@ -1169,7 +1184,7 @@ public class WebsiteHandler {
 				for( int i = 0; i < feedItems.length(); i++ ) {
 					
 					//Once per loop
-					comments.clear();
+					comments = new ArrayList<CommentData>();
 					
 					//Each loop is an object
 					currItem = feedItems.getJSONObject( i );
@@ -1689,7 +1704,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	private static ArrayList<CommentData> getCommentsForPost( long postId ) throws WebsiteHandlerException {
+	public static ArrayList<CommentData> getCommentsForPost( long postId ) throws WebsiteHandlerException {
 			
 		try {
 			
@@ -1775,7 +1790,7 @@ public class WebsiteHandler {
 					
 					)	 
 				},
-				true
+				1
 		
 			);
 						
@@ -1819,8 +1834,8 @@ public class WebsiteHandler {
 					
 					)	 
 				},
-				true
-		
+				1
+				
 			);
 						
 			//Did we manage?
@@ -1849,7 +1864,7 @@ public class WebsiteHandler {
 			//Let's login everybody!
 			RequestHandler wh = new RequestHandler();
 			String httpContent;
-			
+
 			//Get the content
 			httpContent = wh.post( 
 					
@@ -1869,15 +1884,23 @@ public class WebsiteHandler {
 					
 					)	
 				},
-				true
+				2 //Noticed the 2?
 		
 			);
 						
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
 				
-				Log.d(Constants.debugTag, httpContent);
-				return true;
+				//Hopefully this goes as planned
+				if( !httpContent.equals( "Internal server error" )) {
+					
+					return true;
+				
+				} else {
+					
+					return false;
+					
+				}
 				
 			} else {
 			
@@ -1885,8 +1908,9 @@ public class WebsiteHandler {
 				
 			}	
 		
-		} catch ( RequestHandlerException ex ) {
+		} catch ( Exception ex ) {
 			
+			ex.printStackTrace();
 			throw new WebsiteHandlerException(ex.getMessage());
 			
 		}

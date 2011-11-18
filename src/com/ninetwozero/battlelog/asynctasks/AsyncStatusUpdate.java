@@ -71,7 +71,7 @@ public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
 			
     		//Let's login everybody!
 			RequestHandler wh = new RequestHandler();
-    		httpContent = wh.post( Constants.urlStatusSend, arg0, false);
+    		httpContent = wh.post( Constants.urlStatusSend, arg0, 0);
     		
     		//Did we manage?
     		if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -91,12 +91,12 @@ public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
     		
 		} catch ( RequestHandlerException ex ) {
 			
-			Log.e(Constants.debugTag, "", ex);
+			ex.printStackTrace();
 			return 1;
 		
 		} catch( Exception ex ) {
 			
-			Log.e(Constants.debugTag, "", ex);
+			ex.printStackTrace();
 			return 1;
 			
 		}

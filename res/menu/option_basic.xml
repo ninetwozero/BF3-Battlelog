@@ -6,18 +6,6 @@
 		android:alphabeticShortcut="R"
 	/>
     <item 
-		android:id="@+id/option_friendadd" 
-		android:icon="@android:drawable/ic_menu_add" 
-		android:title="Add friend" 
-		android:alphabeticShortcut="A"
-	/>
-    <item 
-		android:id="@+id/option_frienddel" 
-		android:icon="@android:drawable/ic_menu_add" 
-		android:title="Remove friend" 
-		android:alphabeticShortcut="A"
-	/>
-	<item 
 		android:id="@+id/option_back" 
 		android:icon="@android:drawable/ic_menu_revert" 
 		android:title="Back" 

@@ -21,48 +21,48 @@ import java.util.TimerTask;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.ninetwozero.battlelog.asynctasks.AsyncChatClose;
-import com.ninetwozero.battlelog.asynctasks.AsyncChatRefresh;
-import com.ninetwozero.battlelog.asynctasks.AsyncChatSend;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.ProfileView.AsyncProfileRefresh;
+import com.ninetwozero.battlelog.adapters.CommentListAdapter;
+import com.ninetwozero.battlelog.asynctasks.AsyncCommentSend;
+import com.ninetwozero.battlelog.asynctasks.AsyncCommentsRefresh;
+import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
+import com.ninetwozero.battlelog.datatypes.CommentData;
+import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-
-public class ChatView extends ListActivity {
+public class CommentView extends ListActivity {
 
 	//Attributes
-	private long chatId;
-	private ProfileData profileData;
+	private long postId;
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
+	private ArrayList<CommentData> comments;
 	
 	//Elements
 	private ListView listView;
 	private EditText fieldMessage;
 	private Button buttonSend;
 	
-	//Misc
-	Timer timerReload;
-	
 	//CHAT-related
-	private AsyncChatRefresh asyncChatRefresh;
+	private AsyncCommentsRefresh asyncCommentsRefresh;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -77,11 +77,8 @@ public class ChatView extends ListActivity {
     	
     	}
     	
-        //Did we get someone to chat with?
-        if( !getIntent().hasExtra( "profile" ) ) { finish(); }
-    	
     	//Set the content view
-        setContentView(R.layout.chat_view);
+        setContentView(R.layout.comments_view);
 
         //Prepare to tango
         this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
@@ -91,87 +88,22 @@ public class ChatView extends ListActivity {
         listView = getListView();
         listView.setChoiceMode( ListView.CHOICE_MODE_NONE );
         
-        //Let's get the other chat participant
-        profileData = (ProfileData) getIntent().getSerializableExtra( "profile" );
-	
-        //Setup the title
-        setTitle( getTitle().toString().replace( "...", profileData.getAccountName() ) );
+        //Let's get the other comments participant
+        comments = (ArrayList<CommentData>) getIntent().getSerializableExtra( "comments" );
+        postId = getIntent().getLongExtra( "postId", 0);
         
         //Get the elements
         buttonSend = (Button) findViewById(R.id.button_send);
         fieldMessage = (EditText) findViewById(R.id.field_message);
         
-        //Try to get the chatid
-        new AsyncGetChatId(this, profileData.getProfileId() ).execute( sharedPreferences.getString( "battlelog_post_checksum", "" ) );
-        
-        //Let's reload the chat will we?
-        timerReload = new Timer();
-        timerReload.schedule(
-        		
-    		new TimerTask() {
-
-				@Override
-				public void run() {
-
-					reloadChat();
-					
-				}
-			}, 
-    		0,
-    		25000
-    	
-        ); 
-        
-	}    
-	
-	public class AsyncGetChatId extends AsyncTask<String, Void, Boolean> {
-
-		//Attributes
-		private Context context;
-		private long chatId;
-		private long profileId;
-		
-		//Construct
-		public AsyncGetChatId(Context c, long pId) {
-			
-			this.context = c;
-			this.profileId = pId;
-			
-		}
-		
-		@Override
-		protected Boolean doInBackground( String... arg0 ) {
-
-			try {
-				
-				this.chatId = WebsiteHandler.getChatId(profileId, arg0[0]);
-				return true;
-			
-			} catch( WebsiteHandlerException ex ) {
-			
-				ex.printStackTrace();
-				return false;
-					
-			}
-			
-		}
-		
-		@Override
-		protected void onPostExecute( Boolean results ) {
-			
-			//If we succeeded, we're ok with this
-			if( results ) {
-			
-				setChatId(chatId);
-				buttonSend.setEnabled( true );
-
-			}
-			
-		}
-		
-		
+        //Let's setup the adapter
+        if( listView.getAdapter() == null ) {
+        	
+        	listView.setAdapter( new CommentListAdapter(this, comments, layoutInflater) );
+        	
+        }
+                
 	}
-	
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -185,19 +117,10 @@ public class ChatView extends ListActivity {
     public void onConfigurationChanged(Configuration newConfig){        
         super.onConfigurationChanged(newConfig);
     }
-
-    @Override
-    public void onDestroy() {
-    	
-    	super.onDestroy();
-    	if( timerReload != null ) timerReload.cancel();
-    	new AsyncChatClose(this, chatId).execute();
-    	
-    }
     
-    public void reloadChat() {
+    public void reloadComments() {
     	
-    	new AsyncChatRefresh(this, listView, profileData.getAccountName(), layoutInflater).execute( profileData.getProfileId() );
+    	new AsyncCommentsRefresh(this, listView, layoutInflater).execute( postId );
     
     }
     
@@ -207,14 +130,13 @@ public class ChatView extends ListActivity {
     	if( v.getId() == R.id.button_send ) {
     	
     		//Send it!
-    		new AsyncChatSend(
+    		new AsyncCommentSend(
     				
 				this,
-				profileData.getProfileId(),
-				chatId, 
+				postId,
 				buttonSend, 
 				false, 
-				new AsyncChatRefresh(this, listView, profileData.getAccountName(), layoutInflater)
+				new AsyncCommentsRefresh(this, listView, layoutInflater)
 			
     		).execute(
 
@@ -245,7 +167,7 @@ public class ChatView extends ListActivity {
 		//Let's act!
 		if( item.getItemId() == R.id.option_reload ) {
 	
-			this.reloadChat();
+			this.reloadComments();
 			
 		} else if( item.getItemId() == R.id.option_back ) {
 			
@@ -256,8 +178,92 @@ public class ChatView extends ListActivity {
 		// Return true yo
 		return true;
 
-	}  
-    
-    public void setChatId(long cId) { this.chatId = cId; }
+	} 
+	
+	/*
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
 
+       	//Show the menu
+		menu.add( 0, 0, 0, "Report comment");
+
+		return;
+	
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+
+		//Declare...
+		AdapterView.AdapterContextMenuInfo info;
+		
+		//Let's try to get some menu information via a try/catch
+		try {
+			
+		    info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+		
+		} catch (ClassCastException e) {
+		
+			e.printStackTrace();
+			return false;
+		
+		}
+		
+		try {
+			
+			//Divide & conquer 
+			if( item.getGroupId() == 0 ) {
+				
+				//REQUESTS
+				if( item.getItemId() == 0 ) {
+
+					new AsyncCommentReport(this, info.id, false, new AsyncProfileRefresh(this, true, profileData)).execute( 
+							
+						sharedPreferences.getString( 
+								
+							"battlelog_post_checksum", 
+							""
+							
+						) 
+					
+					);
+				
+				} else if( item.getItemId() == 1 ){
+					
+					//Yeah
+					startActivity(
+							
+						new Intent(
+								
+							this, 
+							CommentView.class
+							
+						).putExtra(
+								
+							"comments", 
+							(ArrayList<CommentData>) ((FeedItem) info.targetView.getTag()).getComments()
+					
+						).putExtra( 
+
+							"postId", 
+							((FeedItem) info.targetView.getTag()).getId()
+							
+						)
+						
+					);
+					
+				}
+				
+			}
+			
+		} catch( Exception ex ) {
+		
+			ex.printStackTrace();
+			return false;
+			
+		}
+
+		return true;
+	}
+    */
 }

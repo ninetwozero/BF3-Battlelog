@@ -49,6 +49,8 @@ import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
+import com.ninetwozero.battlelog.datatypes.CommentData;
+import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;

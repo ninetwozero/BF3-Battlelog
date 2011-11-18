@@ -51,6 +51,12 @@
           	android:windowSoftInputMode="adjustResize"
         />
         <activity
+            android:label="BF3 Battlelog - Comments"
+            android:name=".CommentView"
+          	android:configChanges="orientation"
+          	android:windowSoftInputMode="adjustResize"
+        />
+        <activity
             android:label="BF3 Battlelog - Comparing battle scars"
             android:name=".CompareView"
           	android:configChanges="orientation"

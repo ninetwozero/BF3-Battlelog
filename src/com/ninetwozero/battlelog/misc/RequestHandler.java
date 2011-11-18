@@ -150,7 +150,7 @@ public class RequestHandler {
 		
 	}
 
-	public String post( String link, PostData[] postDataArray, boolean extraHeaders ) throws RequestHandlerException {
+	public String post( String link, PostData[] postDataArray, int extraHeaders ) throws RequestHandlerException {
 
 		// Check so it's not empty
 		if ( link.equals( "" ) ) throw new RequestHandlerException("No link found.");
@@ -159,15 +159,30 @@ public class RequestHandler {
 		HttpPost httpPost = new HttpPost(link);
 		
 		//Do we need 'em?
-		if( extraHeaders ) {
+		if( extraHeaders > 0 ) {
 			
-			httpPost.setHeader( "Host", "battlelog.battlefield.com" );
-			httpPost.setHeader( "X-Requested-With", "XMLHttpRequest");
-			httpPost.setHeader( "X-AjaxNavigation", "1");
-			httpPost.setHeader( "Accept-Encoding", "gzip, deflate" );
-			httpPost.setHeader( "Referer", Constants.urlMain);
-			httpPost.setHeader( "Accept", "application/json, text/javascript, */*" );
-			httpPost.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
+			if( extraHeaders == 1 ) {
+								
+				//Set headers
+				httpPost.setHeader( "Host", "battlelog.battlefield.com" );
+				httpPost.setHeader( "X-Requested-With", "XMLHttpRequest");
+				httpPost.setHeader( "X-AjaxNavigation", "1");
+				httpPost.setHeader( "Accept-Encoding", "gzip, deflate" );
+				httpPost.setHeader( "Referer", Constants.urlMain);
+				httpPost.setHeader( "Accept", "application/json, text/javascript, */*" );
+				httpPost.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
+
+			} else if( extraHeaders == 2 ) {
+				
+				//Set headers
+				httpPost.setHeader( "Host", "battlelog.battlefield.com" );
+				httpPost.setHeader( "X-Requested-With", "XMLHttpRequest");
+				httpPost.setHeader( "Accept-Encoding", "gzip, deflate" );
+				httpPost.setHeader( "Referer", Constants.urlMain);
+				httpPost.setHeader( "Accept", "application/json, text/javascript, */*" );
+				httpPost.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
+				
+			}
 			
 		}
 			

@@ -107,8 +107,6 @@ public class FeedListAdapter extends BaseAdapter {
 	public void notifyDataSetChanged() {
 		
 		super.notifyDataSetChanged();
-		
-		Log.d(Constants.debugTag, "This is me doing a notification of it!!");
-		
+
 	}
 }

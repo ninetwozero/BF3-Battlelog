@@ -19,10 +19,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -45,6 +47,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
+import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
@@ -509,8 +512,21 @@ public class ProfileView extends TabActivity {
     @Override
 	public boolean onCreateOptionsMenu( Menu menu ) {
 
+    	//Inflate!!
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate( R.menu.option_profileview, menu );
+		
+		if( profileData.getProfileId() == sharedPreferences.getLong( "battlelog_profile_id", 0 ) ) {
+
+			menu.removeItem( R.id.option_friendadd );
+			menu.removeItem( R.id.option_frienddel );
+			
+		} else {
+			
+			menu.removeItem( R.id.option_frienddel );
+			
+		}
+		
 		return super.onCreateOptionsMenu( menu );
 	
     }
@@ -527,12 +543,28 @@ public class ProfileView extends TabActivity {
 			
 			((Activity) this).finish();
 			
-		}
+		} else if( item.getItemId() == R.id.option_friendadd ) {
+			
+			Toast.makeText( this, "ADD as friend!", Toast.LENGTH_SHORT).show();
+			
+		} else if( item.getItemId() == R.id.option_frienddel ) {
 		
+			Toast.makeText( this, "DELETE the friend!", Toast.LENGTH_SHORT).show();
+		
+		}
+	
 		// Return true yo
 		return true;
 
 	}  
+	
+	@Override
+	public void onResume() {
+		
+		super.onResume();
+		this.reloadLayout();
+		
+	}
 	
     @Override
     public void onConfigurationChanged(Configuration newConfig){        
@@ -552,7 +584,7 @@ public class ProfileView extends TabActivity {
 
        	//Show the menu
 		menu.add( 0, 0, 0, "Hooah!");
-//		menu.add( 0, 1, 0, "View comments");
+		menu.add( 0, 1, 0, "View comments");
 
 		return;
 	
@@ -597,11 +629,28 @@ public class ProfileView extends TabActivity {
 				
 				} else if( item.getItemId() == 1 ){
 					
-					/* TODO 
-					 * startActivity( new Intent(this, ViewFeedComments.class).putExtra("postId", postId);
-					 * -vv-
-					 * WebsiteHandler.commentOnFeedPost( info.id, sharedPreferences.getString( "battlelog_post_checksum", ""), comment )
-					*/
+					//Yeah
+					startActivity(
+							
+						new Intent(
+								
+							this, 
+							CommentView.class
+							
+						).putExtra(
+								
+							"comments", 
+							(ArrayList<CommentData>) ((FeedItem) info.targetView.getTag()).getComments()
+					
+						).putExtra( 
+
+							"postId", 
+							((FeedItem) info.targetView.getTag()).getId()
+							
+						)
+						
+					);
+					
 				}
 				
 			}
