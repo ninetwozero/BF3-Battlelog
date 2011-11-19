@@ -9,13 +9,29 @@
 		android:id="@+id/option_friendadd" 
 		android:icon="@android:drawable/ic_menu_add" 
 		android:title="Add friend" 
-		android:alphabeticShortcut="A"
+		android:alphabeticShortcut="F"
+		android:visible="false"
 	/>
     <item 
 		android:id="@+id/option_frienddel" 
-		android:icon="@android:drawable/ic_menu_add" 
+		android:icon="@android:drawable/ic_menu_delete" 
 		android:title="Remove friend" 
-		android:alphabeticShortcut="A"
+		android:alphabeticShortcut="F"
+		android:visible="false"
+	/>
+    <item 
+		android:id="@+id/option_compare" 
+		android:icon="@android:drawable/ic_menu_directions" 
+		android:title="Compare stats" 
+		android:alphabeticShortcut="C"
+		android:visible="false"
+	/>
+    <item 
+		android:id="@+id/option_newpost" 
+		android:icon="@android:drawable/ic_menu_edit" 
+		android:title="Post in feed" 
+		android:alphabeticShortcut="P"
+		android:visible="false"
 	/>
 	<item 
 		android:id="@+id/option_back" 

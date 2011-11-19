@@ -47,10 +47,9 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRefresh;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
+import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToProfileView;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
-import com.ninetwozero.battlelog.datatypes.CommentData;
-import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
@@ -117,8 +116,12 @@ public class Dashboard extends Activity {
 			
 		} else if ( v.getId() == R.id.button_unlocks ) {
 		
-			 startActivity( new Intent(this, UnlocksView.class) );
+			startActivity( new Intent(this, UnlockView.class) );
 			 
+		} else if( v.getId() == R.id.button_find ) {
+			
+			generateDialogFind(this).show();
+			
 		} else if( v.getId() == R.id.button_view_self ) {
 			
 			startActivity( 
@@ -286,7 +289,15 @@ public class Dashboard extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 			      
 					
-					new AsyncFetchDataToCompare(context).execute(fieldUsername.getText().toString());
+					if( !fieldUsername.getText().toString().equals( "" ) ) {
+						
+						new AsyncFetchDataToCompare(context).execute(fieldUsername.getText().toString());
+					
+					} else {
+						
+						Toast.makeText( context, "You need to enter a username", Toast.LENGTH_SHORT ).show();
+						
+					}
 						
 			   
 				}
@@ -300,7 +311,64 @@ public class Dashboard extends Activity {
 		
 	}
 	
-	
+	public Dialog generateDialogFind(final Context context) {
+		
+		//Attributes
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+	    final View layout = inflater.inflate(R.layout.compare_dialog, (ViewGroup) findViewById(R.id.dialog_root));
+		
+	    //Set the title and the view
+		builder.setTitle("View soldier profile of...");
+		builder.setView(layout);
+
+		//Grab the fields
+		final EditText fieldUsername = (EditText) layout.findViewById(R.id.field_username);
+		
+		//Dialog options
+		builder.setNegativeButton(
+				
+			android.R.string.cancel, 
+			
+			new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int whichButton) { 
+					
+					dialog.dismiss(); 
+					
+				}
+				
+			}
+			
+		);
+			 
+		builder.setPositiveButton(
+				
+			android.R.string.ok, 
+			new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+			      
+					if( !fieldUsername.getText().toString().equals( "" ) ) {
+							
+						new AsyncFetchDataToProfileView(context).execute(fieldUsername.getText().toString());
+					
+					} else {
+						
+						Toast.makeText( context, "You need to enter a username", Toast.LENGTH_SHORT ).show();
+						
+					}
+			   
+				}
+				
+			}
+			
+		);
+		
+		//CREATE
+		return builder.create();
+		
+	}
 	
 	private void setupCOM() {
 		

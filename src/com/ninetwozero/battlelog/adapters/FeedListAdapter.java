@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,6 @@ import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class FeedListAdapter extends BaseAdapter {
@@ -92,9 +90,23 @@ public class FeedListAdapter extends BaseAdapter {
 		
 		}
 		
+		//How many likes/comments?
+		String textHooah = ( currentItem.getNumLikes() == 1 )? "{num} hooah" : "{num} hooahs";
+		String textComments = ( currentItem.getNumComments() == 1 )? "{num} comment" : "{num} comments";
+		
+		//Set the fields
 		((TextView) convertView.findViewById(R.id.text_date)).setText( PublicUtils.getRelativeDate( currentItem.getDate() ) );
-		((TextView) convertView.findViewById(R.id.text_hooah)).setText( currentItem.getNumLikes() + " hoahs" );
-		((TextView) convertView.findViewById(R.id.text_comment)).setText( currentItem.getComments().size() + " comments");
+		((TextView) convertView.findViewById(R.id.text_hooah)).setText( textHooah.replace("{num}", currentItem.getNumLikes() + ""));
+		((TextView) convertView.findViewById(R.id.text_comment)).setText( 
+				
+			textComments.replace(
+				
+				"{num}", 
+				currentItem.getNumComments() + " "
+				
+			)
+			
+		);
 		
 		//Hook it up on the tag
 		convertView.setTag( currentItem );

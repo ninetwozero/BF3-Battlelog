@@ -16,15 +16,17 @@ package com.ninetwozero.battlelog;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -32,8 +34,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -47,6 +51,8 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
+import com.ninetwozero.battlelog.asynctasks.AsyncFriendRequest;
+import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
@@ -87,19 +93,12 @@ public class ProfileView extends TabActivity {
     		RequestHandler.setSerializedCookies( (ArrayList<SerializedCookie> ) icicle.getSerializable("serializedCookies") );
     	
     	}
-    	
-    	//Set the content view
-        setContentView(R.layout.profile_view);
         
         //Prepare to tango
         this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         
-        //Fix the tabs
-    	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
-    	setupTabs(new String[] { "Home", "Stats", "Feed" }, new int[] {R.layout.tab_content_overview, R.layout.tab_content_stats, R.layout.tab_content_feed} );
-    	
-        //Get the intent
+    	//Get the intent
         if( !getIntent().hasExtra( "profile" ) ) {
         	
         	profileData = new ProfileData(
@@ -118,20 +117,30 @@ public class ProfileView extends TabActivity {
         	
         }
         
+        //Is the profileData null?!
+        if( profileData == null || profileData.getProfileId() == 0 ) { finish(); return; }
+    	
+    	//Set the content view
+        setContentView(R.layout.profile_view);
+        
+        //Fix the tabs
+    	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+    	setupTabs(new String[] { "Home", "Stats", "Feed" }, new int[] {R.layout.tab_content_overview, R.layout.tab_content_stats, R.layout.tab_content_feed} );
+        
         initLayout();
 	}        
 
 	public void initLayout() {
 		
 		//Eventually get a *cached* version instead    
-		new AsyncProfileRefresh(this, false, profileData).execute();
+		new AsyncProfileRefresh(this, false, profileData, sharedPreferences.getLong( "battlelog_profile_id", 0 )).execute();
 		
 	}
 	
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new AsyncProfileRefresh(this, true, profileData).execute();
+    	new AsyncProfileRefresh(this, true, profileData, sharedPreferences.getLong( "battlelog_profile_id", 0 )).execute();
     	
     	
     }
@@ -184,17 +193,20 @@ public class ProfileView extends TabActivity {
     public class AsyncProfileRefresh extends AsyncTask<Void, Void, Boolean> {
     
     	//Attributes
-    	Context context;
-    	ProgressDialog progressDialog;
-    	ProfileData profileData;
-    	boolean hideDialog;
+    	private Context context;
+    	private ProgressDialog progressDialog;
+    	private ProfileData profileData;
+    	private long activeProfileId;
+    	private boolean hideDialog;
     	
-    	public AsyncProfileRefresh(Context c, boolean f, ProfileData pd) {
+    	public AsyncProfileRefresh(Context c, boolean f, ProfileData pd, long pId) {
     		
     		this.context = c;
     		this.hideDialog = f;
     		this.profileData = pd;
     		this.progressDialog = null;
+    		this.activeProfileId = pId;
+    		
     	}
     	
     	@Override
@@ -218,9 +230,20 @@ public class ProfileView extends TabActivity {
 			
 			try {
 				
+				//Get...
 				playerData = WebsiteHandler.getStatsForUser( this.profileData );
-				profileInformation = WebsiteHandler.getProfileInformationForUser( this.profileData );
-				return true;
+				profileInformation = WebsiteHandler.getProfileInformationForUser( this.profileData, this.activeProfileId);
+				
+				//...validate!
+				if( playerData == null || profileInformation == null ) { 
+					
+					return false; 
+				
+				} else {
+					
+					return true;
+				
+				}
 				
 			} catch ( WebsiteHandlerException ex ) {
 				
@@ -235,9 +258,9 @@ public class ProfileView extends TabActivity {
 		protected void onPostExecute(Boolean result) {
 					
 			//Fail?
-			if( !result && !hideDialog ) { 
+			if( !result ) { 
 				
-				if( this.progressDialog != null ) this.progressDialog.dismiss();
+				if ( !hideDialog ) { if( this.progressDialog != null ) this.progressDialog.dismiss(); }
 				Toast.makeText( this.context, "No data found.", Toast.LENGTH_SHORT).show(); 
 				((Activity) this.context).finish();
 				return; 
@@ -508,29 +531,93 @@ public class ProfileView extends TabActivity {
 			feedListAdapter.notifyDataSetChanged();
 		}
     }
-    
+
     @Override
 	public boolean onCreateOptionsMenu( Menu menu ) {
 
     	//Inflate!!
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate( R.menu.option_profileview, menu );
-		
-		if( profileData.getProfileId() == sharedPreferences.getLong( "battlelog_profile_id", 0 ) ) {
-
-			menu.removeItem( R.id.option_friendadd );
-			menu.removeItem( R.id.option_frienddel );
-			
-		} else {
-			
-			menu.removeItem( R.id.option_frienddel );
-			
-		}
-		
+		inflater.inflate( R.menu.option_profileview, menu );		
 		return super.onCreateOptionsMenu( menu );
 	
     }
 	
+    @Override
+    public boolean onPrepareOptionsMenu( Menu menu ) {
+    	
+    	//Our own profile, no need to show the "extra" buttons
+    	if( profileData.getProfileId() == sharedPreferences.getLong( "battlelog_profile_id", 0 ) ) {
+
+			menu.removeItem( R.id.option_friendadd );
+			menu.removeItem( R.id.option_frienddel );
+			menu.removeItem( R.id.option_compare );
+			menu.removeItem( R.id.option_newpost );
+			
+		} else {
+    	
+	    	//Which tab is operating?
+	    	if( mTabHost.getCurrentTab() == 0 ) {			
+					
+				if( profileInformation.getAllowFriendRequests() ) {
+					
+					if( profileInformation.isFriend() ) {
+
+						((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
+						((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( true );	
+				
+					} else {
+
+						((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( true );
+						((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
+					}
+					
+				} else {
+
+					((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
+					
+				}
+				
+				((MenuItem) menu.findItem( R.id.option_compare )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
+			
+			} else if( mTabHost.getCurrentTab() == 1 ) {
+				
+				((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_compare )).setVisible( true );
+				((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
+				
+			} else if( mTabHost.getCurrentTab() == 2 ) {
+				
+				((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_compare )).setVisible( false );
+				
+				if( profileInformation.isFriend() ) {
+					
+					((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( true );
+				
+				} else {
+				
+					((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
+					
+				}
+			} else {
+				
+				menu.removeItem( R.id.option_friendadd );
+				menu.removeItem( R.id.option_frienddel );
+				menu.removeItem( R.id.option_compare );
+				menu.removeItem( R.id.option_newpost );
+				
+			}
+
+		}
+    	
+    	return super.onPrepareOptionsMenu( menu );
+    	
+    }
+    
 	@Override
 	public boolean onOptionsItemSelected( MenuItem item ) {
 
@@ -545,12 +632,43 @@ public class ProfileView extends TabActivity {
 			
 		} else if( item.getItemId() == R.id.option_friendadd ) {
 			
-			Toast.makeText( this, "ADD as friend!", Toast.LENGTH_SHORT).show();
+			new AsyncFriendRequest(this, profileData.getProfileId()).execute( 
+					
+				sharedPreferences.getString( 
+						
+					"battlelog_post_checksum", 
+					"" 
+				)
+			
+			);
+				
 			
 		} else if( item.getItemId() == R.id.option_frienddel ) {
 		
-			Toast.makeText( this, "DELETE the friend!", Toast.LENGTH_SHORT).show();
+			Toast.makeText( this, "Friends can't be deleted at this time, currently looking for a solution!", Toast.LENGTH_SHORT).show();
 		
+		} else if( item.getItemId() == R.id.option_compare ) {
+			
+			startActivity(
+			
+				new Intent(
+					
+					this,
+					CompareView.class
+						
+				).putExtra(
+				
+					"profile",
+					profileData
+				
+				)
+					
+			);
+			
+		} else if( item.getItemId() == R.id.option_newpost ) {
+			
+			generateDialogPost(this).show();
+			
 		}
 	
 		// Return true yo
@@ -582,8 +700,19 @@ public class ProfileView extends TabActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
 
-       	//Show the menu
-		menu.add( 0, 0, 0, "Hooah!");
+		//Grab the info
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+		//Show the menu
+		if( !((FeedItem) ((View) info.targetView).getTag()).isLiked() ) {
+			
+			menu.add( 0, 0, 0, "Hooah!");
+		
+		} else {
+			
+			menu.add( 0, 0, 0, "Un-hooah!");
+			
+		}
 		menu.add( 0, 1, 0, "View comments");
 
 		return;
@@ -615,8 +744,23 @@ public class ProfileView extends TabActivity {
 				
 				//REQUESTS
 				if( item.getItemId() == 0 ) {
-
-					new AsyncFeedHooah(this, info.id, false, new AsyncProfileRefresh(this, true, profileData)).execute( 
+						
+					new AsyncFeedHooah(
+							
+						this, 
+						info.id, 
+						false,
+						( (FeedItem)info.targetView.getTag()).isLiked(),
+						new AsyncProfileRefresh(
+								
+							this, 
+							true, 
+							profileData,
+							sharedPreferences.getLong( "battlelog_profile_id", 0 )
+							
+						)
+					
+					).execute( 
 							
 						sharedPreferences.getString( 
 								
@@ -647,6 +791,16 @@ public class ProfileView extends TabActivity {
 							"postId", 
 							((FeedItem) info.targetView.getTag()).getId()
 							
+						).putExtra(
+								
+							"isFriend",
+							profileInformation.isFriend()	
+						
+						).putExtra( 
+								
+							"profileId",
+							profileInformation.getProfileId()
+							
 						)
 						
 					);
@@ -663,5 +817,67 @@ public class ProfileView extends TabActivity {
 		}
 
 		return true;
+	}
+	
+	public Dialog generateDialogPost(final Context context) {
+		
+		//Attributes
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+	    final View layout = inflater.inflate(R.layout.dialog_newpost, (ViewGroup) findViewById(R.id.dialog_root));
+		
+	    //Set the title and the view
+		builder.setTitle("New wall post");
+		builder.setView(layout);
+
+		//Grab the fields
+		final EditText fieldMessage = (EditText) layout.findViewById(R.id.field_message);
+		
+		//Dialog options
+		builder.setNegativeButton(
+				
+			android.R.string.cancel, 
+			
+			new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int whichButton) { 
+					
+					dialog.dismiss(); 
+					
+				}
+				
+			}
+			
+		);
+			 
+		builder.setPositiveButton(
+				
+			android.R.string.ok, 
+			new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+			      
+					
+					new AsyncPostToWall(
+							
+						context, 
+						profileData.getProfileId()
+						
+					).execute(
+							
+						sharedPreferences.getString( "battlelog_post_checksum", "" ),
+						fieldMessage.getText().toString()
+						
+					);
+			   
+				}
+				
+			}
+			
+		);
+		
+		//CREATE
+		return builder.create();
+		
 	}
 }

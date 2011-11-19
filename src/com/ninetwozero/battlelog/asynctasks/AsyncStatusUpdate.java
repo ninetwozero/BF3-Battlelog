@@ -14,12 +14,10 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -66,10 +64,7 @@ public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
 		
 		try {
 		
-			//TEMP
-			String[] tempString = new String[10];
-			
-    		//Let's login everybody!
+			//Let's login everybody!
 			RequestHandler wh = new RequestHandler();
     		httpContent = wh.post( Constants.urlStatusSend, arg0, 0);
     		
@@ -78,7 +73,6 @@ public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
     			
     			//Set the int
     			int startPosition = httpContent.indexOf( Constants.elementStatusOK );
-    			String[] bits;
     			
     			//Did we find it?
     			if( startPosition == -1 ) {

@@ -39,6 +39,8 @@ public class DataBank {
 	public static String getUnlockGoal( String key ) { return UNLOCK_GOALS.containsKey( key )? UNLOCK_GOALS.get( key ): ""; }
 	public static String getAwardTitle( String key ) { return AWARDS.containsKey( key ) ? AWARDS.get( key ) : ""; }
 	public static String getMapTitle( String key ) { return MAPS.containsKey( key ) ? MAPS.get( key ) : ""; }
+	public static String getCoopLevelTitle( String key ) { return COOP_DATA.containsKey( key ) ? COOP_DATA.get( key ) : ""; }
+	public static String getDifficultyTitle( String key ) { return DIFFICULTY_MAP.containsKey( key ) ? DIFFICULTY_MAP.get( key ) : ""; }
 	
 	private static PlatformData[] PLATFORMS;
 	private static HashMap<String, String> RANKS;
@@ -52,7 +54,8 @@ public class DataBank {
 	private static HashMap<String, String> UNLOCK_GOALS;		
 	private static HashMap<String, String> AWARDS;
 	private static HashMap<String, String> MAPS;
-	
+	private static HashMap<String, String> COOP_DATA = new HashMap<String, String>();
+	private static HashMap<String, String> DIFFICULTY_MAP = new HashMap<String, String>();
 	static{
   
 		PLATFORMS = new PlatformData[4];
@@ -73,7 +76,13 @@ public class DataBank {
     	PLATFORMS[1] = new PlatformData(2, "xbox");
     	PLATFORMS[2] = new PlatformData(1, "");
     	PLATFORMS[3] = new PlatformData(4, "ps3");
-    	
+
+    	//DIFFICULTIES
+		DIFFICULTY_MAP.put("ID_RP_DIFFICULTY_MEDIUM", "Normal");
+		DIFFICULTY_MAP.put("ID_RP_DIFFICULTY_HARDCORE", "Hardcore");
+		DIFFICULTY_MAP.put("ID_RP_DIFFICULTY_HARD", "Hard");
+		DIFFICULTY_MAP.put("ID_RP_DIFFICULTY_EASY", "Easy");
+
     	//MAPS
 		MAPS.put("MP_007", "CASPIAN BORDER");
 		MAPS.put("MP_013", "DAMAVAND PEAK");
@@ -745,6 +754,48 @@ public class DataBank {
 		AWARDS.put("ID_P_WSTAR_NAME_M40A5", "M40A5 SERVICE STAR");
 		AWARDS.put("ID_P_WSTAR_NAME_M93R", "93R SERVICE STAR");
 		AWARDS.put("ID_P_WSTAR_NAME_M98B", "M98B SERVICE STAR");
+		
+		COOP_DATA.put("COOP_EXFILTRATION", "Exfiltration");
+		COOP_DATA.put("COOP_INTRO", "Independent sources have provided consistent information that a major attack is planned by the PLR in the upcoming weeks");
+		COOP_DATA.put("COOP_ASSASSINATION", "Assassination");
+		COOP_DATA.put("COOP_PATH", "MAIN ");
+		COOP_DATA.put("COOP_MISSION", "CO-OP MISSION ");
+		COOP_DATA.put("COOP_HOSTAGE", "Drop 'Em Like Liquid");
+		COOP_DATA.put("COOP_HEADER", "GAME MENU");
+		COOP_DATA.put("COOP_RESUME", "RESUME");
+		COOP_DATA.put("COOP_HINT", "Play co-op");
+		COOP_DATA.put("COOP_PATH", "MAIN ");
+		COOP_DATA.put("COOP_CLASSIFIED", "CLASSIFIED");
+		COOP_DATA.put("COOP_QUIT", "QUIT");
+		COOP_DATA.put("COOP_010", "THE ELEVENTH HOUR");
+		COOP_DATA.put("COOP_006", "FIRE FROM THE SKY");
+		COOP_DATA.put("COOP_007", "OPERATION EXODUS");
+		COOP_DATA.put("COOP_004", "ROLLING THUNDER");
+		COOP_DATA.put("COOP_005", "BEHIND ENEMY LINES");
+		COOP_DATA.put("COOP_008", "ASSASSINATION");
+		COOP_DATA.put("COOP_009", "EXFILTRATION");
+		COOP_DATA.put("COOP_002", "HIT AND RUN");
+		COOP_DATA.put("COOP_003", "DROP 'EM LIKE LIQUID");
+		COOP_DATA.put("COOP_001", "A-10");
+		COOP_DATA.put("COOP_SPOTTING", "SPOTTING");
+		COOP_DATA.put("COOP_REVIVE", "CRITICAL HEALTH");
+		COOP_DATA.put("COOP_OPTIONS", "OPTIONS");
+		COOP_DATA.put("COOP_PRESENTATION", "Independent sources have provided consistent information that a major attack is planned by the PLR in the upcoming weeks");
+		COOP_DATA.put("COOP_PATH", "CO-OP ");
+		COOP_DATA.put("COOP_LEADERBOARDS", "LEADERBOARDS");
+		COOP_DATA.put("COOP_EXTRACTION", "Operation Exodus");
+		COOP_DATA.put("COOP_SUPERCOBRA", "Fire From The Sky");
+		COOP_DATA.put("COOP_A10", "A-10");
+		COOP_DATA.put("COOP_BREACHED", "Hit And Run");
+		COOP_DATA.put("COOP_GREAT", "GREAT");
+		COOP_DATA.put("COOP_ROLLINGTHUNDER", "Rolling Thunder");
+		COOP_DATA.put("COOP_HINT03", "KILLING AN ENEMY SPOTTED BY YOUR FRIEND WILL GIVE HIM A SCORE BONUS");
+		COOP_DATA.put("COOP_HINT04", "YOU CAN REPLENISH AMMO FROM WEAPON CRATES");
+		COOP_DATA.put("COOP_HINT01", "WHEN YOUR FRIEND ENDS UP IN MAN DOWN");
+		COOP_DATA.put("COOP_HINT02", "KILL ENEMIES WHILE IN MAN DOWN TO GET BACK UP");
+		COOP_DATA.put("COOP_HINT05", "USE THE AMMO CRATES PLACED IN THE WORLD TO REPLENISH YOUR WEAPON");
+		COOP_DATA.put("COOP_BEHINDENEMYLINES", "Behind Enemy Lines");
+		COOP_DATA.put("COOP_SUBWAY", "The Eleventh Hour");
 	}
 	
 	//Static methods

@@ -23,7 +23,6 @@ import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.adapters.ChatListAdapter;
 import com.ninetwozero.battlelog.adapters.CommentListAdapter;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;

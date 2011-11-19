@@ -63,7 +63,7 @@
         />
         <activity
             android:label="BF3 Battlelog - Your upcoming unlocks"
-            android:name=".UnlocksView"
+            android:name=".UnlockView"
           	android:configChanges="orientation"
         />
 		<receiver android:name="com.ninetwozero.battlelog.widgets.BattlelogAppWidgetProvider" android:label="@string/widget_name">

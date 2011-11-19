@@ -16,10 +16,6 @@ package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
-import com.ninetwozero.battlelog.misc.Constants;
-
 
 
 public class FeedItem {
@@ -29,6 +25,7 @@ public class FeedItem {
 	private int numLikes;
 	private String title, content, type;
 	private String[] username;
+	private boolean liked;
 	private ArrayList<CommentData> comments;
 	
 	//Construct
@@ -36,7 +33,7 @@ public class FeedItem {
 	
 		long i, long oid, long iid, long nDate, int num,
 		String t, String c, String type, String[] u,
-		ArrayList<CommentData> cda
+		boolean il, ArrayList<CommentData> cda
 		
 	) {
 		
@@ -50,7 +47,7 @@ public class FeedItem {
 		this.type = type;
 		this.username = u;
 		this.comments = cda;
-		
+		this.liked = il;
 	}
 	
 	//Getters
@@ -58,6 +55,7 @@ public class FeedItem {
 	public long getOwnerId() { return this.ownerId; }
 	public long getItemId() { return this.itemId; }
 	public long getDate() { return this.date; }
+	public int getNumComments() { return this.comments.size(); }
 	public int getNumLikes() { return this.numLikes; }
 	public String getTitle() { 
 		
@@ -123,11 +121,13 @@ public class FeedItem {
 			
 			return this.title.replace(
 					
-				"{username1}", this.username[0]
+				"{username1}", 
+				this.username[0]
 			
 			).replace( 
 					
-				"{username2}", this.username[1]
+				"{username2}", 
+				this.username[1]
 						
 			); 
 			
@@ -180,5 +180,6 @@ public class FeedItem {
 	public String getContent() { return this.content; }
 	public String getType() { return this.type; }
 	public String[] getUsername() { return this.username; }
+	public boolean isLiked() { return this.liked; }
 	public ArrayList<CommentData> getComments() { return this.comments; }
 }

@@ -81,7 +81,7 @@ public final class Constants {
 	public static final String[] fieldNamesChat = new String[] { "message", "chatId", "post-check-sum" };
 	public static final String[] fieldValuesChat = new String[] { null, null, null };
 	
-	public static final String[] fieldNamesProfilePost = new String[] { "message", "wall-ownerId", "post-check-sum" };
+	public static final String[] fieldNamesProfilePost = new String[] { "wall-message", "wall-ownerId", "post-check-sum" };
 	public static final String[] fieldValuesProfilePost = new String[] { null, null, null };
 	
 	public static final String[] fieldNamesFeedComment = new String[] { "comment", "post-check-sum" };

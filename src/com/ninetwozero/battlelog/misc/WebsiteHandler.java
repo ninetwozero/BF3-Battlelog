@@ -213,7 +213,7 @@ public class WebsiteHandler {
 						
 					}
 					
-					return WebsiteHandler.getPersonaIdFromProfile( profile.getProfileId() );
+					return WebsiteHandler.getPersonaIdFromProfile( profile );
 
 				}
 				
@@ -281,6 +281,29 @@ public class WebsiteHandler {
 		
 	}
 	
+	public static ProfileData getPersonaIdFromProfile(ProfileData p) throws WebsiteHandlerException {
+
+		try {
+			
+			ProfileData profile = WebsiteHandler.getPersonaIdFromProfile( p.getProfileId() );
+			return new ProfileData(
+				
+				p.getAccountName(),
+				profile.getPersonaName(),
+				profile.getPersonaId(),
+				p.getProfileId(),
+				profile.getPlatformId()
+					
+			);
+			
+		} catch( Exception ex ) {
+			
+			ex.printStackTrace();
+			throw new WebsiteHandlerException("No profile found");
+			
+		}
+	}
+	
 	public static PlayerData getStatsForUser(ProfileData pd) throws WebsiteHandlerException {
 		
 		try {
@@ -310,6 +333,11 @@ public class WebsiteHandler {
 	    	
 	    	//JSON Objects
 	    	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
+	    	
+	    	//Is overviewStats NULL? If so, no data.
+	    	if( dataObject.isNull( "overviewStats" ) ) { return null; }
+	    	
+	    	//Keep it up!
 	    	JSONObject statsOverview = dataObject.getJSONObject( "overviewStats" );
 	    	JSONObject kitScores = statsOverview.getJSONObject( "kitScores" );
 	    	JSONObject nextRankInfo = dataObject.getJSONObject( "rankNeeded" );
@@ -1106,7 +1134,7 @@ public class WebsiteHandler {
 
 	}
 	
-	public static ProfileInformation getProfileInformationForUser( ProfileData profileData ) throws WebsiteHandlerException {
+	public static ProfileInformation getProfileInformationForUser( ProfileData profileData, long activeProfileId ) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -1127,7 +1155,7 @@ public class WebsiteHandler {
 				JSONObject profileCommonObject = contextObject.optJSONObject( "profileCommon" );
 				JSONObject userInfo = profileCommonObject.optJSONObject( "userinfo" );
 				JSONObject presenceObject = profileCommonObject.getJSONObject( "user" ).getJSONObject("presence");
-				JSONArray gameReports = contextObject.getJSONArray( "gameReportPreviewGroups" );
+				//JSONArray gameReports = contextObject.getJSONArray( "gameReportPreviewGroups" );
 				JSONArray feedItems = contextObject.getJSONArray( "feed" );
 				JSONArray platoonArray = profileCommonObject.getJSONArray( "platoons" );
 				JSONObject statusMessage = profileCommonObject.optJSONObject( "userStatusMessage" );
@@ -1137,7 +1165,6 @@ public class WebsiteHandler {
 				String playingOn;
 
 				FeedItem tempFeedItem = null;
-				PlatoonData tempPlatoonData = null;
 				ArrayList<CommentData> comments;
 				
 				//Is status messages null?
@@ -1231,6 +1258,23 @@ public class WebsiteHandler {
 					String itemTitle = null;
 					String itemContent = null;
 					
+					//Process the likes
+					JSONArray likeUsers = currItem.getJSONArray( "likeUserIds" );
+					int numLikes = likeUsers.length();
+					boolean liked = false;
+					
+					//Iterate and see if the user has *liked* it already
+					for( int likeCount = 0; likeCount < numLikes; likeCount++ ) {
+					
+						if( Long.parseLong(likeUsers.getString( likeCount )) == activeProfileId ) {
+							
+							liked = true;
+							break;
+							
+						}
+						
+					}
+					
 					//What do we have *here*?
 					if( !currItem.isNull( "BECAMEFRIENDS" )) {
 					
@@ -1256,11 +1300,12 @@ public class WebsiteHandler {
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
+							numLikes,
 							"<b>{username1}</b> and <b>{username2}</b> are now friends",
 							"",
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), username },
+							liked,
 							comments
 								
 						);
@@ -1282,11 +1327,12 @@ public class WebsiteHandler {
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
+							numLikes,
 							itemTitle,
 							tempSubItem.getString( "postBody" ),
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
+							liked,
 							comments
 								
 						);
@@ -1340,11 +1386,12 @@ public class WebsiteHandler {
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
+							numLikes,
 							itemTitle.replace( "{item}", itemContent),
 							"",
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
+							liked,
 							comments
 								
 						);
@@ -1361,11 +1408,12 @@ public class WebsiteHandler {
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
+							numLikes,
 							"<b>{username}</b> " + tempSubItem.getString( "statusMessage" ),
 							"",
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
+							liked,
 							comments
 								
 						);
@@ -1382,11 +1430,12 @@ public class WebsiteHandler {
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
-							"<b>{username}</b> favorited a server: <b>" + tempSubItem.getString( "serverName" ) + "</b>",
+							numLikes,
+							"<b>{username}</b> favorited a server: <b>" + tempSubItem.getString( "serverName" ) + "</b>.",
 							"",
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
+							liked,
 							comments
 								
 						);
@@ -1417,11 +1466,12 @@ public class WebsiteHandler {
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
+							numLikes,
 							itemTitle,
 							"",
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
+							liked,
 							comments
 								
 						);
@@ -1457,11 +1507,12 @@ public class WebsiteHandler {
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
+							numLikes,
 							itemTitle,
 							tempSubItem.getString( "gameReportComment" ),
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
+							liked,
 							comments
 								
 						);
@@ -1486,11 +1537,12 @@ public class WebsiteHandler {
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
+							numLikes,
 							itemTitle,
 							"",
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
+							liked,
 							comments
 								
 						);
@@ -1515,11 +1567,12 @@ public class WebsiteHandler {
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
+							numLikes,
 							itemTitle,
 							"",
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
+							liked,
 							comments
 								
 						);
@@ -1546,11 +1599,12 @@ public class WebsiteHandler {
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
+							numLikes,
 							itemTitle,
 							tempSubItem.getString( "wallBody" ),
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
+							liked,
 							comments
 								
 						);
@@ -1562,14 +1616,14 @@ public class WebsiteHandler {
 						tempSubItem = currItem.getJSONObject( "LEVELCOMPLETE" );
 						
 						//Set it!
-						itemTitle = "<b>{username1}</b> and <b>{username2}</b> completed a co-op level<br /> <b>{level}</b> on <b>{difficulty}</b>.".replace(
+						itemTitle = "<b>{username1}</b> and <b>{username2}</b> completed <b>\"{level}\"</b> on <b>{difficulty}</b>.".replace(
 								
-							"level", 
-							tempSubItem.getString( "level" )
+							"{level}", 
+							DataBank.getCoopLevelTitle( tempSubItem.getString( "level" ) )
 							
 						).replace(
 							
-							"difficulty",	
+							"{difficulty}",	
 							tempSubItem.getString( "difficulty" )
 
 						);
@@ -1581,11 +1635,17 @@ public class WebsiteHandler {
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
+							numLikes,
 							itemTitle,
 							"",
 							currItem.getString("event"),
-							new String[] { profileData.getAccountName(), null },
+							new String[] { 
+								
+								profileData.getAccountName(), 
+								tempSubItem.getJSONObject( "friend" ).getString( "username" ) 
+							
+							},
+							liked,
 							comments
 								
 						);
@@ -1595,8 +1655,6 @@ public class WebsiteHandler {
 
 						//Get it!
 						tempSubItem = currItem.optJSONObject( "RECEIVEDAWARD" ).optJSONArray( "statItems" ).getJSONObject( 0 );
-						
-						Log.d(Constants.debugTag, "=>" + tempSubItem.getString( "langKeyTitle" ) + "<=");
 						
 						//Set it!
 						itemTitle = "<b>{username}</b> recieved a new award: <b>{award}</b>.".replace( 
@@ -1613,11 +1671,12 @@ public class WebsiteHandler {
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
+							numLikes,
 							itemTitle,
 							"",
 							currItem.getString("event"),
 							new String[] { profileData.getAccountName(), null },
+							liked,
 							comments
 								
 						);
@@ -1643,7 +1702,7 @@ public class WebsiteHandler {
 							profileData.getProfileId(),
 							Long.parseLong( currItem.getString("itemId") ),
 							currItem.getLong( "creationDate" ),
-							currItem.getInt( "numLikes" ),
+							numLikes,
 							itemTitle,
 							"",
 							currItem.getString("event"),
@@ -1653,6 +1712,7 @@ public class WebsiteHandler {
 								profileData.getAccountName()
 								
 							},
+							liked,
 							comments
 								
 						);
@@ -1685,6 +1745,7 @@ public class WebsiteHandler {
 					userInfo.optBoolean( "allowFriendRequests", true ), 
 					presenceObject.getBoolean("isOnline"),
 					presenceObject.getBoolean("isPlaying"),
+					profileCommonObject.getString( "friendStatus" ).equals("ACCEPTED"),
 					feedItemArray,
 					platoonDataArray
 				);
@@ -1909,6 +1970,115 @@ public class WebsiteHandler {
 			}	
 		
 		} catch ( Exception ex ) {
+			
+			ex.printStackTrace();
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+
+	}
+	
+	public static boolean sendFriendRequest(long profileId, String checksum) throws WebsiteHandlerException {
+	
+		try {
+
+			//Let's login everybody!
+			RequestHandler wh = new RequestHandler();
+			String httpContent = wh.post( 
+					
+				Constants.urlFriendRequest.replace( 
+						
+					"{PID}", 
+					profileId + ""
+					
+				), 
+				new PostData[] {
+					
+					new PostData(
+					
+						Constants.fieldNamesCHSUM[0],
+						checksum
+							
+					)
+				},
+				1
+				
+			);
+			
+			//Did we manage?
+			if( httpContent != null ) {
+	
+				return true;
+				
+			} else {
+				
+				return false;
+				
+			}
+		
+		} catch(Exception ex) {
+			
+			ex.printStackTrace();
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+
+	}
+
+	public static boolean postToWall(long profileId, String checksum, String content) throws WebsiteHandlerException {
+		
+		try {
+
+			//Let's login everybody!
+			RequestHandler wh = new RequestHandler();
+			PostData[] postDataArray;
+			String httpContent = wh.post( 
+					
+				Constants.urlProfilePost,
+				postDataArray = new PostData[] {
+					
+					new PostData(
+							
+						Constants.fieldNamesProfilePost[0],
+						content
+							
+					),new PostData(
+							
+						Constants.fieldNamesProfilePost[1],
+						profileId + ""
+								
+					),new PostData(
+							
+						Constants.fieldNamesProfilePost[2],
+						checksum
+							
+					)
+				},
+				2
+				
+			);
+
+			//Did we manage?
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+	
+				//Check the JSON
+				if( (new JSONObject(httpContent)).getString( "message" ).equals( "WALL_POST_CREATED" )) {
+					
+					return true;
+				
+				} else {
+				
+					return false;
+					
+				}
+
+			} else {
+				
+				return false;
+				
+			}
+		
+		} catch(Exception ex) {
 			
 			ex.printStackTrace();
 			throw new WebsiteHandlerException(ex.getMessage());

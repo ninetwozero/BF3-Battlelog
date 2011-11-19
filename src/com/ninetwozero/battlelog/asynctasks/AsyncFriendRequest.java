@@ -14,53 +14,38 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.ProfileView.AsyncProfileRefresh;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
-public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
+public class AsyncFriendRequest extends AsyncTask<String, Integer, Boolean> {
 
 	//Attribute
 	Context context;
-	long postId;
-	boolean fromWidget;
-	boolean liked;
+	long profileId;
 	String httpContent;
-	AsyncProfileRefresh asyncFeedRefresh;
 	
 	//Constructor
-	public AsyncFeedHooah( Context c, long pId, boolean w, boolean l, AsyncProfileRefresh acr ) { 
+	public AsyncFriendRequest( Context c, long pId) { 
 		
-		this.context = c; 
-		this.postId = pId;
-		this.fromWidget = w;
-		this.liked = l;
-		this.asyncFeedRefresh = acr;
-	
-	}
+		this.context = c;
+		this.profileId = pId;
+		
+	}	
 	
 	@Override
-	protected void onPreExecute() {}
+	protected void onPreExecute() { }
 	
 	@Override
 	protected Boolean doInBackground( String... arg0 ) {
 		
 		try {
-		
-    		//Did we manage?
-			if( liked ) {
-				
-				return WebsiteHandler.unHooahInFeed( postId, arg0[0] );
-				
-			} else {
-				
-				return WebsiteHandler.doHooahInFeed( postId, arg0[0] );
 			
-			}
+    		return WebsiteHandler.sendFriendRequest( profileId, arg0[0] );
     		
 		} catch( Exception ex ) {
 			
@@ -73,20 +58,19 @@ public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
 	
 	@Override
 	protected void onPostExecute(Boolean results) {
-
-		if( !fromWidget ) {
+		
+		if( results ) { 
 			
-			//Reload
-			asyncFeedRefresh.execute();
+			Toast.makeText(this.context, "Friend request sent!", Toast.LENGTH_SHORT).show(); 
 			
-			if( results ) Toast.makeText( context, "Hooah!", Toast.LENGTH_SHORT).show();
-			else Toast.makeText( context, "Hooah failed!", Toast.LENGTH_SHORT).show();
+		} else { 
+			
+			Toast.makeText( this.context, "Friend request could not be sent.", Toast.LENGTH_SHORT).show(); 
 			
 		}
+
 		return;
 		
-	}
-
-	
+	}	
 	
 }

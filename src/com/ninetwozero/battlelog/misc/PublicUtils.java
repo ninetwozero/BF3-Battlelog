@@ -17,7 +17,6 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import android.util.Log;
 
 public class PublicUtils {
 
@@ -39,6 +38,9 @@ public class PublicUtils {
 		//When did we start? 0 == just one login (if I haven't understood it too wrong)
 		if( d == 0 ) { return "an unknown amount of time ago."; }
 		
+		//Diff is not allowed to be < 0
+		dateDiff = ( dateDiff < 0 )? 0 : dateDiff;
+				
 		//What's the difference (in seconds) y'all?
 		if( (dateDiff / Constants.minuteInSeconds) < 1 ) {
 			

@@ -57,23 +57,20 @@
 			/>
 			<Button
 			    style="@style/MenuButton"
-			    android:id="@+id/button_compare"
-			    android:text="Compare battle scars"
-				android:layout_marginTop="10dp"
-		    	android:layout_height="50dp"
-				android:layout_below="@id/button_unlocks"
-			/>
-			<!-- 
-			<Button
-			    style="@style/MenuButton"
 			    android:id="@+id/button_find"
 			    android:text="Find soldier"
 				android:layout_marginTop="10dp"
 		    	android:layout_height="50dp"
-				android:layout_below="@id/button_view_self"
+				android:layout_below="@id/button_unlocks"
 			/>
-			 -->
-			
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_compare"
+			    android:text="Compare battle scars"
+				android:layout_marginTop="10dp"
+		    	android:layout_height="50dp"
+				android:layout_below="@id/button_find"
+			/>
 		</RelativeLayout>
 	</ScrollView>
 	<include layout="@layout/com_center_slider" />
