@@ -30,48 +30,53 @@
 		    android:maxLength="90"
 		 />
 	</RelativeLayout>
-	<ScrollView
+	<RelativeLayout
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:paddingTop="40dp"
-		android:paddingBottom="40dp"
-		android:layout_centerInParent="true"
-	>
-		<RelativeLayout
+		android:layout_height="fill_parent"
+		android:layout_below="@id/bar_status"
+		android:layout_marginBottom="50dp"
+	>   
+		<ScrollView
 			android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
 		>
-			<Button
-			    style="@style/MenuButton"
-			    android:id="@+id/button_view_self"
-			    android:text="My profile"
-		    	android:layout_height="50dp"
-			/>
-			<Button
-			    style="@style/MenuButton"
-			    android:id="@+id/button_unlocks"
-			    android:text="My unlocks"
-				android:layout_marginTop="10dp"
-		    	android:layout_height="50dp"
-				android:layout_below="@id/button_view_self"
-			/>
-			<Button
-			    style="@style/MenuButton"
-			    android:id="@+id/button_find"
-			    android:text="Find soldier"
-				android:layout_marginTop="10dp"
-		    	android:layout_height="50dp"
-				android:layout_below="@id/button_unlocks"
-			/>
-			<Button
-			    style="@style/MenuButton"
-			    android:id="@+id/button_compare"
-			    android:text="Compare battle scars"
-				android:layout_marginTop="10dp"
-		    	android:layout_height="50dp"
-				android:layout_below="@id/button_find"
-			/>
-		</RelativeLayout>
-	</ScrollView>
+			<RelativeLayout
+				android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			>
+				<Button
+				    style="@style/MenuButton"
+				    android:id="@+id/button_view_self"
+				    android:text="My profile"
+			    	android:layout_height="50dp"
+				/>
+				<Button
+				    style="@style/MenuButton"
+				    android:id="@+id/button_unlocks"
+				    android:text="My unlocks"
+					android:layout_marginTop="10dp"
+			    	android:layout_height="50dp"
+					android:layout_below="@id/button_view_self"
+				/>
+				<Button
+				    style="@style/MenuButton"
+				    android:id="@+id/button_find"
+				    android:text="Find soldier"
+					android:layout_marginTop="10dp"
+			    	android:layout_height="50dp"
+					android:layout_below="@id/button_unlocks"
+				/>
+				<Button
+				    style="@style/MenuButton"
+				    android:id="@+id/button_compare"
+				    android:text="Compare battle scars"
+					android:layout_marginTop="10dp"
+			    	android:layout_height="50dp"
+					android:layout_below="@id/button_find"
+				/>
+			</RelativeLayout>
+		</ScrollView>
+	</RelativeLayout>
 	<include layout="@layout/com_center_slider" />
 </RelativeLayout>
