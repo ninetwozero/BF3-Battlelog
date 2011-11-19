@@ -22,7 +22,7 @@
     <item 
 		android:id="@+id/option_compare" 
 		android:icon="@android:drawable/ic_menu_directions" 
-		android:title="Compare stats" 
+		android:title="Compare scars" 
 		android:alphabeticShortcut="C"
 		android:visible="false"
 	/>
