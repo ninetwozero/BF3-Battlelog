@@ -25,15 +25,14 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
 
 	//Attribute
-	Context context;
-	long postId;
-	boolean fromWidget;
-	boolean liked;
-	String httpContent;
-	AsyncProfileRefresh asyncFeedRefresh;
+	private Context context;
+	private long postId;
+	private boolean fromWidget, liked;
+	private String httpContent;
+	private AsyncTask<Void, Void, Boolean> asyncFeedRefresh;
 	
 	//Constructor
-	public AsyncFeedHooah( Context c, long pId, boolean w, boolean l, AsyncProfileRefresh acr ) { 
+	public AsyncFeedHooah( Context c, long pId, boolean w, boolean l, AsyncTask<Void, Void, Boolean> acr ) { 
 		
 		this.context = c; 
 		this.postId = pId;

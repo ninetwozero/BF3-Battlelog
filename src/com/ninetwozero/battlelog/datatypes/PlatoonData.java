@@ -1,19 +1,23 @@
 package com.ninetwozero.battlelog.datatypes;
 
-import android.graphics.drawable.Drawable;
+import java.io.Serializable;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 
-public class PlatoonData {
+public class PlatoonData implements Serializable {
 
 	//Attributes
+	private static final long serialVersionUID = -1957801511187912007L;
 	private long id;
 	private int countFans, countMembers, platformId;
 	private String name, tag;
-	private Drawable image;
+	private byte[] image;
 	private boolean visible;
 	
 	//Construct
-	public PlatoonData(long i, int cF, int cM, int pId, String n, String t, Drawable img, boolean v) {
+	public PlatoonData(long i, int cF, int cM, int pId, String n, String t, byte[] img, boolean v) {
 		
 		this.id = i;
 		this.countFans = cF;
@@ -33,6 +37,6 @@ public class PlatoonData {
 	public int getPlatformId() { return this.platformId; }
 	public String getName() { return this.name; }
 	public String getTag() { return this.tag; }
-	public Drawable getImage() { return this.image; }
+	public Bitmap getImage() { return BitmapFactory.decodeByteArray( image, 0, image.length); }
 	public boolean isVisible() { return this.visible; }
 }

@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog.misc;
 
 import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
@@ -102,14 +103,14 @@ public class RequestHandler {
 		
 	}
 	
-	public Drawable getImageFromStream( String link, boolean extraHeaders ) throws RequestHandlerException {
+	public byte[] getImageFromStream( String link, boolean extraHeaders ) throws RequestHandlerException {
 		
 		// Check defaults
 		if ( link.equals( "" ) ) throw new RequestHandlerException("No link found.");
 		
 		//Default
 		InputStream httpContent = null;
-		Drawable image;
+		String image;
 		try {
 			
 			//Init the HTTP-related attributes
@@ -131,7 +132,7 @@ public class RequestHandler {
 			httpContent = httpEntity.getContent();
 			
 			//Create the image
-			image = Drawable.createFromStream( httpContent, "src" );
+			image = getStringFromStream(httpContent);
 			
 			//Is the entity <> null?
 			if( httpEntity != null ) {
@@ -146,8 +147,66 @@ public class RequestHandler {
 			return null;
 		}
 		
-		return image;
+		return image.getBytes();
 		
+	}
+	
+	public boolean saveFileFromURI( String link, String directory, String filename ) throws RequestHandlerException {
+			
+		// Check defaults
+		if ( link.equals( "" ) ) throw new RequestHandlerException("No link found.");
+		
+		//Default
+		byte[] httpContent = null;
+		FileOutputStream fileStream = null;
+		String path = "";
+		
+		//Let's get a *nice* path
+		if( filename != null && !filename.equals( "" ) ) {
+			
+			path = directory + filename;
+			
+		} else {
+			
+			path = directory + String.valueOf(System.currentTimeMillis());
+		
+		}
+
+		//Let's do this!
+		try {
+			
+			//Init the HTTP-related attributes
+			HttpGet httpGet = new HttpGet(link);
+			
+			HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);	
+			HttpEntity httpEntity = httpResponse.getEntity();
+			httpContent = getStringFromStream(httpEntity.getContent()).getBytes();
+			
+			//Let's see...
+			if( httpContent.length <= 0 ) { return false; }
+			else fileStream = new FileOutputStream( path );
+			
+			//Iterate over the bytes
+			for( byte b : httpContent ) {
+				
+				fileStream.write( b );
+				
+			}
+			
+			//Clear the stream
+			fileStream.flush();
+			fileStream.close();
+			
+			return true;
+			
+		} catch ( Exception ex ) {
+
+			ex.printStackTrace();
+			throw new RequestHandlerException("No file found");
+		
+		}
+
+			
 	}
 
 	public String post( String link, PostData[] postDataArray, int extraHeaders ) throws RequestHandlerException {
@@ -227,11 +286,7 @@ public class RequestHandler {
 				
 			}
 		
-		} catch ( ClientProtocolException e ) {
-			
-			e.printStackTrace();
-		
-		} catch ( IOException e ) {
+		} catch ( Exception e ) {
 			
 			e.printStackTrace();
 		
@@ -245,6 +300,7 @@ public class RequestHandler {
 	public String hash( String str ) {
 
 		try {
+			
 			// Create SHA-256
 			MessageDigest digest = MessageDigest.getInstance( "SHA-256" );
 			digest.update( str.getBytes() );
@@ -253,10 +309,11 @@ public class RequestHandler {
 			// Create Hex String
 			StringBuffer hexString = new StringBuffer();
 			for ( int i = 0; i < messageDigest.length; i++ ) {
+			
 				String h = Integer.toHexString( 0xFF & messageDigest[i] );
-				while ( h.length() < 2 )
-					h = "0" + h;
+				while ( h.length() < 2 ) { h = "0" + h; }
 				hexString.append( h );
+			
 			}
 			return hexString.toString();
 
@@ -286,9 +343,7 @@ public class RequestHandler {
 				byte_read = buff_in.read( byte_buffer );
 				
 				//If it's -1, we break
-				if ( byte_read == -1 ) {
-					break;
-				}
+				if ( byte_read == -1 ) { break; }
 	
 				// Add the buffered bytes to the array for storage
 				buff_array.append( byte_buffer, 0, byte_read );
@@ -296,10 +351,10 @@ public class RequestHandler {
 
 			return new String( buff_array.toByteArray());
 		
-		} catch ( IOException ex ) {
+		} catch ( Exception ex ) {
 
 			// Read/write error
-			Log.e( "com.ninetwozero.shared", ex.getMessage(), ex );
+			ex.printStackTrace();
 			return null;
 		}
 	}
@@ -311,15 +366,26 @@ public class RequestHandler {
 	}
 
 	public static DefaultHttpClient getThreadSafeClient() {
+		
 	     DefaultHttpClient client = new DefaultHttpClient();
 	     ClientConnectionManager mgr = client.getConnectionManager();
 	     HttpParams params = client.getParams();
-	  
-	     client = new DefaultHttpClient(new ThreadSafeClientConnManager(params, 
-	             mgr.getSchemeRegistry()), params);
+	     client = new DefaultHttpClient(
+	    		 
+	    	new ThreadSafeClientConnManager(
+	    			
+	    		params, 
+	    		mgr.getSchemeRegistry()
+	    		
+	    	), 
+	    
+	    	params
+	    
+		 );
 	  
 	     return client;
-	 }
+	 
+	}
 
 	public static ArrayList<SerializedCookie> getSerializedCookies() {
 	

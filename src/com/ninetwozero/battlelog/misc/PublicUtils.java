@@ -17,9 +17,39 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class PublicUtils {
 
+	/**
+	 * <p>Get the Date-string (YYYY-MM-DD</p>
+	 * 
+	 * @param date	the Date to be formatted in the {X} {unit}
+	 * @return String
+	 */
+	
+	public static String getDate(final Long d) {
+		
+		return new SimpleDateFormat("yyyy-MM-dd").format( new Date(d*1000) );
+		
+	}
+	
+	/**
+	* <p>Get the "relative" date</p>
+	*
+	* @param d  the first String, must not be null
+	* @param s  the second String, must not be null
+	* @return String the relative date
+	*/
+	
+	public static final String getDate(long d, String s) {
+		
+		return s + " " + getDate(d);
+		
+	}
+		
 	/**
 	 * <p>Get the "relative" Date-string</p>
 	 * 
@@ -139,6 +169,22 @@ public class PublicUtils {
 		
 	}
 	
+	
+	/**
+	 *  <p>Normalize the given url (adding the http-prefix if none given)
+	 *  
+	 *  @param s the link to be normalized
+	 *  @return link the normalized link
+	 * 
+	 */
+	
+	public final static String normalizeUrl( final String s ) {
+		
+		//Check if we have a valid prefix
+		if( s.contains( "://" ) ) return s;
+		else return "http://" + s;
+		
+	}
   /**
    * <p>Find the Levenshtein distance between two Strings.</p>
    * <p>Credit: <a href="http://www.merriampark.com/ldjava.htm">http://www.merriampark.com/ldjava.htm</a> </p>

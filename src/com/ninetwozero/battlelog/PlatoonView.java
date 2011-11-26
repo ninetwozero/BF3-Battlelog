@@ -34,7 +34,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -58,8 +57,8 @@ import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlayerData;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.ProfileInformation;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
+import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -67,16 +66,15 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class ProfileView extends TabActivity {
+public class PlatoonView extends TabActivity {
 
 	//Attributes
-	private final Context context = this;
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
 	private ProgressBar progressBar;
-	private ProfileData profileData;
+	private PlatoonData platoonData;
 	private PlayerData playerData;
-	private ProfileInformation profileInformation;
+	private PlatoonInformation platoonInformation;
 	private TabHost mTabHost;
 	private FeedListAdapter feedListAdapter;
 	
@@ -101,38 +99,24 @@ public class ProfileView extends TabActivity {
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         
     	//Get the intent
-        if( !getIntent().hasExtra( "profile" ) ) {
+        if( getIntent().hasExtra( "platoon" ) ) {
         	
-        	profileData = new ProfileData(
-
-        		this.sharedPreferences.getString( "battlelog_username", "" ),
-        		this.sharedPreferences.getString( "battlelog_persona", "" ),
-    			this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-    			this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-    			this.sharedPreferences.getLong( "battlelog_platform_id", 1)
-    		
-    		);
-        	
-        } else {
-        	
-        	profileData = (ProfileData) getIntent().getSerializableExtra( "profile" );
+        	platoonData = (PlatoonData) getIntent().getSerializableExtra( "platoon" );
         	
         }
         
         //Is the profileData null?!
-        if( profileData == null || profileData.getProfileId() == 0 ) { finish(); return; }
+        if( platoonData == null || platoonData.getId() == 0 ) { finish(); return; }
     	
     	//Set the content view
-        setContentView(R.layout.profile_view);
+        setContentView(R.layout.platoon_view);
         
         //Fix the tabs
     	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
     	setupTabs(
     			
     		new String[] { "Home", "Stats", "Feed" }, 
-    		new int[] { R.layout.tab_content_overview_profile, R.layout.tab_content_stats, R.layout.tab_content_feed }
-    		
-    	);
+    		new int[] { R.layout.tab_content_overview_platoon, R.layout.tab_content_stats, R.layout.tab_content_feed } );
         
         initLayout();
 	}        
@@ -140,14 +124,14 @@ public class ProfileView extends TabActivity {
 	public void initLayout() {
 		
 		//Eventually get a *cached* version instead    
-		new AsyncProfileRefresh(this, false, profileData, sharedPreferences.getLong( "battlelog_profile_id", 0 )).execute();
+		new AsyncPlatoonRefresh(this, false, platoonData, sharedPreferences.getLong( "battlelog_profile_id", 0 )).execute();
 		
 	}
 	
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new AsyncProfileRefresh(this, true, profileData, sharedPreferences.getLong( "battlelog_profile_id", 0 )).execute();
+    	new AsyncPlatoonRefresh(this, true, platoonData, sharedPreferences.getLong( "battlelog_profile_id", 0 )).execute();
     	
     	
     }
@@ -197,20 +181,20 @@ public class ProfileView extends TabActivity {
     
     public void doFinish() {}
     
-    public class AsyncProfileRefresh extends AsyncTask<Void, Void, Boolean> {
+    public class AsyncPlatoonRefresh extends AsyncTask<Void, Void, Boolean> {
     
     	//Attributes
     	private Context context;
     	private ProgressDialog progressDialog;
-    	private ProfileData profileData;
+    	private PlatoonData platoonData;
     	private long activeProfileId;
     	private boolean hideDialog;
     	
-    	public AsyncProfileRefresh(Context c, boolean f, ProfileData pd, long pId) {
+    	public AsyncPlatoonRefresh(Context c, boolean f, PlatoonData pd, long pId) {
     		
     		this.context = c;
     		this.hideDialog = f;
-    		this.profileData = pd;
+    		this.platoonData = pd;
     		this.progressDialog = null;
     		this.activeProfileId = pId;
     		
@@ -238,11 +222,10 @@ public class ProfileView extends TabActivity {
 			try {
 				
 				//Get...
-				playerData = WebsiteHandler.getStatsForUser( this.profileData );
-				profileInformation = WebsiteHandler.getProfileInformationForUser( this.profileData, this.activeProfileId);
+				platoonInformation = WebsiteHandler.getProfileInformationForPlatoon( this.platoonData, this.activeProfileId);
 				
 				//...validate!
-				if( playerData == null || profileInformation == null ) { 
+				if( platoonInformation == null ) { 
 					
 					return false; 
 				
@@ -285,7 +268,7 @@ public class ProfileView extends TabActivity {
 						switch( getTabHost().getCurrentTab() ) {
 							
 							case 0:
-								drawHome(profileInformation);
+								drawHome(platoonInformation);
 								break;
 								
 							case 1:
@@ -293,7 +276,7 @@ public class ProfileView extends TabActivity {
 								break;
 							
 							case 2:
-								drawFeed(profileInformation);
+								drawFeed(platoonInformation);
 								break;
 								
 							default:
@@ -311,7 +294,7 @@ public class ProfileView extends TabActivity {
 			switch( mTabHost.getCurrentTab() ) {
 				
 				case 0:
-					drawHome(profileInformation);
+					drawHome(platoonInformation);
 					break;
 					
 				case 1:
@@ -319,7 +302,7 @@ public class ProfileView extends TabActivity {
 					break;
 				
 				case 2:
-					drawFeed(profileInformation);
+					drawFeed(platoonInformation);
 					break;
 					
 				default:
@@ -337,49 +320,24 @@ public class ProfileView extends TabActivity {
 		
     }
     
-    public final void drawHome(ProfileInformation data) {
+    public final void drawHome(PlatoonInformation data) {
     	
     	//Let's start drawing the... layout
-    	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
+    	((TextView) findViewById(R.id.text_name)).setText( data.getName() );
     	
-    	//When did was the users last login?
-    	if( data.isPlaying() && data.isOnline() ) { 
-    		
-    		((TextView) findViewById(R.id.text_online)).setText( 
-    				
-				"Playing on {server name}".replace(
-					
-					"{server name}",
-					data.getCurrentServer()
-					
-				)
-    				
-			);
-        	
-    	} else if( data.isOnline() ) {
+    	//Set the *created*
+    	((TextView) findViewById(R.id.text_date)).setText( 
+    			
+    		PublicUtils.getDate( data.getDate(), "Created on" ) + " (" +
+    		PublicUtils.getRelativeDate( data.getDate() ) + ")"
+    	);
     	
-    		((TextView) findViewById(R.id.text_online)).setText( "Online but not currently playing" ); 
+    	//Do we have a link?!
+    	if( data.getWebsite() != null && !data.getWebsite().equals( "" ) ) {
     		
-    	} else {
-    		
-    		((TextView) findViewById(R.id.text_online)).setText( data.getLastLogin() ); 
+    		((TextView) findViewById(R.id.text_web)).setText( data.getWebsite() );
     		
     	}
-    	
-    	//Is the status ""?
-    	if( !data.getStatusMessage().equals( "" ) ) {
-			
-    		//Set the status
-    		((TextView) findViewById(R.id.text_status)).setText( data.getStatusMessage() );
-    		((TextView) findViewById(R.id.text_status_date)).setText( PublicUtils.getRelativeDate( data.getStatusMessageChanged(), "Last updated ") );
-    	
-    	} else {
-    		
-    		//Hide the view
-    		((RelativeLayout) findViewById(R.id.wrap_status)).setVisibility(View.GONE);
-    		
-    	}
-    	
     	//Do we have a presentation?
     	if( data.getPresentation() != null && !data.getPresentation().equals( "" ) ) {
     		
@@ -391,73 +349,6 @@ public class ProfileView extends TabActivity {
 
     	}
     	
-    	//Any platoons?
-    	if( data.getPlatoons().size() > 0 ) {
-
-    		//Init
-    		View convertView;
-    		LinearLayout platoonWrapper = (LinearLayout) findViewById(R.id.list_platoons);
-    		
-    		//Clear the platoonWrapper
-    		platoonWrapper.removeAllViews();
-    		
-    		//Iterate over the platoons
-    		for( PlatoonData currentPlatoon : data.getPlatoons() ) {
-
-	    		//Does it already exist?
-    			if( platoonWrapper.findViewWithTag( currentPlatoon ) != null ) { continue; }
-    			
-    			//Recycle
-	    		convertView = layoutInflater.inflate( R.layout.list_item_platoon, platoonWrapper, false );
-	
-	    		//Set the TextViews
-	    		((TextView) convertView.findViewById( R.id.text_name ) ).setText( currentPlatoon.getName() );
-	    		((TextView) convertView.findViewById( R.id.text_tag ) ).setText( "[" + currentPlatoon.getTag() + "]" );
-	    		((TextView) convertView.findViewById( R.id.text_members ) ).setText( currentPlatoon.getCountMembers() + "");
-	    		((TextView) convertView.findViewById( R.id.text_fans ) ).setText( currentPlatoon.getCountFans() + "");
-	    		
-	    		//Almost forgot - we got a Bitmap too!
-	    		((ImageView) convertView.findViewById( R.id.image_badge ) ).setImageBitmap( currentPlatoon.getImage() );
-	    		
-	    		//Store it in the tag
-	    		convertView.setTag( currentPlatoon );
-	    		convertView.setOnClickListener(
-	    			
-	    			new OnClickListener() {
-
-						@Override
-						public void onClick( View v ) {
-
-							//On-click
-							startActivity( 
-									
-								new Intent(context, PlatoonView.class).putExtra(
-										
-									"platoon", 
-									(PlatoonData) v.getTag()
-								
-								) 
-								
-							);
-							
-						}
-	    				
-	    			}
-	    				
-	    		);
-	    		//Add it!
-	    		platoonWrapper.addView( convertView );
-	    		
-    		}
-    		
-    	} else {
-        	
-    		((TextView) findViewById(R.id.text_platoon)).setVisibility( View.VISIBLE );
-    	
-    	}
-    	
-    	//Set the username
-    	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
     }
     
     public void drawStats(PlayerData pd) {
@@ -509,7 +400,7 @@ public class ProfileView extends TabActivity {
     	
     }
     
-    public void drawFeed(ProfileInformation data) {
+    public void drawFeed(PlatoonInformation data) {
     	
     	//Do we have it already?
 		if( listFeed == null ) { 
@@ -519,7 +410,7 @@ public class ProfileView extends TabActivity {
 			
 		}
         
-		((TextView) findViewById(R.id.feed_username)).setText( data.getUsername() );
+		((TextView) findViewById(R.id.feed_username)).setText( data.getName() );
         
 		//If we don't have it defined, then we need to set it
 		if( listFeed.getAdapter() == null ) {
@@ -557,7 +448,7 @@ public class ProfileView extends TabActivity {
 			
 		} else {
 			
-			feedListAdapter.setItemArray( profileInformation.getFeedItems() );
+			feedListAdapter.setItemArray( platoonInformation.getFeedItems() );
 			feedListAdapter.notifyDataSetChanged();
 		}
     }
@@ -576,74 +467,53 @@ public class ProfileView extends TabActivity {
     public boolean onPrepareOptionsMenu( Menu menu ) {
     	
     	//Our own profile, no need to show the "extra" buttons
-    	if( profileData.getProfileId() == sharedPreferences.getLong( "battlelog_profile_id", 0 ) ) {
+		if( mTabHost.getCurrentTab() == 0 ) {			
+					
+			if( platoonInformation.isOpenForNewMembers() ) {
+					
+				if( platoonInformation.isOpenForNewMembers() ) {
 
+					((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( true );	
+				
+				} else {
+
+					((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( true );
+					((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
+				}
+					
+			} else {
+
+				((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
+				
+			}
+			
+			((MenuItem) menu.findItem( R.id.option_compare )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
+		
+		} else if( mTabHost.getCurrentTab() == 1 ) {
+			
+			((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_compare )).setVisible( true );
+			((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
+			
+		} else if( mTabHost.getCurrentTab() == 2 ) {
+			
+			((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_compare )).setVisible( false );
+			
+		} else {
+			
 			menu.removeItem( R.id.option_friendadd );
 			menu.removeItem( R.id.option_frienddel );
 			menu.removeItem( R.id.option_compare );
 			menu.removeItem( R.id.option_newpost );
 			
-		} else {
-    	
-	    	//Which tab is operating?
-	    	if( mTabHost.getCurrentTab() == 0 ) {			
-					
-				if( profileInformation.getAllowFriendRequests() ) {
-					
-					if( profileInformation.isFriend() ) {
-
-						((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
-						((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( true );	
-				
-					} else {
-
-						((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( true );
-						((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
-					}
-					
-				} else {
-
-					((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
-					((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
-					
-				}
-				
-				((MenuItem) menu.findItem( R.id.option_compare )).setVisible( false );
-				((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
-			
-			} else if( mTabHost.getCurrentTab() == 1 ) {
-				
-				((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
-				((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
-				((MenuItem) menu.findItem( R.id.option_compare )).setVisible( true );
-				((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
-				
-			} else if( mTabHost.getCurrentTab() == 2 ) {
-				
-				((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
-				((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
-				((MenuItem) menu.findItem( R.id.option_compare )).setVisible( false );
-				
-				if( profileInformation.isFriend() ) {
-					
-					((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( true );
-				
-				} else {
-				
-					((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
-					
-				}
-			} else {
-				
-				menu.removeItem( R.id.option_friendadd );
-				menu.removeItem( R.id.option_frienddel );
-				menu.removeItem( R.id.option_compare );
-				menu.removeItem( R.id.option_newpost );
-				
-			}
-
 		}
-    	
+		
     	return super.onPrepareOptionsMenu( menu );
     	
     }
@@ -662,7 +532,7 @@ public class ProfileView extends TabActivity {
 			
 		} else if( item.getItemId() == R.id.option_friendadd ) {
 			
-			new AsyncFriendRequest(this, profileData.getProfileId()).execute( 
+			new AsyncFriendRequest(this, platoonData.getId()).execute( 
 					
 				sharedPreferences.getString( 
 						
@@ -679,21 +549,7 @@ public class ProfileView extends TabActivity {
 		
 		} else if( item.getItemId() == R.id.option_compare ) {
 			
-			startActivity(
-			
-				new Intent(
-					
-					this,
-					CompareView.class
-						
-				).putExtra(
-				
-					"profile",
-					profileData
-				
-				)
-					
-			);
+			Toast.makeText( this, "You can't compare platoons... duh", Toast.LENGTH_SHORT).show();
 			
 		} else if( item.getItemId() == R.id.option_newpost ) {
 			
@@ -781,11 +637,11 @@ public class ProfileView extends TabActivity {
 						info.id, 
 						false,
 						( (FeedItem)info.targetView.getTag()).isLiked(),
-						new AsyncProfileRefresh(
+						new AsyncPlatoonRefresh(
 								
 							this, 
 							true, 
-							profileData,
+							platoonData,
 							sharedPreferences.getLong( "battlelog_profile_id", 0 )
 							
 						)
@@ -821,15 +677,10 @@ public class ProfileView extends TabActivity {
 							"postId", 
 							((FeedItem) info.targetView.getTag()).getId()
 							
-						).putExtra(
-								
-							"isFriend",
-							profileInformation.isFriend()	
-						
 						).putExtra( 
 								
-							"profileId",
-							profileInformation.getProfileId()
+							"platoonId",
+							platoonInformation.getId()
 							
 						)
 						
@@ -891,7 +742,7 @@ public class ProfileView extends TabActivity {
 					new AsyncPostToWall(
 							
 						context, 
-						profileData.getProfileId()
+						platoonData.getId()
 						
 					).execute(
 							

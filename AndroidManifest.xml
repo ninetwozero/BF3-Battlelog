@@ -40,6 +40,11 @@
           	android:configChanges="orientation"
         />
         <activity
+            android:label="BF3 Battlelog - Platoon"
+            android:name=".PlatoonView"
+          	android:configChanges="orientation"
+        />
+        <activity
             android:label="BF3 Battlelog - Your performance"
             android:name=".StatsView"
           	android:configChanges="orientation"

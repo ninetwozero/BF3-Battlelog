@@ -21,6 +21,7 @@ public final class Constants {
 	public static final String urlMain = "http://battlelog.battlefield.com/bf3/";
 	public static final String urlMainSecure = "https://battlelog.battlefield.com/bf3/";
 	public static final String urlStaticContent = "http://static.cdn.ea.com/battlelog/";
+	public static final String urlImagePack = "http://192.168.0.11:10920/file.zip";
 	
 	//URLs that REQUIRE POST-DATA
 	public static final String urlLogin = urlMainSecure + "gate/login/";
@@ -43,6 +44,11 @@ public final class Constants {
 	public static final String urlPlatoonThumbs = urlStaticContent + "prod/emblems/60/";
 	public static final String urlFriendRequest = urlMain + "friend/requestFriendship/{PID}/";
 	
+	//URLS for PLATOONS
+	public static final String urlPlatoon = urlMain + "platoon/{PID}/";
+	public static final String urlPlatoonFans = urlMain + "platoon/{PID}/listfans/";
+	public static final String urlPlatoonMembers = urlMain + "platoon/{PID}/listmembers/";
+	public static final String urlPlatoonStats = urlMain + "platoon/platoonMemberStats/{PID}/2/{PLATFORM_ID}/";
 	//URLS for FEED
 	public static final String urlFeedReport = urlMain + "viewcontent/reportFeedItemAbuse/{PID}/0/"; /* TODO */
 	public static final String urlFeedCommentReport = urlMain + "viewcontent/reportFeedItemAbuse/{PID}/{CID}/"; /* TODO */
@@ -98,7 +104,7 @@ public final class Constants {
 	
 	//Files
 	public static final String fileSharedPrefs = "battlelog";
-
+	
 	//DEBUG
 	public static final String debugTag = "com.ninetwozero.battlelog";
 

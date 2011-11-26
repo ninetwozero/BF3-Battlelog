@@ -879,4 +879,33 @@ public class DataBank {
 		}
 		
 	}
+	
+	public static String getRoleFromId( int number ) {
+
+		switch( number ) {
+			
+			case 0:
+				return "Not a member";
+				
+			case 1: 
+				return "Waiting to be evaluated";
+				
+			case 2:
+				return "Invited";
+				
+			case 4:
+				return "Member";
+			
+			case 128:
+				return "Admin";
+
+			case 256:
+				return "Founder";
+			
+			default:
+				return "(unknown user role)";
+		
+		}
+		
+	}
 }

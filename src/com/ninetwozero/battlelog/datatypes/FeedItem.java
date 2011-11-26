@@ -131,8 +131,17 @@ public class FeedItem {
 						
 			); 
 			
-		} else if( type.equals( "joinedplatoon" ) || type.equals( "leftplatoon" ) || type.equals( "receivedplatoonwallpost" ) ) {
+		} else if( type.equals( "createdplatoon" ) || type.equals( "joinedplatoon" ) || type.equals( "leftplatoon" ) ) {
 			
+			return this.title.replace( 
+					
+				"{username}", 
+				this.username[0]
+				
+			);
+			
+		} else if( type.equals( "platoonbadgesaved" ) || type.equals( "receivedplatoonwallpost" ) ) {
+		
 			return this.title.replace( 
 					
 				"{username}", 
