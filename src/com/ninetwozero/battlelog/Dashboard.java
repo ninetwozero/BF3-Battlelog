@@ -42,6 +42,7 @@ import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.asynctasks.AsyncComRefresh;
@@ -70,6 +71,7 @@ public class Dashboard extends Activity {
 	
 	//COM-related
 	private SlidingDrawer slidingDrawer;
+	private TextView slidingDrawerHandle;
 	private OnDrawerOpenListener onDrawerOpenListener;
 	private OnDrawerCloseListener onDrawerCloseListener;
 	private ListView listFriendsRequests, listFriends;
@@ -118,9 +120,13 @@ public class Dashboard extends Activity {
 		
 			startActivity( new Intent(this, UnlockView.class) );
 			 
-		} else if( v.getId() == R.id.button_find ) {
+		} else if( v.getId() == R.id.button_find_soldier ) {
 			
-			generateDialogFind(this).show();
+			generateDialogFindSoldier(this).show();
+			
+		} else if( v.getId() == R.id.button_find_platoon ) {
+			
+			generateDialogFindPlatoon(this).show();
 			
 		} else if( v.getId() == R.id.button_view_self ) {
 			
@@ -255,7 +261,7 @@ public class Dashboard extends Activity {
 		//Attributes
 		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-	    final View layout = inflater.inflate(R.layout.compare_dialog, (ViewGroup) findViewById(R.id.dialog_root));
+	    final View layout = inflater.inflate(R.layout.dialog_compare, (ViewGroup) findViewById(R.id.dialog_root));
 		
 	    //Set the title and the view
 		builder.setTitle("Compare battle scars");
@@ -311,12 +317,12 @@ public class Dashboard extends Activity {
 		
 	}
 	
-	public Dialog generateDialogFind(final Context context) {
+	public Dialog generateDialogFindSoldier(final Context context) {
 		
 		//Attributes
 		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-	    final View layout = inflater.inflate(R.layout.compare_dialog, (ViewGroup) findViewById(R.id.dialog_root));
+	    final View layout = inflater.inflate(R.layout.dialog_compare, (ViewGroup) findViewById(R.id.dialog_root));
 		
 	    //Set the title and the view
 		builder.setTitle("View soldier profile of...");
@@ -370,10 +376,70 @@ public class Dashboard extends Activity {
 		
 	}
 	
+	public Dialog generateDialogFindPlatoon(final Context context) {
+		
+		//Attributes
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+	    final View layout = inflater.inflate(R.layout.dialog_find_platoon, (ViewGroup) findViewById(R.id.dialog_root));
+		
+	    //Set the title and the view
+		builder.setTitle("View the platoon profile for...");
+		builder.setView(layout);
+
+		//Grab the fields
+		final EditText fieldName = (EditText) layout.findViewById(R.id.field_name);
+		
+		//Dialog options
+		builder.setNegativeButton(
+				
+			android.R.string.cancel, 
+			
+			new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int whichButton) { 
+					
+					dialog.dismiss(); 
+					
+				}
+				
+			}
+			
+		);
+			 
+		builder.setPositiveButton(
+				
+			android.R.string.ok, 
+			new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+			      
+					if( !fieldName.getText().toString().equals( "" ) ) {
+							
+						new AsyncFetchDataToProfileView(context).execute(fieldName.getText().toString());
+					
+					} else {
+						
+						Toast.makeText( context, "You need to enter a name", Toast.LENGTH_SHORT ).show();
+						
+					}
+			   
+				}
+				
+			}
+			
+		);
+		
+		//CREATE
+		return builder.create();
+		
+	}
+	
 	private void setupCOM() {
 		
         //Define the SlidingDrawer
 		slidingDrawer = (SlidingDrawer) findViewById( R.id.com_slider);
+		slidingDrawerHandle = (TextView) findViewById( R.id.com_slide_handle_text );
 		buttonRefresh = (Button) findViewById( R.id.button_refresh );
 		
 		//Set the drawer listeners
@@ -431,7 +497,8 @@ public class Dashboard extends Activity {
 			listFriends, 
 			listFriends, 
 			layoutInflater,
-			buttonRefresh
+			buttonRefresh,
+			slidingDrawerHandle
 			
 		);
 		asyncComRefresh.execute();
@@ -454,7 +521,8 @@ public class Dashboard extends Activity {
 					listFriends, 
 					listFriends, 
 					layoutInflater,
-					buttonRefresh
+					buttonRefresh,
+					slidingDrawerHandle
 					
 				)
 			
@@ -473,7 +541,8 @@ public class Dashboard extends Activity {
 					listFriends, 
 					listFriends, 
 					layoutInflater,
-					buttonRefresh
+					buttonRefresh,
+					slidingDrawerHandle
 					
 				)
 				

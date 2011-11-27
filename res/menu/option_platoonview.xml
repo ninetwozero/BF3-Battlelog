@@ -1,0 +1,56 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item 
+		android:id="@+id/option_reload" 
+		android:icon="@android:drawable/ic_menu_rotate"
+		android:title="Reload" 
+		android:alphabeticShortcut="R"
+	/>
+    <item 
+		android:id="@+id/option_join" 
+		android:icon="@android:drawable/ic_menu_add" 
+		android:title="Request to join" 
+		android:alphabeticShortcut="F"
+		android:visible="false"
+	/>
+    <item 
+		android:id="@+id/option_leave" 
+		android:icon="@android:drawable/ic_menu_delete" 
+		android:title="Leave platoon" 
+		android:alphabeticShortcut="F"
+		android:visible="false"
+	/>
+    <item 
+		android:id="@+id/option_members" 
+		android:icon="@android:drawable/ic_menu_myplaces" 
+		android:title="Members" 
+		android:alphabeticShortcut="U"
+		android:visible="false"
+	/>
+    <item 
+		android:id="@+id/option_fans" 
+		android:icon="@android:drawable/ic_menu_myplaces" 
+		android:title="Fans" 
+		android:alphabeticShortcut="U"
+		android:visible="false"
+	/>
+    <item 
+		android:id="@+id/option_compare" 
+		android:icon="@android:drawable/ic_menu_directions" 
+		android:title="Compare..." 
+		android:alphabeticShortcut="C"
+		android:visible="false"
+	/>
+    <item 
+		android:id="@+id/option_newpost" 
+		android:icon="@android:drawable/ic_menu_edit" 
+		android:title="Post in feed" 
+		android:alphabeticShortcut="P"
+		android:visible="false"
+	/>
+	<item 
+		android:id="@+id/option_back" 
+		android:icon="@android:drawable/ic_menu_revert" 
+		android:title="Back" 
+		android:alphabeticShortcut="B"
+	/>
+</menu>

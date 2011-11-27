@@ -24,7 +24,7 @@ public class PlatoonInformation {
 	private int platformId, gameId, numFans, numMembers, blazeClubId;
 	private long id, date;
 	private String name, tag, presentation, pathToBadge, website;
-	private boolean visible, allowNewMembers;
+	private boolean visible, hasAdminRights, allowNewMembers;
 	private ArrayList<FeedItem> feedItems;
 	private ArrayList<ProfileData> members;
 	private ArrayList<ProfileData> fans;
@@ -35,7 +35,7 @@ public class PlatoonInformation {
 		int pId, int g, int nF, int nM, int bcId,
 		long i, long d,
 		String n, String t, String p, String pTB, String w,
-		boolean v, boolean a,
+		boolean v, boolean ham, boolean a,
 		ArrayList<FeedItem> f, ArrayList<ProfileData> m, ArrayList<ProfileData> fa
 		
 	) {
@@ -53,6 +53,7 @@ public class PlatoonInformation {
 		this.pathToBadge = pTB;
 		this.website = w;
 		this.visible = v;
+		this.hasAdminRights = ham;
 		this.allowNewMembers = a;
 		this.feedItems = f;
 		this.members = m;
@@ -66,6 +67,7 @@ public class PlatoonInformation {
 	public int getNumFans() { return this.numFans; }
 	public int getNumMembers() { return this.numMembers; }
 	public int getBlazeClubId() { return this.blazeClubId; }
+	public boolean hasAdminRights() { return this.hasAdminRights; }
 	public long getId() { return this.id; }
 	public long getDate() { return this.date; }
 	public String getName() { return this.name; }

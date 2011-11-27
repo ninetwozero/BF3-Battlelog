@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -724,11 +725,14 @@ public class WebsiteHandler {
 					
 					}
 					
-					//First add the separators)...
+					//How many "online" friends do we have? Playing + idle
+					numFriends = profileRowPlaying.size() + profileRowOnline.size();
 					
-					if( (profileRowPlaying.size() + profileRowOnline.size()) > 0 ){
+					//First add the separators)...
+					if( numFriends > 0 ){
 						
 						profileRowPlaying.add(  new ProfileData( "00000000", "Online friends", 0, 0, 0 ) );
+					
 					}
 					
 					
@@ -745,10 +749,10 @@ public class WebsiteHandler {
 					
 					//...sprinkle a little merging here and there...
 					profileRowPlaying.addAll( profileRowOnline );
-					profileRowPlaying.addAll( profileRowOffline );
 					
 					//...and add it to the list!
 					profileArray.add( profileRowPlaying );
+					profileArray.add( profileRowOffline );
 				
 				} else {
 					
@@ -1135,7 +1139,7 @@ public class WebsiteHandler {
 
 	}
 	
-public static ProfileInformation getProfileInformationForUser( ProfileData profileData, long activeProfileId ) throws WebsiteHandlerException {
+	public static ProfileInformation getProfileInformationForUser( ProfileData profileData, long activeProfileId ) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -1146,7 +1150,7 @@ public static ProfileInformation getProfileInformationForUser( ProfileData profi
 			String httpContent;
 			
 			//Get the content
-			httpContent = rh.get( Constants.urlProfileInfo.replace( "{UNAME}", profileData.getAccountName() ), true );
+			httpContent = rh.get( Constants.urlProfileInfo.replace( "{UNAME}", Uri.encode( profileData.getAccountName() ) ), true );
 
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -1242,6 +1246,72 @@ public static ProfileInformation getProfileInformationForUser( ProfileData profi
 		
 	}
 
+	public static ArrayList<ProfileData> getFansForPlatoon(long platoonId) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Let's go!
+			RequestHandler rh = new RequestHandler();
+			ArrayList<ProfileData> fans = new ArrayList<ProfileData>();
+			String httpContent;
+
+			//Do the request
+			httpContent = rh.get( 
+					
+				Constants.urlPlatoonFans.replace( "{PID}",  platoonId + ""), 
+				true
+				
+			);
+			
+			//Let's start with the JSON shall we?
+			JSONObject fanArray = new JSONObject(httpContent).getJSONObject("context").getJSONObject("fans");
+			JSONArray fanIdArray = fanArray.names();
+			JSONObject tempObject = null;
+			
+			//Iterate over the fans
+			for( int i = 0; i < fanIdArray.length(); i++ ) {
+				
+				//Grab the fan
+				tempObject = fanArray.getJSONObject( fanIdArray.getString( i ) );
+				
+				//Store him in the ArrayList
+				fans.add( 
+					
+					new ProfileData(
+
+						tempObject.getString( "username" ),
+						null,
+						Long.parseLong(tempObject.getString( "userId" ) ),
+						0,
+						0
+					)				
+						
+				);
+				
+			}
+			
+			//Did we get more than 0?
+			if( fans.size() > 0 ) {
+			
+				//Add a header just 'cause we can
+				fans.add( new ProfileData("00000000", "Loyal fans", 0, 0, 0) );
+				
+				//a-z please!
+				Collections.sort( fans, new ProfileComparator() );
+			
+			}
+			//Return
+			return fans;
+			
+		} catch( Exception ex ) {
+			
+			ex.printStackTrace();
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+	}
+	
+	/* TODO */
 	public static PlatoonInformation getProfileInformationForPlatoon( PlatoonData platoonData, long activeProfileId ) throws WebsiteHandlerException {
 		
 		try {
@@ -1249,12 +1319,19 @@ public static ProfileInformation getProfileInformationForUser( ProfileData profi
 			//Let's go!
 			RequestHandler rh = new RequestHandler();
 			ArrayList<FeedItem> feedItemArray = new ArrayList<FeedItem>();
-			ArrayList<ProfileData> fans = new ArrayList<ProfileData>();
+			ArrayList<ProfileData> fans = new ArrayList<ProfileData>(); 
 			ArrayList<ProfileData> members = new ArrayList<ProfileData>();
-			String httpContent;
+			
+			//Arrays to divide the users in
+			ArrayList<ProfileData> founderMembers = new ArrayList<ProfileData>();
+			ArrayList<ProfileData> adminMembers = new ArrayList<ProfileData>();
+			ArrayList<ProfileData> regularMembers = new ArrayList<ProfileData>();
+			ArrayList<ProfileData> invitedMembers = new ArrayList<ProfileData>();
+			ArrayList<ProfileData> requestMembers = new ArrayList<ProfileData>();
 			
 			//Get the content
-			httpContent = rh.get( Constants.urlPlatoon.replace( "{PID}", platoonData.getId() + "" ), true );
+			String httpContent = rh.get( Constants.urlPlatoon.replace( "{PID}", platoonData.getId() + "" ), true );
+			boolean hasAdminRights = false;
 	
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -1266,6 +1343,9 @@ public static ProfileInformation getProfileInformationForUser( ProfileData profi
 				JSONArray feedItems = contextObject.getJSONArray( "feed" );
 				JSONObject currItem;
 				
+				//Temporary var
+				ProfileData tempProfile;
+				
 				//Let's iterate over the members
 				JSONArray idArray = memberArray.names();
 				for( int counter = 0; counter < idArray.length(); counter++ ) {
@@ -1273,25 +1353,142 @@ public static ProfileInformation getProfileInformationForUser( ProfileData profi
 					//Get the current item
 					currItem = memberArray.optJSONObject( idArray.getString( counter ) );
 
-					//Add it to the members
-					members.add(
-					
-						new ProfileData(
-
-							currItem.getJSONObject( "user" ).getString( "username" ),
-							currItem.getJSONObject( "persona" ).getString( "personaName" ),
-							Long.parseLong( currItem.getString( "personaId" ) ),
-							Long.parseLong( currItem.getString( "userId" ) ),
-							profileCommonObject.getLong( "platform" ),
-							currItem.getJSONObject( "user" ).getJSONObject("presence").getBoolean( "isOnline" ),
-							currItem.getJSONObject( "user" ).getJSONObject("presence").getBoolean( "isPlaying" )
-								
-						)
+					//Check the *rights* of the user
+					if( idArray.getString( counter ).equals("" + activeProfileId)  ) {
 						
+						hasAdminRights = true;
+						
+					}
+					
+					//Add it to the members
+					tempProfile = new ProfileData(
+
+						currItem.getJSONObject( "user" ).getString( "username" ),
+						currItem.getJSONObject( "persona" ).getString( "personaName" ),
+						Long.parseLong( currItem.getString( "personaId" ) ),
+						Long.parseLong( currItem.getString( "userId" ) ),
+						profileCommonObject.getLong( "platform" ),
+						currItem.getJSONObject( "user" ).getJSONObject("presence").getBoolean( "isOnline" ),
+						currItem.getJSONObject( "user" ).getJSONObject("presence").getBoolean( "isPlaying" )
+							
 					);
+						
+					switch( currItem.getInt( "membershipLevel" ) ) { 
+
+						case 1:
+							requestMembers.add( tempProfile );
+							break;
+
+						case 2:
+							invitedMembers.add( tempProfile );
+							break;
+						
+						case 4:
+							regularMembers.add( tempProfile );
+							break;
+
+						case 128:
+							adminMembers.add( tempProfile );
+							break;
+
+						case 256:
+							founderMembers.add( tempProfile );
+							break;
+							
+						default:
+							regularMembers.add( tempProfile );
+							break;
+					}
 					
 				}
+				
+				//Let's sort the members...
+				Collections.sort( requestMembers, new ProfileComparator() );
+				Collections.sort( invitedMembers, new ProfileComparator() );
+				Collections.sort( regularMembers, new ProfileComparator() );
+				Collections.sort( adminMembers, new ProfileComparator() );
+				Collections.sort( founderMembers, new ProfileComparator() );
 
+				//...and then merge them with their *labels*
+				if( founderMembers.size() > 0 ) { 
+					
+					//Plural?
+					if( founderMembers.size() > 1 ) {
+						
+						members.add( new ProfileData("00000000", "Founders", 0, 0, 0) );
+					
+					} else { 
+						
+						members.add( new ProfileData("00000001", "Founder", 0, 0, 0) );
+						
+					}
+			
+					//Add them to the members
+					members.addAll( founderMembers );
+					
+				}
+		
+				if( adminMembers.size() > 0 ) { 
+					
+					//Plural?
+					if( adminMembers.size() > 1 ) {
+						
+						members.add( new ProfileData("00000002", "Admins", 0, 0, 0) );
+					
+					} else { 
+						
+						members.add( new ProfileData("00000003", "Admin", 0, 0, 0) );
+						
+					}
+			
+					//Add them to the members
+					members.addAll( adminMembers );
+					
+				}
+				
+				if( regularMembers.size() > 0 ) { 
+					
+					//Plural?
+					if( regularMembers.size() > 1 ) {
+						
+						members.add( new ProfileData("00000004", "Regular members", 0, 0, 0) );
+					
+					} else { 
+						
+						members.add( new ProfileData("00000005", "Regular member", 0, 0, 0) );
+						
+					}
+			
+					//Add them to the members
+					members.addAll( regularMembers );
+					
+
+				}
+
+				//Is the user *admin* or higher?
+				if( hasAdminRights ) {
+					
+					if( invitedMembers.size() > 0 ) {
+						
+						//Just add them
+						members.add( new ProfileData("00000006", "Invited to join", 0, 0, 0) );
+						members.addAll( invitedMembers );
+						
+					}
+					
+					if( requestMembers.size() > 0 ) {
+	
+						//Just add them
+						members.add( new ProfileData("00000007", "Requested to join", 0, 0, 0) );
+						members.addAll( requestMembers);
+	
+					}
+
+				}
+					
+				//Let's get 'em fans too
+				fans = WebsiteHandler.getFansForPlatoon(platoonData.getId());
+				
 				//Parse the feed
 				feedItemArray = getFeedItemsFromJSON(feedItems, null, activeProfileId);
 				
@@ -1311,6 +1508,7 @@ public static ProfileInformation getProfileInformationForUser( ProfileData profi
 					profileCommonObject.getString( "badgePath" ),
 					PublicUtils.normalizeUrl( profileCommonObject.optString( "website", "" ) ),
 					!profileCommonObject.getBoolean( "hidden" ),
+					hasAdminRights,
 					profileCommonObject.getBoolean( "allowNewMembers" ),
 					feedItemArray,
 					members,

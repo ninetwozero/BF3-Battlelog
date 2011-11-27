@@ -25,6 +25,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -38,11 +39,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
@@ -50,15 +47,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
+import com.ninetwozero.battlelog.adapters.PlatoonUserListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
-import com.ninetwozero.battlelog.asynctasks.AsyncFriendRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.PlayerData;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
+import com.ninetwozero.battlelog.datatypes.PlayerData;
+import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -69,17 +66,23 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 public class PlatoonView extends TabActivity {
 
 	//Attributes
+	private final Context CONTEXT = this;
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
-	private ProgressBar progressBar;
 	private PlatoonData platoonData;
 	private PlayerData playerData;
 	private PlatoonInformation platoonInformation;
 	private TabHost mTabHost;
-	private FeedListAdapter feedListAdapter;
 	
 	//Elements
 	private ListView listFeed;
+	private ListView listUsers;
+	private FeedListAdapter feedListAdapter;
+	private PlatoonUserListAdapter platoonUserListAdapter;
+	
+	//CONTROLLERS for the users-tab
+	private final int VIEW_MEMBERS = 0, VIEW_FANS = 1;
+	private boolean isViewingMembers = true;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -115,8 +118,17 @@ public class PlatoonView extends TabActivity {
     	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
     	setupTabs(
     			
-    		new String[] { "Home", "Stats", "Feed" }, 
-    		new int[] { R.layout.tab_content_overview_platoon, R.layout.tab_content_stats, R.layout.tab_content_feed } );
+    		new String[] { "Home", "Stats", "Users", "Feed" }, 
+    		new int[] { 
+    				
+				R.layout.tab_content_overview_platoon, 
+				R.layout.tab_content_platoon_stats, 
+				R.layout.tab_content_platoon_users, 
+				R.layout.tab_content_feed 
+				
+    		}
+    		
+    	);
         
         initLayout();
 	}        
@@ -274,8 +286,12 @@ public class PlatoonView extends TabActivity {
 							case 1:
 								drawStats(playerData);
 								break;
-							
+								
 							case 2:
+								drawUsers(platoonInformation);
+								break;
+								
+							case 3:
 								drawFeed(platoonInformation);
 								break;
 								
@@ -302,6 +318,10 @@ public class PlatoonView extends TabActivity {
 					break;
 				
 				case 2:
+					drawUsers(platoonInformation);
+					break;
+					
+				case 3:
 					drawFeed(platoonInformation);
 					break;
 					
@@ -336,6 +356,11 @@ public class PlatoonView extends TabActivity {
     	if( data.getWebsite() != null && !data.getWebsite().equals( "" ) ) {
     		
     		((TextView) findViewById(R.id.text_web)).setText( data.getWebsite() );
+    		((View) findViewById(R.id.wrap_web)).setTag( data.getWebsite() );
+    		
+    	} else {
+    		
+    		((View) findViewById(R.id.wrap_web)).setVisibility( View.GONE );
     		
     	}
     	//Do we have a presentation?
@@ -353,50 +378,84 @@ public class PlatoonView extends TabActivity {
     
     public void drawStats(PlayerData pd) {
     	
-		//Persona & rank
-        ((TextView) findViewById(R.id.string_persona)).setText( pd.getPersonaName() );
-        ((TextView) findViewById(R.id.string_rank_title)).setText( pd.getRankTitle() );
-        ((TextView) findViewById(R.id.string_rank_short)).setText( pd.getRankId() + "" );
-        
-        //Progress
-        progressBar = ( (ProgressBar) findViewById(R.id.progress_level));
-        progressBar.setMax( (int) pd.getPointsNeededToLvlUp()  );
-        progressBar.setProgress( (int) pd.getPointsProgressLvl() );
-        ((TextView) findViewById(R.id.string_progress_curr)).setText( pd.getPointsProgressLvl() + "" );
-        ((TextView) findViewById(R.id.string_progress_max)).setText( pd.getPointsNeededToLvlUp() + "" );
-        ((TextView) findViewById(R.id.string_progress_left)).setText( pd.getPointsLeft() + "" );
-        
-        //Score
-        ((TextView) findViewById(R.id.string_score_assault)).setText( pd.getScoreAssault() + "" );
-        ((TextView) findViewById(R.id.string_score_engineer)).setText( pd.getScoreEngineer() + "" );
-        ((TextView) findViewById(R.id.string_score_support)).setText( pd.getScoreSupport() + "" );
-        ((TextView) findViewById(R.id.string_score_recon)).setText( pd.getScoreRecon() + "" );
-        ((TextView) findViewById(R.id.string_score_vehicles)).setText( pd.getScoreVehicle() + "" );
-        ((TextView) findViewById(R.id.string_score_combat)).setText( pd.getScoreCombat() + "" );
-        ((TextView) findViewById(R.id.string_score_award)).setText( pd.getScoreAwards() + "" );
-        ((TextView) findViewById(R.id.string_score_unlock)).setText( pd.getScoreUnlocks() + "" );
-        ((TextView) findViewById(R.id.string_score_total)).setText( pd.getScoreTotal() + "" );
-        
-        //Stats
-        ((TextView) findViewById(R.id.string_stats_kills)).setText( pd.getNumKills() + "" );
-        ((TextView) findViewById(R.id.string_stats_assists)).setText( pd.getNumAssists() + "" );
-        ((TextView) findViewById(R.id.string_stats_vkills)).setText( pd.getNumVehicles() + "" );
-        ((TextView) findViewById(R.id.string_stats_vassists)).setText( pd.getNumVehicleAssists() + "" );
-        ((TextView) findViewById(R.id.string_stats_heals)).setText( pd.getNumHeals() + "" );
-        ((TextView) findViewById(R.id.string_stats_revives)).setText( pd.getNumRevives() + "" );
-        ((TextView) findViewById(R.id.string_stats_repairs)).setText( pd.getNumRepairs() + "" );
-        ((TextView) findViewById(R.id.string_stats_resupplies)).setText( pd.getNumResupplies() + "" );
-        ((TextView) findViewById(R.id.string_stats_deaths)).setText( pd.getNumDeaths() + "" );
-        ((TextView) findViewById(R.id.string_stats_kdr)).setText( pd.getKDRatio() + "" );
-        ((TextView) findViewById(R.id.string_stats_wins)).setText( pd.getNumWins() + "" );
-        ((TextView) findViewById(R.id.string_stats_losses)).setText( pd.getNumLosses() + "" );
-        ((TextView) findViewById(R.id.string_stats_wlr)).setText( pd.getWLRatio() + "" );
-        ((TextView) findViewById(R.id.string_stats_accuracy)).setText( pd.getAccuracy() + "%" );
-        ((TextView) findViewById(R.id.string_stats_lks)).setText( pd.getLongestKS() + "" );
-        ((TextView) findViewById(R.id.string_stats_lhs)).setText( pd.getLongestHS() + " m");
-        ((TextView) findViewById(R.id.string_stats_skill)).setText( pd.getNumVehicles() + "" );
-        ((TextView) findViewById(R.id.string_stats_time)).setText( pd.getTimePlayedString() + "" );
-        ((TextView) findViewById(R.id.string_stats_spm)).setText( pd.getScorePerMinute() + "" );
+		Toast.makeText( this, "This is not implemented yet!", Toast.LENGTH_SHORT).show();
+		
+    }
+    
+    public final void drawUsers(PlatoonInformation data) {
+    	
+    	//Do we have the ListView?
+    	if( listUsers == null ) {
+    		
+    		listUsers = (ListView) findViewById(R.id.list_users);
+    		registerForContextMenu(listUsers);
+    		
+    	}
+    	
+    	//Do we have an adapter?
+    	if( listUsers.getAdapter() == null ) {
+    		
+    		//Create new adapter & set it onto our ListView
+    		platoonUserListAdapter = new PlatoonUserListAdapter(this, data.getMembers(), layoutInflater);
+    		listUsers.setAdapter( platoonUserListAdapter );
+			
+    		//Do we have the onClick?
+			if( listUsers.getOnItemClickListener() == null ) {
+				
+				listUsers.setOnItemClickListener( 
+						
+					new OnItemClickListener() {
+	
+						@Override
+						public void onItemClick( AdapterView<?> a, View v, int pos, long id ) {
+	
+							startActivity(
+									
+								new Intent(CONTEXT, ProfileView.class).putExtra(
+										
+									"profile", 
+									(ProfileData) v.getTag() 
+									
+								)
+								
+							);
+							
+						}
+						
+					}
+						
+				);
+			
+			}
+    		
+    	} else {
+    		
+			//Get the appropriate data
+			if( isViewingMembers ) { 
+				
+				((PlatoonUserListAdapter)listUsers.getAdapter()).setProfileArray( platoonInformation.getMembers());
+			
+			} else {
+				
+				((PlatoonUserListAdapter)listUsers.getAdapter()).setProfileArray( platoonInformation.getFans());
+			
+			}
+    			
+    		//Update it!
+			((PlatoonUserListAdapter)listUsers.getAdapter()).notifyDataSetChanged();
+			
+    	}
+    	
+    	//Which view are we on?
+    	if( isViewingMembers ) { 
+    		
+    		((TextView) findViewById(R.id.feed_title)).setText( "MEMBERS" );
+    		
+    	} else { 
+    		
+    		((TextView) findViewById(R.id.feed_title)).setText( "FANS");
+    		
+    	}
     	
     }
     
@@ -448,7 +507,7 @@ public class PlatoonView extends TabActivity {
 			
 		} else {
 			
-			feedListAdapter.setItemArray( platoonInformation.getFeedItems() );
+			
 			feedListAdapter.notifyDataSetChanged();
 		}
     }
@@ -458,7 +517,7 @@ public class PlatoonView extends TabActivity {
 
     	//Inflate!!
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate( R.menu.option_profileview, menu );		
+		inflater.inflate( R.menu.option_platoonview, menu );		
 		return super.onCreateOptionsMenu( menu );
 	
     }
@@ -473,44 +532,74 @@ public class PlatoonView extends TabActivity {
 					
 				if( platoonInformation.isOpenForNewMembers() ) {
 
-					((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
-					((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( true );	
+					((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_leave )).setVisible( true );
+					((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
 				
 				} else {
 
-					((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( true );
-					((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_join )).setVisible( true );
+					((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
 				}
 					
 			} else {
 
-				((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
-				((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
 				
 			}
-			
-			((MenuItem) menu.findItem( R.id.option_compare )).setVisible( false );
-			((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
 		
 		} else if( mTabHost.getCurrentTab() == 1 ) {
-			
-			((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
-			((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
-			((MenuItem) menu.findItem( R.id.option_compare )).setVisible( true );
+
+			((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
 			
 		} else if( mTabHost.getCurrentTab() == 2 ) {
 			
-			((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
-			((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
-			((MenuItem) menu.findItem( R.id.option_compare )).setVisible( false );
+			if( isViewingMembers ) {
+				
+				((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_fans )).setVisible( true );
+				((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
+				
+			} else {
+
+				((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_members )).setVisible( true );
+				((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
+				
+			}
+			
+		} else if( mTabHost.getCurrentTab() == 3 ) {
+
+			((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( true );
 			
 		} else {
 			
-			menu.removeItem( R.id.option_friendadd );
-			menu.removeItem( R.id.option_frienddel );
-			menu.removeItem( R.id.option_compare );
-			menu.removeItem( R.id.option_newpost );
+			((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
 			
 		}
 		
@@ -530,23 +619,11 @@ public class PlatoonView extends TabActivity {
 			
 			((Activity) this).finish();
 			
-		} else if( item.getItemId() == R.id.option_friendadd ) {
+		} else if( item.getItemId() == R.id.option_members || item.getItemId() == R.id.option_fans ) {
 			
-			new AsyncFriendRequest(this, platoonData.getId()).execute( 
-					
-				sharedPreferences.getString( 
-						
-					"battlelog_post_checksum", 
-					"" 
-				)
+			isViewingMembers = !isViewingMembers;
+			drawUsers( platoonInformation );
 			
-			);
-				
-			
-		} else if( item.getItemId() == R.id.option_frienddel ) {
-		
-			Toast.makeText( this, "Friends can't be deleted at this time, currently looking for a solution!", Toast.LENGTH_SHORT).show();
-		
 		} else if( item.getItemId() == R.id.option_compare ) {
 			
 			Toast.makeText( this, "You can't compare platoons... duh", Toast.LENGTH_SHORT).show();
@@ -554,6 +631,14 @@ public class PlatoonView extends TabActivity {
 		} else if( item.getItemId() == R.id.option_newpost ) {
 			
 			generateDialogPost(this).show();
+			
+		} else if( item.getItemId() == R.id.option_join ) {
+			
+			Toast.makeText( this, "So you want to join the platoon ey?", Toast.LENGTH_SHORT).show();
+			
+		} else if( item.getItemId() == R.id.option_leave ) {
+			
+			Toast.makeText( this, "So you want to leave the platoon ey?", Toast.LENGTH_SHORT).show();
 			
 		}
 	
@@ -581,6 +666,29 @@ public class PlatoonView extends TabActivity {
 		super.onSaveInstanceState(outState);
 		outState.putSerializable("serializedCookies", RequestHandler.getSerializedCookies());
 	
+	}
+	
+	public void onClick(View v) {
+		
+		//Check which view we clicked
+		if( v.getId() == R.id.wrap_web ) {
+			
+			startActivity(
+			
+				new Intent(Intent.ACTION_VIEW).setData(
+						
+					Uri.parse(
+							
+						String.valueOf( v.getTag() ) 
+						
+					)
+					
+				)
+					
+			);
+			
+		}
+		
 	}
 	
 	@Override

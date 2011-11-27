@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
@@ -43,9 +44,10 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 	ListView listRequests, listFriendsOnline, listFriendsOffline;
 	LayoutInflater layoutInflater;
 	Button buttonRefresh;
+	TextView drawerHandle;
 	
 	//Constructor
-	public AsyncComRefresh( Context c, ListView r, ListView fon, ListView fof, LayoutInflater l, Button b ) { 
+	public AsyncComRefresh( Context c, ListView r, ListView fon, ListView fof, LayoutInflater l, Button b, TextView t ) { 
 		
 		this.context = c;
 		this.listRequests = r;
@@ -54,7 +56,8 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 		this.layoutInflater = l;
 		this.sharedPreferences = context.getSharedPreferences(Constants.fileSharedPrefs, 0);
 		this.buttonRefresh = b;
-		
+		this.drawerHandle = t;
+	
 	}	
 	
 	@Override
@@ -87,6 +90,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 
 		//Boolean
 		int emptyLists = 0;
+		int numOnlineFriends = 0;
 		
 		//Fill the listviews!!
 		if( profileArray.size() > 0 ) {
@@ -105,13 +109,22 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 				
 			}
 
-			if( profileArray.get( 1 ) == null || profileArray.get( 1 ).size() > 0 ) {
+			if( profileArray.get( 1 ).size() > 0 || profileArray.get( 2 ).size() > 0 ) {
 
-				//Set the visibilty (could've been hidden)
+				//Set the visibility (could've been hidden)
 				((Activity)context).findViewById(R.id.list_friends).setVisibility( View.VISIBLE );
 				
+				//Create a copy so that we can merge later on
+				ArrayList<ProfileData> mergedArray = profileArray.get( 1 );
+				
+				//...but first we want the lenght, oorah!
+				numOnlineFriends = mergedArray.size()-1;
+				
+				//...and now we can merge 'em!
+				mergedArray.addAll( profileArray.get(2) );
+				
 				//Set the adapter
-				listFriendsOnline.setAdapter( new FriendListAdapter(context, profileArray.get(1), layoutInflater) );
+				listFriendsOnline.setAdapter( new FriendListAdapter(context, mergedArray, layoutInflater) );
 				
 				
 			} else {
@@ -120,6 +133,9 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 				((Activity)context).findViewById(R.id.list_friends).setVisibility( View.GONE );
 				
 			}
+			
+			//Update the sliding drawer handle
+			drawerHandle.setText( "COM CENTER (" + numOnlineFriends + " ONLINE)" ); //-1 to compensate for the header
 		
 		} else {
 			

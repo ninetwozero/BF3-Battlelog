@@ -61,7 +61,7 @@
 				/>
 				<Button
 				    style="@style/MenuButton"
-				    android:id="@+id/button_find"
+				    android:id="@+id/button_find_soldier"
 				    android:text="Find soldier"
 					android:layout_marginTop="10dp"
 			    	android:layout_height="50dp"
@@ -69,11 +69,19 @@
 				/>
 				<Button
 				    style="@style/MenuButton"
+				    android:id="@+id/button_find_platoon"
+				    android:text="Find Platoon"
+					android:layout_marginTop="10dp"
+			    	android:layout_height="50dp"
+					android:layout_below="@id/button_find_soldier"
+				/>
+				<Button
+				    style="@style/MenuButton"
 				    android:id="@+id/button_compare"
 				    android:text="Compare battle scars"
 					android:layout_marginTop="10dp"
 			    	android:layout_height="50dp"
-					android:layout_below="@id/button_find"
+					android:layout_below="@id/button_find_platoon"
 				/>
 			</RelativeLayout>
 		</ScrollView>

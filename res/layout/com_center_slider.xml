@@ -39,10 +39,11 @@
 	    	android:background="#20201f"
 	    />
 	    <TextView
+	        android:id="@+id/com_slide_handle_text"
 	        android:layout_width="fill_parent"
 	        android:layout_height="37dp"
 	        android:background="@drawable/gradient_greytodarkgrey"
-	    	android:text="COM CENTER"
+	    	android:text="COM CENTER (0 ONLINE)"
 	    	android:textColor="#FFFFFF"
 	    	android:gravity="center"
 	    />

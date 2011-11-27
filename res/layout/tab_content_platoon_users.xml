@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+	android:paddingTop="5dp"
+	android:paddingLeft="10dp"
+	android:paddingRight="10dp"
+	android:paddingBottom="10dp"
+>		
+
+	<TextView 
+	    style="@style/InfoHeading"
+	    android:id="@+id/feed_title"
+	    android:text="MEMBERS"
+		android:padding="5dp"
+    	android:layout_marginBottom="0dp"
+	/>	
+	<ListView
+	    android:id="@+id/list_users"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_below="@+id/feed_title"
+	    android:fastScrollEnabled="true"
+	/>
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+	>
+		<TextView
+		  	android:id="@+id/status_feed"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+		    android:text="No users found."	
+		    android:layout_centerInParent="true"
+		    android:visibility="gone"
+		/>
+	</RelativeLayout>
+</RelativeLayout>

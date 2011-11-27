@@ -63,19 +63,32 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 			android:layout_below="@id/wrap_badge"
+			android:onClick="onClick"
 		>
-			<TextView 
-			    style="@style/FriendHeadingRow"
-			    android:id="@+id/text_header_web"
-			    android:text="Website"
-			/>
+			<RelativeLayout
+			    android:id="@+id/wrap_header_row"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			>
+				<TextView 
+				    style="@style/FriendHeadingRow"
+				    android:id="@+id/text_header_web"
+				    android:text="Website"
+				/>
+				<ImageView
+				    android:layout_width="30dp"
+				    android:layout_height="30dp"
+				    android:src="@android:drawable/ic_menu_set_as"
+				    android:layout_alignParentRight="true"
+				/>
+			</RelativeLayout>
 			<TextView 
 			    android:id="@+id/text_web"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 			    android:text="http://www.ninetwozero.com"
 			    android:textSize="14sp"
-			    android:layout_below="@id/text_header_web"
+			    android:layout_below="@id/wrap_header_row"
 				android:padding="5dp"
 			/>
 		</RelativeLayout>

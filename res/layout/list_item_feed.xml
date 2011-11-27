@@ -8,19 +8,34 @@
 	   	android:id="@+id/wrap_text"
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	>
-		<TextView 
-		    android:id="@+id/text_title"
-		    android:layout_width="wrap_content"
+	>	
+	
+		<RelativeLayout
+		   	android:id="@+id/wrap_top"
+			android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
-			android:text="NINETWOZERO and Chokzor are now friends"
-			android:textSize="14sp"
-		/>
+		>
+			<ImageView
+				android:id="@+id/image_avatar"    
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:src="@drawable/test_avatar_48"
+			/>
+			<TextView 
+			    android:id="@+id/text_title"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+				android:text="NINETWOZERO and Chokzor are now friends"
+				android:textSize="14sp"
+				android:layout_toRightOf="@id/image_avatar"
+				android:layout_marginLeft="10dp"
+			/>	
+		</RelativeLayout>
 		<LinearLayout
 		    android:id="@+id/wrap_contentbox"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
-			android:layout_below="@id/text_title"
+			android:layout_below="@id/wrap_top"
 			android:orientation="vertical"
 		    android:visibility="gone"
 		>   
