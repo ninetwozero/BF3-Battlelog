@@ -35,6 +35,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,6 +49,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRefresh;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
+import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToPlatoonView;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToProfileView;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
@@ -146,7 +148,8 @@ public class Dashboard extends Activity {
 						sharedPreferences.getString( "battlelog_persona", "" ),
 						sharedPreferences.getLong( "battlelog_persona_id", 0 ),	
 						sharedPreferences.getLong( "battlelog_profile_id", 0 ),	
-						sharedPreferences.getLong( "battlelog_platform_id", 0 )
+						sharedPreferences.getLong( "battlelog_platform_id", 0 ),
+						sharedPreferences.getString( "battlelog_gravatar_hash", "" )
 						
 					)
 				
@@ -416,7 +419,7 @@ public class Dashboard extends Activity {
 			      
 					if( !fieldName.getText().toString().equals( "" ) ) {
 							
-						new AsyncFetchDataToProfileView(context).execute(fieldName.getText().toString());
+						new AsyncFetchDataToPlatoonView(context).execute(fieldName.getText().toString());
 					
 					} else {
 						
@@ -574,15 +577,23 @@ public class Dashboard extends Activity {
     	//init
     	int menuId = 2;
     	
+    	//Get the actual menu item and tag
+    	AdapterContextMenuInfo info =(AdapterContextMenuInfo) menuInfo;
+    	ProfileData selectedUser = (ProfileData) info.targetView.getTag();
+    	
     	//Get it right
     	if( view.getId()  == R.id.list_requests ) { menuId = 0;  } 
     	else if( view.getId() == R.id.list_friends) { menuId = 0; }
-    	
-    	//Show the menu
-		menu.add( menuId, 0, 0, "Open chat");
-		menu.add( menuId, 1, 0, "View soldier");
-		menu.add( menuId, 2, 0, "Compare battle scars");
-    	
+        		
+    	//Wait, is the position 0? If so, it's the heading...
+    	if( !selectedUser.getAccountName().startsWith( "0000000" ) ) {
+    		
+			menu.add( menuId, 0, 0, "Open chat");
+			menu.add( menuId, 1, 0, "View soldier");
+			menu.add( menuId, 2, 0, "Compare battle scars");
+			
+    	}
+			
 		return;
 	
 	}

@@ -29,7 +29,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.datatypes.PlayerData;
+import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -79,7 +79,8 @@ public class StatsView extends Activity {
 				this.sharedPreferences.getString( "battlelog_persona", "" ),
 				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
 				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-				this.sharedPreferences.getLong( "battlelog_platform_id", 1)
+				this.sharedPreferences.getLong( "battlelog_platform_id", 1),
+				sharedPreferences.getString( "battlelog_gravatar_hash", "" )
 			)
 		
 		);
@@ -94,7 +95,7 @@ public class StatsView extends Activity {
     	//Attributes
     	Context context;
     	ProgressDialog progressDialog;
-    	PlayerData playerData;
+    	PersonaStats playerData;
     	
     	public GetDataSelfAsync(Context c) {
     		

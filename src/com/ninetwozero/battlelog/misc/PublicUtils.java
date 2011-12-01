@@ -181,8 +181,19 @@ public class PublicUtils {
 	public final static String normalizeUrl( final String s ) {
 		
 		//Check if we have a valid prefix
-		if( s.contains( "://" ) ) return s;
-		else return "http://" + s;
+		if( s.equals( "" ) ) {
+		
+			return "";
+			
+		} else if( s.contains( "://" ) ) { 
+			
+			return s;
+		
+		} else {
+			
+			return "http://" + s;
+		
+		}
 		
 	}
   /**
@@ -246,5 +257,14 @@ public class PublicUtils {
 		return p[n];
 	
 	}
+	
+	public static String timeToLiteral(long s) {
+	    
+    	//Let's see what we can do
+    	if( ( s / 60) < 1 ) return s + "S" ;
+    	else if( (s / 3600 ) < 1 ) return (s/60) + "M " + (s % 60) + "S" ;
+    	else return (s/3600) + "H " + ((s % 3600)/60) + "M";		
+    	
+    }
 
 }

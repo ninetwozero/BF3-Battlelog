@@ -26,8 +26,8 @@ public class PlatoonInformation {
 	private String name, tag, presentation, pathToBadge, website;
 	private boolean visible, hasAdminRights, allowNewMembers;
 	private ArrayList<FeedItem> feedItems;
-	private ArrayList<ProfileData> members;
-	private ArrayList<ProfileData> fans;
+	private ArrayList<ProfileData> members, fans;
+	private PlatoonStats stats;
 	
 	//Construct(s)
 	public PlatoonInformation(
@@ -36,7 +36,8 @@ public class PlatoonInformation {
 		long i, long d,
 		String n, String t, String p, String pTB, String w,
 		boolean v, boolean ham, boolean a,
-		ArrayList<FeedItem> f, ArrayList<ProfileData> m, ArrayList<ProfileData> fa
+		ArrayList<FeedItem> f, ArrayList<ProfileData> m, ArrayList<ProfileData> fa,
+		PlatoonStats st
 		
 	) {
 		
@@ -58,6 +59,7 @@ public class PlatoonInformation {
 		this.feedItems = f;
 		this.members = m;
 		this.fans = fa;
+		this.stats = st;
 	
 	}
 	
@@ -80,5 +82,6 @@ public class PlatoonInformation {
 	public ArrayList<FeedItem> getFeedItems() { return this.feedItems; }
 	public ArrayList<ProfileData> getMembers() { return this.members; }
 	public ArrayList<ProfileData> getFans() { return this.fans; }
+	public PlatoonStats getStats() { return this.stats; }
 
 }

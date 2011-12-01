@@ -7,13 +7,14 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.PlatoonView;
 import com.ninetwozero.battlelog.ProfileView;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
-public class AsyncFetchDataToProfileView extends AsyncTask<String, Void, Boolean> {
+public class AsyncFetchDataToPlatoonView extends AsyncTask<String, Void, Boolean> {
     
 	//Context
 	private Context context;
@@ -21,18 +22,18 @@ public class AsyncFetchDataToProfileView extends AsyncTask<String, Void, Boolean
 	private SharedPreferences sharedPreferences;
 	
 	//Data
-	ProfileData userData;
+	PlatoonData platoon;
 	
 	//Error message
 	private String error;
 	
-	public AsyncFetchDataToProfileView(Context c) {
+	public AsyncFetchDataToPlatoonView(Context c) {
 		
 		context = c;
 		origin = (Activity) context;
 		sharedPreferences = context.getSharedPreferences( Constants.fileSharedPrefs, 0 );
 		
-		userData = null;
+		platoon = null;
 		error = "";
 		
 	}
@@ -50,7 +51,7 @@ public class AsyncFetchDataToProfileView extends AsyncTask<String, Void, Boolean
 		try {
 				
 			//Post the world!
-			userData = WebsiteHandler.getProfileIdFromSearch(
+			platoon = WebsiteHandler.getPlatoonIdFromSearch(
 				
 				searchString, 
 				sharedPreferences.getString( "battlelog_post_checksum", "" ) 
@@ -58,10 +59,10 @@ public class AsyncFetchDataToProfileView extends AsyncTask<String, Void, Boolean
 			);
 
 			//Did we get an actual user?
-			if( userData == null || userData.getPersonaId() == 0 ) { 
+			if( platoon == null || platoon.getId() == 0 ) { 
 				
 				//Persona
-				error = "No user found matching the following keyword: " + searchString;
+				error = "No platoon found matching the following keyword: " + searchString;
 				return false; 
 				
 			}
@@ -69,7 +70,7 @@ public class AsyncFetchDataToProfileView extends AsyncTask<String, Void, Boolean
 		} catch(Exception ex) {
 			
 			//D'oh	
-			error = "No user found matching the following keyword: " + searchString;
+			error = "No platoon found matching the following keyword: " + searchString;
 			return false;
 		
 		}
@@ -90,12 +91,12 @@ public class AsyncFetchDataToProfileView extends AsyncTask<String, Void, Boolean
 				new Intent(
 					
 					context,
-					ProfileView.class
+					PlatoonView.class
 					
 				).putExtra(
 						
-					"profile", 
-					userData	
+					"platoon", 
+					platoon	
 				
 				)
 				

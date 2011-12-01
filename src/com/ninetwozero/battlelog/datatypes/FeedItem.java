@@ -72,7 +72,7 @@ public class FeedItem {
 						
 			); 
 		
-		} else if( type.equals( "wroteforumpost" ) ) {
+		} else if( type.equals( "createdforumthread" ) || type.equals( "wroteforumpost" ) ) {
 			
 			return this.title.replace( 
 					

@@ -49,7 +49,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
 		try {
 				
 			//Post the world!
-			userData = WebsiteHandler.getIDFromSearch(
+			userData = WebsiteHandler.getProfileIdFromSearch(
 				
 				searchString, 
 				sharedPreferences.getString( "battlelog_post_checksum", "" ) 

@@ -23,27 +23,28 @@ public class ProfileData implements Serializable {
 	private static final long serialVersionUID = 4037268866097818638L;
 
 	//Attributes
-	private String accountName, personaName;
+	private String accountName, personaName, gravatarHash;
 	private long personaId, profileId, platformId;
 	private boolean isPlaying, isOnline;
 	
 	//Construct
-	public ProfileData(String an, String pn, long p, long pf, long n) {
+	public ProfileData(String an, String pn, long p, long pf, long n, String im) {
 		
 		this.accountName = an;
 		this.personaName = pn;
 		this.personaId = p;
 		this.profileId = pf;
 		this.platformId = n;
+		this.gravatarHash = im;
 
 		this.isOnline = false;
 		this.isPlaying = false;
 		
 	}
 	
-	public ProfileData(String an, String pn,  long p, long pf, long n, boolean io, boolean ip ) {
+	public ProfileData(String an, String pn,  long p, long pf, long n, String im, boolean io, boolean ip ) {
 		
-		this(an, pn, p, pf, n);
+		this(an, pn, p, pf, n, im);
 		this.isOnline = io;
 		this.isPlaying = ip;
 		
@@ -55,6 +56,7 @@ public class ProfileData implements Serializable {
 	public long getPersonaId() { return this.personaId; }
 	public long getProfileId() { return this.profileId; }
 	public long getPlatformId() { return this.platformId; }
+	public String getGravatarHash() { return this.gravatarHash; }
 	
 	//is ... ?
 	public boolean isOnline() { return this.isOnline; }

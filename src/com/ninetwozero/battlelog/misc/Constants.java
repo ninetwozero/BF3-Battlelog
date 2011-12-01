@@ -27,52 +27,54 @@ public final class Constants {
 	public static final String urlLogin = urlMainSecure + "gate/login/";
 	public static final String urlStatusSend = urlMain + "user/setStatusmessage/";
 	public static final String urlSearch = urlMain + "search/getMatches/";
-	public static final String urlFriendAccept = urlMain + "friend/acceptFriendship/{PID}/";
-	public static final String urlFriendDecline = urlMain + "friend/declineFriendship/{PID}/";
+	public static final String urlPlatoonSearch = urlMain + "platoon/search/";
+	public static final String urlFriendAccept = urlMain + "friend/acceptFriendship/{UID}/";
+	public static final String urlFriendDecline = urlMain + "friend/declineFriendship/{UID}/";
 	public static final String urlNotifications = urlMain + "notification/";
 //	public static final String urlNotifications = urlMain + "notification/loadNotifications/";
 	public static final String urlLogout = urlMain + "session/logout/";
 	
 	//URLs for CHAT
 	public static final String urlFriends = urlMain + "comcenter/sync/";
-	public static final String urlChatContents = urlMain + "comcenter/getChatId/{PID}/";
+	public static final String urlChatContents = urlMain + "comcenter/getChatId/{UID}/";
 	public static final String urlChatSend = urlMain + "comcenter/sendChatMessage/";
 	public static final String urlChatClose = urlMain + "comcenter/hideChat/{CID}/";
 	
 	//URLS for PROFILE
 	public static final String urlProfilePost = urlMain + "wall/postmessage";
 	public static final String urlPlatoonThumbs = urlStaticContent + "prod/emblems/60/";
-	public static final String urlFriendRequest = urlMain + "friend/requestFriendship/{PID}/";
+	public static final String urlFriendRequest = urlMain + "friend/requestFriendship/{UID}/";
 	
 	//URLS for PLATOONS
-	public static final String urlPlatoon = urlMain + "platoon/{PID}/";
-	public static final String urlPlatoonFans = urlMain + "platoon/{PID}/listfans/";
-	public static final String urlPlatoonMembers = urlMain + "platoon/{PID}/listmembers/";
-	public static final String urlPlatoonStats = urlMain + "platoon/platoonMemberStats/{PID}/2/{PLATFORM_ID}/";
+	public static final String urlPlatoon = urlMain + "platoon/{PLATOON_ID}/";
+	public static final String urlPlatoonFans = urlMain + "platoon/{PLATOON_ID}/listfans/";
+	public static final String urlPlatoonMembers = urlMain + "platoon/{PLATOON_ID}/listmembers/";
+	public static final String urlPlatoonStats = urlMain + "platoon/platoonMemberStats/{PLATOON_ID}/2/{PLATFORM_ID}/";
+	public static final String urlPlatoonPromote = urlMain + "platoon/promotemember/{PLATOON_ID}/{UID}/";
 	//URLS for FEED
-	public static final String urlFeedReport = urlMain + "viewcontent/reportFeedItemAbuse/{PID}/0/"; /* TODO */
-	public static final String urlFeedCommentReport = urlMain + "viewcontent/reportFeedItemAbuse/{PID}/{CID}/"; /* TODO */
-	public static final String urlHooah = urlMain + "like/postlike/{ID}/feed-item-like/";
-	public static final String urlUnHooah = urlMain + "like/postunlike/{ID}/feed-item-like/";
-	public static final String urlComment = urlMain + "comment/postcomment/{ID}/feed-item-comment/";
+	public static final String urlFeedReport = urlMain + "viewcontent/reportFeedItemAbuse/{POST_ID}/0/"; /* TODO */
+	public static final String urlFeedCommentReport = urlMain + "viewcontent/reportFeedItemAbuse/{POST_ID}/{CID}/"; /* TODO */
+	public static final String urlHooah = urlMain + "like/postlike/{POST_ID}/feed-item-like/";
+	public static final String urlUnHooah = urlMain + "like/postunlike/{POST_ID}/feed-item-like/";
+	public static final String urlComment = urlMain + "comment/postcomment/{POST_ID}/feed-item-comment/";
 	
 	//URLs to JSON-files (FEED-related)
 	public static final String urlFeed = urlMain + "feed/?start={NUMSTART}"; /* TODO */
-	public static final String urlFeedComments = urlMain + "feed/getComments/{PID}/"; /* TODO */
-	public static final String urlUserFeed = urlMain + "feed/profileevents/{PID}/?start={NUMSTART}"; /* TODO */
+	public static final String urlFeedComments = urlMain + "feed/getComments/{POST_ID}/"; /* TODO */
+	public static final String urlUserFeed = urlMain + "feed/profileevents/{POST_ID}/?start={NUMSTART}"; /* TODO */
 	
 	//URL to JSON-files (PROFILE-related)
-	public static final String urlProfile = urlMain + "user/overviewBoxStats/{PID}/";
+	public static final String urlProfile = urlMain + "user/overviewBoxStats/{UID}/";
 	public static final String urlProfileInfo = urlMain + "user/{UNAME}/";
 	
 	//URL to JSON-files (STATS-related)
-	public static final String urlStatsOverview = urlMain +"overviewPopulateStats/{UID}/None/{PLATFORM_ID}/";
-	public static final String urlStatsWeapons = urlMain +"weaponsPopulateStats/{UID}/{PLATFORM_ID}/";
-	public static final String urlStatsVehicles = urlMain +"vehiclesPopulateStats/{UID}/{PLATFORM_ID}/";
-	public static final String urlStatsAwards = urlMain +"awardsPopulateStats/{UID}/{PLATFORM_ID}/";
-	public static final String urlStatsUpcoming = urlMain +"upcomingUnlocksPopulateStats/{UID}/{PLATFORM_ID}/";
-	public static final String urlStatsDogtags = urlMain +"soldier/dogtagsPopulateStats/{UID}/{PID}/{PLATFORM_ID}/";
-	public static final String urlStatsAll = urlMain + "indexstats/{UID}/{PLATFORM_NAME}/";
+	public static final String urlStatsOverview = urlMain +"overviewPopulateStats/{PID}/None/{PLATFORM_ID}/";
+	public static final String urlStatsWeapons = urlMain +"weaponsPopulateStats/{PID}/{PLATFORM_ID}/";
+	public static final String urlStatsVehicles = urlMain +"vehiclesPopulateStats/{PID}/{PLATFORM_ID}/";
+	public static final String urlStatsAwards = urlMain +"awardsPopulateStats/{PID}/{PLATFORM_ID}/";
+	public static final String urlStatsUpcoming = urlMain +"upcomingUnlocksPopulateStats/{PID}/{PLATFORM_ID}/";
+	public static final String urlStatsDogtags = urlMain +"soldier/dogtagsPopulateStats/{PID}/{UID}/{PLATFORM_ID}/";
+	public static final String urlStatsAll = urlMain + "indexstats/{PID}/{PLATFORM_NAME}/";
 	
 	//Fields needed for the posts fields
 	public static final String[] fieldNamesLogin = new String[] {"email", "password", "redirect", "submit"};
@@ -84,6 +86,9 @@ public final class Constants {
 	public static final String[] fieldNamesSearch = new String[] { "username", "post-check-sum" };
 	public static final String[] fieldValuesSearch = new String[] { null, null };
 
+	public static final String[] fieldNamesPlatoonSearch = new String[] { "searchplat", "post-check-sum" };
+	public static final String[] fieldValuesPlatoonSearch = new String[] { null, null };
+	
 	public static final String[] fieldNamesChat = new String[] { "message", "chatId", "post-check-sum" };
 	public static final String[] fieldValuesChat = new String[] { null, null, null };
 	

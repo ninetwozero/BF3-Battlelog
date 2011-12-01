@@ -28,6 +28,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -40,9 +41,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +58,8 @@ import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
-import com.ninetwozero.battlelog.datatypes.PlayerData;
+import com.ninetwozero.battlelog.datatypes.PlatoonStats;
+import com.ninetwozero.battlelog.datatypes.PlatoonStatsItem;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -70,13 +75,15 @@ public class PlatoonView extends TabActivity {
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
 	private PlatoonData platoonData;
-	private PlayerData playerData;
+	private PlatoonStats platoonStats;
 	private PlatoonInformation platoonInformation;
 	private TabHost mTabHost;
 	
 	//Elements
-	private ListView listFeed;
-	private ListView listUsers;
+	private RelativeLayout wrapGeneral, cacheView, wrapKit, wrapTopList;
+	private ListView listFeed, listUsers;
+	private TableLayout tableKit, tableTopList;
+	private TableRow cacheTableRow;
 	private FeedListAdapter feedListAdapter;
 	private PlatoonUserListAdapter platoonUserListAdapter;
 	
@@ -284,7 +291,7 @@ public class PlatoonView extends TabActivity {
 								break;
 								
 							case 1:
-								drawStats(playerData);
+								drawStats(platoonInformation.getStats());
 								break;
 								
 							case 2:
@@ -314,7 +321,7 @@ public class PlatoonView extends TabActivity {
 					break;
 					
 				case 1:
-					drawStats(playerData);
+					drawStats(platoonInformation.getStats());
 					break;
 				
 				case 2:
@@ -376,10 +383,132 @@ public class PlatoonView extends TabActivity {
     	
     }
     
-    public void drawStats(PlayerData pd) {
+    public void drawStats(PlatoonStats pd) {
     	
-		Toast.makeText( this, "This is not implemented yet!", Toast.LENGTH_SHORT).show();
-		
+    	//Are they null?
+    	if( wrapGeneral == null ) {
+	    
+    		//General ones
+    		wrapGeneral = (RelativeLayout) findViewById(R.id.wrap_general);
+	    	
+    		//Kits & vehicles
+    		wrapKit = (RelativeLayout) findViewById(R.id.wrap_kits);
+	    	tableKit = (TableLayout) wrapKit.findViewById( R.id.tbl_stats );
+	    	
+    		//Top list
+    		wrapTopList = (RelativeLayout) findViewById(R.id.wrap_toplist);
+    		tableTopList = (TableLayout) wrapTopList.findViewById( R.id.tbl_stats );
+	    	
+	    	
+    	}
+    	
+    	//Let's grab the different data
+    	PlatoonStatsItem generalSPM = pd.getGlobalTop()[0];
+    	PlatoonStatsItem generalKDR = pd.getGlobalTop()[1];
+    	PlatoonStatsItem generalRank = pd.getGlobalTop()[2];
+
+    	//Set the general stats
+    	( (TextView) wrapGeneral.findViewById( R.id.text_average_spm )).setText( generalSPM.getAvg() + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_max_spm )).setText( generalSPM.getMax() + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_mid_spm )).setText( generalSPM.getMid() + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_min_spm )).setText( generalSPM.getMin() + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_average_rank )).setText( Math.round( generalRank.getAvg() ) + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_max_rank )).setText( Math.round( generalRank.getMax() ) + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_mid_rank )).setText( Math.round( generalRank.getMid() ) + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_min_rank )).setText( Math.round( generalRank.getMin() ) + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_average_kdr )).setText( generalKDR.getAvg() + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_max_kdr )).setText( generalKDR.getMax() + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_mid_kdr )).setText( generalKDR.getMid() + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_min_kdr )).setText( generalKDR.getMin() + "" );
+    	
+    	//Top Players
+    	PlatoonStatsItem[] topStats = pd.getTopPlayers();
+    	
+    	/*//Loop over them, *one* by *one*
+    	for( int i = 0; i < topStats.length; i++ ) {
+    		
+    		Log.d(Constants.debugTag, "We will be running until " + topStats.length + "(currently " + i + ")");
+    		
+    		//Oh well, couldn't quite cache it could we?
+    		cacheView = (RelativeLayout) layoutInflater.inflate( R.layout.grid_item_platoon_stats, null );
+    		
+    		//Add the new TableRow
+    		if( cacheTableRow == null || (i % 3) == 0 ) { 
+    			
+    			tableTopList.addView( cacheTableRow = new TableRow(this) );
+	    		cacheTableRow.setLayoutParams( 
+	    				
+					new TableRow.LayoutParams(
+					
+						TableLayout.LayoutParams.FILL_PARENT,
+						TableLayout.LayoutParams.WRAP_CONTENT
+							
+					)
+				
+				);
+    	
+    		}
+    		
+    		//Add the *layout* into the TableRow
+    		cacheTableRow.addView( cacheView );
+    		
+    		//Say cheese...
+    		( (TextView) cacheView.findViewById( R.id.text_label )).setText( topStats[i].getLabel() + "" );
+        	( (TextView) cacheView.findViewById( R.id.text_average )).setText( topStats[i].getAvg() + "" );
+        	( (TextView) cacheView.findViewById( R.id.text_max )).setText( topStats[i].getMax() + "" );
+        	( (TextView) cacheView.findViewById( R.id.text_mid )).setText( topStats[i].getMid() + "" );
+        	( (TextView) cacheView.findViewById( R.id.text_min )).setText( topStats[i].getMin() + "" );
+    			
+    	}*/
+    	
+    	//Null it!
+    	cacheTableRow = null;
+    	
+    	//Kit & vehicles
+    	PlatoonStatsItem[] specSPM = pd.getSpm();
+    	PlatoonStatsItem[] specScores = pd.getScores();
+    	PlatoonStatsItem[] specTime = pd.getTime();
+    	
+    	//Loop over them, *one* by *one*
+    	for( int i = 0; i < specSPM.length; i++ ) {
+    		
+    		Log.d(Constants.debugTag, "We will be running until " + specSPM.length + "(currently " + i + ")");
+    		
+    		//Is it null?
+    		cacheView = (RelativeLayout) layoutInflater.inflate( R.layout.grid_item_platoon_stats, null );
+    		
+    		//Add the new TableRow
+    		if( cacheTableRow == null || (i % 3) == 0 ) { 
+    			
+    			tableKit.addView( cacheTableRow = new TableRow(this) );
+	    		cacheTableRow.setLayoutParams( 
+	    				
+					new TableRow.LayoutParams(
+					
+						TableLayout.LayoutParams.FILL_PARENT,
+						TableLayout.LayoutParams.WRAP_CONTENT
+							
+					)
+				
+				);
+    	
+    		}
+    		
+    		//Add the *layout* into the TableRow
+    		cacheTableRow.addView( cacheView );
+    		
+    		//Say cheese...
+    		( (TextView) cacheView.findViewById( R.id.text_label )).setText( specSPM[i].getLabel() + "" );
+        	( (TextView) cacheView.findViewById( R.id.text_average )).setText( specSPM[i].getAvg() + "" );
+        	( (TextView) cacheView.findViewById( R.id.text_max )).setText( specSPM[i].getMax() + "" );
+        	( (TextView) cacheView.findViewById( R.id.text_mid )).setText( specSPM[i].getMid() + "" );
+        	( (TextView) cacheView.findViewById( R.id.text_min )).setText( specSPM[i].getMin() + "" ); 
+    		
+    	}
+    	
+    	//Null it!
+    	cacheTableRow = null;
+ 	
     }
     
     public final void drawUsers(PlatoonInformation data) {

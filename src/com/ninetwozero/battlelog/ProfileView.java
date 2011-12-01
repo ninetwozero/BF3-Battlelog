@@ -57,7 +57,7 @@ import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.PlayerData;
+import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
@@ -75,7 +75,7 @@ public class ProfileView extends TabActivity {
 	private LayoutInflater layoutInflater;
 	private ProgressBar progressBar;
 	private ProfileData profileData;
-	private PlayerData playerData;
+	private PersonaStats playerData;
 	private ProfileInformation profileInformation;
 	private TabHost mTabHost;
 	private FeedListAdapter feedListAdapter;
@@ -109,7 +109,8 @@ public class ProfileView extends TabActivity {
         		this.sharedPreferences.getString( "battlelog_persona", "" ),
     			this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
     			this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-    			this.sharedPreferences.getLong( "battlelog_platform_id", 1)
+    			this.sharedPreferences.getLong( "battlelog_platform_id", 1),
+				sharedPreferences.getString( "battlelog_gravatar_hash", "" )
     		
     		);
         	
@@ -460,7 +461,7 @@ public class ProfileView extends TabActivity {
     	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
     }
     
-    public void drawStats(PlayerData pd) {
+    public void drawStats(PersonaStats pd) {
     	
 		//Persona & rank
         ((TextView) findViewById(R.id.string_persona)).setText( pd.getPersonaName() );

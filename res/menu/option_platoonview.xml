@@ -13,9 +13,23 @@
 		android:visible="false"
 	/>
     <item 
+		android:id="@+id/option_fan_yes" 
+		android:icon="@android:drawable/ic_menu_add" 
+		android:title="Fan" 
+		android:alphabeticShortcut="F"
+		android:visible="false"
+	/>
+    <item 
 		android:id="@+id/option_leave" 
 		android:icon="@android:drawable/ic_menu_delete" 
 		android:title="Leave platoon" 
+		android:alphabeticShortcut="F"
+		android:visible="false"
+	/>
+    <item 
+		android:id="@+id/option_fan_no" 
+		android:icon="@android:drawable/ic_menu_delete" 
+		android:title="Un-fan" 
 		android:alphabeticShortcut="F"
 		android:visible="false"
 	/>

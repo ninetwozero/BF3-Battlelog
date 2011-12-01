@@ -23,6 +23,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -241,6 +242,15 @@ public class RequestHandler {
 				httpPost.setHeader( "Accept", "application/json, text/javascript, */*" );
 				httpPost.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
 				
+			} else if( extraHeaders == 3 ) {
+				
+				httpPost.setHeader( "Host", "battlelog.battlefield.com" );
+				httpPost.setHeader( "X-Requested-With", "XMLHttpRequest");
+				httpPost.setHeader( "Accept-Encoding", "gzip, deflate" );
+				httpPost.setHeader( "Referer", Constants.urlMain);
+				httpPost.setHeader( "Accept", "application/json, text/javascript, */*" );
+				httpPost.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
+				httpPost.setHeader( "Accept-Charset", "utf-8,ISO-8859-1;");
 			}
 			
 		}
@@ -269,7 +279,8 @@ public class RequestHandler {
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 			httpResponse = httpClient.execute(httpPost);
 			httpEntity = httpResponse.getEntity();
-
+			
+for( Header h : httpResponse.getAllHeaders() ) { Log.d(Constants.debugTag, h.getName() + "=" + h.getValue()); }
 			//Anything?
 			if (httpEntity != null) {
 				

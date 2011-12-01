@@ -82,7 +82,8 @@ public class UnlockView extends ListActivity {
 				this.sharedPreferences.getString( "battlelog_persona", "" ),
 				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
 				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-				this.sharedPreferences.getLong( "battlelog_platform_id", 1)
+				this.sharedPreferences.getLong( "battlelog_platform_id", 1),
+				sharedPreferences.getString( "battlelog_gravatar_hash", "" )
 			)
 		
 		);

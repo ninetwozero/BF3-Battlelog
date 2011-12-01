@@ -32,7 +32,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.Main;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
-import com.ninetwozero.battlelog.datatypes.PlayerData;
+import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -58,7 +58,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 		   
 		   RemoteViews remoteView = null;
 		   ProfileData profileData = null;
-		   PlayerData playerData = null;
+		   PersonaStats playerData = null;
 		   ArrayList<ProfileData> profileDataArray = null;
 		   SharedPreferences sharedPreferences = null;
 		   ComponentName BattlelogListWidget;
@@ -72,7 +72,8 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 			    sharedPreferences.getString( "battlelog_persona", "" ),
 			    sharedPreferences.getLong( "battlelog_persona_id", 0 ),
 			    sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-			    sharedPreferences.getLong( "battlelog_platform_id", 1)
+			    sharedPreferences.getLong( "battlelog_platform_id", 1),
+				sharedPreferences.getString( "battlelog_gravatar_hash", "" )
 		   
 		   );
 		   remoteView = new RemoteViews(context.getPackageName(), R.layout.appwidget_layout);

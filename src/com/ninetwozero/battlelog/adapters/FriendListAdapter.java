@@ -150,10 +150,11 @@ public class FriendListAdapter extends BaseAdapter {
 				textStatus.setTextColor( context.getResources().getColor(R.color.grey) );
 				
 			}
-			
-			convertView.setTag( currentProfile );
 		
 		}
+		
+		//Set the tag either way
+		convertView.setTag( currentProfile );
 
 		return convertView;
 	}
