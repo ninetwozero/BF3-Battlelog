@@ -273,7 +273,7 @@ public class WebsiteHandler {
 			
 				//Generate an object
 				JSONArray searchResults = new JSONArray(httpContent);
-Log.d(Constants.debugTag, searchResults.toString( 4 ));
+				
 				//Did we get any results?
 				if( searchResults.length() > 0 ) {
 					
@@ -1726,10 +1726,10 @@ Log.d(Constants.debugTag, searchResults.toString( 4 ));
 					arrayGeneral[i] = new PlatoonStatsItem(
 					
 						currObjNames.getString( i ),
-						currObj.getDouble( "min" ),
-						currObj.getDouble( "median" ),
-						currObj.getDouble( "best" ),
-						currObj.getDouble( "average" ),
+						currObj.getInt( "min" ),
+						currObj.getInt( "median" ),
+						currObj.getInt( "best" ),
+						currObj.getInt( "average" ),
 						null
 						
 					);
@@ -1752,10 +1752,10 @@ Log.d(Constants.debugTag, searchResults.toString( 4 ));
 					arrayScore[i] = new PlatoonStatsItem(
 							
 							currObjNames.getString( i ),
-							currObj.getDouble( "min" ),
-							currObj.getDouble( "median" ),
-							currObj.getDouble( "best" ),
-							currObj.getDouble( "average" ),
+							currObj.getInt( "min" ),
+							currObj.getInt( "median" ),
+							currObj.getInt( "best" ),
+							currObj.getInt( "average" ),
 							new ProfileData(
 								
 								currUser.optString("username", ""),
@@ -1787,10 +1787,10 @@ Log.d(Constants.debugTag, searchResults.toString( 4 ));
 					arraySPM[i] = new PlatoonStatsItem(
 							
 							currObjNames.getString( i ),
-							currObj.getDouble( "min" ),
-							currObj.getDouble( "median" ),
-							currObj.getDouble( "best" ),
-							currObj.getDouble( "average" ),
+							currObj.getInt( "min" ),
+							currObj.getInt( "median" ),
+							currObj.getInt( "best" ),
+							currObj.getInt( "average" ),
 							new ProfileData(
 								
 								currUser.optString("username", ""),
@@ -1822,10 +1822,10 @@ Log.d(Constants.debugTag, searchResults.toString( 4 ));
 					arrayTime[i] = new PlatoonStatsItem(
 							
 						currObjNames.getString( i ),
-						currObj.getDouble( "min" ),
-						currObj.getDouble( "median" ),
-						currObj.getDouble( "best" ),
-						currObj.getDouble( "average" ),
+						currObj.getInt( "min" ),
+						currObj.getInt( "median" ),
+						currObj.getInt( "best" ),
+						currObj.getInt( "average" ),
 						new ProfileData(
 							
 							currUser.optString("username", ""),
@@ -1853,7 +1853,7 @@ Log.d(Constants.debugTag, searchResults.toString( 4 ));
 					arrayTop[i] = new PlatoonTopStatsItem(
 					
 						currObjNames.getString( i ),
-						currObj.getDouble( "spm" ),
+						currObj.getInt( "spm" ),
 						new ProfileData(
 							
 							currUser.optString("username", ""),
@@ -1870,17 +1870,23 @@ Log.d(Constants.debugTag, searchResults.toString( 4 ));
 					
 				}
 				
+				Log.d(Constants.debugTag, arrayGeneral.length + " = n");
+				Log.d(Constants.debugTag, arrayTop.length + " = n");
+				Log.d(Constants.debugTag, arrayScore.length + " = n");
+				Log.d(Constants.debugTag, arraySPM.length + " = n");
+				Log.d(Constants.debugTag, arrayTime.length + " = n");
+				
 				//Return it now!!
 				return new PlatoonStats(
 				
 					platoonData.getName(),
 					platoonData.getId(),
 					arrayGeneral,
+					arrayTop,
 					arrayScore,
 					arraySPM,
-					arrayTime,
-					null //arrayTop
-						
+					arrayTime
+					
 				);
 
 			} else {

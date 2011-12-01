@@ -26,11 +26,11 @@ public class PlatoonTopStatsItem implements Serializable {
 	
 	//Base-section
 	private String label;
-	private double spm;
+	private int spm;
 	private ProfileData profile;
 	
 	//Construct
-	public PlatoonTopStatsItem( String l, double s, ProfileData p ) {
+	public PlatoonTopStatsItem( String l, int s, ProfileData p ) {
 		
 		this.label = l;
 		this.spm = s;
@@ -40,6 +40,6 @@ public class PlatoonTopStatsItem implements Serializable {
 
 	//Getters	
 	public String getLabel() { return this.label; }
-	public double getSPM() { return this.spm; }
+	public int getSPM() { return this.spm; }
 	public ProfileData getProfile() { return this.profile; }
 }

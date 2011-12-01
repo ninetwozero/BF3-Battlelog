@@ -98,10 +98,7 @@ public class RequestHandler {
 
 				//Get the content!
 				httpContent = EntityUtils.toString( httpEntity );
-					
-				//Clear the entity
-				httpEntity.consumeContent();
-				
+
 			}
 			
 		} catch ( ClientProtocolException e ) {
@@ -144,17 +141,13 @@ public class RequestHandler {
 			
 			HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);	
 			HttpEntity httpEntity = httpResponse.getEntity();
-			httpContent = httpEntity.getContent();
 			
 			//Create the image
 			if (httpEntity != null) {
 
 				//Get the content!
 				image = EntityUtils.toString( httpEntity );
-					
-				//Clear the entity
-				httpEntity.consumeContent();
-				
+
 			}
 			
 		} catch ( Exception ex ) {
@@ -325,10 +318,7 @@ public class RequestHandler {
 
 				//Get the content!
 				httpContent = EntityUtils.toString( httpEntity );
-					
-				//Clear the entity
-				httpEntity.consumeContent();
-				
+
 			} else {
 				
 				Log.d(Constants.debugTag, "The response was null. Weird.");

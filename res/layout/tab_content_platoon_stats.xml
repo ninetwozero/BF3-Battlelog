@@ -341,7 +341,7 @@
 			<TextView
 				android:id="@+id/string200"
 			    style="@style/InfoHeading"
-				android:text="Score"
+				android:text="Top soldiers"
 				android:padding="5dp"
 			/>
 			
@@ -352,19 +352,19 @@
 				android:layout_below="@id/string200"
 				android:stretchColumns="*"
 			>
-				<TableRow
-					android:id="@+id/row_stats"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:weightSum="3"				    
-				>	
+				<TableRow	
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" 
+				>
+					<View android:layout_width="1dp" android:layout_height="1dp"/>
+				    
 				</TableRow>
 			</TableLayout>
 
 		</RelativeLayout>
 		
 		<RelativeLayout
-			android:id="@+id/wrap_kits"
+			android:id="@+id/wrap_score"
 		    android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 		    android:layout_below="@+id/wrap_toplist" 
@@ -372,7 +372,7 @@
 			<TextView
 				android:id="@+id/string300"
 			    style="@style/InfoHeading"
-				android:text="Kits &amp; vehicles"
+				android:text="Score"
 				android:padding="5dp"
 			/>
 			
@@ -382,8 +382,56 @@
 				android:layout_height="wrap_content" 
 				android:layout_below="@id/string300"
 				android:stretchColumns="*"
-			>				
-			</TableLayout>
+				android:weightSum="3"
+			></TableLayout>
+
+		</RelativeLayout>
+		
+	    <RelativeLayout
+			android:id="@+id/wrap_spm"
+		    android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+		    android:layout_below="@+id/wrap_score" 
+	    >
+			<TextView
+				android:id="@+id/string300"
+			    style="@style/InfoHeading"
+				android:text="Score/min"
+				android:padding="5dp"
+			/>
+			
+			<TableLayout
+				android:id="@+id/tbl_stats"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" 
+				android:layout_below="@id/string300"
+				android:stretchColumns="*"
+				android:weightSum="3"
+			></TableLayout>
+
+		</RelativeLayout>
+		
+      	<RelativeLayout
+			android:id="@+id/wrap_time"
+		    android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+		    android:layout_below="@+id/wrap_spm" 
+	    >
+			<TextView
+				android:id="@+id/string300"
+			    style="@style/InfoHeading"
+				android:text="Time"
+				android:padding="5dp"
+			/>
+			
+			<TableLayout
+				android:id="@+id/tbl_stats"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" 
+				android:layout_below="@id/string300"
+				android:stretchColumns="*"
+				android:weightSum="3"
+			></TableLayout>
 
 		</RelativeLayout>
 		    		    

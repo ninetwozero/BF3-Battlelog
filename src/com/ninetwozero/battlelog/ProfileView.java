@@ -504,7 +504,7 @@ public class ProfileView extends TabActivity {
         ((TextView) findViewById(R.id.string_stats_accuracy)).setText( pd.getAccuracy() + "%" );
         ((TextView) findViewById(R.id.string_stats_lks)).setText( pd.getLongestKS() + "" );
         ((TextView) findViewById(R.id.string_stats_lhs)).setText( pd.getLongestHS() + " m");
-        ((TextView) findViewById(R.id.string_stats_skill)).setText( pd.getNumVehicles() + "" );
+        ((TextView) findViewById(R.id.string_stats_skill)).setText( pd.getSkill() + "" );
         ((TextView) findViewById(R.id.string_stats_time)).setText( pd.getTimePlayedString() + "" );
         ((TextView) findViewById(R.id.string_stats_spm)).setText( pd.getScorePerMinute() + "" );
     	

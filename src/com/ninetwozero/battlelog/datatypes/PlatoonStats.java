@@ -29,11 +29,12 @@ public class PlatoonStats implements Serializable {
 	private long id;
 	
 	//General stats
-	private PlatoonStatsItem[] globalTop, topPlayers, scores, spm, time;
+	private PlatoonStatsItem[] globalTop, scores, spm, time;
+	private PlatoonTopStatsItem[] topPlayers;
 	
 	//Construct
 	public PlatoonStats(
-		String sName, long lId, PlatoonStatsItem[] gS, PlatoonStatsItem[] tP, PlatoonStatsItem[] kS, PlatoonStatsItem[] kSPM, PlatoonStatsItem[] kT
+		String sName, long lId, PlatoonStatsItem[] gS, PlatoonTopStatsItem[] tP, PlatoonStatsItem[] kS, PlatoonStatsItem[] kSPM, PlatoonStatsItem[] kT
 	) {
 		
 		//Basic attributes
@@ -51,7 +52,7 @@ public class PlatoonStats implements Serializable {
 	//Getters	
 	public final String getAccountName() { return name; }
 	public final long getId() { return id; }
-	public final PlatoonStatsItem[] getTopPlayers() { return this.topPlayers; }
+	public final PlatoonTopStatsItem[] getTopPlayers() { return this.topPlayers; }
 	public final PlatoonStatsItem[] getGlobalTop() { return this.globalTop; }
 	public final PlatoonStatsItem[] getScores() { return this.scores; }
 	public final PlatoonStatsItem[] getSpm() { return this.spm; }
