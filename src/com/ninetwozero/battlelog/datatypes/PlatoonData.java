@@ -37,6 +37,6 @@ public class PlatoonData implements Serializable {
 	public int getPlatformId() { return this.platformId; }
 	public String getName() { return this.name; }
 	public String getTag() { return this.tag; }
-	public Bitmap getImage() { return BitmapFactory.decodeByteArray( image, 0, image.length); }
+	public Bitmap getImage() { return (image != null ) ? BitmapFactory.decodeByteArray( image, 0, image.length) : null; }
 	public boolean isVisible() { return this.visible; }
 }

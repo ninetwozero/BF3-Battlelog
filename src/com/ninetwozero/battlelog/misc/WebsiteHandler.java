@@ -267,16 +267,13 @@ public class WebsiteHandler {
 				3
 				
 			);
-
-			
-			Log.d(Constants.debugTag, "httpContent => " + httpContent);
 			
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
 			
 				//Generate an object
 				JSONArray searchResults = new JSONArray(httpContent);
-
+Log.d(Constants.debugTag, searchResults.toString( 4 ));
 				//Did we get any results?
 				if( searchResults.length() > 0 ) {
 					
@@ -311,7 +308,7 @@ public class WebsiteHandler {
 						}
 						
 						//Grab the "cost"
-						costCurrent = PublicUtils.getLevenshteinDistance( keyword, tempObj.getString( "username" ) );
+						costCurrent = PublicUtils.getLevenshteinDistance( keyword, tempObj.getString( "name" ) );
 						
 						//Somewhat of a match? Get the "best" one!
 						if( costOld > costCurrent ) {
@@ -1393,25 +1390,29 @@ public class WebsiteHandler {
 			JSONObject tempObject = null;
 			
 			//Iterate over the fans
-			for( int i = 0; i < fanIdArray.length(); i++ ) {
+			if( fanIdArray != null ) {
 				
-				//Grab the fan
-				tempObject = fanArray.getJSONObject( fanIdArray.getString( i ) );
+				for( int i = 0; i < fanIdArray.length(); i++ ) {
 				
-				//Store him in the ArrayList
-				fans.add( 
+					//Grab the fan
+					tempObject = fanArray.getJSONObject( fanIdArray.getString( i ) );
 					
-					new ProfileData(
-
-						tempObject.getString( "username" ),
-						null,
-						Long.parseLong(tempObject.getString( "userId" ) ),
-						0,
-						0,
-						tempObject.optString( "gravatarMd5", "" )
-					)				
+					//Store him in the ArrayList
+					fans.add( 
 						
-				);
+						new ProfileData(
+	
+							tempObject.getString( "username" ),
+							null,
+							Long.parseLong(tempObject.getString( "userId" ) ),
+							0,
+							0,
+							tempObject.optString( "gravatarMd5", "" )
+						)				
+							
+					);
+				
+				}
 				
 			}
 			

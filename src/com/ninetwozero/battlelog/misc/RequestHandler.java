@@ -22,10 +22,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
+import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -33,15 +38,17 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.cookie.Cookie;
+import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.ByteArrayBuffer;
+import org.apache.http.util.EntityUtils;
 
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.ninetwozero.battlelog.datatypes.PostData;
@@ -52,6 +59,10 @@ public class RequestHandler {
 
 	//Attributes
 	public static DefaultHttpClient httpClient = getThreadSafeClient();	
+
+	//ENCODING
+	private static final String HEADER_ACCEPT_ENCODING = "Accept-Encoding";
+	private static final String ENCODING_GZIP = "gzip";
 
 	// Constructor
 	public RequestHandler() {}
@@ -81,11 +92,14 @@ public class RequestHandler {
 			
 			HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);	
 			HttpEntity httpEntity = httpResponse.getEntity();
-			httpContent = this.getStringFromStream( httpEntity.getContent() );
 			
-			//Is the entity <> null?
-			if( httpEntity != null ) {
-				
+			//Anything?
+			if (httpEntity != null) {
+
+				//Get the content!
+				httpContent = EntityUtils.toString( httpEntity );
+					
+				//Clear the entity
 				httpEntity.consumeContent();
 				
 			}
@@ -111,7 +125,7 @@ public class RequestHandler {
 		
 		//Default
 		InputStream httpContent = null;
-		String image;
+		String image = null;
 		try {
 			
 			//Init the HTTP-related attributes
@@ -133,11 +147,12 @@ public class RequestHandler {
 			httpContent = httpEntity.getContent();
 			
 			//Create the image
-			image = getStringFromStream(httpContent);
-			
-			//Is the entity <> null?
-			if( httpEntity != null ) {
-				
+			if (httpEntity != null) {
+
+				//Get the content!
+				image = EntityUtils.toString( httpEntity );
+					
+				//Clear the entity
 				httpEntity.consumeContent();
 				
 			}
@@ -181,7 +196,32 @@ public class RequestHandler {
 			
 			HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);	
 			HttpEntity httpEntity = httpResponse.getEntity();
-			httpContent = getStringFromStream(httpEntity.getContent()).getBytes();
+			
+			//Anything?
+			if (httpEntity != null) {
+
+				//Grab the response
+				if( 
+					
+					httpResponse.containsHeader( "Encoding-Type" ) && 
+					httpResponse.getFirstHeader( "Encoding-Type" ).getValue().equalsIgnoreCase( "gzip" ) 
+					
+				) {
+					
+					//*Fix* the entity
+					httpEntity = new InflatingEntity(httpEntity);
+					
+					//Grab the gzipped response!
+					httpContent = getStringFromGzipStream( new GZIPInputStream(httpEntity.getContent()) ).getBytes(); 
+				
+				} else {
+				
+					//Grab the response
+					httpContent = EntityUtils.toString( httpEntity ).getBytes();
+					
+				}
+				
+			}
 			
 			//Let's see...
 			if( httpContent.length <= 0 ) { return false; }
@@ -280,14 +320,12 @@ public class RequestHandler {
 			httpResponse = httpClient.execute(httpPost);
 			httpEntity = httpResponse.getEntity();
 			
-for( Header h : httpResponse.getAllHeaders() ) { Log.d(Constants.debugTag, h.getName() + "=" + h.getValue()); }
 			//Anything?
 			if (httpEntity != null) {
-				
-				//Get the content
-				httpContent = getStringFromStream(httpEntity.getContent());
 
-				
+				//Get the content!
+				httpContent = EntityUtils.toString( httpEntity );
+					
 				//Clear the entity
 				httpEntity.consumeContent();
 				
@@ -334,9 +372,8 @@ for( Header h : httpResponse.getAllHeaders() ) { Log.d(Constants.debugTag, h.get
 		}
 		return "";
 	}
-
 	
-	private String getStringFromStream( InputStream in ) {
+	private String getStringFromGzipStream( GZIPInputStream in ) {
 
 		//Initialize variables
 		BufferedInputStream buff_in = new BufferedInputStream(in);
@@ -367,9 +404,11 @@ for( Header h : httpResponse.getAllHeaders() ) { Log.d(Constants.debugTag, h.get
 			// Read/write error
 			ex.printStackTrace();
 			return null;
+			
 		}
+		
 	}
-
+	
 	public void close() {
 	
 		if( httpClient.getConnectionManager() != null ) { httpClient.getConnectionManager().closeExpiredConnections(); }
@@ -439,5 +478,69 @@ for( Header h : httpResponse.getAllHeaders() ) { Log.d(Constants.debugTag, h.get
     	}
 		
 	}
+	
+	static {
+
+		httpClient.addRequestInterceptor(
+		
+			new HttpRequestInterceptor() {
+			
+				public void process(HttpRequest request, HttpContext context) {
+				
+					// Add header to accept gzip content
+					if (!request.containsHeader(HEADER_ACCEPT_ENCODING)) { request.addHeader(HEADER_ACCEPT_ENCODING, ENCODING_GZIP); }
+				
+				}
+				
+			}
+		
+		);
+
+		httpClient.addResponseInterceptor(
+		
+			new HttpResponseInterceptor() {
+			
+				public void process(HttpResponse response, HttpContext context) {
+				
+					// Inflate any responses compressed with gzip
+					final HttpEntity entity = response.getEntity();
+					final Header encoding = entity.getContentEncoding();
+					
+					//How's the encoding you ask?
+					if (encoding != null) {
+					
+						for (HeaderElement element : encoding.getElements()) {
+						
+							if (element.getName().equalsIgnoreCase(ENCODING_GZIP)) {
+							
+								response.setEntity(new InflatingEntity(response.getEntity()));
+								break;
+							
+							}
+						
+						}
+					
+					}
+				
+				}
+			
+			}
+		
+		);
+
+	}
+
+	 private static class InflatingEntity extends HttpEntityWrapper {
+		 
+		 public InflatingEntity(HttpEntity wrapped) { super(wrapped); }
+
+         @Override
+         public InputStream getContent() throws IOException { return new GZIPInputStream(wrappedEntity.getContent()); }
+
+         @Override
+         public long getContentLength() { return -1; }
+	 
+	 }
+
 	
 }

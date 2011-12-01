@@ -472,8 +472,6 @@ public class PlatoonView extends TabActivity {
     	//Loop over them, *one* by *one*
     	for( int i = 0; i < specSPM.length; i++ ) {
     		
-    		Log.d(Constants.debugTag, "We will be running until " + specSPM.length + "(currently " + i + ")");
-    		
     		//Is it null?
     		cacheView = (RelativeLayout) layoutInflater.inflate( R.layout.grid_item_platoon_stats, null );
     		
@@ -485,8 +483,8 @@ public class PlatoonView extends TabActivity {
 	    				
 					new TableRow.LayoutParams(
 					
-						TableLayout.LayoutParams.FILL_PARENT,
-						TableLayout.LayoutParams.WRAP_CONTENT
+						TableRow.LayoutParams.FILL_PARENT,
+						TableRow.LayoutParams.WRAP_CONTENT
 							
 					)
 				
@@ -509,6 +507,9 @@ public class PlatoonView extends TabActivity {
     	//Null it!
     	cacheTableRow = null;
  	
+    	//The End!!
+    	Log.d(Constants.debugTag, "The end!");
+    	
     }
     
     public final void drawUsers(PlatoonInformation data) {
