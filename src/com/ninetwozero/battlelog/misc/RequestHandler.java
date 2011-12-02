@@ -49,6 +49,8 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.ByteArrayBuffer;
 import org.apache.http.util.EntityUtils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.ninetwozero.battlelog.datatypes.PostData;
@@ -115,14 +117,13 @@ public class RequestHandler {
 		
 	}
 	
-	public byte[] getImageFromStream( String link, boolean extraHeaders ) throws RequestHandlerException {
+	public Bitmap getImageFromStream( String link, boolean extraHeaders ) throws RequestHandlerException {
 		
 		// Check defaults
 		if ( link.equals( "" ) ) throw new RequestHandlerException("No link found.");
 		
 		//Default
-		InputStream httpContent = null;
-		String image = null;
+		Bitmap image = null;
 		try {
 			
 			//Init the HTTP-related attributes
@@ -146,7 +147,7 @@ public class RequestHandler {
 			if (httpEntity != null) {
 
 				//Get the content!
-				image = EntityUtils.toString( httpEntity );
+				image = BitmapFactory.decodeStream( httpEntity.getContent() );
 
 			}
 			
@@ -156,7 +157,7 @@ public class RequestHandler {
 			return null;
 		}
 		
-		return image.getBytes();
+		return image;
 		
 	}
 	

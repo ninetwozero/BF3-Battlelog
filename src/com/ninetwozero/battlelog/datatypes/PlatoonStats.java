@@ -15,8 +15,7 @@
 package com.ninetwozero.battlelog.datatypes;
 
 import java.io.Serializable;
-
-import com.ninetwozero.battlelog.misc.DataBank;
+import java.util.ArrayList;
 
 
 public class PlatoonStats implements Serializable {
@@ -29,12 +28,12 @@ public class PlatoonStats implements Serializable {
 	private long id;
 	
 	//General stats
-	private PlatoonStatsItem[] globalTop, scores, spm, time;
-	private PlatoonTopStatsItem[] topPlayers;
+	private ArrayList<PlatoonStatsItem> globalTop, scores, spm, time;
+	private ArrayList<PlatoonTopStatsItem> topPlayers;
 	
 	//Construct
 	public PlatoonStats(
-		String sName, long lId, PlatoonStatsItem[] gS, PlatoonTopStatsItem[] tP, PlatoonStatsItem[] kS, PlatoonStatsItem[] kSPM, PlatoonStatsItem[] kT
+		String sName, long lId, ArrayList<PlatoonStatsItem> gS, ArrayList<PlatoonTopStatsItem> tP, ArrayList<PlatoonStatsItem> kS, ArrayList<PlatoonStatsItem> kSPM, ArrayList<PlatoonStatsItem> kT
 	) {
 		
 		//Basic attributes
@@ -50,13 +49,13 @@ public class PlatoonStats implements Serializable {
 	}
 
 	//Getters	
-	public final String getAccountName() { return name; }
+	public final String getName() { return name; }
 	public final long getId() { return id; }
-	public final PlatoonTopStatsItem[] getTopPlayers() { return this.topPlayers; }
-	public final PlatoonStatsItem[] getGlobalTop() { return this.globalTop; }
-	public final PlatoonStatsItem[] getScores() { return this.scores; }
-	public final PlatoonStatsItem[] getSpm() { return this.spm; }
-	public final PlatoonStatsItem[] getTime() { return this.time; }	
+	public final ArrayList<PlatoonTopStatsItem> getTopPlayers() { return this.topPlayers; }
+	public final ArrayList<PlatoonStatsItem> getGlobalTop() { return this.globalTop; }
+	public final ArrayList<PlatoonStatsItem> getScores() { return this.scores; }
+	public final ArrayList<PlatoonStatsItem> getSpm() { return this.spm; }
+	public final ArrayList<PlatoonStatsItem> getTime() { return this.time; }	
 
 
 }

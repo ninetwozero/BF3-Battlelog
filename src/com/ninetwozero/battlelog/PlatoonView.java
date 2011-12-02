@@ -25,6 +25,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
@@ -77,7 +79,6 @@ public class PlatoonView extends TabActivity {
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
 	private PlatoonData platoonData;
-	private PlatoonStats platoonStats;
 	private PlatoonInformation platoonInformation;
 	private TabHost mTabHost;
 	
@@ -89,8 +90,10 @@ public class PlatoonView extends TabActivity {
 	private TableRow cacheTableRow;
 	private FeedListAdapter feedListAdapter;
 	private PlatoonUserListAdapter platoonUserListAdapter;
+	private Bitmap platoonBadge = null;
+	private ImageView imageViewBadge;
 	
-	//CONTROLLERS for the users-tab
+	//CONTROLLERS 
 	private final int VIEW_MEMBERS = 0, VIEW_FANS = 1;
 	private boolean isViewingMembers = true;
 	
@@ -103,7 +106,11 @@ public class PlatoonView extends TabActivity {
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
     		
-    		RequestHandler.setSerializedCookies( (ArrayList<SerializedCookie> ) icicle.getSerializable("serializedCookies") );
+    		RequestHandler.setSerializedCookies(
+    				
+    			(ArrayList<SerializedCookie> ) icicle.getSerializable("serializedCookies") 
+    			
+    		);
     	
     	}
         
@@ -112,11 +119,7 @@ public class PlatoonView extends TabActivity {
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         
     	//Get the intent
-        if( getIntent().hasExtra( "platoon" ) ) {
-        	
-        	platoonData = (PlatoonData) getIntent().getSerializableExtra( "platoon" );
-        	
-        }
+        if( getIntent().hasExtra( "platoon" ) ) { platoonData = (PlatoonData) getIntent().getParcelableExtra( "platoon" ); }
         
         //Is the profileData null?!
         if( platoonData == null || platoonData.getId() == 0 ) { finish(); return; }
@@ -128,10 +131,17 @@ public class PlatoonView extends TabActivity {
     	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
     	setupTabs(
     			
-    		new String[] { "Home", "Stats", "Users", "Feed" }, 
+    		new String[] { 
+    				
+    			"Home", 
+    			"Stats", 
+    			"Users", 
+    			"Feed" 
+    			
+    		}, 
     		new int[] { 
     				
-				R.layout.tab_content_overview_platoon, 
+				R.layout.tab_content_platoon_overview, 
 				R.layout.tab_content_platoon_stats, 
 				R.layout.tab_content_platoon_users, 
 				R.layout.tab_content_feed 
@@ -140,20 +150,22 @@ public class PlatoonView extends TabActivity {
     		
     	);
         
-        initLayout();
+        //Let's see
+    	initLayout();
+    	
 	}        
 
 	public void initLayout() {
 		
 		//Eventually get a *cached* version instead    
-		new AsyncPlatoonRefresh(this, false, platoonData, sharedPreferences.getLong( "battlelog_profile_id", 0 )).execute();
+		new AsyncPlatoonRefresh(this, false, platoonData, sharedPreferences.getLong( "battlelog_profile_id", 0 ), true).execute();
 		
 	}
 	
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new AsyncPlatoonRefresh(this, true, platoonData, sharedPreferences.getLong( "battlelog_profile_id", 0 )).execute();
+    	new AsyncPlatoonRefresh(this, true, platoonData, sharedPreferences.getLong( "battlelog_profile_id", 0 ), false).execute();
     	
     	
     }
@@ -210,15 +222,16 @@ public class PlatoonView extends TabActivity {
     	private ProgressDialog progressDialog;
     	private PlatoonData platoonData;
     	private long activeProfileId;
-    	private boolean hideDialog;
+    	private boolean hideDialog, loadImage;
     	
-    	public AsyncPlatoonRefresh(Context c, boolean f, PlatoonData pd, long pId) {
+    	public AsyncPlatoonRefresh(Context c, boolean f, PlatoonData pd, long pId, boolean lImg) {
     		
     		this.context = c;
     		this.hideDialog = f;
     		this.platoonData = pd;
     		this.progressDialog = null;
     		this.activeProfileId = pId;
+    		this.loadImage = lImg;
     		
     	}
     	
@@ -244,7 +257,13 @@ public class PlatoonView extends TabActivity {
 			try {
 				
 				//Get...
-				platoonInformation = WebsiteHandler.getProfileInformationForPlatoon( this.platoonData, this.activeProfileId);
+				platoonInformation = WebsiteHandler.getProfileInformationForPlatoon(
+						
+					this.platoonData, 
+					this.activeProfileId, 
+					this.loadImage
+					
+				);
 				
 				//...validate!
 				if( platoonInformation == null ) { 
@@ -352,15 +371,30 @@ public class PlatoonView extends TabActivity {
     
     public final void drawHome(PlatoonInformation data) {
     	
-    	//Let's start drawing the... layout
-    	((TextView) findViewById(R.id.text_name)).setText( data.getName() );
-    	
-    	//Set the *created*
+    	//Let's start by getting an ImageView
+		if( imageViewBadge == null ) { imageViewBadge = (ImageView) findViewById(R.id.image_badge); }
+		
+		//Set some TextViews
+    	((TextView) findViewById(R.id.text_name_platoon)).setText( data.getName() );
     	((TextView) findViewById(R.id.text_date)).setText( 
     			
     		PublicUtils.getDate( data.getDate(), "Created on" ) + " (" +
     		PublicUtils.getRelativeDate( data.getDate() ) + ")"
     	);
+
+    	//Is the platoon badge null?
+    	if( data.hasImage() ) {
+    		
+    		//Get the image
+    		platoonBadge = data.getImage();
+    		
+    		//Set the properties
+    		imageViewBadge.setImageBitmap( platoonBadge );
+    		imageViewBadge.setAdjustViewBounds( true );
+    		imageViewBadge.setMaxHeight( 320 );
+    		imageViewBadge.setPadding( 0, 0, 0, 0 );
+
+    	}
     	
     	//Do we have a link?!
     	if( data.getWebsite() != null && !data.getWebsite().equals( "" ) ) {
@@ -388,6 +422,9 @@ public class PlatoonView extends TabActivity {
     
     public void drawStats(PlatoonStats pd) {
     	
+    	//Let's start drawing the... layout
+    	((TextView) findViewById(R.id.text_name_platoon)).setText( pd.getName() );
+    	
     	//Are they null?
     	if( wrapGeneral == null ) {
 	    
@@ -406,13 +443,19 @@ public class PlatoonView extends TabActivity {
     		wrapTopList = (RelativeLayout) findViewById(R.id.wrap_toplist);
     		tableTopList = (TableLayout) wrapTopList.findViewById( R.id.tbl_stats );
 	    	
-	    	
+    	} else {
+    		
+    		tableScores.removeAllViews();
+    		tableSPM.removeAllViews();
+    		tableTime.removeAllViews();
+    		tableTopList.removeAllViews();
+    		
     	}
     	
     	//Let's grab the different data
-    	PlatoonStatsItem generalSPM = pd.getGlobalTop()[0];
-    	PlatoonStatsItem generalKDR = pd.getGlobalTop()[1];
-    	PlatoonStatsItem generalRank = pd.getGlobalTop()[2];
+    	PlatoonStatsItem generalSPM = pd.getGlobalTop().get(0);
+    	PlatoonStatsItem generalKDR = pd.getGlobalTop().get(1);
+    	PlatoonStatsItem generalRank = pd.getGlobalTop().get(2);
 
     	//Set the general stats
     	( (TextView) wrapGeneral.findViewById( R.id.text_average_spm )).setText( generalSPM.getAvg() + "" );
@@ -423,16 +466,16 @@ public class PlatoonView extends TabActivity {
     	( (TextView) wrapGeneral.findViewById( R.id.text_max_rank )).setText( generalRank.getMax() + "" );
     	( (TextView) wrapGeneral.findViewById( R.id.text_mid_rank )).setText( generalRank.getMid() + "" );
     	( (TextView) wrapGeneral.findViewById( R.id.text_min_rank )).setText( generalRank.getMin() + "" );
-    	( (TextView) wrapGeneral.findViewById( R.id.text_average_kdr )).setText( generalKDR.getAvg() + "" );
-    	( (TextView) wrapGeneral.findViewById( R.id.text_max_kdr )).setText( generalKDR.getMax() + "" );
-    	( (TextView) wrapGeneral.findViewById( R.id.text_mid_kdr )).setText( generalKDR.getMid() + "" );
-    	( (TextView) wrapGeneral.findViewById( R.id.text_min_kdr )).setText( generalKDR.getMin() + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_average_kdr )).setText( generalKDR.getDAvg() + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_max_kdr )).setText( generalKDR.getDMax() + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_mid_kdr )).setText( generalKDR.getDMid() + "" );
+    	( (TextView) wrapGeneral.findViewById( R.id.text_min_kdr )).setText( generalKDR.getDMin() + "" );
     	
     	//Top Players
-    	PlatoonTopStatsItem[] topStats = pd.getTopPlayers();
-    	
+    	ArrayList<PlatoonTopStatsItem> topStats = pd.getTopPlayers();
+    	    	
     	//Loop over them, *one* by *one*
-    	for( int i = 0; i < topStats.length; i++ ) {
+    	for( int i = 0; i < topStats.size(); i++ ) {
     		
     		//Oh well, couldn't quite cache it could we?
     		cacheView = (RelativeLayout) layoutInflater.inflate( R.layout.grid_item_platoon_top_stats, null );
@@ -458,9 +501,9 @@ public class PlatoonView extends TabActivity {
     		cacheTableRow.addView( cacheView );
     		
     		//Say cheese...
-    		( (TextView) cacheView.findViewById( R.id.text_label )).setText( topStats[i].getLabel().toUpperCase() + "" );
-    		( (TextView) cacheView.findViewById( R.id.text_name )).setText( topStats[i].getProfile().getAccountName() + "" );
-        	( (TextView) cacheView.findViewById( R.id.text_spm )).setText( topStats[i].getSPM() + "" );
+    		( (TextView) cacheView.findViewById( R.id.text_label )).setText( topStats.get(i).getLabel().toUpperCase() + "" );
+    		( (TextView) cacheView.findViewById( R.id.text_name )).setText( topStats.get(i).getProfile().getAccountName() + "" );
+        	( (TextView) cacheView.findViewById( R.id.text_spm )).setText( topStats.get(i).getSPM() + "" );
     			
     	}
     	
@@ -558,7 +601,7 @@ public class PlatoonView extends TabActivity {
 			
 		}
         
-		((TextView) findViewById(R.id.feed_username)).setText( data.getName() );
+		((TextView) findViewById(R.id.text_name_platoon)).setText( data.getName() );
         
 		//If we don't have it defined, then we need to set it
 		if( listFeed.getAdapter() == null ) {
@@ -740,7 +783,7 @@ public class PlatoonView extends TabActivity {
 	public void onResume() {
 		
 		super.onResume();
-		this.reloadLayout();
+		reloadLayout();
 		
 	}
 	
@@ -839,7 +882,8 @@ public class PlatoonView extends TabActivity {
 							this, 
 							true, 
 							platoonData,
-							sharedPreferences.getLong( "battlelog_profile_id", 0 )
+							sharedPreferences.getLong( "battlelog_profile_id", 0 ),
+							false
 							
 						)
 					
@@ -959,7 +1003,7 @@ public class PlatoonView extends TabActivity {
 		
 	}
 	
-	public void generateTableRows(TableLayout parent, PlatoonStatsItem[] stats) {
+	public void generateTableRows(TableLayout parent, ArrayList<PlatoonStatsItem> stats) {
 	
 		//Make sure the cache is null, as well as the table being cleared
     	cacheTableRow = null;
@@ -968,7 +1012,11 @@ public class PlatoonView extends TabActivity {
 		//Loop over them, *one* by *one*
     	if( stats != null ) {
 
-    		for( int i = 0; i < stats.length; i++ ) {
+        	//The number of items (-1) as the overall is a field that shouldn't be counted
+        	int numItems = stats.size() - 1;
+    		
+        	//Iterate over the stats
+    		for( int i = 0; i < (numItems+1); i++ ) {
     		
 	    		//Is it null?
 	    		cacheView = (RelativeLayout) layoutInflater.inflate( R.layout.grid_item_platoon_stats, null );
@@ -993,12 +1041,25 @@ public class PlatoonView extends TabActivity {
 	    		//Add the *layout* into the TableRow
 	    		cacheTableRow.addView( cacheView );
 	    		
-	    		//Say cheese...
-	    		( (TextView) cacheView.findViewById( R.id.text_label )).setText( stats[i].getLabel().toUpperCase() + "" );
-	        	( (TextView) cacheView.findViewById( R.id.text_average )).setText( stats[i].getAvg() + "" );
-	        	( (TextView) cacheView.findViewById( R.id.text_max )).setText( stats[i].getMax() + "" );
-	        	( (TextView) cacheView.findViewById( R.id.text_mid )).setText( stats[i].getMid() + "" );
-	        	( (TextView) cacheView.findViewById( R.id.text_min )).setText( stats[i].getMin() + "" ); 
+	    		//Set the label
+	    		( (TextView) cacheView.findViewById( R.id.text_label )).setText( stats.get(i).getLabel().toUpperCase() + "" );
+
+	    		//If (i == 0) => Overall
+	    		if( i == 0 ) {
+	    			
+		    		( (TextView) cacheView.findViewById( R.id.text_average )).setText( stats.get(i).getAvg()/numItems  + "" );
+		        	( (TextView) cacheView.findViewById( R.id.text_max )).setText( stats.get(i).getMax() + "" );
+		        	( (TextView) cacheView.findViewById( R.id.text_mid )).setText( stats.get(i).getMid() + "" );
+		        	( (TextView) cacheView.findViewById( R.id.text_min )).setText( stats.get(i).getMin() + "" ); 
+
+	    		} else {
+	    			
+		    		( (TextView) cacheView.findViewById( R.id.text_average )).setText( stats.get(i).getAvg()  + "" );
+		        	( (TextView) cacheView.findViewById( R.id.text_max )).setText( stats.get(i).getMax() + "" );
+		        	( (TextView) cacheView.findViewById( R.id.text_mid )).setText( stats.get(i).getMid() + "" );
+		        	( (TextView) cacheView.findViewById( R.id.text_min )).setText( stats.get(i).getMin() + "" ); 
+	    			
+	    		}
 	    		
 	    	}
 		

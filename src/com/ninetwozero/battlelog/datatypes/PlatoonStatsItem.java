@@ -27,6 +27,7 @@ public class PlatoonStatsItem implements Serializable {
 	//Base-section
 	private String label;
 	private int min, mid, max, avg;
+	private double dMin, dMid, dMax, dAvg;
 	private ProfileData profile;
 	
 	//Construct
@@ -41,11 +42,37 @@ public class PlatoonStatsItem implements Serializable {
 	
 	}
 
+	public PlatoonStatsItem( String l, double a, double b, double c, double d, ProfileData p ) {
+		
+		this.label = l;
+		this.dMin = a;
+		this.dMid = b;
+		this.dMax = c;
+		this.dAvg = d;
+		this.profile = p;
+	
+	}
+	
 	//Getters	
 	public String getLabel() { return this.label; }
 	public int getMin() { return this.min; }
 	public int getMid() { return this.mid; }
 	public int getMax() { return this.max; }
 	public int getAvg() { return this.avg; }
+	public double getDMin() { return this.dMin; }
+	public double getDMid() { return this.dMid; }
+	public double getDMax() { return this.dMax; }
+	public double getDAvg() { return this.dAvg; }
 	public ProfileData getProfile() { return this.profile; }
+	
+	//Setters
+	public void setMid(int m) { this.mid = m; }
+	public void add(PlatoonStatsItem p) {
+		
+		this.min = ( p.getMin() < this.min ) ? p.getMin() : this.min;
+		this.mid = p.getMid();
+		this.max = ( p.getMax() > this.max ) ? p.getMax() : this.max;
+		this.avg += p.getAvg();
+		
+	}
 }

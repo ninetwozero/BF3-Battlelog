@@ -16,14 +16,15 @@ package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.misc.PublicUtils;
+import android.graphics.Bitmap;
 
 public class PlatoonInformation {
 
 	//Attributes
 	private int platformId, gameId, numFans, numMembers, blazeClubId;
 	private long id, date;
-	private String name, tag, presentation, pathToBadge, website;
+	private String name, tag, presentation, website;
+	private Bitmap image;
 	private boolean visible, hasAdminRights, allowNewMembers;
 	private ArrayList<FeedItem> feedItems;
 	private ArrayList<ProfileData> members, fans;
@@ -34,8 +35,8 @@ public class PlatoonInformation {
 		
 		int pId, int g, int nF, int nM, int bcId,
 		long i, long d,
-		String n, String t, String p, String pTB, String w,
-		boolean v, boolean ham, boolean a,
+		String n, String t, String p, String w,
+		Bitmap im, boolean v, boolean ham, boolean a,
 		ArrayList<FeedItem> f, ArrayList<ProfileData> m, ArrayList<ProfileData> fa,
 		PlatoonStats st
 		
@@ -51,8 +52,8 @@ public class PlatoonInformation {
 		this.name = n;
 		this.tag = t;
 		this.presentation = p;
-		this.pathToBadge = pTB;
 		this.website = w;
+		this.image = im;
 		this.visible = v;
 		this.hasAdminRights = ham;
 		this.allowNewMembers = a;
@@ -75,7 +76,8 @@ public class PlatoonInformation {
 	public String getName() { return this.name; }
 	public String getTag() { return this.tag; }
 	public String getPresentation() { return this.presentation; }
-	public String getPathToBadge() { return this.pathToBadge; }
+	public boolean hasImage() { return (this.image != null ); }
+	public Bitmap getImage() { return this.image; }
 	public String getWebsite() { return this.website; }
 	public boolean isVisible() { return this.visible; }
 	public boolean isOpenForNewMembers() { return this.allowNewMembers; }

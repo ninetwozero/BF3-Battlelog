@@ -19,7 +19,7 @@
 	    android:id="@+id/text_name"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-		android:text="Non-turbined Zebras"
+		android:text="Non-Turbined Zebras"
 		android:textSize="16sp"
 		android:layout_toRightOf="@id/image_badge"
 		android:layout_marginLeft="5dp"

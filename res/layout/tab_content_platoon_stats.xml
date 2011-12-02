@@ -29,7 +29,7 @@
 	>
 		<TextView
 		    style="@style/InfoHeading"
-		    android:id="@+id/string_name"
+		    android:id="@+id/text_name_platoon"
 	    	android:text="Non-turbined Zebras"
 			android:padding="5dp"
 	    />
@@ -40,7 +40,7 @@
 			android:id="@+id/wrap_general"
 		    android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
-		    android:layout_below="@+id/string_name" 
+		    android:layout_below="@+id/text_name_pltaoon" 
 	    >
 			<TextView
 				android:id="@+id/string100"
@@ -351,47 +351,14 @@
 				android:layout_height="wrap_content" 
 				android:layout_below="@id/string200"
 				android:stretchColumns="*"
-			>
-				<TableRow	
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content" 
-				>
-					<View android:layout_width="1dp" android:layout_height="1dp"/>
-				    
-				</TableRow>
-			</TableLayout>
-
-		</RelativeLayout>
-		
-		<RelativeLayout
-			android:id="@+id/wrap_score"
-		    android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-		    android:layout_below="@+id/wrap_toplist" 
-	    >
-			<TextView
-				android:id="@+id/string300"
-			    style="@style/InfoHeading"
-				android:text="Score"
-				android:padding="5dp"
 			/>
-			
-			<TableLayout
-				android:id="@+id/tbl_stats"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content" 
-				android:layout_below="@id/string300"
-				android:stretchColumns="*"
-				android:weightSum="3"
-			></TableLayout>
 
 		</RelativeLayout>
-		
 	    <RelativeLayout
 			android:id="@+id/wrap_spm"
 		    android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
-		    android:layout_below="@+id/wrap_score" 
+		    android:layout_below="@+id/wrap_toplist" 
 	    >
 			<TextView
 				android:id="@+id/string300"
@@ -406,16 +373,38 @@
 				android:layout_height="wrap_content" 
 				android:layout_below="@id/string300"
 				android:stretchColumns="*"
-				android:weightSum="3"
-			></TableLayout>
+			/>
 
 		</RelativeLayout>
 		
+		<RelativeLayout
+			android:id="@+id/wrap_score"
+		    android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+		    android:layout_below="@+id/wrap_spm" 
+	    >
+			<TextView
+				android:id="@+id/string300"
+			    style="@style/InfoHeading"
+				android:text="Score"
+				android:padding="5dp"
+			/>
+			
+			<TableLayout
+				android:id="@+id/tbl_stats"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" 
+				android:layout_below="@id/string300"
+				android:stretchColumns="*"
+				android:collapseColumns="true"
+			/>
+
+		</RelativeLayout>
       	<RelativeLayout
 			android:id="@+id/wrap_time"
 		    android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
-		    android:layout_below="@+id/wrap_spm" 
+		    android:layout_below="@+id/wrap_score" 
 	    >
 			<TextView
 				android:id="@+id/string300"
@@ -430,8 +419,7 @@
 				android:layout_height="wrap_content" 
 				android:layout_below="@id/string300"
 				android:stretchColumns="*"
-				android:weightSum="3"
-			></TableLayout>
+			/>
 
 		</RelativeLayout>
 		    		    

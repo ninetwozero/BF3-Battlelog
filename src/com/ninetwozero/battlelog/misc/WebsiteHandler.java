@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
@@ -1319,7 +1320,7 @@ public class WebsiteHandler {
 							currItem.getInt( "platform" ),
 							currItem.getString( "name" ),
 							currItem.getString( "tag" ),
-							rh.getImageFromStream( Constants.urlPlatoonThumbs + currItem.getString( "badgePath" ), false),
+							rh.getImageFromStream( Constants.urlPlatoonImageThumbs + currItem.getString( "badgePath" ), false),
 							!currItem.getBoolean("hidden")
 								
 						)
@@ -1437,7 +1438,7 @@ public class WebsiteHandler {
 		}
 	}
 	
-	public static PlatoonInformation getProfileInformationForPlatoon( PlatoonData platoonData, long activeProfileId ) throws WebsiteHandlerException {
+	public static PlatoonInformation getProfileInformationForPlatoon( PlatoonData platoonData, long activeProfileId, boolean loadImage ) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -1623,6 +1624,23 @@ public class WebsiteHandler {
 				//Parse the feed
 				feedItemArray = getFeedItemsFromJSON(feedItems, null, activeProfileId);
 				
+				//Do we need the image?
+				Bitmap image ;
+				if( loadImage ) { 
+					
+					image = rh.getImageFromStream( 
+							
+						Constants.urlPlatoonImage + profileCommonObject.getString( "badgePath" ), 
+						true
+						
+					);
+				
+				} else {
+					
+					image = null;
+					
+				}
+				
 				//Return it!
 				return new PlatoonInformation(
 				
@@ -1636,8 +1654,8 @@ public class WebsiteHandler {
 					profileCommonObject.getString( "name" ),
 					profileCommonObject.getString( "tag" ),
 					profileCommonObject.getString( "presentation" ),
-					profileCommonObject.getString( "badgePath" ),
 					PublicUtils.normalizeUrl( profileCommonObject.optString( "website", "" ) ),
+					image,
 					!profileCommonObject.getBoolean( "hidden" ),
 					hasAdminRights,
 					profileCommonObject.getBoolean( "allowNewMembers" ),
@@ -1692,7 +1710,7 @@ public class WebsiteHandler {
 			
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
-			
+	
 				//JSON-base!!
 				JSONObject personaList = new JSONObject(httpContent).getJSONObject( "data" ).getJSONObject( "platoonPersonas" );
 				JSONObject memberStats = new JSONObject(httpContent).getJSONObject( "data" ).getJSONObject( "memberStats" );
@@ -1709,37 +1727,69 @@ public class WebsiteHandler {
 				JSONArray currObjNames = null;
 				
 				//Let's iterate and create the containers
-				PlatoonStatsItem[] arrayGeneral = new PlatoonStatsItem[objectGeneral.length()];
-				PlatoonStatsItem[] arrayScore = new PlatoonStatsItem[objectGeneral.length()];
-				PlatoonStatsItem[] arraySPM = new PlatoonStatsItem[objectGeneral.length()];
-				PlatoonStatsItem[] arrayTime = new PlatoonStatsItem[objectGeneral.length()];
-				PlatoonTopStatsItem[] arrayTop = new PlatoonTopStatsItem[objectGeneral.length()];
+				ArrayList<PlatoonStatsItem> arrayGeneral = new ArrayList<PlatoonStatsItem>();
+				ArrayList<PlatoonStatsItem> arrayScore = new ArrayList<PlatoonStatsItem>();
+				ArrayList<PlatoonStatsItem> arraySPM = new ArrayList<PlatoonStatsItem>();
+				ArrayList<PlatoonStatsItem> arrayTime = new ArrayList<PlatoonStatsItem>();
+				ArrayList<PlatoonTopStatsItem> arrayTop = new ArrayList<PlatoonTopStatsItem>();
+				
+				//More temp
+				ArrayList<Integer> tempMid = new ArrayList<Integer>();
 				
 				//Get the *general* stats
 				currObjNames = objectGeneral.names();
-				for( int i = 0; i < arrayGeneral.length; i++ ) {
+				for( int i = 0; i < currObjNames.length(); i++ ) {
 
 					//Grab the current object
 					currObj = objectGeneral.getJSONObject( currObjNames.getString( i ) );
 					
-					//Create a new "stats item"
-					arrayGeneral[i] = new PlatoonStatsItem(
-					
-						currObjNames.getString( i ),
-						currObj.getInt( "min" ),
-						currObj.getInt( "median" ),
-						currObj.getInt( "best" ),
-						currObj.getInt( "average" ),
-						null
+					//Is it the KD? The KD == DOUBLE
+					if( currObjNames.getString( i ).equals( "kd" ) ) {
 						
-					);
+						//Create a new "stats item"
+						arrayGeneral.add(
+								
+							new PlatoonStatsItem(
+						
+								currObjNames.getString( i ),
+								currObj.getDouble( "min" ),
+								currObj.getDouble( "median" ),
+								currObj.getDouble( "best" ),
+								currObj.getDouble( "average" ),
+								null
+								
+							)
+						
+						);
 					
+					} else {
+						
+						//Create a new "stats item"
+						arrayGeneral.add( 
+								
+							new PlatoonStatsItem(
+						
+								currObjNames.getString( i ),
+								currObj.getInt( "min" ),
+								currObj.getInt( "median" ),
+								currObj.getInt( "best" ),
+								currObj.getInt( "average" ),
+								null
+								
+							)
+							
+						);
+						
+					}
 					
 				}
 				
+				//Create a new "overall item"
+				arrayScore.add( new PlatoonStatsItem( "Overall", 0, 0, 0, 0, null ) );
+				
 				//Get the *kit* scores
 				currObjNames = objectScore.names();
-				for( int i = 0; i < arrayScore.length; i++ ) {
+				for( int i = 0; i < currObjNames.length(); i++ ) {
 
 					//Grab the current object
 					currObj = objectScore.getJSONObject( currObjNames.getString( i ) );
@@ -1749,7 +1799,10 @@ public class WebsiteHandler {
 					else { currUser = personaList.getJSONObject( currObj.getString( "personaId" ) ); }
 
 					//Create a new "stats item"
-					arrayScore[i] = new PlatoonStatsItem(
+					arrayScore.add(
+							
+							
+						new PlatoonStatsItem(
 							
 							currObjNames.getString( i ),
 							currObj.getInt( "min" ),
@@ -1767,14 +1820,27 @@ public class WebsiteHandler {
 											
 							)
 							
-						);
+						)
+						
+					);
+
+					//Is it ! the first?
+					if( i > 0 ) { tempMid.add(arrayScore.get(i+1).getMid()); }
 					
+					//Update the "overall"
+					arrayScore.get(0).add(arrayScore.get(i+1));
 					
 				}
+				Collections.sort( tempMid );
+				arrayScore.get( 0 ).setMid( tempMid.get( (int) Math.ceil(tempMid.size()/2) ) );
+				tempMid.clear();
+				
+				//Create a new "overall item"
+				arraySPM.add( new PlatoonStatsItem( "Overall", 0, 0, 0, 0, null ) );
 				
 				//Get the *kit* score/min
 				currObjNames = objectSPM.names();
-				for( int i = 0; i < arraySPM.length; i++ ) {
+				for( int i = 0; i < currObjNames.length(); i++ ) {
 
 					//Grab the current object
 					currObj = objectSPM.getJSONObject( currObjNames.getString( i ) );
@@ -1784,7 +1850,9 @@ public class WebsiteHandler {
 					else { currUser = personaList.getJSONObject( currObj.getString( "personaId" ) ); }
 					
 					//Create a new "stats item"
-					arraySPM[i] = new PlatoonStatsItem(
+					arraySPM.add(
+							
+						new PlatoonStatsItem(
 							
 							currObjNames.getString( i ),
 							currObj.getInt( "min" ),
@@ -1802,80 +1870,107 @@ public class WebsiteHandler {
 											
 							)
 							
-						);
-					
-					
+						)
+						
+					);
+
+						//Is it ! the first?
+						if( i > 0 ) { tempMid.add(arraySPM.get( 0 ).getMid()); }
+						
+						//Update the "overall"
+						arraySPM.get(0).add(arraySPM.get(i+1));
+			
 				}
+				Collections.sort( tempMid );
+				arraySPM.get(0).setMid( tempMid.get( (int) Math.ceil(tempMid.size()/2) ) );
+				tempMid.clear();
+				
+				//Create a new "overall item"
+				arrayTime.add( new PlatoonStatsItem( "Overall", 0, 0, 0, 0, null ) );
 				
 				//Get the *kit* times
 				currObjNames = objectTime.names();
-				for( int i = 0; i < arrayTime.length; i++ ) {
+				for( int i = 0; i < currObjNames.length(); i++ ) {
 
 					//Grab the current object
 					currObj = objectTime.getJSONObject( currObjNames.getString( i ) );
 
-					//Hmm, where is the userInfo?
+					//Hmm, where is the userInfo?					
 					if( currObj.has( "bestPersonaId" ) ) { currUser = personaList.getJSONObject( currObj.getString( "bestPersonaId" ) ); }
 					else { currUser = personaList.getJSONObject( currObj.getString( "personaId" ) ); }
 					
 					//Create a new "stats item"
-					arrayTime[i] = new PlatoonStatsItem(
+					arrayTime.add(
 							
-						currObjNames.getString( i ),
-						currObj.getInt( "min" ),
-						currObj.getInt( "median" ),
-						currObj.getInt( "best" ),
-						currObj.getInt( "average" ),
-						new ProfileData(
+						new PlatoonStatsItem(
 							
-							currUser.optString("username", ""),
-							currUser.optString("username", ""),
-							Long.parseLong(currObj.optString( "bestPersonaId", "" )),
-							Long.parseLong(currUser.optString( "userId", "0" )),
-							platoonData.getPlatformId(),
-							currUser.optString( "gravatarMd5", "" )
-										
-						)
+							currObjNames.getString( i ),
+							currObj.getInt( "min" ),
+							currObj.getInt( "median" ),
+							currObj.getInt( "best" ),
+							currObj.getInt( "average" ),
+							new ProfileData(
+								
+								currUser.optString("username", ""),
+								currUser.optString("username", ""),
+								Long.parseLong(currObj.optString( (currObj.has( "bestPersonaId")? "bestPersonaId" : "personaId" ), "" )),
+								Long.parseLong(currUser.optString( "userId", "0" )),
+								platoonData.getPlatformId(),
+								currUser.optString( "gravatarMd5", "" )
+											
+							)
 						
+						)
+							
 					);
+
+					//Is it ! the first?
+					if( i > 0 ) { tempMid.add(arrayTime.get( 0 ).getMid()); }
 					
+					//Update the "overall"
+					arrayTime.get(0).add(arrayTime.get( i+1 ));
 					
 				}
+				Collections.sort( tempMid );
+				arrayTime.get(0).setMid( tempMid.get( (int) Math.ceil(tempMid.size()/2) ) );
+				tempMid.clear();
 				
 				//Get the *top player* Tops
 				currObjNames = objectTop.names();
-				for( int i = 0; i < arrayTop.length; i++ ) {
+				for( int i = 0; i < currObjNames.length(); i++ ) {
 
 					//Grab the current object
 					currObj = objectTop.getJSONObject( currObjNames.getString( i ) );
 					
-					//Create a new "stats item"
-					arrayTop[i] = new PlatoonTopStatsItem(
+					//Hmm, where is the userInfo?					
+					if( currObj.has( "bestPersonaId" ) ) { currUser = personaList.getJSONObject( currObj.getString( "bestPersonaId" ) ); }
+					else { currUser = personaList.getJSONObject( currObj.getString( "personaId" ) ); }
 					
-						currObjNames.getString( i ),
-						currObj.getInt( "spm" ),
-						new ProfileData(
+					//Create a new "stats item"
+					arrayTop.add(
 							
-							currUser.optString("username", ""),
-							currUser.optString("username", ""),
-							Long.parseLong(currObj.optString( "personaId", "" )),
-							Long.parseLong(currUser.optString( "userId", "0" )),
-							platoonData.getPlatformId(),
-							currUser.optString( "gravatarMd5", "" )
-										
+						new PlatoonTopStatsItem(
+					
+							currObjNames.getString( i ),
+							currObj.getInt( "spm" ),
+							new ProfileData(
+								
+								currUser.optString("username", ""),
+								currUser.optString("username", ""),
+								Long.parseLong(currObj.optString( "personaId", "" )),
+								Long.parseLong(currUser.optString( "userId", "0" )),
+								platoonData.getPlatformId(),
+								currUser.optString( "gravatarMd5", "" )
+											
+							)
+						
 						)
 						
 					);
 					
 					
 				}
-				
-				Log.d(Constants.debugTag, arrayGeneral.length + " = n");
-				Log.d(Constants.debugTag, arrayTop.length + " = n");
-				Log.d(Constants.debugTag, arrayScore.length + " = n");
-				Log.d(Constants.debugTag, arraySPM.length + " = n");
-				Log.d(Constants.debugTag, arrayTime.length + " = n");
-				
+
 				//Return it now!!
 				return new PlatoonStats(
 				

@@ -42,7 +42,8 @@ public final class Constants {
 	
 	//URLS for PROFILE
 	public static final String urlProfilePost = urlMain + "wall/postmessage";
-	public static final String urlPlatoonThumbs = urlStaticContent + "prod/emblems/60/";
+	public static final String urlPlatoonImage = urlStaticContent + "prod/emblems/320/";
+	public static final String urlPlatoonImageThumbs = urlStaticContent + "prod/emblems/60/";
 	public static final String urlFriendRequest = urlMain + "friend/requestFriendship/{UID}/";
 	
 	//URLS for PLATOONS
