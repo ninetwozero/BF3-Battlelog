@@ -50,12 +50,15 @@
 			/>
 			<ImageView
 			    android:id="@+id/image_badge"
-			    android:layout_width="fill_parent"
-			    android:layout_height="fill_parent"
+			    android:layout_width="320dp"
+			    android:layout_height="wrap_content"
 			    android:layout_below="@id/text_header_badge"
 				android:src="@drawable/test_image"
-				android:padding="10dp"
+				android:paddingTop="10dp"
+				android:layout_centerHorizontal="true"
+				android:paddingBottom="10dp"
 				android:scaleType="center"
+				
 			/>
 		</RelativeLayout>
 		<RelativeLayout 

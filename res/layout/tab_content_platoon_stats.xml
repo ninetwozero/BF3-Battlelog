@@ -40,7 +40,7 @@
 			android:id="@+id/wrap_general"
 		    android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
-		    android:layout_below="@+id/text_name_pltaoon" 
+		    android:layout_below="@+id/text_name_platoon" 
 	    >
 			<TextView
 				android:id="@+id/string100"

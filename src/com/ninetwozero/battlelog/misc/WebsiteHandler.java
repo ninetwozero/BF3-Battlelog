@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog.misc;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
@@ -53,6 +54,9 @@ import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
  */
 
 public class WebsiteHandler {
+	
+	//Let's have this one ready
+	public static HashMap<String, Bitmap> bitmapCache = new HashMap<String, Bitmap>();
 	
 	public static boolean doLogin(Context context, PostData[] postDataArray, boolean savePassword) throws WebsiteHandlerException {
 	
@@ -1735,6 +1739,7 @@ public class WebsiteHandler {
 				
 				//More temp
 				ArrayList<Integer> tempMid = new ArrayList<Integer>();
+				String tempGravatarHash = null;
 				
 				//Get the *general* stats
 				currObjNames = objectGeneral.names();
@@ -1798,6 +1803,9 @@ public class WebsiteHandler {
 					if( currObj.has( "bestPersonaId" ) ) { currUser = personaList.getJSONObject( currObj.getString( "bestPersonaId" ) ); }
 					else { currUser = personaList.getJSONObject( currObj.getString( "personaId" ) ); }
 
+					//Store the gravatar
+					tempGravatarHash = currUser.optString( "gravatarMd5", "" );
+					
 					//Create a new "stats item"
 					arrayScore.add(
 							
@@ -1816,7 +1824,7 @@ public class WebsiteHandler {
 								Long.parseLong(currObj.optString( "bestPersonaId", "" )),
 								Long.parseLong(currUser.optString( "userId", "0" )),
 								platoonData.getPlatformId(),
-								currUser.optString( "gravatarMd5", "" )
+								tempGravatarHash
 											
 							)
 							
@@ -1848,6 +1856,9 @@ public class WebsiteHandler {
 					//Hmm, where is the userInfo?
 					if( currObj.has( "bestPersonaId" ) ) { currUser = personaList.getJSONObject( currObj.getString( "bestPersonaId" ) ); }
 					else { currUser = personaList.getJSONObject( currObj.getString( "personaId" ) ); }
+
+					//Store the gravatar
+					tempGravatarHash = currUser.optString( "gravatarMd5", "" );
 					
 					//Create a new "stats item"
 					arraySPM.add(
@@ -1866,7 +1877,7 @@ public class WebsiteHandler {
 								Long.parseLong(currObj.optString( "bestPersonaId", "" )),
 								Long.parseLong(currUser.optString( "userId", "0" )),
 								platoonData.getPlatformId(),
-								currUser.optString( "gravatarMd5", "" )
+								tempGravatarHash
 											
 							)
 							
@@ -1898,6 +1909,9 @@ public class WebsiteHandler {
 					//Hmm, where is the userInfo?					
 					if( currObj.has( "bestPersonaId" ) ) { currUser = personaList.getJSONObject( currObj.getString( "bestPersonaId" ) ); }
 					else { currUser = personaList.getJSONObject( currObj.getString( "personaId" ) ); }
+
+					//Store the gravatar
+					tempGravatarHash = currUser.optString( "gravatarMd5", "" );
 					
 					//Create a new "stats item"
 					arrayTime.add(
@@ -1916,7 +1930,7 @@ public class WebsiteHandler {
 								Long.parseLong(currObj.optString( (currObj.has( "bestPersonaId")? "bestPersonaId" : "personaId" ), "" )),
 								Long.parseLong(currUser.optString( "userId", "0" )),
 								platoonData.getPlatformId(),
-								currUser.optString( "gravatarMd5", "" )
+								tempGravatarHash
 											
 							)
 						
@@ -1945,6 +1959,26 @@ public class WebsiteHandler {
 					//Hmm, where is the userInfo?					
 					if( currObj.has( "bestPersonaId" ) ) { currUser = personaList.getJSONObject( currObj.getString( "bestPersonaId" ) ); }
 					else { currUser = personaList.getJSONObject( currObj.getString( "personaId" ) ); }
+
+					//Store the gravatar
+					tempGravatarHash = currUser.optString( "gravatarMd5", "" );
+					
+					//Do we need to download a new image?
+					if( !WebsiteHandler.bitmapCache.containsKey( tempGravatarHash ) ) {
+						
+						WebsiteHandler.bitmapCache.put( 
+								
+							tempGravatarHash, 
+							WebsiteHandler.getGravatar( 
+									
+								tempGravatarHash, 
+								40
+								
+							)
+							
+						);
+						
+					}
 					
 					//Create a new "stats item"
 					arrayTop.add(
@@ -1960,7 +1994,7 @@ public class WebsiteHandler {
 								Long.parseLong(currObj.optString( "personaId", "" )),
 								Long.parseLong(currUser.optString( "userId", "0" )),
 								platoonData.getPlatformId(),
-								currUser.optString( "gravatarMd5", "" )
+								tempGravatarHash
 											
 							)
 						
@@ -2092,6 +2126,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("ownerId") ),
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
+						
 						numLikes,
 						"<b>{username1}</b> and <b>{username2}</b> are now friends",
 						"",
@@ -3024,6 +3059,60 @@ public class WebsiteHandler {
 				
 			}
 			
+		} catch( Exception ex ) {
+		
+			ex.printStackTrace();
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+		
+	}
+	
+	public static Bitmap getGravatar(String hash, int size) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Any size requirements? Otherwise we just pick the standard number
+			return new RequestHandler().getImageFromStream( 
+					
+				Constants.urlGravatar.replace(
+				
+					"{hash}",
+					hash
+					
+				).replace(
+						
+					"{size}", 
+					(
+						(size > 0)? size : Constants.defaultAvatarSize
+								
+					) + ""
+					
+				).replace( 
+				
+					"{default}",
+					Constants.defaultAvatarSize + ""
+						
+				),
+				true 
+				
+			);
+
+		} catch( Exception ex ) {
+		
+			ex.printStackTrace();
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+		
+	}
+	
+	public static Bitmap getImage(String url) throws WebsiteHandlerException {
+	
+		try {
+			
+			return new RequestHandler().getImageFromStream( url, true );
+
 		} catch( Exception ex ) {
 		
 			ex.printStackTrace();

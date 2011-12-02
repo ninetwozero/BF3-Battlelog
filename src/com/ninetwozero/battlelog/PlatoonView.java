@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
@@ -385,15 +387,9 @@ public class PlatoonView extends TabActivity {
     	//Is the platoon badge null?
     	if( data.hasImage() ) {
     		
-    		//Get the image
-    		platoonBadge = data.getImage();
-    		
     		//Set the properties
-    		imageViewBadge.setImageBitmap( platoonBadge );
-    		imageViewBadge.setAdjustViewBounds( true );
-    		imageViewBadge.setMaxHeight( 320 );
-    		imageViewBadge.setPadding( 0, 0, 0, 0 );
-
+    		imageViewBadge.setImageBitmap( platoonBadge = data.getImage() );
+    	
     	}
     	
     	//Do we have a link?!
@@ -473,7 +469,8 @@ public class PlatoonView extends TabActivity {
     	
     	//Top Players
     	ArrayList<PlatoonTopStatsItem> topStats = pd.getTopPlayers();
-    	    	
+    	PlatoonTopStatsItem tempTopStats = null;
+    	
     	//Loop over them, *one* by *one*
     	for( int i = 0; i < topStats.size(); i++ ) {
     		
@@ -500,10 +497,24 @@ public class PlatoonView extends TabActivity {
     		//Add the *layout* into the TableRow
     		cacheTableRow.addView( cacheView );
     		
-    		//Say cheese...
-    		( (TextView) cacheView.findViewById( R.id.text_label )).setText( topStats.get(i).getLabel().toUpperCase() + "" );
-    		( (TextView) cacheView.findViewById( R.id.text_name )).setText( topStats.get(i).getProfile().getAccountName() + "" );
-        	( (TextView) cacheView.findViewById( R.id.text_spm )).setText( topStats.get(i).getSPM() + "" );
+    		//Grab *this* item
+    		tempTopStats = topStats.get(i);
+    		
+    		//Say cheese... (mister Bitmap)
+    		( (ImageView) cacheView.findViewById( R.id.image_avatar )).setImageBitmap( 
+    				
+				WebsiteHandler.bitmapCache.get( 
+				
+					tempTopStats.getProfile().getGravatarHash()
+						
+				) 
+    				
+    		);
+    		
+    		//Set the TextViews accordingly
+    		( (TextView) cacheView.findViewById( R.id.text_label )).setText( tempTopStats.getLabel().toUpperCase() + "" );
+    		( (TextView) cacheView.findViewById( R.id.text_name )).setText( tempTopStats.getProfile().getAccountName() + "" );
+        	( (TextView) cacheView.findViewById( R.id.text_spm )).setText( tempTopStats.getSPM() + "" );
     			
     	}
     	

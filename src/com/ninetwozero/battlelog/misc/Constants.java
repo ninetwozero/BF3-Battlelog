@@ -22,6 +22,7 @@ public final class Constants {
 	public static final String urlMainSecure = "https://battlelog.battlefield.com/bf3/";
 	public static final String urlStaticContent = "http://static.cdn.ea.com/battlelog/";
 	public static final String urlImagePack = "http://192.168.0.11:10920/file.zip";
+	public static final String urlGravatar = "http://www.gravatar.com/avatar/{hash}?s={size}&d=http://battlelog-cdn.battlefield.com/public/base/shared/default-avatar-{default}.png?v=7909";
 	
 	//URLs that REQUIRE POST-DATA
 	public static final String urlLogin = urlMainSecure + "gate/login/";
@@ -120,6 +121,9 @@ public final class Constants {
 	public static final int dayInSeconds = 86400;
 	public static final int weekInSeconds = 604800;
 	public static final int yearInSeconds = 31449600;
+	
+	//Grawratar
+	public static final int defaultAvatarSize = 30; 
 	
 	//Misc
 	public static final String userAgent = "Mozilla/5.0 (X11; Linux i686; rv:7.0.1) Gecko/20100101 Firefox/7.0.1";

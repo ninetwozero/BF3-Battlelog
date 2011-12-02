@@ -16,6 +16,8 @@ package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
 
+import android.graphics.Bitmap;
+
 
 
 public class FeedItem {
