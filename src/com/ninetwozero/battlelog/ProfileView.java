@@ -131,7 +131,7 @@ public class ProfileView extends TabActivity {
     	setupTabs(
     			
     		new String[] { "Home", "Stats", "Feed" }, 
-    		new int[] { R.layout.tab_content_overview_profile, R.layout.tab_content_stats, R.layout.tab_content_feed }
+    		new int[] { R.layout.tab_content_profile_overview, R.layout.tab_content_profile_stats, R.layout.tab_content_feed }
     		
     	);
         
@@ -521,7 +521,7 @@ public class ProfileView extends TabActivity {
 		}
         
 		((TextView) findViewById(R.id.feed_username)).setText( data.getUsername() );
-        
+		
 		//If we don't have it defined, then we need to set it
 		if( listFeed.getAdapter() == null ) {
 			

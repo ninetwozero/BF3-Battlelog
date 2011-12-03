@@ -62,7 +62,7 @@ public class StatsView extends Activity {
     	instances = 1;
     	
     	//Set the content view
-        setContentView(R.layout.tab_content_stats);
+        setContentView(R.layout.tab_content_profile_stats);
 
         //Prepare to tango
         this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);

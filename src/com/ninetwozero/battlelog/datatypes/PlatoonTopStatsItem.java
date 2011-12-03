@@ -42,4 +42,5 @@ public class PlatoonTopStatsItem implements Serializable {
 	public String getLabel() { return this.label; }
 	public int getSPM() { return this.spm; }
 	public ProfileData getProfile() { return this.profile; }
+
 }

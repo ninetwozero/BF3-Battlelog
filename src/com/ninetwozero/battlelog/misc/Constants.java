@@ -123,7 +123,17 @@ public final class Constants {
 	public static final int yearInSeconds = 31449600;
 	
 	//Grawratar
-	public static final int defaultAvatarSize = 30; 
+	public static final int defaultAvatarSize = 52; 
+	public static final int bitmapCacheLimit = 25;
+	
+	//Menu
+	public static final long MENU_ME = 0;
+	public static final long MENU_UNLOCKS = 1;
+	public static final long MENU_SOLDIER = 2;
+	public static final long MENU_PLATOON = 3;
+	public static final long MENU_COMPARE = 4;
+	public static final long MENU_SETTINGS = 5;
+	
 	
 	//Misc
 	public static final String userAgent = "Mozilla/5.0 (X11; Linux i686; rv:7.0.1) Gecko/20100101 Firefox/7.0.1";

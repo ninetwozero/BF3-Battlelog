@@ -472,13 +472,14 @@ public class PlatoonView extends TabActivity {
     	PlatoonTopStatsItem tempTopStats = null;
     	
     	//Loop over them, *one* by *one*
+    	int numCols = 2;
     	for( int i = 0; i < topStats.size(); i++ ) {
     		
     		//Oh well, couldn't quite cache it could we?
     		cacheView = (RelativeLayout) layoutInflater.inflate( R.layout.grid_item_platoon_top_stats, null );
     		
     		//Add the new TableRow
-    		if( cacheTableRow == null || (i % 3) == 0 ) { 
+    		if( cacheTableRow == null || (i % numCols) == 0 ) { 
     			
     			tableTopList.addView( cacheTableRow = new TableRow(this) );
 	    		cacheTableRow.setLayoutParams( 
@@ -519,9 +520,9 @@ public class PlatoonView extends TabActivity {
     	}
     	
     	//Let's generate the table rows!
-    	generateTableRows(tableScores, pd.getScores() );
-    	generateTableRows(tableSPM, pd.getSpm() );
-    	generateTableRows(tableTime, pd.getTime() );
+    	generateTableRows(tableScores, pd.getScores(), false );
+    	generateTableRows(tableSPM, pd.getSpm(), false );
+    	generateTableRows(tableTime, pd.getTime(), true );
     	
     }
     
@@ -1014,7 +1015,7 @@ public class PlatoonView extends TabActivity {
 		
 	}
 	
-	public void generateTableRows(TableLayout parent, ArrayList<PlatoonStatsItem> stats) {
+	public void generateTableRows(TableLayout parent, ArrayList<PlatoonStatsItem> stats, boolean isTime) {
 	
 		//Make sure the cache is null, as well as the table being cleared
     	cacheTableRow = null;
@@ -1025,12 +1026,16 @@ public class PlatoonView extends TabActivity {
 
         	//The number of items (-1) as the overall is a field that shouldn't be counted
         	int numItems = stats.size() - 1;
+    		int avg;
     		
         	//Iterate over the stats
     		for( int i = 0; i < (numItems+1); i++ ) {
     		
+    			//Set the average
+    			avg = (i == 0) ? (stats.get(i).getAvg()/numItems) : stats.get( i ).getAvg();
+    			
 	    		//Is it null?
-	    		cacheView = (RelativeLayout) layoutInflater.inflate( R.layout.grid_item_platoon_stats, null );
+    			cacheView = (RelativeLayout) layoutInflater.inflate( R.layout.grid_item_platoon_stats, null );
 	    		
 	    		//Add the new TableRow
 	    		if( cacheTableRow == null || (i % 3) == 0 ) { 
@@ -1056,16 +1061,16 @@ public class PlatoonView extends TabActivity {
 	    		( (TextView) cacheView.findViewById( R.id.text_label )).setText( stats.get(i).getLabel().toUpperCase() + "" );
 
 	    		//If (i == 0) => Overall
-	    		if( i == 0 ) {
+	    		if( isTime ) {
 	    			
-		    		( (TextView) cacheView.findViewById( R.id.text_average )).setText( stats.get(i).getAvg()/numItems  + "" );
-		        	( (TextView) cacheView.findViewById( R.id.text_max )).setText( stats.get(i).getMax() + "" );
-		        	( (TextView) cacheView.findViewById( R.id.text_mid )).setText( stats.get(i).getMid() + "" );
-		        	( (TextView) cacheView.findViewById( R.id.text_min )).setText( stats.get(i).getMin() + "" ); 
+		    		( (TextView) cacheView.findViewById( R.id.text_average )).setText( PublicUtils.timeToLiteral( avg ) );
+		        	( (TextView) cacheView.findViewById( R.id.text_max )).setText( PublicUtils.timeToLiteral( stats.get(i).getMax()) );
+		        	( (TextView) cacheView.findViewById( R.id.text_mid )).setText( PublicUtils.timeToLiteral( stats.get(i).getMid()) );
+		        	( (TextView) cacheView.findViewById( R.id.text_min )).setText( PublicUtils.timeToLiteral( stats.get(i).getMin()) ); 
 
 	    		} else {
 	    			
-		    		( (TextView) cacheView.findViewById( R.id.text_average )).setText( stats.get(i).getAvg()  + "" );
+		    		( (TextView) cacheView.findViewById( R.id.text_average )).setText( avg  + "" );
 		        	( (TextView) cacheView.findViewById( R.id.text_max )).setText( stats.get(i).getMax() + "" );
 		        	( (TextView) cacheView.findViewById( R.id.text_mid )).setText( stats.get(i).getMid() + "" );
 		        	( (TextView) cacheView.findViewById( R.id.text_min )).setText( stats.get(i).getMin() + "" ); 

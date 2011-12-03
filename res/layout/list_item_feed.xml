@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:padding="5dp"
 >
 	<RelativeLayout
 	   	android:id="@+id/wrap_text"
@@ -17,8 +17,8 @@
 		>
 			<ImageView
 				android:id="@+id/image_avatar"    
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
+			    android:layout_width="40dp"
+			    android:layout_height="40dp"
 			    android:src="@drawable/test_avatar_48"
 			/>
 			<TextView 
@@ -28,7 +28,8 @@
 				android:text="NINETWOZERO and Chokzor are now friends"
 				android:textSize="14sp"
 				android:layout_toRightOf="@id/image_avatar"
-				android:layout_marginLeft="10dp"
+				android:layout_marginLeft="5dp"
+				android:layout_marginTop="0dp"
 			/>	
 		</RelativeLayout>
 		<LinearLayout

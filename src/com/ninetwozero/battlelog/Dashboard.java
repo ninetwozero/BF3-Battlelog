@@ -16,9 +16,9 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.TabActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,13 +39,20 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
+import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
+import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.adapters.FeedListAdapter;
+import com.ninetwozero.battlelog.adapters.GridMenuAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRefresh;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
@@ -53,6 +60,8 @@ import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToPlatoonView;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToProfileView;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
+import com.ninetwozero.battlelog.datatypes.DashboardItem;
+import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
@@ -61,7 +70,7 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class Dashboard extends Activity {
+public class Dashboard extends TabActivity {
 
 	//Attributes
 	final private Context context = this;
@@ -70,6 +79,14 @@ public class Dashboard extends Activity {
 	private PostData[] postDataArray;
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
+	private ArrayList<FeedItem> feedItems;
+	private DashboardItem[] menuItems;
+	
+	//Elements
+	private TabHost mTabHost;
+	private GridView gridMenu;
+	private ListView listFeed;
+	private FeedListAdapter feedListAdapter;
 	
 	//COM-related
 	private SlidingDrawer slidingDrawer;
@@ -99,18 +116,143 @@ public class Dashboard extends Activity {
     	//Set the content view
         setContentView(R.layout.dashboard);
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        feedItems = new ArrayList<FeedItem>();
         
-        //Set the attirbutes
-        fieldStatusUpdate = (EditText) findViewById(R.id.field_status);
-        valueFields = new String[2];
-        postDataArray = new PostData[2];
-        
+        //Fix the tabs
+    	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+    	setupTabs(
+    			
+    		new String[] { "Menu", "Feed" }, 
+    		new int[] { R.layout.tab_content_dashboard_menu, R.layout.tab_content_dashboard_feed }
+    		
+    	);
+    
         //Set sharedPreferences
         sharedPreferences = getSharedPreferences( Constants.fileSharedPrefs, 0);
 
+        //Build the menu items
+        menuItems = new DashboardItem[]{ 
+
+        	new DashboardItem(Constants.MENU_ME, "My soldier"),
+        	new DashboardItem(Constants.MENU_UNLOCKS, "My unlocks"),
+        	new DashboardItem(Constants.MENU_SOLDIER, "Find soldier"),
+        	new DashboardItem(Constants.MENU_PLATOON, "Find platoon"),
+        	new DashboardItem(Constants.MENU_COMPARE, "Compare battle scars"),
+        	new DashboardItem(Constants.MENU_SETTINGS, "Settings")
+        	
+        };
+        
         //Setup COM
         setupCOM();
+        
+        //Setup everything
+        switch( mTabHost.getCurrentTab() ) {
+        	
+        	case 0:
+        		drawHome();
+        		break;
+        		
+        	case 1:
+        		drawFeed(feedItems);
+        		break;
+        		
+        	default:
+        		break;
+        	
+        }
 	}	
+	
+	public final void drawHome() {
+    	
+    	//Let's see
+		if( gridMenu == null ) {
+			
+			gridMenu = (GridView) findViewById(R.id.grid_menu);
+			gridMenu.setAdapter( new GridMenuAdapter(this, menuItems, layoutInflater ) );
+		
+			//Do we have the onClick?
+			if( gridMenu.getOnItemClickListener() == null ) {
+				
+				gridMenu.setOnItemClickListener( 
+					
+					new OnItemClickListener() {
+
+						@Override
+						public void onItemClick( AdapterView<?> a, View v, int p, long id ) {
+
+							onMenuClick( id );
+								
+						}
+						
+					}
+						
+				);
+				
+			}
+			
+		}
+		
+    	
+    }
+    
+    public void drawFeed(ArrayList<FeedItem> items) {
+    	
+    	//Do we have it already? If no, we init
+		if( listFeed == null ) { 
+			
+			//
+			listFeed = ((ListView) findViewById(R.id.list_feed)); 
+			registerForContextMenu(listFeed);
+
+			//Set the attributes
+	        fieldStatusUpdate = (EditText) findViewById(R.id.field_status);
+	        valueFields = new String[2];
+	        postDataArray = new PostData[2];
+	        
+
+		}
+        
+		//If we don't have it defined, then we need to set it
+		if( listFeed.getAdapter() == null ) {
+			
+			//Create a new FeedListAdapter
+			feedListAdapter = new FeedListAdapter(this, items, layoutInflater);
+			listFeed.setAdapter( feedListAdapter );
+			
+			//Do we have the onClick?
+			if( listFeed.getOnItemClickListener() == null ) {
+				
+				listFeed.setOnItemClickListener( 
+						
+					new OnItemClickListener() {
+	
+						@Override
+						public void onItemClick( AdapterView<?> a, View v, int pos, long id ) {
+	
+							if( !((FeedItem) a.getItemAtPosition( pos ) ).getContent().equals( "" ) ) {
+								
+								View viewContainer = (View) v.findViewById(R.id.wrap_contentbox);
+								viewContainer.setVisibility( ( viewContainer.getVisibility() == View.GONE ) ? View.VISIBLE : View.GONE );
+							
+							}
+							
+						}
+						
+						
+						
+					}
+						
+				);
+			
+			}
+			
+		} else {
+			
+			
+			feedListAdapter.notifyDataSetChanged();
+		}
+    
+    }
 	
 	public void onClick(View v) {
 		
@@ -118,45 +260,6 @@ public class Dashboard extends Activity {
 			
 			refreshCOM();
 			
-		} else if ( v.getId() == R.id.button_unlocks ) {
-		
-			startActivity( new Intent(this, UnlockView.class) );
-			 
-		} else if( v.getId() == R.id.button_find_soldier ) {
-			
-			generateDialogFindSoldier(this).show();
-			
-		} else if( v.getId() == R.id.button_find_platoon ) {
-			
-			generateDialogFindPlatoon(this).show();
-			
-		} else if( v.getId() == R.id.button_view_self ) {
-			
-			startActivity( 
-					
-				new Intent(
-					
-					this, 
-					ProfileView.class
-					
-				).putExtra( 
-						
-					"profile",
-					new ProfileData(
-
-						sharedPreferences.getString( "battlelog_username", "" ),
-						sharedPreferences.getString( "battlelog_persona", "" ),
-						sharedPreferences.getLong( "battlelog_persona_id", 0 ),	
-						sharedPreferences.getLong( "battlelog_profile_id", 0 ),	
-						sharedPreferences.getLong( "battlelog_platform_id", 0 ),
-						sharedPreferences.getString( "battlelog_gravatar_hash", "" )
-						
-					)
-				
-				)
-				
-			);
-		
 		} else if( v.getId() == R.id.button_status ) {
 			
 			//Let's set 'em values
@@ -191,11 +294,6 @@ public class Dashboard extends Activity {
     		AsyncStatusUpdate asu = new AsyncStatusUpdate(this, false);
     		asu.execute( postDataArray );
     		return;
-			
-		} else if( v.getId() == R.id.button_compare ) {
-			
-			generateDialogCompare(this).show();
-			return;
 			
 		} else {
 			
@@ -498,7 +596,6 @@ public class Dashboard extends Activity {
 			context, 
 			listFriendsRequests, 
 			listFriends, 
-			listFriends, 
 			layoutInflater,
 			buttonRefresh,
 			slidingDrawerHandle
@@ -522,7 +619,6 @@ public class Dashboard extends Activity {
 					this, 
 					listFriendsRequests, 
 					listFriends, 
-					listFriends, 
 					layoutInflater,
 					buttonRefresh,
 					slidingDrawerHandle
@@ -541,7 +637,6 @@ public class Dashboard extends Activity {
 						
 					this, 
 					listFriendsRequests, 
-					listFriends, 
 					listFriends, 
 					layoutInflater,
 					buttonRefresh,
@@ -567,7 +662,9 @@ public class Dashboard extends Activity {
 	
     @Override
     public void onConfigurationChanged(Configuration newConfig){        
-        super.onConfigurationChanged(newConfig);
+    	
+        super.onConfigurationChanged(newConfig);       
+        
     }
     
     @Override
@@ -578,7 +675,7 @@ public class Dashboard extends Activity {
     	int menuId = 2;
     	
     	//Get the actual menu item and tag
-    	AdapterContextMenuInfo info =(AdapterContextMenuInfo) menuInfo;
+    	AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
     	ProfileData selectedUser = (ProfileData) info.targetView.getTag();
     	
     	//Get it right
@@ -699,4 +796,132 @@ public class Dashboard extends Activity {
 		startActivity( new Intent(this, ProfileView.class).putExtra( "profile", (ProfileData) a.getItemAtPosition( position )));
 		
 	}
+	
+	 private void setupTabs(final String[] tags, final int[] layouts) {
+
+		//Init
+    	TabHost.TabSpec spec;
+    	
+    	//Iterate them tabs
+    	for(int i = 0; i < tags.length; i++) {
+
+    		//Num
+    		final int num = i;
+			View tabview = createTabView(mTabHost.getContext(), tags[num]);
+			
+			//Let's set the content
+			spec = mTabHost.newTabSpec(tags[num]).setIndicator(tabview).setContent(
+	        		
+	    		new TabContentFactory() {
+	    			
+	            	public View createTabContent(String tag) {
+	            		
+	            		return layoutInflater.inflate( layouts[num], null );
+	    
+	            	}
+	            
+	            }
+	    		
+	        );
+			
+			//Add the tab
+			mTabHost.addTab( spec ); 
+    	
+    	}
+    	
+    	//Assign values
+    	mTabHost.setOnTabChangedListener(
+    			
+    		new OnTabChangeListener() {
+
+    			@Override
+    			public void onTabChanged(String tabId) {
+
+    				switch( getTabHost().getCurrentTab() ) {
+    					
+    					case 0:
+    						drawHome();
+    						break;
+    						
+    					case 1:
+    						drawFeed(null);
+    						break;
+    						
+    					default:
+    						break;
+    			
+    				}
+
+    			}
+    			
+    		}
+    		
+    	);
+    	
+    }
+
+    private final View createTabView(final Context context, final String text) {
+    	
+    	View view = LayoutInflater.from(context).inflate(R.layout.profile_tab_layout, null);
+    	TextView tv = (TextView) view.findViewById(R.id.tabsText);
+    	tv.setText(text);
+    	return view;
+    
+    }
+ 
+    private final void onMenuClick(long id) {
+    	
+    	if ( id == Constants.MENU_UNLOCKS ) {
+    		
+			startActivity( new Intent(this, UnlockView.class) );
+			 
+		} else if( id == Constants.MENU_SOLDIER ) {
+			
+			generateDialogFindSoldier(this).show();
+			
+		} else if( id == Constants.MENU_PLATOON ) {
+			
+			generateDialogFindPlatoon(this).show();
+			
+		} else if( id == Constants.MENU_ME ) {
+			
+			startActivity( 
+					
+				new Intent(
+					
+					this, 
+					ProfileView.class
+					
+				).putExtra( 
+						
+					"profile",
+					new ProfileData(
+
+						sharedPreferences.getString( "battlelog_username", "" ),
+						sharedPreferences.getString( "battlelog_persona", "" ),
+						sharedPreferences.getLong( "battlelog_persona_id", 0 ),	
+						sharedPreferences.getLong( "battlelog_profile_id", 0 ),	
+						sharedPreferences.getLong( "battlelog_platform_id", 0 ),
+						sharedPreferences.getString( "battlelog_gravatar_hash", "" )
+						
+					)
+				
+				)
+				
+			);
+		
+		} else if( id == Constants.MENU_COMPARE ) {
+			
+			generateDialogCompare(this).show();
+			return;
+			
+		} else {
+			
+			Toast.makeText( this, "Unimplemented menu alternative.", Toast.LENGTH_SHORT).show();
+			
+		}
+    	
+    	
+    }
+    
 }

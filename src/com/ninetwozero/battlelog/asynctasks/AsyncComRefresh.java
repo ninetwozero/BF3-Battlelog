@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -41,18 +42,17 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 	Context context;
 	SharedPreferences sharedPreferences;
 	ArrayList<ArrayList<ProfileData>> profileArray = new ArrayList<ArrayList<ProfileData>>();
-	ListView listRequests, listFriendsOnline, listFriendsOffline;
+	ListView listRequests, listFriends;
 	LayoutInflater layoutInflater;
 	Button buttonRefresh;
 	TextView drawerHandle;
 	
 	//Constructor
-	public AsyncComRefresh( Context c, ListView r, ListView fon, ListView fof, LayoutInflater l, Button b, TextView t ) { 
+	public AsyncComRefresh( Context c, ListView r, ListView f, LayoutInflater l, Button b, TextView t ) { 
 		
 		this.context = c;
 		this.listRequests = r;
-		this.listFriendsOnline = fon;
-		this.listFriendsOffline = fof;
+		this.listFriends = f;
 		this.layoutInflater = l;
 		this.sharedPreferences = context.getSharedPreferences(Constants.fileSharedPrefs, 0);
 		this.buttonRefresh = b;
@@ -74,7 +74,9 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 		try {
 		
 			//Let's get this!!
+			Log.d(Constants.debugTag, "Före...");
 			profileArray = WebsiteHandler.getFriendsCOM( sharedPreferences.getString( "battlelog_post_checksum", "") );
+			Log.d(Constants.debugTag, "Efter...");
 			return true;
 			
 		} catch ( WebsiteHandlerException e ) {
@@ -124,7 +126,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 				mergedArray.addAll( profileArray.get(2) );
 				
 				//Set the adapter
-				listFriendsOnline.setAdapter( new FriendListAdapter(context, mergedArray, layoutInflater) );
+				listFriends.setAdapter( new FriendListAdapter(context, mergedArray, layoutInflater) );
 				
 				
 			} else {

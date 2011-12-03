@@ -29,13 +29,15 @@ public class FeedItem {
 	private String[] username;
 	private boolean liked;
 	private ArrayList<CommentData> comments;
+	private String gravatarHash;
 	
 	//Construct
 	public FeedItem( 
 	
 		long i, long oid, long iid, long nDate, int num,
 		String t, String c, String type, String[] u,
-		boolean il, ArrayList<CommentData> cda
+		boolean il, ArrayList<CommentData> cda,
+		String im
 		
 	) {
 		
@@ -50,6 +52,7 @@ public class FeedItem {
 		this.username = u;
 		this.comments = cda;
 		this.liked = il;
+		this.gravatarHash = im;
 	}
 	
 	//Getters
@@ -193,4 +196,5 @@ public class FeedItem {
 	public String[] getUsername() { return this.username; }
 	public boolean isLiked() { return this.liked; }
 	public ArrayList<CommentData> getComments() { return this.comments; }
+	public String getAvatarForPost() { return this.gravatarHash; }
 }

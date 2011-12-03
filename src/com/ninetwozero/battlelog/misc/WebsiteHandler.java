@@ -26,11 +26,14 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
@@ -45,6 +48,7 @@ import com.ninetwozero.battlelog.datatypes.ProfileComparator;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
+import com.ninetwozero.battlelog.datatypes.TopStatsComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -1466,7 +1470,7 @@ public class WebsiteHandler {
 	
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
-			
+				
 				//JSON Objects
 				JSONObject contextObject = new JSONObject(httpContent).optJSONObject( "context" );
 				JSONObject profileCommonObject = contextObject.optJSONObject( "platoon" );
@@ -1483,7 +1487,7 @@ public class WebsiteHandler {
 					
 					//Get the current item
 					currItem = memberArray.optJSONObject( idArray.getString( counter ) );
-
+					
 					//Check the *rights* of the user
 					if( idArray.getString( counter ).equals("" + activeProfileId)  ) {
 						
@@ -1491,19 +1495,28 @@ public class WebsiteHandler {
 						
 					}
 					
-					//Add it to the members
-					tempProfile = new ProfileData(
+					
+					//If we have a persona >> add it to the members
+					if( !currItem.isNull( "persona" ) ) {
 
-						currItem.getJSONObject( "user" ).getString( "username" ),
-						currItem.getJSONObject( "persona" ).getString( "personaName" ),
-						Long.parseLong( currItem.getString( "personaId" ) ),
-						Long.parseLong( currItem.getString( "userId" ) ),
-						profileCommonObject.getLong( "platform" ),
-						currItem.optString( "gravatarMd5", "" ),
-						currItem.getJSONObject( "user" ).getJSONObject("presence").getBoolean( "isOnline" ),
-						currItem.getJSONObject( "user" ).getJSONObject("presence").getBoolean( "isPlaying" )
-							
-					);
+						tempProfile = new ProfileData(
+
+							currItem.getJSONObject( "user" ).getString( "username" ),
+							currItem.getJSONObject( "persona" ).getString( "personaName" ),
+							Long.parseLong( currItem.getString( "personaId" ) ),
+							Long.parseLong( currItem.getString( "userId" ) ),
+							profileCommonObject.getLong( "platform" ),
+							currItem.optString( "gravatarMd5", "" ),
+							currItem.getJSONObject( "user" ).getJSONObject("presence").getBoolean( "isOnline" ),
+							currItem.getJSONObject( "user" ).getJSONObject("presence").getBoolean( "isPlaying" )
+								
+						);
+						
+					} else {
+						
+						continue;
+						
+					}
 					
 					//Add the user to the correct *part* of the (future) merged list
 					switch( currItem.getInt( "membershipLevel" ) ) { 
@@ -1950,6 +1963,7 @@ public class WebsiteHandler {
 				tempMid.clear();
 				
 				//Get the *top player* Tops
+				PlatoonTopStatsItem highestSPM = null;
 				currObjNames = objectTop.names();
 				for( int i = 0; i < currObjNames.length(); i++ ) {
 
@@ -1966,17 +1980,7 @@ public class WebsiteHandler {
 					//Do we need to download a new image?
 					if( !WebsiteHandler.bitmapCache.containsKey( tempGravatarHash ) ) {
 						
-						WebsiteHandler.bitmapCache.put( 
-								
-							tempGravatarHash, 
-							WebsiteHandler.getGravatar( 
-									
-								tempGravatarHash, 
-								40
-								
-							)
-							
-						);
+						WebsiteHandler.cacheGravatar( tempGravatarHash, 40 );
 						
 					}
 					
@@ -2002,8 +2006,29 @@ public class WebsiteHandler {
 						
 					);
 					
+					//Store it if it's the highest
+					if( highestSPM == null || highestSPM.getSPM() < arrayTop.get( i ).getSPM() ) {
+						
+						highestSPM = arrayTop.get( i );
+						
+					}
+					
 					
 				}
+				
+				//Set the best & sort
+				arrayTop.add( 
+				
+					new PlatoonTopStatsItem(
+					
+						"TOP",
+						highestSPM.getSPM(),
+						highestSPM.getProfile()
+							
+					)	
+						
+				);
+				Collections.sort( arrayTop, new TopStatsComparator() );
 
 				//Return it now!!
 				return new PlatoonStats(
@@ -2038,12 +2063,14 @@ public class WebsiteHandler {
 		try {
 			
 			//Variables that we need
-			JSONObject currItem;
-			JSONObject tempSubItem;
-			JSONObject tempCommentItem;
+			JSONObject currItem = null;
+			JSONObject tempSubItem = null;
+			JSONObject tempCommentItem = null;
+			JSONObject ownerObject = null;
+			JSONObject otherUserObject = null;
 			FeedItem tempFeedItem = null;
+			ArrayList<CommentData> comments = null;
 			ArrayList<FeedItem> feedItemArray = new ArrayList<FeedItem>();
-			ArrayList<CommentData> comments;
 			
 			//Iterate over the feed
 			for( int i = 0; i < jsonArray.length(); i++ ) {
@@ -2053,7 +2080,8 @@ public class WebsiteHandler {
 				
 				//Each loop is an object
 				currItem = jsonArray.getJSONObject( i );
-				
+				ownerObject = currItem.getJSONObject( "owner" );
+
 				//Let's get the comments
 				if( currItem.getInt("numComments") > 2 ) {
 					
@@ -2095,6 +2123,7 @@ public class WebsiteHandler {
 				//Variables if *modification* is needed
 				String itemTitle = null;
 				String itemContent = null;
+				String tempGravatarHash = ownerObject.getString("gravatarMd5");
 				
 				//Process the likes
 				JSONArray likeUsers = currItem.getJSONArray( "likeUserIds" );
@@ -2133,12 +2162,13 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] { 
 							
-							currItem.getJSONObject("owner").getString("username"), 
+							ownerObject.getString("username"), 
 							tempSubItem.getJSONObject( "friendUser" ).getString( "username" )
 							
 						},
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 					
@@ -2165,12 +2195,13 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] {
 							
-							currItem.getJSONObject("owner").getString("username"), 
+							ownerObject.getString("username"), 
 							null 
 						
 						},
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 					
@@ -2197,12 +2228,13 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] {
 							
-							currItem.getJSONObject("owner").getString("username"), 
+							ownerObject.getString("username"), 
 							null 
 						
 						},
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 					
@@ -2261,12 +2293,13 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] { 
 							
-							currItem.getJSONObject("owner").getString("username"), 
+							ownerObject.getString("username"), 
 							null 
 						
 						},
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 					
@@ -2288,12 +2321,13 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] {
 							
-							currItem.getJSONObject("owner").getString("username"),
+							ownerObject.getString("username"),
 							null 
 							
 						},
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 				
@@ -2315,12 +2349,13 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] { 
 							
-							currItem.getJSONObject("owner").getString("username"), 
+							ownerObject.getString("username"), 
 							null 
 						
 						},
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 					
@@ -2356,12 +2391,13 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] { 
 							
-							currItem.getJSONObject("owner").getString("username"), 
+							ownerObject.getString("username"), 
 							null 
 							
 						},
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 	
@@ -2402,12 +2438,13 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] {
 							
-							currItem.getJSONObject("owner").getString("username"), 
+							ownerObject.getString("username"), 
 							null 
 							
 						},
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 				
@@ -2437,11 +2474,12 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] { 
 								
-								currItem.getJSONObject("owner").getString("username"),
+								ownerObject.getString("username"),
 								null 
 						},								
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 				
@@ -2471,11 +2509,12 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] { 
 								
-								currItem.getJSONObject("owner").getString("username"),
+								ownerObject.getString("username"),
 								null 
 						},								
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 				
@@ -2505,11 +2544,12 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] { 
 								
-								currItem.getJSONObject("owner").getString("username"),
+								ownerObject.getString("username"),
 								null 
 						},								
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 				
@@ -2539,11 +2579,12 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] { 
 							
-							currItem.getJSONObject("owner").getString("username"),
+							ownerObject.getString("username"),
 							null 
 						},
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 					
@@ -2575,12 +2616,13 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] { 
 						
-							currItem.getJSONObject("owner").getString("username"),
+							ownerObject.getString("username"),
 							null 
 							
 						},
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 					
@@ -2616,12 +2658,13 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] { 
 							
-							currItem.getJSONObject("owner").getString("username"), 
+							ownerObject.getString("username"), 
 							tempSubItem.getJSONObject( "friend" ).getString( "username" ) 
 						
 						},
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 					
@@ -2652,12 +2695,13 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] { 
 							
-							currItem.getJSONObject("owner").getString("username"),
+							ownerObject.getString("username"),
 							null 
 							
 						},
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 					
@@ -2675,6 +2719,10 @@ public class WebsiteHandler {
 	
 					);
 					
+					//Let's get it!
+					otherUserObject = tempSubItem.getJSONObject( "writerUser" );
+					tempGravatarHash = otherUserObject.getString( "gravatarMd5" );
+					
 					//Temporary storage						
 					tempFeedItem = new FeedItem(
 	
@@ -2688,12 +2736,13 @@ public class WebsiteHandler {
 						currItem.getString("event"),
 						new String[] { 
 							
-							tempSubItem.getJSONObject( "writerUser" ).getString( "username" ), 
-							currItem.getJSONObject("owner").getString("username") 
+							otherUserObject.getString( "username" ), 
+							ownerObject.getString("username") 
 							
 						},
 						liked,
-						comments
+						comments,
+						tempGravatarHash
 							
 					);
 					
@@ -2706,6 +2755,13 @@ public class WebsiteHandler {
 				
 				//Append it to the array
 				if( tempFeedItem != null ) { feedItemArray.add( tempFeedItem ); }
+				
+				//Before I forget - let's download the gravatar too!
+				if( !WebsiteHandler.bitmapCache.containsKey( tempGravatarHash ) ) {
+
+					WebsiteHandler.cacheGravatar( tempGravatarHash, 40 );
+					
+				}
 				
 			}
 			
@@ -3068,7 +3124,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static Bitmap getGravatar(String hash, int size) throws WebsiteHandlerException {
+	public static Bitmap downloadGravatarToCache(String hash, int size) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -3107,6 +3163,21 @@ public class WebsiteHandler {
 		
 	}
 	
+	public static Bitmap getGravatarFromCache(String identifier, Resources r) {
+		
+		if( WebsiteHandler.bitmapCache.containsKey( identifier ) ) {
+					
+			return WebsiteHandler.bitmapCache.get( identifier );
+				
+		} else {
+			
+			return BitmapFactory.decodeResource( r, R.drawable.test_avatar_48);
+			
+		}
+		
+	}
+	
+	
 	public static Bitmap getImage(String url) throws WebsiteHandlerException {
 	
 		try {
@@ -3117,6 +3188,40 @@ public class WebsiteHandler {
 		
 			ex.printStackTrace();
 			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+		
+	}
+	
+	public static void cacheGravatar(String h, int s) {
+	
+		try { 
+			
+			
+			if( WebsiteHandler.bitmapCache.size() > Constants.bitmapCacheLimit ) {
+				
+				//Loops & removes five bitmaps from the cache
+				int counter = 0;
+				for( String identifier : WebsiteHandler.bitmapCache.keySet() ) {
+	
+					//> 4 = stop
+					if( counter > 4 ) { break; }
+					
+					//Remove and increment
+					WebsiteHandler.bitmapCache.remove(identifier);
+					counter++;			
+				
+				}
+			
+			}
+		
+			//Add it!
+			WebsiteHandler.bitmapCache.put( h, null );
+			WebsiteHandler.bitmapCache.put( h, WebsiteHandler.downloadGravatarToCache(h, s) );
+		
+		} catch(Exception ex) {
+			
+			ex.printStackTrace();
 			
 		}
 		

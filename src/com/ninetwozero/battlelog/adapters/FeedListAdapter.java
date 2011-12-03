@@ -22,11 +22,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class FeedListAdapter extends BaseAdapter {
 	
@@ -95,6 +97,11 @@ public class FeedListAdapter extends BaseAdapter {
 		String textComments = ( currentItem.getNumComments() == 1 )? "{num} comment" : "{num} comments";
 		
 		//Set the fields
+		((ImageView) convertView.findViewById(R.id.image_avatar)).setImageBitmap( 
+				
+			WebsiteHandler.getGravatarFromCache(currentItem.getAvatarForPost(), context.getResources()) 
+					
+		);
 		((TextView) convertView.findViewById(R.id.text_date)).setText( PublicUtils.getRelativeDate( currentItem.getDate() ) );
 		((TextView) convertView.findViewById(R.id.text_hooah)).setText( textHooah.replace("{num}", currentItem.getNumLikes() + ""));
 		((TextView) convertView.findViewById(R.id.text_comment)).setText( 
