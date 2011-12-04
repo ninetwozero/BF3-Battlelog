@@ -8,12 +8,19 @@
 	android:paddingLeft="10dp"
 	android:paddingRight="10dp"
 >		
+	
+	<TextView 
+	    style="@style/InfoHeading"
+	    android:id="@+id/feed_username"
+	    android:text="NINETWOZERO"
+		android:padding="5dp"
+	/>
 	<RelativeLayout
 	    android:id="@+id/feed_update"
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_alignParentBottom="true"
-	    android:paddingTop="5dp"
+	    android:paddingBottom="10dp"
+	    android:layout_below="@id/feed_username"
 	>  
 		<Button
 		    style="@style/RegularButton"
@@ -23,10 +30,10 @@
 		    android:layout_centerVertical="true"
 		/>
 		<EditText
-		  	android:id="@+id/field_status"
+		  	android:id="@+id/field_message"
 		  	android:layout_width="fill_parent"
 		  	android:layout_height="wrap_content"
-		  	android:hint="Update your status text"
+		  	android:hint="Write in feed"
 		  	android:layout_toLeftOf="@id/button_status"
 		    android:layout_marginRight="6dp"
 		    android:layout_centerVertical="true"
@@ -38,7 +45,7 @@
 	    android:id="@+id/list_feed"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-		android:layout_above="@id/feed_update"
+		android:layout_below="@id/feed_update"
 		android:paddingBottom="5dp"
 	/>
 	<RelativeLayout

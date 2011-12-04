@@ -14,20 +14,19 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 
-public class ProfileData implements Serializable {
-
-	//Serializable
-	private static final long serialVersionUID = 4037268866097818638L;
+public class ProfileData implements Parcelable {
 
 	//Attributes
 	private String accountName, personaName, gravatarHash;
 	private long personaId, profileId, platformId;
 	private boolean isPlaying, isOnline;
 	
-	//Construct
+	//Constructs
+	public ProfileData(Parcel in) { readFromParcel(in); }
 	public ProfileData(String an, String pn, long p, long pf, long n, String im) {
 		
 		this.accountName = an;
@@ -41,7 +40,6 @@ public class ProfileData implements Serializable {
 		this.isPlaying = false;
 		
 	}
-	
 	public ProfileData(String an, String pn,  long p, long pf, long n, String im, boolean io, boolean ip ) {
 		
 		this(an, pn, p, pf, n, im);
@@ -62,7 +60,59 @@ public class ProfileData implements Serializable {
 	public boolean isOnline() { return this.isOnline; }
 	public boolean isPlaying() { return this.isPlaying; }
 	
+	@Override
+	public void writeToParcel( Parcel dest, int flags ) {
+		
+		//Everything else
+		dest.writeString( this.accountName );
+		dest.writeString( this.personaName );
+		dest.writeLong( this.profileId );
+		dest.writeLong( this.personaId );
+		dest.writeLong( this.platformId );
+		dest.writeString( this.gravatarHash );
+		dest.writeInt( this.isOnline? 1 : 0 );
+		dest.writeInt( this.isPlaying? 1 : 0 );
+	}
+	
+	private void readFromParcel(Parcel in) {
+
+		//Let's retrieve them, same order as above
+		this.accountName = in.readString();
+		this.personaName = in.readString();
+		this.profileId = in.readLong();
+		this.personaId = in.readLong();
+		this.platformId = in.readLong();
+		this.gravatarHash = in.readString();
+		this.isOnline = (in.readInt() == 1);
+		this.isPlaying = (in.readInt() == 1);
+	
+	}
+	
+	@Override
+	public int describeContents() { return 0; }
+	
+	public static final Parcelable.Creator<ProfileData> CREATOR = new Parcelable.Creator<ProfileData>() {
+	
+		public ProfileData createFromParcel(Parcel in) { return new ProfileData(in); }
+        public ProfileData[] newArray(int size) { return new ProfileData[size]; }
+	
+	};
+	
+	
 	//toString
 	@Override
-	public String toString() { return getAccountName() + ":" + getPersonaId() + ":" + getProfileId() + ":" + getPlatformId(); }
+	public String toString() { 
+		
+		return (
+				
+			getAccountName() + ":" + 
+			getPersonaName() + ":" + 
+			getPersonaId() + ":" + 
+			getProfileId() + ":" + 
+			getPlatformId() + ":" + 
+			isOnline() + ":" + 
+			isPlaying() 
+		
+		);
+	}
 }

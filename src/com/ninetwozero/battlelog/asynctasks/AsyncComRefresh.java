@@ -74,9 +74,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 		try {
 		
 			//Let's get this!!
-			Log.d(Constants.debugTag, "Före...");
 			profileArray = WebsiteHandler.getFriendsCOM( sharedPreferences.getString( "battlelog_post_checksum", "") );
-			Log.d(Constants.debugTag, "Efter...");
 			return true;
 			
 		} catch ( WebsiteHandlerException e ) {

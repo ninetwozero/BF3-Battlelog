@@ -148,7 +148,7 @@ public class CompareView extends Activity {
 			this.sharedPreferences.getString( "battlelog_gravatar_hash", "" )
 		
 		);
-        playerTwo = (ProfileData) getIntent().getSerializableExtra( "profile" );
+        playerTwo = (ProfileData) getIntent().getParcelableExtra( "profile" );
         
         if( tvPersona[0] == null ) { this.grabAllViews(); }
         this.reloadLayout();

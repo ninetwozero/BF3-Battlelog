@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.Dashboard;
 import com.ninetwozero.battlelog.datatypes.PostData;
+import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -35,6 +36,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 	boolean savePassword;
 	SharedPreferences sharedPreferences;
 	SharedPreferences.Editor spEdit;
+	ProfileData profile;
 	
 	//Constructor
 	public AsyncLogin( Context c, boolean w ) { 
@@ -74,8 +76,10 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 		
 		try {
 		
-			return WebsiteHandler.doLogin( context, arg0, savePassword );
-		
+			profile = WebsiteHandler.doLogin( context, arg0, savePassword );
+			
+			return (profile != null)? true : false;
+			
 		} catch ( WebsiteHandlerException e ) {
 			
 			return false;
@@ -91,8 +95,24 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 			
 			if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
 			
-			if( results ) { this.context.startActivity( new Intent(this.context, Dashboard.class) ); }
-			else { Toast.makeText( this.context, "Login failed.", Toast.LENGTH_SHORT).show(); }
+			if( results ) { 
+				
+				this.context.startActivity( 
+						
+					new Intent(this.context, Dashboard.class).putExtra( 
+							
+						"myProfile", 
+						profile
+						
+					) 
+					
+				); 
+				
+			} else {
+				
+				Toast.makeText( this.context, "Login failed.", Toast.LENGTH_SHORT).show(); 
+				
+			}
 			
 		}
 		return;

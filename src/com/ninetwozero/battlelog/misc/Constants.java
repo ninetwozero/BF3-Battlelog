@@ -62,6 +62,7 @@ public final class Constants {
 	
 	//URLs to JSON-files (FEED-related)
 	public static final String urlFeed = urlMain + "feed/?start={NUMSTART}"; /* TODO */
+	public static final String urlFeedGlobal = urlMain + "feed/homeevents/?start={NUMSTART}";
 	public static final String urlFeedComments = urlMain + "feed/getComments/{POST_ID}/"; /* TODO */
 	public static final String urlUserFeed = urlMain + "feed/profileevents/{POST_ID}/?start={NUMSTART}"; /* TODO */
 	

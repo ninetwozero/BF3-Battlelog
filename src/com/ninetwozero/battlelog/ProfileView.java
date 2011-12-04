@@ -27,6 +27,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -56,8 +57,8 @@ import com.ninetwozero.battlelog.asynctasks.AsyncFriendRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
@@ -100,6 +101,12 @@ public class ProfileView extends TabActivity {
         this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         
+        for( String key : getIntent().getExtras().keySet()) {
+        	
+        	Log.d(Constants.debugTag, key + " => " + getIntent().getExtras().get(key).toString() );
+        	
+        }
+        
     	//Get the intent
         if( !getIntent().hasExtra( "profile" ) ) {
         	
@@ -116,7 +123,7 @@ public class ProfileView extends TabActivity {
         	
         } else {
         	
-        	profileData = (ProfileData) getIntent().getSerializableExtra( "profile" );
+        	profileData = (ProfileData) getIntent().getParcelableExtra( "profile" );
         	
         }
         

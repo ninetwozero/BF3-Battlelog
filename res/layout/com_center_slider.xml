@@ -53,63 +53,41 @@
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:background="#FDFDFD"
-	>	    
-		<Button
-	    	android:id="@+id/button_refresh" 
-			android:layout_width="fill_parent"
-			android:layout_height="40dp"
-	     	android:text="Refresh now"
-	     	android:background="@drawable/gradient_greytodarkgrey"
-	     	android:textColor="#FFFFFF"
-	    	android:gravity="center"
-	     	android:layout_alignParentBottom="true"
-	     	android:onClick="onClick"
-	     />
-		<TextView 
-		    android:id="@+id/text_empty_com"
-		    android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="No friends found. :-("
-			android:layout_centerInParent="true"
-			android:visibility="gone"
-	    />
-	    <View 
-			android:id="@+id/topalign"  
-			android:layout_width="fill_parent"
-			android:layout_height="0dp"
-		/>
-	    <RelativeLayout
-	    	android:id="@+id/wrap_friends_requests"  
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content" 
-		>
-			<TextView
-			    style="@style/FriendHeadingRow"
-				android:id="@+id/header_friends_requests"
-				android:text="Friend requests"
-	    	/>
-		    <ListView
-		    	android:id="@+id/list_requests"  
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_below="@id/header_friends_requests"
-		    />
-	    </RelativeLayout>
-	    <View 
-			android:id="@+id/centeralign"  
-			android:layout_width="fill_parent"
-			android:layout_height="0dp"
-			android:layout_below="@id/wrap_friends_requests"
-			android:layout_alignWithParentIfMissing="@id/topalign" 
-		/>
-	   <ListView
-	    	android:id="@+id/list_friends"  
+	>	<TabHost
+			android:id="@+id/tabhost_com" 
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
-			android:layout_alignWithParentIfMissing="@id/topalign"
-			android:layout_above="@id/button_refresh"
-			android:layout_below="@id/wrap_friends_requests"
-			android:fastScrollEnabled="true"
-	    />
+		>
+			<RelativeLayout 
+				android:layout_width="fill_parent" 
+				android:layout_height="fill_parent"
+			>
+				<TabWidget 
+				    android:id="@+id/com_tabs"
+					android:layout_width="fill_parent" 
+					android:layout_height="wrap_content" 
+					android:layout_alignParentTop="true"
+				/>
+				<Button
+			    	android:id="@+id/button_refresh" 
+					android:layout_width="fill_parent"
+					android:layout_height="40dp"
+			     	android:text="Refresh now"
+			     	android:background="@drawable/gradient_greytodarkgrey"
+			     	android:textColor="#FFFFFF"
+			    	android:gravity="center"
+			     	android:layout_alignParentBottom="true"
+			     	android:onClick="onClick"
+			     />
+				<FrameLayout 
+				    android:id="@android:id/tabcontent"
+					android:layout_width="fill_parent" 
+					android:layout_height="fill_parent"
+					android:layout_below="@id/com_tabs"
+					android:layout_above="@id/button_refresh"
+				>
+				</FrameLayout>
+			</RelativeLayout>    
+		</TabHost>
 	</RelativeLayout>
 </SlidingDrawer>

@@ -24,7 +24,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -42,7 +44,6 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.TabHost;
@@ -55,11 +56,13 @@ import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.adapters.GridMenuAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRefresh;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
+import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToPlatoonView;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToProfileView;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
+import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.DashboardItem;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PostData;
@@ -83,10 +86,11 @@ public class Dashboard extends TabActivity {
 	private DashboardItem[] menuItems;
 	
 	//Elements
-	private TabHost mTabHost;
+	private TabHost mTabHost, cTabHost;
 	private GridView gridMenu;
 	private ListView listFeed;
 	private FeedListAdapter feedListAdapter;
+	private TextView feedStatusText;
 	
 	//COM-related
 	private SlidingDrawer slidingDrawer;
@@ -95,17 +99,24 @@ public class Dashboard extends TabActivity {
 	private OnDrawerCloseListener onDrawerCloseListener;
 	private ListView listFriendsRequests, listFriends;
 	private Button buttonRefresh;
-	private AsyncComRefresh asyncComRefresh;
 	
 	//Async
-	AsyncLogout asyncLogout = null;
+	private AsyncFeedRefresh asyncFeedRefresh;
+	private AsyncComRefresh asyncComRefresh;
+	private AsyncLogout asyncLogout;
+	
+	//Misc
+	private static ProfileData profile;
 	
 	@Override
     public void onCreate(Bundle icicle) {
     
     	//onCreate - save the instance state
     	super.onCreate(icicle);
-    	
+
+        //Set sharedPreferences
+        sharedPreferences = getSharedPreferences( Constants.fileSharedPrefs, 0);
+        
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
     		
@@ -113,22 +124,40 @@ public class Dashboard extends TabActivity {
     	
     	}
     	
+    	//We should've gotten a profile
+    	if( Dashboard.profile == null ) {
+    		
+    		if( getIntent().hasExtra( "myProfile" ) ) {
+    			
+    			Dashboard.profile = (ProfileData) getIntent().getParcelableExtra( "myProfile" );
+    			
+    		}
+    		
+    	}
+    	
     	//Set the content view
         setContentView(R.layout.dashboard);
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         feedItems = new ArrayList<FeedItem>();
+        refreshFeed();
         
         //Fix the tabs
     	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
-    	setupTabs(
+    	cTabHost = (TabHost) findViewById(R.id.tabhost_com);
+    	
+    	//Let's set them up
+    	setupTabsPrimary(
     			
     		new String[] { "Menu", "Feed" }, 
     		new int[] { R.layout.tab_content_dashboard_menu, R.layout.tab_content_dashboard_feed }
-    		
+
     	);
-    
-        //Set sharedPreferences
-        sharedPreferences = getSharedPreferences( Constants.fileSharedPrefs, 0);
+    	setupTabsSecondary(
+    			
+    		new String[] { "Friends", "Notifications" }, 
+    		new int[] { R.layout.tab_content_com_friends, R.layout.tab_content_com_notifications }
+    		
+    	); /*TODO setup (check@stackoverflow)*/
 
         //Build the menu items
         menuItems = new DashboardItem[]{ 
@@ -144,22 +173,7 @@ public class Dashboard extends TabActivity {
         
         //Setup COM
         setupCOM();
-        
-        //Setup everything
-        switch( mTabHost.getCurrentTab() ) {
-        	
-        	case 0:
-        		drawHome();
-        		break;
-        		
-        	case 1:
-        		drawFeed(feedItems);
-        		break;
-        		
-        	default:
-        		break;
-        	
-        }
+
 	}	
 	
 	public final void drawHome() {
@@ -197,11 +211,15 @@ public class Dashboard extends TabActivity {
     
     public void drawFeed(ArrayList<FeedItem> items) {
     	
+    	Log.d(Constants.debugTag, "listFeed => " + listFeed);
+    	Log.d(Constants.debugTag, "# of items => " + items.size());
+    	
     	//Do we have it already? If no, we init
 		if( listFeed == null ) { 
 			
-			//
+			//Get the ListView
 			listFeed = ((ListView) findViewById(R.id.list_feed)); 
+			feedStatusText = ((TextView) findViewById(R.id.status_feed));
 			registerForContextMenu(listFeed);
 
 			//Set the attributes
@@ -211,14 +229,26 @@ public class Dashboard extends TabActivity {
 	        
 
 		}
+		
+
+		//If empty --> show other
+		if( items == null || items.size() == 0 ) {
+		
+			feedStatusText.setVisibility( View.VISIBLE );
+			
+		} else {
+			
+			feedStatusText.setVisibility( View.GONE );
+			
+		}
         
 		//If we don't have it defined, then we need to set it
 		if( listFeed.getAdapter() == null ) {
-			
+
 			//Create a new FeedListAdapter
 			feedListAdapter = new FeedListAdapter(this, items, layoutInflater);
 			listFeed.setAdapter( feedListAdapter );
-			
+				
 			//Do we have the onClick?
 			if( listFeed.getOnItemClickListener() == null ) {
 				
@@ -248,10 +278,11 @@ public class Dashboard extends TabActivity {
 			
 		} else {
 			
-			
+			feedListAdapter.setItemArray( items );
 			feedListAdapter.notifyDataSetChanged();
+		
 		}
-    
+		
     }
 	
 	public void onClick(View v) {
@@ -291,7 +322,7 @@ public class Dashboard extends TabActivity {
     		}
     		
     		//Do the async
-    		AsyncStatusUpdate asu = new AsyncStatusUpdate(this, false);
+    		AsyncStatusUpdate asu = new AsyncStatusUpdate(this, new AsyncFeedRefresh(this, Dashboard.profile.getProfileId() ));
     		asu.execute( postDataArray );
     		return;
 			
@@ -317,7 +348,21 @@ public class Dashboard extends TabActivity {
 	public boolean onOptionsItemSelected( MenuItem item ) {
 
 		//Let's act!
-		if( item.getItemId() == R.id.option_logout ) {
+		if( item.getItemId() == R.id.option_refresh ) {
+			
+			new AsyncFeedRefresh(context, Dashboard.profile.getProfileId()).execute();
+			new AsyncComRefresh(
+					
+				context, 
+				listFriendsRequests, 
+				listFriends, 
+				layoutInflater,
+				buttonRefresh,
+				slidingDrawerHandle
+				
+			);
+			
+		} else if( item.getItemId() == R.id.option_logout ) {
 			
 			new AsyncLogout(this).execute();
 			
@@ -337,6 +382,10 @@ public class Dashboard extends TabActivity {
 			if( slidingDrawer.isOpened() ) {
 			
 				slidingDrawer.animateClose();
+				
+			} else if( mTabHost.getCurrentTab() != 0 ) { 
+			
+				mTabHost.setCurrentTab( 0 );
 				
 			} else {
 				
@@ -605,6 +654,19 @@ public class Dashboard extends TabActivity {
 		
 	}
 	
+	private void refreshFeed() {
+		
+		//Feed refresh!
+		asyncFeedRefresh = new AsyncFeedRefresh(
+			
+			context,
+			Dashboard.profile.getProfileId()
+				
+		);
+		asyncFeedRefresh.execute();
+		
+	}
+	
 	public void onRequestActionClick(View v) {
 
 		//...
@@ -676,21 +738,42 @@ public class Dashboard extends TabActivity {
     	
     	//Get the actual menu item and tag
     	AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-    	ProfileData selectedUser = (ProfileData) info.targetView.getTag();
     	
     	//Get it right
-    	if( view.getId()  == R.id.list_requests ) { menuId = 0;  } 
-    	else if( view.getId() == R.id.list_friends) { menuId = 0; }
-        		
-    	//Wait, is the position 0? If so, it's the heading...
-    	if( !selectedUser.getAccountName().startsWith( "0000000" ) ) {
+    	if( view.getId()  == R.id.list_requests || view.getId() == R.id.list_friends ) { menuId = 0;  } 
+    	else if( view.getId() == R.id.list_feed ) { menuId = 1; }
+
+    	//Do the right thing
+    	if(menuId == 0) { 
     		
-			menu.add( menuId, 0, 0, "Open chat");
-			menu.add( menuId, 1, 0, "View soldier");
-			menu.add( menuId, 2, 0, "Compare battle scars");
-			
+    		//Get the "object"
+        	ProfileData selectedUser = (ProfileData) info.targetView.getTag();
+    		
+    		//Wait, is the position 0? If so, it's the heading...
+	    	if( !selectedUser.getAccountName().startsWith( "0000000" ) ) {
+	    		
+				menu.add( menuId, 0, 0, "Open chat");
+				menu.add( menuId, 1, 0, "View soldier");
+				menu.add( menuId, 2, 0, "Compare battle scars");
+				
+	    	}
+		
+    	} else if( menuId == 1 ) {
+    	
+    		//Show the menu
+    		if( !((FeedItem) ((View) info.targetView).getTag()).isLiked() ) {
+    			
+    			menu.add( menuId, 0, 0, "Hooah!");
+    		
+    		} else {
+    			
+    			menu.add( menuId, 0, 0, "Un-hooah!");
+    			
+    		}
+    		menu.add( menuId, 1, 0, "View comments");
+    		
     	}
-			
+    	
 		return;
 	
 	}
@@ -779,7 +862,63 @@ public class Dashboard extends TabActivity {
 					
 				}
 					
-	    	} else {}
+	    	} else if( item.getGroupId() == 1 ) {
+	    		
+	    		//REQUESTS
+				if( item.getItemId() == 0 ) {
+						
+					new AsyncFeedHooah(
+							
+						this, 
+						info.id, 
+						false,
+						( (FeedItem)info.targetView.getTag()).isLiked(),
+						new AsyncFeedRefresh(
+								
+							this, 
+							Dashboard.profile.getProfileId()
+							
+						)
+					
+					).execute();
+				
+				} else if( item.getItemId() == 1 ){
+					
+					//Yeah
+					startActivity(
+							
+						new Intent(
+								
+							this, 
+							CommentView.class
+							
+						).putExtra(
+								
+							"comments", 
+							(ArrayList<CommentData>) ((FeedItem) info.targetView.getTag()).getComments()
+					
+						).putExtra( 
+
+							"postId", 
+							((FeedItem) info.targetView.getTag()).getId()
+							
+						).putExtra(
+								
+							"profileId",
+							((FeedItem) info.targetView.getTag()).getOwnerId()
+							
+						).putExtra(
+						
+							"isFriend",
+							true
+								
+						)
+						
+					);
+					
+				}
+	    		
+	    	}
 		
 		} catch ( WebsiteHandlerException e ) {
 				
@@ -797,26 +936,26 @@ public class Dashboard extends TabActivity {
 		
 	}
 	
-	 private void setupTabs(final String[] tags, final int[] layouts) {
+	private void setupTabsPrimary( final String[] titleArray, final int[] layoutArray ) {
 
 		//Init
     	TabHost.TabSpec spec;
     	
     	//Iterate them tabs
-    	for(int i = 0; i < tags.length; i++) {
+    	for(int i = 0; i < titleArray.length; i++) {
 
     		//Num
     		final int num = i;
-			View tabview = createTabView(mTabHost.getContext(), tags[num]);
+			View tabview = createTabView(mTabHost.getContext(), titleArray[num]);
 			
 			//Let's set the content
-			spec = mTabHost.newTabSpec(tags[num]).setIndicator(tabview).setContent(
+			spec = mTabHost.newTabSpec(titleArray[num]).setIndicator(tabview).setContent(
 	        		
 	    		new TabContentFactory() {
 	    			
 	            	public View createTabContent(String tag) {
 	            		
-	            		return layoutInflater.inflate( layouts[num], null );
+	            		return layoutInflater.inflate( layoutArray[num], null );
 	    
 	            	}
 	            
@@ -826,6 +965,8 @@ public class Dashboard extends TabActivity {
 			
 			//Add the tab
 			mTabHost.addTab( spec ); 
+			
+			
     	
     	}
     	
@@ -837,14 +978,14 @@ public class Dashboard extends TabActivity {
     			@Override
     			public void onTabChanged(String tabId) {
 
-    				switch( getTabHost().getCurrentTab() ) {
+    				switch( mTabHost.getCurrentTab() ) {
     					
     					case 0:
     						drawHome();
     						break;
     						
     					case 1:
-    						drawFeed(null);
+    						drawFeed(feedItems);
     						break;
     						
     					default:
@@ -860,6 +1001,70 @@ public class Dashboard extends TabActivity {
     	
     }
 
+	private void setupTabsSecondary( final String[] titleArray, final int[] layoutArray ) {
+
+		//Init
+    	TabHost.TabSpec spec;
+    	
+    	//Iterate them tabs
+    	for(int i = 0; i < titleArray.length; i++) {
+
+    		//Num
+    		final int num = i;
+			View tabview = createTabView(cTabHost.getContext(), titleArray[num]);
+			
+			//Let's set the content
+			spec = cTabHost.newTabSpec(titleArray[num]).setIndicator(tabview).setContent(
+	        		
+	    		new TabContentFactory() {
+	    			
+	            	public View createTabContent(String tag) {
+	            		
+	            		return layoutInflater.inflate( layoutArray[num], null );
+	    
+	            	}
+	            
+	            }
+	    		
+	        );
+			
+			//Add the tab
+			cTabHost.addTab( spec ); 
+    	
+    	}
+    	
+    	//Assign values
+    	cTabHost.setOnTabChangedListener(
+    			
+    		new OnTabChangeListener() {
+
+    			@Override
+    			public void onTabChanged(String tabId) {
+
+    				switch( cTabHost.getCurrentTab() ) {
+    					
+    					case 0:
+    						drawHome();
+    						break;
+    						
+    					case 1:
+    						drawFeed(feedItems);
+    						break;
+    						
+    					default:
+    						break;
+    			
+    				}
+
+    			}
+    			
+    		}
+    		
+    	);
+    	
+    }
+
+	
     private final View createTabView(final Context context, final String text) {
     	
     	View view = LayoutInflater.from(context).inflate(R.layout.profile_tab_layout, null);
@@ -885,6 +1090,8 @@ public class Dashboard extends TabActivity {
 			
 		} else if( id == Constants.MENU_ME ) {
 			
+			Log.d(Constants.debugTag, "INPUT: " + Dashboard.profile.toString() );
+			
 			startActivity( 
 					
 				new Intent(
@@ -895,16 +1102,7 @@ public class Dashboard extends TabActivity {
 				).putExtra( 
 						
 					"profile",
-					new ProfileData(
-
-						sharedPreferences.getString( "battlelog_username", "" ),
-						sharedPreferences.getString( "battlelog_persona", "" ),
-						sharedPreferences.getLong( "battlelog_persona_id", 0 ),	
-						sharedPreferences.getLong( "battlelog_profile_id", 0 ),	
-						sharedPreferences.getLong( "battlelog_platform_id", 0 ),
-						sharedPreferences.getString( "battlelog_gravatar_hash", "" )
-						
-					)
+					Dashboard.profile
 				
 				)
 				
@@ -922,6 +1120,112 @@ public class Dashboard extends TabActivity {
 		}
     	
     	
+    }
+    
+    public class AsyncFeedRefresh extends AsyncTask<Void, Void, Boolean> {
+        
+    	//Attributes
+    	private Context context;
+    	private long activeProfileId;
+    	
+    	public AsyncFeedRefresh(Context c, long pId) {
+    		
+    		this.context = c;
+    		this.activeProfileId = pId;
+    		
+    	}
+    	
+    	@Override
+    	protected void onPreExecute() {}
+
+		@Override
+		protected Boolean doInBackground( Void... arg0 ) {
+			
+			try {
+				
+				//Get...
+				feedItems = WebsiteHandler.getPublicFeed(
+
+					sharedPreferences.getInt( "battlelog_feed_count", 20 ),
+					activeProfileId
+					
+				);
+
+				Log.d(Constants.debugTag, "feedItems.size() => " + feedItems.size());
+				
+				//...validate!
+				if( feedItems == null ) { 
+					
+					return false; 
+				
+				} else {
+					
+					return true;
+				
+				}
+				
+			} catch ( WebsiteHandlerException ex ) {
+				
+				ex.printStackTrace();
+				return false;
+				
+			}
+
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result) {
+					
+			//Fail?
+			if( !result ) { 
+				
+				Toast.makeText( this.context, "No feed items found.", Toast.LENGTH_SHORT).show(); 
+				return; 
+			
+			}
+
+			//Let's see what we need to update *directly*
+			switch( mTabHost.getCurrentTab() ) {
+				
+				case 0:
+					drawHome();
+					break;
+					
+				case 1:
+					drawFeed(feedItems);
+					break;
+					
+				default:
+					break;
+		
+			}
+			
+			//Get back here!
+	        return;
+		        
+		}
+		
+    }
+    
+    @Override
+    public void onResume() {
+    
+    	super.onResume();
+    	switch( mTabHost.getCurrentTab() ) {
+			
+			case 0:
+				drawHome();
+				break;
+				
+			case 1:
+				drawFeed(feedItems);
+				break;
+				
+			default:
+				break;
+	
+		}
+
     }
     
 }

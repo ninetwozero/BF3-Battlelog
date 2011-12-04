@@ -62,14 +62,14 @@ public class WebsiteHandler {
 	//Let's have this one ready
 	public static HashMap<String, Bitmap> bitmapCache = new HashMap<String, Bitmap>();
 	
-	public static boolean doLogin(Context context, PostData[] postDataArray, boolean savePassword) throws WebsiteHandlerException {
+	public static ProfileData doLogin(Context context, PostData[] postDataArray, boolean savePassword) throws WebsiteHandlerException {
 	
 		//Init
 		SharedPreferences sharedPreferences = context.getSharedPreferences( Constants.fileSharedPrefs, 0);
 		SharedPreferences.Editor spEdit = sharedPreferences.edit();
 		String[] tempString = new String[10];
 		String httpContent = "";
-		long profileId = 0;
+		ProfileData profile = null;
 	
 		try {
 			
@@ -87,7 +87,7 @@ public class WebsiteHandler {
     			//Did we find it?
     			if( startPosition == -1 ) {
     				
-    				return false;
+    				return null;
 
     			}
     			
@@ -103,7 +103,7 @@ public class WebsiteHandler {
 				//Let's work on getting the "username", not persona name --> profileId
 				tempString[2] = httpContent.substring( httpContent.indexOf( Constants.elementUsernameLink ) );
 				tempString[2] = tempString[2].substring( 0, tempString[2].indexOf( "/\">") ).replace( Constants.elementUsernameLink, "" );
-				profileId = WebsiteHandler.getProfileIdFromSearch( tempString[2], tempString[1]).getProfileId();
+				profile = WebsiteHandler.getProfileIdFromSearch( tempString[2], tempString[1]);
 
 				//Further more, we would actually like to store the userid and name
 				spEdit.putString( "origin_email", postDataArray[0].getValue() );
@@ -123,17 +123,20 @@ public class WebsiteHandler {
 				//This we keep!!!
 				spEdit.putString( "battlelog_username", tempString[2] );
 				spEdit.putString( "battlelog_persona",  bits[0]);
-				spEdit.putLong( "battlelog_profile_id", profileId);
+				spEdit.putLong( "battlelog_profile_id", profile.getProfileId());
 				spEdit.putLong( "battlelog_persona_id",  Long.parseLong( bits[2] ));				
 				spEdit.putLong( "battlelog_platform_id",  DataBank.getPlatformIdFromName(bits[3]) );
 				spEdit.putString( "battlelog_post_checksum", tempString[1]);
 				
 				//Co-co-co-commit
 				spEdit.commit();
+		
+				//Return it!!
+				return profile;
 				
     		} else {
     			
-    			return false;
+    			return null;
     			
     		}
     		
@@ -143,8 +146,6 @@ public class WebsiteHandler {
 			throw new WebsiteHandlerException("Failed to log-in.");
 			
 		}
-
-		return true;
 		
 	}
 	
@@ -1338,7 +1339,7 @@ public class WebsiteHandler {
 				}
 				
 				//Parse the feed
-				feedItemArray = getFeedItemsFromJSON(feedItems, profileData, activeProfileId);
+				feedItemArray = getFeedItemsFromJSON(feedItems, activeProfileId);
 				
 				return new ProfileInformation(
 					
@@ -1639,7 +1640,7 @@ public class WebsiteHandler {
 				stats = WebsiteHandler.getStatsForPlatoon( platoonData );
 				
 				//Parse the feed
-				feedItemArray = getFeedItemsFromJSON(feedItems, null, activeProfileId);
+				feedItemArray = getFeedItemsFromJSON(feedItems, activeProfileId);
 				
 				//Do we need the image?
 				Bitmap image ;
@@ -1694,6 +1695,42 @@ public class WebsiteHandler {
 			ex.printStackTrace();
 			throw new WebsiteHandlerException(ex.getMessage());
 			
+		}
+		
+	}
+	
+	/*TODO*/
+	
+	public static ArrayList<FeedItem> getPublicFeed(int num, long profileId) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Attributes
+			String httpContent = null;
+			RequestHandler rh = new RequestHandler();
+			ArrayList<FeedItem> feedItems = new ArrayList<FeedItem>();
+			JSONArray jsonArray = new JSONArray();
+			
+			//Let's see
+			for(int i = 0; i < Math.round( num / 10 ); i++ ) {
+
+				//Get the content, and create a JSONArray
+				httpContent = rh.get( Constants.urlFeedGlobal.replace( "{NUMSTART}", String.valueOf( i*10 ) ), true );
+				jsonArray = new JSONObject(httpContent).getJSONObject("data").getJSONArray( "feedEvents" );
+				
+				//Gather them
+				feedItems.addAll( WebsiteHandler.getFeedItemsFromJSON( jsonArray, profileId ) );
+				
+			}
+			
+			//Return it
+			return feedItems;
+			
+		} catch(Exception ex) {
+			
+			ex.printStackTrace();
+			throw new WebsiteHandlerException(ex.getMessage());
+		
 		}
 		
 	}
@@ -2058,7 +2095,7 @@ public class WebsiteHandler {
 		
 	}
 
-	private static ArrayList<FeedItem> getFeedItemsFromJSON( JSONArray jsonArray, ProfileData profileData, long activeProfileId ) throws WebsiteHandlerException {
+	private static ArrayList<FeedItem> getFeedItemsFromJSON( JSONArray jsonArray, long activeProfileId ) throws WebsiteHandlerException {
 
 		try {
 			

@@ -31,32 +31,23 @@ import com.ninetwozero.battlelog.misc.RequestHandler;
 public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
 
 	//Attribute
-	ProgressDialog progressDialog;
 	Context context;
-	boolean fromWidget;
 	String httpContent;
+	AsyncTask<Void, Void, Boolean> asyncTask;
 	
 	//Constructor
-	public AsyncStatusUpdate( Context c, boolean w ) { 
+	public AsyncStatusUpdate( Context c, AsyncTask<Void, Void, Boolean> a ) { 
 		
 		this.context = c; 
-		this.fromWidget = w;
+		this.asyncTask = a;
 	
 	}	
 	
 	@Override
 	protected void onPreExecute() {
-	
+
+		Toast.makeText( context, "Updating your status...", Toast.LENGTH_SHORT).show();
 		
-		//Let's see
-		if( !fromWidget ) {
-		
-			this.progressDialog = new ProgressDialog(this.context);
-			this.progressDialog.setTitle("Please wait");
-			this.progressDialog.setMessage( "Updating your status..." );
-			this.progressDialog.show();
-		
-		}
 	}
 	
 	@Override
@@ -102,18 +93,21 @@ public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
 	@Override
 	protected void onPostExecute(Integer results) {
 
-		if( !fromWidget ) {
-			
-			this.progressDialog.dismiss();
-			
-			if( results == 0 ) { 
+		if( results == 0 ) { 
 				
+				//Yay
 				Toast.makeText(this.context, "Status updated successfully.", Toast.LENGTH_SHORT).show(); 
 				((EditText) ((Activity)context).findViewById(R.id.field_status)).setText("");
-				
-			} else { Toast.makeText( this.context, "Posting the status update...", Toast.LENGTH_SHORT).show(); }
+							
+		} else { 
+			
+			Toast.makeText( this.context, "Posting the status update...", Toast.LENGTH_SHORT).show(); 
 			
 		}
+		
+		//Do we need to do our AsyncTask?
+		if( asyncTask != null ) { asyncTask.execute(); }
+
 		return;
 		
 	}

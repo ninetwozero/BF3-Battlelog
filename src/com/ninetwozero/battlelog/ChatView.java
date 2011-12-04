@@ -92,7 +92,7 @@ public class ChatView extends ListActivity {
         listView.setChoiceMode( ListView.CHOICE_MODE_NONE );
         
         //Let's get the other chat participant
-        profileData = (ProfileData) getIntent().getSerializableExtra( "profile" );
+        profileData = (ProfileData) getIntent().getParcelableExtra( "profile" );
 	
         //Setup the title
         setTitle( getTitle().toString().replace( "...", profileData.getAccountName() ) );
