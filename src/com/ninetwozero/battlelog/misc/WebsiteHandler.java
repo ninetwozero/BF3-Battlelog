@@ -37,6 +37,8 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
+import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
+import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
@@ -372,7 +374,7 @@ public class WebsiteHandler {
 			String httpContent;
 			
 			//Get the content
-			httpContent = wh.get( Constants.urlProfile.replace( "{UID}", profileId + ""), false);
+			httpContent = wh.get( Constants.urlProfile.replace( "{UID}", profileId + ""), 0);
 
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -455,7 +457,7 @@ public class WebsiteHandler {
 				
 					"{PLATFORM_ID}", pd.getPlatformId() + ""
 				),
-				false
+				0
 			
 			);
 	    	
@@ -536,7 +538,7 @@ public class WebsiteHandler {
 				
 					"{PLATFORM_ID}", pd.getPlatformId() + ""
 				), 
-				false
+				0
 				
 			);
 	    	
@@ -698,14 +700,13 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static final ArrayList<ArrayList<ProfileData>> getFriendsCOM(String checksum) throws WebsiteHandlerException {
+	public static final FriendListDataWrapper getFriendsCOM(String checksum) throws WebsiteHandlerException {
 		
 		try {
 				
 			//Let's login everybody!
 			RequestHandler wh = new RequestHandler();
 			String httpContent;
-			ArrayList<ArrayList<ProfileData>> profileArray = new ArrayList<ArrayList<ProfileData>>();
 			
 			//Get the content
 			httpContent = wh.post( 
@@ -772,13 +773,7 @@ public class WebsiteHandler {
 
 					//Sort it out
 					Collections.sort( profileRowRequests, new ProfileComparator() );
-			 
-					profileArray.add( profileRowRequests );
-					
-				} else {
-					
-					profileArray.add( null );
-					
+			 	
 				}
 				
 				if( numFriends > 0 ) {
@@ -880,17 +875,9 @@ public class WebsiteHandler {
 					//...sprinkle a little merging here and there...
 					profileRowPlaying.addAll( profileRowOnline );
 					
-					//...and add it to the list!
-					profileArray.add( profileRowPlaying );
-					profileArray.add( profileRowOffline );
-				
-				} else {
-					
-					profileArray.add( null );
-					
 				}
 				
-				return profileArray;
+				return new FriendListDataWrapper(profileRowRequests, profileRowPlaying, profileRowOffline );
 			
 			} else {
 			
@@ -1247,20 +1234,12 @@ public class WebsiteHandler {
 					chatId + ""
 					
 				),
-				true
+				1
 					
 			);
 						
 			//Did we manage?
-			if( httpContent != null && !httpContent.equals( "" ) ) {
-			
-				return true;
-				
-			} else {
-			
-				throw new WebsiteHandlerException("Could not close the chat.");
-				
-			}	
+			return true;	
 		
 		} catch ( RequestHandlerException ex ) {
 			
@@ -1281,7 +1260,7 @@ public class WebsiteHandler {
 			String httpContent;
 			
 			//Get the content
-			httpContent = rh.get( Constants.urlProfileInfo.replace( "{UNAME}", Uri.encode( profileData.getAccountName() ) ), true );
+			httpContent = rh.get( Constants.urlProfileInfo.replace( "{UNAME}", Uri.encode( profileData.getAccountName() ) ), 1 );
 
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -1390,7 +1369,7 @@ public class WebsiteHandler {
 			httpContent = rh.get( 
 					
 				Constants.urlPlatoonFans.replace( "{PLATOON_ID}",  platoonId + ""), 
-				true
+				1
 				
 			);
 			
@@ -1466,7 +1445,7 @@ public class WebsiteHandler {
 			ArrayList<ProfileData> requestMembers = new ArrayList<ProfileData>();
 			
 			//Get the content
-			String httpContent = rh.get( Constants.urlPlatoon.replace( "{PLATOON_ID}", platoonData.getId() + "" ), true );
+			String httpContent = rh.get( Constants.urlPlatoon.replace( "{PLATOON_ID}", platoonData.getId() + "" ), 1 );
 			boolean hasAdminRights = false;
 	
 			//Did we manage?
@@ -1715,7 +1694,7 @@ public class WebsiteHandler {
 			for(int i = 0; i < Math.round( num / 10 ); i++ ) {
 
 				//Get the content, and create a JSONArray
-				httpContent = rh.get( Constants.urlFeedGlobal.replace( "{NUMSTART}", String.valueOf( i*10 ) ), true );
+				httpContent = rh.get( Constants.urlFeedGlobal.replace( "{NUMSTART}", String.valueOf( i*10 ) ), 1 );
 				jsonArray = new JSONObject(httpContent).getJSONObject("data").getJSONArray( "feedEvents" );
 				
 				//Gather them
@@ -1735,7 +1714,73 @@ public class WebsiteHandler {
 		
 	}
 	
-/* TODO */	
+	public static ArrayList<NotificationData> getNotifications(String checksum) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Init
+			RequestHandler rh = new RequestHandler();
+			ArrayList<NotificationData> notifications = new ArrayList<NotificationData>();
+			String httpContent;
+			
+			//Get the content
+			httpContent = rh.get( 
+					
+				Constants.urlNotifications,
+				1
+		
+			);
+			
+			//Got httpContent
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+				
+				//Grab the notifications
+				JSONObject currItem = null;
+				JSONArray notificationArray = new JSONObject(httpContent).getJSONObject("context").getJSONArray( "notifications" );
+				
+				//Now we store the information - easy peasy
+				for( int i = 0; i < notificationArray.length(); i++ ) {
+					
+					//Grab the current item
+					currItem = notificationArray.getJSONObject( i );
+					
+					//Add!!
+					notifications.add(
+					
+						new NotificationData(
+
+							Long.parseLong(currItem.optString( "feedItemId", "0" )),
+							Long.parseLong(currItem.optString( "itemOwnerId", "0" )),
+							Long.parseLong(currItem.getString( "userId" )),
+							Long.parseLong(currItem.getString( "timestamp" )),
+							currItem.optInt( "feedItemType", 0 ),	
+							currItem.optString( "itemOwnerUsername", "" ),
+							currItem.getString( "username" ),
+							currItem.getString( "type" )
+								
+						)	
+							
+					);
+					
+				}
+				
+			} else {
+				
+				throw new WebsiteHandlerException("No notifications found.");
+				
+			}
+			
+			//Return!!
+			return notifications;
+
+		} catch( Exception ex ) {
+		
+			ex.printStackTrace();
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+		
+	}
 	
 	public static PlatoonStats getStatsForPlatoon( PlatoonData platoonData ) throws WebsiteHandlerException {
 
@@ -1758,7 +1803,7 @@ public class WebsiteHandler {
 					platoonData.getPlatformId() + ""
 					
 				), 
-				true 
+				1
 				
 			);
 			
@@ -2830,7 +2875,7 @@ public class WebsiteHandler {
 					postId + ""
 				
 				),
-				false
+				0
 		
 			);
 						

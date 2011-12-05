@@ -159,4 +159,6 @@ public class FriendListAdapter extends BaseAdapter {
 		return convertView;
 	}
 	
+	public void setItemArray(ArrayList<ProfileData> data) { this.profileArray = data; }
+	
 }

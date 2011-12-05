@@ -40,6 +40,7 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 		android:layout_below="@id/feed_update"
+		android:fastScrollEnabled="true"
 	/>
 	<RelativeLayout
 		android:layout_width="fill_parent"

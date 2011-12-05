@@ -69,7 +69,7 @@ public class RequestHandler {
 	// Constructor
 	public RequestHandler() {}
 	
-	public String get( String link, boolean extraHeaders ) throws RequestHandlerException {
+	public String get( String link, int extraHeaders ) throws RequestHandlerException {
 		
 		// Check defaults
 		if ( link.equals( "" ) ) throw new RequestHandlerException("No link found.");
@@ -82,7 +82,7 @@ public class RequestHandler {
 			HttpGet httpGet = new HttpGet(link);
 			
 			//Do we need those extra headers?
-			if( extraHeaders ) {
+			if( extraHeaders == 1 ) {
 			
 				httpGet.setHeader( "X-Requested-With", "XMLHttpRequest");
 				httpGet.setHeader( "X-AjaxNavigation", "1");
@@ -90,6 +90,13 @@ public class RequestHandler {
 				httpGet.setHeader( "Accept", "application/json, text/javascript, */*" );
 				httpGet.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
 			
+			} else if( extraHeaders == 2 ) {
+				
+				httpGet.setHeader( "X-JSON", "1");
+				httpGet.setHeader( "Referer", link);
+				httpGet.setHeader( "Accept", "application/json, text/javascript, */*" );
+				httpGet.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
+				
 			}
 			
 			HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);	

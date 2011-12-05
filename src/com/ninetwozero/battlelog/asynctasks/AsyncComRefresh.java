@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.FriendListAdapter;
 import com.ninetwozero.battlelog.adapters.RequestListAdapter;
+import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -41,7 +42,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 	//Attribute
 	Context context;
 	SharedPreferences sharedPreferences;
-	ArrayList<ArrayList<ProfileData>> profileArray = new ArrayList<ArrayList<ProfileData>>();
+	FriendListDataWrapper profileArray;
 	ListView listRequests, listFriends;
 	LayoutInflater layoutInflater;
 	Button buttonRefresh;
@@ -93,9 +94,9 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 		int numOnlineFriends = 0;
 		
 		//Fill the listviews!!
-		if( profileArray.size() > 0 ) {
+		if( profileArray != null ) {
 			
-			if( profileArray.get( 0 ) == null || profileArray.get( 0 ).size() == 0 ) {
+			if( profileArray.getRequests() == null || profileArray.getRequests().size() == 0 ) {
 			
 				((Activity)context).findViewById(R.id.wrap_friends_requests).setVisibility( View.GONE );
 			
@@ -105,23 +106,23 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 				((Activity)context).findViewById(R.id.wrap_friends_requests).setVisibility( View.VISIBLE );
 				
 				//Set the adapter
-				listRequests.setAdapter( new RequestListAdapter(context, profileArray.get(0), layoutInflater) );
+				listRequests.setAdapter( new RequestListAdapter(context, profileArray.getRequests(), layoutInflater) );
 				
 			}
 
-			if( profileArray.get( 1 ).size() > 0 || profileArray.get( 2 ).size() > 0 ) {
+			if( profileArray.getOnlineFriends().size() > 0 || profileArray.getOfflineFriends().size() > 0 ) {
 
 				//Set the visibility (could've been hidden)
 				((Activity)context).findViewById(R.id.list_friends).setVisibility( View.VISIBLE );
 				
 				//Create a copy so that we can merge later on
-				ArrayList<ProfileData> mergedArray = profileArray.get( 1 );
+				ArrayList<ProfileData> mergedArray = profileArray.getOnlineFriends();
 				
 				//...but first we want the lenght, oorah!
 				numOnlineFriends = mergedArray.size()-1;
 				
 				//...and now we can merge 'em!
-				mergedArray.addAll( profileArray.get(2) );
+				mergedArray.addAll( profileArray.getOfflineFriends() );
 				
 				//Set the adapter
 				listFriends.setAdapter( new FriendListAdapter(context, mergedArray, layoutInflater) );

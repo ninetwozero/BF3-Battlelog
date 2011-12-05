@@ -62,7 +62,7 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
 		
     		//Let's login everybody!
 			RequestHandler wh = new RequestHandler();
-    		httpContent = wh.get( Constants.urlLogout, false);
+    		httpContent = wh.get( Constants.urlLogout, 0);
 
     		//Did we manage?
     		if( httpContent != null && !httpContent.equals( "" ) ) {

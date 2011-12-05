@@ -3,14 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
-	android:paddingTop="10dp"
-	android:paddingLeft="10dp"
-	android:paddingRight="10dp"
-	android:paddingBottom="10dp"
+    android:orientation="vertical"
 >			
 	<TextView 
-	    android:id="@+id/text_empty_com"
+	    android:id="@+id/text_status_friends"
 	    android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="No friends found. :-("
@@ -37,6 +33,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/header_friends_requests"
+			android:fastScrollEnabled="true"
 	    />
     </RelativeLayout>
     <View 

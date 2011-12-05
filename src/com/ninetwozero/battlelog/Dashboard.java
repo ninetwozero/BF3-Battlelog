@@ -53,7 +53,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
+import com.ninetwozero.battlelog.adapters.FriendListAdapter;
 import com.ninetwozero.battlelog.adapters.GridMenuAdapter;
+import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRefresh;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
@@ -65,6 +67,8 @@ import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.DashboardItem;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
+import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
+import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
@@ -77,32 +81,38 @@ public class Dashboard extends TabActivity {
 
 	//Attributes
 	final private Context context = this;
-	private EditText fieldStatusUpdate;
-	private String[] valueFields;
+	private DashboardItem[] menuArray;
+	private String[] valueFieldsArray;
 	private PostData[] postDataArray;
+	private ArrayList<FeedItem> feedArray;
+	private ArrayList<NotificationData> notificationArray;
+	private FriendListDataWrapper friendListData;
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
-	private ArrayList<FeedItem> feedItems;
-	private DashboardItem[] menuItems;
 	
 	//Elements
+	private View wrapFriendRequests;
 	private TabHost mTabHost, cTabHost;
 	private GridView gridMenu;
 	private ListView listFeed;
+	private EditText fieldStatusUpdate;
 	private FeedListAdapter feedListAdapter;
-	private TextView feedStatusText;
+	private TextView feedStatusText, notificationStatusText, friendsStatusText;
 	
 	//COM-related
 	private SlidingDrawer slidingDrawer;
 	private TextView slidingDrawerHandle;
 	private OnDrawerOpenListener onDrawerOpenListener;
 	private OnDrawerCloseListener onDrawerCloseListener;
-	private ListView listFriendsRequests, listFriends;
+	private ListView listFriendRequests, listFriends, listNotifications;
+	private NotificationListAdapter notificationListAdapter;
+	private FriendListAdapter friendRequestListAdapter, friendListAdapter;
+	private OnItemClickListener onItemClickListener;
 	private Button buttonRefresh;
 	
 	//Async
 	private AsyncFeedRefresh asyncFeedRefresh;
-	private AsyncComRefresh asyncComRefresh;
+	private AsyncCOMReload asyncComReload;
 	private AsyncLogout asyncLogout;
 	
 	//Misc
@@ -138,12 +148,17 @@ public class Dashboard extends TabActivity {
     	//Set the content view
         setContentView(R.layout.dashboard);
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        feedItems = new ArrayList<FeedItem>();
+        feedArray = new ArrayList<FeedItem>();
+        notificationArray = new ArrayList<NotificationData>();
+    	friendListData = new FriendListDataWrapper(null, null, null);
+    	
+    	//Refresh the feed
         refreshFeed();
         
         //Fix the tabs
     	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
-    	cTabHost = (TabHost) findViewById(R.id.tabhost_com);
+    	cTabHost = (TabHost) findViewById(R.id.com_tabhost);
+    	cTabHost.setup();
     	
     	//Let's set them up
     	setupTabsPrimary(
@@ -160,7 +175,7 @@ public class Dashboard extends TabActivity {
     	); /*TODO setup (check@stackoverflow)*/
 
         //Build the menu items
-        menuItems = new DashboardItem[]{ 
+        menuArray = new DashboardItem[]{ 
 
         	new DashboardItem(Constants.MENU_ME, "My soldier"),
         	new DashboardItem(Constants.MENU_UNLOCKS, "My unlocks"),
@@ -176,13 +191,13 @@ public class Dashboard extends TabActivity {
 
 	}	
 	
-	public final void drawHome() {
+	public final void setupHome() {
     	
     	//Let's see
 		if( gridMenu == null ) {
 			
 			gridMenu = (GridView) findViewById(R.id.grid_menu);
-			gridMenu.setAdapter( new GridMenuAdapter(this, menuItems, layoutInflater ) );
+			gridMenu.setAdapter( new GridMenuAdapter(this, menuArray, layoutInflater ) );
 		
 			//Do we have the onClick?
 			if( gridMenu.getOnItemClickListener() == null ) {
@@ -209,10 +224,7 @@ public class Dashboard extends TabActivity {
     	
     }
     
-    public void drawFeed(ArrayList<FeedItem> items) {
-    	
-    	Log.d(Constants.debugTag, "listFeed => " + listFeed);
-    	Log.d(Constants.debugTag, "# of items => " + items.size());
+	public void setupFeed(ArrayList<FeedItem> items) {
     	
     	//Do we have it already? If no, we init
 		if( listFeed == null ) { 
@@ -224,7 +236,7 @@ public class Dashboard extends TabActivity {
 
 			//Set the attributes
 	        fieldStatusUpdate = (EditText) findViewById(R.id.field_status);
-	        valueFields = new String[2];
+	        valueFieldsArray = new String[2];
 	        postDataArray = new PostData[2];
 	        
 
@@ -269,7 +281,6 @@ public class Dashboard extends TabActivity {
 						}
 						
 						
-						
 					}
 						
 				);
@@ -284,6 +295,157 @@ public class Dashboard extends TabActivity {
 		}
 		
     }
+
+	public void setupFriendList( FriendListDataWrapper items ) {
+
+		//Do we have it already? If no, we init
+		if( listFriends == null ) { 
+			
+			//Get the ListView
+			listFriends = ((ListView) findViewById(R.id.list_friends)); 
+			friendsStatusText = ((TextView) findViewById(R.id.text_status_friends));
+			listFriends.setOnItemClickListener( onItemClickListener );
+		
+			registerForContextMenu(listFriends);
+			
+			//Set the wrap
+			wrapFriendRequests = findViewById(R.id.wrap_friends_requests);
+	        
+		}
+		
+		if( listFriendRequests == null ) {
+			
+			//Get the ListView
+			listFriendRequests = ((ListView) findViewById(R.id.list_friends)); 
+			listFriendRequests.setOnItemClickListener( onItemClickListener );
+			friendsStatusText = ((TextView) findViewById(R.id.text_status_friends));
+			
+			registerForContextMenu(listFriendRequests);
+			
+			//Set the wrap
+			wrapFriendRequests = findViewById(R.id.wrap_friends_requests);
+			
+		}
+		
+	
+		//If empty --> show other
+		if( items != null ) {
+		
+			boolean hasRequests = !(items.getRequests() == null || items.getRequests().size() == 0);
+			boolean hasFriends = !(items.getFriends() == null || items.getFriends().size() == 0);
+			
+			if( !hasRequests && !hasFriends ) {
+
+				if( friendsStatusText.getVisibility() == View.GONE ) { friendsStatusText.setVisibility( View.VISIBLE ); }
+				if( wrapFriendRequests.getVisibility() == View.VISIBLE ) { wrapFriendRequests.setVisibility( View.GONE ); }
+				
+			} else {
+
+				if( items.getRequests() == null || items.getRequests().size() == 0 ) {
+					
+					if( wrapFriendRequests.getVisibility() == View.VISIBLE ) { wrapFriendRequests.setVisibility( View.GONE ); }
+					
+				} else {
+					
+					if( wrapFriendRequests.getVisibility() == View.GONE ) { wrapFriendRequests.setVisibility( View.VISIBLE  ); }
+					
+				}
+				
+				if( items.getFriends() == null || items.getFriends().size() == 0 ) {
+					
+					if( friendsStatusText.getVisibility() == View.GONE ) { friendsStatusText.setVisibility( View.VISIBLE ); }
+					
+				} else {
+					
+					if( friendsStatusText.getVisibility() == View.VISIBLE ) { friendsStatusText.setVisibility( View.GONE ); }
+					
+				}
+		
+			}
+			
+			//If we don't have it defined, then we need to set it
+			if( listFriends.getAdapter() == null ) {
+		
+				//Create a new NotificationListAdapter
+				friendListAdapter = new FriendListAdapter(this, items.getFriends(), layoutInflater);
+				listFriends.setAdapter( friendListAdapter );
+				friendRequestListAdapter = new FriendListAdapter(this, items.getRequests(), layoutInflater);
+				listFriendRequests.setAdapter( friendRequestListAdapter );
+				
+			} else {
+	
+				friendListAdapter.setItemArray( items.getFriends() );
+				friendListAdapter.notifyDataSetChanged();
+				friendRequestListAdapter.setItemArray( items.getRequests() );
+				friendRequestListAdapter.notifyDataSetChanged();
+			
+			}
+			
+		}
+		
+	}
+	
+	public void setupNotifications(ArrayList<NotificationData> items) {
+		
+		//Do we have it already? If no, we init
+		if( listNotifications == null ) { 
+			
+			//Get the ListView
+			listNotifications = ((ListView) findViewById(R.id.list_notifications)); 
+			notificationStatusText = ((TextView) findViewById(R.id.status_notifications));
+			//registerForContextMenu(listNotifications); //Needed?
+	        
+		}
+		
+	
+		//If empty --> show other
+		if( items == null || items.size() == 0 ) {
+		
+			notificationStatusText.setVisibility( View.VISIBLE );
+			
+		} else {
+			
+			notificationStatusText.setVisibility( View.GONE );
+			
+		}
+	    
+		//If we don't have it defined, then we need to set it
+		if( listNotifications.getAdapter() == null ) {
+	
+			//Create a new NotificationListAdapter
+			notificationListAdapter = new NotificationListAdapter(this, items, layoutInflater, Dashboard.profile.getProfileId());
+			listNotifications.setAdapter( notificationListAdapter );
+				
+			//Do we have the onClick?
+			if( listNotifications.getOnItemClickListener() == null ) {
+				
+				listNotifications.setOnItemClickListener( 
+						
+					new OnItemClickListener() {
+	
+						@Override
+						public void onItemClick( AdapterView<?> a, View v, int pos, long id ) {
+	
+							Toast.makeText( context, "Clicked on #" + pos + "(" + id + ")", Toast.LENGTH_SHORT ).show();
+							
+						}
+						
+						
+						
+					}
+						
+				);
+			
+			}
+			
+		} else {
+			
+			notificationListAdapter.setItemArray( items );
+			notificationListAdapter.notifyDataSetChanged();
+		
+		}
+		
+	}
 	
 	public void onClick(View v) {
 		
@@ -294,16 +456,16 @@ public class Dashboard extends TabActivity {
 		} else if( v.getId() == R.id.button_status ) {
 			
 			//Let's set 'em values
-    		valueFields[0] = fieldStatusUpdate.getText().toString();
-    		valueFields[1] = sharedPreferences.getString( "battlelog_post_checksum", "");
+    		valueFieldsArray[0] = fieldStatusUpdate.getText().toString();
+    		valueFieldsArray[1] = sharedPreferences.getString( "battlelog_post_checksum", "");
     		
     		//Validate
-    		if( valueFields[0].equals( "" ) ) {
+    		if( valueFieldsArray[0].equals( "" ) ) {
     			
     			Toast.makeText( this, "Please enter a status text to continue.", Toast.LENGTH_SHORT).show();
     			return;
     			
-    		} else if( valueFields[1].equals( "" ) ) {
+    		} else if( valueFieldsArray[1].equals( "" ) ) {
     			
     			Toast.makeText( this, "An error has occured: please relogin and try again.", Toast.LENGTH_SHORT).show();
     			return;
@@ -315,7 +477,7 @@ public class Dashboard extends TabActivity {
     			postDataArray[i] =	new PostData(
 	    			
     				Constants.fieldNamesStatus[i],
-	    			(Constants.fieldValuesStatus[i] == null) ? valueFields[i] : Constants.fieldValuesStatus[i] 
+	    			(Constants.fieldValuesStatus[i] == null) ? valueFieldsArray[i] : Constants.fieldValuesStatus[i] 
 	    		
     			);
     		
@@ -351,16 +513,7 @@ public class Dashboard extends TabActivity {
 		if( item.getItemId() == R.id.option_refresh ) {
 			
 			new AsyncFeedRefresh(context, Dashboard.profile.getProfileId()).execute();
-			new AsyncComRefresh(
-					
-				context, 
-				listFriendsRequests, 
-				listFriends, 
-				layoutInflater,
-				buttonRefresh,
-				slidingDrawerHandle
-				
-			);
+			new AsyncCOMReload().execute( sharedPreferences.getString( "battlelog_post_checksum", "" ));
 			
 		} else if( item.getItemId() == R.id.option_logout ) {
 			
@@ -588,50 +741,59 @@ public class Dashboard extends TabActivity {
 	private void setupCOM() {
 		
         //Define the SlidingDrawer
-		slidingDrawer = (SlidingDrawer) findViewById( R.id.com_slider);
-		slidingDrawerHandle = (TextView) findViewById( R.id.com_slide_handle_text );
-		buttonRefresh = (Button) findViewById( R.id.button_refresh );
-		
-		//Set the drawer listeners
-		onDrawerCloseListener = new OnDrawerCloseListener() {
+		if( slidingDrawer == null ) {
 
-			@Override
-			public void onDrawerClosed() { slidingDrawer.setClickable( false ); }
-		
-		};
-		onDrawerOpenListener = new OnDrawerOpenListener() { 
-		
-			@Override 
-			public void onDrawerOpened() { slidingDrawer.setClickable( true ); } 
+			slidingDrawer = (SlidingDrawer) findViewById( R.id.com_slider);
+			slidingDrawerHandle = (TextView) findViewById( R.id.com_slide_handle_text );
+			buttonRefresh = (Button) findViewById( R.id.button_refresh );
 			
-		};
-		
-		//Attach the listeners
-		slidingDrawer.setOnDrawerOpenListener( onDrawerOpenListener );
-		slidingDrawer.setOnDrawerCloseListener( onDrawerCloseListener );
-		
-		//Grab the ListViews
-		listFriendsRequests = (ListView) findViewById( R.id.list_requests );
-		listFriendsRequests.setChoiceMode( ListView.CHOICE_MODE_NONE );
-		listFriends = (ListView) findViewById( R.id.list_friends);
-
-		//Set the context menus
-		registerForContextMenu( listFriends );
-		
-		//Setup the onClicks
-		OnItemClickListener onItemClickListener = new OnItemClickListener() {
-
-			@Override public void onItemClick( AdapterView<?> a, View v, int p, long i ) {
-
-				onCOMRowClick(a, v, p, i);
+			//Set the drawer listeners
+			onDrawerCloseListener = new OnDrawerCloseListener() {
+	
+				@Override
+				public void onDrawerClosed() { slidingDrawer.setClickable( false ); }
+			
+			};
+			onDrawerOpenListener = new OnDrawerOpenListener() { 
+			
+				@Override 
+				public void onDrawerOpened() { slidingDrawer.setClickable( true ); } 
 				
-			}
+			};
 			
-		};
+			//Attach the listeners
+			slidingDrawer.setOnDrawerOpenListener( onDrawerOpenListener );
+			slidingDrawer.setOnDrawerCloseListener( onDrawerCloseListener );
+			
+			//Setup the onClicks
+			onItemClickListener = new OnItemClickListener() {
 
-		listFriendsRequests.setOnItemClickListener( onItemClickListener );
-		listFriends.setOnItemClickListener( onItemClickListener );
+				@Override public void onItemClick( AdapterView<?> a, View v, int p, long i ) {
+
+					onCOMRowClick(a, v, p, i);
+
+				}
+
+			};
+			
+		}
 		
+		switch( cTabHost.getCurrentTab() ) {
+			
+			case 0:
+				setupFriendList(friendListData);
+				break;
+				
+			case 1:
+				setupNotifications(notificationArray);
+				break;
+				
+			default:
+				break;
+				
+			
+		}
+	
 		//refresh the COM
 		refreshCOM();
 		
@@ -640,17 +802,7 @@ public class Dashboard extends TabActivity {
 	private void refreshCOM() {
 
 		//Done? No? Let's populate in an async task!
-		asyncComRefresh = new AsyncComRefresh(
-			
-			context, 
-			listFriendsRequests, 
-			listFriends, 
-			layoutInflater,
-			buttonRefresh,
-			slidingDrawerHandle
-			
-		);
-		asyncComRefresh.execute();
+		new AsyncCOMReload().execute( sharedPreferences.getString( "battlelog_post_checksum", "" ));
 		
 	}
 	
@@ -679,7 +831,7 @@ public class Dashboard extends TabActivity {
 				new AsyncComRefresh(
 						
 					this, 
-					listFriendsRequests, 
+					listFriendRequests, 
 					listFriends, 
 					layoutInflater,
 					buttonRefresh,
@@ -698,7 +850,7 @@ public class Dashboard extends TabActivity {
 				new AsyncComRefresh(
 						
 					this, 
-					listFriendsRequests, 
+					listFriendRequests, 
 					listFriends, 
 					layoutInflater,
 					buttonRefresh,
@@ -981,11 +1133,11 @@ public class Dashboard extends TabActivity {
     				switch( mTabHost.getCurrentTab() ) {
     					
     					case 0:
-    						drawHome();
+    						setupHome();
     						break;
     						
     					case 1:
-    						drawFeed(feedItems);
+    						setupFeed(feedArray);
     						break;
     						
     					default:
@@ -1029,7 +1181,11 @@ public class Dashboard extends TabActivity {
 	        );
 			
 			//Add the tab
-			cTabHost.addTab( spec ); 
+			cTabHost.addTab( 
+				
+				spec 
+				
+			); 
     	
     	}
     	
@@ -1044,11 +1200,11 @@ public class Dashboard extends TabActivity {
     				switch( cTabHost.getCurrentTab() ) {
     					
     					case 0:
-    						drawHome();
+    						setupHome();
     						break;
     						
     					case 1:
-    						drawFeed(feedItems);
+    						setupNotifications(notificationArray);
     						break;
     						
     					default:
@@ -1089,8 +1245,6 @@ public class Dashboard extends TabActivity {
 			generateDialogFindPlatoon(this).show();
 			
 		} else if( id == Constants.MENU_ME ) {
-			
-			Log.d(Constants.debugTag, "INPUT: " + Dashboard.profile.toString() );
 			
 			startActivity( 
 					
@@ -1144,17 +1298,15 @@ public class Dashboard extends TabActivity {
 			try {
 				
 				//Get...
-				feedItems = WebsiteHandler.getPublicFeed(
+				feedArray = WebsiteHandler.getPublicFeed(
 
 					sharedPreferences.getInt( "battlelog_feed_count", 20 ),
 					activeProfileId
 					
 				);
-
-				Log.d(Constants.debugTag, "feedItems.size() => " + feedItems.size());
 				
 				//...validate!
-				if( feedItems == null ) { 
+				if( feedArray == null ) { 
 					
 					return false; 
 				
@@ -1188,11 +1340,11 @@ public class Dashboard extends TabActivity {
 			switch( mTabHost.getCurrentTab() ) {
 				
 				case 0:
-					drawHome();
+					setupHome();
 					break;
 					
 				case 1:
-					drawFeed(feedItems);
+					setupFeed(feedArray);
 					break;
 					
 				default:
@@ -1207,6 +1359,70 @@ public class Dashboard extends TabActivity {
 		
     }
     
+    public class AsyncCOMReload extends AsyncTask<String, Integer, Boolean> {
+    	
+    	//Constructor
+    	public AsyncCOMReload() {}	
+    	
+    	@Override
+    	protected void onPreExecute() {
+    		
+    		buttonRefresh.setText( "Please wait..." );
+    		buttonRefresh.setEnabled( !buttonRefresh.isEnabled() );
+    		
+    	}
+    	
+    	@Override
+    	protected Boolean doInBackground( String... arg0) {
+    		
+    		try {
+    		
+    			//Let's get this!!
+    			notificationArray = WebsiteHandler.getNotifications( arg0[0] );
+    			friendListData = WebsiteHandler.getFriendsCOM( arg0[0] );
+    			return true;
+    			
+    		} catch ( WebsiteHandlerException e ) {
+    			
+    			return false;
+    			
+    		}
+    		
+    	}
+    	
+    	@Override
+    	protected void onPostExecute(Boolean results) {
+    		
+    		switch( cTabHost.getCurrentTab() ) {
+    			
+    			case 0:
+    				setupFriendList(friendListData);
+    				break;
+    				
+    			case 1:
+    				setupNotifications(notificationArray);
+    				break;
+    				
+    			default:
+    				break;    				
+    			
+    		}
+    		
+    		//Update the text
+    		buttonRefresh.setText( "Refresh now" );
+    		buttonRefresh.setEnabled( !buttonRefresh.isEnabled() );
+    		
+    		//Update the sliding drawer handle
+    		slidingDrawerHandle.setText( "COM CENTER (" + friendListData.getOnlineCount() + " ONLINE)" );
+    		
+    		//R-turn
+    		return;
+    		
+    	}
+    
+    }
+
+    
     @Override
     public void onResume() {
     
@@ -1214,11 +1430,11 @@ public class Dashboard extends TabActivity {
     	switch( mTabHost.getCurrentTab() ) {
 			
 			case 0:
-				drawHome();
+				setupHome();
 				break;
 				
 			case 1:
-				drawFeed(feedItems);
+				setupFeed(feedArray);
 				break;
 				
 			default:

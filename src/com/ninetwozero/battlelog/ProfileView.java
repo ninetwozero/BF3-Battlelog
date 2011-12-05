@@ -101,12 +101,6 @@ public class ProfileView extends TabActivity {
         this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         
-        for( String key : getIntent().getExtras().keySet()) {
-        	
-        	Log.d(Constants.debugTag, key + " => " + getIntent().getExtras().get(key).toString() );
-        	
-        }
-        
     	//Get the intent
         if( !getIntent().hasExtra( "profile" ) ) {
         	
