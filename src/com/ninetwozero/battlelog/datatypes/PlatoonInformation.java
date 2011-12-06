@@ -25,7 +25,7 @@ public class PlatoonInformation {
 	private long id, date;
 	private String name, tag, presentation, website;
 	private Bitmap image;
-	private boolean visible, hasAdminRights, allowNewMembers;
+	private boolean visible, isMember, isAdmin, allowNewMembers;
 	private ArrayList<FeedItem> feedItems;
 	private ArrayList<ProfileData> members, fans;
 	private PlatoonStats stats;
@@ -36,7 +36,7 @@ public class PlatoonInformation {
 		int pId, int g, int nF, int nM, int bcId,
 		long i, long d,
 		String n, String t, String p, String w,
-		Bitmap im, boolean v, boolean ham, boolean a,
+		Bitmap im, boolean v, boolean ism, boolean isa, boolean a,
 		ArrayList<FeedItem> f, ArrayList<ProfileData> m, ArrayList<ProfileData> fa,
 		PlatoonStats st
 		
@@ -55,7 +55,8 @@ public class PlatoonInformation {
 		this.website = w;
 		this.image = im;
 		this.visible = v;
-		this.hasAdminRights = ham;
+		this.isMember = ism;
+		this.isAdmin = isa;
 		this.allowNewMembers = a;
 		this.feedItems = f;
 		this.members = m;
@@ -70,7 +71,8 @@ public class PlatoonInformation {
 	public int getNumFans() { return this.numFans; }
 	public int getNumMembers() { return this.numMembers; }
 	public int getBlazeClubId() { return this.blazeClubId; }
-	public boolean hasAdminRights() { return this.hasAdminRights; }
+	public boolean isMember() { return this.isMember; }
+	public boolean isAdmin() { return this.isAdmin; }
 	public long getId() { return this.id; }
 	public long getDate() { return this.date; }
 	public String getName() { return this.name; }

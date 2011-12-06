@@ -40,12 +40,7 @@ public class AsyncComRequest extends AsyncTask<Boolean, Integer, Boolean> {
 	}	
 	
 	@Override
-	protected void onPreExecute() {
-		
-		//Let's see
-		Toast.makeText( context, "Updating the COM CENTER", Toast.LENGTH_SHORT).show();
-		
-	}
+	protected void onPreExecute() {}
 	
 	@Override
 	protected Boolean doInBackground( Boolean... arg0) {

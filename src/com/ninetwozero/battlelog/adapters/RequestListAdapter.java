@@ -94,6 +94,9 @@ public class RequestListAdapter extends BaseAdapter {
 		convertView.setTag( currentProfile );
 		
 		return convertView;
+	
 	}
+	
+	public void setItemArray(ArrayList<ProfileData> p) { this.profileArray = p; }		
 	
 }

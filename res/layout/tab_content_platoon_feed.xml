@@ -21,7 +21,6 @@
 	    android:layout_height="wrap_content"
 	    android:paddingBottom="10dp"
 	    android:layout_below="@id/feed_username"
-	    android:visibility="gone"
 	>  
 		<Button
 		    style="@style/RegularButton"

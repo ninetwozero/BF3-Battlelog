@@ -54,13 +54,6 @@
 		android:alphabeticShortcut="C"
 		android:visible="false"
 	/>
-    <item 
-		android:id="@+id/option_newpost" 
-		android:icon="@android:drawable/ic_menu_edit" 
-		android:title="Post in feed" 
-		android:alphabeticShortcut="P"
-		android:visible="false"
-	/>
 	<item 
 		android:id="@+id/option_back" 
 		android:icon="@android:drawable/ic_menu_revert" 

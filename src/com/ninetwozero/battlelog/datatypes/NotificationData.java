@@ -176,7 +176,7 @@ public class NotificationData {
 			
 		}
 		
-		return Html.fromHtml( message ).toString().replace( "{username}", this.commenter ).replace( "{owner}", this.owner );
+		return message.replace( "{username}", this.commenter ).replace( "{owner}", this.owner );
 		
 	}
 	

@@ -74,15 +74,17 @@ public class ProfileView extends TabActivity {
 	private final Context context = this;
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
-	private ProgressBar progressBar;
 	private ProfileData profileData;
 	private PersonaStats playerData;
 	private ProfileInformation profileInformation;
-	private TabHost mTabHost;
-	private FeedListAdapter feedListAdapter;
+	
 	
 	//Elements
+	private ProgressBar progressBar;
+	private TabHost mTabHost;
+	private FeedListAdapter feedListAdapter;
 	private ListView listFeed;
+	private EditText fieldMessage;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -287,15 +289,15 @@ public class ProfileView extends TabActivity {
 						switch( getTabHost().getCurrentTab() ) {
 							
 							case 0:
-								drawHome(profileInformation);
+								setupHome(profileInformation);
 								break;
 								
 							case 1:
-								drawStats(playerData);
+								setupStats(playerData);
 								break;
 							
 							case 2:
-								drawFeed(profileInformation);
+								setupFeed(profileInformation);
 								break;
 								
 							default:
@@ -313,15 +315,15 @@ public class ProfileView extends TabActivity {
 			switch( mTabHost.getCurrentTab() ) {
 				
 				case 0:
-					drawHome(profileInformation);
+					setupHome(profileInformation);
 					break;
 					
 				case 1:
-					drawStats(playerData);
+					setupStats(playerData);
 					break;
 				
 				case 2:
-					drawFeed(profileInformation);
+					setupFeed(profileInformation);
 					break;
 					
 				default:
@@ -339,7 +341,7 @@ public class ProfileView extends TabActivity {
 		
     }
     
-    public final void drawHome(ProfileInformation data) {
+    public final void setupHome(ProfileInformation data) {
     	
     	//Let's start drawing the... layout
     	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
@@ -462,7 +464,7 @@ public class ProfileView extends TabActivity {
     	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
     }
     
-    public void drawStats(PersonaStats pd) {
+    public void setupStats(PersonaStats pd) {
     	
 		//Persona & rank
         ((TextView) findViewById(R.id.string_persona)).setText( pd.getPersonaName() );
@@ -511,13 +513,19 @@ public class ProfileView extends TabActivity {
     	
     }
     
-    public void drawFeed(ProfileInformation data) {
+    public void setupFeed(ProfileInformation data) {
     	
     	//Do we have it already?
 		if( listFeed == null ) { 
 			
 			listFeed = ((ListView) findViewById(R.id.list_feed)); 
 			registerForContextMenu(listFeed);
+			
+			if( profileInformation.isFriend() ) {
+				
+				findViewById(R.id.feed_update).setVisibility( View.VISIBLE );
+				
+			}
 			
 		}
         
@@ -583,7 +591,6 @@ public class ProfileView extends TabActivity {
 			menu.removeItem( R.id.option_friendadd );
 			menu.removeItem( R.id.option_frienddel );
 			menu.removeItem( R.id.option_compare );
-			menu.removeItem( R.id.option_newpost );
 			
 		} else {
     	
@@ -611,14 +618,12 @@ public class ProfileView extends TabActivity {
 				}
 				
 				((MenuItem) menu.findItem( R.id.option_compare )).setVisible( false );
-				((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
 			
 			} else if( mTabHost.getCurrentTab() == 1 ) {
 				
 				((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_compare )).setVisible( true );
-				((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
 				
 			} else if( mTabHost.getCurrentTab() == 2 ) {
 				
@@ -626,21 +631,11 @@ public class ProfileView extends TabActivity {
 				((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_compare )).setVisible( false );
 				
-				if( profileInformation.isFriend() ) {
-					
-					((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( true );
-				
-				} else {
-				
-					((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
-					
-				}
 			} else {
 				
 				menu.removeItem( R.id.option_friendadd );
 				menu.removeItem( R.id.option_frienddel );
 				menu.removeItem( R.id.option_compare );
-				menu.removeItem( R.id.option_newpost );
 				
 			}
 
@@ -696,10 +691,6 @@ public class ProfileView extends TabActivity {
 				)
 					
 			);
-			
-		} else if( item.getItemId() == R.id.option_newpost ) {
-			
-			generateDialogPost(this).show();
 			
 		}
 	
@@ -851,65 +842,37 @@ public class ProfileView extends TabActivity {
 		return true;
 	}
 	
-	public Dialog generateDialogPost(final Context context) {
-		
-		//Attributes
-		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-	    final View layout = inflater.inflate(R.layout.dialog_newpost, (ViewGroup) findViewById(R.id.dialog_root));
-		
-	    //Set the title and the view
-		builder.setTitle("New wall post");
-		builder.setView(layout);
+	public void onClick(View v) {
+	
+		if( v.getId() == R.id.button_send ) {
+			
+			//Is it non-existent
+			if( fieldMessage == null ) { fieldMessage = (EditText) findViewById(R.id.field_message); }
+			
+			//Empty message?
+			if( fieldMessage.getText().toString().equals("") ) {
+				
+				Toast.makeText(context, "You're not allowed to post an empty message.", Toast.LENGTH_SHORT).show();
+				return;
+				
+			}
+			
+			new AsyncPostToWall(
+			
+				context, 
+				profileData.getProfileId(),
+				false
+				
+			).execute(
+					
+				sharedPreferences.getString( "battlelog_post_checksum", "" ),
+				fieldMessage.getText().toString()
+				
+			);
+			fieldMessage.setText("");
+			
+		}
 
-		//Grab the fields
-		final EditText fieldMessage = (EditText) layout.findViewById(R.id.field_message);
-		
-		//Dialog options
-		builder.setNegativeButton(
-				
-			android.R.string.cancel, 
-			
-			new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int whichButton) { 
-					
-					dialog.dismiss(); 
-					
-				}
-				
-			}
-			
-		);
-			 
-		builder.setPositiveButton(
-				
-			android.R.string.ok, 
-			new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int which) {
-			      
-					
-					new AsyncPostToWall(
-							
-						context, 
-						profileData.getProfileId()
-						
-					).execute(
-							
-						sharedPreferences.getString( "battlelog_post_checksum", "" ),
-						fieldMessage.getText().toString()
-						
-					);
-			   
-				}
-				
-			}
-			
-		);
-		
-		//CREATE
-		return builder.create();
-		
 	}
+	
 }

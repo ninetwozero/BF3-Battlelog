@@ -95,8 +95,8 @@ public final class Constants {
 	public static final String[] fieldNamesChat = new String[] { "message", "chatId", "post-check-sum" };
 	public static final String[] fieldValuesChat = new String[] { null, null, null };
 	
-	public static final String[] fieldNamesProfilePost = new String[] { "wall-message", "wall-ownerId", "post-check-sum" };
-	public static final String[] fieldValuesProfilePost = new String[] { null, null, null };
+	public static final String[] fieldNamesFeedPost = new String[] { "wall-message", "post-check-sum", "wall-ownerId", "wall-platoonId" };
+	public static final String[] fieldValuesFeedPost = new String[] { null, null, null, null };
 	
 	public static final String[] fieldNamesFeedComment = new String[] { "comment", "post-check-sum" };
 	public static final String[] fieldValuesFeedComment = new String[] { null, null };
@@ -125,7 +125,7 @@ public final class Constants {
 	
 	//Grawratar
 	public static final int defaultAvatarSize = 52; 
-	public static final int bitmapCacheLimit = 25;
+	public static final int cacheLimit = 25;
 	
 	//Menu
 	public static final long MENU_ME = 0;

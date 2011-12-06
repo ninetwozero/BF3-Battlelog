@@ -92,8 +92,9 @@ public class PlatoonView extends TabActivity {
 	private TableRow cacheTableRow;
 	private FeedListAdapter feedListAdapter;
 	private PlatoonUserListAdapter platoonUserListAdapter;
-	private Bitmap platoonBadge = null;
+	private Bitmap platoonBadge;
 	private ImageView imageViewBadge;
+	private EditText fieldMessage;
 	
 	//CONTROLLERS 
 	private final int VIEW_MEMBERS = 0, VIEW_FANS = 1;
@@ -146,7 +147,7 @@ public class PlatoonView extends TabActivity {
 				R.layout.tab_content_platoon_overview, 
 				R.layout.tab_content_platoon_stats, 
 				R.layout.tab_content_platoon_users, 
-				R.layout.tab_content_feed 
+				R.layout.tab_content_platoon_feed 
 				
     		}
     		
@@ -311,19 +312,19 @@ public class PlatoonView extends TabActivity {
 						switch( getTabHost().getCurrentTab() ) {
 							
 							case 0:
-								drawHome(platoonInformation);
+								setupHome(platoonInformation);
 								break;
 								
 							case 1:
-								drawStats(platoonInformation.getStats());
+								setupStats(platoonInformation.getStats());
 								break;
 								
 							case 2:
-								drawUsers(platoonInformation);
+								setupUsers(platoonInformation);
 								break;
 								
 							case 3:
-								drawFeed(platoonInformation);
+								setupFeed(platoonInformation);
 								break;
 								
 							default:
@@ -341,19 +342,19 @@ public class PlatoonView extends TabActivity {
 			switch( mTabHost.getCurrentTab() ) {
 				
 				case 0:
-					drawHome(platoonInformation);
+					setupHome(platoonInformation);
 					break;
 					
 				case 1:
-					drawStats(platoonInformation.getStats());
+					setupStats(platoonInformation.getStats());
 					break;
 				
 				case 2:
-					drawUsers(platoonInformation);
+					setupUsers(platoonInformation);
 					break;
 					
 				case 3:
-					drawFeed(platoonInformation);
+					setupFeed(platoonInformation);
 					break;
 					
 				default:
@@ -371,7 +372,7 @@ public class PlatoonView extends TabActivity {
 		
     }
     
-    public final void drawHome(PlatoonInformation data) {
+    public final void setupHome(PlatoonInformation data) {
     	
     	//Let's start by getting an ImageView
 		if( imageViewBadge == null ) { imageViewBadge = (ImageView) findViewById(R.id.image_badge); }
@@ -416,7 +417,7 @@ public class PlatoonView extends TabActivity {
     	
     }
     
-    public void drawStats(PlatoonStats pd) {
+    public void setupStats(PlatoonStats pd) {
     	
     	//Let's start drawing the... layout
     	((TextView) findViewById(R.id.text_name_platoon)).setText( pd.getName() );
@@ -526,7 +527,7 @@ public class PlatoonView extends TabActivity {
     	
     }
     
-    public final void drawUsers(PlatoonInformation data) {
+    public final void setupUsers(PlatoonInformation data) {
     	
     	//Do we have the ListView?
     	if( listUsers == null ) {
@@ -603,7 +604,7 @@ public class PlatoonView extends TabActivity {
     	
     }
     
-    public void drawFeed(PlatoonInformation data) {
+    public void setupFeed(PlatoonInformation data) {
     	
     	//Do we have it already?
 		if( listFeed == null ) { 
@@ -651,7 +652,7 @@ public class PlatoonView extends TabActivity {
 			
 		} else {
 			
-			
+			feedListAdapter.setItemArray( data.getFeedItems() );
 			feedListAdapter.notifyDataSetChanged();
 		}
     }
@@ -674,21 +675,26 @@ public class PlatoonView extends TabActivity {
 					
 			if( platoonInformation.isOpenForNewMembers() ) {
 					
-				if( platoonInformation.isOpenForNewMembers() ) {
-
+				if( platoonInformation.isMember() ) {
+					
 					((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
 					((MenuItem) menu.findItem( R.id.option_leave )).setVisible( true );
 					((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
 					((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
-					((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
-				
-				} else {
+										
+				} else if( platoonInformation.isOpenForNewMembers() ) {
 
 					((MenuItem) menu.findItem( R.id.option_join )).setVisible( true );
 					((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 					((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
 					((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
-					((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
+					
+				} else {
+
+					((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
 				}
 					
 			} else {
@@ -697,7 +703,6 @@ public class PlatoonView extends TabActivity {
 				((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
-				((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
 				
 			}
 		
@@ -707,7 +712,6 @@ public class PlatoonView extends TabActivity {
 			((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
-			((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
 			
 		} else if( mTabHost.getCurrentTab() == 2 ) {
 			
@@ -717,7 +721,6 @@ public class PlatoonView extends TabActivity {
 				((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_fans )).setVisible( true );
 				((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
-				((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
 				
 			} else {
 
@@ -725,7 +728,6 @@ public class PlatoonView extends TabActivity {
 				((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_members )).setVisible( true );
-				((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
 				
 			}
 			
@@ -735,7 +737,6 @@ public class PlatoonView extends TabActivity {
 			((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
-			((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( true );
 			
 		} else {
 			
@@ -743,7 +744,6 @@ public class PlatoonView extends TabActivity {
 			((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
-			((MenuItem) menu.findItem( R.id.option_newpost )).setVisible( false );
 			
 		}
 		
@@ -766,15 +766,11 @@ public class PlatoonView extends TabActivity {
 		} else if( item.getItemId() == R.id.option_members || item.getItemId() == R.id.option_fans ) {
 			
 			isViewingMembers = !isViewingMembers;
-			drawUsers( platoonInformation );
+			setupUsers( platoonInformation );
 			
 		} else if( item.getItemId() == R.id.option_compare ) {
 			
 			Toast.makeText( this, "You can't compare platoons... duh", Toast.LENGTH_SHORT).show();
-			
-		} else if( item.getItemId() == R.id.option_newpost ) {
-			
-			generateDialogPost(this).show();
 			
 		} else if( item.getItemId() == R.id.option_join ) {
 			
@@ -831,8 +827,35 @@ public class PlatoonView extends TabActivity {
 					
 			);
 			
+		} else if( v.getId() == R.id.button_send ) {
+				
+			//Is it non-existent
+			if( fieldMessage == null ) { fieldMessage = (EditText) findViewById(R.id.field_message); }
+			
+			//Empty message?
+			if( fieldMessage.getText().toString().equals("") ) {
+				
+				Toast.makeText(this, "You're not allowed to post an empty message.", Toast.LENGTH_SHORT).show();
+				return;
+				
+			}
+			
+			new AsyncPostToWall(
+			
+				this, 
+				platoonData.getId(),
+				true
+				
+			).execute(
+					
+				sharedPreferences.getString( "battlelog_post_checksum", "" ),
+				fieldMessage.getText().toString()
+				
+			);
+			fieldMessage.setText("");
+			
 		}
-		
+
 	}
 	
 	@Override
@@ -935,6 +958,11 @@ public class PlatoonView extends TabActivity {
 							"platoonId",
 							platoonInformation.getId()
 							
+						).putExtra( 
+								
+							"canComment",
+							platoonInformation.isMember()
+							
 						)
 						
 					);
@@ -951,68 +979,6 @@ public class PlatoonView extends TabActivity {
 		}
 
 		return true;
-	}
-	
-	public Dialog generateDialogPost(final Context context) {
-		
-		//Attributes
-		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-	    final View layout = inflater.inflate(R.layout.dialog_newpost, (ViewGroup) findViewById(R.id.dialog_root));
-		
-	    //Set the title and the view
-		builder.setTitle("New wall post");
-		builder.setView(layout);
-
-		//Grab the fields
-		final EditText fieldMessage = (EditText) layout.findViewById(R.id.field_message);
-		
-		//Dialog options
-		builder.setNegativeButton(
-				
-			android.R.string.cancel, 
-			
-			new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int whichButton) { 
-					
-					dialog.dismiss(); 
-					
-				}
-				
-			}
-			
-		);
-			 
-		builder.setPositiveButton(
-				
-			android.R.string.ok, 
-			new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int which) {
-			      
-					
-					new AsyncPostToWall(
-							
-						context, 
-						platoonData.getId()
-						
-					).execute(
-							
-						sharedPreferences.getString( "battlelog_post_checksum", "" ),
-						fieldMessage.getText().toString()
-						
-					);
-			   
-				}
-				
-			}
-			
-		);
-		
-		//CREATE
-		return builder.create();
-		
 	}
 	
 	public void generateTableRows(TableLayout parent, ArrayList<PlatoonStatsItem> stats, boolean isTime) {

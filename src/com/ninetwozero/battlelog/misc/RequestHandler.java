@@ -256,6 +256,9 @@ public class RequestHandler {
 		// Check so it's not empty
 		if ( link.equals( "" ) ) throw new RequestHandlerException("No link found.");
 
+		//DEBUG
+		//for( PostData p : postDataArray) { Log.d(Constants.debugTag, p.getField() + " => " + p.getValue()); }
+		
 		//Init...
 		HttpPost httpPost = new HttpPost(link);
 		
@@ -321,6 +324,15 @@ public class RequestHandler {
 			httpResponse = httpClient.execute(httpPost);
 			httpEntity = httpResponse.getEntity();
 			
+			//DEBUG
+			/*Log.d(Constants.debugTag, "############################");
+			for( Header h : httpResponse.getAllHeaders() ) {
+				
+				Log.d(Constants.debugTag, h.getName() + " => " + h.getValue());
+				
+			}
+			Log.d(Constants.debugTag, "############################");
+			*/
 			//Anything?
 			if (httpEntity != null) {
 

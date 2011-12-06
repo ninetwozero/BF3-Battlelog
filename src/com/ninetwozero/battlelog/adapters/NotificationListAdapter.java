@@ -82,12 +82,12 @@ public class NotificationListAdapter extends BaseAdapter {
 		//Recycle
 		if ( convertView == null ) {
 
-			convertView = layoutInflater.inflate( R.layout.list_item_feed, parent, false );
+			convertView = layoutInflater.inflate( R.layout.list_item_notification, parent, false );
 
 		}
 	
 		//Set the views
-		((TextView) convertView.findViewById(R.id.text_title)).setText( currentItem.getMessage( this.activeUserId ) );
+		((TextView) convertView.findViewById(R.id.text_message)).setText( Html.fromHtml( currentItem.getMessage(this.activeUserId ) ) );
 		((TextView) convertView.findViewById(R.id.text_date)).setText( PublicUtils.getRelativeDate( currentItem.getDate() ) );
 
 		

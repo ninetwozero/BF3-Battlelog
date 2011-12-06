@@ -63,6 +63,7 @@ public class WebsiteHandler {
 	
 	//Let's have this one ready
 	public static HashMap<String, Bitmap> bitmapCache = new HashMap<String, Bitmap>();
+	public static HashMap<String, Object> feedCache = new HashMap<String, Object>();
 	
 	public static ProfileData doLogin(Context context, PostData[] postDataArray, boolean savePassword) throws WebsiteHandlerException {
 	
@@ -1446,8 +1447,9 @@ public class WebsiteHandler {
 			
 			//Get the content
 			String httpContent = rh.get( Constants.urlPlatoon.replace( "{PLATOON_ID}", platoonData.getId() + "" ), 1 );
-			boolean hasAdminRights = false;
-	
+			boolean isAdmin = false;
+			boolean isMember = false;
+			
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
 				
@@ -1471,8 +1473,8 @@ public class WebsiteHandler {
 					//Check the *rights* of the user
 					if( idArray.getString( counter ).equals("" + activeProfileId)  ) {
 						
-						hasAdminRights = true;
-						
+						isMember = true;
+						if( currItem.getInt("membershipLevel") >= 128 ) { isAdmin = true; }
 					}
 					
 					
@@ -1592,7 +1594,7 @@ public class WebsiteHandler {
 				}
 
 				//Is the user *admin* or higher?
-				if( hasAdminRights ) {
+				if( isAdmin ) {
 					
 					if( invitedMembers.size() > 0 ) {
 						
@@ -1654,7 +1656,8 @@ public class WebsiteHandler {
 					PublicUtils.normalizeUrl( profileCommonObject.optString( "website", "" ) ),
 					image,
 					!profileCommonObject.getBoolean( "hidden" ),
-					hasAdminRights,
+					isMember,
+					isAdmin,
 					profileCommonObject.getBoolean( "allowNewMembers" ),
 					feedItemArray,
 					members,
@@ -2530,6 +2533,43 @@ public class WebsiteHandler {
 							
 					);
 				
+				} else if( !currItem.isNull( "COMMENTEDBLOG" )) {
+				
+	
+					//Get it!
+					tempSubItem = currItem.getJSONObject( "COMMENTEDBLOG" );
+					
+					//Set it!
+					itemTitle = "<b>{username}</b> commented on the blog post <b>{post name}</b>.".replace(
+							
+						"{post name}",
+						tempSubItem.getString( "blogTitle" )
+						
+					);
+					
+					//Temporary storage						
+					tempFeedItem = new FeedItem(
+	
+						Long.parseLong( currItem.getString("id") ),
+						Long.parseLong( currItem.getString("ownerId") ),
+						Long.parseLong( currItem.getString("itemId") ),
+						currItem.getLong( "creationDate" ),
+						numLikes,
+						itemTitle,
+						tempSubItem.getString( "blogCommentBody" ),
+						currItem.getString("event"),
+						new String[] {
+							
+							ownerObject.getString("username"), 
+							null 
+							
+						},
+						liked,
+						comments,
+						tempGravatarHash
+							
+					);
+				
 				} else if( !currItem.isNull( "JOINEDPLATOON" )) {
 	
 					//Get it!
@@ -3117,7 +3157,7 @@ public class WebsiteHandler {
 
 	}
 
-	public static boolean postToWall(long profileId, String checksum, String content) throws WebsiteHandlerException {
+	public static boolean postToWall(long profileId, String checksum, String content, boolean isPlatoon) throws WebsiteHandlerException {
 		
 		try {
 
@@ -3131,30 +3171,33 @@ public class WebsiteHandler {
 					
 					new PostData(
 							
-						Constants.fieldNamesProfilePost[0],
+						Constants.fieldNamesFeedPost[0],
 						content
 							
 					),new PostData(
 							
-						Constants.fieldNamesProfilePost[1],
-						profileId + ""
-								
-					),new PostData(
-							
-						Constants.fieldNamesProfilePost[2],
+						Constants.fieldNamesFeedPost[1],
 						checksum
 							
+					),new PostData(
+							
+						Constants.fieldNamesFeedPost[(!isPlatoon?2:3)],
+						profileId + ""
+								
 					)
 				},
 				2
 				
 			);
-
+			
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
 	
 				//Check the JSON
-				if( (new JSONObject(httpContent)).getString( "message" ).equals( "WALL_POST_CREATED" )) {
+				JSONObject jsonResponse = new JSONObject(httpContent);
+				String status = jsonResponse.optString( "message", "" );
+				
+				if( status.equals( "WALL_POST_CREATED" ) || status.equals( "PLATOONWALL_POST_CREATED" ) ) {
 					
 					return true;
 				
@@ -3280,7 +3323,7 @@ public class WebsiteHandler {
 		try { 
 			
 			
-			if( WebsiteHandler.bitmapCache.size() > Constants.bitmapCacheLimit ) {
+			if( WebsiteHandler.bitmapCache.size() > Constants.cacheLimit ) {
 				
 				//Loops & removes five bitmaps from the cache
 				int counter = 0;
@@ -3305,6 +3348,39 @@ public class WebsiteHandler {
 			
 			ex.printStackTrace();
 			
+		}
+		
+	}
+	
+	public static void cacheObject(String h, Object o) {
+		
+		try { 
+			
+			
+			if( WebsiteHandler.feedCache.size() > Constants.cacheLimit ) {
+				
+				//Loops & removes five bitmaps from the cache
+				int counter = 0;
+				for( String identifier : WebsiteHandler.feedCache.keySet() ) {
+	
+					//> 4 = stop
+					if( counter > 4 ) { break; }
+					
+					//Remove and increment
+					WebsiteHandler.feedCache.remove(identifier);
+					counter++;			
+				
+				}
+			
+			}
+		
+			//Add it!
+			WebsiteHandler.feedCache.put( h, o );
+		
+		} catch(Exception ex) {
+			
+			ex.printStackTrace();
+
 		}
 		
 	}

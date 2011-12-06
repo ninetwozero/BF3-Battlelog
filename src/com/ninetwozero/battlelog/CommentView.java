@@ -88,7 +88,7 @@ public class CommentView extends ListActivity {
     	fieldMessage = (EditText) findViewById(R.id.field_message);
     
     	//Is the user allowed to post?
-        if( !getIntent().getBooleanExtra( "isFriend", false ) ) {
+        if( !getIntent().getBooleanExtra( "canComment", false ) ) {
 
         	if( sharedPreferences.getLong( "battlelog_profile_id", 0 ) != getIntent().getLongExtra( "profileId", 0) ) {
         		

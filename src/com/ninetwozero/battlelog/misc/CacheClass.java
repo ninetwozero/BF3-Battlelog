@@ -9,5 +9,5 @@ public class CacheClass {
 
 	//Attributes
 	public static HashMap<String, Bitmap> bitmapCache = new HashMap<String, Bitmap>();
-	
+
 }

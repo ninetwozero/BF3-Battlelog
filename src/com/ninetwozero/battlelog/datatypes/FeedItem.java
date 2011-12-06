@@ -175,7 +175,7 @@ public class FeedItem {
 						
 			);
 			
-		} else if( type.equals( "commentedgamereport" ) ) {
+		} else if( type.equals( "commentedgamereport" ) || type.equals( "commentedblog" ) ) {
 			
 			return this.title.replace( 
 				

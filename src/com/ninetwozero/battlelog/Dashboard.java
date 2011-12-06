@@ -56,6 +56,7 @@ import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.adapters.FriendListAdapter;
 import com.ninetwozero.battlelog.adapters.GridMenuAdapter;
 import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
+import com.ninetwozero.battlelog.adapters.RequestListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRefresh;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
@@ -106,7 +107,8 @@ public class Dashboard extends TabActivity {
 	private OnDrawerCloseListener onDrawerCloseListener;
 	private ListView listFriendRequests, listFriends, listNotifications;
 	private NotificationListAdapter notificationListAdapter;
-	private FriendListAdapter friendRequestListAdapter, friendListAdapter;
+	private FriendListAdapter friendListAdapter;
+	private RequestListAdapter friendRequestListAdapter;
 	private OnItemClickListener onItemClickListener;
 	private Button buttonRefresh;
 	
@@ -151,9 +153,6 @@ public class Dashboard extends TabActivity {
         feedArray = new ArrayList<FeedItem>();
         notificationArray = new ArrayList<NotificationData>();
     	friendListData = new FriendListDataWrapper(null, null, null);
-    	
-    	//Refresh the feed
-        refreshFeed();
         
         //Fix the tabs
     	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
@@ -186,7 +185,8 @@ public class Dashboard extends TabActivity {
         	
         };
         
-        //Setup COM
+        //Setup COM & feed
+        refreshFeed();
         setupCOM();
 
 	}	
@@ -303,28 +303,24 @@ public class Dashboard extends TabActivity {
 			
 			//Get the ListView
 			listFriends = ((ListView) findViewById(R.id.list_friends)); 
-			friendsStatusText = ((TextView) findViewById(R.id.text_status_friends));
 			listFriends.setOnItemClickListener( onItemClickListener );
 		
 			registerForContextMenu(listFriends);
-			
-			//Set the wrap
-			wrapFriendRequests = findViewById(R.id.wrap_friends_requests);
 	        
 		}
 		
 		if( listFriendRequests == null ) {
 			
 			//Get the ListView
-			listFriendRequests = ((ListView) findViewById(R.id.list_friends)); 
+			listFriendRequests = ((ListView) findViewById(R.id.list_requests)); 
 			listFriendRequests.setOnItemClickListener( onItemClickListener );
 			friendsStatusText = ((TextView) findViewById(R.id.text_status_friends));
 			
 			registerForContextMenu(listFriendRequests);
 			
-			//Set the wrap
+			//Get the wrap
 			wrapFriendRequests = findViewById(R.id.wrap_friends_requests);
-			
+		
 		}
 		
 	
@@ -341,7 +337,7 @@ public class Dashboard extends TabActivity {
 				
 			} else {
 
-				if( items.getRequests() == null || items.getRequests().size() == 0 ) {
+				if( !hasRequests ) {
 					
 					if( wrapFriendRequests.getVisibility() == View.VISIBLE ) { wrapFriendRequests.setVisibility( View.GONE ); }
 					
@@ -349,19 +345,20 @@ public class Dashboard extends TabActivity {
 					
 					if( wrapFriendRequests.getVisibility() == View.GONE ) { wrapFriendRequests.setVisibility( View.VISIBLE  ); }
 					
-				}
-				
-				if( items.getFriends() == null || items.getFriends().size() == 0 ) {
-					
-					if( friendsStatusText.getVisibility() == View.GONE ) { friendsStatusText.setVisibility( View.VISIBLE ); }
-					
-				} else {
-					
-					if( friendsStatusText.getVisibility() == View.VISIBLE ) { friendsStatusText.setVisibility( View.GONE ); }
+					if( !hasFriends ) {
+						
+						if( friendsStatusText.getVisibility() == View.GONE ) { friendsStatusText.setVisibility( View.VISIBLE ); }
+						
+					} else {
+						
+						if( friendsStatusText.getVisibility() == View.VISIBLE ) { friendsStatusText.setVisibility( View.GONE ); }
+						
+					}
 					
 				}
 		
 			}
+
 			
 			//If we don't have it defined, then we need to set it
 			if( listFriends.getAdapter() == null ) {
@@ -369,18 +366,32 @@ public class Dashboard extends TabActivity {
 				//Create a new NotificationListAdapter
 				friendListAdapter = new FriendListAdapter(this, items.getFriends(), layoutInflater);
 				listFriends.setAdapter( friendListAdapter );
-				friendRequestListAdapter = new FriendListAdapter(this, items.getRequests(), layoutInflater);
-				listFriendRequests.setAdapter( friendRequestListAdapter );
 				
 			} else {
 	
 				friendListAdapter.setItemArray( items.getFriends() );
 				friendListAdapter.notifyDataSetChanged();
-				friendRequestListAdapter.setItemArray( items.getRequests() );
-				friendRequestListAdapter.notifyDataSetChanged();
-			
+				
 			}
 			
+			if( listFriendRequests.getAdapter() == null ) {
+
+				//Create a new NotificationListAdapter
+				friendRequestListAdapter = new RequestListAdapter(this, items.getRequests(), layoutInflater);
+				listFriendRequests.setAdapter( friendRequestListAdapter );
+			
+			} else {
+				
+				
+				friendRequestListAdapter.setItemArray( 
+						
+					items.getRequests() 
+					
+				);
+				friendRequestListAdapter.notifyDataSetChanged();
+
+			}
+				
 		}
 		
 	}
@@ -451,6 +462,7 @@ public class Dashboard extends TabActivity {
 		
 		if( v.getId() == R.id.button_refresh ) {
 			
+			refreshFeed();
 			refreshCOM();
 			
 		} else if( v.getId() == R.id.button_status ) {
@@ -511,10 +523,10 @@ public class Dashboard extends TabActivity {
 
 		//Let's act!
 		if( item.getItemId() == R.id.option_refresh ) {
-			
-			new AsyncFeedRefresh(context, Dashboard.profile.getProfileId()).execute();
-			new AsyncCOMReload().execute( sharedPreferences.getString( "battlelog_post_checksum", "" ));
-			
+
+			refreshFeed();
+			refreshCOM();
+		
 		} else if( item.getItemId() == R.id.option_logout ) {
 			
 			new AsyncLogout(this).execute();
@@ -1061,7 +1073,7 @@ public class Dashboard extends TabActivity {
 							
 						).putExtra(
 						
-							"isFriend",
+							"canComment",
 							true
 								
 						)
