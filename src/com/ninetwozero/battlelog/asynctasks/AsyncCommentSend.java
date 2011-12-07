@@ -66,7 +66,7 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
     		
 		} catch( Exception ex ) {
 			
-			Log.e(Constants.debugTag, "", ex);
+			Log.e(Constants.DEBUG_TAG, "", ex);
 			return false;
 			
 		}

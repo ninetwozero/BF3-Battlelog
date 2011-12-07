@@ -68,7 +68,7 @@ public class UnlockView extends ListActivity {
         setContentView(R.layout.unlocks_view);
 
         //Prepare to tango
-        this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
+        this.sharedPreferences = this.getSharedPreferences( Constants.FILE_SHPREF, 0);
     	if( instances == 1 ) { this.reloadLayout(); }
 	}        
 

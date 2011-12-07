@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.CompareView;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
@@ -29,7 +29,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
 		
 		context = c;
 		origin = (Activity) context;
-		sharedPreferences = context.getSharedPreferences( Constants.fileSharedPrefs, 0 );
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences( context );
 		
 		userData = null;
 		error = "";

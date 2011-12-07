@@ -84,7 +84,7 @@ public class ChatView extends ListActivity {
         setContentView(R.layout.chat_view);
 
         //Prepare to tango
-        this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
+        this.sharedPreferences = this.getSharedPreferences( Constants.FILE_SHPREF, 0);
         this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         
         //Get the ListView

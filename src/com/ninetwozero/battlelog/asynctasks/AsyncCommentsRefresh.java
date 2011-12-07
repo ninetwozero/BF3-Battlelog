@@ -44,7 +44,7 @@ public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
 		this.context = c;
 		this.listView = lv;
 		this.layoutInflater = l;
-		this.sharedPreferences = context.getSharedPreferences(Constants.fileSharedPrefs, 0);
+		this.sharedPreferences = context.getSharedPreferences(Constants.FILE_SHPREF, 0);
 	
 	}	
 

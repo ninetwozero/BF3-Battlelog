@@ -72,7 +72,7 @@ public class PublicUtils {
 		dateDiff = ( dateDiff < 0 )? 0 : dateDiff;
 				
 		//What's the difference (in seconds) y'all?
-		if( (dateDiff / Constants.minuteInSeconds) < 1 ) {
+		if( (dateDiff / Constants.MINUTE_IN_SECONDS) < 1 ) {
 			
 			//Diff is in seconds
 			if( dateDiff == 1 ) {
@@ -82,71 +82,71 @@ public class PublicUtils {
 				
 			} else {
 				
-				dateString = "{seconds} seconds ago".replace( "{seconds}", String.valueOf(dateDiff % Constants.minuteInSeconds) );
+				dateString = "{seconds} seconds ago".replace( "{seconds}", String.valueOf(dateDiff % Constants.MINUTE_IN_SECONDS) );
 			
 			}
 			
-		} else if( (dateDiff / Constants.hourInSeconds) < 1 ) {
+		} else if( (dateDiff / Constants.HOUR_IN_SECONDS) < 1 ) {
 			
 			//Diff is in minutes
-			if( (dateDiff / Constants.minuteInSeconds) == 1 ) {
+			if( (dateDiff / Constants.MINUTE_IN_SECONDS) == 1 ) {
 				
 				dateString = "{minutes} minute ago".replace( "{minutes}", String.valueOf(1) );
 			
 			} else {
 				
-				dateString = "{minutes} minutes ago".replace( "{minutes}", String.valueOf(dateDiff / Constants.minuteInSeconds) );
+				dateString = "{minutes} minutes ago".replace( "{minutes}", String.valueOf(dateDiff / Constants.MINUTE_IN_SECONDS) );
 				
 			}
-		} else if( (dateDiff / Constants.dayInSeconds) < 1 ) {
+		} else if( (dateDiff / Constants.DAY_IN_SECONDS) < 1 ) {
 			
 			//Diff is in hours
-			if( (dateDiff / Constants.hourInSeconds) == 1 ) {
+			if( (dateDiff / Constants.HOUR_IN_SECONDS) == 1 ) {
 				
 				dateString = "{hours} hour ago".replace( "{hours}", String.valueOf(1) );
 			
 			} else {
 			
-				dateString = "{hours} hours ago".replace( "{hours}", String.valueOf(dateDiff / Constants.hourInSeconds) );	
+				dateString = "{hours} hours ago".replace( "{hours}", String.valueOf(dateDiff / Constants.HOUR_IN_SECONDS) );	
 				
 			}
 
-		} else if( (dateDiff / Constants.weekInSeconds) < 1 ) {
+		} else if( (dateDiff / Constants.WEEK_IN_SECONDS) < 1 ) {
 		
 			//Diff is in days
-			if( (dateDiff / Constants.dayInSeconds) == 1 ) {
+			if( (dateDiff / Constants.DAY_IN_SECONDS) == 1 ) {
 			
 				dateString = "{days} day ago".replace( "{days}", String.valueOf(1) );
 				
 			} else {
 				
-				dateString = "{days} days ago".replace( "{days}", String.valueOf(dateDiff / Constants.dayInSeconds) );
+				dateString = "{days} days ago".replace( "{days}", String.valueOf(dateDiff / Constants.DAY_IN_SECONDS) );
 			
 			}
 				
-		} else if( (dateDiff / Constants.yearInSeconds) < 1 ) {
+		} else if( (dateDiff / Constants.YEAR_IN_SECONDS) < 1 ) {
 			
 			//Diff is in weeks
-			if( (dateDiff / Constants.weekInSeconds) == 1 ) {
+			if( (dateDiff / Constants.WEEK_IN_SECONDS) == 1 ) {
 			
 				dateString = "{weeks} week ago".replace( "{weeks}", String.valueOf(1) );
 				
 			} else {
 				
-				dateString = "{weeks} weeks ago".replace( "{weeks}", String.valueOf(dateDiff / Constants.weekInSeconds) );
+				dateString = "{weeks} weeks ago".replace( "{weeks}", String.valueOf(dateDiff / Constants.WEEK_IN_SECONDS) );
 			
 			}	
 			
 		} else {
 		
 			//Diff is probably in years
-			if( (dateDiff / Constants.yearInSeconds) == 1 ) {
+			if( (dateDiff / Constants.YEAR_IN_SECONDS) == 1 ) {
 			
 				dateString = "{years} year ago".replace( "{years}", String.valueOf(1) );
 				
 			} else {
 				
-				dateString = "{years} years ago".replace( "{years}", String.valueOf(dateDiff / Constants.yearInSeconds ) );
+				dateString = "{years} years ago".replace( "{years}", String.valueOf(dateDiff / Constants.YEAR_IN_SECONDS ) );
 		
 			}
 		

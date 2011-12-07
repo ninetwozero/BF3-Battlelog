@@ -26,6 +26,7 @@ import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
@@ -97,9 +98,13 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 			
 			if( results ) { 
 				
+				//Start the service
+				this.context.startService( new Intent(context, BattlelogService.class) );
+
+				//Start the activity
 				this.context.startActivity( 
 						
-					new Intent(this.context, Dashboard.class).putExtra( 
+					new Intent(context, Dashboard.class).putExtra( 
 							
 						"myProfile", 
 						profile

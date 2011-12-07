@@ -44,7 +44,7 @@ public class AsyncFriendListSpinner extends AsyncTask<String, Void, Boolean> {
 			
 		} catch ( WebsiteHandlerException ex ) {
 			
-			Log.d(Constants.debugTag, ex.getMessage() );
+			Log.d(Constants.DEBUG_TAG, ex.getMessage() );
 			return false;
 			
 		}

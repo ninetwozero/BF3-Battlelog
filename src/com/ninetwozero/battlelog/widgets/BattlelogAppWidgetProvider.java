@@ -65,7 +65,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 		   int numFriendsOnline = 0;
 	   
 		   //Set the values
-		   sharedPreferences = context.getSharedPreferences( Constants.fileSharedPrefs, 0);  
+		   sharedPreferences = context.getSharedPreferences( Constants.FILE_SHPREF, 0);  
 		   profileData = new ProfileData(
 
 				sharedPreferences.getString( "battlelog_username", "" ),
@@ -101,7 +101,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 					try {
 						
 						//Init
-						PostData[] postDataArray = new PostData[Constants.fieldNamesLogin.length];
+						PostData[] postDataArray = new PostData[Constants.FIELD_NAMES_LOGIN.length];
 			    		String[] valueFields = new String[] { 
 							
 						sharedPreferences.getString( "origin_email", ""), 
@@ -120,12 +120,12 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 			    		}; 
 
 						//Iterate and conquer
-			    		for( int i = 0; i < Constants.fieldNamesLogin.length; i++ ) {
+			    		for( int i = 0; i < Constants.FIELD_NAMES_LOGIN.length; i++ ) {
 	
 			    			postDataArray[i] =	new PostData(
 				    			
-			    				Constants.fieldNamesLogin[i],
-				    			(Constants.fieldValuesLogin[i] == null) ? valueFields[i] : Constants.fieldValuesLogin[i] 
+			    				Constants.FIELD_NAMES_LOGIN[i],
+				    			(Constants.FIELD_VALUES_LOGIN[i] == null) ? valueFields[i] : Constants.FIELD_VALUES_LOGIN[i] 
 				    		);
 			    		
 			    		}

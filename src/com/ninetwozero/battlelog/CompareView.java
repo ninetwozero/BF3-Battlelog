@@ -135,7 +135,7 @@ public class CompareView extends Activity {
         setContentView(R.layout.compare_view);
 
         //Prepare to tango
-        this.sharedPreferences = this.getSharedPreferences( Constants.fileSharedPrefs, 0);
+        this.sharedPreferences = this.getSharedPreferences( Constants.FILE_SHPREF, 0);
     
         //Let's set them straight
         playerOne = new ProfileData(

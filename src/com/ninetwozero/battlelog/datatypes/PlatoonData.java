@@ -1,9 +1,6 @@
 package com.ninetwozero.battlelog.datatypes;
 
-import java.io.Serializable;
-
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Parcel;
 import android.os.Parcelable;
 

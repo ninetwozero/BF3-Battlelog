@@ -1,6 +1,5 @@
 package com.ninetwozero.battlelog.datatypes;
 
-import android.text.Html;
 import android.util.Log;
 
 import com.ninetwozero.battlelog.misc.Constants;
@@ -45,7 +44,7 @@ public class NotificationData {
 	//Generate a message
 	public String getMessage(long userId) {
 		
-		Log.d( Constants.debugTag, userId + " :|: " + this.toString() );
+		Log.d( Constants.DEBUG_TAG, userId + " :|: " + this.toString() );
 		
 		//What have we here?
 		String message = "";

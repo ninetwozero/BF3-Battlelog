@@ -81,6 +81,7 @@
 				android:resource="@xml/appwidget">  
 			</meta-data>
 		</receiver>
+		<service android:enabled="true" android:name=".services.BattlelogService" />
     </application>
 	<uses-permission android:name="android.permission.INTERNET" />
 </manifest>

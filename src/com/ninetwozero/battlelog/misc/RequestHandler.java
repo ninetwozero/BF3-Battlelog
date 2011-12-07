@@ -272,7 +272,7 @@ public class RequestHandler {
 				httpPost.setHeader( "X-Requested-With", "XMLHttpRequest");
 				httpPost.setHeader( "X-AjaxNavigation", "1");
 				httpPost.setHeader( "Accept-Encoding", "gzip, deflate" );
-				httpPost.setHeader( "Referer", Constants.urlMain);
+				httpPost.setHeader( "Referer", Constants.URL_MAIN);
 				httpPost.setHeader( "Accept", "application/json, text/javascript, */*" );
 				httpPost.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
 
@@ -282,7 +282,7 @@ public class RequestHandler {
 				httpPost.setHeader( "Host", "battlelog.battlefield.com" );
 				httpPost.setHeader( "X-Requested-With", "XMLHttpRequest");
 				httpPost.setHeader( "Accept-Encoding", "gzip, deflate" );
-				httpPost.setHeader( "Referer", Constants.urlMain);
+				httpPost.setHeader( "Referer", Constants.URL_MAIN);
 				httpPost.setHeader( "Accept", "application/json, text/javascript, */*" );
 				httpPost.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
 				
@@ -291,7 +291,7 @@ public class RequestHandler {
 				httpPost.setHeader( "Host", "battlelog.battlefield.com" );
 				httpPost.setHeader( "X-Requested-With", "XMLHttpRequest");
 				httpPost.setHeader( "Accept-Encoding", "gzip, deflate" );
-				httpPost.setHeader( "Referer", Constants.urlMain);
+				httpPost.setHeader( "Referer", Constants.URL_MAIN);
 				httpPost.setHeader( "Accept", "application/json, text/javascript, */*" );
 				httpPost.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
 				httpPost.setHeader( "Accept-Charset", "utf-8,ISO-8859-1;");
@@ -341,7 +341,7 @@ public class RequestHandler {
 
 			} else {
 				
-				Log.d(Constants.debugTag, "The response was null. Weird.");
+				Log.d(Constants.DEBUG_TAG, "The response was null. Weird.");
 				
 			}
 		

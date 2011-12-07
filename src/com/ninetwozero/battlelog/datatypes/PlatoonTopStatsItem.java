@@ -16,8 +16,6 @@ package com.ninetwozero.battlelog.datatypes;
 
 import java.io.Serializable;
 
-import com.ninetwozero.battlelog.misc.DataBank;
-
 
 public class PlatoonTopStatsItem implements Serializable {
 

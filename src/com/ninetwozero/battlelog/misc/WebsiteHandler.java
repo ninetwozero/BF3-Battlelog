@@ -68,7 +68,7 @@ public class WebsiteHandler {
 	public static ProfileData doLogin(Context context, PostData[] postDataArray, boolean savePassword) throws WebsiteHandlerException {
 	
 		//Init
-		SharedPreferences sharedPreferences = context.getSharedPreferences( Constants.fileSharedPrefs, 0);
+		SharedPreferences sharedPreferences = context.getSharedPreferences( Constants.FILE_SHPREF, 0);
 		SharedPreferences.Editor spEdit = sharedPreferences.edit();
 		String[] tempString = new String[10];
 		String httpContent = "";
@@ -78,13 +78,13 @@ public class WebsiteHandler {
 			
 			//Let's login everybody!
 			RequestHandler wh = new RequestHandler();
-    		httpContent = wh.post( Constants.urlLogin, postDataArray, 0);
+    		httpContent = wh.post( Constants.URL_LOGIN, postDataArray, 0);
 
     		//Did we manage?
     		if( httpContent != null && !httpContent.equals( "" ) ) {
     			
     			//Set the int
-    			int startPosition = httpContent.indexOf( Constants.elementUIDLink );
+    			int startPosition = httpContent.indexOf( Constants.ELEMENT_UID_LINK );
     			String[] bits;
     			
     			//Did we find it?
@@ -97,15 +97,15 @@ public class WebsiteHandler {
     			//Cut out the appropriate bits (<a class="SOME CLASS HERE" href="A LONG LINK HERE">NINETWOZERO
 	    		tempString[0] = httpContent.substring( startPosition );
 				tempString[0] = tempString[0].substring( 0, tempString[0].indexOf("\">") ); 
-				bits = TextUtils.split( tempString[0].replace( Constants.elementUIDLink, ""), "/");
+				bits = TextUtils.split( tempString[0].replace( Constants.ELEMENT_UID_LINK, ""), "/");
 				
 				//Get the checksum
-				tempString[1] = httpContent.substring( httpContent.indexOf( Constants.elementStatusChecksumLink ) );
-				tempString[1] = tempString[1].substring( 0, tempString[1].indexOf( "\" />") ).replace( Constants.elementStatusChecksumLink, "" );
+				tempString[1] = httpContent.substring( httpContent.indexOf( Constants.ELEMENT_STATUS_CHECKSUM ) );
+				tempString[1] = tempString[1].substring( 0, tempString[1].indexOf( "\" />") ).replace( Constants.ELEMENT_STATUS_CHECKSUM, "" );
 				
 				//Let's work on getting the "username", not persona name --> profileId
-				tempString[2] = httpContent.substring( httpContent.indexOf( Constants.elementUsernameLink ) );
-				tempString[2] = tempString[2].substring( 0, tempString[2].indexOf( "/\">") ).replace( Constants.elementUsernameLink, "" );
+				tempString[2] = httpContent.substring( httpContent.indexOf( Constants.ELEMENT_USERNAME_LINK ) );
+				tempString[2] = tempString[2].substring( 0, tempString[2].indexOf( "/\">") ).replace( Constants.ELEMENT_USERNAME_LINK, "" );
 				profile = WebsiteHandler.getProfileIdFromSearch( tempString[2], tempString[1]);
 
 				//Further more, we would actually like to store the userid and name
@@ -164,11 +164,11 @@ public class WebsiteHandler {
 			//Get the content
 			httpContent = wh.post( 
 				
-				Constants.urlSearch, 
+				Constants.URL_PROFILE_SEARCH, 
 				new PostData[] {
 						 
-					new PostData(Constants.fieldNamesSearch[0], keyword),
-					new PostData(Constants.fieldNamesSearch[1], checksum)
+					new PostData(Constants.FIELD_NAMES_PROFILE_SEARCH[0], keyword),
+					new PostData(Constants.FIELD_NAMES_PROFILE_SEARCH[1], checksum)
 					
 				}, 
 				0
@@ -270,11 +270,11 @@ public class WebsiteHandler {
 			//Get the content
 			httpContent = wh.post( 
 				
-				Constants.urlPlatoonSearch, 
+				Constants.URL_PLATOON_SEARCH, 
 				new PostData[] {
 						 
-					new PostData(Constants.fieldNamesPlatoonSearch[0], keyword),
-					new PostData(Constants.fieldNamesPlatoonSearch[1], checksum)
+					new PostData(Constants.FIELD_NAMES_PLATOON_SEARCH[0], keyword),
+					new PostData(Constants.FIELD_NAMES_PLATOON_SEARCH[1], checksum)
 					
 				}, 
 				3
@@ -375,7 +375,7 @@ public class WebsiteHandler {
 			String httpContent;
 			
 			//Get the content
-			httpContent = wh.get( Constants.urlProfile.replace( "{UID}", profileId + ""), 0);
+			httpContent = wh.get( Constants.URL_PROFILE.replace( "{UID}", profileId + ""), 0);
 
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -450,7 +450,7 @@ public class WebsiteHandler {
 	    	RequestHandler wh = new RequestHandler();
 	    	String content = wh.get( 
     	
-    			Constants.urlStatsOverview.replace(
+    			Constants.URL_STATS_OVERVIEW.replace(
     					
 					"{PID}", pd.getPersonaId() + ""
 				
@@ -531,7 +531,7 @@ public class WebsiteHandler {
 	    	ArrayList<UnlockData> unlockArray = new ArrayList<UnlockData>();
 	    	String content = wh.get( 
 		
-				Constants.urlStatsUpcoming.replace(
+				Constants.URL_STATS_UNLOCKS.replace(
 						
 					"{PID}", pd.getPersonaId() + ""
 				
@@ -712,12 +712,12 @@ public class WebsiteHandler {
 			//Get the content
 			httpContent = wh.post( 
 					
-				Constants.urlFriends, 
+				Constants.URL_FRIENDS, 
 				new PostData[] { 
 						
 					new PostData(
 							
-						Constants.fieldNamesCHSUM[0], 
+						Constants.FIELD_NAMES_CHECKSUM[0], 
 						checksum
 						
 					) 
@@ -908,7 +908,7 @@ public class WebsiteHandler {
 			ArrayList<ProfileData> profileArray = new ArrayList<ProfileData>();
 			
 			//Get the content
-			httpContent = wh.post( Constants.urlFriends, new PostData[] { new PostData(Constants.fieldNamesCHSUM[0], checksum) }, 0);
+			httpContent = wh.post( Constants.URL_FRIENDS, new PostData[] { new PostData(Constants.FIELD_NAMES_CHECKSUM[0], checksum) }, 0);
 	
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -976,7 +976,7 @@ public class WebsiteHandler {
 
 				httpContent = wh.post( 
 						
-					Constants.urlFriendAccept.replace( 
+					Constants.URL_FRIEND_ACCEPT.replace( 
 						
 						"{UID}", 
 						pId + ""
@@ -985,7 +985,7 @@ public class WebsiteHandler {
 					
 						new PostData(
 							
-							Constants.fieldNamesCHSUM[0], 
+							Constants.FIELD_NAMES_CHECKSUM[0], 
 							checksum
 						
 						) 
@@ -999,7 +999,7 @@ public class WebsiteHandler {
 
 				httpContent = wh.post( 
 					
-					Constants.urlFriendDecline.replace( 
+					Constants.URL_FRIEND_DECLINE.replace( 
 						
 						"{UID}", 
 						pId + ""
@@ -1008,7 +1008,7 @@ public class WebsiteHandler {
 					
 						new PostData(
 							
-							Constants.fieldNamesCHSUM[0], 
+							Constants.FIELD_NAMES_CHECKSUM[0], 
 							checksum
 						
 						) 
@@ -1050,7 +1050,7 @@ public class WebsiteHandler {
 			//Get the content
 			httpContent = wh.post( 
 					
-				Constants.urlChatContents.replace( 
+				Constants.URL_CHAT_CONTENTS.replace( 
 					
 					"{UID}", 
 					profileId + ""
@@ -1059,7 +1059,7 @@ public class WebsiteHandler {
 				
 					new PostData(
 						
-						Constants.fieldNamesCHSUM[0], 
+						Constants.FIELD_NAMES_CHECKSUM[0], 
 						checksum
 					
 					) 
@@ -1101,7 +1101,7 @@ public class WebsiteHandler {
 			//Get the content
 			httpContent = wh.post( 
 					
-				Constants.urlChatContents.replace( 
+				Constants.URL_CHAT_CONTENTS.replace( 
 					
 					"{UID}", 
 					profileId + ""
@@ -1110,7 +1110,7 @@ public class WebsiteHandler {
 				
 					new PostData(
 						
-						Constants.fieldNamesCHSUM[0], 
+						Constants.FIELD_NAMES_CHECKSUM[0], 
 						checksum
 					
 					) 
@@ -1173,23 +1173,23 @@ public class WebsiteHandler {
 			//Get the content
 			httpContent = wh.post( 
 					
-				Constants.urlChatSend, 
+				Constants.URL_CHAT_SEND, 
 				new PostData[] { 
 					 new PostData(
 								
-						Constants.fieldNamesChat[2], 
+						Constants.FIELD_NAMES_CHAT[2], 
 						checksum
 					
 					),
 					new PostData(
 							
-						Constants.fieldNamesChat[1], 
+						Constants.FIELD_NAMES_CHAT[1], 
 						chatId
 						
 					),
 					new PostData(
 							
-						Constants.fieldNamesChat[0], 
+						Constants.FIELD_NAMES_CHAT[0], 
 						message
 					
 					)
@@ -1224,12 +1224,11 @@ public class WebsiteHandler {
 			
 			//Let's login everybody!
 			RequestHandler rh = new RequestHandler();
-			String httpContent;
 			
 			//Get the content
-			httpContent = rh.get(
+			rh.get(
 					
-				Constants.urlChatClose.replace(
+				Constants.URL_CHAT_CLOSE.replace(
 						
 					"{CID}", 
 					chatId + ""
@@ -1261,7 +1260,7 @@ public class WebsiteHandler {
 			String httpContent;
 			
 			//Get the content
-			httpContent = rh.get( Constants.urlProfileInfo.replace( "{UNAME}", Uri.encode( profileData.getAccountName() ) ), 1 );
+			httpContent = rh.get( Constants.URL_PROFILE_INFO.replace( "{UNAME}", Uri.encode( profileData.getAccountName() ) ), 1 );
 
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -1309,7 +1308,7 @@ public class WebsiteHandler {
 							currItem.getInt( "platform" ),
 							currItem.getString( "name" ),
 							currItem.getString( "tag" ),
-							rh.getImageFromStream( Constants.urlPlatoonImageThumbs + currItem.getString( "badgePath" ), false),
+							rh.getImageFromStream( Constants.URL_PLATOON_IMAGE_THUMBS + currItem.getString( "badgePath" ), false),
 							!currItem.getBoolean("hidden")
 								
 						)
@@ -1369,7 +1368,7 @@ public class WebsiteHandler {
 			//Do the request
 			httpContent = rh.get( 
 					
-				Constants.urlPlatoonFans.replace( "{PLATOON_ID}",  platoonId + ""), 
+				Constants.URL_PLATOON_FANS.replace( "{PLATOON_ID}",  platoonId + ""), 
 				1
 				
 			);
@@ -1446,7 +1445,7 @@ public class WebsiteHandler {
 			ArrayList<ProfileData> requestMembers = new ArrayList<ProfileData>();
 			
 			//Get the content
-			String httpContent = rh.get( Constants.urlPlatoon.replace( "{PLATOON_ID}", platoonData.getId() + "" ), 1 );
+			String httpContent = rh.get( Constants.URL_PLATOON.replace( "{PLATOON_ID}", platoonData.getId() + "" ), 1 );
 			boolean isAdmin = false;
 			boolean isMember = false;
 			
@@ -1629,7 +1628,7 @@ public class WebsiteHandler {
 					
 					image = rh.getImageFromStream( 
 							
-						Constants.urlPlatoonImage + profileCommonObject.getString( "badgePath" ), 
+						Constants.URL_PLATOON_IMAGE + profileCommonObject.getString( "badgePath" ), 
 						true
 						
 					);
@@ -1681,8 +1680,6 @@ public class WebsiteHandler {
 		
 	}
 	
-	/*TODO*/
-	
 	public static ArrayList<FeedItem> getPublicFeed(int num, long profileId) throws WebsiteHandlerException {
 		
 		try {
@@ -1697,7 +1694,7 @@ public class WebsiteHandler {
 			for(int i = 0; i < Math.round( num / 10 ); i++ ) {
 
 				//Get the content, and create a JSONArray
-				httpContent = rh.get( Constants.urlFeedGlobal.replace( "{NUMSTART}", String.valueOf( i*10 ) ), 1 );
+				httpContent = rh.get( Constants.URL_FRIEND_FEED.replace( "{NUMSTART}", String.valueOf( i*10 ) ), 1 );
 				jsonArray = new JSONObject(httpContent).getJSONObject("data").getJSONArray( "feedEvents" );
 				
 				//Gather them
@@ -1717,6 +1714,78 @@ public class WebsiteHandler {
 		
 	}
 	
+	public static boolean setActive() {
+		
+		try {
+			
+			//Let's see
+			String httpContent = new RequestHandler().get( Constants.URL_CHAT_SETACTIVE, 1 );
+			JSONObject httpResponse = new JSONObject(httpContent);
+			
+			//Is it ok?
+			if( httpResponse.optString( "message", "FAIL" ).equals( "OK" ) ) {
+				
+				return true;
+				
+			} else {
+				
+				return false;
+				
+			}
+			
+			
+		} catch( Exception ex ) {
+			
+			ex.printStackTrace();
+			return false;
+			
+		}
+		
+	}
+	
+	public static int getNewNotificationsCount(String checksum) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Init
+			RequestHandler rh = new RequestHandler();
+			ArrayList<NotificationData> notifications = new ArrayList<NotificationData>();
+			String httpContent;
+			
+			//Get the content
+			httpContent = rh.post( 
+					
+				Constants.URL_NOTIFICATIONS_TOP5,
+				new PostData[] {
+						
+					new PostData(Constants.FIELD_NAMES_CHECKSUM[0], checksum)	
+						
+				},
+				1
+		
+			);
+			
+			//Got httpContent
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+				
+				//Grab the notifications
+				return new JSONObject(httpContent).getJSONObject("data").getInt( "numUnread" );
+				
+			} else {
+				
+				throw new WebsiteHandlerException("No notifications found.");
+				
+			}
+
+		} catch( Exception ex ) {
+		
+			ex.printStackTrace();
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+		
+	}
+	
 	public static ArrayList<NotificationData> getNotifications(String checksum) throws WebsiteHandlerException {
 		
 		try {
@@ -1729,7 +1798,7 @@ public class WebsiteHandler {
 			//Get the content
 			httpContent = rh.get( 
 					
-				Constants.urlNotifications,
+				Constants.URL_NOTIFICATIONS_ALL,
 				1
 		
 			);
@@ -1795,7 +1864,7 @@ public class WebsiteHandler {
 			//Get the content
 			String httpContent = rh.get( 
 					
-				Constants.urlPlatoonStats.replace(
+				Constants.URL_PLATOON_STATS.replace(
 						
 					"{PLATOON_ID}", 
 					platoonData.getId() + "" 
@@ -2870,7 +2939,7 @@ public class WebsiteHandler {
 					
 				} else {
 					
-					Log.d(Constants.debugTag, "event => " + currItem.getString( "event" ) );
+					Log.d(Constants.DEBUG_TAG, "event => " + currItem.getString( "event" ) );
 					tempFeedItem = null;
 				
 				}
@@ -2909,7 +2978,7 @@ public class WebsiteHandler {
 			//Get the content
 			httpContent = wh.get( 
 					
-				Constants.urlFeedComments.replace( 
+				Constants.URL_FEED_COMMENTS.replace( 
 					
 					"{POST_ID}", 
 					postId + ""
@@ -2973,12 +3042,12 @@ public class WebsiteHandler {
 			//Get the content
 			httpContent = wh.post( 
 					
-				Constants.urlHooah.replace( "{POST_ID}", postId + "" ), 
+				Constants.URL_HOOAH.replace( "{POST_ID}", postId + "" ), 
 				new PostData[] { 
 					 
 					new PostData(
 								
-						Constants.fieldNamesCHSUM[0], 
+						Constants.FIELD_NAMES_CHECKSUM[0], 
 						checksum
 					
 					)	 
@@ -3017,12 +3086,12 @@ public class WebsiteHandler {
 			//Get the content
 			httpContent = wh.post( 
 					
-				Constants.urlUnHooah.replace( "{POST_ID}", postId + "" ), 
+				Constants.URL_UNHOOAH.replace( "{POST_ID}", postId + "" ), 
 				new PostData[] { 
 					 
 					new PostData(
 								
-						Constants.fieldNamesCHSUM[0], 
+						Constants.FIELD_NAMES_CHECKSUM[0], 
 						checksum
 					
 					)	 
@@ -3061,18 +3130,18 @@ public class WebsiteHandler {
 			//Get the content
 			httpContent = wh.post( 
 					
-				Constants.urlComment.replace( "{POST_ID}", postId + "" ), 
+				Constants.URL_COMMENT.replace( "{POST_ID}", postId + "" ), 
 				new PostData[] { 
 					 
 					new PostData(
 								
-						Constants.fieldNamesFeedComment[0], 
+						Constants.FIELD_NAMES_FEED_COMMENT[0], 
 						comment
 					
 					),
 					new PostData(
 							
-						Constants.fieldNamesFeedComment[1], 
+						Constants.FIELD_NAMES_FEED_COMMENT[1], 
 						checksum
 					
 					)	
@@ -3118,7 +3187,7 @@ public class WebsiteHandler {
 			RequestHandler wh = new RequestHandler();
 			String httpContent = wh.post( 
 					
-				Constants.urlFriendRequest.replace( 
+				Constants.URL_FRIEND_REQUESTS.replace( 
 						
 					"{UID}", 
 					profileId + ""
@@ -3128,7 +3197,7 @@ public class WebsiteHandler {
 					
 					new PostData(
 					
-						Constants.fieldNamesCHSUM[0],
+						Constants.FIELD_NAMES_CHECKSUM[0],
 						checksum
 							
 					)
@@ -3166,22 +3235,22 @@ public class WebsiteHandler {
 			PostData[] postDataArray;
 			String httpContent = wh.post( 
 					
-				Constants.urlProfilePost,
+				Constants.URL_FEED_POST,
 				postDataArray = new PostData[] {
 					
 					new PostData(
 							
-						Constants.fieldNamesFeedPost[0],
+						Constants.FIELD_NAMES_FEED_POST[0],
 						content
 							
 					),new PostData(
 							
-						Constants.fieldNamesFeedPost[1],
+						Constants.FIELD_NAMES_FEED_POST[1],
 						checksum
 							
 					),new PostData(
 							
-						Constants.fieldNamesFeedPost[(!isPlatoon?2:3)],
+						Constants.FIELD_NAMES_FEED_POST[(!isPlatoon?2:3)],
 						profileId + ""
 								
 					)
@@ -3230,7 +3299,7 @@ public class WebsiteHandler {
 			RequestHandler rh = new RequestHandler();
 			
 			//Get the *content*
-			if( !rh.saveFileFromURI( Constants.urlImagePack, "", "imagepack-001.zip" ) ) {
+			if( !rh.saveFileFromURI( Constants.URL_IMAGE_PACK, "", "imagepack-001.zip" ) ) {
 			
 				return "<this is supposed to be the path to the zip>";
 				
@@ -3256,7 +3325,7 @@ public class WebsiteHandler {
 			//Any size requirements? Otherwise we just pick the standard number
 			return new RequestHandler().getImageFromStream( 
 					
-				Constants.urlGravatar.replace(
+				Constants.URL_GRAVATAR.replace(
 				
 					"{hash}",
 					hash
@@ -3265,14 +3334,14 @@ public class WebsiteHandler {
 						
 					"{size}", 
 					(
-						(size > 0)? size : Constants.defaultAvatarSize
+						(size > 0)? size : Constants.DEFAULT_AVATAR_SIZE
 								
 					) + ""
 					
 				).replace( 
 				
 					"{default}",
-					Constants.defaultAvatarSize + ""
+					Constants.DEFAULT_AVATAR_SIZE + ""
 						
 				),
 				true 
@@ -3323,7 +3392,7 @@ public class WebsiteHandler {
 		try { 
 			
 			
-			if( WebsiteHandler.bitmapCache.size() > Constants.cacheLimit ) {
+			if( WebsiteHandler.bitmapCache.size() > Constants.DEFAULT_CACHE_LIMIT ) {
 				
 				//Loops & removes five bitmaps from the cache
 				int counter = 0;
@@ -3357,7 +3426,7 @@ public class WebsiteHandler {
 		try { 
 			
 			
-			if( WebsiteHandler.feedCache.size() > Constants.cacheLimit ) {
+			if( WebsiteHandler.feedCache.size() > Constants.DEFAULT_CACHE_LIMIT ) {
 				
 				//Loops & removes five bitmaps from the cache
 				int counter = 0;

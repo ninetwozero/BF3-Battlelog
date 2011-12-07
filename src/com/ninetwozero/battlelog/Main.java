@@ -14,6 +14,8 @@
 
 package com.ninetwozero.battlelog;
 
+import java.util.Map;
+
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,7 +25,9 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,11 +51,8 @@ public class Main extends Activity {
 	private PostData[] postDataArray;
 	
 	//SP
-	SharedPreferences sharedPreferences;
-	
-	//Changelog v
-	final int changelogVersion = 4;
-	
+	private SharedPreferences sharedPreferences;
+		
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		
@@ -61,11 +62,33 @@ public class Main extends Activity {
     	//Set the content view
         setContentView(R.layout.main);
         
-        //Get the sharedPreferences
-        sharedPreferences = getSharedPreferences( Constants.fileSharedPrefs, 0 );
-        		
+        //Check if the default-file is ok
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences( this );
+        if( sharedPreferences.getInt( "file_version", 0) == 0 ) {
+        	
+	        //Get the sharedPreferences
+        	SharedPreferences sharedPreferencesOld = getSharedPreferences( Constants.FILE_SHPREF, 0 );
+        	SharedPreferences.Editor spEdit = sharedPreferences.edit();
+        	
+        	//Set it up
+        	spEdit.putInt( "file_version", sharedPreferencesOld.getInt( "file_version", 0 )+1 );
+        	spEdit.putInt( "latest_changelog_version", (int) sharedPreferencesOld.getLong("latest_changelog_version", 0 ) );
+        	spEdit.putLong( "battlelog_platform_id", sharedPreferencesOld.getLong("battlelog_platform_id", 0 ) );
+        	spEdit.putLong( "battlelog_profile_id", sharedPreferencesOld.getLong("battlelog_profile_id", 0 ) );
+        	spEdit.putLong( "battlelog_persona_id", sharedPreferencesOld.getLong("battlelog_persona_id", 0 ) );
+        	spEdit.putString( "origin_email", sharedPreferencesOld.getString("origin_email", "" ) );
+        	spEdit.putString( "origin_password", sharedPreferencesOld.getString("origin_password", "" ) );
+        	spEdit.putString( "battlelog_username", sharedPreferencesOld.getString("battlelog_username", "" ) );
+        	spEdit.putString( "battlelog_post_checksum", sharedPreferencesOld.getString("battlelog_post_checksum", "" ) );
+        	spEdit.putBoolean( "remember_password", sharedPreferencesOld.getBoolean( "remember_password", false ));
+        	
+        	//Commit!!
+        	spEdit.commit();
+        	
+        }
+        
         //Initialize the attributes
-        postDataArray = new PostData[Constants.fieldNamesLogin.length];
+        postDataArray = new PostData[Constants.FIELD_NAMES_LOGIN.length];
         valueFields = new String[2];
         
         //Get the fields
@@ -74,12 +97,12 @@ public class Main extends Activity {
         checkboxSave = (CheckBox) findViewById(R.id.checkbox_save);
         
         //Do we need to show the cool changelog-dialog?
-        if( sharedPreferences.getLong( "latest_changelog_version", 2) < changelogVersion ) {
+        if( sharedPreferences.getInt( "latest_changelog_version", Constants.CHANGELOG_VERSION-1) < Constants.CHANGELOG_VERSION ) {
         	
         	createChangelogDialog().show();
         	
         }
-        
+
         //Let's populate... or shall we not?
         if( sharedPreferences.contains( "origin_email" ) ) {
         	
@@ -145,12 +168,12 @@ public class Main extends Activity {
     		}
     		
     		//Iterate and conquer
-    		for( int i = 0; i < Constants.fieldNamesLogin.length; i++ ) {
+    		for( int i = 0; i < Constants.FIELD_NAMES_LOGIN.length; i++ ) {
 
     			postDataArray[i] =	new PostData(
 	    			
-    				Constants.fieldNamesLogin[i],
-	    			(Constants.fieldValuesLogin[i] == null) ? valueFields[i] : Constants.fieldValuesLogin[i] 
+    				Constants.FIELD_NAMES_LOGIN[i],
+	    			(Constants.FIELD_VALUES_LOGIN[i] == null) ? valueFields[i] : Constants.FIELD_VALUES_LOGIN[i] 
 	    		);
     		
     		}
@@ -175,7 +198,7 @@ public class Main extends Activity {
 	    final View layout = inflater.inflate(R.layout.changelog_dialog, (ViewGroup) findViewById(R.id.dialog_root));
 		
 	    //Set the title and the view
-		builder.setTitle("Changelog version 1.0." + changelogVersion);
+		builder.setTitle("Changelog version 1.0." + Constants.CHANGELOG_VERSION);
 		builder.setView(layout);
 
 		//Grab the fields
@@ -190,7 +213,7 @@ public class Main extends Activity {
 				
 				public void onClick(DialogInterface dialog, int which) {
 			      
-					sharedPreferences.edit().putLong( "latest_changelog_version", changelogVersion).commit();
+					sharedPreferences.edit().putLong( "latest_changelog_version", Constants.CHANGELOG_VERSION).commit();
 			   
 				}
 				

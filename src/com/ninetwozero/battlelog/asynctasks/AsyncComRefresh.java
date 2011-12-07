@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -55,7 +54,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 		this.listRequests = r;
 		this.listFriends = f;
 		this.layoutInflater = l;
-		this.sharedPreferences = context.getSharedPreferences(Constants.fileSharedPrefs, 0);
+		this.sharedPreferences = context.getSharedPreferences(Constants.FILE_SHPREF, 0);
 		this.buttonRefresh = b;
 		this.drawerHandle = t;
 	

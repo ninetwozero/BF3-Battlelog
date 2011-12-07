@@ -39,7 +39,7 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
 	public AsyncLogout( Context c ) { 
 		
 		this.context = c; 
-		this.sharedPreferences = this.context.getSharedPreferences( Constants.fileSharedPrefs, 0);
+		this.sharedPreferences = this.context.getSharedPreferences( Constants.FILE_SHPREF, 0);
 		this.spEdit = this.sharedPreferences.edit();
 	
 	}	
@@ -62,7 +62,7 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
 		
     		//Let's login everybody!
 			RequestHandler wh = new RequestHandler();
-    		httpContent = wh.get( Constants.urlLogout, 0);
+    		httpContent = wh.get( Constants.URL_LOGOUT, 0);
 
     		//Did we manage?
     		if( httpContent != null && !httpContent.equals( "" ) ) {
@@ -80,7 +80,7 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
     		
 		} catch ( RequestHandlerException ex ) {
 			
-			Log.e(Constants.debugTag, "", ex);
+			Log.e(Constants.DEBUG_TAG, "", ex);
 			return 1;
 		}
 

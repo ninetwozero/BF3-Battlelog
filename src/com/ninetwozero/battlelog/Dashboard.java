@@ -26,7 +26,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -52,6 +51,7 @@ import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.apps.iosched.util.FlingableTabHost;
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.adapters.FriendListAdapter;
 import com.ninetwozero.battlelog.adapters.GridMenuAdapter;
@@ -127,7 +127,7 @@ public class Dashboard extends TabActivity {
     	super.onCreate(icicle);
 
         //Set sharedPreferences
-        sharedPreferences = getSharedPreferences( Constants.fileSharedPrefs, 0);
+        sharedPreferences = getSharedPreferences( Constants.FILE_SHPREF, 0);
         
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
@@ -339,7 +339,11 @@ public class Dashboard extends TabActivity {
 
 				if( !hasRequests ) {
 					
-					if( wrapFriendRequests.getVisibility() == View.VISIBLE ) { wrapFriendRequests.setVisibility( View.GONE ); }
+					if( wrapFriendRequests.getVisibility() == View.VISIBLE ) { 
+						
+						wrapFriendRequests.setVisibility( View.GONE ); 
+						friendsStatusText.setVisibility( View.VISIBLE  );	
+					}
 					
 				} else {
 					
@@ -484,12 +488,12 @@ public class Dashboard extends TabActivity {
     			
     		}
     		//Iterate and conquer
-    		for( int i = 0; i < Constants.fieldNamesStatus.length; i++ ) {
+    		for( int i = 0; i < Constants.FIELD_NAMES_STATUS.length; i++ ) {
 
     			postDataArray[i] =	new PostData(
 	    			
-    				Constants.fieldNamesStatus[i],
-	    			(Constants.fieldValuesStatus[i] == null) ? valueFieldsArray[i] : Constants.fieldValuesStatus[i] 
+    				Constants.FIELD_NAMES_STATUS[i],
+	    			(Constants.FIELD_VALUES_STATUS[i] == null) ? valueFieldsArray[i] : Constants.FIELD_VALUES_STATUS[i] 
 	    		
     			);
     		
