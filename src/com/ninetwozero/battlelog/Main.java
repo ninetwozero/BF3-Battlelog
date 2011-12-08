@@ -14,20 +14,18 @@
 
 package com.ninetwozero.battlelog;
 
-import java.util.Map;
-
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +37,8 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.PublicUtils;
+import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class Main extends Activity {
 
@@ -61,6 +61,9 @@ public class Main extends Activity {
     	
     	//Set the content view
         setContentView(R.layout.main);
+        
+        //Are we active?
+        if( PublicUtils.isMyServiceRunning( this ) || WebsiteHandler.setActive() ) { startActivity( new Intent(this, Dashboard.class) ); }
         
         //Check if the default-file is ok
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences( this );

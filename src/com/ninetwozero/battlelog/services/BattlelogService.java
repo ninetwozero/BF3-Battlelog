@@ -19,7 +19,7 @@ public class BattlelogService extends Service {
 	//Attributes
 	private final Context CONTEXT = this;
 	private static SharedPreferences sharedPreferences;
-	private static Timer serviceTimer = new Timer();
+	private static Timer serviceTimer = null;
 	
 	@Override
 	public IBinder onBind(Intent intent) { return null; }
@@ -41,6 +41,7 @@ public class BattlelogService extends Service {
 
 	public void start() {
 		
+		if( serviceTimer == null ) { serviceTimer = new Timer(); }
 		serviceTimer.scheduleAtFixedRate(
     			
     		new TimerTask() {
@@ -59,11 +60,20 @@ public class BattlelogService extends Service {
     			
     		}, 
     		0, 
-    		BattlelogService.sharedPreferences.getInt( "battlelog_service_timer", Constants.HOUR_IN_SECONDS )*1000
+    		BattlelogService.sharedPreferences.getInt( "battlelog_service_interval", Constants.MINUTE_IN_SECONDS )*1000
 		);
 		
 	}
+	
+	@Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+	
+		Log.d(Constants.DEBUG_TAG, "Service has reached onStartCommand()");
+		start();
+		return Service.START_STICKY;
 		
+	}
+	
 	@Override
 	public void onDestroy() { BattlelogService.stop(); }
 	
@@ -76,7 +86,13 @@ public class BattlelogService extends Service {
 	public static void stop() { 
 		
 		Log.d(Constants.DEBUG_TAG, "Service stopped");
-		if( BattlelogService.getServiceTimer() != null ){ BattlelogService.getServiceTimer().cancel(); } 
+		if( BattlelogService.getServiceTimer() != null ){ 
+			
+			BattlelogService.getServiceTimer().cancel(); 
+			serviceTimer = null;
+					
+		} 
+		
 	}
 
 }

@@ -20,4 +20,26 @@
 	        &lt;u&gt;@karllindmark&lt;/u&gt; on Twitter.&lt;br /&gt;&lt;br /&gt;
 	        Thank you for your support!
 		</string>
+	    <integer-array name="service_update_intervals_values">
+	        <item >300</item>
+	        <item >600</item>
+	        <item >1800</item>
+	        <item >3600</item>
+	        <item >7200</item>
+	        <item >21600</item>
+	        <item >43200</item>
+	        <item >64800</item>
+	        <item >86400</item>
+	    </integer-array>
+	    <string-array name="service_update_intervals_labels">
+	        <item >Every 5 minutes</item>
+	        <item >Every 10 minutes</item>
+	        <item >Every 30 minutes</item>
+	        <item >Every 1 hour</item>
+	        <item >Every 2 hours</item>
+	        <item >Every 6 hours</item>
+	        <item >Every 12 hours</item>
+	        <item >Every 18 hours</item>
+	        <item >Every 24 hours</item>
+	    </string-array>
 </resources>

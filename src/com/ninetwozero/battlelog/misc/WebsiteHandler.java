@@ -1768,6 +1768,8 @@ public class WebsiteHandler {
 			//Got httpContent
 			if( httpContent != null && !httpContent.equals( "" ) ) {
 				
+				Log.d(Constants.DEBUG_TAG, new JSONObject(httpContent).getJSONObject("data").toString(2));
+				
 				//Grab the notifications
 				return new JSONObject(httpContent).getJSONObject("data").getInt( "numUnread" );
 				

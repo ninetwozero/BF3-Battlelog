@@ -73,8 +73,8 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 					context, 
 					new PostData[] {
 
-						new PostData(Constants.FIELD_NAMES_LOGIN[0], arg0[1]),
-						new PostData(Constants.FIELD_NAMES_LOGIN[1], arg0[2] )
+						new PostData(Constants.FIELD_NAMES_LOGIN[1], arg0[0]),
+						new PostData(Constants.FIELD_NAMES_LOGIN[2], arg0[1] )
 							
 					}, 
 					true 
@@ -109,7 +109,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 				//We had a "positive" outcome
 				NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 				Notification battlelogNotification = new Notification();
-				battlelogNotification.icon = android.R.drawable.ic_dialog_info;
+				battlelogNotification.icon = R.drawable.app_logo;
 				battlelogNotification.when = System.currentTimeMillis();
 	
 				Intent notificationIntent = new Intent(context, Dashboard.class).putExtra( "openCOMCenter", true).putExtra("tabid", 1);
@@ -120,12 +120,13 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 				battlelogNotification.setLatestEventInfo(
 						
 					context, 
-					"Someone has interacted with you on Battlelog!", 
-					"Tap this item to go to view notifications.", 
+					"BF3 Battlelog - new notifications!", 
+					"Tap this item to view your notifications.", 
 					contentIntent
 				
 				);
-	
+				battlelogNotification.flags |= Notification.FLAG_AUTO_CANCEL;
+				
 				//Notify yo
 				notificationManager.notify(0, battlelogNotification);
 			

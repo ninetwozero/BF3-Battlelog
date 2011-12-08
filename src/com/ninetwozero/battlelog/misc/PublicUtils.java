@@ -20,6 +20,10 @@ package com.ninetwozero.battlelog.misc;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
+import android.content.Context;
+
 
 public class PublicUtils {
 
@@ -266,5 +270,28 @@ public class PublicUtils {
     	else return (s/3600) + "H " + ((s % 3600)/60) + "M";		
     	
     }
+	
+	/*
+	 * 	Author: http://www.mobile-web-consulting.de/post/5272654457/android-check-if-a-service-is-running
+	 *  Modified by: Karl Lindmark
+	 *  
+	 *  @param Context The context to be called from
+	 *  @return boolean True/false regarding if the app is running
+	 */
+	
+    public static boolean isMyServiceRunning(Context context) {
+    	
+    	ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+    	for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+        
+    		if( "com.ninetwozero.battlelog.services.BattleLogService".equals( service.service.getClassName() ) ) {
+                return true;
+            }
+        
+    	}
+        return false;
+    
+    }
+
 
 }

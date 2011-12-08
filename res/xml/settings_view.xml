@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    
-
+    <PreferenceCategory android:title="Service options">
+        <CheckBoxPreference android:key="allow_service" android:defaultValue="true" android:title="Enable use of BattlelogService" android:summary="When enabled, a background service keeps track on notifications and the widget"/>
+        <ListPreference android:negativeButtonText="Cancel" android:dialogTitle="Select an update interval" android:positiveButtonText="OK" android:entries="@array/service_update_intervals_labels" android:entryValues="@array/service_update_intervals_values" android:title="Update interval" android:summary="Select an update interval to use"/>
+    </PreferenceCategory>
 </PreferenceScreen>

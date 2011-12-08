@@ -71,6 +71,12 @@
             android:name=".UnlockView"
           	android:configChanges="orientation"
         />
+        <activity
+            android:label="BF3 Battlelog - Settings"
+            android:name=".SettingsView"
+          	android:configChanges="orientation"
+          	android:theme="@android:style/Theme.Light"
+        />
 		<receiver android:name="com.ninetwozero.battlelog.widgets.BattlelogAppWidgetProvider" android:label="@string/widget_name">
 			<intent-filter>
 		         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

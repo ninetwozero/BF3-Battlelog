@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
@@ -28,4 +29,16 @@ public class SettingsView extends PreferenceActivity {
     	addPreferencesFromResource(R.xml.settings_view);
     	
 	}
+	
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) { super.onConfigurationChanged(newConfig); }  
+    
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("serializedCookies", RequestHandler.getSerializedCookies());
+	
+	}
+	
 }

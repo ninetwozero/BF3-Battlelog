@@ -97,9 +97,6 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 			if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
 			
 			if( results ) { 
-				
-				//Start the service
-				this.context.startService( new Intent(context, BattlelogService.class) );
 
 				//Start the activity
 				this.context.startActivity( 

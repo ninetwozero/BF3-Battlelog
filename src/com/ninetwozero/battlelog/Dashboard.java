@@ -51,7 +51,6 @@ import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.apps.iosched.util.FlingableTabHost;
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.adapters.FriendListAdapter;
 import com.ninetwozero.battlelog.adapters.GridMenuAdapter;
@@ -75,8 +74,10 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SerializedCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class Dashboard extends TabActivity {
 
@@ -129,6 +130,13 @@ public class Dashboard extends TabActivity {
         //Set sharedPreferences
         sharedPreferences = getSharedPreferences( Constants.FILE_SHPREF, 0);
         
+        //Do we want to start a service?
+        if( !PublicUtils.isMyServiceRunning(this) && sharedPreferences.getBoolean( "allow_service", true ) ) {
+        	
+        	this.context.startService( new Intent(context, BattlelogService.class) );
+        
+        }
+        
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
     		
@@ -150,6 +158,8 @@ public class Dashboard extends TabActivity {
     	//Set the content view
         setContentView(R.layout.dashboard);
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        
+        //Setup the data
         feedArray = new ArrayList<FeedItem>();
         notificationArray = new ArrayList<NotificationData>();
     	friendListData = new FriendListDataWrapper(null, null, null);
@@ -342,7 +352,7 @@ public class Dashboard extends TabActivity {
 					if( wrapFriendRequests.getVisibility() == View.VISIBLE ) { 
 						
 						wrapFriendRequests.setVisibility( View.GONE ); 
-						friendsStatusText.setVisibility( View.VISIBLE  );	
+						friendsStatusText.setVisibility( View.GONE  );	
 					}
 					
 				} else {
@@ -1283,12 +1293,17 @@ public class Dashboard extends TabActivity {
 			generateDialogCompare(this).show();
 			return;
 			
+		} else if( id == Constants.MENU_SETTINGS ) { 
+			
+			startActivity( new Intent(this, SettingsView.class) );
+			return;
+			
 		} else {
 			
 			Toast.makeText( this, "Unimplemented menu alternative.", Toast.LENGTH_SHORT).show();
-			
+			return;
+		
 		}
-    	
     	
     }
     
@@ -1459,5 +1474,5 @@ public class Dashboard extends TabActivity {
 		}
 
     }
-    
+       
 }
