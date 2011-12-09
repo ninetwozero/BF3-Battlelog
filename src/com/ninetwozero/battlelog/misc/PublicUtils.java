@@ -284,7 +284,7 @@ public class PublicUtils {
     	ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
     	for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
         
-    		if( "com.ninetwozero.battlelog.services.BattleLogService".equals( service.service.getClassName() ) ) {
+    		if( "com.ninetwozero.battlelog.services.BattlelogService".equals( service.service.getClassName() ) ) {
                 return true;
             }
         

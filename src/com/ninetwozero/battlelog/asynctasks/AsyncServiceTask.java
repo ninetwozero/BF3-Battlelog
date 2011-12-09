@@ -73,8 +73,10 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 					context, 
 					new PostData[] {
 
-						new PostData(Constants.FIELD_NAMES_LOGIN[1], arg0[0]),
-						new PostData(Constants.FIELD_NAMES_LOGIN[2], arg0[1] )
+						new PostData(Constants.FIELD_NAMES_LOGIN[0], arg0[1]),
+						new PostData(Constants.FIELD_NAMES_LOGIN[1], arg0[2] ),
+						new PostData(Constants.FIELD_NAMES_LOGIN[2], Constants.FIELD_VALUES_LOGIN[2]),
+						new PostData(Constants.FIELD_NAMES_LOGIN[3], Constants.FIELD_VALUES_LOGIN[3]),
 							
 					}, 
 					true 
@@ -82,7 +84,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 				);
 				
 				//Restart the AsyncTask and return -1
-				new AsyncServiceTask(context).execute();
+				new AsyncServiceTask(context).execute( arg0[0], arg0[1], arg0[2] );
 				return -1;
 				
 			}
@@ -112,7 +114,15 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 				battlelogNotification.icon = R.drawable.app_logo;
 				battlelogNotification.when = System.currentTimeMillis();
 	
-				Intent notificationIntent = new Intent(context, Dashboard.class).putExtra( "openCOMCenter", true).putExtra("tabid", 1);
+				Intent notificationIntent = new Intent(context, Dashboard.class).putExtra(
+						
+					"openCOMCenter", true
+						
+				).putExtra(
+						
+					"tabid", 1
+					
+				);
 				PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 					
 				//Set the ticker

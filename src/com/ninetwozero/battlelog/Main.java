@@ -26,6 +26,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,9 +62,18 @@ public class Main extends Activity {
     	
     	//Set the content view
         setContentView(R.layout.main);
-        
+
+        Log.d(Constants.DEBUG_TAG, "A: "+ PublicUtils.isMyServiceRunning(this) + ", B:" + WebsiteHandler.setActive()); 
         //Are we active?
-        if( PublicUtils.isMyServiceRunning( this ) || WebsiteHandler.setActive() ) { startActivity( new Intent(this, Dashboard.class) ); }
+        if( PublicUtils.isMyServiceRunning( this ) || WebsiteHandler.setActive() ) { 
+        	
+        	startActivity( 
+        			
+        		new Intent(this, Dashboard.class)
+        		
+        	);
+        	
+        }
         
         //Check if the default-file is ok
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences( this );
@@ -75,7 +85,7 @@ public class Main extends Activity {
         	
         	//Set it up
         	spEdit.putInt( "file_version", sharedPreferencesOld.getInt( "file_version", 0 )+1 );
-        	spEdit.putInt( "latest_changelog_version", (int) sharedPreferencesOld.getLong("latest_changelog_version", 0 ) );
+        	spEdit.putInt( "latest_changelog_version", Integer.valueOf( String.valueOf( sharedPreferencesOld.getLong("latest_changelog_version", 0 ) ) ) );
         	spEdit.putLong( "battlelog_platform_id", sharedPreferencesOld.getLong("battlelog_platform_id", 0 ) );
         	spEdit.putLong( "battlelog_profile_id", sharedPreferencesOld.getLong("battlelog_profile_id", 0 ) );
         	spEdit.putLong( "battlelog_persona_id", sharedPreferencesOld.getLong("battlelog_persona_id", 0 ) );

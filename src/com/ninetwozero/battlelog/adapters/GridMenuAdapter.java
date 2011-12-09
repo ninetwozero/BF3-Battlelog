@@ -71,7 +71,7 @@ public class GridMenuAdapter extends BaseAdapter {
 		//Recycle
 		if ( convertView == null ) {
 
-			convertView = layoutInflater.inflate( R.layout.grid_item_menu_dashboard, parent, false );
+			convertView = layoutInflater.inflate( R.layout.grid_item_dashboard_menu, parent, false );
 			
 		}
 

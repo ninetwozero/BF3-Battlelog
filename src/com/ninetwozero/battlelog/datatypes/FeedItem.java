@@ -134,7 +134,7 @@ public class FeedItem {
 						
 			); 
 			
-		} else if( type.equals( "createdplatoon" ) || type.equals( "joinedplatoon" ) || type.equals( "leftplatoon" ) ) {
+		} else if( type.equals( "kickedplatoon" ) || type.equals( "joinedplatoon" ) || type.equals( "leftplatoon" ) ) {
 			
 			return this.title.replace( 
 					
@@ -143,7 +143,7 @@ public class FeedItem {
 				
 			);
 			
-		} else if( type.equals( "platoonbadgesaved" ) || type.equals( "receivedplatoonwallpost" ) ) {
+		} else if( type.equals( "createdplatoon" ) || type.equals( "platoonbadgesaved" ) || type.equals( "receivedplatoonwallpost" ) ) {
 		
 			return this.title.replace( 
 					

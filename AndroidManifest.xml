@@ -38,7 +38,8 @@
             android:label="BF3 Battlelog - Profile"
             android:name=".ProfileView"
           	android:configChanges="orientation"
-        />
+          	android:launchMode="singleTask"
+		/>
         <activity
             android:label="BF3 Battlelog - Platoon"
             android:name=".PlatoonView"

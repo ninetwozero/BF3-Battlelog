@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TabActivity;
@@ -26,6 +27,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -131,7 +133,7 @@ public class Dashboard extends TabActivity {
         sharedPreferences = getSharedPreferences( Constants.FILE_SHPREF, 0);
         
         //Do we want to start a service?
-        if( !PublicUtils.isMyServiceRunning(this) && sharedPreferences.getBoolean( "allow_service", true ) ) {
+        if( !PublicUtils.isMyServiceRunning(context) && sharedPreferences.getBoolean( "allow_service", true ) ) {
         	
         	this.context.startService( new Intent(context, BattlelogService.class) );
         
@@ -350,24 +352,23 @@ public class Dashboard extends TabActivity {
 				if( !hasRequests ) {
 					
 					if( wrapFriendRequests.getVisibility() == View.VISIBLE ) { 
-						
+
+						Log.d(Constants.DEBUG_TAG, "I have no requests");
 						wrapFriendRequests.setVisibility( View.GONE ); 
 						friendsStatusText.setVisibility( View.GONE  );	
 					}
 					
-				} else {
-					
+				} else if( !hasFriends ) {
+
+					Log.d(Constants.DEBUG_TAG, "I have no friends");
 					if( wrapFriendRequests.getVisibility() == View.GONE ) { wrapFriendRequests.setVisibility( View.VISIBLE  ); }
+					if( friendsStatusText.getVisibility() == View.GONE ) { friendsStatusText.setVisibility( View.VISIBLE ); }
 					
-					if( !hasFriends ) {
-						
-						if( friendsStatusText.getVisibility() == View.GONE ) { friendsStatusText.setVisibility( View.VISIBLE ); }
-						
-					} else {
-						
-						if( friendsStatusText.getVisibility() == View.VISIBLE ) { friendsStatusText.setVisibility( View.GONE ); }
-						
-					}
+				} else {
+				
+					Log.d(Constants.DEBUG_TAG, "I have requests/friends");
+					if( friendsStatusText.getVisibility() == View.VISIBLE ) { friendsStatusText.setVisibility( View.GONE ); }
+					
 					
 				}
 		
@@ -540,6 +541,15 @@ public class Dashboard extends TabActivity {
 
 			refreshFeed();
 			refreshCOM();
+			
+			Object[] keys = sharedPreferences.getAll().keySet().toArray();
+			Object[] values = sharedPreferences.getAll().values().toArray();
+			
+			for(int i = 0; i < keys.length; i++ ) {
+				
+				Log.d(Constants.DEBUG_TAG, keys[i] + " => " + values[i]);
+				
+			}
 		
 		} else if( item.getItemId() == R.id.option_logout ) {
 			
@@ -568,13 +578,22 @@ public class Dashboard extends TabActivity {
 				
 			} else {
 				
-				if( asyncLogout == null ) {
+				//Are we running a service?
+				if( !PublicUtils.isMyServiceRunning( context ) ) {
+
+					if( asyncLogout == null ) {
 					
-					(asyncLogout = new AsyncLogout(this)).execute();
-				
+						(asyncLogout = new AsyncLogout(context)).execute();
+					
+					} else {
+						
+						return true;
+						
+					}
+					
 				} else {
 					
-					return true;
+					((Activity)this).finish();
 					
 				}
 			

@@ -11,8 +11,8 @@
 	
 	<TextView 
 	    style="@style/InfoHeading"
-	    android:id="@+id/feed_username"
-	    android:text="NINETWOZERO"
+	    android:id="@+id/text_name_platoon"
+	    android:text="Platoon feed"
 		android:padding="5dp"
 	/>
 	<RelativeLayout
@@ -20,12 +20,12 @@
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:paddingBottom="10dp"
-	    android:layout_below="@id/feed_username"
+	    android:layout_below="@id/text_name_platoon"
 	>  
 		<Button
 		    style="@style/RegularButton"
 		    android:id="@+id/button_send"
-		    android:text="Update"
+		    android:text="Post"
 		    android:layout_alignParentRight="true"
 		    android:layout_centerVertical="true"
 		/>

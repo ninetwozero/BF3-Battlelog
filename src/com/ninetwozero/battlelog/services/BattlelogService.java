@@ -33,35 +33,38 @@ public class BattlelogService extends Service {
 			BattlelogService.sharedPreferences = PreferenceManager.getDefaultSharedPreferences( this ); 
 			
 		}
-
-		//TimerTask
-    	start();
     	
 	}
 
 	public void start() {
 		
-		if( serviceTimer == null ) { serviceTimer = new Timer(); }
-		serviceTimer.scheduleAtFixedRate(
-    			
-    		new TimerTask() {
-    			
-    			@Override
-    			public void run() {
-
-    				new AsyncServiceTask(CONTEXT).execute(
-    						
-    					BattlelogService.sharedPreferences.getString( "battlelog_post_checksum", "" )
-    					
-    				);
-
-    				
-    			}
-    			
-    		}, 
-    		0, 
-    		BattlelogService.sharedPreferences.getInt( "battlelog_service_interval", Constants.MINUTE_IN_SECONDS )*1000
-		);
+		if( serviceTimer == null ) { 
+			
+			serviceTimer = new Timer();
+			serviceTimer.scheduleAtFixedRate(
+	    			
+	    		new TimerTask() {
+	    			
+	    			@Override
+	    			public void run() {
+	
+	    				new AsyncServiceTask(CONTEXT).execute(
+	
+	    					BattlelogService.sharedPreferences.getString( "battlelog_post_checksum", "" ),
+	    					BattlelogService.sharedPreferences.getString( "origin_email", "" ),
+	    					BattlelogService.sharedPreferences.getString( "origin_password", "" )
+	    					
+	    				);
+	
+	    				
+	    			}
+	    			
+	    		}, 
+	    		0, 
+	    		BattlelogService.sharedPreferences.getInt( "battlelog_service_interval", Constants.MINUTE_IN_SECONDS )*1000
+			);
+		
+		}
 		
 	}
 	

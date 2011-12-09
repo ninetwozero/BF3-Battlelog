@@ -587,11 +587,11 @@ public class PlatoonView extends TabActivity {
     	//Which view are we on?
     	if( isViewingMembers ) { 
     		
-    		((TextView) findViewById(R.id.feed_title)).setText( "MEMBERS" );
+    		((TextView) findViewById(R.id.text_name_platoon)).setText( "MEMBERS" );
     		
     	} else { 
     		
-    		((TextView) findViewById(R.id.feed_title)).setText( "FANS");
+    		((TextView) findViewById(R.id.text_name_platoon)).setText( "FANS");
     		
     	}
     	

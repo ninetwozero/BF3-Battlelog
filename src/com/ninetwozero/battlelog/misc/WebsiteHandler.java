@@ -79,7 +79,7 @@ public class WebsiteHandler {
 			//Let's login everybody!
 			RequestHandler wh = new RequestHandler();
     		httpContent = wh.post( Constants.URL_LOGIN, postDataArray, 0);
-
+    		
     		//Did we manage?
     		if( httpContent != null && !httpContent.equals( "" ) ) {
     			
@@ -87,9 +87,12 @@ public class WebsiteHandler {
     			int startPosition = httpContent.indexOf( Constants.ELEMENT_UID_LINK );
     			String[] bits;
     			
+    			Log.d(Constants.DEBUG_TAG, "httpContent => " + httpContent);
+    			
     			//Did we find it?
     			if( startPosition == -1 ) {
     				
+    				Log.d(Constants.DEBUG_TAG, "No pain is gain.");
     				return null;
 
     			}
@@ -1768,8 +1771,6 @@ public class WebsiteHandler {
 			//Got httpContent
 			if( httpContent != null && !httpContent.equals( "" ) ) {
 				
-				Log.d(Constants.DEBUG_TAG, new JSONObject(httpContent).getJSONObject("data").toString(2));
-				
 				//Grab the notifications
 				return new JSONObject(httpContent).getJSONObject("data").getInt( "numUnread" );
 				
@@ -2648,6 +2649,41 @@ public class WebsiteHandler {
 					
 					//Set it!
 					itemTitle = "<b>{username}</b> joined the platoon <b>{platoon}</b>.".replace( 
+				
+						"{platoon}",
+						tempSubItem.getString("name")
+				
+					);
+					
+					//Temporary storage						
+					tempFeedItem = new FeedItem(
+	
+						Long.parseLong( currItem.getString("id") ),
+						Long.parseLong( currItem.getString("ownerId") ),
+						Long.parseLong( currItem.getString("itemId") ),
+						currItem.getLong( "creationDate" ),
+						numLikes,
+						itemTitle,
+						"",
+						currItem.getString("event"),
+						new String[] { 
+								
+								ownerObject.getString("username"),
+								null 
+						},								
+						liked,
+						comments,
+						tempGravatarHash
+							
+					);
+				
+				}  else if( !currItem.isNull( "KICKEDPLATOON" )) {
+	
+					//Get it!
+					tempSubItem = currItem.getJSONObject( "KICKEDPLATOON" ).getJSONObject( "platoon" );
+					
+					//Set it!
+					itemTitle = "<b>{username}</b> got kicked from the platoon <b>{platoon}</b>.".replace( 
 				
 						"{platoon}",
 						tempSubItem.getString("name")

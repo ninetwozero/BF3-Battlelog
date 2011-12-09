@@ -35,11 +35,11 @@
 	        <item >Every 5 minutes</item>
 	        <item >Every 10 minutes</item>
 	        <item >Every 30 minutes</item>
-	        <item >Every 1 hour</item>
-	        <item >Every 2 hours</item>
-	        <item >Every 6 hours</item>
-	        <item >Every 12 hours</item>
-	        <item >Every 18 hours</item>
-	        <item >Every 24 hours</item>
+	        <item >Once an hour</item>
+	        <item >Once every 2 hours</item>
+	        <item >Once every 6 hours</item>
+	        <item >Once every 12 hours</item>
+	        <item >Once every 18 hours</item>
+	        <item >Once a day</item>
 	    </string-array>
 </resources>
