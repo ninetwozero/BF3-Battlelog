@@ -109,6 +109,15 @@ public class Main extends Activity {
         fieldPassword = (EditText) findViewById(R.id.field_password);
         checkboxSave = (CheckBox) findViewById(R.id.checkbox_save);
         
+		Object[] keys = sharedPreferences.getAll().keySet().toArray();
+		Object[] values = sharedPreferences.getAll().values().toArray();
+		
+		for(int i = 0; i < keys.length; i++ ) {
+			
+			Log.d(Constants.DEBUG_TAG, keys[i] + " => " + values[i]);
+			
+		}
+        
         //Do we need to show the cool changelog-dialog?
         if( sharedPreferences.getInt( "latest_changelog_version", Constants.CHANGELOG_VERSION-1) < Constants.CHANGELOG_VERSION ) {
         	
@@ -226,7 +235,7 @@ public class Main extends Activity {
 				
 				public void onClick(DialogInterface dialog, int which) {
 			      
-					sharedPreferences.edit().putLong( "latest_changelog_version", Constants.CHANGELOG_VERSION).commit();
+					sharedPreferences.edit().putInt( "latest_changelog_version", Constants.CHANGELOG_VERSION).commit();
 			   
 				}
 				
