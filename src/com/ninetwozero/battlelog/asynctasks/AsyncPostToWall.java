@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.PlatoonView;
 import com.ninetwozero.battlelog.ProfileView;
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
@@ -62,7 +63,7 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 		//How'd it go?
 		if( result ) {
 
-			Toast.makeText( context, "Message posted successfully!", Toast.LENGTH_SHORT).show();
+			Toast.makeText( context, R.string.msg_feed_ok, Toast.LENGTH_SHORT).show();
 			
 			try { wait( 1000 ); } catch( Exception ex ) { ex.printStackTrace(); }
 			if( !isPlatoon ) { ((ProfileView) context).reloadLayout(); }
@@ -71,7 +72,7 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 		} else {
 		
 
-			Toast.makeText( context, "Message could not be posted (you may have reached your limit).", Toast.LENGTH_SHORT).show();
+			Toast.makeText( context, R.string.msg_feed_fail, Toast.LENGTH_SHORT).show();
 			
 		}
 		

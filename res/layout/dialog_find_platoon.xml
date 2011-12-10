@@ -10,7 +10,7 @@
         android:id="@+id/field_name"
         android:layout_height="wrap_content"
         android:layout_width="250dp" 
- 		android:hint="Type a platoon name here"
+ 		android:hint="@string/info_hint_platoon"
  		android:singleLine="true"
         android:layout_centerHorizontal="true">
     </EditText>

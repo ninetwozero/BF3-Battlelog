@@ -64,7 +64,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 	protected void onPreExecute() {
 		
 		this.buttonRefresh.setEnabled(false);
-		this.buttonRefresh.setText( "Please wait..." );
+		this.buttonRefresh.setText( R.string.label_wait );
 		
 	}
 	
@@ -74,7 +74,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 		try {
 		
 			//Let's get this!!
-			profileArray = WebsiteHandler.getFriendsCOM( sharedPreferences.getString( "battlelog_post_checksum", "") );
+			profileArray = WebsiteHandler.getFriendsCOM( sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "") );
 			return true;
 			
 		} catch ( WebsiteHandlerException e ) {
@@ -135,7 +135,16 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 			}
 			
 			//Update the sliding drawer handle
-			drawerHandle.setText( "COM CENTER (" + numOnlineFriends + " ONLINE)" ); //-1 to compensate for the header
+			drawerHandle.setText( 
+					
+				context.getResources().getString( R.string.label_com_handle ).replace(
+				
+					"{num}",
+					numOnlineFriends + ""
+						
+				) 
+				
+			); //-1 to compensate for the header
 		
 		} else {
 			
@@ -146,11 +155,11 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 
 		//Update the button y'all
 		this.buttonRefresh.setEnabled(true);
-		this.buttonRefresh.setText( "Refresh now" );
+		this.buttonRefresh.setText( R.string.lable_refresh );
 		
 		//How did go?
-		if( results ) Toast.makeText( context, "COM CENTER up to date.", Toast.LENGTH_SHORT).show();
-		else Toast.makeText( context, "COM CENTER could not be refreshed.", Toast.LENGTH_SHORT).show();				
+		if( results ) Toast.makeText( context, R.string.msg_com_ok, Toast.LENGTH_SHORT).show();
+		else Toast.makeText( context, R.string.msg_com_fail, Toast.LENGTH_SHORT).show();				
 		return;
 		
 	}	

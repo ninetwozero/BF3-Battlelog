@@ -1,4 +1,5 @@
 package net.sf.andhsli.hotspotlogin;
+import com.ninetwozero.battlelog.R;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;

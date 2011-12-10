@@ -2,13 +2,13 @@
     <item 
 		android:id="@+id/option_refresh" 
 		android:icon="@android:drawable/ic_menu_rotate"
-		android:title="Refresh" 
+		android:title="@string/info_xml_reload" 
 		android:alphabeticShortcut="R"
 	/>
     <item 
 		android:id="@+id/option_logout" 
 		android:icon="@android:drawable/ic_lock_power_off" 
-		android:title="Logout" 
+		android:title="@string/info_xml_logout" 
 		android:alphabeticShortcut="L"
 	/>
 </menu>

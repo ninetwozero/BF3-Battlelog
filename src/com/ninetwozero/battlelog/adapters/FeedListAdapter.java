@@ -93,8 +93,8 @@ public class FeedListAdapter extends BaseAdapter {
 		}
 		
 		//How many likes/comments?
-		String textHooah = ( currentItem.getNumLikes() == 1 )? "{num} hooah" : "{num} hooahs";
-		String textComments = ( currentItem.getNumComments() == 1 )? "{num} comment" : "{num} comments";
+		String textHooah = ( currentItem.getNumLikes() == 1 )? context.getString( R.string.info_hooah_s ) : context.getString( R.string.info_hooah_p );
+		String textComments = ( currentItem.getNumComments() == 1 )? context.getString( R.string.info_comment_s ) : context.getString( R.string.info_comment_p );
 		
 		//Set the fields
 		((ImageView) convertView.findViewById(R.id.image_avatar)).setImageBitmap( 
@@ -102,7 +102,7 @@ public class FeedListAdapter extends BaseAdapter {
 			WebsiteHandler.getGravatarFromCache(currentItem.getAvatarForPost(), context.getResources()) 
 					
 		);
-		((TextView) convertView.findViewById(R.id.text_date)).setText( PublicUtils.getRelativeDate( currentItem.getDate() ) );
+		((TextView) convertView.findViewById(R.id.text_date)).setText( PublicUtils.getRelativeDate( context, currentItem.getDate() ) );
 		((TextView) convertView.findViewById(R.id.text_hooah)).setText( textHooah.replace("{num}", currentItem.getNumLikes() + ""));
 		((TextView) convertView.findViewById(R.id.text_comment)).setText( 
 				

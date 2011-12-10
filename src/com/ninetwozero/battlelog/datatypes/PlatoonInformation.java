@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.datatypes;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
+import com.ninetwozero.battlelog.R;
 
 public class PlatoonInformation {
 

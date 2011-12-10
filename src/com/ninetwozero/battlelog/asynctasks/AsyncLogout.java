@@ -19,11 +19,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.services.BattlelogService;
 
 
 public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
@@ -39,7 +43,7 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
 	public AsyncLogout( Context c ) { 
 		
 		this.context = c; 
-		this.sharedPreferences = this.context.getSharedPreferences( Constants.FILE_SHPREF, 0);
+		this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		this.spEdit = this.sharedPreferences.edit();
 	
 	}	
@@ -48,8 +52,8 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
 	protected void onPreExecute() {
 		
 		this.progressDialog = new ProgressDialog(this.context);
-		this.progressDialog.setTitle("Please wait");
-		this.progressDialog.setMessage( "Logging out..." );
+		this.progressDialog.setTitle(context.getString( R.string.general_wait ));
+		this.progressDialog.setMessage( context.getString( R.string.msg_logout ) );
 		this.progressDialog.setCancelable( false );
 		this.progressDialog.show();
 		
@@ -68,7 +72,7 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
     		if( httpContent != null && !httpContent.equals( "" ) ) {
     			
 				//Further more, we would actually like to store the userid and name
-				spEdit.putString( "battlelog_persona",  "");
+				spEdit.putString( Constants.SP_BL_PERSONA,  "");
 				spEdit.putString( "battlelog_personaid",  "");
 				spEdit.putString( "battlelog_platform", "");
 				
@@ -90,6 +94,9 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
 	
 	@Override
 	protected void onPostExecute(Integer results) {
+		
+		//Is the service running?
+		if( PublicUtils.isMyServiceRunning( context ) ) { BattlelogService.stop(); }
 		
 		if( this.progressDialog != null && this.progressDialog.isShowing() ) {
 			

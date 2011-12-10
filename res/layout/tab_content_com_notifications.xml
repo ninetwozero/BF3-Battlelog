@@ -19,7 +19,7 @@
 	    android:id="@+id/status_notifications"
 	    android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="No notifications found. :-("
+		android:text="@string/info_xml_no_notifications"
 		android:layout_centerInParent="true"
 		android:visibility="gone"
     />

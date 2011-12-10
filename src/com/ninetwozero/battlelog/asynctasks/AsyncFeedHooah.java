@@ -18,6 +18,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
@@ -77,8 +78,8 @@ public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
 			//Reload
 			asyncFeedRefresh.execute();
 			
-			if( results ) Toast.makeText( context, "Hooah!", Toast.LENGTH_SHORT).show();
-			else Toast.makeText( context, "Hooah failed!", Toast.LENGTH_SHORT).show();
+			if( results ) Toast.makeText( context, R.string.label_hooah, Toast.LENGTH_SHORT).show();
+			else Toast.makeText( context, R.string.msg_hooah_fail, Toast.LENGTH_SHORT).show();
 			
 		}
 		return;

@@ -19,23 +19,26 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class AsyncComRequest extends AsyncTask<Boolean, Integer, Boolean> {
+public class AsyncComRequest extends AsyncTask<String, Integer, Boolean> {
 
 	//Attribute
 	Context context;
 	SharedPreferences sharedPreferences;
 	long profileId;
+	boolean response;
 	AsyncComRefresh refreshMethod;
 
 	//Constructor
-	public AsyncComRequest( Context c, long p, AsyncComRefresh acr ) { 
+	public AsyncComRequest( Context c, long p, AsyncComRefresh acr, boolean r ) { 
 		
 		this.context = c;
 		this.profileId = p;
-		this.sharedPreferences = context.getSharedPreferences( "battlelog", 0 );
+		this.response = r;
 		this.refreshMethod = acr;
 	}	
 	
@@ -43,12 +46,12 @@ public class AsyncComRequest extends AsyncTask<Boolean, Integer, Boolean> {
 	protected void onPreExecute() {}
 	
 	@Override
-	protected Boolean doInBackground( Boolean... arg0) {
+	protected Boolean doInBackground( String... arg0) {
 		
 		try {
 		
 			//Let's get this!!
-			return WebsiteHandler.answerFriendRequest( profileId, arg0[0], sharedPreferences.getString( "battlelog_post_checksum", "") );
+			return WebsiteHandler.answerFriendRequest( profileId, response, arg0[0] );
 			
 			
 		} catch ( WebsiteHandlerException e ) {

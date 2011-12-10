@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctasks.AsyncServiceTask;
 import com.ninetwozero.battlelog.misc.Constants;
 
@@ -35,44 +36,12 @@ public class BattlelogService extends Service {
 		}
     	
 	}
-
-	public void start() {
-		
-		if( serviceTimer == null ) { 
-			
-			serviceTimer = new Timer();
-			serviceTimer.scheduleAtFixedRate(
-	    			
-	    		new TimerTask() {
-	    			
-	    			@Override
-	    			public void run() {
-	
-	    				new AsyncServiceTask(CONTEXT).execute(
-	
-	    					BattlelogService.sharedPreferences.getString( "battlelog_post_checksum", "" ),
-	    					BattlelogService.sharedPreferences.getString( "origin_email", "" ),
-	    					BattlelogService.sharedPreferences.getString( "origin_password", "" )
-	    					
-	    				);
-	
-	    				
-	    			}
-	    			
-	    		}, 
-	    		0, 
-	    		BattlelogService.sharedPreferences.getInt( "battlelog_service_interval", Constants.MINUTE_IN_SECONDS )*1000
-			);
-		
-		}
-		
-	}
 	
 	@Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 	
 		Log.d(Constants.DEBUG_TAG, "Service has reached onStartCommand()");
-		start();
+		start(CONTEXT);
 		return Service.START_STICKY;
 		
 	}
@@ -85,6 +54,47 @@ public class BattlelogService extends Service {
 	
 	/* SELF */
 	public static Timer getServiceTimer() { return BattlelogService.serviceTimer; }
+
+	public static void start(final Context context) {
+		
+		if( serviceTimer == null ) { 
+		
+			//SET THE SHARED PREFERENCES IF THEY'RE NOT SET
+			if( BattlelogService.sharedPreferences == null ) {
+				
+				BattlelogService.sharedPreferences = PreferenceManager.getDefaultSharedPreferences( context ); 
+				
+			}
+			
+			//Init a new Timer 
+			serviceTimer = new Timer();
+			serviceTimer.scheduleAtFixedRate(
+	    			
+	    		new TimerTask() {
+	    			
+	    			@Override
+	    			public void run() {
+	
+	    				new AsyncServiceTask(context).execute(
+	
+	    					BattlelogService.sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ),
+	    					BattlelogService.sharedPreferences.getString( Constants.SP_BL_EMAIL, "" ),
+	    					BattlelogService.sharedPreferences.getString( Constants.SP_BL_PASSWORD, "" )
+	    					
+	    				);
+	
+	    				
+	    			}
+	    			
+	    		}, 
+	    		0, 
+	    		BattlelogService.sharedPreferences.getInt( Constants.SP_BL_INTERVAL_SERVICE, Constants.MINUTE_IN_SECONDS )*1000
+			);
+		
+		}
+		
+	}
+
 	
 	public static void stop() { 
 		
@@ -92,10 +102,12 @@ public class BattlelogService extends Service {
 		if( BattlelogService.getServiceTimer() != null ){ 
 			
 			BattlelogService.getServiceTimer().cancel(); 
-			serviceTimer = null;
+			BattlelogService.serviceTimer = null;
 					
 		} 
 		
 	}
+	
+	public static boolean isRunning() { return (BattlelogService.getServiceTimer() != null ); }
 
 }

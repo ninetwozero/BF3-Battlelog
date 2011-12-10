@@ -85,8 +85,8 @@ public class NotificationListAdapter extends BaseAdapter {
 		}
 	
 		//Set the views
-		((TextView) convertView.findViewById(R.id.text_message)).setText( Html.fromHtml( currentItem.getMessage(this.activeUserId ) ) );
-		((TextView) convertView.findViewById(R.id.text_date)).setText( PublicUtils.getRelativeDate( currentItem.getDate() ) );
+		((TextView) convertView.findViewById(R.id.text_message)).setText( Html.fromHtml( currentItem.getMessage(context, this.activeUserId ) ) );
+		((TextView) convertView.findViewById(R.id.text_date)).setText( PublicUtils.getRelativeDate( context, currentItem.getDate() ) );
 
 		
 		//Hook it up on the tag

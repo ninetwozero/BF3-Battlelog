@@ -53,9 +53,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
-import com.ninetwozero.battlelog.datatypes.SerializedCookie;
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 
 public class RequestHandler {
 
@@ -447,23 +448,23 @@ public class RequestHandler {
 	 
 	}
 
-	public static ArrayList<SerializedCookie> getSerializedCookies() {
+	public static ArrayList<ShareableCookie> getSerializedCookies() {
 	
 		//Get our cookie storage
 		List<Cookie> cookies = RequestHandler.httpClient.getCookieStore().getCookies();
-		ArrayList<SerializedCookie> serializedCookies = new ArrayList<SerializedCookie>();
+		ArrayList<ShareableCookie> serializedCookies = new ArrayList<ShareableCookie>();
 
 		//Empty?
 		if (!cookies.isEmpty()){
 			
-			for( Cookie c : cookies ) { serializedCookies.add( new SerializedCookie(c) ); }
+			for( Cookie c : cookies ) { serializedCookies.add( new ShareableCookie(c) ); }
 		
 		}
 
 		return serializedCookies;
 	}
 	
-	public static void setSerializedCookies( ArrayList<SerializedCookie> sc ) {
+	public static void setCookies( ArrayList<ShareableCookie> sc ) {
 		
 		//Init
     	CookieStore cookieStore = RequestHandler.httpClient.getCookieStore();
@@ -472,10 +473,10 @@ public class RequestHandler {
     	if( cookieStore.getCookies().isEmpty() ) {
 	    	
 			//Set it up
-			ArrayList<SerializedCookie> serializedCookies = sc;
+			ArrayList<ShareableCookie> serializedCookies = sc;
 			
 			//Loop & add
-			for( SerializedCookie sCookie : serializedCookies ) {
+			for( ShareableCookie sCookie : serializedCookies ) {
 
 				BasicClientCookie tempCookie = new BasicClientCookie(sCookie.getName(), sCookie.getValue());
 				tempCookie.setDomain(sCookie.getDomain());

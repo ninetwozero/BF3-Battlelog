@@ -8,8 +8,8 @@
         <CheckBoxPreference 
             android:key="allow_service" 
             android:defaultValue="true" 
-            android:title="Enable background service" 
-            android:summary="When enabled, a background service keeps track on notifications and makes sure that the widget can stay online."
+            android:title="@string/info_xml_enable_bgsrv" 
+            android:summary="@string/info_xml_enable_bgsrv_t"
         />
         <com.kmansoft.IntegerListPreference
             android:title="Select an update interval" 

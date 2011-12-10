@@ -2,62 +2,62 @@
     <item 
 		android:id="@+id/option_reload" 
 		android:icon="@android:drawable/ic_menu_rotate"
-		android:title="Reload" 
+		android:title="@string/info_xml_reload" 
 		android:alphabeticShortcut="R"
 	/>
     <item 
 		android:id="@+id/option_join" 
 		android:icon="@android:drawable/ic_menu_add" 
-		android:title="Request to join" 
+		android:title="@string/info_xml_apply" 
 		android:alphabeticShortcut="F"
 		android:visible="false"
 	/>
     <item 
 		android:id="@+id/option_fan_yes" 
 		android:icon="@android:drawable/ic_menu_add" 
-		android:title="Fan" 
+		android:title="@string/info_xml_fan" 
 		android:alphabeticShortcut="F"
 		android:visible="false"
 	/>
     <item 
 		android:id="@+id/option_leave" 
 		android:icon="@android:drawable/ic_menu_delete" 
-		android:title="Leave platoon" 
+		android:title="@string/info_xml_leave_platoon" 
 		android:alphabeticShortcut="F"
 		android:visible="false"
 	/>
     <item 
 		android:id="@+id/option_fan_no" 
 		android:icon="@android:drawable/ic_menu_delete" 
-		android:title="Un-fan" 
+		android:title="@string/info_xml_un_fan" 
 		android:alphabeticShortcut="F"
 		android:visible="false"
 	/>
     <item 
 		android:id="@+id/option_members" 
 		android:icon="@android:drawable/ic_menu_myplaces" 
-		android:title="Members" 
+		android:title="@string/info_xml_members" 
 		android:alphabeticShortcut="U"
 		android:visible="false"
 	/>
     <item 
 		android:id="@+id/option_fans" 
 		android:icon="@android:drawable/ic_menu_myplaces" 
-		android:title="Fans" 
+		android:title="@string/info_xml_fans" 
 		android:alphabeticShortcut="U"
 		android:visible="false"
 	/>
     <item 
 		android:id="@+id/option_compare" 
 		android:icon="@android:drawable/ic_menu_directions" 
-		android:title="Compare..." 
+		android:title="@string/info_xml_compare" 
 		android:alphabeticShortcut="C"
 		android:visible="false"
 	/>
 	<item 
 		android:id="@+id/option_back" 
 		android:icon="@android:drawable/ic_menu_revert" 
-		android:title="Back" 
+		android:title="@string/info_xml_back" 
 		android:alphabeticShortcut="B"
 	/>
 </menu>

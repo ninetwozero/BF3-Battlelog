@@ -19,6 +19,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
@@ -61,11 +62,11 @@ public class AsyncFriendRequest extends AsyncTask<String, Integer, Boolean> {
 		
 		if( results ) { 
 			
-			Toast.makeText(this.context, "Friend request sent!", Toast.LENGTH_SHORT).show(); 
+			Toast.makeText(this.context, R.string.msg_frequest_ok, Toast.LENGTH_SHORT).show(); 
 			
 		} else { 
 			
-			Toast.makeText( this.context, "Friend request could not be sent.", Toast.LENGTH_SHORT).show(); 
+			Toast.makeText( this.context, R.string.msg_frequest_fail, Toast.LENGTH_SHORT).show(); 
 			
 		}
 

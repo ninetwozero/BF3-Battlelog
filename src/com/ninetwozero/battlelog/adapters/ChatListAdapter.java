@@ -115,27 +115,10 @@ public class ChatListAdapter extends BaseAdapter {
 		textTimestamp = (TextView) convertView.findViewById( R.id.text_timestamp);
 		textMessage = (TextView) convertView.findViewById( R.id.text_message);
 		
-		//Either set or hide it
-		/*if( 0 < position && currentMessage.getSender().equals( getItem(position-1).getSender() ) ) {
-			
-			if( position < (getCount()-1) && (currentMessage.getTimestamp()+300) > getItem(position).getTimestamp() ) {
-				
-				textUsername.setVisibility( View.GONE );
-				textTimestamp.setVisibility(View.GONE);			
-			
-			}
-			
-		} else {
-			
-			textUsername.setVisibility( View.VISIBLE );
-			textTimestamp.setVisibility(View.VISIBLE);
-			
-		}*/
-		
 		//Set the TextViews
 		textUsername.setText( currentMessage.getSender() );
 		textMessage.setText( Html.fromHtml( currentMessage.getMessage() ) );
-		textTimestamp.setText( PublicUtils.getRelativeDate(currentMessage.getTimestamp()) );
+		textTimestamp.setText( PublicUtils.getRelativeDate(context, currentMessage.getTimestamp()) );
 		
 		//Store the object
 		convertView.setTag( currentMessage );

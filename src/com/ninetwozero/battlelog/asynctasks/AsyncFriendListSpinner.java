@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.Spinner;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.FriendSpinnerAdapter;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;

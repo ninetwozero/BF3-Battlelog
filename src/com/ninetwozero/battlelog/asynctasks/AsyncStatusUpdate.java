@@ -46,7 +46,7 @@ public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
 	@Override
 	protected void onPreExecute() {
 
-		Toast.makeText( context, "Updating your status...", Toast.LENGTH_SHORT).show();
+		Toast.makeText( context, R.string.msg_status, Toast.LENGTH_SHORT).show();
 		
 	}
 	
@@ -95,13 +95,13 @@ public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
 
 		if( results == 0 ) { 
 				
-				//Yay
-				Toast.makeText(this.context, "Status updated successfully.", Toast.LENGTH_SHORT).show(); 
-				((EditText) ((Activity)context).findViewById(R.id.field_status)).setText("");
+			//Yay
+			Toast.makeText(this.context, R.string.msg_status_ok, Toast.LENGTH_SHORT).show(); 
+			((EditText) ((Activity)context).findViewById(R.id.field_status)).setText("");
 							
 		} else { 
 			
-			Toast.makeText( this.context, "Posting the status update...", Toast.LENGTH_SHORT).show(); 
+			Toast.makeText( this.context, R.string.msg_status_fail, Toast.LENGTH_SHORT).show(); 
 			
 		}
 		

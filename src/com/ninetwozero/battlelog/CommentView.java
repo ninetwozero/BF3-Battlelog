@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,7 +36,7 @@ import com.ninetwozero.battlelog.adapters.CommentListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncCommentSend;
 import com.ninetwozero.battlelog.asynctasks.AsyncCommentsRefresh;
 import com.ninetwozero.battlelog.datatypes.CommentData;
-import com.ninetwozero.battlelog.datatypes.SerializedCookie;
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
@@ -62,9 +63,9 @@ public class CommentView extends ListActivity {
     	super.onCreate(icicle);	
     	
     	//Did it get passed on?
-    	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
+    	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setSerializedCookies( (ArrayList<SerializedCookie> ) icicle.getSerializable("serializedCookies") );
+    		RequestHandler.setCookies( (ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) );
     	
     	}
     	
@@ -72,7 +73,7 @@ public class CommentView extends ListActivity {
         setContentView(R.layout.comments_view);
 
         //Prepare to tango
-        this.sharedPreferences = this.getSharedPreferences( Constants.FILE_SHPREF, 0);
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         
         //Get the ListView
@@ -90,7 +91,7 @@ public class CommentView extends ListActivity {
     	//Is the user allowed to post?
         if( !getIntent().getBooleanExtra( "canComment", false ) ) {
 
-        	if( sharedPreferences.getLong( "battlelog_profile_id", 0 ) != getIntent().getLongExtra( "profileId", 0) ) {
+        	if( sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ) != getIntent().getLongExtra( "profileId", 0) ) {
         		
         		buttonSend.setVisibility( View.GONE );
         		fieldMessage.setVisibility( View.GONE );
@@ -112,7 +113,7 @@ public class CommentView extends ListActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		
 		super.onSaveInstanceState(outState);
-		outState.putSerializable("serializedCookies", RequestHandler.getSerializedCookies());
+		outState.putSerializable(Constants.SUPER_COOKIES, RequestHandler.getSerializedCookies());
 	
 	}
 	
@@ -143,7 +144,7 @@ public class CommentView extends ListActivity {
 			
     		).execute(
 
-				sharedPreferences.getString( "battlelog_post_checksum", "" ),
+				sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ),
 				fieldMessage.getText().toString()
     				
 			);
@@ -224,35 +225,11 @@ public class CommentView extends ListActivity {
 							
 						sharedPreferences.getString( 
 								
-							"battlelog_post_checksum", 
+							Constants.SP_BL_CHECKSUM, 
 							""
 							
 						) 
 					
-					);
-				
-				} else if( item.getItemId() == 1 ){
-					
-					//Yeah
-					startActivity(
-							
-						new Intent(
-								
-							this, 
-							CommentView.class
-							
-						).putExtra(
-								
-							"comments", 
-							(ArrayList<CommentData>) ((FeedItem) info.targetView.getTag()).getComments()
-					
-						).putExtra( 
-
-							"postId", 
-							((FeedItem) info.targetView.getTag()).getId()
-							
-						)
-						
 					);
 					
 				}

@@ -20,6 +20,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -51,7 +52,7 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
 		
 		//Set the button
 		buttonSend.setEnabled( false );
-		buttonSend.setText( "Please wait..." );
+		buttonSend.setText( R.string.label_wait );
 		
 	}
 	
@@ -83,10 +84,10 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
 			
 			//Set the button
 			buttonSend.setEnabled( true );
-			buttonSend.setText( "Send" );
+			buttonSend.setText( R.string.label_send );
 			
-			if( results ) Toast.makeText( context, "Comment posted!", Toast.LENGTH_SHORT).show();
-			else Toast.makeText( context, "Comment could not be posted!", Toast.LENGTH_SHORT).show();
+			if( results ) Toast.makeText( context, R.string.msg_comment_ok, Toast.LENGTH_SHORT).show();
+			else Toast.makeText( context, R.string.msg_comment_fail, Toast.LENGTH_SHORT).show();
 			
 		}
 		return;

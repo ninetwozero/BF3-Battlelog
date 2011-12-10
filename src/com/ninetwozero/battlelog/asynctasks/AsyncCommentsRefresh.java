@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.CommentListAdapter;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -83,7 +84,7 @@ public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
 			
 		} else {
 			
-			Toast.makeText( context, "Comments could not be refreshed.", Toast.LENGTH_SHORT).show();				
+			Toast.makeText( context, R.string.msg_comment_norefresh, Toast.LENGTH_SHORT).show();				
 		
 		}
 		return;

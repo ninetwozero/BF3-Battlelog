@@ -125,32 +125,10 @@ public class PlatoonFanListAdapter extends BaseAdapter {
 	
 			//Set the TextViews
 			textUser = (TextView) convertView.findViewById( R.id.text_user );
-			textUser.setText( 
-					currentProfile.getAccountName() 
-			);
+			textUser.setText( currentProfile.getAccountName()  );
 			textStatus = (TextView) convertView.findViewById( R.id.text_status );
 			
-			//Oh-oh
-			if( currentProfile.isPlaying() && currentProfile.isOnline() ) {
-				
-				textUser.setTextColor( context.getResources().getColor(R.color.blue) );
-				textStatus.setText( "Playing" );
-				textStatus.setTextColor( context.getResources().getColor(R.color.blue) );
-				
-			} else if( currentProfile.isOnline() ) {
-				
-				textUser.setTextColor( context.getResources().getColor(R.color.green) );
-				textStatus.setText( "Online" );
-				textStatus.setTextColor( context.getResources().getColor(R.color.green) );
-							
-			} else {
-
-				textUser.setTextColor( context.getResources().getColor(R.color.grey) );
-				textStatus.setText( "Offline" );				
-				textStatus.setTextColor( context.getResources().getColor(R.color.grey) );
-				
-			}
-			
+			//Set the tag
 			convertView.setTag( currentProfile );
 		
 		}

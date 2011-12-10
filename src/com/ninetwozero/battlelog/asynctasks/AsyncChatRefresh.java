@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ChatListAdapter;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -58,7 +59,7 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
 		try {
 		
 			//Let's get this!!
-			messageArray = WebsiteHandler.getChatMessages( chatId[0], sharedPreferences.getString( "battlelog_post_checksum", "") );
+			messageArray = WebsiteHandler.getChatMessages( chatId[0], sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "") );
 			return true;
 			
 		} catch ( WebsiteHandlerException e ) {
@@ -84,7 +85,7 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
 			
 		} else {
 			
-			Toast.makeText( context, "Chat could not be refreshed.", Toast.LENGTH_SHORT).show();				
+			Toast.makeText( context, R.string.msg_chat_norefresh, Toast.LENGTH_SHORT).show();				
 		
 		}
 		return;

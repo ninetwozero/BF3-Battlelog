@@ -25,13 +25,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
@@ -54,6 +57,7 @@ import com.ninetwozero.battlelog.datatypes.TopStatsComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.services.BattlelogService;
 
 /* 
  * Methods of this class should be loaded in AsyncTasks, as they would probably lock up the GUI
@@ -68,7 +72,7 @@ public class WebsiteHandler {
 	public static ProfileData doLogin(Context context, PostData[] postDataArray, boolean savePassword) throws WebsiteHandlerException {
 	
 		//Init
-		SharedPreferences sharedPreferences = context.getSharedPreferences( Constants.FILE_SHPREF, 0);
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences( context );
 		SharedPreferences.Editor spEdit = sharedPreferences.edit();
 		String[] tempString = new String[10];
 		String httpContent = "";
@@ -87,12 +91,20 @@ public class WebsiteHandler {
     			int startPosition = httpContent.indexOf( Constants.ELEMENT_UID_LINK );
     			String[] bits;
     			
-    			Log.d(Constants.DEBUG_TAG, "httpContent => " + httpContent);
-    			
     			//Did we find it?
     			if( startPosition == -1 ) {
     				
-    				Log.d(Constants.DEBUG_TAG, "No pain is gain.");
+    				tempString[0] = httpContent.substring( 
+    						
+    					httpContent.indexOf( 
+    							
+    						Constants.ELEMENT_ERROR_MESSAGE 
+    						
+    					) 
+    					
+    				).replace( "</div>" , "" ).replace( Constants.ELEMENT_ERROR_MESSAGE, "" );
+        				
+       				Toast.makeText( context, tempString[0], Toast.LENGTH_SHORT).show();
     				return null;
 
     			}
@@ -112,31 +124,42 @@ public class WebsiteHandler {
 				profile = WebsiteHandler.getProfileIdFromSearch( tempString[2], tempString[1]);
 
 				//Further more, we would actually like to store the userid and name
-				spEdit.putString( "origin_email", postDataArray[0].getValue() );
+				spEdit.putString( Constants.SP_BL_EMAIL, postDataArray[0].getValue() );
 				
 				//Should we remember the password?
 				if( savePassword ) {
 
-					spEdit.putString( "origin_password", SimpleCrypto.encrypt( postDataArray[0].getValue(), postDataArray[1].getValue() ) );
-					spEdit.putBoolean( "remember_password", true );
+					spEdit.putString( Constants.SP_BL_PASSWORD, SimpleCrypto.encrypt( postDataArray[0].getValue(), postDataArray[1].getValue() ) );
+					spEdit.putBoolean( Constants.SP_BL_REMEMBER, true );
 					
 				} else {
 					
-					spEdit.putString( "origin_password", "" );
-					spEdit.putBoolean( "remember_password", false);
+					spEdit.putString( Constants.SP_BL_PASSWORD, "" );
+					spEdit.putBoolean( Constants.SP_BL_REMEMBER, false);
 				}
 				
 				//This we keep!!!
-				spEdit.putString( "battlelog_username", tempString[2] );
-				spEdit.putString( "battlelog_persona",  bits[0]);
-				spEdit.putLong( "battlelog_profile_id", profile.getProfileId());
-				spEdit.putLong( "battlelog_persona_id",  Long.parseLong( bits[2] ));				
-				spEdit.putLong( "battlelog_platform_id",  DataBank.getPlatformIdFromName(bits[3]) );
-				spEdit.putString( "battlelog_post_checksum", tempString[1]);
+				spEdit.putString( Constants.SP_BL_USERNAME, tempString[2] );
+				spEdit.putString( Constants.SP_BL_PERSONA,  bits[0]);
+				spEdit.putLong( Constants.SP_BL_PROFILE_ID, profile.getProfileId());
+				spEdit.putLong( Constants.SP_BL_PERSONA_ID,  Long.parseLong( bits[2] ));				
+				spEdit.putLong( Constants.SP_BL_PLATFORM_ID,  DataBank.getPlatformIdFromName(bits[3]) );
+				spEdit.putString( Constants.SP_BL_CHECKSUM, tempString[1]);
 				
 				//Co-co-co-commit
 				spEdit.commit();
-		
+		        
+		        //Do we want to start a service?
+		        if( !PublicUtils.isMyServiceRunning(context) && sharedPreferences.getBoolean( Constants.SP_BL_SERVICE, true ) ) {
+		        	
+		        	context.startService( new Intent(context, BattlelogService.class) );
+		        
+		        } else if( !BattlelogService.isRunning() ) {
+		        	
+		        	BattlelogService.start(context);
+		        	
+		        }
+				
 				//Return it!!
 				return profile;
 				
@@ -191,7 +214,7 @@ public class WebsiteHandler {
 					int costOld = 999, costCurrent = 0;
 					
 					//Iterate baby!
-					for( int i = 0; i < searchResults.length(); i++ ) {
+					for( int i = 0, max = searchResults.length(); i < max; i++ ) {
 						
 						//Get the JSONObject
 						JSONObject tempObj = searchResults.optJSONObject( i );
@@ -260,12 +283,113 @@ public class WebsiteHandler {
 		}
 		
 	}
+
+	public static int applyForPlatoonMembership(final long platoonId, final String checksum) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Let's set it up!
+			RequestHandler wh = new RequestHandler();
+			String httpContent;
+			
+			//Do the actual request
+			httpContent = wh.post(
+					
+				Constants.URL_PLATOON_APPLY, 
+				new PostData[] {
+						
+					new PostData(Constants.FIELD_NAMES_PLATOON_APPLY[0], platoonId + ""),
+					new PostData(Constants.FIELD_NAMES_PLATOON_APPLY[1], checksum)
+					
+				},
+				3
+				
+			);
+			
+			//What up?
+			if( httpContent == null || httpContent.equals( "" ) ) {
+				
+				return -1; // Invalid request
+				
+			} else {
+
+				if( httpContent.equals( "success" ) ) { //OK!
+					
+					return 0; 
+					
+				} else if( httpContent.equals( "wrongplatform" ) ) { //Wrong platform
+					
+					return 1; 
+					
+				} else if( httpContent.equals( "maxmembersreached" ) ) { //Full platoon
+					
+					return 2;
+				
+				} else { //unknown
+					
+					return 3;
+					
+				}
+				
+			}
+			
+		} catch( Exception ex ) {
+			
+			ex.printStackTrace();
+			throw new WebsiteHandlerException( ex.getMessage() );
+		
+		}
+		
+	}
+
+	public static boolean closePlatoonMembership(final long platoonId, final long userId, final String checksum) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Let's set it up!
+			RequestHandler wh = new RequestHandler();
+			String httpContent;
+			
+			//Do the actual request
+			httpContent = wh.post(
+					
+				Constants.URL_PLATOON_LEAVE, 
+				new PostData[] {
+
+					new PostData(Constants.FIELD_NAMES_PLATOON_LEAVE[0], platoonId + ""),
+					new PostData(Constants.FIELD_NAMES_PLATOON_LEAVE[1], userId + ""),
+					new PostData(Constants.FIELD_NAMES_PLATOON_LEAVE[2], checksum)
+					
+				}, 
+				3
+				
+			);
+			
+			//What up?
+			if( httpContent == null || httpContent.equals( "" ) ) {
+				
+				return false;
+				
+			} else {
+			
+				return true;
+				
+			}
+			
+		} catch( Exception ex ) {
+			
+			ex.printStackTrace();
+			throw new WebsiteHandlerException( ex.getMessage() );
+		
+		}
+		
+	}
 	
 	public static PlatoonData getPlatoonIdFromSearch(final String keyword, final String checksum) throws WebsiteHandlerException {
 		
 		try {
 			
-			//Let's login everybody!
+			//Let's do this!
 			RequestHandler wh = new RequestHandler();
 			String httpContent;
 			PlatoonData platoon = null;
@@ -297,7 +421,7 @@ public class WebsiteHandler {
 					int costOld = 999, costCurrent = 0;
 					
 					//Iterate baby!
-					for( int i = 0; i < searchResults.length(); i++ ) {
+					for( int i = 0, max = searchResults.length(); i < max; i++ ) {
 						
 						//Get the JSONObject
 						JSONObject tempObj = searchResults.optJSONObject( i );
@@ -553,7 +677,7 @@ public class WebsiteHandler {
 	    	int unlockKit;
 	    	
 	    	//Iterate over the unlocksArray
-	    	for( int i = 0; i < unlockResults.length(); i++ ) {
+	    	for( int i = 0, max = unlockResults.length(); i < max; i++ ) {
 	    	
 	    		//Get the temporary object
 	    		unlockRow = unlockResults.optJSONObject( i );
@@ -752,7 +876,7 @@ public class WebsiteHandler {
 				if( numRequests  > 0 ) {
 					
 					//Iterate baby!
-					for( int i = 0; i < requestsObject.length(); i++ ) {
+					for( int i = 0, max = requestsObject.length(); i < max; i++ ) {
 						
 						//Grab the object
 						tempObj = requestsObject.optJSONObject( i );
@@ -783,7 +907,7 @@ public class WebsiteHandler {
 				if( numFriends > 0 ) {
 					
 					//Iterate baby!
-					for( int i = 0; i < friendsObject.length(); i++ ) {
+					for( int i = 0, max = friendsObject.length(); i < max; i++ ) {
 						
 						//Grab the object
 						tempObj = friendsObject.optJSONObject( i );
@@ -921,7 +1045,7 @@ public class WebsiteHandler {
 				JSONObject tempObj;
 				
 				//Iterate baby!
-				for( int i = 0; i < profileObject.length(); i++ ) {
+				for( int i = 0, max = profileObject.length(); i < max; i++ ) {
 					
 					//Grab the object
 					tempObj = profileObject.optJSONObject( i );
@@ -1131,7 +1255,7 @@ public class WebsiteHandler {
 				JSONObject tempObject;
 				
 				//Iterate
-				for( int i = 0; i < messages.length(); i++ ) {
+				for( int i = 0, max = messages.length(); i < max; i++ ) {
 					
 					tempObject = messages.optJSONObject( i );
 					messageArray.add( 
@@ -1295,7 +1419,7 @@ public class WebsiteHandler {
 				}
 				
 				//Iterate over the platoons
-				for( int i = 0; i < platoonArray.length(); i++ ) {
+				for( int i = 0, max = platoonArray.length(); i < max; i++ ) {
 					
 					//Each loop is an object
 					currItem = platoonArray.getJSONObject( i );
@@ -1384,7 +1508,7 @@ public class WebsiteHandler {
 			//Iterate over the fans
 			if( fanIdArray != null ) {
 				
-				for( int i = 0; i < fanIdArray.length(); i++ ) {
+				for( int i = 0, max = fanIdArray.length(); i < max; i++ ) {
 				
 					//Grab the fan
 					tempObject = fanArray.getJSONObject( fanIdArray.getString( i ) );
@@ -1688,13 +1812,13 @@ public class WebsiteHandler {
 		try {
 			
 			//Attributes
-			String httpContent = null;
 			RequestHandler rh = new RequestHandler();
 			ArrayList<FeedItem> feedItems = new ArrayList<FeedItem>();
-			JSONArray jsonArray = new JSONArray();
+			JSONArray jsonArray;
+			String httpContent = null;
 			
 			//Let's see
-			for(int i = 0; i < Math.round( num / 10 ); i++ ) {
+			for(int i = 0, max = Math.round( num / 10 ); i < max; i++ ) {
 
 				//Get the content, and create a JSONArray
 				httpContent = rh.get( Constants.URL_FRIEND_FEED.replace( "{NUMSTART}", String.valueOf( i*10 ) ), 1 );
@@ -1752,7 +1876,6 @@ public class WebsiteHandler {
 			
 			//Init
 			RequestHandler rh = new RequestHandler();
-			ArrayList<NotificationData> notifications = new ArrayList<NotificationData>();
 			String httpContent;
 			
 			//Get the content
@@ -1764,7 +1887,7 @@ public class WebsiteHandler {
 					new PostData(Constants.FIELD_NAMES_CHECKSUM[0], checksum)	
 						
 				},
-				1
+				3
 		
 			);
 			
@@ -1810,14 +1933,28 @@ public class WebsiteHandler {
 			if( httpContent != null && !httpContent.equals( "" ) ) {
 				
 				//Grab the notifications
-				JSONObject currItem = null;
-				JSONArray notificationArray = new JSONObject(httpContent).getJSONObject("context").getJSONArray( "notifications" );
+				JSONObject contextObject = new JSONObject(httpContent).getJSONObject("context");
+				JSONObject platoonObject = contextObject.getJSONObject( "platoons" );
+				JSONArray notificationArray = contextObject.getJSONArray( "notifications" );
 				
 				//Now we store the information - easy peasy
-				for( int i = 0; i < notificationArray.length(); i++ ) {
+				for( int i = 0, max = notificationArray.length(); i < max; i++ ) {
 					
 					//Grab the current item
-					currItem = notificationArray.getJSONObject( i );
+					JSONObject currItem = notificationArray.getJSONObject( i );
+					
+					//Let's see
+					String extra = null;
+					if( currItem.has( "platoonId" ) ) {
+						
+						extra = (
+								
+							"[" + platoonObject.getJSONObject( currItem.getString( "platoonId" ) ).getString( "tag" ) + "] " +
+							platoonObject.getJSONObject( currItem.getString( "platoonId" ) ).getString( "name" )
+							
+						);
+						
+					}
 					
 					//Add!!
 					notifications.add(
@@ -1831,7 +1968,8 @@ public class WebsiteHandler {
 							currItem.optInt( "feedItemType", 0 ),	
 							currItem.optString( "itemOwnerUsername", "" ),
 							currItem.getString( "username" ),
-							currItem.getString( "type" )
+							currItem.getString( "type" ),
+							extra 
 								
 						)	
 							
@@ -1913,7 +2051,7 @@ public class WebsiteHandler {
 				
 				//Get the *general* stats
 				currObjNames = objectGeneral.names();
-				for( int i = 0; i < currObjNames.length(); i++ ) {
+				for( int i = 0, max = currObjNames.length(); i < max; i++ ) {
 
 					//Grab the current object
 					currObj = objectGeneral.getJSONObject( currObjNames.getString( i ) );
@@ -1964,7 +2102,7 @@ public class WebsiteHandler {
 				
 				//Get the *kit* scores
 				currObjNames = objectScore.names();
-				for( int i = 0; i < currObjNames.length(); i++ ) {
+				for( int i = 0, max = currObjNames.length(); i < max; i++ ) {
 
 					//Grab the current object
 					currObj = objectScore.getJSONObject( currObjNames.getString( i ) );
@@ -2018,7 +2156,7 @@ public class WebsiteHandler {
 				
 				//Get the *kit* score/min
 				currObjNames = objectSPM.names();
-				for( int i = 0; i < currObjNames.length(); i++ ) {
+				for( int i = 0, max = currObjNames.length(); i < max; i++ ) {
 
 					//Grab the current object
 					currObj = objectSPM.getJSONObject( currObjNames.getString( i ) );
@@ -2071,7 +2209,7 @@ public class WebsiteHandler {
 				
 				//Get the *kit* times
 				currObjNames = objectTime.names();
-				for( int i = 0; i < currObjNames.length(); i++ ) {
+				for( int i = 0, max = currObjNames.length(); i < max; i++ ) {
 
 					//Grab the current object
 					currObj = objectTime.getJSONObject( currObjNames.getString( i ) );
@@ -2122,7 +2260,7 @@ public class WebsiteHandler {
 				//Get the *top player* Tops
 				PlatoonTopStatsItem highestSPM = null;
 				currObjNames = objectTop.names();
-				for( int i = 0; i < currObjNames.length(); i++ ) {
+				for( int i = 0, max = currObjNames.length(); i < max; i++ ) {
 
 					//Grab the current object
 					currObj = objectTop.getJSONObject( currObjNames.getString( i ) );
@@ -2230,7 +2368,7 @@ public class WebsiteHandler {
 			ArrayList<FeedItem> feedItemArray = new ArrayList<FeedItem>();
 			
 			//Iterate over the feed
-			for( int i = 0; i < jsonArray.length(); i++ ) {
+			for( int i = 0, max = jsonArray.length(); i < max; i++ ) {
 				
 				//Once per loop
 				comments = new ArrayList<CommentData>();
@@ -3034,7 +3172,7 @@ public class WebsiteHandler {
 				JSONObject tempObject;
 				
 				//Iterate
-				for( int i = 0; i < commentArray.length(); i++ ) {
+				for( int i = 0, max = commentArray.length(); i < max; i++ ) {
 					
 					tempObject = commentArray.optJSONObject( i );
 					comments.add( 
@@ -3270,11 +3408,10 @@ public class WebsiteHandler {
 
 			//Let's login everybody!
 			RequestHandler wh = new RequestHandler();
-			PostData[] postDataArray;
 			String httpContent = wh.post( 
 					
 				Constants.URL_FEED_POST,
-				postDataArray = new PostData[] {
+				new PostData[] {
 					
 					new PostData(
 							
@@ -3301,9 +3438,7 @@ public class WebsiteHandler {
 			if( httpContent != null && !httpContent.equals( "" ) ) {
 	
 				//Check the JSON
-				JSONObject jsonResponse = new JSONObject(httpContent);
-				String status = jsonResponse.optString( "message", "" );
-				
+				String status = new JSONObject(httpContent).optString( "message", "" );
 				if( status.equals( "WALL_POST_CREATED" ) || status.equals( "PLATOONWALL_POST_CREATED" ) ) {
 					
 					return true;

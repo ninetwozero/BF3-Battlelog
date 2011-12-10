@@ -88,7 +88,7 @@ public class CommentListAdapter extends BaseAdapter {
 		//Set the TextViews
 		textUsername.setText( currentData.getAuthor() );
 		textMessage.setText( Html.fromHtml( currentData.getContent() ) );
-		textTimestamp.setText( PublicUtils.getRelativeDate(currentData.getTimestamp()) );
+		textTimestamp.setText( PublicUtils.getRelativeDate(context, currentData.getTimestamp()) );
 		
 		//Store the object
 		convertView.setTag( currentData );

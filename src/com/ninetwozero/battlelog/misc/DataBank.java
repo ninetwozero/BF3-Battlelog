@@ -16,6 +16,9 @@ package com.ninetwozero.battlelog.misc;
 
 import java.util.HashMap;
 
+import android.content.Context;
+
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PlatformData;
 import com.ninetwozero.battlelog.datatypes.VehicleType;
 import com.ninetwozero.battlelog.datatypes.WeaponType;
@@ -761,10 +764,6 @@ public class DataBank {
 		COOP_DATA.put("COOP_PATH", "MAIN ");
 		COOP_DATA.put("COOP_MISSION", "CO-OP MISSION ");
 		COOP_DATA.put("COOP_HOSTAGE", "Drop 'Em Like Liquid");
-		COOP_DATA.put("COOP_HEADER", "GAME MENU");
-		COOP_DATA.put("COOP_RESUME", "RESUME");
-		COOP_DATA.put("COOP_HINT", "Play co-op");
-		COOP_DATA.put("COOP_PATH", "MAIN ");
 		COOP_DATA.put("COOP_CLASSIFIED", "CLASSIFIED");
 		COOP_DATA.put("COOP_QUIT", "QUIT");
 		COOP_DATA.put("COOP_010", "THE ELEVENTH HOUR");
@@ -777,23 +776,11 @@ public class DataBank {
 		COOP_DATA.put("COOP_002", "HIT AND RUN");
 		COOP_DATA.put("COOP_003", "DROP 'EM LIKE LIQUID");
 		COOP_DATA.put("COOP_001", "A-10");
-		COOP_DATA.put("COOP_SPOTTING", "SPOTTING");
-		COOP_DATA.put("COOP_REVIVE", "CRITICAL HEALTH");
-		COOP_DATA.put("COOP_OPTIONS", "OPTIONS");
-		COOP_DATA.put("COOP_PRESENTATION", "Independent sources have provided consistent information that a major attack is planned by the PLR in the upcoming weeks");
-		COOP_DATA.put("COOP_PATH", "CO-OP ");
-		COOP_DATA.put("COOP_LEADERBOARDS", "LEADERBOARDS");
 		COOP_DATA.put("COOP_EXTRACTION", "Operation Exodus");
 		COOP_DATA.put("COOP_SUPERCOBRA", "Fire From The Sky");
 		COOP_DATA.put("COOP_A10", "A-10");
 		COOP_DATA.put("COOP_BREACHED", "Hit And Run");
-		COOP_DATA.put("COOP_GREAT", "GREAT");
 		COOP_DATA.put("COOP_ROLLINGTHUNDER", "Rolling Thunder");
-		COOP_DATA.put("COOP_HINT03", "KILLING AN ENEMY SPOTTED BY YOUR FRIEND WILL GIVE HIM A SCORE BONUS");
-		COOP_DATA.put("COOP_HINT04", "YOU CAN REPLENISH AMMO FROM WEAPON CRATES");
-		COOP_DATA.put("COOP_HINT01", "WHEN YOUR FRIEND ENDS UP IN MAN DOWN");
-		COOP_DATA.put("COOP_HINT02", "KILL ENEMIES WHILE IN MAN DOWN TO GET BACK UP");
-		COOP_DATA.put("COOP_HINT05", "USE THE AMMO CRATES PLACED IN THE WORLD TO REPLENISH YOUR WEAPON");
 		COOP_DATA.put("COOP_BEHINDENEMYLINES", "Behind Enemy Lines");
 		COOP_DATA.put("COOP_SUBWAY", "The Eleventh Hour");
 	}
@@ -801,7 +788,7 @@ public class DataBank {
 	//Static methods
 	public static int getPlatformIdFromName( String p ) {
 			
-		for( int i = 0; i < PLATFORMS.length; i++ ) {
+		for( int i = 0, max = PLATFORMS.length; i < max; i++ ) {
 			
 			if( DataBank.PLATFORMS[i].getName().equals( p ) ) {
 				
@@ -816,7 +803,7 @@ public class DataBank {
 	
 	public static String getPlatformNameFromId( int pId ) {
 		
-		for( int i = 0; i < PLATFORMS.length; i++ ) {
+		for( int i = 0, max = PLATFORMS.length; i < max; i++ ) {
 			
 			if( DataBank.PLATFORMS[i].getId() == pId ) {
 				
@@ -829,27 +816,27 @@ public class DataBank {
 		return DataBank.PLATFORMS[0].getName();
 	}
 
-	public static String getKitTitle( int number ) {
+	public static String getKitTitle( final Context c, final int number ) {
 	
 		switch( number ) {
 	
 			case 1:
-				return "Assault";
+				return c.getResources().getString( R.string.info_xml_assault );
 				
 			case 2:	
-				return "Engineer";
+				return c.getResources().getString( R.string.info_xml_engineer );
 				
 			case 8:	
-				return "Recon";
+				return c.getResources().getString( R.string.info_xml_recon );
 				
 			case 16: 
-				return "Vehicle";
+				return c.getResources().getString( R.string.info_xml_vehicles );
 				
 			case 32: 
-				return "Support";
+				return c.getResources().getString( R.string.info_xml_support );
 				
 			case 64: 
-				return "General";
+				return c.getResources().getString( R.string.info_xml_general );
 				
 			default:
 				return "";

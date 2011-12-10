@@ -126,12 +126,12 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 				PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 					
 				//Set the ticker
-				battlelogNotification.tickerText =  "Someone has interacted with you on Battlelog!";
+				battlelogNotification.tickerText =  context.getString( R.string.msg_notification );
 				battlelogNotification.setLatestEventInfo(
 						
 					context, 
 					"BF3 Battlelog - new notifications!", 
-					"Tap this item to view your notifications.", 
+					context.getString( R.string.info_tap_notification ), 
 					contentIntent
 				
 				);

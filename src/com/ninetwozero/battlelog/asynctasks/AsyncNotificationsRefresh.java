@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -90,10 +91,6 @@ public class AsyncNotificationsRefresh extends AsyncTask<String, Integer, Boolea
 				
 			}
 
-		} else {
-			
-			Toast.makeText( context, "Notification would be sent here", Toast.LENGTH_SHORT).show();
-			
 		}
 
 			

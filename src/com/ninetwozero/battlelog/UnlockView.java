@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,7 +34,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.UnlockListAdapter;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.SerializedCookie;
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -55,9 +56,9 @@ public class UnlockView extends ListActivity {
     	super.onCreate(icicle);
     	
     	//Did it get passed on?
-    	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
+    	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setSerializedCookies( (ArrayList<SerializedCookie> ) icicle.getSerializable("serializedCookies") );
+    		RequestHandler.setCookies( (ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) );
     	
     	}
     	
@@ -68,7 +69,7 @@ public class UnlockView extends ListActivity {
         setContentView(R.layout.unlocks_view);
 
         //Prepare to tango
-        this.sharedPreferences = this.getSharedPreferences( Constants.FILE_SHPREF, 0);
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     	if( instances == 1 ) { this.reloadLayout(); }
 	}        
 
@@ -78,12 +79,12 @@ public class UnlockView extends ListActivity {
     	new GetDataSelfAsync(this, getListView(), (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).execute(
     		
     		new ProfileData(
-				this.sharedPreferences.getString( "battlelog_username", "" ),
-				this.sharedPreferences.getString( "battlelog_persona", "" ),
-				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-				this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-				this.sharedPreferences.getLong( "battlelog_platform_id", 1),
-				sharedPreferences.getString( "battlelog_gravatar_hash", "" )
+				this.sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
+				this.sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
+				this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
+				this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
+				this.sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
+				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
 			)
 		
 		);
@@ -116,8 +117,8 @@ public class UnlockView extends ListActivity {
     		
     		//Let's see
 			this.progressDialog = new ProgressDialog(this.context);
-			this.progressDialog.setTitle("Please wait");
-			this.progressDialog.setMessage( "Downloading your unlocks (may take a few seconds)..." );
+			this.progressDialog.setTitle(context.getString( R.string.general_wait ));
+			this.progressDialog.setMessage( getResources().getString( R.string.general_downloading ) );
 			this.progressDialog.show();
     		
     	}
@@ -147,7 +148,7 @@ public class UnlockView extends ListActivity {
 			if( !result ) { 
 				
 				if( this.progressDialog != null ) this.progressDialog.dismiss();
-				Toast.makeText( this.context, "No data found.", Toast.LENGTH_SHORT).show(); 
+				Toast.makeText( this.context, R.string.general_no_data, Toast.LENGTH_SHORT).show(); 
 				((Activity) this.context).finish();
 				return; 
 			
@@ -200,7 +201,7 @@ public class UnlockView extends ListActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		
 		super.onSaveInstanceState(outState);
-		outState.putSerializable("serializedCookies", RequestHandler.getSerializedCookies());
+		outState.putSerializable(Constants.SUPER_COOKIES, RequestHandler.getSerializedCookies());
 	
 	}
     

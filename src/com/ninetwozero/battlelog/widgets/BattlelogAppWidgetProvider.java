@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -65,15 +66,15 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 		   int numFriendsOnline = 0;
 	   
 		   //Set the values
-		   sharedPreferences = context.getSharedPreferences( Constants.FILE_SHPREF, 0);  
+		   sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);  
 		   profileData = new ProfileData(
 
-				sharedPreferences.getString( "battlelog_username", "" ),
-			    sharedPreferences.getString( "battlelog_persona", "" ),
-			    sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-			    sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-			    sharedPreferences.getLong( "battlelog_platform_id", 1),
-				sharedPreferences.getString( "battlelog_gravatar_hash", "" )
+				sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
+			    sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
+			    sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
+			    sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
+			    sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
+				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
 		   
 		   );
 		   remoteView = new RemoteViews(context.getPackageName(), R.layout.appwidget_layout);
@@ -81,19 +82,19 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 		   try {
 			    
 			   playerData = WebsiteHandler.getStatsForUser(profileData);
-			   remoteView.setTextViewText(R.id.label, "Name: "+ playerData.getPersonaName());
+			   remoteView.setTextViewText(R.id.label, playerData.getPersonaName());
 			   remoteView.setTextViewText(R.id.title, "Rank: " + playerData.getRankId() + " (" + playerData.getPointsProgressLvl() + "/" + playerData.getPointsNeededToLvlUp() + ")");
 			   remoteView.setTextViewText(R.id.stats, "W/L: " + playerData.getWLRatio() + "  K/D: " + playerData.getKDRatio());
-			   profileDataArray = WebsiteHandler.getFriends( sharedPreferences.getString("battlelog_post_checksum", ""), true);
+			   profileDataArray = WebsiteHandler.getFriends( sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""), true);
 			   numFriendsOnline = profileDataArray.size();
 			   
 		   } catch (WebsiteHandlerException e) {
 				
 			    e.printStackTrace();
 			   	
-				if( !sharedPreferences.getBoolean("remember_password", false) ) {
+				if( !sharedPreferences.getBoolean(Constants.SP_BL_REMEMBER, false) ) {
 					
-					Toast.makeText(context, "Authentication failed - is your password saved?", Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, R.string.msg_widget_auth_fail, Toast.LENGTH_SHORT).show();
 					return;
 					
 				} else {
@@ -104,15 +105,15 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 						PostData[] postDataArray = new PostData[Constants.FIELD_NAMES_LOGIN.length];
 			    		String[] valueFields = new String[] { 
 							
-						sharedPreferences.getString( "origin_email", ""), 
+						sharedPreferences.getString( Constants.SP_BL_EMAIL, ""), 
 						SimpleCrypto.decrypt( 
 										
 							sharedPreferences.getString( 
-								"origin_email", 
+								Constants.SP_BL_EMAIL, 
 								"" 
 							), 
 							sharedPreferences.getString( 
-								"origin_password", 
+								Constants.SP_BL_PASSWORD, 
 									""
 								)
 							)
@@ -120,7 +121,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 			    		}; 
 
 						//Iterate and conquer
-			    		for( int i = 0; i < Constants.FIELD_NAMES_LOGIN.length; i++ ) {
+			    		for( int i = 0, max = Constants.FIELD_NAMES_LOGIN.length; i < max; i++ ) {
 	
 			    			postDataArray[i] =	new PostData(
 				    			
@@ -136,12 +137,12 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
 						//Get our stats and output them
 						playerData = WebsiteHandler.getStatsForUser(profileData);
-						remoteView.setTextViewText(R.id.label, "Name: "+ playerData.getPersonaName());
+						remoteView.setTextViewText(R.id.label, playerData.getPersonaName());
 						remoteView.setTextViewText(R.id.title, "Rank: " + playerData.getRankId() + " (" + playerData.getPointsProgressLvl() + "/" + playerData.getPointsNeededToLvlUp() + ")");
 						remoteView.setTextViewText(R.id.stats, "W/L: " + playerData.getWLRatio() + "  K/D: " + playerData.getKDRatio());
 						
 						//Get the friends
-						profileDataArray = WebsiteHandler.getFriends( sharedPreferences.getString("battlelog_post_checksum", ""), true );
+						profileDataArray = WebsiteHandler.getFriends( sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""), true );
 						numFriendsOnline = profileDataArray.size();
 						
 					} catch (Exception ex ) {

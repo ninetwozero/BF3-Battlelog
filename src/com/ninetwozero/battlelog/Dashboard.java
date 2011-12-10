@@ -27,7 +27,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -73,13 +73,12 @@ import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.SerializedCookie;
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
-import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class Dashboard extends TabActivity {
 
@@ -130,19 +129,12 @@ public class Dashboard extends TabActivity {
     	super.onCreate(icicle);
 
         //Set sharedPreferences
-        sharedPreferences = getSharedPreferences( Constants.FILE_SHPREF, 0);
-        
-        //Do we want to start a service?
-        if( !PublicUtils.isMyServiceRunning(context) && sharedPreferences.getBoolean( "allow_service", true ) ) {
-        	
-        	this.context.startService( new Intent(context, BattlelogService.class) );
-        
-        }
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         
     	//Did it get passed on?
-    	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
+    	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setSerializedCookies( (ArrayList<SerializedCookie> ) icicle.getSerializable("serializedCookies") );
+    		RequestHandler.setCookies( (ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) );
     	
     	}
     	
@@ -174,26 +166,41 @@ public class Dashboard extends TabActivity {
     	//Let's set them up
     	setupTabsPrimary(
     			
-    		new String[] { "Menu", "Feed" }, 
-    		new int[] { R.layout.tab_content_dashboard_menu, R.layout.tab_content_dashboard_feed }
+    		new String[] { 
+    		
+    			getResources().getString( R.string.general_label_menu ), 
+    			getResources().getString( R.string.general_label_feed) 
+    		
+    		}, 
+    		new int[] { 
+    			
+    			R.layout.tab_content_dashboard_menu, 
+    			R.layout.tab_content_dashboard_feed 
+    			
+    		}
 
     	);
     	setupTabsSecondary(
     			
-    		new String[] { "Friends", "Notifications" }, 
+    		new String[] { 
+    				
+    			getResources().getString( R.string.general_label_friends ), 
+				getResources().getString( R.string.general_label_notifications ) 
+    							
+    		}, 
     		new int[] { R.layout.tab_content_com_friends, R.layout.tab_content_com_notifications }
     		
-    	); /*TODO setup (check@stackoverflow)*/
+    	);
 
         //Build the menu items
         menuArray = new DashboardItem[]{ 
 
-        	new DashboardItem(Constants.MENU_ME, "My soldier"),
-        	new DashboardItem(Constants.MENU_UNLOCKS, "My unlocks"),
-        	new DashboardItem(Constants.MENU_SOLDIER, "Find soldier"),
-        	new DashboardItem(Constants.MENU_PLATOON, "Find platoon"),
-        	new DashboardItem(Constants.MENU_COMPARE, "Compare battle scars"),
-        	new DashboardItem(Constants.MENU_SETTINGS, "Settings")
+        	new DashboardItem(Constants.MENU_ME, getResources().getString( R.string.general_label_me )),
+        	new DashboardItem(Constants.MENU_UNLOCKS, getResources().getString( R.string.general_label_unlocks )),
+        	new DashboardItem(Constants.MENU_SOLDIER, getResources().getString( R.string.general_label_find_soldier )),
+        	new DashboardItem(Constants.MENU_PLATOON, getResources().getString( R.string.general_label_find_platoon )),
+        	new DashboardItem(Constants.MENU_COMPARE, getResources().getString( R.string.general_label_compare_bs)),
+        	new DashboardItem(Constants.MENU_SETTINGS, getResources().getString( R.string.general_label_settings ))
         	
         };
         
@@ -348,25 +355,23 @@ public class Dashboard extends TabActivity {
 				if( wrapFriendRequests.getVisibility() == View.VISIBLE ) { wrapFriendRequests.setVisibility( View.GONE ); }
 				
 			} else {
-
+				
 				if( !hasRequests ) {
 					
 					if( wrapFriendRequests.getVisibility() == View.VISIBLE ) { 
 
-						Log.d(Constants.DEBUG_TAG, "I have no requests");
 						wrapFriendRequests.setVisibility( View.GONE ); 
-						friendsStatusText.setVisibility( View.GONE  );	
 					}
+
+					friendsStatusText.setVisibility( View.GONE  );	
 					
 				} else if( !hasFriends ) {
 
-					Log.d(Constants.DEBUG_TAG, "I have no friends");
 					if( wrapFriendRequests.getVisibility() == View.GONE ) { wrapFriendRequests.setVisibility( View.VISIBLE  ); }
 					if( friendsStatusText.getVisibility() == View.GONE ) { friendsStatusText.setVisibility( View.VISIBLE ); }
 					
 				} else {
 				
-					Log.d(Constants.DEBUG_TAG, "I have requests/friends");
 					if( friendsStatusText.getVisibility() == View.VISIBLE ) { friendsStatusText.setVisibility( View.GONE ); }
 					
 					
@@ -484,22 +489,22 @@ public class Dashboard extends TabActivity {
 			
 			//Let's set 'em values
     		valueFieldsArray[0] = fieldStatusUpdate.getText().toString();
-    		valueFieldsArray[1] = sharedPreferences.getString( "battlelog_post_checksum", "");
+    		valueFieldsArray[1] = sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "");
     		
     		//Validate
     		if( valueFieldsArray[0].equals( "" ) ) {
     			
-    			Toast.makeText( this, "Please enter a status text to continue.", Toast.LENGTH_SHORT).show();
+    			Toast.makeText( this, R.string.status_empty_input, Toast.LENGTH_SHORT).show();
     			return;
     			
     		} else if( valueFieldsArray[1].equals( "" ) ) {
     			
-    			Toast.makeText( this, "An error has occured: please relogin and try again.", Toast.LENGTH_SHORT).show();
+    			Toast.makeText( this, R.string.status_error_unknown, Toast.LENGTH_SHORT).show();
     			return;
     			
     		}
     		//Iterate and conquer
-    		for( int i = 0; i < Constants.FIELD_NAMES_STATUS.length; i++ ) {
+    		for( int i = 0, max = Constants.FIELD_NAMES_STATUS.length; i < max; i++ ) {
 
     			postDataArray[i] =	new PostData(
 	    			
@@ -541,15 +546,6 @@ public class Dashboard extends TabActivity {
 
 			refreshFeed();
 			refreshCOM();
-			
-			Object[] keys = sharedPreferences.getAll().keySet().toArray();
-			Object[] values = sharedPreferences.getAll().values().toArray();
-			
-			for(int i = 0; i < keys.length; i++ ) {
-				
-				Log.d(Constants.DEBUG_TAG, keys[i] + " => " + values[i]);
-				
-			}
 		
 		} else if( item.getItemId() == R.id.option_logout ) {
 			
@@ -612,7 +608,7 @@ public class Dashboard extends TabActivity {
 	    final View layout = inflater.inflate(R.layout.dialog_compare, (ViewGroup) findViewById(R.id.dialog_root));
 		
 	    //Set the title and the view
-		builder.setTitle("Compare battle scars");
+		builder.setTitle(R.string.general_label_compare_bs);
 		builder.setView(layout);
 
 		//Grab the fields
@@ -649,7 +645,7 @@ public class Dashboard extends TabActivity {
 					
 					} else {
 						
-						Toast.makeText( context, "You need to enter a username", Toast.LENGTH_SHORT ).show();
+						Toast.makeText( context, R.string.general_empty_user, Toast.LENGTH_SHORT ).show();
 						
 					}
 						
@@ -673,7 +669,7 @@ public class Dashboard extends TabActivity {
 	    final View layout = inflater.inflate(R.layout.dialog_compare, (ViewGroup) findViewById(R.id.dialog_root));
 		
 	    //Set the title and the view
-		builder.setTitle("View soldier profile of...");
+		builder.setTitle(R.string.info_profile_soldier);
 		builder.setView(layout);
 
 		//Grab the fields
@@ -709,7 +705,7 @@ public class Dashboard extends TabActivity {
 					
 					} else {
 						
-						Toast.makeText( context, "You need to enter a username", Toast.LENGTH_SHORT ).show();
+						Toast.makeText( context, R.string.general_empty_user, Toast.LENGTH_SHORT ).show();
 						
 					}
 			   
@@ -732,7 +728,7 @@ public class Dashboard extends TabActivity {
 	    final View layout = inflater.inflate(R.layout.dialog_find_platoon, (ViewGroup) findViewById(R.id.dialog_root));
 		
 	    //Set the title and the view
-		builder.setTitle("View the platoon profile for...");
+		builder.setTitle(R.string.info_profile_platoon);
 		builder.setView(layout);
 
 		//Grab the fields
@@ -768,7 +764,7 @@ public class Dashboard extends TabActivity {
 					
 					} else {
 						
-						Toast.makeText( context, "You need to enter a name", Toast.LENGTH_SHORT ).show();
+						Toast.makeText( context, R.string.general_empty_name, Toast.LENGTH_SHORT ).show();
 						
 					}
 			   
@@ -847,7 +843,7 @@ public class Dashboard extends TabActivity {
 	private void refreshCOM() {
 
 		//Done? No? Let's populate in an async task!
-		new AsyncCOMReload().execute( sharedPreferences.getString( "battlelog_post_checksum", "" ));
+		new AsyncCOMReload().execute( sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ));
 		
 	}
 	
@@ -866,46 +862,23 @@ public class Dashboard extends TabActivity {
 	
 	public void onRequestActionClick(View v) {
 
-		//...
-		if( v.getId() == R.id.button_accept ) { 
-			
-			new AsyncComRequest(
-					
-				this, 
-				((ProfileData)v.getTag()).getProfileId(),
-				new AsyncComRefresh(
-						
-					this, 
-					listFriendRequests, 
-					listFriends, 
-					layoutInflater,
-					buttonRefresh,
-					slidingDrawerHandle
-					
-				)
-			
-			).execute(true); 
-			
-		} else { 
-			
-			new AsyncComRequest(
-					
-				this, 
-				((ProfileData)v.getTag()).getProfileId(),
-				new AsyncComRefresh(
-						
-					this, 
-					listFriendRequests, 
-					listFriends, 
-					layoutInflater,
-					buttonRefresh,
-					slidingDrawerHandle
-					
-				)
+		new AsyncComRequest(
 				
-			).execute(false); 
+			this, 
+			((ProfileData)v.getTag()).getProfileId(),
+			new AsyncComRefresh(
+					
+				this, 
+				listFriendRequests, 
+				listFriends, 
+				layoutInflater,
+				buttonRefresh,
+				slidingDrawerHandle
+				
+			),
+			( v.getId() == R.id.button_accept )
 		
-		}
+		).execute(sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "")); 
 		
 	}
 	
@@ -914,7 +887,7 @@ public class Dashboard extends TabActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		
 		super.onSaveInstanceState(outState);
-		outState.putSerializable("serializedCookies", RequestHandler.getSerializedCookies());
+		outState.putSerializable(Constants.SUPER_COOKIES, RequestHandler.getSerializedCookies());
 	
 	}
 
@@ -949,9 +922,9 @@ public class Dashboard extends TabActivity {
     		//Wait, is the position 0? If so, it's the heading...
 	    	if( !selectedUser.getAccountName().startsWith( "0000000" ) ) {
 	    		
-				menu.add( menuId, 0, 0, "Open chat");
-				menu.add( menuId, 1, 0, "View soldier");
-				menu.add( menuId, 2, 0, "Compare battle scars");
+				menu.add( menuId, 0, 0, R.string.label_chat_open);
+				menu.add( menuId, 1, 0, R.string.label_soldier_view);
+				menu.add( menuId, 2, 0, R.string.general_label_compare_bs);
 				
 	    	}
 		
@@ -960,14 +933,14 @@ public class Dashboard extends TabActivity {
     		//Show the menu
     		if( !((FeedItem) ((View) info.targetView).getTag()).isLiked() ) {
     			
-    			menu.add( menuId, 0, 0, "Hooah!");
+    			menu.add( menuId, 0, 0, R.string.label_hooah);
     		
     		} else {
     			
-    			menu.add( menuId, 0, 0, "Un-hooah!");
+    			menu.add( menuId, 0, 0, R.string.label_unhooah);
     			
     		}
-    		menu.add( menuId, 1, 0, "View comments");
+    		menu.add( menuId, 1, 0, R.string.label_comment_view);
     		
     	}
     	
@@ -1139,12 +1112,12 @@ public class Dashboard extends TabActivity {
     	TabHost.TabSpec spec;
     	
     	//Iterate them tabs
-    	for(int i = 0; i < titleArray.length; i++) {
+    	for(int i = 0, max = titleArray.length; i < max; i++) {
 
     		//Num
     		final int num = i;
 			View tabview = createTabView(mTabHost.getContext(), titleArray[num]);
-			
+
 			//Let's set the content
 			spec = mTabHost.newTabSpec(titleArray[num]).setIndicator(tabview).setContent(
 	        		
@@ -1204,7 +1177,7 @@ public class Dashboard extends TabActivity {
     	TabHost.TabSpec spec;
     	
     	//Iterate them tabs
-    	for(int i = 0; i < titleArray.length; i++) {
+    	for(int i = 0, max = titleArray.length; i < max; i++) {
 
     		//Num
     		final int num = i;
@@ -1319,7 +1292,7 @@ public class Dashboard extends TabActivity {
 			
 		} else {
 			
-			Toast.makeText( this, "Unimplemented menu alternative.", Toast.LENGTH_SHORT).show();
+			Toast.makeText( this, R.string.msg_unimplemented, Toast.LENGTH_SHORT).show();
 			return;
 		
 		}
@@ -1350,7 +1323,7 @@ public class Dashboard extends TabActivity {
 				//Get...
 				feedArray = WebsiteHandler.getPublicFeed(
 
-					sharedPreferences.getInt( "battlelog_feed_count", 20 ),
+					sharedPreferences.getInt( Constants.SP_BL_NUM_FEED, Constants.DEFAULT_NUM_FEED ),
 					activeProfileId
 					
 				);
@@ -1381,7 +1354,7 @@ public class Dashboard extends TabActivity {
 			//Fail?
 			if( !result ) { 
 				
-				Toast.makeText( this.context, "No feed items found.", Toast.LENGTH_SHORT).show(); 
+				Toast.makeText( this.context, R.string.info_feed_empty, Toast.LENGTH_SHORT).show(); 
 				return; 
 			
 			}
@@ -1417,7 +1390,7 @@ public class Dashboard extends TabActivity {
     	@Override
     	protected void onPreExecute() {
     		
-    		buttonRefresh.setText( "Please wait..." );
+    		buttonRefresh.setText( R.string.label_wait );
     		buttonRefresh.setEnabled( !buttonRefresh.isEnabled() );
     		
     	}
@@ -1459,11 +1432,19 @@ public class Dashboard extends TabActivity {
     		}
     		
     		//Update the text
-    		buttonRefresh.setText( "Refresh now" );
+    		buttonRefresh.setText( R.string.lable_refresh );
     		buttonRefresh.setEnabled( !buttonRefresh.isEnabled() );
     		
     		//Update the sliding drawer handle
-    		slidingDrawerHandle.setText( "COM CENTER (" + friendListData.getOnlineCount() + " ONLINE)" );
+    		slidingDrawerHandle.setText( 
+    				
+				getResources().getString( R.string.label_com_handle ).replace(
+    					
+    				"{num}", friendListData.getOnlineCount() + ""
+    				
+    			) 
+    			
+    		);
     		
     		//R-turn
     		return;
@@ -1477,6 +1458,23 @@ public class Dashboard extends TabActivity {
     public void onResume() {
     
     	super.onResume();
+    	
+    	//Let's see
+    	if( Dashboard.profile == null ) {
+    		
+    		Dashboard.profile = new ProfileData(
+    			
+    			sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
+    			sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
+    			sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ),
+    			sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
+    			sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 0 ),
+    			null
+    				
+    		);
+    		
+    	}
+    	
     	switch( mTabHost.getCurrentTab() ) {
 			
 			case 0:
@@ -1493,5 +1491,7 @@ public class Dashboard extends TabActivity {
 		}
 
     }
+    
+    public final static ProfileData getProfile() { return Dashboard.profile; }
        
 }

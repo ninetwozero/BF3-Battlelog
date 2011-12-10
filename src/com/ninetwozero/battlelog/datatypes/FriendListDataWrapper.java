@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.util.Log;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.Constants;
 
 
@@ -17,9 +18,6 @@ public class FriendListDataWrapper {
 	public FriendListDataWrapper(ArrayList<ProfileData> r, ArrayList<ProfileData> on, ArrayList<ProfileData> off) {
 		
 		//Set the data
-		if(r != null){ Log.d(Constants.DEBUG_TAG, "# in r => " + r.size() ); }
-		if(on != null){ Log.d(Constants.DEBUG_TAG, "# in on => " + on.size() ); }
-		if(off != null){ Log.d(Constants.DEBUG_TAG, "# in off => " + off.size() ); }
 		requests = r;
 		onlineFriends = on;
 		offlineFriends = off;

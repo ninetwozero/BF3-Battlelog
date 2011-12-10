@@ -40,7 +40,7 @@
 			<TextView 
  			    style="@style/FriendHeadingRow"
 			    android:id="@+id/text_header_status"
-			    android:text="Latest Status Message"
+			    android:text="@string/info_xml_latest_statusmsg"
 			/>
 			<TextView 
 			    android:id="@+id/text_status"
@@ -73,7 +73,7 @@
 			<TextView 
 			    style="@style/FriendHeadingRow"
 			    android:id="@+id/text_header_presentation"
-			    android:text="Presentation"
+			    android:text="@string/info_xml_presentation"
 			/>
 			<TextView 
 		    	android:gravity="center"
@@ -95,7 +95,7 @@
 			<TextView 
 			    style="@style/FriendHeadingRow"
 			    android:id="@+id/text_header_platoon"
-			    android:text="Platoons"
+			    android:text="@string/info_xml_platoons"
 			/>
 
 			<LinearLayout
@@ -111,7 +111,7 @@
 			    android:id="@+id/text_platoon"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="No platoons joined."
+			    android:text="@string/info_xml_no_platoons"
 			    android:textSize="14sp"
 			    android:layout_below="@id/text_header_platoon"
 				android:padding="5dp"

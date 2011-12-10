@@ -14,6 +14,7 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,11 +23,12 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.Dashboard;
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
-import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
@@ -63,8 +65,8 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 		if( !fromWidget ) {
 		
 			this.progressDialog = new ProgressDialog(this.context);
-			this.progressDialog.setTitle("Please wait");
-			this.progressDialog.setMessage( "Logging in..." );
+			this.progressDialog.setTitle(context.getString( R.string.general_wait ));
+			this.progressDialog.setMessage( context.getString( R.string.msg_logging_in ) );
 			this.progressDialog.setCancelable( false );
 			this.progressDialog.show();
 		
@@ -99,6 +101,12 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 			if( results ) { 
 
 				//Start the activity
+				if( PublicUtils.isMyServiceRunning( context ) ) {
+					
+					((Activity)context).finish();
+					
+				}
+				
 				this.context.startActivity( 
 						
 					new Intent(context, Dashboard.class).putExtra( 
@@ -112,7 +120,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 				
 			} else {
 				
-				Toast.makeText( this.context, "Login failed.", Toast.LENGTH_SHORT).show(); 
+				Toast.makeText( this.context, R.string.msg_login_fail, Toast.LENGTH_SHORT).show(); 
 				
 			}
 			

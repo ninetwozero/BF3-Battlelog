@@ -24,6 +24,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -56,7 +57,7 @@ import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
-import com.ninetwozero.battlelog.datatypes.SerializedCookie;
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -88,14 +89,14 @@ public class ProfileView extends TabActivity {
     	super.onCreate(icicle);	
     	
     	//Did it get passed on?
-    	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
+    	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setSerializedCookies( (ArrayList<SerializedCookie> ) icicle.getSerializable("serializedCookies") );
+    		RequestHandler.setCookies( (ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) );
     	
     	}
         
         //Prepare to tango
-        this.sharedPreferences = this.getSharedPreferences( Constants.FILE_SHPREF, 0);
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         
     	//Get the intent
@@ -103,12 +104,12 @@ public class ProfileView extends TabActivity {
         	
         	profileData = new ProfileData(
 
-        		this.sharedPreferences.getString( "battlelog_username", "" ),
-        		this.sharedPreferences.getString( "battlelog_persona", "" ),
-    			this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-    			this.sharedPreferences.getLong( "battlelog_persona_id", 0 ),
-    			this.sharedPreferences.getLong( "battlelog_platform_id", 1),
-				sharedPreferences.getString( "battlelog_gravatar_hash", "" )
+        		this.sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
+        		this.sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
+    			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
+    			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
+    			this.sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
+				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
     		
     		);
         	
@@ -128,8 +129,20 @@ public class ProfileView extends TabActivity {
     	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
     	setupTabs(
     			
-    		new String[] { "Home", "Stats", "Feed" }, 
-    		new int[] { R.layout.tab_content_profile_overview, R.layout.tab_content_profile_stats, R.layout.tab_content_feed }
+    		new String[] { 
+    				
+    			getResources().getString( R.string.label_home ), 
+				getResources().getString( R.string.label_stats ), 
+				getResources().getString( R.string.general_label_feed )
+    			
+    		}, 
+    		new int[] { 
+    				
+    			R.layout.tab_content_profile_overview, 
+    			R.layout.tab_content_profile_stats, 
+    			R.layout.tab_content_feed 
+    			
+    		}
     		
     	);
         
@@ -139,14 +152,14 @@ public class ProfileView extends TabActivity {
 	public void initLayout() {
 		
 		//Eventually get a *cached* version instead    
-		new AsyncProfileRefresh(this, false, profileData, sharedPreferences.getLong( "battlelog_profile_id", 0 )).execute();
+		new AsyncProfileRefresh(this, false, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
 		
 	}
 	
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new AsyncProfileRefresh(this, true, profileData, sharedPreferences.getLong( "battlelog_profile_id", 0 )).execute();
+    	new AsyncProfileRefresh(this, true, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
     	
     	
     }
@@ -157,7 +170,7 @@ public class ProfileView extends TabActivity {
     	TabHost.TabSpec spec;
     	
     	//Iterate them tabs
-    	for(int i = 0; i < tags.length; i++) {
+    	for(int i = 0, max = tags.length; i < max; i++) {
 
     		//Num
     		final int num = i;
@@ -223,8 +236,8 @@ public class ProfileView extends TabActivity {
 
     			//Let's see
 				this.progressDialog = new ProgressDialog(this.context);
-				this.progressDialog.setTitle("Please wait");
-				this.progressDialog.setMessage( "Downloading the data..." );
+				this.progressDialog.setTitle(context.getString( R.string.general_wait ));
+				this.progressDialog.setMessage( context.getString( R.string.general_downloading ) );
 				this.progressDialog.show();
     		
     		}	
@@ -267,7 +280,7 @@ public class ProfileView extends TabActivity {
 			if( !result ) { 
 				
 				if ( !hideDialog ) { if( this.progressDialog != null ) this.progressDialog.dismiss(); }
-				Toast.makeText( this.context, "No data found.", Toast.LENGTH_SHORT).show(); 
+				Toast.makeText( this.context, R.string.general_no_data, Toast.LENGTH_SHORT).show(); 
 				((Activity) this.context).finish();
 				return; 
 			
@@ -346,7 +359,7 @@ public class ProfileView extends TabActivity {
     		
     		((TextView) findViewById(R.id.text_online)).setText( 
     				
-				"Playing on {server name}".replace(
+				getResources().getString( R.string.info_profile_playing ).replace(
 					
 					"{server name}",
 					data.getCurrentServer()
@@ -357,11 +370,11 @@ public class ProfileView extends TabActivity {
         	
     	} else if( data.isOnline() ) {
     	
-    		((TextView) findViewById(R.id.text_online)).setText( "Online but not currently playing" ); 
+    		((TextView) findViewById(R.id.text_online)).setText( R.string.info_profile_online ); 
     		
     	} else {
     		
-    		((TextView) findViewById(R.id.text_online)).setText( data.getLastLogin() ); 
+    		((TextView) findViewById(R.id.text_online)).setText( data.getLastLogin(context) ); 
     		
     	}
     	
@@ -370,7 +383,7 @@ public class ProfileView extends TabActivity {
 			
     		//Set the status
     		((TextView) findViewById(R.id.text_status)).setText( data.getStatusMessage() );
-    		((TextView) findViewById(R.id.text_status_date)).setText( PublicUtils.getRelativeDate( data.getStatusMessageChanged(), "Last updated ") );
+    		((TextView) findViewById(R.id.text_status_date)).setText( PublicUtils.getRelativeDate( context, data.getStatusMessageChanged(), R.string.info_lastupdate) );
     	
     	} else {
     		
@@ -386,7 +399,7 @@ public class ProfileView extends TabActivity {
 		
     	} else {
     		
-    		((TextView) findViewById(R.id.text_presentation)).setText( "No presentation found." );
+    		((TextView) findViewById(R.id.text_presentation)).setText( R.string.info_profile_empty_pres );
 
     	}
     	
@@ -581,7 +594,7 @@ public class ProfileView extends TabActivity {
     public boolean onPrepareOptionsMenu( Menu menu ) {
     	
     	//Our own profile, no need to show the "extra" buttons
-    	if( profileData.getProfileId() == sharedPreferences.getLong( "battlelog_profile_id", 0 ) ) {
+    	if( profileData.getProfileId() == sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ) ) {
 
 			menu.removeItem( R.id.option_friendadd );
 			menu.removeItem( R.id.option_frienddel );
@@ -658,7 +671,7 @@ public class ProfileView extends TabActivity {
 					
 				sharedPreferences.getString( 
 						
-					"battlelog_post_checksum", 
+					Constants.SP_BL_CHECKSUM, 
 					"" 
 				)
 			
@@ -667,7 +680,7 @@ public class ProfileView extends TabActivity {
 			
 		} else if( item.getItemId() == R.id.option_frienddel ) {
 		
-			Toast.makeText( this, "Friends can't be deleted at this time, currently looking for a solution!", Toast.LENGTH_SHORT).show();
+			Toast.makeText( this, R.string.msg_unimplemented, Toast.LENGTH_SHORT).show();
 		
 		} else if( item.getItemId() == R.id.option_compare ) {
 			
@@ -711,7 +724,7 @@ public class ProfileView extends TabActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		
 		super.onSaveInstanceState(outState);
-		outState.putSerializable("serializedCookies", RequestHandler.getSerializedCookies());
+		outState.putSerializable(Constants.SUPER_COOKIES, RequestHandler.getSerializedCookies());
 	
 	}
 	
@@ -724,14 +737,14 @@ public class ProfileView extends TabActivity {
 		//Show the menu
 		if( !((FeedItem) ((View) info.targetView).getTag()).isLiked() ) {
 			
-			menu.add( 0, 0, 0, "Hooah!");
+			menu.add( 0, 0, 0, R.string.label_hooah);
 		
 		} else {
 			
-			menu.add( 0, 0, 0, "Un-hooah!");
+			menu.add( 0, 0, 0, R.string.label_unhooah);
 			
 		}
-		menu.add( 0, 1, 0, "View comments");
+		menu.add( 0, 1, 0, R.string.label_comment_view);
 
 		return;
 	
@@ -774,7 +787,7 @@ public class ProfileView extends TabActivity {
 							this, 
 							true, 
 							profileData,
-							sharedPreferences.getLong( "battlelog_profile_id", 0 )
+							sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )
 							
 						)
 					
@@ -782,7 +795,7 @@ public class ProfileView extends TabActivity {
 							
 						sharedPreferences.getString( 
 								
-							"battlelog_post_checksum", 
+							Constants.SP_BL_CHECKSUM, 
 							""
 							
 						) 
@@ -847,7 +860,7 @@ public class ProfileView extends TabActivity {
 			//Empty message?
 			if( fieldMessage.getText().toString().equals("") ) {
 				
-				Toast.makeText(context, "You're not allowed to post an empty message.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, R.string.info_empty_msg, Toast.LENGTH_SHORT).show();
 				return;
 				
 			}
@@ -860,7 +873,7 @@ public class ProfileView extends TabActivity {
 				
 			).execute(
 					
-				sharedPreferences.getString( "battlelog_post_checksum", "" ),
+				sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ),
 				fieldMessage.getText().toString()
 				
 			);

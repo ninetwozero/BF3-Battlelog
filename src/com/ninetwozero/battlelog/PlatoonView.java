@@ -26,6 +26,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -51,6 +52,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.adapters.PlatoonUserListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
+import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
@@ -60,7 +62,7 @@ import com.ninetwozero.battlelog.datatypes.PlatoonStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonStatsItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonTopStatsItem;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.SerializedCookie;
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -100,18 +102,18 @@ public class PlatoonView extends TabActivity {
     	super.onCreate(icicle);	
     	
     	//Did it get passed on?
-    	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
+    	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setSerializedCookies(
+    		RequestHandler.setCookies(
     				
-    			(ArrayList<SerializedCookie> ) icicle.getSerializable("serializedCookies") 
+    			(ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) 
     			
     		);
     	
     	}
         
         //Prepare to tango
-        this.sharedPreferences = this.getSharedPreferences( Constants.FILE_SHPREF, 0);
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         
     	//Get the intent
@@ -129,10 +131,10 @@ public class PlatoonView extends TabActivity {
     			
     		new String[] { 
     				
-    			"Home", 
-    			"Stats", 
-    			"Users", 
-    			"Feed" 
+				getResources().getString( R.string.label_home ), 
+				getResources().getString( R.string.label_stats ), 
+				getResources().getString( R.string.label_users ), 
+    			getResources().getString( R.string.general_label_feed ) 
     			
     		}, 
     		new int[] { 
@@ -154,14 +156,14 @@ public class PlatoonView extends TabActivity {
 	public void initLayout() {
 		
 		//Eventually get a *cached* version instead    
-		new AsyncPlatoonRefresh(this, false, platoonData, sharedPreferences.getLong( "battlelog_profile_id", 0 ), true).execute();
+		new AsyncPlatoonRefresh(this, false, platoonData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ), true).execute();
 		
 	}
 	
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new AsyncPlatoonRefresh(this, true, platoonData, sharedPreferences.getLong( "battlelog_profile_id", 0 ), false).execute();
+    	new AsyncPlatoonRefresh(this, true, platoonData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ), false).execute();
     	
     	
     }
@@ -172,7 +174,7 @@ public class PlatoonView extends TabActivity {
     	TabHost.TabSpec spec;
     	
     	//Iterate them tabs
-    	for(int i = 0; i < tags.length; i++) {
+    	for(int i = 0, max = tags.length; i < max; i++) {
 
     		//Num
     		final int num = i;
@@ -239,8 +241,8 @@ public class PlatoonView extends TabActivity {
 
     			//Let's see
 				this.progressDialog = new ProgressDialog(this.context);
-				this.progressDialog.setTitle("Please wait");
-				this.progressDialog.setMessage( "Downloading the data..." );
+				this.progressDialog.setTitle(context.getString( R.string.general_wait ));
+				this.progressDialog.setMessage( context.getString( R.string.general_downloading ) );
 				this.progressDialog.show();
     		
     		}	
@@ -288,7 +290,7 @@ public class PlatoonView extends TabActivity {
 			if( !result ) { 
 				
 				if ( !hideDialog ) { if( this.progressDialog != null ) this.progressDialog.dismiss(); }
-				Toast.makeText( this.context, "No data found.", Toast.LENGTH_SHORT).show(); 
+				Toast.makeText( this.context, R.string.general_no_data, Toast.LENGTH_SHORT).show(); 
 				((Activity) this.context).finish();
 				return; 
 			
@@ -371,13 +373,43 @@ public class PlatoonView extends TabActivity {
 		if( imageViewBadge == null ) { imageViewBadge = (ImageView) findViewById(R.id.image_badge); }
 		
 		//Set some TextViews
-    	((TextView) findViewById(R.id.text_name_platoon)).setText( data.getName() );
+    	((TextView) findViewById(R.id.text_name_platoon)).setText( data.getName() + " [" + data.getTag() + "]" );
     	((TextView) findViewById(R.id.text_date)).setText( 
     			
-    		PublicUtils.getDate( data.getDate(), "Created on" ) + " (" +
-    		PublicUtils.getRelativeDate( data.getDate() ) + ")"
+    		getResources().getString( R.string.info_platoon_created ).replace( 
+    				
+    			"{DATE}", 
+    			PublicUtils.getDate( data.getDate() )
+    			
+    		).replace(
+    				
+    			"{RELATIVE DATE}",
+    			PublicUtils.getRelativeDate( CONTEXT, data.getDate() )
+    			
+    		)
     	);
 
+    	//Platform!!
+    	switch( data.getPlatformId() ) {
+    		
+    		case 1:
+    			((ImageView) findViewById(R.id.image_platform)).setImageResource( R.drawable.logo_pc );
+    			break;
+    			
+    		case 2:
+    			((ImageView) findViewById(R.id.image_platform)).setImageResource( R.drawable.logo_xbox );
+    			break;
+    			
+    		case 4:
+    			((ImageView) findViewById(R.id.image_platform)).setImageResource( R.drawable.logo_ps3 );
+    			break;
+    			
+			default: 
+    			((ImageView) findViewById(R.id.image_platform)).setImageResource( R.drawable.logo_pc );
+				break;
+    		
+    	}
+    	
     	//Is the platoon badge null?
     	if( data.hasImage() ) {
     		
@@ -404,7 +436,7 @@ public class PlatoonView extends TabActivity {
 		
     	} else {
     		
-    		((TextView) findViewById(R.id.text_presentation)).setText( "No presentation found." );
+    		((TextView) findViewById(R.id.text_presentation)).setText( R.string.info_profile_empty_pres );
 
     	}
     	
@@ -467,7 +499,7 @@ public class PlatoonView extends TabActivity {
     	
     	//Loop over them, *one* by *one*
     	int numCols = 2;
-    	for( int i = 0; i < topStats.size(); i++ ) {
+    	for( int i = 0, max = topStats.size(); i < max; i++ ) {
     		
     		//Oh well, couldn't quite cache it could we?
     		cacheView = (RelativeLayout) layoutInflater.inflate( R.layout.grid_item_platoon_top_stats, null );
@@ -587,11 +619,11 @@ public class PlatoonView extends TabActivity {
     	//Which view are we on?
     	if( isViewingMembers ) { 
     		
-    		((TextView) findViewById(R.id.text_name_platoon)).setText( "MEMBERS" );
+    		((TextView) findViewById(R.id.text_name_platoon)).setText( R.string.label_members );
     		
     	} else { 
     		
-    		((TextView) findViewById(R.id.text_name_platoon)).setText( "FANS");
+    		((TextView) findViewById(R.id.text_name_platoon)).setText( R.string.label_fans );
     		
     	}
     	
@@ -763,16 +795,30 @@ public class PlatoonView extends TabActivity {
 			
 		} else if( item.getItemId() == R.id.option_compare ) {
 			
-			Toast.makeText( this, "You can't compare platoons... duh", Toast.LENGTH_SHORT).show();
+			Toast.makeText( this, R.string.info_platoon_compare, Toast.LENGTH_SHORT).show();
 			
 		} else if( item.getItemId() == R.id.option_join ) {
 			
-			Toast.makeText( this, "So you want to join the platoon ey?", Toast.LENGTH_SHORT).show();
+			new AsyncPlatoonRequest(
+
+				this,
+				platoonData.getId(),
+				Dashboard.getProfile().getProfileId(),
+				sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" )
+				
+			).execute(true);
 			
 		} else if( item.getItemId() == R.id.option_leave ) {
 			
-			Toast.makeText( this, "So you want to leave the platoon ey?", Toast.LENGTH_SHORT).show();
-			
+			new AsyncPlatoonRequest(
+
+				this,
+				platoonData.getId(),
+				Dashboard.getProfile().getProfileId(),
+				sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" )
+				
+			).execute(false);
+		
 		}
 	
 		// Return true yo
@@ -797,7 +843,7 @@ public class PlatoonView extends TabActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		
 		super.onSaveInstanceState(outState);
-		outState.putSerializable("serializedCookies", RequestHandler.getSerializedCookies());
+		outState.putSerializable(Constants.SUPER_COOKIES, RequestHandler.getSerializedCookies());
 	
 	}
 	
@@ -828,7 +874,7 @@ public class PlatoonView extends TabActivity {
 			//Empty message?
 			if( fieldMessage.getText().toString().equals("") ) {
 				
-				Toast.makeText(this, "You're not allowed to post an empty message.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.info_empty_msg, Toast.LENGTH_SHORT).show();
 				return;
 				
 			}
@@ -841,7 +887,7 @@ public class PlatoonView extends TabActivity {
 				
 			).execute(
 					
-				sharedPreferences.getString( "battlelog_post_checksum", "" ),
+				sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ),
 				fieldMessage.getText().toString()
 				
 			);
@@ -860,14 +906,14 @@ public class PlatoonView extends TabActivity {
 		//Show the menu
 		if( !((FeedItem) ((View) info.targetView).getTag()).isLiked() ) {
 			
-			menu.add( 0, 0, 0, "Hooah!");
+			menu.add( 0, 0, 0, R.string.label_hooah);
 		
 		} else {
 			
-			menu.add( 0, 0, 0, "Un-hooah!");
+			menu.add( 0, 0, 0, R.string.label_unhooah);
 			
 		}
-		menu.add( 0, 1, 0, "View comments");
+		menu.add( 0, 1, 0, R.string.label_comment_view);
 
 		return;
 	
@@ -910,7 +956,7 @@ public class PlatoonView extends TabActivity {
 							this, 
 							true, 
 							platoonData,
-							sharedPreferences.getLong( "battlelog_profile_id", 0 ),
+							sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ),
 							false
 							
 						)
@@ -919,7 +965,7 @@ public class PlatoonView extends TabActivity {
 							
 						sharedPreferences.getString( 
 								
-							"battlelog_post_checksum", 
+							Constants.SP_BL_CHECKSUM, 
 							""
 							
 						) 
@@ -988,7 +1034,7 @@ public class PlatoonView extends TabActivity {
     		int avg;
     		
         	//Iterate over the stats
-    		for( int i = 0; i < (numItems+1); i++ ) {
+    		for( int i = 0, max = (numItems+1); i < max; i++ ) {
     		
     			//Set the average
     			avg = (i == 0) ? (stats.get(i).getAvg()/numItems) : stats.get( i ).getAvg();

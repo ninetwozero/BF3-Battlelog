@@ -26,7 +26,7 @@
 		    android:layout_height="wrap_content"
 			android:paddingLeft="5dp"
 			android:paddingRight="5dp"
-			android:paddingBottom="5dp"
+			android:layout_marginBottom="5dp"
 			android:layout_below="@id/text_name_platoon"
 	    >
 			<TextView
@@ -36,6 +36,14 @@
 			    android:text="Created on 2011-01-12 (5 days ago)"
 			    android:textSize="14sp"
 			/>	
+			<ImageView
+			 	android:id="@+id/image_platform"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:src="@drawable/logo_xbox"
+				android:layout_alignParentRight="true"
+				android:layout_centerVertical="true"
+			/>
 		</RelativeLayout>
 		<RelativeLayout 
 			android:id="@+id/wrap_badge"
@@ -46,7 +54,7 @@
 			<TextView 
 			    style="@style/FriendHeadingRow"
 			    android:id="@+id/text_header_badge"
-			    android:text="Badge"
+			    android:text="@string/info_xml_badge"
 			/>
 			<ImageView
 			    android:id="@+id/image_badge"
@@ -76,7 +84,7 @@
 				<TextView 
 				    style="@style/FriendHeadingRow"
 				    android:id="@+id/text_header_web"
-				    android:text="Website"
+				    android:text="@string/info_xml_website"
 				/>
 				<ImageView
 				    android:layout_width="30dp"
@@ -104,7 +112,7 @@
 			<TextView 
 			    style="@style/FriendHeadingRow"
 			    android:id="@+id/text_header_presentation"
-			    android:text="Presentation"
+			    android:text="@string/info_xml_presentation"
 			/>
 			<TextView 
 		    	android:gravity="center"

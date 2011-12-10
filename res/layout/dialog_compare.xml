@@ -10,7 +10,7 @@
         android:id="@+id/field_username"
         android:layout_height="wrap_content"
         android:layout_width="250dp" 
- 		android:hint="Type a username here"
+ 		android:hint="@string/info_hint_username"
  		android:singleLine="true"
         android:layout_centerHorizontal="true">
     </EditText>

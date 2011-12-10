@@ -1,5 +1,6 @@
 package com.ninetwozero.battlelog.datatypes;
 
+import com.ninetwozero.battlelog.R;
 import java.util.Comparator;
 
 public class UnlockComparator implements Comparator<UnlockData> {

@@ -9,7 +9,9 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.PlatoonView;
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
@@ -53,7 +55,7 @@ public class AsyncFetchDataToPlatoonView extends AsyncTask<String, Void, Boolean
 			platoon = WebsiteHandler.getPlatoonIdFromSearch(
 				
 				searchString, 
-				sharedPreferences.getString( "battlelog_post_checksum", "" ) 
+				sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ) 
 			
 			);
 
@@ -61,7 +63,7 @@ public class AsyncFetchDataToPlatoonView extends AsyncTask<String, Void, Boolean
 			if( platoon == null || platoon.getId() == 0 ) { 
 				
 				//Persona
-				error = "No platoon found matching the following keyword: " + searchString;
+				error = context.getString( R.string.msg_search_noplatoon ).replace( "{keyword}", searchString );;
 				return false; 
 				
 			}
@@ -69,7 +71,7 @@ public class AsyncFetchDataToPlatoonView extends AsyncTask<String, Void, Boolean
 		} catch(Exception ex) {
 			
 			//D'oh	
-			error = "No platoon found matching the following keyword: " + searchString;
+			error = context.getString( R.string.msg_search_noplatoon ).replace( "{keyword}", searchString );;
 			return false;
 		
 		}

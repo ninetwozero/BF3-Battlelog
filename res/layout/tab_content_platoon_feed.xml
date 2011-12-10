@@ -33,7 +33,7 @@
 		  	android:id="@+id/field_message"
 		  	android:layout_width="fill_parent"
 		  	android:layout_height="wrap_content"
-		  	android:hint="Write in feed"
+		  	android:hint="@string/info_xml_hint_feed"
 		  	android:layout_toLeftOf="@id/button_send"
 		    android:layout_marginRight="6dp"
 		    android:layout_centerVertical="true"
@@ -57,7 +57,7 @@
 		  	android:id="@+id/status_feed"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-		    android:text="No items found in the feed"	
+		    android:text="@string/info_xml_no_feed"	
 		    android:layout_centerInParent="true"
 		    android:visibility="gone"
 		/>

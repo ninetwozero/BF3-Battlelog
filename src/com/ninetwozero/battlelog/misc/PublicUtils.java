@@ -23,6 +23,7 @@ import java.util.Date;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
+import com.ninetwozero.battlelog.R;
 
 
 public class PublicUtils {
@@ -61,7 +62,7 @@ public class PublicUtils {
 	 * @return String
 	 */
 	
-	public static String getRelativeDate(final Long d) {
+	public static String getRelativeDate(final Context c, final Long d) {
 		
 		//Let's just expect it to be millis seconds already
 		Long dateStart = d;
@@ -81,12 +82,12 @@ public class PublicUtils {
 			//Diff is in seconds
 			if( dateDiff == 1 ) {
 			
-				dateString = "{seconds} second ago".replace( "{seconds}", String.valueOf(1) );
+				dateString = c.getString( R.string.info_time_second ).replace( "{seconds}", String.valueOf(1) );
 				
 				
 			} else {
 				
-				dateString = "{seconds} seconds ago".replace( "{seconds}", String.valueOf(dateDiff % Constants.MINUTE_IN_SECONDS) );
+				dateString = c.getString( R.string.info_time_second_p ).replace( "{seconds}", String.valueOf(dateDiff % Constants.MINUTE_IN_SECONDS) );
 			
 			}
 			
@@ -95,11 +96,11 @@ public class PublicUtils {
 			//Diff is in minutes
 			if( (dateDiff / Constants.MINUTE_IN_SECONDS) == 1 ) {
 				
-				dateString = "{minutes} minute ago".replace( "{minutes}", String.valueOf(1) );
+				dateString = c.getString( R.string.info_time_min ).replace( "{minutes}", String.valueOf(1) );
 			
 			} else {
 				
-				dateString = "{minutes} minutes ago".replace( "{minutes}", String.valueOf(dateDiff / Constants.MINUTE_IN_SECONDS) );
+				dateString = c.getString( R.string.info_time_min_p ).replace( "{minutes}", String.valueOf(dateDiff / Constants.MINUTE_IN_SECONDS) );
 				
 			}
 		} else if( (dateDiff / Constants.DAY_IN_SECONDS) < 1 ) {
@@ -107,11 +108,11 @@ public class PublicUtils {
 			//Diff is in hours
 			if( (dateDiff / Constants.HOUR_IN_SECONDS) == 1 ) {
 				
-				dateString = "{hours} hour ago".replace( "{hours}", String.valueOf(1) );
+				dateString = c.getString( R.string.info_time_hour ).replace( "{hours}", String.valueOf(1) );
 			
 			} else {
 			
-				dateString = "{hours} hours ago".replace( "{hours}", String.valueOf(dateDiff / Constants.HOUR_IN_SECONDS) );	
+				dateString = c.getString( R.string.info_time_hour_p ).replace( "{hours}", String.valueOf(dateDiff / Constants.HOUR_IN_SECONDS) );	
 				
 			}
 
@@ -120,11 +121,11 @@ public class PublicUtils {
 			//Diff is in days
 			if( (dateDiff / Constants.DAY_IN_SECONDS) == 1 ) {
 			
-				dateString = "{days} day ago".replace( "{days}", String.valueOf(1) );
+				dateString = c.getString( R.string.info_time_day ).replace( "{days}", String.valueOf(1) );
 				
 			} else {
 				
-				dateString = "{days} days ago".replace( "{days}", String.valueOf(dateDiff / Constants.DAY_IN_SECONDS) );
+				dateString = c.getString( R.string.info_time_day_p ).replace( "{days}", String.valueOf(dateDiff / Constants.DAY_IN_SECONDS) );
 			
 			}
 				
@@ -133,11 +134,11 @@ public class PublicUtils {
 			//Diff is in weeks
 			if( (dateDiff / Constants.WEEK_IN_SECONDS) == 1 ) {
 			
-				dateString = "{weeks} week ago".replace( "{weeks}", String.valueOf(1) );
+				dateString = c.getString( R.string.info_time_week ).replace( "{weeks}", String.valueOf(1) );
 				
 			} else {
 				
-				dateString = "{weeks} weeks ago".replace( "{weeks}", String.valueOf(dateDiff / Constants.WEEK_IN_SECONDS) );
+				dateString = c.getString( R.string.info_time_week_p ).replace( "{weeks}", String.valueOf(dateDiff / Constants.WEEK_IN_SECONDS) );
 			
 			}	
 			
@@ -146,11 +147,11 @@ public class PublicUtils {
 			//Diff is probably in years
 			if( (dateDiff / Constants.YEAR_IN_SECONDS) == 1 ) {
 			
-				dateString = "{years} year ago".replace( "{years}", String.valueOf(1) );
+				dateString = c.getString( R.string.info_time_year ).replace( "{years}", String.valueOf(1) );
 				
 			} else {
 				
-				dateString = "{years} years ago".replace( "{years}", String.valueOf(dateDiff / Constants.YEAR_IN_SECONDS ) );
+				dateString = c.getString( R.string.info_time_year_p ).replace( "{years}", String.valueOf(dateDiff / Constants.YEAR_IN_SECONDS ) );
 		
 			}
 		
@@ -167,9 +168,9 @@ public class PublicUtils {
    * @param s  the second String, must not be null
    * @return String the relative date
    */
-	public static final String getRelativeDate(long d, String s) {
+	public static final String getRelativeDate(Context c, long d, int s) {
 		
-		return s + " " + getRelativeDate(d);
+		return c.getResources().getString( s ).replace( "{date}", getRelativeDate(c, d) );
 		
 	}
 	

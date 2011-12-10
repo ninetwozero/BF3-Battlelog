@@ -14,6 +14,8 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import com.ninetwozero.battlelog.R;
+
 
 public final class Constants {
 	
@@ -41,6 +43,7 @@ public final class Constants {
 	public static final String URL_CHAT_SEND = URL_MAIN + "comcenter/sendChatMessage/";
 	public static final String URL_CHAT_CLOSE = URL_MAIN + "comcenter/hideChat/{CID}/";
 	public static final String URL_CHAT_SETACTIVE = URL_MAIN + "comcenter/setActive/";
+	
 	//URLS for PROFILE
 	public static final String URL_FEED_POST = URL_MAIN + "wall/postmessage";
 	public static final String URL_PLATOON_IMAGE = URL_STATIC_CONTENT + "prod/emblems/320/";
@@ -53,6 +56,8 @@ public final class Constants {
 	public static final String URL_PLATOON_MEMBERS = URL_MAIN + "platoon/{PLATOON_ID}/listmembers/";
 	public static final String URL_PLATOON_STATS = URL_MAIN + "platoon/platoonMemberStats/{PLATOON_ID}/2/{PLATFORM_ID}/";
 	public static final String URL_PLATOON_PROMOTE = URL_MAIN + "platoon/promotemember/{PLATOON_ID}/{UID}/";
+	public static final String URL_PLATOON_APPLY = URL_MAIN + "platoon/applyformembership/";
+	public static final String URL_PLATOON_LEAVE = URL_MAIN + "platoon/leave/";
 	
 	//URLS for FEED
 	public static final String URL_FEED_REPORT = URL_MAIN + "viewcontent/reportFeedItemAbuse/{POST_ID}/0/"; /* TODO */
@@ -92,6 +97,12 @@ public final class Constants {
 
 	public static final String[] FIELD_NAMES_PLATOON_SEARCH = new String[] { "searchplat", "post-check-sum" };
 	public static final String[] FIELD_VALUES_PLATOON_SEARCH = new String[] { null, null };
+
+	public static final String[] FIELD_NAMES_PLATOON_APPLY = new String[] { "platoonId", "post-check-sum" };
+	public static final String[] FIELD_VALUES_PLATOON_APPLY = new String[] { null, null };
+	
+	public static final String[] FIELD_NAMES_PLATOON_LEAVE = new String[] { "platoonId", "userId", "post-check-sum" };
+	public static final String[] FIELD_VALUES_PLATOON_LEAVE = new String[] { null, null, null };
 	
 	public static final String[] FIELD_NAMES_CHAT = new String[] { "message", "chatId", "post-check-sum" };
 	public static final String[] FIELD_VALUES_CHAT = new String[] { null, null, null };
@@ -107,6 +118,7 @@ public final class Constants {
 		
 	//HTML-elements to grab
 	public static final String ELEMENT_UID_LINK = "<a class=\"main-loggedin-leftcolumn-active-soldier-name\" href=\"/bf3/soldier/";
+	public static final String ELEMENT_ERROR_MESSAGE = "<div class=\"gate-login-errormsg wfont\">";
 	public static final String ELEMENT_USERNAME_LINK = "<a href=\"/bf3/user/";
 	public static final String ELEMENT_STATUS_OK = "";
 	public static final String ELEMENT_STATUS_CHECKSUM = "<input type=\"hidden\" name=\"post-check-sum\" value=\"";
@@ -127,9 +139,10 @@ public final class Constants {
 	public static final int WEEK_IN_SECONDS = 604800;
 	public static final int YEAR_IN_SECONDS = 31449600;
 	
-	//Grawratar
+	//Defaults
 	public static final int DEFAULT_AVATAR_SIZE = 52; 
 	public static final int DEFAULT_CACHE_LIMIT = 25;
+	public static final int DEFAULT_NUM_FEED = 20;
 	
 	//Menu
 	public static final long MENU_ME = 0;
@@ -138,9 +151,26 @@ public final class Constants {
 	public static final long MENU_PLATOON = 3;
 	public static final long MENU_COMPARE = 4;
 	public static final long MENU_SETTINGS = 5;
-	
+		
+	//SH
+	public static final String SP_V_FILE = "file_version";
+	public static final String SP_V_CHANGELOG = "latest_changelog_version";
+	public static final String SP_BL_SERVICE = "allow_service";
+	public static final String SP_BL_EMAIL = "origin_email";
+	public static final String SP_BL_PASSWORD = "origin_password";
+	public static final String SP_BL_USERNAME = "battlelog_username";
+	public static final String SP_BL_PERSONA = "battlelog_persona";
+	public static final String SP_BL_PROFILE_ID = "battlelog_profile_id";
+	public static final String SP_BL_PERSONA_ID = "battlelog_persona_id";
+	public static final String SP_BL_PLATFORM_ID = "battlelog_platform_id";
+	public static final String SP_BL_CHECKSUM = "battlelog_post_checksum";
+	public static final String SP_BL_GRAVATAR = "battlelog_gravatar_hash";
+	public static final String SP_BL_REMEMBER = "remember_password";
+	public static final String SP_BL_INTERVAL_SERVICE = "battlelog_service_interval";
+	public static final String SP_BL_NUM_FEED = "battlelog_feed_count";
 	
 	//Misc
+	public static final String SUPER_COOKIES = "superCookies";
 	public static final String USER_AGENT = "Mozilla/5.0 (X11; Linux i686; rv:7.0.1) Gecko/20100101 Firefox/7.0.1";
-
+	
 }

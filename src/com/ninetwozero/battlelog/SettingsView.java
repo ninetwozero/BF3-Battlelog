@@ -2,12 +2,13 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.datatypes.SerializedCookie;
-import com.ninetwozero.battlelog.misc.RequestHandler;
-
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.RequestHandler;
 
 
 public class SettingsView extends PreferenceActivity {
@@ -19,9 +20,9 @@ public class SettingsView extends PreferenceActivity {
     	super.onCreate(icicle);	
     	
     	//Did it get passed on?
-    	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
+    	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setSerializedCookies( (ArrayList<SerializedCookie> ) icicle.getSerializable("serializedCookies") );
+    		RequestHandler.setCookies( (ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) );
     	
     	}
     	
@@ -37,7 +38,7 @@ public class SettingsView extends PreferenceActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		
 		super.onSaveInstanceState(outState);
-		outState.putSerializable("serializedCookies", RequestHandler.getSerializedCookies());
+		outState.putSerializable(Constants.SUPER_COOKIES, RequestHandler.getSerializedCookies());
 	
 	}
 	

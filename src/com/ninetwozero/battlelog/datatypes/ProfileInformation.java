@@ -16,6 +16,9 @@ package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ProfileInformation {
@@ -61,7 +64,7 @@ public class ProfileInformation {
 	public int getAge() { return this.age; }
 	public long getProfileId() { return this.profileId; }
 	public long getDOB() { return this.dateOfBirth; }
-	public String getLastLogin() { return PublicUtils.getRelativeDate( this.lastlogin, "Last logged in"); }
+	public String getLastLogin(Context c) { return PublicUtils.getRelativeDate(c, this.lastlogin, R.string.info_lastlogin ); }
 	public long getStatusMessageChanged() { return this.statusMessageChanged; }
 	public String getName() { return this.name; }
 	public String getUsername() { return this.username; }

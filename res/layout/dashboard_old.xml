@@ -22,7 +22,7 @@
 		  	android:id="@+id/field_status"
 		  	android:layout_width="fill_parent"
 		  	android:layout_height="wrap_content"
-		  	android:hint="Update your status text"
+		  	android:hint="@string/info_xml_hint_status"
 		  	android:layout_toLeftOf="@id/button_status"
 		    android:layout_marginRight="6dp"
 		    android:layout_centerVertical="true"
@@ -54,7 +54,7 @@
 				<Button
 				    style="@style/MenuButton"
 				    android:id="@+id/button_unlocks"
-				    android:text="My unlocks"
+				    android:text="@string/general_label_unlocks"
 					android:layout_marginTop="10dp"
 			    	android:layout_height="50dp"
 					android:layout_below="@id/button_view_self"
@@ -62,7 +62,7 @@
 				<Button
 				    style="@style/MenuButton"
 				    android:id="@+id/button_find_soldier"
-				    android:text="Find soldier"
+				    android:text="@string/general_label_find_soldier"
 					android:layout_marginTop="10dp"
 			    	android:layout_height="50dp"
 					android:layout_below="@id/button_unlocks"

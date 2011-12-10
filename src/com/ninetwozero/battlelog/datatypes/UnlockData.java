@@ -14,6 +14,9 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
+import android.content.Context;
+
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.DataBank;
 
 
@@ -41,7 +44,7 @@ public class UnlockData {
 	
 	//Getters
 	public int getKitId() { return kitId; }
-	public String getKitTitle() { return DataBank.getKitTitle( kitId ); }
+	public String getKitTitle(Context c) { return DataBank.getKitTitle(c, kitId ); }
 	public double getUnlockPercentage() { return Math.round( this.unlockPercentage * 100 ) / 100; }
 	public long getScoreNeeded() { return this.scoreNeeded; }
 	public long getScoreCurrent() { return this.scoreCurrent; }

@@ -64,7 +64,7 @@
 			    android:id="@+id/string_rank_literal_0"
 			    android:layout_width="wrap_content"
 		    	android:layout_height="wrap_content"
-		    	android:text="Rank "
+		    	android:text="@string/info_xml_rank"
 		    	android:layout_below="@id/string_persona_0"
 		    />
 			<TextView
@@ -120,7 +120,7 @@
 			    android:id="@+id/string_rank_literal_1"
 			    android:layout_width="wrap_content"
 		    	android:layout_height="wrap_content"
-		    	android:text="Rank "
+		    	android:text="@string/info_xml_rank"
 		    	android:layout_toLeftOf="@id/string_rank_short_1"
 		    />
 			<RelativeLayout
@@ -164,7 +164,7 @@
 			<TextView
 				android:id="@+id/string100"
 			    style="@style/InfoHeadingCompare"
-				android:text="Stats"
+				android:text="@string/label_stats"
 				android:padding="5dp"
 			/>
 			<!--  START_STATS_LOOP -->
@@ -172,7 +172,7 @@
 					<TextView
 				   		style="@style/InfoRowCompare"
 						android:id="@+id/string_center_kills"
-						android:text="Kills"
+						android:text="@string/info_xml_kills"
 					    android:layout_below="@id/string100"
 					/>
 					<TextView
@@ -198,7 +198,7 @@
 					<TextView
 				   		style="@style/InfoRowCompare"
 						android:id="@+id/string_center_assists"
-						android:text="Assists"
+						android:text="@string/info_xml_assists"
 					    android:layout_below="@id/string_stats_kills_0"
 				    	android:layout_alignBaseline="@id/string_center_assists"
 					/>
@@ -225,7 +225,7 @@
 					<TextView
 				   		style="@style/InfoRowCompare"
 						android:id="@+id/string_center_vkills"
-						android:text="Vehicles destroyed"
+						android:text="@string/info_xml_vehicles_destroyed"
 					    android:layout_below="@id/string_center_assists"
 					/>
 					<TextView
@@ -251,7 +251,7 @@
 					<TextView
 				   		style="@style/InfoRowCompare"
 						android:id="@+id/string_center_vassists"
-						android:text="Vehicles assisted with"
+						android:text="@string/info_xml_vehicles_assisted_with"
 					    android:layout_below="@id/string_stats_vkills_0"
 				    	android:layout_alignBaseline="@id/string_center_vassists"
 					/>
@@ -278,7 +278,7 @@
 					<TextView
 				    	style="@style/InfoRowCompare"
 						android:id="@+id/string_center_heals"
-						android:text="Heals"
+						android:text="@string/info_xml_heals"
 					    android:layout_below="@id/string_stats_vassists_0"
 					/>
 					<TextView
@@ -304,7 +304,7 @@
 					<TextView
 				  		style="@style/InfoRowCompare"
 						android:id="@+id/string_center_revives"
-						android:text="Revives"
+						android:text="@string/info_xml_revives"
 					    android:layout_below="@id/string_stats_heals_0"
 					/>
 					<TextView
@@ -330,7 +330,7 @@
 					<TextView
 				  		style="@style/InfoRowCompare"
 						android:id="@+id/string_center_repairs"
-						android:text="Repairs"
+						android:text="@string/info_xml_repairs"
 					    android:layout_below="@id/string_stats_revives_0"
 					/>
 					<TextView
@@ -356,7 +356,7 @@
 					<TextView
 				  		style="@style/InfoRowCompare"
 						android:id="@+id/string_center_resupplies"
-						android:text="Resupplies"
+						android:text="@string/info_xml_resupplies"
 					    android:layout_below="@id/string_stats_repairs_0"
 					/>
 					<TextView
@@ -382,7 +382,7 @@
 					<TextView
 				    	style="@style/InfoRowCompare"
 						android:id="@+id/string_center_deaths"
-						android:text="Deaths"
+						android:text="@string/info_xml_deaths"
 					    android:layout_below="@id/string_stats_resupplies_0"
 					/>
 					<TextView
@@ -408,7 +408,7 @@
 					<TextView
 					    style="@style/InfoSubHeadingCompare"
 						android:id="@+id/string_center_kdr"
-						android:text="K/D-ratio"
+						android:text="@string/info_xml_kd_ratio"
 					    android:layout_below="@id/string_stats_deaths_0"
 					/>
 					<TextView
@@ -434,7 +434,7 @@
 					<TextView
 				    	style="@style/InfoRowCompare"
 						android:id="@+id/string_center_wins"
-						android:text="Wins"
+						android:text="@string/info_xml_wins"
 					    android:layout_below="@id/string_center_kdr"
 					/>
 					<TextView
@@ -460,7 +460,7 @@
 					<TextView
 				   		style="@style/InfoRowCompare"
 						android:id="@+id/string_center_losses"
-						android:text="Losses"
+						android:text="@string/info_xml_losses"
 						android:layout_below="@id/string_stats_wins_0"
 					/>
 					<TextView
@@ -486,7 +486,7 @@
 					<TextView
 					    style="@style/InfoSubHeadingCompare"
 						android:id="@+id/string_center_wlr"
-						android:text="W/L-ratio"
+						android:text="@string/info_xml_wl_ratio"
 						android:layout_below="@id/string_stats_losses_0"
 					/>
 					<TextView
@@ -512,7 +512,7 @@
 					<TextView
 				    	style="@style/InfoRowCompare"
 						android:id="@+id/string_center_accuracy"
-						android:text="Accuracy"
+						android:text="@string/info_xml_accuracy"
 						android:layout_below="@id/string_center_wlr"
 					/>
 					<TextView
@@ -538,7 +538,7 @@
 					<TextView
 				   		style="@style/InfoRowCompare"
 						android:id="@+id/string_center_lhs"
-						android:text="Longest headshot"
+						android:text="@string/info_xml_longest_headshot"
 						android:layout_below="@id/string_stats_accuracy_0"
 					/>
 					<TextView
@@ -564,7 +564,7 @@
 					<TextView
 				    	style="@style/InfoRowCompare"
 						android:id="@+id/string_center_lks"
-						android:text="Longest killstreak"
+						android:text="@string/info_xml_longest_killstreak"
 						android:layout_below="@id/string_stats_lhs_0"
 					/>
 					<TextView
@@ -590,7 +590,7 @@
 					<TextView
 				    	style="@style/InfoRowCompare"
 						android:id="@+id/string_center_skill"
-						android:text="Skill rating"
+						android:text="@string/info_xml_skill_rating"
 						android:layout_below="@id/string_stats_lks_0"
 					/>
 					<TextView
@@ -616,7 +616,7 @@
 					<TextView
 				    	style="@style/InfoRowCompare"
 						android:id="@+id/string_center_time"
-						android:text="Time played"
+						android:text="@string/info_xml_time_played"
 						android:layout_below="@id/string_stats_skill_0"
 					/>
 					<TextView
@@ -642,7 +642,7 @@
 					<TextView
 					    style="@style/InfoSubHeadingCompare"
 						android:id="@+id/string_center_spm"
-						android:text="Score/minute"
+						android:text="@string/info_xml_score_minute"
 						android:layout_below="@id/string_stats_time_0"
 					/>
 					<TextView
@@ -677,7 +677,7 @@
 			<TextView
 				android:id="@+id/string200"
 			    style="@style/InfoHeadingCompare"
-				android:text="Score"
+				android:text="@string/info_xml_score"
 				android:padding="5dp"
 			/>
 			<!--  START_SCORE_LOOP -->
@@ -685,7 +685,7 @@
 					<TextView
 				    	style="@style/InfoRowCompare"
 						android:id="@+id/string_center_assault"
-						android:text="Assault"
+						android:text="@string/info_xml_assault"
 					    android:layout_below="@id/string200"
 					/>
 					<TextView
@@ -711,7 +711,7 @@
 				<TextView
 				    style="@style/InfoRowCompare"
 					android:id="@+id/string_center_engineer"
-					android:text="Engineer "
+					android:text="@string/info_xml_engineer"
 				    android:layout_below="@id/string_score_assault_0"
 				/>
 				<TextView
@@ -737,7 +737,7 @@
 				<TextView
 				    style="@style/InfoRowCompare"
 					android:id="@+id/string_center_support"
-					android:text="Support "
+					android:text="@string/info_xml_support"
 				    android:layout_below="@id/string_center_engineer"
 				/>
 				<TextView
@@ -763,7 +763,7 @@
 				<TextView
 				    style="@style/InfoRowCompare"
 					android:id="@+id/string_center_recon"
-					android:text="Recon "
+					android:text="@string/info_xml_recon"
 				    android:layout_below="@id/string_score_support_0"
 				/>
 				<TextView
@@ -789,7 +789,7 @@
 				<TextView
 				    style="@style/InfoRowCompare"
 					android:id="@+id/string_center_vehicles"
-					android:text="Vehicles "
+					android:text="@string/info_xml_vehicles"
 				    android:layout_below="@id/string_center_recon"
 				/>
 				<TextView
@@ -815,7 +815,7 @@
 				<TextView
 					style="@style/InfoSubHeadingCompare"
 					android:id="@+id/string_center_combat"
-					android:text="Total in combat "
+					android:text="@string/info_xml_total_in_combat"
 				    android:layout_below="@id/string_score_vehicles_0"
 				/>
 				<TextView
@@ -841,7 +841,7 @@
 				<TextView
 				    style="@style/InfoRowCompare"
 					android:id="@+id/string_center_award"
-					android:text="Award"
+					android:text="@string/info_xml_award"
 				    android:layout_below="@id/string_center_combat"
 				/>
 				<TextView
@@ -867,7 +867,7 @@
 				<TextView
 				    style="@style/InfoRowCompare"
 					android:id="@+id/string_center_unlock"
-					android:text="Unlocks"
+					android:text="@string/info_xml_unlocks"
 				    android:layout_below="@id/string_score_award_0"
 				/>
 				<TextView
@@ -893,7 +893,7 @@
 				<TextView
 				    style="@style/InfoSubHeadingCompare"
 					android:id="@+id/string_score_center_total"
-					android:text="Total score"
+					android:text="@string/info_xml_total_score"
 				    android:layout_below="@id/string_center_unlock"
 				/>
 				<TextView

@@ -13,7 +13,7 @@
 		<Button
 		    style="@style/RegularButton"
 		    android:id="@+id/button_send"
-		    android:text="Send"
+		    android:text="@string/label_send"
 		    android:layout_alignParentRight="true"
 		    android:layout_centerVertical="true"
 		    android:onClick="onClick"
@@ -22,7 +22,7 @@
 		  	android:id="@+id/field_message"
 		  	android:layout_width="fill_parent"
 		  	android:layout_height="wrap_content"
-		  	android:hint="Type a message"
+		  	android:hint="@string/info_hint_comment_msg"
 		  	android:layout_toLeftOf="@id/button_send"
 		    android:layout_marginRight="6dp"
 		    android:layout_centerVertical="true"
@@ -42,7 +42,7 @@
 	  	android:id="@android:id/empty"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-	    android:text="No comments found"
+	    android:text="@string/info_xml_comment_empty"
 	    android:layout_centerInParent="true"
 	    android:paddingBottom="20dp"
 	/>

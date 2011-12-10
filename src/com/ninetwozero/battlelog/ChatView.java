@@ -25,6 +25,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,7 +39,7 @@ import com.ninetwozero.battlelog.asynctasks.AsyncChatClose;
 import com.ninetwozero.battlelog.asynctasks.AsyncChatRefresh;
 import com.ninetwozero.battlelog.asynctasks.AsyncChatSend;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.SerializedCookie;
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -71,9 +72,9 @@ public class ChatView extends ListActivity {
     	super.onCreate(icicle);	
     	
     	//Did it get passed on?
-    	if( icicle != null && icicle.containsKey( "serializedCookies" ) ) {
+    	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setSerializedCookies( (ArrayList<SerializedCookie> ) icicle.getSerializable("serializedCookies") );
+    		RequestHandler.setCookies( (ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) );
     	
     	}
     	
@@ -84,7 +85,7 @@ public class ChatView extends ListActivity {
         setContentView(R.layout.chat_view);
 
         //Prepare to tango
-        this.sharedPreferences = this.getSharedPreferences( Constants.FILE_SHPREF, 0);
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         
         //Get the ListView
@@ -102,7 +103,7 @@ public class ChatView extends ListActivity {
         fieldMessage = (EditText) findViewById(R.id.field_message);
         
         //Try to get the chatid
-        new AsyncGetChatId(this, profileData.getProfileId() ).execute( sharedPreferences.getString( "battlelog_post_checksum", "" ) );
+        new AsyncGetChatId(this, profileData.getProfileId() ).execute( sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ) );
         
         //Let's reload the chat will we?
         timerReload = new Timer();
@@ -177,7 +178,7 @@ public class ChatView extends ListActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		
 		super.onSaveInstanceState(outState);
-		outState.putSerializable("serializedCookies", RequestHandler.getSerializedCookies());
+		outState.putSerializable(Constants.SUPER_COOKIES, RequestHandler.getSerializedCookies());
 	
 	}
 	
@@ -218,7 +219,7 @@ public class ChatView extends ListActivity {
 			
     		).execute(
 
-				sharedPreferences.getString( "battlelog_post_checksum", "" ),
+				sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ),
 				fieldMessage.getText().toString()
     				
 			);

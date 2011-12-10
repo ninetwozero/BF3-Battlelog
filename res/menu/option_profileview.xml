@@ -2,34 +2,34 @@
     <item 
 		android:id="@+id/option_reload" 
 		android:icon="@android:drawable/ic_menu_rotate"
-		android:title="Reload" 
+		android:title="@string/info_xml_reload" 
 		android:alphabeticShortcut="R"
 	/>
     <item 
 		android:id="@+id/option_friendadd" 
 		android:icon="@android:drawable/ic_menu_add" 
-		android:title="Add friend" 
+		android:title="@string/info_xml_add_friend" 
 		android:alphabeticShortcut="F"
 		android:visible="false"
 	/>
     <item 
 		android:id="@+id/option_frienddel" 
 		android:icon="@android:drawable/ic_menu_delete" 
-		android:title="Remove friend" 
+		android:title="@string/info_xml_remove_friend" 
 		android:alphabeticShortcut="F"
 		android:visible="false"
 	/>
     <item 
 		android:id="@+id/option_compare" 
 		android:icon="@android:drawable/ic_menu_directions" 
-		android:title="Compare scars" 
+		android:title="@string/info_xml_compare_bs" 
 		android:alphabeticShortcut="C"
 		android:visible="false"
 	/>
 	<item 
 		android:id="@+id/option_back" 
 		android:icon="@android:drawable/ic_menu_revert" 
-		android:title="Back" 
+		android:title="@string/info_xml_back" 
 		android:alphabeticShortcut="B"
 	/>
 </menu>

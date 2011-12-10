@@ -9,7 +9,7 @@
 	    android:id="@+id/text_status_friends"
 	    android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="No friends found. :-("
+		android:text="@string/info_xml_no_friends"
 		android:layout_centerInParent="true"
 		android:visibility="gone"
     />
@@ -26,7 +26,7 @@
 		<TextView
 		    style="@style/FriendHeadingRow"
 			android:id="@+id/header_friends_requests"
-			android:text="Friend requests"
+			android:text="@string/info_xml_friend_requests"
     	/>
 	    <ListView
 	    	android:id="@+id/list_requests"  

@@ -9,7 +9,9 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.CompareView;
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
@@ -52,7 +54,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
 			userData = WebsiteHandler.getProfileIdFromSearch(
 				
 				searchString, 
-				sharedPreferences.getString( "battlelog_post_checksum", "" ) 
+				sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ) 
 			
 			);
 
@@ -60,7 +62,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
 			if( userData == null || userData.getPersonaId() == 0 ) { 
 				
 				//Persona
-				error = "No user found matching the following keyword: " + searchString;
+				error = context.getString( R.string.msg_search_nouser ).replace( "{keyword}", searchString );
 				return false; 
 				
 			}
@@ -68,7 +70,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
 		} catch(Exception ex) {
 			
 			//D'oh	
-			error = "No user found matching the following keyword: " + searchString;
+			error = context.getString( R.string.msg_search_nouser ).replace( "{keyword}", searchString );
 			return false;
 		
 		}

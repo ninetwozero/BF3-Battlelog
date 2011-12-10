@@ -43,7 +43,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="37dp"
 	        android:background="@drawable/gradient_greytodarkgrey"
-	    	android:text="COM CENTER (0 ONLINE)"
+	    	android:text="@string/label_com_handle_default"
 	    	android:textColor="#FFFFFF"
 	    	android:gravity="center"
 	    />
@@ -72,7 +72,7 @@
 			    	android:id="@+id/button_refresh" 
 					android:layout_width="fill_parent"
 					android:layout_height="40dp"
-			     	android:text="Refresh now"
+			     	android:text="@string/lable_refresh"
 			     	android:background="@drawable/gradient_greytodarkgrey"
 			     	android:textColor="#FFFFFF"
 			    	android:gravity="center"

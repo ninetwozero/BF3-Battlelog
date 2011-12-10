@@ -20,6 +20,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -61,7 +62,7 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
 		if( !fromWidget ) {
 	
 			buttonSend.setEnabled( false );
-			buttonSend.setText( "Sending..." );
+			buttonSend.setText( R.string.label_sending );
 			
 		}
 		
@@ -78,7 +79,7 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
     		
 		} catch( Exception ex ) {
 			
-			Log.e(Constants.DEBUG_TAG, "", ex);
+			ex.printStackTrace();
 			return false;
 			
 		}
@@ -91,13 +92,13 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
 		if( !fromWidget ) {
 			
 			buttonSend.setEnabled( true );
-			buttonSend.setText( "Send" );
+			buttonSend.setText( R.string.label_send );
 			
 			//Reload
 			asyncChatRefresh.execute( profileId );
 			
-			if( results ) Toast.makeText( context, "Message sent!", Toast.LENGTH_SHORT).show();
-			else Toast.makeText( context, "Message could not be sent!", Toast.LENGTH_SHORT).show();
+			if( results ) Toast.makeText( context, R.string.msg_chat_ok, Toast.LENGTH_SHORT).show();
+			else Toast.makeText( context, R.string.msg_chat_fail, Toast.LENGTH_SHORT).show();
 			
 		}
 		return;

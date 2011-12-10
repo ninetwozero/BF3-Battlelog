@@ -134,19 +134,19 @@ public class FriendListAdapter extends BaseAdapter {
 			if( currentProfile.isPlaying() && currentProfile.isOnline() ) {
 				
 				textUser.setTextColor( context.getResources().getColor(R.color.blue) );
-				textStatus.setText( "Playing" );
+				textStatus.setText( R.string.label_playing );
 				textStatus.setTextColor( context.getResources().getColor(R.color.blue) );
 				
 			} else if( currentProfile.isOnline() ) {
 				
 				textUser.setTextColor( context.getResources().getColor(R.color.green) );
-				textStatus.setText( "Online" );
+				textStatus.setText( R.string.label_online );
 				textStatus.setTextColor( context.getResources().getColor(R.color.green) );
 							
 			} else {
 
 				textUser.setTextColor( context.getResources().getColor(R.color.grey) );
-				textStatus.setText( "Offline" );				
+				textStatus.setText( R.string.label_offline );				
 				textStatus.setTextColor( context.getResources().getColor(R.color.grey) );
 				
 			}

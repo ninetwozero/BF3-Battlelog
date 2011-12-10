@@ -1,8 +1,9 @@
 package com.ninetwozero.battlelog.datatypes;
 
-import android.util.Log;
+import android.content.Context;
 
-import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.R;
+
 
 
 public class NotificationData {
@@ -10,13 +11,13 @@ public class NotificationData {
 	//Attributes
 	private long itemId, ownerId, commenterId, date;
 	private int typeId;
-	private String owner, commenter, type;
+	private String owner, commenter, type, extra;
 	
 	//Constructs
 	public NotificationData( 
 			
 		long iId, long oId, long cId, long d, int tId,
-		String oName, String cName, String t
+		String oName, String cName, String t, String x
 		
 	) {
 		
@@ -28,34 +29,34 @@ public class NotificationData {
 		this.owner = oName;
 		this.commenter = cName;
 		this.type = t;
+		this.extra = x;
 		
 	}
 	
 	//Getters
-	public long getItemId() { return this.itemId; }
-	public long getOwnerId() { return this.ownerId; }
-	public long getCommenterId() { return this.commenterId; }
-	public long getDate() { return this.date; }
-	public int getTypeId() { return this.typeId; }
-	public String getOwner() { return this.owner; }
-	public String getCommenter() { return this.commenter; }
-	public String getType() { return this.type; }
+	public long getItemId() {return this.itemId; }
+	public long getOwnerId() {return this.ownerId; }
+	public long getCommenterId() {return this.commenterId; }
+	public long getDate() {return this.date; }
+	public int getTypeId() {return this.typeId; }
+	public String getOwner() {return this.owner; }
+	public String getCommenter() {return this.commenter; }
+	public String getType() {return this.type; }
+	public String getExtra() {return this.extra; }
 	
 	//Generate a message
-	public String getMessage(long userId) {
-		
-		Log.d( Constants.DEBUG_TAG, userId + " :|: " + this.toString() );
-		
-		//What have we here?
-		String message = "";
+	public String getMessage(final Context c, final long userId) {
+
+		//What have we here? 
+		String message;
 		if( this.type.equals( "feedcomment" ) ) {
 			
-			if( userId == this.getOwnerId() ) {
+			if( 0 == this.ownerId || userId == this.ownerId ) {
 	
-				message = "<b>{username}</b> commented on your <b>{action}</b>.".replace( 
+				message = c.getResources().getString( R.string.info_feed_comment_own ).replace( 
 					 
 					"{action}", 
-					resolveActionFromId(this.typeId) 
+					resolveActionFromId(c, this.typeId) 
 					
 				);
 				
@@ -63,19 +64,19 @@ public class NotificationData {
 				
 				if( owner.endsWith( "s" ) ) {
 
-					message = "<b>{username}</b> commented on {owner}' <b>{action}</b>.".replace( 
+					message = c.getResources().getString( R.string.info_feed_comment_other ).replace( 
 						 
 						"{action}", 
-						resolveActionFromId(this.typeId) 
+						resolveActionFromId(c, this.typeId) 
 						
 					);
 				
 				} else {
 					
-					message = "<b>{username}</b> commented on {owner}'s <b>{action}</b>.".replace( 
+					message = c.getResources().getString( R.string.info_feed_comment_other_v2 ).replace( 
 							 
 						"{action}", 
-						resolveActionFromId(this.typeId) 
+						resolveActionFromId(c, this.typeId) 
 						
 					);
 					
@@ -85,12 +86,12 @@ public class NotificationData {
 		
 		} else if( this.type.equals( "feedcommentreply" ) ) {
 			
-			if( userId == this.getOwnerId() ) {
+			if( 0 == this.ownerId || userId == this.ownerId ) {
 				
-				message = "<b>{username}</b> also commented on your <b>{action}</b>.".replace( 
+				message = c.getString( R.string.info_feed_comment_own_2 ).replace( 
 					 
 					"{action}", 
-					resolveActionFromId(this.typeId) 
+					resolveActionFromId(c, this.typeId) 
 					
 				);
 				
@@ -98,19 +99,19 @@ public class NotificationData {
 				
 				if( owner.endsWith( "s" ) ) {
 
-					message = "<b>{username}</b> also commented on {owner}' <b>{action}</b>.".replace( 
+					message = c.getString( R.string.info_feed_comment_other_2 ).replace( 
 						 
 						"{action}", 
-						resolveActionFromId(this.typeId) 
+						resolveActionFromId(c, this.typeId) 
 						
 					);
 				
 				} else {
 					
-					message = "<b>{username}</b> also commented on {owner}'s <b>{action}</b>.".replace( 
+					message = c.getString( R.string.info_feed_comment_other_v2_2 ).replace( 
 							 
 						"{action}", 
-						resolveActionFromId(this.typeId) 
+						resolveActionFromId(c, this.typeId) 
 						
 					);
 					
@@ -120,16 +121,16 @@ public class NotificationData {
 			 
 		} else if( this.type.equals( "wallpostcreated" ) ) {
 			
-			 message = "<b>{username}</b> wrote in your <b>Battle feed</b>.";
+			 message = c.getString( R.string.info_feed_post_own );
 			
 		} else if( this.type.equals( "feedlike" ) ) {
 			
-			if( userId == this.getOwnerId() ) {
+			if( 0 == this.ownerId || userId == this.ownerId ) {
 				
-				message = "<b>{username}</b> hooahs your <b>{action}</b>.".replace( 
+				message = c.getString( R.string.info_feed_hooah_own ).replace( 
 					 
 					"{action}", 
-					resolveActionFromId(this.typeId) 
+					resolveActionFromId(c, this.typeId) 
 					
 				);
 				
@@ -137,19 +138,19 @@ public class NotificationData {
 				
 				if( owner.endsWith( "s" ) ) {
 
-					message = "<b>{username}</b> hooahs {owner}' <b>{action}</b>.".replace( 
+					message = c.getString( R.string.info_feed_hooah_other ).replace( 
 						 
 						"{action}", 
-						resolveActionFromId(this.typeId) 
+						resolveActionFromId(c, this.typeId) 
 						
 					);
 				
 				} else {
 					
-					message = "<b>{username}</b> hooahs {owner}'s <b>{action}</b>.".replace( 
+					message = c.getString( R.string.info_feed_hooah_other_2 ).replace( 
 							 
 						"{action}", 
-						resolveActionFromId(this.typeId) 
+						resolveActionFromId(c, this.typeId) 
 						
 					);
 					
@@ -157,21 +158,54 @@ public class NotificationData {
 				
 			}
 			 
+		} else if( this.type.equals( "platoonjoinrequestaccepted" ) ) {
+			
+			message = c.getString( R.string.info_platoon_join_ok ).replace( 
+		 
+				"{platoon}", 
+				this.extra
+			
+			);
+			
+		} else if( this.type.equals( "platoonjoinrequestdeclined" ) ) {
+			
+			message = c.getString( R.string.info_platoon_join_no ).replace( 
+		 
+				"{platoon}", 
+				this.extra
+			
+			);
+			
 		} else if( this.type.equals( "platoonjoinrequest" ) ) {
 			
-			message = "<b>{username}</b> wants to join <b>{platoon}</b>.";
+			message = c.getString( R.string.info_platoon_join_request ).replace( 
+					 
+				"{platoon}", 
+				this.extra
+				
+			);
 			
 		} else if( this.type.equals( "platoonmemberjoined") ) {
 			
-			message = "<b>{username}</b> joined your platoon <b>{platoon}</b>.";
+			message = c.getString( R.string.info_platoon_join_request_ok ).replace( 
+					 
+				"{platoon}", 
+				this.extra
+				
+			);
 			
 		}  else if( this.type.equals( "platoonleft") ) {
 			
-			message = "<b>{username}</b> left the platoon <b>{platoon}</b>.";
+			message = c.getString( R.string.info_platoon_left ).replace( 
+					 
+				"{platoon}", 
+				this.extra
+				
+			);
 			
 		} else {
 			
-			message = "Unknown notification type.";
+			message = c.getString( R.string.info_unknown_notification );
 			
 		}
 		
@@ -180,27 +214,33 @@ public class NotificationData {
 	}
 	
 	//Misc
-	public String resolveActionFromId(int id) {
+	public String resolveActionFromId(Context c, int id) {
 		
 		switch( this.typeId ) {
 			 
 			case 1: //Friendship
-				return "friendship";
+				return c.getResources().getString( R.string.info_friendship );
 			
-			 case 2: //Forum post
-				 return "forum post";
+			case 2: //Forum post
+				return c.getResources().getString( R.string.info_forum_post );
 				 
-			 case 4: //Game report
-				 return "Game report";
+			case 4: //Game report
+				return c.getResources().getString( R.string.info_game_report );
 				 
-			 case 7: //Status message
-				 return "Status message";
+			case 6: //Wall post
+				return c.getResources().getString( R.string.info_wallpost );
+				
+			case 7: //Status message
+				return c.getResources().getString( R.string.info_status_message );
+			
+			case 8: //Award
+				return c.getResources().getString( R.string.info_award );
 				 
-			 case 9: //Battle report?
-				 return "Battle report";
+			case 9: //Battle report?
+				return c.getResources().getString( R.string.info_battle_report );
 				 
-			 case 20: //Platoon wall post
-				 return "platoon wall post";
+			case 20: //Platoon wall post
+				return c.getResources().getString( R.string.info_platoon_wall_post );
 				 
 			default:
 				return "{unknown action}";
@@ -210,6 +250,15 @@ public class NotificationData {
 	
 	//TO STRING
 	@Override
-	public String toString() { return "(" + this.itemId + ")" + " " + this.commenter + "<" + this.type + "> " + this.owner; }
+	public String toString() { 
+		
+		return (
+			
+			"(" + this.itemId + ")" + " " + this.commenter + 
+			"(" + this.commenterId + ") <" + this.type + "> " +
+			this.owner + "(" + this.ownerId + ")"
+		
+		);
+	}
  
 }
