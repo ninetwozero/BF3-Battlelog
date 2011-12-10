@@ -13,7 +13,7 @@
 		    android:id="@+id/field_email"
 		    android:layout_width="250dp"
 		    android:layout_height="wrap_content"
-		    android:hint="Origin™ Account E-mail"
+		    android:hint="@string/info_hint_email"
 		    android:inputType="textEmailAddress"
 		    android:layout_marginBottom="5dp"
 		/>
@@ -22,7 +22,7 @@
 		    android:layout_width="250dp"
 		    android:layout_height="wrap_content"
 		    android:layout_below="@id/field_email"
-		    android:hint="Password"
+		    android:hint="@string/info_hint_password"
 		    android:inputType="textPassword"
 		    android:layout_marginBottom="5dp"
 		/>
@@ -36,14 +36,14 @@
 			    style="@style/RegularButton"
 			    android:layout_width="125dp"
 			    android:id="@+id/button_login"
-				android:text="Login"
+				android:text="@string/label_login"
 				android:layout_alignParentRight="true"
 			/>	    
    			<CheckBox
 			    android:id="@+id/checkbox_save"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="Save"
+			    android:text="@string/label_save"
 				android:textColor="#FFFFFF"
 				android:layout_toLeftOf="@id/button_login"
 				android:layout_alignBaseline="@id/button_login"

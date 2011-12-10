@@ -170,7 +170,7 @@
         <string name="info_xml_time_played">Time played</string>
         <string name="info_xml_score_minute">Score/minute</string>
         <string name="info_xml_assault">Assault</string>
-        <string name="info_xml_engineer">"Engineer "</string>
+        <string name="info_xml_engineer">Engineer</string>
         <string name="info_xml_support">Support</string>
         <string name="info_xml_recon">Recon</string>
         <string name="info_xml_vehicles">Vehicles</string>
@@ -220,4 +220,8 @@
         <string name="info_xml_enable_bgsrv">Enable background service</string>
         <string name="info_xml_enable_bgsrv_t">When enabled, a background service keeps track on notifications and makes sure that the widget can stay online.</string>
         <string name="info_lastupdate">Last updated {date}</string>
+        <string name="info_hint_email">Origin™ Account E-mail</string>
+        <string name="info_hint_password">Password</string>
+        <string name="label_login">Login</string>
+        <string name="label_save">Save</string>
 </resources>
