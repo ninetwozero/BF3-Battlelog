@@ -14,14 +14,13 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 
-public class CommentData implements Serializable {
+public class CommentData implements Parcelable {
 
 	//Attributes
-	private static final long serialVersionUID = -6685250652253512690L;
 	private long id, itemId, timestamp, authorId;
 	private String author, content;
 	
@@ -37,6 +36,17 @@ public class CommentData implements Serializable {
 		
 	}
 	
+	public CommentData( Parcel in ) {
+		
+		this.id = in.readLong();
+		this.itemId = in.readLong();
+		this.timestamp = in.readLong();
+		this.authorId = in.readLong();
+		this.author = in.readString();
+		this.content = in.readString();
+		
+	}
+	
 	//Getters
 	public long getId() { return this.id; }
 	public long getItemId() { return this.itemId; }
@@ -47,4 +57,27 @@ public class CommentData implements Serializable {
 	
 	@Override
 	public String toString() { return getId() + ":" + getAuthorId() + ":" + getAuthor() + ":" + getContent(); }
+
+	@Override
+	public int describeContents() { return 0; }
+
+	@Override
+	public void writeToParcel( Parcel out, int arg1 ) {
+
+		out.writeLong(this.id);
+		out.writeLong(this.itemId);
+		out.writeLong(this.timestamp);
+		out.writeLong(this.authorId);
+		out.writeString(this.author);
+		out.writeString(this.content);
+		
+	}
+	
+	
+	public static final Parcelable.Creator<CommentData> CREATOR = new Parcelable.Creator<CommentData>() {
+	
+		public CommentData createFromParcel(Parcel in) { return new CommentData(in); }
+        public CommentData[] newArray(int size) { return new CommentData[size]; }
+	
+	};
 }

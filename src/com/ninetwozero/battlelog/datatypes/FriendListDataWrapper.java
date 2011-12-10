@@ -2,11 +2,6 @@ package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.misc.Constants;
-
 
 
 public class FriendListDataWrapper {

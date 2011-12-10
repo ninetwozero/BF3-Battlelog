@@ -235,7 +235,7 @@ public class StatsView extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 		
 		super.onSaveInstanceState(outState);
-		outState.putSerializable(Constants.SUPER_COOKIES, RequestHandler.getSerializedCookies());
+		outState.putParcelableArrayList(Constants.SUPER_COOKIES, RequestHandler.getCookies());
 	
 	}
 }

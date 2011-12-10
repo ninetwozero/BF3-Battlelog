@@ -39,6 +39,7 @@ import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class Main extends Activity {
 
@@ -63,7 +64,7 @@ public class Main extends Activity {
         setContentView(R.layout.main);
 
         //Are we active?
-        if( PublicUtils.isMyServiceRunning( this ) && WebsiteHandler.setActive() ) { 
+        if( PublicUtils.isMyServiceRunning( this ) && BattlelogService.isRunning() ) { 
         	
         	startActivity( 
         			

@@ -14,16 +14,14 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.DataBank;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 
 
-public class PersonaStats implements Serializable {
-
-	//Serializable
-	private static final long serialVersionUID = -4227286910413194182L;
+public class PersonaStats implements Parcelable {
 
 	//Base-section
 	private String accountName, personaName, rankTitle;
@@ -88,6 +86,47 @@ public class PersonaStats implements Serializable {
 		this.scoreTotal = scrTotal;
 	
 	}
+	
+	public PersonaStats(Parcel in) {
+			
+		this.accountName = in.readString();
+		this.personaName = in.readString();
+		this.rankId = in.readLong();
+		this.rankTitle = in.readString();
+		this.personaId = in.readLong();
+		this.playerId = in.readLong();
+		this.platformId = in.readLong();
+		this.timePlayed = in.readLong();
+		this.pointsThisLvl = in.readLong();
+		this.pointsNextLvl = in.readLong();
+		this.numKills = in.readInt();
+		this.numAssists = in.readInt();
+		this.numVehicles = in.readInt();
+		this.numVehicleAssists = in.readInt();
+		this.numHeals = in.readInt();
+		this.numRevives = in.readInt();
+		this.numRepairs = in.readInt();
+		this.numResupplies = in.readInt();
+		this.numDeaths = in.readInt();
+		this.numWins = in.readInt();
+		this.numLosses = in.readInt();
+		this.skill = in.readDouble();
+		this.kdRatio = in.readDouble();
+		this.accuracy = in.readDouble();
+		this.longestHS = in.readDouble();
+		this.longestKS = in.readDouble();
+		this.scorePerMinute = in.readDouble();
+		this.scoreAssault = in.readLong();
+		this.scoreEngineer = in.readLong();
+		this.scoreSupport = in.readLong();
+		this.scoreRecon = in.readLong();
+		this.scoreVehicle = in.readLong();
+		this.scoreCombat = in.readLong();
+		this.scoreAwards = in.readLong();
+		this.scoreUnlocks = in.readLong();
+		this.scoreTotal = in.readLong();
+	
+	}
 
 	//Getters	
 	public final String getAccountName() { return accountName; }
@@ -99,7 +138,7 @@ public class PersonaStats implements Serializable {
 	public final long getPlatformId() { return platformId; }	
 	
 	public final long getTimePlayed() { return timePlayed; }	
-	public final String getTimePlayedString() { return timeToLiteral( timePlayed ); }  
+	public final String getTimePlayedString() { return PublicUtils.timeToLiteral( timePlayed ); }  
 	
 	public final long getPointsThisLvl() { return pointsThisLvl; }
 	public final long getPointsNextLvl() { return pointsNextLvl; }	
@@ -137,14 +176,58 @@ public class PersonaStats implements Serializable {
 	public final long getScoreAwards() { return scoreAwards; }
 	public final long getScoreUnlocks() { return scoreUnlocks; }
 	public final long getScoreTotal() { return scoreTotal; }
+
+	@Override
+	public int describeContents() { return 0; }
+
+	@Override
+	public void writeToParcel( Parcel out, int arg1 ) {
+
+		out.writeString( this.accountName );
+		out.writeString( this.personaName );
+		out.writeLong( this.rankId );
+		out.writeString( this.rankTitle );
+		out.writeLong( this.personaId );
+		out.writeLong( this.playerId );
+		out.writeLong( this.platformId );
+		out.writeLong( this.timePlayed );
+		out.writeLong( this.pointsThisLvl );
+		out.writeLong( this.pointsNextLvl );
+		out.writeInt( this.numKills );
+		out.writeInt( this.numAssists );
+		out.writeInt( this.numVehicles );
+		out.writeInt( this.numVehicleAssists );
+		out.writeInt( this.numHeals );
+		out.writeInt( this.numRevives );
+		out.writeInt( this.numRepairs );
+		out.writeInt( this.numResupplies );
+		out.writeInt( this.numDeaths );
+		out.writeInt( this.numWins );
+		out.writeInt( this.numLosses );
+		out.writeDouble( this.skill );
+		out.writeDouble( this.kdRatio );
+		out.writeDouble( this.accuracy );
+		out.writeDouble( this.longestHS );
+		out.writeDouble( this.longestKS );
+		out.writeDouble( this.scorePerMinute );
+		out.writeLong( this.scoreAssault );
+		out.writeLong( this.scoreEngineer );
+		out.writeLong( this.scoreSupport );
+		out.writeLong( this.scoreRecon );
+		out.writeLong( this.scoreVehicle );
+		out.writeLong( this.scoreCombat );
+		out.writeLong( this.scoreAwards );
+		out.writeLong( this.scoreUnlocks );
+		out.writeLong( this.scoreTotal );
 	
-	//Misc
-	public String timeToLiteral(long s) {
-	    
-    	//Let's see what we can do
-    	if( ( s / 60) < 1 ) return s + "S" ;
-    	else if( (s / 3600 ) < 1 ) return (s/60) + "M " + (s % 60) + "S" ;
-    	else return (s/3600) + "H " + ((s % 3600)/60) + "M";		
-    	
-    }
+	}
+	
+	
+	public static final Parcelable.Creator<PersonaStats> CREATOR = new Parcelable.Creator<PersonaStats>() {
+	
+		public PersonaStats createFromParcel(Parcel in) { return new PersonaStats(in); }
+        public PersonaStats[] newArray(int size) { return new PersonaStats[size]; }
+	
+	};
+	
 }

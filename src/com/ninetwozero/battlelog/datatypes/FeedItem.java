@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
 import java.util.ArrayList;
 
 

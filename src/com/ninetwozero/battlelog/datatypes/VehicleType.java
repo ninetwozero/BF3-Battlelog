@@ -14,14 +14,12 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-
-public class VehicleType implements Serializable {
+public class VehicleType implements Parcelable {
 
 	//Attributes
-	private static final long serialVersionUID = -6682902181714468486L;
 	private String identifier, name, label;
 	
 	//Construct
@@ -33,9 +31,30 @@ public class VehicleType implements Serializable {
 		
 	}
 	
+	public VehicleType(Parcel in) {
+		
+		this.identifier = in.readString();
+		this.name = in.readString();
+		this.label = in.readString();
+		
+	}
+	
 	//Getters
 	public String getIdentifier() { return this.identifier; }
 	public String getName() { return this.name; }
 	public String getLabel() { return this.label; }
+
+
+	@Override
+	public int describeContents() { return 0; }
+
+	@Override
+	public void writeToParcel( Parcel out, int arg1 ) {
+
+		out.writeString(this.identifier);
+		out.writeString(this.name);
+		out.writeString(this.label);
+		
+	}
 	
 }

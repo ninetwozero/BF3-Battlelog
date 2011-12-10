@@ -23,6 +23,7 @@ import java.util.Date;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
+
 import com.ninetwozero.battlelog.R;
 
 

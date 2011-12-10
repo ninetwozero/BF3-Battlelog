@@ -290,11 +290,11 @@ public class Dashboard extends TabActivity {
 						@Override
 						public void onItemClick( AdapterView<?> a, View v, int pos, long id ) {
 	
-							if( !((FeedItem) a.getItemAtPosition( pos ) ).getContent().equals( "" ) ) {
+							final FeedItem currItem = (FeedItem) a.getItemAtPosition( pos );
+							if( !currItem.getContent().equals( "" ) ) {
 								
-								View viewContainer = (View) v.findViewById(R.id.wrap_contentbox);
-								viewContainer.setVisibility( ( viewContainer.getVisibility() == View.GONE ) ? View.VISIBLE : View.GONE );
-							
+								generateDialogContent(context, currItem.getUsername()[0], currItem.getContent()).show();
+								
 							}
 							
 						}
@@ -373,7 +373,7 @@ public class Dashboard extends TabActivity {
 				} else {
 				
 					if( friendsStatusText.getVisibility() == View.VISIBLE ) { friendsStatusText.setVisibility( View.GONE ); }
-					
+					if( wrapFriendRequests.getVisibility() == View.GONE ) { wrapFriendRequests.setVisibility( View.VISIBLE  ); }
 					
 				}
 		
@@ -887,7 +887,7 @@ public class Dashboard extends TabActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		
 		super.onSaveInstanceState(outState);
-		outState.putSerializable(Constants.SUPER_COOKIES, RequestHandler.getSerializedCookies());
+		outState.putParcelableArrayList(Constants.SUPER_COOKIES, RequestHandler.getCookies());
 	
 	}
 
@@ -1323,6 +1323,7 @@ public class Dashboard extends TabActivity {
 				//Get...
 				feedArray = WebsiteHandler.getPublicFeed(
 
+					context,
 					sharedPreferences.getInt( Constants.SP_BL_NUM_FEED, Constants.DEFAULT_NUM_FEED ),
 					activeProfileId
 					
@@ -1493,5 +1494,40 @@ public class Dashboard extends TabActivity {
     }
     
     public final static ProfileData getProfile() { return Dashboard.profile; }
+    
+	public Dialog generateDialogContent(final Context context, final String username, final String content) {
+		
+		//Attributes
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+	    final View layout = inflater.inflate(R.layout.dialog_feed_content, (ViewGroup) findViewById(R.id.dialog_root));
+		
+	    //Set the title and the view
+		builder.setTitle( username );
+		builder.setView(layout);
+
+		//Grab the fields
+		((TextView) layout.findViewById(R.id.feed_content)).setText( content );
+		
+		//Dialog options
+		builder.setPositiveButton(
+				
+			android.R.string.ok, 
+			new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+			      
+					dialog.dismiss();
+			   
+				}
+				
+			}
+			
+		);
+		
+		//CREATE
+		return builder.create();
+		
+	}
        
 }

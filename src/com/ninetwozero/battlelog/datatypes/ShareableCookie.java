@@ -4,7 +4,6 @@ import org.apache.http.cookie.Cookie;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.ninetwozero.battlelog.R;
 
 
 public class ShareableCookie implements Parcelable {

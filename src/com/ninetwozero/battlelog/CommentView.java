@@ -81,7 +81,7 @@ public class CommentView extends ListActivity {
         listView.setChoiceMode( ListView.CHOICE_MODE_NONE );
         
         //Let's get the other comments participant
-        comments = (ArrayList<CommentData>) getIntent().getSerializableExtra( "comments" );
+        comments = (ArrayList<CommentData>) getIntent().getParcelableExtra( "comments" );
         postId = getIntent().getLongExtra( "postId", 0);     
         
         //Get the elements    
@@ -113,7 +113,7 @@ public class CommentView extends ListActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		
 		super.onSaveInstanceState(outState);
-		outState.putSerializable(Constants.SUPER_COOKIES, RequestHandler.getSerializedCookies());
+		outState.putParcelableArrayList(Constants.SUPER_COOKIES, RequestHandler.getCookies());
 	
 	}
 	

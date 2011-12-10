@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 
-	Translator: <YOUR NAME HERE>
-	Email: <YOUR EMAIL HERE>
-	Website: <YOUR WEBSITE HERE>
-	Other: <OTHER HERE>
+	Translator: Karl Lindmark
+	Email: support@ninetwozero.com
+	Website: http://www.ninetwozero.com
+	Other: @karllindmark on Twitter
+	
+	Note: Some translations are made out of humor, as there didn't exist a decent translation. (un-fan for example)
 -->
 <resources>    
     <string name="changelog">
@@ -56,7 +58,7 @@
         <string name="label_com_handle">COM CENTER ({num} INLOGGADE)</string>
         <string name="lable_refresh">Uppdatera nu</string>
         <string name="label_home">Hem</string>
-        <string name="label_stats">Statistik</string>
+        <string name="label_stats">Stats</string>
         <string name="label_users">Användare</string>
         <string name="info_platoon_created">Skapades den {DATE} ({RELATIVE DATE})</string>
         <string name="label_members">MEDLEMMAR</string>
@@ -219,7 +221,7 @@
         <string name="info_xml_remove_friend">Ta bort vän</string>
         <string name="info_xml_enable_bgsrv">Aktivera bakgrundstjänst</string>
         <string name="info_xml_enable_bgsrv_t">När den är aktiverad håller den koll på händelser och ser till att widget:en håller sig levande.</string>
-        <string name="info_lastupdate">Senast uppdaterad den {date}</string>
+        <string name="info_lastupdate">Senast uppdaterad {date}</string>
         <string name="info_hint_email">E-post för Origin™</string>
         <string name="info_hint_password">Lösenord</string>
         <string name="label_login">Logga in</string>

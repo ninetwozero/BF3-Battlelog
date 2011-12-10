@@ -1376,7 +1376,7 @@ public class WebsiteHandler {
 
 	}
 	
-	public static ProfileInformation getProfileInformationForUser(Context context, ProfileData profileData, long activeProfileId ) throws WebsiteHandlerException {
+	public static ProfileInformation getProfileInformationForUser(Context context, ProfileData profileData, int num, long activeProfileId ) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -1446,6 +1446,33 @@ public class WebsiteHandler {
 				
 				//Parse the feed
 				feedItemArray = getFeedItemsFromJSON(context, feedItems, activeProfileId);
+				
+				//Let's see
+				for(int i = 1, max = Math.round( num / 10 ); i < max; i++ ) {
+
+					//Get the content, and create a JSONArray
+					String tempContent = rh.get( 
+							
+						Constants.URL_PROFILE_FEED.replace( 
+								
+							"{PID}",
+							profileData.getProfileId() + ""
+							
+						).replace( 
+								
+							"{NUMSTART}", 
+							String.valueOf( i*10 ) 
+							
+						), 
+						1 
+					
+					);
+					JSONArray jsonArray = new JSONObject(tempContent).getJSONObject("data").getJSONArray( "feedEvents" );
+					
+					//Gather them
+					feedItemArray.addAll( WebsiteHandler.getFeedItemsFromJSON(context, jsonArray, activeProfileId ) );
+					
+				}
 				
 				return new ProfileInformation(
 					
@@ -1553,7 +1580,7 @@ public class WebsiteHandler {
 		}
 	}
 	
-	public static PlatoonInformation getProfileInformationForPlatoon(Context context, PlatoonData platoonData, long activeProfileId, boolean loadImage ) throws WebsiteHandlerException {
+	public static PlatoonInformation getProfileInformationForPlatoon(Context context, PlatoonData platoonData, int num, long activeProfileId, boolean loadImage ) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -1748,6 +1775,33 @@ public class WebsiteHandler {
 				
 				//Parse the feed
 				feedItemArray = getFeedItemsFromJSON(context, feedItems, activeProfileId);
+				
+				//Let's see
+				for(int i = 1, max = Math.round( num / 10 ); i < max; i++ ) {
+
+					//Get the content, and create a JSONArray
+					String tempContent = rh.get( 
+							
+						Constants.URL_PLATOON_FEED.replace( 
+								
+							"{PLATOON_ID}",
+							platoonData.getId() + ""
+							
+						).replace( 
+								
+							"{NUMSTART}", 
+							String.valueOf( i*10 ) 
+							
+						), 
+						1 
+					
+					);
+					JSONArray jsonArray = new JSONObject(tempContent).getJSONObject("data").getJSONArray( "feedEvents" );
+					
+					//Gather them
+					feedItemArray.addAll( WebsiteHandler.getFeedItemsFromJSON(context, jsonArray, activeProfileId ) );
+					
+				}
 				
 				//Do we need the image?
 				Bitmap image ;

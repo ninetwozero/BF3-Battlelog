@@ -16,7 +16,6 @@
 
 package com.google.android.apps.iosched.util;
 
-import com.ninetwozero.battlelog.R;
 
 /**
  * Math utility functions.

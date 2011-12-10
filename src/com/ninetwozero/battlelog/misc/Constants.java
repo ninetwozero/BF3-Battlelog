@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import com.ninetwozero.battlelog.R;
 
 
 public final class Constants {
@@ -58,6 +57,7 @@ public final class Constants {
 	public static final String URL_PLATOON_PROMOTE = URL_MAIN + "platoon/promotemember/{PLATOON_ID}/{UID}/";
 	public static final String URL_PLATOON_APPLY = URL_MAIN + "platoon/applyformembership/";
 	public static final String URL_PLATOON_LEAVE = URL_MAIN + "platoon/leave/";
+	public static final String URL_PLATOON_FEED = URL_MAIN + "feed/platoonevents/{PLATOON_ID}/?start={NUMSTART}";
 	
 	//URLS for FEED
 	public static final String URL_FEED_REPORT = URL_MAIN + "viewcontent/reportFeedItemAbuse/{POST_ID}/0/"; /* TODO */
@@ -69,7 +69,7 @@ public final class Constants {
 	//URLs to JSON-files (FEED-related)
 	public static final String URL_FEED = URL_MAIN + "feed/?start={NUMSTART}"; /* TODO */
 	public static final String URL_FRIEND_FEED = URL_MAIN + "feed/homeevents/?start={NUMSTART}";
-	public static final String URL_PROFILE_FEED = URL_MAIN + "feed/profileevents/{POST_ID}/?start={NUMSTART}"; /* TODO */
+	public static final String URL_PROFILE_FEED = URL_MAIN + "feed/profileevents/{PID}/?start={NUMSTART}"; /* TODO */
 	public static final String URL_FEED_COMMENTS = URL_MAIN + "feed/getComments/{POST_ID}/"; /* TODO */
 	
 	//URL to JSON-files (PROFILE-related)
