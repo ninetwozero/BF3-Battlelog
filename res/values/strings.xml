@@ -239,4 +239,20 @@
         <string name="info_hint_password">Password</string>
         <string name="label_login">Login</string>
         <string name="label_save">Save</string>
+        <string name="info_p_friendship">&lt;b>{username1}&lt;/b> and &lt;b>{username2}&lt;/b> are now friends</string>
+        <string name="info_p_forumthread">&lt;b>{username}&lt;/b> created the forum thread &lt;b>\"{thread}\"&lt;/b>.</string>
+        <string name="info_p_forumpost">&lt;b>{username}&lt;/b> wrote a forum post in the thread &lt;b>\"{thread}\"&lt;/b>.</string>
+        <string name="info_p_newunlock">&lt;b>{username}&lt;/b> unlocked a new item: &lt;b>{item}&lt;/b>.</string>
+        <string name="info_p_favserver">&lt;b>{username}&lt;/b> favorited a server: &lt;b>{server}&lt;/b>.</string>
+        <string name="info_p_promotion">&lt;b>{username}&lt;/b> got promoted to &lt;b>{rank title}&lt;/b> (rank{rank}).</string>
+        <string name="info_p_greport_comment">&lt;b>{username}&lt;/b> commented on Battle Report &lt;b>{server name} {map} {game mode}&lt;/b>.</string>
+        <string name="info_p_blog_comment">&lt;b>{username}&lt;/b> commented on the blog post &lt;b>{post name}&lt;/b>.</string>
+        <string name="info_p_platoon_join">&lt;b>{username}&lt;/b> joined the platoon &lt;b>{platoon}&lt;/b>.</string>
+        <string name="info_p_platoon_kick">&lt;b>{username}&lt;/b> got kicked from the platoon &lt;b>{platoon}&lt;/b>.</string>
+        <string name="info_p_platoon_create">&lt;b>{username}&lt;/b> created a platoon named &lt;b>{platoon}&lt;/b>.</string>
+        <string name="info_p_platoon_badge">&lt;b>{username}&lt;/b> changed the emblem of the platoon &lt;b>{platoon}&lt;/b>.</string>
+        <string name="info_p_platoon_left">&lt;b>{username}&lt;/b> left the platoon &lt;b>{platoon}&lt;/b>.</string>
+        <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> wrote on the wall for &lt;b>{platoon}&lt;/b>.</string>
+        <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> and &lt;b>{username2}&lt;/b> completed &lt;b>\"{level}\"&lt;/b> on &lt;b>{difficulty}&lt;/b>.</string>
+        <string name="info_p_award">&lt;b>{username}&lt;/b> recieved a new award: &lt;b>{award}&lt;/b>.</string>
 </resources>

@@ -1376,7 +1376,7 @@ public class WebsiteHandler {
 
 	}
 	
-	public static ProfileInformation getProfileInformationForUser( ProfileData profileData, long activeProfileId ) throws WebsiteHandlerException {
+	public static ProfileInformation getProfileInformationForUser(Context context, ProfileData profileData, long activeProfileId ) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -1445,7 +1445,7 @@ public class WebsiteHandler {
 				}
 				
 				//Parse the feed
-				feedItemArray = getFeedItemsFromJSON(feedItems, activeProfileId);
+				feedItemArray = getFeedItemsFromJSON(context, feedItems, activeProfileId);
 				
 				return new ProfileInformation(
 					
@@ -1553,7 +1553,7 @@ public class WebsiteHandler {
 		}
 	}
 	
-	public static PlatoonInformation getProfileInformationForPlatoon( PlatoonData platoonData, long activeProfileId, boolean loadImage ) throws WebsiteHandlerException {
+	public static PlatoonInformation getProfileInformationForPlatoon(Context context, PlatoonData platoonData, long activeProfileId, boolean loadImage ) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -1747,7 +1747,7 @@ public class WebsiteHandler {
 				stats = WebsiteHandler.getStatsForPlatoon( platoonData );
 				
 				//Parse the feed
-				feedItemArray = getFeedItemsFromJSON(feedItems, activeProfileId);
+				feedItemArray = getFeedItemsFromJSON(context, feedItems, activeProfileId);
 				
 				//Do we need the image?
 				Bitmap image ;
@@ -1807,7 +1807,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static ArrayList<FeedItem> getPublicFeed(int num, long profileId) throws WebsiteHandlerException {
+	public static ArrayList<FeedItem> getPublicFeed(Context context, int num, long profileId) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -1825,7 +1825,7 @@ public class WebsiteHandler {
 				jsonArray = new JSONObject(httpContent).getJSONObject("data").getJSONArray( "feedEvents" );
 				
 				//Gather them
-				feedItems.addAll( WebsiteHandler.getFeedItemsFromJSON( jsonArray, profileId ) );
+				feedItems.addAll( WebsiteHandler.getFeedItemsFromJSON(context, jsonArray, profileId ) );
 				
 			}
 			
@@ -2353,7 +2353,7 @@ public class WebsiteHandler {
 		
 	}
 
-	private static ArrayList<FeedItem> getFeedItemsFromJSON( JSONArray jsonArray, long activeProfileId ) throws WebsiteHandlerException {
+	private static ArrayList<FeedItem> getFeedItemsFromJSON( Context c, JSONArray jsonArray, long activeProfileId ) throws WebsiteHandlerException {
 
 		try {
 			
@@ -2452,7 +2452,7 @@ public class WebsiteHandler {
 						currItem.getLong( "creationDate" ),
 						
 						numLikes,
-						"<b>{username1}</b> and <b>{username2}</b> are now friends",
+						c.getResources().getString( R.string.info_p_friendship ),
 						"",
 						currItem.getString("event"),
 						new String[] { 
@@ -2471,7 +2471,7 @@ public class WebsiteHandler {
 				
 					//Grab the specific object
 					tempSubItem = currItem.optJSONObject( "CREATEDFORUMTHREAD" );
-					itemTitle = "<b>{username}</b> created the forum thread <b>\"{thread}\"</b>.".replace( 
+					itemTitle = c.getString( R.string.info_p_forumthread ).replace( 
 						
 						"{thread}", 
 						tempSubItem.getString( "threadTitle" )
@@ -2504,7 +2504,7 @@ public class WebsiteHandler {
 				
 					//Grab the specific object
 					tempSubItem = currItem.optJSONObject( "WROTEFORUMPOST" );
-					itemTitle = "<b>{username}</b> wrote a forum post in the thread <b>\"{thread}\"</b>.".replace( 
+					itemTitle = c.getString( R.string.info_p_forumpost ).replace( 
 						
 						"{thread}", 
 						tempSubItem.getString( "threadTitle" )
@@ -2538,7 +2538,7 @@ public class WebsiteHandler {
 					//Grab the specific object
 					JSONArray tempStatsArray = currItem.optJSONObject( "GAMEREPORT" ).optJSONArray( "statItems" );
 					tempSubItem = tempStatsArray.optJSONObject( 0 );
-					itemTitle = "<b>{username}</b> unlocked a new item: <b>{item}</b>.";
+					itemTitle = c.getString( R.string.info_p_newunlock );
 					
 					//Weapon? Attachment?
 					if( !tempSubItem.isNull( "parentLangKeyTitle" ) ) {
@@ -2639,7 +2639,12 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
-						"<b>{username}</b> favorited a server: <b>" + tempSubItem.getString( "serverName" ) + "</b>.",
+						c.getResources().getString( R.string.info_p_favserver ).replace( 
+								
+							"{server}", 
+							tempSubItem.getString( "serverName" ) 
+							
+						),
 						"",
 						currItem.getString("event"),
 						new String[] { 
@@ -2661,7 +2666,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "RANKEDUP" );
 					
 					//Set it!
-					itemTitle = "<b>{username}</b> got promoted to <b>{rank title}</b> (rank{rank}).".replace( 
+					itemTitle = c.getString( R.string.info_p_promotion ).replace( 
 						
 						"{rank title}", 
 						DataBank.getRankTitle( tempSubItem.getString( "langKeyTitle" ) )
@@ -2703,7 +2708,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "COMMENTEDGAMEREPORT" );
 					
 					//Set it!
-					itemTitle = "<b>{username}</b> commented on Battle Report <b>{server name} {map} {game mode}</b>.".replace(
+					itemTitle = c.getString( R.string.info_p_greport_comment ).replace(
 							
 						"{server name}",
 						tempSubItem.getString( "serverName" )
@@ -2750,7 +2755,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "COMMENTEDBLOG" );
 					
 					//Set it!
-					itemTitle = "<b>{username}</b> commented on the blog post <b>{post name}</b>.".replace(
+					itemTitle = c.getString( R.string.info_p_blog_comment ).replace(
 							
 						"{post name}",
 						tempSubItem.getString( "blogTitle" )
@@ -2786,7 +2791,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "JOINEDPLATOON" ).getJSONObject( "platoon" );
 					
 					//Set it!
-					itemTitle = "<b>{username}</b> joined the platoon <b>{platoon}</b>.".replace( 
+					itemTitle = c.getString( R.string.info_p_platoon_join ).replace( 
 				
 						"{platoon}",
 						tempSubItem.getString("name")
@@ -2821,7 +2826,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "KICKEDPLATOON" ).getJSONObject( "platoon" );
 					
 					//Set it!
-					itemTitle = "<b>{username}</b> got kicked from the platoon <b>{platoon}</b>.".replace( 
+					itemTitle = c.getString( R.string.info_p_platoon_kick ).replace( 
 				
 						"{platoon}",
 						tempSubItem.getString("name")
@@ -2856,7 +2861,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "CREATEDPLATOON" ).getJSONObject( "platoon" );
 					
 					//Set it!
-					itemTitle = "<b>{username}</b> created a platoon named <b>{platoon}</b>.".replace( 
+					itemTitle = c.getString( R.string.info_p_platoon_create ).replace( 
 				
 						"{platoon}",
 						tempSubItem.getString("name")
@@ -2891,7 +2896,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "PLATOONBADGESAVED" ).getJSONObject( "platoon" );
 					
 					//Set it!
-					itemTitle = "<b>{username}</b> changed the emblem of the platoon <b>{platoon}</b>.".replace( 
+					itemTitle = c.getString( R.string.info_p_platoon_badge ).replace( 
 				
 						"{platoon}",
 						tempSubItem.getString("name")
@@ -2926,7 +2931,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "LEFTPLATOON" ).getJSONObject( "platoon" );
 					
 					//Set it!
-					itemTitle = "<b>{username}</b> left the platoon <b>{platoon}</b>.".replace( 
+					itemTitle = c.getString( R.string.info_p_platoon_left ).replace( 
 				
 						"{platoon}",
 						tempSubItem.getString("name")
@@ -2962,7 +2967,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "RECEIVEDPLATOONWALLPOST" );
 					
 					//Set it!
-					itemTitle = "<b>{username}</b> wrote on the wall for <b>{platoon}</b>.".replace(
+					itemTitle = c.getString( R.string.info_p_platoon_feed ).replace(
 							
 						"{platoon}", 
 						tempSubItem.getJSONObject("platoon").getString( "name" )
@@ -3000,7 +3005,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "LEVELCOMPLETE" );
 					
 					//Set it!
-					itemTitle = "<b>{username1}</b> and <b>{username2}</b> completed <b>\"{level}\"</b> on <b>{difficulty}</b>.".replace(
+					itemTitle = c.getString( R.string.info_p_coop_level_comp ).replace(
 							
 						"{level}", 
 						DataBank.getCoopLevelTitle( tempSubItem.getString( "level" ) )
@@ -3042,7 +3047,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.optJSONObject( "RECEIVEDAWARD" ).optJSONArray( "statItems" ).getJSONObject( 0 );
 					
 					//Set it!
-					itemTitle = "<b>{username}</b> recieved a new award: <b>{award}</b>.".replace( 
+					itemTitle = c.getString( R.string.info_p_award ).replace( 
 							
 						"{award}", 
 						DataBank.getAwardTitle( tempSubItem.getString( "langKeyTitle" ) )

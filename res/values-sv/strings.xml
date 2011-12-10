@@ -202,7 +202,7 @@
         <string name="info_xml_latest_statusmsg">Senaste statusuppdatering</string>
         <string name="info_xml_platoons">Plutoner</string>
         <string name="info_xml_no_platoons">Inga anslutna plutoner.</string>
-        <string name="info_xml_rank2"> till nästa rank</string>
+        <string name="info_xml_rank2">  till nästa rank</string>
         <string name="info_xml_no_unlocks">Inga upplåsningar hittades.</string>
         <string name="info_xml_back">Bakåt</string>
         <string name="info_xml_reload">Ladda om</string>
@@ -224,4 +224,20 @@
         <string name="info_hint_password">Lösenord</string>
         <string name="label_login">Logga in</string>
         <string name="label_save">Spara</string>
+        <string name="info_p_friendship">&lt;b>{username1}&lt;/b> och &lt;b>{username2}&lt;/b> är numera vänner.</string>
+        <string name="info_p_forumthread">&lt;b>{username}&lt;/b> skapade forumtråden &lt;b>\"{thread}\"&lt;/b>.</string>
+        <string name="info_p_forumpost">&lt;b>{username}&lt;/b> skrev ett inlägg i forumtråden &lt;b>\"{thread}\"&lt;/b>.</string>
+        <string name="info_p_newunlock">&lt;b>{username}&lt;/b> låste upp ett nytt föremål: &lt;b>{item}&lt;/b>.</string>
+        <string name="info_p_favserver">&lt;b>{username}&lt;/b> bokmärkte en server: &lt;b>{server}&lt;/b>.</string>
+        <string name="info_p_promotion">&lt;b>{username}&lt;/b> blev befodrad till &lt;b>{rank title}&lt;/b> (rank{rank}).</string>
+        <string name="info_p_greport_comment">&lt;b>{username}&lt;/b> kommenterade på en krigsrapport &lt;b>{server name} {map} {game mode}&lt;/b>.</string>
+        <string name="info_p_blog_comment">&lt;b>{username}&lt;/b> kommenterade på ett blogginlägg &lt;b>{post name}&lt;/b>.</string>
+        <string name="info_p_platoon_join">&lt;b>{username}&lt;/b> gick med i plutonen &lt;b>{platoon}&lt;/b>.</string>
+        <string name="info_p_platoon_kick">&lt;b>{username}&lt;/b> blev sparkad ur plutonen &lt;b>{platoon}&lt;/b>.</string>
+        <string name="info_p_platoon_create">&lt;b>{username}&lt;/b> skapade plutonen &lt;b>{platoon}&lt;/b>.</string>
+        <string name="info_p_platoon_badge">&lt;b>{username}&lt;/b> uppdaterade emblemet för plutonen &lt;b>{platoon}&lt;/b>.</string>
+        <string name="info_p_platoon_left">&lt;b>{username}&lt;/b> lämnade plutonen &lt;b>{platoon}&lt;/b>.</string>
+        <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> skrev på väggen för &lt;b>{platoon}&lt;/b>.</string>
+        <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> och &lt;b>{username2}&lt;/b> klarade &lt;b>\"{level}\"&lt;/b> på &lt;b>{difficulty}&lt;/b>.</string>
+        <string name="info_p_award">&lt;b>{username}&lt;/b> fick en ny belöning: &lt;b>{award}&lt;/b>.</string>
 </resources>
