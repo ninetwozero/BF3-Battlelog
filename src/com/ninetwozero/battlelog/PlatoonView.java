@@ -534,16 +534,24 @@ public class PlatoonView extends TabActivity {
     		tempTopStats = topStats.get(i);
     		
     		//Say cheese... (mister Bitmap)
-    		( (ImageView) cacheView.findViewById( R.id.image_avatar )).setImageBitmap( 
+    		if( tempTopStats.getProfile() != null ) {
+    			
+    			
+    			((ImageView) cacheView.findViewById( R.id.image_avatar )).setImageBitmap( 
     				
-				WebsiteHandler.bitmapCache.get( 
-				
-					tempTopStats.getProfile().getGravatarHash()
-						
-				) 
-    				
-    		);
+					WebsiteHandler.bitmapCache.get( 
+					
+						tempTopStats.getProfile().getGravatarHash()
+							
+					) 
+	    				
+	    		);
     		
+    		} else {
+    			
+    			((ImageView) cacheView.findViewById( R.id.image_avatar )).setImageResource(R.drawable.test_avatar_48);
+    			
+    		}
     		//Set the TextViews accordingly
     		( (TextView) cacheView.findViewById( R.id.text_label )).setText( tempTopStats.getLabel().toUpperCase() + "" );
     		( (TextView) cacheView.findViewById( R.id.text_name )).setText( tempTopStats.getProfile().getAccountName() + "" );

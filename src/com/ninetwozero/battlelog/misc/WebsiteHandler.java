@@ -17,6 +17,8 @@ package com.ninetwozero.battlelog.misc;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
@@ -2321,7 +2323,33 @@ public class WebsiteHandler {
 					
 					//Hmm, where is the userInfo?					
 					if( currObj.has( "bestPersonaId" ) ) { currUser = personaList.getJSONObject( currObj.getString( "bestPersonaId" ) ); }
-					else { currUser = personaList.getJSONObject( currObj.getString( "personaId" ) ); }
+					else { 
+						
+						if( !currObj.getString( "personaId" ).equals( "0" ) ) {
+
+							currUser = personaList.getJSONObject( currObj.getString( "personaId" ) ); 
+						
+						} else {
+							
+							//Create a new "stats item"
+							arrayTop.add(
+									
+								new PlatoonTopStatsItem(
+							
+									"N/A",
+									0,
+									null
+								
+								)
+								
+							);
+							
+							//Continue
+							continue;
+							
+						}
+						
+					}
 
 					//Store the gravatar
 					tempGravatarHash = currUser.optString( "gravatarMd5", "" );
@@ -3628,13 +3656,14 @@ public class WebsiteHandler {
 				
 				//Loops & removes five bitmaps from the cache
 				int counter = 0;
-				for( String identifier : WebsiteHandler.bitmapCache.keySet() ) {
+				Object[] identifierArray = new HashSet(WebsiteHandler.bitmapCache.keySet()).toArray();
+				for( Object identifier : identifierArray ) {
 	
 					//> 4 = stop
 					if( counter > 4 ) { break; }
 					
 					//Remove and increment
-					WebsiteHandler.bitmapCache.remove(identifier);
+					WebsiteHandler.bitmapCache.remove(String.valueOf( identifier ) );
 					counter++;			
 				
 				}
