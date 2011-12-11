@@ -2316,8 +2316,11 @@ public class WebsiteHandler {
 				//Get the *top player* Tops
 				PlatoonTopStatsItem highestSPM = null;
 				currObjNames = objectTop.names();
+				
+				Log.d(Constants.DEBUG_TAG, "Before for-loop");
 				for( int i = 0, max = currObjNames.length(); i < max; i++ ) {
 
+					Log.d(Constants.DEBUG_TAG, "In for-loop (loop #" + i + " )");
 					//Grab the current object
 					currObj = objectTop.getJSONObject( currObjNames.getString( i ) );
 					
@@ -2330,7 +2333,8 @@ public class WebsiteHandler {
 							currUser = personaList.getJSONObject( currObj.getString( "personaId" ) ); 
 						
 						} else {
-							
+
+							Log.d(Constants.DEBUG_TAG, "No personaId - oh noes!");
 							//Create a new "stats item"
 							arrayTop.add(
 									
@@ -2392,6 +2396,8 @@ public class WebsiteHandler {
 					
 					
 				}
+
+				Log.d(Constants.DEBUG_TAG, "After for-loop");
 				
 				//Set the best & sort
 				arrayTop.add( 
