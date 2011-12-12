@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -24,14 +23,18 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.CommentListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncCommentSend;
@@ -102,11 +105,7 @@ public class CommentView extends ListActivity {
         }
         	
         //Let's setup the adapter
-        if( listView.getAdapter() == null ) {
-        	
-        	listView.setAdapter( new CommentListAdapter(this, comments, layoutInflater) );
-        	
-        }
+        this.reloadComments();
                 
 	}
 	
@@ -185,7 +184,6 @@ public class CommentView extends ListActivity {
 
 	} 
 	
-	/*
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
 
@@ -222,7 +220,7 @@ public class CommentView extends ListActivity {
 				//REQUESTS
 				if( item.getItemId() == 0 ) {
 
-					new AsyncCommentReport(this, info.id, false, new AsyncProfileRefresh(this, true, profileData)).execute( 
+					/*new AsyncCommentReport(this, info.id, false, new AsyncProfileRefresh(this, true, profileData)).execute( 
 							
 						sharedPreferences.getString( 
 								
@@ -231,7 +229,8 @@ public class CommentView extends ListActivity {
 							
 						) 
 					
-					);
+					);*/
+					Toast.makeText(this, "Reporting comment number " + item.getItemId(), Toast.LENGTH_SHORT).show();
 					
 				}
 				
@@ -245,6 +244,7 @@ public class CommentView extends ListActivity {
 		}
 
 		return true;
+	
 	}
-    */
+	
 }

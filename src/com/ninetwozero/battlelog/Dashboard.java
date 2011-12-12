@@ -1136,8 +1136,6 @@ public class Dashboard extends TabActivity {
 			
 			//Add the tab
 			mTabHost.addTab( spec ); 
-			
-			
     	
     	}
     	

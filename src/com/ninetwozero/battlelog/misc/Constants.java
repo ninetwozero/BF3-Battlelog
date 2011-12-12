@@ -68,22 +68,23 @@ public final class Constants {
 	public static final String URL_COMMENT = URL_MAIN + "comment/postcomment/{POST_ID}/feed-item-comment/";
 	
 	//URLs to JSON-files (FEED-related)
-	public static final String URL_FEED = URL_MAIN + "feed/?start={NUMSTART}"; /* TODO */
+	public static final String URL_FEED = URL_MAIN + "feed/?start={NUMSTART}";
 	public static final String URL_FRIEND_FEED = URL_MAIN + "feed/homeevents/?start={NUMSTART}";
-	public static final String URL_PROFILE_FEED = URL_MAIN + "feed/profileevents/{PID}/?start={NUMSTART}"; /* TODO */
-	public static final String URL_FEED_COMMENTS = URL_MAIN + "feed/getComments/{POST_ID}/"; /* TODO */
+	public static final String URL_PROFILE_FEED = URL_MAIN + "feed/profileevents/{PID}/?start={NUMSTART}";
+	public static final String URL_FEED_COMMENTS = URL_MAIN + "feed/getComments/{POST_ID}/";
 	
 	//URL to JSON-files (PROFILE-related)
 	public static final String URL_PROFILE = URL_MAIN + "user/overviewBoxStats/{UID}/";
 	public static final String URL_PROFILE_INFO = URL_MAIN + "user/{UNAME}/";
 	
 	//URL to JSON-files (STATS-related)
-	public static final String URL_STATS_OVERVIEW = URL_MAIN +"overviewPopulateStats/{PID}/None/{PLATFORM_ID}/";
-	public static final String URL_STATS_WEAPONS = URL_MAIN +"weaponsPopulateStats/{PID}/{PLATFORM_ID}/";
-	public static final String URL_STATS_VEHICLES = URL_MAIN +"vehiclesPopulateStats/{PID}/{PLATFORM_ID}/";
-	public static final String URL_STATS_AWARDS = URL_MAIN +"awardsPopulateStats/{PID}/{PLATFORM_ID}/";
-	public static final String URL_STATS_UNLOCKS = URL_MAIN +"upcomingUnlocksPopulateStats/{PID}/{PLATFORM_ID}/";
-	public static final String URL_STATS_DOGTAGS = URL_MAIN +"soldier/dogtagsPopulateStats/{PID}/{UID}/{PLATFORM_ID}/";
+	public static final String URL_STATS_OVERVIEW = URL_MAIN + "overviewPopulateStats/{PID}/None/{PLATFORM_ID}/";
+	public static final String URL_STATS_WEAPONS = URL_MAIN + "weaponsPopulateStats/{PID}/{PLATFORM_ID}/";
+	public static final String URL_STATS_VEHICLES = URL_MAIN + "vehiclesPopulateStats/{PID}/{PLATFORM_ID}/";
+	public static final String URL_STATS_AWARDS = URL_MAIN + "awardsPopulateStats/{PID}/{PLATFORM_ID}/";
+	public static final String URL_STATS_UNLOCKS = URL_MAIN + "upcomingUnlocksPopulateStats/{PID}/{PLATFORM_ID}/";
+	public static final String URL_STATS_DOGTAGS = URL_MAIN + "soldier/dogtagsPopulateStats/{PID}/{UID}/{PLATFORM_ID}/";
+	public static final String URL_STATS_ASSIGNMENTS = URL_MAIN + "assignmentsPopulateStats/{PID}/{PLATFORM_ID}/";
 	public static final String URL_STATS_ALL = URL_MAIN + "indexstats/{PID}/{PLATFORM_NAME}/";
 	
 	//Fields needed for the posts fields

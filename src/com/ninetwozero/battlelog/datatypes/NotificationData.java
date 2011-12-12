@@ -238,8 +238,8 @@ public class NotificationData {
 			case 9: //Battle report?
 				return c.getResources().getString( R.string.info_battle_report );
 			
-			case 11:
-				return c.getResources().getString( 0 );
+			case 11: //Rank
+				return c.getResources().getString( R.string.info_new_rank);
 			
 			case 20: //Platoon wall post
 				return c.getResources().getString( R.string.info_platoon_wall_post );
