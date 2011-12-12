@@ -27,6 +27,8 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.text.Html;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.ninetwozero.battlelog.Main;
@@ -37,6 +39,7 @@ import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.services.BattlelogService;
 
 
 public class BattlelogAppWidgetProvider extends AppWidgetProvider {
@@ -80,9 +83,11 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 		   final Resources res = context.getResources();
 				   
 		   //if service == active
-		   if( !PublicUtils.isMyServiceRunning( context ) ) {
+		   if( !PublicUtils.isMyServiceRunning( context ) || !BattlelogService.isRunning() ) {
 			   
-			   remoteView.setTextViewText(R.id.label, res.getString( R.string.msg_widget_auth_fail ) );
+			   remoteView.setTextViewText(R.id.label, Html.fromHtml( "<b>Error</b>" ) );
+			   remoteView.setTextViewText(R.id.title, res.getString( R.string.general_no_data ) );
+			   remoteView.setTextViewText(R.id.stats, res.getString( R.string.info_connect_bl ) );
 			   
 		   } else {
 			 
@@ -138,15 +143,15 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
 				}  
 
-				remoteView.setOnClickPendingIntent(R.id.widget_button, actionPendingIntent);
-				remoteView.setOnClickPendingIntent(R.id.widget_button2, appPendingIntent);
-				BattlelogListWidget = new ComponentName(
-					context,
-					BattlelogAppWidgetProvider.class
-				);
-				appWidgetManager.updateAppWidget(BattlelogListWidget, remoteView);
+		   	}
+			remoteView.setOnClickPendingIntent(R.id.widget_button, actionPendingIntent);
+			remoteView.setOnClickPendingIntent(R.id.widget_button2, appPendingIntent);
+			BattlelogListWidget = new ComponentName(
+				context,
+				BattlelogAppWidgetProvider.class
+			);
+			appWidgetManager.updateAppWidget(BattlelogListWidget, remoteView);
 
-		  }
 	}
 	   @Override
 	   public void onReceive(Context context, Intent intent) {

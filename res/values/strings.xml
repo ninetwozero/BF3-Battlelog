@@ -99,7 +99,7 @@
         <string name="msg_com_ok">COM CENTER up to date.</string>
         <string name="msg_com_fail">COM CENTER could not be refreshed.</string>
         <string name="msg_hooah_fail">Hooah failed!</string>
-        <string name="msg_search_nouser">"No user found matching the following keyword: {keyword}"</string>
+        <string name="msg_search_nouser">No user found matching the following keyword: {keyword}</string>
         <string name="msg_search_noplatoon">No platoon found matching the following keyword: {keyword}</string>
         <string name="msg_frequest_ok">Friend request sent!</string>
         <string name="msg_frequest_fail">Friend request could not be sent.</string>
@@ -139,7 +139,7 @@
         <string name="info_friendship">friendship</string>
         <string name="info_forum_post">forum post</string>
         <string name="info_game_report">game report</string>
-        <string name="info_wallpost">wallpost</string>
+        <string name="info_wallpost">wall post</string>
         <string name="info_status_message">status message</string>
         <string name="info_award">award</string>
         <string name="info_battle_report">Battle report</string>
@@ -164,7 +164,7 @@
         <string name="label_com_handle_default">COM CENTER (0 ONLINE)</string>
         <string name="info_hint_comment_msg">Type a message</string>
         <string name="info_xml_comment_empty">No comments found</string>
-        <string name="info_xml_rank">"Rank "</string>
+        <string name="info_xml_rank">Rank </string>
         <string name="info_xml_kills">Kills</string>
         <string name="info_xml_assists">Assists</string>
         <string name="info_xml_vehicles_destroyed">Vehicles destroyed</string>
@@ -217,7 +217,7 @@
         <string name="info_xml_latest_statusmsg">Latest Status Message</string>
         <string name="info_xml_platoons">Platoons</string>
         <string name="info_xml_no_platoons">No platoons joined.</string>
-        <string name="info_xml_rank2">" until rank up"</string>
+        <string name="info_xml_rank2"> until rank up</string>
         <string name="info_xml_no_unlocks">No unlocks found.</string>
         <string name="info_xml_back">Back</string>
         <string name="info_xml_reload">Reload</string>
@@ -254,7 +254,7 @@
         <string name="info_p_platoon_left">&lt;b>{username}&lt;/b> left the platoon &lt;b>{platoon}&lt;/b>.</string>
         <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> wrote on the wall for &lt;b>{platoon}&lt;/b>.</string>
         <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> and &lt;b>{username2}&lt;/b> completed &lt;b>\"{level}\"&lt;/b> on &lt;b>{difficulty}&lt;/b>.</string>
-        <string name="info_p_award">&lt;b>{username}&lt;/b> recieved a new award: &lt;b>{award}&lt;/b>.</string>
+        <string name="info_p_award">&lt;b>{username}&lt;/b> received a new award: &lt;b>{award}&lt;/b>.</string>
         
         <!--  NEW -->
         <string name="info_new_rank">new rank</string>

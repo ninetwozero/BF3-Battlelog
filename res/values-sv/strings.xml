@@ -86,7 +86,7 @@
         <string name="msg_com_ok">COM CENTRET är uppdaterat.</string>
         <string name="msg_com_fail">COM CENTRET kunde inte uppdateras.</string>
         <string name="msg_hooah_fail">Hooah misslyckades!</string>
-        <string name="msg_search_nouser">"Det finns ingen användare som matchar följande sökord: {keyword}"</string>
+        <string name="msg_search_nouser">Det finns ingen användare som matchar följande sökord: {keyword}</string>
         <string name="msg_search_noplatoon">Det finns ingen platoon som matchar följande sökord: {keyword}</string>
         <string name="msg_frequest_ok">En vänförfrågan har skickats!</string>
         <string name="msg_frequest_fail">En vänförfrågan kunde ej skickas..</string>

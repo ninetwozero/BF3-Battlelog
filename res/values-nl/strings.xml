@@ -84,7 +84,7 @@
        <string name="msg_com_ok">COM CENTER bijgewerkt.</string>
        <string name="msg_com_fail">COM CENTER kon niet worden ververst.</string>
        <string name="msg_hooah_fail">Hooah failed!</string>
-       <string name="msg_search_nouser">"Geen gebruiker gevonden met het volgende keyword: {keyword}"</string>
+       <string name="msg_search_nouser">Geen gebruiker gevonden met het volgende keyword: {keyword}</string>
        <string name="msg_search_noplatoon">Geen peloton gevonden met het volgende keyword: {keyword}</string>
        <string name="msg_frequest_ok">Vriendenverzoek verzonden!</string>
        <string name="msg_frequest_fail">Vriendenverzoek kon niet worden verzonden.</string>
@@ -124,7 +124,7 @@
        <string name="info_friendship">Vriendschap</string>
        <string name="info_forum_post">Forum post</string>
        <string name="info_game_report">Game report</string>
-       <string name="info_wallpost">Wallpost</string>
+       <string name="info_wallpost">wall post</string>
        <string name="info_status_message">Statusbericht</string>
        <string name="info_award">Onderscheiding</string>
        <string name="info_battle_report">Battle Report</string>
@@ -149,7 +149,7 @@
        <string name="label_com_handle_default">COM CENTER (0 ONLINE)</string>
        <string name="info_hint_comment_msg">Type een bericht</string>
        <string name="info_xml_comment_empty">Geeen commentaar gevonden</string>
-       <string name="info_xml_rank">"Rang "</string>
+       <string name="info_xml_rank">Rang </string>
        <string name="info_xml_kills">Kills</string>
        <string name="info_xml_assists">Assists</string>
        <string name="info_xml_vehicles_destroyed">Voertuigen vernietigd</string>
@@ -170,7 +170,7 @@
        <string name="info_xml_time_played">Speeltijd</string>
        <string name="info_xml_score_minute">Score/minuut</string>
        <string name="info_xml_assault">Assault</string>
-       <string name="info_xml_engineer">"Engineer "</string>
+       <string name="info_xml_engineer">Engineer </string>
        <string name="info_xml_support">Support</string>
        <string name="info_xml_recon">Recon</string>
        <string name="info_xml_vehicles">Voertuigen</string>
@@ -202,7 +202,7 @@
        <string name="info_xml_latest_statusmsg">Laatste status bericht</string>
        <string name="info_xml_platoons">Pelotons</string>
        <string name="info_xml_no_platoons">Je zit niet in een peloton.</string>
-       <string name="info_xml_rank2">" voordat je in rang stijgt"</string>
+       <string name="info_xml_rank2"> voordat je in rang stijgt</string>
        <string name="info_xml_no_unlocks">Geen unlocks gevonden.</string>
        <string name="info_xml_back">Terug</string>
        <string name="info_xml_reload">Ververs</string>
