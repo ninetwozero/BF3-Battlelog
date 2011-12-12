@@ -1,5 +1,6 @@
 package com.ninetwozero.battlelog.asynctasks;
 
+import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,7 +10,6 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.PlatoonView;
 import com.ninetwozero.battlelog.ProfileView;
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 

@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog.datatypes;
 
 
+
 public class WeaponType {
 
 	//Attributes

@@ -121,15 +121,15 @@
         <string name="msg_status_ok">Status updated successfully.</string>
         <string name="msg_status_fail">Your status could not be updated.</string>
         <string name="info_feed_comment_own">&lt;b>{username}&lt;/b> commented on your &lt;b>{action}&lt;/b>.</string>
-        <string name="info_feed_comment_other">&lt;b>{username}&lt;/b> commented on {owner}\' &lt;b>{action}&lt;/b>.</string>
-        <string name="info_feed_comment_other_v2">&lt;b>{username}&lt;/b> commented on {owner}\'s &lt;b>{action}&lt;/b>.</string>
+        <string name="info_feed_comment_other">&lt;b>{username}&lt;/b> commented on &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
+        <string name="info_feed_comment_other_v2">&lt;b>{username}&lt;/b> commented on &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
         <string name="info_feed_comment_own_2">&lt;b>{username}&lt;/b> also commented on your &lt;b>{action}&lt;/b>.</string>
-        <string name="info_feed_comment_other_2">&lt;b>{username}&lt;/b> also commented on {owner}\' &lt;b>{action}&lt;/b>.</string>
-        <string name="info_feed_comment_other_v2_2">&lt;b>{username}&lt;/b> also commented on {owner}\'s &lt;b>{action}&lt;/b>.</string>
+        <string name="info_feed_comment_other_2">&lt;b>{username}&lt;/b> also commented on &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
+        <string name="info_feed_comment_other_v2_2">&lt;b>{username}&lt;/b> also commented on &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
         <string name="info_feed_post_own">&lt;b>{username}&lt;/b> wrote in your &lt;b>Battle feed&lt;/b>.</string>
         <string name="info_feed_hooah_own">&lt;b>{username}&lt;/b> hooahs your &lt;b>{action}&lt;/b>.</string>
-        <string name="info_feed_hooah_other">&lt;b>{username}&lt;/b> hooahs {owner}\' &lt;b>{action}&lt;/b>.</string>
-        <string name="info_feed_hooah_other_2">&lt;b>{username}&lt;/b> hooahs {owner}\'s &lt;b>{action}&lt;/b>.</string>
+        <string name="info_feed_hooah_other">&lt;b>{username}&lt;/b> hooahs &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
+        <string name="info_feed_hooah_other_2">&lt;b>{username}&lt;/b> hooahs &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
         <string name="info_platoon_join_ok">&lt;b>{username}&lt;/b> accepted your request to join &lt;b>{platoon}&lt;/b>.</string>
         <string name="info_platoon_join_no">&lt;b>{username}&lt;/b> denied your request to join &lt;b>{platoon}&lt;/b>.</string>
         <string name="info_platoon_join_request">&lt;b>{username}&lt;/b> wants to join &lt;b>{platoon}&lt;/b>.</string>
@@ -238,7 +238,7 @@
         <string name="info_hint_email">Origin™ Account E-mail</string>
         <string name="info_hint_password">Password</string>
         <string name="label_login">Login</string>
-        <string name="label_save">Save</string>
+        <string name="label_save">Save password</string>
         <string name="info_p_friendship">&lt;b>{username1}&lt;/b> and &lt;b>{username2}&lt;/b> are now friends</string>
         <string name="info_p_forumthread">&lt;b>{username}&lt;/b> created the forum thread &lt;b>\"{thread}\"&lt;/b>.</string>
         <string name="info_p_forumpost">&lt;b>{username}&lt;/b> wrote a forum post in the thread &lt;b>\"{thread}\"&lt;/b>.</string>
@@ -255,4 +255,7 @@
         <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> wrote on the wall for &lt;b>{platoon}&lt;/b>.</string>
         <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> and &lt;b>{username2}&lt;/b> completed &lt;b>\"{level}\"&lt;/b> on &lt;b>{difficulty}&lt;/b>.</string>
         <string name="info_p_award">&lt;b>{username}&lt;/b> recieved a new award: &lt;b>{award}&lt;/b>.</string>
+        
+        <!--  NEW -->
+        <string name="info_new_rank">new rank</string>
 </resources>

@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
+import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -38,7 +39,6 @@ import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class Main extends Activity {

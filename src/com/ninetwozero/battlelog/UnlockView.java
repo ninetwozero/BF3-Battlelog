@@ -15,6 +15,7 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
+import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;

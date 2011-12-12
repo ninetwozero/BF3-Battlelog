@@ -18,6 +18,7 @@ package com.ninetwozero.battlelog.widgets;
 import java.util.ArrayList;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
+import com.ninetwozero.battlelog.R;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -31,7 +32,6 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.Main;
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PostData;

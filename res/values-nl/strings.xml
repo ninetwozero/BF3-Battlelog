@@ -2,8 +2,8 @@
 <!-- 
 	Translator: zAo82 (PS3)
 	Email: sbkg0002@gmail.com
-	Website: --
-	Other: --
+	Website: N/A 
+	Other: N/A
 -->
 <resources>    
    <string name="changelog">
@@ -106,15 +106,15 @@
        <string name="msg_status_fail">Je status is niet bijgewerkt.</string>
        <string name="msg_status_ok">Status succesvol bijgewerkt.</string>
        <string name="info_feed_comment_own">&lt;b>{username}&lt;/b> heeft een bericht achtergelaten op je &lt;b>{action}&lt;/b>.</string>
-       <string name="info_feed_comment_other">&lt;b>{username}&lt;/b> heeft een bericht achtergelaten op {owner}\' &lt;b>{action}&lt;/b>.</string>
-       <string name="info_feed_comment_other_v2">&lt;b>{username}&lt;/b> heeft een bericht achtergelaten op {owner}\'s &lt;b>{action}&lt;/b>.</string>
+       <string name="info_feed_comment_other">&lt;b>{username}&lt;/b> heeft een bericht achtergelaten op &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
+       <string name="info_feed_comment_other_v2">&lt;b>{username}&lt;/b> heeft een bericht achtergelaten op &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
        <string name="info_feed_comment_own_2">&lt;b>{username}&lt;/b> heeft ook gereageerd op je &lt;b>{action}&lt;/b>.</string>
-       <string name="info_feed_comment_other_2">&lt;b>{username}&lt;/b> heeft ook gereageerd op {owner}\'s &lt;b>{action}&lt;/b> feed.</string>
-       <string name="info_feed_comment_other_v2_2">&lt;b>{username}&lt;/b> heeft ook gereageerd op {owner}\'s &lt;b>{action}&lt;/b> feed.</string>
+       <string name="info_feed_comment_other_2">&lt;b>{username}&lt;/b> heeft ook gereageerd op &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b> feed.</string>
+       <string name="info_feed_comment_other_v2_2">&lt;b>{username}&lt;/b> heeft ook gereageerd op &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b> feed.</string>
        <string name="info_feed_post_own">&lt;b>{username}&lt;/b> heeft gereageerd op je &lt;b>Battle feed&lt;/b>.</string>
        <string name="info_feed_hooah_own">&lt;b>{username}&lt;/b> hooahs je &lt;b>{action}&lt;/b>.</string>
-       <string name="info_feed_hooah_other">&lt;b>{username}&lt;/b> hooahs {owner}\'s &lt;b>{action}&lt;/b>.</string>
-       <string name="info_feed_hooah_other_2">&lt;b>{username}&lt;/b> hooahs {owner}\'s &lt;b>{action}&lt;/b>.</string>
+       <string name="info_feed_hooah_other">&lt;b>{username}&lt;/b> hooahs &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
+       <string name="info_feed_hooah_other_2">&lt;b>{username}&lt;/b> hooahs &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
        <string name="info_platoon_join_ok">&lt;b>{username}&lt;/b> heeft je verzoek voor het peloton &lt;b>{platoon}&lt;/b> geaccepteerd.</string>
        <string name="info_platoon_join_no">&lt;b>{username}&lt;/b> heeft je verzoek voor peloton &lt;b>{platoon}&lt;/b> afgewezen. :(</string>
        <string name="info_platoon_join_request">&lt;b>{username}&lt;/b> wil zich aanmelden voor &lt;b>{platoon}&lt;/b>.</string>
@@ -223,7 +223,7 @@
         <string name="info_hint_email">Origin™ Account E-mail adres</string>
         <string name="info_hint_password">Paswoord</string>
         <string name="label_login">Log in</string>
-        <string name="label_save">Bewaar</string>
+        <string name="label_save">Bewaar paswoord</string>
         <string name="info_p_friendship">&lt;b>{username1}&lt;/b> en &lt;b>{username2}&lt;/b> zijn nu vrienden</string>
         <string name="info_p_forumthread">&lt;b>{username}&lt;/b> heeft de volgende draad gepost &lt;b>\"{thread}\"&lt;/b>.</string>
         <string name="info_p_forumpost">&lt;b>{username}&lt;/b> heeft een bericht achter gelaten in &lt;b>\"{thread}\"&lt;/b>.</string>
@@ -240,4 +240,8 @@
         <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> heeft een bericht op de wallpost van &lt;b>{platoon}&lt;/b> achtergelaten.</string>
         <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> en &lt;b>{username2}&lt;/b> hebben &lt;b>\"{level}\"&lt;/b> op &lt;b>{difficulty}&lt;/b> gehaald.</string>
         <string name="info_p_award">&lt;b>{username}&lt;/b> heeft de volgende nieuwe award ontvangen: &lt;b>{award}&lt;/b>.</string>
+
+        <!--  NEW -->
+        <string name="info_new_rank">new rank</string>
+        
 </resources>

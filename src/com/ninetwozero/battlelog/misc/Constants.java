@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog.misc;
 
 
 
+
 public final class Constants {
 	
 	//The base urls

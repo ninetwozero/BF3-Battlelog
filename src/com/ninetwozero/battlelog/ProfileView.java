@@ -15,6 +15,7 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
+import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -35,8 +36,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -53,7 +54,6 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
-import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToPlatoonView;
 import com.ninetwozero.battlelog.asynctasks.AsyncFriendRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
 import com.ninetwozero.battlelog.datatypes.CommentData;

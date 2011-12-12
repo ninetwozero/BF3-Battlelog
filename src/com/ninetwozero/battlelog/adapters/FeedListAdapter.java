@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog.adapters;
 
 import java.util.ArrayList;
 
+import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -25,7 +26,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;

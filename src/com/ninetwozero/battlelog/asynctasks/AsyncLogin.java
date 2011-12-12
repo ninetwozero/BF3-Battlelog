@@ -14,6 +14,7 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
+import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,7 +24,6 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.Dashboard;
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;

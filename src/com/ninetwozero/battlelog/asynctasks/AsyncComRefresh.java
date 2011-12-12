@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog.asynctasks;
 
 import java.util.ArrayList;
 
+import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -27,7 +28,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.FriendListAdapter;
 import com.ninetwozero.battlelog.adapters.RequestListAdapter;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;

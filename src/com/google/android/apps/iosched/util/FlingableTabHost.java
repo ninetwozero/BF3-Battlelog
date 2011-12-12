@@ -1,5 +1,6 @@
 package com.google.android.apps.iosched.util;
 
+import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -9,8 +10,6 @@ import android.view.ViewConfiguration;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TabHost;
-
-import com.ninetwozero.battlelog.R;
 
 
 

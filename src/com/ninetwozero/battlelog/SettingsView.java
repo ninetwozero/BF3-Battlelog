@@ -2,6 +2,7 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
+import com.ninetwozero.battlelog.R;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;

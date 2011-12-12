@@ -20,11 +20,10 @@ package com.ninetwozero.battlelog.misc;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.ninetwozero.battlelog.R;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
-
-import com.ninetwozero.battlelog.R;
 
 
 public class PublicUtils {

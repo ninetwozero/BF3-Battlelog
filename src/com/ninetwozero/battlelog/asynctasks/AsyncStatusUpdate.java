@@ -15,13 +15,13 @@
 package com.ninetwozero.battlelog.asynctasks;
 
 
+import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;

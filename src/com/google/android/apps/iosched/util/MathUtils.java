@@ -17,6 +17,7 @@
 package com.google.android.apps.iosched.util;
 
 
+
 /**
  * Math utility functions.
  */

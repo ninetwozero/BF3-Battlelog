@@ -14,6 +14,7 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
+import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -22,7 +23,6 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;

@@ -16,9 +16,9 @@ package com.ninetwozero.battlelog.misc;
 
 import java.util.HashMap;
 
+import com.ninetwozero.battlelog.R;
 import android.content.Context;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PlatformData;
 import com.ninetwozero.battlelog.datatypes.VehicleType;
 import com.ninetwozero.battlelog.datatypes.WeaponType;

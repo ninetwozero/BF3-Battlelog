@@ -14,6 +14,7 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
+import com.ninetwozero.battlelog.R;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -24,7 +25,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.Dashboard;
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;

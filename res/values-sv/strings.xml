@@ -108,15 +108,15 @@
         <string name="msg_status_ok">Din status har uppdaterats.</string>
         <string name="msg_status_fail">Din status kunde inte uppdateras.</string>
         <string name="info_feed_comment_own">&lt;b>{username}&lt;/b> kommenterade på din/ditt &lt;b>{action}&lt;/b>.</string>
-        <string name="info_feed_comment_other">&lt;b>{username}&lt;/b> kommenterade på {owner}s &lt;b>{action}&lt;/b>.</string>
-        <string name="info_feed_comment_other_v2">&lt;b>{username}&lt;/b> kommenterade på {owner}s &lt;b>{action}&lt;/b>.</string>
+        <string name="info_feed_comment_other">&lt;b>{username}&lt;/b> kommenterade på &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
+        <string name="info_feed_comment_other_v2">&lt;b>{username}&lt;/b> kommenterade på &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
         <string name="info_feed_comment_own_2">&lt;b>{username}&lt;/b> kommenterade också på din/ditt &lt;b>{action}&lt;/b>.</string>
-        <string name="info_feed_comment_other_2">&lt;b>{username}&lt;/b> kommenterade också på {owners}s &lt;b>{action}&lt;/b>.</string>
-        <string name="info_feed_comment_other_v2_2">&lt;b>{username}&lt;/b> kommenterade också på {owners}s &lt;b>{action}&lt;/b>.</string>
+        <string name="info_feed_comment_other_2">&lt;b>{username}&lt;/b> kommenterade också på &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
+        <string name="info_feed_comment_other_v2_2">&lt;b>{username}&lt;/b> kommenterade också på &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
         <string name="info_feed_post_own">&lt;b>{username}&lt;/b> skrev i ditt &lt;b>krigsflöde&lt;/b>.</string>
         <string name="info_feed_hooah_own">&lt;b>{username}&lt;/b> gillade din/ditt &lt;b>{action}&lt;/b>.</string>
-        <string name="info_feed_hooah_other">&lt;b>{username}&lt;/b> gillade {owner}s &lt;b>{action}&lt;/b>.</string>
-        <string name="info_feed_hooah_other_2">&lt;b>{username}&lt;/b> gillade {owner}s &lt;b>{action}&lt;/b>.</string>
+        <string name="info_feed_hooah_other">&lt;b>{username}&lt;/b> gillade &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
+        <string name="info_feed_hooah_other_2">&lt;b>{username}&lt;/b> gillade &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
         <string name="info_platoon_join_ok">&lt;b>{username}&lt;/b> accepterade din inbjudan till &lt;b>{platoon}&lt;/b>.</string>
         <string name="info_platoon_join_no">&lt;b>{username}&lt;/b> nekade din inbjudan till &lt;b>{platoon}&lt;/b>.</string>
         <string name="info_platoon_join_request">&lt;b>{username}&lt;/b> vill gå med i din pluton &lt;b>{platoon}&lt;/b>.</string>
@@ -225,7 +225,7 @@
         <string name="info_hint_email">E-post för Origin™</string>
         <string name="info_hint_password">Lösenord</string>
         <string name="label_login">Logga in</string>
-        <string name="label_save">Spara</string>
+        <string name="label_save">Spara lösenord</string>
         <string name="info_p_friendship">&lt;b>{username1}&lt;/b> och &lt;b>{username2}&lt;/b> är numera vänner.</string>
         <string name="info_p_forumthread">&lt;b>{username}&lt;/b> skapade forumtråden &lt;b>\"{thread}\"&lt;/b>.</string>
         <string name="info_p_forumpost">&lt;b>{username}&lt;/b> skrev ett inlägg i forumtråden &lt;b>\"{thread}\"&lt;/b>.</string>
@@ -242,4 +242,8 @@
         <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> skrev på väggen för &lt;b>{platoon}&lt;/b>.</string>
         <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> och &lt;b>{username2}&lt;/b> klarade &lt;b>\"{level}\"&lt;/b> på &lt;b>{difficulty}&lt;/b>.</string>
         <string name="info_p_award">&lt;b>{username}&lt;/b> fick en ny belöning: &lt;b>{award}&lt;/b>.</string>
+        
+        <!--  NEW -->
+        <string name="info_new_rank">nya rank</string>
+            
 </resources>

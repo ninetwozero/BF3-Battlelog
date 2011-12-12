@@ -16,9 +16,9 @@ package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
 
+import com.ninetwozero.battlelog.R;
 import android.content.Context;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ProfileInformation {

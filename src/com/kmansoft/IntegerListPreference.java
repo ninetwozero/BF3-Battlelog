@@ -1,5 +1,6 @@
 package com.kmansoft;
 
+import com.ninetwozero.battlelog.R;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,8 +9,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-
-import com.ninetwozero.battlelog.R;
 
 public class IntegerListPreference extends DialogPreference {
 	private CharSequence[] mEntries;

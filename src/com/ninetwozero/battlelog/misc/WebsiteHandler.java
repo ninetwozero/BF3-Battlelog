@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
@@ -26,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,7 +38,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
@@ -1806,7 +1805,7 @@ public class WebsiteHandler {
 				}
 				
 				//Do we need the image?
-				Bitmap image ;
+				Bitmap image;
 				if( loadImage ) { 
 					
 					image = rh.getImageFromStream( 
@@ -2326,35 +2325,31 @@ public class WebsiteHandler {
 					
 					//Hmm, where is the userInfo?					
 					if( currObj.has( "bestPersonaId" ) ) { currUser = personaList.getJSONObject( currObj.getString( "bestPersonaId" ) ); }
-					else { 
-						
-						if( !currObj.getString( "personaId" ).equals( "0" ) ) {
+					else if( !currObj.getString( "personaId" ).equals( "0" ) ) {
 
-							currUser = personaList.getJSONObject( currObj.getString( "personaId" ) ); 
+						currUser = personaList.getJSONObject( currObj.getString( "personaId" ) ); 
 						
-						} else {
+					} else {
 
-							Log.d(Constants.DEBUG_TAG, "No personaId - oh noes!");
-							//Create a new "stats item"
-							arrayTop.add(
-									
-								new PlatoonTopStatsItem(
-							
-									"N/A",
-									0,
-									null
+						Log.d(Constants.DEBUG_TAG, "No personaId - oh noes!");
+						//Create a new "stats item"
+						arrayTop.add(
 								
-								)
-								
-							);
+							new PlatoonTopStatsItem(
+						
+								"N/A",
+								0,
+								null
 							
-							//Continue
-							continue;
+							)
 							
-						}
+						);
+						
+						//Continue
+						continue;
 						
 					}
-
+					
 					//Store the gravatar
 					tempGravatarHash = currUser.optString( "gravatarMd5", "" );
 					
@@ -2412,7 +2407,7 @@ public class WebsiteHandler {
 						
 				);
 				Collections.sort( arrayTop, new TopStatsComparator() );
-
+				Log.d(Constants.DEBUG_TAG, "Returning!");
 				//Return it now!!
 				return new PlatoonStats(
 				

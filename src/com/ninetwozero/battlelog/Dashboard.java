@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
+import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -1102,7 +1103,7 @@ public class Dashboard extends TabActivity {
 	
 	public void onCOMRowClick(AdapterView<?> a, View view, int position, long id) {
 	
-		startActivity( new Intent(this, ProfileView.class).putExtra( "profile", (ProfileData) a.getItemAtPosition( position )));
+		openContextMenu( view );
 		
 	}
 	

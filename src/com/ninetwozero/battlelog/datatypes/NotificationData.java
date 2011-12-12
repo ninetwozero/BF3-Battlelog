@@ -1,8 +1,7 @@
 package com.ninetwozero.battlelog.datatypes;
 
-import android.content.Context;
-
 import com.ninetwozero.battlelog.R;
+import android.content.Context;
 
 
 
@@ -238,7 +237,10 @@ public class NotificationData {
 				 
 			case 9: //Battle report?
 				return c.getResources().getString( R.string.info_battle_report );
-				 
+			
+			case 11:
+				return c.getResources().getString( 0 );
+			
 			case 20: //Platoon wall post
 				return c.getResources().getString( R.string.info_platoon_wall_post );
 				 

@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog.adapters;
 
 import java.util.ArrayList;
 
+import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 
 public class PlatoonUserListAdapter extends BaseAdapter {

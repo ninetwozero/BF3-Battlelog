@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog.asynctasks;
 
 import java.util.ArrayList;
 
+import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -23,7 +24,6 @@ import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.CommentListAdapter;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
