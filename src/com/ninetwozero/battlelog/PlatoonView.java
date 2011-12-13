@@ -56,8 +56,10 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.adapters.PlatoonMemberData;
 import com.ninetwozero.battlelog.adapters.PlatoonUserListAdapter;
+import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
 import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonRequest;
+import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonRespond;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
@@ -1153,6 +1155,22 @@ public class PlatoonView extends TabActivity {
 		//CREATE
 		return builder.create();
 		
+	}
+	
+	public void onRequestActionClick(View v) {
+
+		Toast.makeText(this, "Disabled.", Toast.LENGTH_SHORT).show();
+		
+		/* TODO: Check with other UID (non-friend) 
+		new AsyncPlatoonRespond(
+				
+			this, 
+			platoonData.getId(),
+			((PlatoonMemberData)((View)v.getParent()).getTag()).getProfileId(),
+			( v.getId() == R.id.button_accept )
+		
+		).execute(sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "")); 
+		*/
 	}
 
 }
