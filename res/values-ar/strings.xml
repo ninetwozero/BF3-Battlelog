@@ -243,5 +243,15 @@
                     
         <!--  NEW -->
         <string name="info_new_rank">new rank</string>
+        <string name="title_main_menu">BF3 Battlelog - Main menu</string>
+        <string name="title_profile">BF3 Battlelog - Profile</string>
+        <string name="title_platoon">BF3 Battlelog - Platoon</string>
+        <string name="title_performance">BF3 Battlelog - Your performance</string>
+        <string name="title_chat">BF3 Battlelog - Chatting with ...</string>
+        <string name="title_comments">BF3 Battlelog - Comments</string>
+        <string name="title_comparing_battle_scars">BF3 Battlelog - Comparing battle scars</string>
+        <string name="title_unlocks">BF3 Battlelog - Your upcoming unlocks</string>
+        <string name="title_settings">BF3 Battlelog - Settings</string>
+        <string name="title_forum">BF3 Battlelog - Forum</string>
             
 </resources>

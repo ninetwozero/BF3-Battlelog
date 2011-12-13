@@ -2,9 +2,9 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;

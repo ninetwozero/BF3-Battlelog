@@ -14,6 +14,8 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import com.ninetwozero.battlelog.R;
+
 
 
 
@@ -57,6 +59,7 @@ public final class Constants {
 	public static final String URL_PLATOON_STATS = URL_MAIN + "platoon/platoonMemberStats/{PLATOON_ID}/2/{PLATFORM_ID}/";
 	public static final String URL_PLATOON_PROMOTE = URL_MAIN + "platoon/promotemember/{PLATOON_ID}/{UID}/";
 	public static final String URL_PLATOON_APPLY = URL_MAIN + "platoon/applyformembership/";
+	public static final String URL_PLATOON_RESPOND = URL_MAIN + "platoon/applyingactions/{PLATOON_ID}/";
 	public static final String URL_PLATOON_LEAVE = URL_MAIN + "platoon/leave/";
 	public static final String URL_PLATOON_FEED = URL_MAIN + "feed/platoonevents/{PLATOON_ID}/?start={NUMSTART}";
 	
@@ -87,6 +90,9 @@ public final class Constants {
 	public static final String URL_STATS_ASSIGNMENTS = URL_MAIN + "assignmentsPopulateStats/{PID}/{PLATFORM_ID}/";
 	public static final String URL_STATS_ALL = URL_MAIN + "indexstats/{PID}/{PLATFORM_NAME}/";
 	
+	//URL to FORUM
+	public static final String URL_FORUM = URL_MAIN + "forum/";
+	
 	//Fields needed for the posts fields
 	public static final String[] FIELD_NAMES_LOGIN = new String[] {"email", "password", "redirect", "submit"};
 	public static final String[] FIELD_VALUES_LOGIN = new String[] {null, null, "", "Sign+in"};
@@ -102,6 +108,9 @@ public final class Constants {
 
 	public static final String[] FIELD_NAMES_PLATOON_APPLY = new String[] { "platoonId", "post-check-sum" };
 	public static final String[] FIELD_VALUES_PLATOON_APPLY = new String[] { null, null };
+	
+	public static final String[] FIELD_NAMES_PLATOON_RESPOND = new String[] { "apply-action", "userIds[]", "post-check-sum", "accept", "deny" };
+	public static final String[] FIELD_VALUES_PLATOON_RESPOND = new String[] { "", null, null, "accept", "deny" };
 	
 	public static final String[] FIELD_NAMES_PLATOON_LEAVE = new String[] { "platoonId", "userId", "post-check-sum" };
 	public static final String[] FIELD_VALUES_PLATOON_LEAVE = new String[] { null, null, null };

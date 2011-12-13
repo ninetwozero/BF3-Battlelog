@@ -19,26 +19,27 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.PlatoonView;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class AsyncComRequest extends AsyncTask<String, Integer, Boolean> {
+public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
 
 	//Attribute
-	Context context;
-	SharedPreferences sharedPreferences;
-	long profileId;
-	boolean response;
-	AsyncComRefresh refreshMethod;
+	private Context context;
+	private SharedPreferences sharedPreferences;
+	private long platoonId, profileId;
+	private boolean response;
 
 	//Constructor
-	public AsyncComRequest( Context c, long p, AsyncComRefresh acr, boolean r ) { 
+	public AsyncPlatoonRespond( Context c, long plId, long pId, boolean r ) { 
 		
 		this.context = c;
-		this.profileId = p;
+		this.platoonId = plId;
+		this.profileId = pId;
 		this.response = r;
-		this.refreshMethod = acr;
+	
 	}	
 	
 	@Override
@@ -50,7 +51,7 @@ public class AsyncComRequest extends AsyncTask<String, Integer, Boolean> {
 		try {
 		
 			//Let's get this!!
-			return WebsiteHandler.answerFriendRequest( profileId, response, arg0[0] );
+			return WebsiteHandler.answerPlatoonRequest( platoonId, profileId, response, arg0[0] );
 			
 			
 		} catch ( WebsiteHandlerException e ) {
@@ -65,8 +66,8 @@ public class AsyncComRequest extends AsyncTask<String, Integer, Boolean> {
 	protected void onPostExecute(Boolean results) {
 		
 		//Let the user know and then refresh!
-		Toast.makeText( context, "Friend request responded to.", Toast.LENGTH_SHORT).show();				
-		refreshMethod.execute();
+		Toast.makeText( context, "Join request responded to.", Toast.LENGTH_SHORT).show();				
+		if( context != null ) { ((PlatoonView) context).reloadLayout(); }
 		return;
 		
 	}	

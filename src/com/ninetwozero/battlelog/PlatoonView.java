@@ -15,7 +15,6 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -55,6 +54,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
+import com.ninetwozero.battlelog.adapters.PlatoonMemberData;
 import com.ninetwozero.battlelog.adapters.PlatoonUserListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
 import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonRequest;
@@ -66,7 +66,6 @@ import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
 import com.ninetwozero.battlelog.datatypes.PlatoonStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonStatsItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonTopStatsItem;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -599,7 +598,7 @@ public class PlatoonView extends TabActivity {
 								new Intent(CONTEXT, ProfileView.class).putExtra(
 										
 									"profile", 
-									(ProfileData) v.getTag() 
+									(PlatoonMemberData) v.getTag() 
 									
 								)
 								

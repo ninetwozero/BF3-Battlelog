@@ -245,5 +245,15 @@
         
         <!--  NEW -->
         <string name="info_new_rank">nya rank</string>
+        <string name="title_main_menu">BF3 Battlelog - Huvudmenyn</string>
+        <string name="title_profile">BF3 Battlelog - Profil</string>
+        <string name="title_platoon">BF3 Battlelog - Plutonprofil</string>
+        <string name="title_performance">BF3 Battlelog - Din prestation</string>
+        <string name="title_chat">BF3 Battlelog - Chattar med ...</string>
+        <string name="title_comments">BF3 Battlelog - Kommentarer</string>
+        <string name="title_comparing_battle_scars">BF3 Battlelog - Jämför krigsärr</string>
+        <string name="title_unlocks">BF3 Battlelog - Dina kommande upplåsningar</string>
+        <string name="title_settings">BF3 Battlelog - Inställningar</string>
+        <string name="title_forum">BF3 Battlelog - Forum</string>
             
 </resources>

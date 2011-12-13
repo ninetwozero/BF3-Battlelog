@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;

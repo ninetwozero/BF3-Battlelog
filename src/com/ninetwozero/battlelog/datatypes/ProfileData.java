@@ -16,14 +16,15 @@ package com.ninetwozero.battlelog.datatypes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.ninetwozero.battlelog.R;
 
 
 public class ProfileData implements Parcelable {
 
 	//Attributes
-	private String accountName, personaName, gravatarHash;
-	private long personaId, profileId, platformId;
-	private boolean isPlaying, isOnline;
+	protected String accountName, personaName, gravatarHash;
+	protected long personaId, profileId, platformId;
+	protected boolean isPlaying, isOnline;
 	
 	//Constructs
 	public ProfileData(Parcel in) { readFromParcel(in); }

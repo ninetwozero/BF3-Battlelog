@@ -29,13 +29,14 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 public class PlatoonUserListAdapter extends BaseAdapter {
 	
 	//Attributes
-	Context context;
-	ArrayList<ProfileData> profileArray;
-	LayoutInflater layoutInflater;
-	TextView textUser;
+	private Context context;
+	private ArrayList<PlatoonMemberData> profileArray;
+	private LayoutInflater layoutInflater;
+	private TextView textUser;
+	private int lastSeparator;
 	
 	//Construct
-	public PlatoonUserListAdapter(Context c, ArrayList<ProfileData> p, LayoutInflater l) {
+	public PlatoonUserListAdapter(Context c, ArrayList<PlatoonMemberData> p, LayoutInflater l) {
 	
 		context = c;
 		profileArray = p;
@@ -55,11 +56,20 @@ public class PlatoonUserListAdapter extends BaseAdapter {
 	    
 		if( getItem(position).getAccountName().startsWith( "0000000" ) ) {
 			
-			return 1;
+			if( getItem(position).getAccountName().equals("00000007") ) {
+				
+				lastSeparator = position;
+				
+			}
+			return 0;
 		
+		} else if( lastSeparator > 0 && position > lastSeparator ) {
+			
+			return 1;
+			
 		} else {
 			
-			return 0;
+			return 2;
 		
 		}
 	
@@ -68,12 +78,12 @@ public class PlatoonUserListAdapter extends BaseAdapter {
 	@Override
 	public int getViewTypeCount() {
 	   
-		return 2;
+		return 3;
 	
 	}
 
 	@Override
-	public ProfileData getItem( int position ) {
+	public PlatoonMemberData getItem( int position ) {
 
 		return this.profileArray.get( position );
 
@@ -96,10 +106,10 @@ public class PlatoonUserListAdapter extends BaseAdapter {
 	public View getView( int position, View convertView, ViewGroup parent ) {
 
 		//Get the current item
-		ProfileData currentProfile = getItem(position);
+		PlatoonMemberData currentProfile = getItem(position);
 		
 		//Let's see what we found
-		if( getItemViewType(position) == 1 ) {
+		if( getItemViewType(position) == 0 ) {
 			
 			//Can we recycle?
 			if( convertView == null ) {
@@ -112,6 +122,21 @@ public class PlatoonUserListAdapter extends BaseAdapter {
 			((TextView) convertView.findViewById( R.id.text_title )).setText( currentProfile.getPersonaName() );
 			convertView.setOnClickListener( null );
 			convertView.setOnLongClickListener( null );
+			
+		} else if( getItemViewType(position) == 1 ) {
+			
+			//Can we recycle
+			if( convertView == null ) {
+
+				convertView = layoutInflater.inflate( R.layout.list_item_request, parent, false);
+				
+			} 
+			
+			//Set the TextViews
+			textUser = (TextView) convertView.findViewById( R.id.text_user );
+			textUser.setText( currentProfile.getAccountName() );
+			
+			convertView.setTag( currentProfile );
 			
 		} else {
 		
@@ -133,7 +158,7 @@ public class PlatoonUserListAdapter extends BaseAdapter {
 		return convertView;
 	}
 	
-	public void setProfileArray( ArrayList<ProfileData> pa ) { this.profileArray = pa; }
+	public void setProfileArray( ArrayList<PlatoonMemberData> pa ) { this.profileArray = pa; }
 
 	
 }

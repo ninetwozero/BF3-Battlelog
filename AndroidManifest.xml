@@ -28,52 +28,57 @@
             </intent-filter>
         </activity>
         <activity
-            android:label="BF3 Battlelog - Main menu"
+            android:label="@string/title_main_menu"
             android:name=".Dashboard"
             android:orientation="vertical"
           	android:configChanges="orientation"
           	android:windowSoftInputMode="stateHidden"
         />
         <activity
-            android:label="BF3 Battlelog - Profile"
+            android:label="@string/title_profile"
             android:name=".ProfileView"
           	android:configChanges="orientation"
           	android:launchMode="singleTask"
 		/>
         <activity
-            android:label="BF3 Battlelog - Platoon"
+            android:label="@string/title_platoon"
             android:name=".PlatoonView"
           	android:configChanges="orientation"
         />
         <activity
-            android:label="BF3 Battlelog - Your performance"
+            android:label="@string/title_performance"
             android:name=".StatsView"
           	android:configChanges="orientation"
         />
         <activity
-            android:label="BF3 Battlelog - Chatting with ..."
+            android:label="@string/title_chat"
             android:name=".ChatView"
           	android:configChanges="orientation"
           	android:windowSoftInputMode="adjustResize"
         />
         <activity
-            android:label="BF3 Battlelog - Comments"
+            android:label="@string/title_comments"
             android:name=".CommentView"
           	android:configChanges="orientation"
           	android:windowSoftInputMode="adjustResize"
         />
         <activity
-            android:label="BF3 Battlelog - Comparing battle scars"
+            android:label="@string/title_comparing_battle_scars"
             android:name=".CompareView"
           	android:configChanges="orientation"
         />
         <activity
-            android:label="BF3 Battlelog - Your upcoming unlocks"
+            android:label="@string/title_forum"
+            android:name=".ForumView"
+          	android:configChanges="orientation"
+        />
+        <activity
+            android:label="@string/title_unlocks"
             android:name=".UnlockView"
           	android:configChanges="orientation"
         />
         <activity
-            android:label="BF3 Battlelog - Settings"
+            android:label="@string/title_settings"
             android:name=".SettingsView"
           	android:configChanges="orientation"
           	android:theme="@android:style/Theme.Light"

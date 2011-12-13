@@ -25,7 +25,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,6 +37,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.adapters.PlatoonMemberData;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
@@ -95,19 +96,23 @@ public class WebsiteHandler {
     			//Did we find it?
     			if( startPosition == -1 ) {
     				
-    				tempString[0] = httpContent.substring( 
-    						
-    					httpContent.indexOf( 
-    							
-    						Constants.ELEMENT_ERROR_MESSAGE 
-    						
-    					) 
+    				//Update the position
+    				startPosition = httpContent.indexOf( Constants.ELEMENT_ERROR_MESSAGE ); 
+    				
+    				//Is it -1 again?
+    				if( startPosition == -1 ) {
+    				
+    					Toast.makeText( context, "The website won't let us in. Please try again later.", Toast.LENGTH_SHORT).show();
     					
-    				).replace( "</div>" , "" ).replace( Constants.ELEMENT_ERROR_MESSAGE, "" );
-        				
-       				Toast.makeText( context, tempString[0], Toast.LENGTH_SHORT).show();
-    				return null;
+    				} else {
+    				
+	    				tempString[0] = httpContent.substring( startPosition ).replace( "</div>" , "" ).replace( Constants.ELEMENT_ERROR_MESSAGE, "" );	
+	    				Toast.makeText( context, tempString[0], Toast.LENGTH_SHORT).show();
+	    				
+    				}
 
+    				return null;
+    				
     			}
     			
     			//Cut out the appropriate bits (<a class="SOME CLASS HERE" href="A LONG LINK HERE">NINETWOZERO
@@ -1167,6 +1172,76 @@ public class WebsiteHandler {
 		
 	}
 	
+	public static boolean answerPlatoonRequest( long plId, long pId, Boolean accepting, String checksum) throws WebsiteHandlerException {
+
+		try {
+			
+			//Let's login everybody!
+			RequestHandler wh = new RequestHandler();
+			String httpContent;
+		
+			//Modifier
+			int modifier = ( accepting )? 0 : 1;
+			
+			httpContent = wh.post( 
+					
+				Constants.URL_PLATOON_RESPOND.replace( 
+					
+					"{PLATOON_ID}", 
+					plId + ""
+				), 
+				new PostData[] { 
+				
+					new PostData(
+						
+						Constants.FIELD_NAMES_PLATOON_RESPOND[0],
+						""
+					
+					),
+					new PostData(
+							
+						Constants.FIELD_NAMES_PLATOON_RESPOND[1],
+						pId + ""
+						
+					
+					),
+					new PostData(
+							
+						Constants.FIELD_NAMES_PLATOON_RESPOND[2],
+						checksum
+					
+					),
+					new PostData(
+							
+						Constants.FIELD_NAMES_PLATOON_RESPOND[3+modifier],
+						Constants.FIELD_VALUES_PLATOON_RESPOND[3+modifier]
+					
+					)
+					
+				}, 
+				0
+
+			);
+			
+			//Did we manage?
+			if( httpContent != null && !httpContent.equals( "" ) ) {
+			
+				return true;
+				
+			} else {
+			
+				throw new WebsiteHandlerException("Could not respond to the platoon request.");
+			
+			}	
+		
+		} catch ( RequestHandlerException ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+		
+	}
+	
 	public static Long getChatId(long profileId, String checksum) throws WebsiteHandlerException {
 		
 		try {
@@ -1511,13 +1586,13 @@ public class WebsiteHandler {
 		
 	}
 
-	public static ArrayList<ProfileData> getFansForPlatoon(long platoonId) throws WebsiteHandlerException {
+	public static ArrayList<PlatoonMemberData> getFansForPlatoon(long platoonId) throws WebsiteHandlerException {
 		
 		try {
 			
 			//Let's go!
 			RequestHandler rh = new RequestHandler();
-			ArrayList<ProfileData> fans = new ArrayList<ProfileData>();
+			ArrayList<PlatoonMemberData> fans = new ArrayList<PlatoonMemberData>();
 			String httpContent;
 
 			//Do the request
@@ -1544,14 +1619,15 @@ public class WebsiteHandler {
 					//Store him in the ArrayList
 					fans.add( 
 						
-						new ProfileData(
+						new PlatoonMemberData(
 	
 							tempObject.getString( "username" ),
 							null,
 							Long.parseLong(tempObject.getString( "userId" ) ),
 							0,
 							0,
-							tempObject.optString( "gravatarMd5", "" )
+							tempObject.optString( "gravatarMd5", "" ),
+							0
 						)				
 							
 					);
@@ -1564,7 +1640,7 @@ public class WebsiteHandler {
 			if( fans.size() > 0 ) {
 			
 				//Add a header just 'cause we can
-				fans.add( new ProfileData("00000000", "Loyal fans", 0, 0, 0, null) );
+				fans.add( new PlatoonMemberData("00000000", "Loyal fans", 0, 0, 0, null, 0) );
 				
 				//a-z please!
 				Collections.sort( fans, new ProfileComparator() );
@@ -1588,16 +1664,16 @@ public class WebsiteHandler {
 			//Let's go!
 			RequestHandler rh = new RequestHandler();
 			ArrayList<FeedItem> feedItemArray = new ArrayList<FeedItem>();
-			ArrayList<ProfileData> fans = new ArrayList<ProfileData>(); 
-			ArrayList<ProfileData> members = new ArrayList<ProfileData>();
+			ArrayList<PlatoonMemberData> fans = new ArrayList<PlatoonMemberData>(); 
+			ArrayList<PlatoonMemberData> members = new ArrayList<PlatoonMemberData>();
 			PlatoonStats stats = null;
 			
 			//Arrays to divide the users in
-			ArrayList<ProfileData> founderMembers = new ArrayList<ProfileData>();
-			ArrayList<ProfileData> adminMembers = new ArrayList<ProfileData>();
-			ArrayList<ProfileData> regularMembers = new ArrayList<ProfileData>();
-			ArrayList<ProfileData> invitedMembers = new ArrayList<ProfileData>();
-			ArrayList<ProfileData> requestMembers = new ArrayList<ProfileData>();
+			ArrayList<PlatoonMemberData> founderMembers = new ArrayList<PlatoonMemberData>();
+			ArrayList<PlatoonMemberData> adminMembers = new ArrayList<PlatoonMemberData>();
+			ArrayList<PlatoonMemberData> regularMembers = new ArrayList<PlatoonMemberData>();
+			ArrayList<PlatoonMemberData> invitedMembers = new ArrayList<PlatoonMemberData>();
+			ArrayList<PlatoonMemberData> requestMembers = new ArrayList<PlatoonMemberData>();
 			
 			//Get the content
 			String httpContent = rh.get( Constants.URL_PLATOON.replace( "{PLATOON_ID}", platoonData.getId() + "" ), 1 );
@@ -1614,12 +1690,12 @@ public class WebsiteHandler {
 				JSONArray feedItems = contextObject.getJSONArray( "feed" );
 				JSONObject currItem;
 				
-				//Temporary var
-				ProfileData tempProfile;
-				
 				//Let's iterate over the members
 				JSONArray idArray = memberArray.names();
 				for( int counter = 0; counter < idArray.length(); counter++ ) {
+				
+					//Temporary var
+					PlatoonMemberData tempProfile;
 					
 					//Get the current item
 					currItem = memberArray.optJSONObject( idArray.getString( counter ) );
@@ -1635,7 +1711,7 @@ public class WebsiteHandler {
 					//If we have a persona >> add it to the members
 					if( !currItem.isNull( "persona" ) ) {
 
-						tempProfile = new ProfileData(
+						tempProfile = new PlatoonMemberData(
 
 							currItem.getJSONObject( "user" ).getString( "username" ),
 							currItem.getJSONObject( "persona" ).getString( "personaName" ),
@@ -1644,7 +1720,8 @@ public class WebsiteHandler {
 							profileCommonObject.getLong( "platform" ),
 							currItem.optString( "gravatarMd5", "" ),
 							currItem.getJSONObject( "user" ).getJSONObject("presence").getBoolean( "isOnline" ),
-							currItem.getJSONObject( "user" ).getJSONObject("presence").getBoolean( "isPlaying" )
+							currItem.getJSONObject( "user" ).getJSONObject("presence").getBoolean( "isPlaying" ),
+							currItem.getInt("membershipLevel")
 								
 						);
 						
@@ -1697,11 +1774,11 @@ public class WebsiteHandler {
 					//Plural?
 					if( founderMembers.size() > 1 ) {
 						
-						members.add( new ProfileData("00000000", "Founders", 0, 0, 0, null) );
+						members.add( new PlatoonMemberData("00000000", "Founders", 0, 0, 0, null, 0) );
 					
 					} else { 
 						
-						members.add( new ProfileData("00000001", "Founder", 0, 0, 0, null) );
+						members.add( new PlatoonMemberData("00000001", "Founder", 0, 0, 0, null, 0) );
 						
 					}
 			
@@ -1715,11 +1792,11 @@ public class WebsiteHandler {
 					//Plural?
 					if( adminMembers.size() > 1 ) {
 						
-						members.add( new ProfileData("00000002", "Admins", 0, 0, 0, null) );
+						members.add( new PlatoonMemberData("00000002", "Admins", 0, 0, 0, null, 0) );
 					
 					} else { 
 						
-						members.add( new ProfileData("00000003", "Admin", 0, 0, 0, null) );
+						members.add( new PlatoonMemberData("00000003", "Admin", 0, 0, 0, null, 0) );
 						
 					}
 			
@@ -1733,11 +1810,11 @@ public class WebsiteHandler {
 					//Plural?
 					if( regularMembers.size() > 1 ) {
 						
-						members.add( new ProfileData("00000004", "Regular members", 0, 0, 0, null) );
+						members.add( new PlatoonMemberData("00000004", "Regular members", 0, 0, 0, null, 0) );
 					
 					} else { 
 						
-						members.add( new ProfileData("00000005", "Regular member", 0, 0, 0, null) );
+						members.add( new PlatoonMemberData("00000005", "Regular member", 0, 0, 0, null, 0) );
 						
 					}
 			
@@ -1753,7 +1830,7 @@ public class WebsiteHandler {
 					if( invitedMembers.size() > 0 ) {
 						
 						//Just add them
-						members.add( new ProfileData("00000006", "Invited to join", 0, 0, 0, null) );
+						members.add( new PlatoonMemberData("00000006", "Invited to join", 0, 0, 0, null, 0) );
 						members.addAll( invitedMembers );
 						
 					}
@@ -1761,7 +1838,7 @@ public class WebsiteHandler {
 					if( requestMembers.size() > 0 ) {
 	
 						//Just add them
-						members.add( new ProfileData("00000007", "Requested to join", 0, 0, 0, null) );
+						members.add( new PlatoonMemberData("00000007", "Requested to join", 0, 0, 0, null, 0) );
 						members.addAll( requestMembers);
 	
 					}
@@ -2458,8 +2535,11 @@ public class WebsiteHandler {
 				
 				//Each loop is an object
 				currItem = jsonArray.getJSONObject( i );
-				ownerObject = currItem.getJSONObject( "owner" );
-
+				
+				//If we get a null, we do it my way!
+				ownerObject = currItem.optJSONObject( "owner" );
+				if( ownerObject == null ) { continue; }
+				
 				//Let's get the comments
 				if( currItem.getInt("numComments") > 2 ) {
 					

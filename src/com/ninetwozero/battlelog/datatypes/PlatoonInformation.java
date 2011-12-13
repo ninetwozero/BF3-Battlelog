@@ -18,6 +18,9 @@ import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.adapters.PlatoonMemberData;
+
 public class PlatoonInformation {
 
 	//Attributes
@@ -27,7 +30,7 @@ public class PlatoonInformation {
 	private Bitmap image;
 	private boolean visible, isMember, isAdmin, allowNewMembers;
 	private ArrayList<FeedItem> feedItems;
-	private ArrayList<ProfileData> members, fans;
+	private ArrayList<PlatoonMemberData> members, fans;
 	private PlatoonStats stats;
 	
 	//Construct(s)
@@ -37,7 +40,7 @@ public class PlatoonInformation {
 		long i, long d,
 		String n, String t, String p, String w,
 		Bitmap im, boolean v, boolean ism, boolean isa, boolean a,
-		ArrayList<FeedItem> f, ArrayList<ProfileData> m, ArrayList<ProfileData> fa,
+		ArrayList<FeedItem> f, ArrayList<PlatoonMemberData> m, ArrayList<PlatoonMemberData> fa,
 		PlatoonStats st
 		
 	) {
@@ -84,8 +87,8 @@ public class PlatoonInformation {
 	public boolean isVisible() { return this.visible; }
 	public boolean isOpenForNewMembers() { return this.allowNewMembers; }
 	public ArrayList<FeedItem> getFeedItems() { return this.feedItems; }
-	public ArrayList<ProfileData> getMembers() { return this.members; }
-	public ArrayList<ProfileData> getFans() { return this.fans; }
+	public ArrayList<PlatoonMemberData> getMembers() { return this.members; }
+	public ArrayList<PlatoonMemberData> getFans() { return this.fans; }
 	public PlatoonStats getStats() { return this.stats; }
 
 }

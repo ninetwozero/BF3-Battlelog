@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctasks.AsyncServiceTask;
 import com.ninetwozero.battlelog.misc.Constants;
 
@@ -87,7 +88,7 @@ public class BattlelogService extends Service {
 	    			
 	    		}, 
 	    		0, 
-	    		BattlelogService.sharedPreferences.getInt( Constants.SP_BL_INTERVAL_SERVICE, Constants.MINUTE_IN_SECONDS )*1000
+	    		BattlelogService.sharedPreferences.getInt( Constants.SP_BL_INTERVAL_SERVICE, Constants.HOUR_IN_SECONDS )*1000
 			);
 		
 		}
