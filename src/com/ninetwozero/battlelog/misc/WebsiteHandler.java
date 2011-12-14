@@ -2663,7 +2663,6 @@ public class WebsiteHandler {
 							currItem.getLong( "creationDate" ),						
 							numLikes,
 							c.getString( R.string.info_txt_assignment_ok ),
-							//c.getString( R.string.info_p_friendship ),
 							"",
 							currItem.getString("event"),
 							new String[] { 

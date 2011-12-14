@@ -21,7 +21,7 @@ import com.ninetwozero.battlelog.R;
 public class WeaponType {
 
 	//Attributes
-	private String identifier, name, label, rateOfFireText, range, ammo;
+	private String identifier, name, slug, rateOfFireText, range, ammo;
 	private boolean automatic, burst, singleshot;
 	private int rateOfFireNum;
 	
@@ -29,7 +29,7 @@ public class WeaponType {
 		
 		this.identifier = i;
 		this.name = n;
-		this.label = l;
+		this.slug = l;
 		this.rateOfFireText = rof;
 		this.rateOfFireNum = 0;
 		this.range = r;
@@ -50,7 +50,7 @@ public class WeaponType {
 	//GETTERS
 	public final String getIdentifier() { return identifier; }	
 	public final String getName() { return name; }	
-	public final String getLabel() { return label; }	
+	public final String getSlug() { return slug; }	
 	public final String getRateOfFireText() { return rateOfFireText; }	
 	public final String getRange() { return range; }	
 	public final String getAmmo() { return ammo; }	
