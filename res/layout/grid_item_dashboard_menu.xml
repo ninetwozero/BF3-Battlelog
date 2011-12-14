@@ -10,7 +10,7 @@
 	    android:layout_width="100dp"
 	    android:layout_height="80dp"
 	    android:gravity="center"
-	    android:text="@string/general_label_compare_bs"
+	    android:text="@string/label_compare_bs"
 	    android:textSize="16sp"
 	    android:layout_centerInParent="true"
 	/>	

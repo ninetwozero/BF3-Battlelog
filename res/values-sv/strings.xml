@@ -31,16 +31,16 @@
         <string name="general_wait">Var god vänta...</string>
         <string name="general_downloading">Laddar ned information...</string>
         <string name="general_no_data">Ingen information hittades.</string>
-        <string name="general_label_menu">Meny</string>
-        <string name="general_label_feed">Flöde</string>
-        <string name="general_label_friends">Vänner</string>
-        <string name="general_label_notifications">Händelser</string>
-        <string name="general_label_me">Min soldat</string>
-        <string name="general_label_unlocks">Mina upplåsningar</string>
-        <string name="general_label_find_soldier">Hitta soldat</string>
-        <string name="general_label_find_platoon">Hitta platoon</string>
-        <string name="general_label_compare_bs">Jämför krigsärr</string>
-        <string name="general_label_settings">Inställningar</string>
+        <string name="label_menu">Meny</string>
+        <string name="label_feed">Flöde</string>
+        <string name="label_friends">Vänner</string>
+        <string name="label_notifications">Händelser</string>
+        <string name="label_me">Min soldat</string>
+        <string name="label_unlocks">Mina upplåsningar</string>
+        <string name="label_find_soldier">Hitta soldat</string>
+        <string name="label_find_platoon">Hitta platoon</string>
+        <string name="label_compare_bs">Jämför krigsärr</string>
+        <string name="label_settings">Inställningar</string>
         <string name="status_empty_input">Vänligen mata in ett statusmeddelande.</string>
         <string name="status_error_unknown">Ett fel har uppstått - vänligen logga in och ut igen.</string>
         <string name="general_empty_user">Du måste mata in ett användarnamn.</string>
@@ -255,5 +255,6 @@
         <string name="title_unlocks">BF3 Battlelog - Dina kommande upplåsningar</string>
         <string name="title_settings">BF3 Battlelog - Inställningar</string>
         <string name="title_forum">BF3 Battlelog - Forum</string>
+        <string name="label_forum">Forum</string>
             
 </resources>

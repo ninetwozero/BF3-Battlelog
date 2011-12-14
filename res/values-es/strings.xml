@@ -29,16 +29,16 @@
         <string name="general_wait">Por favor espere</string>
         <string name="general_downloading">Descarga de los datos...</string>
         <string name="general_no_data">No se encontraron datos.</string>
-        <string name="general_label_menu">Menú</string>
-        <string name="general_label_feed">Flujo</string>
-        <string name="general_label_friends">Amigos</string>
-        <string name="general_label_notifications">Notificaciones</string>
-        <string name="general_label_me">Mi soldado</string>
-        <string name="general_label_unlocks">Mi abre</string>
-        <string name="general_label_find_soldier">Buscar soldado</string>
-        <string name="general_label_find_platoon">Buscar pelotón</string>
-        <string name="general_label_compare_bs">Compare las cicatrices</string>
-        <string name="general_label_settings">Configuración</string>
+        <string name="label_menu">Menú</string>
+        <string name="label_feed">Flujo</string>
+        <string name="label_friends">Amigos</string>
+        <string name="label_notifications">Notificaciones</string>
+        <string name="label_me">Mi soldado</string>
+        <string name="label_unlocks">Mi abre</string>
+        <string name="label_find_soldier">Buscar soldado</string>
+        <string name="label_find_platoon">Buscar pelotón</string>
+        <string name="label_compare_bs">Compare las cicatrices</string>
+        <string name="label_settings">Configuración</string>
         <string name="status_empty_input">Por favor, introduzca un texto de estado para continuar.</string>
         <string name="status_error_unknown">Se produjo un error: por favor, iniciar la sesión y vuelva a intentarlo.</string>
         <string name="general_empty_user">Es necesario introducir un nombre de usuario</string>
@@ -253,5 +253,6 @@
         <string name="title_unlocks">BF3 Battlelog - Su próximo desbloquea</string>
         <string name="title_settings">BF3 Battlelog - Configuración</string>
         <string name="title_forum">BF3 Battlelog - Foro</string>
+        <string name="label_forum">Foro</string>
             
 </resources>

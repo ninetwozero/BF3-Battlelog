@@ -170,7 +170,7 @@ public class PublicUtils {
    */
 	public static final String getRelativeDate(Context c, long d, int s) {
 		
-		return c.getResources().getString( s ).replace( "{date}", getRelativeDate(c, d) );
+		return c.getString( s ).replace( "{date}", getRelativeDate(c, d) );
 		
 	}
 	

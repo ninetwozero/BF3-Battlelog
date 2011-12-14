@@ -54,7 +54,7 @@
 				<Button
 				    style="@style/MenuButton"
 				    android:id="@+id/button_unlocks"
-				    android:text="@string/general_label_unlocks"
+				    android:text="@string/label_unlocks"
 					android:layout_marginTop="10dp"
 			    	android:layout_height="50dp"
 					android:layout_below="@id/button_view_self"
@@ -62,7 +62,7 @@
 				<Button
 				    style="@style/MenuButton"
 				    android:id="@+id/button_find_soldier"
-				    android:text="@string/general_label_find_soldier"
+				    android:text="@string/label_find_soldier"
 					android:layout_marginTop="10dp"
 			    	android:layout_height="50dp"
 					android:layout_below="@id/button_unlocks"

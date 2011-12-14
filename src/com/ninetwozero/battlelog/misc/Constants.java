@@ -162,6 +162,7 @@ public final class Constants {
 	public static final long MENU_PLATOON = 3;
 	public static final long MENU_COMPARE = 4;
 	public static final long MENU_SETTINGS = 5;
+	public static final long MENU_FORUM = 6;
 		
 	//SH
 	public static final String SP_V_FILE = "file_version";

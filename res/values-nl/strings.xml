@@ -29,16 +29,16 @@
        <string name="general_wait">Moment geduld</string>
        <string name="general_downloading">Bezig de data op te halen...</string>
        <string name="general_no_data">Geen data gevonden.</string>
-       <string name="general_label_menu">Menu</string>
-       <string name="general_label_feed">Feed</string>
-       <string name="general_label_friends">Vrienden</string>
-       <string name="general_label_notifications">Notificaties</string>
-       <string name="general_label_me">Mijn soldaat</string>
-       <string name="general_label_unlocks">Mijn unlocks</string>
-       <string name="general_label_find_soldier">Zoek soldaat</string>
-       <string name="general_label_find_platoon">Zoek peloton</string>
-       <string name="general_label_compare_bs">Vergelijk battle scars</string>
-       <string name="general_label_settings">Instellingen</string>
+       <string name="label_menu">Menu</string>
+       <string name="label_feed">Feed</string>
+       <string name="label_friends">Vrienden</string>
+       <string name="label_notifications">Notificaties</string>
+       <string name="label_me">Mijn soldaat</string>
+       <string name="label_unlocks">Mijn unlocks</string>
+       <string name="label_find_soldier">Zoek soldaat</string>
+       <string name="label_find_platoon">Zoek peloton</string>
+       <string name="label_compare_bs">Vergelijk battle scars</string>
+       <string name="label_settings">Instellingen</string>
        <string name="status_empty_input">Geef je status op om door te gaan.</string>
        <string name="status_error_unknown">Er is een error opgetreden: Log opnieuw in.</string>
        <string name="general_empty_user">Je moet een gebruikersnaam opgeven</string>
@@ -243,5 +243,15 @@
 
         <!--  NEW -->
         <string name="info_new_rank">new rank</string>
-        
+        <string name="title_main_menu">BF3 Battlelog - Main menu</string>
+        <string name="title_profile">BF3 Battlelog - Profile</string>
+        <string name="title_platoon">BF3 Battlelog - Platoon</string>
+        <string name="title_performance">BF3 Battlelog - Your performance</string>
+        <string name="title_chat">BF3 Battlelog - Chatting with ...</string>
+        <string name="title_comments">BF3 Battlelog - Comments</string>
+        <string name="title_comparing_battle_scars">BF3 Battlelog - Comparing battle scars</string>
+        <string name="title_unlocks">BF3 Battlelog - Your upcoming unlocks</string>
+        <string name="title_settings">BF3 Battlelog - Settings</string>
+        <string name="title_forum">BF3 Battlelog - Forum</string>
+        <string name="label_forum">Forum</string>
 </resources>

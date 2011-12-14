@@ -138,7 +138,7 @@ public class ProfileView extends TabActivity {
     				
     			getResources().getString( R.string.label_home ), 
 				getResources().getString( R.string.label_stats ), 
-				getResources().getString( R.string.general_label_feed )
+				getResources().getString( R.string.label_feed )
     			
     		}, 
     		new int[] { 

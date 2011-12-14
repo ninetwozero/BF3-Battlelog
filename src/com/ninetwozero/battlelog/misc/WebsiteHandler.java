@@ -679,17 +679,13 @@ public class WebsiteHandler {
 	    	//JSON Objects
 	    	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
 	    	JSONArray unlockResults = dataObject.getJSONArray( "unlocks" );
-	    	JSONObject unlockRow, detailObject;
 	    	int unlockKit;
 	    	
 	    	//Iterate over the unlocksArray
 	    	for( int i = 0, max = unlockResults.length(); i < max; i++ ) {
 	    	
 	    		//Get the temporary object
-	    		unlockRow = unlockResults.optJSONObject( i );
-	
-	    		//Less than 1.0?
-	    		if( unlockRow.getDouble( "unlockPercentage" ) < 1.0 ) { continue; }
+	    		JSONObject unlockRow = unlockResults.optJSONObject( i );
 	    		
 	    		try {
 	
@@ -701,11 +697,17 @@ public class WebsiteHandler {
 	    			
 	    		}
 	    		
+	    		/* TODO */
+	    		
 	    		//What did we get?
 	    		if( !unlockRow.isNull( "weaponAddonUnlock" ) ) {
 	    			
 	    			//Get the object
-	    			detailObject = unlockRow.getJSONObject( "weaponAddonUnlock" );
+			    	JSONObject detailObject = unlockRow.getJSONObject( "weaponAddonUnlock" );
+	    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
+	    			
+	    			//Less than 1.0?
+		    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
 	    			
 	    			//Add them to the array
 	    			unlockArray.add( 
@@ -713,12 +715,12 @@ public class WebsiteHandler {
 	    				new UnlockData(
 	    				
 							unlockKit,
-							unlockRow.getDouble( "unlockPercentage" ),
-							detailObject.getLong( "valueNeeded" ),
-							detailObject.getLong( "actualValue" ),
+							unlockDetails.getDouble( "completion" ),
+							unlockDetails.getLong( "valueNeeded" ),
+							unlockDetails.getLong( "actualValue" ),
 							detailObject.getString( "weaponCode" ),
 							detailObject.getString( "unlockId" ),
-							detailObject.getString( "codeNeeded" ),
+							unlockDetails.getString( "codeNeeded" ),
 							"weapon+"
 	    						
 						)	
@@ -728,7 +730,11 @@ public class WebsiteHandler {
 	    		} else if( !unlockRow.isNull( "kitItemUnlock" ) ) {
 	
 	    			//Get the object
-	    			detailObject = unlockRow.getJSONObject( "kitItemUnlock" );
+			    	JSONObject detailObject = unlockRow.getJSONObject( "kitItemUnlock" );
+	    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
+	    			
+	    			//Less than 1.0?
+		    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
 	    			
 	    			//Add them to the array
 	    			unlockArray.add( 
@@ -736,12 +742,12 @@ public class WebsiteHandler {
 	    				new UnlockData(
 	    				
 							unlockKit,
-							unlockRow.getDouble( "unlockPercentage" ),
-							detailObject.getLong( "valueNeeded" ),
-							detailObject.getLong( "actualValue" ),
+							unlockDetails.getDouble( "completion" ),
+							unlockDetails.getLong( "valueNeeded" ),
+							unlockDetails.getLong( "actualValue" ),
 							unlockRow.getString( "parentId" ),
 							detailObject.getString( "unlockId" ),
-							detailObject.getString( "codeNeeded" ),
+							unlockDetails.getString( "codeNeeded" ),
 							"kit+"
 	    						
 						)	
@@ -751,7 +757,11 @@ public class WebsiteHandler {
 	    		} else if( !unlockRow.isNull( "vehicleAddonUnlock" ) ) {
 	
 	    			//Get the object
-	    			detailObject = unlockRow.getJSONObject( "vehicleAddonUnlock" );
+			    	JSONObject detailObject = unlockRow.getJSONObject( "vehicleAddonUnlock" );
+	    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
+	    			
+	    			//Less than 1.0?
+		    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
 	    			
 	    			//Add them to the array
 	    			unlockArray.add( 
@@ -759,12 +769,12 @@ public class WebsiteHandler {
 	    				new UnlockData(
 	    				
 							unlockKit,
-							unlockRow.getDouble( "unlockPercentage" ),
-							detailObject.getLong( "valueNeeded" ),
-							detailObject.getLong( "actualValue" ),
+							unlockDetails.getDouble( "completion" ),
+							unlockDetails.getLong( "valueNeeded" ),
+							unlockDetails.getLong( "actualValue" ),
 							unlockRow.getString( "parentId" ),
 							detailObject.getString( "unlockId" ),
-							detailObject.getString( "codeNeeded" ),
+							unlockDetails.getString( "codeNeeded" ),
 							"vehicle+"
 	    						
 						)	
@@ -772,9 +782,13 @@ public class WebsiteHandler {
 					);
 	    	    	
 	    		} else if( !unlockRow.isNull( "weaponUnlock" ) ) {
-	
+
 	    			//Get the object
-	    			detailObject = unlockRow.getJSONObject( "weaponUnlock" );
+			    	JSONObject detailObject = unlockRow.getJSONObject( "weaponUnlock" );
+	    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
+	    			
+	    			//Less than 1.0?
+		    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
 	    			
 	    			//Add them to the array
 	    			unlockArray.add( 
@@ -782,12 +796,12 @@ public class WebsiteHandler {
 	    				new UnlockData(
 	    				
 							unlockKit,
-							unlockRow.getDouble( "unlockPercentage" ),
-							detailObject.getLong( "valueNeeded" ),
-							detailObject.getLong( "actualValue" ),
+							unlockDetails.getDouble( "completion" ),
+							unlockDetails.getLong( "valueNeeded" ),
+							unlockDetails.getLong( "actualValue" ),
 							unlockRow.getString( "parentId" ),
 							detailObject.getString( "unlockId" ),
-							detailObject.getString( "codeNeeded" ),
+							unlockDetails.getString( "codeNeeded" ),
 							"weapon"
 	    						
 						)	
@@ -795,9 +809,13 @@ public class WebsiteHandler {
 					);
 	    	    	
 	    		} else if( !unlockRow.isNull( "soldierSpecializationUnlock" ) ) {
-	
+
 	    			//Get the object
-	    			detailObject = unlockRow.getJSONObject( "soldierSpecializationUnlock" );
+			    	JSONObject detailObject = unlockRow.getJSONObject( "soldierSpecializationUnlock" );
+	    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
+	    			
+	    			//Less than 1.0?
+		    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
 	    			
 	    			//Add them to the array
 	    			unlockArray.add( 
@@ -805,12 +823,12 @@ public class WebsiteHandler {
 	    				new UnlockData(
 	    				
 							unlockKit,
-							unlockRow.getDouble( "unlockPercentage" ),
-							detailObject.getLong( "valueNeeded" ),
-							detailObject.getLong( "actualValue" ),
+							unlockDetails.getDouble( "completion" ),
+							unlockDetails.getLong( "valueNeeded" ),
+							unlockDetails.getLong( "actualValue" ),
 							unlockRow.getString( "parentId" ),
 							detailObject.getString( "unlockId" ),
-							detailObject.getString( "codeNeeded" ),
+							unlockDetails.getString( "codeNeeded" ),
 							"skill"
 	    						
 						)	
@@ -828,6 +846,7 @@ public class WebsiteHandler {
 	    
 		} catch ( Exception ex ) {
 			
+			ex.printStackTrace();
 			throw new WebsiteHandlerException(ex.getMessage());
 			
 		}
@@ -2602,7 +2621,7 @@ public class WebsiteHandler {
 				
 				//What do we have *here*?
 				if( !currItem.isNull( "BECAMEFRIENDS" )) {
-				
+					
 					//Grab the specific object
 					tempSubItem = currItem.optJSONObject( "BECAMEFRIENDS" );
 					
@@ -2613,9 +2632,8 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("ownerId") ),
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
-						
 						numLikes,
-						c.getResources().getString( R.string.info_p_friendship ),
+						c.getString( R.string.info_p_friendship ),
 						"",
 						currItem.getString("event"),
 						new String[] { 
@@ -2628,7 +2646,38 @@ public class WebsiteHandler {
 						comments,
 						tempGravatarHash
 							
-					);
+					);		
+	
+					
+				} else if( !currItem.isNull( "ASSIGNMENTCOMPLETE" )) {
+				
+					//Grab the specific object
+					tempSubItem = currItem.optJSONObject( "ASSIGNMENTCOMPLETE" );
+							
+					//Temporary storage						
+					tempFeedItem = new FeedItem(
+							
+							Long.parseLong( currItem.getString("id") ),
+							Long.parseLong( currItem.getString("ownerId") ),
+							Long.parseLong( currItem.getString("itemId") ),
+							currItem.getLong( "creationDate" ),						
+							numLikes,
+							c.getString( R.string.info_txt_assignment_ok ),
+							//c.getString( R.string.info_p_friendship ),
+							"",
+							currItem.getString("event"),
+							new String[] { 
+								
+								ownerObject.getString("username"), 
+								null
+								
+							},
+							liked,
+							comments,
+							tempGravatarHash
+								
+						);
+					
 					
 				} else if( !currItem.isNull( "CREATEDFORUMTHREAD" )) {
 				
@@ -2802,7 +2851,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
-						c.getResources().getString( R.string.info_p_favserver ).replace( 
+						c.getString( R.string.info_p_favserver ).replace( 
 								
 							"{server}", 
 							tempSubItem.getString( "serverName" ) 

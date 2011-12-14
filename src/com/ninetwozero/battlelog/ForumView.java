@@ -15,7 +15,7 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
-import android.app.TabActivity;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -27,12 +27,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
-import com.ninetwozero.battlelog.PlatoonView.AsyncPlatoonRefresh;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class ForumView extends TabActivity {
+public class ForumView extends Activity {
 
 	//Attributes
 	private final Context CONTEXT = this;

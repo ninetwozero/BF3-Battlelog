@@ -169,8 +169,8 @@ public class Dashboard extends TabActivity {
     			
     		new String[] { 
     		
-    			getResources().getString( R.string.general_label_menu ), 
-    			getResources().getString( R.string.general_label_feed) 
+    			getResources().getString( R.string.label_menu ), 
+    			getResources().getString( R.string.label_feed) 
     		
     		}, 
     		new int[] { 
@@ -185,8 +185,8 @@ public class Dashboard extends TabActivity {
     			
     		new String[] { 
     				
-    			getResources().getString( R.string.general_label_friends ), 
-				getResources().getString( R.string.general_label_notifications ) 
+    			getResources().getString( R.string.label_friends ), 
+				getResources().getString( R.string.label_notifications ) 
     							
     		}, 
     		new int[] { R.layout.tab_content_com_friends, R.layout.tab_content_com_notifications }
@@ -196,12 +196,13 @@ public class Dashboard extends TabActivity {
         //Build the menu items
         menuArray = new DashboardItem[]{ 
 
-        	new DashboardItem(Constants.MENU_ME, getResources().getString( R.string.general_label_me )),
-        	new DashboardItem(Constants.MENU_UNLOCKS, getResources().getString( R.string.general_label_unlocks )),
-        	new DashboardItem(Constants.MENU_SOLDIER, getResources().getString( R.string.general_label_find_soldier )),
-        	new DashboardItem(Constants.MENU_PLATOON, getResources().getString( R.string.general_label_find_platoon )),
-        	new DashboardItem(Constants.MENU_COMPARE, getResources().getString( R.string.general_label_compare_bs)),
-        	new DashboardItem(Constants.MENU_SETTINGS, getResources().getString( R.string.general_label_settings ))
+        	new DashboardItem(Constants.MENU_ME, getResources().getString( R.string.label_me )),
+        	new DashboardItem(Constants.MENU_UNLOCKS, getResources().getString( R.string.label_unlocks )),
+        	new DashboardItem(Constants.MENU_SOLDIER, getResources().getString( R.string.label_find_soldier )),
+        	new DashboardItem(Constants.MENU_PLATOON, getResources().getString( R.string.label_find_platoon )),
+        	new DashboardItem(Constants.MENU_COMPARE, getResources().getString( R.string.label_compare_bs)),
+        	new DashboardItem(Constants.MENU_FORUM, getResources().getString( R.string.label_forum)),
+        	new DashboardItem(Constants.MENU_SETTINGS, getResources().getString( R.string.label_settings ))
         	
         };
         
@@ -609,7 +610,7 @@ public class Dashboard extends TabActivity {
 	    final View layout = inflater.inflate(R.layout.dialog_compare, (ViewGroup) findViewById(R.id.dialog_root));
 		
 	    //Set the title and the view
-		builder.setTitle(R.string.general_label_compare_bs);
+		builder.setTitle(R.string.label_compare_bs);
 		builder.setView(layout);
 
 		//Grab the fields
@@ -925,7 +926,7 @@ public class Dashboard extends TabActivity {
 	    		
 				menu.add( menuId, 0, 0, R.string.label_chat_open);
 				menu.add( menuId, 1, 0, R.string.label_soldier_view);
-				menu.add( menuId, 2, 0, R.string.general_label_compare_bs);
+				menu.add( menuId, 2, 0, R.string.label_compare_bs);
 				
 	    	}
 		
@@ -1287,6 +1288,11 @@ public class Dashboard extends TabActivity {
 		} else if( id == Constants.MENU_SETTINGS ) { 
 			
 			startActivity( new Intent(this, SettingsView.class) );
+			return;
+			
+		} else if( id == Constants.MENU_FORUM ) { 
+			
+			startActivity( new Intent(this, ForumView.class) );
 			return;
 			
 		} else {

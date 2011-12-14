@@ -137,7 +137,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 			//Update the sliding drawer handle
 			drawerHandle.setText( 
 					
-				context.getResources().getString( R.string.label_com_handle ).replace(
+				context.getString( R.string.label_com_handle ).replace(
 				
 					"{num}",
 					numOnlineFriends + ""

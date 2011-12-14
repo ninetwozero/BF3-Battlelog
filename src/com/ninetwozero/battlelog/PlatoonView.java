@@ -140,7 +140,7 @@ public class PlatoonView extends TabActivity {
 				getResources().getString( R.string.label_home ), 
 				getResources().getString( R.string.label_stats ), 
 				getResources().getString( R.string.label_users ), 
-    			getResources().getString( R.string.general_label_feed ) 
+    			getResources().getString( R.string.label_feed ) 
     			
     		}, 
     		new int[] { 
@@ -1159,9 +1159,6 @@ public class PlatoonView extends TabActivity {
 	
 	public void onRequestActionClick(View v) {
 
-		Toast.makeText(this, "Disabled.", Toast.LENGTH_SHORT).show();
-		
-		/* TODO: Check with other UID (non-friend) 
 		new AsyncPlatoonRespond(
 				
 			this, 
@@ -1170,7 +1167,7 @@ public class PlatoonView extends TabActivity {
 			( v.getId() == R.id.button_accept )
 		
 		).execute(sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "")); 
-		*/
+
 	}
 
 }

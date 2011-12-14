@@ -52,7 +52,7 @@ public class NotificationData {
 			
 			if( 0 == this.ownerId || userId == this.ownerId ) {
 	
-				message = c.getResources().getString( R.string.info_feed_comment_own ).replace( 
+				message = c.getString( R.string.info_feed_comment_own ).replace( 
 					 
 					"{action}", 
 					resolveActionFromId(c, this.typeId) 
@@ -63,7 +63,7 @@ public class NotificationData {
 				
 				if( owner.endsWith( "s" ) ) {
 
-					message = c.getResources().getString( R.string.info_feed_comment_other ).replace( 
+					message = c.getString( R.string.info_feed_comment_other ).replace( 
 						 
 						"{action}", 
 						resolveActionFromId(c, this.typeId) 
@@ -72,7 +72,7 @@ public class NotificationData {
 				
 				} else {
 					
-					message = c.getResources().getString( R.string.info_feed_comment_other_v2 ).replace( 
+					message = c.getString( R.string.info_feed_comment_other_v2 ).replace( 
 							 
 						"{action}", 
 						resolveActionFromId(c, this.typeId) 
@@ -218,31 +218,31 @@ public class NotificationData {
 		switch( this.typeId ) {
 			 
 			case 1: //Friendship
-				return c.getResources().getString( R.string.info_friendship );
+				return c.getString( R.string.info_friendship );
 			
 			case 2: //Forum post
-				return c.getResources().getString( R.string.info_forum_post );
+				return c.getString( R.string.info_forum_post );
 				 
 			case 4: //Game report
-				return c.getResources().getString( R.string.info_game_report );
+				return c.getString( R.string.info_game_report );
 				 
 			case 6: //Wall post
-				return c.getResources().getString( R.string.info_wallpost );
+				return c.getString( R.string.info_wallpost );
 				
 			case 7: //Status message
-				return c.getResources().getString( R.string.info_status_message );
+				return c.getString( R.string.info_status_message );
 			
 			case 8: //Award
-				return c.getResources().getString( R.string.info_award );
+				return c.getString( R.string.info_award );
 				 
 			case 9: //Battle report?
-				return c.getResources().getString( R.string.info_battle_report );
+				return c.getString( R.string.info_battle_report );
 			
 			case 11: //Rank
-				return c.getResources().getString( R.string.info_new_rank);
+				return c.getString( R.string.info_new_rank);
 			
 			case 20: //Platoon wall post
-				return c.getResources().getString( R.string.info_platoon_wall_post );
+				return c.getString( R.string.info_platoon_wall_post );
 				 
 			default:
 				return "{unknown action}";

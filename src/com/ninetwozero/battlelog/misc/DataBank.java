@@ -821,22 +821,22 @@ public class DataBank {
 		switch( number ) {
 	
 			case 1:
-				return c.getResources().getString( R.string.info_xml_assault );
+				return c.getString( R.string.info_xml_assault );
 				
 			case 2:	
-				return c.getResources().getString( R.string.info_xml_engineer );
+				return c.getString( R.string.info_xml_engineer );
 				
 			case 8:	
-				return c.getResources().getString( R.string.info_xml_recon );
+				return c.getString( R.string.info_xml_recon );
 				
 			case 16: 
-				return c.getResources().getString( R.string.info_xml_vehicles );
+				return c.getString( R.string.info_xml_vehicles );
 				
 			case 32: 
-				return c.getResources().getString( R.string.info_xml_support );
+				return c.getString( R.string.info_xml_support );
 				
 			case 64: 
-				return c.getResources().getString( R.string.info_xml_general );
+				return c.getString( R.string.info_xml_general );
 				
 			default:
 				return "";
