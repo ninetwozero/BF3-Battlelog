@@ -169,8 +169,8 @@ public class Dashboard extends TabActivity {
     			
     		new String[] { 
     		
-    			getResources().getString( R.string.label_menu ), 
-    			getResources().getString( R.string.label_feed) 
+    			getString(R.string.label_menu ), 
+    			getString(R.string.label_feed) 
     		
     		}, 
     		new int[] { 
@@ -185,8 +185,8 @@ public class Dashboard extends TabActivity {
     			
     		new String[] { 
     				
-    			getResources().getString( R.string.label_friends ), 
-				getResources().getString( R.string.label_notifications ) 
+    			getString(R.string.label_friends ), 
+				getString(R.string.label_notifications ) 
     							
     		}, 
     		new int[] { R.layout.tab_content_com_friends, R.layout.tab_content_com_notifications }
@@ -196,13 +196,14 @@ public class Dashboard extends TabActivity {
         //Build the menu items
         menuArray = new DashboardItem[]{ 
 
-        	new DashboardItem(Constants.MENU_ME, getResources().getString( R.string.label_me )),
-        	new DashboardItem(Constants.MENU_UNLOCKS, getResources().getString( R.string.label_unlocks )),
-        	new DashboardItem(Constants.MENU_SOLDIER, getResources().getString( R.string.label_find_soldier )),
-        	new DashboardItem(Constants.MENU_PLATOON, getResources().getString( R.string.label_find_platoon )),
-        	new DashboardItem(Constants.MENU_COMPARE, getResources().getString( R.string.label_compare_bs)),
-        	new DashboardItem(Constants.MENU_FORUM, getResources().getString( R.string.label_forum)),
-        	new DashboardItem(Constants.MENU_SETTINGS, getResources().getString( R.string.label_settings ))
+    		new DashboardItem(Constants.MENU_MY_SOLDIER, getString(R.string.label_me )),
+    		new DashboardItem(Constants.MENU_MY_PLATOON, getString( R.string.info_xml_platoons_my )),
+        	new DashboardItem(Constants.MENU_SOLDIER, getString(R.string.label_find_soldier )),
+        	new DashboardItem(Constants.MENU_PLATOON, getString(R.string.label_find_platoon )),
+    		new DashboardItem(Constants.MENU_UNLOCKS, getString(R.string.label_unlocks )),
+    		new DashboardItem(Constants.MENU_ASSIGNMENTS, getString( R.string.info_xml_assignments_my )),
+        	new DashboardItem(Constants.MENU_COMPARE, getString(R.string.label_compare_bs)),
+        	new DashboardItem(Constants.MENU_FORUM, getString(R.string.label_forum))
         	
         };
         
@@ -549,6 +550,14 @@ public class Dashboard extends TabActivity {
 			refreshFeed();
 			refreshCOM();
 		
+		} else if( item.getItemId() == R.id.option_settings ) {
+		
+			startActivity(
+				
+				new Intent(this, SettingsView.class)
+				
+			);
+			
 		} else if( item.getItemId() == R.id.option_logout ) {
 			
 			new AsyncLogout(this).execute();
@@ -1098,6 +1107,8 @@ public class Dashboard extends TabActivity {
 		
 		}
 		
+		closeContextMenu();
+		
 		return true;
 	}
 
@@ -1254,6 +1265,10 @@ public class Dashboard extends TabActivity {
     		
 			startActivity( new Intent(this, UnlockView.class) );
 			 
+		} else if( id == Constants.MENU_ASSIGNMENTS ) {
+			
+			startActivity( new Intent(this, AssignmentView.class) );
+			
 		} else if( id == Constants.MENU_SOLDIER ) {
 			
 			generateDialogFindSoldier(this).show();
@@ -1262,7 +1277,7 @@ public class Dashboard extends TabActivity {
 			
 			generateDialogFindPlatoon(this).show();
 			
-		} else if( id == Constants.MENU_ME ) {
+		} else if( id == Constants.MENU_MY_SOLDIER ) {
 			
 			startActivity( 
 					
@@ -1444,7 +1459,7 @@ public class Dashboard extends TabActivity {
     		//Update the sliding drawer handle
     		slidingDrawerHandle.setText( 
     				
-				getResources().getString( R.string.label_com_handle ).replace(
+				getString(R.string.label_com_handle ).replace(
     					
     				"{num}", friendListData.getOnlineCount() + ""
     				

@@ -697,8 +697,6 @@ public class WebsiteHandler {
 	    			
 	    		}
 	    		
-	    		/* TODO */
-	    		
 	    		//What did we get?
 	    		if( !unlockRow.isNull( "weaponAddonUnlock" ) ) {
 	    			
@@ -1958,6 +1956,178 @@ public class WebsiteHandler {
 		
 	}
 	
+	public static ArrayList<AssignmentData> getAssignments(Context c, ProfileData profile) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Attributes
+			RequestHandler rh = new RequestHandler();
+			ArrayList<AssignmentData> items = new ArrayList<AssignmentData>();
+			
+			//Get the JSON!
+			String httpContent = rh.get( 
+					
+				Constants.URL_STATS_ASSIGNMENTS.replace(
+					
+					"{PNAME}",
+					profile.getPersonaName()
+						
+				).replace(
+						
+					"{PID}",
+					profile.getPersonaId() + ""
+					
+				).replace(
+						
+					"{UID}",
+					profile.getProfileId() + ""
+					
+				).replace(
+						
+					"{PLATFORM_ID}",
+					profile.getPlatformId() + ""
+				), 
+				1
+				
+			);
+			
+			//Parse the JSON!
+			JSONObject topLevel = new JSONObject(httpContent).getJSONObject("data").getJSONObject( "missionTrees" );
+			JSONArray missionLines = topLevel.getJSONObject("512").getJSONArray( "missionLines" );
+			int numCurrentAssignment = 0;
+			for( int i = 0, max = missionLines.length(); i < max; i++ ) {
+				
+				//Let's see if we need to tell the dev
+				if( max > Constants.ASSIGNMENT_RESOURCES.length ) {
+					
+					Toast.makeText(
+							
+						c, 
+						c.getString( R.string.info_assignments_new_unknown ),
+						Toast.LENGTH_SHORT 
+						
+					).show();
+					
+					return items;
+					
+				} 
+				
+				//Get the JSONObject per loop
+				JSONArray missions = missionLines.getJSONObject( i ).getJSONArray( "missions" );
+				for( int missionCounter = 0, missionCount = missions.length(); missionCounter < missionCount; missionCounter++ ) {
+					
+					JSONObject assignment = missions.getJSONObject( missionCounter );
+					JSONArray criteriasJSON = assignment.getJSONArray( "criterias" );
+					JSONArray dependenciesJSON = assignment.getJSONArray( "dependencies" );
+					JSONArray unlocksJSON = assignment.getJSONArray( "unlocks" );
+	
+					//Init
+					ArrayList<AssignmentData.Objective> criterias = new ArrayList<AssignmentData.Objective>();
+					ArrayList<AssignmentData.Dependency> dependencies = new ArrayList<AssignmentData.Dependency>();
+					ArrayList<AssignmentData.Unlock> unlocks = new ArrayList<AssignmentData.Unlock>();
+					
+					//Alright, let's do this
+					for( int assignmentCounter = 0, assignmentCount = criteriasJSON.length(); assignmentCounter < assignmentCount; assignmentCounter++ ) {
+						
+						//Get the current item
+						JSONObject currentItem = criteriasJSON.getJSONObject( assignmentCounter );
+						
+						//New object!
+						criterias.add(
+								
+							new AssignmentData.Objective(
+	
+								currentItem.getDouble( "actualValue" ),
+								currentItem.getDouble( "completionValue" ),
+								currentItem.getString( "statCode" ),
+								currentItem.getString( "paramX" ),
+								currentItem.getString( "paramY" ),
+								currentItem.getString( "descriptionID" ),
+								currentItem.getString( "unit" )
+									
+							)
+								
+						);
+						
+					}
+					
+					//Alright, let's do this
+					for( int counter = 0, maxCount = dependenciesJSON.length(); counter < maxCount; counter++ ) {
+						
+						//Get the current item
+						JSONObject currentItem = dependenciesJSON.getJSONObject( counter );
+	
+						//New object!
+						dependencies.add(
+								
+							new AssignmentData.Dependency(
+	
+								currentItem.getInt( "count" ),
+								currentItem.getString( "code" )
+									
+							)
+								
+						);
+						
+					}
+					
+					//Alright, let's do this
+					for( int counter = 0, maxCount = unlocksJSON.length(); counter < maxCount; counter++ ) {
+						
+						//Get the current item
+						JSONObject currentItem = unlocksJSON.getJSONObject( counter );
+						
+						//New object!
+						unlocks.add(
+								
+							new AssignmentData.Unlock(
+	
+								currentItem.getString( "unlockId" ),
+								currentItem.getString( "unlockType" ),
+								currentItem.getBoolean( "visible" )
+								
+							)
+								
+						);
+						
+					}
+					
+					//Add the assignment
+					items.add( 
+					
+						new AssignmentData(
+							
+							Constants.ASSIGNMENT_RESOURCES[numCurrentAssignment],
+							assignment.getString( "stringID" ),
+							assignment.getString( "descriptionID" ),
+							assignment.getString( "license" ),
+							criterias,
+							dependencies,
+							unlocks
+							
+						)
+					
+					);
+					
+					//Update the digit
+					numCurrentAssignment++;
+
+				}
+				
+			}
+			
+			//Return the items
+			return items;
+			
+		} catch( Exception ex ) {
+			
+			ex.printStackTrace();
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+		
+	}
+	
 	public static ArrayList<FeedItem> getPublicFeed(Context context, int num, long profileId) throws WebsiteHandlerException {
 		
 		try {
@@ -2412,10 +2582,8 @@ public class WebsiteHandler {
 				PlatoonTopStatsItem highestSPM = null;
 				currObjNames = objectTop.names();
 				
-				Log.d(Constants.DEBUG_TAG, "Before for-loop");
 				for( int i = 0, max = currObjNames.length(); i < max; i++ ) {
 
-					Log.d(Constants.DEBUG_TAG, "In for-loop (loop #" + i + " )");
 					//Grab the current object
 					currObj = objectTop.getJSONObject( currObjNames.getString( i ) );
 					
@@ -2427,7 +2595,6 @@ public class WebsiteHandler {
 						
 					} else {
 
-						Log.d(Constants.DEBUG_TAG, "No personaId - oh noes!");
 						//Create a new "stats item"
 						arrayTop.add(
 								
@@ -2450,6 +2617,7 @@ public class WebsiteHandler {
 					tempGravatarHash = currUser.optString( "gravatarMd5", "" );
 					
 					//Do we need to download a new image?
+					/* TODO: Cache on SDCARD? Right now this EATS RAM. Get it? EATS! */
 					if( !WebsiteHandler.bitmapCache.containsKey( tempGravatarHash ) ) {
 						
 						WebsiteHandler.cacheGravatar( tempGravatarHash, 40 );
@@ -2653,30 +2821,45 @@ public class WebsiteHandler {
 				
 					//Grab the specific object
 					tempSubItem = currItem.optJSONObject( "ASSIGNMENTCOMPLETE" );
+					JSONObject statsItem = tempSubItem.getJSONArray("statItems").getJSONObject(0);
+					String[] tempInfo = DataBank.getAssignmentTitle( statsItem.getString( "langKeyTitle" ) );
+					
+					//Set the title
+					itemTitle = c.getString( R.string.info_txt_assignment_ok ).replace( 
 							
+						"{assignment}", 
+						tempInfo[0]
+						
+					).replace(
+							
+						"{unlock}", 
+						tempInfo[1]
+						
+					);		
+					
 					//Temporary storage						
 					tempFeedItem = new FeedItem(
 							
-							Long.parseLong( currItem.getString("id") ),
-							Long.parseLong( currItem.getString("ownerId") ),
-							Long.parseLong( currItem.getString("itemId") ),
-							currItem.getLong( "creationDate" ),						
-							numLikes,
-							c.getString( R.string.info_txt_assignment_ok ),
-							"",
-							currItem.getString("event"),
-							new String[] { 
-								
-								ownerObject.getString("username"), 
-								null
-								
-							},
-							liked,
-							comments,
-							tempGravatarHash
-								
-						);
-					
+						Long.parseLong( currItem.getString("id") ),
+						Long.parseLong( currItem.getString("ownerId") ),
+						Long.parseLong( currItem.getString("itemId") ),
+						currItem.getLong( "creationDate" ),						
+						numLikes,
+						itemTitle,
+						"",
+						currItem.getString("event"),
+						new String[] { 
+							
+							ownerObject.getString("username"), 
+							null
+							
+						},
+						liked,
+						comments,
+						tempGravatarHash
+							
+					);
+				
 					
 				} else if( !currItem.isNull( "CREATEDFORUMTHREAD" )) {
 				
@@ -2755,35 +2938,41 @@ public class WebsiteHandler {
 					if( !tempSubItem.isNull( "parentLangKeyTitle" ) ) {
 						
 						//Let's see
-						itemContent = DataBank.getWeaponTitleShort( tempSubItem.getString( "parentLangKeyTitle") );
+						String parentKey = tempSubItem.getString("parentLangKeyTitle");
+						itemContent = DataBank.getWeaponTitleShort( parentKey );
 						
 						//Is it empty?
-						if( !itemContent.equals( "" ) ) {
+						if( !parentKey.equals( itemContent ) ) {
 							
 							itemContent +=  " " + DataBank.getAttachmentTitle( tempSubItem.getString( "langKeyTitle" ) );
 							
 						} else {
 							
 							//Grab a vehicle title then
-							itemContent = DataBank.getVehicleTitle( tempSubItem.getString("parentLangKeyTitle") );
+							itemContent = DataBank.getVehicleTitle( parentKey );
 							
 							//Validate
-							if( !itemContent.equals( "" ) ) {
+							if( !parentKey.equals( itemContent ) ) {
 								
 								itemContent += " " + DataBank.getVehicleAddon( tempSubItem.getString( "langKeyTitle" ) );
 								
 							} else {
 								
-								itemContent = tempSubItem.getString("parentLangKeyTitle");
+								itemContent =  parentKey;
 								
 							} 
 							
 						}
 						
 					} else {
-						
-						itemContent = DataBank.getWeaponTitleShort( tempSubItem.getString("langKeyTitle") );
-						
+						//Let's see
+						String key = tempSubItem.getString("langKeyTitle");
+						itemContent = DataBank.getWeaponTitleShort( key );
+						if( key.equals( itemContent ) ) {
+							
+							itemContent = DataBank.getVehicleAddon( key );
+							
+						}
 					}
 					
 					//Temporary storage						
@@ -3754,7 +3943,7 @@ public class WebsiteHandler {
 				
 		} else {
 			
-			return BitmapFactory.decodeResource( r, R.drawable.test_avatar_48);
+			return BitmapFactory.decodeResource( r, R.drawable.default_avatar);
 			
 		}
 		

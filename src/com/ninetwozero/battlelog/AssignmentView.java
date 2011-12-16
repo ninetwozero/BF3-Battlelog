@@ -15,11 +15,12 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.app.Activity;
-import android.app.ListActivity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -29,26 +30,31 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.adapters.UnlockListAdapter;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
-import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.AssignmentData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class UnlockView extends ListActivity {
+public class AssignmentView extends Activity {
 
 	//SharedPreferences for shizzle
-	SharedPreferences sharedPreferences;
-	ProgressBar progressBar;
-	GetDataSelfAsync getDataAsync;
-	private static int instances = 0;
+	private final Context CONTEXT = this;
+	private SharedPreferences sharedPreferences;
+	private TableLayout tableAssignments;
+	private LayoutInflater layoutInflater;
+	private ArrayList<AssignmentData> assignments;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -62,22 +68,69 @@ public class UnlockView extends ListActivity {
     		RequestHandler.setCookies( (ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) );
     	
     	}
-    	
-    	//Instances += 1
-    	instances = 1;
-    	
+
     	//Set the content view
-        setContentView(R.layout.unlocks_view);
+        setContentView(R.layout.assignment_view);
 
         //Prepare to tango
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-    	if( instances == 1 ) { this.reloadLayout(); }
+        this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.reloadLayout();
+        
 	}        
 
+	public void setupList(ArrayList<AssignmentData> data) {
+		
+		//Is it empty?
+		if( data == null ) { return; }
+		
+		//Do we have the TableLayout?
+		if( tableAssignments == null ) { 
+			
+			tableAssignments = (TableLayout) findViewById(R.id.table_assignments);
+			
+		}
+		
+		//Let's clear the table
+		tableAssignments.removeAllViews();
+		
+		//Loop & create
+		for( int i = 0, max = data.size(); i < max; i += 2 ) {
+		
+			//Init the elements
+			TableRow tableRow = (TableRow) layoutInflater.inflate( R.layout.list_item_assignment, null );
+			ProgressBar progressLeft = (ProgressBar) tableRow.findViewById( R.id.progress_left);
+			ProgressBar progressRight = (ProgressBar) tableRow.findViewById( R.id.progress_right);
+			ImageView imageLeft = (ImageView) tableRow.findViewById( R.id.image_leftassignment );
+			ImageView imageRight = (ImageView) tableRow.findViewById( R.id.image_rightassignment );
+
+			//Add the table row
+			tableAssignments.addView( tableRow );
+			
+			//Get the values
+			AssignmentData ass1 = data.get( i );
+			AssignmentData ass2 = data.get( i + 1 );
+									
+			//Set the images
+			imageLeft.setImageResource( ass1.getResourceId() );
+			imageLeft.setTag( i );
+			imageRight.setImageResource( ass2.getResourceId() );
+			imageRight.setTag( i+1 );
+
+			//Set the progressbars
+			progressLeft.setMax( ass1.getMax() );
+			progressLeft.setProgress( ass1.getCurrent() );
+			progressRight.setMax( ass2.getMax() );
+			progressRight.setProgress( ass2.getCurrent() );
+			
+		}
+		
+	}
+	
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new GetDataSelfAsync(this, getListView(), (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).execute(
+    	new GetDataSelfAsync(this).execute(
     		
     		new ProfileData(
 				this.sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
@@ -100,16 +153,11 @@ public class UnlockView extends ListActivity {
     	//Attributes
     	Context context;
     	ProgressDialog progressDialog;
-    	ArrayList<UnlockData> unlockData;
-    	ListView listView;
-    	LayoutInflater layoutInflater;
     	
-    	public GetDataSelfAsync(Context c, ListView lv, LayoutInflater l) {
+    	public GetDataSelfAsync(Context c) {
     		
     		this.context = c;
     		this.progressDialog = null;
-    		this.listView = lv;
-    		this.layoutInflater = l;
     		
     	}
     	
@@ -130,7 +178,7 @@ public class UnlockView extends ListActivity {
 			
 			try {
 				
-				this.unlockData = WebsiteHandler.getUnlocksForUser( arg0[0] );
+				assignments = WebsiteHandler.getAssignments( context, arg0[0] );
 				return true;
 				
 			} catch ( WebsiteHandlerException ex ) {
@@ -155,8 +203,8 @@ public class UnlockView extends ListActivity {
 			
 			}
 
-			//Do actual stuff, like sending to an adapter		
-			listView.setAdapter( new UnlockListAdapter(context, unlockData, layoutInflater) );
+			//Do actual stuff	
+			setupList(assignments);
 			
 			//Go go go
 	        if( this.progressDialog != null ) this.progressDialog.dismiss();
@@ -179,7 +227,9 @@ public class UnlockView extends ListActivity {
 
 		//Let's act!
 		if( item.getItemId() == R.id.option_reload ) {
-	
+
+	    	
+	    	showDialog(0);
 			this.reloadLayout();
 			
 		} else if( item.getItemId() == R.id.option_back ) {
@@ -205,5 +255,68 @@ public class UnlockView extends ListActivity {
 		outState.putParcelableArrayList(Constants.SUPER_COOKIES, RequestHandler.getCookies());
 	
 	}
-    
+	
+	@Override
+    protected Dialog onCreateDialog(int id) {
+        
+		//Init
+        AlertDialog.Builder builder = new AlertDialog.Builder( this );
+        AssignmentData assignment = assignments.get( id );
+        AssignmentData.Unlock unlocks = assignment.getUnlocks().get( 0 );
+        
+        View dialog = layoutInflater.inflate( R.layout.popup_dialog_view, null);
+        LinearLayout wrapObjectives = (LinearLayout) dialog.findViewById( R.id.wrap_objectives );
+        
+        //Set the title
+        builder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            
+	        	public void onClick(DialogInterface dialog, int id) {
+	                
+	        		dialog.dismiss();
+	            	
+	            }
+	        	
+        	}
+        );
+        
+        //Create the dialog and set the contentView
+        builder.setView( dialog );
+        builder.setCancelable( true );
+        
+        //Set the actual fields too
+        ((ImageView) dialog.findViewById(R.id.image_assignment)).setImageResource( assignment.getResourceId() );
+        ((TextView) dialog.findViewById(R.id.text_title)).setText( assignment.getId() );
+        
+        //Loop over the criterias
+        for( AssignmentData.Objective objective : assignment.getObjectives() ) {
+        	        	
+        	//Inflate a layout...
+        	View v = layoutInflater.inflate( R.layout.list_item_assignment_popup, null);
+        	
+        	//...and set the fields
+        	((TextView) v.findViewById( R.id.text_obj_title )).setText( objective.getDescription() );
+        	((TextView) v.findViewById( R.id.text_obj_values )).setText( 
+        			
+        		objective.getCurrentValue() + "/" + objective.getGoalValue() 
+        		
+        	);
+        	
+        	wrapObjectives.addView(v);
+        	
+        }
+        
+        ((ImageView) dialog.findViewById( R.id.image_reward )).setImageResource( assignment.getResourceId() );
+        ((TextView) dialog.findViewById( R.id.text_rew_name )).setText( unlocks.getId() );
+
+    	return builder.create();
+
+    }
+	
+	public void onPopupClick(View v) {
+		
+		showDialog(Integer.parseInt( v.getTag().toString() ));
+		return;
+	
+	}
+	
 }

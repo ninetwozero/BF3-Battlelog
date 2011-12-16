@@ -216,7 +216,7 @@ public class Main extends Activity {
 
 		//Grab the fields
 		final TextView textView = (TextView) layout.findViewById(R.id.text_changelog);
-		textView.setText( Html.fromHtml( getResources().getString( R.string.changelog ) ) );
+		textView.setText( Html.fromHtml( getString(R.string.changelog ) ) );
 		
 		//Set the button
 		builder.setPositiveButton(

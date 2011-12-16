@@ -136,9 +136,9 @@ public class ProfileView extends TabActivity {
     			
     		new String[] { 
     				
-    			getResources().getString( R.string.label_home ), 
-				getResources().getString( R.string.label_stats ), 
-				getResources().getString( R.string.label_feed )
+    			getString(R.string.label_home ), 
+				getString(R.string.label_stats ), 
+				getString(R.string.label_feed )
     			
     		}, 
     		new int[] { 
@@ -371,7 +371,7 @@ public class ProfileView extends TabActivity {
     		
     		((TextView) findViewById(R.id.text_online)).setText( 
     				
-				getResources().getString( R.string.info_profile_playing ).replace(
+				getString(R.string.info_profile_playing ).replace(
 					
 					"{server name}",
 					data.getCurrentServer()

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  
+	This file is part of BF3 Battlelog
+
+    BF3 Battlelog is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    BF3 Battlelog is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ -->
+ <ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+>     
+	<RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+		style="@style/StandardPopup"
+		android:minWidth="200dp"
+		android:minHeight="200dp"
+		android:paddingRight="5dp"
+		android:paddingBottom="5dp"
+		android:paddingLeft="5dp"
+	>
+		<ImageView
+		    android:id="@+id/image_assignment"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+			android:src="@drawable/assignment_01_m"
+			android:layout_centerHorizontal="true"
+			android:clickable="true"
+			android:onClick="onClick"
+		/>
+		<TextView
+		    android:id="@+id/text_title"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="BEST FRIEND FOREVER"
+		    android:textSize="22sp"
+		    android:textColor="#000000"
+		    android:layout_below="@id/image_assignment"
+		    android:textStyle="bold"
+		/>  
+		<TextView
+		    style="@style/InfoSubHeading"
+		    android:id="@id/string000"
+		    android:text="Objectives"
+		    android:layout_width="fill_parent"
+		    android:layout_below="@id/text_title"
+		    android:padding="5dp"
+		/>
+		<LinearLayout
+		    android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+		 	android:id="@+id/wrap_objectives" 
+		    android:layout_below="@id/string000" 
+		    android:orientation="vertical"
+		>			
+		</LinearLayout>
+		<TextView
+		    style="@style/InfoSubHeading"
+		    android:id="@id/string100"
+		    android:text="REWARDS"
+		    android:layout_width="fill_parent"
+		    android:layout_below="@id/wrap_objectives"
+		    android:padding="5dp"
+		    android:textColor="#000000"
+		/>
+		<RelativeLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		 	android:id="@+id/wrap_rewards" 
+		    android:layout_below="@id/string100"  
+		>
+			<ImageView
+			    android:id="@+id/image_reward"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+				android:src="@drawable/assignment_01"
+			    android:layout_marginTop="5dp"
+				android:layout_centerHorizontal="true"
+			/>
+			    
+			<TextView
+			    android:id="@+id/text_rew_name"
+			    android:text="FAMAS"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:padding="5dp"
+			    android:textColor="#000000"
+			    android:layout_below="@id/image_reward"
+				android:layout_centerHorizontal="true"
+			/>
+		</RelativeLayout>
+	</RelativeLayout>
+</ScrollView>

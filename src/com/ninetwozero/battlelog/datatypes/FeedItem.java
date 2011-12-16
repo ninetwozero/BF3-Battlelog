@@ -64,7 +64,7 @@ public class FeedItem {
 	public String getTitle() { 
 		
 		//Get the correct format depending on the type
-		if( type.equals( "becamefriends" )  ) {
+if( type.equals( "becamefriends" )  ) {
 			
 			return this.title.replace(
 					
@@ -74,6 +74,15 @@ public class FeedItem {
 					
 				"{username2}", this.username[1]
 						
+			); 
+		
+		} else if( type.equals( "assignmentcomplete" )  ) {
+			
+			return this.title.replace(
+					
+				"{username}", 
+				this.username[0]
+			
 			); 
 		
 		} else if( type.equals( "createdforumthread" ) || type.equals( "wroteforumpost" ) ) {

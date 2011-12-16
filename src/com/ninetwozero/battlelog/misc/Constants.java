@@ -87,7 +87,7 @@ public final class Constants {
 	public static final String URL_STATS_AWARDS = URL_MAIN + "awardsPopulateStats/{PID}/{PLATFORM_ID}/";
 	public static final String URL_STATS_UNLOCKS = URL_MAIN + "upcomingUnlocksPopulateStats/{PID}/{PLATFORM_ID}/";
 	public static final String URL_STATS_DOGTAGS = URL_MAIN + "soldier/dogtagsPopulateStats/{PID}/{UID}/{PLATFORM_ID}/";
-	public static final String URL_STATS_ASSIGNMENTS = URL_MAIN + "assignmentsPopulateStats/{PID}/{PLATFORM_ID}/";
+	public static final String URL_STATS_ASSIGNMENTS = URL_MAIN + "soldier/missionsPopulateStats/{PNAME}/{PID}/{UID}/{PLATFORM_ID}/";
 	public static final String URL_STATS_ALL = URL_MAIN + "indexstats/{PID}/{PLATFORM_NAME}/";
 	
 	//URL to FORUM
@@ -155,14 +155,32 @@ public final class Constants {
 	public static final int DEFAULT_CACHE_LIMIT = 25;
 	public static final int DEFAULT_NUM_FEED = 20;
 	
+	//Assignments
+	public static final int[] ASSIGNMENT_RESOURCES = new int[] {
+
+		R.drawable.assignment_01,
+		R.drawable.assignment_02,
+		R.drawable.assignment_03,
+		R.drawable.assignment_04,
+		R.drawable.assignment_05,
+		R.drawable.assignment_06,
+		R.drawable.assignment_07,
+		R.drawable.assignment_08,
+		R.drawable.assignment_09,
+		R.drawable.assignment_10
+		
+	};
+	
 	//Menu
-	public static final long MENU_ME = 0;
+	public static final long MENU_MY_SOLDIER = 0;
 	public static final long MENU_UNLOCKS = 1;
 	public static final long MENU_SOLDIER = 2;
 	public static final long MENU_PLATOON = 3;
 	public static final long MENU_COMPARE = 4;
 	public static final long MENU_SETTINGS = 5;
 	public static final long MENU_FORUM = 6;
+	public static final long MENU_MY_PLATOON = 7;
+	public static final long MENU_ASSIGNMENTS = 8;
 		
 	//SH
 	public static final String SP_V_FILE = "file_version";

@@ -14,15 +14,13 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.ninetwozero.battlelog.R;
-import java.io.Serializable;
 
 
-public class PlatoonStatsItem implements Serializable {
-
-	//Serializable 
-	private static final long serialVersionUID = -5628303442912315179L;
-
+public class PlatoonStatsItem implements Parcelable {
+	
 	//Base-section
 	private String label;
 	private int min, mid, max, avg;
@@ -30,6 +28,21 @@ public class PlatoonStatsItem implements Serializable {
 	private ProfileData profile;
 	
 	//Construct
+	public PlatoonStatsItem(Parcel in) {
+	
+		this.label = in.readString();
+		this.min = in.readInt();
+		this.mid = in.readInt();
+		this.max = in.readInt();
+		this.avg = in.readInt();
+		this.dMin = in.readDouble();
+		this.dMid = in.readDouble();
+		this.dMax = in.readDouble();
+		this.dAvg = in.readDouble();
+		this.profile = in.readParcelable( ProfileData.class.getClassLoader() );
+			
+	}
+	
 	public PlatoonStatsItem( String l, int a, int b, int c, int d, ProfileData p ) {
 		
 		this.label = l;
@@ -37,6 +50,10 @@ public class PlatoonStatsItem implements Serializable {
 		this.mid = b;
 		this.max = c;
 		this.avg = d;
+		this.dMin = 0;
+		this.dMid = 0;
+		this.dMax = 0;
+		this.dAvg = 0;
 		this.profile = p;
 	
 	}
@@ -44,6 +61,10 @@ public class PlatoonStatsItem implements Serializable {
 	public PlatoonStatsItem( String l, double a, double b, double c, double d, ProfileData p ) {
 		
 		this.label = l;
+		this.min = 0;
+		this.mid = 0;
+		this.max = 0;
+		this.avg = 0;
 		this.dMin = a;
 		this.dMid = b;
 		this.dMax = c;
@@ -74,4 +95,17 @@ public class PlatoonStatsItem implements Serializable {
 		this.avg += p.getAvg();
 		
 	}
+	
+	@Override
+	public int describeContents() { return 0; }
+
+	@Override
+	public void writeToParcel( Parcel dest, int flags ) {}
+
+	public static final Parcelable.Creator<PlatoonStatsItem> CREATOR = new Parcelable.Creator<PlatoonStatsItem>() {
+		
+		public PlatoonStatsItem createFromParcel(Parcel in) { return new PlatoonStatsItem(in); }
+        public PlatoonStatsItem[] newArray(int size) { return new PlatoonStatsItem[size]; }
+	
+	};
 }

@@ -83,6 +83,11 @@
           	android:configChanges="orientation"
           	android:theme="@android:style/Theme.Light"
         />
+        <activity
+            android:label="@string/title_assignments"
+            android:name=".AssignmentView"
+          	android:configChanges="orientation"
+        />
 		<receiver android:name="com.ninetwozero.battlelog.widgets.BattlelogAppWidgetProvider" android:label="@string/widget_name">
 			<intent-filter>
 		         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

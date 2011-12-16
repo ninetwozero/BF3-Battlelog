@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  
+	This file is part of BF3 Battlelog
+
+    BF3 Battlelog is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    BF3 Battlelog is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ -->
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content" 
+	android:gravity="center"
+	android:paddingBottom="10dp"
+>
+    <LinearLayout
+		android:layout_width="wrap_content"    
+		android:layout_height="wrap_content" 
+		android:orientation="horizontal"
+		android:gravity="center"
+	>
+	   <LinearLayout
+	       android:layout_width="wrap_content"
+	       android:layout_height="wrap_content"
+	       android:weightSum="2"
+	   >
+			<RelativeLayout
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginRight="5dp"	
+				android:layout_weight="1"	
+			>   
+				<ImageView
+					android:id="@+id/image_leftassignment"
+					android:layout_width="fill_parent"
+					android:layout_height="50dp"
+					android:src="@drawable/assignment_01"
+					android:onClick="onPopupClick"
+				/>
+				<ProgressBar
+					android:id="@+id/progress_left"
+					style="?android:attr/progressBarStyleHorizontal"
+					android:layout_width="fill_parent"
+					android:layout_height="10dp"
+					android:layout_below="@id/image_leftassignment"
+					android:background="#ffffff"
+				/>
+				
+		   </RelativeLayout>
+			<ImageView
+				android:id="@+id/image_arrow"
+				android:layout_width="10dp"
+				android:layout_height="6dp"
+				android:src="@drawable/assignment_arrow_unlocked"
+				android:layout_marginRight="5dp"
+				android:layout_gravity="center"
+				android:scaleType="fitXY"
+			/>
+			<RelativeLayout
+			   android:layout_width="0dp"
+			   android:layout_height="wrap_content"
+			   android:layout_weight="1"	
+			>   
+			   
+				<ImageView
+					android:id="@+id/image_rightassignment"
+					android:layout_width="fill_parent"
+					android:layout_height="50dp"
+					android:src="@drawable/assignment_locked"
+					android:onClick="onPopupClick"
+				/>
+				<ProgressBar
+					android:id="@+id/progress_right"
+					style="?android:attr/progressBarStyleHorizontal"
+					android:layout_width="fill_parent"
+					android:layout_height="10dp"
+					android:layout_below="@id/image_rightassignment"
+				/>
+				
+			</RelativeLayout>
+			
+		</LinearLayout>
+	
+	</LinearLayout>
+
+</TableRow>

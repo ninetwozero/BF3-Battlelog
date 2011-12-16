@@ -31,19 +31,20 @@ public class DataBank {
 	public DataBank() {}
 	
 	//Getters
-	public static String getRankTitle( String key ) { return RANKS.containsKey( key )? RANKS.get( key ): ""; }
-	public static String getWeaponTitle( String key ) { return WEAPONS.containsKey( key )? WEAPONS.get( key ).getName(): ""; }
-	public static String getWeaponTitleShort( String key ) { return WEAPONS_SHORT.containsKey( key )? WEAPONS_SHORT.get( key ): ""; }
-	public static String getAttachmentTitle( String key ) { return WEAPON_ATTACHMENTS.containsKey( key )? WEAPON_ATTACHMENTS.get( key ): ""; }
-	public static String getVehicleTitle( String key ) { return VEHICLES.containsKey( key )? VEHICLES.get( key ).getName(): ""; }
-	public static String getVehicleAddon( String key ) { return VEHICLE_ADDONS.containsKey( key )? VEHICLE_ADDONS.get( key ): ""; }
-	public static String getSkillTitle( String key ) { return SKILLS.containsKey( key )? SKILLS.get( key ): ""; }
-	public static String getKitUnlockTitle( String key ) { return KIT_ITEMS.containsKey( key )? KIT_ITEMS.get( key ): ""; }
-	public static String getUnlockGoal( String key ) { return UNLOCK_GOALS.containsKey( key )? UNLOCK_GOALS.get( key ): ""; }
-	public static String getAwardTitle( String key ) { return AWARDS.containsKey( key ) ? AWARDS.get( key ) : ""; }
-	public static String getMapTitle( String key ) { return MAPS.containsKey( key ) ? MAPS.get( key ) : ""; }
-	public static String getCoopLevelTitle( String key ) { return COOP_DATA.containsKey( key ) ? COOP_DATA.get( key ) : ""; }
-	public static String getDifficultyTitle( String key ) { return DIFFICULTY_MAP.containsKey( key ) ? DIFFICULTY_MAP.get( key ) : ""; }
+	public static String getRankTitle( String key ) { return RANKS.containsKey( key )? RANKS.get( key ) : key; }
+	public static String getWeaponTitle( String key ) { return WEAPONS.containsKey( key )? WEAPONS.get( key ).getName() : key; }
+	public static String getWeaponTitleShort( String key ) { return WEAPONS_SHORT.containsKey( key )? WEAPONS_SHORT.get( key ) : key; }
+	public static String getAttachmentTitle( String key ) { return WEAPON_ATTACHMENTS.containsKey( key )? WEAPON_ATTACHMENTS.get( key ) : key; }
+	public static String getVehicleTitle( String key ) { return VEHICLES.containsKey( key )? VEHICLES.get( key ).getName() : key; }
+	public static String getVehicleAddon( String key ) { return VEHICLE_ADDONS.containsKey( key )? VEHICLE_ADDONS.get( key ) : key; }
+	public static String getSkillTitle( String key ) { return SKILLS.containsKey( key )? SKILLS.get( key ) : key; }
+	public static String getKitUnlockTitle( String key ) { return KIT_ITEMS.containsKey( key )? KIT_ITEMS.get( key ) : key; }
+	public static String getUnlockGoal( String key ) { return UNLOCK_GOALS.containsKey( key )? UNLOCK_GOALS.get( key ) : key; }
+	public static String getAwardTitle( String key ) { return AWARDS.containsKey( key ) ? AWARDS.get( key ) : key; }
+	public static String getMapTitle( String key ) { return MAPS.containsKey( key ) ? MAPS.get( key ) : key; }
+	public static String getCoopLevelTitle( String key ) { return COOP_DATA.containsKey( key ) ? COOP_DATA.get( key ) : key; }
+	public static String getDifficultyTitle( String key ) { return DIFFICULTY_MAP.containsKey( key ) ? DIFFICULTY_MAP.get( key ) : key; }
+	public static String[] getAssignmentTitle( String key ) { return ASSIGNMENTS.containsKey( key ) ? ASSIGNMENTS.get( key ) : new String[] { key, key }; }
 	
 	private static PlatformData[] PLATFORMS;
 	private static HashMap<String, String> RANKS;
@@ -57,8 +58,9 @@ public class DataBank {
 	private static HashMap<String, String> UNLOCK_GOALS;		
 	private static HashMap<String, String> AWARDS;
 	private static HashMap<String, String> MAPS;
-	private static HashMap<String, String> COOP_DATA = new HashMap<String, String>();
-	private static HashMap<String, String> DIFFICULTY_MAP = new HashMap<String, String>();
+	private static HashMap<String, String> COOP_DATA;
+	private static HashMap<String, String> DIFFICULTY_MAP;
+	private static HashMap<String, String[]> ASSIGNMENTS;
 	static{
   
 		PLATFORMS = new PlatformData[4];
@@ -73,6 +75,9 @@ public class DataBank {
     	UNLOCK_GOALS = new HashMap<String, String>();
     	AWARDS = new HashMap<String, String>();
     	MAPS = new HashMap<String, String>();
+    	COOP_DATA = new HashMap<String, String>();
+    	DIFFICULTY_MAP = new HashMap<String, String>();
+    	ASSIGNMENTS = new HashMap<String, String[]>();
     	
     	//PLATFORMS
     	PLATFORMS[0] = new PlatformData(1, "pc");
@@ -541,7 +546,7 @@ public class DataBank {
 		VEHICLE_ADDONS.put("ID_P_VUNAME_AHZOOM", "ZOOM OPTICS");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_IFVSTEALTH", "THERMAL CAMO");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_JETAVIONIC", "BEAM SCANNING");
-		VEHICLE_ADDONS.put("ID_P_VUNAME_IFVAPFSDS", "APFSDS");
+		VEHICLE_ADDONS.put("ID_P_VUNAME_IFVAPFSDS", "APFSDS-T SHELL");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_AHARADAR", "AIR RADAR");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_MBTSTEALTH", "THERMAL CAMO");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_SHECM", "ECM JAMMER");
@@ -552,7 +557,7 @@ public class DataBank {
 		VEHICLE_ADDONS.put("ID_P_VUNAME_MBTCITV", "CITV STATION");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_AHENVG", "THERMAL OPTICS");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_AAARADAR", "AIR RADAR");
-		VEHICLE_ADDONS.put("ID_P_VUNAME_AAAA", "ANTI");
+		VEHICLE_ADDONS.put("ID_P_VUNAME_AAAA", "ANTI-AIR MISSILE");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_SHLASER", "LASER PAINTER");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_IFVZOOM", "ZOOM OPTICS");
 		VEHICLE_ADDONS.put("ID_P_VUNAME_AHGUIDE", "GUIDED ROCKET");
@@ -792,13 +797,10 @@ public class DataBank {
 		AWARDS.put("ID_P_WSTAR_NAME_M98B", "M98B SERVICE STAR");
 		
 		COOP_DATA.put("COOP_EXFILTRATION", "Exfiltration");
-		COOP_DATA.put("COOP_INTRO", "Independent sources have provided consistent information that a major attack is planned by the PLR in the upcoming weeks");
 		COOP_DATA.put("COOP_ASSASSINATION", "Assassination");
-		COOP_DATA.put("COOP_PATH", "MAIN ");
 		COOP_DATA.put("COOP_MISSION", "CO-OP MISSION ");
 		COOP_DATA.put("COOP_HOSTAGE", "Drop 'Em Like Liquid");
 		COOP_DATA.put("COOP_CLASSIFIED", "CLASSIFIED");
-		COOP_DATA.put("COOP_QUIT", "QUIT");
 		COOP_DATA.put("COOP_010", "THE ELEVENTH HOUR");
 		COOP_DATA.put("COOP_006", "FIRE FROM THE SKY");
 		COOP_DATA.put("COOP_007", "OPERATION EXODUS");
@@ -816,6 +818,17 @@ public class DataBank {
 		COOP_DATA.put("COOP_ROLLINGTHUNDER", "Rolling Thunder");
 		COOP_DATA.put("COOP_BEHINDENEMYLINES", "Behind Enemy Lines");
 		COOP_DATA.put("COOP_SUBWAY", "The Eleventh Hour");
+		
+		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_2", new String[] { "Professional Russian", "L85A2" });
+		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_3", new String[] { "Fixing it", "G+R[71]C" });
+		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_1", new String[] { "Best Friend Forever", "FAMAS" });
+		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_6", new String[] { "Keep your head down", "MG36" });
+		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_7", new String[] { "Specops", "QBU-88" });
+		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_4", new String[] { "It goes Boom", "QBZ-95B" });
+		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_5", new String[] { "Let it rain", "QBB-95" });
+		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_9", new String[] { "Familiar Territory", "PP-19" });
+		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_8", new String[] { "Creeping Death", "L96" });
+		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_10",new String[] {  "Scarred Veteran", "MK3A1" });
 	}
 	
 	//Static methods
@@ -876,6 +889,18 @@ public class DataBank {
 			
 		}
 		
+	}
+	
+	public static int getKitIdFromTitle( final Context c, final String s ) {
+	
+		if( s.equalsIgnoreCase( "assault" ) ) { return 1; }
+		else if( s.equalsIgnoreCase( "engineer" ) ) { return 2;	} 
+		else if( s.equalsIgnoreCase( "recon" ) ) { return 8;  } 
+		else if( s.equalsIgnoreCase( "vehicles" ) ) { return 16; }
+		else if( s.equalsIgnoreCase( "support" ) ) { return 32; }
+		else if( s.equalsIgnoreCase( "general" ) ) { return 64; }
+		else return 64;
+
 	}
 	
 	public static String getGameModeFromId( int number ) {

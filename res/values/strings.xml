@@ -269,5 +269,9 @@
         <string name="title_settings">BF3 Battlelog - Settings</string>
         <string name="title_forum">BF3 Battlelog - Forum</string>
         <string name="label_forum">Forum</string>
-        <string name="info_txt_assignment_ok">completed an assignment - \"{assignment}\" (unlocks {unlock})</string>
+        <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> completed an assignment - &lt;b>\"{assignment}\"&lt;/b> (unlocks &lt;b>{unlock}&lt;/b>)</string>
+        <string name="info_assignments_new_unknown">New assignments have been added - please notify the developer!</string>
+        <string name="title_assignments">BF3 Battlelog - Viewing your assignments</string>
+        <string name="info_xml_platoons_my">My platoons</string>
+        <string name="info_xml_assignments_my">My assignments</string>
 </resources>

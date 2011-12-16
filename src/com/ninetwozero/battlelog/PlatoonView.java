@@ -137,10 +137,10 @@ public class PlatoonView extends TabActivity {
     			
     		new String[] { 
     				
-				getResources().getString( R.string.label_home ), 
-				getResources().getString( R.string.label_stats ), 
-				getResources().getString( R.string.label_users ), 
-    			getResources().getString( R.string.label_feed ) 
+				getString(R.string.label_home ), 
+				getString(R.string.label_stats ), 
+				getString(R.string.label_users ), 
+    			getString(R.string.label_feed ) 
     			
     		}, 
     		new int[] { 
@@ -384,7 +384,7 @@ public class PlatoonView extends TabActivity {
     	((TextView) findViewById(R.id.text_name_platoon)).setText( data.getName() + " [" + data.getTag() + "]" );
     	((TextView) findViewById(R.id.text_date)).setText( 
     			
-    		getResources().getString( R.string.info_platoon_created ).replace( 
+    		getString(R.string.info_platoon_created ).replace( 
     				
     			"{DATE}", 
     			PublicUtils.getDate( data.getDate() )
@@ -551,7 +551,7 @@ public class PlatoonView extends TabActivity {
     		
     		} else {
     			
-    			((ImageView) cacheView.findViewById( R.id.image_avatar )).setImageResource(R.drawable.test_avatar_48);
+    			((ImageView) cacheView.findViewById( R.id.image_avatar )).setImageResource(R.drawable.default_avatar);
     			
     		}
     		//Set the TextViews accordingly

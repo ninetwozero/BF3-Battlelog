@@ -19,7 +19,7 @@
 				android:id="@+id/image_avatar"    
 			    android:layout_width="40dp"
 			    android:layout_height="40dp"
-			    android:src="@drawable/test_avatar_48"
+			    android:src="@drawable/default_avatar"
 			/>
 			<TextView 
 			    android:id="@+id/text_title"
