@@ -58,6 +58,8 @@ public final class Constants {
 	//URL to JSON-files (PROFILE-related)
 	public static final String urlProfile = urlMain + "user/overviewBoxStats/{PID}/";
 	public static final String urlProfileInfo = urlMain + "user/{UNAME}/";
+	public static final String urlProfileFeed = urlMain + "feed/profileevents/{PID}/?start={NUMSTART}";
+	
 	
 	//URL to JSON-files (STATS-related)
 	public static final String urlStatsOverview = urlMain +"overviewPopulateStats/{UID}/None/{PLATFORM_ID}/";

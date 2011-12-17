@@ -232,7 +232,7 @@ public class ProfileView extends TabActivity {
 				
 				//Get...
 				playerData = WebsiteHandler.getStatsForUser( this.profileData );
-				profileInformation = WebsiteHandler.getProfileInformationForUser( this.profileData, this.activeProfileId);
+				profileInformation = WebsiteHandler.getProfileInformationForUser(context, this.profileData, 20, this.activeProfileId);
 				
 				//...validate!
 				if( playerData == null || profileInformation == null ) { 

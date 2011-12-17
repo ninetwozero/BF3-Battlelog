@@ -50,7 +50,7 @@ public class Main extends Activity {
 	SharedPreferences sharedPreferences;
 	
 	//Changelog v
-	final int changelogVersion = 4;
+	final int changelogVersion = 6;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class Main extends Activity {
         checkboxSave = (CheckBox) findViewById(R.id.checkbox_save);
         
         //Do we need to show the cool changelog-dialog?
-        if( sharedPreferences.getLong( "latest_changelog_version", 2) < changelogVersion ) {
+        if( sharedPreferences.getLong( "latest_changelog_version", 5) < changelogVersion ) {
         	
         	createChangelogDialog().show();
         	

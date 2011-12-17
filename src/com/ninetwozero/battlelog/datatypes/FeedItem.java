@@ -1,19 +1,20 @@
 /*
-	This file is part of BF3 Battlelog
+This file is part of BF3 Battlelog
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+BF3 Battlelog is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-*/   
+BF3 Battlelog is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+*/
 
 package com.ninetwozero.battlelog.datatypes;
 
+import com.ninetwozero.battlelog.R;
 import java.util.ArrayList;
 
 
@@ -27,16 +28,18 @@ public class FeedItem {
 	private String[] username;
 	private boolean liked;
 	private ArrayList<CommentData> comments;
-	
+	private String gravatarHash;
+
 	//Construct
-	public FeedItem( 
-	
+	public FeedItem(
+
 		long i, long oid, long iid, long nDate, int num,
 		String t, String c, String type, String[] u,
-		boolean il, ArrayList<CommentData> cda
-		
+		boolean il, ArrayList<CommentData> cda,
+		String im
+
 	) {
-		
+
 		this.id = i;
 		this.ownerId = oid;
 		this.itemId = iid;
@@ -48,8 +51,10 @@ public class FeedItem {
 		this.username = u;
 		this.comments = cda;
 		this.liked = il;
+		this.gravatarHash = im;
+		
 	}
-	
+
 	//Getters
 	public long getId() { return this.id; }
 	public long getOwnerId() { return this.ownerId; }
@@ -57,129 +62,149 @@ public class FeedItem {
 	public long getDate() { return this.date; }
 	public int getNumComments() { return this.comments.size(); }
 	public int getNumLikes() { return this.numLikes; }
-	public String getTitle() { 
-		
+	public String getTitle() {
+
 		//Get the correct format depending on the type
-		if( type.equals( "becamefriends" )  ) {
-			
+		if( type.equals( "becamefriends" ) ) {
+
 			return this.title.replace(
-					
+
 				"{username1}", this.username[0]
-			
-			).replace( 
-					
+
+			).replace(
+
 				"{username2}", this.username[1]
-						
-			); 
-		
-		} else if( type.equals( "wroteforumpost" ) ) {
-			
-			return this.title.replace( 
-					
-				"{username}", 
-				this.username[0]
-				
+
 			);
-			
+
+		} else if( type.equals( "assignmentcomplete" ) ) {
+
+			return this.title.replace(
+
+				"{username}",
+				this.username[0]
+
+			);
+
+		} else if( type.equals( "createdforumthread" ) || type.equals( "wroteforumpost" ) ) {
+
+			return this.title.replace(
+
+				"{username}",
+				this.username[0]
+
+			);
+
 		} else if( type.equals( "gamereport" ) ) {
-			
-			return this.title.replace( 
-					
-				"{username}", 
+
+			return this.title.replace(
+
+				"{username}",
 				this.username[0]
-				
+
 			);
-			
+
 		} else if( type.equals( "statusmessage" ) ) {
-			
-			return this.title.replace( 
-					
-				"{username}", 
+
+			return this.title.replace(
+
+				"{username}",
 				this.username[0]
-				
+
 			);
-			
+
 		} else if( type.equals( "addedfavserver" ) ) {
-			
-			return this.title.replace( 
-					
-				"{username}", 
+
+			return this.title.replace(
+
+				"{username}",
 				this.username[0]
-				
+
 			);
-			
+
 		} else if( type.equals( "rankedup" ) ) {
-			
-			return this.title.replace( 
-					
-				"{username}", 
+
+			return this.title.replace(
+
+				"{username}",
 				this.username[0]
-				
+
 			);
-			
+
 		} else if( type.equals( "levelcomplete" ) ) {
-			
+
 			return this.title.replace(
-					
-				"{username1}", 
+
+				"{username1}",
 				this.username[0]
-			
-			).replace( 
-					
-				"{username2}", 
+
+			).replace(
+
+				"{username2}",
 				this.username[1]
-						
-			); 
-			
-		} else if( type.equals( "joinedplatoon" ) || type.equals( "leftplatoon" ) || type.equals( "receivedplatoonwallpost" ) ) {
-			
-			return this.title.replace( 
-					
-				"{username}", 
-				this.username[0]
-				
+
 			);
-			
-		} else if( type.equals( "receivedaward" ) ) {
-			
-			return this.title.replace( 
-					
-				"{username}", 
-				this.username[0]
-				
-			);
-			
-		} else if( type.equals( "receivedwallpost" ) ) {
-			
+
+		} else if( type.equals( "kickedplatoon" ) || type.equals( "joinedplatoon" ) || type.equals( "leftplatoon" ) ) {
+
+				return this.title.replace(
+
+					"{username}",
+					this.username[0]
+
+				);
+
+		} else if( type.equals( "createdplatoon" ) || type.equals( "platoonbadgesaved" ) || type.equals( "receivedplatoonwallpost" ) ) {
+
 			return this.title.replace(
-					
-				"{username1}", this.username[0]
-			
-			).replace( 
-					
-				"{username2}", this.username[1]
-						
-			);
-			
-		} else if( type.equals( "commentedgamereport" ) ) {
-			
-			return this.title.replace( 
-				
-				"{username}", 
+
+				"{username}",
 				this.username[0]
-				
+
 			);
-			
+
+		} else if( type.equals( "receivedaward" ) ) {
+
+			return this.title.replace(
+
+				"{username}",
+				this.username[0]
+
+			);
+
+		} else if( type.equals( "receivedwallpost" ) ) {
+
+			return this.title.replace(
+
+				"{username1}", this.username[0]
+
+			).replace(
+	
+				"{username2}", this.username[1]
+
+			);
+
+		} else if( type.equals( "commentedgamereport" ) || type.equals( "commentedblog" ) ) {
+
+			return this.title.replace(
+
+				"{username}",
+				this.username[0]
+
+			);
+
 		} else {
-		
+
 			return this.title;
-			
+
 		}
-		
+
 	}
 	public String getContent() { return this.content; }
 	public String getType() { return this.type; }
 	public String[] getUsername() { return this.username; }
 	public boolean isLiked() { return this.liked; }
 	public ArrayList<CommentData> getComments() { return this.comments; }
+	public String getAvatarForPost() { return this.gravatarHash; }
+	
 }
