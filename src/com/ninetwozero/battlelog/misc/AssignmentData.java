@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.ninetwozero.battlelog.R;
 
 
 public class AssignmentData implements Parcelable {

@@ -15,6 +15,8 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
+import org.apache.http.cookie.Cookie;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -25,7 +27,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -37,9 +42,6 @@ public class ForumView extends Activity {
 	private final Context CONTEXT = this;
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
-	
-	//Elements
-	private WebView browserWindow;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -64,26 +66,15 @@ public class ForumView extends Activity {
         //Prepare to tango
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-        this.browserWindow = (WebView) findViewById(R.id.web_view);
         
         //Let's see
     	initLayout();
     	
 	}        
 
-	public void initLayout() {
-		
-		//Eventually get a *cached* version instead    
-		browserWindow.loadUrl( Constants.URL_FORUM );
-		
-	}
+	public void initLayout() {}
 	
-    public void reloadLayout() {
-    	
-    	//ASYNC!!!
-    	browserWindow.reload();
-    	
-    }
+    public void reloadLayout() {}
     
     @Override
 	public boolean onCreateOptionsMenu( Menu menu ) {

@@ -274,4 +274,5 @@
         <string name="title_assignments">BF3 Battlelog - Viewing your assignments</string>
         <string name="info_xml_platoons_my">My platoons</string>
         <string name="info_xml_assignments_my">My assignments</string>
+        <string name="msg_no_cookies">No cookies found - please try to re-login.</string>
 </resources>

@@ -20,10 +20,13 @@ package com.ninetwozero.battlelog.misc;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.ninetwozero.battlelog.R;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+import com.ninetwozero.battlelog.R;
 
 
 public class PublicUtils {
@@ -293,6 +296,19 @@ public class PublicUtils {
         return false;
     
     }
-
+	/*
+	 * 	Author: http://stackoverflow.com/a/4239019/860212
+	 *  Modified by: Karl Lindmark
+	 *  
+	 *  @param Context The context to be called from
+	 *  @return boolean True/false regarding if the network is available
+	 */
+    
+    public static boolean isNetworkAvailable(final Context c) {
+        
+    	ConnectivityManager connMan = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	return (connMan.getActiveNetworkInfo() != null && connMan.getBackgroundDataSetting());
+    
+    }
 
 }

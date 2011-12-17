@@ -190,13 +190,22 @@ public class Main extends Activity {
 				);
     		
     		}
-    		
-    		//Do the async
-    		AsyncLogin al = new AsyncLogin(this, false, checkboxSave.isChecked());
-    		al.execute( postDataArray );
-    		
     		//Clear the pwd-field
     		if( !checkboxSave.isChecked() ) fieldPassword.setText( "" );
+    		
+    		//Do the async
+    		if( PublicUtils.isNetworkAvailable( this ) ) { 
+    			
+    			AsyncLogin al = new AsyncLogin(this, false, checkboxSave.isChecked());
+    			al.execute( postDataArray );
+    		
+    		} else {
+    			
+    			
+    			Toast.makeText( this, "No network connection available!", Toast.LENGTH_SHORT ).show();
+    			
+    		}
+    		
     		return;
     		
     	}
@@ -211,7 +220,7 @@ public class Main extends Activity {
 	    final View layout = inflater.inflate(R.layout.changelog_dialog, (ViewGroup) findViewById(R.id.dialog_root));
 		
 	    //Set the title and the view
-		builder.setTitle(R.string.general_changelog_version  + " 1.0." + Constants.CHANGELOG_VERSION);
+		builder.setTitle( getString( R.string.general_changelog_version ) + " 1.0." + Constants.CHANGELOG_VERSION);
 		builder.setView(layout);
 
 		//Grab the fields

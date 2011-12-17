@@ -1307,7 +1307,8 @@ public class Dashboard extends TabActivity {
 			
 		} else if( id == Constants.MENU_FORUM ) { 
 			
-			startActivity( new Intent(this, ForumView.class) );
+			Toast.makeText( this, R.string.msg_unimplemented, Toast.LENGTH_SHORT ).show();
+//			startActivity( new Intent(this, ForumView.class) );
 			return;
 			
 		} else {
