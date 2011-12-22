@@ -144,7 +144,7 @@
         <string name="info_award">award</string>
         <string name="info_battle_report">Battle report</string>
         <string name="info_platoon_wall_post">platoon wall post</string>
-        <string name="info_lastlogin">Last logged in {last_login}</string>
+        <string name="info_lastlogin">Last logged in {date}</string>
         <string name="info_time_second">{seconds} second ago</string>
         <string name="info_time_second_p">{seconds} seconds ago</string>
         <string name="info_time_min">{minutes} minute ago</string>
@@ -242,9 +242,9 @@
         <string name="info_p_friendship">&lt;b>{username1}&lt;/b> and &lt;b>{username2}&lt;/b> are now friends</string>
         <string name="info_p_forumthread">&lt;b>{username}&lt;/b> created the forum thread &lt;b>\"{thread}\"&lt;/b>.</string>
         <string name="info_p_forumpost">&lt;b>{username}&lt;/b> wrote a forum post in the thread &lt;b>\"{thread}\"&lt;/b>.</string>
-        <string name="info_p_newunlock">&lt;b>{username}&lt;/b> unlocked a new item: &lt;b>{item}&lt;/b>.</string>
+        <string name="info_p_newunlock">&lt;b>{username}&lt;/b> unlocked a new item: {item}.</string>
         <string name="info_p_favserver">&lt;b>{username}&lt;/b> favorited a server: &lt;b>{server}&lt;/b>.</string>
-        <string name="info_p_promotion">&lt;b>{username}&lt;/b> got promoted to &lt;b>{rank title}&lt;/b> (rank{rank}).</string>
+        <string name="info_p_promotion">&lt;b>{username}&lt;/b> got promoted to &lt;b>{rank title}&lt;/b> ({rank}).</string>
         <string name="info_p_greport_comment">&lt;b>{username}&lt;/b> commented on Battle Report &lt;b>{server name} {map} {game mode}&lt;/b>.</string>
         <string name="info_p_blog_comment">&lt;b>{username}&lt;/b> commented on the blog post &lt;b>{post name}&lt;/b>.</string>
         <string name="info_p_platoon_join">&lt;b>{username}&lt;/b> joined the platoon &lt;b>{platoon}&lt;/b>.</string>
@@ -269,10 +269,12 @@
         <string name="title_settings">BF3 Battlelog - Settings</string>
         <string name="title_forum">BF3 Battlelog - Forum</string>
         <string name="label_forum">Forum</string>
-        <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> completed an assignment - &lt;b>\"{assignment}\"&lt;/b> (unlocks &lt;b>{unlock}&lt;/b>)</string>
+        <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> completed an assignment - &lt;b>\"{assignment}\"&lt;/b> (unlocks &lt;b>{unlock}&lt;/b>).</string>
         <string name="info_assignments_new_unknown">New assignments have been added - please notify the developer!</string>
         <string name="title_assignments">BF3 Battlelog - Viewing your assignments</string>
         <string name="info_xml_platoons_my">My platoons</string>
         <string name="info_xml_assignments_my">My assignments</string>
         <string name="msg_no_cookies">No cookies found - please try to re-login.</string>
+        <string name="label_soldier_unlocks">View unlocks</string>
+        <string name="info_p_newunlocks">&lt;b>{username}&lt;/b> unlocked new items: {item}.</string>       
 </resources>

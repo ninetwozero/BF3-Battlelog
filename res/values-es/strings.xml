@@ -129,7 +129,7 @@
         <string name="info_award">premio</string>
         <string name="info_battle_report">batalla informe</string>
         <string name="info_platoon_wall_post">la pared posterior oara pelotón</string>
-        <string name="info_lastlogin">Última vez que ingresó {last_login}</string>
+        <string name="info_lastlogin">Última vez que ingresó {date}</string>
         <string name="info_time_second">Hace {seconds} segundo </string>
         <string name="info_time_second_p">Hace {seconds} secundos</string>
         <string name="info_time_min">Hace {minutes} minuto</string>
@@ -227,7 +227,7 @@
         <string name="info_p_friendship">&lt;b>{username1}&lt;/b> y &lt;b>{username2}&lt;/b> son ahora amigos.</string>
         <string name="info_p_forumthread">&lt;b>{username}&lt;/b> creó el tema del foro &lt;b>\"{thread}\"&lt;/b>.</string>
         <string name="info_p_forumpost">&lt;b>{username}&lt;/b> escribió un mensaje en el foro en el tema &lt;b>\"{thread}\"&lt;/b>.</string>
-        <string name="info_p_newunlock">&lt;b>{username}&lt;/b> abrió un nuevo elemento: &lt;b>{item}&lt;/b>.</string>
+        <string name="info_p_newunlock">&lt;b>{username}&lt;/b> abrió un nuevo elemento: {item}.</string>
         <string name="info_p_favserver">&lt;b>{username}&lt;/b> favorited un servidor: &lt;b>{server}&lt;/b>.</string>
         <string name="info_p_promotion">&lt;b>{username}&lt;/b> fue ascendido a &lt;b>{rank title}&lt;/b> (rank{rank}).</string>
         <string name="info_p_greport_comment">&lt;b>{username}&lt;/b> comentó el informe de batalla por &lt;b>{server name} {map} {game mode}&lt;/b>.</string>
@@ -240,8 +240,6 @@
         <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> escribió en la pared para &lt;b>{platoon}&lt;/b>.</string>
         <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> y &lt;b>{username2}&lt;/b> completo &lt;b>\"{level}\"&lt;/b> en &lt;b>{difficulty}&lt;/b>.</string>
         <string name="info_p_award">&lt;b>{username}&lt;/b> recibió un nuevo premio: &lt;b>{award}&lt;/b>.</string>
-                    
-        <!--  NEW -->
         <string name="info_new_rank">nuevo rango</string>
         <string name="title_main_menu">BF3 Battlelog - Menú principal</string>
         <string name="title_profile">BF3 Battlelog - Perfil</string>
@@ -254,5 +252,15 @@
         <string name="title_settings">BF3 Battlelog - Configuración</string>
         <string name="title_forum">BF3 Battlelog - Foro</string>
         <string name="label_forum">Foro</string>
+                
+        <!--  NEW -->
+        <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> completed an assignment - &lt;b>\"{assignment}\"&lt;/b> (unlocks &lt;b>{unlock}&lt;/b>).</string>
+        <string name="info_assignments_new_unknown">New assignments have been added - please notify the developer!</string>
+        <string name="title_assignments">BF3 Battlelog - Viewing your assignments</string>
+        <string name="info_xml_platoons_my">My platoons</string>
+        <string name="info_xml_assignments_my">My assignments</string>
+        <string name="msg_no_cookies">No cookies found - please try to re-login.</string>
+        <string name="label_soldier_unlocks">View unlocks</string>
+        <string name="info_p_newunlocks">&lt;b>{username}&lt;/b> unlocked new items: {item}.</string> 
             
 </resources>

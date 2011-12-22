@@ -79,7 +79,6 @@ public class ProfileView extends TabActivity {
 	private PersonaStats playerData;
 	private ProfileInformation profileInformation;
 	
-	
 	//Elements
 	private ProgressBar progressBar;
 	private TabHost mTabHost;

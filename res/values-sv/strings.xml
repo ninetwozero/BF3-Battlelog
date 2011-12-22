@@ -131,7 +131,7 @@
         <string name="info_award">utmärkelse</string>
         <string name="info_battle_report">krigsrapport</string>
         <string name="info_platoon_wall_post">plutoninlägg</string>
-        <string name="info_lastlogin">Senast inloggad den {last_login}</string>
+        <string name="info_lastlogin">Senast inloggad den {date}</string>
         <string name="info_time_second">{seconds} sekund sedan</string>
         <string name="info_time_second_p">{seconds} sekunder sedan</string>
         <string name="info_time_min">{minutes} minut sedan</string>
@@ -229,7 +229,7 @@
         <string name="info_p_friendship">&lt;b>{username1}&lt;/b> och &lt;b>{username2}&lt;/b> är numera vänner.</string>
         <string name="info_p_forumthread">&lt;b>{username}&lt;/b> skapade forumtråden &lt;b>\"{thread}\"&lt;/b>.</string>
         <string name="info_p_forumpost">&lt;b>{username}&lt;/b> skrev ett inlägg i forumtråden &lt;b>\"{thread}\"&lt;/b>.</string>
-        <string name="info_p_newunlock">&lt;b>{username}&lt;/b> låste upp ett nytt föremål: &lt;b>{item}&lt;/b>.</string>
+        <string name="info_p_newunlock">&lt;b>{username}&lt;/b> låste upp ett nytt föremål: {item}.</string>
         <string name="info_p_favserver">&lt;b>{username}&lt;/b> bokmärkte en server: &lt;b>{server}&lt;/b>.</string>
         <string name="info_p_promotion">&lt;b>{username}&lt;/b> blev befodrad till &lt;b>{rank title}&lt;/b> (rank{rank}).</string>
         <string name="info_p_greport_comment">&lt;b>{username}&lt;/b> kommenterade på en krigsrapport &lt;b>{server name} {map} {game mode}&lt;/b>.</string>
@@ -256,5 +256,13 @@
         <string name="title_settings">BF3 Battlelog - Inställningar</string>
         <string name="title_forum">BF3 Battlelog - Forum</string>
         <string name="label_forum">Forum</string>
+        <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> klarade ett uppgdrag - &lt;b>\"{assignment}\"&lt;/b> (ger &lt;b>{unlock}&lt;/b>).</string>
+        <string name="info_assignments_new_unknown">Nya uppdrag har lagts till - vänligen tipsa utvecklaren!</string>
+        <string name="title_assignments">BF3 Battlelog - Kollar på tillgänliga uppdrag</string>
+        <string name="info_xml_platoons_my">Mina plutoner</string>
+        <string name="info_xml_assignments_my">Mina uppdrag</string>
+        <string name="msg_no_cookies">Inga kakor kunde hittas - vänligen logga in igen..</string>
+        <string name="label_soldier_unlocks">Upplåsningar</string>
+        <string name="info_p_newunlocks">&lt;b>{username}&lt;/b> låste upp nya föremål: {item}.</string> 
             
 </resources>

@@ -138,7 +138,7 @@ public final class Constants {
 	public static final String FILE_SHPREF = "battlelog";
 	
 	//Changelog version
-	public final static int CHANGELOG_VERSION = 4;
+	public final static int CHANGELOG_VERSION = 8;
 
 	//DEBUG
 	public static final String DEBUG_TAG = "com.ninetwozero.battlelog";

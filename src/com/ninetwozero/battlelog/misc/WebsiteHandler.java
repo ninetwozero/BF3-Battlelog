@@ -2931,48 +2931,109 @@ public class WebsiteHandler {
 				
 					//Grab the specific object
 					JSONArray tempStatsArray = currItem.optJSONObject( "GAMEREPORT" ).optJSONArray( "statItems" );
-					tempSubItem = tempStatsArray.optJSONObject( 0 );
-					itemTitle = c.getString( R.string.info_p_newunlock );
 					
-					//Weapon? Attachment?
-					if( !tempSubItem.isNull( "parentLangKeyTitle" ) ) {
+					/*TODO: BUILD A STRING WITH *ALL* ITEMS */
+					if( tempStatsArray.length() > 1 ) {
 						
-						//Let's see
-						String parentKey = tempSubItem.getString("parentLangKeyTitle");
-						itemContent = DataBank.getWeaponTitleShort( parentKey );
+						itemTitle = c.getString( R.string.info_p_newunlocks );
 						
-						//Is it empty?
-						if( !parentKey.equals( itemContent ) ) {
+					} else {
+						
+						itemTitle = c.getString( R.string.info_p_newunlock );
+						
+					}
+					
+					for(int statsCounter = 0, maxCounter = tempStatsArray.length(); statsCounter < maxCounter; statsCounter++ ) {
+						
+						//Let's get the item
+						String tempKey;
+						tempSubItem = tempStatsArray.optJSONObject( statsCounter );
+						itemContent = "<b>";
+						
+						//Do we need to append anything?
+						if( statsCounter > 0 ) {
 							
-							itemContent +=  " " + DataBank.getAttachmentTitle( tempSubItem.getString( "langKeyTitle" ) );
-							
-						} else {
-							
-							//Grab a vehicle title then
-							itemContent = DataBank.getVehicleTitle( parentKey );
-							
-							//Validate
-							if( !parentKey.equals( itemContent ) ) {
+							if( statsCounter == (maxCounter-1) ) {
 								
-								itemContent += " " + DataBank.getVehicleAddon( tempSubItem.getString( "langKeyTitle" ) );
+								itemContent += " </b>and<b> ";
 								
 							} else {
 								
-								itemContent =  parentKey;
+								itemContent += ", ";
 								
-							} 
+							}
 							
 						}
 						
-					} else {
-						//Let's see
-						String key = tempSubItem.getString("langKeyTitle");
-						itemContent = DataBank.getWeaponTitleShort( key );
-						if( key.equals( itemContent ) ) {
+						//Weapon? Attachment?
+						if( !tempSubItem.isNull( "parentLangKeyTitle" ) ) {
 							
-							itemContent = DataBank.getVehicleAddon( key );
+							//Let's see
+							String parentKey = tempSubItem.getString("parentLangKeyTitle");
+							tempKey = DataBank.getWeaponTitleShort( parentKey );
 							
+							//Is it empty?
+							if( !parentKey.equals( tempKey ) ) {
+								
+								itemContent += tempKey + " " + DataBank.getAttachmentTitle( tempSubItem.getString( "langKeyTitle" ) );
+								
+							} else {
+								
+								//Grab a vehicle title then
+								tempKey = DataBank.getVehicleTitle( parentKey );
+								
+								//Validate
+								if( !parentKey.equals( tempKey ) ) {
+									
+									itemContent += tempKey + " " + DataBank.getVehicleAddon( tempSubItem.getString( "langKeyTitle" ) );
+									
+								} else {
+									
+									itemContent += tempKey;
+									
+								} 
+								
+							}
+
+						} else {
+						
+							//Let's see
+							String key = tempSubItem.getString("langKeyTitle");
+							tempKey = DataBank.getWeaponTitleShort( key );
+							
+							Log.d(Constants.DEBUG_TAG, key + ", " + tempKey);
+							if( key.equals( tempKey ) ) {
+								
+								tempKey = DataBank.getVehicleAddon( key );
+								
+								if( key.equals( tempKey ) ) {
+									
+									tempKey = DataBank.getKitUnlockTitle( key );
+									
+									if( key.equals( tempKey ) ) {
+
+										itemContent += tempKey;
+										
+									} else {
+										
+										itemContent += tempKey;
+										
+									}
+									
+								} else {
+									
+									itemContent += tempKey;
+									
+								}
+								
+							} else {
+								
+								itemContent += tempKey;
+								
+							}
+						
 						}
+					
 					}
 					
 					//Temporary storage						
@@ -2983,7 +3044,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
-						itemTitle.replace( "{item}", itemContent),
+						itemTitle.replace( "{item}", itemContent + "</b>"),
 						"",
 						currItem.getString("event"),
 						new String[] { 

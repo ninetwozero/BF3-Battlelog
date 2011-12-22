@@ -45,9 +45,10 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 public class UnlockView extends ListActivity {
 
 	//SharedPreferences for shizzle
-	SharedPreferences sharedPreferences;
-	ProgressBar progressBar;
-	GetDataSelfAsync getDataAsync;
+	private SharedPreferences sharedPreferences;
+	private ProgressBar progressBar;
+	private GetDataSelfAsync getDataAsync;
+	private ProfileData profileData;
 	private static int instances = 0;
 	
 	@Override
@@ -66,6 +67,29 @@ public class UnlockView extends ListActivity {
     	//Instances += 1
     	instances = 1;
     	
+    	//Get the intent
+        if( !getIntent().hasExtra( "profile" ) ) {
+        	
+        	profileData = new ProfileData(
+
+        		this.sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
+        		this.sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
+    			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
+    			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
+    			this.sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
+				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
+    		
+    		);
+        	
+        } else {
+        	
+        	profileData = (ProfileData) getIntent().getParcelableExtra( "profile" );
+        	
+        }
+        
+        //Is the profileData null?!
+        if( profileData == null || profileData.getProfileId() == 0 ) { finish(); return; }
+    	
     	//Set the content view
         setContentView(R.layout.unlocks_view);
 
@@ -79,14 +103,7 @@ public class UnlockView extends ListActivity {
     	//ASYNC!!!
     	new GetDataSelfAsync(this, getListView(), (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).execute(
     		
-    		new ProfileData(
-				this.sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
-				this.sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
-				this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-				this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-				this.sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
-				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
-			)
+    		profileData
 		
 		);
     	

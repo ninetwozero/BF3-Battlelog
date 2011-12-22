@@ -933,9 +933,10 @@ public class Dashboard extends TabActivity {
     		//Wait, is the position 0? If so, it's the heading...
 	    	if( !selectedUser.getAccountName().startsWith( "0000000" ) ) {
 	    		
-				menu.add( menuId, 0, 0, R.string.label_chat_open);
+	    		menu.add( menuId, 0, 0, R.string.label_chat_open);
 				menu.add( menuId, 1, 0, R.string.label_soldier_view);
-				menu.add( menuId, 2, 0, R.string.label_compare_bs);
+				menu.add( menuId, 2, 0, R.string.label_soldier_unlocks);
+				menu.add( menuId, 3, 0, R.string.label_compare_bs);
 				
 	    	}
 		
@@ -1020,6 +1021,28 @@ public class Dashboard extends TabActivity {
 					);
 					
 				} else if( item.getItemId() == 2 ) {
+					
+					startActivity(
+							
+						new Intent( 
+								
+							this, 
+							UnlockView.class
+							
+						).putExtra( 
+							
+							"profile", 
+							WebsiteHandler.getPersonaIdFromProfile(
+									
+								((ProfileData) info.targetView.getTag()).getProfileId() 
+							
+							)
+							
+						)
+					
+					);
+				
+				} else if( item.getItemId() == 3 ) {
 					
 					startActivity(
 							
@@ -1263,7 +1286,7 @@ public class Dashboard extends TabActivity {
     	
     	if ( id == Constants.MENU_UNLOCKS ) {
     		
-			startActivity( new Intent(this, UnlockView.class) );
+			startActivity( new Intent(this, UnlockView.class).putExtra( "profile", Dashboard.profile ) );
 			 
 		} else if( id == Constants.MENU_ASSIGNMENTS ) {
 			
