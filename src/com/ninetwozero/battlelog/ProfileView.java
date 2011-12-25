@@ -15,7 +15,6 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -64,6 +63,7 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -76,7 +76,7 @@ public class ProfileView extends TabActivity {
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
 	private ProfileData profileData;
-	private PersonaStats playerData;
+	private ArrayList<PersonaStats> personaStats;
 	private ProfileInformation profileInformation;
 	
 	//Elements
@@ -125,6 +125,7 @@ public class ProfileView extends TabActivity {
         
         //Is the profileData null?!
         if( profileData == null || profileData.getProfileId() == 0 ) { finish(); return; }
+    	personaStats = new ArrayList<PersonaStats>();
     	
     	//Set the content view
         setContentView(R.layout.profile_view);
@@ -156,14 +157,15 @@ public class ProfileView extends TabActivity {
 	public void initLayout() {
 		
 		//Eventually get a *cached* version instead    
-		new AsyncProfileRefresh(this, false, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
+		//new AsyncProfileCacheLoad(this, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
+		new AsyncProfileRefresh(this, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
 		
 	}
 	
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new AsyncProfileRefresh(this, true, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
+    	new AsyncProfileRefresh(this, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
     	
     	
     }
@@ -213,19 +215,17 @@ public class ProfileView extends TabActivity {
     
     public void doFinish() {}
     
-    public class AsyncProfileRefresh extends AsyncTask<Void, Void, Boolean> {
-    
+    public class AsyncProfileCacheLoad extends AsyncTask<Void, Void, Boolean> {
+        
     	//Attributes
     	private Context context;
     	private ProgressDialog progressDialog;
     	private ProfileData profileData;
     	private long activeProfileId;
-    	private boolean hideDialog;
     	
-    	public AsyncProfileRefresh(Context c, boolean f, ProfileData pd, long pId) {
+    	public AsyncProfileCacheLoad(Context c, ProfileData pd, long pId) {
     		
     		this.context = c;
-    		this.hideDialog = f;
     		this.profileData = pd;
     		this.progressDialog = null;
     		this.activeProfileId = pId;
@@ -236,15 +236,10 @@ public class ProfileView extends TabActivity {
     	protected void onPreExecute() {
     		
     		//Do we?
-    		if( !hideDialog ) {
-
-    			//Let's see
-				this.progressDialog = new ProgressDialog(this.context);
-				this.progressDialog.setTitle(context.getString( R.string.general_wait ));
-				this.progressDialog.setMessage( context.getString( R.string.general_downloading ) );
-				this.progressDialog.show();
-    		
-    		}	
+    		this.progressDialog = new ProgressDialog(this.context);
+			this.progressDialog.setTitle(context.getString( R.string.general_wait ));
+			this.progressDialog.setMessage( context.getString( R.string.general_downloading ) );
+			this.progressDialog.show();
     	
     	}
 
@@ -254,28 +249,14 @@ public class ProfileView extends TabActivity {
 			try {
 				
 				//Get...
-				playerData = WebsiteHandler.getStatsForUser( this.profileData );
-				profileInformation = WebsiteHandler.getProfileInformationForUser(
-						
-					context, 
-					this.profileData, 
-					sharedPreferences.getInt( Constants.SP_BL_NUM_FEED, Constants.DEFAULT_NUM_FEED ),
-					this.activeProfileId
-					
-				);
+				personaStats = CacheHandler.Persona.select( context, new long[] { this.profileData.getPersonaId() } );
+				profileInformation = CacheHandler.Profile.select( context, this.profileData.getProfileId() );
 				
 				//...validate!
-				if( playerData == null || profileInformation == null ) { 
-					
-					return false; 
+				if( personaStats == null || profileInformation == null ) { return false; } 
+				else { return true; }
 				
-				} else {
-					
-					return true;
-				
-				}
-				
-			} catch ( WebsiteHandlerException ex ) {
+			} catch ( Exception ex ) {
 				
 				ex.printStackTrace();
 				return false;
@@ -290,7 +271,6 @@ public class ProfileView extends TabActivity {
 			//Fail?
 			if( !result ) { 
 				
-				if ( !hideDialog ) { if( this.progressDialog != null ) this.progressDialog.dismiss(); }
 				Toast.makeText( this.context, R.string.general_no_data, Toast.LENGTH_SHORT).show(); 
 				((Activity) this.context).finish();
 				return; 
@@ -312,7 +292,7 @@ public class ProfileView extends TabActivity {
 								break;
 								
 							case 1:
-								setupStats(playerData);
+								setupStats(personaStats.get( 0 ));
 								break;
 							
 							case 2:
@@ -338,7 +318,7 @@ public class ProfileView extends TabActivity {
 					break;
 					
 				case 1:
-					setupStats(playerData);
+					setupStats(personaStats.get( 0 ));
 					break;
 				
 				case 2:
@@ -351,8 +331,129 @@ public class ProfileView extends TabActivity {
 			}
 			
 			//Done!
-	        if( this.progressDialog != null && !hideDialog ) this.progressDialog.dismiss();
+	        if( this.progressDialog != null ) this.progressDialog.dismiss();
 	        
+	        //Get back here!
+	        return;
+		        
+		}
+		
+    }
+    
+    public class AsyncProfileRefresh extends AsyncTask<Void, Void, Boolean> {
+        
+    	//Attributes
+    	private Context context;
+    	private ProfileData profileData;
+    	private long activeProfileId;
+    	
+    	public AsyncProfileRefresh(Context c, ProfileData pd, long pId) {
+    		
+    		this.context = c;
+    		this.profileData = pd;
+    		this.activeProfileId = pId;
+    		
+    	}
+    	
+    	@Override
+    	protected void onPreExecute() {}
+
+		@Override
+		protected Boolean doInBackground( Void... arg0 ) {
+			
+			try {
+				
+				//Get...
+				PersonaStats tempPersona = WebsiteHandler.getStatsForUser( this.profileData );
+				personaStats.add(tempPersona);
+				if( personaStats != null ) { personaStats.clear(); }
+				profileInformation = WebsiteHandler.getProfileInformationForUser(
+						
+					context, 
+					this.profileData, 
+					sharedPreferences.getInt( Constants.SP_BL_NUM_FEED, Constants.DEFAULT_NUM_FEED ),
+					this.activeProfileId
+					
+				);
+				
+				//...validate!
+				if( personaStats == null || profileInformation == null ) { return false; } 
+				else { return true; }
+				
+			} catch ( WebsiteHandlerException ex ) {
+				
+				ex.printStackTrace();
+				return false;
+				
+			}
+
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result) {
+					
+			//Fail?
+			if( !result ) { 
+				
+				Toast.makeText( this.context, R.string.general_no_data, Toast.LENGTH_SHORT).show(); 
+				((Activity) this.context).finish();
+				return; 
+			
+			}
+
+			//Assign values
+			mTabHost.setOnTabChangedListener(
+					
+				new OnTabChangeListener() {
+
+					@Override
+					public void onTabChanged(String tabId) {
+	
+						switch( getTabHost().getCurrentTab() ) {
+							
+							case 0:
+								setupHome(profileInformation);
+								break;
+								
+							case 1:
+								setupStats(personaStats.get( 0 ));
+								break;
+							
+							case 2:
+								setupFeed(profileInformation);
+								break;
+								
+							default:
+								break;
+					
+						}
+		
+					}
+					
+				}
+				
+			);
+
+			//Let's see what we need to update *directly*
+			switch( mTabHost.getCurrentTab() ) {
+				
+				case 0:
+					setupHome(profileInformation);
+					break;
+					
+				case 1:
+					setupStats(personaStats.get( 0 ));
+					break;
+				
+				case 2:
+					setupFeed(profileInformation);
+					break;
+					
+				default:
+					break;
+		
+			}
+			
 	        //Get back here!
 	        return;
 		        
@@ -796,7 +897,6 @@ public class ProfileView extends TabActivity {
 						new AsyncProfileRefresh(
 								
 							this, 
-							true, 
 							profileData,
 							sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )
 							

@@ -28,80 +28,122 @@ public class SQLiteManager {
 				+ DatabaseStructure.PersonaStatistics.TABLE_NAME + " ("
 				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID
 				+ " INTEGER PRIMARY KEY, "
-				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_TITLE
-				+ " TEXT, "
-				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_TOKEN
-				+ " TEXT, "
-				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_OWNER
-				+ " TEXT, "
-				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_USERNAME
-				+ " TEXT, "
-				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_AVGSPEED
-				+ " TEXT, "
-				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_DISTANCE
-				+ " TEXT, "
-				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_DURATION
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_RANK 
 				+ " INTEGER, "
-				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_MAXALTITUDE
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_USER 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PLATFORM 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_ACCOUNT_NAME 
 				+ " TEXT, "
-				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_DEST_LATITUDE
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_PERSONA_NAME 
 				+ " TEXT, "
-				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_DEST_LONGITUDE
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_RANK 
 				+ " TEXT, "
-				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_DEST_ALTITUDE
-				+ " TEXT, "
-				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATUS 
-				+ " TEXT, "
-				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_DATE
-				+ " INTEGER NOT NULL "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_POINTS_NEXT 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_POINTS_THIS 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_KILLS 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_ASSISTS 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_VEHICLES 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_VASSISTS 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_HEALS 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_REVIVES 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_REPAIRS 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_RESUPPLIES 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_DEATHS 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_WINS 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_LOSSES 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_KDR 
+				+ " DOUBLE, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_ACCURACY 
+				+ " DOUBLE, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_LONGEST_HS 
+				+ " DOUBLE, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_LONGEST_KS 
+				+ " DOUBLE, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_TIME 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_SKILL 
+				+ " DOUBLE, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_SPM 
+				+ " DOUBLE, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_ASSAULT 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_ENGINEER 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_SUPPORT 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_RECON 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_VEHICLE 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_COMBAT 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_AWARDS 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_UNLOCKS 
+				+ " INTEGER, "
+				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_TOTAL  
+				+ " INTEGER"
 				+ ")"
 			);
-
-			db.execSQL(
-				"CREATE TABLE "
-				+ DatabaseStructure.PrivateLocations.TABLE_NAME + " ("
-				+ DatabaseStructure.PrivateLocations.COLUMN_NAME_ID
-				+ " INTEGER PRIMARY KEY, "
-				+ DatabaseStructure.PrivateLocations.COLUMN_NAME_TITLE
-				+ " TEXT, "
-				+ DatabaseStructure.PrivateLocations.COLUMN_NAME_USERNAME
-				+ " TEXT, "
-				+ DatabaseStructure.PrivateLocations.COLUMN_NAME_DEST_LATITUDE
-				+ " TEXT, "
-				+ DatabaseStructure.PrivateLocations.COLUMN_NAME_DEST_LONGITUDE
-				+ " TEXT, "
-				+ DatabaseStructure.PrivateLocations.COLUMN_NAME_DEST_ALTITUDE
-				+ " TEXT, "
-				+ DatabaseStructure.PrivateLocations.COLUMN_NAME_DATE
-				+ " INTEGER NOT NULL "
-				+ ")" 
-			);
 			
-			db.execSQL(
-					"CREATE TABLE "
-					+ DatabaseStructure.Invites.TABLE_NAME + " ("
-					+ DatabaseStructure.Invites.COLUMN_NAME_ID
-					+ " INTEGER, "
-					+ DatabaseStructure.Invites.COLUMN_NAME_TRANSMISSION_ID
-					+ " INTEGER, "
-					+ DatabaseStructure.Invites.COLUMN_NAME_TITLE
-					+ " TEXT, "
-					+ DatabaseStructure.Invites.COLUMN_NAME_USERNAME_FROM
-					+ " TEXT, "
-					+ DatabaseStructure.Invites.COLUMN_NAME_USERNAME_TO
-					+ " TEXT, "
-					+ DatabaseStructure.Invites.COLUMN_NAME_DEST_LATITUDE
-					+ " TEXT, "
-					+ DatabaseStructure.Invites.COLUMN_NAME_DEST_LONGITUDE
-					+ " TEXT, "
-					+ DatabaseStructure.Invites.COLUMN_NAME_DEST_ALTITUDE
-					+ " TEXT, "
-					+ DatabaseStructure.Invites.COLUMN_NAME_DATE
-					+ " INTEGER NOT NULL "
-					+ ")" 
-				);
+			db.execSQL( 
+				"CREATE TABLE "
+				+ DatabaseStructure.UserProfile.TABLE_NAME + " ("
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_ID  
+				+ " INTEGER, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_NUM_AGE  
+				+ " INTEGER, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_NUM_UID  
+				+ " INTEGER, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_DATE_BIRTH  
+				+ " INTEGER, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_DATE_LOGIN  
+				+ " INTEGER, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_DATE_STATUS  
+				+ " INTEGER, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_STRING_NAME  
+				+ " STRING, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_STRING_USERNAME 
+				+ " STRING, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PRESENTATION 
+				+ " STRING, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_STRING_LOCATION 
+				+ " STRING, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_STRING_STATUS 
+				+ " STRING, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_STRING_SERVER 
+				+ " STRING, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_ALLOW_REQUESTS  
+				+ " INTEGER, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_ONLINE  
+				+ " INTEGER, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_PLAYING  
+				+ " INTEGER, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_IS_FRIEND  
+				+ " INTEGER, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_PLATOONS  
+				+ " STRING "
+				+ " )"
+			);
 		}
-
+	
 		@Override
 		public void onUpgrade( SQLiteDatabase db, int oldVersion, int newVersion ) {
 
@@ -195,16 +237,16 @@ public class SQLiteManager {
 	public int deleteAll( String table ) throws DatabaseInformationException { 
 		
 		//Let's validate the table
-		if( table == null || table.equals( "" ) ) throw new DatabaseInformationException("No table selected.");
+		if( table == null || table.equals( "" ) ) { throw new DatabaseInformationException("No table selected."); }
 		
 		//Clear it
 		return this.DB.delete( table, "1", null ); 
 			
-		}
+	}
 		
-public long insert( String table, String[] fields, ArrayList<String[]> values ) throws DatabaseInformationException {
+	public long insert( String table, String[] fields, ArrayList<String[]> values ) throws DatabaseInformationException {
 			
-			//Let's validate the table
+		//Let's validate the table
 		if( table == null || table.equals( "" ) ) throw new DatabaseInformationException("No table selected.");
 		
 		//Get the number of fields and values
@@ -272,7 +314,7 @@ public long insert( String table, String[] fields, ArrayList<String[]> values ) 
 		return this.STATEMENT.executeInsert();
 	}
 
-	public void update( String table, String[] fields, String[] values, long id ) throws DatabaseInformationException {
+	public void update( String table, String[] fields, String[] values, String whereField, long id ) throws DatabaseInformationException {
 		
 		//Let's validate the table
 		if( table == null || table.equals( "" ) ) throw new DatabaseInformationException("No table selected.");
@@ -282,7 +324,7 @@ public long insert( String table, String[] fields, ArrayList<String[]> values ) 
 		//Get the number of fields and values
 		int countFields = fields.length;
 		int countValues = values.length;
-		String genQueryString = "", whereQueryString = " WHERE " + table + ".`_id` = ?";
+		String genQueryString = "", whereQueryString = " WHERE " + table + ".`" + whereField + "` = ?";
 		
 		//Validate the number, ie 6 fields should have 6^(n rows) values
 		if( countValues % countFields != 0 ) {

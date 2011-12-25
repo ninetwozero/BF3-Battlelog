@@ -8,89 +8,151 @@ public final class DatabaseStructure {
 
 		// Table-name
 		public static final String TABLE_NAME = "persona_statistics";
-		/*
-		 * 
-			private String accountName, personaName, rankTitle;
-			private long rankId, personaId, playerId, platformId, timePlayed;
-			
-			//EXP-section
-			private long pointsThisLvl, pointsNextLvl;
-			
-			//STATS-section
-			private int numKills, numAssists, numVehicles, numVehicleAssists;
-			private int numHeals, numRevives, numRepairs, numResupplies, numDeaths, numWins, numLosses;
-			private double kdRatio, accuracy, longestHS, longestKS, skill, scorePerMinute;
-			
-			//SCORE-section
-			private long scoreAssault, scoreEngineer, scoreSupport, scoreRecon, scoreVehicle, scoreCombat, scoreAwards, scoreUnlocks, scoreTotal;
-	
-		*/
+
 		// Field-names
 		public static final String COLUMN_NAME_ID = "_id";
-		public static final String COLUMN_NAME_TITLE = "account_name"; // String(255)
-		public static final String COLUMN_NAME_TOKEN = "persona_name"; // String (7) "[a-zA-Z]{3}-[0-9]{3}" or String(9) "LOCAL-[0-9]{3}"
-		public static final String COLUMN_NAME_OWNER = "rank_title"; // String(255) 
-		public static final String COLUMN_NAME_USERNAME = "points_level"; // String(255)
-		public static final String COLUMN_NAME_DURATION = "points_this_level"; // INTEGER (10)
-		public static final String COLUMN_NAME_DISTANCE= "poinsts_next_level"; // INTEGER (10)
-		public static final String COLUMN_NAME_AVGSPEED = "num_kills"; // INTEGER (3)
-		public static final String COLUMN_NAME_MAXALTITUDE = "num_assists"; // INTEGER (7)
-		public static final String COLUMN_NAME_DEST_LATITUDE = "num_vehicles"; // DOUBLE
-		public static final String COLUMN_NAME_DEST_LONGITUDE = "longitude"; // DOUBLE
-		public static final String COLUMN_NAME_DEST_ALTITUDE = "altitude"; // DOUBLE
-		public static final String COLUMN_NAME_DEST_BEARING = "bearing"; // DOUBLE
-		public static final String COLUMN_NAME_STATUS = "status"; // String(255)
-		public static final String COLUMN_NAME_DATE = "date"; // datetime "YYYY-mm-dd HH:ii:ss"
+		public static final String COLUMN_NAME_ACCOUNT_NAME = "account_name";
+		public static final String COLUMN_NAME_PERSONA_NAME = "persona_name";
+		public static final String COLUMN_NAME_RANK = "rank_title"; 
+		public static final String COLUMN_NAME_ID_RANK = "rank_id";
+		public static final String COLUMN_NAME_ID_PERSONA = "persona_id";
+		public static final String COLUMN_NAME_ID_USER = "user_id";
+		public static final String COLUMN_NAME_ID_PLATFORM = "platform_id";
+		public static final String COLUMN_NAME_POINTS_THIS = "points_next_level";
+		public static final String COLUMN_NAME_POINTS_NEXT = "points_this_level";
+		public static final String COLUMN_NAME_STATS_TIME = "time_played";
+		public static final String COLUMN_NAME_NUM_KILLS = "num_kills";
+		public static final String COLUMN_NAME_NUM_ASSISTS = "num_assists";
+		public static final String COLUMN_NAME_NUM_VEHICLES = "num_vehicles";
+		public static final String COLUMN_NAME_NUM_VASSISTS = "num_vehicle_assists";
+		public static final String COLUMN_NAME_NUM_HEALS = "num_heals";
+		public static final String COLUMN_NAME_NUM_REVIVES = "num_revives";
+		public static final String COLUMN_NAME_NUM_REPAIRS = "num_repairs";
+		public static final String COLUMN_NAME_NUM_RESUPPLIES = "num_resupplies";
+		public static final String COLUMN_NAME_NUM_DEATHS = "num_deaths";
+		public static final String COLUMN_NAME_NUM_WINS = "num_wins";
+		public static final String COLUMN_NAME_NUM_LOSSES = "num_losses";
+		public static final String COLUMN_NAME_STATS_KDR = "kdr";
+		public static final String COLUMN_NAME_STATS_ACCURACY = "accuracy";
+		public static final String COLUMN_NAME_STATS_LONGEST_HS = "longest_hs";
+		public static final String COLUMN_NAME_STATS_LONGEST_KS = "longest_ks";
+		public static final String COLUMN_NAME_STATS_SKILL = "skill";
+		public static final String COLUMN_NAME_STATS_SPM = "spm";
+		public static final String COLUMN_NAME_SCORE_ASSAULT = "score_assault";
+		public static final String COLUMN_NAME_SCORE_ENGINEER = "score_engineer";
+		public static final String COLUMN_NAME_SCORE_SUPPORT = "score_support";
+		public static final String COLUMN_NAME_SCORE_RECON = "score_recon";
+		public static final String COLUMN_NAME_SCORE_VEHICLE = "score_vehicle";
+		public static final String COLUMN_NAME_SCORE_COMBAT = "score_combat";
+		public static final String COLUMN_NAME_SCORE_AWARDS = "score_awards";
+		public static final String COLUMN_NAME_SCORE_UNLOCKS = "score_unlocks";
+		public static final String COLUMN_NAME_SCORE_TOTAL = "score_total";
 
 		// Sort order
-		public static final String DEFAULT_SORT_ORDER = "`date` DESC";
+		public static final String DEFAULT_SORT_ORDER = "`_id` DESC";
 
-
+		//Getter
+		public static final String[] getColumns() {
+			
+			return new String[] {
+					
+				COLUMN_NAME_ACCOUNT_NAME,
+				COLUMN_NAME_PERSONA_NAME,
+				COLUMN_NAME_RANK, 
+				COLUMN_NAME_ID_PERSONA,
+				COLUMN_NAME_ID_USER,
+				COLUMN_NAME_ID_PLATFORM,
+				COLUMN_NAME_ID_RANK,
+				COLUMN_NAME_POINTS_THIS,
+				COLUMN_NAME_POINTS_NEXT,
+				COLUMN_NAME_STATS_TIME,
+				COLUMN_NAME_NUM_KILLS,
+				COLUMN_NAME_NUM_ASSISTS,
+				COLUMN_NAME_NUM_VEHICLES,
+				COLUMN_NAME_NUM_VASSISTS,
+				COLUMN_NAME_NUM_HEALS,
+				COLUMN_NAME_NUM_REVIVES,
+				COLUMN_NAME_NUM_REPAIRS,
+				COLUMN_NAME_NUM_RESUPPLIES,
+				COLUMN_NAME_NUM_DEATHS,
+				COLUMN_NAME_NUM_WINS,
+				COLUMN_NAME_NUM_LOSSES,
+				COLUMN_NAME_STATS_KDR,
+				COLUMN_NAME_STATS_ACCURACY,
+				COLUMN_NAME_STATS_LONGEST_HS,
+				COLUMN_NAME_STATS_LONGEST_KS,
+				COLUMN_NAME_STATS_SKILL,
+				COLUMN_NAME_STATS_SPM,
+				COLUMN_NAME_SCORE_ASSAULT,
+				COLUMN_NAME_SCORE_ENGINEER,
+				COLUMN_NAME_SCORE_SUPPORT,
+				COLUMN_NAME_SCORE_RECON,
+				COLUMN_NAME_SCORE_VEHICLE,
+				COLUMN_NAME_SCORE_COMBAT,
+				COLUMN_NAME_SCORE_AWARDS,
+				COLUMN_NAME_SCORE_UNLOCKS,
+				COLUMN_NAME_SCORE_TOTAL
+					
+			};
+			
+		}
 	}
 	
-	// Declare the Table-data for each "part"
-		public static final class PrivateLocations {
+	public static final class UserProfile {
 
-			// Table-name
-			public static final String TABLE_NAME = "privateLocations";
+		// Table-name
+		public static final String TABLE_NAME = "user_profile";
 
-			// Field-names
-			public static final String COLUMN_NAME_ID = "_id";
-			public static final String COLUMN_NAME_TITLE = "title"; // String(255)
-			public static final String COLUMN_NAME_USERNAME = "username"; // String(255)
-			public static final String COLUMN_NAME_DEST_LATITUDE = "latitude"; // DOUBLE
-			public static final String COLUMN_NAME_DEST_LONGITUDE = "longitude"; // DOUBLE
-			public static final String COLUMN_NAME_DEST_ALTITUDE = "altitude"; // DOUBLE
-			public static final String COLUMN_NAME_DATE = "date"; // datetime "YYYY-mm-dd HH:ii:ss"
-
-			// Sort order
-			public static final String DEFAULT_SORT_ORDER = "`date` DESC";
-
-		}
+		// Field-names
+		public static final String COLUMN_NAME_ID = "_id";
+		public static final String COLUMN_NAME_NUM_AGE = "age";
+		public static final String COLUMN_NAME_NUM_UID = "user_id";
+		public static final String COLUMN_NAME_DATE_BIRTH = "birth_date";
+		public static final String COLUMN_NAME_DATE_LOGIN = "last_login";
+		public static final String COLUMN_NAME_DATE_STATUS = "status_changed";
+		public static final String COLUMN_NAME_STRING_NAME = "name";
+		public static final String COLUMN_NAME_STRING_USERNAME = "username";
+		public static final String COLUMN_NAME_STRING_PRESENTATION = "presentation";
+		public static final String COLUMN_NAME_STRING_LOCATION = "location";
+		public static final String COLUMN_NAME_STRING_STATUS = "status_message";
+		public static final String COLUMN_NAME_STRING_SERVER = "current_server";
+		public static final String COLUMN_NAME_BOOL_ALLOW_REQUESTS = "allow_friendrequests";
+		public static final String COLUMN_NAME_BOOL_ONLINE = "is_online";
+		public static final String COLUMN_NAME_BOOL_PLAYING = "is_playing";
+		public static final String COLUMN_NAME_BOOL_IS_FRIEND = "is_friend";
+		public static final String COLUMN_NAME_BOOL_PLATOONS = "platoons";
 		
-		// Declare the Table-data for each "part"
-		public static final class Invites {
+		
+		// Sort order
+		public static final String DEFAULT_SORT_ORDER = "`_id` DESC";
 
-			// Table-name
-			public static final String TABLE_NAME = "invites";
-
-			// Field-names
-			public static final String COLUMN_NAME_ID = "_id";
-			public static final String COLUMN_NAME_INVITE_ID = "inviteid";
-			public static final String COLUMN_NAME_TRANSMISSION_ID = "transmissionid";
-			public static final String COLUMN_NAME_TITLE = "title"; // String(255)
-			public static final String COLUMN_NAME_USERNAME_FROM = "usernamefrom";
-			public static final String COLUMN_NAME_USERNAME_TO = "usernameto"; // String(255)
-			public static final String COLUMN_NAME_DEST_LATITUDE = "latitude"; // DOUBLE
-			public static final String COLUMN_NAME_DEST_LONGITUDE = "longitude"; // DOUBLE
-			public static final String COLUMN_NAME_DEST_ALTITUDE = "altitude"; // DOUBLE
-			public static final String COLUMN_NAME_DATE = "date"; //LONG
-
-			// Sort order
-			public static final String DEFAULT_SORT_ORDER = "`date` DESC";
-
+		//Getter
+		public static final String[] getColumns() {
+			
+			return new String[] {
+				
+				COLUMN_NAME_NUM_AGE,
+				COLUMN_NAME_NUM_UID,
+				COLUMN_NAME_DATE_BIRTH,
+				COLUMN_NAME_DATE_LOGIN,
+				COLUMN_NAME_DATE_STATUS,
+				COLUMN_NAME_STRING_NAME,
+				COLUMN_NAME_STRING_USERNAME,
+				COLUMN_NAME_STRING_PRESENTATION,
+				COLUMN_NAME_STRING_LOCATION,
+				COLUMN_NAME_STRING_STATUS,
+				COLUMN_NAME_STRING_SERVER,
+				COLUMN_NAME_BOOL_ALLOW_REQUESTS,
+				COLUMN_NAME_BOOL_ONLINE,
+				COLUMN_NAME_BOOL_PLAYING,
+				COLUMN_NAME_BOOL_IS_FRIEND,
+				COLUMN_NAME_BOOL_PLATOONS
+		
+			};
+			
 		}
-
+	}
+	
 	// Non-initializable
 	private DatabaseStructure() {}
 }

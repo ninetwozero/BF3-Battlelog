@@ -26,7 +26,7 @@ public class PersonaStats implements Parcelable {
 
 	//Base-section
 	private String accountName, personaName, rankTitle;
-	private long rankId, personaId, playerId, platformId, timePlayed;
+	private long rankId, personaId, userId, platformId, timePlayed;
 	
 	//EXP-section
 	private long pointsThisLvl, pointsNextLvl;
@@ -54,7 +54,7 @@ public class PersonaStats implements Parcelable {
 		this.rankId = rId;
 		this.rankTitle = rTitle;
 		this.personaId = prsId;
-		this.playerId = plyrId;
+		this.userId = plyrId;
 		this.platformId = pltfId;
 		this.timePlayed = tPlayed;
 		this.pointsThisLvl = ptsThisLvl;
@@ -95,7 +95,7 @@ public class PersonaStats implements Parcelable {
 		this.rankId = in.readLong();
 		this.rankTitle = in.readString();
 		this.personaId = in.readLong();
-		this.playerId = in.readLong();
+		this.userId = in.readLong();
 		this.platformId = in.readLong();
 		this.timePlayed = in.readLong();
 		this.pointsThisLvl = in.readLong();
@@ -135,7 +135,7 @@ public class PersonaStats implements Parcelable {
 	public final String getRankTitle() { return DataBank.getRankTitle(rankTitle); }
 	public final long getRankId() { return rankId; }
 	public final long getPersonaId() { return personaId; }	
-	public final long getPlayerId() { return playerId; }	
+	public final long getUserId() { return userId; }	
 	public final long getPlatformId() { return platformId; }	
 	
 	public final long getTimePlayed() { return timePlayed; }	
@@ -189,7 +189,7 @@ public class PersonaStats implements Parcelable {
 		out.writeLong( this.rankId );
 		out.writeString( this.rankTitle );
 		out.writeLong( this.personaId );
-		out.writeLong( this.playerId );
+		out.writeLong( this.userId );
 		out.writeLong( this.platformId );
 		out.writeLong( this.timePlayed );
 		out.writeLong( this.pointsThisLvl );
@@ -231,4 +231,48 @@ public class PersonaStats implements Parcelable {
 	
 	};
 	
+	public final String[] toStringArray() {
+		
+		return new String[] {
+				
+			this.accountName + "",
+			this.personaName + "",
+			this.rankTitle + "",
+			this.personaId + "",
+			this.userId + "",
+			this.platformId + "",
+			this.rankId + "",
+			this.pointsThisLvl + "",
+			this.pointsNextLvl + "",
+			this.timePlayed + "",
+			this.numKills + "",
+			this.numAssists + "",
+			this.numVehicles + "",
+			this.numVehicleAssists + "",
+			this.numHeals + "",
+			this.numRevives + "",
+			this.numRepairs + "",
+			this.numResupplies + "",
+			this.numDeaths + "",
+			this.numWins + "",
+			this.numLosses + "",
+			this.kdRatio + "",
+			this.accuracy + "",
+			this.longestHS + "",
+			this.longestKS + "",
+			this.skill + "",
+			this.scorePerMinute + "",
+			this.scoreAssault + "",
+			this.scoreEngineer + "",
+			this.scoreSupport + "",
+			this.scoreRecon + "",
+			this.scoreVehicle + "",
+			this.scoreCombat + "",
+			this.scoreAwards + "",
+			this.scoreUnlocks + "",
+			this.scoreTotal + ""
+			
+		};
+	
+	}
 }

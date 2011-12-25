@@ -35,6 +35,12 @@
           	android:windowSoftInputMode="stateHidden"
         />
         <activity
+            android:label="@string/app_name"
+            android:name=".DebugActivity"
+            android:orientation="vertical"
+          	android:configChanges="orientation"
+        />
+        <activity
             android:label="@string/title_profile"
             android:name=".ProfileView"
           	android:configChanges="orientation"

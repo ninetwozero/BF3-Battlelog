@@ -2255,7 +2255,7 @@ public class WebsiteHandler {
 				
 				//Grab the notifications
 				JSONObject contextObject = new JSONObject(httpContent).getJSONObject("context");
-				JSONObject platoonObject = contextObject.getJSONObject( "platoons" );
+				JSONObject platoonObject = contextObject.optJSONObject( "platoons" );
 				JSONArray notificationArray = contextObject.getJSONArray( "notifications" );
 				
 				//Now we store the information - easy peasy
@@ -3001,7 +3001,6 @@ public class WebsiteHandler {
 							String key = tempSubItem.getString("langKeyTitle");
 							tempKey = DataBank.getWeaponTitleShort( key );
 							
-							Log.d(Constants.DEBUG_TAG, key + ", " + tempKey);
 							if( key.equals( tempKey ) ) {
 								
 								tempKey = DataBank.getVehicleAddon( key );
@@ -3012,7 +3011,18 @@ public class WebsiteHandler {
 									
 									if( key.equals( tempKey ) ) {
 
-										itemContent += tempKey;
+										tempKey = DataBank.getSkillTitle( key );
+										
+										if( key.equals( tempKey ) ) {
+											
+											Log.d(Constants.DEBUG_TAG, tempKey);
+											itemContent += tempKey;
+										
+										} else {
+											
+											itemContent += tempKey;
+											
+										}
 										
 									} else {
 										

@@ -41,6 +41,7 @@ public class ProfileData implements Parcelable {
 		this.isPlaying = false;
 		
 	}
+	
 	public ProfileData(String an, String pn,  long p, long pf, long n, String im, boolean io, boolean ip ) {
 		
 		this(an, pn, p, pf, n, im);

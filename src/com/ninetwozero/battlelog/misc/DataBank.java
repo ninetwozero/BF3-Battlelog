@@ -600,6 +600,23 @@ public class DataBank {
 		SKILLS.put("9E4734B9-D312-4E38-84A7-73E0F1259EEB", "EXPLOSIVES (SQUAD)");
 		SKILLS.put("9DFDE21C-A50D-48B7-B6C0-F1E4107D2F12", "FLAK JACKET (SQUAD)");
 		SKILLS.put("350432B9-5B42-49F4-8343-CD20DE1B82BD", "SPRINT");
+		SKILLS.put("ID_P_SNAME_ExplRes", "FLAK");
+		SKILLS.put("ID_P_SNAME_Expl", "EXPL");
+		SKILLS.put("ID_P_SNAME_Heal", "HEAL");
+		SKILLS.put("ID_P_SNAME_Gren", "FRAG");
+		SKILLS.put("ID_P_SNAME_Clips2", "SQD AMMO");
+		SKILLS.put("ID_P_SNAME_SuppRes", "COVR");
+		SKILLS.put("ID_P_SNAME_SuppRes2", "SQD COVR");
+		SKILLS.put("ID_P_SNAME_Clips", "AMMO");
+		SKILLS.put("ID_P_SNAME_Gren2", "SQD FRAG");
+		SKILLS.put("ID_P_SNAME_Suppr2", "SQD SUPR");
+		SKILLS.put("ID_P_SNAME_Sprint2", "SQD SPRNT");
+		SKILLS.put("ID_P_SNAME_Suppr", "SUPR");
+		SKILLS.put("ID_P_SNAME_Expl2", "SQD EXPL");
+		SKILLS.put("ID_P_SNAME_ExplRes2", "SQD FLAK");
+		SKILLS.put("ID_P_SNAME_Heal2", "SQD HEAL");
+		SKILLS.put("ID_P_SNAME_Sprint", "SPRNT");
+		SKILLS.put("ID_P_SNAME_NoSpec", "NONE");
 		SKILLS.put("ID_P_SNAME_Heal", "HEAL");
 		SKILLS.put("ID_P_SNAME_Heal2", "HEAL (SQUAD)");
 
@@ -843,7 +860,7 @@ public class DataBank {
 		COOP_DATA.put("COOP_SUBWAY", "The Eleventh Hour");
 		
 		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_2", new String[] { "Professional Russian", "L85A2" });
-		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_3", new String[] { "Fixing it", "G+R[71]C" });
+		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_3", new String[] { "Fixing it", "G53" });
 		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_1", new String[] { "Best Friend Forever", "FAMAS" });
 		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_6", new String[] { "Keep your head down", "MG36" });
 		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_7", new String[] { "Specops", "QBU-88" });

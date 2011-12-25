@@ -203,7 +203,8 @@ public class Dashboard extends TabActivity {
     		new DashboardItem(Constants.MENU_UNLOCKS, getString(R.string.label_unlocks )),
     		new DashboardItem(Constants.MENU_ASSIGNMENTS, getString( R.string.info_xml_assignments_my )),
         	new DashboardItem(Constants.MENU_COMPARE, getString(R.string.label_compare_bs)),
-        	new DashboardItem(Constants.MENU_FORUM, getString(R.string.label_forum))
+        	new DashboardItem(Constants.MENU_FORUM, getString(R.string.label_forum)),
+        	new DashboardItem(Constants.MENU_DEBUG, "DEBUG")
         	
         };
         
@@ -854,21 +855,47 @@ public class Dashboard extends TabActivity {
 	private void refreshCOM() {
 
 		//Done? No? Let's populate in an async task!
-		new AsyncCOMReload().execute( sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ));
+		new AsyncCOMReload().execute( sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ) );
 		
 	}
 	
 	private void refreshFeed() {
 		
-		//Feed refresh!
-		asyncFeedRefresh = new AsyncFeedRefresh(
-			
-			context,
-			Dashboard.profile.getProfileId()
+		//Is it empty?
+		if( Dashboard.profile != null ) {
+
+			//Feed refresh!
+			asyncFeedRefresh = new AsyncFeedRefresh(
 				
-		);
-		asyncFeedRefresh.execute();
+				context,
+				Dashboard.profile.getProfileId()
+					
+			);
+			asyncFeedRefresh.execute();
 		
+		} else {
+			
+			if( sharedPreferences == null ) {
+				
+				sharedPreferences = PreferenceManager.getDefaultSharedPreferences( this );
+				
+			}
+			
+			Dashboard.profile = new ProfileData(
+
+				sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
+				sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
+				sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
+				sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ),
+				sharedPreferences.getInt( Constants.SP_BL_PLATFORM_ID, 0 ),
+				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
+			
+			);
+			
+			refreshFeed();
+			
+		}
+			
 	}
 	
 	public void onRequestActionClick(View v) {
@@ -1332,6 +1359,11 @@ public class Dashboard extends TabActivity {
 			
 			Toast.makeText( this, R.string.msg_unimplemented, Toast.LENGTH_SHORT ).show();
 //			startActivity( new Intent(this, ForumView.class) );
+			return;
+			
+		} else if( id == Constants.MENU_DEBUG ) {
+			
+			startActivity( new Intent(this, DebugActivity.class) );
 			return;
 			
 		} else {
