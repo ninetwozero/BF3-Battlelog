@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.ninetwozero.battlelog.datatypes.PlatoonMemberData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 
 public class PlatoonUserListAdapter extends BaseAdapter {

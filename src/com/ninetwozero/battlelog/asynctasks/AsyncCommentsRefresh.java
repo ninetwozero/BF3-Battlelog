@@ -20,6 +20,7 @@ import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -45,7 +46,7 @@ public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
 		this.context = c;
 		this.listView = lv;
 		this.layoutInflater = l;
-		this.sharedPreferences = context.getSharedPreferences(Constants.FILE_SHPREF, 0);
+		this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences( context );
 	
 	}	
 

@@ -14,8 +14,8 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -42,10 +42,11 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 public class CompareView extends Activity {
 
 	//SharedPreferences for shizzle
-	SharedPreferences sharedPreferences;
-	ProgressBar progressBar;
-	GetDataSelfAsync getDataAsync;
-	ProfileData playerOne, playerTwo;
+	private SharedPreferences sharedPreferences;
+	private ProgressBar progressBar;
+	private GetDataSelfAsync getDataAsync;
+	private ProfileData playerOne, playerTwo;
+	private long[] selectedPersonas;
 	
 	//These are the different fields
 	private final int fieldPersona[] = new int[] { R.id.string_persona_0, R.id.string_persona_1 };
@@ -138,29 +139,21 @@ public class CompareView extends Activity {
 
         //Prepare to tango
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        this.selectedPersonas = new long[2];
     
         //Let's set them straight
-        playerOne = new ProfileData(
-
-    		this.sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
-    		this.sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
-			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-			this.sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
-			this.sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
-		
-		);
-        playerTwo = (ProfileData) getIntent().getParcelableExtra( "profile" );
+        this.playerOne = (ProfileData) getIntent().getParcelableExtra( "profile1" );
+        this.playerTwo = (ProfileData) getIntent().getParcelableExtra( "profile2" );
         
-        if( tvPersona[0] == null ) { this.grabAllViews(); }
-        this.reloadLayout();
+        if( this.tvPersona[0] == null ) { this.grabAllViews(); }
+        this.initLayout();
         
 	}        
 
-    public void reloadLayout() {
+    public void initLayout() {
     	
     	//ASYNC!!!
-    	new GetDataSelfAsync(this).execute(
+    	new GetDataSelfAsync(this, new long[] { playerOne.getPersonaId(), playerTwo.getPersonaId() } ).execute(
     		
     		playerOne,
     		playerTwo
@@ -169,21 +162,40 @@ public class CompareView extends Activity {
     	
     	
     }
+
+    public void reloadLayout() {
+    	
+    	//ASYNC!!!
+    	new GetDataSelfAsync(this, selectedPersonas ).execute(
+    		
+    		playerOne,
+    		playerTwo
+		
+		);
+    	
+    	
+    }
+
     
     public void doFinish() {}
     
     private class GetDataSelfAsync extends AsyncTask<ProfileData, Void, Boolean> {
     
     	//Attributes
-    	Context context;
-    	ProgressDialog progressDialog;
-    	PersonaStats[] playerData;
+    	private Context context;
+    	private ProgressDialog progressDialog;
+    	private HashMap<Long, PersonaStats> playerData1, playerData2;
+    	private ProfileData[] profileData;
+    	private long[] profileIdArray;
     	
-    	public GetDataSelfAsync(Context c) {
+    	public GetDataSelfAsync(Context c, long[] pIds) {
     		
     		this.context = c;
     		this.progressDialog = null;
-    		this.playerData = new PersonaStats[2];
+    		this.playerData1 = new HashMap<Long, PersonaStats>();
+    		this.playerData2 = new HashMap<Long, PersonaStats>();
+        	this.profileIdArray = pIds;
+        	
     	}
     	
     	@Override
@@ -202,11 +214,14 @@ public class CompareView extends Activity {
 		protected Boolean doInBackground( ProfileData... arg0 ) {
 			
 			try {
+				//Grab the profiles
+				profileData = arg0;
 				
-				this.playerData[0] = WebsiteHandler.getStatsForUser( arg0[0] );
-				this.playerData[1] = WebsiteHandler.getStatsForUser( arg0[1] );
+				//Grab the stats
+				this.playerData1 = WebsiteHandler.getStatsForUser( context, profileData[0] );
+				this.playerData2 = WebsiteHandler.getStatsForUser( context, profileData[1] );
 				
-				if( this.playerData[0] != null && this.playerData[1] != null ) { return true; }
+				if( this.playerData1 != null && this.playerData2 != null ) { return true; }
 				else { return false; }
 				
 			} catch ( WebsiteHandlerException ex ) {
@@ -232,10 +247,10 @@ public class CompareView extends Activity {
 			}
 			
 			//Player One
-			populateStats(playerData[0], 0);
+			populateStats(playerData1.get( profileIdArray[0] ), 0);
 
 			//Player Two	
-			populateStats(playerData[1], 1);
+			populateStats(playerData2.get( profileIdArray[1] ), 1);
 			
 	        //Remove the dialog?	        
 			if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
@@ -335,6 +350,9 @@ public class CompareView extends Activity {
 	
 	public void populateStats(PersonaStats ps, int pos) {
 	
+		//If ps == null 
+		if( ps == null ) { return; }
+		
 		//Persona & rank
 		tvPersona[pos].setText( ps.getPersonaName() );
         tvRank[pos].setText( ps.getRankId() + "" );

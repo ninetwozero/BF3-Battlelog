@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.DatabaseInformationException;
 
 public class SQLiteManager {
@@ -31,7 +32,7 @@ public class SQLiteManager {
 				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_RANK 
 				+ " INTEGER, "
 				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA 
-				+ " INTEGER, "
+				+ " INTEGER UNIQUE, "
 				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_USER 
 				+ " INTEGER, "
 				+ DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PLATFORM 
@@ -196,9 +197,9 @@ public class SQLiteManager {
 
 	}
 	public final void close() {
-		
-		if( this.DB != null ) this.DB.close();
+
 		if( this.STATEMENT != null) this.STATEMENT.close();
+		if( this.DB != null ) this.DB.close();
 		return;
 		
 	}

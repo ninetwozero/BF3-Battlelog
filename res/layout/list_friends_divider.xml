@@ -2,5 +2,5 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/FriendHeadingRow"
 	android:id="@+id/text_title"
-	android:text="Offline friends"    
+	android:text="@string/info_txt_friends_offline"    
 />    

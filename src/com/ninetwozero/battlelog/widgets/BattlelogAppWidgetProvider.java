@@ -93,7 +93,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 			 
 			   try {
 
-					playerData = WebsiteHandler.getStatsForUser(profileData);
+					playerData = WebsiteHandler.getStatsForPersona(profileData);
 					remoteView.setTextViewText(
 							
 						R.id.label, 

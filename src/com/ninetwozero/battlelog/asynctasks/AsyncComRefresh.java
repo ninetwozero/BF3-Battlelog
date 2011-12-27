@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -39,13 +40,13 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 
 	//Attribute
-	Context context;
-	SharedPreferences sharedPreferences;
-	FriendListDataWrapper profileArray;
-	ListView listRequests, listFriends;
-	LayoutInflater layoutInflater;
-	Button buttonRefresh;
-	TextView drawerHandle;
+	private Context context;
+	private SharedPreferences sharedPreferences;
+	private FriendListDataWrapper profileArray;
+	private ListView listRequests, listFriends;
+	private LayoutInflater layoutInflater;
+	private Button buttonRefresh;
+	private TextView drawerHandle;
 	
 	//Constructor
 	public AsyncComRefresh( Context c, ListView r, ListView f, LayoutInflater l, Button b, TextView t ) { 
@@ -54,7 +55,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 		this.listRequests = r;
 		this.listFriends = f;
 		this.layoutInflater = l;
-		this.sharedPreferences = context.getSharedPreferences(Constants.FILE_SHPREF, 0);
+		this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences( context );
 		this.buttonRefresh = b;
 		this.drawerHandle = t;
 	
@@ -74,7 +75,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 		try {
 		
 			//Let's get this!!
-			profileArray = WebsiteHandler.getFriendsCOM( sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "") );
+			profileArray = WebsiteHandler.getFriendsCOM( context, sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "") );
 			return true;
 			
 		} catch ( WebsiteHandlerException e ) {

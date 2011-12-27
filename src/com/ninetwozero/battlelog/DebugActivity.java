@@ -98,7 +98,7 @@ public class DebugActivity extends Activity {
     		try { this.isLoggedIn = WebsiteHandler.setActive(); } 
     		catch ( Exception ex ) { ex.printStackTrace(); }
     		
-    		try { this.canInsert = ( CacheHandler.Persona.insert( context, WebsiteHandler.getStatsForUser( Dashboard.getProfile() ) ) > 0 ); } 
+    		try { this.canInsert = ( CacheHandler.Persona.insert( context, WebsiteHandler.getStatsForUser( context, Dashboard.getProfile() ) ) > 0 ); } 
     		catch ( Exception ex ) { ex.printStackTrace(); }
     		
     		try { this.canSelect = ( CacheHandler.Persona.select( context, new long[] { Dashboard.getProfile().getPersonaId() } ).size() > 0 ); } 
@@ -106,7 +106,7 @@ public class DebugActivity extends Activity {
     		
     		try { 
     			
-    			this.canUpdate = CacheHandler.Persona.update( context, WebsiteHandler.getStatsForUser( Dashboard.getProfile() ) );
+    			this.canUpdate = CacheHandler.Persona.update( context, WebsiteHandler.getStatsForUser( context, Dashboard.getProfile() ) );
     		
     		} 
     		catch ( Exception ex ) { ex.printStackTrace(); }

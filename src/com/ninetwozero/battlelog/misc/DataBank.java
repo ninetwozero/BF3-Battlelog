@@ -45,7 +45,9 @@ public class DataBank {
 	public static String getCoopLevelTitle( String key ) { return COOP_DATA.containsKey( key ) ? COOP_DATA.get( key ) : key; }
 	public static String getDifficultyTitle( String key ) { return DIFFICULTY_MAP.containsKey( key ) ? DIFFICULTY_MAP.get( key ) : key; }
 	public static String[] getAssignmentTitle( String key ) { return ASSIGNMENTS.containsKey( key ) ? ASSIGNMENTS.get( key ) : new String[] { key, key }; }
+	public static String getAssignmentCriteria( String key ) { return CRITERIAS.containsKey( key ) ? CRITERIAS.get( key ) : key ; }
 	
+	//Maps
 	private static PlatformData[] PLATFORMS;
 	private static HashMap<String, String> RANKS;
 	private static HashMap<String, VehicleType> VEHICLES;
@@ -61,8 +63,11 @@ public class DataBank {
 	private static HashMap<String, String> COOP_DATA;
 	private static HashMap<String, String> DIFFICULTY_MAP;
 	private static HashMap<String, String[]> ASSIGNMENTS;
+	private static HashMap<String, String> CRITERIAS;
+	
 	static{
   
+		//Init!
 		PLATFORMS = new PlatformData[4];
     	WEAPONS = new HashMap<String, WeaponType>();
     	VEHICLES = new HashMap<String, VehicleType>();
@@ -78,6 +83,7 @@ public class DataBank {
     	COOP_DATA = new HashMap<String, String>();
     	DIFFICULTY_MAP = new HashMap<String, String>();
     	ASSIGNMENTS = new HashMap<String, String[]>();
+    	CRITERIAS = new HashMap<String, String>();
     	
     	//PLATFORMS
     	PLATFORMS[0] = new PlatformData(1, "pc");
@@ -869,8 +875,38 @@ public class DataBank {
 		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_9", new String[] { "Familiar Territory", "PP-19" });
 		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_8", new String[] { "Creeping Death", "L96" });
 		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_10",new String[] {  "Scarred Veteran", "MK3A1" });
+		
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_1", "100 kills with Assault Rifles");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_2", "20 kills with Underslung Grenade Launcher");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_3", "Win 5 rounds of SQDM");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_3", "Win 5 rounds of Conquest");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_1", "50 AT rocket kills");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_2", "Destroy 1 enemy vehicle with Repair Torch");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_8_CRITERIA_3", "5 Knife takedowns");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_8_CRITERIA_1", "50 Headshots");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_8_CRITERIA_2", "50 Spot Assists");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_3", "50 Ammo Resupplies");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_2", "50 Suppression Assists");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_1", "100 kills with Light Machine Guns");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_1_CRITERIA_2", "10 Heals");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_1_CRITERIA_1", "10 Revives");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_1", "10 repairs");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_2", "Kill 1 enemy with Repair Torch");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_4", "Play 2 hours on Sharqi");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_5", "Play 2 hours on Gulf of Oman");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_2", "5 kills in DPV Jeep");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_3", "10 Kills in BTR-90 IFV");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_1", "10 Kills with PP-19");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_7_CRITERIA_2", "5 Laser Designations");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_7_CRITERIA_1", "20 kills with Sniper Rifles");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_5_CRITERIA_2", "2 mortar kills");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_5_CRITERIA_1", "20 kills with Light Machine Guns");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_9_CRITERIA_1", "Arm 10 MCOMs");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_9_CRITERIA_2", "Capture 10 flags");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_9_CRITERIA_3", "Play 2 hours on Karkand");
+		
 	}
-	
+
 	//Static methods
 	public static int getPlatformIdFromName( String p ) {
 			

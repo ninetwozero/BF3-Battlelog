@@ -14,6 +14,7 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,6 +29,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -72,12 +74,13 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 public class ProfileView extends TabActivity {
 
 	//Attributes
-	private final Context context = this;
+	private final Context CONTEXT = this;
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
 	private ProfileData profileData;
-	private ArrayList<PersonaStats> personaStats;
+	private HashMap<Long, PersonaStats> personaStats;
 	private ProfileInformation profileInformation;
+	private long selectedPersona;
 	
 	//Elements
 	private ProgressBar progressBar;
@@ -125,8 +128,11 @@ public class ProfileView extends TabActivity {
         
         //Is the profileData null?!
         if( profileData == null || profileData.getProfileId() == 0 ) { finish(); return; }
-    	personaStats = new ArrayList<PersonaStats>();
-    	
+    	personaStats = new HashMap<Long, PersonaStats>();
+
+        //Set the selected persona
+        selectedPersona = profileData.getPersonaId();
+        
     	//Set the content view
         setContentView(R.layout.profile_view);
         
@@ -157,15 +163,14 @@ public class ProfileView extends TabActivity {
 	public void initLayout() {
 		
 		//Eventually get a *cached* version instead    
-		//new AsyncProfileCacheLoad(this, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
-		new AsyncProfileRefresh(this, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
+		new AsyncProfileCacheLoad(CONTEXT, profileData).execute();
 		
 	}
 	
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new AsyncProfileRefresh(this, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
+    	new AsyncProfileRefresh(CONTEXT, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
     	
     	
     }
@@ -221,14 +226,12 @@ public class ProfileView extends TabActivity {
     	private Context context;
     	private ProgressDialog progressDialog;
     	private ProfileData profileData;
-    	private long activeProfileId;
     	
-    	public AsyncProfileCacheLoad(Context c, ProfileData pd, long pId) {
+    	public AsyncProfileCacheLoad(Context c, ProfileData pd) {
     		
     		this.context = c;
     		this.profileData = pd;
     		this.progressDialog = null;
-    		this.activeProfileId = pId;
     		
     	}
     	
@@ -236,7 +239,7 @@ public class ProfileView extends TabActivity {
     	protected void onPreExecute() {
     		
     		//Do we?
-    		this.progressDialog = new ProgressDialog(this.context);
+    		this.progressDialog = new ProgressDialog(context);
 			this.progressDialog.setTitle(context.getString( R.string.general_wait ));
 			this.progressDialog.setMessage( context.getString( R.string.general_downloading ) );
 			this.progressDialog.show();
@@ -267,16 +270,7 @@ public class ProfileView extends TabActivity {
 		
 		@Override
 		protected void onPostExecute(Boolean result) {
-					
-			//Fail?
-			if( !result ) { 
-				
-				Toast.makeText( this.context, R.string.general_no_data, Toast.LENGTH_SHORT).show(); 
-				((Activity) this.context).finish();
-				return; 
 			
-			}
-
 			//Assign values
 			mTabHost.setOnTabChangedListener(
 					
@@ -292,7 +286,7 @@ public class ProfileView extends TabActivity {
 								break;
 								
 							case 1:
-								setupStats(personaStats.get( 0 ));
+								setupStats(personaStats.get( selectedPersona ));
 								break;
 							
 							case 2:
@@ -318,7 +312,7 @@ public class ProfileView extends TabActivity {
 					break;
 					
 				case 1:
-					setupStats(personaStats.get( 0 ));
+					setupStats(personaStats.get( selectedPersona ));
 					break;
 				
 				case 2:
@@ -331,7 +325,16 @@ public class ProfileView extends TabActivity {
 			}
 			
 			//Done!
-	        if( this.progressDialog != null ) this.progressDialog.dismiss();
+			if( !result ) {
+			
+				new AsyncProfileRefresh(CONTEXT, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ), progressDialog).execute();
+			
+			} else {
+				
+				new AsyncProfileRefresh(CONTEXT, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();	
+				if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
+			
+			}
 	        
 	        //Get back here!
 	        return;
@@ -346,12 +349,23 @@ public class ProfileView extends TabActivity {
     	private Context context;
     	private ProfileData profileData;
     	private long activeProfileId;
+    	private ProgressDialog progressDialog;
     	
     	public AsyncProfileRefresh(Context c, ProfileData pd, long pId) {
     		
-    		this.context = c;
+    		context = c;
     		this.profileData = pd;
     		this.activeProfileId = pId;
+    		this.progressDialog = null;
+    		
+    	}
+    	
+    	public AsyncProfileRefresh(Context c, ProfileData pd, long pId, ProgressDialog pDialog ) {
+    		
+    		context = c;
+    		this.profileData = pd;
+    		this.activeProfileId = pId;
+    		this.progressDialog = pDialog;
     		
     	}
     	
@@ -363,10 +377,11 @@ public class ProfileView extends TabActivity {
 			
 			try {
 				
-				//Get...
-				PersonaStats tempPersona = WebsiteHandler.getStatsForUser( this.profileData );
-				personaStats.add(tempPersona);
+				//Need for clear?
 				if( personaStats != null ) { personaStats.clear(); }
+
+				//Let's get the personas!
+				personaStats = WebsiteHandler.getStatsForUser( context, this.profileData );
 				profileInformation = WebsiteHandler.getProfileInformationForUser(
 						
 					context, 
@@ -395,9 +410,8 @@ public class ProfileView extends TabActivity {
 			//Fail?
 			if( !result ) { 
 				
-				Toast.makeText( this.context, R.string.general_no_data, Toast.LENGTH_SHORT).show(); 
-				((Activity) this.context).finish();
-				return; 
+				Toast.makeText( context, R.string.general_no_data, Toast.LENGTH_SHORT).show(); 
+				return;
 			
 			}
 
@@ -416,7 +430,7 @@ public class ProfileView extends TabActivity {
 								break;
 								
 							case 1:
-								setupStats(personaStats.get( 0 ));
+								setupStats(personaStats.get( selectedPersona ));
 								break;
 							
 							case 2:
@@ -442,7 +456,7 @@ public class ProfileView extends TabActivity {
 					break;
 					
 				case 1:
-					setupStats(personaStats.get( 0 ));
+					setupStats(personaStats.get( selectedPersona ));
 					break;
 				
 				case 2:
@@ -454,6 +468,18 @@ public class ProfileView extends TabActivity {
 		
 			}
 			
+			//Do we have a dialog?
+			if( progressDialog != null ) {
+				
+				if( progressDialog.isShowing() ) {
+					
+					progressDialog.dismiss();
+					progressDialog = null;
+					
+				}
+				
+			}
+			
 	        //Get back here!
 	        return;
 		        
@@ -462,6 +488,9 @@ public class ProfileView extends TabActivity {
     }
     
     public final void setupHome(ProfileInformation data) {
+    	
+    	//Do we have valid data?
+    	if( data == null ) { return; }
     	
     	//Let's start drawing the... layout
     	((TextView) findViewById(R.id.text_username)).setText( data.getUsername() );
@@ -486,7 +515,7 @@ public class ProfileView extends TabActivity {
     		
     	} else {
     		
-    		((TextView) findViewById(R.id.text_online)).setText( data.getLastLogin(context) ); 
+    		((TextView) findViewById(R.id.text_online)).setText( data.getLastLogin(CONTEXT) ); 
     		
     	}
     	
@@ -495,7 +524,7 @@ public class ProfileView extends TabActivity {
 			
     		//Set the status
     		((TextView) findViewById(R.id.text_status)).setText( data.getStatusMessage() );
-    		((TextView) findViewById(R.id.text_status_date)).setText( PublicUtils.getRelativeDate( context, data.getStatusMessageChanged(), R.string.info_lastupdate) );
+    		((TextView) findViewById(R.id.text_status_date)).setText( PublicUtils.getRelativeDate( CONTEXT, data.getStatusMessageChanged(), R.string.info_lastupdate) );
     	
     	} else {
     		
@@ -523,6 +552,7 @@ public class ProfileView extends TabActivity {
     		LinearLayout platoonWrapper = (LinearLayout) findViewById(R.id.list_platoons);
     		
     		//Clear the platoonWrapper
+    		((TextView) findViewById(R.id.text_platoon)).setVisibility( View.GONE );
     		platoonWrapper.removeAllViews();
     		
     		//Iterate over the platoons
@@ -555,7 +585,7 @@ public class ProfileView extends TabActivity {
 							//On-click
 							startActivity( 
 									
-								new Intent(context, PlatoonView.class).putExtra(
+								new Intent(CONTEXT, PlatoonView.class).putExtra(
 										
 									"platoon", 
 									(PlatoonData) v.getTag()
@@ -585,6 +615,9 @@ public class ProfileView extends TabActivity {
     }
     
     public void setupStats(PersonaStats pd) {
+    	
+    	//Is pd null?
+    	if( pd == null ) { return; }
     	
 		//Persona & rank
         ((TextView) findViewById(R.id.string_persona)).setText( pd.getPersonaName() );
@@ -635,6 +668,9 @@ public class ProfileView extends TabActivity {
     
     public void setupFeed(ProfileInformation data) {
     	
+    	//If data == null
+    	if( data == null ) { return; }
+    	
     	//Do we have it already?
 		if( listFeed == null ) { 
 			
@@ -671,7 +707,7 @@ public class ProfileView extends TabActivity {
 							final FeedItem currItem = (FeedItem) a.getItemAtPosition( pos );
 							if( !currItem.getContent().equals( "" ) ) {
 								
-								generateDialogContent(context, currItem.getUsername()[0], currItem.getContent()).show();
+								generateDialogContent(CONTEXT, currItem.getUsername()[0], currItem.getContent()).show();
 								
 							}
 							
@@ -804,8 +840,13 @@ public class ProfileView extends TabActivity {
 					CompareView.class
 						
 				).putExtra(
+						
+					"profile1",
+					Dashboard.getProfile()
 				
-					"profile",
+				).putExtra(
+						
+					"profile2",
 					profileData
 				
 				)
@@ -941,7 +982,7 @@ public class ProfileView extends TabActivity {
 						).putExtra( 
 								
 							"profileId",
-							profileInformation.getProfileId()
+							profileInformation.getUserId()
 							
 						)
 						
@@ -969,16 +1010,16 @@ public class ProfileView extends TabActivity {
 			if( fieldMessage == null ) { fieldMessage = (EditText) findViewById(R.id.field_message); }
 			
 			//Empty message?
-			if( fieldMessage.getText().toString().equals("") ) {
+			if( fieldMessage.getText().toString().equals( "" ) ) {
 				
-				Toast.makeText(context, R.string.info_empty_msg, Toast.LENGTH_SHORT).show();
+				Toast.makeText(CONTEXT, R.string.info_empty_msg, Toast.LENGTH_SHORT).show();
 				return;
 				
 			}
 			
 			new AsyncPostToWall(
 			
-				context, 
+				CONTEXT, 
 				profileData.getProfileId(),
 				false
 				
@@ -989,6 +1030,22 @@ public class ProfileView extends TabActivity {
 				
 			);
 			fieldMessage.setText("");
+			
+		} else if( v.getId() == R.id.string_persona ) {
+			
+			Log.d(Constants.DEBUG_TAG, "Click...");
+			
+			if( personaStats.size() > 1 ) {
+			
+				Toast.makeText(CONTEXT, "Only one persona", Toast.LENGTH_SHORT).show();
+				
+			} else {
+			
+				Toast.makeText(CONTEXT, "Available to switch - yeeha!", Toast.LENGTH_SHORT).show();
+				
+			}
+			
+			return;
 			
 		}
 

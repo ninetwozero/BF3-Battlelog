@@ -198,6 +198,7 @@ public final class Constants {
 	public static final String SP_BL_GRAVATAR = "battlelog_gravatar_hash";
 	public static final String SP_BL_REMEMBER = "remember_password";
 	public static final String SP_BL_INTERVAL_SERVICE = "battlelog_service_interval";
+	public static final String SP_BL_INTERVAL_CHAT = "battlelog_chat_interval";
 	public static final String SP_BL_NUM_FEED = "battlelog_feed_count";
 	
 	//Misc

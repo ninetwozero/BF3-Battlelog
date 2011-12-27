@@ -25,7 +25,7 @@ public class ProfileInformation {
 
 	//Attributes
 	private int age;
-	private long profileId, dateOfBirth, lastlogin, statusMessageChanged;
+	private long userId, dateOfBirth, lastlogin, statusMessageChanged;
 	private String name, username, presentation, location, statusMessage, currentServer;
 	private boolean allowFriendRequests, online, playing, friendStatus;
 	private ArrayList<FeedItem> feedItems;
@@ -34,14 +34,14 @@ public class ProfileInformation {
 	//Construct(s)
 	public ProfileInformation(
 		
-		int a, long pid, long dob, long l, long sc,
+		int a, long uid, long dob, long l, long sc,
 		String n, String u, String p, String loc, String s, String c,
 		boolean af, boolean o, boolean pl, boolean fs, ArrayList<FeedItem> f, ArrayList<PlatoonData> pd
 		
 	) {
 		
 		this.age = a;
-		this.profileId = pid;
+		this.userId = uid;
 		this.dateOfBirth = dob;
 		this.lastlogin = l;
 		this.statusMessageChanged = sc;
@@ -62,7 +62,7 @@ public class ProfileInformation {
 	
 	//Getters
 	public int getAge() { return this.age; }
-	public long getProfileId() { return this.profileId; }
+	public long getUserId() { return this.userId; }
 	public long getDOB() { return this.dateOfBirth; }
 	public String getLastLogin(Context c) { return PublicUtils.getRelativeDate(c, this.lastlogin, R.string.info_lastlogin ); }
 	public long getStatusMessageChanged() { return this.statusMessageChanged; }
@@ -78,5 +78,36 @@ public class ProfileInformation {
 	public boolean isFriend() { return this.friendStatus; }
 	public ArrayList<FeedItem> getFeedItems() { return this.feedItems; }
 	public ArrayList<PlatoonData> getPlatoons() { return this.platoons; }
+	public String getPlatoonString() { 
+		
+		String str = "";
+		for(PlatoonData platoon : this.platoons ) { str += platoon.getId() + ":"; }
+		return str;
+	}
 
+	public final String[] toStringArray() {
+		
+		return new String[] {
+				
+			this.age + "",
+			this.userId + "",
+			this.dateOfBirth + "",
+			this.lastlogin + "",
+			this.statusMessageChanged + "",
+			this.name,
+			this.username,
+			this.presentation,
+			this.location,
+			this.statusMessage,
+			this.currentServer,
+			this.allowFriendRequests ? "1" : "0",
+			this.online ? "1" : "0",
+			this.playing ? "1" : "0",
+			this.friendStatus ? "1" : "0",
+			this.getPlatoonString()
+			
+		};
+	
+	}
+	
 }

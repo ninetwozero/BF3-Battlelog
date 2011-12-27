@@ -22,13 +22,15 @@ import com.ninetwozero.battlelog.R;
 public class ProfileData implements Parcelable {
 
 	//Attributes
-	protected String accountName, personaName, gravatarHash;
-	protected long personaId, profileId, platformId;
+	protected String accountName, gravatarHash;
+	protected String[] personaName;
+	protected long profileId;
+	protected long[] personaId,  platformId;
 	protected boolean isPlaying, isOnline;
 	
 	//Constructs
 	public ProfileData(Parcel in) { readFromParcel(in); }
-	public ProfileData(String an, String pn, long p, long pf, long n, String im) {
+	public ProfileData(String an, String[] pn, long[] p, long pf, long[] n, String im) {
 		
 		this.accountName = an;
 		this.personaName = pn;
@@ -42,7 +44,19 @@ public class ProfileData implements Parcelable {
 		
 	}
 	
-	public ProfileData(String an, String pn,  long p, long pf, long n, String im, boolean io, boolean ip ) {
+	public ProfileData(String an, String pn, long p, long pf, long n, String im) {
+	
+		this(an, new String[] { pn }, new long[] { p }, pf, new long[] { n }, im);
+
+	}
+	
+	public ProfileData(String an, String pn, long p, long pf, long n, String im, boolean b, boolean c) {
+		
+		this(an, new String[] { pn }, new long[] { p }, pf, new long[] { n }, im, b, c);
+		
+	}
+	
+	public ProfileData(String an, String[] pn,  long[] p, long pf, long [] n, String im, boolean io, boolean ip ) {
 		
 		this(an, pn, p, pf, n, im);
 		this.isOnline = io;
@@ -52,10 +66,16 @@ public class ProfileData implements Parcelable {
 	
 	//Getters
 	public String getAccountName() { return this.accountName; }
-	public String getPersonaName() { return this.personaName; }
-	public long getPersonaId() { return this.personaId; }
+	public String getPersonaName() { return ( personaName.length > 0 ) ? this.personaName[0] : null; }
+	public String getPersonaName(int pos) { return ( (personaName.length-1) <= pos ) ? this.personaName[pos] : null; }
+	public String[] getPersonaNameArray() { return this.personaName; }
+	public long[] getPersonaIdArray() { return this.personaId; }
+	public long[] getPlatformIdArray() { return this.platformId; }
+	public long getPersonaId() { return ( personaId.length > 0 ) ? this.personaId[0] : 0; }
+	public long getPersonaId(int pos) { return ( (personaId.length-1) <= pos ) ? personaId[pos] : 0; }
 	public long getProfileId() { return this.profileId; }
-	public long getPlatformId() { return this.platformId; }
+	public long getPlatformId() { return ( platformId.length > 0 ) ? this.platformId[0] : 0; }
+	public long getPlatformId(int pos) { return ( (platformId.length-1) <= pos ) ? platformId[pos] : 0; }
 	public String getGravatarHash() { return this.gravatarHash; }
 	
 	//is ... ?
@@ -64,13 +84,15 @@ public class ProfileData implements Parcelable {
 	
 	@Override
 	public void writeToParcel( Parcel dest, int flags ) {
+
+		//Special cases
+		dest.writeStringArray( this.personaName );
+		dest.writeLongArray( this.personaId );
+		dest.writeLongArray( this.platformId );
 		
 		//Everything else
 		dest.writeString( this.accountName );
-		dest.writeString( this.personaName );
 		dest.writeLong( this.profileId );
-		dest.writeLong( this.personaId );
-		dest.writeLong( this.platformId );
 		dest.writeString( this.gravatarHash );
 		dest.writeInt( this.isOnline? 1 : 0 );
 		dest.writeInt( this.isPlaying? 1 : 0 );
@@ -79,11 +101,12 @@ public class ProfileData implements Parcelable {
 	private void readFromParcel(Parcel in) {
 
 		//Let's retrieve them, same order as above
+		this.personaName = in.createStringArray();
+		this.personaId = in.createLongArray();
+		this.platformId = in.createLongArray();
+		
 		this.accountName = in.readString();
-		this.personaName = in.readString();
 		this.profileId = in.readLong();
-		this.personaId = in.readLong();
-		this.platformId = in.readLong();
 		this.gravatarHash = in.readString();
 		this.isOnline = (in.readInt() == 1);
 		this.isPlaying = (in.readInt() == 1);

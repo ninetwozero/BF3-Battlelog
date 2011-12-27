@@ -276,5 +276,8 @@
         <string name="info_xml_assignments_my">My assignments</string>
         <string name="msg_no_cookies">No cookies found - please try to re-login.</string>
         <string name="label_soldier_unlocks">View unlocks</string>
-        <string name="info_p_newunlocks">&lt;b>{username}&lt;/b> unlocked new items: {item}.</string>       
+        <string name="info_p_newunlocks">&lt;b>{username}&lt;/b> unlocked new items: {item}.</string>
+        <string name="info_txt_friends_offline">Offline friends</string>
+        <string name="info_txt_friends_online">Online friends</string>
+        <string name="info_txt_session_lost">Session lost. Please re-login!</string>       
 </resources>

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import android.graphics.Bitmap;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.PlatoonMemberData;
 
 public class PlatoonInformation {
 

@@ -146,6 +146,11 @@ public class Dashboard extends TabActivity {
     			
     			Dashboard.profile = (ProfileData) getIntent().getParcelableExtra( "myProfile" );
     			
+    		} else {
+    			
+    			Toast.makeText( this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
+    			return;
+    			
     		}
     		
     	}
@@ -875,24 +880,7 @@ public class Dashboard extends TabActivity {
 		
 		} else {
 			
-			if( sharedPreferences == null ) {
-				
-				sharedPreferences = PreferenceManager.getDefaultSharedPreferences( this );
-				
-			}
-			
-			Dashboard.profile = new ProfileData(
-
-				sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
-				sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
-				sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-				sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ),
-				sharedPreferences.getInt( Constants.SP_BL_PLATFORM_ID, 0 ),
-				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
-			
-			);
-			
-			refreshFeed();
+			Toast.makeText( this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT ).show();
 			
 		}
 			
@@ -1080,7 +1068,12 @@ public class Dashboard extends TabActivity {
 							
 						).putExtra( 
 							
-							"profile", 
+							"profile1", 
+							Dashboard.profile
+							
+						).putExtra( 
+								
+							"profile2", 
 							WebsiteHandler.getPersonaIdFromProfile(
 								
 								((ProfileData) info.targetView.getTag()).getProfileId() 
@@ -1317,7 +1310,7 @@ public class Dashboard extends TabActivity {
 			 
 		} else if( id == Constants.MENU_ASSIGNMENTS ) {
 			
-			startActivity( new Intent(this, AssignmentView.class) );
+			startActivity( new Intent(this, AssignmentView.class).putExtra( "profile", Dashboard.profile ) );
 			
 		} else if( id == Constants.MENU_SOLDIER ) {
 			
@@ -1331,17 +1324,7 @@ public class Dashboard extends TabActivity {
 			
 			startActivity( 
 					
-				new Intent(
-					
-					this, 
-					ProfileView.class
-					
-				).putExtra( 
-						
-					"profile",
-					Dashboard.profile
-				
-				)
+				new Intent( this,  ProfileView.class ).putExtra( "profile", Dashboard.profile )
 				
 			);
 		
@@ -1479,7 +1462,7 @@ public class Dashboard extends TabActivity {
     		
     			//Let's get this!!
     			notificationArray = WebsiteHandler.getNotifications( arg0[0] );
-    			friendListData = WebsiteHandler.getFriendsCOM( arg0[0] );
+    			friendListData = WebsiteHandler.getFriendsCOM(context, arg0[0] );
     			return true;
     			
     		} catch ( WebsiteHandlerException e ) {
@@ -1540,15 +1523,15 @@ public class Dashboard extends TabActivity {
     	if( Dashboard.profile == null ) {
     		
     		Dashboard.profile = new ProfileData(
-    			
-    			sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
-    			sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
-    			sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ),
-    			sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-    			sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 0 ),
-    			null
-    				
-    		);
+
+				sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
+				new String[] { sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ) },
+				new long[] { sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ) },
+				sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ),
+				new long[] { (long) sharedPreferences.getInt( Constants.SP_BL_PLATFORM_ID, 0 ) },
+				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
+			
+			);
     		
     	}
     	

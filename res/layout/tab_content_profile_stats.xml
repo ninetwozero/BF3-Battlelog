@@ -32,6 +32,7 @@
 		    android:id="@+id/string_persona"
 	    	android:text="NINETWOZERO"
 			android:padding="5dp"
+			android:onClick="onClick"
 	    />
 		<TextView
 		    android:id="@+id/string_rank_title"

@@ -15,9 +15,12 @@
 package com.ninetwozero.battlelog.misc;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
+import android.util.Log;
 
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
@@ -60,12 +63,56 @@ public class CacheHandler {
 			
 		}
 		
-		public static boolean update(Context context, PersonaStats stats) {
+		public static long insert(Context context, HashMap<Long, PersonaStats> statsArray) {
+
+			//Use the SQLiteManager to get a cursor
+			SQLiteManager manager = new SQLiteManager( context );
+			long results = 0;
 			
 			try {
-				//Use the SQLiteManager to get a cursor
-				SQLiteManager manager = new SQLiteManager( context );
 				
+				//Loop loop
+				for( long key : statsArray.keySet() ) {
+
+					//Get the object
+					PersonaStats stats = statsArray.get( key );
+					
+					//Get them!!
+					results += manager.insert( 
+							
+						DatabaseStructure.PersonaStatistics.TABLE_NAME, 
+						DatabaseStructure.PersonaStatistics.getColumns(),
+						stats.toStringArray()
+						
+					);
+				
+				}
+				
+				manager.close();
+				return results;
+				
+			} catch( SQLiteConstraintException ex ) { //Duplicate input, no worries!
+
+				manager.close();
+				return 0;
+			
+			} catch( Exception ex ) {
+
+				manager.close();
+				ex.printStackTrace();
+				return -1;
+				
+					
+			}
+			
+		}
+		
+		public static boolean update(Context context, PersonaStats stats) {
+
+			//Use the SQLiteManager to get a cursor
+			SQLiteManager manager = new SQLiteManager( context );
+			Log.d(Constants.DEBUG_TAG, DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA + " => " + stats.getPersonaId());
+			try {
 				//UPDATE them!!
 				manager.update(
 						
@@ -82,6 +129,49 @@ public class CacheHandler {
 				
 			} catch( Exception ex ) {
 				
+				manager.close();
+				ex.printStackTrace();
+				return false;
+				
+				
+			}
+		
+		}
+			
+		public static boolean update(Context context, HashMap<Long, PersonaStats> statsArray) {
+
+			//Use the SQLiteManager to get a cursor
+			SQLiteManager manager = new SQLiteManager( context );
+			
+			try {
+				
+				//Loop over the keys
+				for( long key : statsArray.keySet() ) {
+
+					//Get the object
+					PersonaStats stats = statsArray.get( key );
+
+					Log.d(Constants.DEBUG_TAG, DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA + " => " + stats.getPersonaId());
+					
+					//UPDATE them!!
+					manager.update(
+							
+						DatabaseStructure.PersonaStatistics.TABLE_NAME, 
+						DatabaseStructure.PersonaStatistics.getColumns(),
+						stats.toStringArray(),
+						DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA,
+						stats.getPersonaId()
+						
+					);
+
+				}
+				
+				manager.close();
+				return true;
+				
+			} catch( Exception ex ) {
+
+				manager.close();
 				ex.printStackTrace();
 				return false;
 				
@@ -90,14 +180,14 @@ public class CacheHandler {
 			
 		}
 	
-		public static ArrayList<PersonaStats> select(final Context context, final long[] personaId) {
+		public static HashMap<Long, PersonaStats> select(final Context context, final long[] personaId) {
 	
 			try {
 	
 				//Init
 				String strQuestionMarks = "?";
 				String[] personaIdArray = new String[personaId.length];
-				ArrayList<PersonaStats> stats = new ArrayList<PersonaStats>();
+				HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
 				
 				//Loop to string the array
 				for( int i = 0, max = personaId.length; i < max; i++ ) { 
@@ -126,8 +216,9 @@ public class CacheHandler {
 				
 					do {
 						
-						stats.add( 
-							
+						stats.put( 
+
+							results.getLong( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA) ),							
 							new PersonaStats(
 						
 								results.getString( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ACCOUNT_NAME) ),
@@ -222,11 +313,12 @@ public class CacheHandler {
 		
 	public static class Profile {
 		
-		public static long insert(Context context, PersonaStats stats) {
+		public static long insert(Context context, ProfileInformation stats) {
+
+			//Use the SQLiteManager to get a cursor
+			SQLiteManager manager = new SQLiteManager( context );
 			
 			try {
-				//Use the SQLiteManager to get a cursor
-				SQLiteManager manager = new SQLiteManager( context );
 				
 				//Get them!!
 				long results = manager.insert( 
@@ -240,8 +332,14 @@ public class CacheHandler {
 				manager.close();
 				return results;
 				
+			} catch( SQLiteConstraintException ex ) { //Duplicate input, no worries!
+
+				manager.close();
+				return 0;
+			
 			} catch( Exception ex ) {
-				
+
+				manager.close();
 				ex.printStackTrace();
 				return -1;
 				
@@ -250,12 +348,14 @@ public class CacheHandler {
 			
 		}
 		
-		public static boolean update(Context context, PersonaStats stats) {
+		public static boolean update(Context context, ProfileInformation stats) {
+
+			//Use the SQLiteManager to get a cursor
+			SQLiteManager manager = new SQLiteManager( context );
 			
 			try {
-				//Use the SQLiteManager to get a cursor
-				SQLiteManager manager = new SQLiteManager( context );
-				
+
+				Log.d(Constants.DEBUG_TAG, DatabaseStructure.UserProfile.COLUMN_NAME_NUM_UID + " => " + stats.getUserId());
 				//UPDATE them!!
 				manager.update(
 						
@@ -271,7 +371,8 @@ public class CacheHandler {
 				return true;
 				
 			} catch( Exception ex ) {
-				
+
+				manager.close();
 				ex.printStackTrace();
 				return false;
 				
@@ -342,6 +443,9 @@ public class CacheHandler {
 					
 					
 				} else {
+					
+					results.close();
+					manager.close();
 					
 					return null;
 					

@@ -44,6 +44,7 @@ import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.AssignmentData;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -54,6 +55,7 @@ public class AssignmentView extends Activity {
 	private SharedPreferences sharedPreferences;
 	private TableLayout tableAssignments;
 	private LayoutInflater layoutInflater;
+	private ProfileData profileData;
 	private ArrayList<AssignmentData> assignments;
 	
 	@Override
@@ -72,8 +74,30 @@ public class AssignmentView extends Activity {
     	//Set the content view
         setContentView(R.layout.assignment_view);
 
-        //Prepare to tango
+        //SP
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    	
+        //Get the intent
+        if( !getIntent().hasExtra( "profile" ) ) {
+        	
+        	profileData = new ProfileData(
+
+        		this.sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
+        		this.sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
+    			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
+    			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
+    			this.sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
+				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
+    		
+    		);
+        	
+        } else {
+        	
+        	profileData = (ProfileData) getIntent().getParcelableExtra( "profile" );
+        	
+        }
+        
+        //Prepare to tango
         this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.reloadLayout();
         
@@ -132,14 +156,7 @@ public class AssignmentView extends Activity {
     	//ASYNC!!!
     	new GetDataSelfAsync(this).execute(
     		
-    		new ProfileData(
-				this.sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
-				this.sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
-				this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-				this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-				this.sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
-				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
-			)
+    		profileData
 		
 		);
     	
@@ -294,7 +311,7 @@ public class AssignmentView extends Activity {
         	View v = layoutInflater.inflate( R.layout.list_item_assignment_popup, null);
         	
         	//...and set the fields
-        	((TextView) v.findViewById( R.id.text_obj_title )).setText( objective.getDescription() );
+        	((TextView) v.findViewById( R.id.text_obj_title )).setText( DataBank.getAssignmentCriteria( objective.getDescription() ) );
         	((TextView) v.findViewById( R.id.text_obj_values )).setText( 
         			
         		objective.getCurrentValue() + "/" + objective.getGoalValue() 

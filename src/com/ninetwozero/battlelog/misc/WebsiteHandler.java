@@ -38,7 +38,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.PlatoonMemberData;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
@@ -47,6 +46,7 @@ import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
+import com.ninetwozero.battlelog.datatypes.PlatoonMemberData;
 import com.ninetwozero.battlelog.datatypes.PlatoonStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonStatsItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonTopStatsItem;
@@ -71,7 +71,7 @@ public class WebsiteHandler {
 	public static HashMap<String, Bitmap> bitmapCache = new HashMap<String, Bitmap>();
 	public static HashMap<String, Object> feedCache = new HashMap<String, Object>();
 	
-	public static ProfileData doLogin(Context context, PostData[] postDataArray, boolean savePassword) throws WebsiteHandlerException {
+	public static ProfileData doLogin(final Context context, final PostData[] postDataArray, final boolean savePassword) throws WebsiteHandlerException {
 	
 		//Init
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences( context );
@@ -249,14 +249,14 @@ public class WebsiteHandler {
 						if( costOld > costCurrent ) {
 	
 							profile = new ProfileData(
-								
+									
 								tempObj.getString( "username" ),
 								tempObj.getString( "username" ),
 								0,
 								Long.parseLong( tempObj.getString( "userId" ) ),
 								0,
 								tempObj.optString( "gravatarMd5", "" )
-							
+
 							);
 							
 						}
@@ -499,7 +499,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static ProfileData getPersonaIdFromProfile(long profileId) throws WebsiteHandlerException {
+	public static ProfileData getPersonaIdFromProfile(final long profileId) throws WebsiteHandlerException {
 
 		try {
 			
@@ -513,16 +513,39 @@ public class WebsiteHandler {
 			//Did we manage?
 			if( httpContent != null && !httpContent.equals( "" ) ) {
 			
-				//Generate an object
-				JSONObject personaObject = new JSONObject(httpContent).getJSONObject( "data" ).getJSONArray( "soldiersBox" ).optJSONObject( 0 ).getJSONObject( "persona" );
+				//Grab the array
+				JSONArray soldierBox = new JSONObject(httpContent).getJSONObject( "data" ).getJSONArray( "soldiersBox" );
+
+				//Get the number of soldiers
+				final int numPersonas = soldierBox.length();
+	
+				//Init arrays
+				String[] personaNameArray = new String[numPersonas];
+				long[] personaIdArray = new long[numPersonas];
+				long[] platformIdArray = new long[numPersonas];
+
+				//Loop
+				for( int i = 0; i < numPersonas; i++ ) {
+				
+					//Current soldier
+					JSONObject personaObject = soldierBox.optJSONObject( i ).getJSONObject( "persona" );
+					 
+					//Grab the variable data
+					personaNameArray[i] = personaObject.getString("personaName");
+					personaIdArray[i] = personaObject.getLong( "personaId" );
+					platformIdArray[i] = DataBank.getPlatformIdFromName( personaObject.getString( "namespace" ) );
+				
+				}
 				
 				return new ProfileData( 
-					personaObject.getString("personaName"),
-					personaObject.getString("personaName"),
-					personaObject.getLong( "personaId" ), 
+			
+					personaNameArray[0],
+					personaNameArray,
+					personaIdArray,
 					profileId,
-					DataBank.getPlatformIdFromName( personaObject.getString( "namespace" ) ),
-					personaObject.optString( "gravatarMd5", "" )
+					platformIdArray,
+					null
+				
 				);
 			
 			} else {
@@ -532,11 +555,7 @@ public class WebsiteHandler {
 			}
 			
 		
-		} catch ( JSONException e ) {
-		
-			throw new WebsiteHandlerException(e.getMessage());
-		
-		} catch ( RequestHandlerException ex ) {
+		} catch ( Exception ex ) {
 			
 			throw new WebsiteHandlerException(ex.getMessage());
 			
@@ -544,7 +563,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static ProfileData getPersonaIdFromProfile(ProfileData p) throws WebsiteHandlerException {
+	public static ProfileData getPersonaIdFromProfile(final ProfileData p) throws WebsiteHandlerException {
 
 		try {
 			
@@ -552,10 +571,10 @@ public class WebsiteHandler {
 			return new ProfileData(
 				
 				p.getAccountName(),
-				profile.getPersonaName(),
-				profile.getPersonaId(),
+				profile.getPersonaNameArray(),
+				profile.getPersonaIdArray(),
 				p.getProfileId(),
-				profile.getPlatformId(),
+				profile.getPlatformIdArray(),
 				profile.getGravatarHash()
 					
 			);
@@ -568,7 +587,7 @@ public class WebsiteHandler {
 		}
 	}
 	
-	public static PersonaStats getStatsForUser(ProfileData pd) throws WebsiteHandlerException {
+	public static PersonaStats getStatsForPersona(ProfileData pd) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -579,17 +598,19 @@ public class WebsiteHandler {
 				
 			}
 			
-	    	//Get the data
+			//Let's see...
 	    	RequestHandler wh = new RequestHandler();
+	    	
+			//Get the data
 	    	String content = wh.get( 
     	
     			Constants.URL_STATS_OVERVIEW.replace(
     					
-					"{PID}", pd.getPersonaId() + ""
+					"{PID}", pd.getPersonaId( 0 ) + ""
 				
 				).replace( 
 				
-					"{PLATFORM_ID}", pd.getPlatformId() + ""
+					"{PLATFORM_ID}", pd.getPlatformId( 0 ) + ""
 				),
 				0
 			
@@ -606,16 +627,17 @@ public class WebsiteHandler {
 	    	JSONObject kitScores = statsOverview.getJSONObject( "kitScores" );
 	    	JSONObject nextRankInfo = dataObject.getJSONObject( "rankNeeded" );
 	    	JSONObject currRankInfo = dataObject.getJSONObject( "currentRankNeeded" );
-	   
+   
 	        //Yay
-	        return new PersonaStats(
+	       return new PersonaStats(
+	    		   
 	        	pd.getAccountName(),
-	        	pd.getPersonaName(),
+	        	pd.getPersonaName(0),
 	        	currRankInfo.getString( "name" ),
 	        	statsOverview.getLong( "rank" ),
-	        	pd.getPersonaId(),
+	        	pd.getPersonaId(0),
 	        	pd.getProfileId(),
-	        	pd.getPlatformId(),
+	        	pd.getPlatformId(0),
 	        	statsOverview.getLong( "timePlayed" ),
 	        	currRankInfo.getLong( "pointsNeeded" ),
 	        	nextRankInfo.getLong( "pointsNeeded" ),
@@ -645,8 +667,9 @@ public class WebsiteHandler {
 	        	statsOverview.getLong( "sc_award" ),
 	        	statsOverview.getLong( "sc_unlock" ),
 	        	statsOverview.getLong( "totalScore" )
-    		);
 	    
+        	);
+				        
 		} catch ( Exception ex ) {
 			
 			throw new WebsiteHandlerException(ex.getMessage());
@@ -655,7 +678,119 @@ public class WebsiteHandler {
 		
 	}
 
-	public static ArrayList<UnlockData> getUnlocksForUser(ProfileData pd) throws WebsiteHandlerException {
+	public static HashMap<Long, PersonaStats> getStatsForUser(final Context context, final ProfileData pd) throws WebsiteHandlerException {
+		
+		try {
+			
+			//Init
+			HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
+			ProfileData profileData = pd;
+			
+			//Do we have a personaId?
+			if( profileData.getPersonaId() == 0 ) {
+				
+				profileData = getPersonaIdFromProfile(pd.getProfileId());
+				
+			}
+			
+			//Let's see...
+	    	RequestHandler wh = new RequestHandler();
+			for( int i = 0, max = profileData.getPersonaIdArray().length; i < max; i++ ) {
+			
+		    	//Get the data
+		    	String content = wh.get( 
+	    	
+	    			Constants.URL_STATS_OVERVIEW.replace(
+	    					
+						"{PID}", profileData.getPersonaId( i ) + ""
+					
+					).replace( 
+					
+						"{PLATFORM_ID}", profileData.getPlatformId( i ) + ""
+					),
+					0
+				
+				);
+		    	
+		    	//JSON Objects
+		    	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
+		    	
+		    	//Is overviewStats NULL? If so, no data.
+		    	if( dataObject.isNull( "overviewStats" ) ) { return null; }
+		    	
+		    	//Keep it up!
+		    	JSONObject statsOverview = dataObject.getJSONObject( "overviewStats" );
+		    	JSONObject kitScores = statsOverview.getJSONObject( "kitScores" );
+		    	JSONObject nextRankInfo = dataObject.getJSONObject( "rankNeeded" );
+		    	JSONObject currRankInfo = dataObject.getJSONObject( "currentRankNeeded" );
+	   
+		        //Yay
+		        stats.put(
+		        		
+	        		profileData.getPersonaId(i),
+		        	new PersonaStats(
+			        	profileData.getAccountName(),
+			        	profileData.getPersonaName(i),
+			        	currRankInfo.getString( "name" ),
+			        	statsOverview.getLong( "rank" ),
+			        	profileData.getPersonaId(i),
+			        	profileData.getProfileId(),
+			        	profileData.getPlatformId(i),
+			        	statsOverview.getLong( "timePlayed" ),
+			        	currRankInfo.getLong( "pointsNeeded" ),
+			        	nextRankInfo.getLong( "pointsNeeded" ),
+			        	statsOverview.getInt( "kills" ),
+			        	statsOverview.getInt( "killAssists" ),
+			        	statsOverview.getInt( "vehiclesDestroyed" ),
+			        	statsOverview.getInt( "vehiclesDestroyedAssists" ),
+			        	statsOverview.getInt( "heals" ),
+			        	statsOverview.getInt( "revives" ),
+			        	statsOverview.getInt( "repairs" ),
+			        	statsOverview.getInt( "resupplies" ),
+			        	statsOverview.getInt( "deaths" ),
+			        	statsOverview.getInt( "numWins" ),
+			        	statsOverview.getInt( "numLosses" ),
+			        	statsOverview.getDouble( "kdRatio" ),
+			        	statsOverview.getDouble( "accuracy" ),
+			        	statsOverview.getDouble( "longestHeadshot" ),
+			        	statsOverview.getDouble( "killStreakBonus" ),
+			        	statsOverview.getDouble( "elo" ),
+			        	statsOverview.getDouble( "scorePerMinute" ),
+			        	kitScores.getLong( "1" ),
+			        	kitScores.getLong( "2" ),
+			        	kitScores.getLong( "32" ),
+			        	kitScores.getLong( "8" ),
+			        	statsOverview.getLong( "sc_vehicle" ),
+			        	statsOverview.getLong( "combatScore" ),
+			        	statsOverview.getLong( "sc_award" ),
+			        	statsOverview.getLong( "sc_unlock" ),
+			        	statsOverview.getLong( "totalScore" )
+			    
+		        	)
+		        
+		        );
+		    
+			}
+			
+			//Cache it!
+			if( CacheHandler.Persona.insert( context, stats ) == 0 ) {
+				
+				CacheHandler.Persona.update( context, stats );
+			
+			}
+			
+			//Return!
+			return stats;
+		        
+		} catch ( Exception ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+		
+	}
+
+	public static ArrayList<UnlockData> getUnlocksForUser(final ProfileData pd) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -851,7 +986,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static final FriendListDataWrapper getFriendsCOM(String checksum) throws WebsiteHandlerException {
+	public static final FriendListDataWrapper getFriendsCOM(final Context c, final String checksum) throws WebsiteHandlerException {
 		
 		try {
 				
@@ -938,19 +1073,18 @@ public class WebsiteHandler {
 						
 						//Save it
 						if( presenceObj.getBoolean( "isOnline" ) ) {
-							
-							
+
 							if( presenceObj.getBoolean( "isPlaying" ) ) {
-								
+																
 								profileRowPlaying.add(								
 							
 									new ProfileData(
-
+	
 										tempObj.getString( "username" ),
-										tempObj.getString( "username" ),
-										0,
+										tempObj.getString( "username" ) ,
+										0 ,
 										Long.parseLong( tempObj.getString( "userId" ) ),
-										0,
+										0 ,
 										tempObj.optString( "gravatarMd5", "" ),
 										true,
 										true
@@ -958,25 +1092,26 @@ public class WebsiteHandler {
 									) 
 									
 								);
-				
+								
 							} else {
-							
+								
 								profileRowOnline.add(								
 										
-									new ProfileData(
-											
-										tempObj.getString( "username" ),
-										tempObj.getString( "username" ),
-										0,
-										Long.parseLong( tempObj.getString( "userId" ) ),
-										0,
-										tempObj.optString( "gravatarMd5", "" ),
-										true,
-										false
-									
-									) 
-									
-								);
+										new ProfileData(
+		
+											tempObj.getString( "username" ),
+											tempObj.getString( "username" ) ,
+											0 ,
+											Long.parseLong( tempObj.getString( "userId" ) ),
+											0 ,
+											tempObj.optString( "gravatarMd5", "" ),
+											true,
+											false
+										
+										) 
+										
+									);
+								
 								
 							}
 							
@@ -1007,14 +1142,40 @@ public class WebsiteHandler {
 					//First add the separators)...
 					if( numFriends > 0 ){
 						
-						profileRowPlaying.add(  new ProfileData( "00000000", "Online friends", 0, 0, 0, null ) );
+						profileRowPlaying.add(  
+								
+							new ProfileData( 
+									
+								"00000000", 
+								c.getString(R.string.info_txt_friends_online), 
+								0, 
+								0, 
+								0, 
+								null 
+								
+							)
+							
+						);
 					
 					}
 					
 					
 					if( profileRowOffline.size() > 0 ) {
 						
-						profileRowOffline.add(  new ProfileData( "00000001", "Offline friends", 0, 0, 0, null ) );
+						profileRowOffline.add(
+								
+							new ProfileData( 
+									
+								"00000001", 
+								c.getString(R.string.info_txt_friends_offline), 
+								0, 
+								0, 
+								0, 
+								null 
+									
+							) 
+							
+						);
 					
 					}
 					
@@ -1507,7 +1668,7 @@ public class WebsiteHandler {
 					
 				} else {
 					
-					playingOn = presenceObject.optString("serverName", null);
+					playingOn = presenceObject.optString("serverName", "");
 					
 				}
 				
@@ -1567,7 +1728,7 @@ public class WebsiteHandler {
 					
 				}
 				
-				return new ProfileInformation(
+				ProfileInformation tempProfile = new ProfileInformation(
 					
 					userInfo.optInt( "age", 0 ), 
 					profileData.getProfileId(), 
@@ -1587,6 +1748,16 @@ public class WebsiteHandler {
 					feedItemArray,
 					platoonDataArray
 				);
+				
+				//Let's log it
+				if( CacheHandler.Profile.insert( context, tempProfile ) == 0 ) {
+					
+					CacheHandler.Profile.update( context, tempProfile );
+				
+				}
+				
+				//RETURN
+				return tempProfile;
 				
 			} else {
 			
@@ -1640,9 +1811,9 @@ public class WebsiteHandler {
 	
 							tempObject.getString( "username" ),
 							null,
-							Long.parseLong(tempObject.getString( "userId" ) ),
+							new long[] { Long.parseLong(tempObject.getString( "userId" ) ) },
 							0,
-							0,
+							new long[] { 0 },
 							tempObject.optString( "gravatarMd5", "" ),
 							0
 						)				
@@ -1657,7 +1828,21 @@ public class WebsiteHandler {
 			if( fans.size() > 0 ) {
 			
 				//Add a header just 'cause we can
-				fans.add( new PlatoonMemberData("00000000", "Loyal fans", 0, 0, 0, null, 0) );
+				fans.add( 
+						
+					new PlatoonMemberData(
+							
+						"00000000", 
+						new String[] { "Loyal fans" }, 
+						new long[] { 0 }, 
+						0, 
+						new long[] { 0 }, 
+						null, 
+						0
+						
+					) 
+					
+				);
 				
 				//a-z please!
 				Collections.sort( fans, new ProfileComparator() );
@@ -1731,10 +1916,10 @@ public class WebsiteHandler {
 						tempProfile = new PlatoonMemberData(
 
 							currItem.getJSONObject( "user" ).getString( "username" ),
-							currItem.getJSONObject( "persona" ).getString( "personaName" ),
-							Long.parseLong( currItem.getString( "personaId" ) ),
+							new String[] { currItem.getJSONObject( "persona" ).getString( "personaName" ) },
+							new long[] { Long.parseLong( currItem.getString( "personaId" ) ) },
 							Long.parseLong( currItem.getString( "userId" ) ),
-							profileCommonObject.getLong( "platform" ),
+							new long[] { profileCommonObject.getLong( "platform" ) },
 							currItem.optString( "gravatarMd5", "" ),
 							currItem.getJSONObject( "user" ).getJSONObject("presence").getBoolean( "isOnline" ),
 							currItem.getJSONObject( "user" ).getJSONObject("presence").getBoolean( "isPlaying" ),
@@ -2553,10 +2738,10 @@ public class WebsiteHandler {
 							currObj.getInt( "best" ),
 							currObj.getInt( "average" ),
 							new ProfileData(
-								
+									
 								currUser.optString("username", ""),
 								currUser.optString("username", ""),
-								Long.parseLong(currObj.optString( (currObj.has( "bestPersonaId")? "bestPersonaId" : "personaId" ), "" )),
+								Long.parseLong(currObj.optString( "bestPersonaId", "" )),
 								Long.parseLong(currUser.optString( "userId", "0" )),
 								platoonData.getPlatformId(),
 								tempGravatarHash
@@ -2632,7 +2817,7 @@ public class WebsiteHandler {
 							currObjNames.getString( i ),
 							currObj.getInt( "spm" ),
 							new ProfileData(
-								
+									
 								currUser.optString("username", ""),
 								currUser.optString("username", ""),
 								Long.parseLong(currObj.optString( "personaId", "" )),

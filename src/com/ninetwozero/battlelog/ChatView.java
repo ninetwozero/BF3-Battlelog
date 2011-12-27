@@ -61,10 +61,7 @@ public class ChatView extends ListActivity {
 	private Button buttonSend;
 	
 	//Misc
-	Timer timerReload;
-	
-	//CHAT-related
-	private AsyncChatRefresh asyncChatRefresh;
+	private Timer timerReload;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -120,7 +117,7 @@ public class ChatView extends ListActivity {
 				}
 			}, 
     		0,
-    		25000
+    		sharedPreferences.getLong( Constants.SP_BL_INTERVAL_CHAT, 25 )*1000
     	
         ); 
         

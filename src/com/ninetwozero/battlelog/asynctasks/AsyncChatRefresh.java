@@ -20,6 +20,7 @@ import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -33,12 +34,12 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
 
 	//Attribute
-	Context context;
-	SharedPreferences sharedPreferences;
-	ArrayList<ChatMessage> messageArray = new ArrayList<ChatMessage>();
-	ListView listView;
-	LayoutInflater layoutInflater;
-	String username; //The user that's using the chat on "this" end
+	private Context context;
+	private SharedPreferences sharedPreferences;
+	private ArrayList<ChatMessage> messageArray = new ArrayList<ChatMessage>();
+	private ListView listView;
+	private LayoutInflater layoutInflater;
+	private String username; //The user that's using the chat on "this" end
 	
 	//Constructor
 	public AsyncChatRefresh( Context c, ListView lv, String u, LayoutInflater l ) { 
@@ -46,7 +47,7 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
 		this.context = c;
 		this.listView = lv;
 		this.layoutInflater = l;
-		this.sharedPreferences = context.getSharedPreferences(Constants.FILE_SHPREF, 0);
+		this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences( context );
 		this.username = u;
 	}	
 
