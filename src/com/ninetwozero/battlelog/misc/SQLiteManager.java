@@ -2,6 +2,7 @@ package com.ninetwozero.battlelog.misc;
 
 import java.util.ArrayList;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -108,11 +109,11 @@ public class SQLiteManager {
 				"CREATE TABLE "
 				+ DatabaseStructure.UserProfile.TABLE_NAME + " ("
 				+ DatabaseStructure.UserProfile.COLUMN_NAME_ID  
-				+ " INTEGER, "
+				+ " INTEGER PRIMARY KEY, "
 				+ DatabaseStructure.UserProfile.COLUMN_NAME_NUM_AGE  
 				+ " INTEGER, "
 				+ DatabaseStructure.UserProfile.COLUMN_NAME_NUM_UID  
-				+ " INTEGER, "
+				+ " INTEGER UNIQUE, "
 				+ DatabaseStructure.UserProfile.COLUMN_NAME_DATE_BIRTH  
 				+ " INTEGER, "
 				+ DatabaseStructure.UserProfile.COLUMN_NAME_DATE_LOGIN  
@@ -315,7 +316,10 @@ public class SQLiteManager {
 		return this.STATEMENT.executeInsert();
 	}
 
-	public void update( String table, String[] fields, String[] values, String whereField, long id ) throws DatabaseInformationException {
+	public int update( String table, String[] fields, String[] values, String whereField, long id ) throws DatabaseInformationException {
+		
+		//Init
+		ContentValues contentValues = new ContentValues();
 		
 		//Let's validate the table
 		if( table == null || table.equals( "" ) ) throw new DatabaseInformationException("No table selected.");
@@ -325,7 +329,6 @@ public class SQLiteManager {
 		//Get the number of fields and values
 		int countFields = fields.length;
 		int countValues = values.length;
-		String genQueryString = "", whereQueryString = " WHERE " + table + ".`" + whereField + "` = ?";
 		
 		//Validate the number, ie 6 fields should have 6^(n rows) values
 		if( countValues % countFields != 0 ) {
@@ -333,22 +336,16 @@ public class SQLiteManager {
 			throw new DatabaseInformationException("Database mismatch - numFields <> numValues.");
 			
 		}
-	
-		//Let's bind the parameters
-		for( int i = 0; i < countFields; i++ ) { genQueryString += ( i == 0 )? " SET " + fields[i] + " = ?" : ", " + fields[i] + " = ?"; }
-				
-		
-		this.STATEMENT = this.DB.compileStatement(
-			"UPDATE " + table + genQueryString + whereQueryString
-		);
 
 		//Let's bind the parameters
-		for( int i = 0; i < countValues; i++ ) { this.STATEMENT.bindString(i+1, values[i] ); }
-		this.STATEMENT.bindLong( countValues+1, id );
+		for( int i = 0; i < countFields; i++ ) {
+			
+			contentValues.put( fields[i], values[i] );
+			
+		}
 		
 		//EXECUTE!!!
-		this.STATEMENT.execute();
-		return;
+		return this.DB.update( table, contentValues, whereField + " = ?", new String[]  { id + "" } );
 		
 	}
 

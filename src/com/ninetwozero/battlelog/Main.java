@@ -15,7 +15,6 @@
 package com.ninetwozero.battlelog;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
-import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -27,6 +26,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +62,7 @@ public class Main extends Activity {
     	
     	//Set the content view
         setContentView(R.layout.main);
-
+        
         //Are we active?
         if( PublicUtils.isMyServiceRunning( this ) && BattlelogService.isRunning() ) { 
         	

@@ -74,7 +74,6 @@ public class CommentData implements Parcelable {
 		
 	}
 	
-	
 	public static final Parcelable.Creator<CommentData> CREATOR = new Parcelable.Creator<CommentData>() {
 	
 		public CommentData createFromParcel(Parcel in) { return new CommentData(in); }

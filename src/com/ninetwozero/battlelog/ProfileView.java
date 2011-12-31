@@ -157,7 +157,6 @@ public class ProfileView extends TabActivity {
     		
     	);
         
-        initLayout();
 	}        
 
 	public void initLayout() {
@@ -864,7 +863,7 @@ public class ProfileView extends TabActivity {
 	public void onResume() {
 		
 		super.onResume();
-		this.reloadLayout();
+        initLayout();
 		
 	}
 	

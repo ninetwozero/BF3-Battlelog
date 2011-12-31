@@ -77,6 +77,7 @@
     <color name="kit_general">#8d8d8d</color>
     <color name="green">#309030</color>
     <color name="blue">#308DBF</color>   
-    <color name="grey">#3A3A3A</color>    
+    <color name="grey">#3A3A3A</color> 
+    <color name="lightgrey">#DDDDDD</color>    
     <color name="orange">#e7ab0a</color>   
 </resources>

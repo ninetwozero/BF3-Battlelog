@@ -91,7 +91,9 @@ public final class Constants {
 	public static final String URL_STATS_ALL = URL_MAIN + "indexstats/{PID}/{PLATFORM_NAME}/";
 	
 	//URL to FORUM
-	public static final String URL_FORUM = URL_MAIN + "forum/";
+	public static final String URL_FORUM_LIST = URL_MAIN + "forum/";
+	public static final String URL_FORUM_FORUM = URL_FORUM_LIST + "view/{FORUM_ID}/";
+	public static final String URL_FORUM_THREAD = URL_FORUM_LIST + "threadview/{THREAD_ID}/";
 	
 	//Fields needed for the posts fields
 	public static final String[] FIELD_NAMES_LOGIN = new String[] {"email", "password", "redirect", "submit"};

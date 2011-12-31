@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item 
+		android:id="@+id/option_reload" 
+		android:icon="@android:drawable/ic_menu_rotate"
+		android:title="@string/info_xml_reload" 
+		android:alphabeticShortcut="R"
+	/>
+	<item 
+		android:id="@+id/option_back" 
+		android:icon="@android:drawable/ic_menu_revert" 
+		android:title="@string/info_xml_back" 
+		android:alphabeticShortcut="B"
+	/>
+	<item 
+		android:id="@+id/option_back" 
+		android:icon="@android:drawable/ic_menu_revert" 
+		android:title="@string/info_xml_back" 
+		android:alphabeticShortcut="B"
+	/>
+</menu>

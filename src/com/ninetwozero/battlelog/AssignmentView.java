@@ -134,7 +134,7 @@ public class AssignmentView extends Activity {
 			//Get the values
 			AssignmentData ass1 = data.get( i );
 			AssignmentData ass2 = data.get( i + 1 );
-									
+							
 			//Set the images
 			imageLeft.setImageResource( ass1.getResourceId() );
 			imageLeft.setTag( i );
@@ -142,10 +142,13 @@ public class AssignmentView extends Activity {
 			imageRight.setTag( i+1 );
 
 			//Set the progressbars
-			progressLeft.setMax( ass1.getMax() );
-			progressLeft.setProgress( ass1.getCurrent() );
-			progressRight.setMax( ass2.getMax() );
-			progressRight.setProgress( ass2.getCurrent() );
+			double[] progressArrayLeft = ass1.getProgress();
+			double[] progressArrayRight = ass2.getProgress();
+			
+			progressLeft.setProgress( (int) Math.round( progressArrayLeft[0] ) );
+			progressLeft.setMax( (int) Math.round( progressArrayLeft[1] ) );
+			progressRight.setProgress( (int) Math.round( progressArrayRight[0] ) );
+			progressRight.setMax( (int) Math.round( progressArrayRight[1] ) );
 			
 		}
 		
@@ -300,9 +303,12 @@ public class AssignmentView extends Activity {
         builder.setView( dialog );
         builder.setCancelable( true );
         
+        //Grab the data
+        String[] assignmentTitleData = DataBank.getAssignmentTitle( assignment.getId() );
+        
         //Set the actual fields too
         ((ImageView) dialog.findViewById(R.id.image_assignment)).setImageResource( assignment.getResourceId() );
-        ((TextView) dialog.findViewById(R.id.text_title)).setText( assignment.getId() );
+        ((TextView) dialog.findViewById(R.id.text_title)).setText( assignmentTitleData[0] );
         
         //Loop over the criterias
         for( AssignmentData.Objective objective : assignment.getObjectives() ) {
@@ -323,7 +329,7 @@ public class AssignmentView extends Activity {
         }
         
         ((ImageView) dialog.findViewById( R.id.image_reward )).setImageResource( assignment.getResourceId() );
-        ((TextView) dialog.findViewById( R.id.text_rew_name )).setText( unlocks.getId() );
+        ((TextView) dialog.findViewById( R.id.text_rew_name )).setText( assignmentTitleData[1] );
 
     	return builder.create();
 

@@ -37,10 +37,13 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.BoardView;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
+import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
@@ -107,7 +110,7 @@ public class WebsiteHandler {
     				} else {
     				
 	    				tempString[0] = httpContent.substring( startPosition ).replace( "</div>" , "" ).replace( Constants.ELEMENT_ERROR_MESSAGE, "" );	
-	    				Toast.makeText( context, tempString[0], Toast.LENGTH_SHORT).show();
+	    				Toast.makeText( context, tempString[0] + " ", Toast.LENGTH_SHORT).show();
 	    				
     				}
 
@@ -680,6 +683,8 @@ public class WebsiteHandler {
 
 	public static HashMap<Long, PersonaStats> getStatsForUser(final Context context, final ProfileData pd) throws WebsiteHandlerException {
 		
+		
+		Log.d(Constants.DEBUG_TAG, "Entered getStatsForUser()");
 		try {
 			
 			//Init
@@ -692,11 +697,13 @@ public class WebsiteHandler {
 				profileData = getPersonaIdFromProfile(pd.getProfileId());
 				
 			}
-			
+
+			Log.d(Constants.DEBUG_TAG, "# About to loop");
 			//Let's see...
 	    	RequestHandler wh = new RequestHandler();
-			for( int i = 0, max = profileData.getPersonaIdArray().length; i < max; i++ ) {
-			
+			for( int i = 0, max = profileData.getNumPersonas(); i < max; i++ ) {
+
+				Log.d(Constants.DEBUG_TAG, "## Loop(" + i + " of " + max + ")");
 		    	//Get the data
 		    	String content = wh.get( 
 	    	
@@ -711,7 +718,8 @@ public class WebsiteHandler {
 					0
 				
 				);
-		    	
+
+				Log.d(Constants.DEBUG_TAG, "# End of loop");
 		    	//JSON Objects
 		    	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
 		    	
@@ -772,13 +780,19 @@ public class WebsiteHandler {
 		    
 			}
 			
+
+			Log.d(Constants.DEBUG_TAG, "# About to cache");
+			
 			//Cache it!
 			if( CacheHandler.Persona.insert( context, stats ) == 0 ) {
 				
+
+				Log.d(Constants.DEBUG_TAG, "## Let's update the cache instead");
 				CacheHandler.Persona.update( context, stats );
 			
 			}
-			
+
+			Log.d(Constants.DEBUG_TAG, "# Done caching");
 			//Return!
 			return stats;
 		        
@@ -1750,6 +1764,9 @@ public class WebsiteHandler {
 				);
 				
 				//Let's log it
+				
+				
+				Log.d(Constants.DEBUG_TAG, "CacheHandler.Profile.insert( context, tempProfile ) => " + CacheHandler.Profile.insert( context, tempProfile ));
 				if( CacheHandler.Profile.insert( context, tempProfile ) == 0 ) {
 					
 					CacheHandler.Profile.update( context, tempProfile );
@@ -4285,6 +4302,293 @@ public class WebsiteHandler {
 			
 			ex.printStackTrace();
 
+		}
+		
+	}
+	
+	public static ArrayList<Board.Forum> getAllForums() throws WebsiteHandlerException {
+
+		try {
+			
+			//Init to winit
+			ArrayList<Board.Forum> forums = new ArrayList<Board.Forum>();
+			
+			//Setup a RequestHandler
+			RequestHandler rh = new RequestHandler();
+			final String httpContent = rh.get(
+					
+				Constants.URL_FORUM_LIST, 
+				1
+			
+			);
+			
+			//Let's parse it!
+			JSONArray categoryArray = new JSONObject(httpContent).getJSONObject( "context" ).getJSONArray( "categories" );
+			JSONArray forumArray = categoryArray.getJSONObject( 0 ).optJSONArray( "forums" );
+			
+			//Loop
+			for( int i = 0, max = forumArray.length(); i < max; i++ ) {
+				
+				//Get the current object
+				JSONObject currObject = forumArray.getJSONObject( i );
+				JSONObject lastThread = currObject.optJSONObject( "lastThread" );
+				JSONObject userInfo = lastThread.optJSONObject( "lastPoster" );
+				
+				//Let's store them
+				if( lastThread != null && userInfo != null ) { 
+					
+					forums.add( 
+							
+						new Board.Forum(
+								
+							Long.parseLong( currObject.getString( "id" ) ),
+							Long.parseLong( currObject.getString( "categoryId" ) ),
+							lastThread.getLong( "lastPostDate" ),
+							Long.parseLong( lastThread.getString( "id" ) ),
+							Long.parseLong( lastThread.getString( "lastPostId" ) ),
+							currObject.getLong( "numberOfPosts" ),
+							currObject.getLong( "numberOfThreads" ),
+							currObject.getString( "title" ),
+							currObject.getString( "description" ),
+							lastThread.getString( "title" ),
+							userInfo.getString( "username" )
+						
+						)
+						
+					);
+					
+				} else {
+					
+					forums.add( 
+							
+						new Board.Forum(
+								
+							Long.parseLong( currObject.getString( "id" ) ),
+							Long.parseLong( currObject.getString( "categoryId" ) ),
+							0,
+							0,
+							0,
+							currObject.getLong( "numberOfPosts" ),
+							currObject.getLong( "numberOfThreads" ),
+							currObject.getString( "title" ),
+							currObject.getString( "description" ),
+							null,
+							null
+						
+						)
+						
+					);
+
+				}
+				
+			}
+			
+			//Return
+			return forums;
+			
+		} catch( Exception ex ) {
+			
+			ex.printStackTrace();
+			throw new WebsiteHandlerException("No forums found.");
+			
+		}
+		
+	}
+	
+	public static Board.Forum getThreadsForForum(long forumId) throws WebsiteHandlerException {
+
+		try {
+			
+			//Init to winit
+			ArrayList<Board.ThreadData> threads = new ArrayList<Board.ThreadData>();
+			
+			//Setup a RequestHandler
+			RequestHandler rh = new RequestHandler();
+			final String httpContent = rh.get(
+					
+				Constants.URL_FORUM_FORUM.replace( "{FORUM_ID}", forumId + "" ), 
+				1
+			
+			);
+			
+			//Let's parse it!
+			JSONObject contextObject = new JSONObject(httpContent).getJSONObject( "context" );
+			JSONObject forumObject = contextObject.getJSONObject( "forum" );
+			JSONArray stickiesArray = contextObject.getJSONArray( "stickies" );
+			JSONArray threadArray = contextObject.getJSONArray( "threads" );
+			
+			//Loop the stickies
+			int numStickies = stickiesArray.length();
+			for( int i = 0, max = numStickies; i < max; i++ ) {
+				
+				//Yay, we found at least one sticky
+				if( i == 0 ) { threads.add( new Board.ThreadData("Stickies" )  ); }
+				
+				//Get the current object
+				JSONObject currObject = stickiesArray.getJSONObject( i );
+				JSONObject ownerObject = currObject.getJSONObject("owner");
+				JSONObject lastPosterObject = currObject.getJSONObject("lastPoster");
+				
+				//Let's store them
+				threads.add(
+				
+					new Board.ThreadData( 
+							
+						Long.parseLong( currObject.getString("id" ) ), 
+						currObject.getLong( "creationDate" ), 
+						currObject.getLong( "lastPostDate" ), 
+						lastPosterObject.getLong( "userId" ), 
+						Long.parseLong( ownerObject.getString( "userId" ) ), 
+						currObject.getInt( "numberOfOfficialPosts" ), 
+						currObject.getInt( "numberOfPosts" ),
+						currObject.getString( "title" ), 
+						lastPosterObject.getString( "username" ), 
+						ownerObject.getString( "username" ), 
+						currObject.getBoolean( "isSticky" ), 
+						currObject.getBoolean( "isLocked" ) 
+						
+					)	
+					
+				);
+				
+			}
+			
+			//Loop the regular
+			for( int i = numStickies, max = threadArray.length(); i < max; i++ ) {
+				
+				if( i == numStickies ) { threads.add( new Board.ThreadData( "Threads" )  ); }
+				
+				//Get the current object
+				JSONObject currObject = threadArray.getJSONObject( i );
+				JSONObject ownerObject = currObject.getJSONObject("owner");
+				JSONObject lastPosterObject = currObject.getJSONObject("lastPoster");
+				
+				//Let's store them
+				threads.add(
+				
+					new Board.ThreadData( 
+							
+						Long.parseLong( currObject.getString("id" ) ), 
+						currObject.getLong( "creationDate" ), 
+						currObject.getLong( "lastPostDate" ), 
+						lastPosterObject.getLong( "userId" ), 
+						Long.parseLong( ownerObject.getString( "userId" ) ), 
+						currObject.getInt( "numberOfOfficialPosts" ), 
+						currObject.getInt( "numberOfPosts" ),
+						currObject.getString( "title" ), 
+						lastPosterObject.getString( "username" ), 
+						ownerObject.getString( "username" ), 
+						currObject.getBoolean( "isSticky" ), 
+						currObject.getBoolean( "isLocked" ) 
+						
+					)	
+					
+				);
+				
+			}
+			
+			return new Board.Forum(
+					
+				forumObject.getString( "title" ),
+				forumObject.getString( "description" ),
+				forumObject.getLong( "numberOfPosts" ), 
+				forumObject.getLong( "numberOfThreads" ),
+				threads
+			
+			);
+						
+		} catch( Exception ex ) {
+			
+			ex.printStackTrace();
+			throw new WebsiteHandlerException("No threads found.");
+			
+		}
+		
+	}
+	
+	public static Board.ThreadData getPostsForThread(long threadId) throws WebsiteHandlerException {
+
+		try {
+			
+			//Init to winit
+			ArrayList<Board.PostData> posts = new ArrayList<Board.PostData>();
+			
+			//Setup a RequestHandler
+			RequestHandler rh = new RequestHandler();
+			final String httpContent = rh.get(
+					
+				Constants.URL_FORUM_THREAD.replace( "{THREAD_ID}", threadId + "" ), 
+				1
+			
+			);
+			
+			//Let's parse it!
+			JSONObject contextObject = new JSONObject(httpContent).getJSONObject( "context" );
+			JSONArray postArray = contextObject.getJSONArray( "posts" );
+			JSONObject threadObject = contextObject.getJSONObject( "thread" );
+			JSONObject lastPosterObject = threadObject.getJSONObject("lastPoster");
+			JSONObject threadOwnerObject = threadObject.getJSONObject("owner");
+			
+			//Loop the stickies
+			for( int i = 0, max = postArray.length(); i < max; i++ ) {
+				
+				//Get the current object
+				JSONObject currObject = postArray.getJSONObject( i );
+				JSONObject ownerObject = currObject.getJSONObject( "owner" );
+				
+				//Let's store them
+				posts.add(
+					
+					new Board.PostData(
+
+						Long.parseLong( currObject.getString("id") ),
+						Long.parseLong( currObject.getString("creationDate") ),
+						Long.parseLong( ownerObject.getString("userId") ),
+						Long.parseLong( currObject.getString("threadId") ),
+						ownerObject.getString("username"),
+						currObject.getString("formattedBody"),
+						currObject.getInt("abuseCount"),
+						currObject.getBoolean("isCensored"),
+						currObject.getBoolean("isOfficial")
+							
+					)	
+						
+				);
+				
+			}
+			
+			return new Board.ThreadData( 
+
+				threadObject.getLong( "id" ), 
+				threadObject.getLong( "creationDate" ), 
+				threadObject.getLong( "lastPostDate" ), 
+				lastPosterObject.getLong( "userId" ), 
+				threadOwnerObject.getLong( "userId" ), 
+				threadObject.getInt( "numberOfOfficialPosts" ), 
+				threadObject.getInt( "numberOfPosts" ),
+				contextObject.getInt( "currentPage" ), 
+				contextObject.getInt( "numPages" ),
+				threadObject.getString( "title" ), 
+				lastPosterObject.getString( "username" ), 
+				threadOwnerObject.getString( "username" ), 
+				threadObject.getBoolean( "isSticky" ), 
+				threadObject.getBoolean( "isLocked" ), 
+				contextObject.getBoolean( "canEditPosts" ),   
+				contextObject.getBoolean( "canCensorPosts" ),
+				contextObject.getBoolean( "canDeletePosts" ),
+				contextObject.getBoolean( "canPostOfficial" ),
+				contextObject.getBoolean( "canViewLatestPosts" ),
+				contextObject.getBoolean( "canViewPostHistory" ),  
+				contextObject.getBoolean( "isAdmin" ),  
+				posts
+				
+			);
+				
+		} catch( Exception ex ) {
+			
+			ex.printStackTrace();
+			throw new WebsiteHandlerException("No threads found.");
+			
 		}
 		
 	}

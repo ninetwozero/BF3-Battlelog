@@ -877,7 +877,7 @@ public class DataBank {
 		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_10",new String[] {  "Scarred Veteran", "MK3A1" });
 		
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_1", "100 kills with Assault Rifles");
-		CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_2", "20 kills with Underslung Grenade Launcher");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_2", "20 kills with the Noobtube");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_3", "Win 5 rounds of SQDM");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_3", "Win 5 rounds of Conquest");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_1", "50 AT rocket kills");

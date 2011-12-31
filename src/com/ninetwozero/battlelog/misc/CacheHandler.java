@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.util.Log;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
@@ -111,7 +112,7 @@ public class CacheHandler {
 
 			//Use the SQLiteManager to get a cursor
 			SQLiteManager manager = new SQLiteManager( context );
-			Log.d(Constants.DEBUG_TAG, DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA + " => " + stats.getPersonaId());
+
 			try {
 				//UPDATE them!!
 				manager.update(
@@ -142,6 +143,7 @@ public class CacheHandler {
 
 			//Use the SQLiteManager to get a cursor
 			SQLiteManager manager = new SQLiteManager( context );
+			int results = 0;
 			
 			try {
 				
@@ -150,11 +152,9 @@ public class CacheHandler {
 
 					//Get the object
 					PersonaStats stats = statsArray.get( key );
-
-					Log.d(Constants.DEBUG_TAG, DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA + " => " + stats.getPersonaId());
 					
 					//UPDATE them!!
-					manager.update(
+					results += manager.update(
 							
 						DatabaseStructure.PersonaStatistics.TABLE_NAME, 
 						DatabaseStructure.PersonaStatistics.getColumns(),
@@ -163,11 +163,14 @@ public class CacheHandler {
 						stats.getPersonaId()
 						
 					);
-
+					
 				}
-				
+
+				//Close the manager
 				manager.close();
-				return true;
+				
+				//Check the results
+				return ( results > 0 );
 				
 			} catch( Exception ex ) {
 
@@ -317,9 +320,9 @@ public class CacheHandler {
 
 			//Use the SQLiteManager to get a cursor
 			SQLiteManager manager = new SQLiteManager( context );
-			
+
 			try {
-				
+	
 				//Get them!!
 				long results = manager.insert( 
 						
@@ -328,7 +331,7 @@ public class CacheHandler {
 					stats.toStringArray()
 					
 				);
-				
+
 				manager.close();
 				return results;
 				
@@ -352,12 +355,12 @@ public class CacheHandler {
 
 			//Use the SQLiteManager to get a cursor
 			SQLiteManager manager = new SQLiteManager( context );
+			int results = 0;
 			
 			try {
 
-				Log.d(Constants.DEBUG_TAG, DatabaseStructure.UserProfile.COLUMN_NAME_NUM_UID + " => " + stats.getUserId());
 				//UPDATE them!!
-				manager.update(
+				results += manager.update(
 						
 					DatabaseStructure.UserProfile.TABLE_NAME, 
 					DatabaseStructure.UserProfile.getColumns(),
@@ -368,7 +371,7 @@ public class CacheHandler {
 				);
 				
 				manager.close();
-				return true;
+				return (results > 0);
 				
 			} catch( Exception ex ) {
 

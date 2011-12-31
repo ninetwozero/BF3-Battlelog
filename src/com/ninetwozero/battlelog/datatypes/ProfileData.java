@@ -69,6 +69,7 @@ public class ProfileData implements Parcelable {
 	public String getPersonaName() { return ( personaName.length > 0 ) ? this.personaName[0] : null; }
 	public String getPersonaName(int pos) { return ( (personaName.length-1) <= pos ) ? this.personaName[pos] : null; }
 	public String[] getPersonaNameArray() { return this.personaName; }
+	public int getNumPersonas() { return this.personaId.length; }
 	public long[] getPersonaIdArray() { return this.personaId; }
 	public long[] getPlatformIdArray() { return this.platformId; }
 	public long getPersonaId() { return ( personaId.length > 0 ) ? this.personaId[0] : 0; }

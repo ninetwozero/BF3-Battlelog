@@ -31,8 +31,9 @@
 		    style="@style/InfoHeading"
 		    android:id="@+id/string_persona"
 	    	android:text="NINETWOZERO"
-			android:padding="5dp"
 			android:onClick="onClick"
+			android:padding="5dp"
+			android:clickable="true"
 	    />
 		<TextView
 		    android:id="@+id/string_rank_title"
@@ -583,7 +584,7 @@
 					android:id="@+id/string206"
 					android:text="@string/info_xml_total_in_combat"
 				    android:layout_below="@id/string_score_vehicles"
-				    android:paddingRight="35dp"
+				    android:paddingRight="40dp"
 				/>
 				<TextView
 				    style="@style/InfoSubHeading"

@@ -243,7 +243,10 @@ public class NotificationData {
 			
 			case 20: //Platoon wall post
 				return c.getString( R.string.info_platoon_wall_post );
-				 
+				
+			case 22: //Got game
+				return c.getString( R.string.info_p_activated_expansion );
+				
 			default:
 				return "{unknown action}";
 		}

@@ -17,6 +17,7 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -24,7 +25,6 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 import com.ninetwozero.battlelog.R;
 
@@ -309,6 +309,30 @@ public class PublicUtils {
     	ConnectivityManager connMan = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
     	return (connMan.getActiveNetworkInfo() != null && connMan.getBackgroundDataSetting());
     
+    }
+    
+    /*
+     * 	Author: Karl Lindmark
+     * 
+     * 	@param Context The context to be called from
+     *  @return String The path to the cache directory
+     * 
+     */
+    
+    public static File getCacheFileHandler(final Context c) { 
+
+    	final String packageName = c.getPackageName();
+    	final File directory = c.getExternalCacheDir();
+    	
+    	if( directory.getPath().contains( packageName ) ) {
+    		
+    		return directory;
+    	
+    	} else {
+    		
+    		return new File( directory.getPath() + "/Android/data/" + packageName + "/cache/" );
+    	
+    	}
     }
 
 }

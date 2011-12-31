@@ -208,8 +208,7 @@ public class Dashboard extends TabActivity {
     		new DashboardItem(Constants.MENU_UNLOCKS, getString(R.string.label_unlocks )),
     		new DashboardItem(Constants.MENU_ASSIGNMENTS, getString( R.string.info_xml_assignments_my )),
         	new DashboardItem(Constants.MENU_COMPARE, getString(R.string.label_compare_bs)),
-        	new DashboardItem(Constants.MENU_FORUM, getString(R.string.label_forum)),
-        	new DashboardItem(Constants.MENU_DEBUG, "DEBUG")
+        	new DashboardItem(Constants.MENU_FORUM, getString(R.string.label_forum))
         	
         };
         
@@ -1340,8 +1339,8 @@ public class Dashboard extends TabActivity {
 			
 		} else if( id == Constants.MENU_FORUM ) { 
 			
-			Toast.makeText( this, R.string.msg_unimplemented, Toast.LENGTH_SHORT ).show();
-//			startActivity( new Intent(this, ForumView.class) );
+			//Toast.makeText( this, R.string.msg_unimplemented, Toast.LENGTH_SHORT ).show();
+			startActivity( new Intent(this, BoardView.class) );
 			return;
 			
 		} else if( id == Constants.MENU_DEBUG ) {

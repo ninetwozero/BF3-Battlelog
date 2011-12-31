@@ -21,12 +21,6 @@
     	
     -->
     
-    <string name="changelog">
-        &lt;br /&gt;
-        Please report any errors you may encounter to &lt;u&gt;support@ninetwozero.com&lt;/u&gt; and/or 
-        &lt;u&gt;@karllindmark&lt;/u&gt; on Twitter.&lt;br /&gt;&lt;br /&gt;
-        Thank you for your support!
-	</string>
     <string-array name="service_update_intervals_labels">
         <item >Every 5 minutes</item>
         <item >Every 10 minutes</item>
@@ -279,5 +273,23 @@
         <string name="info_p_newunlocks">&lt;b>{username}&lt;/b> unlocked new items: {item}.</string>
         <string name="info_txt_friends_offline">Offline friends</string>
         <string name="info_txt_friends_online">Online friends</string>
-        <string name="info_txt_session_lost">Session lost. Please re-login!</string>       
+        <string name="info_txt_session_lost">Session lost. Please re-login!</string>
+        <string name="info_xml_forums_none">No forums found.</string>
+        <string name="info_xml_forums">Forums</string>
+        <string name="info_p_activated_expansion">activated game/or expansion pack</string>
+        <string name="info_xml_forum_postsinthreads">&lt;b>{num_posts}&lt;/b> posts in &lt;b>{num_threads}&lt;/b> threads.</string>
+        <string name="info_xml_threadinfo">&lt;b>{num_posts}&lt;/b> posts (whereof &lt;b>{num_official}&lt;/b> official)</string>
+        <string name="info_xml_threaddate">Posted &lt;b>{date}&lt;/b> by &lt;b>{user}&lt;/b></string>      
+        <string name="info_xml_threadreplydate">Last post &lt;b>{date}&lt;/b> by &lt;b>{user}&lt;/b></string> 
+        
+        <!--  ALWAYS TRANSLATED -->
+	    <string name="changelog">
+	        * Added platoons
+	        * Added assignments
+	        * Widget should now be working (via service)
+	        &lt;br /&gt;
+	        Please report any errors you may encounter to &lt;u&gt;support@ninetwozero.com&lt;/u&gt; and/or 
+	        &lt;u&gt;@karllindmark&lt;/u&gt; on Twitter.&lt;br /&gt;&lt;br /&gt;
+	        Thank you for your support!
+		</string>
 </resources>

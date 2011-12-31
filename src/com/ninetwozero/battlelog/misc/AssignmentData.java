@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 import com.ninetwozero.battlelog.R;
 
 
@@ -70,8 +71,18 @@ public class AssignmentData implements Parcelable {
 	public ArrayList<AssignmentData.Objective> getObjectives() { return this.objectives; }
 	public ArrayList<AssignmentData.Dependency> getDependencies() { return this.dependencies; }
 	public ArrayList<AssignmentData.Unlock> getUnlocks() { return this.unlocks; }
-	public int getCurrent() { /*TODO*/ return 0; }
-	public int getMax() { /*TODO*/ return 0; }
+	public double[] getProgress() { 
+	
+		double[] num = new double[2];
+		for( AssignmentData.Objective obj : this.objectives ) {
+			
+			num[0] += (obj.getCurrentValue() / obj.getGoalValue())*100; //0 <= x <= 100
+			num[1] += 100;
+		
+		}
+		return num;
+		
+	}
 	
 	//toString()
 	@Override

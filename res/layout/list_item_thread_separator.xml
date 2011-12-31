@@ -12,23 +12,8 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
  -->
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/tabsLayout" 
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent" 
-	android:background="@drawable/gradient_greytodarkgrey"
-	android:padding="10dip" 
-	android:gravity="center" 
-	android:orientation="vertical"
->
-
-	<TextView 
-	    android:id="@+id/tabsText" 
-	    android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:text="Title"
-		android:textSize="15dip" 
-		android:textColor="@drawable/selector_tab_text" 
-	/>
-</LinearLayout>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/FriendHeadingRow"
+	android:id="@+id/text_title"
+	android:text=""    
+/>    

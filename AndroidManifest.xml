@@ -44,7 +44,6 @@
             android:label="@string/title_profile"
             android:name=".ProfileView"
           	android:configChanges="orientation"
-          	android:launchMode="singleTask"
 		/>
         <activity
             android:label="@string/title_platoon"
@@ -75,7 +74,17 @@
         />
         <activity
             android:label="@string/title_forum"
+            android:name=".BoardView"
+          	android:configChanges="orientation"
+        />
+        <activity
+            android:label="Viewing forum ..."
             android:name=".ForumView"
+          	android:configChanges="orientation"
+        />
+        <activity
+            android:label="Viewing thread ..."
+            android:name=".ForumThreadView"
           	android:configChanges="orientation"
         />
         <activity
@@ -108,4 +117,5 @@
     </application>
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>

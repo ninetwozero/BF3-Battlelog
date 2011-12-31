@@ -24,7 +24,6 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,24 +31,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ThreadListAdapter;
+import com.ninetwozero.battlelog.adapters.ThreadPostListAdapter;
 import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.Board.ThreadData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class ForumView extends ListActivity {
+public class ForumThreadView extends ListActivity {
 
 	//Attributes
 	private final Context CONTEXT = this;
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
-	private Board.Forum currentForum;
-	private long forumId;
-	private String forumTitle;
-	
+	private ThreadData currentThread;
+	private long threadId;
+	private String threadTitle;
+
 	//Elements
 	private ListView listView;
 	
@@ -62,20 +64,25 @@ public class ForumView extends ListActivity {
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setCookies( (ArrayList<ShareableCookie>) icicle.getParcelable(Constants.SUPER_COOKIES) );
-    		
+    		RequestHandler.setCookies(
+    				
+    			(ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) 
+    			
+    		);
+    	
     	}
+    	
     	//Set the content view
-        setContentView(R.layout.board_forum_view);
+        setContentView(R.layout.board_forum_thread_view);
 
         //Prepare to tango
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         
-        //Get the forumId
-        forumId = getIntent().getLongExtra( "forumId", 0 );
-        forumTitle = getIntent().getStringExtra( "forumTitle" );
-        
+        //Get the threadId
+        threadId = getIntent().getLongExtra( "threadId", 0 );
+        threadTitle = getIntent().getStringExtra( "threadTitle" );
+
         //Init
 		initLayout(); 
 	
@@ -85,16 +92,16 @@ public class ForumView extends ListActivity {
 	public void onResume() {
 		
 		super.onResume();
-		reloadLayout();
+		reloadLayout(); 
 		
 	}
 	
 	public void initLayout() {
 		
 		//Set the top
-		if( forumTitle != null ) {
+		if( threadTitle != null ) {
 			
-			( (TextView) findViewById( R.id.text_title) ).setText( forumTitle );
+			( (TextView) findViewById( R.id.text_title_thread) ).setText( threadTitle );
 			
 		}
 		
@@ -102,14 +109,15 @@ public class ForumView extends ListActivity {
         if( listView == null ) { 
         	
         	listView = getListView(); 
-        	if( currentForum == null ) { 
-        		
-        		listView.setAdapter( new ThreadListAdapter( this, null, layoutInflater ) );
-        		
+        	
+        	if( currentThread == null ) {
+        	
+        		listView.setAdapter( new ThreadPostListAdapter( this, null, layoutInflater ) );
+        	
         	} else {
         		
-        		listView.setAdapter( new ThreadListAdapter( this, currentForum.getThreads(), layoutInflater ) );
-        		
+            	listView.setAdapter( new ThreadPostListAdapter( this, currentThread.getPosts(), layoutInflater ) );
+        	
         	}
         	
         }
@@ -118,13 +126,13 @@ public class ForumView extends ListActivity {
 	
     public void reloadLayout() { 
     	
-    	if( currentForum == null ) {
+    	if( currentThread == null ) {
     		
-    		new AsyncGetThreads(this, listView).execute( forumId ); 
+    		new AsyncGetPosts(this, listView).execute( threadId ); 
     	
     	} else {
     		
-    		new AsyncGetThreads(null, listView).execute( forumId ); 
+    		new AsyncGetPosts(null, listView).execute( threadId ); 
     		
     	}
     	
@@ -164,31 +172,18 @@ public class ForumView extends ListActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		
 		super.onSaveInstanceState(outState);
+		outState.putParcelableArrayList(Constants.SUPER_COOKIES, RequestHandler.getCookies());
 	
 	}
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int p, long id) {
 		
-		startActivity( 
-				
-			new Intent(this, ForumThreadView.class).putExtra(
-					
-				"threadId", 
-				id 
-				
-			).putExtra(
-			
-				"threadTitle",
-				((Board.ThreadData) v.getTag()).getTitle()
-					
-			)	
-				
-		);
+		Toast.makeText( this, "Unimplemented feature - what should this do - contextMenu with option to quote?", Toast.LENGTH_SHORT ).show();
 		
 	}
 
-	private class AsyncGetThreads extends AsyncTask<Long, Void, Boolean>{
+	private class AsyncGetPosts extends AsyncTask<Long, Void, Boolean>{
 
 		//Attributes
 		private Context context;
@@ -196,7 +191,7 @@ public class ForumView extends ListActivity {
 		private ListView list;
 		
 		//Construct
-		public AsyncGetThreads(Context c, ListView l) {
+		public AsyncGetPosts(Context c, ListView l) {
 						
 			context = c;
 			list = l;
@@ -210,7 +205,7 @@ public class ForumView extends ListActivity {
 				
 				progressDialog = new ProgressDialog(this.context);
 				progressDialog.setTitle( R.string.general_wait );
-				progressDialog.setMessage( "Downloading the threads..." );
+				progressDialog.setMessage( "Downloading the posts..." );
 				progressDialog.show();
 			
 			}	
@@ -222,8 +217,8 @@ public class ForumView extends ListActivity {
 
 			try {
 				
-				currentForum = WebsiteHandler.getThreadsForForum( arg0[0] );
-				return ( currentForum != null );
+				currentThread = WebsiteHandler.getPostsForThread( arg0[0] );
+				return ( currentThread != null );
 				
 			} catch( Exception ex ) {
 				
@@ -247,7 +242,7 @@ public class ForumView extends ListActivity {
 
 				if( list.getAdapter() != null ) { 
 				
-					( (ThreadListAdapter) list.getAdapter() ).setItemArray( currentForum.getThreads() ); 
+					( (ThreadPostListAdapter) list.getAdapter() ).setItemArray( currentThread.getPosts() ); 
 
 				}
 				
