@@ -15,8 +15,9 @@
 package com.ninetwozero.battlelog.datatypes;
 
 import android.content.Context;
+import android.util.Log;
 
-import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 
 
@@ -68,6 +69,8 @@ public class UnlockData {
 			
 		} else if ( this.type.equals( "weapon+" ) ) {
 		
+			if( DataBank.getAttachmentTitle( this.unlockIdentifier ).equals( this.unlockIdentifier ) ) { Log.d(Constants.DEBUG_TAG, this.unlockIdentifier); }
+			
 			return DataBank.getAttachmentTitle( this.unlockIdentifier );
 			
 		} else if( this.type.equals( "vehicle+" ) ) {
@@ -149,6 +152,20 @@ public class UnlockData {
 				"{scoreCurr}/{scoreNeeded} {name}", 
 				this.scoreCurrent + "/" + this.scoreNeeded + " " + getParent()
 				
+			);
+			
+		} else if( this.objective.startsWith( "xpm" ) ) {
+			
+
+			String digits = this.objective.subSequence( 4, 6 ).toString();
+			
+			if( digits.startsWith( "0" ) ) { digits = digits.substring( 1 ); }
+			
+			return DataBank.getUnlockGoal( "xpm" ).replace(
+				
+				"{name}",
+				DataBank.getAssignmentTitle( "ID_XP1_ASSIGNMENT_" + digits )[0]
+					
 			);
 			
 		}

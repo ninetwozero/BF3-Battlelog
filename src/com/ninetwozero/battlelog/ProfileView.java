@@ -251,10 +251,12 @@ public class ProfileView extends TabActivity {
 			try {
 				
 				//Get...
-				personaStats = CacheHandler.Persona.select( context, new long[] { this.profileData.getPersonaId() } );
+				/* TODO: Add a personaId-field to Profile-sqlite, and do profileInformation.getPersonaId() instead of this.profileData.getPersonaId() */
 				profileInformation = CacheHandler.Profile.select( context, this.profileData.getProfileId() );
+				personaStats = CacheHandler.Persona.select( context, new long[] { this.profileData.getPersonaId() } );
 				
 				//...validate!
+				Log.d(Constants.DEBUG_TAG, "Size: " + personaStats.size() );
 				if( personaStats == null || profileInformation == null ) { return false; } 
 				else { return true; }
 				

@@ -169,6 +169,8 @@ public class CacheHandler {
 				//Close the manager
 				manager.close();
 				
+				Log.d(Constants.DEBUG_TAG, "Rows updated: " + results);
+				
 				//Check the results
 				return ( results > 0 );
 				
@@ -177,7 +179,6 @@ public class CacheHandler {
 				manager.close();
 				ex.printStackTrace();
 				return false;
-				
 				
 			}
 			

@@ -630,7 +630,7 @@ public class WebsiteHandler {
 	    	JSONObject kitScores = statsOverview.getJSONObject( "kitScores" );
 	    	JSONObject nextRankInfo = dataObject.getJSONObject( "rankNeeded" );
 	    	JSONObject currRankInfo = dataObject.getJSONObject( "currentRankNeeded" );
-   
+			
 	        //Yay
 	       return new PersonaStats(
 	    		   
@@ -683,8 +683,6 @@ public class WebsiteHandler {
 
 	public static HashMap<Long, PersonaStats> getStatsForUser(final Context context, final ProfileData pd) throws WebsiteHandlerException {
 		
-		
-		Log.d(Constants.DEBUG_TAG, "Entered getStatsForUser()");
 		try {
 			
 			//Init
@@ -698,12 +696,10 @@ public class WebsiteHandler {
 				
 			}
 
-			Log.d(Constants.DEBUG_TAG, "# About to loop");
 			//Let's see...
 	    	RequestHandler wh = new RequestHandler();
 			for( int i = 0, max = profileData.getNumPersonas(); i < max; i++ ) {
 
-				Log.d(Constants.DEBUG_TAG, "## Loop(" + i + " of " + max + ")");
 		    	//Get the data
 		    	String content = wh.get( 
 	    	
@@ -719,7 +715,6 @@ public class WebsiteHandler {
 				
 				);
 
-				Log.d(Constants.DEBUG_TAG, "# End of loop");
 		    	//JSON Objects
 		    	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
 		    	
@@ -737,6 +732,7 @@ public class WebsiteHandler {
 		        		
 	        		profileData.getPersonaId(i),
 		        	new PersonaStats(
+		        			
 			        	profileData.getAccountName(),
 			        	profileData.getPersonaName(i),
 			        	currRankInfo.getString( "name" ),
@@ -780,19 +776,14 @@ public class WebsiteHandler {
 		    
 			}
 			
-
-			Log.d(Constants.DEBUG_TAG, "# About to cache");
-			
 			//Cache it!
 			if( CacheHandler.Persona.insert( context, stats ) == 0 ) {
 				
-
-				Log.d(Constants.DEBUG_TAG, "## Let's update the cache instead");
-				CacheHandler.Persona.update( context, stats );
+				boolean result = CacheHandler.Persona.update( context, stats );
+				Log.d(Constants.DEBUG_TAG, "CacheHandler.Persona.update( context, stats ) => " + result );
 			
 			}
 
-			Log.d(Constants.DEBUG_TAG, "# Done caching");
 			//Return!
 			return stats;
 		        
@@ -1764,8 +1755,6 @@ public class WebsiteHandler {
 				);
 				
 				//Let's log it
-				
-				
 				Log.d(Constants.DEBUG_TAG, "CacheHandler.Profile.insert( context, tempProfile ) => " + CacheHandler.Profile.insert( context, tempProfile ));
 				if( CacheHandler.Profile.insert( context, tempProfile ) == 0 ) {
 					
@@ -2857,8 +2846,6 @@ public class WebsiteHandler {
 					
 					
 				}
-
-				Log.d(Constants.DEBUG_TAG, "After for-loop");
 				
 				//Set the best & sort
 				arrayTop.add( 
@@ -2873,7 +2860,7 @@ public class WebsiteHandler {
 						
 				);
 				Collections.sort( arrayTop, new TopStatsComparator() );
-				Log.d(Constants.DEBUG_TAG, "Returning!");
+				
 				//Return it now!!
 				return new PlatoonStats(
 				
@@ -3761,6 +3748,46 @@ public class WebsiteHandler {
 							
 						"{message}", 
 						tempSubItem.getString( "wallBody" )
+	
+					);
+					
+					//Let's get it!
+					otherUserObject = tempSubItem.getJSONObject( "writerUser" );
+					tempGravatarHash = otherUserObject.getString( "gravatarMd5" );
+					
+					//Temporary storage						
+					tempFeedItem = new FeedItem(
+	
+						Long.parseLong( currItem.getString("id") ),
+						Long.parseLong( currItem.getString("ownerId") ),
+						Long.parseLong( currItem.getString("itemId") ),
+						currItem.getLong( "creationDate" ),
+						numLikes,
+						itemTitle,
+						"",
+						currItem.getString("event"),
+						new String[] { 
+							
+							otherUserObject.getString( "username" ), 
+							ownerObject.getString("username") 
+							
+						},
+						liked,
+						comments,
+						tempGravatarHash
+							
+					);
+					
+				} else if( !currItem.isNull( "GAMEACCESS" )  ) {
+					
+					//Get it!
+					tempSubItem = currItem.optJSONObject( "GAMEACCESS" );
+					
+					//Set it!
+					itemTitle = "<b>{username} now has access to <b>{title}</b> for <b>Battlefield 3</b>. ".replace( 
+							
+						"{title}", 
+						DataBank.getExpansionTitle(tempSubItem.getString( "expansion" ))
 	
 					);
 					
