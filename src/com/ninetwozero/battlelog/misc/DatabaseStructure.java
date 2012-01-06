@@ -1,6 +1,5 @@
 package com.ninetwozero.battlelog.misc;
 
-import com.ninetwozero.battlelog.R;
 
 
 public final class DatabaseStructure {
@@ -20,8 +19,8 @@ public final class DatabaseStructure {
 		public static final String COLUMN_NAME_ID_PERSONA = "persona_id";
 		public static final String COLUMN_NAME_ID_USER = "user_id";
 		public static final String COLUMN_NAME_ID_PLATFORM = "platform_id";
-		public static final String COLUMN_NAME_POINTS_THIS = "points_next_level";
-		public static final String COLUMN_NAME_POINTS_NEXT = "points_this_level";
+		public static final String COLUMN_NAME_POINTS_THIS = "points_this_level";
+		public static final String COLUMN_NAME_POINTS_NEXT = "points_next_level";
 		public static final String COLUMN_NAME_STATS_TIME = "time_played";
 		public static final String COLUMN_NAME_NUM_KILLS = "num_kills";
 		public static final String COLUMN_NAME_NUM_ASSISTS = "num_assists";
@@ -118,6 +117,9 @@ public final class DatabaseStructure {
 		public static final String COLUMN_NAME_STRING_LOCATION = "location";
 		public static final String COLUMN_NAME_STRING_STATUS = "status_message";
 		public static final String COLUMN_NAME_STRING_SERVER = "current_server";
+		public static final String COLUMN_NAME_STRING_PERSONA = "persona_id";
+		public static final String COLUMN_NAME_STRING_PERSONA_NAME = "persona_name";
+		public static final String COLUMN_NAME_STRING_PLATFORM = "platform_id";
 		public static final String COLUMN_NAME_BOOL_ALLOW_REQUESTS = "allow_friendrequests";
 		public static final String COLUMN_NAME_BOOL_ONLINE = "is_online";
 		public static final String COLUMN_NAME_BOOL_PLAYING = "is_playing";
@@ -144,6 +146,9 @@ public final class DatabaseStructure {
 				COLUMN_NAME_STRING_LOCATION,
 				COLUMN_NAME_STRING_STATUS,
 				COLUMN_NAME_STRING_SERVER,
+				COLUMN_NAME_STRING_PERSONA,
+				COLUMN_NAME_STRING_PERSONA_NAME,
+				COLUMN_NAME_STRING_PLATFORM,
 				COLUMN_NAME_BOOL_ALLOW_REQUESTS,
 				COLUMN_NAME_BOOL_ONLINE,
 				COLUMN_NAME_BOOL_PLAYING,

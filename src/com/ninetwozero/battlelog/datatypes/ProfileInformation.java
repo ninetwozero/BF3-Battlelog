@@ -26,7 +26,9 @@ public class ProfileInformation {
 	//Attributes
 	private int age;
 	private long userId, dateOfBirth, lastlogin, statusMessageChanged;
+	private long[] persona, platform;
 	private String name, username, presentation, location, statusMessage, currentServer;
+	private String[] personaName;
 	private boolean allowFriendRequests, online, playing, friendStatus;
 	private ArrayList<FeedItem> feedItems;
 	private ArrayList<PlatoonData> platoons;
@@ -34,8 +36,8 @@ public class ProfileInformation {
 	//Construct(s)
 	public ProfileInformation(
 		
-		int a, long uid, long dob, long l, long sc,
-		String n, String u, String p, String loc, String s, String c,
+		int a, long uid, long dob, long l, long sc, long[] pe, long[] pa,
+		String n, String u, String p, String loc, String s, String c, String[] pn,
 		boolean af, boolean o, boolean pl, boolean fs, ArrayList<FeedItem> f, ArrayList<PlatoonData> pd
 		
 	) {
@@ -45,12 +47,15 @@ public class ProfileInformation {
 		this.dateOfBirth = dob;
 		this.lastlogin = l;
 		this.statusMessageChanged = sc;
+		this.persona = pe;
+		this.platform = pa;
 		this.name = n;
 		this.username = u;
 		this.presentation = p;
 		this.location = loc; 
 		this.statusMessage = s;
 		this.currentServer = c;
+		this.personaName = pn;
 		this.allowFriendRequests = af;
 		this.online = o;
 		this.playing = pl;
@@ -66,12 +71,18 @@ public class ProfileInformation {
 	public long getDOB() { return this.dateOfBirth; }
 	public String getLastLogin(Context c) { return PublicUtils.getRelativeDate(c, this.lastlogin, R.string.info_lastlogin ); }
 	public long getStatusMessageChanged() { return this.statusMessageChanged; }
+	public long getPersona(int position) { return ( ( this.persona.length < position ) ? this.persona[position] : this.persona[0] ); }
+	public long[] getAllPersonas() { return this.persona; }
+	public long getPlatform(int position) { return ( ( this.platform.length < position ) ? this.platform[position] : this.platform[0] ); }
+	public long[] getAllPlatforms() { return this.platform; }
 	public String getName() { return this.name; }
 	public String getUsername() { return this.username; }
 	public String getPresentation() { return this.presentation; }
 	public String getLocation() { return this.location; }
 	public String getStatusMessage() { return this.statusMessage; }
 	public String getCurrentServer() { return this.currentServer; }
+	public String getPersonaName(int position) { return ( ( this.personaName.length < position ) ? this.personaName[position] : this.personaName[0] ); }
+	public String[] getAllPersonaNames() { return this.personaName; }
 	public boolean getAllowFriendRequests() { return this.allowFriendRequests; }
 	public boolean isOnline() { return this.online; }
 	public boolean isPlaying() { return this.playing; }
@@ -83,8 +94,33 @@ public class ProfileInformation {
 		String str = "";
 		for(PlatoonData platoon : this.platoons ) { str += platoon.getId() + ":"; }
 		return str;
+	
 	}
 
+	public String getPersonaString() { 
+		
+		String str = "";
+		for(long personaId : this.persona) { str += personaId + ":"; }
+		return str;
+	
+	}
+
+	public String getPersonaNameString() { 
+		
+		String str = "";
+		for(String name : this.personaName ) { str += name + ":"; }
+		return str;
+	
+	}
+	
+	public String getPlatformString() { 
+		
+		String str = "";
+		for(long platformId : this.platform) { str += platformId + ":"; }
+		return str;
+	
+	}
+	
 	public final String[] toStringArray() {
 		
 		return new String[] {
@@ -100,6 +136,9 @@ public class ProfileInformation {
 			( this.location == null ) ? "" : this.location,
 			( this.statusMessage == null ) ? "" : this.statusMessage,
 			( this.currentServer == null ) ? "" : this.currentServer,
+			( this.getPersonaString() == null ) ? "" : this.getPersonaString(),
+			( this.getPersonaNameString() == null ) ? "" : this.getPersonaNameString(),
+			( this.getPlatformString() == null ) ? "" : this.getPlatformString(),
 			this.allowFriendRequests ? "1" : "0",
 			this.online ? "1" : "0",
 			this.playing ? "1" : "0",

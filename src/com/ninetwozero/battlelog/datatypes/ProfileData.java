@@ -67,16 +67,16 @@ public class ProfileData implements Parcelable {
 	//Getters
 	public String getAccountName() { return this.accountName; }
 	public String getPersonaName() { return ( personaName.length > 0 ) ? this.personaName[0] : null; }
-	public String getPersonaName(int pos) { return ( (personaName.length-1) <= pos ) ? this.personaName[pos] : null; }
+	public String getPersonaName(int pos) { return ( (personaName.length-1) >= pos ) ? this.personaName[pos] : null; }
 	public String[] getPersonaNameArray() { return this.personaName; }
 	public int getNumPersonas() { return this.personaId.length; }
 	public long[] getPersonaIdArray() { return this.personaId; }
 	public long[] getPlatformIdArray() { return this.platformId; }
 	public long getPersonaId() { return ( personaId.length > 0 ) ? this.personaId[0] : 0; }
-	public long getPersonaId(int pos) { return ( (personaId.length-1) <= pos ) ? personaId[pos] : 0; }
+	public long getPersonaId(int pos) { return ( (personaId.length-1) >= pos ) ? personaId[pos] : 0; }
 	public long getProfileId() { return this.profileId; }
 	public long getPlatformId() { return ( platformId.length > 0 ) ? this.platformId[0] : 0; }
-	public long getPlatformId(int pos) { return ( (platformId.length-1) <= pos ) ? platformId[pos] : 0; }
+	public long getPlatformId(int pos) { return ( (platformId.length-1) >= pos ) ? platformId[pos] : 0; }
 	public String getGravatarHash() { return this.gravatarHash; }
 	
 	//is ... ?
@@ -124,6 +124,9 @@ public class ProfileData implements Parcelable {
 	
 	};
 	
+	//Setters
+	public void setPersonaId(long[] array) { this.personaId = array; }
+	public void setPlatformId(long[] array) { this.platformId = array; }
 	
 	//toString
 	@Override

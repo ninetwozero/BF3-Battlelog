@@ -94,6 +94,10 @@ public final class Constants {
 	public static final String URL_FORUM_LIST = URL_MAIN + "forum/";
 	public static final String URL_FORUM_FORUM = URL_FORUM_LIST + "view/{FORUM_ID}/";
 	public static final String URL_FORUM_THREAD = URL_FORUM_LIST + "threadview/{THREAD_ID}/";
+	public static final String URL_FORUM_POST = URL_FORUM_LIST + "createpost/{THREAD_ID}/";
+	public static final String URL_FORUM_SIMILAR = URL_FORUM_LIST + "dofindsimilar?title={title}&body={body}";
+	public static final String URL_FORUM_NEW = URL_FORUM_LIST + "createthread/{FORUM_ID}/";	
+	//http://battlelog.battlefield.com/bf3/en/forum/createthread/2832654624697920750/
 	
 	//Fields needed for the posts fields
 	public static final String[] FIELD_NAMES_LOGIN = new String[] {"email", "password", "redirect", "submit"};
@@ -125,6 +129,12 @@ public final class Constants {
 	
 	public static final String[] FIELD_NAMES_FEED_COMMENT = new String[] { "comment", "post-check-sum" };
 	public static final String[] FIELD_VALUES_FEED_COMMENT = new String[] { null, null };
+
+	public static final String[] FIELD_NAMES_FORUM_POST = new String[] { "body", "post-check-sum" };
+	public static final String[] FIELD_VALUES_FORUM_POST = new String[] { null, null };
+	
+	public static final String[] FIELD_NAMES_FORUM_NEW = new String[] { "topic", "body", "post-check-sum" };
+	public static final String[] FIELD_VALUES_FORUM_NEW = new String[] { null, null, null };
 	
 	public static final String[] FIELD_NAMES_CHECKSUM = new String[] { "post-check-sum" };
 	public static final String[] FIELD_VALUES_CHECKSUM = new String[] { null };

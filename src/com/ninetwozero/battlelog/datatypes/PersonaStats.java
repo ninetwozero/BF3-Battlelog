@@ -51,8 +51,8 @@ public class PersonaStats implements Parcelable {
 		
 		this.accountName = aName;
 		this.personaName = pName;
-		this.rankId = rId;
 		this.rankTitle = rTitle;
+		this.rankId = rId;
 		this.personaId = prsId;
 		this.userId = plyrId;
 		this.platformId = pltfId;

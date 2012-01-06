@@ -71,16 +71,35 @@ public class AssignmentData implements Parcelable {
 	public ArrayList<AssignmentData.Objective> getObjectives() { return this.objectives; }
 	public ArrayList<AssignmentData.Dependency> getDependencies() { return this.dependencies; }
 	public ArrayList<AssignmentData.Unlock> getUnlocks() { return this.unlocks; }
-	public double[] getProgress() { 
-	
-		double[] num = new double[2];
+	public int getProgress() { 
+
+		//How many?
+		final int numObjectives = this.objectives.size();
+		double count = 0;
+		
+		//Iterate
 		for( AssignmentData.Objective obj : this.objectives ) {
 			
-			num[0] += (obj.getCurrentValue() / obj.getGoalValue())*100; //0 <= x <= 100
-			num[1] += 100;
-		
+			count += (obj.getCurrentValue() / obj.getGoalValue()); //0 <= x <= 1
+			
 		}
-		return num;
+		return (int) Math.round( ( count / numObjectives ) * 100 );
+		
+	}
+	
+	public boolean isCompleted() { 
+		
+		for( AssignmentData.Objective obj : this.objectives ) {
+		
+			if( obj.getCurrentValue() < obj.getGoalValue() ) { 
+				
+				return false; 
+				
+			}
+			
+		}
+		
+		return true;
 		
 	}
 	

@@ -72,6 +72,8 @@ public class Main extends Activity {
         		
         	);
         	
+        	finish();
+        	
         }
         
         //Check if the default-file is ok

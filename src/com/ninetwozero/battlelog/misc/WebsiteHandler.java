@@ -692,6 +692,7 @@ public class WebsiteHandler {
 			//Do we have a personaId?
 			if( profileData.getPersonaId() == 0 ) {
 				
+				Log.d(Constants.DEBUG_TAG, "We have no personaId...");
 				profileData = getPersonaIdFromProfile(pd.getProfileId());
 				
 			}
@@ -699,9 +700,9 @@ public class WebsiteHandler {
 			//Let's see...
 	    	RequestHandler wh = new RequestHandler();
 			for( int i = 0, max = profileData.getNumPersonas(); i < max; i++ ) {
-
+				
 		    	//Get the data
-		    	String content = wh.get( 
+		    	String httpContent = wh.get( 
 	    	
 	    			Constants.URL_STATS_OVERVIEW.replace(
 	    					
@@ -716,7 +717,7 @@ public class WebsiteHandler {
 				);
 
 		    	//JSON Objects
-		    	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
+		    	JSONObject dataObject = new JSONObject(httpContent).getJSONObject( "data" );
 		    	
 		    	//Is overviewStats NULL? If so, no data.
 		    	if( dataObject.isNull( "overviewStats" ) ) { return null; }
@@ -734,7 +735,7 @@ public class WebsiteHandler {
 		        	new PersonaStats(
 		        			
 			        	profileData.getAccountName(),
-			        	profileData.getPersonaName(i),
+			        	profileData.getPersonaName(i) + " "  + DataBank.resolvePlatformId( (int) profileData.getPlatformId(i) ),
 			        	currRankInfo.getString( "name" ),
 			        	statsOverview.getLong( "rank" ),
 			        	profileData.getPersonaId(i),
@@ -789,6 +790,7 @@ public class WebsiteHandler {
 		        
 		} catch ( Exception ex ) {
 			
+			ex.printStackTrace();
 			throw new WebsiteHandlerException(ex.getMessage());
 			
 		}
@@ -1657,11 +1659,21 @@ public class WebsiteHandler {
 				JSONObject userInfo = profileCommonObject.optJSONObject( "userinfo" );
 				JSONObject presenceObject = profileCommonObject.getJSONObject( "user" ).getJSONObject("presence");
 				//JSONArray gameReports = contextObject.getJSONArray( "gameReportPreviewGroups" );
+				JSONArray soldierArray = contextObject.getJSONArray( "soldiersBox" );
 				JSONArray feedItems = contextObject.getJSONArray( "feed" );
 				JSONArray platoonArray = profileCommonObject.getJSONArray( "platoons" );
 				JSONObject statusMessage = profileCommonObject.optJSONObject( "userStatusMessage" );
 				JSONObject currItem;
 				String playingOn;
+				
+				//Persona related
+				int numSoldiers = soldierArray.length();
+				long[] personaIdArray = new long[numSoldiers];
+				long[] platformIdArray = new long[numSoldiers];
+				String[] personaNameArray = new String[numSoldiers];
+				
+				//Get the username
+				String username = profileCommonObject.getJSONObject( "user" ).getString( "username" );
 				
 				//Is status messages null?
 				if( statusMessage == null ) { statusMessage = new JSONObject("{'statusMessage':'', 'statusMessageChanged':0}"); }
@@ -1674,6 +1686,25 @@ public class WebsiteHandler {
 				} else {
 					
 					playingOn = presenceObject.optString("serverName", "");
+					
+				}
+				
+				for( int i = 0, max = numSoldiers; i < max; i++ ) {
+					
+					//Each loop is an object
+					currItem = soldierArray.getJSONObject( i );
+					JSONObject personaObject = currItem.getJSONObject( "persona" );
+					
+					//Store them
+					personaIdArray[i] = Long.parseLong( personaObject.getString( "personaId" ) );
+					platformIdArray[i] = DataBank.getPlatformIdFromName( personaObject.getString( "namespace" ) );
+					personaNameArray[i] = (
+							
+						personaObject.optString( "personaName", username) + 
+						" "  + 
+						DataBank.resolvePlatformId( (int) platformIdArray[i] )
+				
+					);
 					
 				}
 				
@@ -1740,12 +1771,15 @@ public class WebsiteHandler {
 					userInfo.optLong("birthdate", 0), 
 					userInfo.optLong("lastLogin", 0),
 					statusMessage.optLong("statusMessageChanged", 0), 
+					personaIdArray,
+					platformIdArray,
 					userInfo.optString( "name", "N/A" ), 
-					profileCommonObject.getJSONObject( "user" ).getString( "username" ),
+					username,
 					userInfo.isNull( "presentation" ) ? null : userInfo.getString( "presentation" ),  
 					userInfo.optString( "location", "us" ),  
 					statusMessage.optString( "statusMessage", "" ), 
 					playingOn,
+					personaNameArray,
 					userInfo.optBoolean( "allowFriendRequests", true ), 
 					presenceObject.getBoolean("isOnline"),
 					presenceObject.getBoolean("isPlaying"),
@@ -1755,11 +1789,11 @@ public class WebsiteHandler {
 				);
 				
 				//Let's log it
-				Log.d(Constants.DEBUG_TAG, "CacheHandler.Profile.insert( context, tempProfile ) => " + CacheHandler.Profile.insert( context, tempProfile ));
 				if( CacheHandler.Profile.insert( context, tempProfile ) == 0 ) {
 					
-					CacheHandler.Profile.update( context, tempProfile );
-				
+					boolean status = CacheHandler.Profile.update( context, tempProfile );
+					Log.d(Constants.DEBUG_TAG, "CacheHandler.Profile.update( context, tempProfile ) => " + status );
+					
 				}
 				
 				//RETURN
@@ -2057,7 +2091,7 @@ public class WebsiteHandler {
 				fans = WebsiteHandler.getFansForPlatoon(platoonData.getId());
 				
 				//Oh man, don't forget the stats!!!
-				stats = WebsiteHandler.getStatsForPlatoon( platoonData );
+				stats = WebsiteHandler.getStatsForPlatoon(context, platoonData );
 				
 				//Parse the feed
 				feedItemArray = getFeedItemsFromJSON(context, feedItems, activeProfileId);
@@ -2507,7 +2541,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static PlatoonStats getStatsForPlatoon( PlatoonData platoonData ) throws WebsiteHandlerException {
+	public static PlatoonStats getStatsForPlatoon( Context context, PlatoonData platoonData ) throws WebsiteHandlerException {
 
 		try {
 			
@@ -2809,7 +2843,7 @@ public class WebsiteHandler {
 					
 					//Do we need to download a new image?
 					/* TODO: Cache on SDCARD? Right now this EATS RAM. Get it? EATS! */
-					if( !WebsiteHandler.bitmapCache.containsKey( tempGravatarHash ) ) {
+					if( CacheHandler.isCached( context, tempGravatarHash ) ) ) {
 						
 						WebsiteHandler.cacheGravatar( tempGravatarHash, 40 );
 						
@@ -4300,6 +4334,7 @@ public class WebsiteHandler {
 		
 	}
 	
+	//TODO
 	public static void cacheObject(String h, Object o) {
 		
 		try { 
@@ -4615,6 +4650,73 @@ public class WebsiteHandler {
 			
 			ex.printStackTrace();
 			throw new WebsiteHandlerException("No threads found.");
+			
+		}
+		
+	}
+	
+	public static boolean postReplyInThread( final Context c, final String body, final String chksm, final long tId ) {
+		
+		try {
+		
+			//Setup a RequestHandler
+			RequestHandler rh = new RequestHandler();
+			
+			//POST!
+			String httpContent = rh.post( 
+				
+				Constants.URL_FORUM_POST.replace( "{THREAD_ID}", tId + "" ), 
+				new PostData[] {
+						 
+					new PostData(Constants.FIELD_NAMES_FORUM_POST[0], body),
+					new PostData(Constants.FIELD_NAMES_FORUM_POST[1], chksm)
+					
+				}, 
+				1
+				
+			);
+			
+			//Let's do it
+			return (httpContent != null && !httpContent.equals( "" ) );
+			
+		} catch( Exception ex ) { 
+		
+			ex.printStackTrace();
+			return false;
+			
+		}
+		
+	}
+
+	public static boolean createNewThreadInForum( final Context c, final String topic, final String body, final String chksm, final long fId  ) {
+		
+		try {
+		
+			//Setup a RequestHandler
+			RequestHandler rh = new RequestHandler();
+			
+			//POST!
+			String httpContent = rh.post( 
+				
+				Constants.URL_FORUM_POST.replace( "{FORUM_ID}", fId + "" ), 
+				new PostData[] {
+						 
+					new PostData(Constants.FIELD_NAMES_FORUM_NEW[0], topic),
+					new PostData(Constants.FIELD_NAMES_FORUM_NEW[1], body),
+					new PostData(Constants.FIELD_NAMES_FORUM_NEW[2], chksm)
+					
+				}, 
+				1
+				
+			);
+			
+			//Let's do it
+			return (httpContent != null && !httpContent.equals( "" ) );
+			
+		} catch( Exception ex ) { 
+		
+			ex.printStackTrace();
+			return false;
 			
 		}
 		

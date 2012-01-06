@@ -879,31 +879,31 @@ public class DataBank {
 		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_8", new String[] { "Creeping Death", "L96" });
 		ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_10",new String[] {  "Scarred Veteran", "MK3A1" });
 		
-		CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_1", "100 kills with Assault Rifles");
-		CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_2", "20 kills with the Noobtube");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_1", "100 Assault Rifles kills");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_2", "20 Noobtube kills");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_3", "Win 5 rounds of SQDM");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_3", "Win 5 rounds of Conquest");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_1", "50 AT rocket kills");
-		CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_2", "Destroy 1 enemy vehicle with Repair Torch");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_2", "Destroy 1 vehicle with Repair Torch");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_8_CRITERIA_3", "5 Knife takedowns");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_8_CRITERIA_1", "50 Headshots");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_8_CRITERIA_2", "50 Spot Assists");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_3", "50 Ammo Resupplies");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_2", "50 Suppression Assists");
-		CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_1", "100 kills with Light Machine Guns");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_1", "100 LMG kills");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_1_CRITERIA_2", "10 Heals");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_1_CRITERIA_1", "10 Revives");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_1", "10 repairs");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_2", "Kill 1 enemy with Repair Torch");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_4", "Play 2 hours on Sharqi");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_5", "Play 2 hours on Gulf of Oman");
-		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_2", "5 kills in DPV Jeep");
-		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_3", "10 Kills in BTR-90 IFV");
-		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_1", "10 Kills with PP-19");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_2", "5 DPV Jeep kills");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_3", "10 BTR-90 IFV Kills");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_1", "10 PP-19 Kills");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_7_CRITERIA_2", "5 Laser Designations");
-		CRITERIAS.put("ID_XP1_ASSIGNMENT_7_CRITERIA_1", "20 kills with Sniper Rifles");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_7_CRITERIA_1", "20 Sniper Rifle kills");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_5_CRITERIA_2", "2 mortar kills");
-		CRITERIAS.put("ID_XP1_ASSIGNMENT_5_CRITERIA_1", "20 kills with Light Machine Guns");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_5_CRITERIA_1", "20 LMG kills");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_9_CRITERIA_1", "Arm 10 MCOMs");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_9_CRITERIA_2", "Capture 10 flags");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_9_CRITERIA_3", "Play 2 hours on Karkand");
@@ -943,6 +943,27 @@ public class DataBank {
 		return DataBank.PLATFORMS[0].getName();
 	}
 
+	public static String resolvePlatformId( int id ) {
+		
+		switch( id ) {
+			
+			case 0:
+			case 1:
+				return "[PC]";
+				
+			case 2:
+				return "[360]";
+				
+			case 4: 
+				return "[PS3]";
+				
+			default:
+				return "[N/A]";
+			
+		}
+		
+	}
+	
 	public static String getKitTitle( final Context c, final int number ) {
 	
 		switch( number ) {

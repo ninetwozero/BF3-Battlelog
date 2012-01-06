@@ -132,6 +132,12 @@ public class SQLiteManager {
 				+ " STRING, "
 				+ DatabaseStructure.UserProfile.COLUMN_NAME_STRING_SERVER 
 				+ " STRING, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PERSONA
+				+ " STRING, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PERSONA_NAME
+				+ " STRING, "
+				+ DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PLATFORM
+				+ " STRING, "
 				+ DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_ALLOW_REQUESTS  
 				+ " INTEGER, "
 				+ DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_ONLINE  

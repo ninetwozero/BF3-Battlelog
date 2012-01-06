@@ -18,6 +18,7 @@ import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -242,6 +243,11 @@ public class RequestHandler {
 			
 			return true;
 			
+		} catch( UnknownHostException ex ) { 
+			
+			ex.printStackTrace();
+			throw new RequestHandlerException("No route to host");
+			
 		} catch ( Exception ex ) {
 
 			ex.printStackTrace();
@@ -325,15 +331,6 @@ public class RequestHandler {
 			httpResponse = httpClient.execute(httpPost);
 			httpEntity = httpResponse.getEntity();
 			
-			//DEBUG
-			/*Log.d(Constants.debugTag, "############################");
-			for( Header h : httpResponse.getAllHeaders() ) {
-				
-				Log.d(Constants.debugTag, h.getName() + " => " + h.getValue());
-				
-			}
-			Log.d(Constants.debugTag, "############################");
-			*/
 			//Anything?
 			if (httpEntity != null) {
 
@@ -346,6 +343,10 @@ public class RequestHandler {
 				
 			}
 		
+		} catch( UnknownHostException ex ) { 
+			
+			ex.printStackTrace();
+			
 		} catch ( Exception e ) {
 			
 			e.printStackTrace();

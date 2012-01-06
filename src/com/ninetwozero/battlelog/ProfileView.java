@@ -41,6 +41,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -113,7 +114,7 @@ public class ProfileView extends TabActivity {
 
         		this.sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
         		this.sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
-    			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
+    			this.sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ),
     			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
     			this.sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
 				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
@@ -161,15 +162,15 @@ public class ProfileView extends TabActivity {
 
 	public void initLayout() {
 		
-		//Eventually get a *cached* version instead    
-		new AsyncProfileCacheLoad(CONTEXT, profileData).execute();
+		//Get a *cached* version instead    
+		new AsyncProfileCacheLoad(CONTEXT).execute();
 		
 	}
 	
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new AsyncProfileRefresh(CONTEXT, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
+    	new AsyncProfileRefresh(CONTEXT, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
     	
     	
     }
@@ -224,12 +225,10 @@ public class ProfileView extends TabActivity {
     	//Attributes
     	private Context context;
     	private ProgressDialog progressDialog;
-    	private ProfileData profileData;
     	
-    	public AsyncProfileCacheLoad(Context c, ProfileData pd) {
+    	public AsyncProfileCacheLoad(Context c) {
     		
     		this.context = c;
-    		this.profileData = pd;
     		this.progressDialog = null;
     		
     	}
@@ -251,13 +250,22 @@ public class ProfileView extends TabActivity {
 			try {
 				
 				//Get...
-				/* TODO: Add a personaId-field to Profile-sqlite, and do profileInformation.getPersonaId() instead of this.profileData.getPersonaId() */
-				profileInformation = CacheHandler.Profile.select( context, this.profileData.getProfileId() );
-				personaStats = CacheHandler.Persona.select( context, new long[] { this.profileData.getPersonaId() } );
+				profileInformation = CacheHandler.Profile.select( context, profileData.getProfileId() );
+				
+				//We got one?!
+				if( profileInformation != null ) { 
+
+					personaStats = CacheHandler.Persona.select( context, profileInformation.getAllPersonas() );
+					selectedPersona = profileInformation.getPersona( 0 );
+					
+				} else {
+					
+					personaStats = null;
+					
+				}
 				
 				//...validate!
-				Log.d(Constants.DEBUG_TAG, "Size: " + personaStats.size() );
-				if( personaStats == null || profileInformation == null ) { return false; } 
+				if( personaStats == null || personaStats.size() < 1 ) { return false; } 
 				else { return true; }
 				
 			} catch ( Exception ex ) {
@@ -273,67 +281,67 @@ public class ProfileView extends TabActivity {
 		protected void onPostExecute(Boolean result) {
 			
 			//Assign values
-			mTabHost.setOnTabChangedListener(
-					
-				new OnTabChangeListener() {
-
-					@Override
-					public void onTabChanged(String tabId) {
+			if( result ) { 
+				
+				mTabHost.setOnTabChangedListener(
+						
+					new OnTabChangeListener() {
 	
-						switch( getTabHost().getCurrentTab() ) {
-							
-							case 0:
-								setupHome(profileInformation);
-								break;
+						@Override
+						public void onTabChanged(String tabId) {
+		
+							switch( mTabHost.getCurrentTab() ) {
 								
-							case 1:
-								setupStats(personaStats.get( selectedPersona ));
-								break;
-							
-							case 2:
-								setupFeed(profileInformation);
-								break;
+								case 0:
+									setupHome(profileInformation);
+									break;
+									
+								case 1:
+									setupStats(personaStats.get( selectedPersona ));
+									break;
 								
-							default:
-								break;
-					
+								case 2:
+									setupFeed(profileInformation);
+									break;
+									
+								default:
+									break;
+						
+							}
+			
 						}
-		
+						
 					}
-					
-				}
 				
-			);
+				);
 
-			//Let's see what we need to update *directly*
-			switch( mTabHost.getCurrentTab() ) {
-				
-				case 0:
-					setupHome(profileInformation);
-					break;
+				//Let's see what we need to update *directly*
+				switch( mTabHost.getCurrentTab() ) {
 					
-				case 1:
-					setupStats(personaStats.get( selectedPersona ));
-					break;
-				
-				case 2:
-					setupFeed(profileInformation);
-					break;
+					case 0:
+						setupHome(profileInformation);
+						break;
+						
+					case 1:
+						setupStats(personaStats.get( selectedPersona ));
+						break;
 					
-				default:
-					break;
-		
-			}
+					case 2:
+						setupFeed(profileInformation);
+						break;
+						
+					default:
+						break;
 			
-			//Done!
-			if( !result ) {
+				}
 			
-				new AsyncProfileRefresh(CONTEXT, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ), progressDialog).execute();
+				//Siiiiiiiiilent refresh
+				new AsyncProfileRefresh(CONTEXT, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ) ).execute();	
+				if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
 			
 			} else {
-				
-				new AsyncProfileRefresh(CONTEXT, profileData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();	
-				if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
+
+				new AsyncProfileRefresh(CONTEXT, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ), progressDialog).execute();
 			
 			}
 	        
@@ -348,23 +356,20 @@ public class ProfileView extends TabActivity {
         
     	//Attributes
     	private Context context;
-    	private ProfileData profileData;
     	private long activeProfileId;
     	private ProgressDialog progressDialog;
     	
-    	public AsyncProfileRefresh(Context c, ProfileData pd, long pId) {
+    	public AsyncProfileRefresh(Context c, long pId) {
     		
-    		context = c;
-    		this.profileData = pd;
+    		this.context = c;
     		this.activeProfileId = pId;
     		this.progressDialog = null;
     		
     	}
     	
-    	public AsyncProfileRefresh(Context c, ProfileData pd, long pId, ProgressDialog pDialog ) {
+    	public AsyncProfileRefresh(Context c, long pId, ProgressDialog pDialog ) {
     		
-    		context = c;
-    		this.profileData = pd;
+    		this.context = c;
     		this.activeProfileId = pId;
     		this.progressDialog = pDialog;
     		
@@ -378,23 +383,40 @@ public class ProfileView extends TabActivity {
 			
 			try {
 				
-				//Need for clear?
-				if( personaStats != null ) { personaStats.clear(); }
-
 				//Let's get the personas!
-				personaStats = WebsiteHandler.getStatsForUser( context, this.profileData );
 				profileInformation = WebsiteHandler.getProfileInformationForUser(
 						
 					context, 
-					this.profileData, 
+					profileData, 
 					sharedPreferences.getInt( Constants.SP_BL_NUM_FEED, Constants.DEFAULT_NUM_FEED ),
 					this.activeProfileId
 					
 				);
 				
-				//...validate!
-				if( personaStats == null || profileInformation == null ) { return false; } 
-				else { return true; }
+				if( profileInformation != null ) {
+				
+					//Need for clear?
+					if( personaStats != null ) { personaStats.clear(); }
+					
+					//Set the persona
+					profileData.setPersonaId( profileInformation.getAllPersonas() );
+					profileData.setPlatformId( profileInformation.getAllPlatforms() );
+
+					//Set the selected persona?
+					selectedPersona = ( selectedPersona == 0 ) ? profileData.getPersonaId( 0 ) : selectedPersona;
+					
+					//Grab the stats
+					personaStats = WebsiteHandler.getStatsForUser( context, profileData );
+					
+					//...validate!
+					return ( personaStats != null && personaStats.size() > 0 );
+					
+				} else {
+
+					return false;
+				
+				}
+				
 				
 			} catch ( WebsiteHandlerException ex ) {
 				
@@ -407,66 +429,68 @@ public class ProfileView extends TabActivity {
 		
 		@Override
 		protected void onPostExecute(Boolean result) {
-					
+			
 			//Fail?
 			if( !result ) { 
 				
 				Toast.makeText( context, R.string.general_no_data, Toast.LENGTH_SHORT).show(); 
-				return;
 			
-			}
-
-			//Assign values
-			mTabHost.setOnTabChangedListener(
-					
-				new OnTabChangeListener() {
-
-					@Override
-					public void onTabChanged(String tabId) {
+			} else {
 	
-						switch( getTabHost().getCurrentTab() ) {
-							
-							case 0:
-								setupHome(profileInformation);
-								break;
-								
-							case 1:
-								setupStats(personaStats.get( selectedPersona ));
-								break;
-							
-							case 2:
-								setupFeed(profileInformation);
-								break;
-								
-							default:
-								break;
-					
-						}
+	
+				//Assign values
+				mTabHost.setOnTabChangedListener(
+						
+					new OnTabChangeListener() {
+	
+						@Override
+						public void onTabChanged(String tabId) {
 		
+							switch( getTabHost().getCurrentTab() ) {
+								
+								case 0:
+									setupHome(profileInformation);
+									break;
+									
+								case 1:
+									setupStats(personaStats.get( selectedPersona ));
+									break;
+								
+								case 2:
+									setupFeed(profileInformation);
+									break;
+									
+								default:
+									break;
+						
+							}
+			
+						}
+						
 					}
 					
+				);
+	
+				//Let's see what we need to update *directly*
+				switch( mTabHost.getCurrentTab() ) {
+					
+					case 0:
+						setupHome(profileInformation);
+						break;
+						
+					case 1:
+						setupStats(personaStats.get( selectedPersona ));
+						break;
+					
+					case 2:
+						setupFeed(profileInformation);
+						break;
+						
+					default:
+						break;
+			
 				}
 				
-			);
-
-			//Let's see what we need to update *directly*
-			switch( mTabHost.getCurrentTab() ) {
-				
-				case 0:
-					setupHome(profileInformation);
-					break;
-					
-				case 1:
-					setupStats(personaStats.get( selectedPersona ));
-					break;
-				
-				case 2:
-					setupFeed(profileInformation);
-					break;
-					
-				default:
-					break;
-		
 			}
 			
 			//Do we have a dialog?
@@ -619,7 +643,7 @@ public class ProfileView extends TabActivity {
     	
     	//Is pd null?
     	if( pd == null ) { return; }
-    	
+    	    	
 		//Persona & rank
         ((TextView) findViewById(R.id.string_persona)).setText( pd.getPersonaName() );
         ((TextView) findViewById(R.id.string_rank_title)).setText( pd.getRankTitle() );
@@ -741,6 +765,9 @@ public class ProfileView extends TabActivity {
 	
     @Override
     public boolean onPrepareOptionsMenu( Menu menu ) {
+    	
+    	//Not loaded yet?
+    	if( profileInformation == null ) { return super.onPrepareOptionsMenu( menu ); }
     	
     	//Our own profile, no need to show the "extra" buttons
     	if( profileData.getProfileId() == sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ) ) {
@@ -938,8 +965,7 @@ public class ProfileView extends TabActivity {
 						( (FeedItem)info.targetView.getTag()).isLiked(),
 						new AsyncProfileRefresh(
 								
-							this, 
-							profileData,
+							this,
 							sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )
 							
 						)
@@ -1034,19 +1060,8 @@ public class ProfileView extends TabActivity {
 			
 		} else if( v.getId() == R.id.string_persona ) {
 			
-			Log.d(Constants.DEBUG_TAG, "Click...");
-			
-			if( personaStats.size() > 1 ) {
-			
-				Toast.makeText(CONTEXT, "Only one persona", Toast.LENGTH_SHORT).show();
-				
-			} else {
-			
-				Toast.makeText(CONTEXT, "Available to switch - yeeha!", Toast.LENGTH_SHORT).show();
-				
-			}
-			
-			return;
+			//Let's get it on!
+			generateDialogPersonaList(this, profileInformation.getAllPersonas(), profileInformation.getAllPersonaNames()).show();
 			
 		}
 
@@ -1087,4 +1102,40 @@ public class ProfileView extends TabActivity {
 		
 	}
 	
+	public Dialog generateDialogPersonaList( final Context context, final long[] personaId, final String[] persona ) {
+	
+		//Attributes
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		
+	    //Set the title and the view
+		builder.setTitle( "Select a soldier to view..." );
+		
+		builder.setSingleChoiceItems(
+				
+			persona, -1, new DialogInterface.OnClickListener() {
+		  
+				public void onClick(DialogInterface dialog, int item) {
+			    	
+					if( personaId[item] != selectedPersona ) {
+						
+						//Update it
+						selectedPersona = personaId[item];
+					
+						//Load the new!
+						setupStats(personaStats.get( selectedPersona ));
+						
+					}
+					
+					dialog.dismiss();
+		
+				}
+				
+			}
+		
+		);
+		
+		//CREATE
+		return builder.create();
+		
+	}
 }

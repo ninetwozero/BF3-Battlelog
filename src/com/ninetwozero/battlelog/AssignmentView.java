@@ -26,6 +26,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -138,17 +139,18 @@ public class AssignmentView extends Activity {
 			//Set the images
 			imageLeft.setImageResource( ass1.getResourceId() );
 			imageLeft.setTag( i );
-			imageRight.setImageResource( ass2.getResourceId() );
+			imageRight.setImageResource( ass1.isCompleted() ? ass2.getResourceId() : R.drawable.assignment_locked  );
 			imageRight.setTag( i+1 );
 
-			//Set the progressbars
-			double[] progressArrayLeft = ass1.getProgress();
-			double[] progressArrayRight = ass2.getProgress();
-			
-			progressLeft.setProgress( (int) Math.round( progressArrayLeft[0] ) );
-			progressLeft.setMax( (int) Math.round( progressArrayLeft[1] ) );
-			progressRight.setProgress( (int) Math.round( progressArrayRight[0] ) );
-			progressRight.setMax( (int) Math.round( progressArrayRight[1] ) );
+			//Get the progress...
+			int progressValueLeft = ass1.getProgress();
+			int progressValueRight = ass2.getProgress();
+	
+			//...and set the progress bars
+			progressLeft.setProgress( progressValueLeft );
+			progressLeft.setMax( 100 );
+			progressRight.setProgress( progressValueRight );
+			progressRight.setMax( 100 );
 			
 		}
 		

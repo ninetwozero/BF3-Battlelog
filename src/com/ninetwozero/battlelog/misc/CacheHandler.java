@@ -14,15 +14,16 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
+import android.text.TextUtils;
 import android.util.Log;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
@@ -185,7 +186,10 @@ public class CacheHandler {
 		}
 	
 		public static HashMap<Long, PersonaStats> select(final Context context, final long[] personaId) {
-	
+
+		
+			SQLiteManager manager = new SQLiteManager( context );
+			
 			try {
 	
 				//Init
@@ -196,13 +200,12 @@ public class CacheHandler {
 				//Loop to string the array
 				for( int i = 0, max = personaId.length; i < max; i++ ) { 
 					
-					if( i > 0 ) { strQuestionMarks = ",?"; }
+					if( i > 0 ) { strQuestionMarks += ",?"; }
 					personaIdArray[i] = String.valueOf( personaId[i] ); 
 					
 				}
 				
 				//Use the SQLiteManager to get a cursor
-				SQLiteManager manager = new SQLiteManager( context );
 				Cursor results = manager.query(
 						
 					DatabaseStructure.PersonaStatistics.TABLE_NAME, 
@@ -224,17 +227,17 @@ public class CacheHandler {
 
 							results.getLong( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA) ),							
 							new PersonaStats(
-						
+									
 								results.getString( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ACCOUNT_NAME) ),
 								results.getString( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_PERSONA_NAME) ),
 								results.getString( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_RANK) ), 
+								results.getLong( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_RANK) ),
 								results.getLong( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA) ),
 								results.getLong( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_USER) ),
 								results.getLong( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PLATFORM) ),
-								results.getLong( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_RANK) ),
+								results.getLong( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_TIME) ),
 								results.getLong( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_POINTS_THIS) ),
 								results.getLong( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_POINTS_NEXT) ),
-								results.getLong( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_TIME) ),
 								results.getInt( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_KILLS) ),
 								results.getInt( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_ASSISTS) ),
 								results.getInt( results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_VEHICLES) ),
@@ -278,6 +281,7 @@ public class CacheHandler {
 			} catch( Exception ex ) {
 				
 				ex.printStackTrace();
+				manager.close();
 				return null;
 				
 			}
@@ -285,7 +289,9 @@ public class CacheHandler {
 		}
 		
 		public static boolean delete(final Context context, final long[] personaId) {
-	
+
+			SQLiteManager manager = new SQLiteManager( context );
+			
 			try {
 				
 				//Loop to string the array
@@ -293,7 +299,6 @@ public class CacheHandler {
 				for( int i = 0, max = personaId.length; i < max; i++ ) { personaIdArray[i] = String.valueOf( personaId[i] ); }
 				
 				//Use the SQLiteManager to get a cursor
-				SQLiteManager manager = new SQLiteManager( context );
 				int results = manager.delete( 
 						
 					DatabaseStructure.PersonaStatistics.TABLE_NAME,	
@@ -308,6 +313,7 @@ public class CacheHandler {
 			} catch( Exception ex ) {
 				
 				ex.printStackTrace();
+				manager.close();
 				return false;
 			
 			}
@@ -415,6 +421,31 @@ public class CacheHandler {
 						
 					}
 					
+					//Get the strings
+					String personaIdString = results.getString( results.getColumnIndex("persona_id") );
+					String platformIdString = results.getString( results.getColumnIndex("platform_id") );
+					String personaNameString = results.getString( results.getColumnIndex("persona_name") );
+					//Split them
+					String[] personaStringArray = TextUtils.split( personaIdString, ":" );
+					String[] platformStringArray = TextUtils.split( platformIdString, ":" );
+					String[] personaNameStringArray = TextUtils.split( personaNameString, ":" );
+					
+					//How many do we have? -1 due to last occurence being empty
+					int numPersonas = personaStringArray.length-1;
+					
+					//Create two new arrays for this
+					long[] personaIdArray = new long[numPersonas];
+					String[] personaNameArray = new String[numPersonas];
+					long[] platformIdArray = new long[numPersonas];
+					
+					for( int i = 0; i < numPersonas; i++ ) { 
+						
+						personaIdArray[i] = Long.parseLong( personaStringArray[i] );
+						platformIdArray[i] = Long.parseLong( platformStringArray[i] );
+						personaNameArray[i] = personaNameStringArray[i];
+					
+					}
+					
 					//Get the profile
 					ProfileInformation profile = new ProfileInformation(
 							
@@ -423,12 +454,15 @@ public class CacheHandler {
 						results.getLong( results.getColumnIndex("birth_date") ),
 						results.getLong( results.getColumnIndex("last_login") ),
 						results.getLong( results.getColumnIndex("status_changed") ),
+						personaIdArray,
+						platformIdArray,
 						results.getString( results.getColumnIndex("name") ),
 						results.getString( results.getColumnIndex("username") ),
 						results.getString( results.getColumnIndex("presentation") ),
 						results.getString( results.getColumnIndex("location") ), 
 						results.getString( results.getColumnIndex("status_message") ),
 						results.getString( results.getColumnIndex("current_server") ),
+						personaNameArray,
 						( results.getString( results.getColumnIndex("allow_friendrequests") ).equalsIgnoreCase( "true" ) ),
 						( results.getString( results.getColumnIndex("is_online") ).equalsIgnoreCase( "true" ) ),
 						( results.getString( results.getColumnIndex("is_playing") ).equalsIgnoreCase( "true" ) ),
@@ -494,5 +528,11 @@ public class CacheHandler {
 			
 		}
 			
+	}
+	
+	public static boolean isCached(Context c, String f) { 
+		Log.d(Constants.DEBUG_TAG, "FILE: " + c.getFileStreamPath( PublicUtils.getCacheFileHandler(c).getPath() + f) );
+		return ( c.getFileStreamPath( PublicUtils.getCacheFileHandler(c).getPath() + f ).exists() ); 
+		
 	}
 }
