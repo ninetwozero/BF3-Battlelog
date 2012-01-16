@@ -126,6 +126,49 @@ public class RequestHandler {
 		
 	}
 	
+	public HttpEntity getHttpEntity( String link, boolean extraHeaders ) throws RequestHandlerException { 
+			
+		// Check defaults
+		if ( link.equals( "" ) ) throw new RequestHandlerException("No link found.");
+
+		try {
+			
+			//Init the HTTP-related attributes
+			HttpGet httpGet = new HttpGet(link);
+			
+			//Do we need those extra headers?
+			if( extraHeaders ) {
+			
+				httpGet.setHeader( "X-Requested-With", "XMLHttpRequest");
+				httpGet.setHeader( "X-AjaxNavigation", "1");
+				httpGet.setHeader( "Referer", link);
+				httpGet.setHeader( "Accept", "application/json, text/javascript, */*" );
+				httpGet.setHeader( "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8" );
+			
+			}
+			
+			HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);	
+			HttpEntity httpEntity = httpResponse.getEntity();
+			
+			//Create the image
+			if (httpEntity != null) {
+
+				return httpEntity;
+				
+			} else {
+				
+				return null;
+				
+			}
+			
+		} catch ( Exception ex ) {
+
+			ex.printStackTrace();
+			return null;
+		}
+		
+	}
+	
 	public Bitmap getImageFromStream( String link, boolean extraHeaders ) throws RequestHandlerException {
 		
 		// Check defaults

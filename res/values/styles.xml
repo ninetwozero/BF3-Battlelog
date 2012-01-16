@@ -8,6 +8,8 @@
 		<item name="android:textColor">#FFFFFF</item>
 		<item name="android:layout_marginTop">5dp</item>
 		<item name="android:layout_marginBottom">5dp</item>
+		<item name="android:singleLine">true</item>
+		<item name="android:ellipsize">marquee</item>
     </style>    
     <style parent="@style/InfoHeading" name="InfoSubHeading">
 		<item name="android:layout_width">wrap_content</item>
@@ -78,6 +80,7 @@
     <color name="green">#309030</color>
     <color name="blue">#308DBF</color>   
     <color name="grey">#3A3A3A</color> 
-    <color name="lightgrey">#DDDDDD</color>    
-    <color name="orange">#e7ab0a</color>   
+    <color name="lightgrey">#EEEEEE</color>
+    <color name="orange">#e7ab0a</color>      
+    <color name="officialblue">#E6F3FF</color>   
 </resources>

@@ -1,5 +1,14 @@
 package com.ninetwozero.battlelog.misc;
 
+import java.util.ArrayList;
+
+import android.graphics.Bitmap;
+
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.FeedItem;
+import com.ninetwozero.battlelog.datatypes.PlatoonMemberData;
+import com.ninetwozero.battlelog.datatypes.PlatoonStats;
+
 
 
 public final class DatabaseStructure {
@@ -154,6 +163,52 @@ public final class DatabaseStructure {
 				COLUMN_NAME_BOOL_PLAYING,
 				COLUMN_NAME_BOOL_IS_FRIEND,
 				COLUMN_NAME_BOOL_PLATOONS
+		
+			};
+			
+		}
+	}
+	
+	public static final class PlatoonProfile {
+
+		// Table-name
+		public static final String TABLE_NAME = "platoon_profile";
+		
+		// Field-names
+		public static final String COLUMN_NAME_ID = "_id";
+		public static final String COLUMN_NAME_NUM_ID = "platoon_id";
+		public static final String COLUMN_NAME_NUM_GAME_ID = "game_id";
+		public static final String COLUMN_NAME_NUM_FANS = "num_fans";
+		public static final String COLUMN_NAME_NUM_MEMBERS = "num_members";
+		public static final String COLUMN_NAME_NUM_BLAZE_ID = "blaze_club_id";
+		public static final String COLUMN_NAME_NUM_PLATFORM_ID = "platform_id";
+		public static final String COLUMN_NAME_NUM_DATE = "date";
+		public static final String COLUMN_NAME_STRING_NAME = "name";
+		public static final String COLUMN_NAME_STRING_TAG = "tag";
+		public static final String COLUMN_NAME_STRING_INFO = "presentation";
+		public static final String COLUMN_NAME_STRING_WEB = "website";
+		public static final String COLUMN_NAME_BOOL_VISIBLE = "visible";
+				
+		// Sort order
+		public static final String DEFAULT_SORT_ORDER = "`_id` DESC";
+
+		//Getter
+		public static final String[] getColumns() {
+	
+			return new String[] {
+				
+				COLUMN_NAME_NUM_ID,
+				COLUMN_NAME_NUM_PLATFORM_ID,
+				COLUMN_NAME_NUM_GAME_ID,
+				COLUMN_NAME_NUM_FANS,
+				COLUMN_NAME_NUM_MEMBERS,
+				COLUMN_NAME_NUM_BLAZE_ID,
+				COLUMN_NAME_NUM_DATE,
+				COLUMN_NAME_STRING_NAME,
+				COLUMN_NAME_STRING_TAG,
+				COLUMN_NAME_STRING_INFO,
+				COLUMN_NAME_STRING_WEB,
+				COLUMN_NAME_BOOL_VISIBLE,
 		
 			};
 			

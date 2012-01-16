@@ -150,6 +150,40 @@ public class SQLiteManager {
 				+ " STRING "
 				+ " )"
 			);
+			
+			db.execSQL(
+					
+				"CREATE TABLE "
+				+ DatabaseStructure.PlatoonProfile.TABLE_NAME + " ("
+				+ DatabaseStructure.PlatoonProfile.COLUMN_NAME_ID  
+				+ " INTEGER PRIMARY KEY, "
+				+ DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID  
+				+ " INTEGER UNIQUE, "
+				+ DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_DATE
+				+ " INTEGER, "
+				+ DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_PLATFORM_ID
+				+ " INTEGER, "
+				+ DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_GAME_ID
+				+ " INTEGER, "
+				+ DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_FANS 
+				+ " INTEGER, "
+				+ DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_MEMBERS
+				+ " INTEGER, "
+				+ DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_BLAZE_ID  
+				+ " INTEGER, "
+				+ DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_NAME 
+				+ " STRING, "
+				+ DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_TAG 
+				+ " STRING, "
+				+ DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_INFO 
+				+ " STRING, "
+				+ DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_WEB
+				+ " STRING, "
+				+ DatabaseStructure.PlatoonProfile.COLUMN_NAME_BOOL_VISIBLE
+				+ " )"
+			
+			);
+	
 		}
 	
 		@Override

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import com.ninetwozero.battlelog.R;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class PlatoonListAdapter extends BaseAdapter {
 	
@@ -86,7 +88,11 @@ public class PlatoonListAdapter extends BaseAdapter {
 		((TextView) convertView.findViewById( R.id.text_fans ) ).setText( currentPlatoon.getCountFans() + "");
 		
 		//Almost forgot - we got a Bitmap too!
-		((ImageView) convertView.findViewById( R.id.image_badge ) ).setImageBitmap( currentPlatoon.getImage() );
+		((ImageView) convertView.findViewById( R.id.image_badge ) ).setImageBitmap( 
+				
+			BitmapFactory.decodeFile( PublicUtils.getCachePath( context ) + currentPlatoon.getId() + ".jpeg" )
+				
+		);
 		
 		//Store it in the tag
 		convertView.setTag( currentPlatoon );

@@ -26,6 +26,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -256,6 +257,7 @@ public class ProfileView extends TabActivity {
 				if( profileInformation != null ) { 
 
 					personaStats = CacheHandler.Persona.select( context, profileInformation.getAllPersonas() );
+					
 					selectedPersona = profileInformation.getPersona( 0 );
 					
 				} else {
@@ -400,6 +402,7 @@ public class ProfileView extends TabActivity {
 					
 					//Set the persona
 					profileData.setPersonaId( profileInformation.getAllPersonas() );
+					profileData.setPersonaName( profileInformation.getAllPersonaNames() );
 					profileData.setPlatformId( profileInformation.getAllPlatforms() );
 
 					//Set the selected persona?
@@ -570,7 +573,7 @@ public class ProfileView extends TabActivity {
     	}
     	
     	//Any platoons?
-    	if( data.getPlatoons().size() > 0 ) {
+    	if( data.getNumPlatoons() > 0 ) {
 
     		//Init
     		View convertView;
@@ -596,7 +599,11 @@ public class ProfileView extends TabActivity {
 	    		((TextView) convertView.findViewById( R.id.text_fans ) ).setText( currentPlatoon.getCountFans() + "");
 	    		
 	    		//Almost forgot - we got a Bitmap too!
-	    		((ImageView) convertView.findViewById( R.id.image_badge ) ).setImageBitmap( currentPlatoon.getImage() );
+	    		((ImageView) convertView.findViewById( R.id.image_badge ) ).setImageBitmap( 
+    				
+    				BitmapFactory.decodeFile( PublicUtils.getCachePath( this ) + currentPlatoon.getImage() )
+    					
+    			);
 	    		
 	    		//Store it in the tag
 	    		convertView.setTag( currentPlatoon );
@@ -630,7 +637,9 @@ public class ProfileView extends TabActivity {
     		}
     		
     	} else {
-        	
+
+
+    		((LinearLayout) findViewById(R.id.list_platoons)).removeAllViews();
     		((TextView) findViewById(R.id.text_platoon)).setVisibility( View.VISIBLE );
     	
     	}
@@ -1108,7 +1117,7 @@ public class ProfileView extends TabActivity {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		
 	    //Set the title and the view
-		builder.setTitle( "Select a soldier to view..." );
+		builder.setTitle( R.string.info_dialog_soldierselect );
 		
 		builder.setSingleChoiceItems(
 				

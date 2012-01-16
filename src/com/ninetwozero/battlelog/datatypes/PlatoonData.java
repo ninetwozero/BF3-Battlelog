@@ -11,14 +11,14 @@ public class PlatoonData implements Parcelable {
 	//Attributes
 	private long id;
 	private int countFans, countMembers, platformId;
-	private String name, tag;
-	private Bitmap image;
+	private String name, tag, image;
 	private boolean visible;
 	
 	//Constructs
 
 	public PlatoonData(Parcel in) { readFromParcel(in); }
-	public PlatoonData(long i, int cF, int cM, int pId, String n, String t, Bitmap img, boolean v) {
+	
+	public PlatoonData(long i, int cF, int cM, int pId, String n, String t, String img, boolean v) {
 		
 		this.id = i;
 		this.countFans = cF;
@@ -38,7 +38,7 @@ public class PlatoonData implements Parcelable {
 	public int getPlatformId() { return this.platformId; }
 	public String getName() { return this.name; }
 	public String getTag() { return this.tag; }
-	public Bitmap getImage() { return image; }
+	public String getImage() { return image; }
 	public boolean isVisible() { return this.visible; }
 
 	@Override
@@ -47,9 +47,6 @@ public class PlatoonData implements Parcelable {
 	@Override
 	public void writeToParcel( Parcel dest, int flags ) {
 
-		//The image
-		dest.writeParcelable(this.image, flags);
-
 		//Everything else
 		dest.writeLong( this.id );
 		dest.writeInt( this.countFans );
@@ -57,15 +54,13 @@ public class PlatoonData implements Parcelable {
 		dest.writeInt( this.platformId );
 		dest.writeString( this.name );
 		dest.writeString( this.tag );
+		dest.writeString( this.image );
 		dest.writeInt( (this.visible)? 1 : 0 );
 
 	}
 	
 	private void readFromParcel(Parcel in) {
 
-		//The image
-		this.image = in.readParcelable( Bitmap.class.getClassLoader() );
-		
 		//Let's retrieve them, same order as above
 		this.id = in.readLong();
 		this.countFans = in.readInt();
@@ -73,6 +68,7 @@ public class PlatoonData implements Parcelable {
 		this.platformId = in.readInt();
 		this.name = in.readString();
 		this.tag = in.readString();
+		this.image = in.readString();
 		this.visible = ( in.readInt() == 1 );
 	
 	}

@@ -26,7 +26,6 @@ public class PlatoonInformation {
 	private int platformId, gameId, numFans, numMembers, blazeClubId;
 	private long id, date;
 	private String name, tag, presentation, website;
-	private Bitmap image;
 	private boolean visible, isMember, isAdmin, allowNewMembers;
 	private ArrayList<FeedItem> feedItems;
 	private ArrayList<PlatoonMemberData> members, fans;
@@ -34,11 +33,35 @@ public class PlatoonInformation {
 	
 	//Construct(s)
 	public PlatoonInformation(
-		
-		int pId, int g, int nF, int nM, int bcId,
-		long i, long d,
+			
+		long id, long d,
+		int pId, int gId, int nF, int nM, int bcId,
 		String n, String t, String p, String w,
-		Bitmap im, boolean v, boolean ism, boolean isa, boolean a,
+		int v
+		
+	) {
+		
+		this.id = id;
+		this.date = d;
+		this.platformId = pId;
+		this.gameId = gId;
+		this.numFans = nF;
+		this.numMembers = nM;
+		this.blazeClubId = bcId ;
+		this.name = n;
+		this.tag = t;
+		this.presentation = p;
+		this.website = w;
+		this.visible = ( v == 1 );
+		
+	}
+	
+	public PlatoonInformation(
+		
+		long i, long d,
+		int pId, int g, int nF, int nM, int bcId,
+		String n, String t, String p, String w,
+		boolean v, boolean ism, boolean isa, boolean a,
 		ArrayList<FeedItem> f, ArrayList<PlatoonMemberData> m, ArrayList<PlatoonMemberData> fa,
 		PlatoonStats st
 		
@@ -55,7 +78,6 @@ public class PlatoonInformation {
 		this.tag = t;
 		this.presentation = p;
 		this.website = w;
-		this.image = im;
 		this.visible = v;
 		this.isMember = ism;
 		this.isAdmin = isa;
@@ -80,8 +102,6 @@ public class PlatoonInformation {
 	public String getName() { return this.name; }
 	public String getTag() { return this.tag; }
 	public String getPresentation() { return this.presentation; }
-	public boolean hasImage() { return (this.image != null ); }
-	public Bitmap getImage() { return this.image; }
 	public String getWebsite() { return this.website; }
 	public boolean isVisible() { return this.visible; }
 	public boolean isOpenForNewMembers() { return this.allowNewMembers; }
@@ -89,5 +109,26 @@ public class PlatoonInformation {
 	public ArrayList<PlatoonMemberData> getMembers() { return this.members; }
 	public ArrayList<PlatoonMemberData> getFans() { return this.fans; }
 	public PlatoonStats getStats() { return this.stats; }
+
+	public String[] toStringArray() {
+		
+		return new String[] { 
+
+			this.id + "",
+			this.platformId + "",
+			this.gameId + "",
+			this.numFans + "",
+			this.numMembers + "",
+			this.blazeClubId + "",
+			this.date + "",
+			this.name,
+			this.tag,
+			this.presentation,
+			this.website,
+			(this.visible ? 1 : 0 ) + "",
+	
+		};
+		
+	}
 
 }

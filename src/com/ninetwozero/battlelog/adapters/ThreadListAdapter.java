@@ -114,7 +114,7 @@ public class ThreadListAdapter extends BaseAdapter {
 			} else {
 				
 				//Set the colors
-				convertView.findViewById( R.id.bar_official ).setBackgroundColor( context.getResources().getColor( R.color.grey ) );
+				convertView.findViewById( R.id.bar_official ).setBackgroundColor( context.getResources().getColor( R.color.lightgrey ) );
 				
 			}
 			

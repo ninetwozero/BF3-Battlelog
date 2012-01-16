@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import com.ninetwozero.battlelog.R;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,7 +100,7 @@ public class FeedListAdapter extends BaseAdapter {
 		//Set the fields
 		((ImageView) convertView.findViewById(R.id.image_avatar)).setImageBitmap( 
 				
-			WebsiteHandler.getGravatarFromCache(currentItem.getAvatarForPost(), context.getResources()) 
+			BitmapFactory.decodeFile( PublicUtils.getCachePath( context ).toString() + currentItem.getAvatarForPost() + ".png" )
 					
 		);
 		((TextView) convertView.findViewById(R.id.text_date)).setText( PublicUtils.getRelativeDate( context, currentItem.getDate() ) );

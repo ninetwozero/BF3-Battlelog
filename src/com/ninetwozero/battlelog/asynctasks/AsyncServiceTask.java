@@ -53,9 +53,6 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 			//Let's try to setActive
 			if( WebsiteHandler.setActive() ) {
 				
-				//Logging
-				Log.d(Constants.DEBUG_TAG, "The user is active");
-				
 				//The user is active, so how many notifications does he have?
 				int numNotifications = WebsiteHandler.getNewNotificationsCount( arg0[0] );
 				

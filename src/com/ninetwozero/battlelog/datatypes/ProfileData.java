@@ -127,6 +127,7 @@ public class ProfileData implements Parcelable {
 	//Setters
 	public void setPersonaId(long[] array) { this.personaId = array; }
 	public void setPlatformId(long[] array) { this.platformId = array; }
+	public void setPersonaName(String[] array) { this.personaName = array; }
 	
 	//toString
 	@Override

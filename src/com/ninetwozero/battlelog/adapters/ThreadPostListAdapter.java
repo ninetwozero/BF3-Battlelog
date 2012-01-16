@@ -94,6 +94,15 @@ public class ThreadPostListAdapter extends BaseAdapter {
 		}
 		
 		//Store the object
+		if( currentItem.isOfficial() ) {
+			
+			convertView.setBackgroundColor( context.getResources().getColor( R.color.officialblue ) );
+			
+		} else {
+
+			convertView.setBackgroundColor( context.getResources().getColor( android.R.color.white ) );
+			
+		}
 		((TextView) convertView.findViewById( R.id.text_content ) ).setText( Html.fromHtml( currentItem.getContent() ) );
 		((TextView) convertView.findViewById( R.id.text_posted_by) ).setText( 
 				

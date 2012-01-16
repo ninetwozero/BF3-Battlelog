@@ -67,7 +67,7 @@ public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
 		
 		//Let the user know and then refresh!
 		Toast.makeText( context, "Join request responded to.", Toast.LENGTH_SHORT).show();				
-		if( context != null ) { ((PlatoonView) context).reloadLayout(); }
+		if( context != null ) { ((PlatoonView) context).reloadLayout(true); }
 		return;
 		
 	}	

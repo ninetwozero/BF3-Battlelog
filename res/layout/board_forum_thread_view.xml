@@ -24,7 +24,7 @@
 		android:text="@string/info_xml_forums"
 		android:padding="5dp"
 		android:layout_marginTop="0dp"
-
+		android:layout_marginBottom="0dp"
 	/>
 	<ListView 
 		android:id="@android:id/list" 

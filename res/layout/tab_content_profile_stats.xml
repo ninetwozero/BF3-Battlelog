@@ -27,20 +27,35 @@
 		android:paddingRight="10dp"
 		android:paddingBottom="10dp"
 	>
-		<TextView
-		    style="@style/InfoHeading"
-		    android:id="@+id/string_persona"
-	    	android:text="NINETWOZERO"
-			android:onClick="onClick"
-			android:padding="5dp"
-			android:clickable="true"
-	    />
+		<RelativeLayout
+			android:id="@+id/wrap_persona"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		>
+			<TextView
+			    style="@style/InfoHeading"
+			    android:id="@+id/string_persona"
+		    	android:text="NINETWOZERO"
+				android:onClick="onClick"
+				android:padding="5dp"
+				android:clickable="true"
+		    />
+			<ImageView
+			    android:id="@+id/img_persona_list"
+			    android:src="@android:drawable/arrow_down_float"
+				android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_alignParentRight="true"
+		    	android:layout_marginTop="20dp"
+		    	android:layout_marginRight="5dp"
+		    />	
+		</RelativeLayout>
 		<TextView
 		    android:id="@+id/string_rank_title"
 		    android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 	    	android:text="PRIVATE FIRST CLASS 1 STAR"
-	    	android:layout_below="@id/string_persona"
+	    	android:layout_below="@id/wrap_persona"
 	    />
 		<TextView
 		    android:id="@+id/string_rank_literal"

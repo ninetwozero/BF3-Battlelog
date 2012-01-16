@@ -14,13 +14,17 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
+import org.apache.http.HttpEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,13 +41,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.BoardView;
+import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
-import com.ninetwozero.battlelog.datatypes.Board;
-import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
@@ -71,7 +74,6 @@ import com.ninetwozero.battlelog.services.BattlelogService;
 public class WebsiteHandler {
 	
 	//Let's have this one ready
-	public static HashMap<String, Bitmap> bitmapCache = new HashMap<String, Bitmap>();
 	public static HashMap<String, Object> feedCache = new HashMap<String, Object>();
 	
 	public static ProfileData doLogin(final Context context, final PostData[] postDataArray, final boolean savePassword) throws WebsiteHandlerException {
@@ -692,7 +694,6 @@ public class WebsiteHandler {
 			//Do we have a personaId?
 			if( profileData.getPersonaId() == 0 ) {
 				
-				Log.d(Constants.DEBUG_TAG, "We have no personaId...");
 				profileData = getPersonaIdFromProfile(pd.getProfileId());
 				
 			}
@@ -727,7 +728,7 @@ public class WebsiteHandler {
 		    	JSONObject kitScores = statsOverview.getJSONObject( "kitScores" );
 		    	JSONObject nextRankInfo = dataObject.getJSONObject( "rankNeeded" );
 		    	JSONObject currRankInfo = dataObject.getJSONObject( "currentRankNeeded" );
-	   
+		    	
 		        //Yay
 		        stats.put(
 		        		
@@ -735,7 +736,7 @@ public class WebsiteHandler {
 		        	new PersonaStats(
 		        			
 			        	profileData.getAccountName(),
-			        	profileData.getPersonaName(i) + " "  + DataBank.resolvePlatformId( (int) profileData.getPlatformId(i) ),
+			        	profileData.getPersonaName(i),
 			        	currRankInfo.getString( "name" ),
 			        	statsOverview.getLong( "rank" ),
 			        	profileData.getPersonaId(i),
@@ -780,8 +781,7 @@ public class WebsiteHandler {
 			//Cache it!
 			if( CacheHandler.Persona.insert( context, stats ) == 0 ) {
 				
-				boolean result = CacheHandler.Persona.update( context, stats );
-				Log.d(Constants.DEBUG_TAG, "CacheHandler.Persona.update( context, stats ) => " + result );
+				CacheHandler.Persona.update( context, stats );
 			
 			}
 
@@ -1668,9 +1668,13 @@ public class WebsiteHandler {
 				
 				//Persona related
 				int numSoldiers = soldierArray.length();
+				int numPlatoons = platoonArray.length();
+				
+				//Init the arrays
+				String[] personaNameArray = new String[numSoldiers];
 				long[] personaIdArray = new long[numSoldiers];
 				long[] platformIdArray = new long[numSoldiers];
-				String[] personaNameArray = new String[numSoldiers];
+				long[] platoonIdArray = new long[numPlatoons];
 				
 				//Get the username
 				String username = profileCommonObject.getJSONObject( "user" ).getString( "username" );
@@ -1700,7 +1704,7 @@ public class WebsiteHandler {
 					platformIdArray[i] = DataBank.getPlatformIdFromName( personaObject.getString( "namespace" ) );
 					personaNameArray[i] = (
 							
-						personaObject.optString( "personaName", username) + 
+						( personaObject.isNull( "personaName" ) ? username : personaObject.getString( "personaName" ) ) + 
 						" "  + 
 						DataBank.resolvePlatformId( (int) platformIdArray[i] )
 				
@@ -1709,10 +1713,30 @@ public class WebsiteHandler {
 				}
 				
 				//Iterate over the platoons
-				for( int i = 0, max = platoonArray.length(); i < max; i++ ) {
+				for( int i = 0; i < numPlatoons; i++ ) {
 					
 					//Each loop is an object
 					currItem = platoonArray.getJSONObject( i );
+					
+					//Store the id
+					platoonIdArray[i] = Long.parseLong( currItem.getString( "id" ) );
+					
+					//Let's cache the gravatar
+					String title = currItem.getString( "id" ) + ".jpeg";
+					
+					//Is it cached?
+					if( !CacheHandler.isCached( context, title ) ) { /* TODO: SHOULD BE CACHING HERE ALREADY */
+						
+						WebsiteHandler.cacheBadge( 
+								
+							context, 
+							currItem.getString( "badgePath" ), 
+							title,
+							Constants.DEFAULT_BADGE_SIZE
+							
+						);
+						
+					}
 					
 					//Store the data
 					platoonDataArray.add(
@@ -1725,7 +1749,7 @@ public class WebsiteHandler {
 							currItem.getInt( "platform" ),
 							currItem.getString( "name" ),
 							currItem.getString( "tag" ),
-							rh.getImageFromStream( Constants.URL_PLATOON_IMAGE_THUMBS + currItem.getString( "badgePath" ), false),
+							title,
 							!currItem.getBoolean("hidden")
 								
 						)
@@ -1773,6 +1797,7 @@ public class WebsiteHandler {
 					statusMessage.optLong("statusMessageChanged", 0), 
 					personaIdArray,
 					platformIdArray,
+					platformIdArray, 
 					userInfo.optString( "name", "N/A" ), 
 					username,
 					userInfo.isNull( "presentation" ) ? null : userInfo.getString( "presentation" ),  
@@ -1791,8 +1816,7 @@ public class WebsiteHandler {
 				//Let's log it
 				if( CacheHandler.Profile.insert( context, tempProfile ) == 0 ) {
 					
-					boolean status = CacheHandler.Profile.update( context, tempProfile );
-					Log.d(Constants.DEBUG_TAG, "CacheHandler.Profile.update( context, tempProfile ) => " + status );
+					CacheHandler.Profile.update( context, tempProfile );
 					
 				}
 				
@@ -1899,7 +1923,7 @@ public class WebsiteHandler {
 		}
 	}
 	
-	public static PlatoonInformation getProfileInformationForPlatoon(Context context, PlatoonData platoonData, int num, long activeProfileId, boolean loadImage ) throws WebsiteHandlerException {
+	public static PlatoonInformation getProfileInformationForPlatoon(final Context c, final PlatoonData pData, final int num, final long aPId) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -1918,7 +1942,7 @@ public class WebsiteHandler {
 			ArrayList<PlatoonMemberData> requestMembers = new ArrayList<PlatoonMemberData>();
 			
 			//Get the content
-			String httpContent = rh.get( Constants.URL_PLATOON.replace( "{PLATOON_ID}", platoonData.getId() + "" ), 1 );
+			String httpContent = rh.get( Constants.URL_PLATOON.replace( "{PLATOON_ID}", pData.getId() + "" ), 1 );
 			boolean isAdmin = false;
 			boolean isMember = false;
 			
@@ -1943,7 +1967,7 @@ public class WebsiteHandler {
 					currItem = memberArray.optJSONObject( idArray.getString( counter ) );
 					
 					//Check the *rights* of the user
-					if( idArray.getString( counter ).equals("" + activeProfileId)  ) {
+					if( idArray.getString( counter ).equals("" + aPId)  ) {
 						
 						isMember = true;
 						if( currItem.getInt("membershipLevel") >= 128 ) { isAdmin = true; }
@@ -2088,13 +2112,13 @@ public class WebsiteHandler {
 				}
 					
 				//Let's get 'em fans too
-				fans = WebsiteHandler.getFansForPlatoon(platoonData.getId());
+				fans = WebsiteHandler.getFansForPlatoon(pData.getId());
 				
 				//Oh man, don't forget the stats!!!
-				stats = WebsiteHandler.getStatsForPlatoon(context, platoonData );
+				stats = WebsiteHandler.getStatsForPlatoon(c, pData );
 				
 				//Parse the feed
-				feedItemArray = getFeedItemsFromJSON(context, feedItems, activeProfileId);
+				feedItemArray = getFeedItemsFromJSON(c, feedItems, aPId);
 				
 				//Let's see
 				for(int i = 1, max = Math.round( num / 10 ); i < max; i++ ) {
@@ -2105,7 +2129,7 @@ public class WebsiteHandler {
 						Constants.URL_PLATOON_FEED.replace( 
 								
 							"{PLATOON_ID}",
-							platoonData.getId() + ""
+							pData.getId() + ""
 							
 						).replace( 
 								
@@ -2119,42 +2143,35 @@ public class WebsiteHandler {
 					JSONArray jsonArray = new JSONObject(tempContent).getJSONObject("data").getJSONArray( "feedEvents" );
 					
 					//Gather them
-					feedItemArray.addAll( WebsiteHandler.getFeedItemsFromJSON(context, jsonArray, activeProfileId ) );
+					feedItemArray.addAll( WebsiteHandler.getFeedItemsFromJSON(c, jsonArray, aPId ) );
 					
 				}
 				
-				//Do we need the image?
-				Bitmap image;
-				if( loadImage ) { 
-					
-					image = rh.getImageFromStream( 
-							
-						Constants.URL_PLATOON_IMAGE + profileCommonObject.getString( "badgePath" ), 
-						true
-						
-					);
+				//Required
+				long platoonId = Long.parseLong(profileCommonObject.getString( "id" ) );
+				String filename = platoonId + ".jpeg";
 				
-				} else {
+				//Is the image already cached?
+				if( !CacheHandler.isCached( c, filename ) ) {
 					
-					image = null;
-					
+					WebsiteHandler.cacheBadge( c, profileCommonObject.getString( "badgePath" ), filename, Constants.DEFAULT_BADGE_SIZE );
+				
 				}
 				
 				//Return it!
 				return new PlatoonInformation(
-				
+
+					platoonId,
+					profileCommonObject.getLong( "creationDate" ),
 					profileCommonObject.getInt( "platform" ),
 					profileCommonObject.getInt( "game" ),
 					profileCommonObject.getInt( "fanCounter" ),
 					profileCommonObject.getInt( "memberCounter" ),
 					profileCommonObject.getInt( "blazeClubId" ),
-					profileCommonObject.getLong( "id" ),
-					profileCommonObject.getLong( "creationDate" ),
 					profileCommonObject.getString( "name" ),
 					profileCommonObject.getString( "tag" ),
 					profileCommonObject.getString( "presentation" ),
 					PublicUtils.normalizeUrl( profileCommonObject.optString( "website", "" ) ),
-					image,
 					!profileCommonObject.getBoolean( "hidden" ),
 					isMember,
 					isAdmin,
@@ -2168,7 +2185,7 @@ public class WebsiteHandler {
 				
 			} else {
 			
-				throw new WebsiteHandlerException("Could not get the profile.");
+				throw new WebsiteHandlerException("Could not get the platoon.");
 				
 			}	
 		
@@ -2840,12 +2857,12 @@ public class WebsiteHandler {
 					
 					//Store the gravatar
 					tempGravatarHash = currUser.optString( "gravatarMd5", "" );
+					String filename = tempGravatarHash + ".png";
 					
 					//Do we need to download a new image?
-					/* TODO: Cache on SDCARD? Right now this EATS RAM. Get it? EATS! */
-					if( CacheHandler.isCached( context, tempGravatarHash ) ) ) {
+					if( !CacheHandler.isCached( context, filename ) ) {
 						
-						WebsiteHandler.cacheGravatar( tempGravatarHash, 40 );
+						WebsiteHandler.cacheGravatar( context, filename, Constants.DEFAULT_AVATAR_SIZE);
 						
 					}
 					
@@ -2923,7 +2940,7 @@ public class WebsiteHandler {
 		
 	}
 
-	private static ArrayList<FeedItem> getFeedItemsFromJSON( Context c, JSONArray jsonArray, long activeProfileId ) throws WebsiteHandlerException {
+	private static ArrayList<FeedItem> getFeedItemsFromJSON( Context context, JSONArray jsonArray, long activeProfileId ) throws WebsiteHandlerException {
 
 		try {
 			
@@ -3024,7 +3041,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
-						c.getString( R.string.info_p_friendship ),
+						context.getString( R.string.info_p_friendship ),
 						"",
 						currItem.getString("event"),
 						new String[] { 
@@ -3048,7 +3065,7 @@ public class WebsiteHandler {
 					String[] tempInfo = DataBank.getAssignmentTitle( statsItem.getString( "langKeyTitle" ) );
 					
 					//Set the title
-					itemTitle = c.getString( R.string.info_txt_assignment_ok ).replace( 
+					itemTitle = context.getString( R.string.info_txt_assignment_ok ).replace( 
 							
 						"{assignment}", 
 						tempInfo[0]
@@ -3088,7 +3105,7 @@ public class WebsiteHandler {
 				
 					//Grab the specific object
 					tempSubItem = currItem.optJSONObject( "CREATEDFORUMTHREAD" );
-					itemTitle = c.getString( R.string.info_p_forumthread ).replace( 
+					itemTitle = context.getString( R.string.info_p_forumthread ).replace( 
 						
 						"{thread}", 
 						tempSubItem.getString( "threadTitle" )
@@ -3121,7 +3138,7 @@ public class WebsiteHandler {
 				
 					//Grab the specific object
 					tempSubItem = currItem.optJSONObject( "WROTEFORUMPOST" );
-					itemTitle = c.getString( R.string.info_p_forumpost ).replace( 
+					itemTitle = context.getString( R.string.info_p_forumpost ).replace( 
 						
 						"{thread}", 
 						tempSubItem.getString( "threadTitle" )
@@ -3158,11 +3175,11 @@ public class WebsiteHandler {
 					/*TODO: BUILD A STRING WITH *ALL* ITEMS */
 					if( tempStatsArray.length() > 1 ) {
 						
-						itemTitle = c.getString( R.string.info_p_newunlocks );
+						itemTitle = context.getString( R.string.info_p_newunlocks );
 						
 					} else {
 						
-						itemTitle = c.getString( R.string.info_p_newunlock );
+						itemTitle = context.getString( R.string.info_p_newunlock );
 						
 					}
 					
@@ -3333,7 +3350,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
-						c.getString( R.string.info_p_favserver ).replace( 
+						context.getString( R.string.info_p_favserver ).replace( 
 								
 							"{server}", 
 							tempSubItem.getString( "serverName" ) 
@@ -3360,7 +3377,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "RANKEDUP" );
 					
 					//Set it!
-					itemTitle = c.getString( R.string.info_p_promotion ).replace( 
+					itemTitle = context.getString( R.string.info_p_promotion ).replace( 
 						
 						"{rank title}", 
 						DataBank.getRankTitle( tempSubItem.getString( "langKeyTitle" ) )
@@ -3402,7 +3419,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "COMMENTEDGAMEREPORT" );
 					
 					//Set it!
-					itemTitle = c.getString( R.string.info_p_greport_comment ).replace(
+					itemTitle = context.getString( R.string.info_p_greport_comment ).replace(
 							
 						"{server name}",
 						tempSubItem.getString( "serverName" )
@@ -3449,7 +3466,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "COMMENTEDBLOG" );
 					
 					//Set it!
-					itemTitle = c.getString( R.string.info_p_blog_comment ).replace(
+					itemTitle = context.getString( R.string.info_p_blog_comment ).replace(
 							
 						"{post name}",
 						tempSubItem.getString( "blogTitle" )
@@ -3485,7 +3502,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "JOINEDPLATOON" ).getJSONObject( "platoon" );
 					
 					//Set it!
-					itemTitle = c.getString( R.string.info_p_platoon_join ).replace( 
+					itemTitle = context.getString( R.string.info_p_platoon_join ).replace( 
 				
 						"{platoon}",
 						tempSubItem.getString("name")
@@ -3520,7 +3537,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "KICKEDPLATOON" ).getJSONObject( "platoon" );
 					
 					//Set it!
-					itemTitle = c.getString( R.string.info_p_platoon_kick ).replace( 
+					itemTitle = context.getString( R.string.info_p_platoon_kick ).replace( 
 				
 						"{platoon}",
 						tempSubItem.getString("name")
@@ -3555,7 +3572,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "CREATEDPLATOON" ).getJSONObject( "platoon" );
 					
 					//Set it!
-					itemTitle = c.getString( R.string.info_p_platoon_create ).replace( 
+					itemTitle = context.getString( R.string.info_p_platoon_create ).replace( 
 				
 						"{platoon}",
 						tempSubItem.getString("name")
@@ -3590,7 +3607,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "PLATOONBADGESAVED" ).getJSONObject( "platoon" );
 					
 					//Set it!
-					itemTitle = c.getString( R.string.info_p_platoon_badge ).replace( 
+					itemTitle = context.getString( R.string.info_p_platoon_badge ).replace( 
 				
 						"{platoon}",
 						tempSubItem.getString("name")
@@ -3625,7 +3642,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "LEFTPLATOON" ).getJSONObject( "platoon" );
 					
 					//Set it!
-					itemTitle = c.getString( R.string.info_p_platoon_left ).replace( 
+					itemTitle = context.getString( R.string.info_p_platoon_left ).replace( 
 				
 						"{platoon}",
 						tempSubItem.getString("name")
@@ -3661,7 +3678,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "RECEIVEDPLATOONWALLPOST" );
 					
 					//Set it!
-					itemTitle = c.getString( R.string.info_p_platoon_feed ).replace(
+					itemTitle = context.getString( R.string.info_p_platoon_feed ).replace(
 							
 						"{platoon}", 
 						tempSubItem.getJSONObject("platoon").getString( "name" )
@@ -3699,7 +3716,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.getJSONObject( "LEVELCOMPLETE" );
 					
 					//Set it!
-					itemTitle = c.getString( R.string.info_p_coop_level_comp ).replace(
+					itemTitle = context.getString( R.string.info_p_coop_level_comp ).replace(
 							
 						"{level}", 
 						DataBank.getCoopLevelTitle( tempSubItem.getString( "level" ) )
@@ -3741,7 +3758,7 @@ public class WebsiteHandler {
 					tempSubItem = currItem.optJSONObject( "RECEIVEDAWARD" ).optJSONArray( "statItems" ).getJSONObject( 0 );
 					
 					//Set it!
-					itemTitle = c.getString( R.string.info_p_award ).replace( 
+					itemTitle = context.getString( R.string.info_p_award ).replace( 
 							
 						"{award}", 
 						DataBank.getAwardTitle( tempSubItem.getString( "langKeyTitle" ) )
@@ -3862,10 +3879,13 @@ public class WebsiteHandler {
 				//Append it to the array
 				if( tempFeedItem != null ) { feedItemArray.add( tempFeedItem ); }
 				
+				//Fix a filename
+				String filename = tempGravatarHash + ".png";
+				
 				//Before I forget - let's download the gravatar too!
-				if( !WebsiteHandler.bitmapCache.containsKey( tempGravatarHash ) ) {
-
-					WebsiteHandler.cacheGravatar( tempGravatarHash, 40 );
+				if( !CacheHandler.isCached( context, filename ) ) {
+					
+					WebsiteHandler.cacheGravatar( context, filename, Constants.DEFAULT_AVATAR_SIZE);
 					
 				}
 				
@@ -4230,7 +4250,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static Bitmap downloadGravatarToCache(String hash, int size) throws WebsiteHandlerException {
+	public static Bitmap downloadGravatarToBitmap(String hash, int size) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -4269,103 +4289,140 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static Bitmap getGravatarFromCache(String identifier, Resources r) {
-		
-		if( WebsiteHandler.bitmapCache.containsKey( identifier ) ) {
-					
-			return WebsiteHandler.bitmapCache.get( identifier );
-				
-		} else {
-			
-			return BitmapFactory.decodeResource( r, R.drawable.default_avatar);
-			
-		}
-		
-	}
-	
-	
-	public static Bitmap getImage(String url) throws WebsiteHandlerException {
+	public static boolean cacheGravatar(Context c, String h, int s) {
 	
 		try {
-			
-			return new RequestHandler().getImageFromStream( url, true );
 
-		} catch( Exception ex ) {
-		
-			ex.printStackTrace();
-			throw new WebsiteHandlerException(ex.getMessage());
+			//Let's set it up
+			RequestHandler rh = new RequestHandler();
 			
-		}
-		
-	}
-	
-	public static void cacheGravatar(String h, int s) {
-	
-		try { 
+			//Get the external cache dir
+			String cacheDir = PublicUtils.getCachePath( c );
 			
+			//How does it end?
+			if( !cacheDir.endsWith( "/" ) ) { cacheDir += "/"; }
+
+			//Get the actual stream
+			HttpEntity httpEntity = rh.getHttpEntity(
 			
-			if( WebsiteHandler.bitmapCache.size() > Constants.DEFAULT_CACHE_LIMIT ) {
+				Constants.URL_GRAVATAR.replace( "{hash}", h ).replace( "{size}", s + "" ).replace( "{default}", s + "" ), 	
+				false
 				
-				//Loops & removes five bitmaps from the cache
-				int counter = 0;
-				Object[] identifierArray = new HashSet(WebsiteHandler.bitmapCache.keySet()).toArray();
-				for( Object identifier : identifierArray ) {
-	
-					//> 4 = stop
-					if( counter > 4 ) { break; }
-					
-					//Remove and increment
-					WebsiteHandler.bitmapCache.remove(String.valueOf( identifier ) );
-					counter++;			
-				
-				}
+			);
+
+			//Init
+			int bytesRead = 0;
+			int offset = 0;
+			int contentLength = (int) httpEntity.getContentLength();
+			byte[] data = new byte[contentLength];
 			
+			//Build a path
+			String filepath = cacheDir + h;
+			
+			//Handle the streams
+			InputStream imageStream = httpEntity.getContent();
+			BufferedInputStream in = new BufferedInputStream(imageStream);
+
+			//Iterate
+			while (offset < contentLength) {
+				
+				bytesRead = in.read(data, offset, data.length - offset);
+				if (bytesRead == -1) { break; } 
+				offset += bytesRead;
+
 			}
-		
-			//Add it!
-			WebsiteHandler.bitmapCache.put( h, null );
-			WebsiteHandler.bitmapCache.put( h, WebsiteHandler.downloadGravatarToCache(h, s) );
-		
+			
+			//Alright?
+			if (offset != contentLength) {
+
+				throw new IOException("Only read " + offset + " bytes; Expected " + contentLength + " bytes");
+
+			}
+			
+			//Close the stream
+			in.close();
+			FileOutputStream out = new FileOutputStream(filepath);
+			out.write(data);
+			out.flush();
+			out.close();
+	
+			return true;
+			
 		} catch(Exception ex) {
 			
 			ex.printStackTrace();
+			return false;
 			
 		}
-		
+			
 	}
 	
-	//TODO
-	public static void cacheObject(String h, Object o) {
+	public static boolean cacheBadge(Context c, String h, String fName, int s) {
 		
-		try { 
+		try {
+
+			//Let's set it up
+			RequestHandler rh = new RequestHandler();
 			
+			//Get the external cache dir
+			String cacheDir = PublicUtils.getCachePath( c );
 			
-			if( WebsiteHandler.feedCache.size() > Constants.DEFAULT_CACHE_LIMIT ) {
+			//How does it end?
+			if( !cacheDir.endsWith( "/" ) ) { cacheDir += "/"; }
+
+			//Get the actual stream
+			HttpEntity httpEntity = rh.getHttpEntity(
+			
+				Constants.URL_PLATOON_IMAGE.replace( "{BADGE_PATH}", h ), 	
+				true
 				
-				//Loops & removes five bitmaps from the cache
-				int counter = 0;
-				for( String identifier : WebsiteHandler.feedCache.keySet() ) {
-	
-					//> 4 = stop
-					if( counter > 4 ) { break; }
-					
-					//Remove and increment
-					WebsiteHandler.feedCache.remove(identifier);
-					counter++;			
-				
-				}
+			);
+
+			//Init
+			int bytesRead = 0;
+			int offset = 0;
+			int contentLength = (int) httpEntity.getContentLength();
+			byte[] data = new byte[contentLength];
 			
+			//Handle the streams
+			InputStream imageStream = httpEntity.getContent();
+			BufferedInputStream in = new BufferedInputStream(imageStream);
+			
+			//Build a path
+			String filepath = cacheDir + fName;
+			
+			//Iterate
+			while (offset < contentLength) {
+				
+				bytesRead = in.read(data, offset, data.length - offset);
+				if (bytesRead == -1) { break; } 
+				offset += bytesRead;
+
 			}
-		
-			//Add it!
-			WebsiteHandler.feedCache.put( h, o );
-		
+			
+			//Alright?
+			if (offset != contentLength) {
+
+				throw new IOException("Only read " + offset + " bytes; Expected " + contentLength + " bytes");
+
+			}
+			
+			//Close the in-stream, start the outbound
+			in.close();
+			FileOutputStream out = new FileOutputStream(filepath);
+			out.write(data);
+			out.flush();
+			out.close();
+	
+			return true;
+			
 		} catch(Exception ex) {
 			
 			ex.printStackTrace();
-
+			return false;
+			
 		}
-		
+			
 	}
 	
 	public static ArrayList<Board.Forum> getAllForums() throws WebsiteHandlerException {
@@ -4698,7 +4755,7 @@ public class WebsiteHandler {
 			//POST!
 			String httpContent = rh.post( 
 				
-				Constants.URL_FORUM_POST.replace( "{FORUM_ID}", fId + "" ), 
+				Constants.URL_FORUM_NEW.replace( "{FORUM_ID}", fId + "" ), 
 				new PostData[] {
 						 
 					new PostData(Constants.FIELD_NAMES_FORUM_NEW[0], topic),

@@ -24,8 +24,11 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.coveragemapper.android.Map.ExternalCacheDirectory;
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
+import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 
 
@@ -169,8 +172,6 @@ public class CacheHandler {
 
 				//Close the manager
 				manager.close();
-				
-				Log.d(Constants.DEBUG_TAG, "Rows updated: " + results);
 				
 				//Check the results
 				return ( results > 0 );
@@ -413,37 +414,52 @@ public class CacheHandler {
 				if( results.moveToFirst() ) {
 				
 					//Any platoons?
-					String platoons = results.getString( results.getColumnIndex("platoons") );
-					ArrayList<PlatoonData> platoonArray = new ArrayList<PlatoonData>();
-					if( !"".equals( platoons ) ) {
-						
-						//platoonArray = CacheHandler.Platoons.select(context, platoons.split( ":" ));
-						
-					}
+					ArrayList<PlatoonData> platoons = new ArrayList<PlatoonData>();
 					
 					//Get the strings
 					String personaIdString = results.getString( results.getColumnIndex("persona_id") );
 					String platformIdString = results.getString( results.getColumnIndex("platform_id") );
 					String personaNameString = results.getString( results.getColumnIndex("persona_name") );
+					String platoonIdString = results.getString( results.getColumnIndex("platoons") );
+					
 					//Split them
 					String[] personaStringArray = TextUtils.split( personaIdString, ":" );
 					String[] platformStringArray = TextUtils.split( platformIdString, ":" );
 					String[] personaNameStringArray = TextUtils.split( personaNameString, ":" );
+					String[] platoonStringArray = TextUtils.split( platoonIdString, ":" );
 					
 					//How many do we have? -1 due to last occurence being empty
 					int numPersonas = personaStringArray.length-1;
+					int numPlatoons = platoonStringArray.length-1;
 					
 					//Create two new arrays for this
-					long[] personaIdArray = new long[numPersonas];
 					String[] personaNameArray = new String[numPersonas];
+					long[] personaIdArray = new long[numPersonas];
 					long[] platformIdArray = new long[numPersonas];
+					long[] platoonIdArray = new long[numPlatoons];
 					
+					//Loop for the personas
 					for( int i = 0; i < numPersonas; i++ ) { 
 						
 						personaIdArray[i] = Long.parseLong( personaStringArray[i] );
 						platformIdArray[i] = Long.parseLong( platformStringArray[i] );
 						personaNameArray[i] = personaNameStringArray[i];
 					
+					}
+					
+					//loop the platoons
+					for( int i = 0; i < numPlatoons; i++ ) { 
+						
+						platoonIdArray[i] = Long.parseLong(platoonStringArray[i]); 
+						
+					}
+					
+					//Do we have any platoons?
+					if( numPlatoons > 0 ) { 
+						
+						//Let's get that array brah
+						platoons = CacheHandler.Platoon.selectPlatoonsForUser( context, platoonIdArray );
+						
 					}
 					
 					//Get the profile
@@ -456,6 +472,7 @@ public class CacheHandler {
 						results.getLong( results.getColumnIndex("status_changed") ),
 						personaIdArray,
 						platformIdArray,
+						platoonIdArray,
 						results.getString( results.getColumnIndex("name") ),
 						results.getString( results.getColumnIndex("username") ),
 						results.getString( results.getColumnIndex("presentation") ),
@@ -468,7 +485,7 @@ public class CacheHandler {
 						( results.getString( results.getColumnIndex("is_playing") ).equalsIgnoreCase( "true" ) ),
 						( results.getString( results.getColumnIndex("is_friend") ).equalsIgnoreCase( "true" ) ),
 						null,
-						platoonArray
+						platoons
 						
 					);
 
@@ -516,6 +533,7 @@ public class CacheHandler {
 					
 				);
 
+				//Close it
 				manager.close();
 				return (results > 0);
 				
@@ -530,9 +548,327 @@ public class CacheHandler {
 			
 	}
 	
-	public static boolean isCached(Context c, String f) { 
-		Log.d(Constants.DEBUG_TAG, "FILE: " + c.getFileStreamPath( PublicUtils.getCacheFileHandler(c).getPath() + f) );
-		return ( c.getFileStreamPath( PublicUtils.getCacheFileHandler(c).getPath() + f ).exists() ); 
+	public static class Platoon {
+		
+		public static long insert(Context context, PlatoonInformation stats) {
+			
+			try {
+				//Use the SQLiteManager to get a cursor
+				SQLiteManager manager = new SQLiteManager( context );
+				
+				//Get them!!
+				long results = manager.insert( 
+						
+					DatabaseStructure.PlatoonProfile.TABLE_NAME, 
+					DatabaseStructure.PlatoonProfile.getColumns(),
+					stats.toStringArray()
+					
+				);
+				
+				manager.close();
+				return results;
+				
+			} catch( Exception ex ) {
+				
+				ex.printStackTrace();
+				return -1;
+				
+				
+			}
+			
+		}
+		
+		public static long insert(Context context, HashMap<Long, PlatoonInformation> statsArray) {
+
+			//Use the SQLiteManager to get a cursor
+			SQLiteManager manager = new SQLiteManager( context );
+			long results = 0;
+			
+			try {
+				
+				//Loop loop
+				for( long key : statsArray.keySet() ) {
+
+					//Get the object
+					PlatoonInformation stats = statsArray.get( key );
+					
+					//Get them!!
+					results += manager.insert( 
+							
+						DatabaseStructure.PlatoonProfile.TABLE_NAME, 
+						DatabaseStructure.PlatoonProfile.getColumns(),
+						stats.toStringArray()
+						
+					);
+				
+				}
+				
+				manager.close();
+				return results;
+				
+			} catch( SQLiteConstraintException ex ) { //Duplicate input, no worries!
+
+				manager.close();
+				return 0;
+			
+			} catch( Exception ex ) {
+
+				manager.close();
+				ex.printStackTrace();
+				return -1;
+				
+					
+			}
+			
+		}
+		
+		public static boolean update(Context context, PlatoonInformation stats) {
+
+			//Use the SQLiteManager to get a cursor
+			SQLiteManager manager = new SQLiteManager( context );
+
+			try {
+				//UPDATE them!!
+				manager.update(
+						
+					DatabaseStructure.PlatoonProfile.TABLE_NAME, 
+					DatabaseStructure.PlatoonProfile.getColumns(),
+					stats.toStringArray(),
+					DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID,
+					stats.getId()
+					
+				);
+				
+				manager.close();
+				return true;
+				
+			} catch( Exception ex ) {
+				
+				manager.close();
+				ex.printStackTrace();
+				return false;
+				
+				
+			}
+		
+		}
+			
+		public static boolean update(Context context, HashMap<Long, PlatoonInformation> statsArray) {
+
+			//Use the SQLiteManager to get a cursor
+			SQLiteManager manager = new SQLiteManager( context );
+			int results = 0;
+			
+			try {
+				
+				//Loop over the keys
+				for( long key : statsArray.keySet() ) {
+
+					//Get the object
+					PlatoonInformation stats = statsArray.get( key );
+					
+					//UPDATE them!!
+					results += manager.update(
+							
+						DatabaseStructure.PlatoonProfile.TABLE_NAME, 
+						DatabaseStructure.PlatoonProfile.getColumns(),
+						stats.toStringArray(),
+						DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID,
+						stats.getId()
+						
+					);
+					
+				}
+
+				//Close the manager
+				manager.close();
+				
+				//Check the results
+				return ( results > 0 );
+				
+			} catch( Exception ex ) {
+
+				manager.close();
+				ex.printStackTrace();
+				return false;
+				
+			}
+			
+		}
+		
+		public static PlatoonInformation select(final Context context, final long platoonId) {
+
+			
+			SQLiteManager manager = new SQLiteManager( context );
+			PlatoonInformation tempPlatoon = null;
+			
+			try {
+
+				//Use the SQLiteManager to get a cursor
+				Cursor results = manager.query(
+						
+					DatabaseStructure.PlatoonProfile.TABLE_NAME, 
+					null, 
+					DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID + " = ?", 
+					new String[] { platoonId + "" },
+					null, 
+					null, 
+					DatabaseStructure.PlatoonProfile.DEFAULT_SORT_ORDER
+					
+				);
+				
+				//Loop over the results
+				if( results.moveToFirst() ) {
+				
+					do {
+						
+						tempPlatoon = new PlatoonInformation(
+
+							results.getLong( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID) ),
+							results.getLong( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_DATE) ),
+							results.getInt( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_PLATFORM_ID) ),
+							results.getInt( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_GAME_ID) ),
+							results.getInt( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_FANS) ),
+							results.getInt( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_MEMBERS) ),
+							results.getInt( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_BLAZE_ID) ),
+							results.getString( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_NAME) ),
+							results.getString( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_TAG) ),
+							results.getString( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_INFO) ),
+							results.getString( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_WEB) ),
+							results.getInt( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_BOOL_VISIBLE) )
+							
+						);
+						
+					} while( results.moveToNext() );
+					
+				}
+				
+				//Platoon Platoon BABY
+				results.close();
+				manager.close();
+				return tempPlatoon;
+			
+			} catch( Exception ex ) {
+				
+				ex.printStackTrace();
+				manager.close();
+				return null;
+				
+			}
+			
+		}
+	
+		public static ArrayList<PlatoonData> selectPlatoonsForUser(final Context context, final long[] platoonId) {
+
+		
+			SQLiteManager manager = new SQLiteManager( context );
+			
+			try {
+	
+				//Init
+				String strQuestionMarks = "?";
+				String[] PlatoonIdArray = new String[platoonId.length];
+				ArrayList<PlatoonData>  stats = new ArrayList<PlatoonData> ();
+				
+				//Loop to string the array
+				for( int i = 0, max = platoonId.length; i < max; i++ ) { 
+					
+					if( i > 0 ) { strQuestionMarks += ",?"; }
+					PlatoonIdArray[i] = String.valueOf( platoonId[i] ); 
+					
+				}
+				
+				//Use the SQLiteManager to get a cursor
+				Cursor results = manager.query(
+						
+					DatabaseStructure.PlatoonProfile.TABLE_NAME, 
+					null, 
+					DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID + " IN (" + strQuestionMarks + ")", 
+					PlatoonIdArray,
+					null, 
+					null, 
+					DatabaseStructure.PlatoonProfile.DEFAULT_SORT_ORDER
+					
+				);
+				
+				//Loop over the results
+				if( results.moveToFirst() ) {
+				
+					do {
+						
+						stats.add( 
+
+							new PlatoonData(
+
+								results.getLong( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID) ),
+								results.getInt( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_FANS) ),
+								results.getInt( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_MEMBERS) ),
+								results.getInt( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_PLATFORM_ID) ),
+								results.getString( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_NAME) ),
+								results.getString( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_TAG) ),
+								null,
+								( results.getInt( results.getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_BOOL_VISIBLE) ) == 1 )
+								
+							)	
+								
+						);
+						
+					} while( results.moveToNext() );
+					
+				}
+				
+				//Platoon Platoon BABY
+				results.close();
+				manager.close();
+				return stats;
+			
+			} catch( Exception ex ) {
+				
+				ex.printStackTrace();
+				manager.close();
+				return null;
+				
+			}
+			
+		}
+		
+		public static boolean delete(final Context context, final long[] PlatoonId) {
+
+			SQLiteManager manager = new SQLiteManager( context );
+			
+			try {
+				
+				//Loop to string the array
+				String[] platoonIdArray = new String[PlatoonId.length];				
+				for( int i = 0, max = PlatoonId.length; i < max; i++ ) { platoonIdArray[i] = String.valueOf( PlatoonId[i] ); }
+				
+				//Use the SQLiteManager to get a cursor
+				int results = manager.delete( 
+						
+					DatabaseStructure.PlatoonProfile.TABLE_NAME,	
+					DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID,
+					platoonIdArray
+					
+				);
+
+				manager.close();
+				return (results > 0);
+				
+			} catch( Exception ex ) {
+				
+				ex.printStackTrace();
+				manager.close();
+				return false;
+			
+			}
+			
+		}
+	}
+	
+	public static boolean isCached(Context c, String f ) { 
+		
+		return( new File(ExternalCacheDirectory.getInstance( c ).getExternalCacheDirectory(), f ).exists() ); 
 		
 	}
+	
 }

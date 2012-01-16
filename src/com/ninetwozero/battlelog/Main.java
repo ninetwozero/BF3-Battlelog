@@ -35,6 +35,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -62,6 +63,13 @@ public class Main extends Activity {
     	
     	//Set the content view
         setContentView(R.layout.main);
+        
+        //Does the cache-dir exist?
+        if( !ExternalCacheDirectory.getInstance( this ).getExternalCacheDirectory().exists() ) {
+        
+        	Log.d(Constants.DEBUG_TAG, "There is no cache-directory!!");
+        	
+        }
         
         //Are we active?
         if( PublicUtils.isMyServiceRunning( this ) && BattlelogService.isRunning() ) { 

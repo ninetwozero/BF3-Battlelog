@@ -25,7 +25,9 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.util.Log;
 
+import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.R;
 
 
@@ -310,6 +312,7 @@ public class PublicUtils {
     	return (connMan.getActiveNetworkInfo() != null && connMan.getBackgroundDataSetting());
     
     }
+ 
     
     /*
      * 	Author: Karl Lindmark
@@ -319,20 +322,17 @@ public class PublicUtils {
      * 
      */
     
-    public static File getCacheFileHandler(final Context c) { 
+    public static String getCachePath(final Context c) { 
 
-    	final String packageName = c.getPackageName();
-    	final File directory = c.getExternalCacheDir();
+    	//Get the file
+    	String path = ExternalCacheDirectory.getInstance( c ).getExternalCacheDirectory().toString();
     	
-    	if( directory.getPath().contains( packageName ) ) {
-    		
-    		return directory;
+    	//Append if needed
+    	if( !path.endsWith( "/" ) ) { path += "/"; }
     	
-    	} else {
-    		
-    		return new File( directory.getPath() + "/Android/data/" + packageName + "/cache/" );
+    	//Return it
+    	return path;
     	
-    	}
     }
 
 }

@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -93,7 +94,6 @@ public class PlatoonView extends TabActivity {
 	private TableRow cacheTableRow;
 	private FeedListAdapter feedListAdapter;
 	private PlatoonUserListAdapter platoonUserListAdapter;
-	private Bitmap platoonBadge;
 	private ImageView imageViewBadge;
 	private EditText fieldMessage;
 	
@@ -159,17 +159,12 @@ public class PlatoonView extends TabActivity {
     	
 	}        
 
-	public void initLayout() {
-		
-		//Eventually get a *cached* version instead    
-		new AsyncPlatoonRefresh(this, false, platoonData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ), true).execute();
-		
-	}
+	public void initLayout() {}
 	
-    public void reloadLayout() {
+    public void reloadLayout(boolean dialog) {
     	
     	//ASYNC!!!
-    	new AsyncPlatoonRefresh(this, true, platoonData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ), false).execute();
+    	new AsyncPlatoonRefresh(this, dialog, platoonData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
     	
     	
     }
@@ -226,16 +221,15 @@ public class PlatoonView extends TabActivity {
     	private ProgressDialog progressDialog;
     	private PlatoonData platoonData;
     	private long activeProfileId;
-    	private boolean hideDialog, loadImage;
+    	private boolean hideDialog;
     	
-    	public AsyncPlatoonRefresh(Context c, boolean f, PlatoonData pd, long pId, boolean lImg) {
+    	public AsyncPlatoonRefresh(Context c, boolean f, PlatoonData pd, long pId) {
     		
     		this.context = c;
     		this.hideDialog = f;
     		this.platoonData = pd;
     		this.progressDialog = null;
     		this.activeProfileId = pId;
-    		this.loadImage = lImg;
     		
     	}
     	
@@ -266,8 +260,7 @@ public class PlatoonView extends TabActivity {
 					context,
 					this.platoonData, 
 					sharedPreferences.getInt( Constants.SP_BL_NUM_FEED, Constants.DEFAULT_NUM_FEED ),
-					this.activeProfileId,
-					this.loadImage
+					this.activeProfileId
 					
 				);
 				
@@ -418,13 +411,16 @@ public class PlatoonView extends TabActivity {
     		
     	}
     	
-    	//Is the platoon badge null?
-    	if( data.hasImage() ) {
-    		
-    		//Set the properties
-    		imageViewBadge.setImageBitmap( platoonBadge = data.getImage() );
-    	
-    	}
+    	//Set the properties
+		imageViewBadge.setImageBitmap( 
+		
+			BitmapFactory.decodeFile(
+			
+				PublicUtils.getCachePath( this ) + data.getId() + ".jpeg"
+				
+			)
+				
+		);
     	
     	//Do we have a link?!
     	if( data.getWebsite() != null && !data.getWebsite().equals( "" ) ) {
@@ -541,9 +537,9 @@ public class PlatoonView extends TabActivity {
     			
     			((ImageView) cacheView.findViewById( R.id.image_avatar )).setImageBitmap( 
     				
-					WebsiteHandler.bitmapCache.get( 
-					
-						tempTopStats.getProfile().getGravatarHash()
+					BitmapFactory.decodeFile(
+							
+						PublicUtils.getCachePath( this ) + tempTopStats.getProfile().getGravatarHash() + ".png"
 							
 					) 
 	    				
@@ -796,7 +792,7 @@ public class PlatoonView extends TabActivity {
 		//Let's act!
 		if( item.getItemId() == R.id.option_reload ) {
 	
-			this.reloadLayout();
+			this.reloadLayout(true);
 			
 		} else if( item.getItemId() == R.id.option_back ) {
 			
@@ -844,7 +840,7 @@ public class PlatoonView extends TabActivity {
 	public void onResume() {
 		
 		super.onResume();
-		reloadLayout();
+		reloadLayout(false);
 		
 	}
 	
@@ -970,8 +966,7 @@ public class PlatoonView extends TabActivity {
 							this, 
 							true, 
 							platoonData,
-							sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ),
-							false
+							sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )
 							
 						)
 					

@@ -48,8 +48,8 @@ public final class Constants {
 	
 	//URLS for PROFILE
 	public static final String URL_FEED_POST = URL_MAIN + "wall/postmessage";
-	public static final String URL_PLATOON_IMAGE = URL_STATIC_CONTENT + "prod/emblems/320/";
-	public static final String URL_PLATOON_IMAGE_THUMBS = URL_STATIC_CONTENT + "prod/emblems/60/";
+	public static final String URL_PLATOON_IMAGE = URL_STATIC_CONTENT + "prod/emblems/320/{BADGE_PATH}";
+	public static final String URL_PLATOON_IMAGE_THUMBS = URL_STATIC_CONTENT + "prod/emblems/60/{BADGE_PATH}";
 	public static final String URL_FRIEND_REQUESTS = URL_MAIN + "friend/requestFriendship/{UID}/";
 	
 	//URLS for PLATOONS
@@ -164,6 +164,7 @@ public final class Constants {
 	
 	//Defaults
 	public static final int DEFAULT_AVATAR_SIZE = 52; 
+	public static final int DEFAULT_BADGE_SIZE = 320;
 	public static final int DEFAULT_CACHE_LIMIT = 25;
 	public static final int DEFAULT_NUM_FEED = 20;
 	

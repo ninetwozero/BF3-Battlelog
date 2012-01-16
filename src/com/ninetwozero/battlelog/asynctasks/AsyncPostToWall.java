@@ -64,10 +64,8 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 		if( result ) {
 
 			Toast.makeText( context, R.string.msg_feed_ok, Toast.LENGTH_SHORT).show();
-			
-			try { wait( 1000 ); } catch( Exception ex ) { ex.printStackTrace(); }
 			if( !isPlatoon ) { ((ProfileView) context).reloadLayout(); }
-			else { ((PlatoonView) context).reloadLayout(); }
+			else { ((PlatoonView) context).reloadLayout(true); }
 		
 		} else {
 		

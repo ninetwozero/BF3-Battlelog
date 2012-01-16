@@ -6,6 +6,12 @@
 		android:alphabeticShortcut="R"
 	/>
 	<item 
+		android:id="@+id/option_new" 
+		android:icon="@android:drawable/ic_menu_add" 
+		android:title="@string/info_xml_thread_new" 
+		android:alphabeticShortcut="N"
+	/>
+	<item 
 		android:id="@+id/option_back" 
 		android:icon="@android:drawable/ic_menu_revert" 
 		android:title="@string/info_xml_back" 
