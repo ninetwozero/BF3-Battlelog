@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import com.ninetwozero.battlelog.R;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -25,8 +24,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.Dashboard;
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
+import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
@@ -61,11 +63,8 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 				
 			} else {
 				
-				//Logging
-				Log.d(Constants.DEBUG_TAG, "The user isn't logged in. Let's login!");
-				
 				//Do the login
-				WebsiteHandler.doLogin( 
+				ProfileData profileData = WebsiteHandler.doLogin( 
 						
 					context, 
 					new PostData[] {
@@ -79,6 +78,9 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 					true 
 					
 				);
+				
+				//Did it work?
+				if( profileData != null ) { SessionKeeper.setProfileData(profileData); }
 				
 				//Restart the AsyncTask and return -1
 				new AsyncServiceTask(context).execute( arg0[0], arg0[1], arg0[2] );
@@ -122,12 +124,26 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 				);
 				PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 					
+				//So...
+				String text;
+				
+				if( results == 1 ) {
+					
+					text = context.getString( R.string.info_txt_notification_new );
+				
+				} else {
+					
+					text = context.getString( R.string.info_txt_notification_new_p ).replace("{num}", results + "");					
+					
+				}
+						
+				
 				//Set the ticker
 				battlelogNotification.tickerText =  context.getString( R.string.msg_notification );
 				battlelogNotification.setLatestEventInfo(
 						
 					context, 
-					"BF3 Battlelog - new notifications!", 
+					text,
 					context.getString( R.string.info_tap_notification ), 
 					contentIntent
 				
@@ -146,7 +162,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 				
 		} else if( results == -1 ) {
 			
-			Log.d(Constants.DEBUG_TAG, "User was not logged in - retrying.");
+			Log.d(Constants.DEBUG_TAG, "Trying to login...");
 			return;
 			
 		} else {

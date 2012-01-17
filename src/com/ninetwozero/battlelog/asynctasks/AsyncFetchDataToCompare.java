@@ -21,19 +21,20 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
 	private Context context;
 	private Activity origin;
 	private SharedPreferences sharedPreferences; 
-	//Data
-	ProfileData userData;
 	
+	//Data
+	private ProfileData playerOne, playerTwo;
 	//Error message
 	private String error;
 	
-	public AsyncFetchDataToCompare(Context c) {
+	public AsyncFetchDataToCompare(Context c, ProfileData p) {
 		
 		context = c;
 		origin = (Activity) context;
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences( context );
 		
-		userData = null;
+		playerOne = p;
+		playerTwo = null;
 		error = "";
 		
 	}
@@ -51,7 +52,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
 		try {
 				
 			//Post the world!
-			userData = WebsiteHandler.getProfileIdFromSearch(
+			playerTwo = WebsiteHandler.getProfileIdFromSearch(
 				
 				searchString, 
 				sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ) 
@@ -59,7 +60,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
 			);
 
 			//Did we get an actual user?
-			if( userData == null || userData.getPersonaId() == 0 ) { 
+			if( playerTwo == null || playerTwo.getPersonaId() == 0 ) { 
 				
 				//Persona
 				error = context.getString( R.string.msg_search_nouser ).replace( "{keyword}", searchString );
@@ -94,9 +95,14 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
 					CompareView.class
 					
 				).putExtra(
+					
+					"profile1",
+					playerOne
 						
-					"profile", 
-					userData	
+				).putExtra(
+						
+					"profile2", 
+					playerTwo	
 				
 				)
 				

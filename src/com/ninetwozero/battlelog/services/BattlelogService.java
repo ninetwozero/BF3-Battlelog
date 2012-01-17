@@ -3,6 +3,8 @@ package com.ninetwozero.battlelog.services;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.sf.andhsli.hotspotlogin.SimpleCrypto;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -74,21 +76,29 @@ public class BattlelogService extends Service {
 	    			
 	    			@Override
 	    			public void run() {
-	
-	    				new AsyncServiceTask(context).execute(
-	
-	    					BattlelogService.sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ),
-	    					BattlelogService.sharedPreferences.getString( Constants.SP_BL_EMAIL, "" ),
-	    					BattlelogService.sharedPreferences.getString( Constants.SP_BL_PASSWORD, "" )
+	    				
+	    				final String email = BattlelogService.sharedPreferences.getString( Constants.SP_BL_EMAIL, "" );
+	    				try {
 	    					
-	    				);
+	    					new AsyncServiceTask(context).execute(
+		
+		    					BattlelogService.sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ),
+		    					email,
+		    					SimpleCrypto.decrypt( email, BattlelogService.sharedPreferences.getString( Constants.SP_BL_PASSWORD, "" ) )
+		    					
+		    				);
 	
+	    				} catch( Exception ex ) {
+	    					
+	    					ex.printStackTrace();
+	    					
+	    				}
 	    				
 	    			}
 	    			
 	    		}, 
 	    		0, 
-	    		BattlelogService.sharedPreferences.getInt( Constants.SP_BL_INTERVAL_SERVICE, Constants.HOUR_IN_SECONDS )*1000
+	    		BattlelogService.sharedPreferences.getInt( Constants.SP_BL_INTERVAL_SERVICE, (Constants.MINUTE_IN_SECONDS) )*1000
 			);
 		
 		}

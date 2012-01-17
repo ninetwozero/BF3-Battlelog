@@ -79,6 +79,7 @@ import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class Dashboard extends TabActivity {
@@ -120,9 +121,6 @@ public class Dashboard extends TabActivity {
 	private AsyncCOMReload asyncComReload;
 	private AsyncLogout asyncLogout;
 	
-	//Misc
-	private static ProfileData profile;
-	
 	@Override
     public void onCreate(Bundle icicle) {
     
@@ -140,11 +138,11 @@ public class Dashboard extends TabActivity {
     	}
     	
     	//We should've gotten a profile
-    	if( Dashboard.profile == null ) {
+    	if( SessionKeeper.getProfileData() == null ) {
     		
     		if( getIntent().hasExtra( "myProfile" ) ) {
     			
-    			Dashboard.profile = (ProfileData) getIntent().getParcelableExtra( "myProfile" );
+    			SessionKeeper.setProfileData( (ProfileData) getIntent().getParcelableExtra( "myProfile" ) );
     			
     		} else {
     			
@@ -164,7 +162,16 @@ public class Dashboard extends TabActivity {
         notificationArray = new ArrayList<NotificationData>();
     	friendListData = new FriendListDataWrapper(null, null, null);
         
-        //Fix the tabs
+        //Setup COM & feed
+    	initActivity();
+        refreshFeed();
+        setupCOM();
+
+	}	
+	
+	public final void initActivity() {
+		
+		//Fix the tabs
     	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
     	cTabHost = (TabHost) findViewById(R.id.com_tabhost);
     	cTabHost.setup();
@@ -210,13 +217,9 @@ public class Dashboard extends TabActivity {
         	new DashboardItem(Constants.MENU_COMPARE, getString(R.string.label_compare_bs)),
         	new DashboardItem(Constants.MENU_FORUM, getString(R.string.label_forum))
         	
-        };
-        
-        //Setup COM & feed
-        refreshFeed();
-        setupCOM();
-
-	}	
+        };		
+		
+	}
 	
 	public final void setupHome() {
     	
@@ -452,7 +455,7 @@ public class Dashboard extends TabActivity {
 		if( listNotifications.getAdapter() == null ) {
 	
 			//Create a new NotificationListAdapter
-			notificationListAdapter = new NotificationListAdapter(this, items, layoutInflater, Dashboard.profile.getProfileId());
+			notificationListAdapter = new NotificationListAdapter(this, items, layoutInflater, SessionKeeper.getProfileData().getProfileId());
 			listNotifications.setAdapter( notificationListAdapter );
 				
 			//Do we have the onClick?
@@ -524,7 +527,7 @@ public class Dashboard extends TabActivity {
     		}
     		
     		//Do the async
-    		AsyncStatusUpdate asu = new AsyncStatusUpdate(this, new AsyncFeedRefresh(this, Dashboard.profile.getProfileId() ));
+    		AsyncStatusUpdate asu = new AsyncStatusUpdate(this, new AsyncFeedRefresh(this, SessionKeeper.getProfileData().getProfileId() ));
     		asu.execute( postDataArray );
     		return;
 			
@@ -566,6 +569,10 @@ public class Dashboard extends TabActivity {
 		} else if( item.getItemId() == R.id.option_logout ) {
 			
 			new AsyncLogout(this).execute();
+			
+		} else if( item.getItemId() == R.id.option_crash ) {
+			
+			int y = 1 / 0;
 			
 		}
 		
@@ -657,7 +664,7 @@ public class Dashboard extends TabActivity {
 					
 					if( !fieldUsername.getText().toString().equals( "" ) ) {
 						
-						new AsyncFetchDataToCompare(context).execute(fieldUsername.getText().toString());
+						new AsyncFetchDataToCompare(context, SessionKeeper.getProfileData()).execute(fieldUsername.getText().toString());
 					
 					} else {
 						
@@ -866,13 +873,13 @@ public class Dashboard extends TabActivity {
 	private void refreshFeed() {
 		
 		//Is it empty?
-		if( Dashboard.profile != null ) {
+		if( SessionKeeper.getProfileData() != null ) {
 
 			//Feed refresh!
 			asyncFeedRefresh = new AsyncFeedRefresh(
 				
 				context,
-				Dashboard.profile.getProfileId()
+				SessionKeeper.getProfileData().getProfileId()
 					
 			);
 			asyncFeedRefresh.execute();
@@ -1068,7 +1075,7 @@ public class Dashboard extends TabActivity {
 						).putExtra( 
 							
 							"profile1", 
-							Dashboard.profile
+							SessionKeeper.getProfileData()
 							
 						).putExtra( 
 								
@@ -1099,7 +1106,7 @@ public class Dashboard extends TabActivity {
 						new AsyncFeedRefresh(
 								
 							this, 
-							Dashboard.profile.getProfileId()
+							SessionKeeper.getProfileData().getProfileId()
 							
 						)
 					
@@ -1305,11 +1312,11 @@ public class Dashboard extends TabActivity {
     	
     	if ( id == Constants.MENU_UNLOCKS ) {
     		
-			startActivity( new Intent(this, UnlockView.class).putExtra( "profile", Dashboard.profile ) );
+			startActivity( new Intent(this, UnlockView.class).putExtra( "profile", SessionKeeper.getProfileData() ) );
 			 
 		} else if( id == Constants.MENU_ASSIGNMENTS ) {
 			
-			startActivity( new Intent(this, AssignmentView.class).putExtra( "profile", Dashboard.profile ) );
+			startActivity( new Intent(this, AssignmentView.class).putExtra( "profile", SessionKeeper.getProfileData() ) );
 			
 		} else if( id == Constants.MENU_SOLDIER ) {
 			
@@ -1323,7 +1330,7 @@ public class Dashboard extends TabActivity {
 			
 			startActivity( 
 					
-				new Intent( this,  ProfileView.class ).putExtra( "profile", Dashboard.profile )
+				new Intent( this,  ProfileView.class ).putExtra( "profile", SessionKeeper.getProfileData() )
 				
 			);
 		
@@ -1519,39 +1526,51 @@ public class Dashboard extends TabActivity {
     	super.onResume();
     	
     	//Let's see
-    	if( Dashboard.profile == null ) {
+    	if( SessionKeeper.getProfileData() == null ) {
     		
-    		Dashboard.profile = new ProfileData(
+    		SessionKeeper.setProfileData(
+    				
+    			new ProfileData(
 
-				sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
-				new String[] { sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ) },
-				new long[] { sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ) },
-				sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ),
-				new long[] { (long) sharedPreferences.getInt( Constants.SP_BL_PLATFORM_ID, 0 ) },
-				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
-			
-			);
+					sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
+					new String[] { sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ) },
+					new long[] { sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ) },
+					sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ),
+					new long[] { sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 0 ) },
+					sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
+				
+				)
+    			
+    		);
     		
     	}
     	
-    	switch( mTabHost.getCurrentTab() ) {
-			
-			case 0:
-				setupHome();
-				break;
+    	if( mTabHost == null ) {
+    	
+    		this.initActivity();    		
+    		
+    	} else {
+    		
+    		switch( mTabHost.getCurrentTab() ) {
 				
-			case 1:
-				setupFeed(feedArray);
-				break;
-				
-			default:
-				break;
-	
-		}
+				case 0:
+					setupHome();
+					break;
+					
+				case 1:
+					setupFeed(feedArray);
+					break;
+					
+				default:
+					break;
+		
+			}
 
+    	}
+    		
     }
     
-    public final static ProfileData getProfile() { return Dashboard.profile; }
+    public final static ProfileData getProfile() { return SessionKeeper.getProfileData(); }
     
 	public Dialog generateDialogContent(final Context context, final String username, final String content) {
 		

@@ -301,4 +301,6 @@
 	    <string name="info_dialog_threadpost">Post a reply</string>
 	    <string name="info_forum_newpost_true">The reply has been posted.</string>
 	    <string name="info_forum_newpost_false">The reply could not be posted.</string>
+	    <string name="info_txt_notification_new">BF3 Battlelog - {num} new notification!</string>
+	    <string name="info_txt_notification_new_p">BF3 Battlelog - {num} new notifications!</string>
 </resources>

@@ -24,6 +24,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -153,7 +154,7 @@ public class CompareView extends Activity {
     public void initLayout() {
     	
     	//ASYNC!!!
-    	new GetDataSelfAsync(this, new long[] { playerOne.getPersonaId(), playerTwo.getPersonaId() } ).execute(
+    	new GetDataSelfAsync(this).execute(
     		
     		playerOne,
     		playerTwo
@@ -188,6 +189,16 @@ public class CompareView extends Activity {
     	private ProfileData[] profileData;
     	private long[] profileIdArray;
     	
+    	public GetDataSelfAsync(Context c) {
+    		
+    		this.context = c;
+    		this.progressDialog = null;
+    		this.playerData1 = new HashMap<Long, PersonaStats>();
+    		this.playerData2 = new HashMap<Long, PersonaStats>();
+        	this.profileIdArray = null;
+        	
+    	}
+    	
     	public GetDataSelfAsync(Context c, long[] pIds) {
     		
     		this.context = c;
@@ -216,6 +227,9 @@ public class CompareView extends Activity {
 			try {
 				//Grab the profiles
 				profileData = arg0;
+				
+				//Let's store them
+				if( profileIdArray == null ) { profileIdArray = new long[] { profileData[0].getPersonaId(), profileData[1].getPersonaId() }; }
 				
 				//Grab the stats
 				this.playerData1 = WebsiteHandler.getStatsForUser( context, profileData[0] );
