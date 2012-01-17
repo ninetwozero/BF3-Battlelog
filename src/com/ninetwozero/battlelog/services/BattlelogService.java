@@ -98,7 +98,7 @@ public class BattlelogService extends Service {
 	    			
 	    		}, 
 	    		0, 
-	    		BattlelogService.sharedPreferences.getInt( Constants.SP_BL_INTERVAL_SERVICE, (Constants.MINUTE_IN_SECONDS) )*1000
+	    		BattlelogService.sharedPreferences.getInt( Constants.SP_BL_INTERVAL_SERVICE, (Constants.HOUR_IN_SECONDS/2) )*1000
 			);
 		
 		}
