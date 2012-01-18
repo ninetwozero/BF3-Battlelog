@@ -24,9 +24,7 @@
 		style="@style/StandardPopup"
 		android:minWidth="200dp"
 		android:minHeight="200dp"
-		android:paddingRight="5dp"
-		android:paddingBottom="5dp"
-		android:paddingLeft="5dp"
+		android:padding="10dp"
 	>
 		<ImageView
 		    android:id="@+id/image_assignment"
@@ -77,13 +75,13 @@
 		    android:layout_height="wrap_content"
 		 	android:id="@+id/wrap_rewards" 
 		    android:layout_below="@id/string100"  
+		    android:layout_marginTop="5dp"
 		>
 			<ImageView
 			    android:id="@+id/image_reward"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 				android:src="@drawable/assignment_01"
-			    android:layout_marginTop="5dp"
 				android:layout_centerHorizontal="true"
 			/>
 			    

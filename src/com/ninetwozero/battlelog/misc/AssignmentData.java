@@ -24,7 +24,7 @@ import com.ninetwozero.battlelog.R;
 public class AssignmentData implements Parcelable {
 
 	//Attributes
-	private int resourceId;
+	private int resourceId, unlockResourceId;
 	private String id, description, set;
 	private ArrayList<AssignmentData.Objective> objectives;
 	private ArrayList<AssignmentData.Dependency> dependencies;
@@ -33,12 +33,13 @@ public class AssignmentData implements Parcelable {
 	//Constructs
 	public AssignmentData(
 			
-		int rId, String id, String d, String s, 
+		int rId, int uId, String id, String d, String s, 
 		ArrayList<AssignmentData.Objective> c, ArrayList<AssignmentData.Dependency> dp, ArrayList<AssignmentData.Unlock> u
 		
 	) {
 		
 		this.resourceId = rId;
+		this.unlockResourceId = uId;
 		this.id = id;
 		this.description = d;
 		this.set = s;
@@ -65,6 +66,7 @@ public class AssignmentData implements Parcelable {
 	
 	//Getters
 	public int getResourceId() { return this.resourceId; }
+	public int getUnlockResourceId() { return this.unlockResourceId; }
 	public String getId() { return this.id; }
 	public String getDescription() { return this.description; }
 	public String getSet() { return this.set; }

@@ -33,8 +33,9 @@
             android:orientation="vertical"
           	android:configChanges="orientation"
           	android:windowSoftInputMode="stateHidden"
-        />
-        <activity
+          	android:launchMode="singleTask"       
+       />
+       <activity
             android:label="@string/app_name"
             android:name=".DebugActivity"
             android:orientation="vertical"

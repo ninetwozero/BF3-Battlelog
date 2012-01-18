@@ -169,7 +169,7 @@ public final class Constants {
 	public static final int DEFAULT_NUM_FEED = 20;
 	
 	//Assignments
-	public static final int[] ASSIGNMENT_RESOURCES = new int[] {
+	public static final int[] ASSIGNMENT_RESOURCES_SCHEMATICS = new int[] {
 
 		R.drawable.assignment_01,
 		R.drawable.assignment_02,
@@ -181,6 +181,21 @@ public final class Constants {
 		R.drawable.assignment_08,
 		R.drawable.assignment_09,
 		R.drawable.assignment_10
+		
+	};
+	
+	public static final int[] ASSIGNMENT_RESOURCES_UNLOCKS = new int[] {
+
+		R.drawable.assignment_01_u,
+		R.drawable.assignment_02_u,
+		R.drawable.assignment_03_u,
+		R.drawable.assignment_04_u,
+		R.drawable.assignment_05_u,
+		R.drawable.assignment_06_u,
+		R.drawable.assignment_07_u,
+		R.drawable.assignment_08_u,
+		R.drawable.assignment_09_u,
+		R.drawable.assignment_10_u
 		
 	};
 	

@@ -166,9 +166,10 @@ public class Dashboard extends TabActivity {
     	initActivity();
         refreshFeed();
         setupCOM();
+        preOpenElements(getIntent());
 
 	}	
-	
+
 	public final void initActivity() {
 		
 		//Fix the tabs
@@ -1606,5 +1607,18 @@ public class Dashboard extends TabActivity {
 		return builder.create();
 		
 	}
+	
+	private void preOpenElements( Intent intent ) {
+
+        //Do we need to open anything?
+        if( intent.hasExtra( "openTabId") && intent.hasExtra( "openCOMCenter" ) ) {
+        	
+        	slidingDrawer.open();
+        	cTabHost.setCurrentTab( intent.getIntExtra( "openTabId", 0 ) );
+        	
+        }
+		
+	}
+
        
 }

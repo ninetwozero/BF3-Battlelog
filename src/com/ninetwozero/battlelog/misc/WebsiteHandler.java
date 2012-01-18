@@ -2237,7 +2237,7 @@ public class WebsiteHandler {
 			for( int i = 0, max = missionLines.length(); i < max; i++ ) {
 				
 				//Let's see if we need to tell the dev
-				if( max > Constants.ASSIGNMENT_RESOURCES.length ) {
+				if( max > Constants.ASSIGNMENT_RESOURCES_SCHEMATICS.length ) {
 					
 					Toast.makeText(
 							
@@ -2335,8 +2335,9 @@ public class WebsiteHandler {
 					items.add( 
 					
 						new AssignmentData(
-							
-							Constants.ASSIGNMENT_RESOURCES[numCurrentAssignment],
+
+							Constants.ASSIGNMENT_RESOURCES_SCHEMATICS[numCurrentAssignment],
+							Constants.ASSIGNMENT_RESOURCES_UNLOCKS[numCurrentAssignment],
 							assignment.getString( "stringID" ),
 							assignment.getString( "descriptionID" ),
 							assignment.getString( "license" ),
@@ -3840,8 +3841,7 @@ public class WebsiteHandler {
 					);
 					
 					//Let's get it!
-					otherUserObject = tempSubItem.getJSONObject( "writerUser" );
-					tempGravatarHash = otherUserObject.getString( "gravatarMd5" );
+					tempGravatarHash = ownerObject.getString( "gravatarMd5" );
 					
 					//Temporary storage						
 					tempFeedItem = new FeedItem(
@@ -3855,9 +3855,9 @@ public class WebsiteHandler {
 						"",
 						currItem.getString("event"),
 						new String[] { 
-							
-							otherUserObject.getString( "username" ), 
-							ownerObject.getString("username") 
+							 
+							ownerObject.getString("username"),
+							null
 							
 						},
 						liked,

@@ -20,7 +20,7 @@ import com.ninetwozero.battlelog.misc.Constants;
 public class BattlelogService extends Service {
 	
 	//Attributes
-	private final Context CONTEXT = this;
+	private static Context CONTEXT = null;
 	private static SharedPreferences sharedPreferences;
 	private static Timer serviceTimer = null;
 	
@@ -43,7 +43,7 @@ public class BattlelogService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 	
 		Log.d(Constants.DEBUG_TAG, "Service has reached onStartCommand()");
-		start(CONTEXT);
+		start(this);
 		return Service.START_STICKY;
 		
 	}
@@ -59,12 +59,16 @@ public class BattlelogService extends Service {
 
 	public static void start(final Context context) {
 		
+		//Is the context null?
+		if( CONTEXT == null ) { CONTEXT = context; }
+		
+		//Is the timre null?
 		if( serviceTimer == null ) { 
 		
 			//SET THE SHARED PREFERENCES IF THEY'RE NOT SET
 			if( BattlelogService.sharedPreferences == null ) {
 				
-				BattlelogService.sharedPreferences = PreferenceManager.getDefaultSharedPreferences( context ); 
+				BattlelogService.sharedPreferences = PreferenceManager.getDefaultSharedPreferences( CONTEXT ); 
 				
 			}
 			
@@ -80,7 +84,7 @@ public class BattlelogService extends Service {
 	    				final String email = BattlelogService.sharedPreferences.getString( Constants.SP_BL_EMAIL, "" );
 	    				try {
 	    					
-	    					new AsyncServiceTask(context).execute(
+	    					new AsyncServiceTask(CONTEXT).execute(
 		
 		    					BattlelogService.sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ),
 		    					email,
@@ -105,6 +109,12 @@ public class BattlelogService extends Service {
 		
 	}
 
+	public static void restart() {
+		
+		BattlelogService.stop();
+		BattlelogService.start( CONTEXT );
+		
+	}
 	
 	public static void stop() { 
 		

@@ -26,12 +26,12 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -138,8 +138,18 @@ public class AssignmentView extends Activity {
 							
 			//Set the images
 			imageLeft.setImageResource( ass1.getResourceId() );
+			if( ass1.isCompleted() ) { 
+				
+				imageRight.setImageResource( ass2.getResourceId() );
+			
+			} else {
+				
+				imageRight.setImageResource( R.drawable.assignment_locked );
+			
+			}
+		
+			//Set the tags
 			imageLeft.setTag( i );
-			imageRight.setImageResource( ass1.isCompleted() ? ass2.getResourceId() : R.drawable.assignment_locked  );
 			imageRight.setTag( i+1 );
 
 			//Get the progress...
@@ -330,11 +340,13 @@ public class AssignmentView extends Activity {
         	
         }
         
-        ((ImageView) dialog.findViewById( R.id.image_reward )).setImageResource( assignment.getResourceId() );
+        ((ImageView) dialog.findViewById( R.id.image_reward )).setImageResource( assignment.getUnlockResourceId() );
         ((TextView) dialog.findViewById( R.id.text_rew_name )).setText( assignmentTitleData[1] );
-
-    	return builder.create();
-
+       
+    	AlertDialog theDialog = builder.create();
+        theDialog.setView( dialog, 0, 0, 0, 0);
+        
+        return theDialog;
     }
 	
 	public void onPopupClick(View v) {

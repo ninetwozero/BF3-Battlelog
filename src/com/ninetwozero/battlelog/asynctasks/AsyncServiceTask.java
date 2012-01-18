@@ -119,7 +119,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 						
 				).putExtra(
 						
-					"tabid", 1
+					"openTabid", 1
 					
 				);
 				PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
