@@ -4,7 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
-
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -61,50 +61,53 @@ public class BattlelogService extends Service {
 		
 		//Is the context null?
 		if( CONTEXT == null ) { CONTEXT = context; }
-		
-		//Is the timre null?
-		if( serviceTimer == null ) { 
-		
-			//SET THE SHARED PREFERENCES IF THEY'RE NOT SET
-			if( BattlelogService.sharedPreferences == null ) {
+		if( CONTEXT instanceof Service || CONTEXT instanceof Activity ) {
 				
-				BattlelogService.sharedPreferences = PreferenceManager.getDefaultSharedPreferences( CONTEXT ); 
+			//Is the timre null?
+			if( serviceTimer == null ) { 
+			
+				//SET THE SHARED PREFERENCES IF THEY'RE NOT SET
+				if( BattlelogService.sharedPreferences == null ) {
+					
+					BattlelogService.sharedPreferences = PreferenceManager.getDefaultSharedPreferences( CONTEXT ); 
+					
+				}
 				
+				//Init a new Timer 
+				serviceTimer = new Timer();
+				serviceTimer.scheduleAtFixedRate(
+		    			
+		    		new TimerTask() {
+		    			
+		    			@Override
+		    			public void run() {
+		    				
+		    				final String email = BattlelogService.sharedPreferences.getString( Constants.SP_BL_EMAIL, "" );
+		    				try {
+		    					
+		    					new AsyncServiceTask(CONTEXT).execute(
+			
+			    					BattlelogService.sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ),
+			    					email,
+			    					SimpleCrypto.decrypt( email, BattlelogService.sharedPreferences.getString( Constants.SP_BL_PASSWORD, "" ) )
+			    					
+			    				);
+		
+		    				} catch( Exception ex ) {
+		    					
+		    					ex.printStackTrace();
+		    					
+		    				}
+		    				
+		    			}
+		    			
+		    		}, 
+		    		0, 
+		    		BattlelogService.sharedPreferences.getInt( Constants.SP_BL_INTERVAL_SERVICE, (Constants.HOUR_IN_SECONDS/2) )*1000
+				);
+			
 			}
 			
-			//Init a new Timer 
-			serviceTimer = new Timer();
-			serviceTimer.scheduleAtFixedRate(
-	    			
-	    		new TimerTask() {
-	    			
-	    			@Override
-	    			public void run() {
-	    				
-	    				final String email = BattlelogService.sharedPreferences.getString( Constants.SP_BL_EMAIL, "" );
-	    				try {
-	    					
-	    					new AsyncServiceTask(CONTEXT).execute(
-		
-		    					BattlelogService.sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ),
-		    					email,
-		    					SimpleCrypto.decrypt( email, BattlelogService.sharedPreferences.getString( Constants.SP_BL_PASSWORD, "" ) )
-		    					
-		    				);
-	
-	    				} catch( Exception ex ) {
-	    					
-	    					ex.printStackTrace();
-	    					
-	    				}
-	    				
-	    			}
-	    			
-	    		}, 
-	    		0, 
-	    		BattlelogService.sharedPreferences.getInt( Constants.SP_BL_INTERVAL_SERVICE, (Constants.HOUR_IN_SECONDS/2) )*1000
-			);
-		
 		}
 		
 	}

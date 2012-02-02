@@ -25,15 +25,15 @@ import android.widget.TextView;
 
 import com.ninetwozero.battlelog.datatypes.DashboardItem;
 
-public class GridMenuAdapter extends BaseAdapter {
+public class DashboardMenuAdapter extends BaseAdapter {
 	
 	//Attributes
-	Context context;
-	DashboardItem[] items;
-	LayoutInflater layoutInflater;
+	private Context context;
+	private DashboardItem[] items;
+	private LayoutInflater layoutInflater;
 	
 	//Construct
-	public GridMenuAdapter(Context c, DashboardItem[] d, LayoutInflater l) {
+	public DashboardMenuAdapter(Context c, DashboardItem[] d, LayoutInflater l) {
 	
 		context = c;
 		items = d;
@@ -71,7 +71,7 @@ public class GridMenuAdapter extends BaseAdapter {
 		//Recycle
 		if ( convertView == null ) {
 
-			convertView = layoutInflater.inflate( R.layout.grid_item_dashboard_menu, parent, false );
+			convertView = layoutInflater.inflate( R.layout.list_item_dashboard_menu, parent, false );
 			
 		}
 

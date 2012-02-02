@@ -17,9 +17,11 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;

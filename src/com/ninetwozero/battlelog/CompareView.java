@@ -48,6 +48,7 @@ public class CompareView extends Activity {
 	private GetDataSelfAsync getDataAsync;
 	private ProfileData playerOne, playerTwo;
 	private long[] selectedPersonas;
+	private HashMap<Long, PersonaStats> playerData1, playerData2; 
 	
 	//These are the different fields
 	private final int fieldPersona[] = new int[] { R.id.string_persona_0, R.id.string_persona_1 };
@@ -184,8 +185,7 @@ public class CompareView extends Activity {
     
     	//Attributes
     	private Context context;
-    	private ProgressDialog progressDialog;
-    	private HashMap<Long, PersonaStats> playerData1, playerData2;
+    	private ProgressDialog progressDialog;/*TODO: WHY LOCAL? */
     	private ProfileData[] profileData;
     	private long[] profileIdArray;
     	
@@ -193,18 +193,15 @@ public class CompareView extends Activity {
     		
     		this.context = c;
     		this.progressDialog = null;
-    		this.playerData1 = new HashMap<Long, PersonaStats>();
-    		this.playerData2 = new HashMap<Long, PersonaStats>();
+    		if( playerData1 == null ) { playerData1 = new HashMap<Long, PersonaStats>(); }
+    		if( playerData2 == null ) { playerData2 = new HashMap<Long, PersonaStats>(); }
         	this.profileIdArray = null;
         	
     	}
     	
     	public GetDataSelfAsync(Context c, long[] pIds) {
     		
-    		this.context = c;
-    		this.progressDialog = null;
-    		this.playerData1 = new HashMap<Long, PersonaStats>();
-    		this.playerData2 = new HashMap<Long, PersonaStats>();
+    		this(c);
         	this.profileIdArray = pIds;
         	
     	}
@@ -232,10 +229,10 @@ public class CompareView extends Activity {
 				if( profileIdArray == null ) { profileIdArray = new long[] { profileData[0].getPersonaId(), profileData[1].getPersonaId() }; }
 				
 				//Grab the stats
-				this.playerData1 = WebsiteHandler.getStatsForUser( context, profileData[0] );
-				this.playerData2 = WebsiteHandler.getStatsForUser( context, profileData[1] );
+				playerData1 = WebsiteHandler.getStatsForUser( context, profileData[0] );
+				playerData2 = WebsiteHandler.getStatsForUser( context, profileData[1] );
 				
-				if( this.playerData1 != null && this.playerData2 != null ) { return true; }
+				if( playerData1 != null && playerData2 != null ) { return true; }
 				else { return false; }
 				
 			} catch ( WebsiteHandlerException ex ) {

@@ -24,7 +24,7 @@
 	
 	<TextView 
 	    style="@style/InfoHeading"
-	    android:id="@+id/text_name_platoon"
+	    android:id="@+id/text_name_platoon_tab4"
 	    android:text="Platoon feed"
 		android:padding="5dp"
 	/>
@@ -33,7 +33,7 @@
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:paddingBottom="10dp"
-	    android:layout_below="@id/text_name_platoon"
+	    android:layout_below="@id/text_name_platoon_tab4"
 	>  
 		<Button
 		    style="@style/RegularButton"

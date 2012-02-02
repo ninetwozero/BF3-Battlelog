@@ -22,7 +22,7 @@ import com.ninetwozero.battlelog.R;
 public class ProfileData implements Parcelable {
 
 	//Attributes
-	protected String accountName, gravatarHash;
+	protected String username, gravatarHash;
 	protected String[] personaName;
 	protected long profileId;
 	protected long[] personaId,  platformId;
@@ -30,9 +30,16 @@ public class ProfileData implements Parcelable {
 	
 	//Constructs
 	public ProfileData(Parcel in) { readFromParcel(in); }
-	public ProfileData(String an, String[] pn, long[] p, long pf, long[] n, String im) {
+	public ProfileData(String un, long pf) {
 		
-		this.accountName = an;
+		this.username = un;
+		this.profileId = pf;
+		
+	}
+	
+	public ProfileData(String un, String[] pn, long[] p, long pf, long[] n, String im) {
+		
+		this.username = un;
 		this.personaName = pn;
 		this.personaId = p;
 		this.profileId = pf;
@@ -65,7 +72,7 @@ public class ProfileData implements Parcelable {
 	}
 	
 	//Getters
-	public String getAccountName() { return this.accountName; }
+	public String getAccountName() { return this.username; }
 	public String getPersonaName() { return ( personaName.length > 0 ) ? this.personaName[0] : null; }
 	public String getPersonaName(int pos) { return ( (personaName.length-1) >= pos ) ? this.personaName[pos] : null; }
 	public String[] getPersonaNameArray() { return this.personaName; }
@@ -92,7 +99,7 @@ public class ProfileData implements Parcelable {
 		dest.writeLongArray( this.platformId );
 		
 		//Everything else
-		dest.writeString( this.accountName );
+		dest.writeString( this.username );
 		dest.writeLong( this.profileId );
 		dest.writeString( this.gravatarHash );
 		dest.writeInt( this.isOnline? 1 : 0 );
@@ -106,7 +113,7 @@ public class ProfileData implements Parcelable {
 		this.personaId = in.createLongArray();
 		this.platformId = in.createLongArray();
 		
-		this.accountName = in.readString();
+		this.username = in.readString();
 		this.profileId = in.readLong();
 		this.gravatarHash = in.readString();
 		this.isOnline = (in.readInt() == 1);

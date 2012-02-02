@@ -15,13 +15,13 @@ public class Board {
 		
 		//Attributes
 		private long forumId, categoryId, latestPostDate, latestPostThreadId, latestPostId;
-		private long numPosts, numThreads;
+		private long numPosts, numThreads, numPages;
 		private String title, description;
 		private String latestThreadTitle, latestPostUsername;
 		private ArrayList<Board.ThreadData> threads;
 		
 		//Constructs
-		public Forum( String fTitle, String fDescription, long nPosts, long nThreads, ArrayList<Board.ThreadData> aThreads ) {
+		public Forum( String fTitle, String fDescription, long nPosts, long nThreads, long nPages, ArrayList<Board.ThreadData> aThreads ) {
 			
 			this.forumId = 0;
 			this.categoryId = 0;
@@ -30,6 +30,7 @@ public class Board {
 			this.latestPostId = 0;
 			this.numPosts = nPosts;
 			this.numThreads = nThreads;
+			this.numPages = nPages;
 			
 			this.title = fTitle;
 			this.description = fDescription;
@@ -42,7 +43,7 @@ public class Board {
 				
 		public Forum(
 		
-			long fId, long cId, long lpDate, long lpTId, long lpId, long nPosts, long nThreads,
+			long fId, long cId, long lpDate, long lpTId, long lpId, long nPosts, long nThreads, long nPages,
 			String t, String d, String ltTitle, String lpUser
 				
 		) {
@@ -54,6 +55,7 @@ public class Board {
 			this.latestPostId = lpId;
 			this.numPosts = nPosts;
 			this.numThreads = nThreads;
+			this.numPages = nPages;
 			
 			this.title = t;
 			this.description = d;
@@ -73,6 +75,7 @@ public class Board {
 			this.latestPostId = in.readLong();
 			this.numPosts = in.readLong();
 			this.numThreads = in.readLong();
+			this.numPages = in.readLong();
 			
 			this.title = in.readString();
 			this.description = in.readString();
@@ -91,6 +94,7 @@ public class Board {
 		public long getLatestPostId() { return this.latestPostId; }
 		public long getNumPosts() { return this.numPosts; }
 		public long getNumThreads() { return this.numThreads; }
+		public long getNumPages() { return this.numPages; }
 		
 		public String getTitle() { return this.title; }
 		public String getDescription() { return this.description; }
@@ -112,6 +116,7 @@ public class Board {
 			dest.writeLong( this.latestPostId );
 			dest.writeLong( this.numPosts );
 			dest.writeLong( this.numThreads );
+			dest.writeLong( this.numPages );
 	
 			dest.writeString( this.title );
 			dest.writeString( this.description );
@@ -134,9 +139,10 @@ public class Board {
 	public static class ThreadData implements Parcelable {
 		
 		//Attributes
-		private long threadId, date, lastPostDate, lastPostUserId, ownerId;
+		private long threadId, date, lastPostDate;
 		private int numOfficialPosts, numPosts, numCurrentPage, numTotalPages;
-		private String title, lastPostUsername, owner;
+		private String title;
+		private ProfileData owner, lastPoster;
 		private boolean sticky, locked;
 		private boolean censorPosts, deletePosts, editPosts, admin, postOfficial, viewLatestPosts, viewPostHistory;
 		private ArrayList<Board.PostData> posts;
@@ -148,8 +154,6 @@ public class Board {
 			this.threadId = in.readLong();
 			this.date = in.readLong();
 			this.lastPostDate = in.readLong();
-			this.lastPostUserId = in.readLong();
-			this.ownerId = in.readLong();
 			
 			this.numOfficialPosts = in.readInt();
 			this.numPosts = in.readInt();
@@ -157,8 +161,9 @@ public class Board {
 			this.numTotalPages = in.readInt();
 			
 			this.title = in.readString();
-			this.lastPostUsername = in.readString();
-			this.owner = in.readString();
+			
+			this.owner = in.readParcelable(ProfileData.class.getClassLoader());
+			this.lastPoster = in.readParcelable(ProfileData.class.getClassLoader());
 		
 			this.sticky = ( in.readInt() == 1 );
 			this.locked = ( in.readInt() == 1 );
@@ -177,9 +182,10 @@ public class Board {
 		
 		public ThreadData(
 		
-			long tId, long tDate, long lpDate, long lpUId, long oId,
+			long tId, long tDate, long lpDate,
 			int nOffPosts, int nPosts,
-			String t, String lpUser, String oName,
+			String t,
+			ProfileData o, ProfileData lp,
 			boolean st, boolean lo
 		
 		) {
@@ -187,8 +193,6 @@ public class Board {
 			this.threadId = tId;
 			this.date = tDate;
 			this.lastPostDate = lpDate;
-			this.lastPostUserId = lpUId;
-			this.ownerId = oId;
 			
 			this.numOfficialPosts = nOffPosts;
 			this.numPosts = nPosts;
@@ -196,9 +200,10 @@ public class Board {
 			this.numTotalPages = 0;
 			
 			this.title = t;
-			this.lastPostUsername = lpUser;
-			this.owner = oName;
-		
+
+			this.owner = o;
+			this.lastPoster = lp;
+			
 			this.sticky = st;
 			this.locked = lo;
 			
@@ -216,9 +221,10 @@ public class Board {
 		
 		public ThreadData(
 				
-			long tId, long tDate, long lpDate, long lpUId, long oId,
+			long tId, long tDate, long lpDate,
 			int nOffPosts, int nPosts, int nCurrPage, int nPages,
-			String t, String lpUser, String oName,
+			String t,
+			ProfileData o, ProfileData lp,
 			boolean st, boolean lo,
 			boolean cePosts, boolean ccPosts, boolean cdPosts, boolean cpOfficial, 
 			boolean cvlPosts, boolean cvpHistory, boolean ad, 
@@ -229,8 +235,6 @@ public class Board {
 			this.threadId = tId;
 			this.date = tDate;
 			this.lastPostDate = lpDate;
-			this.lastPostUserId = lpUId;
-			this.ownerId = oId;
 			
 			this.numOfficialPosts = nOffPosts;
 			this.numPosts = nPosts;
@@ -238,8 +242,9 @@ public class Board {
 			this.numTotalPages = nPages;
 			
 			this.title = t;
-			this.lastPostUsername = lpUser;
-			this.owner = oName;
+
+			this.owner = o;
+			this.lastPoster = lp;
 		
 			this.sticky = st;
 			this.locked = lo;
@@ -260,15 +265,16 @@ public class Board {
 		public long getThreadId() { return this.threadId; }
 		public long getDate() { return this.date; }
 		public long getLastPostDate() { return this.lastPostDate; }
-		public long getLastPostUserId() { return this.lastPostUserId; }
-		public long getOwnerId() { return this.ownerId; }
 		
 		public int getNumOfficialPosts() { return this.numOfficialPosts; }
 		public int getNumPosts() { return this.numPosts + this.numOfficialPosts; }
+		public int getNumCurrentPage() { return this.numCurrentPage; }
+		public int getNumPages() { return this.numTotalPages; }
 
 		public String getTitle() { return this.title; }
-		public String getLastPostUsername() { return this.lastPostUsername; }
-		public String getOwner() { return this.owner; }
+		
+		public ProfileData getOwner() { return this.owner; }
+		public ProfileData getLastPoster() { return this.lastPoster; }
 	
 		public boolean isSticky() { return this.sticky; }
 		public boolean isLocked() { return this.locked; }
@@ -294,8 +300,6 @@ public class Board {
 			dest.writeLong( this.threadId );
 			dest.writeLong( this.date );
 			dest.writeLong( this.lastPostDate );
-			dest.writeLong( this.lastPostUserId );
-			dest.writeLong( this.ownerId );
 		
 			dest.writeInt( this.numOfficialPosts );
 			dest.writeInt( this.numPosts );
@@ -303,8 +307,9 @@ public class Board {
 			dest.writeInt( this.numTotalPages );
 			
 			dest.writeString( this.title );
-			dest.writeString( this.lastPostUsername );
-			dest.writeString( this.owner );
+			
+			dest.writeParcelable( this.owner, flags );
+			dest.writeParcelable( this.lastPoster, flags );
 		
 			dest.writeInt( this.sticky ? 1 : 0 );
 			dest.writeInt( this.locked ? 1 : 0 );
@@ -336,16 +341,18 @@ public class Board {
 	public static class PostData implements Parcelable {
 		
 		//Attributes
-		private long postId, date, userId, threadId;
-		private String username, content;
+		private long postId, date, threadId;
+		private ProfileData profileData;
+		private String content;
 		private int numReports;
 		private boolean censored, official;
 		
 		//Construct
 		public PostData( 
 				
-			long pId, long d, long uId, long thId,
-			String uName, String c,
+			long pId, long d, long thId,
+			ProfileData p,
+			String c,
 			int cReports,
 			boolean iCensored, boolean iOfficial
 			
@@ -353,10 +360,10 @@ public class Board {
 			
 			this.postId = pId;
 			this.date = d;
-			this.userId = uId;
 			this.threadId = thId;
+
+			this.profileData = p;
 			
-			this.username = uName;
 			this.content = c;
 			
 			this.numReports = cReports;
@@ -370,10 +377,10 @@ public class Board {
 			
 			this.postId = in.readLong();
 			this.date = in.readLong();
-			this.userId = in.readLong();
 			this.threadId = in.readLong();
+
+			this.profileData = in.readParcelable( ProfileData.class.getClassLoader() );
 			
-			this.username = in.readString();
 			this.content = in.readString();
 			
 			this.numReports = in.readInt();
@@ -386,10 +393,9 @@ public class Board {
 		//Getters
 		public long getPostId() { return this.postId; }
 		public long getDate() { return this.date; }
-		public long getUserId() { return this.userId; }
 		public long getThreadId() { return this.threadId; }
 		
-		public String getUsername() { return this.username; }
+		public ProfileData getProfileData() { return this.profileData; }
 		public String getContent() { return this.content; }
 		
 		public int getNumReports() { return this.numReports; }
@@ -405,10 +411,10 @@ public class Board {
 
 			dest.writeLong( this.postId );
 			dest.writeLong( this.date );
-			dest.writeLong( this.userId );
 			dest.writeLong( this.threadId );
 			
-			dest.writeString( this.username );
+			dest.writeParcelable( this.profileData, flags );
+			
 			dest.writeString( this.content );
 			
 			dest.writeInt( this.numReports );
@@ -426,8 +432,96 @@ public class Board {
 		};
 		
 		@Override
-		public String toString() { return this.username + ":" + this.content; }
+		public String toString() { return this.profileData.getAccountName() + ":" + this.content; }
 		
 	}	
+	
+	public static class SearchResult implements Parcelable {
+		
+		//Attributes
+		private long threadId, date;
+		private String title;
+		private ProfileData owner;
+		private boolean sticky, official;
+			
+		//Construct
+		public SearchResult( String t ) { this.title = t; }
+		public SearchResult( Parcel in ) { 
+			
+			this.threadId = in.readLong();
+			this.date = in.readLong();
+		
+			this.title = in.readString();
+			
+			this.owner = in.readParcelable(ProfileData.class.getClassLoader());
+			
+			this.sticky = ( in.readInt() == 1 );
+			this.official = ( in.readInt() == 1 );
+			
+		}
+		
+		public SearchResult(
+		
+			long tId, long tDate,
+			String t,
+			ProfileData o,
+			boolean st, boolean of
+		
+		) {
+				
+			this.threadId = tId;
+			this.date = tDate;
+			
+			this.title = t;
+
+			this.owner = o;
+			
+			this.sticky = st;
+			this.official = of;
+			
+		}
+
+		//Getters
+		public long getThreadId() { return this.threadId; }
+		public long getDate() { return this.date; }
+		
+
+		public String getTitle() { return this.title; }
+		
+		public ProfileData getOwner() { return this.owner; }
+	
+		public boolean isSticky() { return this.sticky; }
+		public boolean isOfficial() { return this.official; }
+		
+
+		@Override
+		public int describeContents() { return 0; }
+
+		@Override
+		public void writeToParcel( Parcel dest, int flags ) {
+
+			dest.writeLong( this.threadId );
+			dest.writeLong( this.date );
+			
+			dest.writeString( this.title );
+			
+			dest.writeParcelable( this.owner, flags );
+		
+			dest.writeInt( this.sticky ? 1 : 0 );
+			dest.writeInt( this.official ? 1 : 0 );
+			
+		}
+		
+		public static final Parcelable.Creator<Board.SearchResult> CREATOR = new Parcelable.Creator<Board.SearchResult>() {
+			
+			public Board.SearchResult createFromParcel(Parcel in) { return new Board.SearchResult(in); }
+	        public Board.SearchResult[] newArray(int size) { return new Board.SearchResult[size]; }
+		
+		};
+		
+		@Override
+		public String toString() { return this.owner + ":" + this.title; }
+	
+	}
 	
 }

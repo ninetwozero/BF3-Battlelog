@@ -13,7 +13,7 @@
 	<TextView 
 	    style="@style/InfoHeading"
 	    android:id="@+id/feed_title"
-	    android:text="@string/label_members"
+	    android:text="@string/label_own_soldiermbers"
 		android:padding="5dp"
 	/>	
 	<ListView

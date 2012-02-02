@@ -32,11 +32,11 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class PlatoonListAdapter extends BaseAdapter {
 	
 	//Attributes
-	Context context;
-	ArrayList<PlatoonData> platoonArray;
-	LayoutInflater layoutInflater;
-	String tempStatus;
-	TextView textPersona, textStatus;
+	private Context context;
+	private ArrayList<PlatoonData> platoonArray;
+	private LayoutInflater layoutInflater;
+	private String tempStatus;
+	private TextView textPersona, textStatus;
 	
 	//Construct
 	public PlatoonListAdapter(Context c, ArrayList<PlatoonData> p, LayoutInflater l) {

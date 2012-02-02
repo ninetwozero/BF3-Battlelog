@@ -116,7 +116,7 @@ public class ThreadPostListAdapter extends BaseAdapter {
 				).replace(
 				
 					"{user}",
-					currentItem.getUsername()
+					currentItem.getProfileData().getAccountName()
 						
 				)
 					
@@ -132,11 +132,18 @@ public class ThreadPostListAdapter extends BaseAdapter {
 	
 	}
 	
-	public void setItemArray(ArrayList<Board.PostData> array) {
+	public void set(ArrayList<Board.PostData> array) {
 		
 		this.itemArray = array;
-		this.notifyDataSetInvalidated();
+		this.notifyDataSetChanged();
 		
+	}
+	
+	public void add(ArrayList<Board.PostData> array) {
+	
+		this.itemArray.addAll( array );
+		this.notifyDataSetChanged();
+	
 	}
 	
 }

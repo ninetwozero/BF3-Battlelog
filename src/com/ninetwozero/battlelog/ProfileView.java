@@ -30,7 +30,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -42,7 +41,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,9 +55,9 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
+import com.ninetwozero.battlelog.asynctasks.AsyncFriendRemove;
 import com.ninetwozero.battlelog.asynctasks.AsyncFriendRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
-import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
@@ -71,6 +69,7 @@ import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class ProfileView extends TabActivity {
@@ -109,24 +108,7 @@ public class ProfileView extends TabActivity {
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         
     	//Get the intent
-        if( !getIntent().hasExtra( "profile" ) ) {
-        	
-        	profileData = new ProfileData(
-
-        		this.sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
-        		this.sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
-    			this.sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ),
-    			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-    			this.sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
-				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
-    		
-    		);
-        	
-        } else {
-        	
-        	profileData = (ProfileData) getIntent().getParcelableExtra( "profile" );
-        	
-        }
+        if( getIntent().hasExtra( "profile" ) ) { profileData = (ProfileData) getIntent().getParcelableExtra( "profile" ); }
         
         //Is the profileData null?!
         if( profileData == null || profileData.getProfileId() == 0 ) { finish(); return; }
@@ -164,14 +146,18 @@ public class ProfileView extends TabActivity {
 	public void initLayout() {
 		
 		//Get a *cached* version instead    
-		new AsyncProfileCacheLoad(CONTEXT).execute();
+		if( profileInformation == null || personaStats == null ) { 
+			
+			new AsyncProfileCacheLoad(CONTEXT).execute();
+		
+		}
 		
 	}
 	
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new AsyncProfileRefresh(CONTEXT, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
+    	new AsyncProfileRefresh(CONTEXT, SessionKeeper.getProfileData().getProfileId()).execute();
     	
     	
     }
@@ -338,12 +324,12 @@ public class ProfileView extends TabActivity {
 				}
 			
 				//Siiiiiiiiilent refresh
-				new AsyncProfileRefresh(CONTEXT, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ) ).execute();	
+				new AsyncProfileRefresh(CONTEXT, SessionKeeper.getProfileData().getProfileId() ).execute();	
 				if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
 			
 			} else {
 
-				new AsyncProfileRefresh(CONTEXT, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ), progressDialog).execute();
+				new AsyncProfileRefresh(CONTEXT, SessionKeeper.getProfileData().getProfileId(), progressDialog).execute();
 			
 			}
 	        
@@ -741,7 +727,7 @@ public class ProfileView extends TabActivity {
 							final FeedItem currItem = (FeedItem) a.getItemAtPosition( pos );
 							if( !currItem.getContent().equals( "" ) ) {
 								
-								generateDialogContent(CONTEXT, currItem.getUsername()[0], currItem.getContent()).show();
+								generateDialogContent(CONTEXT, currItem.getProfile(0).getAccountName(), currItem.getContent()).show();
 								
 							}
 							
@@ -779,7 +765,7 @@ public class ProfileView extends TabActivity {
     	if( profileInformation == null ) { return super.onPrepareOptionsMenu( menu ); }
     	
     	//Our own profile, no need to show the "extra" buttons
-    	if( profileData.getProfileId() == sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ) ) {
+    	if( profileData.getProfileId() == SessionKeeper.getProfileData().getProfileId() ) {
 
 			menu.removeItem( R.id.option_friendadd );
 			menu.removeItem( R.id.option_frienddel );
@@ -864,6 +850,19 @@ public class ProfileView extends TabActivity {
 				
 			
 		} else if( item.getItemId() == R.id.option_frienddel ) {
+			
+			new AsyncFriendRemove(this, profileData.getProfileId()).execute( 
+					
+				sharedPreferences.getString( 
+						
+					Constants.SP_BL_CHECKSUM, 
+					"" 
+				)
+			
+			);
+				
+			
+		} else if( item.getItemId() == R.id.option_frienddel ) {
 		
 			Toast.makeText( this, R.string.msg_unimplemented, Toast.LENGTH_SHORT).show();
 		
@@ -934,7 +933,7 @@ public class ProfileView extends TabActivity {
 			menu.add( 0, 0, 0, R.string.label_unhooah);
 			
 		}
-		menu.add( 0, 1, 0, R.string.label_comment_view);
+		menu.add( 0, 1, 0, R.string.label_single_post_view);
 
 		return;
 	
@@ -963,6 +962,9 @@ public class ProfileView extends TabActivity {
 			//Divide & conquer 
 			if( item.getGroupId() == 0 ) {
 				
+				//Grab the data
+				FeedItem feedItem = (FeedItem) info.targetView.getTag();
+				
 				//REQUESTS
 				if( item.getItemId() == 0 ) {
 						
@@ -971,11 +973,11 @@ public class ProfileView extends TabActivity {
 						this, 
 						info.id, 
 						false,
-						( (FeedItem)info.targetView.getTag()).isLiked(),
+						feedItem.isLiked(),
 						new AsyncProfileRefresh(
 								
 							this,
-							sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )
+							SessionKeeper.getProfileData().getProfileId()
 							
 						)
 					
@@ -998,18 +1000,13 @@ public class ProfileView extends TabActivity {
 						new Intent(
 								
 							this, 
-							CommentView.class
+							SinglePostView.class
 							
 						).putExtra(
 								
-							"comments", 
-							(ArrayList<CommentData>) ((FeedItem) info.targetView.getTag()).getComments()
-					
-						).putExtra( 
-
-							"postId", 
-							((FeedItem) info.targetView.getTag()).getId()
-							
+							"feedItem",
+							feedItem 
+								
 						).putExtra(
 								
 							"isFriend",
@@ -1106,8 +1103,10 @@ public class ProfileView extends TabActivity {
 			
 		);
 		
-		//CREATE
-		return builder.create();
+		//Padding fix
+		AlertDialog theDialog = builder.create();
+	    theDialog.setView( layout, 0, 0, 0, 0);
+	    return theDialog;
 		
 	}
 	
@@ -1147,4 +1146,5 @@ public class ProfileView extends TabActivity {
 		return builder.create();
 		
 	}
+
 }

@@ -29,11 +29,11 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 public class FriendListAdapter extends BaseAdapter {
 	
 	//Attributes
-	Context context;
-	ArrayList<ProfileData> profileArray;
-	LayoutInflater layoutInflater;
-	String tempStatus;
-	TextView textUser, textStatus;
+	private Context context;
+	private ArrayList<ProfileData> profileArray;
+	private LayoutInflater layoutInflater;
+	private String tempStatus;
+	private TextView textUser, textStatus;
 	
 	//Construct
 	public FriendListAdapter(Context c, ArrayList<ProfileData> p, LayoutInflater l) {

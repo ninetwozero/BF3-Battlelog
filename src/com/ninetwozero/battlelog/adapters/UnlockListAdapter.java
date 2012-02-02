@@ -30,17 +30,17 @@ import com.ninetwozero.battlelog.datatypes.UnlockData;
 public class UnlockListAdapter extends BaseAdapter {
 	
 	//Attributes
-	Context context;
-	ArrayList<UnlockData> unlockArray;
-	LayoutInflater layoutInflater;
-	String tempStatus;
-	ProgressBar progressBar;
+	private Context context;
+	private ArrayList<UnlockData> dataArray;
+	private LayoutInflater layoutInflater;
+	private String tempStatus;
+	private ProgressBar progressBar;
 	
 	//Construct
 	public UnlockListAdapter(Context c, ArrayList<UnlockData> u, LayoutInflater l) {
 	
 		context = c;
-		unlockArray = u;
+		dataArray = u;
 		layoutInflater = l;
 		
 	}
@@ -48,14 +48,14 @@ public class UnlockListAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 
-		return ( unlockArray != null )? unlockArray.size() : 0;
+		return ( dataArray != null )? dataArray.size() : 0;
 		
 	}
 
 	@Override
 	public UnlockData getItem( int position ) {
 
-		return unlockArray.get( position );
+		return dataArray.get( position );
 
 	}
 
@@ -124,6 +124,13 @@ public class UnlockListAdapter extends BaseAdapter {
 				return R.color.kit_general;
 			
 		}
+		
+	}
+
+	public void setDataArray( ArrayList<UnlockData> data ) {
+
+		//Let's do this
+		this.dataArray = data;
 		
 	}
 	

@@ -106,7 +106,8 @@ public class UnlockData {
 			
 		} else if( this.type.equals( "vehicle+" ) ) {
 			
-			return getParent() + " " + getTitle();
+//			return getParent() + " " + getTitle();
+			return getTitle();
 			
 		} else if( this.type.equals( "kit+" ) ) {
 			

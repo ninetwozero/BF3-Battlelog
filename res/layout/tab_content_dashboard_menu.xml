@@ -12,21 +12,58 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
  -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
 	android:background="@drawable/bg_bf3_main"
 	android:padding="10dp"
 >
-	<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:id="@+id/grid_menu"
-	    android:layout_width="220dp"
-	    android:columnWidth="110dp"
-	    android:layout_height="wrap_content"
-	    android:numColumns="2"
-	    android:layout_centerInParent="true"
-	    android:verticalSpacing="10dp"
-	    android:horizontalSpacing="10dp"
-	    android:listSelector="@android:color/transparent"
-	/>
-</RelativeLayout>
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+		android:gravity="center"
+	>
+		<LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:gravity="center"
+		>
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_self"
+			    android:text="@string/label_own_soldier"
+			/>
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_platoons"
+			    android:text="@string/label_own_platoon"
+			/>
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_assignments"
+			    android:text="@string/label_assignments"
+			/>
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_unlocks"
+			    android:text="@string/label_unlocks"
+			/>
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_compare"
+			    android:text="@string/label_compare_bs"
+			/>
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_search"
+			    android:text="@string/label_search"
+			/>
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_forum"
+			    android:text="@string/label_forum"
+			/>
+		</LinearLayout>
+	</LinearLayout>
+</ScrollView>

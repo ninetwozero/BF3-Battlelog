@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+   	android:padding="10dp" 
+>
+	<Button
+	    android:id="@+id/text_title"
+	    android:layout_width="fill_parent"
+	    android:layout_height="50dp"
+	    android:gravity="center"
+	    android:text="@string/label_compare_bs"
+	    android:textSize="20sp"
+	    android:layout_centerInParent="true"
+	    android:textColor="#000000"
+		android:background="@drawable/button_orange"
+		android:onClick="onMenuClick"
+		android:focusable="true"
+		android:focusableInTouchMode="true"
+	/>	
+</RelativeLayout>

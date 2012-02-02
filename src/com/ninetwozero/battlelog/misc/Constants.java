@@ -47,10 +47,13 @@ public final class Constants {
 	public static final String URL_CHAT_SETACTIVE = URL_MAIN + "comcenter/setActive/";
 	
 	//URLS for PROFILE
+	public static final String URL_FEED_SINGLE = URL_MAIN + "feed/show/{POST_ID}/";
 	public static final String URL_FEED_POST = URL_MAIN + "wall/postmessage";
 	public static final String URL_PLATOON_IMAGE = URL_STATIC_CONTENT + "prod/emblems/320/{BADGE_PATH}";
 	public static final String URL_PLATOON_IMAGE_THUMBS = URL_STATIC_CONTENT + "prod/emblems/60/{BADGE_PATH}";
 	public static final String URL_FRIEND_REQUESTS = URL_MAIN + "friend/requestFriendship/{UID}/";
+	public static final String URL_FRIEND_DELETE = URL_MAIN + "friend/removeFriend/{UID}/";
+	
 	
 	//URLS for PLATOONS
 	public static final String URL_PLATOON = URL_MAIN + "platoon/{PLATOON_ID}/";
@@ -58,10 +61,13 @@ public final class Constants {
 	public static final String URL_PLATOON_MEMBERS = URL_MAIN + "platoon/{PLATOON_ID}/listmembers/";
 	public static final String URL_PLATOON_STATS = URL_MAIN + "platoon/platoonMemberStats/{PLATOON_ID}/2/{PLATFORM_ID}/";
 	public static final String URL_PLATOON_PROMOTE = URL_MAIN + "platoon/promotemember/{PLATOON_ID}/{UID}/";
+	public static final String URL_PLATOON_DEMOTE = URL_MAIN + "platoon/demotemember/{PLATOON_ID}/{UID}/";
 	public static final String URL_PLATOON_APPLY = URL_MAIN + "platoon/applyformembership/";
 	public static final String URL_PLATOON_RESPOND = URL_MAIN + "platoon/applyingactions/{PLATOON_ID}/";
 	public static final String URL_PLATOON_LEAVE = URL_MAIN + "platoon/leave/";
+	public static final String URL_PLATOON_KICK = URL_MAIN + "platoon/kickmember/{PLATOON_ID}/{UID}/";
 	public static final String URL_PLATOON_FEED = URL_MAIN + "feed/platoonevents/{PLATOON_ID}/?start={NUMSTART}";
+	public static final String URL_PLATOON_INVITE = URL_MAIN + "platoon/invitemember/";
 	
 	//URLS for FEED
 	public static final String URL_FEED_REPORT = URL_MAIN + "viewcontent/reportFeedItemAbuse/{POST_ID}/0/"; /* TODO */
@@ -92,12 +98,12 @@ public final class Constants {
 	
 	//URL to FORUM
 	public static final String URL_FORUM_LIST = URL_MAIN + "forum/";
-	public static final String URL_FORUM_FORUM = URL_FORUM_LIST + "view/{FORUM_ID}/";
-	public static final String URL_FORUM_THREAD = URL_FORUM_LIST + "threadview/{THREAD_ID}/";
+	public static final String URL_FORUM_FORUM = URL_FORUM_LIST + "view/{FORUM_ID}/{PAGE}/";
+	public static final String URL_FORUM_THREAD = URL_FORUM_LIST + "threadview/{THREAD_ID}/{PAGE}/";
 	public static final String URL_FORUM_POST = URL_FORUM_LIST + "createpost/{THREAD_ID}/";
 	public static final String URL_FORUM_SIMILAR = URL_FORUM_LIST + "dofindsimilar?title={title}&body={body}";
-	public static final String URL_FORUM_NEW = URL_FORUM_LIST + "createthread/{FORUM_ID}/";	
-	//http://battlelog.battlefield.com/bf3/en/forum/createthread/2832654624697920750/
+	public static final String URL_FORUM_NEW = URL_FORUM_LIST + "createthread/{FORUM_ID}/";
+	public static final String URL_FORUM_SEARCH = URL_FORUM_LIST + "dosearch/?q={SEARCH_STRING}&snippet=text&fetch=threadId%2CforumId%2Ctitle%2Ctimestamp";
 	
 	//Fields needed for the posts fields
 	public static final String[] FIELD_NAMES_LOGIN = new String[] {"email", "password", "redirect", "submit"};
@@ -114,9 +120,12 @@ public final class Constants {
 
 	public static final String[] FIELD_NAMES_PLATOON_APPLY = new String[] { "platoonId", "post-check-sum" };
 	public static final String[] FIELD_VALUES_PLATOON_APPLY = new String[] { null, null };
-	
+
 	public static final String[] FIELD_NAMES_PLATOON_RESPOND = new String[] { "apply-action", "userIds[]", "post-check-sum", "accept", "deny" };
 	public static final String[] FIELD_VALUES_PLATOON_RESPOND = new String[] { "", null, null, "accept", "deny" };
+	
+	public static final String[] FIELD_NAMES_PLATOON_INVITE = new String[] { "platoonId", "post-check-sum", "userIds[]"};
+	public static final String[] FIELD_VALUES_PLATOON_INVITE = new String[] { null, null, null };
 	
 	public static final String[] FIELD_NAMES_PLATOON_LEAVE = new String[] { "platoonId", "userId", "post-check-sum" };
 	public static final String[] FIELD_VALUES_PLATOON_LEAVE = new String[] { null, null, null };
@@ -146,12 +155,35 @@ public final class Constants {
 	public static final String ELEMENT_STATUS_OK = "";
 	public static final String ELEMENT_STATUS_CHECKSUM = "<input type=\"hidden\" name=\"post-check-sum\" value=\"";
 	
+	public static final String PATTERN_POST_SINGLE_ID = "<li id=\"feed-item-([0-9]+)\" class=\"feed-single-item feed-no-border\">";
+	public static final String PATTERN_POST_SINGLE_UID = "<div rel=\"([0-9]+)\" class=\"base-avatar-container base-avatar-size-medium\">";
+	public static final String PATTERN_POST_SINGLE_USERNAME = "<a href=\"/bf3/user/([^/]+)/\" class=\"base-avatar-status-overlay";
+	public static final String PATTERN_POST_SINGLE_GRAVATAR = "<img src=\"http://www.gravatar.com/avatar/([^\\?]+)";
+	public static final String PATTERN_POST_SINGLE_TITLE = "<a class=\"base-profile-link\" href=\"/bf3/user/([^/]+)/\">([^\"</a>\"]+)</a>([^\"</div>\"]+)";
+	public static final String PATTERN_POST_SINGLE_BODY = "<div class=\"wallpost-body\">([^\"</div>\"]+)</div>";
+	public static final String PATTERN_POST_SINGLE_DATE = "<span data-timestamp=\"([0-9]+)\" class=\"base-ago\">";
+	
+	//BBCODE
+	public static final String BBCODE_TAG_BOLD_IN = "**{text}**";
+	public static final String BBCODE_TAG_BOLD_OUT = "[b]{text}[/b]";
+	public static final String BBCODE_TAG_STRIKE_IN = "--{text}--";
+	public static final String BBCODE_TAG_STRIKE_OUT = "[s]{text}[/s]";
+	public static final String BBCODE_TAG_UNDERLINE_IN = "__{text}__";
+	public static final String BBCODE_TAG_UNDERLINE_OUT = "[u]{text}[/u]";
+	public static final String BBCODE_TAG_ITALIC_IN = "_-{text}-_";
+	public static final String BBCODE_TAG_ITALIC_OUT = "[i]{text}[/i]";
+	public static final String BBCODE_TAG_QUOTE_IN = "@q:{number}:{username}@\n";
+	public static final String BBCODE_TAG_QUOTE_OUT = "[quote {username} said:]{text}[/quote]";
+	
 	//Files
 	public static final String FILE_SHPREF = "battlelog";
 	
 	//Changelog version
 	public final static int CHANGELOG_VERSION = 8;
 
+	//MENU IDs
+	public final static int MENU_ID_FEED = 2;
+	
 	//DEBUG
 	public static final String DEBUG_TAG = "com.ninetwozero.battlelog";
 
@@ -202,7 +234,7 @@ public final class Constants {
 	//Menu
 	public static final long MENU_MY_SOLDIER = 0;
 	public static final long MENU_UNLOCKS = 1;
-	public static final long MENU_SOLDIER = 2;
+	public static final long MENU_SEARCH = 2;
 	public static final long MENU_PLATOON = 3;
 	public static final long MENU_COMPARE = 4;
 	public static final long MENU_SETTINGS = 5;

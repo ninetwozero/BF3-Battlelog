@@ -393,11 +393,12 @@ public class CacheHandler {
 		}
 	
 		public static ProfileInformation select(final Context context, final long userId) {
-	
+
+			//Use the SQLiteManager to get a cursor
+			SQLiteManager manager = new SQLiteManager( context );
 			try {
 				
-				//Use the SQLiteManager to get a cursor
-				SQLiteManager manager = new SQLiteManager( context );
+				//Get the cursor
 				Cursor results = manager.query(
 						
 					DatabaseStructure.UserProfile.TABLE_NAME, 
@@ -509,6 +510,7 @@ public class CacheHandler {
 			} catch( Exception ex ) {
 				
 				ex.printStackTrace();
+				manager.close();
 				return null;
 				
 			}
@@ -551,10 +553,11 @@ public class CacheHandler {
 	public static class Platoon {
 		
 		public static long insert(Context context, PlatoonInformation stats) {
+
+			//Use the SQLiteManager to get a cursor
+			SQLiteManager manager = new SQLiteManager( context );
 			
 			try {
-				//Use the SQLiteManager to get a cursor
-				SQLiteManager manager = new SQLiteManager( context );
 				
 				//Get them!!
 				long results = manager.insert( 
@@ -568,8 +571,14 @@ public class CacheHandler {
 				manager.close();
 				return results;
 				
+			} catch( SQLiteConstraintException ex ) { //Duplicate input, no worries!
+
+				manager.close();
+				return 0;
+			
 			} catch( Exception ex ) {
 				
+				manager.close();
 				ex.printStackTrace();
 				return -1;
 				

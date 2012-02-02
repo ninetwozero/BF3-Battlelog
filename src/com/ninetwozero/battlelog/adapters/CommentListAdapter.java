@@ -16,26 +16,29 @@ package com.ninetwozero.battlelog.adapters;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class CommentListAdapter extends BaseAdapter {
 	
 	//Attributes
-	Context context;
-	ArrayList<CommentData> comments;
-	LayoutInflater layoutInflater;
-	TextView textUsername, textMessage, textTimestamp;
-	String thisUser;
+	private Context context;
+	private ArrayList<CommentData> comments;
+	private LayoutInflater layoutInflater;
+	private TextView textUsername, textMessage, textTimestamp;
+	private ImageView imageAvatar;
+	private String thisUser;
 	
 	//Construct
 	public CommentListAdapter(Context c, ArrayList<CommentData> cd, LayoutInflater l) {
@@ -84,11 +87,23 @@ public class CommentListAdapter extends BaseAdapter {
 		textUsername = (TextView) convertView.findViewById( R.id.text_username);
 		textTimestamp = (TextView) convertView.findViewById( R.id.text_timestamp);
 		textMessage = (TextView) convertView.findViewById( R.id.text_message);
+		imageAvatar = (ImageView) convertView.findViewById( R.id.image_avatar );
 		
 		//Set the TextViews
 		textUsername.setText( currentData.getAuthor() );
-		textMessage.setText( Html.fromHtml( currentData.getContent() ) );
+		textMessage.setText( Html.fromHtml( currentData.getContent().replace( "<", "&lt;" ) ) );
 		textTimestamp.setText( PublicUtils.getRelativeDate(context, currentData.getTimestamp()) );
+		
+		//Set the gravatar
+		imageAvatar.setImageBitmap(
+		
+			BitmapFactory.decodeFile(
+			
+				PublicUtils.getCachePath( context ) + currentData.getGravatar() + ".png"
+					
+			)	
+				
+		);
 		
 		//Store the object
 		convertView.setTag( currentData );

@@ -31,12 +31,12 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class NotificationListAdapter extends BaseAdapter {
 	
 	//Attributes
-	Context context;
-	ArrayList<NotificationData> itemArray;
-	LayoutInflater layoutInflater;
-	String tempStatus;
-	TextView textPersona, textStatus;
-	long activeUserId;
+	private Context context;
+	private ArrayList<NotificationData> itemArray;
+	private LayoutInflater layoutInflater;
+	private String tempStatus;
+	private TextView textPersona, textStatus;
+	private long activeUserId;
 	
 	//Construct
 	public NotificationListAdapter(Context c, ArrayList<NotificationData> fi, LayoutInflater l, long auid) {

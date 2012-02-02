@@ -16,10 +16,10 @@ package com.ninetwozero.battlelog.adapters;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,18 +27,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class FeedListAdapter extends BaseAdapter {
 	
 	//Attributes
-	Context context;
-	ArrayList<FeedItem> itemArray;
-	LayoutInflater layoutInflater;
-	String tempStatus;
-	TextView textPersona, textStatus;
+	private Context context;
+	private ArrayList<FeedItem> itemArray;
+	private LayoutInflater layoutInflater;
 	
 	//Construct
 	public FeedListAdapter(Context c, ArrayList<FeedItem> fi, LayoutInflater l) {
@@ -70,11 +69,16 @@ public class FeedListAdapter extends BaseAdapter {
 		
 	}
 	
-	public void setItemArray( ArrayList<FeedItem> ia ) { this.itemArray = ia; }
+	public void setItemArray( ArrayList<FeedItem> ia ) { 
+		
+		this.itemArray = ia; 
+		this.notifyDataSetInvalidated();
+	
+	}
 	
 	@Override
 	public View getView( int position, View convertView, ViewGroup parent ) {
-
+		
 		//Get the current item
 		FeedItem currentItem = getItem(position);
 		
@@ -90,43 +94,29 @@ public class FeedListAdapter extends BaseAdapter {
 		if( !currentItem.getContent().equals( "" ) ) {
 
 			((TextView) convertView.findViewById(R.id.text_content)).setText( currentItem.getContent() );
-		
+
 		}
-		
+
 		//How many likes/comments?
 		String textHooah = ( currentItem.getNumLikes() == 1 )? context.getString( R.string.info_hooah_s ) : context.getString( R.string.info_hooah_p );
 		String textComments = ( currentItem.getNumComments() == 1 )? context.getString( R.string.info_comment_s ) : context.getString( R.string.info_comment_p );
-		
+		String content = textComments.replace("{num}", currentItem.getNumComments() + "");
+
 		//Set the fields
 		((ImageView) convertView.findViewById(R.id.image_avatar)).setImageBitmap( 
-				
+
 			BitmapFactory.decodeFile( PublicUtils.getCachePath( context ).toString() + currentItem.getAvatarForPost() + ".png" )
-					
+
 		);
 		((TextView) convertView.findViewById(R.id.text_date)).setText( PublicUtils.getRelativeDate( context, currentItem.getDate() ) );
 		((TextView) convertView.findViewById(R.id.text_hooah)).setText( textHooah.replace("{num}", currentItem.getNumLikes() + ""));
-		((TextView) convertView.findViewById(R.id.text_comment)).setText( 
-				
-			textComments.replace(
-				
-				"{num}", 
-				currentItem.getNumComments() + " "
-				
-			)
-			
-		);
-		
+		((TextView) convertView.findViewById(R.id.text_comment)).setText( content );
+
 		//Hook it up on the tag
 		convertView.setTag( currentItem );
 
 		//Send it back
 		return convertView;
 	}
-	
-	@Override
-	public void notifyDataSetChanged() {
-		
-		super.notifyDataSetChanged();
 
-	}
 }

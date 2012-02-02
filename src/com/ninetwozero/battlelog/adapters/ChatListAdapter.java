@@ -31,11 +31,11 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class ChatListAdapter extends BaseAdapter {
 	
 	//Attributes
-	Context context;
-	ArrayList<ChatMessage> messageArray;
-	LayoutInflater layoutInflater;
-	TextView textUsername, textMessage, textTimestamp;
-	String thisUser;
+	private Context context;
+	private ArrayList<ChatMessage> messageArray;
+	private LayoutInflater layoutInflater;
+	private TextView textUsername, textMessage, textTimestamp;
+	private String thisUser;
 	
 	//Construct
 	public ChatListAdapter(Context c, ArrayList<ChatMessage> m, String tu, LayoutInflater l) {

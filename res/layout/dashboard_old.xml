@@ -1,90 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-	android:background="@drawable/bg_bf3_main"
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@android:id/tabhost" 
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
 >
 	<RelativeLayout
-	    android:id="@+id/bar_status"
-		android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentTop="true"
-		android:padding="5dp"
-	>  
-		<Button
-		    style="@style/RegularButton"
-		    android:id="@+id/button_status"
-		    android:text="Update"
-		    android:layout_alignParentRight="true"
-		    android:layout_centerVertical="true"
-		/>
-		<EditText
-		  	android:id="@+id/field_status"
-		  	android:layout_width="fill_parent"
-		  	android:layout_height="wrap_content"
-		  	android:hint="@string/info_xml_hint_status"
-		  	android:layout_toLeftOf="@id/button_status"
-		    android:layout_marginRight="6dp"
-		    android:layout_centerVertical="true"
-		    android:singleLine="true"
-		    android:maxLength="90"
-		 />
-	</RelativeLayout>
-	<RelativeLayout
-		android:layout_width="fill_parent"
+	    android:orientation="vertical"
+		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent"
-		android:layout_below="@id/bar_status"
-		android:layout_marginBottom="50dp"
-	>   
-		<ScrollView
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_centerInParent="true"
+	> 
+		<TabWidget 
+		    android:id="@android:id/tabs"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content" 
+			android:layout_alignParentTop="true"
+		/>
+		<FrameLayout 
+		    android:id="@android:id/tabcontent"
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent"
+			android:layout_below="@android:id/tabs"
+			android:layout_marginBottom="40dp"
 		>
-			<RelativeLayout
-				android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			>
-				<Button
-				    style="@style/MenuButton"
-				    android:id="@+id/button_view_self"
-				    android:text="My profile"
-			    	android:layout_height="50dp"
-				/>
-				<Button
-				    style="@style/MenuButton"
-				    android:id="@+id/button_unlocks"
-				    android:text="@string/label_unlocks"
-					android:layout_marginTop="10dp"
-			    	android:layout_height="50dp"
-					android:layout_below="@id/button_view_self"
-				/>
-				<Button
-				    style="@style/MenuButton"
-				    android:id="@+id/button_find_soldier"
-				    android:text="@string/label_find_soldier"
-					android:layout_marginTop="10dp"
-			    	android:layout_height="50dp"
-					android:layout_below="@id/button_unlocks"
-				/>
-				<Button
-				    style="@style/MenuButton"
-				    android:id="@+id/button_find_platoon"
-				    android:text="Find Platoon"
-					android:layout_marginTop="10dp"
-			    	android:layout_height="50dp"
-					android:layout_below="@id/button_find_soldier"
-				/>
-				<Button
-				    style="@style/MenuButton"
-				    android:id="@+id/button_compare"
-				    android:text="Compare battle scars"
-					android:layout_marginTop="10dp"
-			    	android:layout_height="50dp"
-					android:layout_below="@id/button_find_platoon"
-				/>
-			</RelativeLayout>
-		</ScrollView>
+		</FrameLayout>
+		<include layout="@layout/com_center_slider"  />	  
 	</RelativeLayout>
-	<include layout="@layout/com_center_slider" />
-</RelativeLayout>
+</TabHost>

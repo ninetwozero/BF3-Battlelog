@@ -14,49 +14,81 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.ninetwozero.battlelog.AssignmentView;
+import com.ninetwozero.battlelog.ForumThreadView;
+import com.ninetwozero.battlelog.ProfileView;
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
-public class FeedItem {
+
+public class FeedItem implements Parcelable {
 
 	//Attributes
-	private long id, ownerId, itemId, date;
+	private long id, itemId, date;
 	private int numLikes;
 	private String title, content, type;
-	private String[] username;
-	private boolean liked;
+	private ProfileData[] profileData;
+	private boolean liked, censored;
 	private ArrayList<CommentData> comments;
 	private String gravatarHash;
+	private Intent intent;
 	
 	//Construct
 	public FeedItem( 
 	
-		long i, long oid, long iid, long nDate, int num,
-		String t, String c, String type, String[] u,
-		boolean il, ArrayList<CommentData> cda,
+		long i, long iid, long nDate, int num,
+		String t, String c, String type,
+		ProfileData[] pd,
+		boolean il, boolean cs, ArrayList<CommentData> cda,
 		String im
 		
 	) {
 		
 		this.id = i;
-		this.ownerId = oid;
 		this.itemId = iid;
 		this.date = nDate;
 		this.numLikes = num;
 		this.title = t;
 		this.content = c;
 		this.type = type;
-		this.username = u;
+		this.profileData = pd;
 		this.comments = cda;
 		this.liked = il;
+		this.censored = cs;
 		this.gravatarHash = im;
+
+	}
+	
+	public FeedItem( Parcel in ) {
+			
+		//Init
+		this.comments = new ArrayList<CommentData>();
+		in.readTypedList( this.comments, CommentData.CREATOR );
+		
+		this.id = in.readLong();
+		this.itemId = in.readLong();
+		this.date = in.readLong();
+		this.numLikes = in.readInt();
+		this.title = in.readString();
+		this.content = in.readString();
+		this.type = in.readString();
+		this.liked = ( in.readInt() == 1);
+		this.censored = ( in.readInt() == 1);
+		this.gravatarHash = in.readString();
+		this.profileData = in.createTypedArray( ProfileData.CREATOR );
+		
 	}
 	
 	//Getters
 	public long getId() { return this.id; }
-	public long getOwnerId() { return this.ownerId; }
 	public long getItemId() { return this.itemId; }
 	public long getDate() { return this.date; }
 	public int getNumComments() { return this.comments.size(); }
@@ -68,11 +100,11 @@ public class FeedItem {
 			
 			return this.title.replace(
 					
-				"{username1}", this.username[0]
+				"{username1}", profileData[0].getAccountName()
 			
 			).replace( 
 					
-				"{username2}", this.username[1]
+				"{username2}", profileData[1].getAccountName()
 						
 			); 
 		
@@ -81,7 +113,7 @@ public class FeedItem {
 			return this.title.replace(
 					
 				"{username}", 
-				this.username[0]
+				 profileData[0].getAccountName()
 			
 			); 
 		
@@ -90,7 +122,7 @@ public class FeedItem {
 			return this.title.replace( 
 					
 				"{username}", 
-				this.username[0]
+				 profileData[0].getAccountName()
 				
 			);
 			
@@ -99,7 +131,7 @@ public class FeedItem {
 			return this.title.replace( 
 					
 				"{username}", 
-				this.username[0]
+				 profileData[0].getAccountName()
 				
 			);
 			
@@ -108,7 +140,7 @@ public class FeedItem {
 			return this.title.replace( 
 					
 				"{username}", 
-				this.username[0]
+				 profileData[0].getAccountName()
 				
 			);
 			
@@ -117,7 +149,7 @@ public class FeedItem {
 			return this.title.replace( 
 					
 				"{username}", 
-				this.username[0]
+				 profileData[0].getAccountName()
 				
 			);
 			
@@ -126,7 +158,7 @@ public class FeedItem {
 			return this.title.replace( 
 					
 				"{username}", 
-				this.username[0]
+				 profileData[0].getAccountName()
 				
 			);
 			
@@ -135,12 +167,12 @@ public class FeedItem {
 			return this.title.replace(
 					
 				"{username1}", 
-				this.username[0]
+				 profileData[0].getAccountName()
 			
 			).replace( 
 					
 				"{username2}", 
-				this.username[1]
+				 profileData[1].getAccountName()
 						
 			); 
 			
@@ -149,7 +181,7 @@ public class FeedItem {
 			return this.title.replace( 
 					
 				"{username}", 
-				this.username[0]
+				 profileData[0].getAccountName()
 				
 			);
 			
@@ -158,7 +190,7 @@ public class FeedItem {
 			return this.title.replace( 
 					
 				"{username}", 
-				this.username[0]
+				 profileData[0].getAccountName()
 				
 			);
 			
@@ -167,7 +199,7 @@ public class FeedItem {
 			return this.title.replace( 
 					
 				"{username}", 
-				this.username[0]
+				 profileData[0].getAccountName()
 				
 			);
 			
@@ -175,11 +207,11 @@ public class FeedItem {
 			
 			return this.title.replace(
 					
-				"{username1}", this.username[0]
+				"{username1}",  profileData[0].getAccountName()
 			
 			).replace( 
 					
-				"{username2}", this.username[1]
+				"{username2}",  profileData[1].getAccountName()
 						
 			);
 			
@@ -188,7 +220,7 @@ public class FeedItem {
 			return this.title.replace( 
 				
 				"{username}", 
-				this.username[0]
+				 profileData[0].getAccountName()
 				
 			);
 			
@@ -197,7 +229,7 @@ public class FeedItem {
 			return this.title.replace(
 			
 				"{username}",
-				this.username[0]
+				 profileData[0].getAccountName()
 				
 			);
 			
@@ -210,8 +242,178 @@ public class FeedItem {
 	}
 	public String getContent() { return this.content; }
 	public String getType() { return this.type; }
-	public String[] getUsername() { return this.username; }
+	public ProfileData[] getProfileData() { return this.profileData; }
+	public ProfileData getProfile( int i ) { return ( i <= this.profileData.length ) ? this.profileData[i] : null; }
 	public boolean isLiked() { return this.liked; }
+	public boolean isCensored() { return this.censored; }
 	public ArrayList<CommentData> getComments() { return this.comments; }
 	public String getAvatarForPost() { return this.gravatarHash; }
+	public Intent getIntent(Context c) { 
+		
+		//Get the correct format depending on the type
+		if( type.equals( "becamefriends" )  ) {
+			
+			return null;
+		
+		} else if( type.equals( "assignmentcomplete" )  ) {
+			
+			try { 
+				
+				return new Intent(c, AssignmentView.class ).putExtra( 
+						
+					"profile", 
+					WebsiteHandler.getPersonaIdFromProfile(  profileData[0].getProfileId() )	
+						
+				);
+
+			} catch( Exception ex ) {
+				
+				ex.printStackTrace();
+				return null;
+				
+			}
+				
+		} else if( type.equals( "createdforumthread" ) || type.equals( "wroteforumpost" ) ) {
+			
+			return new Intent(c, ForumThreadView.class).putExtra( 
+					
+				"threadId", 
+				this.itemId
+				
+			).putExtra( 
+					
+				"threadTitle", 
+				"N/A"
+				
+			);
+			
+		} else if( type.equals( "gamereport" ) ) {
+			
+			return new Intent(c, ProfileView.class).putExtra( 
+					
+				"profile", 
+				 profileData[0]
+				
+			);
+			
+		} else if( type.equals( "statusmessage" ) ) {
+			
+
+			return new Intent(c, ProfileView.class).putExtra( 
+					
+				"profile", 
+				 profileData[0]
+				
+			);
+			
+		} else if( type.equals( "addedfavserver" ) ) {
+			
+
+			return new Intent(c, ProfileView.class).putExtra( 
+					
+				"profile", 
+				 profileData[0]
+				
+			);
+			
+		} else if( type.equals( "rankedup" ) ) {
+
+
+			return new Intent(c, ProfileView.class).putExtra( 
+					
+				"profile", 
+				 profileData[0]
+				
+			);
+			
+		} else if( type.equals( "levelcomplete" ) ) {
+
+
+			return new Intent(c, ProfileView.class).putExtra( 
+					
+				"profile",
+				 profileData[0]
+				
+			);
+			
+		} else if( type.equals( "kickedplatoon" ) || type.equals( "joinedplatoon" ) || type.equals( "leftplatoon" ) ) {
+
+			return null;
+			
+		} else if( type.equals( "createdplatoon" ) || type.equals( "platoonbadgesaved" ) || type.equals( "receivedplatoonwallpost" ) ) {
+
+			return null;
+			
+		} else if( type.equals( "receivedaward" ) ) {
+
+
+			return new Intent(c, ProfileView.class).putExtra( 
+					
+				"profile", 
+				 profileData[0]
+				
+			);
+		} else if( type.equals( "receivedwallpost" ) ) {
+
+
+			return new Intent(c, ProfileView.class).putExtra( 
+					
+				"profile",
+				 profileData[0]
+				
+			);
+			
+		} else if( type.equals( "commentedgamereport" ) || type.equals( "commentedblog" ) ) {
+
+			return null;
+			
+		} else if( type.equals( "gameaccess" ) ) {
+
+
+			return new Intent(c, ProfileView.class).putExtra( 
+					
+				"profile",
+				 profileData[0]
+				
+			);
+			
+		} else {
+		
+			return null;
+			
+		}
+		
+	}	
+	@Override
+	public int describeContents() {
+
+		return 0;
+	
+	}
+
+	@Override
+	public void writeToParcel( Parcel dest, int flags ) {
+
+		dest.writeTypedList( this.comments );
+		
+		dest.writeLong( this.id );
+		dest.writeLong( this.itemId );
+		dest.writeLong( this.date );
+		dest.writeInt( this.numLikes );
+		dest.writeString( this.title );
+		dest.writeString( this.content );
+		dest.writeString( this.type );
+		dest.writeInt( this.liked ? 1 : 0 );
+		dest.writeInt( this.censored ? 1 : 0 );
+		dest.writeString( this.gravatarHash );
+		dest.writeTypedArray( this.profileData, flags );
+		
+	}
+	
+	public static final Parcelable.Creator<FeedItem> CREATOR = new Parcelable.Creator<FeedItem>() {
+		
+		public FeedItem createFromParcel(Parcel in) { return new FeedItem(in); }
+        public FeedItem[] newArray(int size) { return new FeedItem[size]; }
+	
+	};
 }

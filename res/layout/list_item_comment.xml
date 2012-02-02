@@ -4,33 +4,47 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
 >
-	<TextView 
-	    android:id="@+id/text_username"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-		android:text="ninetwozero"
-		android:textSize="16sp"
-		android:textStyle="bold"
-		android:textColor="@color/blue"
+	<ImageView
+	    android:id="@+id/image_avatar"
+	    android:layout_width="40dp"
+	    android:layout_height="40dp"
+		android:layout_alignParentLeft="true"
+		android:src="@drawable/default_avatar"
 	/>
-   	<TextView 
-	    android:id="@+id/text_message"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-		android:text="This is a message"
-		android:textSize="16sp"
-		android:layout_below="@id/text_username"
-		android:linksClickable="true"
-	/>
-
-   	<TextView 
-	    android:id="@+id/text_timestamp"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-		android:text="3 hours ago"
-		android:textSize="14sp"
-		android:textColor="#BBBBBB"
-		android:layout_alignParentRight="true"
-		android:layout_alignBaseline="@id/text_username"
-	/>
+	<RelativeLayout
+	    android:id="@+id/wrap_top"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/image_avatar"
+		android:layout_marginLeft="5dp"
+		android:layout_marginBottom="5dp"
+	>
+	   	<TextView 
+		    android:id="@+id/text_username"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+			android:text="ninetwozero"
+			android:textStyle="bold"
+			android:textColor="@color/blue"
+		/>
+	   	<TextView 
+		    android:id="@+id/text_timestamp"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+			android:text="3 hours ago"
+			android:textColor="#BBBBBB"
+			android:layout_alignBaseline="@id/text_username"
+			android:layout_toRightOf="@id/text_username"
+			android:layout_marginLeft="5dp"
+			
+		/>
+	   	<TextView 
+		    android:id="@+id/text_message"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+			android:text="This is a message"
+			android:layout_below="@id/text_username"
+			android:linksClickable="true"
+		/>
+	</RelativeLayout>
 </RelativeLayout>

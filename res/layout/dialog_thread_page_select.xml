@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:id="@+id/dialog_root"
+    android:padding="10dp"
+    android:background="#FFFFFF"
+>
+	<TextView
+    	android:id="@+id/text_desc"
+    	android:layout_width="fill_parent" 
+    	android:layout_height="wrap_content"
+    	android:text="@string/info_xml_enternumber"
+	/>
+    <EditText
+    	android:id="@+id/text_page"
+    	android:layout_width="fill_parent" 
+    	android:layout_height="wrap_content"
+    	android:singleLine="true"
+    	android:inputType="numberSigned"
+   		android:layout_below="@id/text_desc"
+   	/>
+</RelativeLayout>

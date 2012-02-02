@@ -29,6 +29,7 @@ public class PlatoonInformation {
 	private boolean visible, isMember, isAdmin, allowNewMembers;
 	private ArrayList<FeedItem> feedItems;
 	private ArrayList<PlatoonMemberData> members, fans;
+	private ArrayList<ProfileData> invitableFriends;
 	private PlatoonStats stats;
 	
 	//Construct(s)
@@ -62,7 +63,9 @@ public class PlatoonInformation {
 		int pId, int g, int nF, int nM, int bcId,
 		String n, String t, String p, String w,
 		boolean v, boolean ism, boolean isa, boolean a,
-		ArrayList<FeedItem> f, ArrayList<PlatoonMemberData> m, ArrayList<PlatoonMemberData> fa,
+		ArrayList<FeedItem> f, 
+		ArrayList<PlatoonMemberData> m, ArrayList<PlatoonMemberData> fa,
+		ArrayList<ProfileData> pd,
 		PlatoonStats st
 		
 	) {
@@ -85,6 +88,7 @@ public class PlatoonInformation {
 		this.feedItems = f;
 		this.members = m;
 		this.fans = fa;
+		this.invitableFriends = pd;
 		this.stats = st;
 	
 	}
@@ -108,6 +112,7 @@ public class PlatoonInformation {
 	public ArrayList<FeedItem> getFeedItems() { return this.feedItems; }
 	public ArrayList<PlatoonMemberData> getMembers() { return this.members; }
 	public ArrayList<PlatoonMemberData> getFans() { return this.fans; }
+	public ArrayList<ProfileData> getInvitableFriends() { return this.invitableFriends; }
 	public PlatoonStats getStats() { return this.stats; }
 
 	public String[] toStringArray() {

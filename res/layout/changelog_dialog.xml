@@ -5,12 +5,12 @@
     android:layout_width="fill_parent"
     android:id="@+id/dialog_root"
     android:padding="10dp"
+    android:textColor="#FFFFFF"
 >
     <TextView
       	android:id="@+id/text_changelog"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content" 
  	    android:layout_centerHorizontal="true"
- 	    android:textColor="#FFFFFF"
     />    
 </RelativeLayout>

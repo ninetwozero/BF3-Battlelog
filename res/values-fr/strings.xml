@@ -29,11 +29,11 @@
         <string name="general_wait">Please wait</string>
         <string name="general_downloading">Downloading the data...</string>
         <string name="general_no_data">No data found.</string>
-        <string name="label_menu">Menu</string>
+        <string name="label_own_soldiernu">Menu</string>
         <string name="label_feed">Feed</string>
         <string name="label_friends">Friends</string>
         <string name="label_notifications">Notifications</string>
-        <string name="label_me">My soldier</string>
+        <string name="label_own_soldier">My soldier</string>
         <string name="label_unlocks">My unlocks</string>
         <string name="label_find_soldier">Find soldier</string>
         <string name="label_find_platoon">Find platoon</string>
@@ -59,7 +59,7 @@
         <string name="label_stats">Stats</string>
         <string name="label_users">Users</string>
         <string name="info_platoon_created">Created on {DATE} ({RELATIVE DATE})</string>
-        <string name="label_members">MEMBERS</string>
+        <string name="label_own_soldiermbers">MEMBERS</string>
         <string name="label_fans">FANS</string>
         <string name="info_platoon_compare">You can\'t compare platoons... (yet?)</string>
         <string name="info_empty_msg">You\'re not allowed to post an empty message.</string>

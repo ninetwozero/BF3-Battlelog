@@ -15,12 +15,9 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -28,20 +25,26 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SlidingDrawer;
+import android.widget.SlidingDrawer.OnDrawerCloseListener;
+import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ThreadListAdapter;
+import com.ninetwozero.battlelog.asynctasks.AsyncCreateNewThread;
 import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
+import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
@@ -55,9 +58,17 @@ public class ForumView extends ListActivity {
 	private Board.Forum currentForum;
 	private long forumId;
 	private String forumTitle;
+	private int currentPage = 1;
+	private long latestRefresh = 0;
 	
 	//Elements
 	private ListView listView;
+	private SlidingDrawer slidingDrawer;
+	private TextView slidingDrawerHandle;
+	private OnDrawerOpenListener onDrawerOpenListener;
+	private OnDrawerCloseListener onDrawerCloseListener;
+	private EditText textareaTitle, textareaContent;
+	private Button buttonPost, buttonMore;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -72,7 +83,7 @@ public class ForumView extends ListActivity {
     		
     	}
     	//Set the content view
-        setContentView(R.layout.board_forum_view);
+        setContentView(R.layout.forum_view);
 
         //Prepare to tango
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -82,8 +93,15 @@ public class ForumView extends ListActivity {
         forumId = getIntent().getLongExtra( "forumId", 0 );
         forumTitle = getIntent().getStringExtra( "forumTitle" );
         
+    	//Update the title
+    	this.setTitle( getTitle().toString().replace( "...", forumTitle ) );
+        
+    	//Validate
+    	if( forumId == 0 || forumTitle == null ) { return; }
+    	
         //Init
 		initLayout(); 
+		setupBottom();
 	
 	}        
 
@@ -108,31 +126,90 @@ public class ForumView extends ListActivity {
         if( listView == null ) { 
         	
         	listView = getListView(); 
-        	if( currentForum == null ) { 
-        		
+        	if( currentForum == null ) {
+        	
         		listView.setAdapter( new ThreadListAdapter( this, null, layoutInflater ) );
-        		
+            	
         	} else {
         		
         		listView.setAdapter( new ThreadListAdapter( this, currentForum.getThreads(), layoutInflater ) );
-        		
-        	}
         	
+        	}
+        		
+        	//Let's get the button
+        	buttonMore = (Button) findViewById( R.id.button_more );
+        		
         }
+        
+	}
+	
+	//Define the SlidingDrawer
+	public void setupBottom() {
+		
+		if( slidingDrawer == null ) {
+	
+			slidingDrawer = (SlidingDrawer) findViewById( R.id.post_slider);
+			slidingDrawerHandle = (TextView) findViewById( R.id.post_slide_handle_text );
+			
+			//Set the drawer listeners
+			onDrawerCloseListener = new OnDrawerCloseListener() {
+	
+				@Override
+				public void onDrawerClosed() { slidingDrawer.setClickable( false ); }
+			
+			};
+			onDrawerOpenListener = new OnDrawerOpenListener() { 
+			
+				@Override 
+				public void onDrawerOpened() { slidingDrawer.setClickable( true ); } 
+				
+			};
+			
+			//Attach the listeners
+			slidingDrawer.setOnDrawerOpenListener( onDrawerOpenListener );
+			slidingDrawer.setOnDrawerCloseListener( onDrawerCloseListener );
+			
+			//Grab the field + button for further reference!
+			textareaTitle = (EditText) findViewById(R.id.textarea_title);
+			textareaContent = (EditText) findViewById( R.id.textarea_content );
+			buttonPost = (Button) findViewById( R.id.button_new );
+			
+		}
 		
 	}
 	
     public void reloadLayout() { 
     	
+    	//Set it up
+    	long now = System.currentTimeMillis()/1000;
+    			
     	if( currentForum == null ) {
     		
     		new AsyncGetThreads(this, listView).execute( forumId ); 
     	
     	} else {
     		
-    		new AsyncGetThreads(null, listView).execute( forumId ); 
+    		if( listView.getAdapter() == null ) {
+    			 
+    			 initLayout();
+    			 
+    		}
+    		
+    		if( (latestRefresh+300) < now ) {
+    			
+    			new AsyncGetThreads(null, listView).execute( forumId ); 
+    		
+    		} else {
+    			
+    			Log.d(Constants.DEBUG_TAG, "It's still fresh enough if you ask me!" );
+    			
+    		}
     		
     	}
+    
+    	//Save the latest refresh
+    	latestRefresh = now;
+    	
     	
     }
     
@@ -141,7 +218,7 @@ public class ForumView extends ListActivity {
 
     	//Inflate!!
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate( R.menu.option_threadview, menu );		
+		inflater.inflate( R.menu.option_forumview, menu );		
 		return super.onCreateOptionsMenu( menu );
 	
     }
@@ -154,9 +231,9 @@ public class ForumView extends ListActivity {
 	
 			this.reloadLayout();
 			
-		} else if( item.getItemId() == R.id.option_new ) {
+		} else if( item.getItemId() == R.id.option_search ) {
 			
-			this.generateDialogNew(this).show();
+			startActivity( new Intent(this, ForumSearchView.class ) );
 			
 		} else if( item.getItemId() == R.id.option_back ) {
 			
@@ -226,7 +303,7 @@ public class ForumView extends ListActivity {
 				progressDialog.setTitle( R.string.general_wait );
 				progressDialog.setMessage( "Downloading the threads..." );
 				progressDialog.show();
-			
+				
 			}	
 				
 		}
@@ -254,16 +331,22 @@ public class ForumView extends ListActivity {
 			if( context != null && this.progressDialog != null ) { 
 					
 				this.progressDialog.dismiss();
-			
+				if( currentForum.getNumPages() > 1 ) { 
+					
+					buttonMore.setVisibility( View.VISIBLE );
+					buttonMore.setText( getString( R.string.info_xml_feed_button_pagination ) );
+				
+				} else {
+					
+					buttonMore.setVisibility( View.GONE );
+					
+				}
+				
 			}
 			
 			if( results ) { 
 
-				if( list.getAdapter() != null ) { 
-				
-					( (ThreadListAdapter) list.getAdapter() ).setItemArray( currentForum.getThreads() ); 
-
-				}
+				((ThreadListAdapter) listView.getAdapter()).set( currentForum.getThreads() );
 				
 			}
 			
@@ -272,74 +355,136 @@ public class ForumView extends ListActivity {
 	
 	}
 	
-	public Dialog generateDialogNew(final Context context) {
+	public void onPostSubmit(View v) {
+	
+		//Let's get the content
+		String title = textareaTitle.getText().toString();
+		String content = textareaContent.getText().toString();
+		
+		//Parse for the BBCODE!
+		content = BBCodeUtils.toBBCode( content, null );
+		
+		//Ready... set... go!
+		new AsyncCreateNewThread(this, forumId).execute( title, content, sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ) );
+		
+	}
+	
+	public void resetPostFields() {
+		
+		//Reset
+		textareaTitle.setText( "" );
+		textareaContent.setText( "" );
+		
+	}
+	
+	@Override
+	public boolean onKeyDown( int keyCode, KeyEvent event ) {
+
+		// Hotkeys
+		if ( keyCode == KeyEvent.KEYCODE_BACK ) {
+		
+			if( slidingDrawer.isOpened() ) {
+			
+				slidingDrawer.animateClose();
+				
+			} else {
+				
+				this.finish();
+			
+			}
+			return true;
+			
+		}
+		
+		return super.onKeyDown( keyCode, event );
+		
+	}
+	
+	public void onClick( View v ) {
+	
+		if( v.getId() == R.id.button_more ) {
+			
+			//Validate
+			if( (currentPage-1) == currentForum.getNumPages() ) {
+				
+				v.setVisibility( View.GONE );
+				
+			}
+			
+			//Increment
+			currentPage++;
+			
+			//Do the "get more"-thing
+			new AsyncLoadMore(this, forumId).execute( currentPage );
+			
+		}
+	}
+	
+	public class AsyncLoadMore extends AsyncTask<Integer, Void, Boolean> {
 		
 		//Attributes
-		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-	    final View layout = inflater.inflate(R.layout.dialog_thread_new, (ViewGroup) findViewById(R.id.dialog_root));
+		private Context context;
+		private long forumId;
+		private int page;
+		private ArrayList<Board.ThreadData> threads;
 		
-	    //Set the title and the view
-		builder.setTitle( "Create a new thread" );
-		builder.setView(layout);
+		//Constructs
+		public AsyncLoadMore( Context c, long f ) {
 		
-		//Dialog options
-		builder.setPositiveButton(
-				
-			android.R.string.ok, 
-			new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int which) {
+			this.context = c;
+			this.forumId = f;
+			
+		}
+		
+		@Override
+		protected void onPreExecute() {
 
-					String title = ((EditText) layout.findViewById(R.id.text_title)).getText().toString();
-					String content = ((EditText) layout.findViewById(R.id.text_content)).getText().toString();
+			buttonMore.setText( getString(R.string.label_downloading) );
+			buttonMore.setEnabled( false );
+		}
+		
+		@Override
+		protected Boolean doInBackground( Integer... arg0 ) {
+		
+			try {
+				
+				page = arg0[0];
+				threads = WebsiteHandler.getThreadsForForum( this.forumId, page );
+				return true;
+				
+			} catch( Exception ex ) {
+				
+				ex.printStackTrace();
+				return false;
+				
+			}
+		
+		}
+		
+		@Override
+		protected void onPostExecute( Boolean results ) {
+		
+			if( context instanceof ForumView ) {
+				
+				if( results ) {
+
+					((ThreadListAdapter)((ForumView) context).getListView().getAdapter()).add( threads );
+					buttonMore.setText( getString( R.string.info_xml_feed_button_pagination ) );
 					
-					boolean status = WebsiteHandler.createNewThreadInForum( 
-						
-						CONTEXT, 
-						title, 
-						content, 
-						sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ), 
-						forumId
-						
-					);
+				} else {
 					
-					//Well, how'd it go?
-					if( status ) { 
-						
-						Toast.makeText( CONTEXT, R.string.info_forum_newthread_true, Toast.LENGTH_SHORT).show();
-						reloadLayout();
-						dialog.dismiss(); 
-						
-					} else {
-						
-						Toast.makeText( CONTEXT, R.string.info_forum_newthread_false, Toast.LENGTH_SHORT).show();
-						
-					}
-			   
+					Toast.makeText( context, R.string.info_xml_threads_more_false, Toast.LENGTH_SHORT ).show();
+					
 				}
+				
+				buttonMore.setEnabled( true );
+				
 				
 			}
 			
-		);
-		
-		builder.setNegativeButton(
-				
-			android.R.string.cancel, 
-			new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int which) {
-			      
-					dialog.dismiss();
-			   
-				}
-				
-			}
-			
-		);
-		//CREATE
-		return builder.create();
-		
+
+		}
+	
 	}
 	
 }

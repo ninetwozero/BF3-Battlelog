@@ -31,11 +31,11 @@
         <string name="general_wait">Var god vänta...</string>
         <string name="general_downloading">Laddar ned information...</string>
         <string name="general_no_data">Ingen information hittades.</string>
-        <string name="label_menu">Meny</string>
+        <string name="label_own_soldiernu">Meny</string>
         <string name="label_feed">Flöde</string>
         <string name="label_friends">Vänner</string>
         <string name="label_notifications">Händelser</string>
-        <string name="label_me">Min soldat</string>
+        <string name="label_own_soldier">Min soldat</string>
         <string name="label_unlocks">Mina upplåsningar</string>
         <string name="label_find_soldier">Hitta soldat</string>
         <string name="label_find_platoon">Hitta platoon</string>
@@ -61,7 +61,7 @@
         <string name="label_stats">Stats</string>
         <string name="label_users">Användare</string>
         <string name="info_platoon_created">Skapades den {DATE} ({RELATIVE DATE})</string>
-        <string name="label_members">MEDLEMMAR</string>
+        <string name="label_own_soldiermbers">MEDLEMMAR</string>
         <string name="label_fans">FANS</string>
         <string name="info_platoon_compare">Du kan inte jämföra platoons... (än?)</string>
         <string name="info_empty_msg">Det är inte tillåtet att skriva tomma inlägg.</string>

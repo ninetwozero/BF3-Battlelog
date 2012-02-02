@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -43,7 +42,6 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
@@ -54,9 +52,9 @@ import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.adapters.DashboardPopupPlatoonListAdapter;
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.adapters.FriendListAdapter;
-import com.ninetwozero.battlelog.adapters.GridMenuAdapter;
 import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
 import com.ninetwozero.battlelog.adapters.RequestListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRefresh;
@@ -68,10 +66,10 @@ import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToProfileView;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
 import com.ninetwozero.battlelog.datatypes.CommentData;
-import com.ninetwozero.battlelog.datatypes.DashboardItem;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
@@ -81,16 +79,17 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class Dashboard extends TabActivity {
 
 	//Attributes
 	final private Context context = this;
-	private DashboardItem[] menuArray;
 	private String[] valueFieldsArray;
 	private PostData[] postDataArray;
 	private ArrayList<FeedItem> feedArray;
 	private ArrayList<NotificationData> notificationArray;
+	private ArrayList<PlatoonData> platoonArray; /* TODO */
 	private FriendListDataWrapper friendListData;
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
@@ -98,7 +97,6 @@ public class Dashboard extends TabActivity {
 	//Elements
 	private View wrapFriendRequests;
 	private TabHost mTabHost, cTabHost;
-	private GridView gridMenu;
 	private ListView listFeed;
 	private EditText fieldStatusUpdate;
 	private FeedListAdapter feedListAdapter;
@@ -118,7 +116,6 @@ public class Dashboard extends TabActivity {
 	
 	//Async
 	private AsyncFeedRefresh asyncFeedRefresh;
-	private AsyncCOMReload asyncComReload;
 	private AsyncLogout asyncLogout;
 	
 	@Override
@@ -182,7 +179,7 @@ public class Dashboard extends TabActivity {
     			
     		new String[] { 
     		
-    			getString(R.string.label_menu ), 
+    			getString(R.string.label_own_soldiernu ), 
     			getString(R.string.label_feed) 
     		
     		}, 
@@ -204,56 +201,11 @@ public class Dashboard extends TabActivity {
     		}, 
     		new int[] { R.layout.tab_content_com_friends, R.layout.tab_content_com_notifications }
     		
-    	);
-
-        //Build the menu items
-        menuArray = new DashboardItem[]{ 
-
-    		new DashboardItem(Constants.MENU_MY_SOLDIER, getString(R.string.label_me )),
-    		new DashboardItem(Constants.MENU_MY_PLATOON, getString( R.string.info_xml_platoons_my )),
-        	new DashboardItem(Constants.MENU_SOLDIER, getString(R.string.label_find_soldier )),
-        	new DashboardItem(Constants.MENU_PLATOON, getString(R.string.label_find_platoon )),
-    		new DashboardItem(Constants.MENU_UNLOCKS, getString(R.string.label_unlocks )),
-    		new DashboardItem(Constants.MENU_ASSIGNMENTS, getString( R.string.info_xml_assignments_my )),
-        	new DashboardItem(Constants.MENU_COMPARE, getString(R.string.label_compare_bs)),
-        	new DashboardItem(Constants.MENU_FORUM, getString(R.string.label_forum))
-        	
-        };		
+    	);	
 		
 	}
 	
-	public final void setupHome() {
-    	
-    	//Let's see
-		if( gridMenu == null ) {
-			
-			gridMenu = (GridView) findViewById(R.id.grid_menu);
-			gridMenu.setAdapter( new GridMenuAdapter(this, menuArray, layoutInflater ) );
-		
-			//Do we have the onClick?
-			if( gridMenu.getOnItemClickListener() == null ) {
-				
-				gridMenu.setOnItemClickListener( 
-					
-					new OnItemClickListener() {
-
-						@Override
-						public void onItemClick( AdapterView<?> a, View v, int p, long id ) {
-
-							onMenuClick( id );
-								
-						}
-						
-					}
-						
-				);
-				
-			}
-			
-		}
-		
-    	
-    }
+	public final void setupHome() {}
     
 	public void setupFeed(ArrayList<FeedItem> items) {
     	
@@ -261,8 +213,8 @@ public class Dashboard extends TabActivity {
 		if( listFeed == null ) { 
 			
 			//Get the ListView
-			listFeed = ((ListView) findViewById(R.id.list_feed)); 
-			feedStatusText = ((TextView) findViewById(R.id.status_feed));
+			listFeed = ((ListView) findViewById(android.R.id.list)); 
+			feedStatusText = ((TextView) findViewById(android.R.id.empty));
 			registerForContextMenu(listFeed);
 
 			//Set the attributes
@@ -302,12 +254,13 @@ public class Dashboard extends TabActivity {
 						@Override
 						public void onItemClick( AdapterView<?> a, View v, int pos, long id ) {
 	
-							final FeedItem currItem = (FeedItem) a.getItemAtPosition( pos );
+							/*final FeedItem currItem = (FeedItem) a.getItemAtPosition( pos );
 							if( !currItem.getContent().equals( "" ) ) {
 								
 								generateDialogContent(context, currItem.getUsername()[0], currItem.getContent()).show();
 								
-							}
+							}*/
+							openContextMenu( v );
 							
 						}
 						
@@ -469,7 +422,9 @@ public class Dashboard extends TabActivity {
 						@Override
 						public void onItemClick( AdapterView<?> a, View v, int pos, long id ) {
 	
-							Toast.makeText( context, "Clicked on #" + pos + "(" + id + ")", Toast.LENGTH_SHORT ).show();
+							//Grab the data
+							NotificationData data = (NotificationData) v.getTag();
+							onNotificationClick(data);
 							
 						}
 						
@@ -680,126 +635,10 @@ public class Dashboard extends TabActivity {
 			
 		);
 		
-		//CREATE
-		return builder.create();
-		
-	}
-	
-	public Dialog generateDialogFindSoldier(final Context context) {
-		
-		//Attributes
-		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-	    final View layout = inflater.inflate(R.layout.dialog_compare, (ViewGroup) findViewById(R.id.dialog_root));
-		
-	    //Set the title and the view
-		builder.setTitle(R.string.info_profile_soldier);
-		builder.setView(layout);
-
-		//Grab the fields
-		final EditText fieldUsername = (EditText) layout.findViewById(R.id.field_username);
-		
-		//Dialog options
-		builder.setNegativeButton(
-				
-			android.R.string.cancel, 
-			
-			new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int whichButton) { 
-					
-					dialog.dismiss(); 
-					
-				}
-				
-			}
-			
-		);
-			 
-		builder.setPositiveButton(
-				
-			android.R.string.ok, 
-			new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int which) {
-			      
-					if( !fieldUsername.getText().toString().equals( "" ) ) {
-							
-						new AsyncFetchDataToProfileView(context).execute(fieldUsername.getText().toString());
-					
-					} else {
-						
-						Toast.makeText( context, R.string.general_empty_user, Toast.LENGTH_SHORT ).show();
-						
-					}
-			   
-				}
-				
-			}
-			
-		);
-		
-		//CREATE
-		return builder.create();
-		
-	}
-	
-	public Dialog generateDialogFindPlatoon(final Context context) {
-		
-		//Attributes
-		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-	    final View layout = inflater.inflate(R.layout.dialog_find_platoon, (ViewGroup) findViewById(R.id.dialog_root));
-		
-	    //Set the title and the view
-		builder.setTitle(R.string.info_profile_platoon);
-		builder.setView(layout);
-
-		//Grab the fields
-		final EditText fieldName = (EditText) layout.findViewById(R.id.field_name);
-		
-		//Dialog options
-		builder.setNegativeButton(
-				
-			android.R.string.cancel, 
-			
-			new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int whichButton) { 
-					
-					dialog.dismiss(); 
-					
-				}
-				
-			}
-			
-		);
-			 
-		builder.setPositiveButton(
-				
-			android.R.string.ok, 
-			new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int which) {
-			      
-					if( !fieldName.getText().toString().equals( "" ) ) {
-							
-						new AsyncFetchDataToPlatoonView(context).execute(fieldName.getText().toString());
-					
-					} else {
-						
-						Toast.makeText( context, R.string.general_empty_name, Toast.LENGTH_SHORT ).show();
-						
-					}
-			   
-				}
-				
-			}
-			
-		);
-		
-		//CREATE
-		return builder.create();
+		//Padding fix
+		AlertDialog theDialog = builder.create();
+	    theDialog.setView( layout, 0, 0, 0, 0);
+	    return theDialog;
 		
 	}
 	
@@ -833,7 +672,8 @@ public class Dashboard extends TabActivity {
 			//Setup the onClicks
 			onItemClickListener = new OnItemClickListener() {
 
-				@Override public void onItemClick( AdapterView<?> a, View v, int p, long i ) {
+				@Override 
+				public void onItemClick( AdapterView<?> a, View v, int p, long i ) {
 
 					onCOMRowClick(a, v, p, i);
 
@@ -944,7 +784,7 @@ public class Dashboard extends TabActivity {
     	
     	//Get it right
     	if( view.getId()  == R.id.list_requests || view.getId() == R.id.list_friends ) { menuId = 0;  } 
-    	else if( view.getId() == R.id.list_feed ) { menuId = 1; }
+    	else if( view.getId() == android.R.id.list ) { menuId = 1; }
 
     	//Do the right thing
     	if(menuId == 0) { 
@@ -959,6 +799,7 @@ public class Dashboard extends TabActivity {
 				menu.add( menuId, 1, 0, R.string.label_soldier_view);
 				menu.add( menuId, 2, 0, R.string.label_soldier_unlocks);
 				menu.add( menuId, 3, 0, R.string.label_compare_bs);
+				menu.add( menuId, 4, 0, "View assignments");
 				
 	    	}
 		
@@ -974,7 +815,8 @@ public class Dashboard extends TabActivity {
     			menu.add( menuId, 0, 0, R.string.label_unhooah);
     			
     		}
-    		menu.add( menuId, 1, 0, R.string.label_comment_view);
+    		menu.add( menuId, 1, 0, R.string.label_single_post_view);
+    		menu.add( menuId, 2, 0, "Goto item");
     		
     	}
     	
@@ -1091,9 +933,34 @@ public class Dashboard extends TabActivity {
 					
 					);
 					
+				} else if( item.getItemId() == 4 ) {
+					
+					startActivity(
+							
+						new Intent( 
+								
+							this, 
+							AssignmentView.class
+							
+						).putExtra( 
+							
+							"profile", 
+							WebsiteHandler.getPersonaIdFromProfile(
+								
+								((ProfileData) info.targetView.getTag()).getProfileId() 
+						
+							)
+							
+						)
+					
+					);
+					
 				}
 					
 	    	} else if( item.getGroupId() == 1 ) {
+	    		
+	    		//Get the FeedItem
+	    		FeedItem feedItem = (FeedItem) info.targetView.getTag();
 	    		
 	    		//REQUESTS
 				if( item.getItemId() == 0 ) {
@@ -1103,7 +970,7 @@ public class Dashboard extends TabActivity {
 						this, 
 						info.id, 
 						false,
-						( (FeedItem)info.targetView.getTag()).isLiked(),
+						feedItem.isLiked(),
 						new AsyncFeedRefresh(
 								
 							this, 
@@ -1111,7 +978,11 @@ public class Dashboard extends TabActivity {
 							
 						)
 					
-					).execute();
+					).execute(
+							
+						sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" )
+						
+					);
 				
 				} else if( item.getItemId() == 1 ){
 					
@@ -1121,23 +992,13 @@ public class Dashboard extends TabActivity {
 						new Intent(
 								
 							this, 
-							CommentView.class
+							SinglePostView.class
 							
 						).putExtra(
 								
-							"comments", 
-							(ArrayList<CommentData>) ((FeedItem) info.targetView.getTag()).getComments()
-					
-						).putExtra( 
-
-							"postId", 
-							((FeedItem) info.targetView.getTag()).getId()
-							
-						).putExtra(
+							"feedItem",
+							feedItem 
 								
-							"profileId",
-							((FeedItem) info.targetView.getTag()).getOwnerId()
-							
 						).putExtra(
 						
 							"canComment",
@@ -1146,6 +1007,10 @@ public class Dashboard extends TabActivity {
 						)
 						
 					);
+					
+				} else if( item.getItemId() == 2 ) {
+					
+					if( feedItem.getIntent( this ) != null ) { startActivity(feedItem.getIntent( this )); }
 					
 				}
 	    		
@@ -1309,25 +1174,24 @@ public class Dashboard extends TabActivity {
     
     }
  
-    private final void onMenuClick(long id) {
+    public final void onMenuClick(View v) {
     	
-    	if ( id == Constants.MENU_UNLOCKS ) {
+    	//Get it
+    	long id = v.getId();
+    	
+    	if ( id == R.id.button_unlocks ) {
     		
 			startActivity( new Intent(this, UnlockView.class).putExtra( "profile", SessionKeeper.getProfileData() ) );
 			 
-		} else if( id == Constants.MENU_ASSIGNMENTS ) {
+		} else if( id == R.id.button_assignments ) {
 			
 			startActivity( new Intent(this, AssignmentView.class).putExtra( "profile", SessionKeeper.getProfileData() ) );
 			
-		} else if( id == Constants.MENU_SOLDIER ) {
+		} else if( id == R.id.button_search ) {
 			
-			generateDialogFindSoldier(this).show();
+			startActivity( new Intent(this, SearchView.class) );
 			
-		} else if( id == Constants.MENU_PLATOON ) {
-			
-			generateDialogFindPlatoon(this).show();
-			
-		} else if( id == Constants.MENU_MY_SOLDIER ) {
+		} else if( id == R.id.button_self ) {
 			
 			startActivity( 
 					
@@ -1335,25 +1199,20 @@ public class Dashboard extends TabActivity {
 				
 			);
 		
-		} else if( id == Constants.MENU_COMPARE ) {
+		} else if( id == R.id.button_platoons ) { 
+			
+			generatePopupPlatoonList(this).show();
+			return;
+			
+		} else if( id == R.id.button_compare ) {
 			
 			generateDialogCompare(this).show();
 			return;
 			
-		} else if( id == Constants.MENU_SETTINGS ) { 
-			
-			startActivity( new Intent(this, SettingsView.class) );
-			return;
-			
-		} else if( id == Constants.MENU_FORUM ) { 
+		} else if( id == R.id.button_forum ) { 
 			
 			//Toast.makeText( this, R.string.msg_unimplemented, Toast.LENGTH_SHORT ).show();
 			startActivity( new Intent(this, BoardView.class) );
-			return;
-			
-		} else if( id == Constants.MENU_DEBUG ) {
-			
-			startActivity( new Intent(this, DebugActivity.class) );
 			return;
 			
 		} else {
@@ -1470,6 +1329,7 @@ public class Dashboard extends TabActivity {
     			//Let's get this!!
     			notificationArray = WebsiteHandler.getNotifications( arg0[0] );
     			friendListData = WebsiteHandler.getFriendsCOM(context, arg0[0] );
+    			platoonArray = WebsiteHandler.getPlatoonsForUser( context, SessionKeeper.getProfileData().getAccountName() );
     			return true;
     			
     		} catch ( WebsiteHandlerException e ) {
@@ -1529,20 +1389,7 @@ public class Dashboard extends TabActivity {
     	//Let's see
     	if( SessionKeeper.getProfileData() == null ) {
     		
-    		SessionKeeper.setProfileData(
-    				
-    			new ProfileData(
-
-					sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
-					new String[] { sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ) },
-					new long[] { sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ) },
-					sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 ),
-					new long[] { sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 0 ) },
-					sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
-				
-				)
-    			
-    		);
+    		BattlelogService.restart();
     		
     	}
     	
@@ -1572,7 +1419,60 @@ public class Dashboard extends TabActivity {
     }
     
     public final static ProfileData getProfile() { return SessionKeeper.getProfileData(); }
-    
+
+    public Dialog generatePopupPlatoonList(final Context context) {
+		
+		//Attributes
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+	    final View layout = inflater.inflate(R.layout.dialog_dashboard_platoon, (ViewGroup) findViewById(R.id.dialog_root));
+		
+	    //Set the title
+		builder.setTitle( R.string.info_xml_platoon_select );
+		
+		//Dialog options
+		builder.setNegativeButton(
+				
+			android.R.string.cancel, 
+			new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+			      
+					dialog.dismiss();
+			   
+				}
+				
+			}
+			
+		);
+	       
+		//Padding fix
+		final AlertDialog theDialog = builder.create();
+	    theDialog.setView( layout, 0, 0, 0, 0);
+	    
+	    //Grab the fields
+  		ListView listView = (ListView) layout.findViewById(R.id.list_platoons);
+  		listView.setAdapter( new DashboardPopupPlatoonListAdapter(this, platoonArray, layoutInflater) );
+  		listView.setOnItemClickListener(
+  			
+  			new OnItemClickListener() {
+
+  				@Override
+  				public void onItemClick( AdapterView<?> arg0, View arg1, int arg2, long arg3 ) {
+
+  					startActivity( new Intent(context, PlatoonView.class).putExtra( "platoon", ((PlatoonData) arg1.getTag())) );
+  					theDialog.dismiss();
+  					
+  				}
+  				
+  			}
+  				
+  		);
+	    
+	    return theDialog;
+		
+	}
+
 	public Dialog generateDialogContent(final Context context, final String username, final String content) {
 		
 		//Attributes
@@ -1603,8 +1503,10 @@ public class Dashboard extends TabActivity {
 			
 		);
 		
-		//CREATE
-		return builder.create();
+		//Padding fix
+		AlertDialog theDialog = builder.create();
+	    theDialog.setView( layout, 0, 0, 0, 0);
+	    return theDialog;
 		
 	}
 	
@@ -1617,6 +1519,23 @@ public class Dashboard extends TabActivity {
         	cTabHost.setCurrentTab( intent.getIntExtra( "openTabId", 0 ) );
         	
         }
+		
+	}
+	
+	public void onNotificationClick(NotificationData notification) {
+
+		Toast.makeText( this, "This might not do anything. DICE made it really hard to control this part. :-(", Toast.LENGTH_SHORT).show();
+		
+		/*
+		if( notification.getItemId() > 0 ) { 
+			
+			startActivity(
+				
+				new Intent(this, SinglePostView.class).putExtra( "notification", notification ).putExtra( "canComment", true )
+			
+			); 
+			
+		}*/
 		
 	}
 

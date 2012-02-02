@@ -14,31 +14,28 @@
  -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:padding="10dp"
->     
+>  
+	<ImageView 
+   	    android:id="@+id/image_avatar" 
+   	    android:layout_width="40dp"
+	    android:layout_height="40dp" 
+	    android:layout_alignParentLeft="true"
+	    android:src="@drawable/default_avatar"
+	    
+	/>
 	<TextView 
-	    style="@style/InfoHeading"
-	    android:id="@+id/text_title_thread"
-		android:layout_alignParentTop="true"
-		android:text="@string/info_xml_forums"
-		android:padding="5dp"
-		android:layout_marginTop="0dp"
-		android:layout_marginBottom="0dp"
-	/>
-	<ListView 
-		android:id="@android:id/list" 
-		android:layout_width="fill_parent"
+	    android:id="@+id/string_name"
+		android:text="NINETWOZERO"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/text_title_thread"   
-		android:fastScrollEnabled="true"
-	/>
-	<TextView
-	    android:id="@android:id/empty"
-		android:layout_height="wrap_content"
-	    android:layout_width="wrap_content"
-	    android:layout_centerInParent="true"
-	   	android:layout_marginTop="30dp"
-	  	android:text="@string/info_xml_forums_none" 	
+		android:textColor="@color/blue"
+		android:textStyle="bold"
+		android:layout_toRightOf="@id/image_avatar"
+		android:layout_centerVertical="true"
+		android:layout_marginLeft="10dp"
+		android:textSize="18sp"
+		android:ellipsize="marquee"
 	/>
 </RelativeLayout>

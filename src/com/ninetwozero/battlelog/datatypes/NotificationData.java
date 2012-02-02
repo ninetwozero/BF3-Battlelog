@@ -1,11 +1,14 @@
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.ninetwozero.battlelog.R;
 
 
 
-public class NotificationData {
+public class NotificationData implements Parcelable {
 
 	//Attributes
 	private long itemId, ownerId, commenterId, date;
@@ -31,7 +34,21 @@ public class NotificationData {
 		this.extra = x;
 		
 	}
-	
+
+	public NotificationData( Parcel in ) {
+			
+		this.itemId = in.readLong();
+		this.ownerId = in.readLong();
+		this.commenterId = in.readLong();
+		this.date = in.readLong();
+		this.typeId = in.readInt();
+		this.owner = in.readString();
+		this.commenter = in.readString();
+		this.type = in.readString();
+		this.extra = in.readString();
+		
+	}
+
 	//Getters
 	public long getItemId() {return this.itemId; }
 	public long getOwnerId() {return this.ownerId; }
@@ -202,6 +219,10 @@ public class NotificationData {
 				
 			);
 			
+		} else if( this.type.equals( "friendrequestaccepted" ) ) {
+
+			message = c.getString( R.string.info_feed_friend_accept );
+			
 		} else {
 			
 			message = c.getString( R.string.info_unknown_notification );
@@ -266,4 +287,34 @@ public class NotificationData {
 		);
 	}
  
+
+	@Override
+	public int describeContents() {
+
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel( Parcel dest, int flags ) {
+
+		dest.writeLong( this.itemId );
+		dest.writeLong( this.ownerId );
+		dest.writeLong( this.commenterId );
+		dest.writeLong( this.date );
+		dest.writeInt( this.typeId );
+		dest.writeString( this.owner );
+		dest.writeString( this.commenter );
+		dest.writeString( this.type );
+		dest.writeString( this.extra );
+		
+	}
+	
+	public static final Parcelable.Creator<NotificationData> CREATOR = new Parcelable.Creator<NotificationData>() {
+		
+		public NotificationData createFromParcel(Parcel in) { return new NotificationData(in); }
+        public NotificationData[] newArray(int size) { return new NotificationData[size]; }
+	
+	};
+	
 }

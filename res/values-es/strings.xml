@@ -29,11 +29,11 @@
         <string name="general_wait">Por favor espere</string>
         <string name="general_downloading">Descarga de los datos...</string>
         <string name="general_no_data">No se encontraron datos.</string>
-        <string name="label_menu">Menú</string>
+        <string name="label_own_soldiernu">Menú</string>
         <string name="label_feed">Flujo</string>
         <string name="label_friends">Amigos</string>
         <string name="label_notifications">Notificaciones</string>
-        <string name="label_me">Mi soldado</string>
+        <string name="label_own_soldier">Mi soldado</string>
         <string name="label_unlocks">Mi abre</string>
         <string name="label_find_soldier">Buscar soldado</string>
         <string name="label_find_platoon">Buscar pelotón</string>
@@ -59,7 +59,7 @@
         <string name="label_stats">Estadísticas</string>
         <string name="label_users">Usuarios</string>
         <string name="info_platoon_created">Creado el {DATE} ({RELATIVE DATE})</string>
-        <string name="label_members">Miembros</string>
+        <string name="label_own_soldiermbers">Miembros</string>
         <string name="label_fans">Fans</string>
         <string name="info_platoon_compare">No se puede comparar pelotones ... (¿todavía?)</string>
         <string name="info_empty_msg">Usted no está autorizado a publicar un mensaje en blanco.</string>

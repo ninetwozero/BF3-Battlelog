@@ -25,7 +25,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -54,10 +53,11 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.ProfileView.AsyncProfileRefresh;
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.adapters.PlatoonUserListAdapter;
-import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
+import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonMemberManagement;
 import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonRespond;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
@@ -71,9 +71,11 @@ import com.ninetwozero.battlelog.datatypes.PlatoonStatsItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonTopStatsItem;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class PlatoonView extends TabActivity {
@@ -159,15 +161,153 @@ public class PlatoonView extends TabActivity {
     	
 	}        
 
-	public void initLayout() {}
+	public void initLayout() {
+		
+		//Get a *cached* version instead    
+		if( platoonInformation ==  null ) { 
+			
+			new AsyncPlatoonCacheLoad(CONTEXT).execute();
+		
+		}
+		
+	}
 	
-    public void reloadLayout(boolean dialog) {
+    public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new AsyncPlatoonRefresh(this, dialog, platoonData, sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )).execute();
+    	new AsyncPlatoonRefresh(this, platoonData, SessionKeeper.getProfileData().getProfileId()).execute();
     	
     	
     }
+    
+	public class AsyncPlatoonCacheLoad extends AsyncTask<Void, Void, Boolean> {
+		
+		//Attributes
+		private Context context;
+		private ProgressDialog progressDialog;
+		
+		public AsyncPlatoonCacheLoad(Context c) {
+			
+			this.context = c;
+			this.progressDialog = null;
+			
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			
+			//Do we?
+			this.progressDialog = new ProgressDialog(context);
+			this.progressDialog.setTitle(context.getString( R.string.general_wait ));
+			this.progressDialog.setMessage( context.getString( R.string.general_downloading ) );
+			this.progressDialog.show();
+		
+		}
+
+		@Override
+		protected Boolean doInBackground( Void... arg0 ) {
+			
+			try {
+				
+				//Get...
+				platoonInformation = CacheHandler.Platoon.select( context, platoonData.getId() );
+				
+				//We got one?!
+				if( platoonInformation == null ) { return false; } 
+				else { return true; }
+				
+			} catch ( Exception ex ) {
+				
+				ex.printStackTrace();
+				return false;
+				
+			}
+
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result) {
+			
+			//Assign values
+			if( result ) { 
+				
+				//Assign values
+				mTabHost.setOnTabChangedListener(
+						
+					new OnTabChangeListener() {
+
+						@Override
+						public void onTabChanged(String tabId) {
+		
+							switch( getTabHost().getCurrentTab() ) {
+								
+								case 0:
+									setupHome(platoonInformation);
+									break;
+									
+								case 1:
+									setupStats(platoonInformation.getStats());
+									break;
+									
+								case 2:
+									setupUsers(platoonInformation);
+									break;
+									
+								case 3:
+									setupFeed(platoonInformation);
+									break;
+									
+								default:
+									break;
+						
+							}
+			
+						}
+						
+					}
+					
+				);
+
+				//Let's see what we need to update *directly*
+				switch( mTabHost.getCurrentTab() ) {
+					
+					case 0:
+						setupHome(platoonInformation);
+						break;
+						
+					case 1:
+						setupStats(platoonInformation.getStats());
+						break;
+					
+					case 2:
+						setupUsers(platoonInformation);
+						break;
+						
+					case 3:
+						setupFeed(platoonInformation);
+						break;
+						
+					default:
+						break;
+			
+				}
+			
+				//Siiiiiiiiilent refresh
+				new AsyncPlatoonRefresh(CONTEXT, platoonData, SessionKeeper.getProfileData().getProfileId()).execute();
+				if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
+			
+			} else {
+
+				new AsyncPlatoonRefresh(CONTEXT, platoonData, SessionKeeper.getProfileData().getProfileId(), progressDialog).execute();
+			
+			}
+			
+			//Get back here!
+			return;
+				
+		}
+		
+	}
     
     private void setupTabs(final String[] tags, final int[] layouts) {
 
@@ -214,6 +354,8 @@ public class PlatoonView extends TabActivity {
     
     public void doFinish() {}
     
+    
+    
     public class AsyncPlatoonRefresh extends AsyncTask<Void, Void, Boolean> {
     
     	//Attributes
@@ -221,33 +363,27 @@ public class PlatoonView extends TabActivity {
     	private ProgressDialog progressDialog;
     	private PlatoonData platoonData;
     	private long activeProfileId;
-    	private boolean hideDialog;
     	
-    	public AsyncPlatoonRefresh(Context c, boolean f, PlatoonData pd, long pId) {
+    	public AsyncPlatoonRefresh(Context c, PlatoonData pd, long pId) {
     		
     		this.context = c;
-    		this.hideDialog = f;
     		this.platoonData = pd;
-    		this.progressDialog = null;
     		this.activeProfileId = pId;
+    		this.progressDialog = null;
+        		
+    	}    	
+    	
+    	public AsyncPlatoonRefresh(Context c, PlatoonData pd, long pId, ProgressDialog p) {
+    		
+    		this.context = c;
+    		this.platoonData = pd;
+    		this.activeProfileId = pId;
+    		this.progressDialog = p;
     		
     	}
     	
     	@Override
-    	protected void onPreExecute() {
-    		
-    		//Do we?
-    		if( !hideDialog ) {
-
-    			//Let's see
-				this.progressDialog = new ProgressDialog(this.context);
-				this.progressDialog.setTitle(context.getString( R.string.general_wait ));
-				this.progressDialog.setMessage( context.getString( R.string.general_downloading ) );
-				this.progressDialog.show();
-    		
-    		}	
-    	
-    	}
+    	protected void onPreExecute() {}
 
 		@Override
 		protected Boolean doInBackground( Void... arg0 ) {
@@ -290,77 +426,85 @@ public class PlatoonView extends TabActivity {
 			//Fail?
 			if( !result ) { 
 				
-				if ( !hideDialog ) { if( this.progressDialog != null ) this.progressDialog.dismiss(); }
 				Toast.makeText( this.context, R.string.general_no_data, Toast.LENGTH_SHORT).show(); 
-				((Activity) this.context).finish();
-				return; 
 			
-			}
+			} else {
 
-			//Assign values
-			mTabHost.setOnTabChangedListener(
-					
-				new OnTabChangeListener() {
-
-					@Override
-					public void onTabChanged(String tabId) {
+				//Assign values
+				mTabHost.setOnTabChangedListener(
+						
+					new OnTabChangeListener() {
 	
-						switch( getTabHost().getCurrentTab() ) {
-							
-							case 0:
-								setupHome(platoonInformation);
-								break;
-								
-							case 1:
-								setupStats(platoonInformation.getStats());
-								break;
-								
-							case 2:
-								setupUsers(platoonInformation);
-								break;
-								
-							case 3:
-								setupFeed(platoonInformation);
-								break;
-								
-							default:
-								break;
-					
-						}
+						@Override
+						public void onTabChanged(String tabId) {
 		
+							switch( getTabHost().getCurrentTab() ) {
+								
+								case 0:
+									setupHome(platoonInformation);
+									break;
+									
+								case 1:
+									setupStats(platoonInformation.getStats());
+									break;
+									
+								case 2:
+									setupUsers(platoonInformation);
+									break;
+									
+								case 3:
+									setupFeed(platoonInformation);
+									break;
+									
+								default:
+									break;
+						
+							}
+			
+						}
+						
 					}
+					
+				);
+	
+				//Let's see what we need to update *directly*
+				switch( mTabHost.getCurrentTab() ) {
+					
+					case 0:
+						setupHome(platoonInformation);
+						break;
+						
+					case 1:
+						setupStats(platoonInformation.getStats());
+						break;
+					
+					case 2:
+						setupUsers(platoonInformation);
+						break;
+						
+					case 3:
+						setupFeed(platoonInformation);
+						break;
+						
+					default:
+						break;
+			
+				}
+				
+			}
+			
+			//Do we have a dialog?
+			if( progressDialog != null ) {
+				
+				if( progressDialog.isShowing() ) {
+					
+					progressDialog.dismiss();
+					progressDialog = null;
 					
 				}
 				
-			);
-
-			//Let's see what we need to update *directly*
-			switch( mTabHost.getCurrentTab() ) {
-				
-				case 0:
-					setupHome(platoonInformation);
-					break;
-					
-				case 1:
-					setupStats(platoonInformation.getStats());
-					break;
-				
-				case 2:
-					setupUsers(platoonInformation);
-					break;
-					
-				case 3:
-					setupFeed(platoonInformation);
-					break;
-					
-				default:
-					break;
-		
 			}
 			
-			//Done!
-	        if( this.progressDialog != null && !hideDialog ) this.progressDialog.dismiss();
-	        
 	        //Get back here!
 	        return;
 		        
@@ -369,6 +513,9 @@ public class PlatoonView extends TabActivity {
     }
     
     public final void setupHome(PlatoonInformation data) {
+    	
+    	//Poof
+    	if( data == null ) { return; }
     	
     	//Let's start by getting an ImageView
 		if( imageViewBadge == null ) { imageViewBadge = (ImageView) findViewById(R.id.image_badge); }
@@ -448,8 +595,11 @@ public class PlatoonView extends TabActivity {
     
     public void setupStats(PlatoonStats pd) {
     	
+    	//Do we have it??
+    	if( pd == null ) { return; }
+    	
     	//Let's start drawing the... layout
-    	((TextView) findViewById(R.id.text_name_platoon)).setText( pd.getName() );
+    	((TextView) findViewById(R.id.text_name_platoon_tab2)).setText( pd.getName() );
     	
     	//Are they null?
     	if( wrapGeneral == null ) {
@@ -566,6 +716,9 @@ public class PlatoonView extends TabActivity {
     
     public final void setupUsers(PlatoonInformation data) {
     	
+    	//Let's try it
+    	if( data == null ) { return; }
+    	
     	//Do we have the ListView?
     	if( listUsers == null ) {
     		
@@ -591,16 +744,7 @@ public class PlatoonView extends TabActivity {
 						@Override
 						public void onItemClick( AdapterView<?> a, View v, int pos, long id ) {
 	
-							startActivity(
-									
-								new Intent(CONTEXT, ProfileView.class).putExtra(
-										
-									"profile", 
-									(PlatoonMemberData) v.getTag() 
-									
-								)
-								
-							);
+							v.showContextMenu();
 							
 						}
 						
@@ -631,7 +775,7 @@ public class PlatoonView extends TabActivity {
     	//Which view are we on?
     	if( isViewingMembers ) { 
     		
-    		((TextView) findViewById(R.id.text_name_platoon)).setText( R.string.label_members );
+    		((TextView) findViewById(R.id.text_name_platoon)).setText( R.string.label_own_soldiermbers );
     		
     	} else { 
     		
@@ -643,6 +787,9 @@ public class PlatoonView extends TabActivity {
     
     public void setupFeed(PlatoonInformation data) {
     	
+    	//Let's see
+    	if( data == null ) { return; }
+    	
     	//Do we have it already?
 		if( listFeed == null ) { 
 			
@@ -651,7 +798,7 @@ public class PlatoonView extends TabActivity {
 			
 		}
         
-		((TextView) findViewById(R.id.text_name_platoon)).setText( data.getName() );
+		((TextView) findViewById(R.id.text_name_platoon_tab4)).setText( data.getName() );
         
 		//If we don't have it defined, then we need to set it
 		if( listFeed.getAdapter() == null ) {
@@ -673,7 +820,7 @@ public class PlatoonView extends TabActivity {
 							final FeedItem currItem = (FeedItem) a.getItemAtPosition( pos );
 							if( !currItem.getContent().equals( "" ) ) {
 								
-								generateDialogContent(CONTEXT, currItem.getUsername()[0], currItem.getContent()).show();
+								generateDialogContent(CONTEXT, currItem.getProfile( 0 ).getAccountName(), currItem.getContent()).show();
 								
 							}
 							
@@ -715,6 +862,7 @@ public class PlatoonView extends TabActivity {
 					((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
 					((MenuItem) menu.findItem( R.id.option_leave )).setVisible( true );
 					((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_invite )).setVisible( false );
 					((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
 										
 				} else if( platoonInformation.isOpenForNewMembers() ) {
@@ -722,6 +870,7 @@ public class PlatoonView extends TabActivity {
 					((MenuItem) menu.findItem( R.id.option_join )).setVisible( true );
 					((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 					((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_invite )).setVisible( false );
 					((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
 					
 				} else {
@@ -729,6 +878,7 @@ public class PlatoonView extends TabActivity {
 					((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
 					((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 					((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+					((MenuItem) menu.findItem( R.id.option_invite )).setVisible( false );
 					((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
 				}
 					
@@ -737,6 +887,7 @@ public class PlatoonView extends TabActivity {
 				((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_invite )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
 				
 			}
@@ -746,6 +897,7 @@ public class PlatoonView extends TabActivity {
 			((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_invite )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
 			
 		} else if( mTabHost.getCurrentTab() == 2 ) {
@@ -755,6 +907,7 @@ public class PlatoonView extends TabActivity {
 				((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_fans )).setVisible( true );
+				((MenuItem) menu.findItem( R.id.option_invite )).setVisible( true );
 				((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
 				
 			} else {
@@ -762,6 +915,7 @@ public class PlatoonView extends TabActivity {
 				((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_invite )).setVisible( true );
 				((MenuItem) menu.findItem( R.id.option_members )).setVisible( true );
 				
 			}
@@ -771,6 +925,7 @@ public class PlatoonView extends TabActivity {
 			((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_invite )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
 			
 		} else {
@@ -778,6 +933,7 @@ public class PlatoonView extends TabActivity {
 			((MenuItem) menu.findItem( R.id.option_join )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_leave )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_fans )).setVisible( false );
+			((MenuItem) menu.findItem( R.id.option_invite )).setVisible( false );
 			((MenuItem) menu.findItem( R.id.option_members )).setVisible( false );
 			
 		}
@@ -792,7 +948,7 @@ public class PlatoonView extends TabActivity {
 		//Let's act!
 		if( item.getItemId() == R.id.option_reload ) {
 	
-			this.reloadLayout(true);
+			this.reloadLayout();
 			
 		} else if( item.getItemId() == R.id.option_back ) {
 			
@@ -829,6 +985,29 @@ public class PlatoonView extends TabActivity {
 				
 			).execute(false);
 		
+		} else if( item.getItemId() == R.id.option_invite ) {
+			
+			startActivity( 
+					
+				new Intent(
+					
+					this, 
+					PlatoonInviteView.class
+					
+				).putExtra( 
+					
+					"platoon",
+					platoonData
+					
+				).putExtra( 
+						
+					"friends", 
+					platoonInformation.getInvitableFriends() 
+					
+				)
+				
+			);
+			
 		}
 	
 		// Return true yo
@@ -840,7 +1019,7 @@ public class PlatoonView extends TabActivity {
 	public void onResume() {
 		
 		super.onResume();
-		reloadLayout(false);
+		reloadLayout();
 		
 	}
 	
@@ -913,20 +1092,68 @@ public class PlatoonView extends TabActivity {
 		//Grab the info
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-		//Show the menu
-		if( !((FeedItem) ((View) info.targetView).getTag()).isLiked() ) {
-			
-			menu.add( 0, 0, 0, R.string.label_hooah);
+		if( mTabHost.getCurrentTab() == 2 ) {
 		
-		} else {
+			//Get the data
+			PlatoonMemberData data = (PlatoonMemberData) info.targetView.getTag();
 			
-			menu.add( 0, 0, 0, R.string.label_unhooah);
+			//General
+			menu.add( 2, 0, 0, "View profile");
 			
-		}
-		menu.add( 0, 1, 0, R.string.label_comment_view);
+			//Let's see... founder? No "admin" options on that user!!
+			if( data.getMembershipLevel() == 256 ) {
+				
+				return;
+				
+			} if( data.getMembershipLevel() >= 4) { //^Other actual member
 
-		return;
+				//Are we on an admin level and able to modify?
+				if( platoonInformation.isAdmin() && isViewingMembers ) { 
+					
+					//128 == Admin, which renders our action to demote
+					if( data.getMembershipLevel() == 128 ) {
+						
+						menu.add( 2, 1, 0, "Demote");
+						
+					} else {
+						
+						menu.add( 2, 1, 0, "Promote");
+						
+					}
+				
+					menu.add( 2, 2, 0, "Kick" );
+					
+				}
+				
+			} else if( data.getMembershipLevel() == 1 ) { //Players that want to join
+				
+				menu.add( 2, 3, 0, "Accept membership" );
+				menu.add( 2, 4, 0, "Deny membership" );
+				
+			}
+			
+		} else if( mTabHost.getCurrentTab() == 3 ) {
+			
+			//Get the data
+			FeedItem data = (FeedItem) info.targetView.getTag();
+			
+			//Show the menu if we can hooah
+			if( !data.isLiked() ) {
+				
+				menu.add( 3, 0, 0, R.string.label_hooah);
+			
+			} else {
+				
+				menu.add( 3, 0, 0, R.string.label_unhooah);
+				
+			}
+			menu.add( 3, 1, 0, R.string.label_single_post_view);
 	
+		} else {}
+	
+		//RETURN
+		return;
+		
 	}
 	
 	@Override
@@ -950,7 +1177,63 @@ public class PlatoonView extends TabActivity {
 		try {
 			
 			//Divide & conquer 
-			if( item.getGroupId() == 0 ) {
+			if( item.getGroupId() == 2 ) {
+				
+				//Get the data
+				PlatoonMemberData data = (PlatoonMemberData) info.targetView.getTag();
+				
+				//...
+				if( item.getItemId() == 0 ) {
+					
+					startActivity(
+							
+						new Intent(CONTEXT, ProfileView.class).putExtra(
+								
+							"profile", 
+							data
+							
+						)
+						
+					);
+					
+				} else if( item.getItemId() == 1 ) {
+					
+					Toast.makeText( this, !data.isAdmin()? "Promoting..." : "Demoting", Toast.LENGTH_SHORT).show();
+					new AsyncPlatoonMemberManagement( this, data.getProfileId(), platoonData.getId(), 1).execute( !data.isAdmin()  );
+					
+				} else if( item.getItemId() == 2 ) {
+					
+					Toast.makeText( this, "Kicking...", Toast.LENGTH_SHORT ).show();
+					new AsyncPlatoonMemberManagement( this, data.getProfileId(), platoonData.getId(), 2).execute();
+					
+				} else if( item.getItemId() == 3 ) {
+					
+					Toast.makeText(this, "Accepting the new member...", Toast.LENGTH_SHORT).show();
+					new AsyncPlatoonRespond(
+								
+						this, 
+						platoonData.getId(),
+						data.getProfileId(),
+						true
+					
+					).execute(sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "")); 
+					
+				} else if( item.getItemId() == 4 ) {
+					
+					Toast.makeText(this, "Turning down the new member...", Toast.LENGTH_SHORT).show();	
+					new AsyncPlatoonRespond(
+						
+						this, 
+						platoonData.getId(),
+						data.getProfileId(),
+						false
+					
+					).execute(sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "")); 
+				
+				}
+				
+				
+			} else if( item.getGroupId() == 3 ) {
 				
 				//REQUESTS
 				if( item.getItemId() == 0 ) {
@@ -964,9 +1247,8 @@ public class PlatoonView extends TabActivity {
 						new AsyncPlatoonRefresh(
 								
 							this, 
-							true, 
 							platoonData,
-							sharedPreferences.getLong( Constants.SP_BL_PROFILE_ID, 0 )
+							SessionKeeper.getProfileData().getProfileId()
 							
 						)
 					
@@ -989,7 +1271,7 @@ public class PlatoonView extends TabActivity {
 						new Intent(
 								
 							this, 
-							CommentView.class
+							SinglePostView.class
 							
 						).putExtra(
 								
@@ -1147,12 +1429,14 @@ public class PlatoonView extends TabActivity {
 			
 		);
 		
-		//CREATE
-		return builder.create();
+		//Padding fix
+		AlertDialog theDialog = builder.create();
+	    theDialog.setView( layout, 0, 0, 0, 0);
+	    return theDialog;
 		
 	}
 	
-	public void onRequestActionClick(View v) {
+	public void onRequestActionClick(final View v) {
 
 		new AsyncPlatoonRespond(
 				
@@ -1164,5 +1448,5 @@ public class PlatoonView extends TabActivity {
 		).execute(sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "")); 
 
 	}
-
+	
 }

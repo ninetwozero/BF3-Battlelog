@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  
+	This file is part of BF3 Battlelog
+
+    BF3 Battlelog is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    BF3 Battlelog is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+>
+	<RelativeLayout
+		android:id="@+id/wrap_top"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"    
+		android:layout_marginBottom="40dp"
+		android:padding="10dp"
+	>  
+		<Button
+		    style="@style/RegularButton"
+		    android:id="@+id/button_more"
+		    android:layout_width="fill_parent"
+		    android:text="@string/info_xml_feed_button_pagination"
+		    android:layout_alignParentBottom="true"
+		    android:onClick="onClick"
+		    android:visibility="gone"
+		/>
+		<TextView 
+		    style="@style/InfoHeading"
+		    android:id="@+id/text_title"
+			android:layout_alignParentTop="true"
+			android:text="Threads"
+			android:padding="5dp"
+			android:layout_marginTop="0dp"
+			android:layout_marginBottom="0dp"
+	
+		/>
+		<ListView 
+			android:id="@android:id/list" 
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_above="@id/button_more"
+			android:layout_below="@id/text_title" 
+			android:fastScrollEnabled="true"
+			android:layout_marginBottom="10dp" 
+		/>
+		<TextView
+		    android:id="@android:id/empty"
+			android:layout_height="wrap_content"
+		    android:layout_width="wrap_content"
+		    android:layout_centerInParent="true"
+		   	android:layout_marginTop="30dp"
+		   	android:layout_marginBottom="30dp"
+		  	android:text="@string/info_xml_threads_none" 	
+		/>
+	</RelativeLayout>
+	<SlidingDrawer 
+		android:id="@+id/post_slider"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:topOffset="0dp" 
+	    android:handle="@+id/post_slide_handle"
+	    android:content="@+id/post_slide_content"
+		android:layout_alignParentBottom="true"
+	>
+	  	<LinearLayout
+		   android:layout_width="fill_parent"
+		   android:layout_height="40dp"
+	       android:id="@+id/post_slide_handle"
+	       android:orientation="vertical"
+		>
+		    <View
+		        android:layout_width="fill_parent"
+		    	android:layout_height="2dp"  
+		    	android:background="#5c5c5c"
+		    />
+		    <View
+		        android:id="@+id/temp000"
+		        android:layout_width="fill_parent"
+		    	android:layout_height="1dp"  
+		    	android:background="#20201f"
+		    />
+		    <TextView
+		        android:id="@+id/post_slide_handle_text"
+		        android:layout_width="fill_parent"
+		        android:layout_height="37dp"
+		        android:background="@drawable/gradient_greytodarkgrey"
+		    	android:text="@string/info_xml_thread_new"
+		    	android:textColor="#FFFFFF"
+		    	android:gravity="center"
+		    />
+		</LinearLayout>
+		<RelativeLayout 
+			android:id="@+id/post_slide_content"  
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="#FDFDFD"
+			android:padding="10dp"
+		>	
+		    <Button
+				android:id="@+id/button_new"
+				style="@style/RegularButton"
+				android:text="Create new thread!"
+				android:onClick="onPostSubmit"  
+				android:layout_alignParentBottom="true"
+				android:layout_centerHorizontal="true"
+				android:layout_width="fill_parent"
+		    	android:layout_marginTop="5dp"
+			/>
+		    <EditText 
+		        android:id="@+id/textarea_title"
+		    	android:layout_width="fill_parent"
+		    	android:layout_height="wrap_content"
+		    	android:singleLine="true"
+		    	android:hint="Your title here..."
+		    	android:layout_alignParentTop="true"
+		    	android:gravity="left|top"
+		    />
+   		    <EditText 
+		        android:id="@+id/textarea_content"
+		    	android:layout_width="fill_parent"
+		    	android:layout_height="fill_parent"
+		    	android:hint="Your content here..."
+		    	android:layout_above="@id/button_new"
+		    	android:layout_below="@id/textarea_title"
+		    	android:gravity="left|top"
+		    	android:layout_marginTop="5dp"
+		    />
+		</RelativeLayout>
+	</SlidingDrawer>
+</RelativeLayout>

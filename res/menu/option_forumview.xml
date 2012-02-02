@@ -6,10 +6,10 @@
 		android:alphabeticShortcut="R"
 	/>
 	<item 
-		android:id="@+id/option_new" 
-		android:icon="@android:drawable/ic_menu_add" 
-		android:title="@string/info_xml_post_new" 
-		android:alphabeticShortcut="B"
+		android:id="@+id/option_search" 
+		android:icon="@android:drawable/ic_menu_search" 
+		android:title="@string/info_xml_search" 
+		android:alphabeticShortcut="S"
 	/>
 	<item 
 		android:id="@+id/option_back" 

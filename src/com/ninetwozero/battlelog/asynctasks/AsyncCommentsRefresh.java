@@ -34,11 +34,11 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
 
 	//Attribute
-	Context context;
-	SharedPreferences sharedPreferences;
-	ArrayList<CommentData> comments = new ArrayList<CommentData>();
-	ListView listView;
-	LayoutInflater layoutInflater;
+	private Context context;
+	private SharedPreferences sharedPreferences;
+	private ArrayList<CommentData> comments = new ArrayList<CommentData>();
+	private ListView listView;
+	private LayoutInflater layoutInflater;
 	
 	//Constructor
 	public AsyncCommentsRefresh( Context c, ListView lv, LayoutInflater l ) { 

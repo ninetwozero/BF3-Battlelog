@@ -15,6 +15,8 @@
 package com.ninetwozero.battlelog.asynctasks;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.ViewPagerDashboard;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;

@@ -14,6 +14,8 @@
 
 package com.ninetwozero.battlelog;
 
+import java.util.HashMap;
+
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -38,6 +40,7 @@ import android.widget.Toast;
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
 import com.ninetwozero.battlelog.datatypes.PostData;
+import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.services.BattlelogService;
@@ -69,7 +72,7 @@ public class Main extends Activity {
         
         	Log.d(Constants.DEBUG_TAG, "There is no cache-directory!!");
         	
-        }
+        };
         
         //Are we active?
         if( PublicUtils.isMyServiceRunning( this ) && BattlelogService.isRunning() ) { 
@@ -231,7 +234,6 @@ public class Main extends Activity {
 		
 	    //Set the title and the view
 		builder.setTitle( getString( R.string.general_changelog_version ) + " 1.0." + Constants.CHANGELOG_VERSION);
-		builder.setView(layout);
 
 		//Grab the fields
 		final TextView textView = (TextView) layout.findViewById(R.id.text_changelog);
@@ -254,7 +256,9 @@ public class Main extends Activity {
 		);
     		
 		//CREATE
-		return builder.create();
+		AlertDialog theDialog = builder.create();
+		theDialog.setView( layout, 0, 0, 0, 0 );
+		return theDialog;
     	
     }
     

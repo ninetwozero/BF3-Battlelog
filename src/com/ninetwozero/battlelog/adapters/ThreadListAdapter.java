@@ -132,7 +132,7 @@ public class ThreadListAdapter extends BaseAdapter {
 					).replace(
 					
 						"{user}",
-						currentItem.getOwner()
+						currentItem.getOwner().getAccountName()
 							
 					)
 					
@@ -152,7 +152,7 @@ public class ThreadListAdapter extends BaseAdapter {
 					).replace(
 					
 						"{user}",
-						currentItem.getLastPostUsername()
+						currentItem.getLastPoster().getAccountName()
 							
 					)
 					
@@ -190,16 +190,17 @@ public class ThreadListAdapter extends BaseAdapter {
 	
 	}
 	
-	public void setItemArray(ArrayList<Board.ThreadData> array) {
+	public void set(ArrayList<Board.ThreadData> array) {
 		
 		this.itemArray = array;
 		this.notifyDataSetInvalidated();
 		
 	}
 	
-	public void addItem( ArrayList<Board.ThreadData> array ) {
+	public void add( ArrayList<Board.ThreadData> array ) {
 	
-		this.itemArray.addAll( array );
+		this.itemArray.addAll( array ); /* TODO FIX THIS */
+		this.notifyDataSetChanged();
 		
 	}
 	

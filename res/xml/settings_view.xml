@@ -3,14 +3,17 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sample="http://schemas.android.com/apk/res/com.ninetwozero.battlelog"
 >
-    <PreferenceCategory android:title="Service options">
-
-        <CheckBoxPreference 
-            android:key="allow_service" 
-            android:defaultValue="true" 
-            android:title="@string/info_xml_enable_bgsrv" 
-            android:summary="@string/info_xml_enable_bgsrv_t"
+   	<PreferenceCategory android:title="Chat options">
+        <com.kmansoft.IntegerListPreference
+            android:title="Select an update interval" 
+            android:key="Constants.SP_BL_INTERVAL_CHAT"
+            sample:entryList="@array/service_update_intervals_labels" 
+            sample:valueList="@array/service_update_intervals_values" 
+            android:defaultValue="1800"
         />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Service options">
+        
         <com.kmansoft.IntegerListPreference
             android:title="Select an update interval" 
             android:key="battlelog_service_interval"
@@ -19,5 +22,5 @@
             android:defaultValue="1800"
             android:dependency="allow_service"
         />
-    </PreferenceCategory>
+   	</PreferenceCategory>
 </PreferenceScreen>

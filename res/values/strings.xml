@@ -13,7 +13,17 @@
         <item >64800</item>
         <item >86400</item>
     </integer-array>
-        
+    <integer-array name="chat_update_intervals_values">    
+        <item >5</item>
+        <item >10</item>
+        <item >15</item>
+        <item >20</item>
+        <item >25</item>
+        <item >30</item>
+        <item >60</item>
+        <item >90</item>
+        <item >120</item>
+    </integer-array>
     <!-- 
     
     	Strings to be translated below
@@ -32,17 +42,28 @@
         <item >Once every 18 hours</item>
         <item >Once a day</item>
     </string-array>
+     <string-array name="chat_update_intervals_labels">
+        <item >Once every 5 seconds</item>
+        <item >Once every 10 seconds</item>
+        <item >Once every 15 seconds</item>
+        <item >Once every 20 seconds</item>
+        <item >Once every 25 seconds</item>
+        <item >Once every 30 seconds</item>
+        <item >Once a minute</item>
+        <item >Once every 90 seconds</item>
+        <item >Once every 2 minutes</item>
+    </string-array>
         <string name="general_invalid_email">Invalid e-mail address.</string>
         <string name="general_invalid_password">Please enter your password.</string>
         <string name="general_changelog_version">Changelog version</string>
         <string name="general_wait">Please wait</string>
         <string name="general_downloading">Downloading the data...</string>
         <string name="general_no_data">No data found.</string>
-        <string name="label_menu">Menu</string>
+        <string name="label_own_soldiernu">Menu</string>
         <string name="label_feed">Feed</string>
         <string name="label_friends">Friends</string>
         <string name="label_notifications">Notifications</string>
-        <string name="label_me">My soldier</string>
+        <string name="label_own_soldier">My soldier</string>
         <string name="label_unlocks">My unlocks</string>
         <string name="label_find_soldier">Find soldier</string>
         <string name="label_find_platoon">Find platoon</string>
@@ -68,7 +89,7 @@
         <string name="label_stats">Stats</string>
         <string name="label_users">Users</string>
         <string name="info_platoon_created">Created on {DATE} ({RELATIVE DATE})</string>
-        <string name="label_members">MEMBERS</string>
+        <string name="label_own_soldiermbers">MEMBERS</string>
         <string name="label_fans">FANS</string>
         <string name="info_platoon_compare">You can\'t compare platoons... (yet?)</string>
         <string name="info_empty_msg">You\'re not allowed to post an empty message.</string>
@@ -109,7 +130,6 @@
         <string name="msg_platoon_left_fail">An error occured while leaving the platoon.</string>
         <string name="msg_feed_ok">Message posted successfully!</string>
         <string name="msg_feed_fail">Message could not be posted (you may have reached your limit).</string>
-        <string name="info_tap_notification">Tap this item to view your notifications.</string>
         <string name="msg_notification">Someone has interacted with you on Battlelog!</string>
         <string name="msg_status">Updating your status...</string>
         <string name="msg_status_ok">Status updated successfully.</string>
@@ -292,6 +312,7 @@
 	        &lt;u&gt;@karllindmark&lt;/u&gt; on Twitter.&lt;br /&gt;&lt;br /&gt;
 	        Thank you for your support!
 		</string>
+		<!-- /ALWAYS -->
 	    <string name="info_xml_thread_new">New thread...</string>
 	    <string name="info_xml_post_new">New post...</string>
 	    <string name="info_forum_newthread_true">The thread has been created.</string>
@@ -303,4 +324,36 @@
 	    <string name="info_forum_newpost_false">The reply could not be posted.</string>
 	    <string name="info_txt_notification_new">1 new notification!</string>
 	    <string name="info_txt_notification_new_p">{num} new notifications!</string>
+        <string name="info_tap_notification">Tap this item open the app.</string>
+        <string name="info_xml_posts_none">No posts found.</string>
+        <string name="info_xml_threads_none">No threads found.</string>
+        <string name="info_xml_results_none">No results found.</string>
+        <string name="title_forum_view">Viewing forum ...</string>
+        <string name="title_thread_view">Viewing thread ...</string>
+        <string name="title_forum_search">Searching through the forums</string>
+        <string name="title_search">Searching through users and platoons</string>
+        <string name="info_xml_search">Search...</string>
+        <string name="info_xml_generic_error">An error has occured.</string>
+        <string name="label_search">Search</string>
+        <string name="label_search_ongoing">Searching...</string>
+        <string name="info_p_awards">&lt;b>{username}&lt;/b> recieved new awards: {award}.</string>
+        <string name="label_own_platoon">My platoons</string>
+        <string name="label_assignments">My assignments</string>
+        <string name="info_xml_invite">Invite...</string>
+        <string name="title_platoon_invite">Inviting friends to a platoon</string>
+        <string name="info_xml_platoon_select">Select a platoon...</string>
+        <string name="info_spost_heading">{username}\'s post</string>
+        <string name="info_spost_heading_s">{username}\' post</string>
+        <string name="info_txt_friend_delete_true">The user has been removed from your list.</string>
+        <string name="info_txt_friend_delete_false">The user could not be removed from your list.</string>
+        <string name="info_xml_feed_button_pagination">Load more items</string>
+        <string name="label_downloading">Downloading...</string>
+        <string name="info_xml_threads_more_false">No further threads.</string>
+        <string name="info_xml_posts_more_false">No more posts.</string>
+        <string name="label_jump">Jump to page...</string>
+        <string name="info_txt_pageselect">Select a page...</string>
+        <string name="info_xml_enternumber">Enter a number between {min} - {max} below.</string>
+        <string name="info_xml_feed_button_jump">Jump to page...</string>
+        <string name="info_feed_friend_accept">&lt;b>{username}&lt;/b> accepted your &lt;b>friend request&lt;/b>.</string>
+        <string name="label_single_post_view">View post</string>
 </resources>

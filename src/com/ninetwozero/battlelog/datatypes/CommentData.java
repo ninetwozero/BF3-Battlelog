@@ -23,10 +23,10 @@ public class CommentData implements Parcelable {
 
 	//Attributes
 	private long id, itemId, timestamp, authorId;
-	private String author, content;
+	private String author, content, gravatar;
 	
 	//Constructs
-	public CommentData( long id, long iId, long cDate, long aId, String a, String c) {
+	public CommentData( long id, long iId, long cDate, long aId, String a, String c, String g) {
 		
 		this.id = id;
 		this.itemId = iId;
@@ -34,6 +34,7 @@ public class CommentData implements Parcelable {
 		this.authorId = aId;
 		this.author = a;
 		this.content = c;
+		this.gravatar = g;
 		
 	}
 	
@@ -55,6 +56,7 @@ public class CommentData implements Parcelable {
 	public long getAuthorId() { return this.authorId; }
 	public String getAuthor() { return this.author; }
 	public String getContent() { return this.content; }
+	public String getGravatar() { return this.gravatar; }
 	
 	@Override
 	public String toString() { return getId() + ":" + getAuthorId() + ":" + getAuthor() + ":" + getContent(); }
@@ -71,6 +73,7 @@ public class CommentData implements Parcelable {
 		out.writeLong(this.authorId);
 		out.writeString(this.author);
 		out.writeString(this.content);
+		out.writeString( this.gravatar );
 		
 	}
 	

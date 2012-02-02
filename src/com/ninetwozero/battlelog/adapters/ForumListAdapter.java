@@ -31,9 +31,9 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class ForumListAdapter extends BaseAdapter {
 	
 	//Attributes
-	Context context;
-	ArrayList<Board.Forum> itemArray;
-	LayoutInflater layoutInflater;
+	private Context context;
+	private ArrayList<Board.Forum> itemArray;
+	private LayoutInflater layoutInflater;
 	
 	//Construct
 	public ForumListAdapter(Context c, ArrayList<Board.Forum> m, LayoutInflater l) {

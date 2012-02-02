@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.adapters;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +23,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PlatoonMemberData;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
 
 public class PlatoonUserListAdapter extends BaseAdapter {
 	
@@ -66,7 +65,8 @@ public class PlatoonUserListAdapter extends BaseAdapter {
 		
 		} else if( lastSeparator > 0 && position > lastSeparator ) {
 			
-			return 1;
+			if( profileArray.get( position ).getMembershipLevel() == 1 ) { return 1; } 
+			else { return 2; }
 			
 		} else {
 			

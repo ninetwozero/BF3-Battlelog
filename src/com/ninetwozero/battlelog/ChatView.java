@@ -101,7 +101,7 @@ public class ChatView extends ListActivity {
         fieldMessage = (EditText) findViewById(R.id.field_message);
         
         //Try to get the chatid
-        new AsyncGetChatId(this, profileData.getProfileId() ).execute( sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ) );
+        new AsyncGetChatId( profileData.getProfileId() ).execute( sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ) );
         
         //Let's reload the chat will we?
         timerReload = new Timer();
@@ -126,14 +126,12 @@ public class ChatView extends ListActivity {
 	public class AsyncGetChatId extends AsyncTask<String, Void, Boolean> {
 
 		//Attributes
-		private Context context;
 		private long chatId;
 		private long profileId;
 		
 		//Construct
-		public AsyncGetChatId(Context c, long pId) {
+		public AsyncGetChatId(long pId) {
 			
-			this.context = c;
 			this.profileId = pId;
 			
 		}
@@ -170,7 +168,6 @@ public class ChatView extends ListActivity {
 		
 		
 	}
-	
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {

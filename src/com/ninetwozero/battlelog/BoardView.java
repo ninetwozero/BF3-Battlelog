@@ -130,6 +130,10 @@ public class BoardView extends ListActivity {
 	
 			this.reloadLayout();
 			
+		} else if( item.getItemId() == R.id.option_search ) {
+			
+			startActivity( new Intent(this, ForumSearchView.class ) );
+			
 		}
 		
 		// Return true yo

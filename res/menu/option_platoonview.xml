@@ -48,6 +48,13 @@
 		android:visible="false"
 	/>
     <item 
+		android:id="@+id/option_invite" 
+		android:icon="@android:drawable/ic_menu_add" 
+		android:title="@string/info_xml_invite" 
+		android:alphabeticShortcut="I"
+		android:visible="false"
+	/>
+    <item 
 		android:id="@+id/option_compare" 
 		android:icon="@android:drawable/ic_menu_directions" 
 		android:title="@string/info_xml_compare" 

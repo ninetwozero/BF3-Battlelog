@@ -5,11 +5,11 @@
     android:layout_width="fill_parent"
     android:id="@+id/dialog_root"
     android:padding="10dp"
+    android:background="#FFFFFF"
 >
     <TextView
     	android:id="@+id/feed_content"
     	android:layout_width="fill_parent" 
-    	android:layout_height="wrap_content" 
-    	android:textColor="#FFFFFF"
+    	android:layout_height="wrap_content"
     />
 </RelativeLayout>

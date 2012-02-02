@@ -26,12 +26,15 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -88,7 +91,7 @@ public class AssignmentView extends Activity {
     			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
     			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
     			this.sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
-				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
+    			this.sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
     		
     		);
         	
@@ -196,11 +199,15 @@ public class AssignmentView extends Activity {
     	@Override
     	protected void onPreExecute() {
     		
-    		//Let's see
-			this.progressDialog = new ProgressDialog(this.context);
-			this.progressDialog.setTitle(context.getString( R.string.general_wait ));
-			this.progressDialog.setMessage( getString(R.string.general_downloading ) );
-			this.progressDialog.show();
+    		//Let's see if we got data already
+    		if( assignments == null ) {
+    			
+				this.progressDialog = new ProgressDialog(this.context);
+				this.progressDialog.setTitle(context.getString( R.string.general_wait ));
+				this.progressDialog.setMessage( getString(R.string.general_downloading ) );
+				this.progressDialog.show();
+    		
+    		}
     		
     	}
     	
