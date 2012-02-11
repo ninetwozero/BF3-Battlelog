@@ -1,265 +1,423 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
-	Translator: zAo82 (PS3)
-	Email: sbkg0002@gmail.com
-	Website: N/A 
-	Other: N/A
--->
-<resources>    
-   <string name="changelog">
-       &lt;br /&gt;
-       Bij problemen kun je contact opnemen met {&lt;u&gt;support@ninetwozero.com&lt;/u&gt;} en/of 
-       {&lt;u&gt;@karllindmark&lt;/u&gt;} op {Twitter}.&lt;br /&gt;&lt;br /&gt;
-       Bedankt voor je support!
-	</string>
-   <string-array name="service_update_intervals_labels">
-       <item>Elke 5 minuten</item>
-       <item>Elke 10 minuten</item>
-       <item>Elke 30 minuten</item>
-       <item>Eens per uur</item>
-       <item>Elke 2 uur</item>
-       <item>Elke 6 uur</item>
-       <item>Elke 12 uur</item>
-       <item>Elke 18 uur</item>
-       <item>Eens per dag</item>
-   </string-array>
-       <string name="general_invalid_email">Onbekend e-mail adres.</string>
-       <string name="general_invalid_password">Geef je wachtwoord op.</string>
-       <string name="general_changelog_version">Changelog versie</string>
-       <string name="general_wait">Moment geduld</string>
-       <string name="general_downloading">Bezig de data op te halen...</string>
-       <string name="general_no_data">Geen data gevonden.</string>
-       <string name="label_own_soldiernu">Menu</string>
-       <string name="label_feed">Feed</string>
-       <string name="label_friends">Vrienden</string>
-       <string name="label_notifications">Notificaties</string>
-       <string name="label_own_soldier">Mijn soldaat</string>
-       <string name="label_unlocks">Mijn unlocks</string>
-       <string name="label_find_soldier">Zoek soldaat</string>
-       <string name="label_find_platoon">Zoek peloton</string>
-       <string name="label_compare_bs">Vergelijk battle scars</string>
-       <string name="label_settings">Instellingen</string>
-       <string name="status_empty_input">Geef je status op om door te gaan.</string>
-       <string name="status_error_unknown">Er is een error opgetreden: Log opnieuw in.</string>
-       <string name="general_empty_user">Je moet een gebruikersnaam opgeven</string>
-       <string name="info_profile_soldier">Bekijk het profiel van...</string>
-       <string name="info_profile_platoon">Bekijk het volgende peloton...</string>
-       <string name="general_empty_name">Je moet een naam opgeven</string>
-       <string name="label_chat_open">Open chatbox</string>
-       <string name="label_soldier_view">Bekijk soldaat</string>
-       <string name="label_hooah">Hooah!</string>
-       <string name="label_unhooah">Un-hooah!</string>
-       <string name="label_comment_view">Bekijk commentaar</string>
-       <string name="msg_unimplemented">Functionaliteit nog niet aanwezig.</string>
-       <string name="info_feed_empty">Geen feed gevonden.</string>
-       <string name="label_wait">Ogenblik geduld a.u.b....</string>
-       <string name="label_com_handle">COM CENTER ({num} ONLINE)</string>
-       <string name="lable_refresh">Ververs</string>
-       <string name="label_home">Begin</string>
-       <string name="label_stats">Statestieken</string>
-       <string name="label_users">Gebruikers</string>
-       <string name="info_platoon_created">Gemaakt op {DATE} ({RELATIVE DATE})</string>
-       <string name="label_own_soldiermbers">LEDEN</string>
-       <string name="label_fans">FANS</string>
-       <string name="info_platoon_compare">Pelotons kunnen (nog?) niet worden vergeleken...</string>
-       <string name="info_empty_msg">Je kunt geen lege berichten plaatsen.</string>
-       <string name="info_profile_online">Online</string>
-       <string name="info_profile_playing">Speelt op {server name}</string>
-       <string name="info_profile_empty_pres">Geen gegevens gevonden.</string>
-       <string name="info_hooah_s">{num} hooah</string>
-       <string name="info_hooah_p">{num} hooahs</string>
-       <string name="info_comment_s">{num} geef commentaar</string>
-       <string name="info_comment_p">{num} commentaar</string>
-       <string name="label_playing">Aan het spelen</string>
-       <string name="label_online">Online</string>
-       <string name="label_offline">Offline</string>
-       <string name="msg_chat_norefresh">De chat kon niet worden ververst.</string>
-       <string name="label_sending">Bezig met sturen...</string>
-       <string name="label_send">Verstuur</string>
-       <string name="msg_chat_ok">Bericht verzonden!</string>
-       <string name="msg_chat_fail">Je bericht kon niet worden verzonden!</string>
-       <string name="msg_comment_ok">Commentaar gepost!</string>
-       <string name="msg_comment_fail">Commentaar kon niet worden gepost!</string>
-       <string name="msg_comment_norefresh">Commentaar kon niet worden ververst.</string>
-       <string name="msg_com_ok">COM CENTER bijgewerkt.</string>
-       <string name="msg_com_fail">COM CENTER kon niet worden ververst.</string>
-       <string name="msg_hooah_fail">Hooah failed!</string>
-       <string name="msg_search_nouser">Geen gebruiker gevonden met het volgende keyword: {keyword}</string>
-       <string name="msg_search_noplatoon">Geen peloton gevonden met het volgende keyword: {keyword}</string>
-       <string name="msg_frequest_ok">Vriendenverzoek verzonden!</string>
-       <string name="msg_frequest_fail">Vriendenverzoek kon niet worden verzonden.</string>
-       <string name="msg_logging_in">Bezig met inloggen...</string>
-       <string name="msg_login_fail">Inloggen mislukt.</string>
-       <string name="msg_logout">Bezig met uitloggen...</string>
-       <string name="msg_error">Er is een error opgetreden.</string>
-       <string name="msg_prequest_ok">Je hebt je opgegeven voor het peloton.</string>
-       <string name="msg_prequest_fail_pres">Vanwege beperkingen kon je niet meedoen aan het peloton.</string>
-       <string name="msg_prequest_fail_full">Het peloton is vol.</string>
-       <string name="msg_prequest_fail_error">Er is een error opgetreden bij het aanmelden voor het peloton.</string>
-       <string name="msg_platoon_left">Je hebt het peloton verlaten.</string>
-       <string name="msg_platoon_left_fail">Er is een error opgetreden bij het verlaten van het peloton.</string>
-       <string name="msg_feed_ok">Bericht geplaatst.</string>
-       <string name="msg_feed_fail">Bericht kon niet worden geplaatst (wellicht zit je aan je limiet?).</string>
-       <string name="info_tap_notification">Druk hierop voor je notificaties.</string>
-       <string name="msg_notification">Iemand heeft iets op je Battlelog geplaatst!</string>
-       <string name="msg_status">Bezig met het bijwerken van je status...</string>
-       <string name="msg_status_fail">Je status is niet bijgewerkt.</string>
-       <string name="msg_status_ok">Status succesvol bijgewerkt.</string>
-       <string name="info_feed_comment_own">&lt;b>{username}&lt;/b> heeft een bericht achtergelaten op je &lt;b>{action}&lt;/b>.</string>
-       <string name="info_feed_comment_other">&lt;b>{username}&lt;/b> heeft een bericht achtergelaten op &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
-       <string name="info_feed_comment_other_v2">&lt;b>{username}&lt;/b> heeft een bericht achtergelaten op &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
-       <string name="info_feed_comment_own_2">&lt;b>{username}&lt;/b> heeft ook gereageerd op je &lt;b>{action}&lt;/b>.</string>
-       <string name="info_feed_comment_other_2">&lt;b>{username}&lt;/b> heeft ook gereageerd op &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b> feed.</string>
-       <string name="info_feed_comment_other_v2_2">&lt;b>{username}&lt;/b> heeft ook gereageerd op &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b> feed.</string>
-       <string name="info_feed_post_own">&lt;b>{username}&lt;/b> heeft gereageerd op je &lt;b>Battle feed&lt;/b>.</string>
-       <string name="info_feed_hooah_own">&lt;b>{username}&lt;/b> hooahs je &lt;b>{action}&lt;/b>.</string>
-       <string name="info_feed_hooah_other">&lt;b>{username}&lt;/b> hooahs &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
-       <string name="info_feed_hooah_other_2">&lt;b>{username}&lt;/b> hooahs &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
-       <string name="info_platoon_join_ok">&lt;b>{username}&lt;/b> heeft je verzoek voor het peloton &lt;b>{platoon}&lt;/b> geaccepteerd.</string>
-       <string name="info_platoon_join_no">&lt;b>{username}&lt;/b> heeft je verzoek voor peloton &lt;b>{platoon}&lt;/b> afgewezen. :(</string>
-       <string name="info_platoon_join_request">&lt;b>{username}&lt;/b> wil zich aanmelden voor &lt;b>{platoon}&lt;/b>.</string>
-       <string name="info_platoon_join_request_ok">&lt;b>{username}&lt;/b> heeft zich aangemeld voor peloton &lt;b>{platoon}&lt;/b>.</string>
-       <string name="info_platoon_left">&lt;b>{username}&lt;/b> heeft peloton &lt;b>{platoon}&lt;/b> verlaten.</string>
-       <string name="info_unknown_notification">Onbekend soort notificatie.</string>
-       <string name="info_friendship">Vriendschap</string>
-       <string name="info_forum_post">Forum post</string>
-       <string name="info_game_report">Game report</string>
-       <string name="info_wallpost">wall post</string>
-       <string name="info_status_message">Statusbericht</string>
-       <string name="info_award">Onderscheiding</string>
-       <string name="info_battle_report">Battle Report</string>
-       <string name="info_platoon_wall_post">Peloton wallpost</string>
-       <string name="info_lastlogin">Laatst ingelogd op {date}</string>
-       <string name="info_time_second">{seconds} seconde geleden</string>
-       <string name="info_time_second_p">{seconds} seconden geleden</string>
-       <string name="info_time_min">{minutes} minuut geleden</string>
-       <string name="info_time_min_p">{minutes} minuten geleden</string>
-       <string name="info_time_hour">{hours} uur geleden</string>
-       <string name="info_time_hour_p">{hours} uur geleden</string>
-       <string name="info_time_day">{days} dag geleden</string>
-       <string name="info_time_day_p">{days} dagen geleden</string>
-       <string name="info_time_week">{weeks} week geleden</string>
-       <string name="info_time_week_p">{weeks} weken geleden</string>
-       <string name="info_time_year">{years} jaar geleden</string>
-       <string name="info_time_year_p">{years} jaren geleden</string>
-       <string name="info_connect_bl">Verbindt met Battlelog</string>
-       <string name="info_widget_friends_online">Online vrienden:</string>
-       <string name="msg_widget_auth_fail">Authenticatie mislukt - is je wachtwoord opgeslagen?</string>
-       <string name="info_xml_chat_empty">Geen berichten</string>
-       <string name="label_com_handle_default">COM CENTER (0 ONLINE)</string>
-       <string name="info_hint_comment_msg">Type een bericht</string>
-       <string name="info_xml_comment_empty">Geeen commentaar gevonden</string>
-       <string name="info_xml_rank">Rang </string>
-       <string name="info_xml_kills">Kills</string>
-       <string name="info_xml_assists">Assists</string>
-       <string name="info_xml_vehicles_destroyed">Voertuigen vernietigd</string>
-       <string name="info_xml_vehicles_assisted_with">Voertuigen assists</string>
-       <string name="info_xml_heals">Heals</string>
-       <string name="info_xml_revives">Revives</string>
-       <string name="info_xml_repairs">Repairs</string>
-       <string name="info_xml_resupplies">Resupplies</string>
-       <string name="info_xml_deaths">Deaths</string>
-       <string name="info_xml_kd_ratio">KD-ratio</string>
-       <string name="info_xml_wins">Wins</string>
-       <string name="info_xml_losses">Losses</string>
-       <string name="info_xml_wl_ratio">W/L-ratio</string>
-       <string name="info_xml_accuracy">Nauwkeurigheid</string>
-       <string name="info_xml_longest_headshot">Langste headshot</string>
-       <string name="info_xml_longest_killstreak">Langste killstreak</string>
-       <string name="info_xml_skill_rating">Skill rating</string>
-       <string name="info_xml_time_played">Speeltijd</string>
-       <string name="info_xml_score_minute">Score/minuut</string>
-       <string name="info_xml_assault">Assault</string>
-       <string name="info_xml_engineer">Engineer </string>
-       <string name="info_xml_support">Support</string>
-       <string name="info_xml_recon">Recon</string>
-       <string name="info_xml_vehicles">Voertuigen</string>
-       <string name="info_xml_total_in_combat">Totaal in gevecht</string>
-       <string name="info_xml_award">Award</string>
-       <string name="info_xml_unlocks">Unlocks</string>
-       <string name="info_xml_total_score">Totaal score</string>
-       <string name="info_hint_username">Type hier een gebruikersnaam</string>
-       <string name="info_hint_platoon">Type hier een pelotonnaam</string>
-       <string name="info_xml_average">Gemiddeld</string>
-       <string name="info_xml_best">Beste</string>
-       <string name="info_xml_median">Mediaan</string>
-       <string name="info_xml_min">Min</string>
-       <string name="info_xml_friend_requests">Vriendenverzoek</string>
-       <string name="info_xml_no_friends">Geen vrienden gevonden. :-(</string>
-       <string name="info_xml_no_notifications">Geen notificaties gevonden. :-(</string>
-       <string name="info_xml_hint_status">Werk je status bij</string>
-       <string name="info_xml_no_feed">Niets gevonden in je feed</string>
-       <string name="info_xml_hint_feed">Schrijf iets in je feed</string>
-       <string name="info_xml_website">Website</string>
-       <string name="info_xml_presentation">Presentatie</string>
-       <string name="info_xml_badge">Badge</string>
-       <string name="info_xml_general">General</string>
-       <string name="info_xml_score_min">Score / Min</string>
-       <string name="info_xml_top_soldiers">Beste soldaten</string>
-       <string name="info_xml_time">Tijd</string>
-       <string name="info_xml_score">Score</string>
-       <string name="info_xml_no_users">Geen gebruiker gevonden.</string>
-       <string name="info_xml_latest_statusmsg">Laatste status bericht</string>
-       <string name="info_xml_platoons">Pelotons</string>
-       <string name="info_xml_no_platoons">Je zit niet in een peloton.</string>
-       <string name="info_xml_rank2"> voordat je in rang stijgt</string>
-       <string name="info_xml_no_unlocks">Geen unlocks gevonden.</string>
-       <string name="info_xml_back">Terug</string>
-       <string name="info_xml_reload">Ververs</string>
-       <string name="info_xml_logout">Uitloggen</string>
-       <string name="info_xml_apply">Aanmelden</string>
-       <string name="info_xml_fan">Wordt fan</string>
-       <string name="info_xml_leave_platoon">Verlaat peloton</string>
-       <string name="info_xml_members">Leden</string>
-       <string name="info_xml_un_fan">Un-fan</string>
-       <string name="info_xml_fans">Fans</string>
-       <string name="info_xml_compare">Vergelijk</string>
-       <string name="info_xml_compare_bs">Vergelijk scars</string>
-       <string name="info_xml_add_friend">Voeg vriend toe</string>
-       <string name="info_xml_remove_friend">Verwijder vriend</string>
-       <string name="info_xml_enable_bgsrv">Schakel achtergronddienst in</string>
-       <string name="info_xml_enable_bgsrv_t">Wanneer ingeschakeld kan de widget altijd bij de online gegevens.</string>
-       <string name="info_lastupdate">Laatst bijgewerkt {date}</string>
-        <string name="info_hint_email">Origin™ Account E-mail adres</string>
-        <string name="info_hint_password">Paswoord</string>
-        <string name="label_login">Log in</string>
-        <string name="label_save">Bewaar paswoord</string>
-        <string name="info_p_friendship">&lt;b>{username1}&lt;/b> en &lt;b>{username2}&lt;/b> zijn nu vrienden</string>
-        <string name="info_p_forumthread">&lt;b>{username}&lt;/b> heeft de volgende draad gepost &lt;b>\"{thread}\"&lt;/b>.</string>
-        <string name="info_p_forumpost">&lt;b>{username}&lt;/b> heeft een bericht achter gelaten in &lt;b>\"{thread}\"&lt;/b>.</string>
-        <string name="info_p_newunlock">&lt;b>{username}&lt;/b> heeft een nieuw item unlockt: {item}.</string>
-        <string name="info_p_favserver">&lt;b>{username}&lt;/b> heeft een nieuwe server als favoriet: &lt;b>{server}&lt;/b>.</string>
-        <string name="info_p_promotion">&lt;b>{username}&lt;/b> is promoted &lt;b>{rank title}&lt;/b> (rank{rank}).</string>
-        <string name="info_p_greport_comment">&lt;b>{username}&lt;/b> heeft gereageerd op een Battle Report &lt;b>{server name} {map} {game mode}&lt;/b>.</string>
-        <string name="info_p_blog_comment">&lt;b>{username}&lt;/b> heeft gereageerd op een blog post &lt;b>{post name}&lt;/b>.</string>
-        <string name="info_p_platoon_join">&lt;b>{username}&lt;/b> is aangemeld voor peloton &lt;b>{platoon}&lt;/b>.</string>
-        <string name="info_p_platoon_kick">&lt;b>{username}&lt;/b> is uit de volgende peloton geschopt &lt;b>{platoon}&lt;/b>.</string>
-        <string name="info_p_platoon_create">&lt;b>{username}&lt;/b> heeft een peloton gemaakt met de naam &lt;b>{platoon}&lt;/b>.</string>
-        <string name="info_p_platoon_badge">&lt;b>{username}&lt;/b> heeft het embleem van peloton &lt;b>{platoon}&lt;/b> bijgewerkt.</string>
-        <string name="info_p_platoon_left">&lt;b>{username}&lt;/b> heeft peloton &lt;b>{platoon}&lt;/b> verlaten.</string>
-        <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> heeft een bericht op de wallpost van &lt;b>{platoon}&lt;/b> achtergelaten.</string>
-        <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> en &lt;b>{username2}&lt;/b> hebben &lt;b>\"{level}\"&lt;/b> op &lt;b>{difficulty}&lt;/b> gehaald.</string>
-        <string name="info_p_award">&lt;b>{username}&lt;/b> heeft de volgende nieuwe award ontvangen: &lt;b>{award}&lt;/b>.</string>
-
-        <!--  NEW -->
-        <string name="info_new_rank">new rank</string>
-        <string name="title_main_menu">BF3 Battlelog - Main menu</string>
-        <string name="title_profile">BF3 Battlelog - Profile</string>
-        <string name="title_platoon">BF3 Battlelog - Platoon</string>
-        <string name="title_performance">BF3 Battlelog - Your performance</string>
-        <string name="title_chat">BF3 Battlelog - Chatting with ...</string>
-        <string name="title_comments">BF3 Battlelog - Comments</string>
-        <string name="title_comparing_battle_scars">BF3 Battlelog - Comparing battle scars</string>
-        <string name="title_unlocks">BF3 Battlelog - Upcoming unlocks</string>
-        <string name="title_settings">BF3 Battlelog - Settings</string>
-        <string name="title_forum">BF3 Battlelog - Forum</string>
-        <string name="label_forum">Forum</string>
-        <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> completed an assignment - &lt;b>\"{assignment}\"&lt;/b> (unlocks &lt;b>{unlock}&lt;/b>).</string>
-        <string name="info_assignments_new_unknown">New assignments have been added - please notify the developer!</string>
-        <string name="title_assignments">BF3 Battlelog - Viewing your assignments</string>
-        <string name="info_xml_platoons_my">My platoons</string>
-        <string name="info_xml_assignments_my">My assignments</string>
-        <string name="msg_no_cookies">No cookies found - please try to re-login.</string>
-        <string name="label_soldier_unlocks">View unlocks</string>
-        <string name="info_p_newunlocks">&lt;b>{username}&lt;/b> unlocked new items: {item}.</string>  
+<resources>
+    <string name="app_name">BF3 Battlelog</string>
+	<string name="widget_name">Battlelog - Stats+Vrienden</string>
+    <integer-array name="service_update_intervals_values">
+        <item >300</item>
+        <item >600</item>
+        <item >1800</item>
+        <item >3600</item>
+        <item >7200</item>
+        <item >21600</item>
+        <item >43200</item>
+        <item >64800</item>
+        <item >86400</item>
+    </integer-array>
+    <integer-array name="chat_update_intervals_values">    
+        <item >5</item>
+        <item >10</item>
+        <item >15</item>
+        <item >20</item>
+        <item >25</item>
+        <item >30</item>
+        <item >60</item>
+        <item >90</item>
+        <item >120</item>
+    </integer-array>
+    
+    <string-array name="service_update_intervals_labels">
+        <item >Every 5 minutes</item>
+        <item >Every 10 minutes</item>
+        <item >Every 30 minutes</item>
+        <item >Once an hour</item>
+        <item >Once every 2 hours</item>
+        <item >Once every 6 hours</item>
+        <item >Once every 12 hours</item>
+        <item >Once every 18 hours</item>
+        <item >Once a day</item>
+    </string-array>
+     <string-array name="chat_update_intervals_labels">
+        <item >Once every 5 seconds</item>
+        <item >Once every 10 seconds</item>
+        <item >Once every 15 seconds</item>
+        <item >Once every 20 seconds</item>
+        <item >Once every 25 seconds</item>
+        <item >Once every 30 seconds</item>
+        <item >Once a minute</item>
+        <item >Once every 90 seconds</item>
+        <item >Once every 2 minutes</item>
+    </string-array>
+    
+    <!--  translation starts here -->
+   <string name="changelog">* Pelotons toegevoegd &lt;br /&gt;
+* Assignments toegevoegd &lt;br /&gt;
+* Forums toegevoegd &lt;br /&gt;
+* Notificaties toegevoegd &lt;br /&gt;
+* Globale feed toegevoegd &lt;br /&gt;
+* Donatie mogelijkheid toegevoegd &lt;br /&gt;
+* Unlocks zijn nu in tabs &lt;br /&gt;
+* Plaatjes staan nu op je SD-card &lt;br /&gt; 
+* Vertalingen toegevoegd (neem contact met me op als je kunt vertalen!) &lt;br /&gt;
+* Widgets werken nu via de service &lt;br /&gt;
+* Veel bugfixes en optimalisaties &lt;br /&gt;
+* Forum voor de app is nu beschikbaar via http://bit.ly/bf3blforum &lt;br /&gt;
+&lt;br /&gt;
+Stuur bugreports naar  support@ninetwozero.com en/of
+@karllindmark op Twitter (https://twitter.com/karllindmark).&lt;br /&gt;&lt;br /&gt;
+Dank voor je support!</string>
+	<string name="general_invalid_email">Onbekend e-mail adres.</string>
+	<string name="general_invalid_password">Geef je wachtwoord op.</string>
+	<string name="general_changelog_version">Changelog versie</string>
+	<string name="general_wait">Moment geduld</string>
+	<string name="general_downloading">Bezig de data op te halen...</string>
+	<string name="general_no_data">Geen data gevonden.</string>
+	<string name="label_own_soldiernu">Menu</string>
+	<string name="label_feed">Feed</string>
+	<string name="label_friends">Vrienden</string>
+	<string name="label_notifications">Notificaties</string>
+	<string name="label_own_soldier">Mijn soldaat</string>
+	<string name="label_unlocks">Mijn unlocks</string>
+	<string name="label_find_soldier">Zoek soldaat</string>
+	<string name="label_find_platoon">Zoek peloton</string>
+	<string name="label_compare_bs">Vergelijk battle scars</string>
+	<string name="label_settings">Instellingen</string>
+	<string name="status_empty_input">Geef je status op om door te gaan.</string>
+	<string name="status_error_unknown">Er is een error opgetreden: Log opnieuw in.</string>
+	<string name="general_empty_user">Je moet een gebruikersnaam opgeven</string>
+	<string name="info_profile_soldier">Bekijk het profiel van...</string>
+	<string name="info_profile_platoon">Bekijk het volgende peloton...</string>
+	<string name="general_empty_name">Je moet een naam opgeven</string>
+	<string name="label_chat_open">Open chatbox</string>
+	<string name="label_soldier_view">Bekijk soldaat</string>
+	<string name="label_hooah">Hooah!</string>
+	<string name="label_unhooah">Un-hooah!</string>
+	<string name="label_comment_view">Bekijk commentaar</string>
+	<string name="msg_unimplemented">Functionaliteit nog niet aanwezig.</string>
+	<string name="info_feed_empty">Geen feed gevonden.</string>
+	<string name="label_wait">Ogenblik geduld a.u.b....</string>
+	<string name="label_com_handle">COM CENTER ({num} ONLINE)</string>
+	<string name="lable_refresh">Ververs</string>
+	<string name="label_home">Begin</string>
+	<string name="label_stats">Statestieken</string>
+	<string name="label_users">Gebruikers</string>
+	<string name="info_platoon_created">Gemaakt op {DATE} ({RELATIVE DATE})</string>
+	<string name="label_own_soldiermbers">Leden</string>
+	<string name="label_fans">FANS</string>
+	<string name="info_platoon_compare">Pelotons kunnen (nog?) niet worden vergeleken...</string>
+	<string name="info_empty_msg">Je kunt geen lege berichten plaatsen.</string>
+	<string name="info_profile_online">Online</string>
+	<string name="info_profile_playing">Speelt op {server name}</string>
+	<string name="info_profile_empty_pres">Geen gegevens gevonden.</string>
+	<string name="info_hooah_s">{num} hooah</string>
+	<string name="info_hooah_p">{num} hooahs</string>
+	<string name="info_comment_s">{num} comments</string>
+	<string name="info_comment_p">{num} comments</string>
+	<string name="label_playing">Aan het spelen</string>
+	<string name="label_online">Online</string>
+	<string name="label_offline">Offline</string>
+	<string name="msg_chat_norefresh">De chat kon niet worden ververst.</string>
+	<string name="label_sending">Bezig met sturen...</string>
+	<string name="label_send">Verstuur</string>
+	<string name="msg_chat_ok">Bericht verzonden!</string>
+	<string name="msg_chat_fail">Je bericht kon niet worden verzonden!</string>
+	<string name="msg_comment_ok">Commentaar gepost!</string>
+	<string name="msg_comment_fail">Commentaar kon niet worden gepost!</string>
+	<string name="msg_comment_norefresh">Commentaar kon niet worden ververst.</string>
+	<string name="msg_com_ok">COM CENTER bijgewerkt.</string>
+	<string name="msg_com_fail">COM CENTER kon niet worden ververst.</string>
+	<string name="msg_hooah_fail">Hooah failed!</string>
+	<string name="msg_search_nouser">Geen gebruiker gevonden met het volgende keyword: {keyword}</string>
+	<string name="msg_search_noplatoon">Geen peloton gevonden met het volgende keyword: {keyword}</string>
+	<string name="msg_frequest_ok">Vriendenverzoek verzonden!</string>
+	<string name="msg_frequest_fail">Vriendenverzoek kon niet worden verzonden.</string>
+	<string name="msg_logging_in">Bezig met inloggen...</string>
+	<string name="msg_login_fail">Inloggen mislukt.</string>
+	<string name="msg_logout">Bezig met uitloggen...</string>
+	<string name="msg_error">Er is een error opgetreden.</string>
+	<string name="msg_prequest_ok">Je hebt je opgegeven voor het peloton.</string>
+	<string name="msg_prequest_fail_pres">Vanwege beperkingen kon je niet meedoen aan het peloton.</string>
+	<string name="msg_prequest_fail_full">Het peloton is vol.</string>
+	<string name="msg_prequest_fail_error">Er is een error opgetreden bij het aanmelden voor het peloton.</string>
+	<string name="msg_platoon_left">Je hebt het peloton verlaten.</string>
+	<string name="msg_platoon_left_fail">Er is een error opgetreden bij het verlaten van het peloton.</string>
+	<string name="msg_feed_ok">Bericht geplaatst.</string>
+	<string name="msg_feed_fail">Bericht kon niet worden geplaatst (wellicht zit je aan je limiet?).</string>
+	<string name="msg_notification">Iemand heeft iets op je Battlelog geplaatst!</string>
+	<string name="msg_status">Bezig met het bijwerken van je status...</string>
+	<string name="msg_status_ok">Status succesvol bijgewerkt.</string>
+	<string name="msg_status_fail">Je status is niet bijgewerkt.</string>
+	<string name="info_feed_comment_own">&lt;b&gt;{username}&lt;/b&gt; heeft een bericht achtergelaten op je &lt;b&gt;{action}&lt;/b&gt;.</string>
+	<string name="info_feed_comment_other">&lt;b&gt;{username}&lt;/b&gt; heeft een bericht achtergelaten op &lt;b&gt;{owner}&lt;/b&gt;\' &lt;b&gt;{action}&lt;/b&gt;.</string>
+	<string name="info_feed_comment_other_v2">&lt;b&gt;{username}&lt;/b&gt; heeft een bericht achtergelaten op &lt;b&gt;{owner}&lt;/b&gt;\'s &lt;b&gt;{action}&lt;/b&gt;.</string>
+	<string name="info_feed_comment_own_2">&lt;b&gt;{username}&lt;/b&gt; heeft ook gereageerd op je &lt;b&gt;{action}&lt;/b&gt;.</string>
+	<string name="info_feed_comment_other_2">&lt;b&gt;{username}&lt;/b&gt; heeft ook gereageerd op &lt;b&gt;{owner}&lt;/b&gt;\'s &lt;b&gt;{action}&lt;/b&gt; feed.</string>
+	<string name="info_feed_comment_other_v2_2">&lt;b&gt;{username}&lt;/b&gt; heeft ook gereageerd op &lt;b&gt;{owner}&lt;/b&gt;\'s &lt;b&gt;{action}&lt;/b&gt; feed.</string>
+	<string name="info_feed_post_own">&lt;b&gt;{username}&lt;/b&gt; heeft gereageerd op je &lt;b&gt;Battle feed&lt;/b&gt;.</string>
+	<string name="info_feed_hooah_own">&lt;b&gt;{username}&lt;/b&gt; hooahs je &lt;b&gt;{action}&lt;/b&gt;.</string>
+	<string name="info_feed_hooah_other">&lt;b&gt;{username}&lt;/b&gt; hooahs &lt;b&gt;{owner}&lt;/b&gt;\'s &lt;b&gt;{action}&lt;/b&gt;.</string>
+	<string name="info_feed_hooah_other_2">&lt;b&gt;{username}&lt;/b&gt; hooahs &lt;b&gt;{owner}&lt;/b&gt;\'s &lt;b&gt;{action}&lt;/b&gt;.</string>
+	<string name="info_platoon_join_ok">&lt;b&gt;{username}&lt;/b&gt; heeft je verzoek voor het peloton &lt;b&gt;{platoon}&lt;/b&gt; geaccepteerd.</string>
+	<string name="info_platoon_join_no">&lt;b&gt;{username}&lt;/b&gt; heeft je verzoek voor peloton &lt;b&gt;{platoon}&lt;/b&gt; afgewezen. :(</string>
+	<string name="info_platoon_join_request">&lt;b&gt;{username}&lt;/b&gt; wil zich aanmelden voor &lt;b&gt;{platoon}&lt;/b&gt;.</string>
+	<string name="info_platoon_join_request_ok">&lt;b&gt;{username}&lt;/b&gt; heeft zich aangemeld voor peloton &lt;b&gt;{platoon}&lt;/b&gt;.</string>
+	<string name="info_platoon_left">&lt;b&gt;{username}&lt;/b&gt; heeft peloton &lt;b&gt;{platoon}&lt;/b&gt; verlaten.</string>
+	<string name="info_unknown_notification">Onbekend soort notificatie.</string>
+	<string name="info_friendship">Vriendschap</string>
+	<string name="info_forum_post">Forum post</string>
+	<string name="info_game_report">Game report</string>
+	<string name="info_wallpost">wall post</string>
+	<string name="info_status_message">Statusbericht</string>
+	<string name="info_award">Onderscheiding</string>
+	<string name="info_battle_report">Battle Report</string>
+	<string name="info_platoon_wall_post">Peloton wallpost</string>
+	<string name="info_lastlogin">Laatst ingelogd op {date}</string>
+	<string name="info_time_second">{seconds} seconde geleden</string>
+	<string name="info_time_second_p">{seconds} seconden geleden</string>
+	<string name="info_time_min">{minutes} minuut geleden</string>
+	<string name="info_time_min_p">{minutes} minuten geleden</string>
+	<string name="info_time_hour">{hours} uur geleden</string>
+	<string name="info_time_hour_p">{hours} uur geleden</string>
+	<string name="info_time_day">{days} dag geleden</string>
+	<string name="info_time_day_p">{days} dagen geleden</string>
+	<string name="info_time_week">{weeks} week geleden</string>
+	<string name="info_time_week_p">{weeks} weken geleden</string>
+	<string name="info_time_year">{years} jaar geleden</string>
+	<string name="info_time_year_p">{years} jaren geleden</string>
+	<string name="info_connect_bl">Verbindt met Battlelog</string>
+	<string name="info_widget_friends_online">Online vrienden:</string>
+	<string name="msg_widget_auth_fail">Authenticatie mislukt - is je wachtwoord opgeslagen?</string>
+	<string name="info_xml_chat_empty">Geen berichten</string>
+	<string name="label_com_handle_default">COM CENTER (0 ONLINE)</string>
+	<string name="info_hint_comment_msg">Type een bericht</string>
+	<string name="info_xml_comment_empty">Geen commentaar gevonden</string>
+	<string name="info_xml_rank">Rang </string>
+	<string name="info_xml_kills">Kills</string>
+	<string name="info_xml_assists">Assists</string>
+	<string name="info_xml_vehicles_destroyed">Voertuigen vernietigd</string>
+	<string name="info_xml_vehicles_assisted_with">Voertuig assists</string>
+	<string name="info_xml_heals">Heals</string>
+	<string name="info_xml_revives">Revives</string>
+	<string name="info_xml_repairs">Repairs</string>
+	<string name="info_xml_resupplies">Resupplies</string>
+	<string name="info_xml_deaths">Deaths</string>
+	<string name="info_xml_kd_ratio">KD-ratio</string>
+	<string name="info_xml_wins">Wins</string>
+	<string name="info_xml_losses">Losses</string>
+	<string name="info_xml_wl_ratio">W/L-ratio</string>
+	<string name="info_xml_accuracy">Nauwkeurigheid</string>
+	<string name="info_xml_longest_headshot">Langste headshot</string>
+	<string name="info_xml_longest_killstreak">Langste killstreak</string>
+	<string name="info_xml_skill_rating">Skill rating</string>
+	<string name="info_xml_time_played">Speeltijd</string>
+	<string name="info_xml_score_minute">Score/minuut</string>
+	<string name="info_xml_assault">Assault</string>
+	<string name="info_xml_engineer">Engineer </string>
+	<string name="info_xml_support">Support</string>
+	<string name="info_xml_recon">Recon</string>
+	<string name="info_xml_vehicles">Voertuigen</string>
+	<string name="info_xml_total_in_combat">Totaal in gevecht</string>
+	<string name="info_xml_award">Award</string>
+	<string name="info_xml_unlocks">Unlocks</string>
+	<string name="info_xml_total_score">Totaal score</string>
+	<string name="info_hint_username">Type hier een gebruikersnaam</string>
+	<string name="info_hint_platoon">Type hier een pelotonnaam</string>
+	<string name="info_xml_average">Gemiddeld</string>
+	<string name="info_xml_best">Beste</string>
+	<string name="info_xml_median">Mediaan</string>
+	<string name="info_xml_min">Min</string>
+	<string name="info_xml_friend_requests">Vriendenverzoek</string>
+	<string name="info_xml_no_friends">Geen vrienden gevonden. :-(</string>
+	<string name="info_xml_no_notifications">Geen notificaties gevonden. :-(</string>
+	<string name="info_xml_hint_status">Werk je status bij</string>
+	<string name="info_xml_no_feed">Niets gevonden in je feed</string>
+	<string name="info_xml_hint_feed">Schrijf iets in je feed</string>
+	<string name="info_xml_website">Website</string>
+	<string name="info_xml_presentation">Presentatie</string>
+	<string name="info_xml_badge">Badge</string>
+	<string name="info_xml_general">Algemeen</string>
+	<string name="info_xml_score_min">Score / Min</string>
+	<string name="info_xml_top_soldiers">Beste soldaten</string>
+	<string name="info_xml_time">Tijd</string>
+	<string name="info_xml_score">Score</string>
+	<string name="info_xml_no_users">Geen gebruiker gevonden.</string>
+	<string name="info_xml_latest_statusmsg">Laatste status bericht</string>
+	<string name="info_xml_platoons">Pelotons</string>
+	<string name="info_xml_no_platoons">Je zit niet in een peloton.</string>
+	<string name="info_xml_rank2"> voordat je in rang stijgt</string>
+	<string name="info_xml_no_unlocks">Geen unlocks gevonden.</string>
+	<string name="info_xml_back">Terug</string>
+	<string name="info_xml_reload">Ververs</string>
+	<string name="info_xml_logout">Uitloggen</string>
+	<string name="info_xml_apply">Aanmelden</string>
+	<string name="info_xml_fan">Wordt fan</string>
+	<string name="info_xml_leave_platoon">Verlaat peloton</string>
+	<string name="info_xml_members">Leden</string>
+	<string name="info_xml_un_fan">Un-fan</string>
+	<string name="info_xml_fans">Fans</string>
+	<string name="info_xml_compare">Vergelijk</string>
+	<string name="info_xml_compare_bs">Vergelijk scars</string>
+	<string name="info_xml_add_friend">Voeg vriend toe</string>
+	<string name="info_xml_remove_friend">Verwijder vriend</string>
+	<string name="info_xml_enable_bgsrv">Schakel achtergronddienst in</string>
+	<string name="info_xml_enable_bgsrv_t">Wanneer ingeschakeld kan de widget altijd bij de online gegevens.</string>
+	<string name="info_lastupdate">Laatst bijgewerkt {date}</string>
+	<string name="info_hint_email">Origin™ Account E-mail adres</string>
+	<string name="info_hint_password">Paswoord</string>
+	<string name="label_login">Log in</string>
+	<string name="label_save">Bewaar paswoord</string>
+	<string name="info_p_friendship">&lt;b&gt;{username1}&lt;/b&gt; en &lt;b&gt;{username2}&lt;/b&gt; zijn nu vrienden</string>
+	<string name="info_p_forumthread">&lt;b>{username}&lt;/b> heeft de volgende draad gepost &lt;b>\"{thread}\"&lt;/b>.</string>
+	<string name="info_p_forumpost">&lt;b&gt;{username}&lt;/b&gt; heeft een bericht achter gelaten in &lt;b&gt;"{thread}"&lt;/b&gt;.</string>
+	<string name="info_p_newunlock">&lt;b&gt;{username}&lt;/b&gt; heeft een nieuw item unlockt: {item}.</string>
+	<string name="info_p_favserver">&lt;b&gt;{username}&lt;/b&gt; heeft een nieuwe server als favoriet: &lt;b&gt;{server}&lt;/b&gt;.</string>
+	<string name="info_p_promotion">&lt;b&gt;{username}&lt;/b&gt; is promoted &lt;b&gt;{rank title}&lt;/b&gt; (rank{rank}).</string>
+	<string name="info_p_greport_comment">&lt;b&gt;{username}&lt;/b&gt; heeft gereageerd op een Battle Report &lt;b&gt;{server name} {map} {game mode}&lt;/b&gt;.</string>
+	<string name="info_p_blog_comment">&lt;b&gt;{username}&lt;/b&gt; heeft gereageerd op een blog post &lt;b&gt;{post name}&lt;/b&gt;.</string>
+	<string name="info_p_platoon_join">&lt;b&gt;{username}&lt;/b&gt; is aangemeld voor peloton &lt;b&gt;{platoon}&lt;/b&gt;.</string>
+	<string name="info_p_platoon_kick">&lt;b&gt;{username}&lt;/b&gt; is uit de volgende peloton geschopt &lt;b&gt;{platoon}&lt;/b&gt;.</string>
+	<string name="info_p_platoon_create">&lt;b&gt;{username}&lt;/b&gt; heeft een peloton gemaakt met de naam &lt;b&gt;{platoon}&lt;/b&gt;.</string>
+	<string name="info_p_platoon_badge">&lt;b&gt;{username}&lt;/b&gt; heeft het embleem van peloton &lt;b&gt;{platoon}&lt;/b&gt; bijgewerkt.</string>
+	<string name="info_p_platoon_left">&lt;b&gt;{username}&lt;/b&gt; heeft peloton &lt;b&gt;{platoon}&lt;/b&gt; verlaten.</string>
+	<string name="info_p_platoon_feed">&lt;b&gt;{username}&lt;/b&gt; heeft een bericht op de wallpost van &lt;b&gt;{platoon}&lt;/b&gt; achtergelaten.</string>
+	<string name="info_p_coop_level_comp">&lt;b&gt;{username1}&lt;/b&gt; en &lt;b&gt;{username2}&lt;/b&gt; hebben &lt;b&gt;"{level}"&lt;/b&gt; op &lt;b&gt;{difficulty}&lt;/b&gt; gehaald.</string>
+	<string name="info_p_award">&lt;b&gt;{username}&lt;/b&gt; heeft de volgende nieuwe award ontvangen: &lt;b&gt;{award}&lt;/b&gt;.</string>
+	<string name="info_new_rank">new rank</string>
+	<string name="title_main_menu">BF3 Battlelog - Main menu</string>
+	<string name="title_profile">BF3 Battlelog - Profile</string>
+	<string name="title_platoon">BF3 Battlelog - Platoon</string>
+	<string name="title_performance">BF3 Battlelog - Your performance</string>
+	<string name="title_chat">BF3 Battlelog - Chatting with ...</string>
+	<string name="title_comments">BF3 Battlelog - Comments</string>
+	<string name="title_comparing_battle_scars">BF3 Battlelog - Comparing battle scars</string>
+	<string name="title_unlocks">BF3 Battlelog - Upcoming unlocks</string>
+	<string name="title_settings">BF3 Battlelog - Settings</string>
+	<string name="title_forum">BF3 Battlelog - Forum</string>
+	<string name="label_forum">Forum</string>
+	<string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> completed an assignment - &lt;b>\"{assignment}\"&lt;/b> (unlocks &lt;b>{unlock}&lt;/b>).</string>
+	<string name="info_assignments_new_unknown">New assignments have been added - please notify the developer!</string>
+	<string name="title_assignments">BF3 Battlelog - Viewing your assignments</string>
+	<string name="info_xml_platoons_my">My platoons</string>
+	<string name="info_xml_assignments_my">My assignments</string>
+	<string name="msg_no_cookies">No cookies found - please try to re-login.</string>
+	<string name="label_soldier_unlocks">View unlocks</string>
+	<string name="info_p_newunlocks">&lt;b>{username}&lt;/b> unlocked new items: {item}.</string>
+	<string name="info_txt_friends_offline">Offline vrienden</string>
+	<string name="info_txt_friends_online">Online vrienden</string>
+	<string name="info_txt_session_lost">Sessie verbinding verloren. Opnieuw inloggen aub!</string>
+	<string name="info_xml_forums_none">Geen forums gevonden.</string>
+	<string name="info_xml_forums">Forums</string>
+	<string name="info_p_activated_expansion">Geactiveerd spel / uitbreiding</string>
+	<string name="info_xml_forum_postsinthreads">&lt;b>{num_posts}&lt;/b> posts in &lt;b>{num_threads}&lt;/b>.</string>
+	<string name="info_xml_threadinfo">&lt;b>{num_posts}&lt;/b> posts (waar &lt;b>{num_official}&lt;/b> officieel is)</string>
+	<string name="info_xml_threaddate">Posted &lt;b>{date}&lt;/b> door &lt;b>{user}&lt;/b></string>      
+	<string name="info_xml_threadreplydate">Posted &lt;b>{date}&lt;/b> door &lt;b>{user}&lt;/b></string> 
+	<string name="info_xml_thread_new">Nieuw onderwerp...</string>
+	<string name="info_xml_post_new">Nieuw bericht...</string>
+	<string name="info_forum_newthread_true">Het topic is gemaakt.</string>
+	<string name="info_forum_newthread_false">Het topic kon niet worden gemaakt.</string>
+	<string name="info_xml_enter_content">Zet je inhoud hier.</string>
+	<string name="info_dialog_soldierselect">Bekijk soldaat</string>
+	<string name="info_dialog_threadpost">Post een reactie.</string>
+	<string name="info_forum_newpost_true">De reactie was is gestuurd.</string>
+	<string name="info_forum_newpost_false">De reactie is gestuurd.</string>
+	<string name="info_txt_notification_new">1 nieuw bericht!</string>
+	<string name="info_txt_notification_new_p">{num} nieuwe berichten.</string>
+	<string name="info_tap_notification">Druk hierop om de app te openen.</string>
+	<string name="info_xml_posts_none">Geen post gevonden.</string>
+	<string name="info_xml_threads_none">Geen onderwerpen gevonden.</string>
+	<string name="info_xml_results_none">Niets gevonden.</string>
+	<string name="title_forum_view">Forum</string>
+	<string name="title_thread_view">Bekijk post ...</string>
+	<string name="title_forum_search">Zoek door de forums</string>
+	<string name="title_search">Zoek naar gebruikers of pelotons.</string>
+	<string name="info_xml_search">Zoeken...</string>
+	<string name="info_xml_generic_error">Er is een error opgetreden.</string>
+	<string name="label_search">Zoeken</string>
+	<string name="label_search_ongoing">Bezig met zoeken...</string>
+	<string name="info_p_awards">&lt;b>{username}&lt;/b>heeft een nieuwe award ontvangen: {award}.</string>
+	<string name="label_own_platoon">Mijn pelotons</string>
+	<string name="label_assignments">Mijn assignments</string>
+	<string name="info_xml_invite">Nodig uit...</string>
+	<string name="title_platoon_invite">Bezig met vriend uit te nodigen voor peloton</string>
+	<string name="info_xml_platoon_select">Selecteer een peloton...</string>
+	<string name="info_spost_heading">{username}\'s post</string>
+	<string name="info_spost_heading_s">{username}\' post</string>
+	<string name="info_txt_friend_delete_true">Deze gebruiker is van je lijst verwijderd.</string>
+	<string name="info_txt_friend_delete_false">Deze gebruiker kan niet van je lijst gehaald worden.</string>
+	<string name="info_xml_feed_button_pagination">Laadt meer.</string>
+	<string name="label_downloading">Downloading...</string>
+	<string name="info_xml_threads_more_false">Geen posts meer.</string>
+	<string name="info_xml_posts_more_false">Geen posts meer.</string>
+	<string name="label_jump">Ga naar pagina..</string>
+	<string name="info_txt_pageselect">Selecteer pagina...</string>
+	<string name="info_xml_enternumber">Geef een nummer tussen {min} en {max} op.</string>
+	<string name="info_xml_feed_button_jump">Ga naar pagina..</string>
+	<string name="info_feed_friend_accept">&lt;b>{username}&lt;/b> accepteerde je &lt;b>vriendschapsverzoek&lt;/b>.</string>
+	<string name="label_single_post_view">Bekijk post</string>
+	<string name="info_xml_main_slider">Informatie over de app</string>
+	<string name="label_option_about">Over...</string>
+	<string name="title_about">Over de app</string>
+	<string name="info_option_unlocks">Bekijk unlocks</string>
+	<string name="info_txt_email_send">Stuur E-Mail</string>
+	<string name="label_about">Over</string>
+	<string name="label_faq">Veelgestelde vragen</string>
+	<string name="label_credits">Credits</string>
+	<string name="info_assignment_completed">assignment voltooid</string>
+	<string name="info_platoon_invite">&lt;b>{username}&lt;/b> heeft je uitgenodigd voor &lt;b>{platoon}&lt;/b>.</string>
+	<string name="info_platoon_promote">Je bent gepromoveerd in &lt;b>{platoon}&lt;/b>.</string>
+	<string name="info_platoon_demote">Je bent gedegradeerd in &lt;b>{platoon}&lt;/b>.</string>
+	<string name="info_platoon_kick">&lt;b>{username}&lt;/b> heeft je uit het volgende peloton geschopt &lt;b>{platoon}&lt;/b>.</string>
+	<string name="info_platoon_activity">peloton activiteiten</string>
+	<string name="info_platoon_member_new_ok">Accepteer het nieuwe lid..</string>
+	<string name="info_platoon_member_new_false">Wijs het nieuwe lid af.</string>
+	<string name="info_platoon_member_demoting">Degradeer lid</string>
+	<string name="info_platoon_member_promoting">Promoveer lid</string>
+	<string name="info_platoon_member_kicking">Kick lid</string>
+	<string name="info_platoon_member_new_accept">Accepteer lidmaatschap</string>
+	<string name="info_platoon_member_new_deny">Weiger lidmaatschap</string>
+	<string name="info_platoon_member_demote">Degradeer</string>
+	<string name="info_platoon_member_promote">Promoveer</string>
+	<string name="info_platoon_member_kick">Schop</string>
+	<string name="info_profile_view">Bekijk het profiel</string>
+	<string name="info_stats_not_found">Geen stats gevonden.</string>
+	<string name="info_forum_page_invalid">Ongeldig pagina nummer.</string>
+	<string name="info_forum_quote_warning">Quote toegevoegd aan de tekst, wijzig of verwijder de tag niet.</string>
+	<string name="info_forum_links_no">Geen links gevonden in de post.</string>
+	<string name="info_forum_quote">Quote post</string>
+	<string name="info_forum_report">Rapporteer post</string>
+	<string name="info_forum_links">Bekijk links..</string>
+	<string name="info_forum_link_title">Selecteer een link om te bekijken...</string>
+	<string name="info_forum_posts_downloading">Downloading de posts...</string>
+	<string name="info_platoon_member_founder">Oprichter</string>
+	<string name="info_platoon_member_nonmember">Geen lid</string>
+	<string name="info_platoon_member_evaluate">Wacht op goedkeuring</string>
+	<string name="info_platoon_member_invited">Uitgenodigd.</string>
+	<string name="info_platoon_member_member">Lid</string>
+	<string name="info_platoon_member_admin">Admin</string>
+	<string name="info_platoon_member_founder_p">Oprichters</string>
+	<string name="info_platoon_member_admin_p">Admins</string>
+	<string name="info_platoon_member_regular">Normaal lid</string>
+	<string name="info_platoon_member_regular_p">Normale leden</string>
+	<string name="info_platoon_member_invited_label">Uitgenodigd.</string>
+	<string name="info_platoon_member_requested_label">Gevraagd om mee te doen.</string>
+	<string name="info_platoon_stats_overall">Algemeen</string>
+	<string name="label_assignments_view">Bekijk assignments</string>
+	<string name="label_goto_section">Ga naar {section}</string>
+	<string name="label_goto_assignments">Assignments</string>
+	<string name="label_goto_forum_thread">Forum</string>
+	<string name="label_goto_platoon">peloton</string>
+	<string name="label_goto_profile">profiel</string>
+	<string name="label_goto_unlocks">Unlocks</string>
+	<string name="info_about_donating">Als je graag gebruik maakt van deze app, doneer me dan een biertje! Klik op deze tekst om naar Paypal te gaan. Thanks!</string>
+	<string name="general_censored">Deze post is gecensureerd door Battlelog zelf.</string>
+	<string name="info_forum_report_true">Deze post is gerapporteerd.</string>
+	<string name="info_forum_report_false">Deze post kon niet gerapporteerd worden.</string>
+	<string name="info_forum_search_label">Zoeken</string>
+	<string name="info_forum_search_hint">Zoek voor ...</string>
+	<string name="info_forum_report_reason">Waarom wil je deze post rapporteren?</string>
+	<string name="info_forum_report_label">Rapporteer een post</string>
+	<string name="label_report">Report</string>
+	<string name="info_forum_report_empty">Je moet een reden aangeven.</string>
+	<string name="info_report_active">Bezig met rapporteren ...</string>
+	<string name="title_forum_report">BF3 Battlelog - Rapport</string>
 </resources>

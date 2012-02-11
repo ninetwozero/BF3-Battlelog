@@ -67,8 +67,18 @@ public class SearchView extends ListActivity {
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setCookies( (ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) );
-    	
+    		ArrayList<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
+			
+    		if( shareableCookies != null ) { 
+    			
+    			RequestHandler.setCookies( shareableCookies );
+    		
+    		} else {
+    			
+    			finish();
+    			
+    		}
+    		
     	}
     	
     	//Set the content view
@@ -245,7 +255,7 @@ public class SearchView extends ListActivity {
 		//Build the intent
 		if( result.hasProfileData() ) {
 
-			intent = new Intent(this, ProfileView.class).putExtra( "profile", result.getProfileData() );
+			intent = new Intent(this, ProfileView.class).putExtra( "profile" , result.getProfileData() );
 			
 		} else {
 		

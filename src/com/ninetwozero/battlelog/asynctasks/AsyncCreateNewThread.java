@@ -70,7 +70,7 @@ public class AsyncCreateNewThread extends AsyncTask<String, Void, Boolean> {
 		if( results ) { 
 			
 			Toast.makeText( this.context, R.string.info_forum_newthread_true, Toast.LENGTH_SHORT).show();
-			if( context instanceof ForumThreadView ) { 
+			if( context instanceof ForumView ) { 
 				
 				((ForumView) this.context).reloadLayout(); 
 				((ForumView) this.context).resetPostFields();

@@ -90,12 +90,11 @@ public class FeedListAdapter extends BaseAdapter {
 		}
 	
 		//Set the views
-		((TextView) convertView.findViewById(R.id.text_title)).setText( Html.fromHtml( currentItem.getTitle() ) );
-		if( !currentItem.getContent().equals( "" ) ) {
-
-			((TextView) convertView.findViewById(R.id.text_content)).setText( currentItem.getContent() );
-
-		}
+		((TextView) convertView.findViewById(R.id.text_title)).setText( 
+				
+			!currentItem.isCensored() ? Html.fromHtml( currentItem.getTitle() ) : context.getString( R.string.general_censored ) 
+						
+		);
 
 		//How many likes/comments?
 		String textHooah = ( currentItem.getNumLikes() == 1 )? context.getString( R.string.info_hooah_s ) : context.getString( R.string.info_hooah_p );
@@ -110,8 +109,8 @@ public class FeedListAdapter extends BaseAdapter {
 		);
 		((TextView) convertView.findViewById(R.id.text_date)).setText( PublicUtils.getRelativeDate( context, currentItem.getDate() ) );
 		((TextView) convertView.findViewById(R.id.text_hooah)).setText( textHooah.replace("{num}", currentItem.getNumLikes() + ""));
-		((TextView) convertView.findViewById(R.id.text_comment)).setText( content );
-
+		((TextView) convertView.findViewById(R.id.text_comment)).setText(content);
+		
 		//Hook it up on the tag
 		convertView.setTag( currentItem );
 

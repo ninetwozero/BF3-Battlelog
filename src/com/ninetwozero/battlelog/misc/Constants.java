@@ -104,6 +104,7 @@ public final class Constants {
 	public static final String URL_FORUM_SIMILAR = URL_FORUM_LIST + "dofindsimilar?title={title}&body={body}";
 	public static final String URL_FORUM_NEW = URL_FORUM_LIST + "createthread/{FORUM_ID}/";
 	public static final String URL_FORUM_SEARCH = URL_FORUM_LIST + "dosearch/?q={SEARCH_STRING}&snippet=text&fetch=threadId%2CforumId%2Ctitle%2Ctimestamp";
+	public static final String URL_FORUM_REPORT = URL_MAIN + "viewcontent/reportForumAbuse/{POST_ID}/";
 	
 	//Fields needed for the posts fields
 	public static final String[] FIELD_NAMES_LOGIN = new String[] {"email", "password", "redirect", "submit"};
@@ -145,6 +146,9 @@ public final class Constants {
 	public static final String[] FIELD_NAMES_FORUM_NEW = new String[] { "topic", "body", "post-check-sum" };
 	public static final String[] FIELD_VALUES_FORUM_NEW = new String[] { null, null, null };
 	
+	public static final String[] FIELD_NAMES_FORUM_REPORT = new String[] { "reason", "post-check-sum" };
+	public static final String[] FIELD_VALUES_FORUM_REPORT = new String[] { null, null };
+	
 	public static final String[] FIELD_NAMES_CHECKSUM = new String[] { "post-check-sum" };
 	public static final String[] FIELD_VALUES_CHECKSUM = new String[] { null };
 		
@@ -162,6 +166,7 @@ public final class Constants {
 	public static final String PATTERN_POST_SINGLE_TITLE = "<a class=\"base-profile-link\" href=\"/bf3/user/([^/]+)/\">([^\"</a>\"]+)</a>([^\"</div>\"]+)";
 	public static final String PATTERN_POST_SINGLE_BODY = "<div class=\"wallpost-body\">([^\"</div>\"]+)</div>";
 	public static final String PATTERN_POST_SINGLE_DATE = "<span data-timestamp=\"([0-9]+)\" class=\"base-ago\">";
+	public static final String PATTERN_POST_FORUM_LINK = "<a href=\"([^\\\"]+)\" rel=\"nofollow\">([^\\<]+)<\\/a> \\[([^\\]]+)\\]";
 	
 	//BBCODE
 	public static final String BBCODE_TAG_BOLD_IN = "**{text}**";
@@ -179,7 +184,7 @@ public final class Constants {
 	public static final String FILE_SHPREF = "battlelog";
 	
 	//Changelog version
-	public final static int CHANGELOG_VERSION = 8;
+	public final static int CHANGELOG_VERSION = 7;
 
 	//MENU IDs
 	public final static int MENU_ID_FEED = 2;

@@ -17,25 +17,26 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
 >  
-	<ImageView 
-   	    android:id="@+id/image_avatar" 
-   	    android:layout_width="40dp"
-	    android:layout_height="40dp" 
-	    android:layout_alignParentLeft="true"
-	    android:src="@drawable/test_image"
-	    
-	/>
 	<TextView 
+	    android:id="@+id/string000"
+		android:text="Platoon"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="#BABABA"
+		android:textStyle="bold"
+		android:layout_centerVertical="true"
+		android:layout_alignParentRight="true"
+	/>
+    <TextView 
 	    android:id="@+id/string_name"
 		android:text="Non-Turbined Zebras [NTZ]"
-		android:layout_width="wrap_content"
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:textColor="@color/blue"
 		android:textStyle="bold"
-		android:layout_toRightOf="@id/image_avatar"
 		android:layout_centerVertical="true"
-		android:layout_marginLeft="10dp"
 		android:textSize="18sp"
 		android:ellipsize="marquee"
+		android:layout_toLeftOf="@id/string000"
 	/>
 </RelativeLayout>

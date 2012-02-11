@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,7 +104,14 @@ public class ThreadPostListAdapter extends BaseAdapter {
 			convertView.setBackgroundColor( context.getResources().getColor( android.R.color.white ) );
 			
 		}
-		((TextView) convertView.findViewById( R.id.text_content ) ).setText( Html.fromHtml( currentItem.getContent() ) );
+		
+		TextView textView = (TextView) convertView.findViewById( R.id.text_content );
+		textView.setText( 
+				
+			!currentItem.isCensored() ? Html.fromHtml( currentItem.getContent() ) : context.getString( R.string.general_censored ) 
+					
+		);
+
 		((TextView) convertView.findViewById( R.id.text_posted_by) ).setText( 
 				
 			Html.fromHtml( 

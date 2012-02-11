@@ -118,8 +118,20 @@ public class ThreadListAdapter extends BaseAdapter {
 				
 			}
 			
-			//Set the TextViews
-			((TextView) convertView.findViewById( R.id.string_title )).setText( currentItem.getTitle() );
+			//Set the title
+			TextView textTitle = (TextView) convertView.findViewById( R.id.string_title );
+			textTitle.setText( currentItem.getTitle() );
+			if( !currentItem.isLocked() ) {
+				
+				textTitle.setTextColor( context.getResources().getColor( R.color.blue ) );
+				
+			} else {
+				
+				textTitle.setTextColor( context.getResources().getColor( android.R.color.black) );
+				
+			}
+			
+			//Set the rest of the TextViews
 			((TextView) convertView.findViewById( R.id.string_owner )).setText( 
 					
 				Html.fromHtml( 

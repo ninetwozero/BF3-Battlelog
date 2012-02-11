@@ -38,6 +38,7 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 import com.ninetwozero.battlelog.services.BattlelogService;
 
@@ -69,16 +70,6 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 	   
 		   //Set the values
 		   sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);  
-		   profileData = new ProfileData(
-
-				sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
-			    sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
-			    sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-			    sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-			    sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
-				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
-		   
-		   );
 		   remoteView = new RemoteViews(context.getPackageName(), R.layout.appwidget_layout);
 		   final Resources res = context.getResources();
 				   
@@ -93,7 +84,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 			 
 			   try {
 
-					playerData = WebsiteHandler.getStatsForPersona(profileData);
+					playerData = WebsiteHandler.getStatsForPersona(SessionKeeper.getProfileData());
 					remoteView.setTextViewText(
 							
 						R.id.label, 
@@ -102,12 +93,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 					);
 					remoteView.setTextViewText(
 							
-						R.id.title, 
-						(
-							res.getString(R.string.info_xml_rank) + playerData.getRankId() + 
-							" (" + playerData.getPointsProgressLvl() + 
-							"/" + playerData.getPointsNeededToLvlUp() + ")"
-						)
+						R.id.title, res.getString(R.string.info_xml_rank) + playerData.getRankId() 
 					);
 					remoteView.setTextViewText(
 						

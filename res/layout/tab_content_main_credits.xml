@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  
+	This file is part of BF3 Battlelog
+
+    BF3 Battlelog is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    BF3 Battlelog is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+>					
+	<LinearLayout
+        android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:orientation="vertical"
+	>
+		<TextView 
+			style="@style/FriendHeadingRow"
+			android:text="List of contributors"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="First of all, I'd like to thank everyone for the support and hand out a special &quot;thank you&quot; to all the beta testers out there.\n\nWith that said, I've categorized the list of contributors below after what they've helped with and hopefully I haven't forgot anyone!"
+	       android:padding="10dp"
+		/>		
+		<TextView 
+			style="@style/FriendHeadingRow"
+			android:text="Code"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="Lukas 'chokzor' Larson"
+	       android:padding="10dp"
+		/>
+		<TextView 
+			style="@style/FriendHeadingRow"
+			android:text="Graphics"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="Markus 'Markus96-1337' Olszewski"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="Stephen 'Dbagjones' Beaudet"
+	       android:padding="10dp"
+		/>
+		<TextView 
+			style="@style/FriendHeadingRow"
+			android:text="Translations"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="bagione"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="capalex &lt;@Lord_Gabriel>"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="Coval Delanight"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="cyrq"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="DarkoKukovec"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="federico"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="fysme"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="kosmiq"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="Mirella Lindmark"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="zAo82 &lt;sbkg0002@gmail.com>"
+	       android:padding="10dp"
+		/>
+	</LinearLayout>
+</ScrollView>

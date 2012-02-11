@@ -31,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -60,6 +61,7 @@ public class ForumView extends ListActivity {
 	private String forumTitle;
 	private int currentPage = 1;
 	private long latestRefresh = 0;
+	private InputMethodManager inputMethodManager;
 	
 	//Elements
 	private ListView listView;
@@ -79,16 +81,27 @@ public class ForumView extends ListActivity {
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setCookies( (ArrayList<ShareableCookie>) icicle.getParcelable(Constants.SUPER_COOKIES) );
+    		ArrayList<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
+			
+    		if( shareableCookies != null ) { 
+    			
+    			RequestHandler.setCookies( shareableCookies );
+    		
+    		} else {
+    			
+    			finish();
+    			
+    		}
     		
     	}
+    	
     	//Set the content view
         setContentView(R.layout.forum_view);
 
         //Prepare to tango
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-        
+
         //Get the forumId
         forumId = getIntent().getLongExtra( "forumId", 0 );
         forumTitle = getIntent().getStringExtra( "forumTitle" );
@@ -374,6 +387,7 @@ public class ForumView extends ListActivity {
 		//Reset
 		textareaTitle.setText( "" );
 		textareaContent.setText( "" );
+		slidingDrawer.animateClose();
 		
 	}
 	

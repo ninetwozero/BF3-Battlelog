@@ -30,6 +30,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -82,6 +83,7 @@ public class ProfileView extends TabActivity {
 	private HashMap<Long, PersonaStats> personaStats;
 	private ProfileInformation profileInformation;
 	private long selectedPersona;
+	private int selectedPosition;
 	
 	//Elements
 	private ProgressBar progressBar;
@@ -99,8 +101,18 @@ public class ProfileView extends TabActivity {
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setCookies( (ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) );
-    	
+    		ArrayList<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
+			
+    		if( shareableCookies != null ) { 
+    			
+    			RequestHandler.setCookies( shareableCookies );
+    		
+    		} else {
+    			
+    			finish();
+    			
+    		}
+    		
     	}
         
         //Prepare to tango
@@ -108,10 +120,10 @@ public class ProfileView extends TabActivity {
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         
     	//Get the intent
-        if( getIntent().hasExtra( "profile" ) ) { profileData = (ProfileData) getIntent().getParcelableExtra( "profile" ); }
+        if( getIntent().hasExtra( "profile" ) ) { profileData = getIntent().getParcelableExtra( "profile" ); }
         
         //Is the profileData null?!
-        if( profileData == null || profileData.getProfileId() == 0 ) { finish(); return; }
+        if( profileData == null || profileData.getProfileId() == 0 ) { return; }
     	personaStats = new HashMap<Long, PersonaStats>();
 
         //Set the selected persona
@@ -120,30 +132,36 @@ public class ProfileView extends TabActivity {
     	//Set the content view
         setContentView(R.layout.profile_view);
         
-        //Fix the tabs
-    	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
-    	setupTabs(
+        //Setup the tabs
+        mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+        setupTabs(
     			
-    		new String[] { 
-    				
-    			getString(R.string.label_home ), 
-				getString(R.string.label_stats ), 
-				getString(R.string.label_feed )
-    			
-    		}, 
-    		new int[] { 
-    				
-    			R.layout.tab_content_profile_overview, 
-    			R.layout.tab_content_profile_stats, 
-    			R.layout.tab_content_feed 
-    			
-    		}
-    		
-    	);
+        		new String[] { 
+        				
+        			getString(R.string.label_home ), 
+    				getString(R.string.label_stats ), 
+    				getString(R.string.label_feed )
+        			
+        		}, 
+        		new int[] { 
+        				
+        			R.layout.tab_content_profile_overview, 
+        			R.layout.tab_content_profile_stats, 
+        			R.layout.tab_content_feed 
+        			
+        		}
+        		
+        	);
         
 	}        
 
 	public void initLayout() {
+
+		//Fix the tabs
+    	if( mTabHost == null ) { mTabHost = (TabHost) findViewById(android.R.id.tabhost); }
+		
+		//Let's try something new
+		if( SessionKeeper.getProfileData() == null ) { finish(); }
 		
 		//Get a *cached* version instead    
 		if( profileInformation == null || personaStats == null ) { 
@@ -243,7 +261,6 @@ public class ProfileView extends TabActivity {
 				if( profileInformation != null ) { 
 
 					personaStats = CacheHandler.Persona.select( context, profileInformation.getAllPersonas() );
-					
 					selectedPersona = profileInformation.getPersona( 0 );
 					
 				} else {
@@ -253,8 +270,7 @@ public class ProfileView extends TabActivity {
 				}
 				
 				//...validate!
-				if( personaStats == null || personaStats.size() < 1 ) { return false; } 
-				else { return true; }
+				return( personaStats != null && personaStats.size() > 0 );
 				
 			} catch ( Exception ex ) {
 				
@@ -384,7 +400,7 @@ public class ProfileView extends TabActivity {
 				if( profileInformation != null ) {
 				
 					//Need for clear?
-					if( personaStats != null ) { personaStats.clear(); }
+					//if( personaStats != null ) { personaStats.clear(); }
 					
 					//Set the persona
 					profileData.setPersonaId( profileInformation.getAllPersonas() );
@@ -724,12 +740,13 @@ public class ProfileView extends TabActivity {
 						@Override
 						public void onItemClick( AdapterView<?> a, View v, int pos, long id ) {
 	
-							final FeedItem currItem = (FeedItem) a.getItemAtPosition( pos );
+							v.showContextMenu();
+							/*final FeedItem currItem = (FeedItem) a.getItemAtPosition( pos );
 							if( !currItem.getContent().equals( "" ) ) {
 								
 								generateDialogContent(CONTEXT, currItem.getProfile(0).getAccountName(), currItem.getContent()).show();
 								
-							}
+							}*/
 							
 						}
 						
@@ -770,8 +787,9 @@ public class ProfileView extends TabActivity {
 			menu.removeItem( R.id.option_friendadd );
 			menu.removeItem( R.id.option_frienddel );
 			menu.removeItem( R.id.option_compare );
-			
-		} else {
+			menu.removeItem( R.id.option_unlocks );
+	
+    	} else {
     	
 	    	//Which tab is operating?
 	    	if( mTabHost.getCurrentTab() == 0 ) {			
@@ -803,18 +821,22 @@ public class ProfileView extends TabActivity {
 				((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_compare )).setVisible( true );
+				((MenuItem) menu.findItem( R.id.option_unlocks )).setVisible( true );
+				
 				
 			} else if( mTabHost.getCurrentTab() == 2 ) {
 				
 				((MenuItem) menu.findItem( R.id.option_friendadd )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_frienddel )).setVisible( false );
 				((MenuItem) menu.findItem( R.id.option_compare )).setVisible( false );
+				((MenuItem) menu.findItem( R.id.option_unlocks )).setVisible( false );
 				
 			} else {
 				
 				menu.removeItem( R.id.option_friendadd );
 				menu.removeItem( R.id.option_frienddel );
 				menu.removeItem( R.id.option_compare );
+				menu.removeItem( R.id.option_unlocks );
 				
 			}
 
@@ -878,12 +900,56 @@ public class ProfileView extends TabActivity {
 				).putExtra(
 						
 					"profile1",
-					Dashboard.getProfile()
+					SessionKeeper.getProfileData()
 				
 				).putExtra(
 						
 					"profile2",
 					profileData
+				
+				).putExtra(
+						
+					"selectedPosition", 
+					selectedPosition
+					
+					
+				)
+					
+			);
+			
+		} else if( item.getItemId() == R.id.option_unlocks ) {
+			
+			int position = 0;
+			for( long key : personaStats.keySet() ) {
+				
+				if( key == selectedPersona ) {
+					
+					break;
+					
+				} else {
+					
+					position++;
+					
+				}
+				
+			}
+			
+			startActivity(
+			
+				new Intent(
+					
+					this,
+					UnlockView.class
+						
+				).putExtra(
+						
+					"profile",
+					profileData
+				
+				).putExtra(
+						
+					"selectedPosition",
+					position
 				
 				)
 					
@@ -924,7 +990,10 @@ public class ProfileView extends TabActivity {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
 		//Show the menu
-		if( !((FeedItem) ((View) info.targetView).getTag()).isLiked() ) {
+		FeedItem feedItem = (FeedItem) info.targetView.getTag();
+		
+		//Show the menu
+		if( !feedItem.isLiked() ) {
 			
 			menu.add( 0, 0, 0, R.string.label_hooah);
 		
@@ -934,6 +1003,7 @@ public class ProfileView extends TabActivity {
 			
 		}
 		menu.add( 0, 1, 0, R.string.label_single_post_view);
+		menu.add( 0, 2, 0, getString(R.string.label_goto_section).replace( "{section}", feedItem.getOptionTitle( this ) ) );
 
 		return;
 	
@@ -1009,7 +1079,7 @@ public class ProfileView extends TabActivity {
 								
 						).putExtra(
 								
-							"isFriend",
+							"canComment",
 							profileInformation.isFriend()	
 						
 						).putExtra( 
@@ -1020,6 +1090,10 @@ public class ProfileView extends TabActivity {
 						)
 						
 					);
+					
+				} else if( item.getItemId() == 2 ) {
+					
+					if( feedItem.getIntent( this ) != null ) { startActivity(feedItem.getIntent( this )); }
 					
 				}
 				
@@ -1131,6 +1205,9 @@ public class ProfileView extends TabActivity {
 					
 						//Load the new!
 						setupStats(personaStats.get( selectedPersona ));
+						
+						//Store selectedPersonaPos
+						selectedPosition = item;
 						
 					}
 					

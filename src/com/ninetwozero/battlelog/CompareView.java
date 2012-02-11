@@ -17,17 +17,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +50,8 @@ public class CompareView extends Activity {
 	private ProgressBar progressBar;
 	private GetDataSelfAsync getDataAsync;
 	private ProfileData playerOne, playerTwo;
-	private long[] selectedPersonas;
+	private int selectedPosition;
+	private long[] selectedPersona;
 	private HashMap<Long, PersonaStats> playerData1, playerData2; 
 	
 	//These are the different fields
@@ -128,34 +132,44 @@ public class CompareView extends Activity {
     
     	//onCreate - save the instance state
     	super.onCreate(icicle);
-    	
+        
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setCookies( (ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) );
-    	
+    		ArrayList<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
+			
+    		if( shareableCookies != null ) { 
+    			
+    			RequestHandler.setCookies( shareableCookies );
+    		
+    		} else {
+    			
+    			finish();
+    			
+    		}
+    		
     	}
     	
     	//Set the content view
         setContentView(R.layout.compare_view);
 
         //Prepare to tango
-        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.selectedPersonas = new long[2];
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     
         //Let's set them straight
-        this.playerOne = (ProfileData) getIntent().getParcelableExtra( "profile1" );
-        this.playerTwo = (ProfileData) getIntent().getParcelableExtra( "profile2" );
-        
-        if( this.tvPersona[0] == null ) { this.grabAllViews(); }
-        this.initLayout();
+        playerOne = (ProfileData) getIntent().getParcelableExtra( "profile1" );
+        playerTwo = (ProfileData) getIntent().getParcelableExtra( "profile2" );
+        selectedPersona = new long[2];
+        selectedPosition = getIntent().getIntExtra( "selectedPosition", 0 );
+        if( tvPersona[0] == null ) { grabAllViews(); }
+        initLayout();
         
 	}        
 
     public void initLayout() {
     	
     	//ASYNC!!!
-    	new GetDataSelfAsync(this).execute(
+    	new GetDataSelfAsync(this, selectedPosition).execute(
     		
     		playerOne,
     		playerTwo
@@ -168,7 +182,7 @@ public class CompareView extends Activity {
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new GetDataSelfAsync(this, selectedPersonas ).execute(
+    	new GetDataSelfAsync(this, selectedPosition, selectedPersona ).execute(
     		
     		playerOne,
     		playerTwo
@@ -188,32 +202,34 @@ public class CompareView extends Activity {
     	private ProgressDialog progressDialog;/*TODO: WHY LOCAL? */
     	private ProfileData[] profileData;
     	private long[] profileIdArray;
+    	private int arrayPosition;
     	
-    	public GetDataSelfAsync(Context c) {
+    	public GetDataSelfAsync(Context c, int ap) {
     		
-    		this.context = c;
-    		this.progressDialog = null;
+    		context = c;
+    		progressDialog = null;
     		if( playerData1 == null ) { playerData1 = new HashMap<Long, PersonaStats>(); }
     		if( playerData2 == null ) { playerData2 = new HashMap<Long, PersonaStats>(); }
-        	this.profileIdArray = null;
-        	
+        	profileIdArray = null;
+        	arrayPosition = ap;
+    	
     	}
     	
-    	public GetDataSelfAsync(Context c, long[] pIds) {
+    	public GetDataSelfAsync(Context c, int ap, long[] pIds ) {
     		
-    		this(c);
-        	this.profileIdArray = pIds;
-        	
+    		this(c, ap);
+        	profileIdArray = pIds;
+        
     	}
     	
     	@Override
     	protected void onPreExecute() {
     		
     		//Let's see
-			this.progressDialog = new ProgressDialog(this.context);
-			this.progressDialog.setTitle(context.getString( R.string.general_wait ));
-			this.progressDialog.setMessage( context.getString( R.string.general_downloading ) );
-			this.progressDialog.show();
+			progressDialog = new ProgressDialog(context);
+			progressDialog.setTitle(context.getString( R.string.general_wait ));
+			progressDialog.setMessage( context.getString( R.string.general_downloading ) );
+			progressDialog.show();
     		
     	}
     	
@@ -226,7 +242,24 @@ public class CompareView extends Activity {
 				profileData = arg0;
 				
 				//Let's store them
-				if( profileIdArray == null ) { profileIdArray = new long[] { profileData[0].getPersonaId(), profileData[1].getPersonaId() }; }
+				if( profileIdArray == null ) {
+					
+					profileIdArray = new long[] { 
+							
+						profileData[0].getPersonaId(), 
+						profileData[1].getPersonaId(arrayPosition) 
+						
+					};
+					
+				} else if( profileIdArray[0] == 0 ) {
+					
+					profileIdArray[0] = profileData[0].getPersonaId(); 
+					
+				} else if( profileIdArray[1] == 0 ) { 
+					
+					profileIdArray[1] = profileData[1].getPersonaId(arrayPosition); 
+					
+				}
 				
 				//Grab the stats
 				playerData1 = WebsiteHandler.getStatsForUser( context, profileData[0] );
@@ -250,9 +283,9 @@ public class CompareView extends Activity {
 			//Fail?
 			if( !result ) { 
 				
-				if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
-				Toast.makeText( this.context, R.string.general_no_data, Toast.LENGTH_SHORT).show(); 
-				((Activity) this.context).finish();
+				if( progressDialog != null ) { progressDialog.dismiss(); }
+				Toast.makeText( context, R.string.general_no_data, Toast.LENGTH_SHORT).show(); 
+				((Activity) context).finish();
 				return; 
 			
 			}
@@ -264,7 +297,7 @@ public class CompareView extends Activity {
 			populateStats(playerData2.get( profileIdArray[1] ), 1);
 			
 	        //Remove the dialog?	        
-			if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
+			if( progressDialog != null ) { progressDialog.dismiss(); }
 			return;
 		}
     	
@@ -285,7 +318,7 @@ public class CompareView extends Activity {
 		//Let's act!
 		if( item.getItemId() == R.id.option_reload ) {
 	
-			this.reloadLayout();
+			reloadLayout();
 			
 		} else if( item.getItemId() == R.id.option_back ) {
 			
@@ -317,44 +350,44 @@ public class CompareView extends Activity {
 		for( int i = 0, max = tvPersona.length; i < max; i++ ) {
 
 			//General
-			this.tvPersona[i] = (TextView) findViewById(fieldPersona[i]);
-			this.tvRank[i] = (TextView) findViewById(fieldRank[i]);
+			tvPersona[i] = (TextView) findViewById(fieldPersona[i]);
+			tvRank[i] = (TextView) findViewById(fieldRank[i]);
 	        
 	        //Progress
-			this.tvProgressCurr[i] = (TextView) findViewById(fieldProgressCurr[i]);
-			this.tvProgressMax[i] = (TextView) findViewById(fieldProgressMax[i]);
+			tvProgressCurr[i] = (TextView) findViewById(fieldProgressCurr[i]);
+			tvProgressMax[i] = (TextView) findViewById(fieldProgressMax[i]);
 	        
 	        //Score
-			this.tvScoreAssault[i] = (TextView) findViewById(fieldScoreAssault[i]);
-			this.tvScoreEngineer[i] = (TextView) findViewById(fieldScoreEngineer[i]);
-			this.tvScoreSupport[i] = (TextView) findViewById(fieldScoreSupport[i]);
-			this.tvScoreRecon[i] = (TextView) findViewById(fieldScoreRecon[i]);
-			this.tvScoreVehicles[i] = (TextView) findViewById(fieldScoreVehicles[i]);
-			this.tvScoreCombat[i] = (TextView) findViewById(fieldScoreCombat[i]);
-			this.tvScoreAward[i] = (TextView) findViewById(fieldScoreAward[i]);
-			this.tvScoreUnlocks[i] = (TextView) findViewById(fieldScoreUnlocks[i]);
-			this.tvScoreTotal[i] = (TextView) findViewById(fieldScoreTotal[i]);
+			tvScoreAssault[i] = (TextView) findViewById(fieldScoreAssault[i]);
+			tvScoreEngineer[i] = (TextView) findViewById(fieldScoreEngineer[i]);
+			tvScoreSupport[i] = (TextView) findViewById(fieldScoreSupport[i]);
+			tvScoreRecon[i] = (TextView) findViewById(fieldScoreRecon[i]);
+			tvScoreVehicles[i] = (TextView) findViewById(fieldScoreVehicles[i]);
+			tvScoreCombat[i] = (TextView) findViewById(fieldScoreCombat[i]);
+			tvScoreAward[i] = (TextView) findViewById(fieldScoreAward[i]);
+			tvScoreUnlocks[i] = (TextView) findViewById(fieldScoreUnlocks[i]);
+			tvScoreTotal[i] = (TextView) findViewById(fieldScoreTotal[i]);
 	        
 	        //Stats
-			this.tvStatsKills[i] = (TextView) findViewById(fieldStatsKills[i]);
-			this.tvStatsAssists[i] = (TextView) findViewById(fieldStatsAssists[i]);
-			this.tvStatsVKills[i] = (TextView) findViewById(fieldStatsVKills[i]);
-			this.tvStatsVAssists[i] = (TextView) findViewById(fieldStatsVAssists[i]);
-			this.tvStatsHeals[i] = (TextView) findViewById(fieldStatsHeals[i]);
-			this.tvStatsRevives[i] = (TextView) findViewById(fieldStatsRevives[i]);
-			this.tvStatsRepairs[i] = (TextView) findViewById(fieldStatsRepairs[i]);
-			this.tvStatsResupplies[i] = (TextView) findViewById(fieldStatsResupplies[i]);
-			this.tvStatsDeath[i] = (TextView) findViewById(fieldStatsDeath[i]);
-			this.tvStatsKDR[i] = (TextView) findViewById(fieldStatsKDR[i]);
-			this.tvStatsWins[i] = (TextView) findViewById(fieldStatsWins[i]);
-			this.tvStatsLosses[i] = (TextView) findViewById(fieldStatsLosses[i]);
-			this.tvStatsWLR[i] = (TextView) findViewById(fieldStatsWLR[i]);
-			this.tvStatsAccuracy[i] = (TextView) findViewById(fieldStatsAccuracy[i]);
-			this.tvStatsTime[i] = (TextView) findViewById(fieldStatsTime[i]);
-			this.tvStatsSkill[i] = (TextView) findViewById(fieldStatsSkill[i]);
-			this.tvStatsSPM[i] = (TextView) findViewById(fieldStatsSPM[i]);
-			this.tvStatsLKS[i] = (TextView) findViewById(fieldStatsLKS[i]);
-			this.tvStatsLHS[i] = (TextView) findViewById(fieldStatsLHS[i]);
+			tvStatsKills[i] = (TextView) findViewById(fieldStatsKills[i]);
+			tvStatsAssists[i] = (TextView) findViewById(fieldStatsAssists[i]);
+			tvStatsVKills[i] = (TextView) findViewById(fieldStatsVKills[i]);
+			tvStatsVAssists[i] = (TextView) findViewById(fieldStatsVAssists[i]);
+			tvStatsHeals[i] = (TextView) findViewById(fieldStatsHeals[i]);
+			tvStatsRevives[i] = (TextView) findViewById(fieldStatsRevives[i]);
+			tvStatsRepairs[i] = (TextView) findViewById(fieldStatsRepairs[i]);
+			tvStatsResupplies[i] = (TextView) findViewById(fieldStatsResupplies[i]);
+			tvStatsDeath[i] = (TextView) findViewById(fieldStatsDeath[i]);
+			tvStatsKDR[i] = (TextView) findViewById(fieldStatsKDR[i]);
+			tvStatsWins[i] = (TextView) findViewById(fieldStatsWins[i]);
+			tvStatsLosses[i] = (TextView) findViewById(fieldStatsLosses[i]);
+			tvStatsWLR[i] = (TextView) findViewById(fieldStatsWLR[i]);
+			tvStatsAccuracy[i] = (TextView) findViewById(fieldStatsAccuracy[i]);
+			tvStatsTime[i] = (TextView) findViewById(fieldStatsTime[i]);
+			tvStatsSkill[i] = (TextView) findViewById(fieldStatsSkill[i]);
+			tvStatsSPM[i] = (TextView) findViewById(fieldStatsSPM[i]);
+			tvStatsLKS[i] = (TextView) findViewById(fieldStatsLKS[i]);
+			tvStatsLHS[i] = (TextView) findViewById(fieldStatsLHS[i]);
 		
 		}
 	}
@@ -365,7 +398,7 @@ public class CompareView extends Activity {
 		if( ps == null ) { return; }
 		
 		//Persona & rank
-		tvPersona[pos].setText( ps.getPersonaName() );
+		tvPersona[pos].setText( ps.getPersonaName().replaceAll( "(\\[^\\]]+)", "") );
         tvRank[pos].setText( ps.getRankId() + "" );
         
         //Progress
@@ -404,5 +437,68 @@ public class CompareView extends Activity {
         tvStatsLKS[pos].setText( ps.getLongestKS() + "" );
         tvStatsLHS[pos].setText( ps.getLongestHS() + " m");		
 	
+	}
+	
+	public Dialog generateDialogPersonaList( final Context context, final long[] personaId, final String[] persona, final int pos ) {
+		
+		//Attributes
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		
+	    //Set the title and the view
+		builder.setTitle( R.string.info_dialog_soldierselect );
+		
+		builder.setSingleChoiceItems(
+				
+			persona, -1, new DialogInterface.OnClickListener() {
+		  
+				public void onClick(DialogInterface dialog, int item) {
+			    	
+					if( personaId[item] != selectedPersona[pos] ) {
+						
+						//Update it
+						selectedPersona[pos] = personaId[item];
+					
+						//Load the new!
+						if( pos == 0 ) {
+							
+							populateStats( playerData1.get( selectedPersona[pos] ), pos );
+						
+						} else {
+							
+							populateStats( playerData2.get( selectedPersona[pos] ), pos );
+							
+						}
+						
+						//Store selectedPersonaPos
+						selectedPosition = item;
+						
+					}
+					
+					dialog.dismiss();
+		
+				}
+				
+			}
+		
+		);
+		
+		//CREATE
+		return builder.create();
+		
+	}
+	
+	public void onClick(View v) {
+	
+		 if( v.getId() == R.id.string_persona_0 ) {
+				
+			//Let's get it on!
+			generateDialogPersonaList(this, playerOne.getPersonaIdArray(), playerOne.getPersonaNameArray(), 0).show();
+			
+		} else if( v.getId() == R.id.string_persona_1 ) {
+			
+			generateDialogPersonaList(this, playerTwo.getPersonaIdArray(), playerTwo.getPersonaNameArray(), 1).show();
+			
+		}
+		
 	}
 }

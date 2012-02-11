@@ -26,7 +26,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
-import android.util.Log;
+import android.text.method.LinkMovementMethod;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -76,8 +76,18 @@ public class SinglePostView extends ListActivity {
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setCookies( (ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) );
-    	
+    		ArrayList<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
+			
+    		if( shareableCookies != null ) { 
+    			
+    			RequestHandler.setCookies( shareableCookies );
+    		
+    		} else {
+    			
+    			finish();
+    			
+    		}
+    		
     	}
     	
     	//Set the content view
@@ -277,9 +287,8 @@ public class SinglePostView extends ListActivity {
     	//Is the user allowed to post?
     	if( !intent.getBooleanExtra( "canComment", false ) ) {
 
-        	if( SessionKeeper.getProfileData().getProfileId() != intent.getLongExtra( "profileId", 0) ) {
+    		if( SessionKeeper.getProfileData().getProfileId() != intent.getLongExtra( "profileId", 0) ) {
         		
-        		Log.d( Constants.DEBUG_TAG, "No comment due to... I don't know!");
         		buttonSend.setVisibility( View.GONE );
         		fieldMessage.setVisibility( View.GONE );
         	
@@ -291,7 +300,6 @@ public class SinglePostView extends ListActivity {
     	
     	if( item == null || item.getType().equals( "wroteforumpost" ) || item.getType().equals( "createdforumthread" ) ) {
 
-    		Log.d( Constants.DEBUG_TAG, "No comment due to... it being a forum post?!");
     		buttonSend.setVisibility( View.GONE );
     		fieldMessage.setVisibility( View.GONE );
     	
@@ -367,7 +375,17 @@ public class SinglePostView extends ListActivity {
     	if( buttonSend == null ) { buttonSend = (Button) findViewById(R.id.button_send); }
 		
         //Set up the top-place
-        String username = ( feedItem.getProfile(1) == null ) ? feedItem.getProfile( 0 ).getAccountName() : feedItem.getProfile( 1 ).getAccountName();
+        String username = "";
+        if( feedItem.getProfile(1) == null ) {
+        	
+        	username = feedItem.getProfile( 0 ).getAccountName();
+        
+        } else {
+        
+        	username = feedItem.getProfile( 1 ).getAccountName();
+        	
+        }
+
         if( !username.endsWith( "s" ) ) {
     		
     		textHeading.setText( getString( R.string.info_spost_heading ).replace("{username}", username) );
@@ -385,6 +403,8 @@ public class SinglePostView extends ListActivity {
         if( feedItem.getContent() != null && feedItem.getContent().length() > 0 ) {
         	
         	textContent.setText( Html.fromHtml( feedItem.getContent() ) ); 
+        	textContent.setVisibility( View.VISIBLE );
+        	textContent.setMovementMethod( LinkMovementMethod.getInstance() );
         	
         } else {
         

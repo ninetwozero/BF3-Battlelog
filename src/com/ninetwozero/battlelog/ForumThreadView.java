@@ -15,6 +15,8 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,9 +28,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -39,6 +43,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -52,6 +58,8 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.adapters.ThreadPostListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostInThread;
 import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
+import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -90,12 +98,18 @@ public class ForumThreadView extends ListActivity {
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setCookies(
-    				
-    			(ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) 
+    		ArrayList<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
+			
+    		if( shareableCookies != null ) { 
     			
-    		);
-    	
+    			RequestHandler.setCookies( shareableCookies );
+    		
+    		} else {
+    			
+    			finish();
+    			
+    		}
+    		
     	}
     	
     	//Set the content view
@@ -109,7 +123,8 @@ public class ForumThreadView extends ListActivity {
         threadId = getIntent().getLongExtra( "threadId", 0 );
         threadTitle = getIntent().getStringExtra( "threadTitle" );
         selectedQuotes = new HashMap<Long, String>();
-
+        currentPage = 1;
+        
         //Init
 		initLayout();
 		setupBottom();
@@ -137,7 +152,8 @@ public class ForumThreadView extends ListActivity {
         if( listView == null ) { 
         	
         	listView = getListView(); 
-        	
+        	//listView.setItemsCanFocus(true);
+
         	if( currentThread == null ) {
         	
         		listView.setAdapter( new ThreadPostListAdapter( this, null, layoutInflater ) );
@@ -176,11 +192,9 @@ public class ForumThreadView extends ListActivity {
     	
     	} else {
     		
-    		new AsyncGetPosts(null, listView).execute( threadId ); 
+    		new AsyncLoadPage(this, threadId).execute( currentPage ); 
     		
     	}
-    	
-		currentPage = 1;
     	
     }
     
@@ -237,7 +251,7 @@ public class ForumThreadView extends ListActivity {
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int p, long id) { openContextMenu( v ); }
-
+	
 	private class AsyncGetPosts extends AsyncTask<Long, Void, Boolean>{
 
 		//Attributes
@@ -260,7 +274,7 @@ public class ForumThreadView extends ListActivity {
 				
 				progressDialog = new ProgressDialog(this.context);
 				progressDialog.setTitle( R.string.general_wait );
-				progressDialog.setMessage( "Downloading the posts..." );
+				progressDialog.setMessage( context.getString( R.string.info_forum_posts_downloading ) );
 				progressDialog.show();
 			
 			}	
@@ -324,6 +338,10 @@ public class ForumThreadView extends ListActivity {
 						
 					}
 			    	
+					//Do we need to hide?
+					if( currentThread.isLocked() ) { slidingDrawer.setVisibility( View.GONE ); }
+					else { slidingDrawer.setVisibility( View.VISIBLE ); }
+			    	
 				}
 				
 			}
@@ -337,9 +355,10 @@ public class ForumThreadView extends ListActivity {
 	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
 	
 	   	//Show the menu
-		menu.add( 0, 0, 0, "View profile" );
-		menu.add( 0, 1, 0, "Quote post" );
-		menu.add( 0, 2, 0, "Report post" );
+		menu.add( 0, 0, 0, R.string.info_profile_view );
+		menu.add( 0, 1, 0, R.string.info_forum_quote );
+		menu.add( 0, 2, 0, R.string.info_forum_links );
+		menu.add( 0, 3, 0, R.string.info_forum_report );
 	
 		//RETURN
 		return;
@@ -376,11 +395,11 @@ public class ForumThreadView extends ListActivity {
 				switch( item.getItemId() ) {
 					
 					case 0:
-						startActivity( new Intent(this, ProfileView.class).putExtra( "profile", data.getProfileData() ) );
+						startActivity( new Intent(this, ProfileView.class).putExtra( "profile" , data.getProfileData() ) );
 						break;
 						
 					case 1:
-						Toast.makeText( this, "Quote added to the textarea, don't edit the tag.", Toast.LENGTH_SHORT).show();
+						Toast.makeText( this, R.string.info_forum_quote_warning, Toast.LENGTH_SHORT).show();
 						textareaContent.setText( 
 
 							textareaContent.getText().insert( 
@@ -401,15 +420,19 @@ public class ForumThreadView extends ListActivity {
 							)
 								
 						);
-						selectedQuotes.put( data.getPostId(), data.getContent() );
+						selectedQuotes.put( data.getPostId(), ( data.isCensored() ? getString( R.string.general_censored ) : data.getContent() ) );
 						break;
 					
 					case 2:
-						Toast.makeText(this, "Report post #" + data.getPostId(), Toast.LENGTH_SHORT).show();
+						generatePopupWithLinks(data.getContent());
 						break;
 						
+					case 3:
+						startActivity( new Intent( this, ForumReportView.class).putExtra( "postId", data.getPostId() ) );
+						break;
+							
 					default:
-						Toast.makeText(this, "Unsupported option", Toast.LENGTH_SHORT).show();
+						Toast.makeText(this, R.string.msg_unimplemented, Toast.LENGTH_SHORT).show();
 						break;
 					
 				}
@@ -427,6 +450,39 @@ public class ForumThreadView extends ListActivity {
 	
 	}
 	
+	private void generatePopupWithLinks( String string ) {
+
+		//Got some?
+		if( string == null ) { Toast.makeText( this, R.string.info_forum_links_no, Toast.LENGTH_SHORT ).show(); }
+		
+		//Init
+		ArrayList<String> links = new ArrayList<String>();
+		boolean linkFound = false;
+
+		//Let's try to find 'em
+		Pattern linkPattern = Pattern.compile( "<a href=\"([^\"]+)\" rel=\"nofollow\">" );
+		Matcher linkMatcher = linkPattern.matcher( string );
+		
+		while( linkMatcher.find() ) {
+			
+			linkFound = true;
+			links.add( linkMatcher.group( 1 ) );
+		
+		}
+		
+		if( !linkFound ) {
+			
+			//No links found
+			Toast.makeText( this, R.string.info_forum_links_no, Toast.LENGTH_SHORT ).show();
+		
+		} else {
+			
+			generateDialogLinkList( this, links ).show();
+			
+		}
+		
+	}
+
 	//Define the SlidingDrawer
 	public void setupBottom() {
 		
@@ -479,6 +535,7 @@ public class ForumThreadView extends ListActivity {
 		//Reset
 		textareaContent.setText( "" );
 		selectedQuotes.clear();
+		slidingDrawer.animateClose();
 		
 	}
 	
@@ -586,7 +643,7 @@ public class ForumThreadView extends ListActivity {
 				if( results ) {
 
 					((ThreadPostListAdapter)((ForumThreadView) context).getListView().getAdapter()).set( posts );
-					buttonJump.setText( getString( R.string.info_xml_feed_button_jump ) );
+					buttonJump.setText( getString( R.string.info_xml_feed_button_jump ) );					
 					
 				} else {
 					
@@ -598,15 +655,70 @@ public class ForumThreadView extends ListActivity {
 				if( page != currentThread.getNumPages() ) { buttonNext.setEnabled( true ); } else { buttonNext.setEnabled( false ); }
 				buttonJump.setEnabled( true );			
 				
-				
-				
 			}
 			
 
 		}
 	
 	}
-	
+
+	public Dialog generateDialogLinkList(final Context context, final ArrayList<String> links) {
+		
+		//Attributes
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+	    final View layout = inflater.inflate(R.layout.dialog_thread_link, (ViewGroup) findViewById(R.id.dialog_root));
+		
+	    //Set the title
+		builder.setTitle( R.string.info_forum_link_title );
+		
+		//Dialog options
+		builder.setNegativeButton(
+				
+			android.R.string.cancel, 
+			new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					
+					dialog.dismiss();
+			   
+				}
+				
+			}
+			
+		);
+	       
+		//Padding fix
+		final AlertDialog theDialog = builder.create();
+	    theDialog.setView( layout, 0, 0, 0, 0);
+	    
+	    //Grab the fields
+  		ListView listView = (ListView) layout.findViewById(R.id.list_links);
+  		listView.setAdapter( new ArrayAdapter<String>(context, R.layout.list_item_plain, android.R.id.text1, links) );
+  		listView.setOnItemClickListener(
+  			
+  			new OnItemClickListener() {
+
+  				@Override
+  				public void onItemClick( AdapterView<?> arg0, View arg1, int arg2, long arg3 ) {
+
+  					//Get the current link
+  					String currentLink = links.get( arg2 );
+					new AsyncLinkHandling(context).execute( currentLink, sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ) );  					
+  					
+  					//Dismiss  the dialog
+  					theDialog.dismiss();
+  					
+  				}
+  				
+  			}
+  				
+  		);
+	    
+	    return theDialog;
+		
+	}
+
 	public Dialog generateDialogPage(final Context context) {
 		
 		//Attributes
@@ -645,19 +757,25 @@ public class ForumThreadView extends ListActivity {
 				
 				public void onClick(DialogInterface dialog, int which) {
 			      
-					int page = Integer.parseInt( textPage.getText().toString() );
-					if( 0 < page && page <= currentThread.getNumPages() ) {
+					String pageString = textPage.getText().toString();
+					if( !pageString.equals( "" ) ) {
 						
-						currentPage = page;
-						new AsyncLoadPage(context, threadId).execute( currentPage );
-			   
-					} else {
-						
-						Toast.makeText( context, "Invalid page number.", Toast.LENGTH_SHORT).show();
+						int page = Integer.parseInt( pageString );
+						if( 0 < page && page <= currentThread.getNumPages() ) {
+							
+							currentPage = page;
+							new AsyncLoadPage(context, threadId).execute( currentPage );
+				   
+						} else {
+							
+							Toast.makeText( context, R.string.info_forum_page_invalid, Toast.LENGTH_SHORT).show();
+							
+						}
 						
 					}
-				}
 				
+				}
+					
 			}
 			
 		);
@@ -667,6 +785,152 @@ public class ForumThreadView extends ListActivity {
 	    theDialog.setView( layout, 0, 0, 0, 0);
 	    return theDialog;
 		
+	}
+	
+	public class AsyncLinkHandling extends AsyncTask<String, Void, Boolean> {
+		
+		//Attributes
+		private Context context;
+		private Intent intent;
+		
+		//Construct
+		public AsyncLinkHandling(Context c) {
+			
+			context = c;
+			
+		}
+		
+		@Override
+		protected Boolean doInBackground(String... arg0) {
+
+			//React accordingly
+			String currentLink = arg0[0];
+			int index = 0;
+			
+			if( currentLink.startsWith( "http://battlelog.battlefield.com" ) ) {
+
+				try {
+					
+					//*INBOUND LINKS*
+					int linkEndPos = currentLink.endsWith( "/" ) ? currentLink.length()-1 : currentLink.length();
+					index = currentLink.indexOf( "/user/" );
+					if( index > -1 ) {
+					
+						String username = currentLink.substring( index+6, linkEndPos );
+						intent = new Intent(context, ProfileView.class).putExtra(
+								
+							"profile", 
+							WebsiteHandler.getProfileIdFromSearch( username, arg0[1] )
+							
+						);
+				
+					} else {
+					
+						index = currentLink.indexOf( "/platoon/" );
+						if( index > -1 ) {
+							
+							long platoonId = Long.parseLong( currentLink.substring( index+9, linkEndPos ));
+							intent = new Intent(context, PlatoonView.class).putExtra(
+									
+								"platoon",
+								new PlatoonData(platoonId, 0, 0, 0, null, null, null, true)
+									
+							);
+							
+						} else {
+							
+							index = currentLink.indexOf( "/soldier/" );
+							if( index > -1 ) {
+								
+								currentLink = currentLink.substring( currentLink.indexOf( "stats/" ) + 6 );
+								long personaId = Long.parseLong( currentLink.substring( 0, currentLink.indexOf( '/' ) )  );		
+								intent = new Intent(context, ProfileView.class).putExtra(
+											
+									"profile", 
+									WebsiteHandler.getProfileIdFromPersona(personaId)
+									
+								);
+								
+							} else {
+										
+								index = currentLink.indexOf( "forum/threadview/" );
+								if( index > -1 ) {
+									
+									long threadId = Long.parseLong( currentLink.substring( index+17, linkEndPos ) );
+									intent = new Intent(context, ForumThreadView.class).putExtra(
+												
+										"threadId", 
+										threadId
+										
+									).putExtra(
+									
+										"threadTitle",
+										"N/A"
+											
+									);
+									
+								} else {
+									
+									index = currentLink.indexOf( "forum/view/" );
+									if( index > -1 ) {
+										
+										intent = new Intent(context, ForumView.class).putExtra(
+													
+											"forumId", 
+											Long.parseLong( currentLink.substring( index+11, linkEndPos ) )
+											
+										).putExtra(
+										
+											"forumTitle",
+											"N/A"
+												
+										);
+										
+									} else {
+										
+										intent = new Intent(Intent.ACTION_VIEW, Uri.parse( currentLink ) );
+									
+									}
+									
+								}
+								
+							}
+							
+						}
+					
+					}
+					
+				} catch( Exception ex ) {
+					
+					ex.printStackTrace();
+					return false;
+					
+				}
+				
+			} else {
+	
+				intent = new Intent(Intent.ACTION_VIEW, Uri.parse( currentLink ) );
+			
+			}
+		
+			return true;
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result) {
+			
+			if( result ) {
+				
+				if( intent != null ) { startActivity(intent); }
+				
+			} else {
+				
+				Toast.makeText( context, "The request could not be fulfilled.", Toast.LENGTH_SHORT).show();
+				
+			}
+			
+		}
+	
 	}
 	
 }

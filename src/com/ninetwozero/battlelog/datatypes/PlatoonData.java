@@ -18,6 +18,19 @@ public class PlatoonData implements Parcelable {
 
 	public PlatoonData(Parcel in) { readFromParcel(in); }
 	
+	public PlatoonData(long i) {
+		
+		this.id = i;
+		this.countFans = 0;
+		this.countMembers = 0;
+		this.platformId = 0;
+		this.name = null;
+		this.tag = null;
+		this.image = null;
+		this.visible = true;
+		
+	}
+	
 	public PlatoonData(long i, int cF, int cM, int pId, String n, String t, String img, boolean v) {
 		
 		this.id = i;

@@ -33,6 +33,13 @@
             android:orientation="vertical"
           	android:configChanges="orientation"
           	android:windowSoftInputMode="stateHidden"
+		/>
+		<activity
+            android:label="@string/title_about"
+            android:name=".AboutView"
+            android:orientation="vertical"
+          	android:configChanges="orientation"
+          	android:windowSoftInputMode="stateHidden"
        />
         <activity
             android:label="@string/title_main_menu"
@@ -101,6 +108,11 @@
         <activity
             android:label="@string/title_thread_view"
             android:name=".ForumThreadView"
+          	android:configChanges="orientation"
+        />
+        <activity
+            android:label="@string/title_forum_report"
+            android:name=".ForumReportView"
           	android:configChanges="orientation"
         />
         <activity

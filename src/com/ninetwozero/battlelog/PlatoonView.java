@@ -112,12 +112,18 @@ public class PlatoonView extends TabActivity {
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setCookies(
-    				
-    			(ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) 
+    		ArrayList<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
+			
+    		if( shareableCookies != null ) { 
     			
-    		);
-    	
+    			RequestHandler.setCookies( shareableCookies );
+    		
+    		} else {
+    			
+    			finish();
+    			
+    		}
+    		
     	}
         
         //Prepare to tango
@@ -162,6 +168,9 @@ public class PlatoonView extends TabActivity {
 	}        
 
 	public void initLayout() {
+		
+		//Let's try something new
+		if( SessionKeeper.getProfileData() == null ) { finish(); }
 		
 		//Get a *cached* version instead    
 		if( platoonInformation ==  null ) { 
@@ -595,11 +604,15 @@ public class PlatoonView extends TabActivity {
     
     public void setupStats(PlatoonStats pd) {
     	
+    	//Let's start drawing the... layout
+    	((TextView) findViewById(R.id.text_name_platoon_tab2)).setText(
+    			
+    		platoonInformation.getName() + " [" + platoonInformation.getTag() + "]"
+    		
+    	);
+    	
     	//Do we have it??
     	if( pd == null ) { return; }
-    	
-    	//Let's start drawing the... layout
-    	((TextView) findViewById(R.id.text_name_platoon_tab2)).setText( pd.getName() );
     	
     	//Are they null?
     	if( wrapGeneral == null ) {
@@ -799,7 +812,8 @@ public class PlatoonView extends TabActivity {
 		}
         
 		((TextView) findViewById(R.id.text_name_platoon_tab4)).setText( data.getName() );
-        
+		findViewById(R.id.feed_update).setVisibility( data.isMember() ? View.VISIBLE : View.GONE );
+		
 		//If we don't have it defined, then we need to set it
 		if( listFeed.getAdapter() == null ) {
 			
@@ -817,12 +831,7 @@ public class PlatoonView extends TabActivity {
 						@Override
 						public void onItemClick( AdapterView<?> a, View v, int pos, long id ) {
 	
-							final FeedItem currItem = (FeedItem) a.getItemAtPosition( pos );
-							if( !currItem.getContent().equals( "" ) ) {
-								
-								generateDialogContent(CONTEXT, currItem.getProfile( 0 ).getAccountName(), currItem.getContent()).show();
-								
-							}
+							v.showContextMenu();
 							
 						}
 						
@@ -1098,7 +1107,7 @@ public class PlatoonView extends TabActivity {
 			PlatoonMemberData data = (PlatoonMemberData) info.targetView.getTag();
 			
 			//General
-			menu.add( 2, 0, 0, "View profile");
+			menu.add( 2, 0, 0, R.string.info_profile_view);
 			
 			//Let's see... founder? No "admin" options on that user!!
 			if( data.getMembershipLevel() == 256 ) {
@@ -1113,32 +1122,32 @@ public class PlatoonView extends TabActivity {
 					//128 == Admin, which renders our action to demote
 					if( data.getMembershipLevel() == 128 ) {
 						
-						menu.add( 2, 1, 0, "Demote");
+						menu.add( 2, 1, 0, R.string.info_platoon_member_demote);
 						
 					} else {
 						
-						menu.add( 2, 1, 0, "Promote");
+						menu.add( 2, 1, 0, R.string.info_platoon_member_promote);
 						
 					}
 				
-					menu.add( 2, 2, 0, "Kick" );
+					menu.add( 2, 2, 0, R.string.info_platoon_member_kick );
 					
 				}
 				
 			} else if( data.getMembershipLevel() == 1 ) { //Players that want to join
 				
-				menu.add( 2, 3, 0, "Accept membership" );
-				menu.add( 2, 4, 0, "Deny membership" );
+				menu.add( 2, 3, 0, R.string.info_platoon_member_new_accept );
+				menu.add( 2, 4, 0, R.string.info_platoon_member_new_deny );
 				
 			}
 			
 		} else if( mTabHost.getCurrentTab() == 3 ) {
 			
-			//Get the data
-			FeedItem data = (FeedItem) info.targetView.getTag();
+			//Show the menu
+			FeedItem feedItem = (FeedItem) info.targetView.getTag();
 			
-			//Show the menu if we can hooah
-			if( !data.isLiked() ) {
+			//Show the menu
+			if( !feedItem.isLiked() ) {
 				
 				menu.add( 3, 0, 0, R.string.label_hooah);
 			
@@ -1148,6 +1157,9 @@ public class PlatoonView extends TabActivity {
 				
 			}
 			menu.add( 3, 1, 0, R.string.label_single_post_view);
+			/* Platoon posts are always counted as platoon posts, ie just opening a new one.
+			 * menu.add( 3, 2, 0, getString(R.string.label_goto_section).replace( "{section}", feedItem.getOptionTitle( this ) ) );
+			 */
 	
 		} else {}
 	
@@ -1198,17 +1210,25 @@ public class PlatoonView extends TabActivity {
 					
 				} else if( item.getItemId() == 1 ) {
 					
-					Toast.makeText( this, !data.isAdmin()? "Promoting..." : "Demoting", Toast.LENGTH_SHORT).show();
+					if( !data.isAdmin() ) { 
+						
+						Toast.makeText( this, R.string.info_platoon_member_promoting, Toast.LENGTH_SHORT).show();
+					
+					} else {
+						
+						Toast.makeText( this, R.string.info_platoon_member_demoting, Toast.LENGTH_SHORT).show();
+						
+					}
 					new AsyncPlatoonMemberManagement( this, data.getProfileId(), platoonData.getId(), 1).execute( !data.isAdmin()  );
 					
 				} else if( item.getItemId() == 2 ) {
 					
-					Toast.makeText( this, "Kicking...", Toast.LENGTH_SHORT ).show();
+					Toast.makeText( this, R.string.info_platoon_member_kicking, Toast.LENGTH_SHORT ).show();
 					new AsyncPlatoonMemberManagement( this, data.getProfileId(), platoonData.getId(), 2).execute();
 					
 				} else if( item.getItemId() == 3 ) {
 					
-					Toast.makeText(this, "Accepting the new member...", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, R.string.info_platoon_member_new_ok, Toast.LENGTH_SHORT).show();
 					new AsyncPlatoonRespond(
 								
 						this, 
@@ -1220,7 +1240,7 @@ public class PlatoonView extends TabActivity {
 					
 				} else if( item.getItemId() == 4 ) {
 					
-					Toast.makeText(this, "Turning down the new member...", Toast.LENGTH_SHORT).show();	
+					Toast.makeText(this, R.string.info_platoon_member_new_false, Toast.LENGTH_SHORT).show();	
 					new AsyncPlatoonRespond(
 						
 						this, 
@@ -1234,6 +1254,9 @@ public class PlatoonView extends TabActivity {
 				
 				
 			} else if( item.getGroupId() == 3 ) {
+
+				//Get the feedItem
+				FeedItem feedItem = (FeedItem) info.targetView.getTag();
 				
 				//REQUESTS
 				if( item.getItemId() == 0 ) {
@@ -1243,7 +1266,7 @@ public class PlatoonView extends TabActivity {
 						this, 
 						info.id, 
 						false,
-						( (FeedItem)info.targetView.getTag()).isLiked(),
+						feedItem.isLiked(),
 						new AsyncPlatoonRefresh(
 								
 							this, 
@@ -1275,27 +1298,21 @@ public class PlatoonView extends TabActivity {
 							
 						).putExtra(
 								
-							"comments", 
-							(ArrayList<CommentData>) ((FeedItem) info.targetView.getTag()).getComments()
+							"feedItem", 
+							feedItem
 					
-						).putExtra( 
-
-							"postId", 
-							((FeedItem) info.targetView.getTag()).getId()
+						).putExtra(
 							
-						).putExtra( 
-								
-							"platoonId",
-							platoonInformation.getId()
-							
-						).putExtra( 
-								
 							"canComment",
 							platoonInformation.isMember()
 							
 						)
 						
 					);
+					
+				} else if( item.getItemId() == 2 ) {
+					
+					if( feedItem.getIntent( this ) != null ) { startActivity(feedItem.getIntent( this )); }
 					
 				}
 				
@@ -1392,7 +1409,7 @@ public class PlatoonView extends TabActivity {
     		
     		//Add a TextView & set it up
     		cacheTableRow.addView( cacheView = new TextView(this) );
-    		((TextView) cacheView).setText("No stats found.");
+    		((TextView) cacheView).setText(R.string.info_stats_not_found);
     		((TextView) cacheView).setGravity( Gravity.CENTER );
     		
     	}

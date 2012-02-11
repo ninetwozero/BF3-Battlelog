@@ -17,7 +17,7 @@
 		<TextView 
 		    style="@style/InfoHeading"
 		    android:id="@+id/text_name_platoon"
-		    android:text="Non-Turbined Zebras [NTZ]"
+		    android:text="N/A"
 			android:padding="5dp"
 		/>
 	    <RelativeLayout
@@ -58,14 +58,13 @@
 			/>
 			<ImageView
 			    android:id="@+id/image_badge"
-			    android:layout_width="320dp"
+			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 			    android:layout_below="@id/text_header_badge"
-				android:src="@drawable/test_image"
 				android:paddingTop="10dp"
 				android:layout_centerHorizontal="true"
 				android:paddingBottom="10dp"
-				android:scaleType="center"
+				android:scaleType="fitXY"
 				
 			/>
 		</RelativeLayout>
@@ -97,10 +96,11 @@
 			    android:id="@+id/text_web"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="http://www.ninetwozero.com"
+			    android:text="N/A"
 			    android:textSize="14sp"
 			    android:layout_below="@id/wrap_header_row"
 				android:padding="5dp"
+				android:autoLink="all"
 			/>
 		</RelativeLayout>
 		<RelativeLayout 
@@ -119,10 +119,11 @@
 			    android:id="@+id/text_presentation"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="I like dirt, I like dirt...\nI like dirt, I like dirt\nG, Dm, Am, Em (4/4)"
+			    android:text="N/A"
 			    android:textSize="14sp"
 			    android:layout_below="@id/text_header_presentation"
 				android:padding="5dp"
+				android:autoLink="all"
 			/>
 		</RelativeLayout>
 	</RelativeLayout>

@@ -40,20 +40,16 @@ public class BBCodeUtils {
     	String stringMatchesPre = null, stringMatchesPost = null;
     	
     	//Build compile the patterns
+    	Pattern patternLink = Pattern.compile( Constants.PATTERN_POST_FORUM_LINK );
+    	//Pattern patternLink = Pattern.compile( "<a href=\"([^\\\"]+)\" rel=\"nofollow\">([^\\<]+)<\\/a> \\[([^\\]]+)\\]" );
     	Pattern patternQuote = Pattern.compile( "@q:([0-9]+):([^@]+)@" );
     	Pattern patternBold = Pattern.compile( "\\*\\*([^\\*]+)\\*\\*" );
     	Pattern patternUnderline = Pattern.compile( "__([^\\_]+)__" );
     	Pattern patternStrike = Pattern.compile( "--([^\\-]+)--" );
     	Pattern patternItalic = Pattern.compile( "_-([^\\\"_\\-\\\"]+)-_" );
 
-    	//Ready the matchers
+    	//Iterate over the findings    	
     	Matcher matcherQuote = patternQuote.matcher( convertedContent );
-       	Matcher matcherBold = patternBold.matcher( convertedContent );
-    	Matcher matcherUnderline = patternUnderline.matcher( convertedContent );
-    	Matcher matcherStrike = patternStrike.matcher( convertedContent );
-    	Matcher matcherItalic = patternItalic.matcher( convertedContent );
-     	
-    	//Iterate over the findings
     	while( matcherQuote.find() ) {
     		
     		stringMatchesPre = matcherQuote.group();
@@ -73,45 +69,53 @@ public class BBCodeUtils {
     		convertedContent = convertedContent.replace( stringMatchesPre, stringMatchesPost );
     		
     	}
+
+     	Matcher matcherLink = patternLink.matcher( convertedContent );
+    	while( matcherLink.find() ) {
     	
+    		stringMatchesPre = matcherLink.group();
+    		convertedContent = convertedContent.replace( stringMatchesPre, matcherLink.group( 1 ) );
+  		
+    	}
+    	
+    	Matcher matcherItalic = patternItalic.matcher( convertedContent );
     	while( matcherItalic.find() ) {
     		
     		stringMatchesPre = matcherItalic.group();
     		stringMatchesPost = Constants.BBCODE_TAG_ITALIC_OUT.replace( "{text}", matcherItalic.group(1) );
     		convertedContent = convertedContent.replace( stringMatchesPre, stringMatchesPost );
-
-    		Log.d(Constants.DEBUG_TAG, stringMatchesPre + " => " + stringMatchesPost );    		
+ 		
     	}
-    	
+
+       	Matcher matcherBold = patternBold.matcher( convertedContent );
     	while( matcherBold.find() ) {
         	
     		stringMatchesPre = matcherBold.group();
     		stringMatchesPost = Constants.BBCODE_TAG_BOLD_OUT.replace( "{text}", matcherBold.group(1) );
     		convertedContent = convertedContent.replace( stringMatchesPre, stringMatchesPost );
-
-    		Log.d(Constants.DEBUG_TAG, stringMatchesPre + " => " + stringMatchesPost );    		
+  		
     	}
-    	
+
+    	Matcher matcherStrike = patternStrike.matcher( convertedContent );
     	while( matcherStrike.find() ) {
     	
     		stringMatchesPre = matcherStrike.group();
     		stringMatchesPost = Constants.BBCODE_TAG_STRIKE_OUT.replace( "{text}", matcherStrike.group(1) );
     		convertedContent = convertedContent.replace( stringMatchesPre, stringMatchesPost );
-
-    		Log.d(Constants.DEBUG_TAG, stringMatchesPre + " => " + stringMatchesPost );    		
+    		
     	}
-    	
+
+    	Matcher matcherUnderline = patternUnderline.matcher( convertedContent );
     	while( matcherUnderline.find() ) {
     	
     		stringMatchesPre = matcherUnderline.group();
     		stringMatchesPost = Constants.BBCODE_TAG_UNDERLINE_OUT.replace( "{text}", matcherUnderline.group(1) );
     		convertedContent = convertedContent.replace( stringMatchesPre, stringMatchesPost );
-
-    		Log.d(Constants.DEBUG_TAG, stringMatchesPre + " => " + stringMatchesPost );    		
+  		
     	}
-   	
+    	
     	//Return it back
-    	return convertedContent;
+    	return convertedContent.replace( "<br/>", "\n" );
     	
     }
     

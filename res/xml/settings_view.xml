@@ -20,7 +20,6 @@
             sample:entryList="@array/service_update_intervals_labels" 
             sample:valueList="@array/service_update_intervals_values" 
             android:defaultValue="1800"
-            android:dependency="allow_service"
         />
    	</PreferenceCategory>
 </PreferenceScreen>

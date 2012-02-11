@@ -505,6 +505,49 @@ public class WebsiteHandler {
 		
 	}
 	
+	public static ProfileData getProfileIdFromPersona(final long personaId) throws WebsiteHandlerException {
+
+		try {
+			
+			//Let's login everybody!
+			RequestHandler wh = new RequestHandler();
+			String httpContent;
+			
+			//Get the content
+			httpContent = wh.get( Constants.URL_STATS_OVERVIEW.replace( "{PID}", personaId + "").replace( "{PLATFORM_ID}", "0" ), 0);
+
+			//Did we manage?
+			if( !"".equals(httpContent) ) {
+			
+				//Grab the array
+				JSONObject user = new JSONObject(httpContent).getJSONObject( "data" ).getJSONObject( "user" );
+				
+				return new ProfileData( 
+			
+					user.getString( "username" ),
+					user.getString( "username" ),
+					0,
+					Long.parseLong(user.getString( "userId" )),
+					0,
+					user.getString( "gravatarMd5" )
+				
+				);
+			
+			} else {
+			
+				throw new WebsiteHandlerException("Could not retrieve the Profile.");
+			
+			}
+			
+		
+		} catch ( Exception ex ) {
+			
+			throw new WebsiteHandlerException(ex.getMessage());
+			
+		}
+		
+	}
+	
 	public static ProfileData getPersonaIdFromProfile(final long profileId) throws WebsiteHandlerException {
 
 		try {
@@ -568,7 +611,6 @@ public class WebsiteHandler {
 		}
 		
 	}
-	
 	public static ProfileData getPersonaIdFromProfile(final ProfileData p) throws WebsiteHandlerException {
 
 		try {
@@ -798,7 +840,7 @@ public class WebsiteHandler {
 		
 	}
 
-	public static UnlockDataWrapper getUnlocksForUser(final ProfileData pd) throws WebsiteHandlerException {
+	public static UnlockDataWrapper getUnlocksForUser(final ProfileData pd, final int personaPos) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -814,19 +856,41 @@ public class WebsiteHandler {
 	       	ArrayList<UnlockData> unlockArray = new ArrayList<UnlockData>();
 	   	 
 	    	//Get the data
-	    	String content = wh.get( 
-		
-				Constants.URL_STATS_UNLOCKS.replace(
-						
-					"{PID}", pd.getPersonaId() + ""
-				
-				).replace( 
-				
-					"{PLATFORM_ID}", pd.getPlatformId() + ""
-				), 
-				0
-				
-			);
+	    	String content = "";
+	    	
+	    	if( personaPos == -1 ) {
+	    		
+	    		content = wh.get( 
+			
+					Constants.URL_STATS_UNLOCKS.replace(
+							
+						"{PID}", pd.getPersonaId() + ""
+					
+					).replace( 
+					
+						"{PLATFORM_ID}", pd.getPlatformId() + ""
+					), 
+					0
+					
+				);
+
+	    	} else {
+	    	
+	    		content = wh.get( 
+	    				
+					Constants.URL_STATS_UNLOCKS.replace(
+							
+						"{PID}", pd.getPersonaId(personaPos) + ""
+					
+					).replace( 
+					
+						"{PLATFORM_ID}", pd.getPlatformId(personaPos) + ""
+					), 
+					0
+					
+				);
+	    		
+	    	}
 	    	
 	    	//JSON Objects
 	    	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
@@ -1983,6 +2047,11 @@ public class WebsiteHandler {
 				
 				//JSON Objects
 				JSONObject contextObject = new JSONObject(httpContent).optJSONObject( "context" );
+				
+				//Does the platoon exist?
+				if( contextObject.isNull( "platoon" ) ) { return null; }
+				
+				//Moar JSON
 				JSONObject profileCommonObject = contextObject.optJSONObject( "platoon" );
 				JSONObject memberArray = profileCommonObject.optJSONObject( "members" );
 				JSONArray feedItems = contextObject.getJSONArray( "feed" );
@@ -2080,11 +2149,11 @@ public class WebsiteHandler {
 					//Plural?
 					if( founderMembers.size() > 1 ) {
 						
-						members.add( new PlatoonMemberData("00000000", "Founders", 0, 0, 0, null, 0) );
+						members.add( new PlatoonMemberData("00000000", c.getString( R.string.info_platoon_member_founder_p ), 0, 0, 0, null, 0) );
 					
 					} else { 
 						
-						members.add( new PlatoonMemberData("00000001", "Founder", 0, 0, 0, null, 0) );
+						members.add( new PlatoonMemberData("00000001", c.getString( R.string.info_platoon_member_founder ), 0, 0, 0, null, 0) );
 						
 					}
 			
@@ -2098,11 +2167,11 @@ public class WebsiteHandler {
 					//Plural?
 					if( adminMembers.size() > 1 ) {
 						
-						members.add( new PlatoonMemberData("00000002", "Admins", 0, 0, 0, null, 0) );
+						members.add( new PlatoonMemberData("00000002", c.getString( R.string.info_platoon_member_admin_p ), 0, 0, 0, null, 0) );
 					
 					} else { 
 						
-						members.add( new PlatoonMemberData("00000003", "Admin", 0, 0, 0, null, 0) );
+						members.add( new PlatoonMemberData("00000003", c.getString( R.string.info_platoon_member_admin ), 0, 0, 0, null, 0) );
 						
 					}
 			
@@ -2116,11 +2185,11 @@ public class WebsiteHandler {
 					//Plural?
 					if( regularMembers.size() > 1 ) {
 						
-						members.add( new PlatoonMemberData("00000004", "Regular members", 0, 0, 0, null, 0) );
+						members.add( new PlatoonMemberData("00000004", c.getString( R.string.info_platoon_member_regular_p ), 0, 0, 0, null, 0) );
 					
 					} else { 
 						
-						members.add( new PlatoonMemberData("00000005", "Regular member", 0, 0, 0, null, 0) );
+						members.add( new PlatoonMemberData("00000005", c.getString( R.string.info_platoon_member_regular ), 0, 0, 0, null, 0) );
 						
 					}
 			
@@ -2136,7 +2205,7 @@ public class WebsiteHandler {
 					if( invitedMembers.size() > 0 ) {
 						
 						//Just add them
-						members.add( new PlatoonMemberData("00000006", "Invited to join", 0, 0, 0, null, 0) );
+						members.add( new PlatoonMemberData("00000006", c.getString( R.string.info_platoon_member_invited_label ), 0, 0, 0, null, 0) );
 						members.addAll( invitedMembers );
 						
 					}
@@ -2144,7 +2213,7 @@ public class WebsiteHandler {
 					if( requestMembers.size() > 0 ) {
 	
 						//Just add them
-						members.add( new PlatoonMemberData("00000007", "Requested to join", 0, 0, 0, null, 0) );
+						members.add( new PlatoonMemberData("00000007", c.getString( R.string.info_platoon_member_requested_label ), 0, 0, 0, null, 0) );
 						members.addAll( requestMembers);
 	
 					}
@@ -2563,12 +2632,20 @@ public class WebsiteHandler {
 					String extra = null;
 					if( currItem.has( "platoonId" ) ) {
 						
-						extra = (
-								
-							"[" + platoonObject.getJSONObject( currItem.getString( "platoonId" ) ).getString( "tag" ) + "] " +
-							platoonObject.getJSONObject( currItem.getString( "platoonId" ) ).getString( "name" )
+						try {
 							
-						);
+							extra = (
+									
+								"[" + platoonObject.getJSONObject( currItem.getString( "platoonId" ) ).getString( "tag" ) + "] " +
+								platoonObject.getJSONObject( currItem.getString( "platoonId" ) ).getString( "name" )
+								
+							);
+
+						} catch( JSONException ex ) {
+							
+							extra = "*removed platoon*";
+							
+						}
 						
 					}
 					
@@ -2611,7 +2688,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static PlatoonStats getStatsForPlatoon( Context context, PlatoonData platoonData ) throws WebsiteHandlerException {
+	public static PlatoonStats getStatsForPlatoon( final Context context, final PlatoonData platoonData ) throws WebsiteHandlerException {
 
 		try {
 			
@@ -2640,8 +2717,60 @@ public class WebsiteHandler {
 			if( !"".equals(httpContent) ) {
 	
 				//JSON-base!!
-				JSONObject personaList = new JSONObject(httpContent).getJSONObject( "data" ).getJSONObject( "platoonPersonas" );
-				JSONObject memberStats = new JSONObject(httpContent).getJSONObject( "data" ).getJSONObject( "memberStats" );
+				JSONObject baseObject = new JSONObject(httpContent).getJSONObject( "data" );
+				
+				//Wait, did I just see what I think I saw?
+				if( baseObject.isNull( "platoonPersonas" ) ) {
+					
+					//Do we have a platformId?
+					if( platoonData.getPlatformId() == 0 ) { 
+						
+						//Get the content
+						String tempHttpContent = rh.get( 
+								
+							Constants.URL_PLATOON.replace(
+									
+								"{PLATOON_ID}", 
+								platoonData.getId() + "" 
+								
+							),
+							1
+							
+						);
+						
+						//Build an object
+						JSONObject tempPlatoonData = new JSONObject(tempHttpContent).getJSONObject("context").getJSONObject( "platoon" );
+						
+						//Return and reloop
+						return getStatsForPlatoon(
+						
+							context, 
+							new PlatoonData(
+
+								platoonData.getId(),	
+								tempPlatoonData.getInt( "fanCounter" ),
+								tempPlatoonData.getInt( "memberCounter" ),
+								tempPlatoonData.getInt( "platform" ),
+								tempPlatoonData.getString( "name" ), 
+								tempPlatoonData.getString( "tag" ), 
+								platoonData.getId() + ".jpeg", 
+								tempPlatoonData.getBoolean( "hidden" )
+								
+							)
+								
+						);
+					
+					} else {
+					
+						return null;
+						
+					}
+					
+				}
+				
+				//Hold on...
+				JSONObject memberStats = baseObject.getJSONObject( "memberStats" );
+				JSONObject personaList = baseObject.optJSONObject( "platoonPersonas" );
 				
 				//JSON data-branches
 				JSONObject objectGeneral = memberStats.getJSONObject( "general" );
@@ -2667,7 +2796,12 @@ public class WebsiteHandler {
 				
 				//Get the *general* stats
 				currObjNames = objectGeneral.names();
-				for( int i = 0, max = currObjNames.length(); i < max; i++ ) {
+				int maxNames = currObjNames.length();
+				
+				//Got any?
+				if( maxNames == 0 ) { return null; }
+				
+				for( int i = 0; i < maxNames; i++ ) {
 
 					//Grab the current object
 					currObj = objectGeneral.getJSONObject( currObjNames.getString( i ) );
@@ -2714,7 +2848,7 @@ public class WebsiteHandler {
 				}
 				
 				//Create a new "overall item"
-				arrayScore.add( new PlatoonStatsItem( "Overall", 0, 0, 0, 0, null ) );
+				arrayScore.add( new PlatoonStatsItem( context.getString( R.string.info_platoon_stats_overall ), 0, 0, 0, 0, null ) );
 				
 				//Get the *kit* scores
 				currObjNames = objectScore.names();
@@ -2768,7 +2902,7 @@ public class WebsiteHandler {
 				tempMid.clear();
 				
 				//Create a new "overall item"
-				arraySPM.add( new PlatoonStatsItem( "Overall", 0, 0, 0, 0, null ) );
+				arraySPM.add( new PlatoonStatsItem( context.getString( R.string.info_platoon_stats_overall ), 0, 0, 0, 0, null ) );
 				
 				//Get the *kit* score/min
 				currObjNames = objectSPM.names();
@@ -2821,7 +2955,7 @@ public class WebsiteHandler {
 				tempMid.clear();
 				
 				//Create a new "overall item"
-				arrayTime.add( new PlatoonStatsItem( "Overall", 0, 0, 0, 0, null ) );
+				arrayTime.add( new PlatoonStatsItem( context.getString( R.string.info_platoon_stats_overall ), 0, 0, 0, 0, null ) );
 				
 				//Get the *kit* times
 				currObjNames = objectTime.names();
@@ -2984,10 +3118,15 @@ public class WebsiteHandler {
 			
 			}
 			
+		} catch( JSONException ex ) {
+			
+			ex.printStackTrace();
+			return null;
+			
 		} catch( Exception ex ) {
 			
 			ex.printStackTrace();
-			throw new WebsiteHandlerException(ex.getMessage());
+			throw new WebsiteHandlerException( ex.getMessage() );
 			
 		}
 		
@@ -3010,9 +3149,6 @@ public class WebsiteHandler {
 			//Iterate over the feed
 			for( int i = 0, max = jsonArray.length(); i < max; i++ ) {
 				
-				//Once per loop
-				comments = new ArrayList<CommentData>();
-				
 				//Each loop is an object
 				currItem = jsonArray.getJSONObject( i );
 				
@@ -3020,11 +3156,14 @@ public class WebsiteHandler {
 				ownerObject = currItem.optJSONObject( "owner" );
 				if( ownerObject == null ) { continue; }
 				
+			/*	
+				//Once per loop
+				comments = new ArrayList<CommentData>();
+				
 				//Let's get the comments
 				if( currItem.getInt("numComments") > 2 ) {
 					
 					comments = WebsiteHandler.getCommentsForPost( Long.parseLong(currItem.getString("id")) );
-					
 					
 				} else if( currItem.getInt( "numComments" ) == 0 ) {
 					
@@ -3059,7 +3198,8 @@ public class WebsiteHandler {
 					
 					}
 					
-				}
+				} */
+				
 				//Variables if *modification* is needed
 				String itemTitle = "";
 				String itemContent = "";
@@ -3068,6 +3208,7 @@ public class WebsiteHandler {
 				//Process the likes
 				JSONArray likeUsers = currItem.getJSONArray( "likeUserIds" );
 				int numLikes = likeUsers.length();
+				int numComments = currItem.getInt("numComments");
 				boolean liked = false;
 				boolean censored = currItem.getBoolean( "hidden" );
 				
@@ -3097,6 +3238,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						context.getString( R.string.info_p_friendship ),
 						"",
 						currItem.getString("event"),
@@ -3106,8 +3248,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3117,8 +3259,8 @@ public class WebsiteHandler {
 								
 								friendUser.getString("username"),
 								friendUser.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								friendUser.getString( "gravatarMd5" )
 							
@@ -3129,7 +3271,6 @@ public class WebsiteHandler {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);		
@@ -3162,6 +3303,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),						
 						numLikes,
+						numComments,
 						itemTitle,
 						"",
 						currItem.getString("event"),
@@ -3171,8 +3313,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3183,7 +3325,6 @@ public class WebsiteHandler {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3206,6 +3347,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						tempSubItem.getString( "threadBody" ),
 						currItem.getString("event"),
@@ -3215,8 +3357,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3227,7 +3369,6 @@ public class WebsiteHandler {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3250,6 +3391,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						tempSubItem.getString( "postBody" ),
 						currItem.getString("event"),
@@ -3259,8 +3401,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3271,7 +3413,6 @@ public class WebsiteHandler {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3402,6 +3543,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle.replace( "{item}", itemContent + "</b>"),
 						"",
 						currItem.getString("event"),
@@ -3411,8 +3553,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3423,7 +3565,6 @@ public class WebsiteHandler {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3440,6 +3581,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						"<b>{username}</b> " + tempSubItem.getString( "statusMessage" ),
 						"",
 						currItem.getString("event"),
@@ -3449,8 +3591,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3461,7 +3603,6 @@ public class WebsiteHandler {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3478,6 +3619,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						context.getString( R.string.info_p_favserver ).replace( 
 								
 							"{server}", 
@@ -3492,8 +3634,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3504,7 +3646,6 @@ public class WebsiteHandler {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3535,6 +3676,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						"",
 						currItem.getString("event"),
@@ -3544,8 +3686,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3556,7 +3698,6 @@ public class WebsiteHandler {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3592,6 +3733,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						tempSubItem.getString( "gameReportComment" ),
 						currItem.getString("event"),
@@ -3601,8 +3743,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3613,7 +3755,6 @@ public class WebsiteHandler {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3639,6 +3780,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						tempSubItem.getString( "blogCommentBody" ),
 						currItem.getString("event"),
@@ -3648,8 +3790,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3660,7 +3802,6 @@ public class WebsiteHandler {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3685,6 +3826,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						"",
 						currItem.getString("event"),
@@ -3694,8 +3836,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3706,7 +3848,6 @@ public class WebsiteHandler {
 						},							
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3731,6 +3872,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						"",
 						currItem.getString("event"),
@@ -3740,8 +3882,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3752,7 +3894,6 @@ public class WebsiteHandler {
 						},							
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3777,6 +3918,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						"",
 						currItem.getString("event"),
@@ -3786,8 +3928,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3798,7 +3940,6 @@ public class WebsiteHandler {
 						},							
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3823,6 +3964,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						"",
 						currItem.getString("event"),
@@ -3832,8 +3974,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3844,7 +3986,6 @@ public class WebsiteHandler {
 						},							
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3869,6 +4010,7 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						"",
 						currItem.getString("event"),
@@ -3878,8 +4020,8 @@ public class WebsiteHandler {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3890,7 +4032,6 @@ public class WebsiteHandler {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3917,17 +4058,18 @@ public class WebsiteHandler {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						tempSubItem.getString( "wallBody" ),
 						currItem.getString("event"),
-new ProfileData[] {
+						new ProfileData[] {
 
 							new ProfileData(
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3938,7 +4080,6 @@ new ProfileData[] {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -3970,6 +4111,7 @@ new ProfileData[] {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						"",
 						currItem.getString("event"),
@@ -3979,8 +4121,8 @@ new ProfileData[] {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -3990,8 +4132,8 @@ new ProfileData[] {
 
 								friendObject.getString("username"),
 								friendObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								friendObject.getString( "gravatarMd5" )
 							
@@ -4001,7 +4143,6 @@ new ProfileData[] {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -4057,6 +4198,7 @@ new ProfileData[] {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle.replace( "{award}", itemContent + "</b>"),
 						"",
 						currItem.getString("event"),
@@ -4066,8 +4208,8 @@ new ProfileData[] {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -4078,7 +4220,6 @@ new ProfileData[] {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -4108,6 +4249,7 @@ new ProfileData[] {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						"",
 						currItem.getString("event"),
@@ -4117,8 +4259,8 @@ new ProfileData[] {
 
 								otherUserObject.getString("username"),
 								otherUserObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								otherUserObject.getString( "gravatarMd5" )
 							
@@ -4128,8 +4270,8 @@ new ProfileData[] {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
@@ -4139,7 +4281,6 @@ new ProfileData[] {
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -4167,6 +4308,7 @@ new ProfileData[] {
 						Long.parseLong( currItem.getString("itemId") ),
 						currItem.getLong( "creationDate" ),
 						numLikes,
+						numComments,
 						itemTitle,
 						"",
 						currItem.getString("event"),
@@ -4176,28 +4318,18 @@ new ProfileData[] {
 
 								ownerObject.getString("username"),
 								ownerObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
 								0,
+								Long.parseLong( currItem.getString("ownerId") ),
 								0,
 								ownerObject.getString( "gravatarMd5" )
 							
 								
 							),
-							new ProfileData(
-
-								otherUserObject.getString("username"),
-								otherUserObject.getString("username"),
-								Long.parseLong( currItem.getString("ownerId") ),
-								0,
-								0,
-								otherUserObject.getString( "gravatarMd5" )
-							
-							)							
+							null							
 							
 						},
 						liked,
 						censored,
-						comments,
 						tempGravatarHash
 							
 					);
@@ -4937,31 +5069,36 @@ new ProfileData[] {
 				//Get the current object
 				JSONObject currObject = forumArray.getJSONObject( i );
 				JSONObject lastThread = currObject.optJSONObject( "lastThread" );
-				JSONObject userInfo = lastThread.optJSONObject( "lastPoster" );
 				
 				//Let's store them
-				if( lastThread != null && userInfo != null ) { 
+				if( lastThread != null ) { 
 					
-					forums.add( 
-							
-						new Board.Forum(
+					JSONObject userInfo = lastThread.optJSONObject( "lastPoster" );
+					
+					if( userInfo != null ) { 
+					
+						forums.add( 
 								
-							Long.parseLong( currObject.getString( "id" ) ),
-							Long.parseLong( currObject.getString( "categoryId" ) ),
-							lastThread.getLong( "lastPostDate" ),
-							Long.parseLong( lastThread.getString( "id" ) ),
-							Long.parseLong( lastThread.getString( "lastPostId" ) ),
-							currObject.getLong( "numberOfPosts" ),
-							currObject.getLong( "numberOfThreads" ),
-							0,
-							currObject.getString( "title" ),
-							currObject.getString( "description" ),
-							lastThread.getString( "title" ),
-							userInfo.getString( "username" )
+							new Board.Forum(
+									
+								Long.parseLong( currObject.getString( "id" ) ),
+								Long.parseLong( currObject.getString( "categoryId" ) ),
+								lastThread.getLong( "lastPostDate" ),
+								Long.parseLong( lastThread.getString( "id" ) ),
+								Long.parseLong( lastThread.getString( "lastPostId" ) ),
+								currObject.getLong( "numberOfPosts" ),
+								currObject.getLong( "numberOfThreads" ),
+								0,
+								currObject.getString( "title" ),
+								currObject.getString( "description" ),
+								lastThread.getString( "title" ),
+								userInfo.getString( "username" )
+							
+							)
+							
+						);
 						
-						)
-						
-					);
+					}
 					
 				} else {
 					
@@ -5462,14 +5599,19 @@ new ProfileData[] {
 							) 
 							
 						);
+
+						//Construct the avatar
+/*						final String filename = gravatar+ ".png";
+
+						Log.d(Constants.DEBUG_TAG, filename + " is cached: " + CacheHandler.isCached( context, filename ) );
 						
 						//Do we need to download it?
-						if( !CacheHandler.isCached( context, gravatarHash + ".png" ) ) { /* TODO: OR NOT TODO */
+						if( !CacheHandler.isCached( context, filename ) ) {
 							
-							WebsiteHandler.cacheGravatar( context, gravatarHash + ".png", Constants.DEFAULT_AVATAR_SIZE );
+							WebsiteHandler.cacheGravatar( context, filename, Constants.DEFAULT_AVATAR_SIZE );
 							
 						}
-						
+						*/
 					}
 			
 				}
@@ -5504,7 +5646,7 @@ new ProfileData[] {
 						
 						//Get the JSONObject
 						JSONObject tempObj = searchResultsPlatoon.optJSONObject( i );
-						String filename = tempObj.getString( "id" ) + ".jpeg";
+						final String filename = tempObj.getString( "id" ) + ".jpeg";
 						
 						//Add it to the ArrayList
 						results.add(
@@ -5519,7 +5661,7 @@ new ProfileData[] {
 									tempObj.getInt( "platform" ),
 									tempObj.getString( "name" ),
 									tempObj.getString( "tag" ),
-									tempObj.getString( "badgePath"),
+									filename,
 									true
 								
 								)
@@ -5528,12 +5670,15 @@ new ProfileData[] {
 
 						);
 						
+						/*Log.d(Constants.DEBUG_TAG, filename + " is cached: " + CacheHandler.isCached( context, filename ) );
+						
 						//Do we need to download it?
-						if( !CacheHandler.isCached( context, filename ) ) { /* TODO: OR NOT TODO */
+						if( !CacheHandler.isCached( context, filename ) ) {
 						
 							WebsiteHandler.cacheBadge( context, tempObj.getString( "badgePath" ), filename, Constants.DEFAULT_BADGE_SIZE );
 							
 						}
+						*/
 													
 					}
 				
@@ -5693,6 +5838,7 @@ new ProfileData[] {
 					id,
 					date,
 					0, //numLikes
+					0, //numComments
 					title,
 					content,
 					"n/a", //type
@@ -5720,7 +5866,6 @@ new ProfileData[] {
 					},
 					false, //liked
 					false, //censored
-					null, //comments
 					gravatar //gravatar
 					
 				);
@@ -5933,6 +6078,47 @@ new ProfileData[] {
 			
 			ex.printStackTrace();
 			throw new WebsiteHandlerException("No threads found.");
+			
+		}
+		
+	}
+	
+	public static boolean reportPostInThread(Context c, long pId, String r) throws WebsiteHandlerException {
+
+		try {
+			//Setup a RequestHandler
+			RequestHandler rh = new RequestHandler();
+			final String httpContent = rh.post(
+					
+				Constants.URL_FORUM_REPORT.replace( "{POST_ID}", pId + "" ),
+				new PostData[] {
+					
+					new PostData(
+							
+						Constants.FIELD_NAMES_FORUM_REPORT[0],
+						r
+								
+					),
+					new PostData(
+							
+						Constants.FIELD_NAMES_FORUM_REPORT[1],
+						""
+							
+					)
+						
+				},
+				1
+			
+			);
+			
+			//Let's parse it!
+			int status = new JSONObject(httpContent).getJSONObject( "data" ).getInt( "success" );
+			return (status == 1);
+				
+		} catch( Exception ex ) {
+			
+			ex.printStackTrace();
+			throw new WebsiteHandlerException("Could not report the post.");
 			
 		}
 		

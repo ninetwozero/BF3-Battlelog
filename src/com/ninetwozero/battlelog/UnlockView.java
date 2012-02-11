@@ -30,12 +30,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.UnlockListAdapter;
@@ -59,6 +59,7 @@ public class UnlockView extends TabActivity {
 	private TabHost tabHost;
 	private LayoutInflater layoutInflater;
 	private ListView[] listView;
+	private int selectedPersona;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -69,29 +70,34 @@ public class UnlockView extends TabActivity {
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setCookies( (ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) );
-    	
+    		ArrayList<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
+			
+    		if( shareableCookies != null ) { 
+    			
+    			RequestHandler.setCookies( shareableCookies );
+    		
+    		} else {
+    			
+    			finish();
+    			
+    		}
+    		
     	}
     	
     	//Get the intent
-        if( !getIntent().hasExtra( "profile" ) ) {
-        	
-        	profileData = new ProfileData(
-
-        		this.sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
-        		this.sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
-    			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-    			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-    			this.sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
-				sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
-    		
-    		);
-        	
-        } else {
+        if( getIntent().hasExtra( "profile" ) ) {
         	
         	profileData = (ProfileData) getIntent().getParcelableExtra( "profile" );
         	
+        } else {
+        	
+        	Toast.makeText( this, "No profile selected.", Toast.LENGTH_SHORT).show();
+        	return;
+        	
         }
+        
+        //Get the pos
+        selectedPersona = getIntent().getIntExtra( "selectedPosition", -1 );
         
         //Is the profileData null?!
         if( profileData == null || profileData.getProfileId() == 0 ) { finish(); return; }
@@ -126,6 +132,15 @@ public class UnlockView extends TabActivity {
     			"Skills"
     		
     		}, 
+    		new int[] {
+
+    			R.drawable.tab_selector_unlocks_weapons,
+    			R.drawable.tab_selector_unlocks_attachments,
+    			R.drawable.tab_selector_unlocks_kits,
+    			R.drawable.tab_selector_unlocks_vehicles,
+    			R.drawable.tab_selector_unlocks_skills,
+    				
+    		},
     		new int[] { 
     			
     			R.layout.tab_content_unlocks, 
@@ -148,26 +163,26 @@ public class UnlockView extends TabActivity {
 		
 	}
 	
-    private final View createTabView(final Context context, final String text) {
+    private final View createTabView(final Context context, final int logo) {
     	
-    	View view = LayoutInflater.from(context).inflate(R.layout.profile_tab_layout, null);
-    	TextView tv = (TextView) view.findViewById(R.id.tabsText);
-    	tv.setText(text);
+    	View view = LayoutInflater.from(context).inflate(R.layout.unlock_tab_layout, null);
+    	ImageView imageView = (ImageView) view.findViewById( R.id.image_tab );
+    	imageView.setImageResource( logo );
     	return view;
     
     }
     
-	private void setupTabsPrimary( final String[] titleArray, final int[] layoutArray ) {
+	private void setupTabsPrimary( final String[] titleArray, final int[] logoArray, final int[] layoutArray ) {
 
 		//Init
-    	TabHost.TabSpec spec;
-    	
+		TabHost.TabSpec spec;
+		
     	//Iterate them tabs
     	for(int i = 0, max = titleArray.length; i < max; i++) {
 
     		//Num
     		final int num = i;
-			View tabview = createTabView(tabHost.getContext(), titleArray[num]);
+			View tabview = createTabView(tabHost.getContext(), logoArray[num]);
 
 			//Let's set the content
 			spec = tabHost.newTabSpec(titleArray[num]).setIndicator(tabview).setContent(
@@ -236,11 +251,7 @@ public class UnlockView extends TabActivity {
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new AsyncGetDataSelf(this).execute(
-    		
-    		profileData
-		
-		);
+    	new AsyncGetDataSelf(this).execute( profileData );
     	
     	
     }
@@ -280,9 +291,19 @@ public class UnlockView extends TabActivity {
 		protected Boolean doInBackground( ProfileData... arg0 ) {
 			
 			try {
+
+				if( arg0[0].getPersonaId() == 0 ) { 
+					
+					profileData = WebsiteHandler.getPersonaIdFromProfile( profileData ); 
+					unlocks = WebsiteHandler.getUnlocksForUser( profileData, selectedPersona );
+					
+				} else {
+					
+					unlocks = WebsiteHandler.getUnlocksForUser( arg0[0], selectedPersona );
+
+				}	
 				
-				unlocks = WebsiteHandler.getUnlocksForUser( arg0[0] );
-				return true;
+				return (unlocks != null);
 				
 			} catch ( WebsiteHandlerException ex ) {
 				

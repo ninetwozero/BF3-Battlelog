@@ -15,13 +15,15 @@
 package com.ninetwozero.battlelog.asynctasks;
 
 
-import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.Dashboard;
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -46,7 +48,12 @@ public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
 	@Override
 	protected void onPreExecute() {
 
-		Toast.makeText( context, R.string.msg_status, Toast.LENGTH_SHORT).show();
+		if( context instanceof Dashboard ) { 
+
+			Toast.makeText( context, R.string.msg_status, Toast.LENGTH_SHORT).show();
+			((Button) ((Activity)context).findViewById(R.id.button_status)).setEnabled(false);
+
+		}
 		
 	}
 	
@@ -98,6 +105,7 @@ public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
 			//Yay
 			Toast.makeText(this.context, R.string.msg_status_ok, Toast.LENGTH_SHORT).show(); 
 			((EditText) ((Activity)context).findViewById(R.id.field_status)).setText("");
+			((Button) ((Activity)context).findViewById(R.id.button_status)).setEnabled(true);
 							
 		} else { 
 			

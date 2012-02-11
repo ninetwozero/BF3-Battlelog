@@ -41,6 +41,8 @@
 		    	android:layout_alignParentLeft="true"
 		    	android:textSize="18sp"
 		    	android:textColor="#FFFFFF"
+		    	android:onClick="onClick"
+		    	android:clickable="true"
 		    />
 			<TextView
 			    android:id="@+id/string_persona_1"
@@ -51,6 +53,8 @@
 		    	android:layout_alignParentRight="true"
 		    	android:textSize="18sp"
 		    	android:textColor="#FFFFFF"
+		    	android:onClick="onClick"
+		    	android:clickable="true"
 		    />
 		</RelativeLayout>
 		<RelativeLayout

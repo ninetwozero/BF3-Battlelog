@@ -1,5 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item 
+	<item 
+		android:id="@+id/option_about" 
+		android:icon="@android:drawable/ic_menu_help"
+		android:title="@string/label_option_about"
+		android:alphabeticShortcut="A"
+	/>
+	<item 
 		android:id="@+id/option_refresh" 
 		android:icon="@android:drawable/ic_menu_rotate"
 		android:title="@string/info_xml_reload" 
@@ -16,12 +22,5 @@
 		android:icon="@android:drawable/ic_lock_power_off" 
 		android:title="@string/info_xml_logout" 
 		android:alphabeticShortcut="L"
-	/>    
-	<item
-	    android:id="@+id/option_crash"
-	    android:icon="@android:drawable/ic_menu_delete"
-		android:title="CRASH THE APP" 
-		android:alphabeticShortcut="X"
-		android:visible="true"
-	/>  
+	/>
 </menu>

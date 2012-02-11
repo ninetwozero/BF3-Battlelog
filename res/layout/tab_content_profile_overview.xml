@@ -30,14 +30,14 @@
 		<TextView 
 		    style="@style/InfoHeading"
 		    android:id="@+id/text_username"
-		    android:text="NINETWOZERO"
+		    android:text="N/A"
 			android:padding="5dp"
 		/>	
 		<TextView
 		    android:id="@+id/text_online"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:text="Last seen online 2 days ago"
+		    android:text="Last seen online N/A"
 		    android:textSize="14sp"
 			android:layout_below="@id/text_username"
 			android:paddingLeft="5dp"
@@ -59,7 +59,7 @@
 			    android:id="@+id/text_status"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="''I sure like to program Dalvik-java!''"
+			    android:text="N/A"
 			    android:textSize="14sp"
 				android:layout_below="@id/text_header_status"
 				android:padding="5dp"
@@ -68,7 +68,7 @@
 			    android:id="@+id/text_status_date"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="^Last updated 5 days ago"
+			    android:text="Last updated N/A"
 				android:layout_below="@id/text_status"
 				android:paddingLeft="5dp"
 				android:paddingRight="5dp"
@@ -93,9 +93,10 @@
 			    android:id="@+id/text_presentation"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="I like dirt, I like dirt...\nI like dirt, I like dirt\nG, Dm, Am, Em (4/4)"
+			    android:text="N/A"
 			    android:textSize="14sp"
 			    android:layout_below="@id/text_header_presentation"
+				android:autoLink="all"
 				android:padding="5dp"
 			/>
 		</RelativeLayout>

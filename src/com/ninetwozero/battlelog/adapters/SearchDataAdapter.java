@@ -111,11 +111,11 @@ public class SearchDataAdapter extends BaseAdapter {
 			
 			//Set the fields
 			((TextView) convertView.findViewById( R.id.string_name )).setText( profileData.getAccountName() );
-			((ImageView) convertView.findViewById( R.id.image_avatar )).setImageBitmap( 
+			/*((ImageView) convertView.findViewById( R.id.image_avatar )).setImageBitmap( 
 			
 				BitmapFactory.decodeFile( PublicUtils.getCachePath( context ) + profileData.getGravatarHash() + ".png" )
 					
-			);
+			);*/
 			
 		} else { 
 			
@@ -129,12 +129,12 @@ public class SearchDataAdapter extends BaseAdapter {
 			PlatoonData platoonData = currentItem.getPlatoonData();
 			
 			//Set the fields
-			((TextView) convertView.findViewById( R.id.string_name )).setText( platoonData.getName() + " " + platoonData.getTag() );
-			((ImageView) convertView.findViewById( R.id.image_avatar )).setImageBitmap( 
+			((TextView) convertView.findViewById( R.id.string_name )).setText( "[" + platoonData.getTag() + "] " + platoonData.getName() );
+			/*((ImageView) convertView.findViewById( R.id.image_avatar )).setImageBitmap( 
 			
 				BitmapFactory.decodeFile( PublicUtils.getCachePath( context ) + platoonData.getImage() + ".jpeg" )
 					
-			);
+			);*/
 			
 		}
 		

@@ -28,6 +28,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -61,11 +62,8 @@ import com.ninetwozero.battlelog.asynctasks.AsyncComRefresh;
 import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
-import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToPlatoonView;
-import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToProfileView;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
-import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
@@ -130,8 +128,18 @@ public class Dashboard extends TabActivity {
     	//Did it get passed on?
     	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
     		
-    		RequestHandler.setCookies( (ArrayList<ShareableCookie> ) icicle.getParcelable(Constants.SUPER_COOKIES) );
-    	
+    		ArrayList<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
+			
+    		if( shareableCookies != null ) { 
+    			
+    			RequestHandler.setCookies( shareableCookies );
+    		
+    		} else {
+    			
+    			finish();
+    			
+    		}
+    		
     	}
     	
     	//We should've gotten a profile
@@ -172,37 +180,41 @@ public class Dashboard extends TabActivity {
 		//Fix the tabs
     	mTabHost = (TabHost) findViewById(android.R.id.tabhost);
     	cTabHost = (TabHost) findViewById(R.id.com_tabhost);
-    	cTabHost.setup();
+    	if( cTabHost != null ) { 
+    		
+    		cTabHost.setup();
+	    	
+	    	//Let's set them up
+	    	setupTabsPrimary(
+	    			
+	    		new String[] { 
+	    		
+	    			getString(R.string.label_own_soldiernu ), 
+	    			getString(R.string.label_feed) 
+	    		
+	    		}, 
+	    		new int[] { 
+	    			
+	    			R.layout.tab_content_dashboard_menu, 
+	    			R.layout.tab_content_dashboard_feed 
+	    			
+	    		}
+	
+	    	);
+	    	setupTabsSecondary(
+	    			
+	    		new String[] { 
+	    				
+	    			getString(R.string.label_friends ), 
+					getString(R.string.label_notifications ) 
+	    							
+	    		}, 
+	    		new int[] { R.layout.tab_content_com_friends, R.layout.tab_content_com_notifications }
+	    		
+	    	);	
+			
+    	}
     	
-    	//Let's set them up
-    	setupTabsPrimary(
-    			
-    		new String[] { 
-    		
-    			getString(R.string.label_own_soldiernu ), 
-    			getString(R.string.label_feed) 
-    		
-    		}, 
-    		new int[] { 
-    			
-    			R.layout.tab_content_dashboard_menu, 
-    			R.layout.tab_content_dashboard_feed 
-    			
-    		}
-
-    	);
-    	setupTabsSecondary(
-    			
-    		new String[] { 
-    				
-    			getString(R.string.label_friends ), 
-				getString(R.string.label_notifications ) 
-    							
-    		}, 
-    		new int[] { R.layout.tab_content_com_friends, R.layout.tab_content_com_notifications }
-    		
-    	);	
-		
 	}
 	
 	public final void setupHome() {}
@@ -254,12 +266,6 @@ public class Dashboard extends TabActivity {
 						@Override
 						public void onItemClick( AdapterView<?> a, View v, int pos, long id ) {
 	
-							/*final FeedItem currItem = (FeedItem) a.getItemAtPosition( pos );
-							if( !currItem.getContent().equals( "" ) ) {
-								
-								generateDialogContent(context, currItem.getUsername()[0], currItem.getContent()).show();
-								
-							}*/
 							openContextMenu( v );
 							
 						}
@@ -526,9 +532,9 @@ public class Dashboard extends TabActivity {
 			
 			new AsyncLogout(this).execute();
 			
-		} else if( item.getItemId() == R.id.option_crash ) {
+		} else if( item.getItemId() == R.id.option_about) {
 			
-			int y = 1 / 0;
+			startActivity( new Intent( this, AboutView.class ) );
 			
 		}
 		
@@ -799,14 +805,17 @@ public class Dashboard extends TabActivity {
 				menu.add( menuId, 1, 0, R.string.label_soldier_view);
 				menu.add( menuId, 2, 0, R.string.label_soldier_unlocks);
 				menu.add( menuId, 3, 0, R.string.label_compare_bs);
-				menu.add( menuId, 4, 0, "View assignments");
+				menu.add( menuId, 4, 0, R.string.label_assignments_view);
 				
 	    	}
 		
     	} else if( menuId == 1 ) {
     	
+    		//Get the feedItem
+    		FeedItem feedItem = (FeedItem) info.targetView.getTag();
+    		
     		//Show the menu
-    		if( !((FeedItem) ((View) info.targetView).getTag()).isLiked() ) {
+    		if( !feedItem.isLiked() ) {
     			
     			menu.add( menuId, 0, 0, R.string.label_hooah);
     		
@@ -816,7 +825,7 @@ public class Dashboard extends TabActivity {
     			
     		}
     		menu.add( menuId, 1, 0, R.string.label_single_post_view);
-    		menu.add( menuId, 2, 0, "Goto item");
+    		menu.add( menuId, 2, 0, getString(R.string.label_goto_section).replace( "{section}", feedItem.getOptionTitle( this ) ) );
     		
     	}
     	
@@ -896,11 +905,7 @@ public class Dashboard extends TabActivity {
 						).putExtra( 
 							
 							"profile", 
-							WebsiteHandler.getPersonaIdFromProfile(
-									
-								((ProfileData) info.targetView.getTag()).getProfileId() 
-							
-							)
+							(ProfileData) info.targetView.getTag()
 							
 						)
 					
@@ -1181,11 +1186,11 @@ public class Dashboard extends TabActivity {
     	
     	if ( id == R.id.button_unlocks ) {
     		
-			startActivity( new Intent(this, UnlockView.class).putExtra( "profile", SessionKeeper.getProfileData() ) );
+			startActivity( new Intent(this, UnlockView.class).putExtra( "profile" , SessionKeeper.getProfileData() ) );
 			 
 		} else if( id == R.id.button_assignments ) {
 			
-			startActivity( new Intent(this, AssignmentView.class).putExtra( "profile", SessionKeeper.getProfileData() ) );
+			startActivity( new Intent(this, AssignmentView.class).putExtra( "profile" , SessionKeeper.getProfileData() ) );
 			
 		} else if( id == R.id.button_search ) {
 			
@@ -1195,7 +1200,7 @@ public class Dashboard extends TabActivity {
 			
 			startActivity( 
 					
-				new Intent( this,  ProfileView.class ).putExtra( "profile", SessionKeeper.getProfileData() )
+				new Intent( this,  ProfileView.class ).putExtra( "profile" , SessionKeeper.getProfileData() )
 				
 			);
 		
@@ -1511,7 +1516,7 @@ public class Dashboard extends TabActivity {
 	}
 	
 	private void preOpenElements( Intent intent ) {
-
+		
         //Do we need to open anything?
         if( intent.hasExtra( "openTabId") && intent.hasExtra( "openCOMCenter" ) ) {
         	
@@ -1524,7 +1529,7 @@ public class Dashboard extends TabActivity {
 	
 	public void onNotificationClick(NotificationData notification) {
 
-		Toast.makeText( this, "This might not do anything. DICE made it really hard to control this part. :-(", Toast.LENGTH_SHORT).show();
+		Toast.makeText( this, R.string.msg_unimplemented, Toast.LENGTH_SHORT).show();
 		
 		/*
 		if( notification.getItemId() > 0 ) { 
@@ -1538,6 +1543,5 @@ public class Dashboard extends TabActivity {
 		}*/
 		
 	}
-
        
 }

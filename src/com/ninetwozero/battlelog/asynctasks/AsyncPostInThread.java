@@ -16,11 +16,11 @@ package com.ninetwozero.battlelog.asynctasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.SlidingDrawer;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.ForumThreadView;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.R.string;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
@@ -73,6 +73,7 @@ public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
 				
 				((ForumThreadView) this.context).reloadLayout(); 
 				((ForumThreadView) this.context).resetPostFields();
+				
 			}
 			
 		} else {

@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
@@ -23,8 +21,10 @@ import android.os.Parcelable;
 
 import com.ninetwozero.battlelog.AssignmentView;
 import com.ninetwozero.battlelog.ForumThreadView;
+import com.ninetwozero.battlelog.PlatoonView;
 import com.ninetwozero.battlelog.ProfileView;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.UnlockView;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 
@@ -33,21 +33,19 @@ public class FeedItem implements Parcelable {
 
 	//Attributes
 	private long id, itemId, date;
-	private int numLikes;
+	private int numLikes, numComments;
 	private String title, content, type;
 	private ProfileData[] profileData;
 	private boolean liked, censored;
-	private ArrayList<CommentData> comments;
 	private String gravatarHash;
-	private Intent intent;
 	
 	//Construct
 	public FeedItem( 
 	
-		long i, long iid, long nDate, int num,
+		long i, long iid, long nDate, int num, int numC,
 		String t, String c, String type,
 		ProfileData[] pd,
-		boolean il, boolean cs, ArrayList<CommentData> cda,
+		boolean il, boolean cs,
 		String im
 		
 	) {
@@ -56,11 +54,11 @@ public class FeedItem implements Parcelable {
 		this.itemId = iid;
 		this.date = nDate;
 		this.numLikes = num;
+		this.numComments = numC;
 		this.title = t;
 		this.content = c;
 		this.type = type;
 		this.profileData = pd;
-		this.comments = cda;
 		this.liked = il;
 		this.censored = cs;
 		this.gravatarHash = im;
@@ -68,15 +66,12 @@ public class FeedItem implements Parcelable {
 	}
 	
 	public FeedItem( Parcel in ) {
-			
-		//Init
-		this.comments = new ArrayList<CommentData>();
-		in.readTypedList( this.comments, CommentData.CREATOR );
 		
 		this.id = in.readLong();
 		this.itemId = in.readLong();
 		this.date = in.readLong();
 		this.numLikes = in.readInt();
+		this.numComments = in.readInt();
 		this.title = in.readString();
 		this.content = in.readString();
 		this.type = in.readString();
@@ -91,7 +86,7 @@ public class FeedItem implements Parcelable {
 	public long getId() { return this.id; }
 	public long getItemId() { return this.itemId; }
 	public long getDate() { return this.date; }
-	public int getNumComments() { return this.comments.size(); }
+	public int getNumComments() { return this.numComments; }
 	public int getNumLikes() { return this.numLikes; }
 	public String getTitle() { 
 		
@@ -246,17 +241,11 @@ public class FeedItem implements Parcelable {
 	public ProfileData getProfile( int i ) { return ( i <= this.profileData.length ) ? this.profileData[i] : null; }
 	public boolean isLiked() { return this.liked; }
 	public boolean isCensored() { return this.censored; }
-	public ArrayList<CommentData> getComments() { return this.comments; }
 	public String getAvatarForPost() { return this.gravatarHash; }
 	public Intent getIntent(Context c) { 
 		
-		//Get the correct format depending on the type
-		if( type.equals( "becamefriends" )  ) {
-			
-			return null;
-		
-		} else if( type.equals( "assignmentcomplete" )  ) {
-			
+		if( type.equals( "assignmentcomplete" ) ) {
+
 			try { 
 				
 				return new Intent(c, AssignmentView.class ).putExtra( 
@@ -272,11 +261,11 @@ public class FeedItem implements Parcelable {
 				return null;
 				
 			}
-				
+
 		} else if( type.equals( "createdforumthread" ) || type.equals( "wroteforumpost" ) ) {
-			
+
 			return new Intent(c, ForumThreadView.class).putExtra( 
-					
+						
 				"threadId", 
 				this.itemId
 				
@@ -286,9 +275,33 @@ public class FeedItem implements Parcelable {
 				"N/A"
 				
 			);
+			 
+
+		} else if( 
+
+			type.equals( "kickedplatoon" ) || type.equals( "joinedplatoon" ) || 
+			type.equals( "leftplatoon" ) || type.equals( "createdplatoon" ) || 
+			type.equals( "platoonbadgesaved" ) || type.equals( "receivedplatoonwallpost" ) 
+
+		) {
+
+			return new Intent(c, PlatoonView.class).putExtra( "platoon", new PlatoonData( this.itemId ) );
+
+		} else if( type.equals( "gamereport" ) ) { 
 			
-		} else if( type.equals( "gamereport" ) ) {
+			return new Intent(c, UnlockView.class).putExtra( "profile", this.profileData[0] );
 			
+		} else if( 
+
+			type.equals( "becamefriends" ) || type.equals( "receivedaward" ) || 
+			type.equals( "receivedwallpost" ) || type.equals( "commentedgamereport" ) || 
+			type.equals( "commentedblog" ) || 
+			type.equals( "statusmessage" )|| type.equals( "addedfavserver" ) || 
+			type.equals( "rankedup" ) || type.equals( "levelcomplete" ) || 
+			type.equals( "gameaccess" )
+			
+		) {
+
 			return new Intent(c, ProfileView.class).putExtra( 
 					
 				"profile", 
@@ -296,90 +309,56 @@ public class FeedItem implements Parcelable {
 				
 			);
 			
-		} else if( type.equals( "statusmessage" ) ) {
-			
 
-			return new Intent(c, ProfileView.class).putExtra( 
-					
-				"profile", 
-				 profileData[0]
-				
-			);
-			
-		} else if( type.equals( "addedfavserver" ) ) {
-			
-
-			return new Intent(c, ProfileView.class).putExtra( 
-					
-				"profile", 
-				 profileData[0]
-				
-			);
-			
-		} else if( type.equals( "rankedup" ) ) {
-
-
-			return new Intent(c, ProfileView.class).putExtra( 
-					
-				"profile", 
-				 profileData[0]
-				
-			);
-			
-		} else if( type.equals( "levelcomplete" ) ) {
-
-
-			return new Intent(c, ProfileView.class).putExtra( 
-					
-				"profile",
-				 profileData[0]
-				
-			);
-			
-		} else if( type.equals( "kickedplatoon" ) || type.equals( "joinedplatoon" ) || type.equals( "leftplatoon" ) ) {
-
-			return null;
-			
-		} else if( type.equals( "createdplatoon" ) || type.equals( "platoonbadgesaved" ) || type.equals( "receivedplatoonwallpost" ) ) {
-
-			return null;
-			
-		} else if( type.equals( "receivedaward" ) ) {
-
-
-			return new Intent(c, ProfileView.class).putExtra( 
-					
-				"profile", 
-				 profileData[0]
-				
-			);
-		} else if( type.equals( "receivedwallpost" ) ) {
-
-
-			return new Intent(c, ProfileView.class).putExtra( 
-					
-				"profile",
-				 profileData[0]
-				
-			);
-			
-		} else if( type.equals( "commentedgamereport" ) || type.equals( "commentedblog" ) ) {
-
-			return null;
-			
-		} else if( type.equals( "gameaccess" ) ) {
-
-
-			return new Intent(c, ProfileView.class).putExtra( 
-					
-				"profile",
-				 profileData[0]
-				
-			);
-			
 		} else {
 		
 			return null;
+			
+		}
+		
+	}	
+	
+	public String getOptionTitle(Context c) { 
+		
+		if( type.equals( "assignmentcomplete" ) ) {
+
+			return c.getString( R.string.label_goto_assignments );
+
+		} else if( type.equals( "createdforumthread" ) || type.equals( "wroteforumpost" ) ) {
+
+			return c.getString( R.string.label_goto_forum_thread );
+
+		} else if( 
+
+			type.equals( "kickedplatoon" ) || type.equals( "joinedplatoon" ) || 
+			type.equals( "leftplatoon" ) || type.equals( "createdplatoon" ) || 
+			type.equals( "platoonbadgesaved" ) || type.equals( "receivedplatoonwallpost" ) 
+
+		) {
+
+			return c.getString( R.string.label_goto_platoon );
+			
+		} else if( type.equals( "gamereport" ) ) { 
+			
+			return c.getString( R.string.label_goto_unlocks );
+			
+		} else if( 
+
+			type.equals( "becamefriends" ) || type.equals( "receivedaward" ) || 
+			type.equals( "receivedwallpost" ) || type.equals( "commentedgamereport" ) || 
+			type.equals( "commentedblog" ) || 
+			type.equals( "statusmessage" )|| type.equals( "addedfavserver" ) || 
+			type.equals( "rankedup" ) || type.equals( "levelcomplete" ) || 
+			type.equals( "gameaccess" )
+			
+		) {
+
+			return c.getString( R.string.label_goto_profile );
+			
+
+		} else {
+		
+			return "N/A";
 			
 		}
 		
@@ -393,13 +372,12 @@ public class FeedItem implements Parcelable {
 
 	@Override
 	public void writeToParcel( Parcel dest, int flags ) {
-
-		dest.writeTypedList( this.comments );
 		
 		dest.writeLong( this.id );
 		dest.writeLong( this.itemId );
 		dest.writeLong( this.date );
 		dest.writeInt( this.numLikes );
+		dest.writeInt( this.numComments );
 		dest.writeString( this.title );
 		dest.writeString( this.content );
 		dest.writeString( this.type );

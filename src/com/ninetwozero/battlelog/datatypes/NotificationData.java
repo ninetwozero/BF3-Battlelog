@@ -3,8 +3,10 @@ package com.ninetwozero.battlelog.datatypes;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.misc.Constants;
 
 
 
@@ -192,6 +194,41 @@ public class NotificationData implements Parcelable {
 			
 			);
 			
+		} else if( this.type.equals( "platooninviterequest" ) ) {
+			
+			message = c.getString( R.string.info_platoon_invite ).replace( 
+					 
+				"{platoon}", 
+				this.extra
+				
+			);		
+			
+		} else if( this.type.equals( "platoonpromoted" ) ) {
+			
+			message = c.getString( R.string.info_platoon_promote ).replace( 
+					 
+				"{platoon}", 
+				this.extra
+				
+			);		
+			
+		} else if( this.type.equals( "platoonkicked" ) ) {
+			
+			message = c.getString( R.string.info_platoon_kick ).replace( 
+					 
+				"{platoon}", 
+				this.extra
+				
+			);		
+		} else if( this.type.equals( "platoondemoted" ) ) {
+			
+			message = c.getString( R.string.info_platoon_demote ).replace( 
+					 
+				"{platoon}", 
+				this.extra
+				
+			);		
+			
 		} else if( this.type.equals( "platoonjoinrequest" ) ) {
 			
 			message = c.getString( R.string.info_platoon_join_request ).replace( 
@@ -226,7 +263,7 @@ public class NotificationData implements Parcelable {
 		} else {
 			
 			message = c.getString( R.string.info_unknown_notification );
-			
+			Log.d( Constants.DEBUG_TAG, "noticationType => " + this.type );
 		}
 		
 		return message.replace( "{username}", this.commenter ).replace( "{owner}", this.owner );
@@ -262,13 +299,20 @@ public class NotificationData implements Parcelable {
 			case 11: //Rank
 				return c.getString( R.string.info_new_rank);
 			
+			case 16: //Platoon activity
+				return c.getString(R.string.info_platoon_activity);
+				
 			case 20: //Platoon wall post
 				return c.getString( R.string.info_platoon_wall_post );
+				
+			case 21: //Assignment completed
+				return c.getString( R.string.info_assignment_completed );
 				
 			case 22: //Got game
 				return c.getString( R.string.info_p_activated_expansion );
 				
 			default:
+				Log.d( Constants.DEBUG_TAG, "noticationType => " + this.type );
 				return "{unknown action}";
 		}
 		
