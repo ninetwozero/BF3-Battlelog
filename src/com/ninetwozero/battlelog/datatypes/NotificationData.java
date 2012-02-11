@@ -298,8 +298,10 @@ public class NotificationData implements Parcelable {
 			
 			case 11: //Rank
 				return c.getString( R.string.info_new_rank);
-			
+
+			case 13: //Platoon activity				
 			case 16: //Platoon activity
+			case 17: //New platoon /* TODO  */
 				return c.getString(R.string.info_platoon_activity);
 				
 			case 20: //Platoon wall post
