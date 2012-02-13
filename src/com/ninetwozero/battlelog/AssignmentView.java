@@ -14,6 +14,7 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,15 +27,11 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -57,10 +54,15 @@ public class AssignmentView extends Activity {
 	//SharedPreferences for shizzle
 	private final Context CONTEXT = this;
 	private SharedPreferences sharedPreferences;
-	private TableLayout tableAssignments;
 	private LayoutInflater layoutInflater;
 	private ProfileData profileData;
-	private ArrayList<AssignmentData> assignments;
+	private HashMap<Long, ArrayList<AssignmentData>> assignments;
+	private long selectedPersona;
+	private int selectedPosition;
+	
+	//Elements
+	private TableLayout tableAssignments;
+	private TextView textEmpty;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -83,40 +85,57 @@ public class AssignmentView extends Activity {
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     	
         //Get the intent
-        if( !getIntent().hasExtra( "profile" ) ) {
-        	
-        	profileData = new ProfileData(
-
-        		this.sharedPreferences.getString( Constants.SP_BL_USERNAME, "" ),
-        		this.sharedPreferences.getString( Constants.SP_BL_PERSONA, "" ),
-    			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-    			this.sharedPreferences.getLong( Constants.SP_BL_PERSONA_ID, 0 ),
-    			this.sharedPreferences.getLong( Constants.SP_BL_PLATFORM_ID, 1),
-    			this.sharedPreferences.getString( Constants.SP_BL_GRAVATAR, "" )
-    		
-    		);
-        	
-        } else {
+        if( getIntent().hasExtra( "profile" ) ) {
         	
         	profileData = (ProfileData) getIntent().getParcelableExtra( "profile" );
         	
+        } else {
+        	
+        	Toast.makeText( this, R.string.info_general_noprofile, Toast.LENGTH_SHORT).show();
+        	return;
+        	
         }
+        
+        //Is the profileData null?!
+        if( profileData == null || profileData.getProfileId() == 0 ) { finish(); return; }
+
+        //Get the pos
+        selectedPersona = getIntent().getLongExtra( "selectedPersona", profileData.getPersonaId() );
+        selectedPosition = 0;
         
         //Prepare to tango
         this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.reloadLayout();
+        this.textEmpty = (TextView) findViewById( R.id.text_empty );
         
 	}        
 
-	public void setupList(ArrayList<AssignmentData> data) {
+	@Override
+	public void onResume() {
 		
-		//Is it empty?
-		if( data == null ) { return; }
+		super.onResume();
+        this.reloadLayout();
+		
+	}
+	
+	public void setupList(ArrayList<AssignmentData> data) {
 		
 		//Do we have the TableLayout?
 		if( tableAssignments == null ) { 
 			
 			tableAssignments = (TableLayout) findViewById(R.id.table_assignments);
+			
+		}
+		
+		//Is it empty?
+		if( data == null || data.size() == 0 ) { 
+
+			textEmpty.setVisibility( View.VISIBLE );
+			tableAssignments.removeAllViews();
+			return;
+			
+		} else {
+			
+			textEmpty.setVisibility( View.GONE );
 			
 		}
 		
@@ -173,11 +192,7 @@ public class AssignmentView extends Activity {
     public void reloadLayout() {
     	
     	//ASYNC!!!
-    	new GetDataSelfAsync(this).execute(
-    		
-    		profileData
-		
-		);
+    	new GetDataSelfAsync(this).execute(profileData);
     	
     	
     }
@@ -219,7 +234,7 @@ public class AssignmentView extends Activity {
 			try {
 				
 				assignments = WebsiteHandler.getAssignments( context, arg0[0] );
-				return true;
+				return (assignments != null);
 				
 			} catch ( WebsiteHandlerException ex ) {
 				
@@ -244,7 +259,7 @@ public class AssignmentView extends Activity {
 			}
 
 			//Do actual stuff	
-			setupList(assignments);
+			setupList(assignments.get( selectedPersona ));
 			
 			//Go go go
 	        if( this.progressDialog != null ) this.progressDialog.dismiss();
@@ -257,7 +272,7 @@ public class AssignmentView extends Activity {
 	public boolean onCreateOptionsMenu( Menu menu ) {
 
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate( R.menu.option_basic, menu );
+		inflater.inflate( R.menu.option_unlock, menu );
 		return super.onCreateOptionsMenu( menu );
 	
     }
@@ -268,9 +283,18 @@ public class AssignmentView extends Activity {
 		//Let's act!
 		if( item.getItemId() == R.id.option_reload ) {
 
-	    	
-	    	showDialog(0);
 			this.reloadLayout();
+			
+		} else if( item.getItemId() == R.id.option_change ) { 
+			
+			generateDialogPersonaList( 
+					
+				this, 
+				profileData.getPersonaIdArray(), 
+				profileData.getPersonaNameArray(), 
+				profileData.getPlatformIdArray()
+				
+			).show();
 			
 		} else if( item.getItemId() == R.id.option_back ) {
 			
@@ -301,16 +325,18 @@ public class AssignmentView extends Activity {
         
 		//Init
         AlertDialog.Builder builder = new AlertDialog.Builder( this );
-        AssignmentData assignment = assignments.get( id );
+        AssignmentData assignment = assignments.get( selectedPersona ).get( id );
         AssignmentData.Unlock unlocks = assignment.getUnlocks().get( 0 );
         
         View dialog = layoutInflater.inflate( R.layout.popup_dialog_view, null);
         LinearLayout wrapObjectives = (LinearLayout) dialog.findViewById( R.id.wrap_objectives );
         
         //Set the title
-        builder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setCancelable(false).setPositiveButton("OK", 
+        		
+        	new DialogInterface.OnClickListener() {
             
-	        	public void onClick(DialogInterface dialog, int id) {
+        		public void onClick(DialogInterface dialog, int id) {
 	                
 	        		dialog.dismiss();
 	            	
@@ -363,5 +389,50 @@ public class AssignmentView extends Activity {
 		return;
 	
 	}
-	
+
+	public Dialog generateDialogPersonaList( final Context context, final long[] personaId, final String[] persona, final long[] ls ) {
+		
+		//Attributes
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		
+	    //Set the title and the view
+		builder.setTitle( R.string.info_dialog_soldierselect );
+		String[] listNames = new String[personaId.length];
+		
+		for( int i = 0, max = personaId.length; i < max; i++ ) {
+			
+			listNames[i] = persona[i] + " " + DataBank.resolvePlatformId( (int) ls[i] );
+			
+		}
+		builder.setSingleChoiceItems(
+				
+			listNames, selectedPosition, new DialogInterface.OnClickListener() {
+		  
+				public void onClick(DialogInterface dialog, int item) {
+			    	
+					if( personaId[item] != selectedPersona ) {
+						
+						//Update it
+						selectedPersona = profileData.getPersonaId(item);
+					
+						//Update the layout
+						setupList( assignments.get( selectedPersona ) );
+						
+						//Store selectedPersonaPos
+						selectedPosition = item;
+						
+					}
+					
+					dialog.dismiss();
+		
+				}
+				
+			}
+		
+		);
+		
+		//CREATE
+		return builder.create();
+		
+	}
 }

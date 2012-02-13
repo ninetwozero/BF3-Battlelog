@@ -30,6 +30,14 @@
 			android:layout_marginTop="0dp"
 			android:layout_marginBottom="5dp"
 		/>
+		<TextView
+		    android:id="@+id/text_empty"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:text="@string/info_assignments_empty"
+			android:layout_below="@id/string000"
+			android:gravity="center"
+		/>
 		<TableLayout
 			android:id="@+id/table_assignments"
 		   	android:layout_width="fill_parent"

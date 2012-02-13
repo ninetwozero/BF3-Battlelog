@@ -38,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.Toast;
@@ -49,22 +50,26 @@ import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class UnlockView extends TabActivity {
 
-	//SharedPreferences for shizzle
+	//Attributes
 	private SharedPreferences sharedPreferences;
-	private ProgressBar progressBar;
 	private AsyncGetDataSelf getDataAsync;
 	private ProfileData profileData;
 	private HashMap<Long, UnlockDataWrapper> unlocks;
+	private long selectedPersona;
+	private int selectedPosition;
+
+	//Elements
+	private ProgressBar progressBar;
 	private TabHost tabHost;
 	private LayoutInflater layoutInflater;
 	private ListView[] listView;
-	private long selectedPersona;
-	private long selectedPosition;
+	private TextView textEmpty;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -96,17 +101,18 @@ public class UnlockView extends TabActivity {
         	
         } else {
         	
-        	Toast.makeText( this, "No profile selected.", Toast.LENGTH_SHORT).show();
+        	Toast.makeText( this, R.string.info_general_noprofile, Toast.LENGTH_SHORT).show();
         	return;
         	
         }
         
-        //Get the pos
-        selectedPersona = getIntent().getIntExtra( "selectedPosition", -1 );
-        
         //Is the profileData null?!
         if( profileData == null || profileData.getProfileId() == 0 ) { finish(); return; }
-    	
+
+        //Get the pos
+        selectedPersona = getIntent().getLongExtra( "selectedPersona", 0 );
+        selectedPosition = 0;
+        
     	//Set the content view
         setContentView(R.layout.unlocks_view);
 
@@ -114,6 +120,7 @@ public class UnlockView extends TabActivity {
         this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.listView = new ListView[5];
+        this.textEmpty = (TextView) findViewById( R.id.text_empty );
         
         //Init!
         initActivity();
@@ -300,13 +307,17 @@ public class UnlockView extends TabActivity {
 				if( arg0[0].getPersonaId() == 0 ) { 
 					
 					profileData = WebsiteHandler.getPersonaIdFromProfile( profileData ); 
+					if( selectedPersona == 0 ) { selectedPersona = profileData.getPersonaId(); }
 					unlocks = WebsiteHandler.getUnlocksForUser( profileData );
 					
 				} else {
 					
+					if( selectedPersona == 0 ) { selectedPersona = arg0[0].getPersonaId(); }
 					unlocks = WebsiteHandler.getUnlocksForUser( arg0[0] );
 
 				}	
+				
+				Log.d(Constants.DEBUG_TAG, "# of personas => " + unlocks.size() + "(" + profileData.getNumPersonas() + ")" );
 				
 				return (unlocks != null);
 				
@@ -391,6 +402,18 @@ public class UnlockView extends TabActivity {
 			
 		}
 		
+		//Is it empty?
+		if( data == null || data.size() == 0 ) { 
+
+			textEmpty.setVisibility( View.VISIBLE );
+			return;
+			
+		} else {
+			
+			textEmpty.setVisibility( View.GONE );
+			
+		}
+		
 		return;
 		
 	}
@@ -405,7 +428,14 @@ public class UnlockView extends TabActivity {
 			
 		} else if( item.getItemId() == R.id.option_change ) {
 			
-			generateDialogPersonaList( this, profileData.getPersonaIdArray(), profileData.getPersonaNameArray() ).show();
+			generateDialogPersonaList( 
+					
+				this, 
+				profileData.getPersonaIdArray(), 
+				profileData.getPersonaNameArray(), 
+				profileData.getPlatformIdArray() 
+				
+			).show();
 			
 		} else if( item.getItemId() == R.id.option_back ) {
 			
@@ -431,17 +461,23 @@ public class UnlockView extends TabActivity {
 	
 	}
     
-	public Dialog generateDialogPersonaList( final Context context, final long[] personaId, final String[] persona ) {
+	public Dialog generateDialogPersonaList( final Context context, final long[] personaId, final String[] persona, final long[] ls ) {
 		
 		//Attributes
 		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		
 	    //Set the title and the view
 		builder.setTitle( R.string.info_dialog_soldierselect );
+		String[] listNames = new String[personaId.length];
 		
+		for( int i = 0, max = personaId.length; i < max; i++ ) {
+			
+			listNames[i] = persona[i] + " " + DataBank.resolvePlatformId( (int) ls[i] );
+			
+		}
 		builder.setSingleChoiceItems(
 				
-			persona, -1, new DialogInterface.OnClickListener() {
+			listNames, selectedPosition, new DialogInterface.OnClickListener() {
 		  
 				public void onClick(DialogInterface dialog, int item) {
 			    	
@@ -449,6 +485,9 @@ public class UnlockView extends TabActivity {
 						
 						//Update it
 						selectedPersona = profileData.getPersonaId(item);
+						
+						//Store selected position
+						selectedPosition = item;
 					
 						//Load the new!
 						switch( tabHost.getCurrentTab() ) {
@@ -478,9 +517,6 @@ public class UnlockView extends TabActivity {
 							
 							
 						}
-						
-						//Store selectedPersonaPos
-						selectedPosition = item;
 						
 					}
 					

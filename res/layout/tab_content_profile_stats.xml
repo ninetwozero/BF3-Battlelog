@@ -32,13 +32,13 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 			android:onClick="onClick"
+			android:clickable="true"
 		>
 			<TextView
 			    style="@style/InfoHeading"
 			    android:id="@+id/string_persona"
 		    	android:text="NINETWOZERO"
 				android:padding="5dp"
-				android:clickable="true"
 		    />
 			<ImageView
 			    android:id="@+id/img_persona_list"

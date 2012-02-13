@@ -906,7 +906,7 @@ public class DataBank {
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_1", "10 repairs");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_2", "Kill 1 enemy with Repair Torch");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_4", "Play 2 hours on Sharqi");
-		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_5", "Play 2 hours on Gulf of Oman");
+		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_5", "Play 2 hours on 'Oman");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_2", "5 DPV Jeep kills");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_3", "10 BTR-90 IFV Kills");
 		CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_1", "10 PP-19 Kills");

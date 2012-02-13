@@ -425,4 +425,7 @@
 	<string name="info_forum_lang">Select a language for the forums...</string>
 	<string name="info_general_nocache">The cache directory doesn\'t exist: please contact the developer!</string>
 	<string name="info_unlock_change">Change soldier...</string>
+	<string name="info_general_noprofile">No profile selected.</string>
+	<string name="info_assignments_empty">No assignments found for this soldier.</string>
+	<string name="info_unlocks_empty">No unlocks in this view.</string>
 </resources>

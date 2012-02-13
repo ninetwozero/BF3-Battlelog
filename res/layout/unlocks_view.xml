@@ -17,9 +17,8 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 >
-	<LinearLayout 
-	    android:orientation="vertical"
-		android:layout_width="fill_parent" 
+	<RelativeLayout 
+	    android:layout_width="fill_parent" 
 		android:layout_height="fill_parent"
 	>
 		<TabWidget 
@@ -31,7 +30,16 @@
 		    android:id="@android:id/tabcontent"
 			android:layout_width="fill_parent" 
 			android:layout_height="fill_parent"
+			android:layout_below="@android:id/tabs"
 		>
 		</FrameLayout>
-	</LinearLayout>
+		<TextView
+		    android:id="@+id/text_empty"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:text="@string/info_unlocks_empty"
+			android:layout_below="@android:id/tabs"
+			android:gravity="center"
+		/>
+	</RelativeLayout>
 </TabHost>
