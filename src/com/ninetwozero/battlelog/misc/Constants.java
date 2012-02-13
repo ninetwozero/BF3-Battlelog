@@ -185,7 +185,7 @@ public final class Constants {
 	public static final String FILE_SHPREF = "battlelog";
 	
 	//Changelog version
-	public final static int CHANGELOG_VERSION = 20;
+	public final static int CHANGELOG_VERSION = 8;
 
 	//MENU IDs
 	public final static int MENU_ID_FEED = 2;

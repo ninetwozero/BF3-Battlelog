@@ -1216,7 +1216,6 @@ public class Dashboard extends TabActivity {
 			
 		} else if( id == R.id.button_forum ) { 
 			
-			//Toast.makeText( this, R.string.msg_unimplemented, Toast.LENGTH_SHORT ).show();
 			startActivity( new Intent(this, BoardView.class) );
 			return;
 			

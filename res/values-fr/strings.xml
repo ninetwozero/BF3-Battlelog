@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">BF3 Battlelog</string>
-	<string name="widget_name">Battlelog - Statistiques+Amis</string>
+	<string name="widget_name">Battlelog - Stats+Amis</string>
     <integer-array name="service_update_intervals_values">
         <item >300</item>
         <item >600</item>
@@ -49,23 +49,7 @@
     </string-array>
     
     <!--  translation starts here -->
-   <string name="changelog">
-       * Added platoons 
-       * Added assignments
-       * Added forums
-       * Added notifications
-       * Added the "global" feed
-       * Tabbed the unlocks
-       * The app is now caching images to the SD-card
-       * Added some initial localization (contact me if you can help translate!)
-       * Widget should now be working (via the service)
-       * Loads of bug fixes and optimizations
-       * Forum for the app is now available via http://bit.ly/bf3blforum
-       &lt;br /&gt;
-       Please report any errors you may encounter to &lt;u&gt;support@ninetwozero.com&lt;/u&gt; and/or 
-       &lt;u&gt;@karllindmark&lt;/u&gt; on Twitter.&lt;br /&gt;&lt;br /&gt;
-       Thank you for your support!
-	</string>
+   
 	<string name="general_invalid_email">Adresse email non-valid</string>
 	<string name="general_invalid_password">S\'il vous plaît, entrer votre mot de passe.</string>
 	<string name="general_changelog_version">Version de l\'historique</string>
@@ -320,10 +304,10 @@
 	<string name="info_dialog_soldierselect">Select a soldier to view...</string>
 	<string name="info_dialog_threadpost">Post a reply</string>
 	<string name="info_forum_newpost_true">The reply has been posted.</string>
-	<string name="info_forum_newpost_false">The reply could not be posted.</string>
-	<string name="info_txt_notification_new">1 new notification!</string>
-	<string name="info_txt_notification_new_p">{num} new notifications!</string>
-	<string name="info_tap_notification">Tap this item open the app.</string>
+	<string name="info_forum_newpost_false">La réponse ne peut être postée.</string>
+	<string name="info_txt_notification_new">1 nouvelle notification! </string>
+	<string name="info_txt_notification_new_p">{num} nouvelles notifications!</string>
+	<string name="info_tap_notification">Touchez ici pour ouvrir l\'app. </string>
 	<string name="info_xml_posts_none">No posts found.</string>
 	<string name="info_xml_threads_none">No threads found.</string>
 	<string name="info_xml_results_none">Aucun résultat trouvé.</string>
@@ -421,4 +405,10 @@
 	<string name="info_forum_report_empty">You need to enter a reason for reporting this post.</string>
 	<string name="info_report_active">Reporting...</string>
 	<string name="title_forum_report">BF3 Battlelog - Reporting a forum post</string>
+	<string name="info_forum_lang">Select a language for the forums...</string>
+	<string name="info_general_nocache">The cache directory doesn\'t exist: please contact the developer!</string>
+	<string name="info_unlock_change">Change soldier...</string>
+	<string name="info_general_noprofile">No profile selected.</string>
+	<string name="info_assignments_empty">No assignments found for this soldier.</string>
+	<string name="info_unlocks_empty">No unlocks in this view.</string>
 </resources>

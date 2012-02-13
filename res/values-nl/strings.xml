@@ -49,22 +49,7 @@
     </string-array>
     
     <!--  translation starts here -->
-   <string name="changelog">* Pelotons toegevoegd &lt;br /&gt;
-* Assignments toegevoegd &lt;br /&gt;
-* Forums toegevoegd &lt;br /&gt;
-* Notificaties toegevoegd &lt;br /&gt;
-* Globale feed toegevoegd &lt;br /&gt;
-* Donatie mogelijkheid toegevoegd &lt;br /&gt;
-* Unlocks zijn nu in tabs &lt;br /&gt;
-* Plaatjes staan nu op je SD-card &lt;br /&gt; 
-* Vertalingen toegevoegd (neem contact met me op als je kunt vertalen!) &lt;br /&gt;
-* Widgets werken nu via de service &lt;br /&gt;
-* Veel bugfixes en optimalisaties &lt;br /&gt;
-* Forum voor de app is nu beschikbaar via http://bit.ly/bf3blforum &lt;br /&gt;
-&lt;br /&gt;
-Stuur bugreports naar  support@ninetwozero.com en/of
-@karllindmark op Twitter (https://twitter.com/karllindmark).&lt;br /&gt;&lt;br /&gt;
-Dank voor je support!</string>
+   
 	<string name="general_invalid_email">Onbekend e-mail adres.</string>
 	<string name="general_invalid_password">Geef je wachtwoord op.</string>
 	<string name="general_changelog_version">Changelog versie</string>

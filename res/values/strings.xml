@@ -48,19 +48,15 @@
         <item >Once every 2 minutes</item>
     </string-array>
     
-    <!--  translation starts here -->
+   <!--  translation starts here -->
    <string name="changelog">
-       * Added platoons &lt;br /&gt;
-       * Added assignments &lt;br /&gt;
-       * Added forums &lt;br /&gt;
-       * Added notifications &lt;br /&gt;
-       * Added the "global" feed &lt;br /&gt;
-       * Added a DONATE-option via the About screen (below) &lt;br /&gt;
-       * Tabbed the unlocks &lt;br /&gt;
-       * The app is now caching images to the SD-card &lt;br /&gt; 
-       * Added some initial localization (contact me if you can help translate!) &lt;br /&gt;
-       * Widget should now be working (via the service) &lt;br /&gt;
-       * Loads of bug fixes and optimizations &lt;br /&gt;
+       * Fixed some profiles not getting the data &lt;br /&gt;
+       * Fixed some platoons force closing the app &lt;br /&gt;
+       * Added the ability to switch locale in the forum &lt;br /&gt;
+       * Added the ability to switch soldiers while viewing unlocks/assignments (hit MENU) &lt;br /&gt;
+       * Updated the localization with more translations (contact me if you can help translate!) &lt;br /&gt;
+       &lt;br /&gt;
+       * DONATE-option available via the About screen (below) &lt;br /&gt;
        * Forum for the app is now available via http://bit.ly/bf3blforum &lt;br /&gt;
        &lt;br /&gt;
        Please report any errors you may encounter to support@ninetwozero.com and/or 

@@ -49,23 +49,7 @@
     </string-array>
     
     <!--  translation starts here -->
-   <string name="changelog">
-       * Added platoons 
-       * Added assignments
-       * Added forums
-       * Added notifications
-       * Added the "global" feed
-       * Tabbed the unlocks
-       * The app is now caching images to the SD-card
-       * Added some initial localization (contact me if you can help translate!)
-       * Widget should now be working (via the service)
-       * Loads of bug fixes and optimizations
-       * Forum for the app is now available via http://bit.ly/bf3blforum
-       &lt;br /&gt;
-       Please report any errors you may encounter to &lt;u&gt;support@ninetwozero.com&lt;/u&gt; and/or 
-       &lt;u&gt;@karllindmark&lt;/u&gt; on Twitter.&lt;br /&gt;&lt;br /&gt;
-       Thank you for your support!
-	</string>
+   
 	<string name="general_invalid_email">Neispravna e-mail adresa.</string>
 	<string name="general_invalid_password">Molimo unesite svoju lozinku.</string>
 	<string name="general_changelog_version">Povijest izmjena</string>
@@ -421,4 +405,10 @@
 	<string name="info_forum_report_empty">You need to enter a reason for reporting this post.</string>
 	<string name="info_report_active">Reporting...</string>
 	<string name="title_forum_report">BF3 Battlelog - Reporting a forum post</string>
+	<string name="info_forum_lang">Select a language for the forums...</string>
+	<string name="info_general_nocache">The cache directory doesn\'t exist: please contact the developer!</string>
+	<string name="info_unlock_change">Change soldier...</string>
+	<string name="info_general_noprofile">No profile selected.</string>
+	<string name="info_assignments_empty">No assignments found for this soldier.</string>
+	<string name="info_unlocks_empty">No unlocks in this view.</string>
 </resources>

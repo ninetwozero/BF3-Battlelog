@@ -49,22 +49,7 @@
     </string-array>
     
     <!--  translation starts here -->
-   <string name="changelog">* Lade till plutoner &lt;br /&gt;
-* Lade till uppdrag &lt;br /&gt;
-* Lade till forum &lt;br /&gt;
-* Lade till händelser &lt;br /&gt;
-* Lade till det  "globala" flödet &lt;br /&gt;
-* Man kan numera donera pengar via "Om..."-skärmen (nedan) &lt;br /&gt;
-* Delade upp upplåsningarna &lt;br /&gt; 
-* Appen lagrar numera bilder på SD-kortet &lt;br /&gt;
-* Översättning till andra språk har påbörjats (hjälp mottages gärna!) &lt;br /&gt;
-* Widgeten borde fungera nu (med hjälp av servicen) &lt;br /&gt;
-* Massor av buggfixar och optimeringar &lt;br /&gt;
-* Det finns numera ett forum för appen: http://bit.ly/bf3blforum &lt;br /&gt;
-&lt;br /&gt;
-Vänligen rapportera eventuella problem till support@ninetwozero.com och/eller
-@karllindmark på Twitter (https://twitter.com/karllindmark).&lt;br /&gt;&lt;br /&gt;
-Tack för ert stöd!</string>
+   
 	<string name="general_invalid_email">Felaktig e-postadress.</string>
 	<string name="general_invalid_password">Vänligen mata in ditt lösenord.</string>
 	<string name="general_changelog_version">Förändringar till</string>
@@ -420,4 +405,10 @@ Tack för ert stöd!</string>
 	<string name="info_forum_report_empty">Du måste ange en anledning till varför du rapporterar  detta inlägg.</string>
 	<string name="info_report_active">Rapporterar...</string>
 	<string name="title_forum_report">BF3 Battlelog - Rapporterar ett foruminlägg</string>
+	<string name="info_forum_lang">Select a language for the forums...</string>
+	<string name="info_general_nocache">The cache directory doesn\'t exist: please contact the developer!</string>
+	<string name="info_unlock_change">Change soldier...</string>
+	<string name="info_general_noprofile">No profile selected.</string>
+	<string name="info_assignments_empty">No assignments found for this soldier.</string>
+	<string name="info_unlocks_empty">No unlocks in this view.</string>
 </resources>
