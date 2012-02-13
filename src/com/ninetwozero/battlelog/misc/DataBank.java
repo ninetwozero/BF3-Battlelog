@@ -16,9 +16,10 @@ package com.ninetwozero.battlelog.misc;
 
 import java.util.HashMap;
 
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
+import android.util.Log;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PlatformData;
 import com.ninetwozero.battlelog.datatypes.VehicleType;
 import com.ninetwozero.battlelog.datatypes.WeaponType;
@@ -47,9 +48,13 @@ public class DataBank {
 	public static String[] getAssignmentTitle( String key ) { return ASSIGNMENTS.containsKey( key ) ? ASSIGNMENTS.get( key ) : new String[] { key, key }; }
 	public static String getAssignmentCriteria( String key ) { return CRITERIAS.containsKey( key ) ? CRITERIAS.get( key ) : key ; }
 	public static String getExpansionTitle( String key ) { return EXPANSION.containsKey( key ) ? EXPANSION.get( key ) : key; }
+	public static String[] getLanguages() { return LANGUAGES; }
+	public static String[] getLocales() { return LOCALES; }
 	
 	//Maps
 	private static PlatformData[] PLATFORMS;
+	private static String[] LANGUAGES;
+	private static String[] LOCALES;
 	private static HashMap<String, String> RANKS;
 	private static HashMap<String, VehicleType> VEHICLES;
 	private static HashMap<String, String> KIT_ITEMS;
@@ -87,6 +92,10 @@ public class DataBank {
     	ASSIGNMENTS = new HashMap<String, String[]>();
     	CRITERIAS = new HashMap<String, String>();
     	EXPANSION = new HashMap<String, String>();
+    	
+    	//LANG & LOCALE
+    	LANGUAGES = new String[] { "English", "Deutsch", "Français", "Español", "Italiano", "Polski", "Pусский", "日本語", "한국어", "中文", "Česky"  };
+    	LOCALES = new String[] { "en", "de", "fr", "es", "it", "pl", "ru", "jp", "kr", "zh", "cz" };
     	
     	//PLATFORMS
     	PLATFORMS[0] = new PlatformData(1, "pc");
@@ -913,6 +922,40 @@ public class DataBank {
 		
 	}
 
+	public static String getLocale( int p ) {
+		
+		Log.d(Constants.DEBUG_TAG, "p => " + p);
+		switch( p ) {
+			
+	    	case 1: 
+	    		return "en";
+	    	case 2: 
+	    		return "de";
+	    	case 4: 
+	    		return "fr";
+	    	case 8: 
+	    		return "es";
+	    	case 16: 
+	    		return "it";
+	    	case 32: 
+	    		return "pl";
+	    	case 64: 
+	    		return "ru";
+	    	case 128: 
+	    		return "jp";
+	    	case 256: 
+	    		return "kr";
+	    	case 512: 
+	    		return "zh";
+	    	case 1024: 
+	    		return "cz";
+			
+			default:
+				return "en";
+		}
+		
+	}
+	
 	//Static methods
 	public static int getPlatformIdFromName( String p ) {
 			

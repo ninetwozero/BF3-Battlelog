@@ -14,10 +14,12 @@
 
 package com.ninetwozero.battlelog;
 
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
-
-import org.json.JSONArray;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -30,7 +32,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,6 @@ import android.widget.Toast;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
-import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -82,11 +82,20 @@ public class Main extends Activity {
         setContentView(R.layout.main);
         
         //Does the cache-dir exist?
-        if( !ExternalCacheDirectory.getInstance( this ).getExternalCacheDirectory().exists() ) {
-        
-        	Log.d(Constants.DEBUG_TAG, "There is no cache-directory!!");
+        try { 
         	
-        };
+        	if( !ExternalCacheDirectory.getInstance( this ).getExternalCacheDirectory().exists() ) {
+	        	
+	        	Toast.makeText( this, R.string.info_general_nocache, Toast.LENGTH_SHORT).show();
+	        
+	        }
+ 
+        } catch( Exception ex ) {
+        	
+        	ex.printStackTrace();
+        	Toast.makeText( this, R.string.info_general_nocache, Toast.LENGTH_SHORT).show();
+        	
+        }
         
         //Are we active?
         if( PublicUtils.isMyServiceRunning( this ) && BattlelogService.isRunning() ) { 
@@ -306,7 +315,7 @@ public class Main extends Activity {
     		//Do the async
     		if( PublicUtils.isNetworkAvailable( this ) ) { 
     			
-    			AsyncLogin al = new AsyncLogin(this, false, checkboxSave.isChecked());
+    			AsyncLogin al = new AsyncLogin(this, checkboxSave.isChecked());
     			al.execute( postDataArray );
     		
     		} else {

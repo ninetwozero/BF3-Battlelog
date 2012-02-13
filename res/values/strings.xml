@@ -422,4 +422,7 @@
 	<string name="info_forum_report_empty">You need to enter a reason for reporting this post.</string>
 	<string name="info_report_active">Reporting...</string>
 	<string name="title_forum_report">BF3 Battlelog - Reporting a forum post</string>
+	<string name="info_forum_lang">Select a language for the forums...</string>
+	<string name="info_general_nocache">The cache directory doesn\'t exist: please contact the developer!</string>
+	<string name="info_unlock_change">Change soldier...</string>
 </resources>

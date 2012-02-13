@@ -20,6 +20,8 @@ import com.ninetwozero.battlelog.ViewPagerDashboard;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -35,26 +37,25 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
 	//Attribute
-	ProgressDialog progressDialog;
-	Context context;
-	boolean fromWidget;
-	boolean savePassword;
-	SharedPreferences sharedPreferences;
-	SharedPreferences.Editor spEdit;
-	ProfileData profile;
+	private ProgressDialog progressDialog;
+	private Context context;
+	private AsyncLogin origin;
+	private boolean savePassword;
+	private ProfileData profile;
+	private String locale;
 	
 	//Constructor
-	public AsyncLogin( Context c, boolean w ) { 
-		
+	public AsyncLogin( Context c ) { 
+
+		this.origin = this;
 		this.context = c; 
-		this.fromWidget = w;
 	
 	}	
 	
 	//Constructor
-	public AsyncLogin( Context c, boolean w, boolean s) { 
+	public AsyncLogin( Context c, boolean s) { 
 		
-		this(c, w);
+		this(c);
 		this.savePassword = s;
 		
 	}	
@@ -64,15 +65,24 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 	
 		
 		//Let's see
-		if( !fromWidget ) {
+		this.progressDialog = new ProgressDialog(this.context);
+		this.progressDialog.setTitle(context.getString( R.string.general_wait ));
+		this.progressDialog.setMessage( context.getString( R.string.msg_logging_in ) );
+		this.progressDialog.setOnCancelListener( 
+				
+			new OnCancelListener() {
+
+				@Override
+				public void onCancel( DialogInterface dialog ) {
+
+					origin.cancel( true );
+					dialog.dismiss();
+					
+					
+				}}
 		
-			this.progressDialog = new ProgressDialog(this.context);
-			this.progressDialog.setTitle(context.getString( R.string.general_wait ));
-			this.progressDialog.setMessage( context.getString( R.string.msg_logging_in ) );
-			this.progressDialog.setCancelable( false );
-			this.progressDialog.show();
-		
-		}
+		);
+		this.progressDialog.show();
 		
 	}
 	
@@ -83,7 +93,8 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 		
 			profile = WebsiteHandler.doLogin( context, arg0, savePassword );
 			
-			return (profile != null)? true : false;
+			//Did it go ok?
+			return (profile != null );
 			
 		} catch ( WebsiteHandlerException e ) {
 			
@@ -96,35 +107,36 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 	@Override
 	protected void onPostExecute(Boolean results) {
 
-		if( !fromWidget ) {
-			
-			if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
-			
-			if( results ) { 
+	if( this.progressDialog != null ) { this.progressDialog.dismiss(); }
+		
+		if( results ) { 
 
-				//Start the activity
-				if( PublicUtils.isMyServiceRunning( context ) ) {
-					
-					((Activity)context).finish();
-					
-				}
+			//Start the activity
+			if( PublicUtils.isMyServiceRunning( context ) ) {
 				
-				this.context.startActivity( 
-						
-					new Intent(context, Dashboard.class).putExtra( 
-							
-						"myProfile", 
-						profile
-						
-					)
-					
-				); 
-				
-			} else {
-				
-				Toast.makeText( this.context, R.string.msg_login_fail, Toast.LENGTH_SHORT).show(); 
+				((Activity)context).finish();
 				
 			}
+			
+			this.context.startActivity( 
+					
+				new Intent(context, Dashboard.class).putExtra( 
+						
+					"myProfile", 
+					profile
+					
+				).putExtra(
+						
+					"myLocale", 
+					locale
+					
+				)
+				
+			); 
+			
+		} else {
+			
+			Toast.makeText( this.context, R.string.msg_login_fail, Toast.LENGTH_SHORT).show(); 
 			
 		}
 		return;

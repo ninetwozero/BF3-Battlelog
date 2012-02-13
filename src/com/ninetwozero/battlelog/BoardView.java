@@ -15,9 +15,12 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -30,11 +33,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.ninetwozero.battlelog.adapters.ForumListAdapter;
 import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -44,10 +49,13 @@ public class BoardView extends ListActivity {
 	private final Context CONTEXT = this;
 	private SharedPreferences sharedPreferences;
 	private LayoutInflater layoutInflater;
+	private String title;
 	private ArrayList<Board.Forum> forums;
+	private String locale;
 
 	//Elements
 	private ListView listView;
+	private TextView textTitle;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -69,6 +77,7 @@ public class BoardView extends ListActivity {
         //Prepare to tango
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        locale = sharedPreferences.getString( Constants.SP_BL_LOCALE, "en" );
         
         //Init
         initLayout();
@@ -85,6 +94,13 @@ public class BoardView extends ListActivity {
 	
 	public void initLayout() {
 		
+		//Title
+		if( textTitle == null ) {
+			
+			textTitle = (TextView) findViewById(R.id.text_board_title);
+			
+		}
+		
         //Get the listView
         if( listView == null ) { 
         	
@@ -99,11 +115,11 @@ public class BoardView extends ListActivity {
     	
     	if( forums == null ) {
     		
-    		new AsyncGetForums(this, listView).execute(); 
+    		new AsyncGetForums(this).execute(); 
     	
     	} else {
     		
-    		new AsyncGetForums(null, listView).execute(); 
+    		new AsyncGetForums(null).execute(); 
     		
     	}
     	
@@ -177,13 +193,11 @@ public class BoardView extends ListActivity {
 		//Attributes
 		private Context context;
 		private ProgressDialog progressDialog;
-		private ListView list;
 		
 		//Construct
-		public AsyncGetForums(Context c, ListView l) {
+		public AsyncGetForums(Context c) {
 						
 			context = c;
-			list = l;
 			
 		}
 		
@@ -201,12 +215,15 @@ public class BoardView extends ListActivity {
 				
 		}
 		
+		@SuppressWarnings( "unchecked" ) // I know what I'm doing... :D
 		@Override
 		protected Boolean doInBackground( Void... arg0 ) {
 
 			try {
 				
-				forums = WebsiteHandler.getAllForums();
+				Object[] result = WebsiteHandler.getAllForums( locale );
+				title = (String) result[0];
+				forums = (ArrayList<Board.Forum>) result[1];
 				return ( forums != null );
 				
 			} catch( Exception ex ) {
@@ -227,6 +244,9 @@ public class BoardView extends ListActivity {
 			
 			}
 			
+			//update the title
+			textTitle.setText( title );
+			
 			if( listView.getAdapter() != null ) { 
 				
 				((ForumListAdapter)listView.getAdapter()).setItemArray( forums ); 
@@ -236,6 +256,46 @@ public class BoardView extends ListActivity {
 			
 		}
 	
+	}
+	
+	public Dialog generateDialogLanguageList( final Context context, final String[] languages, final String[] locales ) {
+		
+		//Attributes
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		
+	    //Set the title and the view
+		builder.setTitle( R.string.info_forum_lang );
+		
+		builder.setSingleChoiceItems(
+				
+			languages, -1, new DialogInterface.OnClickListener() {
+		  
+				public void onClick(DialogInterface dialog, int item) {
+			    	
+					sharedPreferences.edit().putString( Constants.SP_BL_LOCALE, locales[item] ).commit();
+					locale = locales[item];
+					reloadLayout();
+					dialog.dismiss();
+		
+				}
+				
+			}
+		
+		);
+		
+		//CREATE
+		return builder.create();
+		
+	}
+	
+	public void onClick(View v) {
+	
+		if( v.getId() == R.id.wrap_top ) {
+		
+			generateDialogLanguageList(this, DataBank.getLanguages(), DataBank.getLocales()).show();
+			
+		}
+		
 	}
 	
 }

@@ -64,6 +64,7 @@ import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class ForumThreadView extends ListActivity {
@@ -74,7 +75,7 @@ public class ForumThreadView extends ListActivity {
 	private LayoutInflater layoutInflater;
 	private Board.ThreadData currentThread;
 	private long threadId;
-	private String threadTitle;
+	private String threadTitle, locale;
 	private int currentPage;
 	private HashMap<Long, String> selectedQuotes;
 	private Integer[] pageArray;
@@ -118,6 +119,7 @@ public class ForumThreadView extends ListActivity {
         //Prepare to tango
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        locale = sharedPreferences.getString( Constants.SP_BL_LOCALE, "en" );
         
         //Get the threadId
         threadId = getIntent().getLongExtra( "threadId", 0 );
@@ -286,7 +288,7 @@ public class ForumThreadView extends ListActivity {
 
 			try {
 				
-				currentThread = WebsiteHandler.getPostsForThread( arg0[0] );
+				currentThread = WebsiteHandler.getPostsForThread( locale, arg0[0] );
 				return ( currentThread != null );
 				
 			} catch( Exception ex ) {

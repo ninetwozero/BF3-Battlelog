@@ -31,12 +31,12 @@
 			android:id="@+id/wrap_persona"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
+			android:onClick="onClick"
 		>
 			<TextView
 			    style="@style/InfoHeading"
 			    android:id="@+id/string_persona"
 		    	android:text="NINETWOZERO"
-				android:onClick="onClick"
 				android:padding="5dp"
 				android:clickable="true"
 		    />

@@ -17,20 +17,35 @@
     android:layout_height="fill_parent"
     android:padding="10dp"
 >     
-	<TextView 
-	    style="@style/InfoHeading"
-	    android:id="@+id/string000"
-		android:layout_alignParentTop="true"
-		android:text="@string/info_xml_forums"
-		android:padding="5dp"
-		android:layout_marginTop="0dp"
-
-	/>
+	<RelativeLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/wrap_top"
+	    android:onClick="onClick"
+	>
+		<TextView 
+		    style="@style/InfoHeading"
+		    android:id="@+id/text_board_title"
+			android:layout_alignParentTop="true"
+			android:text="@string/info_xml_forums"
+			android:padding="5dp"
+			android:layout_marginTop="0dp"
+		/>
+		<ImageView
+		    android:id="@+id/img_persona_list"
+		    android:src="@android:drawable/arrow_down_float"
+			android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:layout_alignParentRight="true"
+	    	android:layout_marginTop="12dp"
+	    	android:layout_marginRight="5dp"
+	    />
+	</RelativeLayout>
 	<ListView 
 		android:id="@android:id/list" 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/string000"   
+		android:layout_below="@id/wrap_top"   
 		android:fastScrollEnabled="true"
 	/>
 	<TextView

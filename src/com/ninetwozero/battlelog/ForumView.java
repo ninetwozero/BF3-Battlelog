@@ -58,10 +58,9 @@ public class ForumView extends ListActivity {
 	private LayoutInflater layoutInflater;
 	private Board.Forum currentForum;
 	private long forumId;
-	private String forumTitle;
+	private String forumTitle, locale;
 	private int currentPage = 1;
 	private long latestRefresh = 0;
-	private InputMethodManager inputMethodManager;
 	
 	//Elements
 	private ListView listView;
@@ -105,6 +104,7 @@ public class ForumView extends ListActivity {
         //Get the forumId
         forumId = getIntent().getLongExtra( "forumId", 0 );
         forumTitle = getIntent().getStringExtra( "forumTitle" );
+        locale = sharedPreferences.getString( Constants.SP_BL_LOCALE, "en" );
         
     	//Update the title
     	this.setTitle( getTitle().toString().replace( "...", forumTitle ) );
@@ -326,7 +326,7 @@ public class ForumView extends ListActivity {
 
 			try {
 				
-				currentForum = WebsiteHandler.getThreadsForForum( arg0[0] );
+				currentForum = WebsiteHandler.getThreadsForForum( locale, arg0[0] );
 				return ( currentForum != null );
 				
 			} catch( Exception ex ) {

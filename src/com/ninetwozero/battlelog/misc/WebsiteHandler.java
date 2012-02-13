@@ -733,6 +733,7 @@ public class WebsiteHandler {
 			//Init
 			HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
 			ProfileData profileData = pd;
+			int numValidSoldiers = 0;
 			
 			//Do we have a personaId?
 			if( profileData.getPersonaId() == 0 ) {
@@ -764,73 +765,123 @@ public class WebsiteHandler {
 		    	JSONObject dataObject = new JSONObject(httpContent).getJSONObject( "data" );
 		    	
 		    	//Is overviewStats NULL? If so, no data.
-		    	if( dataObject.isNull( "overviewStats" ) ) { return null; }
-		    	
-		    	//Keep it up!
-		    	JSONObject statsOverview = dataObject.getJSONObject( "overviewStats" );
-		    	JSONObject kitScores = statsOverview.getJSONObject( "kitScores" );
-		    	JSONObject nextRankInfo = dataObject.getJSONObject( "rankNeeded" );
-		    	JSONObject currRankInfo = dataObject.getJSONObject( "currentRankNeeded" );
-		    	
-		        //Yay
-		        stats.put(
-		        		
-	        		profileData.getPersonaId(i),
-		        	new PersonaStats(
-		        			
-			        	profileData.getAccountName(),
-			        	profileData.getPersonaName(i),
-			        	currRankInfo.getString( "name" ),
-			        	statsOverview.getLong( "rank" ),
-			        	profileData.getPersonaId(i),
-			        	profileData.getProfileId(),
-			        	profileData.getPlatformId(i),
-			        	statsOverview.getLong( "timePlayed" ),
-			        	currRankInfo.getLong( "pointsNeeded" ),
-			        	nextRankInfo.getLong( "pointsNeeded" ),
-			        	statsOverview.getInt( "kills" ),
-			        	statsOverview.getInt( "killAssists" ),
-			        	statsOverview.getInt( "vehiclesDestroyed" ),
-			        	statsOverview.getInt( "vehiclesDestroyedAssists" ),
-			        	statsOverview.getInt( "heals" ),
-			        	statsOverview.getInt( "revives" ),
-			        	statsOverview.getInt( "repairs" ),
-			        	statsOverview.getInt( "resupplies" ),
-			        	statsOverview.getInt( "deaths" ),
-			        	statsOverview.getInt( "numWins" ),
-			        	statsOverview.getInt( "numLosses" ),
-			        	statsOverview.getDouble( "kdRatio" ),
-			        	statsOverview.getDouble( "accuracy" ),
-			        	statsOverview.getDouble( "longestHeadshot" ),
-			        	statsOverview.getDouble( "killStreakBonus" ),
-			        	statsOverview.getDouble( "elo" ),
-			        	statsOverview.getDouble( "scorePerMinute" ),
-			        	kitScores.getLong( "1" ),
-			        	kitScores.getLong( "2" ),
-			        	kitScores.getLong( "32" ),
-			        	kitScores.getLong( "8" ),
-			        	statsOverview.getLong( "sc_vehicle" ),
-			        	statsOverview.getLong( "combatScore" ),
-			        	statsOverview.getLong( "sc_award" ),
-			        	statsOverview.getLong( "sc_unlock" ),
-			        	statsOverview.getLong( "totalScore" )
+		    	if( !dataObject.isNull( "overviewStats" ) ) { 
+		    		
+			    	
+			    	//Keep it up!
+			    	JSONObject statsOverview = dataObject.getJSONObject( "overviewStats" );
+			    	JSONObject kitScores = statsOverview.getJSONObject( "kitScores" );
+			    	JSONObject nextRankInfo = dataObject.getJSONObject( "rankNeeded" );
+			    	JSONObject currRankInfo = dataObject.getJSONObject( "currentRankNeeded" );
+			    	
+			        //Yay
+			        stats.put(
+			        		
+		        		profileData.getPersonaId(i),
+			        	new PersonaStats(
+			        			
+				        	profileData.getAccountName(),
+				        	profileData.getPersonaName(i),
+				        	currRankInfo.getString( "name" ),
+				        	statsOverview.getLong( "rank" ),
+				        	profileData.getPersonaId(i),
+				        	profileData.getProfileId(),
+				        	profileData.getPlatformId(i),
+				        	statsOverview.getLong( "timePlayed" ),
+				        	currRankInfo.getLong( "pointsNeeded" ),
+				        	nextRankInfo.getLong( "pointsNeeded" ),
+				        	statsOverview.getInt( "kills" ),
+				        	statsOverview.getInt( "killAssists" ),
+				        	statsOverview.getInt( "vehiclesDestroyed" ),
+				        	statsOverview.getInt( "vehiclesDestroyedAssists" ),
+				        	statsOverview.getInt( "heals" ),
+				        	statsOverview.getInt( "revives" ),
+				        	statsOverview.getInt( "repairs" ),
+				        	statsOverview.getInt( "resupplies" ),
+				        	statsOverview.getInt( "deaths" ),
+				        	statsOverview.getInt( "numWins" ),
+				        	statsOverview.getInt( "numLosses" ),
+				        	statsOverview.getDouble( "kdRatio" ),
+				        	statsOverview.getDouble( "accuracy" ),
+				        	statsOverview.getDouble( "longestHeadshot" ),
+				        	statsOverview.getDouble( "killStreakBonus" ),
+				        	statsOverview.getDouble( "elo" ),
+				        	statsOverview.getDouble( "scorePerMinute" ),
+				        	kitScores.getLong( "1" ),
+				        	kitScores.getLong( "2" ),
+				        	kitScores.getLong( "32" ),
+				        	kitScores.getLong( "8" ),
+				        	statsOverview.getLong( "sc_vehicle" ),
+				        	statsOverview.getLong( "combatScore" ),
+				        	statsOverview.getLong( "sc_award" ),
+				        	statsOverview.getLong( "sc_unlock" ),
+				        	statsOverview.getLong( "totalScore" )
+				    
+			        	)
+			        
+			        );
+			        
+		    	} else {
+		    		
+			        stats.put(
+			        		
+			        		profileData.getPersonaId(i),
+				        	new PersonaStats(
+				        			
+					        	profileData.getAccountName(),
+					        	profileData.getPersonaName(i),
+					        	"Recruit",
+					        	0,
+					        	profileData.getPersonaId(i),
+					        	profileData.getProfileId(),
+					        	profileData.getPlatformId(i),
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0.0,
+					        	0.0,
+					        	0.0,
+					        	0.0,
+					        	0.0,
+					        	0.0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0,
+					        	0
+					    
+				        	)
+				        
+				        );
+		    		
+		    	}
 			    
-		        	)
-		        
-		        );
-		    
 			}
 			
-			//Cache it!
 			if( CacheHandler.Persona.insert( context, stats ) == 0 ) {
-				
+					
 				CacheHandler.Persona.update( context, stats );
 			
 			}
 
 			//Return!
 			return stats;
-		        
+				
 		} catch ( Exception ex ) {
 			
 			ex.printStackTrace();
@@ -840,7 +891,7 @@ public class WebsiteHandler {
 		
 	}
 
-	public static UnlockDataWrapper getUnlocksForUser(final ProfileData pd, final int personaPos) throws WebsiteHandlerException {
+	public static HashMap<Long, UnlockDataWrapper> getUnlocksForUser(final ProfileData pd) throws WebsiteHandlerException {
 		
 		try {
 			
@@ -848,228 +899,221 @@ public class WebsiteHandler {
 	    	RequestHandler wh = new RequestHandler();
 	    	
 	    	//Init the ArrayLists
-	       	ArrayList<UnlockData> weaponArray = new ArrayList<UnlockData>();
-	       	ArrayList<UnlockData> attachmentArray = new ArrayList<UnlockData>();
-	       	ArrayList<UnlockData> kitUnlockArray = new ArrayList<UnlockData>();
-	       	ArrayList<UnlockData> vehicleUpgradeArray = new ArrayList<UnlockData>();
-	       	ArrayList<UnlockData> skillArray = new ArrayList<UnlockData>();
-	       	ArrayList<UnlockData> unlockArray = new ArrayList<UnlockData>();
-	   	 
-	    	//Get the data
-	    	String content = "";
-	    	
-	    	if( personaPos == -1 ) {
-	    		
-	    		content = wh.get( 
-			
+	    	HashMap<Long, UnlockDataWrapper> unlockDataMap = new HashMap<Long, UnlockDataWrapper>();
+	       	ArrayList<UnlockData> weaponArray;
+	       	ArrayList<UnlockData> attachmentArray;
+	       	ArrayList<UnlockData> kitUnlockArray;
+	       	ArrayList<UnlockData> vehicleUpgradeArray;
+	       	ArrayList<UnlockData> skillArray;
+	       	ArrayList<UnlockData> unlockArray;
+	       	
+	       	for( int count = 0, maxCount = pd.getNumPersonas(); count < maxCount; count++ ) {
+	       		
+				weaponArray = new ArrayList<UnlockData>();
+				attachmentArray = new ArrayList<UnlockData>();
+				kitUnlockArray = new ArrayList<UnlockData>();
+				vehicleUpgradeArray = new ArrayList<UnlockData>();
+				skillArray = new ArrayList<UnlockData>();
+				unlockArray = new ArrayList<UnlockData>();
+		   	 
+		    	//Get the data
+		    	String content = "";
+		    	
+		    	content = wh.get( 
+				
 					Constants.URL_STATS_UNLOCKS.replace(
 							
-						"{PID}", pd.getPersonaId() + ""
+						"{PID}", pd.getPersonaId(count) + ""
 					
 					).replace( 
 					
-						"{PLATFORM_ID}", pd.getPlatformId() + ""
+						"{PLATFORM_ID}", pd.getPlatformId(count) + ""
 					), 
 					0
 					
 				);
-
-	    	} else {
-	    	
-	    		content = wh.get( 
-	    				
-					Constants.URL_STATS_UNLOCKS.replace(
-							
-						"{PID}", pd.getPersonaId(personaPos) + ""
-					
-					).replace( 
-					
-						"{PLATFORM_ID}", pd.getPlatformId(personaPos) + ""
-					), 
-					0
-					
-				);
-	    		
-	    	}
-	    	
-	    	//JSON Objects
-	    	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
-	    	JSONArray unlockResults = dataObject.getJSONArray( "unlocks" );
-	    	int unlockKit;
-	    	
-	    	//Iterate over the unlocksArray
-	    	for( int i = 0, max = unlockResults.length(); i < max; i++ ) {
-	    	
-	    		//Get the temporary object
-	    		JSONObject unlockRow = unlockResults.optJSONObject( i );
-	    		
-	    		try {
+		    	
+		    	//JSON Objects
+		    	JSONObject dataObject = new JSONObject(content).getJSONObject( "data" );
+		    	JSONArray unlockResults = dataObject.getJSONArray( "unlocks" );
+		    	int unlockKit;
+		    	
+		    	//Iterate over the unlocksArray
+		    	for( int i = 0, max = unlockResults.length(); i < max; i++ ) {
+		    	
+		    		//Get the temporary object
+		    		JSONObject unlockRow = unlockResults.optJSONObject( i );
+		    		
+		    		try {
+		
+		    			unlockKit = unlockRow.getInt( "kit" );
+		    		
+		    		} catch( Exception ex ) {
+		    			
+		    			unlockKit = 0;
+		    			
+		    		}
+		    		
+		    		//What did we get?
+		    		if( !unlockRow.isNull( "weaponAddonUnlock" ) ) {
+		    			
+		    			//Get the object
+				    	JSONObject detailObject = unlockRow.getJSONObject( "weaponAddonUnlock" );
+		    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
+		    			
+		    			//Less than 1.0?
+			    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
+		    			
+		    			//Add them to the array
+		    			attachmentArray.add( 
+		    				
+		    				new UnlockData(
+		    				
+								unlockKit,
+								unlockDetails.getDouble( "completion" ),
+								unlockDetails.getLong( "valueNeeded" ),
+								unlockDetails.getLong( "actualValue" ),
+								detailObject.getString( "weaponCode" ),
+								detailObject.getString( "unlockId" ),
+								unlockDetails.getString( "codeNeeded" ),
+								"weapon+"
+		    						
+							)	
+		    					
+						);
+		  
+		    		} else if( !unlockRow.isNull( "kitItemUnlock" ) ) {
+		
+		    			//Get the object
+				    	JSONObject detailObject = unlockRow.getJSONObject( "kitItemUnlock" );
+		    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
+		    			
+		    			//Less than 1.0?
+			    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
+		    			
+		    			//Add them to the array
+		    			kitUnlockArray.add( 
+		    				
+		    				new UnlockData(
+		    				
+								unlockKit,
+								unlockDetails.getDouble( "completion" ),
+								unlockDetails.getLong( "valueNeeded" ),
+								unlockDetails.getLong( "actualValue" ),
+								unlockRow.getString( "parentId" ),
+								detailObject.getString( "unlockId" ),
+								unlockDetails.getString( "codeNeeded" ),
+								"kit+"
+		    						
+							)	
+		    					
+						);
+		    	    	
+		    		} else if( !unlockRow.isNull( "vehicleAddonUnlock" ) ) {
+		
+		    			//Get the object
+				    	JSONObject detailObject = unlockRow.getJSONObject( "vehicleAddonUnlock" );
+		    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
+		    			
+		    			//Less than 1.0?
+			    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
+		    			
+		    			//Add them to the array
+		    			vehicleUpgradeArray.add( 
+		    				
+		    				new UnlockData(
+		    				
+								unlockKit,
+								unlockDetails.getDouble( "completion" ),
+								unlockDetails.getLong( "valueNeeded" ),
+								unlockDetails.getLong( "actualValue" ),
+								unlockRow.getString( "parentId" ),
+								detailObject.getString( "unlockId" ),
+								unlockDetails.getString( "codeNeeded" ),
+								"vehicle+"
+		    						
+							)	
+		    					
+						);
+		    	    	
+		    		} else if( !unlockRow.isNull( "weaponUnlock" ) ) {
 	
-	    			unlockKit = unlockRow.getInt( "kit" );
-	    		
-	    		} catch( Exception ex ) {
-	    			
-	    			unlockKit = 0;
-	    			
-	    		}
-	    		
-	    		//What did we get?
-	    		if( !unlockRow.isNull( "weaponAddonUnlock" ) ) {
-	    			
-	    			//Get the object
-			    	JSONObject detailObject = unlockRow.getJSONObject( "weaponAddonUnlock" );
-	    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
-	    			
-	    			//Less than 1.0?
-		    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
-	    			
-	    			//Add them to the array
-	    			attachmentArray.add( 
-	    				
-	    				new UnlockData(
-	    				
-							unlockKit,
-							unlockDetails.getDouble( "completion" ),
-							unlockDetails.getLong( "valueNeeded" ),
-							unlockDetails.getLong( "actualValue" ),
-							detailObject.getString( "weaponCode" ),
-							detailObject.getString( "unlockId" ),
-							unlockDetails.getString( "codeNeeded" ),
-							"weapon+"
-	    						
-						)	
-	    					
-					);
-	  
-	    		} else if( !unlockRow.isNull( "kitItemUnlock" ) ) {
+		    			//Get the object
+				    	JSONObject detailObject = unlockRow.getJSONObject( "weaponUnlock" );
+		    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
+		    			
+		    			//Less than 1.0?
+			    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
+		    			
+		    			//Add them to the array
+		    			weaponArray.add( 
+		    				
+		    				new UnlockData(
+		    				
+								unlockKit,
+								unlockDetails.getDouble( "completion" ),
+								unlockDetails.getLong( "valueNeeded" ),
+								unlockDetails.getLong( "actualValue" ),
+								unlockRow.getString( "parentId" ),
+								detailObject.getString( "unlockId" ),
+								unlockDetails.getString( "codeNeeded" ),
+								"weapon"
+		    						
+							)	
+		    					
+						);
+		    	    	
+		    		} else if( !unlockRow.isNull( "soldierSpecializationUnlock" ) ) {
 	
-	    			//Get the object
-			    	JSONObject detailObject = unlockRow.getJSONObject( "kitItemUnlock" );
-	    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
-	    			
-	    			//Less than 1.0?
-		    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
-	    			
-	    			//Add them to the array
-	    			kitUnlockArray.add( 
-	    				
-	    				new UnlockData(
-	    				
-							unlockKit,
-							unlockDetails.getDouble( "completion" ),
-							unlockDetails.getLong( "valueNeeded" ),
-							unlockDetails.getLong( "actualValue" ),
-							unlockRow.getString( "parentId" ),
-							detailObject.getString( "unlockId" ),
-							unlockDetails.getString( "codeNeeded" ),
-							"kit+"
-	    						
-						)	
-	    					
-					);
-	    	    	
-	    		} else if( !unlockRow.isNull( "vehicleAddonUnlock" ) ) {
-	
-	    			//Get the object
-			    	JSONObject detailObject = unlockRow.getJSONObject( "vehicleAddonUnlock" );
-	    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
-	    			
-	    			//Less than 1.0?
-		    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
-	    			
-	    			//Add them to the array
-	    			vehicleUpgradeArray.add( 
-	    				
-	    				new UnlockData(
-	    				
-							unlockKit,
-							unlockDetails.getDouble( "completion" ),
-							unlockDetails.getLong( "valueNeeded" ),
-							unlockDetails.getLong( "actualValue" ),
-							unlockRow.getString( "parentId" ),
-							detailObject.getString( "unlockId" ),
-							unlockDetails.getString( "codeNeeded" ),
-							"vehicle+"
-	    						
-						)	
-	    					
-					);
-	    	    	
-	    		} else if( !unlockRow.isNull( "weaponUnlock" ) ) {
-
-	    			//Get the object
-			    	JSONObject detailObject = unlockRow.getJSONObject( "weaponUnlock" );
-	    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
-	    			
-	    			//Less than 1.0?
-		    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
-	    			
-	    			//Add them to the array
-	    			weaponArray.add( 
-	    				
-	    				new UnlockData(
-	    				
-							unlockKit,
-							unlockDetails.getDouble( "completion" ),
-							unlockDetails.getLong( "valueNeeded" ),
-							unlockDetails.getLong( "actualValue" ),
-							unlockRow.getString( "parentId" ),
-							detailObject.getString( "unlockId" ),
-							unlockDetails.getString( "codeNeeded" ),
-							"weapon"
-	    						
-						)	
-	    					
-					);
-	    	    	
-	    		} else if( !unlockRow.isNull( "soldierSpecializationUnlock" ) ) {
-
-	    			//Get the object
-			    	JSONObject detailObject = unlockRow.getJSONObject( "soldierSpecializationUnlock" );
-	    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
-	    			
-	    			//Less than 1.0?
-		    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
-	    			
-	    			//Add them to the array
-	    			skillArray.add( 
-	    				
-	    				new UnlockData(
-	    				
-							unlockKit,
-							unlockDetails.getDouble( "completion" ),
-							unlockDetails.getLong( "valueNeeded" ),
-							unlockDetails.getLong( "actualValue" ),
-							unlockRow.getString( "parentId" ),
-							detailObject.getString( "unlockId" ),
-							unlockDetails.getString( "codeNeeded" ),
-							"skill"
-	    						
-						)	
-	    					
-					);
-	    			
-	    		} else {}
-	    	}
+		    			//Get the object
+				    	JSONObject detailObject = unlockRow.getJSONObject( "soldierSpecializationUnlock" );
+		    			JSONObject unlockDetails = detailObject.getJSONObject( "unlockedBy" );
+		    			
+		    			//Less than 1.0?
+			    		if( unlockDetails.getDouble( "completion" ) < 1.0 ) { continue; }
+		    			
+		    			//Add them to the array
+		    			skillArray.add( 
+		    				
+		    				new UnlockData(
+		    				
+								unlockKit,
+								unlockDetails.getDouble( "completion" ),
+								unlockDetails.getLong( "valueNeeded" ),
+								unlockDetails.getLong( "actualValue" ),
+								unlockRow.getString( "parentId" ),
+								detailObject.getString( "unlockId" ),
+								unlockDetails.getString( "codeNeeded" ),
+								"skill"
+		    						
+							)	
+		    					
+						);
+		    			
+		    		} else {}
+		    	}
+		    	
+		    	//Let's put them together
+		    	unlockArray.addAll( weaponArray );
+		    	unlockArray.addAll( attachmentArray );
+		    	unlockArray.addAll( kitUnlockArray );
+		    	unlockArray.addAll( vehicleUpgradeArray );
+		    	unlockArray.addAll( skillArray );
+		    	
+		        //Yay
+		    	Collections.sort( weaponArray, new UnlockComparator() );
+		    	Collections.sort( attachmentArray, new UnlockComparator() );
+		    	Collections.sort( kitUnlockArray, new UnlockComparator() );
+		    	Collections.sort( vehicleUpgradeArray, new UnlockComparator() );
+		    	Collections.sort( skillArray, new UnlockComparator() );
+		    	Collections.sort( unlockArray, new UnlockComparator() );
+		    	
+		    	unlockDataMap.put(pd.getPersonaId(count), new UnlockDataWrapper( weaponArray, attachmentArray, kitUnlockArray, vehicleUpgradeArray, skillArray, unlockArray) );
+		 	    
+	       	}
+	       	
+	       	return unlockDataMap;
 	    	
-	    	//Let's put them together
-	    	unlockArray.addAll( weaponArray );
-	    	unlockArray.addAll( attachmentArray );
-	    	unlockArray.addAll( kitUnlockArray );
-	    	unlockArray.addAll( vehicleUpgradeArray );
-	    	unlockArray.addAll( skillArray );
-	    	
-	        //Yay
-	    	Collections.sort( weaponArray, new UnlockComparator() );
-	    	Collections.sort( attachmentArray, new UnlockComparator() );
-	    	Collections.sort( kitUnlockArray, new UnlockComparator() );
-	    	Collections.sort( vehicleUpgradeArray, new UnlockComparator() );
-	    	Collections.sort( skillArray, new UnlockComparator() );
-	    	Collections.sort( unlockArray, new UnlockComparator() );
-	    	    	
-	    	//RETURN TO SENDER
-	        return new UnlockDataWrapper( weaponArray, attachmentArray, kitUnlockArray, vehicleUpgradeArray, skillArray, unlockArray);
-	    
 		} catch ( Exception ex ) {
 			
 			ex.printStackTrace();
@@ -5043,18 +5087,19 @@ public class WebsiteHandler {
 			
 	}
 	
-	public static ArrayList<Board.Forum> getAllForums() throws WebsiteHandlerException {
+	public static Object[] getAllForums(String locale) throws WebsiteHandlerException {
 
 		try {
 			
-			//Init to winit
+			//Init to win it
 			ArrayList<Board.Forum> forums = new ArrayList<Board.Forum>();
+			String title = "";
 			
 			//Setup a RequestHandler
 			RequestHandler rh = new RequestHandler();
 			final String httpContent = rh.get(
 					
-				Constants.URL_FORUM_LIST, 
+				Constants.URL_FORUM_LIST_LOCALIZED.replace( "{locale}", locale ), 
 				1
 			
 			);
@@ -5062,6 +5107,9 @@ public class WebsiteHandler {
 			//Let's parse it!
 			JSONArray categoryArray = new JSONObject(httpContent).getJSONObject( "context" ).getJSONArray( "categories" );
 			JSONArray forumArray = categoryArray.getJSONObject( 0 ).optJSONArray( "forums" );
+			
+			//Get the title
+			title = categoryArray.getJSONObject( 0 ).getString( "title" );
 			
 			//Loop
 			for( int i = 0, max = forumArray.length(); i < max; i++ ) {
@@ -5128,7 +5176,7 @@ public class WebsiteHandler {
 			}
 			
 			//Return
-			return forums;
+			return new Object[] { title, forums };
 			
 		} catch( Exception ex ) {
 			
@@ -5139,7 +5187,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static Board.Forum getThreadsForForum(long forumId) throws WebsiteHandlerException {
+	public static Board.Forum getThreadsForForum(String locale, long forumId) throws WebsiteHandlerException {
 
 		try {
 			
@@ -5150,7 +5198,7 @@ public class WebsiteHandler {
 			RequestHandler rh = new RequestHandler();
 			final String httpContent = rh.get(
 					
-				Constants.URL_FORUM_FORUM.replace( "{FORUM_ID}", forumId + "" ).replace( "{PAGE}", 1 + "" ), 
+				Constants.URL_FORUM_FORUM.replace( "{locale}", locale ).replace( "{FORUM_ID}", forumId + "" ).replace( "{PAGE}", 1 + "" ), 
 				1
 			
 			);
@@ -5283,7 +5331,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static Board.ThreadData getPostsForThread(long threadId) throws WebsiteHandlerException {
+	public static Board.ThreadData getPostsForThread(String locale, long threadId) throws WebsiteHandlerException {
 
 		try {
 			
@@ -5294,7 +5342,7 @@ public class WebsiteHandler {
 			RequestHandler rh = new RequestHandler();
 			final String httpContent = rh.get(
 					
-				Constants.URL_FORUM_THREAD.replace( "{THREAD_ID}", threadId + "" ).replace( "{PAGE}", "1" ), 
+				Constants.URL_FORUM_THREAD.replace( "{locale}", locale ).replace( "{THREAD_ID}", threadId + "" ).replace( "{PAGE}", "1" ), 
 				1
 			
 			);

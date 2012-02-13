@@ -713,11 +713,20 @@ public class PlatoonView extends TabActivity {
     			((ImageView) cacheView.findViewById( R.id.image_avatar )).setImageResource(R.drawable.default_avatar);
     			
     		}
+    		
     		//Set the TextViews accordingly
     		( (TextView) cacheView.findViewById( R.id.text_label )).setText( tempTopStats.getLabel().toUpperCase() + "" );
-    		( (TextView) cacheView.findViewById( R.id.text_name )).setText( tempTopStats.getProfile().getAccountName() + "" );
-        	( (TextView) cacheView.findViewById( R.id.text_spm )).setText( tempTopStats.getSPM() + "" );
+    		if( tempTopStats.getProfile() != null ) {
     			
+    			( (TextView) cacheView.findViewById( R.id.text_name )).setText( tempTopStats.getProfile().getAccountName() + "" );
+	        	( (TextView) cacheView.findViewById( R.id.text_spm )).setText( tempTopStats.getSPM() + "" );
+    			
+    		} else {
+    		
+    			( (TextView) cacheView.findViewById( R.id.text_name )).setText( "N/A" );
+	        	( (TextView) cacheView.findViewById( R.id.text_spm )).setText( "0" );
+    			
+    		}
     	}
     	
     	//Let's generate the table rows!

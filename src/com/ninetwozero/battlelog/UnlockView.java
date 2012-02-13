@@ -14,11 +14,15 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -55,11 +59,12 @@ public class UnlockView extends TabActivity {
 	private ProgressBar progressBar;
 	private AsyncGetDataSelf getDataAsync;
 	private ProfileData profileData;
-	private UnlockDataWrapper unlocks;
+	private HashMap<Long, UnlockDataWrapper> unlocks;
 	private TabHost tabHost;
 	private LayoutInflater layoutInflater;
 	private ListView[] listView;
-	private int selectedPersona;
+	private long selectedPersona;
+	private long selectedPosition;
 	
 	@Override
     public void onCreate(Bundle icicle) {
@@ -216,23 +221,23 @@ public class UnlockView extends TabActivity {
     				switch( tabHost.getCurrentTab() ) {
 						
 						case 0:
-							setupList(unlocks.getWeapons(), 0);
+							setupList(unlocks.get( selectedPersona ).getWeapons(), 0);
 							break;
 							
 						case 1:
-							setupList(unlocks.getAttachments(), 1);
+							setupList(unlocks.get( selectedPersona ).getAttachments(), 1);
 							break;
 							
 						case 2:
-							setupList(unlocks.getKitUnlocks(), 2);
+							setupList(unlocks.get( selectedPersona ).getKitUnlocks(), 2);
 							break;
 
 						case 3:
-							setupList(unlocks.getVehicleUpgrades(), 3);
+							setupList(unlocks.get( selectedPersona ).getVehicleUpgrades(), 3);
 							break;
 							
 						case 4:
-							setupList(unlocks.getSkills(), 4);
+							setupList(unlocks.get( selectedPersona ).getSkills(), 4);
 							break;
 						
 						default:
@@ -295,11 +300,11 @@ public class UnlockView extends TabActivity {
 				if( arg0[0].getPersonaId() == 0 ) { 
 					
 					profileData = WebsiteHandler.getPersonaIdFromProfile( profileData ); 
-					unlocks = WebsiteHandler.getUnlocksForUser( profileData, selectedPersona );
+					unlocks = WebsiteHandler.getUnlocksForUser( profileData );
 					
 				} else {
 					
-					unlocks = WebsiteHandler.getUnlocksForUser( arg0[0], selectedPersona );
+					unlocks = WebsiteHandler.getUnlocksForUser( arg0[0] );
 
 				}	
 				
@@ -331,23 +336,23 @@ public class UnlockView extends TabActivity {
 			switch( tabHost.getCurrentTab() ) {
 				
 				case 0:
-					setupList(unlocks.getWeapons(), 0);
+					setupList(unlocks.get( selectedPersona ).getWeapons(), 0);
 					break;
 					
 				case 1:
-					setupList(unlocks.getAttachments(), 1);
+					setupList(unlocks.get( selectedPersona ).getAttachments(), 1);
 					break;
 					
 				case 2:
-					setupList(unlocks.getKitUnlocks(), 2);
+					setupList(unlocks.get( selectedPersona ).getKitUnlocks(), 2);
 					break;
 					
 				case 3:
-					setupList(unlocks.getVehicleUpgrades(), 3);
+					setupList(unlocks.get( selectedPersona ).getVehicleUpgrades(), 3);
 					break;
 					
 				case 4:
-					setupList(unlocks.getSkills(), 4);
+					setupList(unlocks.get( selectedPersona ).getSkills(), 4);
 					break;
 					
 				default:
@@ -367,7 +372,7 @@ public class UnlockView extends TabActivity {
 	public boolean onCreateOptionsMenu( Menu menu ) {
 
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate( R.menu.option_basic, menu );
+		inflater.inflate( R.menu.option_unlock, menu );
 		return super.onCreateOptionsMenu( menu );
 	
     }
@@ -398,6 +403,10 @@ public class UnlockView extends TabActivity {
 	
 			this.reloadLayout();
 			
+		} else if( item.getItemId() == R.id.option_change ) {
+			
+			generateDialogPersonaList( this, profileData.getPersonaIdArray(), profileData.getPersonaNameArray() ).show();
+			
 		} else if( item.getItemId() == R.id.option_back ) {
 			
 			((Activity) this).finish();
@@ -422,4 +431,69 @@ public class UnlockView extends TabActivity {
 	
 	}
     
+	public Dialog generateDialogPersonaList( final Context context, final long[] personaId, final String[] persona ) {
+		
+		//Attributes
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		
+	    //Set the title and the view
+		builder.setTitle( R.string.info_dialog_soldierselect );
+		
+		builder.setSingleChoiceItems(
+				
+			persona, -1, new DialogInterface.OnClickListener() {
+		  
+				public void onClick(DialogInterface dialog, int item) {
+			    	
+					if( personaId[item] != selectedPersona ) {
+						
+						//Update it
+						selectedPersona = profileData.getPersonaId(item);
+					
+						//Load the new!
+						switch( tabHost.getCurrentTab() ) {
+							
+							case 0:
+								setupList(unlocks.get( selectedPersona ).getWeapons(), 0);
+								break;
+								
+							case 1:
+								setupList(unlocks.get( selectedPersona ).getAttachments(), 1);
+								break;
+								
+							case 2:
+								setupList(unlocks.get( selectedPersona ).getKitUnlocks(), 2);
+								break;
+								
+							case 3:
+								setupList(unlocks.get( selectedPersona ).getVehicleUpgrades(), 3);
+								break;
+								
+							case 4:
+								setupList(unlocks.get( selectedPersona ).getSkills(), 4);
+								break;
+								
+							default:
+								break;
+							
+							
+						}
+						
+						//Store selectedPersonaPos
+						selectedPosition = item;
+						
+					}
+					
+					dialog.dismiss();
+		
+				}
+				
+			}
+		
+		);
+		
+		//CREATE
+		return builder.create();
+		
+	}
 }

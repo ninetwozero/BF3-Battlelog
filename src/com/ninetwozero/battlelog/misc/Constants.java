@@ -98,8 +98,9 @@ public final class Constants {
 	
 	//URL to FORUM
 	public static final String URL_FORUM_LIST = URL_MAIN + "forum/";
-	public static final String URL_FORUM_FORUM = URL_FORUM_LIST + "view/{FORUM_ID}/{PAGE}/";
-	public static final String URL_FORUM_THREAD = URL_FORUM_LIST + "threadview/{THREAD_ID}/{PAGE}/";
+	public static final String URL_FORUM_LIST_LOCALIZED = URL_MAIN + "{locale}/forum/";
+	public static final String URL_FORUM_FORUM = URL_FORUM_LIST_LOCALIZED + "view/{FORUM_ID}/{PAGE}/";
+	public static final String URL_FORUM_THREAD = URL_FORUM_LIST_LOCALIZED + "threadview/{THREAD_ID}/{PAGE}/";
 	public static final String URL_FORUM_POST = URL_FORUM_LIST + "createpost/{THREAD_ID}/";
 	public static final String URL_FORUM_SIMILAR = URL_FORUM_LIST + "dofindsimilar?title={title}&body={body}";
 	public static final String URL_FORUM_NEW = URL_FORUM_LIST + "createthread/{FORUM_ID}/";
@@ -265,9 +266,11 @@ public final class Constants {
 	public static final String SP_BL_INTERVAL_SERVICE = "battlelog_service_interval";
 	public static final String SP_BL_INTERVAL_CHAT = "battlelog_chat_interval";
 	public static final String SP_BL_NUM_FEED = "battlelog_feed_count";
+	public static final String SP_BL_LOCALE = "battlelog_locale";
 	
 	//Misc
 	public static final String SUPER_COOKIES = "superCookies";
 	public static final String USER_AGENT = "Mozilla/5.0 (X11; Linux i686; rv:7.0.1) Gecko/20100101 Firefox/7.0.1";
+	public static final String LOCALE = "en";
 	
 }

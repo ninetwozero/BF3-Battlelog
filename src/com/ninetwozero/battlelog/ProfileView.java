@@ -1138,7 +1138,7 @@ public class ProfileView extends TabActivity {
 			);
 			fieldMessage.setText("");
 			
-		} else if( v.getId() == R.id.string_persona ) {
+		} else if( v.getId() == R.id.wrap_persona ) {
 			
 			//Let's get it on!
 			generateDialogPersonaList(this, profileInformation.getAllPersonas(), profileInformation.getAllPersonaNames()).show();
