@@ -74,7 +74,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 		   final Resources res = context.getResources();
 				   
 		   //if service == active
-		   if( !PublicUtils.isMyServiceRunning( context ) || !BattlelogService.isRunning() ) {
+		   if( !PublicUtils.isMyServiceRunning( context ) ) {
 			   
 			   remoteView.setTextViewText(R.id.label, Html.fromHtml( "<b>Error</b>" ) );
 			   remoteView.setTextViewText(R.id.title, res.getString( R.string.general_no_data ) );

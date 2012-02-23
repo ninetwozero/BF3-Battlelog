@@ -43,6 +43,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.asynctasks.AsyncCommentSend;
 import com.ninetwozero.battlelog.asynctasks.AsyncCommentsRefresh;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
@@ -140,12 +141,45 @@ public class SinglePostView extends ListActivity {
     public void onConfigurationChanged(Configuration newConfig){        
         super.onConfigurationChanged(newConfig);
     }
-    
-    @Override
-    public void onResume() {
 
-    	//OnResume
-    	super.onResume();
+	@Override
+	public void onResume() {
+	
+		super.onResume();
+		
+		//If we don't have a profile...
+    	if( SessionKeeper.getProfileData() == null ) {
+    		
+    		//...but we do indeed have a cookie...
+    		if( !sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ).equals( "" ) ){
+    			
+    			//...we set the SessionKeeper, but also reload the cookies! Easy peasy!
+    			SessionKeeper.setProfileData( SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences) );
+    			RequestHandler.setCookies( 
+    			
+    				new ShareableCookie(
+
+    					sharedPreferences.getString( Constants.SP_BL_COOKIE_NAME, "" ),
+    					sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ),
+    					Constants.COOKIE_DOMAIN
+    						
+    				)
+    				
+    			);
+    			
+    			//...but just to be sure, we try to verify our session "behind the scenes"
+    			new AsyncSessionValidate(this, sharedPreferences).execute();
+    			
+    		} else {
+    			
+    			//Aw man, that backfired.
+    			Toast.makeText( this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
+    			startActivity( new Intent(this, Main.class) );
+    			finish();
+    			
+    		}
+    		
+    	}
 
         //Let's setup the adapter
         if(item != null) { this.reloadComments(); }
@@ -265,7 +299,7 @@ public class SinglePostView extends ListActivity {
 						);
 					
 					*/
-					Toast.makeText(this, "Reporting comment number " + item.getItemId(), Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, R.string.info_comment_report + item.getItemId(), Toast.LENGTH_SHORT).show();
 					
 				}
 				

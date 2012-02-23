@@ -73,8 +73,10 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
     			
 				//Further more, we would actually like to store the userid and name
 				spEdit.putString( Constants.SP_BL_PERSONA,  "");
-				spEdit.putString( "battlelog_personaid",  "");
-				spEdit.putString( "battlelog_platform", "");
+				spEdit.putString( Constants.SP_BL_PERSONA_ID,  "");
+				spEdit.putString( Constants.SP_BL_PLATFORM_ID, "");
+				spEdit.putString( Constants.SP_BL_COOKIE_NAME, "" );
+				spEdit.putString( Constants.SP_BL_COOKIE_VALUE, "" );
 				
 				//Co-co-co-commit
 				spEdit.commit();
@@ -94,9 +96,6 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
 	
 	@Override
 	protected void onPostExecute(Integer results) {
-		
-		//Is the service running?
-		if( PublicUtils.isMyServiceRunning( context ) ) { BattlelogService.stop(); }
 		
 		if( this.progressDialog != null && this.progressDialog.isShowing() ) {
 			

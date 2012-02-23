@@ -14,51 +14,37 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.ViewPagerDashboard;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Dashboard;
+import com.ninetwozero.battlelog.Main;
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
+public class AsyncSessionRenew extends AsyncTask<PostData, Integer, Boolean> {
 
 	//Attribute
 	private ProgressDialog progressDialog;
 	private Context context;
-	private AsyncLogin origin;
-	private boolean savePassword;
+	private AsyncSessionRenew origin;
 	private ProfileData profile;
-	private String locale;
 	
 	//Constructor
-	public AsyncLogin( Context c ) { 
+	public AsyncSessionRenew( Context c ) { 
 
 		origin = this;
 		context = c; 
 	
-	}	
-	
-	//Constructor
-	public AsyncLogin( Context c, boolean s) { 
-		
-		this(c);
-		savePassword = s;
-		
-	}	
+	}
 	
 	@Override
 	protected void onPreExecute() {
@@ -67,7 +53,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 		//Let's see
 		progressDialog = new ProgressDialog(context);
 		progressDialog.setTitle(context.getString( R.string.general_wait ));
-		progressDialog.setMessage( context.getString( R.string.msg_logging_in ) );
+		progressDialog.setMessage( context.getString( R.string.info_session_expired ) );
 		progressDialog.setOnCancelListener( 
 				
 			new OnCancelListener() {
@@ -77,7 +63,6 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
 					origin.cancel( true );
 					dialog.dismiss();
-					
 					
 				}}
 		
@@ -91,7 +76,8 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 		
 		try {
 		
-			profile = WebsiteHandler.doLogin( context, arg0, savePassword );
+			//Let's try
+			profile = WebsiteHandler.doLogin( context, arg0, true );
 			
 			//Did it go ok?
 			return (profile != null );
@@ -107,34 +93,19 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 	@Override
 	protected void onPostExecute(Boolean results) {
 
-	if( progressDialog != null ) { progressDialog.dismiss(); }
+		//Got a dialog?
+		if( progressDialog != null ) { progressDialog.dismiss(); }
 		
+		//Did it fail? Let's tell the user
 		if( results ) { 
 
-			//Start new
-			context.startActivity( 
-					
-				new Intent(context, Dashboard.class).putExtra( 
-						
-					"myProfile", 
-					profile
-					
-				).putExtra(
-						
-					"myLocale", 
-					locale
-					
-				)
-				
-			); 
-
-			//Kill the main
-			((Activity) context).finish();
+			Toast.makeText( context, R.string.info_session_renew_ok, Toast.LENGTH_SHORT ).show();
 			
-
 		} else {
 			
-			Toast.makeText( context, R.string.msg_login_fail, Toast.LENGTH_SHORT).show(); 
+			Toast.makeText( context, R.string.info_session_renew_fail, Toast.LENGTH_SHORT).show(); 
+			context.startActivity( new Intent(context, Main.class) ); 
+			( (Activity) context).finish();
 			
 		}
 		return;

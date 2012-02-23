@@ -98,7 +98,7 @@ public final class Constants {
 	
 	//URL to FORUM
 	public static final String URL_FORUM_LIST = URL_MAIN + "forum/";
-	public static final String URL_FORUM_LIST_LOCALIZED = URL_MAIN + "{locale}/forum/";
+	public static final String URL_FORUM_LIST_LOCALIZED = URL_MAIN + "{LOCALE}/forum/";
 	public static final String URL_FORUM_FORUM = URL_FORUM_LIST_LOCALIZED + "view/{FORUM_ID}/{PAGE}/";
 	public static final String URL_FORUM_THREAD = URL_FORUM_LIST_LOCALIZED + "threadview/{THREAD_ID}/{PAGE}/";
 	public static final String URL_FORUM_POST = URL_FORUM_LIST + "createpost/{THREAD_ID}/";
@@ -267,6 +267,11 @@ public final class Constants {
 	public static final String SP_BL_INTERVAL_CHAT = "battlelog_chat_interval";
 	public static final String SP_BL_NUM_FEED = "battlelog_feed_count";
 	public static final String SP_BL_LOCALE = "battlelog_locale";
+	public static final String SP_BL_COOKIE_NAME = "battlelog_cookie_name";
+	public static final String SP_BL_COOKIE_VALUE = "battlelog_cookie_value";
+	
+	//Cookie-related
+	public static final String COOKIE_DOMAIN = "battlelog.battlefield.com";
 	
 	//Misc
 	public static final String SUPER_COOKIES = "superCookies";

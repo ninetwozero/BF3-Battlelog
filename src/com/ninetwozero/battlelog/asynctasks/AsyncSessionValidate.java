@@ -14,45 +14,40 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
+import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.PlatoonView;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
+public class AsyncSessionValidate extends AsyncTask<PostData, Integer, Boolean> {
 
 	//Attribute
-	private Context context;
+	private Context origin;
 	private SharedPreferences sharedPreferences;
-	private long platoonId, profileId;
-	private boolean response;
-
-	//Constructor
-	public AsyncPlatoonRespond( Context c, long plId, long pId, boolean r ) { 
-		
-		this.context = c;
-		this.platoonId = plId;
-		this.profileId = pId;
-		this.response = r;
 	
+	//Constructor
+	public AsyncSessionValidate( Context c, SharedPreferences sp ) { 
+		
+		origin = c; 
+		sharedPreferences = sp;
 	}	
 	
 	@Override
 	protected void onPreExecute() {}
 	
 	@Override
-	protected Boolean doInBackground( String... arg0) {
+	protected Boolean doInBackground( PostData... arg0 ) {
 		
 		try {
 		
-			//Let's get this!!
-			return WebsiteHandler.answerPlatoonRequest( platoonId, profileId, response, arg0[0] );
-			
+			return WebsiteHandler.setActive();
 			
 		} catch ( WebsiteHandlerException e ) {
 			
@@ -64,12 +59,37 @@ public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
 	
 	@Override
 	protected void onPostExecute(Boolean results) {
-		
-		//Let the user know and then refresh!
-		Toast.makeText( context, R.string.info_platoon_req_ok, Toast.LENGTH_SHORT).show();				
-		if( context != null ) { ((PlatoonView) context).reloadLayout(); }
-		return;
+
+		if( !results ) {
+			
+			//Get the e-mail
+			String email = sharedPreferences.getString( Constants.SP_BL_EMAIL, "" );
+			
+			//Let's renew it
+			try {
+				
+				new AsyncSessionRenew(origin).execute(
+	
+					new PostData( Constants.FIELD_NAMES_LOGIN[0], email ),
+					new PostData( 
+							
+						Constants.FIELD_NAMES_LOGIN[1], 
+						SimpleCrypto.decrypt( email, sharedPreferences.getString( Constants.SP_BL_PASSWORD, "" ) )
+						
+					),
+					new PostData( Constants.FIELD_NAMES_LOGIN[2], "" ),
+					new PostData( Constants.FIELD_NAMES_LOGIN[3], Constants.FIELD_VALUES_LOGIN[3] )
+						
+				);
+
+			} catch( Exception ex ) {
+			
+				Toast.makeText( origin, ex.getMessage(), Toast.LENGTH_SHORT ).show();
+				
+			}
+			
+		}
 		
 	}	
-
+	
 }

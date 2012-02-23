@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ import com.ninetwozero.battlelog.adapters.FriendListAdapter;
 import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
 import com.ninetwozero.battlelog.adapters.RequestListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.PostData;
@@ -161,9 +163,43 @@ public class ViewPagerDashboard extends FragmentActivity {
 
 	@Override
 	public void onResume() {
-		
+	
 		super.onResume();
 		
+		//If we don't have a profile...
+    	if( SessionKeeper.getProfileData() == null ) {
+    		
+    		//...but we do indeed have a cookie...
+    		if( !sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ).equals( "" ) ){
+    			
+    			//...we set the SessionKeeper, but also reload the cookies! Easy peasy!
+    			SessionKeeper.setProfileData( SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences) );
+    			RequestHandler.setCookies( 
+    			
+    				new ShareableCookie(
+
+    					sharedPreferences.getString( Constants.SP_BL_COOKIE_NAME, "" ),
+    					sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ),
+    					Constants.COOKIE_DOMAIN
+    						
+    				)
+    				
+    			);
+    			
+    			//...but just to be sure, we try to verify our session "behind the scenes"
+    			new AsyncSessionValidate(this, sharedPreferences).execute();
+    			
+    		} else {
+    			
+    			//Aw man, that backfired.
+    			Toast.makeText( this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
+    			startActivity( new Intent(this, Main.class) );
+    			finish();
+    			
+    		}
+    		
+    	}
+    	
 	}
 	
     @Override

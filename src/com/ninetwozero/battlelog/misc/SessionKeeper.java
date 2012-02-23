@@ -14,6 +14,9 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import android.content.SharedPreferences;
+import android.util.Log;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 
@@ -32,5 +35,45 @@ public class SessionKeeper {
 	//Setters
 	public static void setProfileData( ProfileData p ) { SessionKeeper.profileData = p; }
 	
+	//Generate session data
+	public static ProfileData generateProfileDataFromSharedPreferences( SharedPreferences sp ) {
+		
+		//Get the different strings
+		String personaIdString = sp.getString( Constants.SP_BL_PERSONA_ID, "" );
+		String personaNameString = sp.getString( Constants.SP_BL_PERSONA, "" );
+		String platformIdString = sp.getString( Constants.SP_BL_PLATFORM_ID, "" );
+
+		//Let's split them up...
+		String[] personaIdArray = personaIdString.split( ":" );
+		String[] personaNameArray = personaNameString.split( ":" );
+		String[] platformIdArray = platformIdString.split( ":" );
+		
+		//How many do we have?
+		int max = personaIdArray.length;
+		
+		//We need to init the resulting arrays
+		long[] personaId = new long[max];
+		long[] platformId = new long[max];
+		
+		//...and populate them
+		for( int i = 0; i < max; i++ ) {
+			
+			personaId[i] = Long.parseLong( personaIdArray[i]);
+			platformId[i] = Long.parseLong( platformIdArray[i]);
+
+		}
+		
+		return new ProfileData(
+				
+			sp.getString( Constants.SP_BL_USERNAME, "" ),
+			personaNameArray,
+			personaId,
+			sp.getLong( Constants.SP_BL_PROFILE_ID, 0 ),
+			platformId,
+			sp.getString( Constants.SP_BL_GRAVATAR, "" )
+				
+		);
+		
+	}
 	
 }

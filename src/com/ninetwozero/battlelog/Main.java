@@ -49,8 +49,11 @@ import android.widget.Toast;
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
 import com.ninetwozero.battlelog.datatypes.PostData;
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class Main extends Activity {
@@ -97,41 +100,53 @@ public class Main extends Activity {
         	
         }
         
-        //Are we active?
-        if( PublicUtils.isMyServiceRunning( this ) && BattlelogService.isRunning() ) { 
-        	
-        	startActivity( 
-        			
-        		new Intent(this, Dashboard.class)
-        		
-        	);
-        	
-        	finish();
-        	
-        }
-        
         //Check if the default-file is ok
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences( this );
-        if( sharedPreferences.getInt( Constants.SP_V_FILE, 0) == 0 ) {
+        if( sharedPreferences.getInt( Constants.SP_V_FILE, 0) < Constants.CHANGELOG_VERSION ) {
         	
 	        //Get the sharedPreferences
-        	SharedPreferences sharedPreferencesOld = getSharedPreferences( Constants.FILE_SHPREF, 0 );
         	SharedPreferences.Editor spEdit = sharedPreferences.edit();
         	
         	//Set it up
-        	spEdit.putInt( Constants.SP_V_FILE, sharedPreferencesOld.getInt( Constants.SP_V_FILE, 0 )+1 );
-        	spEdit.putInt( Constants.SP_V_CHANGELOG, Integer.valueOf( String.valueOf( sharedPreferencesOld.getLong(Constants.SP_V_CHANGELOG, 0 ) ) ) );
-        	spEdit.putLong( Constants.SP_BL_PLATFORM_ID, sharedPreferencesOld.getLong(Constants.SP_BL_PLATFORM_ID, 0 ) );
-        	spEdit.putLong( Constants.SP_BL_PROFILE_ID, sharedPreferencesOld.getLong(Constants.SP_BL_PROFILE_ID, 0 ) );
-        	spEdit.putLong( Constants.SP_BL_PERSONA_ID, sharedPreferencesOld.getLong(Constants.SP_BL_PERSONA_ID, 0 ) );
-        	spEdit.putString( Constants.SP_BL_EMAIL, sharedPreferencesOld.getString(Constants.SP_BL_EMAIL, "" ) );
-        	spEdit.putString( Constants.SP_BL_PASSWORD, sharedPreferencesOld.getString(Constants.SP_BL_PASSWORD, "" ) );
-        	spEdit.putString( Constants.SP_BL_USERNAME, sharedPreferencesOld.getString(Constants.SP_BL_USERNAME, "" ) );
-        	spEdit.putString( Constants.SP_BL_CHECKSUM, sharedPreferencesOld.getString(Constants.SP_BL_CHECKSUM, "" ) );
-        	spEdit.putBoolean( Constants.SP_BL_REMEMBER, sharedPreferencesOld.getBoolean( Constants.SP_BL_REMEMBER, false ));
+        	spEdit.putInt( Constants.SP_V_FILE, Constants.CHANGELOG_VERSION );
+        	spEdit.remove( Constants.SP_BL_PERSONA_ID );
+        	spEdit.remove( Constants.SP_BL_PLATFORM_ID );
         	
         	//Commit!!
         	spEdit.commit();
+        	
+        }
+        
+        //Are we active?
+        if( SessionKeeper.getProfileData() != null ) {
+        	
+        	startActivity( new Intent(this, Dashboard.class) );
+        	finish();
+        	
+        } else if( !sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ).equals( "" ) ) {
+        	
+			RequestHandler.setCookies( 
+			
+				new ShareableCookie(
+
+					sharedPreferences.getString( Constants.SP_BL_COOKIE_NAME, "" ),
+					sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ),
+					Constants.COOKIE_DOMAIN
+						
+				)
+				
+			);
+        	startActivity( 
+        			
+        		new Intent(this, Dashboard.class).putExtra(
+        				
+        			"myProfile", 
+        			SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences)
+        			
+        		)
+        	
+        	);
+        	finish();
         	
         }
         
@@ -319,9 +334,8 @@ public class Main extends Activity {
     			al.execute( postDataArray );
     		
     		} else {
-    			
-    			
-    			Toast.makeText( this, "No network connection available!", Toast.LENGTH_SHORT ).show();
+    			    			
+    			Toast.makeText( this, R.string.general_nonetwork, Toast.LENGTH_SHORT ).show();
     			
     		}
     		

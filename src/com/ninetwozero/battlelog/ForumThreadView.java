@@ -57,6 +57,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ThreadPostListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostInThread;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
@@ -131,12 +132,46 @@ public class ForumThreadView extends ListActivity {
 		initLayout();
 		setupBottom();
 	
-	}        
+	}    
 
 	@Override
 	public void onResume() {
-		
+	
 		super.onResume();
+		
+		//If we don't have a profile...
+    	if( SessionKeeper.getProfileData() == null ) {
+    		
+    		//...but we do indeed have a cookie...
+    		if( !sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ).equals( "" ) ){
+    			
+    			//...we set the SessionKeeper, but also reload the cookies! Easy peasy!
+    			SessionKeeper.setProfileData( SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences) );
+    			RequestHandler.setCookies( 
+    			
+    				new ShareableCookie(
+
+    					sharedPreferences.getString( Constants.SP_BL_COOKIE_NAME, "" ),
+    					sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ),
+    					Constants.COOKIE_DOMAIN
+    						
+    				)
+    				
+    			);
+    			
+    			//...but just to be sure, we try to verify our session "behind the scenes"
+    			new AsyncSessionValidate(this, sharedPreferences).execute();
+    			
+    		} else {
+    			
+    			//Aw man, that backfired.
+    			Toast.makeText( this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
+    			startActivity( new Intent(this, Main.class) );
+    			finish();
+    			
+    		}
+    		
+    	}
 		reloadLayout(); 
 		
 	}
@@ -625,7 +660,7 @@ public class ForumThreadView extends ListActivity {
 			try {
 				
 				page = arg0[0];
-				posts = WebsiteHandler.getPostsForThread( this.threadId, page );
+				posts = WebsiteHandler.getPostsForThread( this.threadId, page, locale );
 				return true;
 				
 			} catch( Exception ex ) {
@@ -927,7 +962,7 @@ public class ForumThreadView extends ListActivity {
 				
 			} else {
 				
-				Toast.makeText( context, "The request could not be fulfilled.", Toast.LENGTH_SHORT).show();
+				Toast.makeText( context, R.string.msg_error, Toast.LENGTH_SHORT).show();
 				
 			}
 			

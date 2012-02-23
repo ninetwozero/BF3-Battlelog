@@ -14,11 +14,14 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
+import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -30,17 +33,21 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.services.BattlelogService;
 
 
 public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 
 	//Attribute
-	Context context;
+	private Context context;
+	private SharedPreferences sharedPreferences;
+	private String exception;
 	
 	//Constructor
-	public AsyncServiceTask( Context c ) { 
+	public AsyncServiceTask( Context c, SharedPreferences sp ) { 
 		
-		this.context = c; 
+		context = c; 
+		sharedPreferences = sp;
 	
 	}
 	
@@ -51,17 +58,22 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 	protected Integer doInBackground( String... arg0 ) {
 		
 		try {
-			
 			//Let's try to setActive
 			if( WebsiteHandler.setActive() ) {
 				
 				//The user is active, so how many notifications does he have?
-				int numNotifications = WebsiteHandler.getNewNotificationsCount( arg0[0] );
-				
-				//R-turn
-				return numNotifications;
-				
+				int numNotifications = WebsiteHandler.getNewNotificationsCount( 
+						
+					sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" )
+					
+				);
+				return numNotifications; 
+
 			} else {
+				
+				//Attributes
+				String email = sharedPreferences.getString( Constants.SP_BL_EMAIL, "" );
+				String password = SimpleCrypto.decrypt( email, sharedPreferences.getString( Constants.SP_BL_PASSWORD, "" ) );
 				
 				//Do the login
 				ProfileData profileData = WebsiteHandler.doLogin( 
@@ -69,8 +81,8 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 					context, 
 					new PostData[] {
 
-						new PostData(Constants.FIELD_NAMES_LOGIN[0], arg0[1]),
-						new PostData(Constants.FIELD_NAMES_LOGIN[1], arg0[2] ),
+						new PostData(Constants.FIELD_NAMES_LOGIN[0], email ),
+						new PostData(Constants.FIELD_NAMES_LOGIN[1], password ),
 						new PostData(Constants.FIELD_NAMES_LOGIN[2], Constants.FIELD_VALUES_LOGIN[2]),
 						new PostData(Constants.FIELD_NAMES_LOGIN[3], Constants.FIELD_VALUES_LOGIN[3]),
 							
@@ -82,16 +94,14 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 				//Did it work?
 				if( profileData != null ) { SessionKeeper.setProfileData(profileData); }
 				
-				//Restart the AsyncTask and return -1
-				new AsyncServiceTask(context).execute( arg0[0], arg0[1], arg0[2] );
 				return -1;
 				
 			}
-
-		} catch( Exception ex ) {
+				
+		} catch( Exception ex ) { 
 			
-			Log.d(Constants.DEBUG_TAG, "The service has encountered an error.");
 			ex.printStackTrace();
+			exception = ex.getMessage();
 			return -2;
 			
 		}
@@ -104,15 +114,15 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 		//Is the result >= 0 
 		if( results >= 0 ) {
 			 
-			//results == numNotifications
-			if ( results > 0 ) {
-				
-				//We had a "positive" outcome
+			//We had a "positive" outcome
+			if( results > 0 ) {
+
 				NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 				Notification battlelogNotification = new Notification();
 				battlelogNotification.icon = R.drawable.app_logo;
 				battlelogNotification.when = System.currentTimeMillis();
-	
+
+				//Create a new intent
 				Intent notificationIntent = new Intent(context, Dashboard.class).putExtra(
 						
 					"openCOMCenter", true
@@ -122,11 +132,11 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 					"openTabId", 1
 					
 				);
+				//Convert it to a "PendingIntent" as it won't be activated right here, right now (later via notification)
 				PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 					
-				//So...
+				//So... let's fix the singular/plural<insert something here>
 				String text;
-				
 				if( results == 1 ) {
 					
 					text = context.getString( R.string.info_txt_notification_new );
@@ -135,10 +145,9 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 					
 					text = context.getString( R.string.info_txt_notification_new_p ).replace("{num}", results + "");					
 					
-				}
-						
+				}	
 				
-				//Set the ticker
+				//Set the ticker (text scrolling up above when first notified)
 				battlelogNotification.tickerText =  context.getString( R.string.msg_notification );
 				battlelogNotification.setLatestEventInfo(
 						
@@ -150,28 +159,31 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 				);
 				battlelogNotification.flags |= Notification.FLAG_AUTO_CANCEL;
 				
-				//Notify yo
+				//Do the actual notification
 				notificationManager.notify(0, battlelogNotification);
+
 			
 			} else {
 			
 				Log.d(Constants.DEBUG_TAG, "No unread notifications");
-				return;
 
 			}	
+			
 				
 		} else if( results == -1 ) {
 			
-			Log.d(Constants.DEBUG_TAG, "Trying to login...");
-			return;
+			Log.d(Constants.DEBUG_TAG, "Trying to relogin...");
 			
 		} else {
 		
 			//Error in previous method
-			Toast.makeText( context, "Error while updating the service.", Toast.LENGTH_SHORT).show();
-			return;
-
+			Toast.makeText( context, exception, Toast.LENGTH_SHORT).show();
+			
 		}
+		
+		//Stop the service!!
+		((Service)context).stopSelf();
+		
 		
 	}
 

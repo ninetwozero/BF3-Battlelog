@@ -65,7 +65,7 @@ public class AsyncComRequest extends AsyncTask<String, Integer, Boolean> {
 	protected void onPostExecute(Boolean results) {
 		
 		//Let the user know and then refresh!
-		Toast.makeText( context, "Friend request responded to.", Toast.LENGTH_SHORT).show();				
+		Toast.makeText( context, R.string.info_friendreq_resp_ok, Toast.LENGTH_SHORT).show();				
 		refreshMethod.execute();
 		return;
 		

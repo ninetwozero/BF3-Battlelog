@@ -33,33 +33,6 @@ public class AsyncPlatoonMemberManagement extends AsyncTask<Boolean, Void, Boole
 	private long platoonId;
 	private long userId;
 	
-	/*
-	 * 
-	 * 	
-			} else if( item.getItemId() == 1 ) {
-				
-				Toast.makeText( this, !data.isAdmin() ? "Promoting..." : "Demoting", Toast.LENGTH_SHORT).show();
-				
-			} else if( item.getItemId() == 2 ) {
-				
-				Toast.makeText( this, "Kicking...", Toast.LENGTH_SHORT ).show();
-				
-			} else if( item.getItemId() == 3 ) {
-				
-				Toast.makeText(this, "Cancelling invitation...", Toast.LENGTH_SHORT).show();
-				
-			} else if( item.getItemId() == 4 ) {
-				
-				Toast.makeText(this, "Accepting the new member...", Toast.LENGTH_SHORT).show();
-				
-			} else if( item.getItemId() == 5 ) {
-				
-				Toast.makeText(this, "Turning down the new member...", Toast.LENGTH_SHORT).show();	
-			
-			}
-			
-	*/
-	
 	//Constructs
 	public AsyncPlatoonMemberManagement(Context c, long uId, long pId, int w) {
 

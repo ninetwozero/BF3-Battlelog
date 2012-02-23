@@ -424,4 +424,17 @@
 	<string name="info_general_noprofile">No profile selected.</string>
 	<string name="info_assignments_empty">No assignments found for this soldier.</string>
 	<string name="info_unlocks_empty">No unlocks in this view.</string>
+	<string name="info_login_lostcookie">Login was successful, however we didn\'t find any cookies. :-(</string>
+	<string name="info_conn_hostunreach">Host unreachable - please restart your 3G connection and try again.</string>
+	<string name="info_session_expired">Session expired. Renewing the session with the server.</string>
+	<string name="info_session_renew_ok">Session renewed!</string>
+	<string name="info_session_renew_fail">Session could not be renewed.</string>
+	<string name="info_friendreq_resp_ok">Friend request responded to.</string>
+	<string name="info_platoon_invite_ok">Invites have been sent!</string>
+	<string name="info_platoon_invite_fail">Invites could not be sent!</string>
+	<string name="info_platoon_invite_passed">Some invites have been sent, some not!</string>
+	<string name="info_platoon_req_ok">Join request responded to.</string>
+	<string name="info_forum_report_error">You need to enter a reason for reporting this post.</string>
+	<string name="general_nonetwork">No network connection available!</string>
+	<string name="info_comment_report">"Reporting comment number "</string>
 </resources>

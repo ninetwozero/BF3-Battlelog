@@ -120,6 +120,10 @@ public class RequestHandler {
 
 			e.printStackTrace();
 		
+		} catch( Exception ex ) {
+			
+			throw new RequestHandlerException( ex.getMessage() );
+			
 		}
 		
 		return httpContent;
@@ -288,8 +292,7 @@ public class RequestHandler {
 			
 		} catch( UnknownHostException ex ) { 
 			
-			ex.printStackTrace();
-			throw new RequestHandlerException("No route to host");
+			throw new RequestHandlerException( "Host unreachable - please restart your 3G connection and try again." );
 			
 		} catch ( Exception ex ) {
 
@@ -389,7 +392,7 @@ public class RequestHandler {
 		
 		} catch( UnknownHostException ex ) { 
 			
-			ex.printStackTrace();
+			throw new RequestHandlerException( "Host unreachable - please restart your 3G connection and try again." );
 			
 		} catch ( Exception e ) {
 			
@@ -486,7 +489,7 @@ public class RequestHandler {
 		
 		} catch( UnknownHostException ex ) { 
 			
-			ex.printStackTrace();
+			throw new RequestHandlerException( "Host unreachable - please restart your 3G connection and try again." );
 			
 		} catch ( Exception e ) {
 			
@@ -606,6 +609,23 @@ public class RequestHandler {
 		return serializedCookies;
 	}
 	
+	public static void setCookies( ShareableCookie sc ) {
+		
+		//Init
+    	CookieStore cookieStore = RequestHandler.httpClient.getCookieStore();
+    	
+    	//Did we have an icicle?
+    	if( cookieStore.getCookies().isEmpty() ) {
+	    	
+			BasicClientCookie tempCookie = new BasicClientCookie(sc.getName(), sc.getValue());
+			tempCookie.setDomain(sc.getDomain());
+			cookieStore.addCookie( tempCookie );
+			RequestHandler.httpClient.setCookieStore( cookieStore );
+	    		 
+    	}
+		
+	}
+	
 	public static void setCookies( ArrayList<ShareableCookie> sc ) {
 		
 		//Init
@@ -695,5 +715,4 @@ public class RequestHandler {
 	 
 	 }
 
-	
 }

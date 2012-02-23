@@ -18,6 +18,7 @@ import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,6 +32,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -61,6 +64,7 @@ import com.ninetwozero.battlelog.datatypes.ProfileComparator;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.TopStatsComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
@@ -108,7 +112,7 @@ public class WebsiteHandler {
     				//Is it -1 again?
     				if( startPosition == -1 ) {
     				
-    					Toast.makeText( context, "The website won't let us in. Please try again later.", Toast.LENGTH_SHORT).show();
+    					throw new WebsiteHandlerException( "The website won't let us in. Please try again later." );
     					
     				} else {
     				
@@ -134,7 +138,8 @@ public class WebsiteHandler {
 				tempString[2] = httpContent.substring( httpContent.indexOf( Constants.ELEMENT_USERNAME_LINK ) );
 				tempString[2] = tempString[2].substring( 0, tempString[2].indexOf( "/\">") ).replace( Constants.ELEMENT_USERNAME_LINK, "" );
 				profile = WebsiteHandler.getProfileIdFromSearch( tempString[2], tempString[1]);
-
+				profile = WebsiteHandler.getPersonaIdFromProfile( profile );
+				
 				//Further more, we would actually like to store the userid and name
 				spEdit.putString( Constants.SP_BL_EMAIL, postDataArray[0].getValue() );
 				
@@ -143,35 +148,66 @@ public class WebsiteHandler {
 
 					spEdit.putString( Constants.SP_BL_PASSWORD, SimpleCrypto.encrypt( postDataArray[0].getValue(), postDataArray[1].getValue() ) );
 					spEdit.putBoolean( Constants.SP_BL_REMEMBER, true );
-					
+
 				} else {
 					
 					spEdit.putString( Constants.SP_BL_PASSWORD, "" );
 					spEdit.putBoolean( Constants.SP_BL_REMEMBER, false);
 				}
 				
+				//Init the strings
+				String personaNames = "";
+				String personaIds = "";
+				String platformIds = "";
+				
+				//We need to append the different parts to the ^ strings
+				for( int i = 0, max = profile.getPersonaNameArray().length; i < max; i++ ) {
+
+					personaNames += profile.getPersonaName( i ) + ":";
+					personaIds += String.valueOf( profile.getPersonaId( i ) ) + ":";
+					platformIds += String.valueOf( profile.getPlatformId( i ) ) + ":";
+					
+				}
+				
 				//This we keep!!!
 				spEdit.putString( Constants.SP_BL_USERNAME, tempString[2] );
-				spEdit.putString( Constants.SP_BL_PERSONA,  bits[0]);
+				spEdit.putString( Constants.SP_BL_PERSONA, personaNames);
 				spEdit.putLong( Constants.SP_BL_PROFILE_ID, profile.getProfileId());
-				spEdit.putLong( Constants.SP_BL_PERSONA_ID,  Long.parseLong( bits[2] ));				
-				spEdit.putLong( Constants.SP_BL_PLATFORM_ID,  DataBank.getPlatformIdFromName(bits[3]) );
+				spEdit.putString( Constants.SP_BL_PERSONA_ID, personaIds);				
+				spEdit.putString( Constants.SP_BL_PLATFORM_ID, platformIds );
 				spEdit.putString( Constants.SP_BL_CHECKSUM, tempString[1]);
+				
+				//Cookie-related
+				ArrayList<ShareableCookie> sca = RequestHandler.getCookies();
+				if( sca != null ) { 
+					
+					ShareableCookie sc = sca.get( 0 );
+					spEdit.putString( Constants.SP_BL_COOKIE_NAME, sc.getName() );
+					spEdit.putString( Constants.SP_BL_COOKIE_VALUE , sc.getValue() );	
+					
+				} else { 
+					
+					throw new WebsiteHandlerException( context.getString( R.string.info_login_lostcookie ) );
+					
+				}
 				
 				//Co-co-co-commit
 				spEdit.commit();
 		        
 		        //Do we want to start a service?
-		        if( !PublicUtils.isMyServiceRunning(context) && sharedPreferences.getBoolean( Constants.SP_BL_SERVICE, true ) ) {
-		        	
-		        	context.startService( new Intent(context, BattlelogService.class) );
-		        
-		        } else if( !BattlelogService.isRunning() ) {
-		        	
-		        	BattlelogService.start(context);
-		        	
-		        }
-				
+				long serviceInterval = sharedPreferences.getLong( Constants.SP_BL_INTERVAL_SERVICE, (Constants.HOUR_IN_SECONDS/2) )*1000;
+				AlarmManager alarmManager = (AlarmManager) context.getSystemService( Context.ALARM_SERVICE );
+				alarmManager.setInexactRepeating( 
+						
+					AlarmManager.ELAPSED_REALTIME, 
+					0, 
+					serviceInterval,
+					PendingIntent.getService( context, 0, new Intent(context, BattlelogService.class), 0 )
+					
+				);
+
+	    		Log.d( Constants.DEBUG_TAG, "Setting the service to update every " + serviceInterval/60000 + " minutes" );
+	    		
 				//Return it!!
 				return profile;
 				
@@ -181,6 +217,10 @@ public class WebsiteHandler {
     			
     		}
     		
+		} catch( RequestHandlerException ex ) { 
+			
+			throw new WebsiteHandlerException( ex.getMessage() );		
+			
 		} catch( Exception ex ) {
 			
 			ex.printStackTrace();
@@ -2594,7 +2634,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static boolean setActive() {
+	public static boolean setActive() throws WebsiteHandlerException {
 		
 		try {
 			
@@ -2613,6 +2653,10 @@ public class WebsiteHandler {
 				
 			}
 			
+			
+		} catch( RequestHandlerException ex ) {
+			
+			throw new WebsiteHandlerException( ex.getMessage() );
 			
 		} catch( Exception ex ) {
 			
@@ -5123,7 +5167,7 @@ public class WebsiteHandler {
 			RequestHandler rh = new RequestHandler();
 			final String httpContent = rh.get(
 					
-				Constants.URL_FORUM_LIST_LOCALIZED.replace( "{locale}", locale ), 
+				Constants.URL_FORUM_LIST_LOCALIZED.replace( "{LOCALE}", locale ), 
 				1
 			
 			);
@@ -5222,7 +5266,7 @@ public class WebsiteHandler {
 			RequestHandler rh = new RequestHandler();
 			final String httpContent = rh.get(
 					
-				Constants.URL_FORUM_FORUM.replace( "{locale}", locale ).replace( "{FORUM_ID}", forumId + "" ).replace( "{PAGE}", 1 + "" ), 
+				Constants.URL_FORUM_FORUM.replace( "{LOCALE}", locale ).replace( "{FORUM_ID}", forumId + "" ).replace( "{PAGE}", 1 + "" ), 
 				1
 			
 			);
@@ -5366,7 +5410,7 @@ public class WebsiteHandler {
 			RequestHandler rh = new RequestHandler();
 			final String httpContent = rh.get(
 					
-				Constants.URL_FORUM_THREAD.replace( "{locale}", locale ).replace( "{THREAD_ID}", threadId + "" ).replace( "{PAGE}", "1" ), 
+				Constants.URL_FORUM_THREAD.replace( "{LOCALE}", locale ).replace( "{THREAD_ID}", threadId + "" ).replace( "{PAGE}", "1" ), 
 				1
 			
 			);
@@ -5955,7 +5999,7 @@ public class WebsiteHandler {
 		
 	}
 
-	public static ArrayList<ThreadData> getThreadsForForum( long forumId, int page ) throws WebsiteHandlerException {
+	public static ArrayList<ThreadData> getThreadsForForum( long forumId, int page, String locale ) throws WebsiteHandlerException {
 
 		try {
 			
@@ -5966,7 +6010,7 @@ public class WebsiteHandler {
 			RequestHandler rh = new RequestHandler();
 			final String httpContent = rh.get(
 					
-				Constants.URL_FORUM_FORUM.replace( "{FORUM_ID}", forumId + "" ).replace( "{PAGE}", page + "" ), 
+				Constants.URL_FORUM_FORUM.replace( "{LOCALE}", locale ).replace( "{FORUM_ID}", forumId + "" ).replace( "{PAGE}", page + "" ), 
 				1
 			
 			);
@@ -6089,7 +6133,7 @@ public class WebsiteHandler {
 		
 	}
 	
-	public static ArrayList<Board.PostData> getPostsForThread(long threadId, int page) throws WebsiteHandlerException {
+	public static ArrayList<Board.PostData> getPostsForThread(long threadId, int page, String locale) throws WebsiteHandlerException {
 
 		try {
 			
@@ -6100,7 +6144,7 @@ public class WebsiteHandler {
 			RequestHandler rh = new RequestHandler();
 			final String httpContent = rh.get(
 					
-				Constants.URL_FORUM_THREAD.replace( "{THREAD_ID}", threadId + "" ).replace( "{PAGE}", page + "" ), 
+				Constants.URL_FORUM_THREAD.replace( "{LOCALE}", locale ).replace( "{THREAD_ID}", threadId + "" ).replace( "{PAGE}", page + "" ), 
 				1
 			
 			);

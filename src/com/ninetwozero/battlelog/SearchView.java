@@ -36,12 +36,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.SearchDataAdapter;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatypes.GeneralSearchResult;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class SearchView extends ListActivity {
@@ -266,4 +268,46 @@ public class SearchView extends ListActivity {
 		startActivity(intent);
 		
 	}
+	
+	@Override
+	public void onResume() {
+	
+		super.onResume();
+		
+		//If we don't have a profile...
+    	if( SessionKeeper.getProfileData() == null ) {
+    		
+    		//...but we do indeed have a cookie...
+    		if( !sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ).equals( "" ) ){
+    			
+    			//...we set the SessionKeeper, but also reload the cookies! Easy peasy!
+    			SessionKeeper.setProfileData( SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences) );
+    			RequestHandler.setCookies( 
+    			
+    				new ShareableCookie(
+
+    					sharedPreferences.getString( Constants.SP_BL_COOKIE_NAME, "" ),
+    					sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ),
+    					Constants.COOKIE_DOMAIN
+    						
+    				)
+    				
+    			);
+    			
+    			//...but just to be sure, we try to verify our session "behind the scenes"
+    			new AsyncSessionValidate(this, sharedPreferences).execute();
+    			
+    		} else {
+    			
+    			//Aw man, that backfired.
+    			Toast.makeText( this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
+    			startActivity( new Intent(this, Main.class) );
+    			finish();
+    			
+    		}
+    		
+    	}
+    	
+	}
+	
 }

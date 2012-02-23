@@ -63,6 +63,7 @@ import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
@@ -77,7 +78,6 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
-import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class Dashboard extends TabActivity {
 
@@ -143,19 +143,10 @@ public class Dashboard extends TabActivity {
     	}
     	
     	//We should've gotten a profile
-    	if( SessionKeeper.getProfileData() == null ) {
-    		
-    		if( getIntent().hasExtra( "myProfile" ) ) {
+    	if( getIntent().hasExtra( "myProfile" ) ) {
     			
-    			SessionKeeper.setProfileData( (ProfileData) getIntent().getParcelableExtra( "myProfile" ) );
-    			
-    		} else {
-    			
-    			Toast.makeText( this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
-    			return;
-    			
-    		}
-    		
+			SessionKeeper.setProfileData( (ProfileData) getIntent().getParcelableExtra( "myProfile" ) );	
+			
     	}
     	
     	//Set the content view
@@ -495,7 +486,7 @@ public class Dashboard extends TabActivity {
 			
 		} else {
 			
-			Toast.makeText(this, "Unimplemented feature.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.msg_unimplemented, Toast.LENGTH_SHORT).show();
 			return;
 		
 		}
@@ -560,7 +551,7 @@ public class Dashboard extends TabActivity {
 			} else {
 				
 				//Are we running a service?
-				if( !PublicUtils.isMyServiceRunning( context ) ) {
+				if( !sharedPreferences.getBoolean( Constants.SP_BL_REMEMBER, false ) ) {
 
 					if( asyncLogout == null ) {
 					
@@ -1390,10 +1381,37 @@ public class Dashboard extends TabActivity {
     
     	super.onResume();
     	
-    	//Let's see
+    	//If we don't have a profile...
     	if( SessionKeeper.getProfileData() == null ) {
     		
-    		BattlelogService.restart();
+    		//...but we do indeed have a cookie...
+    		if( !sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ).equals( "" ) ){
+    			
+    			//...we set the SessionKeeper, but also reload the cookies! Easy peasy!
+    			SessionKeeper.setProfileData( SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences) );
+    			RequestHandler.setCookies( 
+    			
+    				new ShareableCookie(
+
+    					sharedPreferences.getString( Constants.SP_BL_COOKIE_NAME, "" ),
+    					sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ),
+    					Constants.COOKIE_DOMAIN
+    						
+    				)
+    				
+    			);
+    			
+    			//...but just to be sure, we try to verify our session "behind the scenes"
+    			new AsyncSessionValidate(this, sharedPreferences).execute();
+    			
+    		} else {
+    			
+    			//Aw man, that backfired.
+    			Toast.makeText( this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
+    			startActivity( new Intent(this, Main.class) );
+    			finish();
+    			
+    		}
     		
     	}
     	

@@ -27,6 +27,14 @@ public class ShareableCookie implements Parcelable {
 	private String value;
 	private String domain;
 
+	public ShareableCookie(String n, String v, String d) {
+		
+		this.name = n;
+		this.value = v;
+		this.domain = d;
+	
+	}
+	
 	public ShareableCookie(Cookie cookie){
 
 		this.name = cookie.getName();

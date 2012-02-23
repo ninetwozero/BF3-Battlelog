@@ -64,21 +64,21 @@ public class AsyncPlatoonMemberInvite extends AsyncTask<String, Void, Integer> {
 			switch( result  ) { 
 
 				case -1:
-					Toast.makeText( context, "An error occured.", Toast.LENGTH_SHORT).show();
+					Toast.makeText( context, R.string.msg_error, Toast.LENGTH_SHORT).show();
 					((Activity) context).finish();
 					break;
 
 				case 0:
-					Toast.makeText( context, "Invites have been sent!", Toast.LENGTH_SHORT).show();
+					Toast.makeText( context, R.string.info_platoon_invite_ok, Toast.LENGTH_SHORT).show();
 					((Activity) context).finish();
 					break;
 
 				case 1:
-					Toast.makeText( context, "Invites could not be sent!", Toast.LENGTH_SHORT).show();
+					Toast.makeText( context, R.string.info_platoon_invite_fail, Toast.LENGTH_SHORT).show();
 					break;
 					
 				case 2:
-					Toast.makeText( context, "Some invites have been sent, some not!", Toast.LENGTH_SHORT).show();
+					Toast.makeText( context, R.string.info_platoon_invite_passed, Toast.LENGTH_SHORT).show();
 					break;
 					
 				default:
