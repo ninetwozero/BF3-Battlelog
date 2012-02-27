@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.adapters;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -25,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
@@ -89,6 +89,14 @@ public class ChatListAdapter extends BaseAdapter {
 	
 	}
 	
+	public void setMessageArray(ArrayList<ChatMessage> m) { 
+		
+		messageArray = m; 
+		notifyDataSetChanged();
+		
+	}
+	
+	
 	@Override
 	public View getView( int position, View convertView, ViewGroup parent ) {
 
@@ -101,11 +109,11 @@ public class ChatListAdapter extends BaseAdapter {
 			//Let's get the view type
 			if( getItemViewType(position) == 1 ) {
 				
-				convertView = layoutInflater.inflate( R.layout.list_item_chat_remote, parent, false );
+				convertView = layoutInflater.inflate( R.layout.list_item_chat_local, parent, false );
 
 			} else {
 				
-				convertView = layoutInflater.inflate( R.layout.list_item_chat_local, parent, false );
+				convertView = layoutInflater.inflate( R.layout.list_item_chat_remote, parent, false );
 				
 			}
 		}

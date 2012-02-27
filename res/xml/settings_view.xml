@@ -3,16 +3,31 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sample="http://schemas.android.com/apk/res/com.ninetwozero.battlelog"
 >
-   	<PreferenceCategory android:title="Chat options">
+  	<PreferenceCategory android:title="@string/info_settings_general">
+  		<ListPreference
+  		    android:title="Language" 
+            android:key="app_locale"
+ 			android:entries="@array/language_titles"
+ 			android:entryValues="@array/language_values"
+        /> 
+  	</PreferenceCategory>
+   	<PreferenceCategory android:title="@string/info_settings_chat">
+   	    <CheckBoxPreference
+   	        android:title="Enable chat sound" 
+   	        android:summaryOn="@string/info_settings_chat_desc_beep_true"
+   	        android:summaryOff="@string/info_settings_chat_desc_beep_false"
+            android:key="battlelog_chat_sound"
+            android:defaultValue="true"
+        />
         <com.kmansoft.IntegerListPreference
             android:title="Select an update interval" 
-            android:key="Constants.SP_BL_INTERVAL_CHAT"
-            sample:entryList="@array/service_update_intervals_labels" 
-            sample:valueList="@array/service_update_intervals_values" 
+            android:key="battlelog_chat_interval"
+            sample:entryList="@array/chat_update_intervals_labels" 
+            sample:valueList="@array/chat_update_intervals_values" 
             android:defaultValue="1800"
         />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Service options">
+    <PreferenceCategory android:title="@string/info_settings_service">
         
         <com.kmansoft.IntegerListPreference
             android:title="Select an update interval" 
@@ -20,6 +35,39 @@
             sample:entryList="@array/service_update_intervals_labels" 
             sample:valueList="@array/service_update_intervals_values" 
             android:defaultValue="1800"
+        />
+   	</PreferenceCategory>
+    <PreferenceCategory android:title="@string/info_settings_notifications">
+		
+   	    <CheckBoxPreference
+   	        android:title="Enable use of notification LED" 
+   	        android:summaryOn="Twinkle twinkle little star."
+   	        android:summaryOff="There is no light."
+            android:key="notification_light"
+            android:defaultValue="true"
+        />
+   	    <CheckBoxPreference
+   	        android:title="Enable sounds" 
+   	        android:summaryOn="@string/info_settings_chat_desc_beep_true"
+   	        android:summaryOff="@string/info_settings_chat_desc_beep_false"
+            android:key="notification_sound"
+            android:defaultValue="true"
+        />
+   	    <CheckBoxPreference
+   	        android:title="Use the Battlelog beep" 
+   	        android:summaryOn="@string/info_settings_chat_desc_beep_spec_true"
+   	        android:summaryOff="@string/info_settings_chat_desc_beep_spec_false"
+            android:key="notification_sound_special"
+            android:defaultValue="true"
+        	android:dependency="notification_sound"
+        />
+   	    <CheckBoxPreference
+   	        android:title="Enable vibration" 
+   	        android:summaryOn="@string/info_settings_chat_desc_vibrate_true"
+   	        android:summaryOff="@string/info_settings_chat_desc_vibrate_false"
+            android:key="notification_vibrate"
+            android:defaultValue="true"
+        	android:dependency="notification_sound"
         />
    	</PreferenceCategory>
 </PreferenceScreen>

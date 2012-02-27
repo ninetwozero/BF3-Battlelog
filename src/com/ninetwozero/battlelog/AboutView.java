@@ -15,28 +15,33 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
-
-import com.ninetwozero.battlelog.datatypes.ShareableCookie;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.RequestHandler;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
 
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.RequestHandler;
+
 public class AboutView extends Activity {
 
 	//Fields
 	private TabHost cTabHost;
 	private LayoutInflater layoutInflater;
+	private SharedPreferences sharedPreferences;
 		
 	@Override
     public void onCreate(Bundle icicle) {
@@ -54,7 +59,11 @@ public class AboutView extends Activity {
     		
     	}
     	
+    	//Set 'em up
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences( this );
+        
+        //Tab
         cTabHost = (TabHost) findViewById(R.id.com_tabhost);
     	cTabHost.setup();
 
@@ -183,4 +192,24 @@ public class AboutView extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) { super.onConfigurationChanged(newConfig); }
     
+    
+    @Override
+    public void onResume() {
+    
+    	super.onResume();
+
+    	//Setup the locale
+    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+
+    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
+	    	Locale.setDefault(locale);
+	    	Configuration config = new Configuration();
+	    	config.locale = locale;
+	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
+    	
+    	}
+ 
+     	new AsyncSessionSetActive().execute();
+    	
+    }
 }

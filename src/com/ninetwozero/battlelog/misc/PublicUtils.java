@@ -27,6 +27,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
@@ -310,8 +311,26 @@ public class PublicUtils {
     
     public static boolean isNetworkAvailable(final Context c) {
         
+    	//Let's get the connection manager
     	ConnectivityManager connMan = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-    	return (connMan.getActiveNetworkInfo() != null && connMan.getBackgroundDataSetting());
+    	if( connMan.getActiveNetworkInfo() != null ) {
+    		
+    		//...and the network information
+    		NetworkInfo networkInfo = connMan.getActiveNetworkInfo();
+    		
+    		//If it's WiFi, it's ok
+    		if( networkInfo.getType() == ConnectivityManager.TYPE_WIFI ) {
+    			
+    			return true;
+    		
+    		} else if( networkInfo.getType() == ConnectivityManager.TYPE_MOBILE && connMan.getBackgroundDataSetting() ) {
+    			
+    			return true;
+    			
+    		}
+    		
+    	}
+    	return false;
     
     }
  

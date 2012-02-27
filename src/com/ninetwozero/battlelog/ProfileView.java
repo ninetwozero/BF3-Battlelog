@@ -15,6 +15,7 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,7 +31,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -59,6 +59,7 @@ import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
 import com.ninetwozero.battlelog.asynctasks.AsyncFriendRemove;
 import com.ninetwozero.battlelog.asynctasks.AsyncFriendRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
@@ -967,6 +968,19 @@ public class ProfileView extends TabActivity {
 	public void onResume() {
 	
 		super.onResume();
+		
+		//Setup the locale
+    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+
+    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
+	    	Locale.setDefault(locale);
+	    	Configuration config = new Configuration();
+	    	config.locale = locale;
+	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
+    	
+    	}
+ 
+     	new AsyncSessionSetActive().execute();
 		
 		//If we don't have a profile...
     	if( SessionKeeper.getProfileData() == null ) {

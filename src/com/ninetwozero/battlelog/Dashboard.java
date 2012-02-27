@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,7 +29,6 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -63,6 +63,7 @@ import com.ninetwozero.battlelog.asynctasks.AsyncComRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
@@ -74,7 +75,6 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
@@ -406,7 +406,14 @@ public class Dashboard extends TabActivity {
 		if( listNotifications.getAdapter() == null ) {
 	
 			//Create a new NotificationListAdapter
-			notificationListAdapter = new NotificationListAdapter(this, items, layoutInflater, SessionKeeper.getProfileData().getProfileId());
+			notificationListAdapter = new NotificationListAdapter(
+					
+				this, 
+				items, 
+				layoutInflater, 
+				SessionKeeper.getProfileData().getProfileId()
+				
+			);
 			listNotifications.setAdapter( notificationListAdapter );
 				
 			//Do we have the onClick?
@@ -1380,6 +1387,19 @@ public class Dashboard extends TabActivity {
     public void onResume() {
     
     	super.onResume();
+
+    	//Setup the locale
+    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+
+    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
+	    	Locale.setDefault(locale);
+	    	Configuration config = new Configuration();
+	    	config.locale = locale;
+	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
+    	
+    	}
+ 
+     	new AsyncSessionSetActive().execute();
     	
     	//If we don't have a profile...
     	if( SessionKeeper.getProfileData() == null ) {

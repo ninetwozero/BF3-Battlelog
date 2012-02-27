@@ -14,7 +14,9 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -27,6 +29,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ForumListAdapter;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
@@ -90,7 +94,20 @@ public class BoardView extends ListActivity {
 	@Override
 	public void onResume() {
 		
-		super.onResume();    	
+		super.onResume();  
+		
+		//Setup the locale
+    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+
+    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
+	    	Locale.setDefault(locale);
+	    	Configuration config = new Configuration();
+	    	config.locale = locale;
+	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
+    	
+    	}
+ 
+     	new AsyncSessionSetActive().execute();
 		
 		//If we don't have a profile...
     	if( SessionKeeper.getProfileData() == null ) {
@@ -333,6 +350,19 @@ public class BoardView extends ListActivity {
 			
 		}
 		
+	}
+	
+	@Override
+	public boolean onKeyDown( int keyCode, KeyEvent event ) {
+
+		// Hotkeys
+		if( keyCode == KeyEvent.KEYCODE_SEARCH ) {
+			
+			startActivity( new Intent(this, ForumSearchView.class ) );
+			
+		}
+		return super.onKeyDown( keyCode, event );
+	
 	}
 	
 }

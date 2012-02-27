@@ -14,6 +14,7 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -53,7 +54,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.ProfileView.AsyncProfileRefresh;
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.adapters.PlatoonUserListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
@@ -61,8 +61,8 @@ import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonMemberManagement;
 import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonRequest;
 import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonRespond;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
-import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
@@ -1038,6 +1038,19 @@ public class PlatoonView extends TabActivity {
 	public void onResume() {
 	
 		super.onResume();
+		
+		//Setup the locale
+    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+
+    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
+	    	Locale.setDefault(locale);
+	    	Configuration config = new Configuration();
+	    	config.locale = locale;
+	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
+    	
+    	}
+ 
+     	new AsyncSessionSetActive().execute();
 		
 		//If we don't have a profile...
     	if( SessionKeeper.getProfileData() == null ) {

@@ -22,6 +22,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -158,6 +159,32 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 				
 				);
 				battlelogNotification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+				//Setup LED, sound & vibration
+				if( sharedPreferences.getBoolean( "notification_light", true ) ) { 
+					
+					battlelogNotification.defaults |= Notification.DEFAULT_LIGHTS;
+				
+				}
+				
+				if( sharedPreferences.getBoolean( "notification_sound", true ) ) {
+					
+					if( sharedPreferences.getBoolean( "notification_sound_special", true ) ) {
+						
+						battlelogNotification.sound = Uri.parse( "android.resource://com.ninetwozero.battlelog/" + R.raw.notification);
+						
+					} else {
+						
+						battlelogNotification.defaults |= Notification.DEFAULT_SOUND;
+					
+					}
+				}
+				
+				if( sharedPreferences.getBoolean( "notification_vibrate", true ) ) {
+					
+					battlelogNotification.vibrate = new long[] { 100, 100 };
+				
+				}
 				
 				//Do the actual notification
 				notificationManager.notify(0, battlelogNotification);

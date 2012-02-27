@@ -14,6 +14,7 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -31,7 +32,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -43,6 +43,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ThreadListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncCreateNewThread;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
@@ -124,6 +125,19 @@ public class ForumView extends ListActivity {
 	public void onResume() {
 	
 		super.onResume();
+		
+		//Setup the locale
+    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+
+    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
+	    	Locale.setDefault(locale);
+	    	Configuration config = new Configuration();
+	    	config.locale = locale;
+	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
+    	
+    	}
+ 
+     	new AsyncSessionSetActive().execute();
 		
 		//If we don't have a profile...
     	if( SessionKeeper.getProfileData() == null ) {
@@ -443,6 +457,10 @@ public class ForumView extends ListActivity {
 			
 			}
 			return true;
+			
+		} else if( keyCode == KeyEvent.KEYCODE_SEARCH ) {
+			
+			startActivity( new Intent(this, ForumSearchView.class ) );
 			
 		}
 		

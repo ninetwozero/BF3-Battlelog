@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.content.Context;
 import android.content.Intent;
@@ -43,6 +44,7 @@ import com.ninetwozero.battlelog.adapters.FriendListAdapter;
 import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
 import com.ninetwozero.battlelog.adapters.RequestListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
@@ -165,6 +167,19 @@ public class ViewPagerDashboard extends FragmentActivity {
 	public void onResume() {
 	
 		super.onResume();
+		
+		//Setup the locale
+    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+
+    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
+	    	Locale.setDefault(locale);
+	    	Configuration config = new Configuration();
+	    	config.locale = locale;
+	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
+    	
+    	}
+ 
+     	new AsyncSessionSetActive().execute();
 		
 		//If we don't have a profile...
     	if( SessionKeeper.getProfileData() == null ) {

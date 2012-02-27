@@ -14,15 +14,15 @@
 
 package com.ninetwozero.battlelog;
 
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.util.Locale;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,13 +48,13 @@ import android.widget.Toast;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
-import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class Main extends Activity {
 
@@ -468,5 +468,25 @@ public class Main extends Activity {
 		}
 		return super.onKeyDown( keyCode, event );
 	}
+    
+    @Override
+    public void onResume() {
+    	
+    	super.onResume();
+    	
+    	//Setup the locale
+    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+
+    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
+	    	Locale.setDefault(locale);
+	    	Configuration config = new Configuration();
+	    	config.locale = locale;
+	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
+    	
+    	}
+ 
+     	new AsyncSessionSetActive().execute();
+    	
+    }
 	
 }

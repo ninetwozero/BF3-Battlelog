@@ -64,7 +64,31 @@
 		<TextView 
 	       android:layout_width="fill_parent"
 	       android:layout_height="wrap_content"
+	       android:text="Angelo Zangarini"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="Arnaud Ligny"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="Arttu L. (artsipurtsi)"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
 	       android:text="bagione"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="basr"
 	       android:padding="10dp"
 		/>
 		<TextView 
@@ -77,6 +101,12 @@
 	       android:layout_width="fill_parent"
 	       android:layout_height="wrap_content"
 	       android:text="Coval Delanight"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="Cuprax"
 	       android:padding="10dp"
 		/>
 		<TextView 
@@ -106,6 +136,12 @@
 		<TextView 
 	       android:layout_width="fill_parent"
 	       android:layout_height="wrap_content"
+	       android:text="Klaus Thenmayer"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
 	       android:text="kosmiq"
 	       android:padding="10dp"
 		/>
@@ -118,7 +154,49 @@
 		<TextView 
 	       android:layout_width="fill_parent"
 	       android:layout_height="wrap_content"
+	       android:text="neurokirurgi"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="pauldegroot"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="pingus"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="Ricket008"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="sangr1aman"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="waldzias"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
 	       android:text="zAo82 &lt;sbkg0002@gmail.com>"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="zauriel"
 	       android:padding="10dp"
 		/>
 	</LinearLayout>

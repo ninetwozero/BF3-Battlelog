@@ -15,19 +15,22 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,10 +41,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.adapters.ChatListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncChatClose;
 import com.ninetwozero.battlelog.asynctasks.AsyncChatRefresh;
 import com.ninetwozero.battlelog.asynctasks.AsyncChatSend;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
+import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -63,6 +69,9 @@ public class ChatView extends ListActivity {
 	private ListView listView;
 	private EditText fieldMessage;
 	private Button buttonSend;
+	
+	//Current "last" message
+	private long latestChatResponseTimestamp;
 	
 	//Misc
 	private Timer timerReload;
@@ -103,6 +112,7 @@ public class ChatView extends ListActivity {
         //Get the ListView
         listView = getListView();
         listView.setChoiceMode( ListView.CHOICE_MODE_NONE );
+        listView.setAdapter( new ChatListAdapter(this, null, SessionKeeper.getProfileData().getAccountName(), layoutInflater) );
         
         //Let's get the other chat participant
         profileData = (ProfileData) getIntent().getParcelableExtra( "profile" );
@@ -131,7 +141,7 @@ public class ChatView extends ListActivity {
 				}
 			}, 
     		0,
-    		sharedPreferences.getLong( Constants.SP_BL_INTERVAL_CHAT, 25 )*1000
+    		sharedPreferences.getInt( Constants.SP_BL_INTERVAL_CHAT, 25 )*1000
     	
         ); 
         
@@ -141,6 +151,19 @@ public class ChatView extends ListActivity {
 	public void onResume() {
 		
 		super.onResume();
+		
+		//Setup the locale
+    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+
+    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
+	    	Locale.setDefault(locale);
+	    	Configuration config = new Configuration();
+	    	config.locale = locale;
+	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
+    	
+    	}
+ 
+     	new AsyncSessionSetActive().execute();
 		
 		//If we don't have a profile...
     	if( SessionKeeper.getProfileData() == null ) {
@@ -185,11 +208,7 @@ public class ChatView extends ListActivity {
 		private long profileId;
 		
 		//Construct
-		public AsyncGetChatId(long pId) {
-			
-			this.profileId = pId;
-			
-		}
+		public AsyncGetChatId(long pId) { this.profileId = pId; }
 		
 		@Override
 		protected Boolean doInBackground( String... arg0 ) {
@@ -311,4 +330,56 @@ public class ChatView extends ListActivity {
     
     public void setChatId(long cId) { this.chatId = cId; }
 
+    public void notifyNewPost( ArrayList<ChatMessage> cm ) {
+    	
+    	//Let's see...
+    	if( !sharedPreferences.getBoolean( "battlelog_chat_sound", true ) ) { return; }
+    	
+    	//Init!
+    	boolean hasNewResponse = false;
+    	boolean isFirstRun = true;
+    	
+    	//Iterate
+    	for( int curr = cm.size()-1, min = ((curr > 5)? curr-5 : 0); curr > min; curr--  ) {
+    		
+    		//Let's see what happens.
+    		ChatMessage m = cm.get( curr );
+    		if( m.getSender().equals( profileData.getAccountName() ) ) {
+    			
+    			//Ooh, ooh, is it fresh?
+    			if( m.getTimestamp() > latestChatResponseTimestamp ) {
+    				
+    				hasNewResponse = true;
+    				isFirstRun = (latestChatResponseTimestamp == 0);
+    				latestChatResponseTimestamp = m.getTimestamp();
+    				break;
+    				
+    			}
+    			
+    		}
+    			
+    	}
+    	
+    	//So, did we have a new response?
+    	if( hasNewResponse && !isFirstRun ) {
+    	
+    		MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.notification);
+    		mediaPlayer.start();
+    		mediaPlayer.setOnCompletionListener( 
+    				
+				new OnCompletionListener() {
+
+					@Override
+					public void onCompletion( MediaPlayer arg0 ) { arg0.release(); }
+	    			
+	    		}
+				
+    		);
+    		
+    	}
+    	
+    	return;
+    	
+    }
+    
 }

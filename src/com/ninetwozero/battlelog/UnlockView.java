@@ -15,6 +15,7 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -38,12 +39,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TabHost;
-import android.widget.TextView;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.UnlockListAdapter;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
@@ -164,14 +166,6 @@ public class UnlockView extends TabActivity {
     		}
 
     	);	
-		
-	}
-	
-	@Override
-	public void onResume() {
-		
-		super.onResume();
-		reloadLayout();
 		
 	}
 	
@@ -530,6 +524,27 @@ public class UnlockView extends TabActivity {
 		
 		//CREATE
 		return builder.create();
+		
+	}
+	
+	@Override
+	public void onResume() {
+		
+		super.onResume();
+		
+		//Setup the locale
+    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+
+    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
+	    	Locale.setDefault(locale);
+	    	Configuration config = new Configuration();
+	    	config.locale = locale;
+	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
+    	
+    	}
+ 
+     	new AsyncSessionSetActive().execute();
+		reloadLayout();
 		
 	}
 }

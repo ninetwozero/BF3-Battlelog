@@ -24,7 +24,6 @@
         <item >90</item>
         <item >120</item>
     </integer-array>
-    
     <string-array name="service_update_intervals_labels">
         <item >Every 5 minutes</item>
         <item >Every 10 minutes</item>
@@ -47,13 +46,42 @@
         <item >Once every 90 seconds</item>
         <item >Once every 2 minutes</item>
     </string-array>
-    
+    <string-array name="language_titles">
+        <item >Croatian</item>
+        <item >Danish</item>
+        <item >Dutch</item>
+        <item >English</item>
+        <item >Finnish</item>
+        <item >French</item>
+        <item >German</item>
+        <item >Italian</item>
+        <item >Spanish</item>
+        <item >Polish</item>
+        <item >Portuguese</item>
+        <item >Romanian</item>
+        <item >Serbian</item>
+        <item >Swedish</item>
+    </string-array>
+     <string-array name="language_values">
+        <item >hr</item>
+        <item >da</item>
+        <item >nl</item>
+        <item >en</item>
+        <item >fi</item>
+        <item >fr</item>
+        <item >de</item>
+        <item >it</item>
+        <item >es</item>
+        <item >pl</item>
+        <item >pt</item>
+        <item >ro</item>
+        <item >sr</item>
+        <item >sw</item>
+    </string-array>
    <!--  translation starts here -->
    <string name="changelog">
-       * Fixed some profiles not getting the data &lt;br /&gt;
-       * Fixed some platoons force closing the app &lt;br /&gt;
-       * Added the ability to switch locale in the forum &lt;br /&gt;
-       * Added the ability to switch soldiers while viewing unlocks/assignments (hit MENU) &lt;br /&gt;
+       * Fixed the forum (sorry!) &lt;br /&gt;
+       * Fixed the underlying service from crashing (finally?!) &lt;br /&gt;
        * Updated the localization with more translations (contact me if you can help translate!) &lt;br /&gt;
        &lt;br /&gt;
        * DONATE-option available via the About screen (below) &lt;br /&gt;
@@ -437,4 +465,14 @@
 	<string name="info_forum_report_error">You need to enter a reason for reporting this post.</string>
 	<string name="general_nonetwork">No network connection available!</string>
 	<string name="info_comment_report">"Reporting comment number "</string>
+	<string name="info_settings_general">General options</string>
+	<string name="info_settings_chat">Chat options</string>
+	<string name="info_settings_service">Service options</string>
+	<string name="info_settings_notifications">Notification options</string>
+	<string name="info_settings_chat_desc_beep_true">Your active chat will beep with love.</string>
+	<string name="info_settings_chat_desc_beep_false">Your active chat won\'t even attempt to beep.</string>
+	<string name="info_settings_notification_desc_vibrate_false">Silence is golden.</string>
+	<string name="info_settings_notification_desc_vibrate_true">Bzzz bzzz.</string>
+	<string name="info_settings_notification_desc_beep_spec_true">Using the awesome Battlelog beep.</string>
+	<string name="info_settings_notification_desc_beep_spec_false">Using your default sound.</string>
 </resources>

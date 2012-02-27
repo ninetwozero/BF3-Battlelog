@@ -266,6 +266,7 @@ public final class Constants {
 	public static final String SP_BL_INTERVAL_SERVICE = "battlelog_service_interval";
 	public static final String SP_BL_INTERVAL_CHAT = "battlelog_chat_interval";
 	public static final String SP_BL_NUM_FEED = "battlelog_feed_count";
+	public static final String SP_BL_LANG = "app_locale";
 	public static final String SP_BL_LOCALE = "battlelog_locale";
 	public static final String SP_BL_COOKIE_NAME = "battlelog_cookie_name";
 	public static final String SP_BL_COOKIE_VALUE = "battlelog_cookie_value";

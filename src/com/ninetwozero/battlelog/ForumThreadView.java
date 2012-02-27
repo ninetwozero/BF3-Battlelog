@@ -15,6 +15,7 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,7 +33,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -57,10 +57,10 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ThreadPostListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostInThread;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -138,6 +138,19 @@ public class ForumThreadView extends ListActivity {
 	public void onResume() {
 	
 		super.onResume();
+		
+		//Setup the locale
+    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+
+    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
+	    	Locale.setDefault(locale);
+	    	Configuration config = new Configuration();
+	    	config.locale = locale;
+	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
+    	
+    	}
+ 
+     	new AsyncSessionSetActive().execute();
 		
 		//If we don't have a profile...
     	if( SessionKeeper.getProfileData() == null ) {
@@ -592,6 +605,10 @@ public class ForumThreadView extends ListActivity {
 			
 			}	
 			return true;
+			
+		} else if( keyCode == KeyEvent.KEYCODE_SEARCH ) {
+			
+			startActivity( new Intent(this, ForumSearchView.class ) );
 			
 		}
 		return super.onKeyDown( keyCode, event );

@@ -1,6 +1,7 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -14,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -23,7 +25,7 @@ import com.ninetwozero.battlelog.services.BattlelogService;
 public class SettingsView extends PreferenceActivity  {
 	
 	//Attributes
-	private long originalInterval;
+	private int originalInterval;
 	private SharedPreferences sharedPreferences;
 	
 	@Override
@@ -66,11 +68,11 @@ public class SettingsView extends PreferenceActivity  {
 		// Hotkeys
 		if ( keyCode == KeyEvent.KEYCODE_BACK ) {
 			
-			//Finns det 
+			//If the new interval != the old interval, we got to restart the "alarm" 
 	    	if( originalInterval != sharedPreferences.getInt( Constants.SP_BL_INTERVAL_SERVICE, 0 ) ) {
 	    		
 	    		//Get the interval
-	    		long serviceInterval = sharedPreferences.getLong( Constants.SP_BL_INTERVAL_SERVICE, (Constants.HOUR_IN_SECONDS/2) )*1000;
+	    		int serviceInterval = sharedPreferences.getInt( Constants.SP_BL_INTERVAL_SERVICE, (Constants.HOUR_IN_SECONDS/2) )*1000;
 	    		
 	    		//Restart the AlarmManager
 	    		AlarmManager alarmManager = (AlarmManager) getSystemService( Context.ALARM_SERVICE );
@@ -110,6 +112,39 @@ public class SettingsView extends PreferenceActivity  {
 		super.onSaveInstanceState(outState);
 		outState.putParcelableArrayList(Constants.SUPER_COOKIES, RequestHandler.getCookies());
 	
+	}
+
+	@Override
+	public void onResume() {
+		
+		super.onResume();
+		
+		//Setup the locale
+    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+
+    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
+	    	Locale.setDefault(locale);
+	    	Configuration config = new Configuration();
+	    	config.locale = locale;
+	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
+    	
+    	}
+ 
+     	new AsyncSessionSetActive().execute();
+		
+    	//Setup the locale
+    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+
+    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
+	    	Locale.setDefault(locale);
+	    	Configuration config = new Configuration();
+	    	config.locale = locale;
+	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
+    	
+    	}
+ 
+     	new AsyncSessionSetActive().execute();
+		
 	}
 	
 }

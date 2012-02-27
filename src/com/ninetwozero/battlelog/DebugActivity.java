@@ -14,37 +14,18 @@
 
 package com.ninetwozero.battlelog;
 
-import net.sf.andhsli.hotspotlogin.SimpleCrypto;
-import com.ninetwozero.battlelog.R;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
-import com.ninetwozero.battlelog.datatypes.PostData;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.CacheHandler;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.DatabaseStructure;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
-import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class DebugActivity extends Activity {
 
