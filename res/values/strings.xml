@@ -475,4 +475,8 @@
 	<string name="info_settings_notification_desc_vibrate_true">Bzzz bzzz.</string>
 	<string name="info_settings_notification_desc_beep_spec_true">Using the awesome Battlelog beep.</string>
 	<string name="info_settings_notification_desc_beep_spec_false">Using your default sound.</string>
+	<string name="info_settings_chat_desc_blbeep_true">BEEP!</string>
+	<string name="info_settings_chat_desc_blbeep_false">Using your default notification sound.</string>
+	<string name="info_settings_chat_desc_vibrate_true">Bzzt bzzt.</string>
+	<string name="info_settings_chat_desc_vibrate_false">Your device won\'t buzz you.</string>
 </resources>

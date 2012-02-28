@@ -55,8 +55,8 @@
         />
    	    <CheckBoxPreference
    	        android:title="Use the Battlelog beep" 
-   	        android:summaryOn="@string/info_settings_chat_desc_beep_spec_true"
-   	        android:summaryOff="@string/info_settings_chat_desc_beep_spec_false"
+   	        android:summaryOn="@string/info_settings_chat_desc_blbeep_true"
+   	        android:summaryOff="@string/info_settings_chat_desc_blbeep_false"
             android:key="notification_sound_special"
             android:defaultValue="true"
         	android:dependency="notification_sound"
