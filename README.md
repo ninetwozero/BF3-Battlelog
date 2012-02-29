@@ -1,7 +1,10 @@
 BF3-Battlelog
 =============
 
-BF3-Battlelog is the number one unofficial Battlefield 3 Battlelog-application for Android.
+BF3-Battlelog is the number one unofficial Battlefield 3 Battlelog [application for Android](https://market.android.com/details?id=com.ninetwozero.battlelog).
+
+![BF3-Battlelog home screen](https://lh6.ggpht.com/Q2RIvWNeJDRiQZ7HZyerw45OcdQZVImDHtVbtBs14W2jrtJSaQkeOJkwK-wbR7S9tQ "BF3-Battlelog home screen")
+![BF3-Battlelog player stats](https://lh3.ggpht.com/SSPzqWABXmFJElGWjN4wiGzkYLuUe0RjcfARbBDUlsbBPLVRC6W3oSCYBgGK_DOAsA "BF3-Battlelog player stats")
 
 Author
 ------------
