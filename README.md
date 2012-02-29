@@ -1,49 +1,36 @@
 BF3-Battlelog
 =============
 
+BF3-Battlelog is the number one unofficial Battlefield 3 Battlelog-application for Android.
+
 Author
------------------
+------------
 Karl Lindmark <support@ninetwozero.com> http://www.ninetwozero.com
 
-Code-contributors
------------------
-Lukas "The Widget" Larson <lukaslarson@gmail.com>
 
-Translators
------------------
+Contributors
+------------
 
-### Croatian
- * Darko "DarkoKukovec"
+### Code
+ * Lukas "The Widget" Larson <lukaslarson@gmail.com>
 
-### Danish
- * capalex65 <@Lord_Gabriel>
+### Graphics
+ * Markus 'Markus96-1337' Olszewski
+ * Stephen 'Dbagjones' Beaudet
 
-### Dutch
- * zAo82 "The Dutch PS3-player" <sbkg0002@gmail.com>
- * basr
-
-### French
- * Coval "coval" Delanight
-
-### Italian
- * federico73 
-
-### German
- * jimhardcore
-
-### Serbian
- * bagione
-
-### Spanish
- * Karl "ninetwozero" Lindmark
-
-### Swedish
- * Karl "ninetwozero" Lindmark
- * kosmiq
- * fysme
-
-### Polish
- * cyrq
+### Translations
+ * Darko "DarkoKukovec" (Croatian)
+ * capalex65 <@Lord_Gabriel> (Danish)
+ * zAo82 "The Dutch PS3-player" (Dutch)
+ * basr (Dutch)
+ * Coval "coval" Delanight (French)
+ * federico73 (Italian)
+ * jimhardcore (German)
+ * bagione (Serbian)
+ * Karl "ninetwozero" Lindmark (Spanish, Swedish)
+ * kosmiq (Swedish)
+ * fysme (Swedish)
+ * cyrq (Polish)
 
 ### Special thanks
-To all the people that have helped out by testing, providing feedback and/or anything else helpful. Much appreciated. :-) 
+To all the people that have helped out by testing, providing feedback and/or anything else helpful. Much appreciated. :-)
