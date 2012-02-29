@@ -23,22 +23,28 @@
 	>
 		<TextView 
 			style="@style/FriendHeadingRow"
-			android:text="List of contributors"
+			android:text="@string/info_credits_contributors"
 		/>
 		<TextView 
 	       android:layout_width="fill_parent"
 	       android:layout_height="wrap_content"
-	       android:text="First of all, I'd like to thank everyone for the support and hand out a special &quot;thank you&quot; to all the beta testers out there.\n\nWith that said, I've categorized the list of contributors below after what they've helped with and hopefully I haven't forgot anyone!"
+	       android:text="@string/info_credits_info"
 	       android:padding="10dp"
 		/>		
 		<TextView 
 			style="@style/FriendHeadingRow"
-			android:text="Code"
+			android:text="@string/info_credits_code"
 		/>
 		<TextView 
 	       android:layout_width="fill_parent"
 	       android:layout_height="wrap_content"
 	       android:text="Lukas 'chokzor' Larson"
+	       android:padding="10dp"
+		/>
+		<TextView 
+	       android:layout_width="fill_parent"
+	       android:layout_height="wrap_content"
+	       android:text="Peter Miklosko"
 	       android:padding="10dp"
 		/>
 		<TextView 
@@ -59,7 +65,7 @@
 		/>
 		<TextView 
 			style="@style/FriendHeadingRow"
-			android:text="Translations"
+			android:text="@string/info_credits_translations"
 		/>
 		<TextView 
 	       android:layout_width="fill_parent"

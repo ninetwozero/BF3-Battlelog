@@ -37,6 +37,7 @@
 		android:layout_above="@id/bar_form"
 		android:divider="#FFFFFF"
 		android:dividerHeight="0dp"
+		android:fastScrollEnabled="true"
 	/>
 	<TextView
 	  	android:id="@android:id/empty"

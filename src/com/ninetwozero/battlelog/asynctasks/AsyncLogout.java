@@ -27,6 +27,7 @@ import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.services.BattlelogService;
 
 
@@ -80,6 +81,7 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
 				
 				//Co-co-co-commit
 				spEdit.commit();
+				SessionKeeper.setProfileData( null );
 				
     		}
     		wh.close();

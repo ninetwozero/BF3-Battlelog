@@ -194,7 +194,7 @@ public class WebsiteHandler {
 				spEdit.commit();
 		        
 		        //Do we want to start a service?
-				long serviceInterval = sharedPreferences.getLong( Constants.SP_BL_INTERVAL_SERVICE, (Constants.HOUR_IN_SECONDS/2) )*1000;
+				int serviceInterval = sharedPreferences.getInt( Constants.SP_BL_INTERVAL_SERVICE, (Constants.HOUR_IN_SECONDS/2) )*1000;
 				AlarmManager alarmManager = (AlarmManager) context.getSystemService( Context.ALARM_SERVICE );
 				alarmManager.setInexactRepeating( 
 						
