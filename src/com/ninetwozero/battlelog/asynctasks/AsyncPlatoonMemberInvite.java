@@ -10,10 +10,9 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.asynctasks;
-
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,72 +22,74 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-
 public class AsyncPlatoonMemberInvite extends AsyncTask<String, Void, Integer> {
-	
-	//Attributes
-	private Context context;
-	private long platoonId;
-	private long[] userId;
-	
-	public AsyncPlatoonMemberInvite(Context c, long[] uId, long pId) {
 
-		context = c;
-		userId = uId;
-		platoonId = pId;
-		
-	}
-	
-	@Override
-	protected Integer doInBackground(String... arg0) {
+    // Attributes
+    private Context context;
+    private long platoonId;
+    private long[] userId;
 
-		try {
-				
-			return WebsiteHandler.sendPlatoonInvite( userId, platoonId, arg0[0] );
-			
-		} catch( Exception ex ) {
-		
-			ex.printStackTrace();
-			return -1;
-			
-		}		
-		
-	}
-	
-	@Override
-	protected void onPostExecute( Integer result ) { 
-	
-		if( context instanceof Activity ) { 
+    public AsyncPlatoonMemberInvite(Context c, long[] uId, long pId) {
 
-			
-			switch( result  ) { 
+        context = c;
+        userId = uId;
+        platoonId = pId;
 
-				case -1:
-					Toast.makeText( context, R.string.msg_error, Toast.LENGTH_SHORT).show();
-					((Activity) context).finish();
-					break;
+    }
 
-				case 0:
-					Toast.makeText( context, R.string.info_platoon_invite_ok, Toast.LENGTH_SHORT).show();
-					((Activity) context).finish();
-					break;
+    @Override
+    protected Integer doInBackground(String... arg0) {
 
-				case 1:
-					Toast.makeText( context, R.string.info_platoon_invite_fail, Toast.LENGTH_SHORT).show();
-					break;
-					
-				case 2:
-					Toast.makeText( context, R.string.info_platoon_invite_passed, Toast.LENGTH_SHORT).show();
-					break;
-					
-				default:
-					((Activity) context).finish();
-					break;
-					
-			}
-			
-		}	
-		
-	}
-	
+        try {
+
+            return WebsiteHandler.sendPlatoonInvite(userId, platoonId, arg0[0]);
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            return -1;
+
+        }
+
+    }
+
+    @Override
+    protected void onPostExecute(Integer result) {
+
+        if (context instanceof Activity) {
+
+            switch (result) {
+
+                case -1:
+                    Toast.makeText(context, R.string.msg_error, Toast.LENGTH_SHORT)
+                            .show();
+                    ((Activity) context).finish();
+                    break;
+
+                case 0:
+                    Toast.makeText(context, R.string.info_platoon_invite_ok,
+                            Toast.LENGTH_SHORT).show();
+                    ((Activity) context).finish();
+                    break;
+
+                case 1:
+                    Toast.makeText(context, R.string.info_platoon_invite_fail,
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 2:
+                    Toast.makeText(context, R.string.info_platoon_invite_passed,
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                default:
+                    ((Activity) context).finish();
+                    break;
+
+            }
+
+        }
+
+    }
+
 }

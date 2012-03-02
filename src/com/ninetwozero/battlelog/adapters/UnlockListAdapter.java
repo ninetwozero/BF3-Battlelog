@@ -10,13 +10,12 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.adapters;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,113 +24,123 @@ import android.widget.BaseAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 
 public class UnlockListAdapter extends BaseAdapter {
-	
-	//Attributes
-	private Context context;
-	private ArrayList<UnlockData> dataArray;
-	private LayoutInflater layoutInflater;
-	private String tempStatus;
-	private ProgressBar progressBar;
-	
-	//Construct
-	public UnlockListAdapter(Context c, ArrayList<UnlockData> u, LayoutInflater l) {
-	
-		context = c;
-		dataArray = u;
-		layoutInflater = l;
-		
-	}
 
-	@Override
-	public int getCount() {
+    // Attributes
+    private Context context;
+    private ArrayList<UnlockData> dataArray;
+    private LayoutInflater layoutInflater;
+    private String tempStatus;
+    private ProgressBar progressBar;
 
-		return ( dataArray != null )? dataArray.size() : 0;
-		
-	}
+    // Construct
+    public UnlockListAdapter(Context c, ArrayList<UnlockData> u,
+            LayoutInflater l) {
 
-	@Override
-	public UnlockData getItem( int position ) {
+        context = c;
+        dataArray = u;
+        layoutInflater = l;
 
-		return dataArray.get( position );
+    }
 
-	}
+    @Override
+    public int getCount() {
 
-	@Override
-	public long getItemId( int position ) {
+        return (dataArray != null) ? dataArray.size() : 0;
 
-		return position;
-		
-	}
+    }
 
-	
-	@Override
-	public View getView( int position, View convertView, ViewGroup parent ) {
+    @Override
+    public UnlockData getItem(int position) {
 
-		//Get the current item
-		UnlockData currentUnlock = getItem(position);
-		
-		//Recycle
-		if ( convertView == null ) {
+        return dataArray.get(position);
 
-			convertView = layoutInflater.inflate( R.layout.list_item_unlock, parent, false );
+    }
 
-		}
-		
-		//Grab the progressBar
-		progressBar = ((ProgressBar) convertView.findViewById( R.id.progress_unlock ));
+    @Override
+    public long getItemId(int position) {
 
-		//Set the TextViews
-		((View) convertView.findViewById(R.id.divider_left)).setBackgroundColor( context.getResources().getColor( getColorForKit(currentUnlock.getKitId()) ) );
-		((TextView) convertView.findViewById( R.id.text_unlock_percent )).setText(currentUnlock.getUnlockPercentage() + "%");
-		((TextView) convertView.findViewById( R.id.text_unlock_type )).setText( currentUnlock.getTypeTitle() );
-		
-		//Title
-		((TextView) convertView.findViewById( R.id.text_unlock_title )).setText( currentUnlock.getName() );
-		
-		//Description
-		((TextView) convertView.findViewById(R.id.text_unlock_desc)).setText( currentUnlock.getObjective() );
-		
-		//Update the progress
-		progressBar.setMax( 100 );
-		progressBar.setProgress( (int) Math.round(currentUnlock.getUnlockPercentage()) );
-		
-		//Tag it!
-		convertView.setTag( currentUnlock );
+        return position;
 
-		return convertView;
-	}
-	
-	public int getColorForKit( int kitId ) {
-			
-		switch( kitId ) {
-		
-			case 1:
-				return R.color.kit_assault;
-				
-			case 2:
-				return R.color.kit_engineer;
-				
-			case 8:
-				return R.color.kit_recon;
-				
-			case 32:
-				return R.color.kit_support;
-				
-			default:
-				return R.color.kit_general;
-			
-		}
-		
-	}
+    }
 
-	public void setDataArray( ArrayList<UnlockData> data ) {
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-		//Let's do this
-		this.dataArray = data;
-		
-	}
-	
+        // Get the current item
+        UnlockData currentUnlock = getItem(position);
+
+        // Recycle
+        if (convertView == null) {
+
+            convertView = layoutInflater.inflate(R.layout.list_item_unlock,
+                    parent, false);
+
+        }
+
+        // Grab the progressBar
+        progressBar = ((ProgressBar) convertView
+                .findViewById(R.id.progress_unlock));
+
+        // Set the TextViews
+        ((View) convertView.findViewById(R.id.divider_left))
+                .setBackgroundColor(context.getResources().getColor(
+                        getColorForKit(currentUnlock.getKitId())));
+        ((TextView) convertView.findViewById(R.id.text_unlock_percent))
+                .setText(currentUnlock.getUnlockPercentage() + "%");
+        ((TextView) convertView.findViewById(R.id.text_unlock_type))
+                .setText(currentUnlock.getTypeTitle());
+
+        // Title
+        ((TextView) convertView.findViewById(R.id.text_unlock_title))
+                .setText(currentUnlock.getName());
+
+        // Description
+        ((TextView) convertView.findViewById(R.id.text_unlock_desc))
+                .setText(currentUnlock.getObjective());
+
+        // Update the progress
+        progressBar.setMax(100);
+        progressBar.setProgress((int) Math.round(currentUnlock
+                .getUnlockPercentage()));
+
+        // Tag it!
+        convertView.setTag(currentUnlock);
+
+        return convertView;
+    }
+
+    public int getColorForKit(int kitId) {
+
+        switch (kitId) {
+
+            case 1:
+                return R.color.kit_assault;
+
+            case 2:
+                return R.color.kit_engineer;
+
+            case 8:
+                return R.color.kit_recon;
+
+            case 32:
+                return R.color.kit_support;
+
+            default:
+                return R.color.kit_general;
+
+        }
+
+    }
+
+    public void setDataArray(ArrayList<UnlockData> data) {
+
+        // Let's do this
+        this.dataArray = data;
+
+    }
+
 }

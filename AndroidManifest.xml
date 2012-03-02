@@ -3,7 +3,7 @@
     package="com.ninetwozero.battlelog"
     android:versionCode="12"
     android:versionName="1.0.9"
-	android:installLocation="auto"
+    android:installLocation="internalOnly"
 > 
 	<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="8" />
 
@@ -135,8 +135,16 @@
             android:label="@string/title_assignments"
             android:name=".AssignmentView"
           	android:configChanges="orientation"
-        />
-		<receiver android:name="com.ninetwozero.battlelog.widgets.BattlelogAppWidgetProvider" android:label="@string/widget_name">
+        />	
+        
+		<!-- 	TODO: This currently kills the app (and the phone) so it won\'t be active. 
+        <receiver android:name="com.ninetwozero.battlelog.broadcastreceivers.NetworkReceiver">
+			<intent-filter>
+				<action android:name="android.net.conn.CONNECTIVITY_CHANGE"></action>
+			</intent-filter>
+		</receiver>
+		-->
+		<receiver android:name=".widgets.BattlelogAppWidgetProvider" android:label="@string/widget_name">
 			<intent-filter>
 		         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 		         <action android:name="android.appwidget.action.ACTION_WIDGET_RECEIVER" />

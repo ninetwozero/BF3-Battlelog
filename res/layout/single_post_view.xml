@@ -85,6 +85,8 @@
 	    android:layout_height="fill_parent"
 		android:layout_above="@id/bar_form"
 		android:layout_below="@id/wrap_top"
+		android:listSelector="@android:color/transparent"
+		android:drawSelectorOnTop="false"
 	/>
 	<TextView
 	  	android:id="@android:id/empty"

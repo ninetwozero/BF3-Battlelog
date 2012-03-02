@@ -24,32 +24,75 @@
         <item >90</item>
         <item >120</item>
     </integer-array>
-    
     <string-array name="service_update_intervals_labels">
-        <item >Every 5 minutes</item>
-        <item >Every 10 minutes</item>
-        <item >Every 30 minutes</item>
-        <item >Once an hour</item>
-        <item >Once every 2 hours</item>
-        <item >Once every 6 hours</item>
-        <item >Once every 12 hours</item>
-        <item >Once every 18 hours</item>
-        <item >Once a day</item>
+        <item >@string/label_update_interval_minutes_5</item>
+        <item >@string/label_update_interval_minutes_10</item>
+        <item >@string/label_update_interval_minutes_30</item>
+        <item >@string/label_update_interval_hours_1</item>
+        <item >@string/label_update_interval_hours_2</item>
+        <item >@string/label_update_interval_hours_6</item>
+        <item >@string/label_update_interval_hours_12</item>
+        <item >@string/label_update_interval_hours_18</item>
+        <item >@string/label_update_interval_days_1</item>
     </string-array>
      <string-array name="chat_update_intervals_labels">
-        <item >Once every 5 seconds</item>
-        <item >Once every 10 seconds</item>
-        <item >Once every 15 seconds</item>
-        <item >Once every 20 seconds</item>
-        <item >Once every 25 seconds</item>
-        <item >Once every 30 seconds</item>
-        <item >Once a minute</item>
-        <item >Once every 90 seconds</item>
-        <item >Once every 2 minutes</item>
+        <item >@string/label_update_interval_seconds_5</item>
+        <item >@string/label_update_interval_seconds_10</item>
+        <item >@string/label_update_interval_seconds_15</item>
+        <item >@string/label_update_interval_seconds_20</item>
+        <item >@string/label_update_interval_seconds_25</item>
+        <item >@string/label_update_interval_seconds_30</item>
+        <item >@string/label_update_interval_minutes_1</item>
+        <item >@string/label_update_interval_seconds_90</item>
+        <item >@string/label_update_interval_minutes_2</item>
     </string-array>
-    
-    <!--  translation starts here -->
-   
+    <string-array name="language_titles">
+        <item >Cрпски</item>
+        <item >Dansk</item>
+        <item >Deutsch</item>
+        <item >English</item>
+        <item >Español</item>
+        <item >Francais</item>
+        <item >Hrvatski</item>
+        <item >Italiano</item>
+        <item >Nederlands</item>
+        <item >Polski</item>
+        <item >Português</item>
+        <item >Român</item>
+        <item >Suomi</item>
+        <item >Svenska</item>
+    </string-array>
+     <string-array name="language_values">
+        <item >sr</item>
+        <item >da</item>
+        <item >de</item>
+        <item >en</item>
+        <item >es</item>
+        <item >fr</item>
+        <item >hr</item>
+        <item >it</item>
+        <item >nl</item>
+        <item >pl</item>
+        <item >pt</item>
+        <item >ro</item>
+        <item >fi</item>
+        <item >sv</item>
+    </string-array>
+   <!--  translation starts here -->
+   <string name="changelog">* Åtgärdat forumet (oops!) &lt;br /&gt;
+* Åtgärdat krascher i den underliggande tjänsten (äntligen?!) &lt;br /&gt;
+* Val av språk kan numera göras i inställningarna &lt;br /&gt;
+* Uppdaterat språkstödet med fler språk (kontakta mig om du kan hjälpa till med översättning!!) &lt;br /&gt;
+* Lagt till hörbara händelsenotifieringar &lt;br /&gt;
+* Lagt till chattljud &lt;br /&gt;
+* Lagt till inställningar för ovanstående &lt;br /&gt;
+&lt;br /&gt;
+* DONERA-alternativ valbart i Om-information (nedan) &lt;br /&gt;
+* Ett forum för appen finns nu via  http://bit.ly/bf3blforum &lt;br /&gt;
+&lt;br /&gt;
+Rapportera alla eventuella fel du stöter på till support@ninetwozero.com och/eller 
+@karllindmark på Twitter (https://twitter.com/karllindmark).&lt;br /&gt;&lt;br /&gt;
+Tack för ditt stöd!</string>
 	<string name="general_invalid_email">Felaktig e-postadress.</string>
 	<string name="general_invalid_password">Vänligen mata in ditt lösenord.</string>
 	<string name="general_changelog_version">Förändringar till</string>
@@ -177,13 +220,13 @@
 	<string name="info_xml_comment_empty">Inga kommentarer hittades.</string>
 	<string name="info_xml_rank">Rank</string>
 	<string name="info_xml_kills">Mord</string>
-	<string name="info_xml_assists">Medhjälp till mord</string>
+	<string name="info_xml_assists">Assists</string>
 	<string name="info_xml_vehicles_destroyed">Förstörda fordon</string>
 	<string name="info_xml_vehicles_assisted_with">Skadade fordon</string>
 	<string name="info_xml_heals">Läkningar</string>
 	<string name="info_xml_revives">Återupplivningar</string>
 	<string name="info_xml_repairs">Reparationer</string>
-	<string name="info_xml_resupplies">Resupplies</string>
+	<string name="info_xml_resupplies">Påfyllningar</string>
 	<string name="info_xml_deaths">Dödsfall</string>
 	<string name="info_xml_kd_ratio">KD-ratio</string>
 	<string name="info_xml_wins">Vinster</string>
@@ -191,7 +234,7 @@
 	<string name="info_xml_wl_ratio">Vinster/Förluster</string>
 	<string name="info_xml_accuracy">Träffsäkerhet</string>
 	<string name="info_xml_longest_headshot">Längsta huvudträff</string>
-	<string name="info_xml_longest_killstreak">Längsta mordserie</string>
+	<string name="info_xml_longest_killstreak">Högst antal dödade i rad</string>
 	<string name="info_xml_skill_rating">Skicklighet</string>
 	<string name="info_xml_time_played">Spelad tid</string>
 	<string name="info_xml_score_minute">Poäng/minut</string>
@@ -405,10 +448,66 @@
 	<string name="info_forum_report_empty">Du måste ange en anledning till varför du rapporterar  detta inlägg.</string>
 	<string name="info_report_active">Rapporterar...</string>
 	<string name="title_forum_report">BF3 Battlelog - Rapporterar ett foruminlägg</string>
-	<string name="info_forum_lang">Select a language for the forums...</string>
-	<string name="info_general_nocache">The cache directory doesn\'t exist: please contact the developer!</string>
-	<string name="info_unlock_change">Change soldier...</string>
-	<string name="info_general_noprofile">No profile selected.</string>
-	<string name="info_assignments_empty">No assignments found for this soldier.</string>
-	<string name="info_unlocks_empty">No unlocks in this view.</string>
+	<string name="info_forum_lang">Välj ett språk för forum...</string>
+	<string name="info_general_nocache">Sökvägen för cache finns inte. Kontakta utvecklaren!</string>
+	<string name="info_unlock_change">Ändra soldat...</string>
+	<string name="info_general_noprofile">Ingen profil vald.</string>
+	<string name="info_assignments_empty">Inga uppdrag funna för soldaten.</string>
+	<string name="info_unlocks_empty">Inga upplåsningar i den här vyn.</string>
+	<string name="info_login_lostcookie">Inloggningen lyckades, men inga cookies hittades. :-(</string>
+	<string name="info_conn_hostunreach">Måldatorn gick inte att nå - starta om din 3G-anslutning och försök igen.</string>
+	<string name="info_session_expired">Sessionen har löpt ut. Förnyar sessionen mot server.</string>
+	<string name="info_session_renew_ok">Session förnyad!</string>
+	<string name="info_session_renew_fail">Sessionen kunde inte förnyas.</string>
+	<string name="info_friendreq_resp_ok">Besvarat vänförfrågan.</string>
+	<string name="info_platoon_invite_ok">Inbjudningar har skickats!</string>
+	<string name="info_platoon_invite_fail">Inbjudningar kunde inte skickas!</string>
+	<string name="info_platoon_invite_passed">En del inbjudningar har skickats, andra inte!</string>
+	<string name="info_platoon_req_ok">Inbjudan besvarad.</string>
+	<string name="info_forum_report_error">Du måste ange en anledning till varför du rapporterar  detta inlägg.</string>
+	<string name="general_nonetwork">Ingen nätverksanslutning tillgänglig!</string>
+	<string name="info_comment_report">Rapporterar kommentar nummer</string>
+	<string name="info_settings_general">Allmänna inställningar</string>
+	<string name="info_settings_chat">Chattinställningar</string>
+	<string name="info_settings_service">Inställningar för tjänsten</string>
+	<string name="info_settings_notifications">Händelseinställningar</string>
+	<string name="info_settings_chat_desc_beep_true">Din aktiva chatt kommer pipa med kärlek.</string>
+	<string name="info_settings_chat_desc_beep_false">Din aktiva chatt kommer inte ens att försöka pipa.</string>
+	<string name="info_settings_notification_desc_vibrate_false">Tiga är guld.</string>
+	<string name="info_settings_notification_desc_vibrate_true">Bzzt bzzt.</string>
+	<string name="info_settings_notification_desc_beep_true">Dina händelser kommer att höras.</string>
+	<string name="info_settings_notification_desc_beep_false">Du kommer inte att höra något.</string>
+	<string name="info_settings_notification_desc_beep_spec_true">PIP!</string>
+	<string name="info_settings_notification_desc_light_true">Blinka lilla stjärna.</string>
+	<string name="info_settings_notification_desc_light_false">LED kommer inte att blinka.</string>
+	<string name="info_settings_notification_desc_beep_spec_false">Använder ditt vanliga händelseljud.</string>
+	<string name="info_credits_contributors">Lista över de som bidragit</string>
+	<string name="info_credits_info">Först och främst vill jag tacka alla för ert stöd och framför allt ett stort &amp;quot;tack&amp;quot; till alla betatestare.\n\nMed det sagt så är alla som har bidragit listade nedan och med vad de har hjälpt till med, jag har förhoppningsvis inte glömt någon!</string>
+	<string name="info_credits_code">Kod</string>
+	<string name="info_credits_translations">Översättningar</string>
+	<string name="label_update_interval_seconds_5">En gång varje femte sekund</string>
+	<string name="label_update_interval_seconds_10">En gång var tionde sekund</string>
+	<string name="label_update_interval_seconds_15">En gång var femtonde sekund</string>
+	<string name="label_update_interval_seconds_20">En gång var tjugonde sekund</string>
+	<string name="label_update_interval_seconds_25">En gång var tjugofemte sekund</string>
+	<string name="label_update_interval_seconds_30">En gång var trettionde sekund</string>
+	<string name="label_update_interval_seconds_90">En gång var nittionde sekund</string>
+	<string name="label_update_interval_minutes_1">En gång i minuten</string>
+	<string name="label_update_interval_minutes_2">En gång varannan minut</string>
+	<string name="label_update_interval_minutes_5">En gång var femte minut</string>
+	<string name="label_update_interval_minutes_10">En gång var tionde minut</string>
+	<string name="label_update_interval_minutes_30">En gång var trettionde minut</string>
+	<string name="label_update_interval_hours_1">En gång i timmen</string>
+	<string name="label_update_interval_hours_2">En gång varannan timme</string>
+	<string name="label_update_interval_hours_6">En gång var sjätte timme</string>
+	<string name="label_update_interval_hours_12">En gång var tolfte timme</string>
+	<string name="label_update_interval_hours_18">En gång var artonde timme</string>
+	<string name="label_update_interval_days_1">En gång om dagen</string>
+	<string name="info_settings_title_language">Språk</string>
+	<string name="info_settings_title_sound_chat">Aktivera chattljud</string>
+	<string name="info_settings_chat_title">Inaktivera chattljud</string>
+	<string name="info_settings_notification_title_light">Aktivera LED</string>
+	<string name="info_settings_notification_title_sounds">Aktivera ljud</string>
+	<string name="info_settings_notification_title_sounds_spec">Använd Battlelog pip</string>
+	<string name="info_settings_notification_title_vibration">Aktivera vibration</string>
 </resources>

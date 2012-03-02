@@ -10,52 +10,60 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.datatypes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.ninetwozero.battlelog.R;
 
 public class VehicleType implements Parcelable {
 
-	//Attributes
-	private String identifier, name, label;
-	
-	//Construct
-	public VehicleType(String i, String n, String l) {
-		
-		this.identifier = i;
-		this.name = n;
-		this.label = l;
-		
-	}
-	
-	public VehicleType(Parcel in) {
-		
-		this.identifier = in.readString();
-		this.name = in.readString();
-		this.label = in.readString();
-		
-	}
-	
-	//Getters
-	public String getIdentifier() { return this.identifier; }
-	public String getName() { return this.name; }
-	public String getLabel() { return this.label; }
+    // Attributes
+    private String identifier, name, label;
 
+    // Construct
+    public VehicleType(String i, String n, String l) {
 
-	@Override
-	public int describeContents() { return 0; }
+        this.identifier = i;
+        this.name = n;
+        this.label = l;
 
-	@Override
-	public void writeToParcel( Parcel out, int arg1 ) {
+    }
 
-		out.writeString(this.identifier);
-		out.writeString(this.name);
-		out.writeString(this.label);
-		
-	}
-	
+    public VehicleType(Parcel in) {
+
+        this.identifier = in.readString();
+        this.name = in.readString();
+        this.label = in.readString();
+
+    }
+
+    // Getters
+    public String getIdentifier() {
+        return this.identifier;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getLabel() {
+        return this.label;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int arg1) {
+
+        out.writeString(this.identifier);
+        out.writeString(this.name);
+        out.writeString(this.label);
+
+    }
+
 }

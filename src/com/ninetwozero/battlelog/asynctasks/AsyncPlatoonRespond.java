@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.asynctasks;
 
@@ -26,50 +26,54 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
 
-	//Attribute
-	private Context context;
-	private SharedPreferences sharedPreferences;
-	private long platoonId, profileId;
-	private boolean response;
+    // Attribute
+    private Context context;
+    private SharedPreferences sharedPreferences;
+    private long platoonId, profileId;
+    private boolean response;
 
-	//Constructor
-	public AsyncPlatoonRespond( Context c, long plId, long pId, boolean r ) { 
-		
-		this.context = c;
-		this.platoonId = plId;
-		this.profileId = pId;
-		this.response = r;
-	
-	}	
-	
-	@Override
-	protected void onPreExecute() {}
-	
-	@Override
-	protected Boolean doInBackground( String... arg0) {
-		
-		try {
-		
-			//Let's get this!!
-			return WebsiteHandler.answerPlatoonRequest( platoonId, profileId, response, arg0[0] );
-			
-			
-		} catch ( WebsiteHandlerException e ) {
-			
-			return false;
-			
-		}
-		
-	}
-	
-	@Override
-	protected void onPostExecute(Boolean results) {
-		
-		//Let the user know and then refresh!
-		Toast.makeText( context, R.string.info_platoon_req_ok, Toast.LENGTH_SHORT).show();				
-		if( context != null ) { ((PlatoonView) context).reloadLayout(); }
-		return;
-		
-	}	
+    // Constructor
+    public AsyncPlatoonRespond(Context c, long plId, long pId, boolean r) {
+
+        this.context = c;
+        this.platoonId = plId;
+        this.profileId = pId;
+        this.response = r;
+
+    }
+
+    @Override
+    protected void onPreExecute() {
+    }
+
+    @Override
+    protected Boolean doInBackground(String... arg0) {
+
+        try {
+
+            // Let's get this!!
+            return WebsiteHandler.answerPlatoonRequest(platoonId, profileId,
+                    response, arg0[0]);
+
+        } catch (WebsiteHandlerException e) {
+
+            return false;
+
+        }
+
+    }
+
+    @Override
+    protected void onPostExecute(Boolean results) {
+
+        // Let the user know and then refresh!
+        Toast.makeText(context, R.string.info_platoon_req_ok,
+                Toast.LENGTH_SHORT).show();
+        if (context != null) {
+            ((PlatoonView) context).reload();
+        }
+        return;
+
+    }
 
 }

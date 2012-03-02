@@ -10,35 +10,41 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
-
-
-
 public class ChatMessage {
 
-	//Attributes
-	private long chatId, timestamp;
-	private String sender, message;
-	
-	
-	//Construct
-	public ChatMessage(long c, long t, String s, String m) {
-		
-		this.chatId = c;
-		this.timestamp = t;
-		this.sender = s;
-		this.message = m;
-		
-	}
-	
-	//Getters
-	public long getChatId() { return this.chatId; }
-	public long getTimestamp() { return this.timestamp; }
-	public String getSender() { return this.sender; }
-	public String getMessage() { return this.message; }
-	
+    // Attributes
+    private long chatId, timestamp;
+    private String sender, message;
+
+    // Construct
+    public ChatMessage(long c, long t, String s, String m) {
+
+        this.chatId = c;
+        this.timestamp = t;
+        this.sender = s;
+        this.message = m;
+
+    }
+
+    // Getters
+    public long getChatId() {
+        return this.chatId;
+    }
+
+    public long getTimestamp() {
+        return this.timestamp;
+    }
+
+    public String getSender() {
+        return this.sender;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
 }

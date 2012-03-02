@@ -10,20 +10,21 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
-
-
-
 public class WebsiteHandlerException extends Exception {
 
-	private static final long serialVersionUID = -4284315651483396603L;
+    private static final long serialVersionUID = -4284315651483396603L;
 
-	public WebsiteHandlerException() { super( "WebsiteHandlerException" ); }
+    public WebsiteHandlerException() {
+        super("WebsiteHandlerException");
+    }
 
-	public WebsiteHandlerException( String detailMessage ) { super( ( detailMessage == null ) ? "No error message found" : detailMessage ); }
+    public WebsiteHandlerException(String detailMessage) {
+        super((detailMessage == null) ? "No error message found"
+                : detailMessage);
+    }
 
 }

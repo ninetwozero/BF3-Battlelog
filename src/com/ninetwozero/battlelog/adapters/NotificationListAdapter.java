@@ -10,13 +10,12 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.adapters;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -25,81 +24,88 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class NotificationListAdapter extends BaseAdapter {
-	
-	//Attributes
-	private Context context;
-	private ArrayList<NotificationData> itemArray;
-	private LayoutInflater layoutInflater;
-	private String tempStatus;
-	private TextView textPersona, textStatus;
-	private long activeUserId;
-	
-	//Construct
-	public NotificationListAdapter(Context c, ArrayList<NotificationData> fi, LayoutInflater l, long auid) {
-	
-		context = c;
-		itemArray = fi;
-		layoutInflater = l;
-		activeUserId = auid;
-	
-	}
 
-	@Override
-	public int getCount() {
+    // Attributes
+    private Context context;
+    private ArrayList<NotificationData> itemArray;
+    private LayoutInflater layoutInflater;
+    private String tempStatus;
+    private TextView textPersona, textStatus;
+    private long activeUserId;
 
-		return ( itemArray != null )? itemArray.size() : 0;
-		
-	}
+    // Construct
+    public NotificationListAdapter(Context c, ArrayList<NotificationData> fi,
+            LayoutInflater l, long auid) {
 
-	@Override
-	public NotificationData getItem( int position ) {
+        context = c;
+        itemArray = fi;
+        layoutInflater = l;
+        activeUserId = auid;
 
-		return this.itemArray.get( position );
+    }
 
-	}
+    @Override
+    public int getCount() {
 
-	@Override
-	public long getItemId( int position ) {
+        return (itemArray != null) ? itemArray.size() : 0;
 
-		return this.itemArray.get( position ).getItemId();
-		
-	}
-	
-	public void setItemArray( ArrayList<NotificationData> ia ) { this.itemArray = ia; }
-	
-	@Override
-	public View getView( int position, View convertView, ViewGroup parent ) {
+    }
 
-		//Get the current item
-		NotificationData currentItem = getItem(position);
-		
-		//Recycle
-		if ( convertView == null ) {
+    @Override
+    public NotificationData getItem(int position) {
 
-			convertView = layoutInflater.inflate( R.layout.list_item_notification, parent, false );
+        return this.itemArray.get(position);
 
-		}
-	
-		//Set the views
-		((TextView) convertView.findViewById(R.id.text_message)).setText( Html.fromHtml( currentItem.getMessage(context, this.activeUserId ) ) );
-		((TextView) convertView.findViewById(R.id.text_date)).setText( PublicUtils.getRelativeDate( context, currentItem.getDate() ) );
+    }
 
-		
-		//Hook it up on the tag
-		convertView.setTag( currentItem );
+    @Override
+    public long getItemId(int position) {
 
-		//Send it back
-		return convertView;
-	}
-	
-	@Override
-	public void notifyDataSetChanged() {
-		
-		super.notifyDataSetChanged();
+        return this.itemArray.get(position).getItemId();
 
-	}
+    }
+
+    public void setItemArray(ArrayList<NotificationData> ia) {
+        this.itemArray = ia;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        // Get the current item
+        NotificationData currentItem = getItem(position);
+
+        // Recycle
+        if (convertView == null) {
+
+            convertView = layoutInflater.inflate(
+                    R.layout.list_item_notification, parent, false);
+
+        }
+
+        // Set the views
+        ((TextView) convertView.findViewById(R.id.text_message)).setText(Html
+                .fromHtml(currentItem.getMessage(context, this.activeUserId)));
+        ((TextView) convertView.findViewById(R.id.text_date))
+                .setText(PublicUtils.getRelativeDate(context,
+                        currentItem.getDate()));
+
+        // Hook it up on the tag
+        convertView.setTag(currentItem);
+
+        // Send it back
+        return convertView;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+
+        super.notifyDataSetChanged();
+
+    }
 }

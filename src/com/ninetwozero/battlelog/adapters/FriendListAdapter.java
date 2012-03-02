@@ -10,13 +10,12 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.adapters;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,141 +23,152 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 
 public class FriendListAdapter extends BaseAdapter {
-	
-	//Attributes
-	private Context context;
-	private ArrayList<ProfileData> profileArray;
-	private LayoutInflater layoutInflater;
-	private String tempStatus;
-	private TextView textUser, textStatus;
-	
-	//Construct
-	public FriendListAdapter(Context c, ArrayList<ProfileData> p, LayoutInflater l) {
-	
-		context = c;
-		profileArray = p;
-		layoutInflater = l;
-		
-	}
 
-	@Override
-	public int getCount() {
+    // Attributes
+    private Context context;
+    private ArrayList<ProfileData> profileArray;
+    private LayoutInflater layoutInflater;
+    private String tempStatus;
+    private TextView textUser, textStatus;
 
-		return ( profileArray != null )? profileArray.size() : 0;
-		
-	}
-	
-	@Override
-	public int getItemViewType(int position) {
-	    
-		if( getItem(position).getAccountName().startsWith( "0000000" ) ) {
-			
-			return 1;
-		
-		} else {
-			
-			return 0;
-		
-		}
-	
-	}
+    // Construct
+    public FriendListAdapter(Context c, ArrayList<ProfileData> p,
+            LayoutInflater l) {
 
-	@Override
-	public int getViewTypeCount() {
-	   
-		return 2;
-	
-	}
+        context = c;
+        profileArray = p;
+        layoutInflater = l;
 
-	@Override
-	public ProfileData getItem( int position ) {
+    }
 
-		return this.profileArray.get( position );
+    @Override
+    public int getCount() {
 
-	}
+        return (profileArray != null) ? profileArray.size() : 0;
 
-	@Override
-	public long getItemId( int position ) {
+    }
 
-		return this.profileArray.get( position ).getProfileId();
-		
-	}
+    @Override
+    public int getItemViewType(int position) {
 
-	public long getPersonaId( int position ) {
-	
-		return this.profileArray.get( position ).getPersonaId();
-		
-	}
-	
-	@Override
-	public View getView( int position, View convertView, ViewGroup parent ) {
+        if (getItem(position).getAccountName().startsWith("0000000")) {
 
-		//Get the current item
-		ProfileData currentProfile = getItem(position);
-		
-		//Let's see what we found
-		if( getItemViewType(position) == 1 ) {
-			
-			//Can we recycle?
-			if( convertView == null ) {
+            return 1;
 
-				convertView = layoutInflater.inflate( R.layout.list_friends_divider, parent, false);
-			
-			} 
-			
-			//Set the fields
-			((TextView) convertView.findViewById( R.id.text_title )).setText( currentProfile.getPersonaName() );
-			convertView.setOnClickListener( null );
-			convertView.setOnLongClickListener( null );
-			
-		} else {
-		
-			//Recycle
-			if ( convertView == null ) {
-	
-				convertView = layoutInflater.inflate( R.layout.list_item_friend, parent, false );
-	
-			}
-	
-			//Set the TextViews
-			textUser = (TextView) convertView.findViewById( R.id.text_user );
-			textUser.setText( 
-					currentProfile.getAccountName() 
-			);
-			textStatus = (TextView) convertView.findViewById( R.id.text_status );
-			
-			//Oh-oh
-			if( currentProfile.isPlaying() && currentProfile.isOnline() ) {
-				
-				textUser.setTextColor( context.getResources().getColor(R.color.blue) );
-				textStatus.setText( R.string.label_playing );
-				textStatus.setTextColor( context.getResources().getColor(R.color.blue) );
-				
-			} else if( currentProfile.isOnline() ) {
-				
-				textUser.setTextColor( context.getResources().getColor(R.color.green) );
-				textStatus.setText( R.string.label_online );
-				textStatus.setTextColor( context.getResources().getColor(R.color.green) );
-							
-			} else {
+        } else {
 
-				textUser.setTextColor( context.getResources().getColor(R.color.grey) );
-				textStatus.setText( R.string.label_offline );				
-				textStatus.setTextColor( context.getResources().getColor(R.color.grey) );
-				
-			}
-		
-		}
-		
-		//Set the tag either way
-		convertView.setTag( currentProfile );
+            return 0;
 
-		return convertView;
-	}
-	
-	public void setItemArray(ArrayList<ProfileData> data) { this.profileArray = data; }
-	
+        }
+
+    }
+
+    @Override
+    public int getViewTypeCount() {
+
+        return 2;
+
+    }
+
+    @Override
+    public ProfileData getItem(int position) {
+
+        return this.profileArray.get(position);
+
+    }
+
+    @Override
+    public long getItemId(int position) {
+
+        return this.profileArray.get(position).getProfileId();
+
+    }
+
+    public long getPersonaId(int position) {
+
+        return this.profileArray.get(position).getPersonaId();
+
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        // Get the current item
+        ProfileData currentProfile = getItem(position);
+
+        // Let's see what we found
+        if (getItemViewType(position) == 1) {
+
+            // Can we recycle?
+            if (convertView == null) {
+
+                convertView = layoutInflater.inflate(
+                        R.layout.list_friends_divider, parent, false);
+
+            }
+
+            // Set the fields
+            ((TextView) convertView.findViewById(R.id.text_title))
+                    .setText(currentProfile.getPersonaName());
+            convertView.setOnClickListener(null);
+            convertView.setOnLongClickListener(null);
+
+        } else {
+
+            // Recycle
+            if (convertView == null) {
+
+                convertView = layoutInflater.inflate(R.layout.list_item_friend,
+                        parent, false);
+
+            }
+
+            // Set the TextViews
+            textUser = (TextView) convertView.findViewById(R.id.text_user);
+            textUser.setText(currentProfile.getAccountName());
+            textStatus = (TextView) convertView.findViewById(R.id.text_status);
+
+            // Oh-oh
+            if (currentProfile.isPlaying() && currentProfile.isOnline()) {
+
+                textUser.setTextColor(context.getResources().getColor(
+                        R.color.blue));
+                textStatus.setText(R.string.label_playing);
+                textStatus.setTextColor(context.getResources().getColor(
+                        R.color.blue));
+
+            } else if (currentProfile.isOnline()) {
+
+                textUser.setTextColor(context.getResources().getColor(
+                        R.color.green));
+                textStatus.setText(R.string.label_online);
+                textStatus.setTextColor(context.getResources().getColor(
+                        R.color.green));
+
+            } else {
+
+                textUser.setTextColor(context.getResources().getColor(
+                        R.color.grey));
+                textStatus.setText(R.string.label_offline);
+                textStatus.setTextColor(context.getResources().getColor(
+                        R.color.grey));
+
+            }
+
+        }
+
+        // Set the tag either way
+        convertView.setTag(currentProfile);
+
+        return convertView;
+    }
+
+    public void setItemArray(ArrayList<ProfileData> data) {
+        this.profileArray = data;
+    }
+
 }

@@ -10,68 +10,69 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.asynctasks;
 
-
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
-
 
 public class AsyncFriendRemove extends AsyncTask<String, Integer, Boolean> {
 
-	//Attribute
-	Context context;
-	long profileId;
-	String httpContent;
-	
-	//Constructor
-	public AsyncFriendRemove( Context c, long pId) { 
-		
-		this.context = c;
-		this.profileId = pId;
-		
-	}	
-	
-	@Override
-	protected void onPreExecute() { }
-	
-	@Override
-	protected Boolean doInBackground( String... arg0 ) {
-		
-		try {
-			
-    		return WebsiteHandler.removeFriend( profileId );
-    		
-		} catch( Exception ex ) {
-			
-			ex.printStackTrace();
-			return false;
-			
-		}
-		
-	}
-	
-	@Override
-	protected void onPostExecute(Boolean results) {
-		
-		if( results ) { 
-			
-			Toast.makeText(this.context, R.string.info_txt_friend_delete_true, Toast.LENGTH_SHORT).show(); 
-			
-		} else { 
-			
-			Toast.makeText( this.context, R.string.info_txt_friend_delete_false, Toast.LENGTH_SHORT).show(); 
-			
-		}
+    // Attribute
+    Context context;
+    long profileId;
+    String httpContent;
 
-		return;
-		
-	}	
-	
+    // Constructor
+    public AsyncFriendRemove(Context c, long pId) {
+
+        this.context = c;
+        this.profileId = pId;
+
+    }
+
+    @Override
+    protected void onPreExecute() {
+    }
+
+    @Override
+    protected Boolean doInBackground(String... arg0) {
+
+        try {
+
+            return WebsiteHandler.removeFriend(profileId);
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            return false;
+
+        }
+
+    }
+
+    @Override
+    protected void onPostExecute(Boolean results) {
+
+        if (results) {
+
+            Toast.makeText(this.context, R.string.info_txt_friend_delete_true,
+                    Toast.LENGTH_SHORT).show();
+
+        } else {
+
+            Toast.makeText(this.context, R.string.info_txt_friend_delete_false,
+                    Toast.LENGTH_SHORT).show();
+
+        }
+
+        return;
+
+    }
+
 }

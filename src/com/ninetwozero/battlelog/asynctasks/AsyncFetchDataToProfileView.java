@@ -1,6 +1,6 @@
+
 package com.ninetwozero.battlelog.asynctasks;
 
-import com.ninetwozero.battlelog.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,106 +10,109 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.ProfileView;
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
+public class AsyncFetchDataToProfileView extends
+        AsyncTask<String, Void, Boolean> {
 
-public class AsyncFetchDataToProfileView extends AsyncTask<String, Void, Boolean> {
-    
-	//Context
-	private Context context;
-	private Activity origin;
-	private SharedPreferences sharedPreferences;
-	
-	//Data
-	ProfileData userData;
-	
-	//Error message
-	private String error;
-	
-	public AsyncFetchDataToProfileView(Context c) {
-		
-		context = c;
-		origin = (Activity) context;
-		sharedPreferences = PreferenceManager.getDefaultSharedPreferences( context );
-		
-		userData = null;
-		error = "";
-		
-	}
-	
-	@Override
-	protected void onPreExecute() {}
+    // Context
+    private Context context;
+    private Activity origin;
+    private SharedPreferences sharedPreferences;
 
-	@Override
-	protected Boolean doInBackground( String... arg0 ) {
-		
-			
-		//We got to do it the hard way - let's see if we can find a user with that name.
-		String searchString = arg0[0];
+    // Data
+    ProfileData userData;
 
-		try {
-				
-			//Post the world!
-			userData = WebsiteHandler.getProfileIdFromSearch(
-				
-				searchString, 
-				sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ) 
-			
-			);
+    // Error message
+    private String error;
 
-			//Did we get an actual user?
-			if( userData == null || userData.getPersonaId() == 0 ) { 
-				
-				//Persona
-				error = context.getString( R.string.msg_search_nouser ) + searchString;
-				return false; 
-				
-			}
-				
-		} catch(Exception ex) {
-			
-			//D'oh	
-			error = context.getString( R.string.msg_search_nouser ) + searchString;
-			return false;
-		
-		}
+    public AsyncFetchDataToProfileView(Context c) {
 
-		return true;
+        context = c;
+        origin = (Activity) context;
+        sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
 
-	}
-	
-	@Override
-	protected void onPostExecute(Boolean result) {
-		
-		//How copy?
-		if( result ) {
-		
-			//To the Batmobile!
-			context.startActivity(
-				
-				new Intent(
-					
-					context,
-					ProfileView.class
-					
-				).putExtra(
-						
-					"profile", 
-					userData	
-				
-				)
-				
-			);
-			
-		} else {
-			
-			Toast.makeText( context, error, Toast.LENGTH_SHORT ).show();
-			
-		}
-		
-		return;
-	}
-	
+        userData = null;
+        error = "";
+
+    }
+
+    @Override
+    protected void onPreExecute() {
+    }
+
+    @Override
+    protected Boolean doInBackground(String... arg0) {
+
+        // We got to do it the hard way - let's see if we can find a user with
+        // that name.
+        String searchString = arg0[0];
+
+        try {
+
+            // Post the world!
+            userData = WebsiteHandler.getProfileIdFromSearch(
+
+                    searchString,
+                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, "")
+
+                    );
+
+            // Did we get an actual user?
+            if (userData == null || userData.getPersonaId() == 0) {
+
+                // Persona
+                error = context.getString(R.string.msg_search_nouser)
+                        + searchString;
+                return false;
+
+            }
+
+        } catch (Exception ex) {
+
+            // D'oh
+            error = context.getString(R.string.msg_search_nouser)
+                    + searchString;
+            return false;
+
+        }
+
+        return true;
+
+    }
+
+    @Override
+    protected void onPostExecute(Boolean result) {
+
+        // How copy?
+        if (result) {
+
+            // To the Batmobile!
+            context.startActivity(
+
+                    new Intent(
+
+                            context, ProfileView.class
+
+                    ).putExtra(
+
+                            "profile", userData
+
+                            )
+
+                    );
+
+        } else {
+
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+
+        }
+
+        return;
+    }
+
 }

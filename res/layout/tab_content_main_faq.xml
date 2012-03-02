@@ -28,7 +28,7 @@
 		<TextView 
 	       android:layout_width="fill_parent"
 	       android:layout_height="wrap_content"
-	       android:text="You can use various platforms to reach me, most of them listed in the first tab to the left. Use whichever you feel most comfortable with, and I'll respond as soon as possible. :-)"
+	       android:text="You can use various platforms to reach me, most of them listed in the first tab to the left. Use whichever you feel most comfortable with, and I\'ll respond as soon as possible. :-)"
 	       android:padding="10dp"
 	       android:autoLink="web"
 		/>
@@ -39,7 +39,7 @@
 		<TextView 
 	       android:layout_width="fill_parent"
 	       android:layout_height="wrap_content"
-	       android:text="This app establishes a direct connection to the actual Battlelog servers and logs in using your Origin-account. If you're interested in viewing the actual source, it's viewable on github via the following link: http://bit.ly/bf3blsrc"
+	       android:text="This app establishes a direct connection to the actual Battlelog servers and logs in using your Origin-account. If you\'re interested in viewing the actual source, it\'s viewable on github via the following link: http://bit.ly/bf3blsrc"
 	       android:padding="10dp"
 	       android:autoLink="web"
 		/>
@@ -50,18 +50,18 @@
 		<TextView 
 	       android:layout_width="fill_parent"
 	       android:layout_height="wrap_content"
-	       android:text="As the workflow of login process is identical to logging in using a regular web browser, one could say that it's as safe as your current network connection is."
+	       android:text="As the workflow of login process is identical to logging in using a regular web browser, one could say that it\'s as safe as your current network connection is."
 	       android:padding="10dp"
 	       android:autoLink="web"
 		/>
 		<TextView 
 			style="@style/FriendHeadingRow"
-			android:text="Are you sure that you aren't stealing our passwords?"
+			android:text="Are you sure that you aren\'t stealing our passwords?"
 		/>
 		<TextView 
 	       android:layout_width="fill_parent"
 	       android:layout_height="wrap_content"
-	       android:text="Yes, I'm 100% certain of that.\n\nThe only time that the app is sending your Origin credentials anywhere is when a) you login manually or b) the background service needs to re-login due to Battlelog logging you out.\n\nIn other words, your login information never gets sent to any third-party servers or similar, and they're encrypted locally so that no other application can steal the information with ease."
+	       android:text="Yes, I\'m 100% certain of that.\n\nThe only time that the app is sending your Origin credentials anywhere is when a) you login manually or b) the background service needs to re-login due to Battlelog logging you out.\n\nIn other words, your login information never gets sent to any third-party servers or similar, and they\'re encrypted locally so that no other application can steal the information with ease."
 	       android:padding="10dp"
 	       android:autoLink="web"
 		/>

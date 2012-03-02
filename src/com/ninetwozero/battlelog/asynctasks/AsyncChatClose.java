@@ -10,54 +10,57 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.asynctasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
-
 
 public class AsyncChatClose extends AsyncTask<Void, Integer, Boolean> {
 
-	//Attribute
-	Context context;
-	long chatId;
-	String httpContent;
-	
-	//Constructor
-	public AsyncChatClose( Context c, long cId ) { 
-		
-		this.context = c; 
-		this.chatId = cId;
-	
-	}
-	
-	@Override
-	protected void onPreExecute() {}
-	
-	@Override
-	protected Boolean doInBackground( Void... arg0 ) {
-		
-		try {
-		
-    		//Did we manage?
-    		if( WebsiteHandler.closeChatWindow(chatId) ) { return true; } 
-    		else { return false; }
-    		
-		} catch( Exception ex ) {
-			
-			ex.printStackTrace();
-			return false;
-			
-		}
-		
-	}
-	
-	@Override
-	protected void onPostExecute(Boolean results) {}
+    // Attribute
+    Context context;
+    long chatId;
+    String httpContent;
+
+    // Constructor
+    public AsyncChatClose(Context c, long cId) {
+
+        this.context = c;
+        this.chatId = cId;
+
+    }
+
+    @Override
+    protected void onPreExecute() {
+    }
+
+    @Override
+    protected Boolean doInBackground(Void... arg0) {
+
+        try {
+
+            // Did we manage?
+            if (WebsiteHandler.closeChatWindow(chatId)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            return false;
+
+        }
+
+    }
+
+    @Override
+    protected void onPostExecute(Boolean results) {
+    }
 
 }

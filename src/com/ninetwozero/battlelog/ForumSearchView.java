@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog;
 
@@ -48,276 +48,312 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class ForumSearchView extends ListActivity {
 
-	//Attributes
-	private LayoutInflater layoutInflater;
-	private SharedPreferences sharedPreferences;
-	
-	//Elements
-	private ListView listView;
-	private EditText fieldSearch;
-	private Button buttonSearch;
-	
-	//Misc
-	private ArrayList<Board.SearchResult> threads;
-	
-	@Override
+    // Attributes
+    private LayoutInflater layoutInflater;
+    private SharedPreferences sharedPreferences;
+
+    // Elements
+    private ListView listView;
+    private EditText fieldSearch;
+    private Button buttonSearch;
+
+    // Misc
+    private ArrayList<Board.SearchResult> threads;
+
+    @Override
     public void onCreate(Bundle icicle) {
-    
-    	//onCreate - save the instance state
-    	super.onCreate(icicle);	
-    	
-    	//Did it get passed on?
-    	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
-    		
-    		ArrayList<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
-			
-    		if( shareableCookies != null ) { 
-    			
-    			RequestHandler.setCookies( shareableCookies );
-    		
-    		} else {
-    			
-    			finish();
-    			
-    		}
-    		
-    	}
-    	
-    	//Set the content view
+
+        // onCreate - save the instance state
+        super.onCreate(icicle);
+
+        // Set sharedPreferences
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Did it get passed on?
+        if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
+
+            ArrayList<ShareableCookie> shareableCookies = icicle
+                    .getParcelableArrayList(Constants.SUPER_COOKIES);
+
+            if (shareableCookies != null) {
+
+                RequestHandler.setCookies(shareableCookies);
+
+            } else {
+
+                finish();
+
+            }
+
+        }
+
+        // Setup the locale
+        setupLocale();
+
+        // Set the content view
         setContentView(R.layout.forum_search_view);
 
-        //Prepare to tango
+        // Prepare to tango
         this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences( this );
-        
-        //Get the elements
+
+        // Get the elements
         buttonSearch = (Button) findViewById(R.id.button_search);
         fieldSearch = (EditText) findViewById(R.id.field_search);
-        
-        //Threads!
-        threads = new ArrayList<Board.SearchResult>();
-        setupList( threads );
-	}    
-	
-	public void setupList(ArrayList<Board.SearchResult> results) {
-	
-		//Do we have it?
-		if( listView == null ) { 
-	        
-	        //Get the ListView
-	        listView = getListView();
-	        listView.setChoiceMode( ListView.CHOICE_MODE_NONE );
 
-		}
-		
-		//Does it have an adapter?
-		if( listView.getAdapter() == null ) { 
-			
-			listView.setAdapter( new ForumSearchAdapter(this, results, layoutInflater ) );
-			
-		} else {
-		
-			((ForumSearchAdapter) listView.getAdapter()).setItemArray(results);
-			
-		}
-	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		
-		super.onSaveInstanceState(outState);
-		outState.putParcelableArrayList(Constants.SUPER_COOKIES, RequestHandler.getCookies());
-	
-	}
-	
+        // Threads!
+        threads = new ArrayList<Board.SearchResult>();
+        setupList(threads);
+    }
+
+    public void setupList(ArrayList<Board.SearchResult> results) {
+
+        // Do we have it?
+        if (listView == null) {
+
+            // Get the ListView
+            listView = getListView();
+            listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+
+        }
+
+        // Does it have an adapter?
+        if (listView.getAdapter() == null) {
+
+            listView.setAdapter(new ForumSearchAdapter(this, results,
+                    layoutInflater));
+
+        } else {
+
+            ((ForumSearchAdapter) listView.getAdapter()).setItemArray(results);
+
+        }
+    }
+
     @Override
-    public void onConfigurationChanged(Configuration newConfig){        
+    protected void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
+                RequestHandler.getCookies());
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
 
     public void onClick(View v) {
-    	
-    	//Send?
-    	if( v.getId() == R.id.button_search ) {
-    	
-    		//Send it!
-    		new AsyncForumSearch( this ).execute( fieldSearch.getText().toString() );
-    		
-    	}
-    	
+
+        // Send?
+        if (v.getId() == R.id.button_search) {
+
+            // Send it!
+            new AsyncForumSearch(this)
+                    .execute(fieldSearch.getText().toString());
+
+        }
+
     }
-    
+
     @Override
-	public boolean onCreateOptionsMenu( Menu menu ) {
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate( R.menu.option_basic, menu );
-		return super.onCreateOptionsMenu( menu );
-	
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_basic, menu);
+        return super.onCreateOptionsMenu(menu);
+
     }
-	
-	@Override
-	public boolean onOptionsItemSelected( MenuItem item ) {
 
-		//Let's act!
-		if( item.getItemId() == R.id.option_back ) {
-			
-			((Activity) this).finish();
-			
-		}
-		
-		// Return true yo
-		return true;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-	}  
-	
-	public class AsyncForumSearch extends AsyncTask<String, Void, Boolean> {
-	
-		//Attributes
-		private Context context;
-		
-		//Construct
-		public AsyncForumSearch(Context c) { this.context = c; }
-		
-		@Override
-		protected void onPreExecute() {
-			
-			if( context instanceof ForumSearchView ) { 
-				
-				((ForumSearchView) context).toggleSearchButton();
-				
-			}
-			
-		}
-		
-		@Override
-		protected Boolean doInBackground(String... arg0) {
-			
-			try {
+        // Let's act!
+        if (item.getItemId() == R.id.option_back) {
 
-				threads = WebsiteHandler.searchInForums(context, arg0[0] );
-				return true;
-			
-			} catch( Exception ex ) { 
-				
-				ex.printStackTrace();
-				return false;
-				
-			}
-			
-		}
-		
-		@Override
-		protected void onPostExecute( Boolean results ) {
-		
-			//Let's evaluate
-			if( results ) { 
-			
-				if( context instanceof ForumSearchView ) { 
-				
-					((ForumSearchView) context).setupList(threads);
-					((ForumSearchView) context).toggleSearchButton();
-					
-				}
-				
-			} else {
-				
-				if( context instanceof ForumSearchView ) { 
-					
-					((ForumSearchView) context).toggleSearchButton();
-					
-				}
-				Toast.makeText( context, R.string.info_xml_generic_error, Toast.LENGTH_SHORT).show();
-				
-			}
-			
-		}
-	
-	}
+            ((Activity) this).finish();
 
-	public void toggleSearchButton() {
+        }
 
-		buttonSearch.setEnabled( !buttonSearch.isEnabled() );
-		
-		//Update the text
-		if( buttonSearch.isEnabled() ) { buttonSearch.setText( R.string.label_search ); }
-		else { buttonSearch.setText( "..." ); }
-		
-	}
-	
-	@Override
-	public void onListItemClick(ListView l, View v, int p, long id) {
-		
-		startActivity( 
-				
-			new Intent(this, ForumThreadView.class).putExtra(
-					
-				"threadId", 
-				id 
-				
-			).putExtra(
-			
-				"threadTitle",
-				((Board.SearchResult) v.getTag()).getTitle()
-					
-			)	
-				
-		);
-		
-	}	
-	
-	@Override
-	public void onResume() {
-	
-		super.onResume();
-		
-		//Setup the locale
-    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+        // Return true yo
+        return true;
 
-    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
-	    	Locale.setDefault(locale);
-	    	Configuration config = new Configuration();
-	    	config.locale = locale;
-	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
-    	
-    	}
- 
-     	new AsyncSessionSetActive().execute();
-		
-		//If we don't have a profile...
-    	if( SessionKeeper.getProfileData() == null ) {
-    		
-    		//...but we do indeed have a cookie...
-    		if( !sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ).equals( "" ) ){
-    			
-    			//...we set the SessionKeeper, but also reload the cookies! Easy peasy!
-    			SessionKeeper.setProfileData( SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences) );
-    			RequestHandler.setCookies( 
-    			
-    				new ShareableCookie(
+    }
 
-    					sharedPreferences.getString( Constants.SP_BL_COOKIE_NAME, "" ),
-    					sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ),
-    					Constants.COOKIE_DOMAIN
-    						
-    				)
-    				
-    			);
-    			
-    			//...but just to be sure, we try to verify our session "behind the scenes"
-    			new AsyncSessionValidate(this, sharedPreferences).execute();
-    			
-    		} else {
-    			
-    			//Aw man, that backfired.
-    			Toast.makeText( this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
-    			startActivity( new Intent(this, Main.class) );
-    			finish();
-    			
-    		}
-    		
-    	}
-    	
-	}
-	
+    public class AsyncForumSearch extends AsyncTask<String, Void, Boolean> {
+
+        // Attributes
+        private Context context;
+
+        // Construct
+        public AsyncForumSearch(Context c) {
+            this.context = c;
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+            if (context instanceof ForumSearchView) {
+
+                ((ForumSearchView) context).toggleSearchButton();
+
+            }
+
+        }
+
+        @Override
+        protected Boolean doInBackground(String... arg0) {
+
+            try {
+
+                threads = WebsiteHandler.searchInForums(context, arg0[0]);
+                return true;
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+                return false;
+
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean results) {
+
+            // Let's evaluate
+            if (results) {
+
+                if (context instanceof ForumSearchView) {
+
+                    ((ForumSearchView) context).setupList(threads);
+                    ((ForumSearchView) context).toggleSearchButton();
+
+                }
+
+            } else {
+
+                if (context instanceof ForumSearchView) {
+
+                    ((ForumSearchView) context).toggleSearchButton();
+
+                }
+                Toast.makeText(context, R.string.info_xml_generic_error,
+                        Toast.LENGTH_SHORT).show();
+
+            }
+
+        }
+
+    }
+
+    public void toggleSearchButton() {
+
+        buttonSearch.setEnabled(!buttonSearch.isEnabled());
+
+        // Update the text
+        if (buttonSearch.isEnabled()) {
+            buttonSearch.setText(R.string.label_search);
+        } else {
+            buttonSearch.setText("...");
+        }
+
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int p, long id) {
+
+        startActivity(
+
+        new Intent(this, ForumThreadView.class).putExtra(
+
+                "threadId", id
+
+                ).putExtra(
+
+                        "threadTitle", ((Board.SearchResult) v.getTag()).getTitle()
+
+                )
+
+        );
+
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        // Setup the locale
+        setupLocale();
+
+        // Setup the session
+        setupSession();
+
+    }
+
+    public void setupSession() {
+
+        // Let's set "active" against the website
+        new AsyncSessionSetActive().execute();
+
+        // If we don't have a profile...
+        if (SessionKeeper.getProfileData() == null) {
+
+            // ...but we do indeed have a cookie...
+            if (!sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "")
+                    .equals("")) {
+
+                // ...we set the SessionKeeper, but also reload the cookies!
+                // Easy peasy!
+                SessionKeeper
+                        .setProfileData(SessionKeeper
+                                .generateProfileDataFromSharedPreferences(sharedPreferences));
+                RequestHandler.setCookies(
+
+                        new ShareableCookie(
+
+                                sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
+                                sharedPreferences.getString(
+                                        Constants.SP_BL_COOKIE_VALUE, ""),
+                                Constants.COOKIE_DOMAIN
+
+                        )
+
+                        );
+
+                // ...but just to be sure, we try to verify our session
+                // "behind the scenes"
+                new AsyncSessionValidate(this, sharedPreferences).execute();
+
+            } else {
+
+                // Aw man, that backfired.
+                Toast.makeText(this, R.string.info_txt_session_lost,
+                        Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, Main.class));
+                finish();
+
+            }
+
+        }
+
+    }
+
+    public void setupLocale() {
+
+        if (!sharedPreferences.getString(Constants.SP_BL_LANG, "").equals("")) {
+
+            Locale locale = new Locale(sharedPreferences.getString(
+                    Constants.SP_BL_LANG, "en"));
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config,
+                    getResources().getDisplayMetrics());
+
+        }
+
+    }
+
 }

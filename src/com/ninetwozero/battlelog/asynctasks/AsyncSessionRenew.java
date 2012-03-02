@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.asynctasks;
 
@@ -32,84 +32,89 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncSessionRenew extends AsyncTask<PostData, Integer, Boolean> {
 
-	//Attribute
-	private ProgressDialog progressDialog;
-	private Context context;
-	private AsyncSessionRenew origin;
-	private ProfileData profile;
-	
-	//Constructor
-	public AsyncSessionRenew( Context c ) { 
+    // Attribute
+    private ProgressDialog progressDialog;
+    private Context context;
+    private AsyncSessionRenew origin;
+    private ProfileData profile;
 
-		origin = this;
-		context = c; 
-	
-	}
-	
-	@Override
-	protected void onPreExecute() {
-	
-		
-		//Let's see
-		progressDialog = new ProgressDialog(context);
-		progressDialog.setTitle(context.getString( R.string.general_wait ));
-		progressDialog.setMessage( context.getString( R.string.info_session_expired ) );
-		progressDialog.setOnCancelListener( 
-				
-			new OnCancelListener() {
+    // Constructor
+    public AsyncSessionRenew(Context c) {
 
-				@Override
-				public void onCancel( DialogInterface dialog ) {
+        origin = this;
+        context = c;
 
-					origin.cancel( true );
-					dialog.dismiss();
-					
-				}}
-		
-		);
-		progressDialog.show();
-		
-	}
-	
-	@Override
-	protected Boolean doInBackground( PostData... arg0 ) {
-		
-		try {
-		
-			//Let's try
-			profile = WebsiteHandler.doLogin( context, arg0, true );
-			
-			//Did it go ok?
-			return (profile != null );
-			
-		} catch ( WebsiteHandlerException e ) {
-			
-			return false;
-			
-		}
-		
-	}
-	
-	@Override
-	protected void onPostExecute(Boolean results) {
+    }
 
-		//Got a dialog?
-		if( progressDialog != null ) { progressDialog.dismiss(); }
-		
-		//Did it fail? Let's tell the user
-		if( results ) { 
+    @Override
+    protected void onPreExecute() {
 
-			Toast.makeText( context, R.string.info_session_renew_ok, Toast.LENGTH_SHORT ).show();
-			
-		} else {
-			
-			Toast.makeText( context, R.string.info_session_renew_fail, Toast.LENGTH_SHORT).show(); 
-			context.startActivity( new Intent(context, Main.class) ); 
-			( (Activity) context).finish();
-			
-		}
-		return;
-		
-	}	
-	
+        // Let's see
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle(context.getString(R.string.general_wait));
+        progressDialog.setMessage(context
+                .getString(R.string.info_session_expired));
+        progressDialog.setOnCancelListener(
+
+                new OnCancelListener() {
+
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+
+                        origin.cancel(true);
+                        dialog.dismiss();
+
+                    }
+                }
+
+                );
+        progressDialog.show();
+
+    }
+
+    @Override
+    protected Boolean doInBackground(PostData... arg0) {
+
+        try {
+
+            // Let's try
+            profile = WebsiteHandler.doLogin(context, arg0, true);
+
+            // Did it go ok?
+            return (profile != null);
+
+        } catch (WebsiteHandlerException e) {
+
+            return false;
+
+        }
+
+    }
+
+    @Override
+    protected void onPostExecute(Boolean results) {
+
+        // Got a dialog?
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+
+        // Did it fail? Let's tell the user
+        if (results) {
+
+            Toast.makeText(context, R.string.info_session_renew_ok,
+                    Toast.LENGTH_SHORT).show();
+
+        } else {
+
+            Toast.makeText(context, R.string.info_session_renew_fail,
+                    Toast.LENGTH_SHORT).show();
+            context.startActivity(new Intent(context, Main.class));
+            ((Activity) context).finish();
+
+        }
+        return;
+
+    }
+
 }

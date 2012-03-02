@@ -10,96 +10,93 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
+
 package com.ninetwozero.battlelog.datatypes;
-
-import com.ninetwozero.battlelog.R;
-
-
 
 public class PostData {
 
-	// Attributes
-	private String field, value;
-	private boolean hash;
+    // Attributes
+    private String field, value;
+    private boolean hash;
 
-	// Constructs
-	public PostData() {
+    // Constructs
+    public PostData() {
 
-		this.field = "";
-		this.value = "";
-		this.hash = false;
-	}
-	
-	public PostData( String f, Object v) {
+        this.field = "";
+        this.value = "";
+        this.hash = false;
+    }
 
-		this.field = f;
-		this.value = String.valueOf( v );
-		this.hash = false;
-	}
+    public PostData(String f, Object v) {
 
-	public PostData( String f, Object v, boolean h ) {
+        this.field = f;
+        this.value = String.valueOf(v);
+        this.hash = false;
+    }
 
-		this.field = f;
-		this.value = String.valueOf( v );
-		this.hash = h;
-	}
+    public PostData(String f, Object v, boolean h) {
 
-	// Other
-	public void clear() {
+        this.field = f;
+        this.value = String.valueOf(v);
+        this.hash = h;
+    }
 
-		this.field = "";
-		this.value = "";
-		this.hash = false;
-	}
+    // Other
+    public void clear() {
 
-	public String find( String f ) {
+        this.field = "";
+        this.value = "";
+        this.hash = false;
+    }
 
-		return ( this.field.compareTo( f ) == 1 ) ? this.field : null;
-	}
+    public String find(String f) {
 
-	// Getters
-	public String getField() {
+        return (this.field.compareTo(f) == 1) ? this.field : null;
+    }
 
-		return field;
-	}
+    // Getters
+    public String getField() {
 
-	public String getValue() {
+        return field;
+    }
 
-		return value;
-	}
+    public String getValue() {
 
-	public boolean isHash() {
+        return value;
+    }
 
-		return hash;
-	}
+    public boolean isHash() {
 
-	public void setAll( String f, Object v, boolean h ) {
+        return hash;
+    }
 
-		this.field = f;
-		this.value = String.valueOf( v );
-		this.hash = h;
-	}
+    public void setAll(String f, Object v, boolean h) {
 
-	// Setters
-	public void setField( String field ) {
+        this.field = f;
+        this.value = String.valueOf(v);
+        this.hash = h;
+    }
 
-		this.field = field;
-	}
+    // Setters
+    public void setField(String field) {
 
-	public void setHash( boolean hash ) {
+        this.field = field;
+    }
 
-		this.hash = hash;
-	}
+    public void setHash(boolean hash) {
 
-	public void setValue( String value ) {
+        this.hash = hash;
+    }
 
-		this.value = value;
-	}
+    public void setValue(String value) {
 
-	public String toString() {
+        this.value = value;
+    }
 
-		return ( ( this.isHash() ) ? "[HASH] " : "[PLAIN] " ) + this.field
-				+ " => " + this.value;
-	}
+    public String toString() {
+
+        return ((this.isHash()) ? "[HASH] " : "[PLAIN] ") + this.field + " => "
+                + this.value;
+    }
 }

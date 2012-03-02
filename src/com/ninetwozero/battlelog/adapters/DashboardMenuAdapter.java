@@ -10,12 +10,10 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.adapters;
 
-
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,65 +21,68 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.DashboardItem;
 
 public class DashboardMenuAdapter extends BaseAdapter {
-	
-	//Attributes
-	private Context context;
-	private DashboardItem[] items;
-	private LayoutInflater layoutInflater;
-	
-	//Construct
-	public DashboardMenuAdapter(Context c, DashboardItem[] d, LayoutInflater l) {
-	
-		context = c;
-		items = d;
-		layoutInflater = l;
 
-	}
+    // Attributes
+    private Context context;
+    private DashboardItem[] items;
+    private LayoutInflater layoutInflater;
 
-	@Override
-	public int getCount() {
+    // Construct
+    public DashboardMenuAdapter(Context c, DashboardItem[] d, LayoutInflater l) {
 
-		return ( items != null )? items.length : 0;
-		
-	}
+        context = c;
+        items = d;
+        layoutInflater = l;
 
-	@Override
-	public DashboardItem getItem( int position ) {
+    }
 
-		return this.items[position];
+    @Override
+    public int getCount() {
 
-	}
+        return (items != null) ? items.length : 0;
 
-	@Override
-	public long getItemId( int position ) {
+    }
 
-		return this.items[position].getId();
-		
-	}
-	
-	@Override
-	public View getView( int position, View convertView, ViewGroup parent ) {
+    @Override
+    public DashboardItem getItem(int position) {
 
-		//Get the current item
-		DashboardItem currentItem = getItem(position);
-		
-		//Recycle
-		if ( convertView == null ) {
+        return this.items[position];
 
-			convertView = layoutInflater.inflate( R.layout.list_item_dashboard_menu, parent, false );
-			
-		}
+    }
 
-		//Get the TextView
-		((TextView) convertView.findViewById(R.id.text_title)).setText( currentItem.getTitle() );
+    @Override
+    public long getItemId(int position) {
 
-		//Store the object
-		convertView.setTag( currentItem );
+        return this.items[position].getId();
 
-		return convertView;
-	}
-	
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        // Get the current item
+        DashboardItem currentItem = getItem(position);
+
+        // Recycle
+        if (convertView == null) {
+
+            convertView = layoutInflater.inflate(
+                    R.layout.list_item_dashboard_menu, parent, false);
+
+        }
+
+        // Get the TextView
+        ((TextView) convertView.findViewById(R.id.text_title))
+                .setText(currentItem.getTitle());
+
+        // Store the object
+        convertView.setTag(currentItem);
+
+        return convertView;
+    }
+
 }

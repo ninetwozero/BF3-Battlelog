@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.adapters;
 
@@ -29,124 +29,128 @@ import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ForumSearchAdapter extends BaseAdapter {
-	
-	//Attributes
-	private Context context;
-	private ArrayList<Board.SearchResult> itemArray;
-	private LayoutInflater layoutInflater;
-	
-	//Construct
-	public ForumSearchAdapter(Context c, ArrayList<Board.SearchResult> m, LayoutInflater l) {
-	
-		context = c;
-		itemArray = m;
-		layoutInflater = l;
 
-	}
+    // Attributes
+    private Context context;
+    private ArrayList<Board.SearchResult> itemArray;
+    private LayoutInflater layoutInflater;
 
-	@Override
-	public int getCount() {
+    // Construct
+    public ForumSearchAdapter(Context c, ArrayList<Board.SearchResult> m,
+            LayoutInflater l) {
 
-		return ( itemArray != null )? itemArray.size() : 0;
-		
-	}
+        context = c;
+        itemArray = m;
+        layoutInflater = l;
 
-	@Override
-	public Board.SearchResult getItem( int position ) {
+    }
 
-		return this.itemArray.get( position );
+    @Override
+    public int getCount() {
 
-	}
+        return (itemArray != null) ? itemArray.size() : 0;
 
-	@Override
-	public long getItemId( int position ) {
+    }
 
-		return this.itemArray.get( position ).getThreadId();
-		
-	}
-	
-	@Override
-	public int getItemViewType(int position) {
-	    
-		return 0;
-		
-	}
+    @Override
+    public Board.SearchResult getItem(int position) {
 
-	@Override
-	public int getViewTypeCount() {
-	   
-		return 1;
-	
-	}
-	
-	@Override
-	public View getView( int position, View convertView, ViewGroup parent ) {
+        return this.itemArray.get(position);
 
-		//Get the current item
-		Board.SearchResult currentItem = getItem(position);
-		
-		//Recycle
-		if ( convertView == null ) {
+    }
 
-			convertView = layoutInflater.inflate( R.layout.list_item_forum_search, parent, false );
-			
-		}
+    @Override
+    public long getItemId(int position) {
 
-		//Let's do the coloring
-		if( currentItem.isOfficial() ) { 
-			
-			//Set the colors
-			convertView.findViewById( R.id.bar_official ).setBackgroundColor( context.getResources().getColor( R.color.blue ) );
-			
-		} else {
-			
-			//Set the colors
-			convertView.findViewById( R.id.bar_official ).setBackgroundColor( context.getResources().getColor( R.color.lightgrey ) );
-			
-		}
-		
-		//Set the TextViews
-		((TextView) convertView.findViewById( R.id.string_title )).setText( currentItem.getTitle() );
-		((TextView) convertView.findViewById( R.id.string_owner )).setText( 
-				
-			Html.fromHtml( 
-					
-				context.getString( R.string.info_xml_threaddate ).replace(
-					
-					"{date}",
-					PublicUtils.getRelativeDate( context, currentItem.getDate() )
-					
-				).replace(
-				
-					"{user}",
-					currentItem.getOwner().getAccountName()
-						
-				)
-				
-			)
-				
-		);
-		
-		
-		//Store the object
-		convertView.setTag( currentItem );
+        return this.itemArray.get(position).getThreadId();
 
-		//R-TURN
-		return convertView;
-	
-	}
-	
-	public void setItemArray(ArrayList<Board.SearchResult> array) {
-		
-		this.itemArray = array;
-		this.notifyDataSetInvalidated();
-		
-	}
-	
-	public void addItem( ArrayList<Board.SearchResult> array ) {
-	
-		this.itemArray.addAll( array );
-		
-	}
-	
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        return 0;
+
+    }
+
+    @Override
+    public int getViewTypeCount() {
+
+        return 1;
+
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        // Get the current item
+        Board.SearchResult currentItem = getItem(position);
+
+        // Recycle
+        if (convertView == null) {
+
+            convertView = layoutInflater.inflate(
+                    R.layout.list_item_forum_search, parent, false);
+
+        }
+
+        // Let's do the coloring
+        if (currentItem.isOfficial()) {
+
+            // Set the colors
+            convertView.findViewById(R.id.bar_official).setBackgroundColor(
+                    context.getResources().getColor(R.color.blue));
+
+        } else {
+
+            // Set the colors
+            convertView.findViewById(R.id.bar_official).setBackgroundColor(
+                    context.getResources().getColor(R.color.lightgrey));
+
+        }
+
+        // Set the TextViews
+        ((TextView) convertView.findViewById(R.id.string_title))
+                .setText(currentItem.getTitle());
+        ((TextView) convertView.findViewById(R.id.string_owner)).setText(
+
+                Html.fromHtml(
+
+                        context.getString(R.string.info_xml_threaddate)
+                                .replace(
+
+                                        "{date}",
+                                        PublicUtils.getRelativeDate(context, currentItem.getDate())
+
+                                ).replace(
+
+                                        "{user}", currentItem.getOwner().getAccountName()
+
+                                )
+
+                        )
+
+                );
+
+        // Store the object
+        convertView.setTag(currentItem);
+
+        // R-TURN
+        return convertView;
+
+    }
+
+    public void setItemArray(ArrayList<Board.SearchResult> array) {
+
+        this.itemArray = array;
+        this.notifyDataSetInvalidated();
+
+    }
+
+    public void addItem(ArrayList<Board.SearchResult> array) {
+
+        this.itemArray.addAll(array);
+
+    }
+
 }

@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.adapters;
 
@@ -31,84 +31,91 @@ import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class CommentListAdapter extends BaseAdapter {
-	
-	//Attributes
-	private Context context;
-	private ArrayList<CommentData> comments;
-	private LayoutInflater layoutInflater;
-	private TextView textUsername, textMessage, textTimestamp;
-	private ImageView imageAvatar;
-	private String thisUser;
-	
-	//Construct
-	public CommentListAdapter(Context c, ArrayList<CommentData> cd, LayoutInflater l) {
-	
-		context = c;
-		comments = cd;
-		layoutInflater = l;
 
-	}
+    // Attributes
+    private Context context;
+    private ArrayList<CommentData> comments;
+    private LayoutInflater layoutInflater;
+    private TextView textUsername, textMessage, textTimestamp;
+    private ImageView imageAvatar;
+    private String thisUser;
 
-	@Override
-	public int getCount() {
+    // Construct
+    public CommentListAdapter(Context c, ArrayList<CommentData> cd,
+            LayoutInflater l) {
 
-		return ( comments != null )? comments.size() : 0;
-		
-	}
+        context = c;
+        comments = cd;
+        layoutInflater = l;
 
-	@Override
-	public CommentData getItem( int position ) {
+    }
 
-		return this.comments.get( position );
+    @Override
+    public int getCount() {
 
-	}
+        return (comments != null) ? comments.size() : 0;
 
-	@Override
-	public long getItemId( int position ) {
+    }
 
-		return this.comments.get( position ).getId();
-		
-	}
-	
-	@Override
-	public View getView( int position, View convertView, ViewGroup parent ) {
+    @Override
+    public CommentData getItem(int position) {
 
-		//Get the current item
-		CommentData currentData = getItem(position);
-		
-		//Recycle
-		if ( convertView == null ) {
+        return this.comments.get(position);
 
-			convertView = layoutInflater.inflate( R.layout.list_item_comment, parent, false );
-		
-		}
+    }
 
-		//Grab the fields
-		textUsername = (TextView) convertView.findViewById( R.id.text_username);
-		textTimestamp = (TextView) convertView.findViewById( R.id.text_timestamp);
-		textMessage = (TextView) convertView.findViewById( R.id.text_message);
-		imageAvatar = (ImageView) convertView.findViewById( R.id.image_avatar );
-		
-		//Set the TextViews
-		textUsername.setText( currentData.getAuthor() );
-		textMessage.setText( Html.fromHtml( currentData.getContent().replace( "<", "&lt;" ) ) );
-		textTimestamp.setText( PublicUtils.getRelativeDate(context, currentData.getTimestamp()) );
-		
-		//Set the gravatar
-		imageAvatar.setImageBitmap(
-		
-			BitmapFactory.decodeFile(
-			
-				PublicUtils.getCachePath( context ) + currentData.getGravatar() + ".png"
-					
-			)	
-				
-		);
-		
-		//Store the object
-		convertView.setTag( currentData );
+    @Override
+    public long getItemId(int position) {
 
-		return convertView;
-	}
-	
+        return this.comments.get(position).getId();
+
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        // Get the current item
+        CommentData currentData = getItem(position);
+
+        // Recycle
+        if (convertView == null) {
+
+            convertView = layoutInflater.inflate(R.layout.list_item_comment,
+                    parent, false);
+
+        }
+
+        // Grab the fields
+        textUsername = (TextView) convertView.findViewById(R.id.text_username);
+        textTimestamp = (TextView) convertView
+                .findViewById(R.id.text_timestamp);
+        textMessage = (TextView) convertView.findViewById(R.id.text_message);
+        imageAvatar = (ImageView) convertView.findViewById(R.id.image_avatar);
+
+        // Set the TextViews
+        textUsername.setText(currentData.getAuthor().getAccountName());
+        textMessage.setText(Html.fromHtml(currentData.getContent().replace("<",
+                "&lt;")));
+        textTimestamp.setText(PublicUtils.getRelativeDate(context,
+                currentData.getTimestamp()));
+
+        // Set the gravatar
+        imageAvatar.setImageBitmap(
+
+                BitmapFactory.decodeFile(
+
+                        PublicUtils.getCachePath(context)
+                                + currentData.getAuthor().getGravatarHash() + ".png"
+
+                        )
+
+                );
+        imageAvatar.setTag(currentData.getAuthor());
+
+        // Store the object
+        convertView.setTag(currentData);
+
+        return convertView;
+    }
+
 }

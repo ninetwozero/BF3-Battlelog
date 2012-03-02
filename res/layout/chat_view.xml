@@ -38,6 +38,7 @@
 		android:divider="#FFFFFF"
 		android:dividerHeight="0dp"
 		android:fastScrollEnabled="true"
+		android:transcriptMode="alwaysScroll"
 	/>
 	<TextView
 	  	android:id="@android:id/empty"

@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.adapters;
 
@@ -29,191 +29,210 @@ import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ThreadListAdapter extends BaseAdapter {
-	
-	//Attributes
-	private Context context;
-	private ArrayList<Board.ThreadData> itemArray;
-	private LayoutInflater layoutInflater;
-	
-	//Construct
-	public ThreadListAdapter(Context c, ArrayList<Board.ThreadData> m, LayoutInflater l) {
-	
-		context = c;
-		itemArray = m;
-		layoutInflater = l;
 
-	}
+    // Attributes
+    private Context context;
+    private ArrayList<Board.ThreadData> itemArray;
+    private LayoutInflater layoutInflater;
 
-	@Override
-	public int getCount() {
+    // Construct
+    public ThreadListAdapter(Context c, ArrayList<Board.ThreadData> m,
+            LayoutInflater l) {
 
-		return ( itemArray != null )? itemArray.size() : 0;
-		
-	}
+        context = c;
+        itemArray = m;
+        layoutInflater = l;
 
-	@Override
-	public Board.ThreadData getItem( int position ) {
+    }
 
-		return this.itemArray.get( position );
+    @Override
+    public int getCount() {
 
-	}
+        return (itemArray != null) ? itemArray.size() : 0;
 
-	@Override
-	public long getItemId( int position ) {
+    }
 
-		return this.itemArray.get( position ).getThreadId();
-		
-	}
-	
-	@Override
-	public int getItemViewType(int position) {
-	    
-		if( getItem(position).getThreadId() == 0 ) { return 1; }
-		else { return 0; }
-		
-	}
+    @Override
+    public Board.ThreadData getItem(int position) {
 
-	@Override
-	public int getViewTypeCount() {
-	   
-		return 2;
-	
-	}
-	
-	@Override
-	public View getView( int position, View convertView, ViewGroup parent ) {
+        return this.itemArray.get(position);
 
-		//Get the current item
-		Board.ThreadData currentItem = getItem(position);
-		
-		//Recycle
-		if( getItemViewType(position) == 1 ) { 
-			
-			if ( convertView == null ) {
+    }
 
-				convertView = layoutInflater.inflate( R.layout.list_item_thread_separator, parent, false );
-				
-			}
-			
-			((TextView) convertView.findViewById( R.id.text_title )).setText( currentItem.getTitle() );
-			
-		} else {
-			
-			if ( convertView == null ) {
+    @Override
+    public long getItemId(int position) {
 
-				convertView = layoutInflater.inflate( R.layout.list_item_thread, parent, false );
-				
-			}
+        return this.itemArray.get(position).getThreadId();
 
-			//Let's do the coloring
-			if( currentItem.hasOfficialResponse() ) { 
-				
-				//Set the colors
-				convertView.findViewById( R.id.bar_official ).setBackgroundColor( context.getResources().getColor( R.color.blue ) );
-				
-			} else {
-				
-				//Set the colors
-				convertView.findViewById( R.id.bar_official ).setBackgroundColor( context.getResources().getColor( R.color.lightgrey ) );
-				
-			}
-			
-			//Set the title
-			TextView textTitle = (TextView) convertView.findViewById( R.id.string_title );
-			textTitle.setText( currentItem.getTitle() );
-			if( !currentItem.isLocked() ) {
-				
-				textTitle.setTextColor( context.getResources().getColor( R.color.blue ) );
-				
-			} else {
-				
-				textTitle.setTextColor( context.getResources().getColor( android.R.color.black) );
-				
-			}
-			
-			//Set the rest of the TextViews
-			((TextView) convertView.findViewById( R.id.string_owner )).setText( 
-					
-				Html.fromHtml( 
-						
-					context.getString( R.string.info_xml_threaddate ).replace(
-						
-						"{date}",
-						PublicUtils.getRelativeDate( context, currentItem.getDate() )
-						
-					).replace(
-					
-						"{user}",
-						currentItem.getOwner().getAccountName()
-							
-					)
-					
-				)
-					
-			);
-			
-			((TextView) convertView.findViewById( R.id.string_post_last )).setText( 
-					
-				Html.fromHtml( 
-						
-					context.getString( R.string.info_xml_threadreplydate ).replace(
-						
-						"{date}",
-						PublicUtils.getRelativeDate( context, currentItem.getLastPostDate() )
-						
-					).replace(
-					
-						"{user}",
-						currentItem.getLastPoster().getAccountName()
-							
-					)
-					
-				)
-				
-			);
-			
-			((TextView) convertView.findViewById(R.id.string_info)).setText( 
-					
-				Html.fromHtml( 
-						
-					context.getString( R.string.info_xml_threadinfo ).replace(
-					
-						"{num_posts}",
-						currentItem.getNumPosts() + ""
-							
-					).replace(
-					
-						"{num_official}",
-						currentItem.getNumOfficialPosts() + ""
-							
-					)
-					
-				)
-				
-			);
+    }
 
-		}
-		
-		//Store the object
-		convertView.setTag( currentItem );
+    @Override
+    public int getItemViewType(int position) {
 
-		//R-TURN
-		return convertView;
-	
-	}
-	
-	public void set(ArrayList<Board.ThreadData> array) {
-		
-		this.itemArray = array;
-		this.notifyDataSetInvalidated();
-		
-	}
-	
-	public void add( ArrayList<Board.ThreadData> array ) {
-	
-		this.itemArray.addAll( array ); /* TODO FIX THIS */
-		this.notifyDataSetChanged();
-		
-	}
-	
+        if (getItem(position).getThreadId() == 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+
+    }
+
+    @Override
+    public int getViewTypeCount() {
+
+        return 2;
+
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        // Get the current item
+        Board.ThreadData currentItem = getItem(position);
+
+        // Recycle
+        if (getItemViewType(position) == 1) {
+
+            if (convertView == null) {
+
+                convertView = layoutInflater.inflate(
+                        R.layout.list_item_thread_separator, parent, false);
+
+            }
+
+            ((TextView) convertView.findViewById(R.id.text_title))
+                    .setText(currentItem.getTitle());
+
+        } else {
+
+            if (convertView == null) {
+
+                convertView = layoutInflater.inflate(R.layout.list_item_thread,
+                        parent, false);
+
+            }
+
+            // Let's do the coloring
+            if (currentItem.hasOfficialResponse()) {
+
+                // Set the colors
+                convertView.findViewById(R.id.bar_official).setBackgroundColor(
+                        context.getResources().getColor(R.color.blue));
+
+            } else {
+
+                // Set the colors
+                convertView.findViewById(R.id.bar_official).setBackgroundColor(
+                        context.getResources().getColor(R.color.lightgrey));
+
+            }
+
+            // Set the title
+            TextView textTitle = (TextView) convertView
+                    .findViewById(R.id.string_title);
+            textTitle.setText(currentItem.getTitle());
+            if (!currentItem.isLocked()) {
+
+                textTitle.setTextColor(context.getResources().getColor(
+                        R.color.blue));
+
+            } else {
+
+                textTitle.setTextColor(context.getResources().getColor(
+                        android.R.color.black));
+
+            }
+
+            // Set the rest of the TextViews
+            ((TextView) convertView.findViewById(R.id.string_owner)).setText(
+
+                    Html.fromHtml(
+
+                            context.getString(R.string.info_xml_threaddate)
+                                    .replace(
+
+                                            "{date}",
+                                            PublicUtils.getRelativeDate(context,
+                                                    currentItem.getDate())
+
+                                    ).replace(
+
+                                            "{user}", currentItem.getOwner().getAccountName()
+
+                                    )
+
+                            )
+
+                    );
+
+            ((TextView) convertView.findViewById(R.id.string_post_last))
+                    .setText(
+
+                    Html.fromHtml(
+
+                            context.getString(R.string.info_xml_threadreplydate)
+                                    .replace(
+
+                                            "{date}",
+                                            PublicUtils.getRelativeDate(context,
+                                                    currentItem.getLastPostDate())
+
+                                    )
+                                    .replace(
+
+                                            "{user}",
+                                            currentItem.getLastPoster()
+                                                    .getAccountName()
+
+                                    )
+
+                            )
+
+                    );
+
+            ((TextView) convertView.findViewById(R.id.string_info)).setText(
+
+                    Html.fromHtml(
+
+                            context.getString(R.string.info_xml_threadinfo)
+                                    .replace(
+
+                                            "{num_posts}", currentItem.getNumPosts() + ""
+
+                                    )
+                                    .replace(
+
+                                            "{num_official}",
+                                            currentItem.getNumOfficialPosts() + ""
+
+                                    )
+
+                            )
+
+                    );
+
+        }
+
+        // Store the object
+        convertView.setTag(currentItem);
+
+        // R-TURN
+        return convertView;
+
+    }
+
+    public void set(ArrayList<Board.ThreadData> array) {
+
+        this.itemArray = array;
+        this.notifyDataSetInvalidated();
+
+    }
+
+    public void add(ArrayList<Board.ThreadData> array) {
+
+        this.itemArray.addAll(array); /* TODO FIX THIS */
+        this.notifyDataSetChanged();
+
+    }
+
 }

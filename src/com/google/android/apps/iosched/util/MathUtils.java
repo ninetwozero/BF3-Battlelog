@@ -16,15 +16,12 @@
 
 package com.google.android.apps.iosched.util;
 
-import com.ninetwozero.battlelog.R;
-
-
-
 /**
  * Math utility functions.
  */
 public final class MathUtils {
-    private MathUtils() {}
+    private MathUtils() {
+    }
 
     /**
      * Equivalent to Math.max(low, Math.min(high, amount));

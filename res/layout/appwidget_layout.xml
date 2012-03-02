@@ -14,7 +14,7 @@
         <ImageView
             android:id="@+id/dogtag"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="110dp"
             android:src="@drawable/widget_dogtag" />
 
         <RelativeLayout
@@ -22,7 +22,7 @@
             android:layout_width="124dip"
             android:layout_height="90dip"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="50dip" 
+            android:layout_marginLeft="60dip" 
         >
 			<TextView
 	            android:id="@+id/label"
@@ -75,11 +75,13 @@
 
         <RelativeLayout
             android:id="@+id/relativeLayout2"
-            android:layout_width="40dip"
-            android:layout_height="90dip"
+            android:layout_width="40dp"
+            android:layout_height="80dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="25dp" >
+            android:layout_marginRight="40dp" 
+           	
+            >
 
             <Button
                 android:id="@+id/widget_button"
@@ -90,13 +92,14 @@
 
             <Button
                 android:id="@+id/widget_button2"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:background="@drawable/bg_bf3_main"
                 android:textSize="9sp"
-                android:text="BF3 Battlelog"
+                android:text="BF3"
+                android:textStyle="bold"
                 android:textColor="#ffffff"
             />
 

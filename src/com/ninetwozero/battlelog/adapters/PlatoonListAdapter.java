@@ -10,13 +10,12 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.adapters;
 
 import java.util.ArrayList;
 
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -26,78 +25,87 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class PlatoonListAdapter extends BaseAdapter {
-	
-	//Attributes
-	private Context context;
-	private ArrayList<PlatoonData> platoonArray;
-	private LayoutInflater layoutInflater;
-	private String tempStatus;
-	private TextView textPersona, textStatus;
-	
-	//Construct
-	public PlatoonListAdapter(Context c, ArrayList<PlatoonData> p, LayoutInflater l) {
-	
-		context = c;
-		platoonArray = p;
-		layoutInflater = l;
-		
-	}
 
-	@Override
-	public int getCount() {
+    // Attributes
+    private Context context;
+    private ArrayList<PlatoonData> platoonArray;
+    private LayoutInflater layoutInflater;
+    private String tempStatus;
+    private TextView textPersona, textStatus;
 
-		return ( platoonArray != null )? platoonArray.size() : 0;
-		
-	}
+    // Construct
+    public PlatoonListAdapter(Context c, ArrayList<PlatoonData> p,
+            LayoutInflater l) {
 
-	@Override
-	public PlatoonData getItem( int position ) {
+        context = c;
+        platoonArray = p;
+        layoutInflater = l;
 
-		return this.platoonArray.get( position );
+    }
 
-	}
+    @Override
+    public int getCount() {
 
-	@Override
-	public long getItemId( int position ) {
+        return (platoonArray != null) ? platoonArray.size() : 0;
 
-		return this.platoonArray.get( position ).getId();
-		
-	}
-	
-	@Override
-	public View getView( int position, View convertView, ViewGroup parent ) {
+    }
 
-		//Get the current item
-		PlatoonData currentPlatoon = getItem(position);
-		
-		//Recycle
-		if ( convertView == null ) {
+    @Override
+    public PlatoonData getItem(int position) {
 
-			convertView = layoutInflater.inflate( R.layout.list_item_platoon, parent, false );
+        return this.platoonArray.get(position);
 
-		}
+    }
 
-		//Set the TextViews
-		((TextView) convertView.findViewById( R.id.text_name ) ).setText( currentPlatoon.getName() );
-		((TextView) convertView.findViewById( R.id.text_tag ) ).setText( currentPlatoon.getTag() );
-		((TextView) convertView.findViewById( R.id.text_members ) ).setText( currentPlatoon.getCountMembers() + "");
-		((TextView) convertView.findViewById( R.id.text_fans ) ).setText( currentPlatoon.getCountFans() + "");
-		
-		//Almost forgot - we got a Bitmap too!
-		((ImageView) convertView.findViewById( R.id.image_badge ) ).setImageBitmap( 
-				
-			BitmapFactory.decodeFile( PublicUtils.getCachePath( context ) + currentPlatoon.getId() + ".jpeg" )
-				
-		);
-		
-		//Store it in the tag
-		convertView.setTag( currentPlatoon );
+    @Override
+    public long getItemId(int position) {
 
-		return convertView;
-	}
-	
+        return this.platoonArray.get(position).getId();
+
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        // Get the current item
+        PlatoonData currentPlatoon = getItem(position);
+
+        // Recycle
+        if (convertView == null) {
+
+            convertView = layoutInflater.inflate(R.layout.list_item_platoon,
+                    parent, false);
+
+        }
+
+        // Set the TextViews
+        ((TextView) convertView.findViewById(R.id.text_name))
+                .setText(currentPlatoon.getName());
+        ((TextView) convertView.findViewById(R.id.text_tag))
+                .setText(currentPlatoon.getTag());
+        ((TextView) convertView.findViewById(R.id.text_members))
+                .setText(currentPlatoon.getCountMembers() + "");
+        ((TextView) convertView.findViewById(R.id.text_fans))
+                .setText(currentPlatoon.getCountFans() + "");
+
+        // Almost forgot - we got a Bitmap too!
+        ((ImageView) convertView.findViewById(R.id.image_badge))
+                .setImageBitmap(
+
+                BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
+                        + currentPlatoon.getId() + ".jpeg")
+
+                );
+
+        // Store it in the tag
+        convertView.setTag(currentPlatoon);
+
+        return convertView;
+    }
+
 }

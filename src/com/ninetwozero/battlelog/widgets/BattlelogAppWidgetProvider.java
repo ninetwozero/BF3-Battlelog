@@ -10,10 +10,9 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.widgets;
-
 
 import java.util.ArrayList;
 
@@ -28,130 +27,156 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.text.Html;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.ninetwozero.battlelog.Main;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
-import com.ninetwozero.battlelog.services.BattlelogService;
-
 
 public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
-	public static final String DEBUG_TAG = "WidgetProvider";
-	public static final String ACTION_WIDGET_RECEIVER = "ActionReceiverWidget";
-	public static final String ACTION_WIDGET_OPENAPP = "Main";
-	
-	   @Override
-	   public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		  
-		   
-		   //Attributes
-		   Intent active = new Intent(context, BattlelogAppWidgetProvider.class).setAction(ACTION_WIDGET_RECEIVER);
-		   PendingIntent actionPendingIntent = PendingIntent.getBroadcast(context, 0, active, 0);
-		   Intent appIntent = new Intent(context, Main.class);
-		   PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0, appIntent, 0);
-		   appIntent.setAction(ACTION_WIDGET_OPENAPP);
-		   
-		   RemoteViews remoteView = null;
-		   ProfileData profileData = null;
-		   PersonaStats playerData = null;
-		   ArrayList<ProfileData> profileDataArray = null;
-		   SharedPreferences sharedPreferences = null;
-		   ComponentName BattlelogListWidget;
-		   int numFriendsOnline = 0;
-	   
-		   //Set the values
-		   sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);  
-		   remoteView = new RemoteViews(context.getPackageName(), R.layout.appwidget_layout);
-		   final Resources res = context.getResources();
-				   
-		   //if service == active
-		   if( !PublicUtils.isMyServiceRunning( context ) ) {
-			   
-			   remoteView.setTextViewText(R.id.label, Html.fromHtml( "<b>Error</b>" ) );
-			   remoteView.setTextViewText(R.id.title, res.getString( R.string.general_no_data ) );
-			   remoteView.setTextViewText(R.id.stats, res.getString( R.string.info_connect_bl ) );
-			   
-		   } else {
-			 
-			   try {
+    public static final String DEBUG_TAG = "WidgetProvider";
+    public static final String ACTION_WIDGET_RECEIVER = "ActionReceiverWidget";
+    public static final String ACTION_WIDGET_OPENAPP = "Main";
 
-					playerData = WebsiteHandler.getStatsForPersona(SessionKeeper.getProfileData());
-					remoteView.setTextViewText(
-							
-						R.id.label, 
-						playerData.getPersonaName()
-						
-					);
-					remoteView.setTextViewText(
-							
-						R.id.title, res.getString(R.string.info_xml_rank) + playerData.getRankId() 
-					);
-					remoteView.setTextViewText(
-						
-						R.id.stats, 
-						(
-							"W/L: " + playerData.getWLRatio() + 
-							"  K/D: " + playerData.getKDRatio()
-						)
-					);
-					profileDataArray = WebsiteHandler.getFriends( 
-						
-						sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""), 
-						true
-						
-					);
-					numFriendsOnline = profileDataArray.size();
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+            int[] appWidgetIds) {
 
-				} catch (WebsiteHandlerException e) {
+        // Attributes
+        Intent active = new Intent(context, BattlelogAppWidgetProvider.class)
+                .setAction(ACTION_WIDGET_RECEIVER);
+        PendingIntent actionPendingIntent = PendingIntent.getBroadcast(context,
+                0, active, 0);
+        Intent appIntent = new Intent(context, Main.class);
+        PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0,
+                appIntent, 0);
+        appIntent.setAction(ACTION_WIDGET_OPENAPP);
 
-					e.printStackTrace();
+        RemoteViews remoteView = null;
+        ProfileData profileData = null;
+        PersonaStats playerData = null;
+        ArrayList<ProfileData> profileDataArray = null;
+        SharedPreferences sharedPreferences = null;
+        ComponentName BattlelogListWidget;
+        int numFriendsOnline = 0;
 
-				}
+        // Set the values
+        sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        remoteView = new RemoteViews(context.getPackageName(),
+                R.layout.appwidget_layout);
+        final Resources res = context.getResources();
 
-				if (numFriendsOnline > 0) { 
+        // Set the session if needed
+        SessionKeeper.setProfileData(SessionKeeper
+                .generateProfileDataFromSharedPreferences(sharedPreferences));
 
-					remoteView.setTextColor(R.id.friends, Color.BLACK);
-					remoteView.setTextViewText(R.id.friends, "" + numFriendsOnline);
+        // if service == active
+        if (SessionKeeper.getProfileData() == null) {
 
-				} else {
+            remoteView.setTextViewText(R.id.label,
+                    Html.fromHtml("<b>Error</b>"));
+            remoteView.setTextViewText(R.id.title,
+                    res.getString(R.string.general_no_data));
+            remoteView.setTextViewText(R.id.stats,
+                    res.getString(R.string.info_connect_bl));
+            remoteView.setTextColor(R.id.friends, Color.RED);
+            remoteView.setTextViewText(R.id.friends, "0");
+            
+        } else {
 
-					remoteView.setTextColor(R.id.friends, Color.RED);
-					remoteView.setTextViewText(R.id.friends, "0");
+            // Let's update it
+            RequestHandler.setCookies(
 
-				}  
+                    new ShareableCookie(
 
-		   	}
-			remoteView.setOnClickPendingIntent(R.id.widget_button, actionPendingIntent);
-			remoteView.setOnClickPendingIntent(R.id.widget_button2, appPendingIntent);
-			BattlelogListWidget = new ComponentName(
-				context,
-				BattlelogAppWidgetProvider.class
-			);
-			appWidgetManager.updateAppWidget(BattlelogListWidget, remoteView);
+                            sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
+                            sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, ""),
+                            Constants.COOKIE_DOMAIN
 
-	}
-	   @Override
-	   public void onReceive(Context context, Intent intent) {
+                    )
 
-		   	super.onReceive(context, intent);
-				
-			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-			ComponentName thisAppWidget = new ComponentName(context, BattlelogAppWidgetProvider.class);
-			int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
-			
-			//UPDATE IT !!!!
-			onUpdate(context, appWidgetManager, appWidgetIds); 
-			
-	   } 
-	   
+                    );
+
+            try {
+
+                playerData = WebsiteHandler.getStatsForPersona(SessionKeeper
+                        .getProfileData());
+                remoteView.setTextViewText(
+
+                        R.id.label, playerData.getPersonaName()
+
+                        );
+                remoteView.setTextViewText(
+
+                        R.id.title,
+                        res.getString(R.string.info_xml_rank)
+                                + playerData.getRankId());
+                remoteView
+                        .setTextViewText(
+
+                                R.id.stats,
+                                ("W/L: " + Math.floor(playerData.getWLRatio() * 100) / 100
+                                        + "  K/D: " + Math.floor(playerData.getKDRatio() * 100) / 100));
+                profileDataArray = WebsiteHandler.getFriends(
+
+                        sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""), true
+
+                        );
+                numFriendsOnline = profileDataArray.size();
+
+            } catch (WebsiteHandlerException e) {
+
+                e.printStackTrace();
+
+            }
+
+            if (numFriendsOnline > 0) {
+
+                remoteView.setTextColor(R.id.friends, Color.BLACK);
+                remoteView.setTextViewText(R.id.friends, "" + numFriendsOnline);
+
+            } else {
+
+                remoteView.setTextColor(R.id.friends, Color.RED);
+                remoteView.setTextViewText(R.id.friends, "0");
+
+            }
+
+        }
+        remoteView.setOnClickPendingIntent(R.id.widget_button,
+                actionPendingIntent);
+        remoteView.setOnClickPendingIntent(R.id.widget_button2,
+                appPendingIntent);
+        BattlelogListWidget = new ComponentName(context,
+                BattlelogAppWidgetProvider.class);
+        appWidgetManager.updateAppWidget(BattlelogListWidget, remoteView);
+
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+
+        super.onReceive(context, intent);
+
+        AppWidgetManager appWidgetManager = AppWidgetManager
+                .getInstance(context);
+        ComponentName thisAppWidget = new ComponentName(context,
+                BattlelogAppWidgetProvider.class);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
+
+        // UPDATE IT !!!!
+        onUpdate(context, appWidgetManager, appWidgetIds);
+
+    }
+
 }
-	

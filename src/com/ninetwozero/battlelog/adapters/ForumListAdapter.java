@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.adapters;
 
@@ -26,107 +26,108 @@ import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.Board;
-import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ForumListAdapter extends BaseAdapter {
-	
-	//Attributes
-	private Context context;
-	private ArrayList<Board.Forum> itemArray;
-	private LayoutInflater layoutInflater;
-	
-	//Construct
-	public ForumListAdapter(Context c, ArrayList<Board.Forum> m, LayoutInflater l) {
-	
-		context = c;
-		itemArray = m;
-		layoutInflater = l;
 
-	}
+    // Attributes
+    private Context context;
+    private ArrayList<Board.Forum> itemArray;
+    private LayoutInflater layoutInflater;
 
-	@Override
-	public int getCount() {
+    // Construct
+    public ForumListAdapter(Context c, ArrayList<Board.Forum> m,
+            LayoutInflater l) {
 
-		return ( itemArray != null )? itemArray.size() : 0;
-		
-	}
+        context = c;
+        itemArray = m;
+        layoutInflater = l;
 
-	@Override
-	public Board.Forum getItem( int position ) {
+    }
 
-		return this.itemArray.get( position );
+    @Override
+    public int getCount() {
 
-	}
+        return (itemArray != null) ? itemArray.size() : 0;
 
-	@Override
-	public long getItemId( int position ) {
+    }
 
-		return this.itemArray.get( position ).getForumId();
-		
-	}
-	
-	@Override
-	public int getItemViewType(int position) {
-	    
-		return 0;
-		
-	}
+    @Override
+    public Board.Forum getItem(int position) {
 
-	@Override
-	public int getViewTypeCount() {
-	   
-		return 1;
-	
-	}
-	
-	@Override
-	public View getView( int position, View convertView, ViewGroup parent ) {
+        return this.itemArray.get(position);
 
-		//Get the current item
-		Board.Forum currentItem = getItem(position);
-		
-		//Recycle
-		if ( convertView == null ) {
+    }
 
-			convertView = layoutInflater.inflate( R.layout.list_item_forum, parent, false );
-				
-		}
+    @Override
+    public long getItemId(int position) {
 
-		//Set the TextViews
-		((TextView) convertView.findViewById(R.id.string_title)).setText( currentItem.getTitle() );
-		((TextView) convertView.findViewById(R.id.string_desc)).setText( currentItem.getDescription() );
-		((TextView) convertView.findViewById(R.id.string_info)).setText( 
-		
-			Html.fromHtml( 
-					
-				context.getString( R.string.info_xml_forum_postsinthreads ).replace( 
-						
-					"{num_posts}", 
-					currentItem.getNumPosts() + "" 
-					
-				).replace( 
-						
-					"{num_threads}", 
-					currentItem.getNumThreads() + ""
-					
-				)
-				
-			)
-			
-		);
+        return this.itemArray.get(position).getForumId();
 
-		//Store the object
-		convertView.setTag( currentItem );
+    }
 
-		return convertView;
-	
-	}
-	
-	public void setItemArray(ArrayList<Board.Forum> array) {
-		
-		this.itemArray = array;
-		this.notifyDataSetInvalidated();
-		
-	}
-	
+    @Override
+    public int getItemViewType(int position) {
+
+        return 0;
+
+    }
+
+    @Override
+    public int getViewTypeCount() {
+
+        return 1;
+
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        // Get the current item
+        Board.Forum currentItem = getItem(position);
+
+        // Recycle
+        if (convertView == null) {
+
+            convertView = layoutInflater.inflate(R.layout.list_item_forum,
+                    parent, false);
+
+        }
+
+        // Set the TextViews
+        ((TextView) convertView.findViewById(R.id.string_title))
+                .setText(currentItem.getTitle());
+        ((TextView) convertView.findViewById(R.id.string_desc))
+                .setText(currentItem.getDescription());
+        ((TextView) convertView.findViewById(R.id.string_info)).setText(
+
+                Html.fromHtml(
+
+                        context.getString(R.string.info_xml_forum_postsinthreads).replace(
+
+                                "{num_posts}", currentItem.getNumPosts() + ""
+
+                                ).replace(
+
+                                        "{num_threads}", currentItem.getNumThreads() + ""
+
+                                )
+
+                        )
+
+                );
+
+        // Store the object
+        convertView.setTag(currentItem);
+
+        return convertView;
+
+    }
+
+    public void setItemArray(ArrayList<Board.Forum> array) {
+
+        this.itemArray = array;
+        this.notifyDataSetInvalidated();
+
+    }
+
 }

@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.adapters;
 
@@ -24,68 +24,70 @@ import android.widget.BaseAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 
-
 public class FriendSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
-	
-	private Context context;
-	private ArrayList<ProfileData> profileArray;
-	private LayoutInflater layoutInflater;
 
-	public FriendSpinnerAdapter(Context c, ArrayList<ProfileData> p, LayoutInflater l) {
-		
-		this.context = c;
-		this.profileArray = p;
-		this.layoutInflater = l;
-	}
+    private Context context;
+    private ArrayList<ProfileData> profileArray;
+    private LayoutInflater layoutInflater;
 
-	@Override
-	public int getCount() {
+    public FriendSpinnerAdapter(Context c, ArrayList<ProfileData> p,
+            LayoutInflater l) {
 
-		if ( profileArray != null ) {
+        this.context = c;
+        this.profileArray = p;
+        this.layoutInflater = l;
+    }
 
-			return profileArray.size();
+    @Override
+    public int getCount() {
 
-		} else {
+        if (profileArray != null) {
 
-			return 0;
+            return profileArray.size();
 
-		}
-	}
+        } else {
 
-	@Override
-	public ProfileData getItem( int position ) {
+            return 0;
 
-		return this.profileArray.get( position );
-	}
+        }
+    }
 
-	@Override
-	public long getItemId( int position ) {
+    @Override
+    public ProfileData getItem(int position) {
 
-		return profileArray.get( position ).getProfileId();
-		
-	}
+        return this.profileArray.get(position);
+    }
 
-	@Override
-	public View getView( int position, View convertView, ViewGroup parent ) {
+    @Override
+    public long getItemId(int position) {
 
-		// Declare the current array
-		ProfileData currentItem = profileArray.get( position );
+        return profileArray.get(position).getProfileId();
 
-		//Recycle view - it's good for Mother Nature!
-		if ( convertView == null ) {
+    }
 
-			convertView = this.layoutInflater.inflate( android.R.layout.simple_spinner_dropdown_item, parent, false );
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-		}
+        // Declare the current array
+        ProfileData currentItem = profileArray.get(position);
 
-		//Set the TextView
-		( (TextView) convertView.findViewById( android.R.id.text1 ) ).setText( currentItem.getAccountName() );
-		
-		//Return the view
-		return convertView;
-	}
+        // Recycle view - it's good for Mother Nature!
+        if (convertView == null) {
+
+            convertView = this.layoutInflater.inflate(
+                    android.R.layout.simple_spinner_dropdown_item, parent,
+                    false);
+
+        }
+
+        // Set the TextView
+        ((TextView) convertView.findViewById(android.R.id.text1))
+                .setText(currentItem.getAccountName());
+
+        // Return the view
+        return convertView;
+    }
 
 }

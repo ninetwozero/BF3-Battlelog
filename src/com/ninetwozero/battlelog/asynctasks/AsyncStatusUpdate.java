@@ -10,10 +10,9 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.asynctasks;
-
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,97 +28,103 @@ import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-
 public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
 
-	//Attribute
-	Context context;
-	String httpContent;
-	AsyncTask<Void, Void, Boolean> asyncTask;
-	
-	//Constructor
-	public AsyncStatusUpdate( Context c, AsyncTask<Void, Void, Boolean> a ) { 
-		
-		this.context = c; 
-		this.asyncTask = a;
-	
-	}	
-	
-	@Override
-	protected void onPreExecute() {
+    // Attribute
+    Context context;
+    String httpContent;
+    AsyncTask<Void, Void, Boolean> asyncTask;
 
-		if( context instanceof Dashboard ) { 
+    // Constructor
+    public AsyncStatusUpdate(Context c, AsyncTask<Void, Void, Boolean> a) {
 
-			Toast.makeText( context, R.string.msg_status, Toast.LENGTH_SHORT).show();
-			((Button) ((Activity)context).findViewById(R.id.button_status)).setEnabled(false);
+        this.context = c;
+        this.asyncTask = a;
 
-		}
-		
-	}
-	
-	@Override
-	protected Integer doInBackground( PostData... arg0 ) {
-		
-		try {
-		
-			//Let's login everybody!
-			RequestHandler wh = new RequestHandler();
-    		httpContent = wh.post( Constants.URL_STATUS_SEND, arg0, 0);
-    		
-    		//Did we manage?
-    		if( httpContent != null && !httpContent.equals( "" ) ) {
-    			
-    			//Set the int
-    			int startPosition = httpContent.indexOf( Constants.ELEMENT_STATUS_OK );
-    			
-    			//Did we find it?
-    			if( startPosition == -1 ) {
-    				
-    				return 1;
+    }
 
-    			}
-				
-    		}
-    		
-		} catch ( RequestHandlerException ex ) {
-			
-			ex.printStackTrace();
-			return 1;
-		
-		} catch( Exception ex ) {
-			
-			ex.printStackTrace();
-			return 1;
-			
-		}
+    @Override
+    protected void onPreExecute() {
 
-		return 0;
-		
-	}
-	
-	@Override
-	protected void onPostExecute(Integer results) {
+        if (context instanceof Dashboard) {
 
-		if( results == 0 ) { 
-				
-			//Yay
-			Toast.makeText(this.context, R.string.msg_status_ok, Toast.LENGTH_SHORT).show(); 
-			((EditText) ((Activity)context).findViewById(R.id.field_status)).setText("");
-			((Button) ((Activity)context).findViewById(R.id.button_status)).setEnabled(true);
-							
-		} else { 
-			
-			Toast.makeText( this.context, R.string.msg_status_fail, Toast.LENGTH_SHORT).show(); 
-			
-		}
-		
-		//Do we need to do our AsyncTask?
-		if( asyncTask != null ) { asyncTask.execute(); }
+            Toast.makeText(context, R.string.msg_status, Toast.LENGTH_SHORT)
+                    .show();
+            ((Button) ((Activity) context).findViewById(R.id.button_status))
+                    .setEnabled(false);
 
-		return;
-		
-	}
+        }
 
-	
-	
+    }
+
+    @Override
+    protected Integer doInBackground(PostData... arg0) {
+
+        try {
+
+            // Let's login everybody!
+            RequestHandler wh = new RequestHandler();
+            httpContent = wh.post(Constants.URL_STATUS_SEND, arg0, 0);
+
+            // Did we manage?
+            if (httpContent != null && !httpContent.equals("")) {
+
+                // Set the int
+                int startPosition = httpContent
+                        .indexOf(Constants.ELEMENT_STATUS_OK);
+
+                // Did we find it?
+                if (startPosition == -1) {
+
+                    return 1;
+
+                }
+
+            }
+
+        } catch (RequestHandlerException ex) {
+
+            ex.printStackTrace();
+            return 1;
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            return 1;
+
+        }
+
+        return 0;
+
+    }
+
+    @Override
+    protected void onPostExecute(Integer results) {
+
+        if (results == 0) {
+
+            // Yay
+            Toast.makeText(this.context, R.string.msg_status_ok,
+                    Toast.LENGTH_SHORT).show();
+            ((EditText) ((Activity) context).findViewById(R.id.field_status))
+                    .setText("");
+            ((Button) ((Activity) context).findViewById(R.id.button_status))
+                    .setEnabled(true);
+
+        } else {
+
+            Toast.makeText(this.context, R.string.msg_status_fail,
+                    Toast.LENGTH_SHORT).show();
+
+        }
+
+        // Do we need to do our AsyncTask?
+        if (asyncTask != null) {
+            asyncTask.execute();
+        }
+
+        return;
+
+    }
+
 }

@@ -47,45 +47,46 @@
         <item >@string/label_update_interval_minutes_2</item>
     </string-array>
     <string-array name="language_titles">
-        <item >Hrvatski</item>
+        <item >Cрпски</item>
         <item >Dansk</item>
-        <item >Nederlands</item>
-        <item >English</item>
-        <item >Suomi</item>
-        <item >Francais</item>
         <item >Deutsch</item>
-        <item >Italiano</item>
+        <item >English</item>
         <item >Español</item>
+        <item >Francais</item>
+        <item >Hrvatski</item>
+        <item >Italiano</item>
+        <item >Nederlands</item>
         <item >Polski</item>
         <item >Português</item>
         <item >Român</item>
-        <item >Cрпски</item>
+        <item >Suomi</item>
         <item >Svenska</item>
     </string-array>
      <string-array name="language_values">
-        <item >hr</item>
+        <item >sr</item>
         <item >da</item>
-        <item >nl</item>
-        <item >en</item>
-        <item >fi</item>
-        <item >fr</item>
         <item >de</item>
-        <item >it</item>
+        <item >en</item>
         <item >es</item>
+        <item >fr</item>
+        <item >hr</item>
+        <item >it</item>
+        <item >nl</item>
         <item >pl</item>
         <item >pt</item>
         <item >ro</item>
-        <item >sr</item>
-        <item >sw</item>
+        <item >fi</item>
+        <item >sv</item>
     </string-array>
    <!--  translation starts here -->
    <string name="changelog">
        * Fixed the forum (sorry!) &lt;br /&gt;
        * Fixed the underlying service from crashing (finally?!) &lt;br /&gt;
        * Updated the localization with more translations (contact me if you can help translate!) &lt;br /&gt;
-       * Added audible notifications
-       * Added chat sounds
-       * Added settings for the above
+       * You can now select languages via the Settings &lt;br /&gt;
+       * Added audible notifications &lt;br /&gt;
+       * Added chat sounds &lt;br /&gt;
+       * Added settings for the above &lt;br /&gt;
        &lt;br /&gt;
        * DONATE-option available via the About screen (below) &lt;br /&gt;
        * Forum for the app is now available via http://bit.ly/bf3blforum &lt;br /&gt;
@@ -483,7 +484,7 @@
 	<string name="info_settings_notification_desc_light_false">The LED won\'t be blinking.</string>
 	<string name="info_settings_notification_desc_beep_spec_false">Using your default notification sound.</string>
 	<string name="info_credits_contributors">List of contributors</string>
-	<string name="info_credits_info">First of all, I\'d like to thank everyone for the support and hand out a special &amp;quot;thank you&amp;quot; to all the beta testers out there.\\n\\nWith that said, I\'ve categorized the list of contributors below after what they\'ve helped with and hopefully I haven\'t forgot anyone!</string>
+	<string name="info_credits_info">First of all, I\'d like to thank everyone for the support and hand out a special &quot;thank you&quot; to all the beta testers out there.\n\nWith that said, I\'ve categorized the list of contributors below after what they\'ve helped with and hopefully I haven\'t forgot anyone!</string>
 	<string name="info_credits_code">Code</string>
 	<string name="info_credits_translations">Translations</string>
 	<string name="label_update_interval_seconds_5">Once every 5 seconds</string>

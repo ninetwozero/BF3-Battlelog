@@ -10,7 +10,8 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
+
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
@@ -43,162 +44,196 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class PlatoonInviteView extends ListActivity {
 
-	//Attributes
-	private final Context CONTEXT = this;
-	private SharedPreferences sharedPreferences;
-	private LayoutInflater layoutInflater;
-	private PlatoonData platoonData;
-	private ArrayList<ProfileData> friends;
-	private long[] selectedIds;
-	private TabHost mTabHost;
-	
-	//Elements
-	private ListView listView;
-	
-	@Override
+    // Attributes
+    private final Context CONTEXT = this;
+    private SharedPreferences sharedPreferences;
+    private LayoutInflater layoutInflater;
+    private PlatoonData platoonData;
+    private ArrayList<ProfileData> friends;
+    private long[] selectedIds;
+    private TabHost mTabHost;
+
+    // Elements
+    private ListView listView;
+
+    @Override
     public void onCreate(Bundle icicle) {
-    
-    	//onCreate - save the instance state
-    	super.onCreate(icicle);	
-    	
-    	//Did it get passed on?
-    	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
-    		
-    		ArrayList<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
-			
-    		if( shareableCookies != null ) { 
-    			
-    			RequestHandler.setCookies( shareableCookies );
-    		
-    		} else {
-    			
-    			finish();
-    			
-    		}
-    		
-    	}
-        
-        //Prepare to tango
-        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-        
-    	//Get the intent
-        if( getIntent().hasExtra( "platoon" ) ) { platoonData = getIntent().getParcelableExtra( "platoon" ); }
-        if( getIntent().hasExtra( "friends" ) ) { friends = getIntent().getParcelableArrayListExtra( "friends" ); }
-        
-        //Is the profileData null?!
-        if( platoonData == null || platoonData.getId() == 0 ) { finish(); return; }
-    	
-        //Fix it
+
+        // onCreate - save the instance state
+        super.onCreate(icicle);
+
+        // Set sharedPreferences
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Did it get passed on?
+        if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
+
+            ArrayList<ShareableCookie> shareableCookies = icicle
+                    .getParcelableArrayList(Constants.SUPER_COOKIES);
+
+            if (shareableCookies != null) {
+
+                RequestHandler.setCookies(shareableCookies);
+
+            } else {
+
+                finish();
+
+            }
+
+        }
+
+        // Prepare to tango
+        this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // Get the intent
+        if (getIntent().hasExtra("platoon")) {
+            platoonData = getIntent().getParcelableExtra("platoon");
+        }
+        if (getIntent().hasExtra("friends")) {
+            friends = getIntent().getParcelableArrayListExtra("friends");
+        }
+
+        // Is the profileData null?!
+        if (platoonData == null || platoonData.getId() == 0) {
+            finish();
+            return;
+        }
+
+        // Fix it
         selectedIds = new long[friends.size()];
-        
-    	//Set the content view
+
+        // Setup the locale
+        setupLocale();
+
+        // Set the content view
         setContentView(R.layout.platoon_invite_view);
-        
-        //Let's see
-    	initLayout();
-    	
-	}        
 
-	public void initLayout() {
+        // Let's see
+        initLayout();
 
-    	if( listView == null ) { 
-    		
-    		listView = getListView();
-    		listView.setAdapter( new PlatoonInviteListAdapter(this, friends, layoutInflater) );
-    	
-    	}
+    }
 
-	}
-	
-	public void onListItemClick(ListView lv, View v, int pos, long id) {
-		
-		if( selectedIds[pos] == 0 ) {
-			
-			selectedIds[pos] = id;
-			((CheckBox) v.findViewById(R.id.checkbox)).setChecked( true );
-			
-		} else {
-			
-			selectedIds[pos] = 0;
-			((CheckBox) v.findViewById(R.id.checkbox)).setChecked( false );
-			
-		}
-		
-	}
-	
-	public void onClick(View v) {
-	
-		if( v.getId() == R.id.button_ok ) {
-			
-			new AsyncPlatoonMemberInvite(
-					
-				this, 
-				selectedIds, 
-				platoonData.getId()
-				
-			).execute( sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ) );
-			
-		} else if( v.getId() == R.id.button_cancel ) {
-		
-			this.finish();
-			
-		}
-		
-	}
+    public void initLayout() {
 
-	@Override
-	public void onResume() {
-	
-		super.onResume();
-		
-		//Setup the locale
-    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+        if (listView == null) {
 
-    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
-	    	Locale.setDefault(locale);
-	    	Configuration config = new Configuration();
-	    	config.locale = locale;
-	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
-    	
-    	}
- 
-     	new AsyncSessionSetActive().execute();
-		
-		//If we don't have a profile...
-    	if( SessionKeeper.getProfileData() == null ) {
-    		
-    		//...but we do indeed have a cookie...
-    		if( !sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ).equals( "" ) ){
-    			
-    			//...we set the SessionKeeper, but also reload the cookies! Easy peasy!
-    			SessionKeeper.setProfileData( SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences) );
-    			RequestHandler.setCookies( 
-    			
-    				new ShareableCookie(
+            listView = getListView();
+            listView.setAdapter(new PlatoonInviteListAdapter(this, friends,
+                    layoutInflater));
 
-    					sharedPreferences.getString( Constants.SP_BL_COOKIE_NAME, "" ),
-    					sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ),
-    					Constants.COOKIE_DOMAIN
-    						
-    				)
-    				
-    			);
-    			
-    			//...but just to be sure, we try to verify our session "behind the scenes"
-    			new AsyncSessionValidate(this, sharedPreferences).execute();
-    			
-    		} else {
-    			
-    			//Aw man, that backfired.
-    			Toast.makeText( this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
-    			startActivity( new Intent(this, Main.class) );
-    			finish();
-    			
-    		}
-    		
-    	}
-    	
-	}
-	
+        }
+
+    }
+
+    public void onListItemClick(ListView lv, View v, int pos, long id) {
+
+        if (selectedIds[pos] == 0) {
+
+            selectedIds[pos] = id;
+            ((CheckBox) v.findViewById(R.id.checkbox)).setChecked(true);
+
+        } else {
+
+            selectedIds[pos] = 0;
+            ((CheckBox) v.findViewById(R.id.checkbox)).setChecked(false);
+
+        }
+
+    }
+
+    public void onClick(View v) {
+
+        if (v.getId() == R.id.button_ok) {
+
+            new AsyncPlatoonMemberInvite(
+
+                    this, selectedIds, platoonData.getId()
+
+            ).execute(sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+
+        } else if (v.getId() == R.id.button_cancel) {
+
+            this.finish();
+
+        }
+
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        // Setup the locale
+        setupLocale();
+
+        // Setup the session
+        setupSession();
+    }
+
+    public void setupSession() {
+
+        // Let's set "active" against the website
+        new AsyncSessionSetActive().execute();
+
+        // If we don't have a profile...
+        if (SessionKeeper.getProfileData() == null) {
+
+            // ...but we do indeed have a cookie...
+            if (!sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "")
+                    .equals("")) {
+
+                // ...we set the SessionKeeper, but also reload the cookies!
+                // Easy peasy!
+                SessionKeeper
+                        .setProfileData(SessionKeeper
+                                .generateProfileDataFromSharedPreferences(sharedPreferences));
+                RequestHandler.setCookies(
+
+                        new ShareableCookie(
+
+                                sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
+                                sharedPreferences.getString(
+                                        Constants.SP_BL_COOKIE_VALUE, ""),
+                                Constants.COOKIE_DOMAIN
+
+                        )
+
+                        );
+
+                // ...but just to be sure, we try to verify our session
+                // "behind the scenes"
+                new AsyncSessionValidate(this, sharedPreferences).execute();
+
+            } else {
+
+                // Aw man, that backfired.
+                Toast.makeText(this, R.string.info_txt_session_lost,
+                        Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, Main.class));
+                finish();
+
+            }
+
+        }
+
+    }
+
+    public void setupLocale() {
+
+        if (!sharedPreferences.getString(Constants.SP_BL_LANG, "").equals("")) {
+
+            Locale locale = new Locale(sharedPreferences.getString(
+                    Constants.SP_BL_LANG, "en"));
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config,
+                    getResources().getDisplayMetrics());
+
+        }
+
+    }
+
 }

@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog;
 
@@ -45,233 +45,268 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class ForumReportView extends Activity {
 
-	//Attributes
-	private LayoutInflater layoutInflater;
-	private SharedPreferences sharedPreferences;
-	
-	//Elements
-	private ListView listView;
-	private EditText fieldReport;
-	private Button buttonReport;
-	
-	//Misc
-	private long postId;
-	
-	@Override
+    // Attributes
+    private LayoutInflater layoutInflater;
+    private SharedPreferences sharedPreferences;
+
+    // Elements
+    private ListView listView;
+    private EditText fieldReport;
+    private Button buttonReport;
+
+    // Misc
+    private long postId;
+
+    @Override
     public void onCreate(Bundle icicle) {
-    
-    	//onCreate - save the instance state
-    	super.onCreate(icicle);	
-    	
-    	//Did it get passed on?
-    	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
-    		
-    		ArrayList<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
-			
-    		if( shareableCookies != null ) { 
-    			
-    			RequestHandler.setCookies( shareableCookies );
-    		
-    		} else {
-    			
-    			finish();
-    			
-    		}
-    		
-    	}
-    	
-        //Do we have a postId?
-    	postId = getIntent().getLongExtra( "postId", 0 );
-    	if( postId == 0 ) { return; }
-    	
-    	//Set the content view
+
+        // onCreate - save the instance state
+        super.onCreate(icicle);
+
+        // Set sharedPreferences
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Did it get passed on?
+        if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
+
+            ArrayList<ShareableCookie> shareableCookies = icicle
+                    .getParcelableArrayList(Constants.SUPER_COOKIES);
+
+            if (shareableCookies != null) {
+
+                RequestHandler.setCookies(shareableCookies);
+
+            } else {
+
+                finish();
+
+            }
+
+        }
+
+        // Do we have a postId?
+        postId = getIntent().getLongExtra("postId", 0);
+        if (postId == 0) {
+            return;
+        }
+
+        // Setup the locale
+        setupLocale();
+
+        // Set the content view
         setContentView(R.layout.forum_report_view);
-        
-        //Prepare to tango
-        this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences( this );
-        
-        //Get the elements
+
+        // Prepare to tango
+        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // Get the elements
         buttonReport = (Button) findViewById(R.id.button_report);
         fieldReport = (EditText) findViewById(R.id.field_reason);
-	
-	}    
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		
-		super.onSaveInstanceState(outState);
-		outState.putParcelableArrayList(Constants.SUPER_COOKIES, RequestHandler.getCookies());
-	
-	}
-	
+
+    }
+
     @Override
-    public void onConfigurationChanged(Configuration newConfig){        
+    protected void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
+                RequestHandler.getCookies());
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
 
     public void onClick(View v) {
-    	
-    	//Send?
-    	if( v.getId() == R.id.button_report ) {
-    	
-    		//Get & validate
-    		String reason = fieldReport.getText().toString();
-    		if( reason.equals( "" ) ) {
-    			
-    			Toast.makeText( this, R.string.info_forum_report_error, Toast.LENGTH_SHORT ).show();
-    			
-    		} else {
-    		
-    			new AsyncReportPost( this, postId ).execute( reason );
-    		
-    		}
-    	}
-    	
+
+        // Send?
+        if (v.getId() == R.id.button_report) {
+
+            // Get & validate
+            String reason = fieldReport.getText().toString();
+            if (reason.equals("")) {
+
+                Toast.makeText(this, R.string.info_forum_report_error,
+                        Toast.LENGTH_SHORT).show();
+
+            } else {
+
+                new AsyncReportPost(this, postId).execute(reason);
+
+            }
+        }
+
     }
-    
+
     @Override
-	public boolean onCreateOptionsMenu( Menu menu ) {
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate( R.menu.option_basic, menu );
-		return super.onCreateOptionsMenu( menu );
-	
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_basic, menu);
+        return super.onCreateOptionsMenu(menu);
+
     }
-	
-	@Override
-	public boolean onOptionsItemSelected( MenuItem item ) {
 
-		//Let's act!
-		if( item.getItemId() == R.id.option_back ) {
-			
-			((Activity) this).finish();
-			
-		}
-		
-		// Return true yo
-		return true;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-	}  
-	
-	public class AsyncReportPost extends AsyncTask<String, Void, Boolean> {
-		
-		//Attributes
-		private Context context;
-		private long postId;
+        // Let's act!
+        if (item.getItemId() == R.id.option_back) {
 
-		//Constructs
-		public AsyncReportPost( Context c, long p ) {
-		
-			this.context = c;
-			this.postId = p;
-			
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			
-			if( context instanceof ForumReportView ) {
-				
-				buttonReport.setText( R.string.info_report_active );
-				buttonReport.setEnabled( false );
-				
-			}
-			
-		}
-		
-		@Override
-		protected Boolean doInBackground( String... arg0 ) {
-		
-			try {
-				
-				return WebsiteHandler.reportPostInThread( context, postId, arg0[0] );
-				
-			} catch( Exception ex ) {
-				
-				ex.printStackTrace();
-				return false;
-				
-			}
-		
-		}
-		
-		@Override
-		protected void onPostExecute( Boolean results ) {
-		
-			if( context instanceof ForumReportView ) {
-				
-				if( results ) {
+            ((Activity) this).finish();
 
-					Toast.makeText( context, R.string.info_forum_report_true, Toast.LENGTH_SHORT ).show();
-					( (ForumReportView) context ).finish();
-					
-				} else {
-					
-					Toast.makeText( context, R.string.info_forum_report_false, Toast.LENGTH_SHORT ).show();
-					buttonReport.setText( R.string.label_report );
-					buttonReport.setEnabled( true );
-				}
-				
-			}
-			
+        }
 
-		}
-	
-	}
-	
-	@Override
-	public void onResume() {
-	
-		super.onResume();
-		
-		//Setup the locale
-    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
+        // Return true yo
+        return true;
 
-    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
-	    	Locale.setDefault(locale);
-	    	Configuration config = new Configuration();
-	    	config.locale = locale;
-	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
-    	
-    	}
- 
-     	new AsyncSessionSetActive().execute();
-    	
-		//If we don't have a profile...
-    	if( SessionKeeper.getProfileData() == null ) {
-    		
-    		//...but we do indeed have a cookie...
-    		if( !sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ).equals( "" ) ){
-    			
-    			//...we set the SessionKeeper, but also reload the cookies! Easy peasy!
-    			SessionKeeper.setProfileData( SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences) );
-    			RequestHandler.setCookies( 
-    			
-    				new ShareableCookie(
+    }
 
-    					sharedPreferences.getString( Constants.SP_BL_COOKIE_NAME, "" ),
-    					sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ),
-    					Constants.COOKIE_DOMAIN
-    						
-    				)
-    				
-    			);
-    			
-    			//...but just to be sure, we try to verify our session "behind the scenes"
-    			new AsyncSessionValidate(this, sharedPreferences).execute();
-    			
-    		} else {
-    			
-    			//Aw man, that backfired.
-    			Toast.makeText( this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
-    			startActivity( new Intent(this, Main.class) );
-    			finish();
-    			
-    		}
-    		
-    	}
-    	
-	}
-	
+    public class AsyncReportPost extends AsyncTask<String, Void, Boolean> {
+
+        // Attributes
+        private Context context;
+        private long postId;
+
+        // Constructs
+        public AsyncReportPost(Context c, long p) {
+
+            this.context = c;
+            this.postId = p;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+            if (context instanceof ForumReportView) {
+
+                buttonReport.setText(R.string.info_report_active);
+                buttonReport.setEnabled(false);
+
+            }
+
+        }
+
+        @Override
+        protected Boolean doInBackground(String... arg0) {
+
+            try {
+
+                return WebsiteHandler.reportPostInThread(context, postId,
+                        arg0[0]);
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+                return false;
+
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean results) {
+
+            if (context instanceof ForumReportView) {
+
+                if (results) {
+
+                    Toast.makeText(context, R.string.info_forum_report_true,
+                            Toast.LENGTH_SHORT).show();
+                    ((ForumReportView) context).finish();
+
+                } else {
+
+                    Toast.makeText(context, R.string.info_forum_report_false,
+                            Toast.LENGTH_SHORT).show();
+                    buttonReport.setText(R.string.label_report);
+                    buttonReport.setEnabled(true);
+                }
+
+            }
+
+        }
+
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        // Setup the locale
+        setupLocale();
+
+        // Setup the session
+        setupSession();
+
+    }
+
+    public void setupSession() {
+
+        // Let's set "active" against the website
+        new AsyncSessionSetActive().execute();
+
+        // If we don't have a profile...
+        if (SessionKeeper.getProfileData() == null) {
+
+            // ...but we do indeed have a cookie...
+            if (!sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "")
+                    .equals("")) {
+
+                // ...we set the SessionKeeper, but also reload the cookies!
+                // Easy peasy!
+                SessionKeeper
+                        .setProfileData(SessionKeeper
+                                .generateProfileDataFromSharedPreferences(sharedPreferences));
+                RequestHandler.setCookies(
+
+                        new ShareableCookie(
+
+                                sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
+                                sharedPreferences.getString(
+                                        Constants.SP_BL_COOKIE_VALUE, ""),
+                                Constants.COOKIE_DOMAIN
+
+                        )
+
+                        );
+
+                // ...but just to be sure, we try to verify our session
+                // "behind the scenes"
+                new AsyncSessionValidate(this, sharedPreferences).execute();
+
+            } else {
+
+                // Aw man, that backfired.
+                Toast.makeText(this, R.string.info_txt_session_lost,
+                        Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, Main.class));
+                finish();
+
+            }
+
+        }
+
+    }
+
+    public void setupLocale() {
+
+        if (!sharedPreferences.getString(Constants.SP_BL_LANG, "").equals("")) {
+
+            Locale locale = new Locale(sharedPreferences.getString(
+                    Constants.SP_BL_LANG, "en"));
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config,
+                    getResources().getDisplayMetrics());
+
+        }
+
+    }
+
 }

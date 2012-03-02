@@ -10,90 +10,94 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import com.ninetwozero.battlelog.R;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-
 public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
 
-	//Attribute
-	Context context;
-	Button buttonSend;
-	long postId;
-	boolean fromWidget;
-	String httpContent;
-	AsyncCommentsRefresh asyncCommentsRefresh;
-	
-	
-	//Constructor
-	public AsyncCommentSend( Context c, long pId, Button b, boolean w, AsyncCommentsRefresh acr ) { 
-		
-		this.context = c; 
-		this.postId = pId;
-		this.fromWidget = w;
-		this.buttonSend = b;
-		this.asyncCommentsRefresh = acr;
-	
-	}
-	
-	@Override
-	protected void onPreExecute() {
-		
-		//Set the button
-		buttonSend.setEnabled( false );
-		buttonSend.setText( R.string.label_wait );
-		
-	}
-	
-	@Override
-	protected Boolean doInBackground( String... arg0 ) {
-		
-		try {
-		
-    		//Did we manage?
-    		if( WebsiteHandler.commentOnFeedPost( postId, arg0[0], arg0[1]) ) { return true; } 
-    		else { return false; }
-    		
-		} catch( Exception ex ) {
-			
-			Log.e(Constants.DEBUG_TAG, "", ex);
-			return false;
-			
-		}
-		
-	}
-	
-	@Override
-	protected void onPostExecute(Boolean results) {
+    // Attribute
+    Context context;
+    Button buttonSend;
+    long postId;
+    boolean fromWidget;
+    String httpContent;
+    AsyncCommentsRefresh asyncCommentsRefresh;
 
-		if( !fromWidget ) {
-			
-			//Reload
-			asyncCommentsRefresh.execute( postId );
-			
-			//Set the button
-			buttonSend.setEnabled( true );
-			buttonSend.setText( R.string.label_send );
-			
-			if( results ) Toast.makeText( context, R.string.msg_comment_ok, Toast.LENGTH_SHORT).show();
-			else Toast.makeText( context, R.string.msg_comment_fail, Toast.LENGTH_SHORT).show();
-			
-		}
-		return;
-		
-	}
+    // Constructor
+    public AsyncCommentSend(Context c, long pId, Button b, boolean w,
+            AsyncCommentsRefresh acr) {
 
-	
-	
+        this.context = c;
+        this.postId = pId;
+        this.fromWidget = w;
+        this.buttonSend = b;
+        this.asyncCommentsRefresh = acr;
+
+    }
+
+    @Override
+    protected void onPreExecute() {
+
+        // Set the button
+        buttonSend.setEnabled(false);
+        buttonSend.setText(R.string.label_wait);
+
+    }
+
+    @Override
+    protected Boolean doInBackground(String... arg0) {
+
+        try {
+
+            // Did we manage?
+            if (WebsiteHandler.commentOnFeedPost(postId, arg0[0], arg0[1])) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception ex) {
+
+            Log.e(Constants.DEBUG_TAG, "", ex);
+            return false;
+
+        }
+
+    }
+
+    @Override
+    protected void onPostExecute(Boolean results) {
+
+        if (!fromWidget) {
+
+            // Reload
+            asyncCommentsRefresh.execute(postId);
+
+            // Set the button
+            buttonSend.setEnabled(true);
+            buttonSend.setText(R.string.label_send);
+
+            if (results)
+                Toast.makeText(context, R.string.msg_comment_ok,
+                        Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(context, R.string.msg_comment_fail,
+                        Toast.LENGTH_SHORT).show();
+
+        }
+        return;
+
+    }
+
 }

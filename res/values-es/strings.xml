@@ -24,32 +24,77 @@
         <item >90</item>
         <item >120</item>
     </integer-array>
-    
     <string-array name="service_update_intervals_labels">
-        <item >Every 5 minutes</item>
-        <item >Every 10 minutes</item>
-        <item >Every 30 minutes</item>
-        <item >Once an hour</item>
-        <item >Once every 2 hours</item>
-        <item >Once every 6 hours</item>
-        <item >Once every 12 hours</item>
-        <item >Once every 18 hours</item>
-        <item >Once a day</item>
+        <item >@string/label_update_interval_minutes_5</item>
+        <item >@string/label_update_interval_minutes_10</item>
+        <item >@string/label_update_interval_minutes_30</item>
+        <item >@string/label_update_interval_hours_1</item>
+        <item >@string/label_update_interval_hours_2</item>
+        <item >@string/label_update_interval_hours_6</item>
+        <item >@string/label_update_interval_hours_12</item>
+        <item >@string/label_update_interval_hours_18</item>
+        <item >@string/label_update_interval_days_1</item>
     </string-array>
      <string-array name="chat_update_intervals_labels">
-        <item >Once every 5 seconds</item>
-        <item >Once every 10 seconds</item>
-        <item >Once every 15 seconds</item>
-        <item >Once every 20 seconds</item>
-        <item >Once every 25 seconds</item>
-        <item >Once every 30 seconds</item>
-        <item >Once a minute</item>
-        <item >Once every 90 seconds</item>
-        <item >Once every 2 minutes</item>
+        <item >@string/label_update_interval_seconds_5</item>
+        <item >@string/label_update_interval_seconds_10</item>
+        <item >@string/label_update_interval_seconds_15</item>
+        <item >@string/label_update_interval_seconds_20</item>
+        <item >@string/label_update_interval_seconds_25</item>
+        <item >@string/label_update_interval_seconds_30</item>
+        <item >@string/label_update_interval_minutes_1</item>
+        <item >@string/label_update_interval_seconds_90</item>
+        <item >@string/label_update_interval_minutes_2</item>
     </string-array>
-    
-    <!--  translation starts here -->
-   
+    <string-array name="language_titles">
+        <item >Cрпски</item>
+        <item >Dansk</item>
+        <item >Deutsch</item>
+        <item >English</item>
+        <item >Español</item>
+        <item >Francais</item>
+        <item >Hrvatski</item>
+        <item >Italiano</item>
+        <item >Nederlands</item>
+        <item >Polski</item>
+        <item >Português</item>
+        <item >Român</item>
+        <item >Suomi</item>
+        <item >Svenska</item>
+    </string-array>
+     <string-array name="language_values">
+        <item >sr</item>
+        <item >da</item>
+        <item >de</item>
+        <item >en</item>
+        <item >es</item>
+        <item >fr</item>
+        <item >hr</item>
+        <item >it</item>
+        <item >nl</item>
+        <item >pl</item>
+        <item >pt</item>
+        <item >ro</item>
+        <item >fi</item>
+        <item >sv</item>
+    </string-array>
+   <!--  translation starts here -->
+   <string name="changelog">
+       * Fixed the forum (sorry!) &lt;br /&gt;
+       * Fixed the underlying service from crashing (finally?!) &lt;br /&gt;
+       * Updated the localization with more translations (contact me if you can help translate!) &lt;br /&gt;
+       * You can now select languages via the Settings &lt;br /&gt;
+       * Added audible notifications &lt;br /&gt;
+       * Added chat sounds &lt;br /&gt;
+       * Added settings for the above &lt;br /&gt;
+       &lt;br /&gt;
+       * DONATE-option available via the About screen (below) &lt;br /&gt;
+       * Forum for the app is now available via http://bit.ly/bf3blforum &lt;br /&gt;
+       &lt;br /&gt;
+       Please report any errors you may encounter to support@ninetwozero.com and/or 
+       @karllindmark on Twitter (https://twitter.com/karllindmark).&lt;br /&gt;&lt;br /&gt;
+       Thank you for your support!
+	</string>
 	<string name="general_invalid_email">Dirección de correo electrónico no válida.</string>
 	<string name="general_invalid_password">Por favor, introduzca su contraseña.</string>
 	<string name="general_changelog_version">De cambios de versión</string>
@@ -327,33 +372,33 @@
 	<string name="info_xml_platoon_select">Seleccione una peloton...</string>
 	<string name="info_spost_heading">Posta de {username}</string>
 	<string name="info_spost_heading_s">Posta de {username}</string>
-	<string name="info_txt_friend_delete_true">The user has been removed from your list.</string>
-	<string name="info_txt_friend_delete_false">The user could not be removed from your list.</string>
-	<string name="info_xml_feed_button_pagination">Load more items</string>
+	<string name="info_txt_friend_delete_true">El usuario ha sido eliminado de tu lista.</string>
+	<string name="info_txt_friend_delete_false">No se ha podido eliminar de tu lista al usuario.</string>
+	<string name="info_xml_feed_button_pagination">Cargar más objetos</string>
 	<string name="label_downloading">Descargando...</string>
 	<string name="info_xml_threads_more_false">No hay mas discusiones.</string>
 	<string name="info_xml_posts_more_false">No hay mas postas.</string>
-	<string name="label_jump">Jump to page...</string>
-	<string name="info_txt_pageselect">Select a page...</string>
-	<string name="info_xml_enternumber">Enter a number between {min} - {max} below.</string>
-	<string name="info_xml_feed_button_jump">Jump to page...</string>
-	<string name="info_feed_friend_accept">&lt;b>{username}&lt;/b> accepted your &lt;b>friend request&lt;/b>.</string>
-	<string name="label_single_post_view">View post</string>
-	<string name="info_xml_main_slider">Information about the app</string>
+	<string name="label_jump">Ir a la página...</string>
+	<string name="info_txt_pageselect">Seleccionar una página...</string>
+	<string name="info_xml_enternumber">A continuación escribe un número entre {min} y {max}.</string>
+	<string name="info_xml_feed_button_jump">Ir a la página...</string>
+	<string name="info_feed_friend_accept">&lt;b>{username}&lt;/b> ha aceptado &lt;b>tu solicitud de amistad&lt;/b>.</string>
+	<string name="label_single_post_view">Ver el mensaje</string>
+	<string name="info_xml_main_slider">Información sobre la aplicación</string>
 	<string name="label_option_about">Sobre...</string>
 	<string name="title_about">Sobre del app</string>
 	<string name="info_option_unlocks">View unlocks</string>
-	<string name="info_txt_email_send">Send E-mail</string>
+	<string name="info_txt_email_send">Enviar correo electrónico</string>
 	<string name="label_about">Sobre</string>
 	<string name="label_faq">FAQ</string>
 	<string name="label_credits">Créditos</string>
 	<string name="info_assignment_completed">assignment completed</string>
-	<string name="info_platoon_invite">&lt;b>{username}&lt;/b> has invited you to join &lt;b>{platoon}&lt;/b>.</string>
+	<string name="info_platoon_invite">&lt;b>{username}&lt;/b> te ha invitado a unirte &lt;b>{platoon}&lt;/b>.</string>
 	<string name="info_platoon_promote">You got promoted in &lt;b>{platoon}&lt;/b>.</string>
 	<string name="info_platoon_demote">You got demoted in &lt;b>{platoon}&lt;/b>.</string>
 	<string name="info_platoon_kick">&lt;b>{username}&lt;/b> kicked you from the platoon &lt;b>{platoon}&lt;/b>.</string>
 	<string name="info_platoon_activity">actividad del peloton</string>
-	<string name="info_platoon_member_new_ok">Accepting the new member...</string>
+	<string name="info_platoon_member_new_ok">Aceptando al nuevo miembro...</string>
 	<string name="info_platoon_member_new_false">Turning down the new member...</string>
 	<string name="info_platoon_member_demoting">Demoting member...</string>
 	<string name="info_platoon_member_promoting">Promoting member...</string>
@@ -363,24 +408,24 @@
 	<string name="info_platoon_member_demote">Demote</string>
 	<string name="info_platoon_member_promote">Promote</string>
 	<string name="info_platoon_member_kick">Kick</string>
-	<string name="info_profile_view">View profile</string>
+	<string name="info_profile_view">Ver el perfil</string>
 	<string name="info_stats_not_found">No stats found.</string>
-	<string name="info_forum_page_invalid">Invalid page number.</string>
+	<string name="info_forum_page_invalid">El número de página no es válido.</string>
 	<string name="info_forum_quote_warning">Quote added to the textarea, don\'t edit or remove the tag.</string>
 	<string name="info_forum_links_no">No links found in the post.</string>
-	<string name="info_forum_quote">Quote post</string>
-	<string name="info_forum_report">Report post</string>
+	<string name="info_forum_quote">Citar el mensaje</string>
+	<string name="info_forum_report">Denunciar este mensaje</string>
 	<string name="info_forum_links">View links...</string>
 	<string name="info_forum_link_title">Select a link to view...</string>
 	<string name="info_forum_posts_downloading">Downloading the posts...</string>
-	<string name="info_platoon_member_founder">Founder</string>
-	<string name="info_platoon_member_nonmember">Not a member</string>
+	<string name="info_platoon_member_founder">Fundador/a</string>
+	<string name="info_platoon_member_nonmember">No es miembro</string>
 	<string name="info_platoon_member_evaluate">Waiting to be evaluated</string>
-	<string name="info_platoon_member_invited">Invited</string>
-	<string name="info_platoon_member_member">Member</string>
-	<string name="info_platoon_member_admin">Admin</string>
-	<string name="info_platoon_member_founder_p">Founders</string>
-	<string name="info_platoon_member_admin_p">Admins</string>
+	<string name="info_platoon_member_invited">Invitado/a</string>
+	<string name="info_platoon_member_member">Miembro</string>
+	<string name="info_platoon_member_admin">Administrador/a</string>
+	<string name="info_platoon_member_founder_p">Fundadores/as</string>
+	<string name="info_platoon_member_admin_p">Administradores/as</string>
 	<string name="info_platoon_member_regular">Regular member</string>
 	<string name="info_platoon_member_regular_p">Regular members</string>
 	<string name="info_platoon_member_invited_label">Invited to join</string>
@@ -391,7 +436,7 @@
 	<string name="label_goto_assignments">assignments</string>
 	<string name="label_goto_forum_thread">forum thread</string>
 	<string name="label_goto_platoon">platoon</string>
-	<string name="label_goto_profile">profile</string>
+	<string name="label_goto_profile">perfil</string>
 	<string name="label_goto_unlocks">unlocks</string>
 	<string name="info_about_donating">If you like the work I\'ve been doing and feel like donating a sum of your choice to my development fund, just tap this text to go to Paypal for further instructions.</string>
 	<string name="general_censored">This post has been censored by the Battlelog staff.</string>
@@ -411,4 +456,60 @@
 	<string name="info_general_noprofile">No profile selected.</string>
 	<string name="info_assignments_empty">No assignments found for this soldier.</string>
 	<string name="info_unlocks_empty">No unlocks in this view.</string>
+	<string name="info_login_lostcookie">Login was successful, however we didn\'t find any cookies. :-(</string>
+	<string name="info_conn_hostunreach">Host unreachable - please restart your 3G connection and try again.</string>
+	<string name="info_session_expired">Session expired. Renewing the session with the server.</string>
+	<string name="info_session_renew_ok">Session renewed!</string>
+	<string name="info_session_renew_fail">Session could not be renewed.</string>
+	<string name="info_friendreq_resp_ok">Friend request responded to.</string>
+	<string name="info_platoon_invite_ok">Invites have been sent!</string>
+	<string name="info_platoon_invite_fail">Invites could not be sent!</string>
+	<string name="info_platoon_invite_passed">Some invites have been sent, some not!</string>
+	<string name="info_platoon_req_ok">Join request responded to.</string>
+	<string name="info_forum_report_error">You need to enter a reason for reporting this post.</string>
+	<string name="general_nonetwork">No network connection available!</string>
+	<string name="info_comment_report">Reporting comment number</string>
+	<string name="info_settings_general">General options</string>
+	<string name="info_settings_chat">Chat options</string>
+	<string name="info_settings_service">Service options</string>
+	<string name="info_settings_notifications">Notification options</string>
+	<string name="info_settings_chat_desc_beep_true">Your active chat will beep with love.</string>
+	<string name="info_settings_chat_desc_beep_false">Your active chat won\'t even attempt to beep.</string>
+	<string name="info_settings_notification_desc_vibrate_false">Silence is golden.</string>
+	<string name="info_settings_notification_desc_vibrate_true">Bzzt bzzt.</string>
+	<string name="info_settings_notification_desc_beep_true">Your notifications will be audible.</string>
+	<string name="info_settings_notification_desc_beep_false">You won\'t hear a thing.</string>
+	<string name="info_settings_notification_desc_beep_spec_true">BEEP!</string>
+	<string name="info_settings_notification_desc_light_true">Twinkle twinkle little star.</string>
+	<string name="info_settings_notification_desc_light_false">The LED won\'t be blinking.</string>
+	<string name="info_settings_notification_desc_beep_spec_false">Using your default notification sound.</string>
+	<string name="info_credits_contributors">List of contributors</string>
+	<string name="info_credits_info">First of all, I\'d like to thank everyone for the support and hand out a special &amp;quot;thank you&amp;quot; to all the beta testers out there.\n\nWith that said, I\'ve categorized the list of contributors below after what they\'ve helped with and hopefully I haven\'t forgot anyone!</string>
+	<string name="info_credits_code">Código</string>
+	<string name="info_credits_translations">Traducciones</string>
+	<string name="label_update_interval_seconds_5">Cada 5 segundos</string>
+	<string name="label_update_interval_seconds_10">Once every 10 seconds</string>
+	<string name="label_update_interval_seconds_15">Once every 15 seconds</string>
+	<string name="label_update_interval_seconds_20">Once every 20 seconds</string>
+	<string name="label_update_interval_seconds_25">Once every 25 seconds</string>
+	<string name="label_update_interval_seconds_30">Once every 30 seconds</string>
+	<string name="label_update_interval_seconds_90">Once every 90 seconds</string>
+	<string name="label_update_interval_minutes_1">Once a minute</string>
+	<string name="label_update_interval_minutes_2">Once every 2 minutes</string>
+	<string name="label_update_interval_minutes_5">Once every 5 minutes</string>
+	<string name="label_update_interval_minutes_10">Once every 10 minutes</string>
+	<string name="label_update_interval_minutes_30">Once every 30 minutes</string>
+	<string name="label_update_interval_hours_1">Once every hour</string>
+	<string name="label_update_interval_hours_2">Once every 2 hours</string>
+	<string name="label_update_interval_hours_6">Once every 6 hours</string>
+	<string name="label_update_interval_hours_12">Once every 12 hours</string>
+	<string name="label_update_interval_hours_18">Once every 18 hours</string>
+	<string name="label_update_interval_days_1">Once a day</string>
+	<string name="info_settings_title_language">Idioma</string>
+	<string name="info_settings_title_sound_chat">Enable chat sound</string>
+	<string name="info_settings_chat_title">Enable chat sound</string>
+	<string name="info_settings_notification_title_light">Enable use of the LED</string>
+	<string name="info_settings_notification_title_sounds">Enable sounds</string>
+	<string name="info_settings_notification_title_sounds_spec">Use the Battlelog beep</string>
+	<string name="info_settings_notification_title_vibration">Activa la vibración</string>
 </resources>

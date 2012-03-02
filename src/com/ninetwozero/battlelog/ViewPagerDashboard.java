@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog;
 
@@ -59,179 +59,215 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class ViewPagerDashboard extends FragmentActivity {
 
-	//Attributes
-	final private Context context = this;
-	private String[] valueFieldsArray;
-	private PostData[] postDataArray;
-	private ArrayList<NotificationData> notificationArray;
-	private FriendListDataWrapper friendListData;
-	private SharedPreferences sharedPreferences;
-	private LayoutInflater layoutInflater;
-	
-	//Elements
-	private View wrapFriendRequests;
-	private TabHost mTabHost, cTabHost;
-	private ListView listFeed;
-	private EditText fieldStatusUpdate;
-	private FeedListAdapter feedListAdapter;
-	private TextView feedStatusText, notificationStatusText, friendsStatusText;
-	
-	//COM-related
-	private SlidingDrawer slidingDrawer;
-	private TextView slidingDrawerHandle;
-	private OnDrawerOpenListener onDrawerOpenListener;
-	private OnDrawerCloseListener onDrawerCloseListener;
-	private ListView listFriendRequests, listFriends, listNotifications;
-	private NotificationListAdapter notificationListAdapter;
-	private FriendListAdapter friendListAdapter;
-	private RequestListAdapter friendRequestListAdapter;
-	private OnItemClickListener onItemClickListener;
-	private Button buttonRefresh;
-	
-	//Fragment related
-	private MenuFragment menuFragment;
-	private FeedFragment feedFragment;
-	private FragmentManager fragmentManager;
-	
-	//Async
-	private AsyncLogout asyncLogout;
-	
-	@Override
-    public void onCreate(Bundle icicle) {
-    
-    	//onCreate - save the instance state
-    	super.onCreate(icicle);
+    // Attributes
+    final private Context context = this;
+    private String[] valueFieldsArray;
+    private PostData[] postDataArray;
+    private ArrayList<NotificationData> notificationArray;
+    private FriendListDataWrapper friendListData;
+    private SharedPreferences sharedPreferences;
+    private LayoutInflater layoutInflater;
 
-        //Set sharedPreferences
+    // Elements
+    private View wrapFriendRequests;
+    private TabHost mTabHost, cTabHost;
+    private ListView listFeed;
+    private EditText fieldStatusUpdate;
+    private FeedListAdapter feedListAdapter;
+    private TextView feedStatusText, notificationStatusText, friendsStatusText;
+
+    // COM-related
+    private SlidingDrawer slidingDrawer;
+    private TextView slidingDrawerHandle;
+    private OnDrawerOpenListener onDrawerOpenListener;
+    private OnDrawerCloseListener onDrawerCloseListener;
+    private ListView listFriendRequests, listFriends, listNotifications;
+    private NotificationListAdapter notificationListAdapter;
+    private FriendListAdapter friendListAdapter;
+    private RequestListAdapter friendRequestListAdapter;
+    private OnItemClickListener onItemClickListener;
+    private Button buttonRefresh;
+
+    // Fragment related
+    private MenuFragment menuFragment;
+    private FeedFragment feedFragment;
+    private FragmentManager fragmentManager;
+
+    // Async
+    private AsyncLogout asyncLogout;
+
+    @Override
+    public void onCreate(Bundle icicle) {
+
+        // onCreate - save the instance state
+        super.onCreate(icicle);
+
+        // Set sharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        
-    	//Did it get passed on?
-    	if( icicle != null && icicle.containsKey( Constants.SUPER_COOKIES ) ) {
-    		
-    		ArrayList<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
-			
-    		if( shareableCookies != null ) { 
-    			
-    			RequestHandler.setCookies( shareableCookies );
-    		
-    		} else {
-    			
-    			finish();
-    			
-    		}
-    		
-    	}
-    	
-    	//We should've gotten a profile
-    	if( SessionKeeper.getProfileData() == null ) {
-    		
-    		if( getIntent().hasExtra( "myProfile" ) ) {
-    			
-    			SessionKeeper.setProfileData( (ProfileData) getIntent().getParcelableExtra( "myProfile" ) );
-    			
-    		} else {
-    			
-    			Toast.makeText( this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
-    			return;
-    			
-    		}
-    		
-    	}
-    	
-    	//Set the content view
-        setContentView(R.layout.viewpager_dashboard);
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fragmentManager = getSupportFragmentManager();
-        
-        //Let's setup the fragments
-        if( menuFragment == null ) {
-        	
-        	 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        	 fragmentTransaction.add(R.id.fragment_content, new MenuFragment());
-        	 fragmentTransaction.add(R.id.fragment_content, new MenuFragment());
-             fragmentTransaction.commit();
+
+        // Did it get passed on?
+        if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
+
+            ArrayList<ShareableCookie> shareableCookies = icicle
+                    .getParcelableArrayList(Constants.SUPER_COOKIES);
+
+            if (shareableCookies != null) {
+
+                RequestHandler.setCookies(shareableCookies);
+
+            } else {
+
+                finish();
+
+            }
 
         }
-	        
-        //Setup the data
+
+        // We should've gotten a profile
+        if (SessionKeeper.getProfileData() == null) {
+
+            if (getIntent().hasExtra("myProfile")) {
+
+                SessionKeeper.setProfileData((ProfileData) getIntent()
+                        .getParcelableExtra("myProfile"));
+
+            } else {
+
+                Toast.makeText(this, R.string.info_txt_session_lost,
+                        Toast.LENGTH_SHORT).show();
+                return;
+
+            }
+
+        }
+
+        // Setup the locale
+        setupLocale();
+
+        // Set the content view
+        setContentView(R.layout.viewpager_dashboard);
+
+        // Get the layoutInflater
+        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        fragmentManager = getSupportFragmentManager();
+
+        // Let's setup the fragments
+        if (menuFragment == null) {
+
+            FragmentTransaction fragmentTransaction = fragmentManager
+                    .beginTransaction();
+            fragmentTransaction.add(R.id.fragment_content, new MenuFragment());
+            fragmentTransaction.add(R.id.fragment_content, new MenuFragment());
+            fragmentTransaction.commit();
+
+        }
+
+        // Setup the data
         notificationArray = new ArrayList<NotificationData>();
-    	friendListData = new FriendListDataWrapper(null, null, null);
-        
-        //Setup COM & feed
-    	initActivity();
-	}	
+        friendListData = new FriendListDataWrapper(null, null, null);
 
-	public final void initActivity() {}
-
-	@Override
-	public void onResume() {
-	
-		super.onResume();
-		
-		//Setup the locale
-    	if( !sharedPreferences.getString( Constants.SP_BL_LANG, "" ).equals( "" ) ) {
-
-    		Locale locale = new Locale( sharedPreferences.getString( Constants.SP_BL_LANG, "en" ) );
-	    	Locale.setDefault(locale);
-	    	Configuration config = new Configuration();
-	    	config.locale = locale;
-	    	getResources().updateConfiguration(config, getResources().getDisplayMetrics() );
-    	
-    	}
- 
-     	new AsyncSessionSetActive().execute();
-		
-		//If we don't have a profile...
-    	if( SessionKeeper.getProfileData() == null ) {
-    		
-    		//...but we do indeed have a cookie...
-    		if( !sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ).equals( "" ) ){
-    			
-    			//...we set the SessionKeeper, but also reload the cookies! Easy peasy!
-    			SessionKeeper.setProfileData( SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences) );
-    			RequestHandler.setCookies( 
-    			
-    				new ShareableCookie(
-
-    					sharedPreferences.getString( Constants.SP_BL_COOKIE_NAME, "" ),
-    					sharedPreferences.getString( Constants.SP_BL_COOKIE_VALUE, "" ),
-    					Constants.COOKIE_DOMAIN
-    						
-    				)
-    				
-    			);
-    			
-    			//...but just to be sure, we try to verify our session "behind the scenes"
-    			new AsyncSessionValidate(this, sharedPreferences).execute();
-    			
-    		} else {
-    			
-    			//Aw man, that backfired.
-    			Toast.makeText( this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
-    			startActivity( new Intent(this, Main.class) );
-    			finish();
-    			
-    		}
-    		
-    	}
-    	
-	}
-	
-    @Override
-    public void onConfigurationChanged(Configuration newConfig){        
-    	
-        super.onConfigurationChanged(newConfig);       
-        
+        // Setup COM & feed
+        initActivity();
     }
-    
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		
-		super.onSaveInstanceState(outState);
-		outState.putParcelableArrayList(Constants.SUPER_COOKIES, RequestHandler.getCookies());
-	
-	}
-	
-	public void onMenuClick(View v) { menuFragment.onMenuClick(v); }
-    
+
+    public final void initActivity() {
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        // Setup the locale
+        setupLocale();
+
+        // Setup the session
+        setupSession();
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+
+        super.onConfigurationChanged(newConfig);
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
+                RequestHandler.getCookies());
+
+    }
+
+    public void onMenuClick(View v) {
+        menuFragment.onMenuClick(v);
+    }
+
+    public void setupSession() {
+
+        // Let's set "active" against the website
+        new AsyncSessionSetActive().execute();
+
+        // If we don't have a profile...
+        if (SessionKeeper.getProfileData() == null) {
+
+            // ...but we do indeed have a cookie...
+            if (!sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "")
+                    .equals("")) {
+
+                // ...we set the SessionKeeper, but also reload the cookies!
+                // Easy peasy!
+                SessionKeeper
+                        .setProfileData(SessionKeeper
+                                .generateProfileDataFromSharedPreferences(sharedPreferences));
+                RequestHandler.setCookies(
+
+                        new ShareableCookie(
+
+                                sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
+                                sharedPreferences.getString(
+                                        Constants.SP_BL_COOKIE_VALUE, ""),
+                                Constants.COOKIE_DOMAIN
+
+                        )
+
+                        );
+
+                // ...but just to be sure, we try to verify our session
+                // "behind the scenes"
+                new AsyncSessionValidate(this, sharedPreferences).execute();
+
+            } else {
+
+                // Aw man, that backfired.
+                Toast.makeText(this, R.string.info_txt_session_lost,
+                        Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, Main.class));
+                finish();
+
+            }
+
+        }
+
+    }
+
+    public void setupLocale() {
+
+        if (!sharedPreferences.getString(Constants.SP_BL_LANG, "").equals("")) {
+
+            Locale locale = new Locale(sharedPreferences.getString(
+                    Constants.SP_BL_LANG, "en"));
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config,
+                    getResources().getDisplayMetrics());
+
+        }
+
+    }
+
 }

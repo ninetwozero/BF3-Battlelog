@@ -10,6 +10,7 @@
 	    android:layout_height="40dp"
 		android:layout_alignParentLeft="true"
 		android:src="@drawable/default_avatar"
+		android:onClick="onClick"
 	/>
 	<RelativeLayout
 	    android:id="@+id/wrap_top"
@@ -44,7 +45,7 @@
 		    android:layout_height="wrap_content"
 			android:text="This is a message"
 			android:layout_below="@id/text_username"
-			android:linksClickable="true"
+			android:autoLink="all"
 		/>
 	</RelativeLayout>
 </RelativeLayout>

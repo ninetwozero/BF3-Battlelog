@@ -10,36 +10,42 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
 import java.io.Serializable;
-
 
 public class PlatoonTopStatsItem implements Serializable {
 
-	//Serializable 
-	private static final long serialVersionUID = 7460289426277720097L;
-	
-	//Base-section
-	private String label;
-	private int spm;
-	private ProfileData profile;
-	
-	//Construct
-	public PlatoonTopStatsItem( String l, int s, ProfileData p ) {
-		
-		this.label = l;
-		this.spm = s;
-		this.profile = p;
-	
-	}
+    // Serializable
+    private static final long serialVersionUID = 7460289426277720097L;
 
-	//Getters	
-	public String getLabel() { return this.label; }
-	public int getSPM() { return this.spm; }
-	public ProfileData getProfile() { return this.profile; }
+    // Base-section
+    private String label;
+    private int spm;
+    private ProfileData profile;
+
+    // Construct
+    public PlatoonTopStatsItem(String l, int s, ProfileData p) {
+
+        this.label = l;
+        this.spm = s;
+        this.profile = p;
+
+    }
+
+    // Getters
+    public String getLabel() {
+        return this.label;
+    }
+
+    public int getSPM() {
+        return this.spm;
+    }
+
+    public ProfileData getProfile() {
+        return this.profile;
+    }
 
 }

@@ -1,13 +1,17 @@
-package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
+package com.ninetwozero.battlelog.datatypes;
 
 public class DatabaseInformationException extends Exception {
 
-	private static final long serialVersionUID = -4284315651483396603L;
+    private static final long serialVersionUID = -4284315651483396603L;
 
-	public DatabaseInformationException() { super( "DatabaseInformationException" ); }
+    public DatabaseInformationException() {
+        super("DatabaseInformationException");
+    }
 
-	public DatabaseInformationException( String detailMessage ) { super( ( detailMessage == null ) ? "No error message found" : detailMessage ); }
+    public DatabaseInformationException(String detailMessage) {
+        super((detailMessage == null) ? "No error message found"
+                : detailMessage);
+    }
 
 }

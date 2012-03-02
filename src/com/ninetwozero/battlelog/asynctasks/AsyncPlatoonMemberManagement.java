@@ -10,83 +10,81 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.asynctasks;
 
-
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.PlatoonView;
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
+public class AsyncPlatoonMemberManagement extends
+        AsyncTask<Boolean, Void, Boolean> {
 
-public class AsyncPlatoonMemberManagement extends AsyncTask<Boolean, Void, Boolean> {
-	
-	//Attributes
-	private Context context;
-	private int what;
-	private long platoonId;
-	private long userId;
-	
-	//Constructs
-	public AsyncPlatoonMemberManagement(Context c, long uId, long pId, int w) {
+    // Attributes
+    private Context context;
+    private int what;
+    private long platoonId;
+    private long userId;
 
-		context = c;
-		userId = uId;
-		platoonId = pId;
-		what = w;
-		
-	}
-	
-	@Override
-	protected Boolean doInBackground(Boolean... arg0) {
+    // Constructs
+    public AsyncPlatoonMemberManagement(Context c, long uId, long pId, int w) {
 
-		if( what == 1 || what == 2 ) { //RESPOND TO REQUEST
-			
-			try {
-				
-				if( arg0.length == 0 ) {
-					
-					return WebsiteHandler.alterPlatoonMembership( userId, platoonId, 2 );
-					
-				} else if( !arg0[0] ) {
+        context = c;
+        userId = uId;
+        platoonId = pId;
+        what = w;
 
-					return WebsiteHandler.alterPlatoonMembership( userId, platoonId, 1 );
-					
-				} else {
-					
-					return WebsiteHandler.alterPlatoonMembership( userId, platoonId, 0 );
-					
-				}
-			
-			} catch( Exception ex ) {
-			
-				ex.printStackTrace();
-				return false;
-				
-			}
-				
-		}
-		
-		return true;
-		
-		
-	}
-	
-	@Override
-	protected void onPostExecute( Boolean result ) { 
-	
-		if( context instanceof PlatoonView ) { 
-				
-			((PlatoonView) context).reloadLayout();
-			
-		}	
-		
-	}
-	
+    }
+
+    @Override
+    protected Boolean doInBackground(Boolean... arg0) {
+
+        if (what == 1 || what == 2) { // RESPOND TO REQUEST
+
+            try {
+
+                if (arg0.length == 0) {
+
+                    return WebsiteHandler.alterPlatoonMembership(userId,
+                            platoonId, 2);
+
+                } else if (!arg0[0]) {
+
+                    return WebsiteHandler.alterPlatoonMembership(userId,
+                            platoonId, 1);
+
+                } else {
+
+                    return WebsiteHandler.alterPlatoonMembership(userId,
+                            platoonId, 0);
+
+                }
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+                return false;
+
+            }
+
+        }
+
+        return true;
+
+    }
+
+    @Override
+    protected void onPostExecute(Boolean result) {
+
+        if (context instanceof PlatoonView) {
+
+            ((PlatoonView) context).reload();
+
+        }
+
+    }
+
 }

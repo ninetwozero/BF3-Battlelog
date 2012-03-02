@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.asynctasks;
 
@@ -25,50 +25,52 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncComRequest extends AsyncTask<String, Integer, Boolean> {
 
-	//Attribute
-	Context context;
-	SharedPreferences sharedPreferences;
-	long profileId;
-	boolean response;
-	AsyncComRefresh refreshMethod;
+    // Attribute
+    Context context;
+    SharedPreferences sharedPreferences;
+    long profileId;
+    boolean response;
+    AsyncComRefresh refreshMethod;
 
-	//Constructor
-	public AsyncComRequest( Context c, long p, AsyncComRefresh acr, boolean r ) { 
-		
-		this.context = c;
-		this.profileId = p;
-		this.response = r;
-		this.refreshMethod = acr;
-	}	
-	
-	@Override
-	protected void onPreExecute() {}
-	
-	@Override
-	protected Boolean doInBackground( String... arg0) {
-		
-		try {
-		
-			//Let's get this!!
-			return WebsiteHandler.answerFriendRequest( profileId, response, arg0[0] );
-			
-			
-		} catch ( WebsiteHandlerException e ) {
-			
-			return false;
-			
-		}
-		
-	}
-	
-	@Override
-	protected void onPostExecute(Boolean results) {
-		
-		//Let the user know and then refresh!
-		Toast.makeText( context, R.string.info_friendreq_resp_ok, Toast.LENGTH_SHORT).show();				
-		refreshMethod.execute();
-		return;
-		
-	}	
+    // Constructor
+    public AsyncComRequest(Context c, long p, AsyncComRefresh acr, boolean r) {
+
+        this.context = c;
+        this.profileId = p;
+        this.response = r;
+        this.refreshMethod = acr;
+    }
+
+    @Override
+    protected void onPreExecute() {
+    }
+
+    @Override
+    protected Boolean doInBackground(String... arg0) {
+
+        try {
+
+            // Let's get this!!
+            return WebsiteHandler.answerFriendRequest(profileId, response,
+                    arg0[0]);
+
+        } catch (WebsiteHandlerException e) {
+
+            return false;
+
+        }
+
+    }
+
+    @Override
+    protected void onPostExecute(Boolean results) {
+
+        // Let the user know and then refresh!
+        Toast.makeText(context, R.string.info_friendreq_resp_ok,
+                Toast.LENGTH_SHORT).show();
+        refreshMethod.execute();
+        return;
+
+    }
 
 }

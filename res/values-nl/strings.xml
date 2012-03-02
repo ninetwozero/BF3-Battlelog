@@ -24,32 +24,74 @@
         <item >90</item>
         <item >120</item>
     </integer-array>
-    
     <string-array name="service_update_intervals_labels">
-        <item >Every 5 minutes</item>
-        <item >Every 10 minutes</item>
-        <item >Every 30 minutes</item>
-        <item >Once an hour</item>
-        <item >Once every 2 hours</item>
-        <item >Once every 6 hours</item>
-        <item >Once every 12 hours</item>
-        <item >Once every 18 hours</item>
-        <item >Once a day</item>
+        <item >@string/label_update_interval_minutes_5</item>
+        <item >@string/label_update_interval_minutes_10</item>
+        <item >@string/label_update_interval_minutes_30</item>
+        <item >@string/label_update_interval_hours_1</item>
+        <item >@string/label_update_interval_hours_2</item>
+        <item >@string/label_update_interval_hours_6</item>
+        <item >@string/label_update_interval_hours_12</item>
+        <item >@string/label_update_interval_hours_18</item>
+        <item >@string/label_update_interval_days_1</item>
     </string-array>
      <string-array name="chat_update_intervals_labels">
-        <item >Once every 5 seconds</item>
-        <item >Once every 10 seconds</item>
-        <item >Once every 15 seconds</item>
-        <item >Once every 20 seconds</item>
-        <item >Once every 25 seconds</item>
-        <item >Once every 30 seconds</item>
-        <item >Once a minute</item>
-        <item >Once every 90 seconds</item>
-        <item >Once every 2 minutes</item>
+        <item >@string/label_update_interval_seconds_5</item>
+        <item >@string/label_update_interval_seconds_10</item>
+        <item >@string/label_update_interval_seconds_15</item>
+        <item >@string/label_update_interval_seconds_20</item>
+        <item >@string/label_update_interval_seconds_25</item>
+        <item >@string/label_update_interval_seconds_30</item>
+        <item >@string/label_update_interval_minutes_1</item>
+        <item >@string/label_update_interval_seconds_90</item>
+        <item >@string/label_update_interval_minutes_2</item>
     </string-array>
-    
-    <!--  translation starts here -->
-   
+    <string-array name="language_titles">
+        <item >Cрпски</item>
+        <item >Dansk</item>
+        <item >Deutsch</item>
+        <item >English</item>
+        <item >Español</item>
+        <item >Francais</item>
+        <item >Hrvatski</item>
+        <item >Italiano</item>
+        <item >Nederlands</item>
+        <item >Polski</item>
+        <item >Português</item>
+        <item >Român</item>
+        <item >Suomi</item>
+        <item >Svenska</item>
+    </string-array>
+     <string-array name="language_values">
+        <item >sr</item>
+        <item >da</item>
+        <item >de</item>
+        <item >en</item>
+        <item >es</item>
+        <item >fr</item>
+        <item >hr</item>
+        <item >it</item>
+        <item >nl</item>
+        <item >pl</item>
+        <item >pt</item>
+        <item >ro</item>
+        <item >fi</item>
+        <item >sv</item>
+    </string-array>
+   <!--  translation starts here -->
+   <string name="changelog">* Fix: Forum (Sorry!) &lt;br /&gt;
+* Fix: Achtergrond service crash &lt;br /&gt;
+* Update: vertalingen &lt;br /&gt;
+* Add: notificatiegeluiden;
+* Add: Chat geluiden;
+* Add: Settings toegevoegd;
+&lt;br /&gt;
+* Donatie mogelijk via \'Over\' scherm &lt;br /&gt;
+* Forum voor de app is toegankelijk via http://bit.ly/bf3blforum &lt;br /&gt;
+&lt;br /&gt;
+Stuur problemen of bugs naar support@ninetwozero.com en/of
+@karllindmark opTwitter (https://twitter.com/karllindmark).&lt;br /&gt;&lt;br /&gt;
+Dank je wel voor het meedenken!</string>
 	<string name="general_invalid_email">Onbekend e-mail adres.</string>
 	<string name="general_invalid_password">Geef je wachtwoord op.</string>
 	<string name="general_changelog_version">Changelog versie</string>
@@ -67,7 +109,7 @@
 	<string name="label_compare_bs">Vergelijk battle scars</string>
 	<string name="label_settings">Instellingen</string>
 	<string name="status_empty_input">Geef je status op om door te gaan.</string>
-	<string name="status_error_unknown">Er is een error opgetreden: Log opnieuw in.</string>
+	<string name="status_error_unknown">Er is een fout opgetreden: Log opnieuw in.</string>
 	<string name="general_empty_user">Je moet een gebruikersnaam opgeven</string>
 	<string name="info_profile_soldier">Bekijk het profiel van...</string>
 	<string name="info_profile_platoon">Bekijk het volgende peloton...</string>
@@ -82,8 +124,8 @@
 	<string name="label_wait">Ogenblik geduld a.u.b....</string>
 	<string name="label_com_handle">COM CENTER ({num} ONLINE)</string>
 	<string name="lable_refresh">Ververs</string>
-	<string name="label_home">Begin</string>
-	<string name="label_stats">Statestieken</string>
+	<string name="label_home">Overzicht</string>
+	<string name="label_stats">Statistieken</string>
 	<string name="label_users">Gebruikers</string>
 	<string name="info_platoon_created">Gemaakt op {DATE} ({RELATIVE DATE})</string>
 	<string name="label_own_soldiermbers">Leden</string>
@@ -405,4 +447,66 @@
 	<string name="info_forum_report_empty">Je moet een reden aangeven.</string>
 	<string name="info_report_active">Bezig met rapporteren ...</string>
 	<string name="title_forum_report">BF3 Battlelog - Rapport</string>
+	<string name="info_forum_lang">Selecteer een taal voor het forum..</string>
+	<string name="info_general_nocache">The cache directory bestaat niet: neem contact op met de ontwikkelaar.</string>
+	<string name="info_unlock_change">Andere soldaat</string>
+	<string name="info_general_noprofile">Geen profiel geselecteerd.</string>
+	<string name="info_assignments_empty">Geen assignments gevonden voor deze soldaat.</string>
+	<string name="info_unlocks_empty">Geen unlocks gevonden.</string>
+	<string name="info_login_lostcookie">Het inloggen ging goed, maar de cookies zijn weg. :-(</string>
+	<string name="info_conn_hostunreach">Kon geen connectie maken - herstart je wifi/3G verbinding.</string>
+	<string name="info_session_expired">Sessie verlopen. Bezig met opnieuw opzetten van de sessie.</string>
+	<string name="info_session_renew_ok">Sessie ververst!</string>
+	<string name="info_session_renew_fail">Sessie kon niet ververst worden :(</string>
+	<string name="info_friendreq_resp_ok">Vriend verzoek heeft gereageerd.</string>
+	<string name="info_platoon_invite_ok">Uitnodigingen zijn verstuurd!</string>
+	<string name="info_platoon_invite_fail">Uitnodigingen konden niet verstuurd worden.</string>
+	<string name="info_platoon_invite_passed">Sommige uitnodigingen zijn verstuurd, andere zijn mislukt!</string>
+	<string name="info_platoon_req_ok">Er is gereageerd op je uitnodiging.</string>
+	<string name="info_forum_report_error">Je moet een reden opgeven.</string>
+	<string name="general_nonetwork">Geen netwerk beschikbaar!</string>
+	<string name="info_comment_report">Rapportage commentaar nummer</string>
+	<string name="info_settings_general">Algemene opties</string>
+	<string name="info_settings_chat">Chat opties</string>
+	<string name="info_settings_service">Achtergrond service opties</string>
+	<string name="info_settings_notifications">Notificatie opties</string>
+	<string name="info_settings_chat_desc_beep_true">Je actieve chat zal je met liefde een berichtje laten horen.</string>
+	<string name="info_settings_chat_desc_beep_false">Je actieve chat zal niets laten horen.</string>
+	<string name="info_settings_notification_desc_vibrate_false">Totale mute</string>
+	<string name="info_settings_notification_desc_vibrate_true">Trillen</string>
+	<string name="info_settings_notification_desc_beep_true">Notificatie geluiden</string>
+	<string name="info_settings_notification_desc_beep_false">Geen geluiden</string>
+	<string name="info_settings_notification_desc_beep_spec_true">BEEP!</string>
+	<string name="info_settings_notification_desc_light_true">LED notificatie</string>
+	<string name="info_settings_notification_desc_light_false">Geen LED notificatie</string>
+	<string name="info_settings_notification_desc_beep_spec_false">Standaard notificatie geluid.</string>
+	<string name="info_credits_contributors">Lijst van medewerkers</string>
+	<string name="info_credits_info">Allemaal bedankt :0) "First of all, I\'d like to thank everyone for the support and hand out a special &amp;quot;thank you&amp;quot; to all the beta testers out there.\n\nWith that said, I\'ve categorized the list of contributors below after what they\'ve helped with and hopefully I haven\'t forgot anyone!"</string>
+	<string name="info_credits_code">Code</string>
+	<string name="info_credits_translations">Vertalingen</string>
+	<string name="label_update_interval_seconds_5">Elke 5 seconden</string>
+	<string name="label_update_interval_seconds_10">Elke 10 seconden</string>
+	<string name="label_update_interval_seconds_15">Elke 15 seconden</string>
+	<string name="label_update_interval_seconds_20">Elke 20 seconden</string>
+	<string name="label_update_interval_seconds_25">Elke 25 seconden</string>
+	<string name="label_update_interval_seconds_30">Elke 30 seconden</string>
+	<string name="label_update_interval_seconds_90">Elke 90 seconden</string>
+	<string name="label_update_interval_minutes_1">Elke minuut</string>
+	<string name="label_update_interval_minutes_2">Elke 2 minuten</string>
+	<string name="label_update_interval_minutes_5">Elke 5 minuten</string>
+	<string name="label_update_interval_minutes_10">Elke 10 minuten</string>
+	<string name="label_update_interval_minutes_30">Elke 30 minuten</string>
+	<string name="label_update_interval_hours_1">Elke uur</string>
+	<string name="label_update_interval_hours_2">Elke 2 uur</string>
+	<string name="label_update_interval_hours_6">Elke 6 uur</string>
+	<string name="label_update_interval_hours_12">Elke 12 uur</string>
+	<string name="label_update_interval_hours_18">Elke 18 uur</string>
+	<string name="label_update_interval_days_1">Elke dag</string>
+	<string name="info_settings_title_language">Taal</string>
+	<string name="info_settings_title_sound_chat">Gebruik chat geluiden</string>
+	<string name="info_settings_chat_title">Gebruik chat geluiden</string>
+	<string name="info_settings_notification_title_light">Gebruik LED</string>
+	<string name="info_settings_notification_title_sounds">Gebruik geluiden</string>
+	<string name="info_settings_notification_title_sounds_spec">Gebruik Battlelog BEEP</string>
+	<string name="info_settings_notification_title_vibration">Gebruik trillen</string>
 </resources>

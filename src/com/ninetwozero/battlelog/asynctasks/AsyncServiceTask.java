@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-*/   
+ */
 
 package com.ninetwozero.battlelog.asynctasks;
 
@@ -34,184 +34,196 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
-import com.ninetwozero.battlelog.services.BattlelogService;
-
 
 public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 
-	//Attribute
-	private Context context;
-	private SharedPreferences sharedPreferences;
-	private String exception;
-	
-	//Constructor
-	public AsyncServiceTask( Context c, SharedPreferences sp ) { 
-		
-		context = c; 
-		sharedPreferences = sp;
-	
-	}
-	
-	@Override
-	protected void onPreExecute() {}
-	
-	@Override
-	protected Integer doInBackground( String... arg0 ) {
-		
-		try {
-			//Let's try to setActive
-			if( WebsiteHandler.setActive() ) {
-				
-				//The user is active, so how many notifications does he have?
-				int numNotifications = WebsiteHandler.getNewNotificationsCount( 
-						
-					sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" )
-					
-				);
-				return numNotifications; 
+    // Attribute
+    private Context context;
+    private SharedPreferences sharedPreferences;
+    private String exception;
 
-			} else {
-				
-				//Attributes
-				String email = sharedPreferences.getString( Constants.SP_BL_EMAIL, "" );
-				String password = SimpleCrypto.decrypt( email, sharedPreferences.getString( Constants.SP_BL_PASSWORD, "" ) );
-				
-				//Do the login
-				ProfileData profileData = WebsiteHandler.doLogin( 
-						
-					context, 
-					new PostData[] {
+    // Constructor
+    public AsyncServiceTask(Context c, SharedPreferences sp) {
 
-						new PostData(Constants.FIELD_NAMES_LOGIN[0], email ),
-						new PostData(Constants.FIELD_NAMES_LOGIN[1], password ),
-						new PostData(Constants.FIELD_NAMES_LOGIN[2], Constants.FIELD_VALUES_LOGIN[2]),
-						new PostData(Constants.FIELD_NAMES_LOGIN[3], Constants.FIELD_VALUES_LOGIN[3]),
-							
-					}, 
-					true 
-					
-				);
-				
-				//Did it work?
-				if( profileData != null ) { SessionKeeper.setProfileData(profileData); }
-				
-				return -1;
-				
-			}
-				
-		} catch( Exception ex ) { 
-			
-			ex.printStackTrace();
-			exception = ex.getMessage();
-			return -2;
-			
-		}
-		
-	}
-	
-	@Override
-	protected void onPostExecute(Integer results) {
-		
-		//Is the result >= 0 
-		if( results >= 0 ) {
-			 
-			//We had a "positive" outcome
-			if( results > 0 ) {
+        context = c;
+        sharedPreferences = sp;
 
-				NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-				Notification battlelogNotification = new Notification();
-				battlelogNotification.icon = R.drawable.app_logo;
-				battlelogNotification.when = System.currentTimeMillis();
+    }
 
-				//Create a new intent
-				Intent notificationIntent = new Intent(context, Dashboard.class).putExtra(
-						
-					"openCOMCenter", true
-						
-				).putExtra(
-						
-					"openTabId", 1
-					
-				);
-				//Convert it to a "PendingIntent" as it won't be activated right here, right now (later via notification)
-				PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-					
-				//So... let's fix the singular/plural<insert something here>
-				String text;
-				if( results == 1 ) {
-					
-					text = context.getString( R.string.info_txt_notification_new );
-				
-				} else {
-					
-					text = context.getString( R.string.info_txt_notification_new_p ).replace("{num}", results + "");					
-					
-				}	
-				
-				//Set the ticker (text scrolling up above when first notified)
-				battlelogNotification.tickerText =  context.getString( R.string.msg_notification );
-				battlelogNotification.setLatestEventInfo(
-						
-					context, 
-					text,
-					context.getString( R.string.info_tap_notification ), 
-					contentIntent
-				
-				);
-				battlelogNotification.flags |= Notification.FLAG_AUTO_CANCEL;
+    @Override
+    protected void onPreExecute() {
+    }
 
-				//Setup LED, sound & vibration
-				if( sharedPreferences.getBoolean( "notification_light", true ) ) { 
-					
-					battlelogNotification.defaults |= Notification.DEFAULT_LIGHTS;
-				
-				}
-				
-				if( sharedPreferences.getBoolean( "notification_sound", true ) ) {
-					
-					if( sharedPreferences.getBoolean( "notification_sound_special", true ) ) {
-						
-						battlelogNotification.sound = Uri.parse( "android.resource://com.ninetwozero.battlelog/" + R.raw.notification);
-						
-					} else {
-						
-						battlelogNotification.defaults |= Notification.DEFAULT_SOUND;
-					
-					}
-				}
-				
-				if( sharedPreferences.getBoolean( "notification_vibrate", true ) ) {
-					
-					battlelogNotification.vibrate = new long[] { 100, 100 };
-				
-				}
-				
-				//Do the actual notification
-				notificationManager.notify(0, battlelogNotification);
+    @Override
+    protected Integer doInBackground(String... arg0) {
 
-			
-			} else {
-			
-				Log.d(Constants.DEBUG_TAG, "No unread notifications");
+        try {
+            // Let's try to setActive
+            if (WebsiteHandler.setActive()) {
 
-			}	
-			
-				
-		} else if( results == -1 ) {
-			
-			Log.d(Constants.DEBUG_TAG, "Trying to relogin...");
-			
-		} else {
-		
-			//Error in previous method
-			Toast.makeText( context, exception, Toast.LENGTH_SHORT).show();
-			
-		}
-		
-		//Stop the service!!
-		((Service)context).stopSelf();
-		
-		
-	}
+                // The user is active, so how many notifications does he have?
+                int numNotifications = WebsiteHandler.getNewNotificationsCount(
+
+                        sharedPreferences.getString(Constants.SP_BL_CHECKSUM, "")
+
+                        );
+                return numNotifications;
+
+            } else {
+
+                // Attributes
+                String email = sharedPreferences.getString(
+                        Constants.SP_BL_EMAIL, "");
+                String password = SimpleCrypto.decrypt(email, sharedPreferences
+                        .getString(Constants.SP_BL_PASSWORD, ""));
+
+                // Do the login
+                ProfileData profileData = WebsiteHandler.doLogin(
+
+                        context, new PostData[] {
+
+                                new PostData(Constants.FIELD_NAMES_LOGIN[0], email),
+                                new PostData(Constants.FIELD_NAMES_LOGIN[1], password),
+                                new PostData(Constants.FIELD_NAMES_LOGIN[2],
+                                        Constants.FIELD_VALUES_LOGIN[2]),
+                                new PostData(Constants.FIELD_NAMES_LOGIN[3],
+                                        Constants.FIELD_VALUES_LOGIN[3]),
+
+                        }, true
+
+                        );
+
+                // Did it work?
+                if (profileData != null) {
+                    SessionKeeper.setProfileData(profileData);
+                }
+
+                return -1;
+
+            }
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            exception = ex.getMessage();
+            return -2;
+
+        }
+
+    }
+
+    @Override
+    protected void onPostExecute(Integer results) {
+
+        // Is the result >= 0
+        if (results >= 0) {
+
+            // We had a "positive" outcome
+            if (results > 0) {
+
+                NotificationManager notificationManager = (NotificationManager) context
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+                Notification battlelogNotification = new Notification();
+                battlelogNotification.icon = R.drawable.app_logo;
+                battlelogNotification.when = System.currentTimeMillis();
+
+                // Create a new intent
+                Intent notificationIntent = new Intent(context, Dashboard.class)
+                        .putExtra(
+
+                                "openCOMCenter", true
+
+                        ).putExtra(
+
+                                "openTabId", 1
+
+                        );
+                // Convert it to a "PendingIntent" as it won't be activated
+                // right here, right now (later via notification)
+                PendingIntent contentIntent = PendingIntent.getActivity(
+                        context, 0, notificationIntent, 0);
+
+                // So... let's fix the singular/plural<insert something here>
+                String text;
+                if (results == 1) {
+
+                    text = context
+                            .getString(R.string.info_txt_notification_new);
+
+                } else {
+
+                    text = context.getString(
+                            R.string.info_txt_notification_new_p).replace(
+                            "{num}", results + "");
+
+                }
+
+                // Set the ticker (text scrolling up above when first notified)
+                battlelogNotification.tickerText = context
+                        .getString(R.string.msg_notification);
+                battlelogNotification.setLatestEventInfo(
+
+                        context, text,
+                        context.getString(R.string.info_tap_notification),
+                        contentIntent
+
+                        );
+                battlelogNotification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+                // Setup LED, sound & vibration
+                if (sharedPreferences.getBoolean("notification_light", true)) {
+
+                    battlelogNotification.defaults |= Notification.DEFAULT_LIGHTS;
+
+                }
+
+                if (sharedPreferences.getBoolean("notification_sound", true)) {
+
+                    if (sharedPreferences.getBoolean(
+                            "notification_sound_special", true)) {
+
+                        battlelogNotification.sound = Uri
+                                .parse("android.resource://com.ninetwozero.battlelog/"
+                                        + R.raw.notification);
+
+                    } else {
+
+                        battlelogNotification.defaults |= Notification.DEFAULT_SOUND;
+
+                    }
+                }
+
+                if (sharedPreferences.getBoolean("notification_vibrate", true)) {
+
+                    battlelogNotification.vibrate = new long[] {
+                            100, 100
+                    };
+
+                }
+
+                // Do the actual notification
+                notificationManager.notify(0, battlelogNotification);
+
+            } else {
+
+                Log.d(Constants.DEBUG_TAG, "No unread notifications");
+
+            }
+
+        } else if (results == -1) {
+
+            Log.d(Constants.DEBUG_TAG, "Trying to relogin...");
+
+        } else {
+
+            // Error in previous method
+            Toast.makeText(context, exception, Toast.LENGTH_SHORT).show();
+
+        }
+
+        // Stop the service!!
+        ((Service) context).stopSelf();
+
+    }
 
 }
