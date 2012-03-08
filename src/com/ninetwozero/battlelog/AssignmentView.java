@@ -388,10 +388,15 @@ public class AssignmentView extends Activity {
                 .getId());
 
         // Set the actual fields too
-        ((ImageView) dialog.findViewById(R.id.image_assignment))
-                .setImageResource(assignment.getResourceId());
+        ImageView imageAssignment = ((ImageView) dialog.findViewById(R.id.image_assignment));
+        imageAssignment.setImageResource(assignment.getResourceId());
+        
+        // turn off clickable in assignment dialog (image_assignment is clickable in other dialogs)
+        imageAssignment.setClickable(false);
+        
         ((TextView) dialog.findViewById(R.id.text_title))
                 .setText(assignmentTitleData[0]);
+        
 
         // Loop over the criterias
         for (AssignmentData.Objective objective : assignment.getObjectives()) {
