@@ -61,6 +61,7 @@
         <item >Român</item>
         <item >Suomi</item>
         <item >Svenska</item>
+        <item >Česky</item>
     </string-array>
      <string-array name="language_values">
         <item >sr</item>
@@ -77,6 +78,7 @@
         <item >ro</item>
         <item >fi</item>
         <item >sv</item>
+        <item >cs</item>
     </string-array>
    <!--  translation starts here -->
    <string name="changelog">
@@ -472,6 +474,7 @@
 	<string name="info_settings_general">General options</string>
 	<string name="info_settings_chat">Chat options</string>
 	<string name="info_settings_service">Service options</string>
+	<string name="info_settings_update_interval">Select an update interval</string>
 	<string name="info_settings_notifications">Notification options</string>
 	<string name="info_settings_chat_desc_beep_true">Your active chat will beep with love.</string>
 	<string name="info_settings_chat_desc_beep_false">Your active chat won\'t even attempt to beep.</string>
