@@ -1,7 +1,22 @@
+/*
+    This file is part of BF3 Battlelog
+
+    BF3 Battlelog is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    BF3 Battlelog is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ */
 
 package com.ninetwozero.battlelog.fragments;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -20,7 +35,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.AssignmentView;
-import com.ninetwozero.battlelog.BoardView;
+import com.ninetwozero.battlelog.ForumView;
 import com.ninetwozero.battlelog.PlatoonView;
 import com.ninetwozero.battlelog.ProfileView;
 import com.ninetwozero.battlelog.R;
@@ -36,14 +51,14 @@ public class MenuFragment extends Fragment {
     // Attributes
     private Context context;
     private LayoutInflater layoutInflater;
-    private ArrayList<PlatoonData> platoonArray; /* TODO */
+    private List<PlatoonData> platoonArray; /* TODO */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity().getApplicationContext();
+        context = getActivity();
         layoutInflater = inflater;
 
         // Let's inflate & return the view
@@ -57,46 +72,34 @@ public class MenuFragment extends Fragment {
     public final void onMenuClick(View v) {
 
         // Get it
-        long id = v.getId();
+        final Map<Integer, Intent> intents = new HashMap<Integer, Intent>() {
 
-        if (id == R.id.button_unlocks) {
+            {
+                put(R.id.button_unlocks,
+                        new Intent(context, UnlockView.class).putExtra("profile",
+                                SessionKeeper.getProfileData()));
+                put(R.id.button_assignments,
+                        new Intent(context, AssignmentView.class).putExtra("profile",
+                                SessionKeeper.getProfileData()));
+                put(R.id.button_search, new Intent(context, SearchView.class));
+                put(R.id.button_self,
+                        new Intent(context, ProfileView.class).putExtra("profile",
+                                SessionKeeper.getProfileData()));
+                put(R.id.button_forum, new Intent(context, ForumView.class));
+            }
+        };
 
-            startActivity(new Intent(context, UnlockView.class).putExtra(
-                    "profile", SessionKeeper.getProfileData()));
-
-        } else if (id == R.id.button_assignments) {
-
-            startActivity(new Intent(context, AssignmentView.class).putExtra(
-                    "profile", SessionKeeper.getProfileData()));
-
-        } else if (id == R.id.button_search) {
-
-            startActivity(new Intent(context, SearchView.class));
-
-        } else if (id == R.id.button_self) {
-
-            startActivity(
-
-            new Intent(context, ProfileView.class).putExtra("profile",
-                    SessionKeeper.getProfileData())
-
-            );
-
-        } else if (id == R.id.button_platoons) {
+        // Is it in the HashMap?
+        if (intents.containsKey(v.getId())) {
+            startActivity(intents.get(v.getId()));
+        } else if (v.getId() == R.id.button_platoons) {
 
             generatePopupPlatoonList(context, getView()).show();
             return;
 
-        } else if (id == R.id.button_compare) {
+        } else if (v.getId() == R.id.button_compare) {
 
             generateDialogCompare(context, getView()).show();
-            return;
-
-        } else if (id == R.id.button_forum) {
-
-            // Toast.makeText( CONTEXT, R.string.msg_unimplemented,
-            // Toast.LENGTH_SHORT ).show();
-            startActivity(new Intent(context, BoardView.class));
             return;
 
         } else {

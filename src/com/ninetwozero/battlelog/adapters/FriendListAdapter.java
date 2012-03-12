@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.adapters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -30,13 +30,13 @@ public class FriendListAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private ArrayList<ProfileData> profileArray;
+    private List<ProfileData> profileArray;
     private LayoutInflater layoutInflater;
     private String tempStatus;
     private TextView textUser, textStatus;
 
     // Construct
-    public FriendListAdapter(Context c, ArrayList<ProfileData> p,
+    public FriendListAdapter(Context c, List<ProfileData> p,
             LayoutInflater l) {
 
         context = c;
@@ -167,7 +167,7 @@ public class FriendListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setItemArray(ArrayList<ProfileData> data) {
+    public void setItemArray(List<ProfileData> data) {
         this.profileArray = data;
     }
 

@@ -297,23 +297,25 @@ public class RequestHandler {
             }
 
             // Let's see...
-            if (httpContent.length <= 0) {
+            if (httpContent == null || httpContent.length <= 0) {
                 return false;
-            } else
+            } else {
                 fileStream = new FileOutputStream(path);
 
-            // Iterate over the bytes
-            for (byte b : httpContent) {
+                // Iterate over the bytes
+                for (byte b : httpContent) {
 
-                fileStream.write(b);
+                    fileStream.write(b);
+
+                }
+
+                // Clear the stream
+                fileStream.flush();
+                fileStream.close();
+
+                return true;
 
             }
-
-            // Clear the stream
-            fileStream.flush();
-            fileStream.close();
-
-            return true;
 
         } catch (UnknownHostException ex) {
 
@@ -436,7 +438,7 @@ public class RequestHandler {
 
     }
 
-    public String post(String link, ArrayList<PostData> postDataArray,
+    public String post(String link, List<PostData> postDataArray,
             int extraHeaders) throws RequestHandlerException {
 
         // Check so it's not empty
@@ -640,18 +642,18 @@ public class RequestHandler {
         // Get our cookie storage
         List<Cookie> cookies = RequestHandler.httpClient.getCookieStore()
                 .getCookies();
-        ArrayList<ShareableCookie> serializedCookies = new ArrayList<ShareableCookie>();
+        List<ShareableCookie> sharableCookies = new ArrayList<ShareableCookie>();
 
         // Empty?
         if (!cookies.isEmpty()) {
 
             for (Cookie c : cookies) {
-                serializedCookies.add(new ShareableCookie(c));
+                sharableCookies.add(new ShareableCookie(c));
             }
 
         }
 
-        return serializedCookies;
+        return (ArrayList<ShareableCookie>) sharableCookies;
     }
 
     public static void setCookies(ShareableCookie sc) {
@@ -672,7 +674,7 @@ public class RequestHandler {
 
     }
 
-    public static void setCookies(ArrayList<ShareableCookie> sc) {
+    public static void setCookies(List<ShareableCookie> sc) {
 
         // Init
         CookieStore cookieStore = RequestHandler.httpClient.getCookieStore();
@@ -681,7 +683,7 @@ public class RequestHandler {
         if (cookieStore.getCookies().isEmpty()) {
 
             // Set it up
-            ArrayList<ShareableCookie> serializedCookies = sc;
+            List<ShareableCookie> serializedCookies = sc;
 
             // Loop & add
             for (ShareableCookie sCookie : serializedCookies) {

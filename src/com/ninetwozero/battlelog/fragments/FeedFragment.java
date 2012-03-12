@@ -1,9 +1,23 @@
+/*
+    This file is part of BF3 Battlelog
+
+    BF3 Battlelog is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    BF3 Battlelog is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ */
 
 package com.ninetwozero.battlelog.fragments;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,24 +26,34 @@ import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.SinglePostView;
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
+import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
+import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
+import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
+import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
-import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class FeedFragment extends ListFragment {
+public class FeedFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
     private Context context;
@@ -37,63 +61,148 @@ public class FeedFragment extends ListFragment {
 
     // Elements
     private ListView listFeed;
-    private EditText fieldStatusUpdate;
     private FeedListAdapter feedListAdapter;
-    private TextView feedStatusText;
+    private EditText fieldMessage;
+    private TextView textTitle;
+    private RelativeLayout wrapInput;
+    private Button buttonSend;
 
     // Misc
-    private ArrayList<FeedItem> feedItems;
-    private String[] valueFieldsArray;
-    private PostData[] postDataArray;
+    private List<FeedItem> feedItems;
     private SharedPreferences sharedPreferences;
+    private String title;
+    private int type;
+    private long id;
+    private boolean canWrite;
+
+    // Constants
+    public final static int TYPE_GLOBAL = 0;
+    public final static int TYPE_PROFILE = 1;
+    public final static int TYPE_PLATOON = 2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity().getApplicationContext();
+        context = getActivity();
         layoutInflater = inflater;
         sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_dashboard_feed,
+        View view = layoutInflater.inflate(R.layout.tab_content_feed,
                 container, false);
 
-        // Do we have it already? If no, we init
-        if (listFeed == null) {
+        // Init
+        initFragment(view);
 
-            // Get the ListView
-            listFeed = (ListView) view.findViewById(android.R.id.list);
-
-            // Set the attributes
-            fieldStatusUpdate = (EditText) view.findViewById(R.id.field_status);
-            valueFieldsArray = new String[2];
-            postDataArray = new PostData[2];
-
-        }
-
-        // If we don't have it defined, then we need to set it
-        if (listFeed.getAdapter() == null) {
-
-            // Create a new FeedListAdapter
-            feedListAdapter = new FeedListAdapter(context, feedItems,
-                    layoutInflater);
-            listFeed.setAdapter(feedListAdapter);
-
-        }
-
+        // Return
         return view;
 
     }
 
     @Override
     public void onResume() {
-
         super.onResume();
-        refresh();
+        reload();
 
+    }
+
+    public void initFragment(View v) {
+
+        // Get the elements
+        wrapInput = (RelativeLayout) v.findViewById(R.id.wrap_input);
+        listFeed = (ListView) v.findViewById(android.R.id.list);
+        fieldMessage = (EditText) v.findViewById(R.id.field_message);
+        textTitle = (TextView) v.findViewById(R.id.text_title);
+        buttonSend = (Button) v.findViewById( R.id.button_send );
+        
+        // Setup the listAdapter
+        feedListAdapter = new FeedListAdapter(context, feedItems,
+                layoutInflater);
+        listFeed.setAdapter(feedListAdapter);
+
+        // Handle the *type*-specific events here
+        if (type == FeedFragment.TYPE_GLOBAL) {
+
+            textTitle.setText(R.string.info_feed_title_global);
+            fieldMessage.setHint(R.string.info_xml_hint_status);
+            wrapInput.setVisibility(canWrite ? View.VISIBLE : View.GONE);
+
+        } else if (type == FeedFragment.TYPE_PROFILE) {
+
+            textTitle.setText(title);
+            fieldMessage.setHint(R.string.info_xml_hint_feed);
+            wrapInput.setVisibility(canWrite ? View.VISIBLE : View.GONE);
+
+        } else if (type == FeedFragment.TYPE_PLATOON) {
+
+            textTitle.setText(title);
+            fieldMessage.setHint(R.string.info_xml_hint_feed);
+            wrapInput.setVisibility(canWrite ? View.VISIBLE : View.GONE);
+       
+        }
+        
+        //Setup the button click 
+        buttonSend.setOnClickListener( 
+                
+                new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        
+                        // Empty message?
+                        String message = fieldMessage.getText().toString();
+                        if (message.equals("")) {
+
+                            Toast.makeText(context, R.string.info_empty_msg,
+                                    Toast.LENGTH_SHORT).show();
+                            return;
+
+                        }
+
+                        //Let's do it accordingly
+                        if( type == FeedFragment.TYPE_GLOBAL ) {
+
+                            new AsyncStatusUpdate(context, FeedFragment.this).execute(message, sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ));
+                        
+                        } else if( type == FeedFragment.TYPE_PROFILE ) {
+
+                            new AsyncPostToWall(
+                                    
+                                    context, id, false, FeedFragment.this
+    
+                            ).execute(
+    
+                                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""),
+                                    message
+
+                            );                       
+                            
+                        } else if( type == FeedFragment.TYPE_PLATOON ) {
+                          
+                            new AsyncPostToWall(
+                                    
+                                    context, id, true, FeedFragment.this
+    
+                            ).execute(
+    
+                                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""),
+                                    message
+    
+                                    ); 
+                            
+                        }
+                        
+
+                        //Empty the field
+                        fieldMessage.setText("");
+                        
+                    }
+        }
+                );
+        
     }
 
     @Override
@@ -104,7 +213,7 @@ public class FeedFragment extends ListFragment {
 
     }
 
-    public void refresh() {
+    public void reload() {
 
         // Feed refresh!
         new AsyncFeedRefresh(
@@ -122,8 +231,7 @@ public class FeedFragment extends ListFragment {
 
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view,
+    public void createContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
 
         // Get the actual menu item and tag
@@ -140,10 +248,69 @@ public class FeedFragment extends ListFragment {
 
         }
         menu.add(Constants.MENU_ID_FEED, 1, 0, R.string.label_single_post_view);
-        menu.add(Constants.MENU_ID_FEED, 2, 0, "Goto item");
+        if( type != FeedFragment.TYPE_PLATOON ) { menu.add(Constants.MENU_ID_FEED, 2, 0, R.string.label_goto_item); }
 
         return;
 
+    }
+    
+    public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {
+        
+        try {
+
+            // Grab the data
+            FeedItem feedItem = (FeedItem) info.targetView.getTag();
+
+            // REQUESTS
+            if (item.getItemId() == 0) {
+
+                new AsyncFeedHooah(context,info.id, false, feedItem.isLiked(), this)
+                        .execute(sharedPreferences.getString(
+                                Constants.SP_BL_CHECKSUM, ""));
+                 
+
+            } else if (item.getItemId() == 1) {
+
+                // Yeah
+                startActivity(
+
+                new Intent(
+
+                        context, SinglePostView.class
+
+                ).putExtra(
+
+                        "feedItem", feedItem
+
+                        ).putExtra(
+
+                                "canComment", canWrite
+
+                        ).putExtra(
+
+                                "profileId", feedItem.getProfile(0).getProfileId()
+
+                        )
+
+                );
+
+            } else if (item.getItemId() == 2) {
+
+                if (feedItem.getIntent(context) != null) {
+                    startActivity(feedItem.getIntent(context));
+                }
+
+            }
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            return false;
+
+        }
+        
+        return true;
+        
     }
 
     public class AsyncFeedRefresh extends AsyncTask<Void, Void, Boolean> {
@@ -169,9 +336,9 @@ public class FeedFragment extends ListFragment {
             try {
 
                 // Get...
-                feedItems = WebsiteHandler.getPublicFeed(
+                feedItems = WebsiteHandler.getFeed(
 
-                        context, sharedPreferences.getInt(Constants.SP_BL_NUM_FEED,
+                        context, type, id, sharedPreferences.getInt(Constants.SP_BL_NUM_FEED,
                                 Constants.DEFAULT_NUM_FEED), activeProfileId
 
                         );
@@ -210,4 +377,41 @@ public class FeedFragment extends ListFragment {
 
     }
 
+    public void setTitle(String t) {
+
+        title = t;
+
+    }
+
+    public void setType(int t) {
+
+        type = t;
+
+    }
+    
+    public int getType() {
+        
+        return type;
+    }
+
+    public void setId(long i) {
+
+        id = i;
+
+    }
+
+    public void setCanWrite(boolean c) {
+
+        canWrite = c;
+        if (wrapInput != null) {
+            wrapInput.setVisibility(canWrite ? View.VISIBLE : View.GONE);
+        }
+
+    }
+    
+    @Override
+    public Menu prepareOptionsMenu(Menu menu) { return menu; }
+
+    @Override
+    public boolean handleSelectedOption(MenuItem item) { return false; }
 }

@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.widgets;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -36,7 +36,6 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
@@ -64,7 +63,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
         RemoteViews remoteView = null;
         ProfileData profileData = null;
         PersonaStats playerData = null;
-        ArrayList<ProfileData> profileDataArray = null;
+        List<ProfileData> profileDataArray = null;
         SharedPreferences sharedPreferences = null;
         ComponentName BattlelogListWidget;
         int numFriendsOnline = 0;
@@ -91,7 +90,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
                     res.getString(R.string.info_connect_bl));
             remoteView.setTextColor(R.id.friends, Color.RED);
             remoteView.setTextViewText(R.id.friends, "0");
-            
+
         } else {
 
             // Let's update it

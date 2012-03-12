@@ -14,113 +14,88 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Dashboard;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.PostData;
-import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.fragments.FeedFragment;
+import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class AsyncStatusUpdate extends AsyncTask<PostData, Integer, Integer> {
+public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
 
     // Attribute
-    Context context;
-    String httpContent;
-    AsyncTask<Void, Void, Boolean> asyncTask;
+    private Context context;
+    private String httpContent;
+    private FeedFragment fragmentFeed;
+    private Button buttonSend;
 
     // Constructor
-    public AsyncStatusUpdate(Context c, AsyncTask<Void, Void, Boolean> a) {
+    public AsyncStatusUpdate(Context c, FeedFragment f) {
 
         this.context = c;
-        this.asyncTask = a;
+        this.fragmentFeed = f;
 
     }
 
     @Override
     protected void onPreExecute() {
 
-        if (context instanceof Dashboard) {
+        if( context != null ) {
 
             Toast.makeText(context, R.string.msg_status, Toast.LENGTH_SHORT)
                     .show();
-            ((Button) ((Activity) context).findViewById(R.id.button_status))
-                    .setEnabled(false);
+            
+            buttonSend = (Button)fragmentFeed.getView().findViewById( R.id.button_send );
+            buttonSend.setEnabled(false);
 
         }
 
     }
 
     @Override
-    protected Integer doInBackground(PostData... arg0) {
+    protected Boolean doInBackground(String... arg0) {
 
         try {
 
             // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
-            httpContent = wh.post(Constants.URL_STATUS_SEND, arg0, 0);
-
-            // Did we manage?
-            if (httpContent != null && !httpContent.equals("")) {
-
-                // Set the int
-                int startPosition = httpContent
-                        .indexOf(Constants.ELEMENT_STATUS_OK);
-
-                // Did we find it?
-                if (startPosition == -1) {
-
-                    return 1;
-
-                }
-
-            }
-
-        } catch (RequestHandlerException ex) {
-
-            ex.printStackTrace();
-            return 1;
-
+            return WebsiteHandler.updateStatus(arg0[0], arg0[1]);
+            
         } catch (Exception ex) {
 
             ex.printStackTrace();
-            return 1;
+            return false;
 
         }
-
-        return 0;
 
     }
 
     @Override
-    protected void onPostExecute(Integer results) {
+    protected void onPostExecute(Boolean results) {
 
-        if (results == 0) {
-
-            // Yay
-            Toast.makeText(this.context, R.string.msg_status_ok,
-                    Toast.LENGTH_SHORT).show();
-            ((EditText) ((Activity) context).findViewById(R.id.field_status))
-                    .setText("");
-            ((Button) ((Activity) context).findViewById(R.id.button_status))
-                    .setEnabled(true);
-
-        } else {
-
-            Toast.makeText(this.context, R.string.msg_status_fail,
-                    Toast.LENGTH_SHORT).show();
-
-        }
-
-        // Do we need to do our AsyncTask?
-        if (asyncTask != null) {
-            asyncTask.execute();
+        if( context != null ) { 
+            
+            if (results ) {
+    
+                // Yay
+                Toast.makeText(this.context, R.string.msg_status_ok,
+                        Toast.LENGTH_SHORT).show();
+                ((EditText) fragmentFeed.getView().findViewById(R.id.field_message))
+                        .setText("");
+                buttonSend.setEnabled(true);
+    
+            } else {
+    
+                Toast.makeText(this.context, R.string.msg_status_fail,
+                        Toast.LENGTH_SHORT).show();
+    
+            }
+            
+            //Reload
+            fragmentFeed.reload();
+   
         }
 
         return;

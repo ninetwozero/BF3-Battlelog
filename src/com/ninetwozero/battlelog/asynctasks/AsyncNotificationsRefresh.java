@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog.asynctasks;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -33,7 +34,7 @@ public class AsyncNotificationsRefresh extends
 
     // Attribute
     private Context context;
-    private ArrayList<NotificationData> notifications = new ArrayList<NotificationData>();
+    private List<NotificationData> notifications = new ArrayList<NotificationData>();
     private ListView listNotifications;
     private TextView status;
     private LayoutInflater layoutInflater;

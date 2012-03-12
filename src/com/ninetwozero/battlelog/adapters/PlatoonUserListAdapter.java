@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.adapters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -30,13 +30,13 @@ public class PlatoonUserListAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private ArrayList<PlatoonMemberData> profileArray;
+    private List<PlatoonMemberData> profileArray;
     private LayoutInflater layoutInflater;
     private TextView textUser;
     private int lastSeparator;
 
     // Construct
-    public PlatoonUserListAdapter(Context c, ArrayList<PlatoonMemberData> p,
+    public PlatoonUserListAdapter(Context c, List<PlatoonMemberData> p,
             LayoutInflater l) {
 
         context = c;
@@ -167,8 +167,9 @@ public class PlatoonUserListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setProfileArray(ArrayList<PlatoonMemberData> pa) {
-        this.profileArray = pa;
+    public void setProfileArray(List<PlatoonMemberData> pa) {
+        profileArray = pa;
+        notifyDataSetChanged();
     }
 
 }

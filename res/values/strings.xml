@@ -512,4 +512,8 @@
 	<string name="info_settings_notification_title_sounds">Enable sounds</string>
 	<string name="info_settings_notification_title_sounds_spec">Use the Battlelog beep</string>
 	<string name="info_settings_notification_title_vibration">Enable vibration</string>
+	<string name="label_goto_item">Goto item</string>
+	<string name="label_post">Post</string>
+	<string name="info_feed_title_global">Latest events</string>
+	<string name="info_singlepost_comments">Comments</string>
 </resources>

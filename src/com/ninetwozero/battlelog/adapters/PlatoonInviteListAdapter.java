@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.adapters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -30,11 +30,11 @@ public class PlatoonInviteListAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private ArrayList<ProfileData> profileArray;
+    private List<ProfileData> profileArray;
     private LayoutInflater layoutInflater;
 
     // Construct
-    public PlatoonInviteListAdapter(Context c, ArrayList<ProfileData> p,
+    public PlatoonInviteListAdapter(Context c, List<ProfileData> p,
             LayoutInflater l) {
 
         context = c;
@@ -102,7 +102,7 @@ public class PlatoonInviteListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setItemArray(ArrayList<ProfileData> data) {
+    public void setItemArray(List<ProfileData> data) {
         this.profileArray = data;
     }
 

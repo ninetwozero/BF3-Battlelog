@@ -19,6 +19,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.fragments.FeedFragment;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
@@ -28,17 +29,17 @@ public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
     private long postId;
     private boolean fromWidget, liked;
     private String httpContent;
-    private AsyncTask<Void, Void, Boolean> asyncFeedRefresh;
+    private FeedFragment feedFragment;
 
     // Constructor
     public AsyncFeedHooah(Context c, long pId, boolean w, boolean l,
-            AsyncTask<Void, Void, Boolean> acr) {
+            FeedFragment f) {
 
         this.context = c;
         this.postId = pId;
         this.fromWidget = w;
         this.liked = l;
-        this.asyncFeedRefresh = acr;
+        this.feedFragment = f;
 
     }
 
@@ -76,13 +77,12 @@ public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
 
         if (!fromWidget) {
 
-            // Reload
-            asyncFeedRefresh.execute();
-
             if (!results) {
                 Toast.makeText(context, R.string.msg_hooah_fail,
                         Toast.LENGTH_SHORT).show();
             }
+            
+            feedFragment.reload();
 
         }
         return;

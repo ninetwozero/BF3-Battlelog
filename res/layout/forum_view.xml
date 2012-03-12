@@ -29,7 +29,6 @@
 		    android:layout_width="fill_parent"
 		    android:text="@string/info_xml_feed_button_pagination"
 		    android:layout_alignParentBottom="true"
-		    android:onClick="onClick"
 		    android:visibility="gone"
 		/>
 		<TextView 

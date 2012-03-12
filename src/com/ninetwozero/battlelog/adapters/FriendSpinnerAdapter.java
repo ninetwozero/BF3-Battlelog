@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.adapters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -29,10 +29,10 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 public class FriendSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
     private Context context;
-    private ArrayList<ProfileData> profileArray;
+    private List<ProfileData> profileArray;
     private LayoutInflater layoutInflater;
 
-    public FriendSpinnerAdapter(Context c, ArrayList<ProfileData> p,
+    public FriendSpinnerAdapter(Context c, List<ProfileData> p,
             LayoutInflater l) {
 
         this.context = c;

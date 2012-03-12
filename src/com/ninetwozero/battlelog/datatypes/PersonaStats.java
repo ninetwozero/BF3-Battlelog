@@ -276,7 +276,7 @@ public class PersonaStats implements Parcelable {
         return scoreRecon;
     }
 
-    public final long getScoreVehicle() {
+    public final long getScoreVehicles() {
         return scoreVehicle;
     }
 

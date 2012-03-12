@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
@@ -48,8 +47,6 @@ import android.widget.Toast;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
-import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
-import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -86,7 +83,7 @@ public class Main extends Activity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Setup the locale
-        setupLocale();
+        PublicUtils.setupLocale(this, sharedPreferences);
 
         // Set the content view
         setContentView(R.layout.main);
@@ -551,23 +548,7 @@ public class Main extends Activity {
         super.onResume();
 
         // Setup the locale
-        setupLocale();
-
-    }
-
-    public void setupLocale() {
-
-        if (!sharedPreferences.getString(Constants.SP_BL_LANG, "").equals("")) {
-
-            Locale locale = new Locale(sharedPreferences.getString(
-                    Constants.SP_BL_LANG, "en"));
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getResources().updateConfiguration(config,
-                    getResources().getDisplayMetrics());
-
-        }
+        PublicUtils.setupLocale(this, sharedPreferences);
 
     }
 

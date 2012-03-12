@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -26,13 +27,13 @@ public class PlatoonStats implements Parcelable {
     private long id;
 
     // General stats
-    private ArrayList<PlatoonStatsItem> globalTop, scores, spm, time;
-    private ArrayList<PlatoonTopStatsItem> topPlayers;
+    private List<PlatoonStatsItem> globalTop, scores, spm, time;
+    private List<PlatoonTopStatsItem> topPlayers;
 
     // Construct
-    public PlatoonStats(String sName, long lId, ArrayList<PlatoonStatsItem> gS,
-            ArrayList<PlatoonTopStatsItem> tP, ArrayList<PlatoonStatsItem> kS,
-            ArrayList<PlatoonStatsItem> kSPM, ArrayList<PlatoonStatsItem> kT) {
+    public PlatoonStats(String sName, long lId, List<PlatoonStatsItem> gS,
+            ArrayList<PlatoonTopStatsItem> tP, List<PlatoonStatsItem> kS,
+            ArrayList<PlatoonStatsItem> kSPM, List<PlatoonStatsItem> kT) {
 
         // Basic attributes
         this.name = sName;
@@ -73,23 +74,23 @@ public class PlatoonStats implements Parcelable {
         return id;
     }
 
-    public final ArrayList<PlatoonTopStatsItem> getTopPlayers() {
+    public final List<PlatoonTopStatsItem> getTopPlayers() {
         return this.topPlayers;
     }
 
-    public final ArrayList<PlatoonStatsItem> getGlobalTop() {
+    public final List<PlatoonStatsItem> getGlobalTop() {
         return this.globalTop;
     }
 
-    public final ArrayList<PlatoonStatsItem> getScores() {
+    public final List<PlatoonStatsItem> getScores() {
         return this.scores;
     }
 
-    public final ArrayList<PlatoonStatsItem> getSpm() {
+    public final List<PlatoonStatsItem> getSpm() {
         return this.spm;
     }
 
-    public final ArrayList<PlatoonStatsItem> getTime() {
+    public final List<PlatoonStatsItem> getTime() {
         return this.time;
     }
 

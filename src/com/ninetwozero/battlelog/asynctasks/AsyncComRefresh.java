@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -125,7 +125,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
                         .setVisibility(View.VISIBLE);
 
                 // Create a copy so that we can merge later on
-                ArrayList<ProfileData> mergedArray = profileArray
+                List<ProfileData> mergedArray = profileArray
                         .getOnlineFriends();
 
                 // ...but first we want the lenght, oorah!

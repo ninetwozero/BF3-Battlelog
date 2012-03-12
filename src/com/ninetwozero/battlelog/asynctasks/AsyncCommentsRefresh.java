@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog.asynctasks;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -35,7 +36,7 @@ public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
     // Attribute
     private Context context;
     private SharedPreferences sharedPreferences;
-    private ArrayList<CommentData> comments = new ArrayList<CommentData>();
+    private List<CommentData> comments = new ArrayList<CommentData>();
     private ListView listView;
     private LayoutInflater layoutInflater;
 

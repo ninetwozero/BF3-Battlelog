@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.adapters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -31,11 +31,11 @@ public class RequestListAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private ArrayList<ProfileData> profileArray;
+    private List<ProfileData> profileArray;
     private LayoutInflater layoutInflater;
 
     // Construct
-    public RequestListAdapter(Context c, ArrayList<ProfileData> p,
+    public RequestListAdapter(Context c, List<ProfileData> p,
             LayoutInflater l) {
 
         context = c;
@@ -102,7 +102,7 @@ public class RequestListAdapter extends BaseAdapter {
 
     }
 
-    public void setItemArray(ArrayList<ProfileData> p) {
+    public void setItemArray(List<ProfileData> p) {
         this.profileArray = p;
     }
 

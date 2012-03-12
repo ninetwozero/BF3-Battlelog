@@ -553,7 +553,7 @@ public class CacheHandler {
                                     .equalsIgnoreCase("true")),
                             (results.getString(results
                                     .getColumnIndex("is_friend"))
-                                    .equalsIgnoreCase("true")), null, platoons
+                                    .equalsIgnoreCase("true")), platoons
 
                             );
 

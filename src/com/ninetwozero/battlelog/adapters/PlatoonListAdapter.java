@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.adapters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -33,13 +33,13 @@ public class PlatoonListAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private ArrayList<PlatoonData> platoonArray;
+    private List<PlatoonData> platoonArray;
     private LayoutInflater layoutInflater;
     private String tempStatus;
     private TextView textPersona, textStatus;
 
     // Construct
-    public PlatoonListAdapter(Context c, ArrayList<PlatoonData> p,
+    public PlatoonListAdapter(Context c, List<PlatoonData> p,
             LayoutInflater l) {
 
         context = c;

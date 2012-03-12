@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.adapters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.text.Html;
@@ -32,13 +32,13 @@ public class ChatListAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private ArrayList<ChatMessage> messageArray;
+    private List<ChatMessage> messageArray;
     private LayoutInflater layoutInflater;
     private TextView textUsername, textMessage, textTimestamp;
     private String thisUser;
 
     // Construct
-    public ChatListAdapter(Context c, ArrayList<ChatMessage> m, String tu,
+    public ChatListAdapter(Context c, List<ChatMessage> m, String tu,
             LayoutInflater l) {
 
         context = c;
@@ -90,7 +90,7 @@ public class ChatListAdapter extends BaseAdapter {
 
     }
 
-    public void setMessageArray(ArrayList<ChatMessage> m) {
+    public void setMessageArray(List<ChatMessage> m) {
 
         messageArray = m;
         notifyDataSetChanged();

@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,9 +44,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.AssignmentData;
 import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.Board.ThreadData;
-import com.ninetwozero.battlelog.datatypes.AssignmentData;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
@@ -70,6 +71,7 @@ import com.ninetwozero.battlelog.datatypes.UnlockComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.fragments.FeedFragment;
 import com.ninetwozero.battlelog.services.BattlelogService;
 
 /* 
@@ -1420,7 +1422,7 @@ public class WebsiteHandler {
 
     }
 
-    public static final ArrayList<ProfileData> getFriends(String checksum,
+    public static final List<ProfileData> getFriends(String checksum,
             boolean noOffline) throws WebsiteHandlerException {
 
         try {
@@ -1830,14 +1832,13 @@ public class WebsiteHandler {
     }
 
     public static ProfileInformation getProfileInformationForUser(
-            Context context, ProfileData profileData, int num,
+            Context context, ProfileData profileData,
             long activeProfileId) throws WebsiteHandlerException {
 
         try {
 
             // Let's go!
             RequestHandler rh = new RequestHandler();
-            ArrayList<FeedItem> feedItemArray = new ArrayList<FeedItem>();
             ArrayList<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
             String httpContent;
 
@@ -1859,10 +1860,10 @@ public class WebsiteHandler {
                 JSONObject presenceObject = profileCommonObject.getJSONObject(
                         "user").getJSONObject("presence");
                 // JSONArray gameReports = contextObject.getJSONArray(
-                // "gameReportPreviewGroups" );
+                // "gameReportPreviewGroups" ); //Max 16 items
                 JSONArray soldierArray = contextObject
                         .getJSONArray("soldiersBox");
-                JSONArray feedItems = contextObject.getJSONArray("feed");
+                // JSONArray feedItems = contextObject.getJSONArray("feed");
                 JSONArray platoonArray = profileCommonObject
                         .getJSONArray("platoons");
                 JSONObject statusMessage = profileCommonObject
@@ -1939,10 +1940,6 @@ public class WebsiteHandler {
                     // Let's cache the gravatar
                     String title = currItem.getString("id") + ".jpeg";
 
-                    // Log.d(Constants.DEBUG_TAG, "filename => " + title +
-                    // " (cached: " + CacheHandler.isCached( context, title ) +
-                    // ")");
-
                     // Is it cached?
                     if (!CacheHandler.isCached(context, title)) {
 
@@ -1973,36 +1970,6 @@ public class WebsiteHandler {
 
                 }
 
-                // Parse the feed
-                feedItemArray = getFeedItemsFromJSON(context, feedItems,
-                        activeProfileId);
-
-                // Let's see
-                for (int i = 1, max = Math.round(num / 10); i < max; i++) {
-
-                    // Get the content, and create a JSONArray
-                    String tempContent = rh.get(
-
-                            Constants.URL_PROFILE_FEED.replace(
-
-                                    "{PID}", profileData.getProfileId() + ""
-
-                                    ).replace(
-
-                                            "{NUMSTART}", String.valueOf(i * 10)
-
-                                    ), 1
-
-                            );
-                    JSONArray jsonArray = new JSONObject(tempContent)
-                            .getJSONObject("data").getJSONArray("feedEvents");
-
-                    // Gather them
-                    feedItemArray.addAll(WebsiteHandler.getFeedItemsFromJSON(
-                            context, jsonArray, activeProfileId));
-
-                }
-
                 ProfileInformation tempProfile = new ProfileInformation(
 
                         userInfo.optInt("age", 0), profileData.getProfileId(),
@@ -2020,7 +1987,7 @@ public class WebsiteHandler {
                         presenceObject.getBoolean("isOnline"),
                         presenceObject.getBoolean("isPlaying"),
                         profileCommonObject.getString("friendStatus").equals(
-                                "ACCEPTED"), feedItemArray, platoonDataArray);
+                                "ACCEPTED"), platoonDataArray);
 
                 // Let's log it
                 if (CacheHandler.Profile.insert(context, tempProfile) == 0) {
@@ -2149,10 +2116,9 @@ public class WebsiteHandler {
              */
             // Let's go!
             RequestHandler rh = new RequestHandler();
-            ArrayList<FeedItem> feedItemArray = new ArrayList<FeedItem>();
-            ArrayList<PlatoonMemberData> fans = new ArrayList<PlatoonMemberData>();
-            ArrayList<PlatoonMemberData> members = new ArrayList<PlatoonMemberData>();
-            ArrayList<ProfileData> friends = new ArrayList<ProfileData>();
+            List<PlatoonMemberData> fans = new ArrayList<PlatoonMemberData>();
+            List<PlatoonMemberData> members = new ArrayList<PlatoonMemberData>();
+            List<ProfileData> friends = new ArrayList<ProfileData>();
             PlatoonStats stats = null;
 
             // Arrays to divide the users in
@@ -2397,35 +2363,6 @@ public class WebsiteHandler {
                 // Oh man, don't forget the stats!!!
                 stats = WebsiteHandler.getStatsForPlatoon(c, pData);
 
-                // Parse the feed
-                // feedItemArray = getFeedItemsFromJSON(c, feedItems, aPId);
-
-                // Let's see
-                for (int i = 0, max = Math.round(num / 10); i < max; i++) {
-
-                    // Get the content, and create a JSONArray
-                    String tempContent = rh.get(
-
-                            Constants.URL_PLATOON_FEED.replace(
-
-                                    "{PLATOON_ID}", pData.getId() + ""
-
-                                    ).replace(
-
-                                            "{NUMSTART}", String.valueOf(i * 10)
-
-                                    ), 1
-
-                            );
-                    JSONArray jsonArray = new JSONObject(tempContent)
-                            .getJSONObject("data").getJSONArray("feedEvents");
-
-                    // Gather them
-                    feedItemArray.addAll(WebsiteHandler.getFeedItemsFromJSON(c,
-                            jsonArray, aPId));
-
-                }
-
                 // Required
                 long platoonId = Long.parseLong(profileCommonObject
                         .getString("id"));
@@ -2459,8 +2396,7 @@ public class WebsiteHandler {
                                 "website", "")),
                         !profileCommonObject.getBoolean("hidden"), isMember,
                         isAdmin,
-                        profileCommonObject.getBoolean("allowNewMembers"),
-                        feedItemArray, members, fans, friends, stats
+                        profileCommonObject.getBoolean("allowNewMembers"), members, fans, friends, stats
 
                         );
 
@@ -2489,14 +2425,14 @@ public class WebsiteHandler {
 
     }
 
-    public static HashMap<Long, ArrayList<AssignmentData>> getAssignments(
+    public static HashMap<Long, List<AssignmentData>> getAssignments(
             Context c, ProfileData profile) throws WebsiteHandlerException {
 
         try {
 
             // Attributes
             RequestHandler rh = new RequestHandler();
-            HashMap<Long, ArrayList<AssignmentData>> assignmentMap = new HashMap<Long, ArrayList<AssignmentData>>();
+            HashMap<Long, List<AssignmentData>> assignmentMap = new HashMap<Long, List<AssignmentData>>();
             ArrayList<AssignmentData> items;
 
             for (int count = 0, maxCount = profile.getNumPersonas(); count < maxCount; count++) {
@@ -2686,7 +2622,7 @@ public class WebsiteHandler {
 
     }
 
-    public static ArrayList<FeedItem> getPublicFeed(Context context, int num,
+    public static ArrayList<FeedItem> getFeed(Context context, int type, long id, int num,
             long profileId) throws WebsiteHandlerException {
 
         try {
@@ -2695,14 +2631,36 @@ public class WebsiteHandler {
             RequestHandler rh = new RequestHandler();
             ArrayList<FeedItem> feedItems = new ArrayList<FeedItem>();
             JSONArray jsonArray;
+            String url = "";
             String httpContent = null;
+
+            // What's the url?
+            switch (type) {
+
+                case FeedFragment.TYPE_GLOBAL:
+                    url = Constants.URL_FRIEND_FEED;
+                    break;
+
+                case FeedFragment.TYPE_PROFILE:
+                    url = Constants.URL_PROFILE_FEED.replace("{PID}", id + "");
+                    break;
+
+                case FeedFragment.TYPE_PLATOON:
+                    url = Constants.URL_PLATOON_FEED.replace("{PLATOON_ID}", id + "");
+                    break;
+
+                default:
+                    url = Constants.URL_FRIEND_FEED;
+                    break;
+
+            }
 
             // Let's see
             for (int i = 0, max = Math.round(num / 10); i < max; i++) {
 
                 // Get the content, and create a JSONArray
                 httpContent = rh.get(
-                        Constants.URL_FRIEND_FEED.replace("{NUMSTART}",
+                        url.replace("{NUMSTART}",
                                 String.valueOf(i * 10)), 1);
                 jsonArray = new JSONObject(httpContent).getJSONObject("data")
                         .getJSONArray("feedEvents");
@@ -4741,6 +4699,54 @@ public class WebsiteHandler {
 
     }
 
+    public static boolean updateStatus(String content, String checksum) {
+
+        try {
+
+            RequestHandler rh = new RequestHandler();
+            String httpContent = rh.post(
+                    
+                Constants.URL_STATUS_SEND, 
+                new PostData[] {
+                  
+                        new PostData(
+                            
+                                Constants.FIELD_NAMES_STATUS[0],
+                                content
+                        ),
+                        new PostData(
+                                
+                                Constants.FIELD_NAMES_STATUS[1],
+                                checksum
+                        )                        
+                        
+                },
+                0
+                
+            );
+            
+            // Did we manage?
+            if (httpContent != null && !httpContent.equals("")) {
+    
+                // Set the int
+                int startPosition = httpContent
+                        .indexOf(Constants.ELEMENT_STATUS_OK);
+    
+                // Did we find it?
+                return (startPosition > -1);
+                
+            }
+            
+            return false;
+            
+        } catch( Exception ex ) { 
+            
+            ex.printStackTrace();
+            return false;
+            
+        }
+            
+    }
     public static boolean postToWall(long profileId, String checksum,
             String content, boolean isPlatoon) throws WebsiteHandlerException {
 

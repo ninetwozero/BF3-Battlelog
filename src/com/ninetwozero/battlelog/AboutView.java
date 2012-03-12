@@ -15,7 +15,6 @@
 package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
@@ -28,16 +27,13 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TabHost;
-import android.widget.Toast;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
 
-import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
-import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
-import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class AboutView extends Activity {
 
@@ -56,7 +52,7 @@ public class AboutView extends Activity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Setup the locale
-        setupLocale();
+        PublicUtils.setupLocale(this, sharedPreferences);
 
         // Set the content view
         setContentView(R.layout.about_view);
@@ -224,73 +220,10 @@ public class AboutView extends Activity {
         super.onResume();
 
         // Setup the locale
-        setupLocale();
+        PublicUtils.setupLocale(this, sharedPreferences);
 
         // Setup the session
-        setupSession();
+        PublicUtils.setupSession(this, sharedPreferences);
     }
 
-    public void setupSession() {
-
-        // Let's set "active" against the website
-        new AsyncSessionSetActive().execute();
-
-        // If we don't have a profile...
-        if (SessionKeeper.getProfileData() == null) {
-
-            // ...but we do indeed have a cookie...
-            if (!sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "")
-                    .equals("")) {
-
-                // ...we set the SessionKeeper, but also reload the cookies!
-                // Easy peasy!
-                SessionKeeper
-                        .setProfileData(SessionKeeper
-                                .generateProfileDataFromSharedPreferences(sharedPreferences));
-                RequestHandler.setCookies(
-
-                        new ShareableCookie(
-
-                                sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
-                                sharedPreferences.getString(
-                                        Constants.SP_BL_COOKIE_VALUE, ""),
-                                Constants.COOKIE_DOMAIN
-
-                        )
-
-                        );
-
-                // ...but just to be sure, we try to verify our session
-                // "behind the scenes"
-                new AsyncSessionValidate(this, sharedPreferences).execute();
-
-            } else {
-
-                // Aw man, that backfired.
-                Toast.makeText(this, R.string.info_txt_session_lost,
-                        Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, Main.class));
-                finish();
-
-            }
-
-        }
-
-    }
-
-    public void setupLocale() {
-
-        if (!sharedPreferences.getString(Constants.SP_BL_LANG, "").equals("")) {
-
-            Locale locale = new Locale(sharedPreferences.getString(
-                    Constants.SP_BL_LANG, "en"));
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getResources().updateConfiguration(config,
-                    getResources().getDisplayMetrics());
-
-        }
-
-    }
 }

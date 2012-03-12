@@ -14,15 +14,13 @@
 
 package com.ninetwozero.battlelog;
 
-import java.util.ArrayList;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -38,18 +36,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.asynctasks.AsyncCommentSend;
 import com.ninetwozero.battlelog.asynctasks.AsyncCommentsRefresh;
-import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
-import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -68,6 +64,7 @@ public class SinglePostView extends ListActivity {
     // Elements
     private ListView listView;
     private TextView textHeading, textTitle, textContent, textDate;
+    private ImageView imageAvatar;
     private EditText fieldMessage;
     private Button buttonSend;
 
@@ -79,27 +76,10 @@ public class SinglePostView extends ListActivity {
 
         // Set sharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Did it get passed on?
-        if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
-
-            ArrayList<ShareableCookie> shareableCookies = icicle
-                    .getParcelableArrayList(Constants.SUPER_COOKIES);
-
-            if (shareableCookies != null) {
-
-                RequestHandler.setCookies(shareableCookies);
-
-            } else {
-
-                finish();
-
-            }
-
-        }
+        PublicUtils.restoreCookies(this, icicle);
 
         // Setup the locale
-        setupLocale();
+        PublicUtils.setupLocale(this, sharedPreferences);
 
         // Set the content view
         setContentView(R.layout.single_post_view);
@@ -163,10 +143,10 @@ public class SinglePostView extends ListActivity {
         super.onResume();
 
         // Setup the locale
-        setupLocale();
+        PublicUtils.setupLocale(this, sharedPreferences);
 
         // Setup the session
-        setupSession();
+        PublicUtils.setupSession(this, sharedPreferences);
 
         // We need to reload
         if (item != null) {
@@ -411,6 +391,10 @@ public class SinglePostView extends ListActivity {
         if (buttonSend == null) {
             buttonSend = (Button) findViewById(R.id.button_send);
         }
+        if(imageAvatar == null ) {
+            
+            imageAvatar = (ImageView) findViewById( R.id.image_avatar );
+        }
 
         // Set up the top-place
         String username = "";
@@ -451,73 +435,11 @@ public class SinglePostView extends ListActivity {
             textContent.setVisibility(View.GONE);
 
         }
+        
+        imageAvatar.setImageBitmap( BitmapFactory.decodeFile( PublicUtils.getCachePath(this) + feedItem.getAvatarForPost() + ".png" ));
 
         // Validate comment rights
         checkCommentRights();
-
-    }
-
-    public void setupSession() {
-
-        // Let's set "active" against the website
-        new AsyncSessionSetActive().execute();
-
-        // If we don't have a profile...
-        if (SessionKeeper.getProfileData() == null) {
-
-            // ...but we do indeed have a cookie...
-            if (!sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "")
-                    .equals("")) {
-
-                // ...we set the SessionKeeper, but also reload the cookies!
-                // Easy peasy!
-                SessionKeeper
-                        .setProfileData(SessionKeeper
-                                .generateProfileDataFromSharedPreferences(sharedPreferences));
-                RequestHandler.setCookies(
-
-                        new ShareableCookie(
-
-                                sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
-                                sharedPreferences.getString(
-                                        Constants.SP_BL_COOKIE_VALUE, ""),
-                                Constants.COOKIE_DOMAIN
-
-                        )
-
-                        );
-
-                // ...but just to be sure, we try to verify our session
-                // "behind the scenes"
-                new AsyncSessionValidate(this, sharedPreferences).execute();
-
-            } else {
-
-                // Aw man, that backfired.
-                Toast.makeText(this, R.string.info_txt_session_lost,
-                        Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, Main.class));
-                finish();
-
-            }
-
-        }
-
-    }
-
-    public void setupLocale() {
-
-        if (!sharedPreferences.getString(Constants.SP_BL_LANG, "").equals("")) {
-
-            Locale locale = new Locale(sharedPreferences.getString(
-                    Constants.SP_BL_LANG, "en"));
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getResources().updateConfiguration(config,
-                    getResources().getDisplayMetrics());
-
-        }
 
     }
 

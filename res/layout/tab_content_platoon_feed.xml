@@ -38,7 +38,7 @@
 		<Button
 		    style="@style/RegularButton"
 		    android:id="@+id/button_send"
-		    android:text="Post"
+		    android:text="@string/label_post"
 		    android:layout_alignParentRight="true"
 		    android:layout_centerVertical="true"
 		/>

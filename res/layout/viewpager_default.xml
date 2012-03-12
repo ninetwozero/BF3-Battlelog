@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipeytabs="http://schemas.android.com/apk/res/com.ninetwozero.battlelog"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+<net.peterkuterna.android.apps.swipeytabs.SwipeyTabs
+        android:id="@+id/swipeytabs"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        swipeytabs:bottomBarColor="#FFFFC600"
+        swipeytabs:bottomBarHeight="1.5dip"
+        swipeytabs:tabIndicatorHeight="4.5dip"
+       	android:background="@drawable/gradient_greytodarkgrey"
+        />
+            
+	<android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/swipeytabs"/>
+	<!--  COM HERE -->
+</RelativeLayout>

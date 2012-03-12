@@ -2,6 +2,7 @@
 package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -19,11 +20,11 @@ public class Board {
         private long numPosts, numThreads, numPages;
         private String title, description;
         private String latestThreadTitle, latestPostUsername;
-        private ArrayList<Board.ThreadData> threads;
+        private List<Board.ThreadData> threads;
 
         // Constructs
         public Forum(String fTitle, String fDescription, long nPosts,
-                long nThreads, long nPages, ArrayList<Board.ThreadData> aThreads) {
+                long nThreads, long nPages, List<Board.ThreadData> aThreads) {
 
             this.forumId = 0;
             this.categoryId = 0;
@@ -138,7 +139,7 @@ public class Board {
             return this.latestPostUsername;
         }
 
-        public ArrayList<Board.ThreadData> getThreads() {
+        public List<Board.ThreadData> getThreads() {
             return this.threads;
         }
 
@@ -192,7 +193,7 @@ public class Board {
         private boolean sticky, locked;
         private boolean censorPosts, deletePosts, editPosts, admin,
                 postOfficial, viewLatestPosts, viewPostHistory;
-        private ArrayList<Board.PostData> posts;
+        private List<Board.PostData> posts;
 
         // Construct
         public ThreadData(String t) {
@@ -389,7 +390,7 @@ public class Board {
             return this.admin;
         }
 
-        public ArrayList<Board.PostData> getPosts() {
+        public List<Board.PostData> getPosts() {
             return this.posts;
         }
 

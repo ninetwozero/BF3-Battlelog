@@ -16,66 +16,61 @@ package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.List;
+import java.util.Vector;
 
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.app.TabActivity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
-import android.widget.TabHost.TabContentFactory;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.adapters.UnlockListAdapter;
-import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
-import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
+import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.fragments.UnlockFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
-import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class UnlockView extends TabActivity {
+public class UnlockView extends FragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
+    private final Context CONTEXT = this;
     private SharedPreferences sharedPreferences;
-    private AsyncGetDataSelf getDataAsync;
+    private LayoutInflater layoutInflater;
     private ProfileData profileData;
     private HashMap<Long, UnlockDataWrapper> unlocks;
     private long selectedPersona;
     private int selectedPosition;
 
-    // Elements
-    private ProgressBar progressBar;
-    private TabHost tabHost;
-    private LayoutInflater layoutInflater;
-    private ListView[] listView;
-    private TextView textEmpty;
+    // Fragment related
+    private SwipeyTabs tabs;
+    private SwipeyTabsPagerAdapter pagerAdapter;
+    private List<Fragment> listFragments;
+    private FragmentManager fragmentManager;
+    private ViewPager viewPager;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -86,184 +81,171 @@ public class UnlockView extends TabActivity {
         // Set sharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        // Did it get passed on?
-        if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
+        // Restore the cookies
+        PublicUtils.setupFullscreen(this, sharedPreferences);
+        PublicUtils.restoreCookies(this, icicle);
 
-            ArrayList<ShareableCookie> shareableCookies = icicle
-                    .getParcelableArrayList(Constants.SUPER_COOKIES);
-
-            if (shareableCookies != null) {
-
-                RequestHandler.setCookies(shareableCookies);
-
-            } else {
-
-                finish();
-
-            }
-
-        }
+        // Prepare to tango
+        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        fragmentManager = getSupportFragmentManager();
 
         // Get the intent
         if (getIntent().hasExtra("profile")) {
 
-            profileData = (ProfileData) getIntent().getParcelableExtra(
-                    "profile");
+            profileData = getIntent().getParcelableExtra("profile");
 
         } else {
 
-            Toast.makeText(this, R.string.info_general_noprofile,
-                    Toast.LENGTH_SHORT).show();
             return;
 
         }
 
-        // Is the profileData null?!
-        if (profileData == null || profileData.getProfileId() == 0) {
-            finish();
-            return;
-        }
-
-        // Get the pos
-        selectedPersona = getIntent().getLongExtra("selectedPersona", 0);
-        selectedPosition = 0;
-
-        // Setup the locale
-        setupLocale();
+        // Setup the trinity
+        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupSession(this, sharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.unlocks_view);
+        setContentView(R.layout.viewpager_default);
 
-        // Prepare to tango
-        this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.listView = new ListView[5];
-        this.textEmpty = (TextView) findViewById(R.id.text_empty);
+        // Let's setup the fragments too
+        setupFragments();
 
-        // Init!
+        // Last but not least - init
         initActivity();
 
     }
 
-    public final void initActivity() {
+    public void initActivity() {
 
-        // Fix the tabs
-        tabHost = (TabHost) findViewById(android.R.id.tabhost);
+        // Init to winit
+        unlocks = new HashMap<Long, UnlockDataWrapper>();
 
-        // Let's set them up
-        setupTabsPrimary(
-
-                new String[] {
-
-                        "Weapons", "Attachments", "Kit", "Vehicles", "Skills"
-
-                }, new int[] {
-
-                        R.drawable.tab_selector_unlocks_weapons,
-                        R.drawable.tab_selector_unlocks_attachments,
-                        R.drawable.tab_selector_unlocks_kits,
-                        R.drawable.tab_selector_unlocks_vehicles,
-                        R.drawable.tab_selector_unlocks_skills,
-
-                }, new int[] {
-
-                        R.layout.tab_content_unlocks, R.layout.tab_content_unlocks,
-                        R.layout.tab_content_unlocks, R.layout.tab_content_unlocks,
-                        R.layout.tab_content_unlocks
-
-                }
-
-        );
+        // Set the selected persona
+        selectedPersona = profileData.getPersonaId();
 
     }
 
-    private final View createTabView(final Context context, final int logo) {
+    @Override
+    public void onResume() {
 
-        View view = LayoutInflater.from(context).inflate(
-                R.layout.unlock_tab_layout, null);
-        ImageView imageView = (ImageView) view.findViewById(R.id.image_tab);
-        imageView.setImageResource(logo);
-        return view;
+        super.onResume();
+
+        // Setup the locale
+        PublicUtils.setupLocale(this, sharedPreferences);
+
+        // Setup the session
+        PublicUtils.setupSession(this, sharedPreferences);
+
+        // Reload
+        reload();
 
     }
 
-    private void setupTabsPrimary(final String[] titleArray,
-            final int[] logoArray, final int[] layoutArray) {
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
-        // Init
-        TabHost.TabSpec spec;
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
 
-        // Iterate them tabs
-        for (int i = 0, max = titleArray.length; i < max; i++) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
+                RequestHandler.getCookies());
 
-            // Num
-            final int num = i;
-            View tabview = createTabView(tabHost.getContext(), logoArray[num]);
+    }
 
-            // Let's set the content
-            spec = tabHost.newTabSpec(titleArray[num]).setIndicator(tabview)
-                    .setContent(
+    public Dialog generateDialogPersonaList(final Context context,
+            final long[] personaId, final String[] persona, final long[] ls) {
 
-                            new TabContentFactory() {
+        // Attributes
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                                public View createTabContent(String tag) {
+        // Set the title and the view
+        builder.setTitle(R.string.info_dialog_soldierselect);
+        String[] listNames = new String[personaId.length];
 
-                                    View v = layoutInflater.inflate(layoutArray[num],
-                                            null);
-                                    v.setTag("tab #" + num);
-                                    return v;
-                                }
+        for (int i = 0, max = personaId.length; i < max; i++) {
 
-                            }
-
-                    );
-
-            // Add the tab
-            tabHost.addTab(spec);
+            listNames[i] = persona[i] + " "
+                    + DataBank.resolvePlatformId((int) ls[i]);
 
         }
+        builder.setSingleChoiceItems(
 
-        // Assign values
-        tabHost.setOnTabChangedListener(
+                listNames, selectedPosition, new DialogInterface.OnClickListener() {
 
-                new OnTabChangeListener() {
+                    public void onClick(DialogInterface dialog, int item) {
 
-                    @Override
-                    public void onTabChanged(String tabId) {
+                        if (personaId[item] != selectedPersona) {
 
-                        switch (tabHost.getCurrentTab()) {
+                            // Update it
+                            selectedPersona = profileData.getPersonaId(item);
 
-                            case 0:
-                                setupList(unlocks.get(selectedPersona).getWeapons(), 0);
-                                break;
+                            // Store selected position
+                            selectedPosition = item;
 
-                            case 1:
-                                setupList(unlocks.get(selectedPersona).getAttachments(), 1);
-                                break;
-
-                            case 2:
-                                setupList(unlocks.get(selectedPersona).getKitUnlocks(), 2);
-                                break;
-
-                            case 3:
-                                setupList(
-                                        unlocks.get(selectedPersona).getVehicleUpgrades(),
-                                        3);
-                                break;
-
-                            case 4:
-                                setupList(unlocks.get(selectedPersona).getSkills(), 4);
-                                break;
-
-                            default:
-                                break;
+                            // Load the new!
+                            setupList(unlocks.get(selectedPersona), viewPager.getCurrentItem());
 
                         }
+
+                        dialog.dismiss();
 
                     }
 
                 }
 
                 );
+
+        // CREATE
+        return builder.create();
+
+    }
+
+    public void setupFragments() {
+
+        // Do we need to setup the fragments?
+        if (listFragments == null) {
+
+            // Add them to the list
+            listFragments = new Vector<Fragment>();
+            listFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
+            listFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
+            listFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
+            listFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
+            listFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
+
+            // Iterate over the fragments
+            for (int i = 0, max = listFragments.size(); i < max; i++) {
+
+                ((UnlockFragment) listFragments.get(i)).setViewPagerPosition(i);
+
+            }
+
+            // Get the ViewPager
+            viewPager = (ViewPager) findViewById(R.id.viewpager);
+            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+
+            // Fill the PagerAdapter & set it to the viewpager
+            pagerAdapter = new SwipeyTabsPagerAdapter(
+
+                    fragmentManager,
+                    new String[] {
+                            "WEAPONS", "ATTACHMENTS", "KIT UNLOCKS", "VEHICLE ADDONS", "SKILLS"
+                    },
+                    listFragments,
+                    viewPager,
+                    layoutInflater
+                    );
+            viewPager.setAdapter(pagerAdapter);
+            tabs.setAdapter(pagerAdapter);
+
+            // Make sure the tabs follow
+            viewPager.setOnPageChangeListener(tabs);
+            viewPager.setCurrentItem(0);
+
+        }
 
     }
 
@@ -358,31 +340,13 @@ public class UnlockView extends TabActivity {
             }
 
             // Do actual stuff, like sending to an adapter
-            switch (tabHost.getCurrentTab()) {
-
-                case 0:
-                    setupList(unlocks.get(selectedPersona).getWeapons(), 0);
-                    break;
-
-                case 1:
-                    setupList(unlocks.get(selectedPersona).getAttachments(), 1);
-                    break;
-
-                case 2:
-                    setupList(unlocks.get(selectedPersona).getKitUnlocks(), 2);
-                    break;
-
-                case 3:
-                    setupList(unlocks.get(selectedPersona).getVehicleUpgrades(), 3);
-                    break;
-
-                case 4:
-                    setupList(unlocks.get(selectedPersona).getSkills(), 4);
-                    break;
-
-                default:
-                    break;
-
+            int num = viewPager.getCurrentItem();
+            setupList(unlocks.get(selectedPersona), num);
+            if (num > 0) {
+                setupList(unlocks.get(selectedPersona), num - 1);
+            }
+            if (num < viewPager.getChildCount()) {
+                setupList(unlocks.get(selectedPersona), num + 1);
             }
 
             // Go go go
@@ -402,37 +366,9 @@ public class UnlockView extends TabActivity {
 
     }
 
-    public void setupList(ArrayList<UnlockData> data, int pos) {
+    public void setupList(UnlockDataWrapper data, int position) {
 
-        if (listView[pos] == null) {
-
-            listView[pos] = (ListView) tabHost.findViewWithTag("tab #" + pos)
-                    .findViewById(R.id.list_unlocks);
-            listView[pos].setAdapter(new UnlockListAdapter(this, data,
-                    layoutInflater));
-
-        } else {
-
-            ((UnlockListAdapter) listView[pos].getAdapter()).setDataArray(data);
-            ((UnlockListAdapter) listView[pos].getAdapter())
-                    .notifyDataSetChanged();
-
-        }
-
-        // Is it empty?
-        if (data == null || data.size() == 0) {
-
-            textEmpty.setVisibility(View.VISIBLE);
-            return;
-
-        } else {
-
-            textEmpty.setVisibility(View.GONE);
-
-        }
-
-        return;
-
+        ((UnlockFragment) listFragments.get(position)).showUnlocks(getUnlocksForFragment(position));
     }
 
     @Override
@@ -464,172 +400,44 @@ public class UnlockView extends TabActivity {
 
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
+    public List<UnlockData> getUnlocksForFragment(int p) {
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
+        // Let's see if we got anything
+        if (unlocks == null) {
 
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-                RequestHandler.getCookies());
+            return new ArrayList<UnlockData>();
 
-    }
+        } else {
 
-    public Dialog generateDialogPersonaList(final Context context,
-            final long[] personaId, final String[] persona, final long[] ls) {
+            // Get the UnlockDataWrapper
+            UnlockDataWrapper unlockDataWrapper = unlocks.get(selectedPersona);
 
-        // Attributes
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        // Set the title and the view
-        builder.setTitle(R.string.info_dialog_soldierselect);
-        String[] listNames = new String[personaId.length];
-
-        for (int i = 0, max = personaId.length; i < max; i++) {
-
-            listNames[i] = persona[i] + " "
-                    + DataBank.resolvePlatformId((int) ls[i]);
-
-        }
-        builder.setSingleChoiceItems(
-
-                listNames, selectedPosition, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int item) {
-
-                        if (personaId[item] != selectedPersona) {
-
-                            // Update it
-                            selectedPersona = profileData.getPersonaId(item);
-
-                            // Store selected position
-                            selectedPosition = item;
-
-                            // Load the new!
-                            switch (tabHost.getCurrentTab()) {
-
-                                case 0:
-                                    setupList(unlocks.get(selectedPersona).getWeapons(), 0);
-                                    break;
-
-                                case 1:
-                                    setupList(
-                                            unlocks.get(selectedPersona).getAttachments(),
-                                            1);
-                                    break;
-
-                                case 2:
-                                    setupList(unlocks.get(selectedPersona).getKitUnlocks(),
-                                            2);
-                                    break;
-
-                                case 3:
-                                    setupList(unlocks.get(selectedPersona)
-                                            .getVehicleUpgrades(), 3);
-                                    break;
-
-                                case 4:
-                                    setupList(unlocks.get(selectedPersona).getSkills(), 4);
-                                    break;
-
-                                default:
-                                    break;
-
-                            }
-
-                        }
-
-                        dialog.dismiss();
-
-                    }
-
-                }
-
-                );
-
-        // CREATE
-        return builder.create();
-
-    }
-
-    @Override
-    public void onResume() {
-
-        super.onResume();
-
-        // Setup the locale
-        setupLocale();
-
-        // Setup the session
-        setupSession();
-
-        // We need to reload
-        reload();
-
-    }
-
-    public void setupSession() {
-
-        // Let's set "active" against the website
-        new AsyncSessionSetActive().execute();
-
-        // If we don't have a profile...
-        if (SessionKeeper.getProfileData() == null) {
-
-            // ...but we do indeed have a cookie...
-            if (!sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "")
-                    .equals("")) {
-
-                // ...we set the SessionKeeper, but also reload the cookies!
-                // Easy peasy!
-                SessionKeeper
-                        .setProfileData(SessionKeeper
-                                .generateProfileDataFromSharedPreferences(sharedPreferences));
-                RequestHandler.setCookies(
-
-                        new ShareableCookie(
-
-                                sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
-                                sharedPreferences.getString(
-                                        Constants.SP_BL_COOKIE_VALUE, ""),
-                                Constants.COOKIE_DOMAIN
-
-                        )
-
-                        );
-
-                // ...but just to be sure, we try to verify our session
-                // "behind the scenes"
-                new AsyncSessionValidate(this, sharedPreferences).execute();
-
-            } else {
-
-                // Aw man, that backfired.
-                Toast.makeText(this, R.string.info_txt_session_lost,
-                        Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, Main.class));
-                finish();
-
+            // Is the UnlockDataWrapper null?
+            if (unlockDataWrapper == null) {
+                return new ArrayList<UnlockData>();
             }
 
-        }
+            // Switch over the position
+            switch (p) {
 
-    }
+                case 0:
+                    return unlockDataWrapper.getWeapons();
 
-    public void setupLocale() {
+                case 1:
+                    return unlockDataWrapper.getAttachments();
 
-        if (!sharedPreferences.getString(Constants.SP_BL_LANG, "").equals("")) {
+                case 2:
+                    return unlockDataWrapper.getKitUnlocks();
 
-            Locale locale = new Locale(sharedPreferences.getString(
-                    Constants.SP_BL_LANG, "en"));
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getResources().updateConfiguration(config,
-                    getResources().getDisplayMetrics());
+                case 3:
+                    return unlockDataWrapper.getVehicleUpgrades();
+
+                case 4:
+                    return unlockDataWrapper.getSkills();
+
+                default:
+                    return null;
+            }
 
         }
 

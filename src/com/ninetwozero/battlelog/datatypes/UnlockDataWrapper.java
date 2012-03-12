@@ -15,18 +15,19 @@
 package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UnlockDataWrapper {
 
     // Attributes
-    private ArrayList<UnlockData> weapons, attachments, kitUnlocks,
+    private List<UnlockData> weapons, attachments, kitUnlocks,
             vehicleUpgrades, skills, unlocks;
 
     // Construct
     public UnlockDataWrapper(
 
-            ArrayList<UnlockData> w, ArrayList<UnlockData> a, ArrayList<UnlockData> k,
-            ArrayList<UnlockData> v, ArrayList<UnlockData> s,
+            ArrayList<UnlockData> w, List<UnlockData> a, List<UnlockData> k,
+            ArrayList<UnlockData> v, List<UnlockData> s,
             ArrayList<UnlockData> u
 
     ) {
@@ -41,27 +42,27 @@ public class UnlockDataWrapper {
     }
 
     // Getters
-    public ArrayList<UnlockData> getWeapons() {
+    public List<UnlockData> getWeapons() {
         return this.weapons;
     }
 
-    public ArrayList<UnlockData> getAttachments() {
+    public List<UnlockData> getAttachments() {
         return this.attachments;
     }
 
-    public ArrayList<UnlockData> getKitUnlocks() {
+    public List<UnlockData> getKitUnlocks() {
         return this.kitUnlocks;
     }
 
-    public ArrayList<UnlockData> getVehicleUpgrades() {
+    public List<UnlockData> getVehicleUpgrades() {
         return this.vehicleUpgrades;
     }
 
-    public ArrayList<UnlockData> getSkills() {
+    public List<UnlockData> getSkills() {
         return this.skills;
     }
 
-    public ArrayList<UnlockData> getUnlocks() {
+    public List<UnlockData> getUnlocks() {
         return this.unlocks;
     }
 

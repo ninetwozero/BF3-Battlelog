@@ -18,16 +18,29 @@
 package com.ninetwozero.battlelog.misc;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.view.Window;
+import android.widget.Toast;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
+import com.ninetwozero.battlelog.Main;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
+import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 
 public class PublicUtils {
 
@@ -397,6 +410,117 @@ public class PublicUtils {
 
         // Return it
         return path;
+
+    }
+
+    /*
+     * Author: Karl Lindmark
+     * @param Context The context to be called from
+     * @param Bundle The bundle from onCreate()
+     * @return Nothing
+     */
+
+    public static void restoreCookies(Context context, Bundle icicle) {
+
+        // Did it get passed on?
+        if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
+
+            ArrayList<ShareableCookie> shareableCookies = icicle
+                    .getParcelableArrayList(Constants.SUPER_COOKIES);
+
+            if (shareableCookies != null) {
+
+                RequestHandler.setCookies(shareableCookies);
+
+            } else {
+
+                ((Activity) context).finish();
+
+            }
+
+        }
+
+    }
+
+    /*
+     * Author: Karl Lindmark
+     * @param Context The context to be called from
+     * @param SharedPreferences The SharedPreferences for the app
+     * @return Nothing
+     */
+
+    public static void setupLocale(Context context, SharedPreferences sharedPreferences) {
+
+        if (!sharedPreferences.getString(Constants.SP_BL_LANG, "").equals("")) {
+
+            Locale locale = new Locale(sharedPreferences.getString(
+                    Constants.SP_BL_LANG, "en"));
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            context.getResources().updateConfiguration(config,
+                    context.getResources().getDisplayMetrics());
+
+        }
+
+    }
+
+    public static void setupSession(Context context, SharedPreferences sharedPreferences) {
+
+        // Let's set "active" against the website
+        new AsyncSessionSetActive().execute();
+
+        // If we don't have a profile...
+        if (SessionKeeper.getProfileData() == null) {
+
+            // ...but we do indeed have a cookie...
+            if (!sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "")
+                    .equals("")) {
+
+                // ...we set the SessionKeeper, but also reload the cookies!
+                // Easy peasy!
+                SessionKeeper
+                        .setProfileData(SessionKeeper
+                                .generateProfileDataFromSharedPreferences(sharedPreferences));
+                RequestHandler.setCookies(
+
+                        new ShareableCookie(
+
+                                sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
+                                sharedPreferences.getString(
+                                        Constants.SP_BL_COOKIE_VALUE, ""),
+                                Constants.COOKIE_DOMAIN
+
+                        )
+
+                        );
+
+                // ...but just to be sure, we try to verify our session
+                // "behind the scenes"
+                new AsyncSessionValidate(context, sharedPreferences).execute();
+
+            } else {
+
+                // Aw man, that backfired.
+                Toast.makeText(context, R.string.info_txt_session_lost,
+                        Toast.LENGTH_SHORT).show();
+                ((Activity) context).startActivity(new Intent(context, Main.class));
+                ((Activity) context).finish();
+
+            }
+
+        }
+
+    }
+
+    public static void setupFullscreen(Context context, SharedPreferences sharedPreferences) {
+
+        // Is fullscreen enableD?
+        if (sharedPreferences.getBoolean(Constants.SP_BL_FULLSCREEN, true)) {
+
+            ((Activity) context).requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        }
 
     }
 

@@ -2,15 +2,16 @@
 package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FriendListDataWrapper {
 
     // Attributes
-    private ArrayList<ProfileData> requests, onlineFriends, offlineFriends;
+    private List<ProfileData> requests, onlineFriends, offlineFriends;
 
     // Construct
-    public FriendListDataWrapper(ArrayList<ProfileData> r,
-            ArrayList<ProfileData> on, ArrayList<ProfileData> off) {
+    public FriendListDataWrapper(List<ProfileData> r,
+            ArrayList<ProfileData> on, List<ProfileData> off) {
 
         // Set the data
         requests = r;
@@ -19,19 +20,19 @@ public class FriendListDataWrapper {
     }
 
     // Getters
-    public ArrayList<ProfileData> getRequests() {
+    public List<ProfileData> getRequests() {
         return this.requests;
     }
 
-    public ArrayList<ProfileData> getOnlineFriends() {
+    public List<ProfileData> getOnlineFriends() {
         return this.onlineFriends;
     }
 
-    public ArrayList<ProfileData> getOfflineFriends() {
+    public List<ProfileData> getOfflineFriends() {
         return this.offlineFriends;
     }
 
-    public ArrayList<ProfileData> getFriends() {
+    public List<ProfileData> getFriends() {
 
         // Init
         ArrayList<ProfileData> merged = new ArrayList<ProfileData>();

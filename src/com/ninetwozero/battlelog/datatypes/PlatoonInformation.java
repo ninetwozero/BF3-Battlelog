@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlatoonInformation {
 
@@ -23,9 +24,8 @@ public class PlatoonInformation {
     private long id, date;
     private String name, tag, presentation, website;
     private boolean visible, isMember, isAdmin, allowNewMembers;
-    private ArrayList<FeedItem> feedItems;
-    private ArrayList<PlatoonMemberData> members, fans;
-    private ArrayList<ProfileData> invitableFriends;
+    private List<PlatoonMemberData> members, fans;
+    private List<ProfileData> invitableFriends;
     private PlatoonStats stats;
 
     // Construct(s)
@@ -55,8 +55,8 @@ public class PlatoonInformation {
 
             long i, long d, int pId, int g, int nF, int nM, int bcId, String n,
             String t, String p, String w, boolean v, boolean ism, boolean isa,
-            boolean a, ArrayList<FeedItem> f, ArrayList<PlatoonMemberData> m,
-            ArrayList<PlatoonMemberData> fa, ArrayList<ProfileData> pd,
+            boolean a, List<PlatoonMemberData> m,
+            List<PlatoonMemberData> fa, List<ProfileData> pd,
             PlatoonStats st
 
     ) {
@@ -76,7 +76,6 @@ public class PlatoonInformation {
         this.isMember = ism;
         this.isAdmin = isa;
         this.allowNewMembers = a;
-        this.feedItems = f;
         this.members = m;
         this.fans = fa;
         this.invitableFriends = pd;
@@ -144,21 +143,17 @@ public class PlatoonInformation {
     public boolean isOpenForNewMembers() {
         return this.allowNewMembers;
     }
-
-    public ArrayList<FeedItem> getFeedItems() {
-        return this.feedItems;
-    }
-
+    
     public ArrayList<PlatoonMemberData> getMembers() {
-        return this.members;
+        return (ArrayList<PlatoonMemberData>) this.members;
     }
 
     public ArrayList<PlatoonMemberData> getFans() {
-        return this.fans;
+        return (ArrayList<PlatoonMemberData>) this.fans;
     }
 
     public ArrayList<ProfileData> getInvitableFriends() {
-        return this.invitableFriends;
+        return (ArrayList<ProfileData>) this.invitableFriends;
     }
 
     public PlatoonStats getStats() {

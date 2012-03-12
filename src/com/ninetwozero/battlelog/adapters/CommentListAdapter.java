@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.adapters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -34,14 +34,14 @@ public class CommentListAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private ArrayList<CommentData> comments;
+    private List<CommentData> comments;
     private LayoutInflater layoutInflater;
     private TextView textUsername, textMessage, textTimestamp;
     private ImageView imageAvatar;
     private String thisUser;
 
     // Construct
-    public CommentListAdapter(Context c, ArrayList<CommentData> cd,
+    public CommentListAdapter(Context c, List<CommentData> cd,
             LayoutInflater l) {
 
         context = c;

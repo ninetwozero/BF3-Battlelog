@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog.asynctasks;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -37,7 +38,7 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
     // Attribute
     private Context context;
     private SharedPreferences sharedPreferences;
-    private ArrayList<ChatMessage> messageArray = new ArrayList<ChatMessage>();
+    private List<ChatMessage> messageArray = new ArrayList<ChatMessage>();
     private ListView listView;
     private LayoutInflater layoutInflater;
     private String username; // The user that's using the chat on "this" end

@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 
@@ -31,8 +31,7 @@ public class ProfileInformation {
             currentServer;
     private String[] personaName;
     private boolean allowFriendRequests, online, playing, friendStatus;
-    private ArrayList<FeedItem> feedItems;
-    private ArrayList<PlatoonData> platoons;
+    private List<PlatoonData> platoons;
 
     // Construct(s)
     public ProfileInformation(
@@ -40,7 +39,7 @@ public class ProfileInformation {
             int a, long uid, long dob, long l, long sc, long[] pe, long[] pa,
             long[] plId, String n, String u, String p, String loc, String s,
             String c, String[] pn, boolean af, boolean o, boolean pl,
-            boolean fs, ArrayList<FeedItem> f, ArrayList<PlatoonData> pd
+            boolean fs, List<PlatoonData> pd
 
     ) {
 
@@ -63,7 +62,6 @@ public class ProfileInformation {
         this.online = o;
         this.playing = pl;
         this.friendStatus = fs;
-        this.feedItems = f;
         this.platoons = pd;
 
     }
@@ -170,11 +168,7 @@ public class ProfileInformation {
         return this.friendStatus;
     }
 
-    public ArrayList<FeedItem> getFeedItems() {
-        return this.feedItems;
-    }
-
-    public ArrayList<PlatoonData> getPlatoons() {
+    public List<PlatoonData> getPlatoons() {
         return this.platoons;
     }
 

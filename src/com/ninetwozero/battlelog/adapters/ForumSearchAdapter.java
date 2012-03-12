@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.adapters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.text.Html;
@@ -32,11 +32,11 @@ public class ForumSearchAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private ArrayList<Board.SearchResult> itemArray;
+    private List<Board.SearchResult> itemArray;
     private LayoutInflater layoutInflater;
 
     // Construct
-    public ForumSearchAdapter(Context c, ArrayList<Board.SearchResult> m,
+    public ForumSearchAdapter(Context c, List<Board.SearchResult> m,
             LayoutInflater l) {
 
         context = c;
@@ -140,14 +140,14 @@ public class ForumSearchAdapter extends BaseAdapter {
 
     }
 
-    public void setItemArray(ArrayList<Board.SearchResult> array) {
+    public void setItemArray(List<Board.SearchResult> array) {
 
         this.itemArray = array;
         this.notifyDataSetInvalidated();
 
     }
 
-    public void addItem(ArrayList<Board.SearchResult> array) {
+    public void addItem(List<Board.SearchResult> array) {
 
         this.itemArray.addAll(array);
 

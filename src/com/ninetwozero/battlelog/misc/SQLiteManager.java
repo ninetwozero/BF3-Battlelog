@@ -1,7 +1,7 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -254,7 +254,7 @@ public class SQLiteManager {
         // How many values did we actually get?
         if (values == null || values.length == 0) {
 
-            throw new DatabaseInformationException("No values recieved.");
+            throw new DatabaseInformationException("No values received.");
 
         } else if (values.length == 1) {
 
@@ -290,7 +290,7 @@ public class SQLiteManager {
 
     }
 
-    public long insert(String table, String[] fields, ArrayList<String[]> values)
+    public long insert(String table, String[] fields, List<String[]> values)
             throws DatabaseInformationException {
 
         // Let's validate the table

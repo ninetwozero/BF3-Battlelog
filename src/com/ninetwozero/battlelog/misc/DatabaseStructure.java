@@ -1,6 +1,7 @@
 
 package com.ninetwozero.battlelog.misc;
 
+
 public final class DatabaseStructure {
 
     // Declare the Table-data for each "part"

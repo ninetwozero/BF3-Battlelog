@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog.datatypes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -24,9 +25,9 @@ public class AssignmentData implements Parcelable {
     // Attributes
     private int resourceId, unlockResourceId;
     private String id, description, set;
-    private ArrayList<AssignmentData.Objective> objectives;
-    private ArrayList<AssignmentData.Dependency> dependencies;
-    private ArrayList<AssignmentData.Unlock> unlocks;
+    private List<AssignmentData.Objective> objectives;
+    private List<AssignmentData.Dependency> dependencies;
+    private List<AssignmentData.Unlock> unlocks;
 
     // Constructs
     public AssignmentData(
@@ -95,15 +96,15 @@ public class AssignmentData implements Parcelable {
         return this.set;
     }
 
-    public ArrayList<AssignmentData.Objective> getObjectives() {
+    public List<AssignmentData.Objective> getObjectives() {
         return this.objectives;
     }
 
-    public ArrayList<AssignmentData.Dependency> getDependencies() {
+    public List<AssignmentData.Dependency> getDependencies() {
         return this.dependencies;
     }
 
-    public ArrayList<AssignmentData.Unlock> getUnlocks() {
+    public List<AssignmentData.Unlock> getUnlocks() {
         return this.unlocks;
     }
 
