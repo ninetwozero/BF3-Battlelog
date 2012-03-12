@@ -61,6 +61,7 @@
         <item >Român</item>
         <item >Suomi</item>
         <item >Svenska</item>
+        <item >Česky</item>
     </string-array>
      <string-array name="language_values">
         <item >sr</item>
@@ -77,6 +78,7 @@
         <item >ro</item>
         <item >fi</item>
         <item >sv</item>
+        <item >cs</item>
     </string-array>
    <!--  translation starts here -->
    <string name="changelog">
@@ -472,6 +474,7 @@
 	<string name="info_settings_general">General options</string>
 	<string name="info_settings_chat">Chat options</string>
 	<string name="info_settings_service">Service options</string>
+	<string name="info_settings_update_interval">Select an update interval</string>
 	<string name="info_settings_notifications">Notification options</string>
 	<string name="info_settings_chat_desc_beep_true">Your active chat will beep with love.</string>
 	<string name="info_settings_chat_desc_beep_false">Your active chat won\'t even attempt to beep.</string>
@@ -486,6 +489,7 @@
 	<string name="info_credits_contributors">List of contributors</string>
 	<string name="info_credits_info">First of all, I\'d like to thank everyone for the support and hand out a special &quot;thank you&quot; to all the beta testers out there.\n\nWith that said, I\'ve categorized the list of contributors below after what they\'ve helped with and hopefully I haven\'t forgot anyone!</string>
 	<string name="info_credits_code">Code</string>
+	<string name="info_credits_graphics">Graphics</string>
 	<string name="info_credits_translations">Translations</string>
 	<string name="label_update_interval_seconds_5">Once every 5 seconds</string>
 	<string name="label_update_interval_seconds_10">Once every 10 seconds</string>
