@@ -386,13 +386,12 @@ public class AssignmentView extends Activity {
         // Set the actual fields too
         ImageView imageAssignment = ((ImageView) dialog.findViewById(R.id.image_assignment));
         imageAssignment.setImageResource(assignment.getResourceId());
-        
-        // turn off clickable in assignment dialog (image_assignment is clickable in other dialogs)
+
+        // turn off clickable in assignment dialog (image_assignment needs it in
+        // the assignment list window)
         imageAssignment.setClickable(false);
-        
         ((TextView) dialog.findViewById(R.id.text_title))
                 .setText(assignmentTitleData[0]);
-        
 
         // Loop over the criterias
         for (AssignmentData.Objective objective : assignment.getObjectives()) {
@@ -433,7 +432,7 @@ public class AssignmentView extends Activity {
     }
 
     public Dialog generateDialogPersonaList(final Context context,
-            final long[] personaId, final String[] persona, final long[] ls) {
+            final long[] personaId, final String[] persona, final int[] platform) {
 
         // Attributes
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -445,7 +444,7 @@ public class AssignmentView extends Activity {
         for (int i = 0, max = personaId.length; i < max; i++) {
 
             listNames[i] = persona[i] + " "
-                    + DataBank.resolvePlatformId((int) ls[i]);
+                    + DataBank.resolvePlatformId(platform[i]);
 
         }
         builder.setSingleChoiceItems(

@@ -1,5 +1,5 @@
 /*
-    context file is part of BF3 Battlelog
+	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
     GNU General Public License for more details.
  */
 
-package com.ninetwozero.battlelog.fragments;
+package com.ninetwozero.battlelog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,25 +23,26 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -55,104 +56,68 @@ import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Backup_ForumThreadView;
-import com.ninetwozero.battlelog.Backup_ForumView;
-import com.ninetwozero.battlelog.ForumReportView;
-import com.ninetwozero.battlelog.ForumSearchView;
-import com.ninetwozero.battlelog.ForumView;
-import com.ninetwozero.battlelog.PlatoonView;
-import com.ninetwozero.battlelog.ProfileView;
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ThreadPostListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostInThread;
 import com.ninetwozero.battlelog.datatypes.Board;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.PublicUtils;
+import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class ForumThreadFragment extends ListFragment implements DefaultFragment {
+public class Backup_ForumThreadView extends ListActivity {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
+    private final Context CONTEXT = this;
     private SharedPreferences sharedPreferences;
-    private Board.ThreadData threadData;
+    private LayoutInflater layoutInflater;
+    private Board.ThreadData currentThread;
+    private long threadId;
+    private String threadTitle, locale;
+    private int currentPage;
+    private HashMap<Long, String> selectedQuotes;
+    private Integer[] pageArray;
 
     // Elements
     private ListView listView;
-    private ThreadPostListAdapter listAdapter;
-    private TextView textTitle;
-    private RelativeLayout wrapButtons, wrapLoader;
-    private Button buttonPost, buttonPrev, buttonNext, buttonJump;
     private SlidingDrawer slidingDrawer;
     private TextView slidingDrawerHandle;
     private OnDrawerOpenListener onDrawerOpenListener;
     private OnDrawerCloseListener onDrawerCloseListener;
     private EditText textareaContent;
-
-    // Misc
-    private long threadId;
-    private long latestRefresh;
-    private String locale;
-    private int currentPage;
-    private HashMap<Long, String> selectedQuotes;
-    private Integer[] pageArray;
+    private RelativeLayout wrapButtons;
+    private Button buttonPost, buttonJump, buttonPrev, buttonNext;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public void onCreate(Bundle icicle) {
 
-        // Set our attributes
-        context = getActivity();
-        layoutInflater = inflater;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        // onCreate - save the instance state
+        super.onCreate(icicle);
 
-        // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.forum_thread_view,
-                container, false);
+        // Set sharedPreferences
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        PublicUtils.restoreCookies(this, icicle);
 
-        // Get the unlocks
+        // Setup the locale
+        PublicUtils.setupLocale(this, sharedPreferences);
+
+        // Set the content view
+        setContentView(R.layout.forum_thread_view);
+
+        // Prepare to tango
+        this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         locale = sharedPreferences.getString(Constants.SP_BL_LOCALE, "en");
 
-        // Init the Fragment
-        initFragment(view);
-        setupBottom(view);
+        // Get the threadId
+        threadId = getIntent().getLongExtra("threadId", 0);
+        threadTitle = getIntent().getStringExtra("threadTitle");
+        selectedQuotes = new HashMap<Long, String>();
+        currentPage = 1;
 
-        // Return the view
-        return view;
-
-    }
-
-    public void initFragment(View v) {
-
-        // Setup the text
-        textTitle = (TextView) v.findViewById(R.id.text_title_thread);
-
-        // Setup the ListView
-        listView = (ListView) v.findViewById(android.R.id.list);
-        listView.setAdapter(listAdapter = new ThreadPostListAdapter(context, null, layoutInflater));
-        listView.setDrawSelectorOnTop(false);
-        getActivity().registerForContextMenu(listView);
-
-        // Let's get the button
-        buttonJump = (Button) v.findViewById(R.id.button_jump);
-        buttonPrev = (Button) v.findViewById(R.id.button_prev);
-        buttonNext = (Button) v.findViewById(R.id.button_next);
-        wrapButtons = (RelativeLayout) v.findViewById(R.id.wrap_buttons);
-
-        // Last but not least, the loader
-        wrapLoader = (RelativeLayout) v.findViewById(R.id.wrap_loader);
-
-        // Init the quotes and page
-        if (selectedQuotes == null) {
-            selectedQuotes = new HashMap<Long, String>();
-        }
-        if (currentPage == 0) {
-            currentPage = 1;
-        }
+        // Init
+        initLayout();
+        setupBottom();
 
     }
 
@@ -160,55 +125,147 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     public void onResume() {
 
         super.onResume();
+
+        // Setup the locale
+        PublicUtils.setupLocale(this, sharedPreferences);
+
+        // Setup the session
+        PublicUtils.setupSession(this, sharedPreferences);
+
+        // We need to reload
         reload();
+
+    }
+
+    public void initLayout() {
+
+        // Set the top
+        if (threadTitle != null) {
+
+            ((TextView) findViewById(R.id.text_title_thread))
+                    .setText(threadTitle);
+
+        }
+
+        // Get the listView
+        if (listView == null) {
+
+            listView = getListView();
+            // listView.setItemsCanFocus(true);
+
+            if (currentThread == null) {
+
+                listView.setAdapter(new ThreadPostListAdapter(this, null,
+                        layoutInflater));
+
+            } else {
+
+                listView.setAdapter(new ThreadPostListAdapter(this,
+                        currentThread.getPosts(), layoutInflater));
+
+            }
+
+            // Let's get the button
+            buttonJump = (Button) findViewById(R.id.button_jump);
+            buttonPrev = (Button) findViewById(R.id.button_prev);
+            buttonNext = (Button) findViewById(R.id.button_next);
+            wrapButtons = (RelativeLayout) findViewById(R.id.wrap_buttons);
+
+            // Selector
+            listView.setDrawSelectorOnTop(false);
+
+            // Fix the ContextMenu
+            registerForContextMenu(listView);
+
+        }
+
+        // Update the title
+        this.setTitle(getTitle().toString().replace("...", threadTitle));
 
     }
 
     public void reload() {
 
-        // Do we have a forumId?
-        if (threadId == 0) {
-            return;
-        }
+        if (currentThread == null) {
 
-        // Set it up
-        if (threadData == null) {
-
-            new AsyncGetPosts(context).execute(threadId);
+            new AsyncGetPosts(this, listView).execute(threadId);
 
         } else {
 
-            new AsyncLoadPage(context, threadId).execute(currentPage);
+            new AsyncLoadPage(this, threadId).execute(currentPage);
 
         }
 
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int pos, long id) {
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-        getActivity().openContextMenu(v);
+        // Inflate!!
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_forumthreadview, menu);
+        return super.onCreateOptionsMenu(menu);
 
     }
 
-    public void openThread(Intent data) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-        threadId = data.getLongExtra("threadId", 0);
-        textTitle.setText(data.getStringExtra("threadTitle"));
-        reload();
+        // Let's act!
+        if (item.getItemId() == R.id.option_reload) {
 
+            this.reload();
+
+        } else if (item.getItemId() == R.id.option_search) {
+
+            startActivity(new Intent(this, ForumSearchView.class));
+
+        } else if (item.getItemId() == R.id.option_back) {
+
+            this.finish();
+
+        } else if (item.getItemId() == R.id.option_page) {
+
+            generateDialogPage(this).show();
+
+        }
+
+        // Return true yo
+        return true;
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
+                RequestHandler.getCookies());
+
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int p, long id) {
+        openContextMenu(v);
     }
 
     private class AsyncGetPosts extends AsyncTask<Long, Void, Boolean> {
 
         // Attributes
         private Context context;
-        private RotateAnimation rotateAnimation;
+        private ProgressDialog progressDialog;
+        private ListView list;
 
         // Construct
-        public AsyncGetPosts(Context c) {
+        public AsyncGetPosts(Context c, ListView l) {
 
             context = c;
+            list = l;
 
         }
 
@@ -217,12 +274,11 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
             if (context != null) {
 
-                rotateAnimation = new RotateAnimation(0, 359,
-                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                rotateAnimation.setRepeatCount(RotateAnimation.INFINITE);
-                wrapLoader.setVisibility(View.VISIBLE);
-                wrapLoader.findViewById(R.id.image_loader).setAnimation(rotateAnimation);
-                rotateAnimation.start();
+                progressDialog = new ProgressDialog(this.context);
+                progressDialog.setTitle(R.string.general_wait);
+                progressDialog.setMessage(context
+                        .getString(R.string.info_forum_posts_downloading));
+                progressDialog.show();
 
             }
 
@@ -233,9 +289,9 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
             try {
 
-                threadData = WebsiteHandler.getPostsForThread(locale,
+                currentThread = WebsiteHandler.getPostsForThread(locale,
                         arg0[0]);
-                return (threadData != null);
+                return (currentThread != null);
 
             } catch (Exception ex) {
 
@@ -249,17 +305,32 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         @Override
         protected void onPostExecute(Boolean results) {
 
+            if (context != null && this.progressDialog != null) {
+
+                this.progressDialog.dismiss();
+
+            }
+
             if (results) {
+
+                if (list.getAdapter() != null) {
+
+                    ((ThreadPostListAdapter) list.getAdapter())
+                            .set(currentThread.getPosts());
+
+                }
 
                 if (context != null) {
 
-                    // Let's set it up
-                    listAdapter.set(threadData.getPosts());
-
                     // Update the title
-                    textTitle.setText(threadData.getTitle());
+                    ((Activity) context).setTitle(((Activity) context)
+                            .getTitle().toString()
+                            .replace(threadTitle, currentThread.getTitle()));
+                    ((TextView) ((Activity) context)
+                            .findViewById(R.id.text_title_thread))
+                            .setText(currentThread.getTitle());
 
-                    if (threadData.getNumPages() > 1) {
+                    if (currentThread.getNumPages() > 1) {
 
                         wrapButtons.setVisibility(View.VISIBLE);
                         buttonJump
@@ -278,7 +349,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                     }
 
                     // Do we need to hide?
-                    if (threadData.isLocked()) {
+                    if (currentThread.isLocked()) {
                         slidingDrawer.setVisibility(View.GONE);
                     } else {
                         slidingDrawer.setVisibility(View.VISIBLE);
@@ -288,9 +359,6 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
             }
 
-            // Hide it
-            wrapLoader.setVisibility(View.GONE);
-            rotateAnimation.cancel();
         }
 
     }
@@ -340,12 +408,12 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 switch (item.getItemId()) {
 
                     case 0:
-                        startActivity(new Intent(context, ProfileView.class).putExtra(
+                        startActivity(new Intent(this, ProfileView.class).putExtra(
                                 "profile", data.getProfileData()));
                         break;
 
                     case 1:
-                        Toast.makeText(context, R.string.info_forum_quote_warning,
+                        Toast.makeText(this, R.string.info_forum_quote_warning,
                                 Toast.LENGTH_SHORT).show();
                         textareaContent.setText(
 
@@ -377,12 +445,12 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                         break;
 
                     case 3:
-                        startActivity(new Intent(context, ForumReportView.class)
+                        startActivity(new Intent(this, ForumReportView.class)
                                 .putExtra("postId", data.getPostId()));
                         break;
 
                     default:
-                        Toast.makeText(context, R.string.msg_unimplemented,
+                        Toast.makeText(this, R.string.msg_unimplemented,
                                 Toast.LENGTH_SHORT).show();
                         break;
 
@@ -405,7 +473,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
         // Got some?
         if (string == null) {
-            Toast.makeText(context, R.string.info_forum_links_no,
+            Toast.makeText(this, R.string.info_forum_links_no,
                     Toast.LENGTH_SHORT).show();
         }
 
@@ -428,24 +496,24 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         if (!linkFound) {
 
             // No links found
-            Toast.makeText(context, R.string.info_forum_links_no,
+            Toast.makeText(this, R.string.info_forum_links_no,
                     Toast.LENGTH_SHORT).show();
 
         } else {
 
-            generateDialogLinkList(context, links).show();
+            generateDialogLinkList(this, links).show();
 
         }
 
     }
 
     // Define the SlidingDrawer
-    public void setupBottom(View v) {
+    public void setupBottom() {
 
         if (slidingDrawer == null) {
 
-            slidingDrawer = (SlidingDrawer) v.findViewById(R.id.post_slider);
-            slidingDrawerHandle = (TextView) v.findViewById(R.id.post_slide_handle_text);
+            slidingDrawer = (SlidingDrawer) findViewById(R.id.post_slider);
+            slidingDrawerHandle = (TextView) findViewById(R.id.post_slide_handle_text);
 
             // Set the drawer listeners
             onDrawerCloseListener = new OnDrawerCloseListener() {
@@ -470,8 +538,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
             slidingDrawer.setOnDrawerCloseListener(onDrawerCloseListener);
 
             // Grab the field + button for further reference!
-            textareaContent = (EditText) v.findViewById(R.id.textarea_content);
-            buttonPost = (Button) v.findViewById(R.id.button_new);
+            textareaContent = (EditText) findViewById(R.id.textarea_content);
+            buttonPost = (Button) findViewById(R.id.button_new);
 
         }
 
@@ -486,7 +554,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         content = BBCodeUtils.toBBCode(content, selectedQuotes);
 
         // Ready... set... go!
-        new AsyncPostInThread(context, threadId).execute(content,
+        new AsyncPostInThread(this, threadId).execute(content,
                 sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
 
     }
@@ -500,7 +568,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
     }
 
-    public boolean onKeyDown(int keyCode) {
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -508,22 +577,20 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
             if (slidingDrawer.isOpened()) {
 
                 slidingDrawer.animateClose();
-                return true;
 
             } else {
 
-                return false;
+                ((Activity) this).finish();
 
             }
+            return true;
 
         } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
 
-            startActivity(new Intent(context, ForumSearchView.class));
-            return true;
+            startActivity(new Intent(this, ForumSearchView.class));
 
         }
-
-        return false;
+        return super.onKeyDown(keyCode, event);
 
     }
 
@@ -534,8 +601,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
             // Increment
             currentPage++;
 
-            // Let's do context
-            new AsyncLoadPage(context, threadId).execute(currentPage);
+            // Let's do this
+            new AsyncLoadPage(this, threadId).execute(currentPage);
 
         } else if (v.getId() == R.id.button_prev) {
 
@@ -543,11 +610,11 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
             currentPage--;
 
             // Do the "get more"-thing
-            new AsyncLoadPage(context, threadId).execute(currentPage);
+            new AsyncLoadPage(this, threadId).execute(currentPage);
 
         } else if (v.getId() == R.id.button_jump) {
 
-            generateDialogPage(context).show();
+            generateDialogPage(this).show();
 
         }
 
@@ -572,7 +639,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         @Override
         protected void onPreExecute() {
 
-            if (context instanceof ForumView) {
+            if (context instanceof Backup_ForumThreadView) {
 
                 buttonJump.setText(getString(R.string.label_downloading));
                 buttonJump.setEnabled(false);
@@ -605,12 +672,14 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         @Override
         protected void onPostExecute(Boolean results) {
 
-            if (context instanceof ForumView) {
+            if (context instanceof Backup_ForumThreadView) {
 
                 if (results) {
 
-                    listAdapter.set(posts);
-                    buttonJump.setText(R.string.info_xml_feed_button_jump);
+                    ((ThreadPostListAdapter) ((Backup_ForumThreadView) context)
+                            .getListView().getAdapter()).set(posts);
+                    buttonJump
+                            .setText(getString(R.string.info_xml_feed_button_jump));
 
                 } else {
 
@@ -625,7 +694,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 } else {
                     buttonPrev.setEnabled(false);
                 }
-                if (page != threadData.getNumPages()) {
+                if (page != currentThread.getNumPages()) {
                     buttonNext.setEnabled(true);
                 } else {
                     buttonNext.setEnabled(false);
@@ -646,7 +715,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         final LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View layout = inflater.inflate(R.layout.dialog_thread_link,
-                (ViewGroup) getActivity().findViewById(R.id.dialog_root));
+                (ViewGroup) findViewById(R.id.dialog_root));
 
         // Set the title
         builder.setTitle(R.string.info_forum_link_title);
@@ -709,16 +778,17 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View layout = inflater.inflate(
                 R.layout.dialog_thread_page_select,
-                (ViewGroup) ((Activity) context).findViewById(R.id.dialog_root));
+                (ViewGroup) findViewById(R.id.dialog_root));
 
         // Set the title and the view
         builder.setTitle(R.string.info_txt_pageselect);
         builder.setView(layout);
 
         // How many pages do we have?
-        if (pageArray == null || (pageArray.length != threadData.getNumPages())) {
+        if (pageArray == null
+                || (pageArray.length != currentThread.getNumPages())) {
 
-            pageArray = new Integer[threadData.getNumPages()];
+            pageArray = new Integer[currentThread.getNumPages()];
             for (int i = 0, max = pageArray.length; i < max; i++) {
 
                 pageArray[i] = i;
@@ -736,7 +806,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         // Set the text
         textView.setText(getString(R.string.info_xml_enternumber).replace(
                 "{min}", "1")
-                .replace("{max}", threadData.getNumPages() + ""));
+                .replace("{max}", currentThread.getNumPages() + ""));
 
         // Dialog options
         builder.setPositiveButton(
@@ -749,7 +819,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                         if (!pageString.equals("")) {
 
                             int page = Integer.parseInt(pageString);
-                            if (0 < page && page <= threadData.getNumPages()) {
+                            if (0 < page && page <= currentThread.getNumPages()) {
 
                                 currentPage = page;
                                 new AsyncLoadPage(context, threadId)
@@ -940,17 +1010,6 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
         }
 
-    }
-
-    @Override
-    public Menu prepareOptionsMenu(Menu menu) {
-        return menu;
-    }
-
-    @Override
-    public boolean handleSelectedOption(MenuItem item) {
-        // TODO Auto-generated method stub
-        return false;
     }
 
 }

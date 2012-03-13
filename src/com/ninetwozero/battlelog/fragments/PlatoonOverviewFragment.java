@@ -56,10 +56,10 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
     private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
 
-    //Elements
+    // Elements
     private ImageView imageViewBadge;
     private RelativeLayout wrapWeb;
-    
+
     // Misc
     private PlatoonData platoonData;
     private PlatoonInformation platoonInformation;
@@ -98,27 +98,28 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
         // Let's see if we're allowed to post (before we've gotten the data)
         hasPostingRights = false;
-        
-        //Add a click listener
-        wrapWeb = (RelativeLayout) v.findViewById( R.id.wrap_web );
-        wrapWeb.setOnClickListener( new OnClickListener() {
+
+        // Add a click listener
+        wrapWeb = (RelativeLayout) v.findViewById(R.id.wrap_web);
+        wrapWeb.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 startActivity(
 
-                    new Intent(Intent.ACTION_VIEW).setData(
+                new Intent(Intent.ACTION_VIEW).setData(
 
-                            Uri.parse(
+                        Uri.parse(
 
-                                    String.valueOf(v.getTag())
+                                String.valueOf(v.getTag())
 
-                                    )
+                                )
 
-                            )
+                        )
 
-                    );
-            }} );
+                );
+            }
+        });
 
     }
 
@@ -128,10 +129,12 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         if (data == null) {
             return;
         }
-        
-        //Get the activity
+
+        // Get the activity
         Activity activity = getActivity();
-        if( activity == null ) { return; }
+        if (activity == null) {
+            return;
+        }
 
         // Let's start by getting an ImageView
         if (imageViewBadge == null) {
@@ -283,10 +286,10 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         }
 
     }
-   
+
     public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
-     // Attributes
+        // Attributes
         private Context context;
         private ProgressDialog progressDialog;
         private PlatoonData platoonData;
@@ -322,14 +325,14 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
                 // Get...
                 platoonInformation = WebsiteHandler
-                    .getProfileInformationForPlatoon(
+                        .getProfileInformationForPlatoon(
 
-                            context, this.platoonData, sharedPreferences.getInt(
-                                    Constants.SP_BL_NUM_FEED,
-                                    Constants.DEFAULT_NUM_FEED),
-                            this.activeProfileId
+                                context, this.platoonData, sharedPreferences.getInt(
+                                        Constants.SP_BL_NUM_FEED,
+                                        Constants.DEFAULT_NUM_FEED),
+                                this.activeProfileId
 
-                    );
+                        );
 
                 return (platoonInformation != null);
 
@@ -391,11 +394,11 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         ((PlatoonView) context).openStats(p);
 
     }
-    
+
     public void sendToUsers(PlatoonInformation p) {
-        
+
         ((PlatoonView) context).openMembers(p);
-        
+
     }
 
     public void setFeedPermission(boolean c) {
@@ -408,11 +411,13 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
         platoonData = p;
     }
-    
+
     public Menu prepareOptionsMenu(Menu menu) {
-        
-        //Is it null?
-        if( platoonInformation == null ) { return menu; }
+
+        // Is it null?
+        if (platoonInformation == null) {
+            return menu;
+        }
         if (platoonInformation.isOpenForNewMembers()) {
 
             if (platoonInformation.isMember()) {
@@ -467,13 +472,13 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
         }
         return menu;
-    
+
     }
-    
+
     public boolean handleSelectedOption(MenuItem item) {
-        
+
         if (item.getItemId() == R.id.option_join) {
-            
+
             new AsyncPlatoonRequest(
 
                     context, platoonData.getId(), SessionKeeper.getProfileData()
@@ -492,10 +497,10 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
             ).execute(false);
 
-        } 
-        
+        }
+
         return true;
-    
+
     }
 
 }

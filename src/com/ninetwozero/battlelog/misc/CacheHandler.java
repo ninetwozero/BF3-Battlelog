@@ -487,7 +487,7 @@ public class CacheHandler {
                     // Create two new arrays for this
                     String[] personaNameArray = new String[numPersonas];
                     long[] personaIdArray = new long[numPersonas];
-                    long[] platformIdArray = new long[numPersonas];
+                    int[] platformIdArray = new int[numPersonas];
                     long[] platoonIdArray = new long[numPlatoons];
 
                     // Loop for the personas
@@ -495,8 +495,7 @@ public class CacheHandler {
 
                         personaIdArray[i] = Long
                                 .parseLong(personaStringArray[i]);
-                        platformIdArray[i] = Long
-                                .parseLong(platformStringArray[i]);
+                        platformIdArray[i] = Integer.parseInt(platformStringArray[i]);
                         personaNameArray[i] = personaNameStringArray[i];
 
                     }

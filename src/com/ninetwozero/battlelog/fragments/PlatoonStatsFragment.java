@@ -82,18 +82,21 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
 
     }
 
-    public void initFragment(View view) {    }
+    public void initFragment(View view) {
+    }
 
     public void showStats(PlatoonInformation pi) {
 
-        //Get the activity
+        // Get the activity
         Activity activity = getActivity();
-        if( activity == null ) { return; }
-        
-        //Let's see what we can do
+        if (activity == null) {
+            return;
+        }
+
+        // Let's see what we can do
         platoonInformation = pi;
         PlatoonStats pd = platoonInformation.getStats();
-        
+
         // Let's start drawing the... layout
         ((TextView) activity.findViewById(R.id.text_name_platoon_tab2)).setText(
 
@@ -249,6 +252,7 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
         generateTableRows(tableTime, pd.getTime(), true);
 
     }
+
     public void generateTableRows(TableLayout parent,
             List<PlatoonStatsItem> stats, boolean isTime) {
 
@@ -352,7 +356,7 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
         }
 
     }
-    
+
     public void reload() {
 
     }
@@ -375,28 +379,28 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
         super.onResume();
 
     }
-    
+
     public Menu prepareOptionsMenu(Menu menu) {
-        
+
         ((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
         ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
         ((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
         ((MenuItem) menu.findItem(R.id.option_invite)).setVisible(false);
         ((MenuItem) menu.findItem(R.id.option_members)).setVisible(false);
         return menu;
-        
+
     }
-    
+
     public boolean handleSelectedOption(MenuItem item) {
-        
+
         if (item.getItemId() == R.id.option_compare) {
-            
+
             Toast.makeText(context, R.string.info_platoon_compare,
                     Toast.LENGTH_SHORT).show();
 
-        } 
+        }
         return false;
-    
+
     }
 
 }

@@ -57,13 +57,13 @@ public class SessionKeeper {
 
         // We need to init the resulting arrays
         long[] personaId = new long[max];
-        long[] platformId = new long[max];
+        int[] platformId = new int[max];
 
         // ...and populate them
         for (int i = 0; i < max; i++) {
 
             personaId[i] = Long.parseLong(personaIdArray[i]);
-            platformId[i] = Long.parseLong(platformIdArray[i]);
+            platformId[i] = Integer.parseInt(platformIdArray[i]);
 
         }
 

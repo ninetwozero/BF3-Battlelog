@@ -64,8 +64,6 @@ public class ForumView extends FragmentActivity implements DefaultFragmentActivi
     private ForumFragment fragmentForum;
     private ForumThreadFragment fragmentForumThread;
 
-    // private ThreadFragment fragmentThread;
-
     @Override
     public void onCreate(Bundle icicle) {
 
@@ -165,7 +163,7 @@ public class ForumView extends FragmentActivity implements DefaultFragmentActivi
 
             // Make sure the tabs follow
             viewPager.setOnPageChangeListener(tabs);
-            viewPager.setOffscreenPageLimit(3);
+            viewPager.setOffscreenPageLimit(2);
             viewPager.setCurrentItem(0);
 
         }
@@ -226,14 +224,14 @@ public class ForumView extends FragmentActivity implements DefaultFragmentActivi
         // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-            if( viewPager.getCurrentItem() > 0 ) {
-                
-                viewPager.setCurrentItem( viewPager.getCurrentItem()-1, true );
-                
+            if (viewPager.getCurrentItem() > 0) {
+
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+
             }
 
         }
         return super.onKeyDown(keyCode, event);
     }
-    
+
 }

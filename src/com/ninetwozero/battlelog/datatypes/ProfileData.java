@@ -23,7 +23,8 @@ public class ProfileData implements Parcelable {
     protected String username, gravatarHash;
     protected String[] personaName;
     protected long profileId;
-    protected long[] personaId, platformId;
+    protected long[] personaId;
+    protected int[] platformId;
     protected boolean isPlaying, isOnline;
 
     // Constructs
@@ -38,7 +39,7 @@ public class ProfileData implements Parcelable {
 
     }
 
-    public ProfileData(String un, String[] pn, long[] p, long pf, long[] n,
+    public ProfileData(String un, String[] pn, long[] p, long pf, int[] n,
             String im) {
 
         this.username = un;
@@ -53,34 +54,34 @@ public class ProfileData implements Parcelable {
 
     }
 
-    public ProfileData(String an, String pn, long p, long pf, long n, String im) {
+    public ProfileData(String an, String pn, long p, long pf, int n, String im) {
 
         this(an, new String[] {
                 pn
         }, new long[] {
                 p
-        }, pf, new long[] {
+        }, pf, new int[] {
                 n
         },
                 im);
 
     }
 
-    public ProfileData(String an, String pn, long p, long pf, long n,
+    public ProfileData(String an, String pn, long p, long pf, int n,
             String im, boolean b, boolean c) {
 
         this(an, new String[] {
                 pn
         }, new long[] {
                 p
-        }, pf, new long[] {
+        }, pf, new int[] {
                 n
         },
                 im, b, c);
 
     }
 
-    public ProfileData(String an, String[] pn, long[] p, long pf, long[] n,
+    public ProfileData(String an, String[] pn, long[] p, long pf, int[] n,
             String im, boolean io, boolean ip) {
 
         this(an, pn, p, pf, n, im);
@@ -114,7 +115,7 @@ public class ProfileData implements Parcelable {
         return this.personaId;
     }
 
-    public long[] getPlatformIdArray() {
+    public int[] getPlatformIdArray() {
         return this.platformId;
     }
 
@@ -130,11 +131,11 @@ public class ProfileData implements Parcelable {
         return this.profileId;
     }
 
-    public long getPlatformId() {
-        return (platformId.length > 0) ? this.platformId[0] : 0;
+    public int getPlatformId() {
+        return (platformId.length > 0) ? platformId[0] : 0;
     }
 
-    public long getPlatformId(int pos) {
+    public int getPlatformId(int pos) {
         return ((platformId.length - 1) >= pos) ? platformId[pos] : 0;
     }
 
@@ -157,7 +158,7 @@ public class ProfileData implements Parcelable {
         // Special cases
         dest.writeStringArray(this.personaName);
         dest.writeLongArray(this.personaId);
-        dest.writeLongArray(this.platformId);
+        dest.writeIntArray(this.platformId);
 
         // Everything else
         dest.writeString(this.username);
@@ -172,10 +173,10 @@ public class ProfileData implements Parcelable {
         // Let's retrieve them, same order as above
         this.personaName = in.createStringArray();
         this.personaId = in.createLongArray();
-        this.platformId = in.createLongArray();
+        this.platformId = in.createIntArray();
 
         this.username = in.readString();
-        this.profileId = in.readLong();
+        this.profileId = in.readInt();
         this.gravatarHash = in.readString();
         this.isOnline = (in.readInt() == 1);
         this.isPlaying = (in.readInt() == 1);
@@ -204,7 +205,7 @@ public class ProfileData implements Parcelable {
         this.personaId = array;
     }
 
-    public void setPlatformId(long[] array) {
+    public void setPlatformId(int[] array) {
         this.platformId = array;
     }
 

@@ -139,7 +139,7 @@ public class ProfileView extends FragmentActivity implements DefaultFragmentActi
             // Add the profileData
             fragmentOverview.setProfileData(profileData);
             fragmentStats.setProfileData(profileData);
-            
+
             // We need to set the type
             fragmentFeed.setTitle(profileData.getAccountName());
             fragmentFeed.setType(FeedFragment.TYPE_PROFILE);
@@ -200,11 +200,11 @@ public class ProfileView extends FragmentActivity implements DefaultFragmentActi
             // Which tab is operating?
             if (viewPager.getCurrentItem() == 0) {
 
-                return super.onPrepareOptionsMenu( fragmentOverview.prepareOptionsMenu(menu) );
-                
+                return super.onPrepareOptionsMenu(fragmentOverview.prepareOptionsMenu(menu));
+
             } else if (viewPager.getCurrentItem() == 1) {
 
-                return super.onPrepareOptionsMenu( fragmentStats.prepareOptionsMenu(menu) );
+                return super.onPrepareOptionsMenu(fragmentStats.prepareOptionsMenu(menu));
 
             } else if (viewPager.getCurrentItem() == 2) {
 
@@ -245,17 +245,17 @@ public class ProfileView extends FragmentActivity implements DefaultFragmentActi
             ((Activity) this).finish();
 
         } else {
-            
-            if( viewPager.getCurrentItem() == 0 ) { 
+
+            if (viewPager.getCurrentItem() == 0) {
 
                 return fragmentOverview.handleSelectedOption(item);
-                
-            } else if( viewPager.getCurrentItem() == 1 ) { 
-                
+
+            } else if (viewPager.getCurrentItem() == 1) {
+
                 return fragmentStats.handleSelectedOption(item);
-                
+
             }
-                            
+
         }
 
         // Return true yo
@@ -296,19 +296,19 @@ public class ProfileView extends FragmentActivity implements DefaultFragmentActi
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
-        
-        switch( viewPager.getCurrentItem() ) {
-            
+
+        switch (viewPager.getCurrentItem()) {
+
             case 0:
                 break;
-                
+
             case 1:
                 break;
-                
+
             case 2:
                 fragmentFeed.createContextMenu(menu, view, menuInfo);
                 break;
-            
+
         }
         return;
 
@@ -332,14 +332,14 @@ public class ProfileView extends FragmentActivity implements DefaultFragmentActi
 
         }
 
-        switch( viewPager.getCurrentItem() ) {
-            
+        switch (viewPager.getCurrentItem()) {
+
             case 2:
                 return fragmentFeed.handleSelectedContextItem(info, item);
 
-            default: 
-               break;
-            
+            default:
+                break;
+
         }
 
         return true;
@@ -364,14 +364,14 @@ public class ProfileView extends FragmentActivity implements DefaultFragmentActi
         // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-            if( viewPager.getCurrentItem() > 0 ) {
-                
-                viewPager.setCurrentItem( viewPager.getCurrentItem()-1, true );
-                
+            if (viewPager.getCurrentItem() > 0) {
+
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+
             }
 
         }
         return super.onKeyDown(keyCode, event);
     }
-    
+
 }

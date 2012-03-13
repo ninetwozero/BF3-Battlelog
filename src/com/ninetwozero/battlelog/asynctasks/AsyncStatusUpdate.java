@@ -43,12 +43,12 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
     @Override
     protected void onPreExecute() {
 
-        if( context != null ) {
+        if (context != null) {
 
             Toast.makeText(context, R.string.msg_status, Toast.LENGTH_SHORT)
                     .show();
-            
-            buttonSend = (Button)fragmentFeed.getView().findViewById( R.id.button_send );
+
+            buttonSend = (Button) fragmentFeed.getView().findViewById(R.id.button_send);
             buttonSend.setEnabled(false);
 
         }
@@ -62,7 +62,7 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
 
             // Let's login everybody!
             return WebsiteHandler.updateStatus(arg0[0], arg0[1]);
-            
+
         } catch (Exception ex) {
 
             ex.printStackTrace();
@@ -75,27 +75,27 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
     @Override
     protected void onPostExecute(Boolean results) {
 
-        if( context != null ) { 
-            
-            if (results ) {
-    
+        if (context != null) {
+
+            if (results) {
+
                 // Yay
                 Toast.makeText(this.context, R.string.msg_status_ok,
                         Toast.LENGTH_SHORT).show();
                 ((EditText) fragmentFeed.getView().findViewById(R.id.field_message))
                         .setText("");
                 buttonSend.setEnabled(true);
-    
+
             } else {
-    
+
                 Toast.makeText(this.context, R.string.msg_status_fail,
                         Toast.LENGTH_SHORT).show();
-    
+
             }
-            
-            //Reload
+
+            // Reload
             fragmentFeed.reload();
-   
+
         }
 
         return;

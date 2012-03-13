@@ -122,6 +122,8 @@ public final class Constants {
             + "overviewPopulateStats/{PID}/None/{PLATFORM_ID}/";
     public static final String URL_STATS_WEAPONS = URL_MAIN
             + "weaponsPopulateStats/{PID}/{PLATFORM_ID}/";
+    public static final String URL_STATS_WEAPONS_INFO = URL_MAIN
+            + "statsitemPopulateStats/iteminfo/{PNAME}/{PID}/{SLUG}/{PLATFORM_ID}/";
     public static final String URL_STATS_VEHICLES = URL_MAIN
             + "vehiclesPopulateStats/{PID}/{PLATFORM_ID}/";
     public static final String URL_STATS_AWARDS = URL_MAIN

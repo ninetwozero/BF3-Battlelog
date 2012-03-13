@@ -23,14 +23,14 @@ public class PlatoonMemberData extends ProfileData implements Parcelable {
     private int membershipLevel;
 
     // Constructs
-    public PlatoonMemberData(String an, String pn, long p, long pf, long n,
+    public PlatoonMemberData(String an, String pn, long p, long pf, int n,
             String im, int m) {
 
         this(an, new String[] {
                 pn
         }, new long[] {
                 p
-        }, pf, new long[] {
+        }, pf, new int[] {
                 n
         },
                 im, m);
@@ -38,7 +38,7 @@ public class PlatoonMemberData extends ProfileData implements Parcelable {
     }
 
     public PlatoonMemberData(String an, String[] pn, long[] p, long pf,
-            long[] n, String im, int m) {
+            int[] n, String im, int m) {
 
         super(an, pn, p, pf, n, im);
         this.membershipLevel = m;
@@ -46,7 +46,7 @@ public class PlatoonMemberData extends ProfileData implements Parcelable {
     }
 
     public PlatoonMemberData(String an, String[] pn, long[] p, long pf,
-            long[] n, String im, boolean on, boolean pl, int m) {
+            int[] n, String im, boolean on, boolean pl, int m) {
 
         super(an, pn, p, pf, n, im, on, pl);
         this.membershipLevel = m;
@@ -74,7 +74,7 @@ public class PlatoonMemberData extends ProfileData implements Parcelable {
         // Arrays
         this.personaName = in.createStringArray();
         this.personaId = in.createLongArray();
-        this.platformId = in.createLongArray();
+        this.platformId = in.createIntArray();
 
         // Let's retrieve them, same order as above
         this.username = in.readString();

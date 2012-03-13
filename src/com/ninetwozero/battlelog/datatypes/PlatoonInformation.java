@@ -143,7 +143,7 @@ public class PlatoonInformation {
     public boolean isOpenForNewMembers() {
         return this.allowNewMembers;
     }
-    
+
     public ArrayList<PlatoonMemberData> getMembers() {
         return (ArrayList<PlatoonMemberData>) this.members;
     }

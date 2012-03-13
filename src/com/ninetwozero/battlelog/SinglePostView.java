@@ -391,9 +391,9 @@ public class SinglePostView extends ListActivity {
         if (buttonSend == null) {
             buttonSend = (Button) findViewById(R.id.button_send);
         }
-        if(imageAvatar == null ) {
-            
-            imageAvatar = (ImageView) findViewById( R.id.image_avatar );
+        if (imageAvatar == null) {
+
+            imageAvatar = (ImageView) findViewById(R.id.image_avatar);
         }
 
         // Set up the top-place
@@ -435,8 +435,9 @@ public class SinglePostView extends ListActivity {
             textContent.setVisibility(View.GONE);
 
         }
-        
-        imageAvatar.setImageBitmap( BitmapFactory.decodeFile( PublicUtils.getCachePath(this) + feedItem.getAvatarForPost() + ".png" ));
+
+        imageAvatar.setImageBitmap(BitmapFactory.decodeFile(PublicUtils.getCachePath(this)
+                + feedItem.getAvatarForPost() + ".png"));
 
         // Validate comment rights
         checkCommentRights();

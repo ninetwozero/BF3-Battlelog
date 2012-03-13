@@ -28,7 +28,7 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
     // Elements
     private Button buttonSend;
-    
+
     // Error message
     private String error;
 
@@ -46,15 +46,15 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
     @Override
     protected void onPreExecute() {
-        
-        if( context != null ) {
-            
+
+        if (context != null) {
+
             buttonSend = (Button) fragmentFeed.getView().findViewById(R.id.button_send);
-            buttonSend.setText( R.string.label_sending );
-            buttonSend.setEnabled( false );
-            
+            buttonSend.setText(R.string.label_sending);
+            buttonSend.setEnabled(false);
+
         }
-        
+
     }
 
     @Override
@@ -86,8 +86,8 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
                 fragmentFeed.reload();
             }
 
-            buttonSend.setText( R.string.label_send );
-            buttonSend.setEnabled( true );
+            buttonSend.setText(R.string.label_send);
+            buttonSend.setEnabled(true);
             ((EditText) fragmentFeed.getView().findViewById(R.id.field_message)).setText("");
 
             Toast.makeText(context, R.string.msg_feed_ok, Toast.LENGTH_SHORT)

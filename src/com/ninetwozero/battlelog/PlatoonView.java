@@ -140,15 +140,15 @@ public class PlatoonView extends FragmentActivity implements DefaultFragmentActi
         // Our own profile, no need to show the "extra" buttons
         if (viewPager.getCurrentItem() == 0) {
 
-            return super.onPrepareOptionsMenu( fragmentOverview.prepareOptionsMenu(menu) );
-            
+            return super.onPrepareOptionsMenu(fragmentOverview.prepareOptionsMenu(menu));
+
         } else if (viewPager.getCurrentItem() == 1) {
 
-            return super.onPrepareOptionsMenu( fragmentStats.prepareOptionsMenu(menu) );
+            return super.onPrepareOptionsMenu(fragmentStats.prepareOptionsMenu(menu));
 
         } else if (viewPager.getCurrentItem() == 2) {
 
-            return super.onPrepareOptionsMenu( fragmentMember.prepareOptionsMenu(menu) ); 
+            return super.onPrepareOptionsMenu(fragmentMember.prepareOptionsMenu(menu));
 
         } else {
 
@@ -176,21 +176,21 @@ public class PlatoonView extends FragmentActivity implements DefaultFragmentActi
             ((Activity) this).finish();
 
         } else {
-            
-            if( viewPager.getCurrentItem() == 0 ) { 
+
+            if (viewPager.getCurrentItem() == 0) {
 
                 return fragmentOverview.handleSelectedOption(item);
-                
-            } else if( viewPager.getCurrentItem() == 1 ) { 
-                
+
+            } else if (viewPager.getCurrentItem() == 1) {
+
                 return fragmentStats.handleSelectedOption(item);
-                
-            } else if( viewPager.getCurrentItem() == 2 ) { 
-                
+
+            } else if (viewPager.getCurrentItem() == 2) {
+
                 return fragmentMember.handleSelectedOption(item);
-                
+
             }
-                            
+
         }
 
         // Return true yo
@@ -231,23 +231,23 @@ public class PlatoonView extends FragmentActivity implements DefaultFragmentActi
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
-        
-        switch( viewPager.getCurrentItem() ) {
-            
+
+        switch (viewPager.getCurrentItem()) {
+
             case 0:
                 break;
-                
+
             case 1:
                 break;
-                
+
             case 2:
                 fragmentMember.createContextMenu(menu, view, menuInfo);
                 break;
-                
+
             case 3:
                 fragmentFeed.createContextMenu(menu, view, menuInfo);
                 break;
-            
+
         }
         return;
 
@@ -271,17 +271,17 @@ public class PlatoonView extends FragmentActivity implements DefaultFragmentActi
 
         }
 
-        switch( viewPager.getCurrentItem() ) {
-            
+        switch (viewPager.getCurrentItem()) {
+
             case 2:
                 return fragmentMember.handleSelectedContextItem(info, item);
-                
+
             case 3:
                 return fragmentFeed.handleSelectedContextItem(info, item);
 
-            default: 
-               break;
-            
+            default:
+                break;
+
         }
 
         return true;
@@ -347,34 +347,33 @@ public class PlatoonView extends FragmentActivity implements DefaultFragmentActi
         fragmentStats.reload();
 
     }
-    
+
     public void openMembers(PlatoonInformation p) {
-        
+
         fragmentMember.showMembers(p);
-        
+
     }
 
     public void setFeedPermission(boolean c) {
 
         fragmentFeed.setCanWrite(c);
 
-    } 
-    
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-            if( viewPager.getCurrentItem() > 0 ) {
-                
-                viewPager.setCurrentItem( viewPager.getCurrentItem()-1, true );
-                
+            if (viewPager.getCurrentItem() > 0) {
+
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+
             }
 
         }
         return super.onKeyDown(keyCode, event);
     }
-    
 
 }

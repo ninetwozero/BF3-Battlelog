@@ -26,7 +26,8 @@ public class ProfileInformation {
     // Attributes
     private int age;
     private long userId, dateOfBirth, lastlogin, statusMessageChanged;
-    private long[] persona, platform, platoonId;
+    private long[] persona, platoonId;
+    private int[] platform;
     private String name, username, presentation, location, statusMessage,
             currentServer;
     private String[] personaName;
@@ -36,7 +37,7 @@ public class ProfileInformation {
     // Construct(s)
     public ProfileInformation(
 
-            int a, long uid, long dob, long l, long sc, long[] pe, long[] pa,
+            int a, long uid, long dob, long l, long sc, long[] pe, int[] pa,
             long[] plId, String n, String u, String p, String loc, String s,
             String c, String[] pn, boolean af, boolean o, boolean pl,
             boolean fs, List<PlatoonData> pd
@@ -102,7 +103,7 @@ public class ProfileInformation {
                 : this.platform[0]);
     }
 
-    public long[] getAllPlatforms() {
+    public int[] getAllPlatforms() {
         return this.platform;
     }
 

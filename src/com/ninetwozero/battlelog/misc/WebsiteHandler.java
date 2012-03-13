@@ -70,6 +70,7 @@ import com.ninetwozero.battlelog.datatypes.TopStatsComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
+import com.ninetwozero.battlelog.datatypes.WeaponStats;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
 import com.ninetwozero.battlelog.services.BattlelogService;
@@ -658,7 +659,7 @@ public class WebsiteHandler {
                 // Init arrays
                 String[] personaNameArray = new String[numPersonas];
                 long[] personaIdArray = new long[numPersonas];
-                long[] platformIdArray = new long[numPersonas];
+                int[] platformIdArray = new int[numPersonas];
 
                 // Loop
                 for (int i = 0; i < numPersonas; i++) {
@@ -1878,7 +1879,7 @@ public class WebsiteHandler {
                 // Init the arrays
                 String[] personaNameArray = new String[numSoldiers];
                 long[] personaIdArray = new long[numSoldiers];
-                long[] platformIdArray = new long[numSoldiers];
+                int[] platformIdArray = new int[numSoldiers];
                 long[] platoonIdArray = new long[numPlatoons];
 
                 // Get the username
@@ -1976,7 +1977,7 @@ public class WebsiteHandler {
                         userInfo.optLong("birthdate", 0), userInfo.optLong(
                                 "lastLogin", 0), statusMessage.optLong(
                                 "statusMessageChanged", 0), personaIdArray,
-                        platformIdArray, platformIdArray, userInfo.optString(
+                        platformIdArray, platoonIdArray, userInfo.optString(
                                 "name", "N/A"), username,
                         userInfo.isNull("presentation") ? null : userInfo
                                 .getString("presentation"), userInfo.optString(
@@ -2052,14 +2053,16 @@ public class WebsiteHandler {
 
                             new PlatoonMemberData(
 
-                                    tempObject.getString("username"), null, new long[] {
-                                            Long
-                                                    .parseLong(tempObject.getString("userId"))
-                                    }, 0,
+                                    tempObject.getString("username"),
+                                    null,
                                     new long[] {
+                                            Long.parseLong(tempObject.getString("userId"))
+                                    },
+                                    0,
+                                    new int[] {
                                             0
-                                    }, tempObject.optString(
-                                            "gravatarMd5", ""), 0)
+                                    },
+                                    tempObject.optString("gravatarMd5", ""), 0)
 
                             );
 
@@ -2080,7 +2083,7 @@ public class WebsiteHandler {
                                 }, new long[] {
                                         0
                                 }, 0,
-                                new long[] {
+                                new int[] {
                                         0
                                 }, null, 0
 
@@ -2110,10 +2113,7 @@ public class WebsiteHandler {
             ) throws WebsiteHandlerException {
 
         try {
-            /*
-             * TODO: WHY IS IT CRASHING? LOAD UP A 100 MEMBER PLATOON AND TRY TO
-             * DEBUG
-             */
+
             // Let's go!
             RequestHandler rh = new RequestHandler();
             List<PlatoonMemberData> fans = new ArrayList<PlatoonMemberData>();
@@ -2199,9 +2199,9 @@ public class WebsiteHandler {
                                                 .getString("personaId"))
                                 },
                                 Long.parseLong(currItem.getString("userId")),
-                                new long[] {
+                                new int[] {
                                         profileCommonObject
-                                                .getLong("platform")
+                                                .getInt("platform")
                                 },
                                 currItem.optString("gravatarMd5", ""), currItem
                                         .getJSONObject("user")
@@ -2396,7 +2396,8 @@ public class WebsiteHandler {
                                 "website", "")),
                         !profileCommonObject.getBoolean("hidden"), isMember,
                         isAdmin,
-                        profileCommonObject.getBoolean("allowNewMembers"), members, fans, friends, stats
+                        profileCommonObject.getBoolean("allowNewMembers"), members, fans, friends,
+                        stats
 
                         );
 
@@ -3561,7 +3562,6 @@ public class WebsiteHandler {
                     JSONArray tempStatsArray = currItem.optJSONObject(
                             "GAMEREPORT").optJSONArray("statItems");
 
-                    /* TODO: BUILD A STRING WITH *ALL* ITEMS */
                     if (tempStatsArray.length() > 1) {
 
                         itemTitle = context
@@ -4705,48 +4705,49 @@ public class WebsiteHandler {
 
             RequestHandler rh = new RequestHandler();
             String httpContent = rh.post(
-                    
-                Constants.URL_STATUS_SEND, 
-                new PostData[] {
-                  
-                        new PostData(
-                            
-                                Constants.FIELD_NAMES_STATUS[0],
-                                content
-                        ),
-                        new PostData(
-                                
-                                Constants.FIELD_NAMES_STATUS[1],
-                                checksum
-                        )                        
-                        
-                },
-                0
-                
-            );
-            
+
+                    Constants.URL_STATUS_SEND,
+                    new PostData[] {
+
+                            new PostData(
+
+                                    Constants.FIELD_NAMES_STATUS[0],
+                                    content
+                            ),
+                            new PostData(
+
+                                    Constants.FIELD_NAMES_STATUS[1],
+                                    checksum
+                            )
+
+                    },
+                    0
+
+                    );
+
             // Did we manage?
             if (httpContent != null && !httpContent.equals("")) {
-    
+
                 // Set the int
                 int startPosition = httpContent
                         .indexOf(Constants.ELEMENT_STATUS_OK);
-    
+
                 // Did we find it?
                 return (startPosition > -1);
-                
+
             }
-            
+
             return false;
-            
-        } catch( Exception ex ) { 
-            
+
+        } catch (Exception ex) {
+
             ex.printStackTrace();
             return false;
-            
+
         }
-            
+
     }
+
     public static boolean postToWall(long profileId, String checksum,
             String content, boolean isPlatoon) throws WebsiteHandlerException {
 
@@ -6232,6 +6233,80 @@ public class WebsiteHandler {
 
             ex.printStackTrace();
             throw new WebsiteHandlerException("Could not report the post.");
+
+        }
+
+    }
+
+    public static ArrayList<WeaponStats> getWeaponStatisticsForPersona(long profileId,
+            int platformId) { /* TODO: WORK IN PROGRESS */
+
+        try {
+
+            // Init
+            RequestHandler rh = new RequestHandler();
+            ArrayList<WeaponStats> weaponStatsArray = new ArrayList<WeaponStats>();
+
+            // Get the data
+            String httpContent = rh.get(
+
+                    Constants.URL_STATS_WEAPONS.replace("{PID}", profileId + "").replace(
+                            "{PLATFORM_ID}", platformId + ""),
+                    0
+
+                    );
+
+            // So... how'd it go?
+            if (httpContent != null && !httpContent.equals("")) {
+
+                // Woo, we got results
+                JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
+                JSONArray weaponStats = baseObject.getJSONArray("mainWeaponStats");
+
+                // Let's iterate over the JSONArray
+                for (int count = 0, maxCount = weaponStats.length(); count < maxCount; count++) {
+
+                    // Get the current item
+                    JSONObject currentItem = weaponStats.getJSONObject(count);
+
+                    // Store it
+                    weaponStatsArray.add(
+
+                            new WeaponStats(
+
+                                    currentItem.getString("name"),
+                                    currentItem.getString("guid"),
+                                    currentItem.getString("slug"),
+                                    currentItem.getInt("kills"),
+                                    currentItem.getInt("headshots"),
+                                    currentItem.getInt("kitId"),
+                                    currentItem.getLong("shotsFired"),
+                                    currentItem.getLong("shotsHit"),
+                                    currentItem.getLong("timeEquipped"),
+                                    currentItem.getDouble("accuracy"),
+                                    currentItem.getDouble("serviceStars"),
+                                    currentItem.getDouble("serviceStarProgress")
+
+                            )
+
+                            );
+
+                }
+
+            }
+
+            // Return it!
+            return weaponStatsArray;
+
+        } catch (RequestHandlerException ex) {
+
+            ex.printStackTrace();
+            return null;
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            return null;
 
         }
 

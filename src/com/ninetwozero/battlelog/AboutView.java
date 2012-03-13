@@ -14,33 +14,50 @@
 
 package com.ninetwozero.battlelog;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
-import android.app.Activity;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TabHost;
-import android.widget.TabHost.TabContentFactory;
-import android.widget.TextView;
 
-import com.ninetwozero.battlelog.datatypes.ShareableCookie;
+import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
+import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.fragments.AboutCreditsFragment;
+import com.ninetwozero.battlelog.fragments.AboutFAQFragment;
+import com.ninetwozero.battlelog.fragments.AboutMainFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class AboutView extends Activity {
+public class AboutView extends FragmentActivity implements DefaultFragmentActivity {
 
-    // Fields
-    private TabHost cTabHost;
-    private LayoutInflater layoutInflater;
+    // Attributes
+    final private Context context = this;
     private SharedPreferences sharedPreferences;
+    private LayoutInflater layoutInflater;
+
+    // Fragment related
+    private SwipeyTabs tabs;
+    private SwipeyTabsPagerAdapter pagerAdapter;
+    private List<Fragment> listFragments;
+    private FragmentManager fragmentManager;
+    private AboutMainFragment fragmentAbout;
+    private AboutFAQFragment fragmentFAQ;
+    private AboutCreditsFragment fragmentCredits;
+    private ViewPager viewPager;
+
+    // Async
+    private AsyncLogout asyncLogout;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -51,167 +68,29 @@ public class AboutView extends Activity {
         // Set sharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        // Should we display a title bar?
+        PublicUtils.setupFullscreen(this, sharedPreferences);
+        PublicUtils.restoreCookies(this, icicle);
+
         // Setup the locale
         PublicUtils.setupLocale(this, sharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.about_view);
+        setContentView(R.layout.viewpager_dashboard);
 
-        if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
-
-            ArrayList<ShareableCookie> shareableCookies = icicle
-                    .getParcelableArrayList(Constants.SUPER_COOKIES);
-            RequestHandler.setCookies(shareableCookies);
-
-        }
-
-        // Set 'em up
+        // Get the layoutInflater
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        fragmentManager = getSupportFragmentManager();
 
-        // Tab
-        cTabHost = (TabHost) findViewById(R.id.com_tabhost);
-        cTabHost.setup();
+        // Setup the fragments
+        setupFragments();
 
-        setupTabsSecondary(
-
-                new String[] {
-                        getString(R.string.label_about),
-                        getString(R.string.label_faq),
-                        getString(R.string.label_credits)
-                }, new int[] {
-                        R.layout.tab_content_main_about, R.layout.tab_content_main_faq,
-                        R.layout.tab_content_main_credits
-                }
-
-        );
-
+        // Setup COM & feed
+        initActivity();
     }
 
-    private void setupTabsSecondary(final String[] titleArray,
-            final int[] layoutArray) {
+    public final void initActivity() {
 
-        // Init
-        TabHost.TabSpec spec;
-
-        // Iterate them tabs
-        for (int i = 0, max = titleArray.length; i < max; i++) {
-
-            // Num
-            final int num = i;
-            View tabview = createTabView(cTabHost.getContext(), titleArray[num]);
-
-            // Let's set the content
-            spec = cTabHost.newTabSpec(titleArray[num]).setIndicator(tabview)
-                    .setContent(
-
-                            new TabContentFactory() {
-
-                                public View createTabContent(String tag) {
-
-                                    return layoutInflater.inflate(layoutArray[num],
-                                            null);
-
-                                }
-
-                            }
-
-                    );
-
-            // Add the tab
-            cTabHost.addTab(
-
-                    spec
-
-                    );
-
-        }
-
-    }
-
-    public void onContactClick(View v) {
-
-        if (v.getId() == R.id.wrap_web) {
-
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://www.ninetwozero.com")));
-
-        } else if (v.getId() == R.id.wrap_twitter) {
-
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://www.ninetwozero.com")));
-
-        } else if (v.getId() == R.id.wrap_email) {
-
-            startActivity(
-
-            Intent.createChooser(
-
-                    new Intent(Intent.ACTION_SENDTO).setData(
-
-                            Uri.parse(
-
-                                    "mailto:support@ninetwozero.com"
-
-                                    )
-
-                            ), getString(R.string.info_txt_email_send)
-
-                    )
-
-            );
-
-        } else if (v.getId() == R.id.wrap_forum) {
-
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://www.ninetwozero.com/forum")));
-
-        } else if (v.getId() == R.id.wrap_xbox) {
-
-            startActivity(new Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("http://live.xbox.com/en-US/Profile?gamertag=NINETWOZERO")));
-
-        } else if (v.getId() == R.id.wrap_paypal) {
-
-            startActivity(
-
-            new Intent(
-
-                    Intent.ACTION_VIEW,
-                    Uri.parse(
-
-                            "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y8GLB993JKTCL"
-
-                            ))
-
-            );
-
-        }
-
-    }
-
-    private final View createTabView(final Context context, final String text) {
-
-        View view = LayoutInflater.from(context).inflate(
-                R.layout.profile_tab_layout, null);
-        TextView tv = (TextView) view.findViewById(R.id.tabsText);
-        tv.setText(text);
-        return view;
-
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-                RequestHandler.getCookies());
-
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -224,6 +103,67 @@ public class AboutView extends Activity {
 
         // Setup the session
         PublicUtils.setupSession(this, sharedPreferences);
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+
+        super.onConfigurationChanged(newConfig);
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
+                RequestHandler.getCookies());
+
+    }
+
+    public void setupFragments() {
+
+        // Do we need to setup the fragments?
+        if (listFragments == null) {
+
+            // Add them to the list
+            listFragments = new Vector<Fragment>();
+            listFragments.add(fragmentAbout = (AboutMainFragment) Fragment.instantiate(this,
+                    AboutMainFragment.class.getName()));
+            listFragments.add(fragmentFAQ = (AboutFAQFragment) Fragment.instantiate(this,
+                    AboutFAQFragment.class.getName()));
+            listFragments.add(fragmentCredits = (AboutCreditsFragment) Fragment.instantiate(this,
+                    AboutCreditsFragment.class.getName()));
+
+            // Get the ViewPager
+            viewPager = (ViewPager) findViewById(R.id.viewpager);
+            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+
+            // Fill the PagerAdapter & set it to the viewpager
+            pagerAdapter = new SwipeyTabsPagerAdapter(
+
+                    fragmentManager,
+                    new String[] {
+                            "About", "FAQ", "Credits"
+                    },
+                    listFragments,
+                    viewPager,
+                    layoutInflater
+                    );
+            viewPager.setAdapter(pagerAdapter);
+            tabs.setAdapter(pagerAdapter);
+
+            // Make sure the tabs follow
+            viewPager.setOnPageChangeListener(tabs);
+            viewPager.setCurrentItem(0);
+
+        }
+
+    }
+
+    @Override
+    public void reload() {
     }
 
 }

@@ -81,7 +81,7 @@ public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
                 Toast.makeText(context, R.string.msg_hooah_fail,
                         Toast.LENGTH_SHORT).show();
             }
-            
+
             feedFragment.reload();
 
         }
