@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -29,9 +31,10 @@ import android.widget.ListView;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.UnlockView;
 import com.ninetwozero.battlelog.adapters.UnlockListAdapter;
+import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 
-public class UnlockFragment extends ListFragment {
+public class UnlockFragment extends ListFragment implements DefaultFragment  {
 
     // Attributes
     private Context context;
@@ -63,14 +66,14 @@ public class UnlockFragment extends ListFragment {
         unlocks = ((UnlockView) getActivity()).getUnlocksForFragment(viewPagerPosition);
 
         // Init views
-        initViews(view);
+        initFragment(view);
 
         // Return the view
         return view;
 
     }
 
-    public void initViews(View v) {
+    public void initFragment(View v) {
 
         // Setup the ListView
         listView = (ListView) v.findViewById(android.R.id.list);
@@ -109,5 +112,20 @@ public class UnlockFragment extends ListFragment {
         // Let's set the data
         ((UnlockListAdapter) listView.getAdapter()).setDataArray(unlockData);
 
+    }
+
+    @Override
+    public void reload() {
+        
+    }
+
+    @Override
+    public Menu prepareOptionsMenu(Menu menu) {
+        return null;
+    }
+
+    @Override
+    public boolean handleSelectedOption(MenuItem item) {
+        return false;
     }
 }

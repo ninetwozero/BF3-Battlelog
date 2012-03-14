@@ -3,22 +3,22 @@
     xmlns:swipeytabs="http://schemas.android.com/apk/res/com.ninetwozero.battlelog"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    
+
  <!-- #FFFFC600  -->
 <net.peterkuterna.android.apps.swipeytabs.SwipeyTabs
-        android:id="@+id/swipeytabs"
+        android:id="@+id/swipeytabs_sub"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         swipeytabs:bottomBarColor="#ff30b2e2"
         swipeytabs:bottomBarHeight="1.5dip"
         swipeytabs:tabIndicatorHeight="4.5dip"
-       	android:background="#FF000000"
+       	android:background="@drawable/gradient_darkgreytoblack"
         />
             
 	<android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+        android:id="@+id/viewpager_sub"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/swipeytabs"/>
+        android:layout_below="@id/swipeytabs_sub"/>
 	<!--  COM HERE -->
 </RelativeLayout>

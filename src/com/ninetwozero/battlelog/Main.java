@@ -403,43 +403,6 @@ public class Main extends FragmentActivity implements DefaultFragmentActivity {
         return true;
     }
 
-    public void onContactClick(View v) {
-
-        final Map<Integer, Intent> SOCIAL_INTENTS = new HashMap<Integer, Intent>() {
-
-            {
-
-                put(R.id.wrap_web,
-                        new Intent(Intent.ACTION_VIEW, Uri
-                                .parse("http://www.ninetwozero.com")));
-                put(R.id.wrap_twitter,
-                        new Intent(Intent.ACTION_VIEW, Uri
-                                .parse("https://www.twitter.com/karllindmark")));
-                put(R.id.wrap_email, Intent.createChooser(
-                        new Intent(Intent.ACTION_SENDTO, Uri
-                                .parse("mailto:support@ninetwozero.com")),
-                        getString(R.string.info_txt_email_send)));
-
-                put(R.id.wrap_forum,
-                        new Intent(Intent.ACTION_VIEW, Uri
-                                .parse("http://www.ninetwozero.com/forum")));
-                put(R.id.wrap_xbox,
-                        new Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("http://live.xbox.com/en-US/Profile?gamertag=NINETWOZERO")));
-                put(R.id.wrap_paypal,
-                        new Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y8GLB993JKTCL")));
-            }
-        };
-
-        // Is it in the HashMap?
-        if (SOCIAL_INTENTS.containsKey(v.getId())) {
-            startActivity(SOCIAL_INTENTS.get(v.getId()));
-        }
-    }
-
     public final Dialog createChangelogDialog() {
 
         // Attributes
@@ -450,7 +413,7 @@ public class Main extends FragmentActivity implements DefaultFragmentActivity {
 
         // Set the title and the view
         builder.setTitle(getString(R.string.general_changelog_version)
-                + " 1.0." + Constants.CHANGELOG_VERSION);
+                + Constants.CHANGELOG_VERSION);
 
         // Grab the fields
         final TextView textView = (TextView) layout
@@ -532,8 +495,8 @@ public class Main extends FragmentActivity implements DefaultFragmentActivity {
                     AboutCreditsFragment.class.getName()));
 
             // Get the ViewPager
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
-            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+            viewPager = (ViewPager) findViewById(R.id.viewpager_sub);
+            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs_sub);
 
             // Fill the PagerAdapter & set it to the viewpager
             pagerAdapter = new SwipeyTabsPagerAdapter(
@@ -552,6 +515,7 @@ public class Main extends FragmentActivity implements DefaultFragmentActivity {
             // Make sure the tabs follow
             viewPager.setOnPageChangeListener(tabs);
             viewPager.setCurrentItem(0);
+            viewPager.setOffscreenPageLimit(2);
 
         }
         

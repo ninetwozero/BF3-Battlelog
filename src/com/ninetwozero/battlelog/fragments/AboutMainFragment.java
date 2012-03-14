@@ -30,26 +30,13 @@ import android.view.ViewGroup;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
+import com.ninetwozero.battlelog.misc.DataBank;
 
 public class AboutMainFragment extends Fragment implements DefaultFragment {
 
     // Attributes
     private Context context;
     private LayoutInflater layoutInflater;
-
-    // Intent map
-    final Map<Integer, Intent> intents = new HashMap<Integer, Intent>() {
-
-        private static final long serialVersionUID = -4796576850197705194L;
-        {
-            put(R.id.wrap_web, new Intent());
-            put(R.id.wrap_twitter, new Intent());
-            put(R.id.wrap_email, new Intent());
-            put(R.id.wrap_forum, new Intent());
-            put(R.id.wrap_xbox, new Intent());
-            put(R.id.wrap_paypal, new Intent());
-        }
-    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,8 +60,11 @@ public class AboutMainFragment extends Fragment implements DefaultFragment {
 
     @Override
     public void initFragment(View view) {
+        
+        //Prevent bug
+        setUserVisibleHint(true);
 
-        for (int key : intents.keySet()) {
+        for (int key : DataBank.getContactIntents().keySet()) {
 
             view.findViewById(key).setOnClickListener(
 
@@ -83,7 +73,7 @@ public class AboutMainFragment extends Fragment implements DefaultFragment {
                         @Override
                         public void onClick(View v) {
 
-                            startActivity(intents.get(v.getId()));
+                            startActivity(DataBank.getContactIntent(v.getId()));
 
                         }
                     }

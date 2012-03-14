@@ -27,7 +27,7 @@
             android:defaultValue="true"
         />
         <com.kmansoft.IntegerListPreference
-            android:title="Select an update interval" 
+            android:title="@string/info_settings_update_interval" 
             android:key="battlelog_chat_interval"
             sample:entryList="@array/chat_update_intervals_labels" 
             sample:valueList="@array/chat_update_intervals_values" 
@@ -37,7 +37,7 @@
     <PreferenceCategory android:title="@string/info_settings_service">
         
         <com.kmansoft.IntegerListPreference
-            android:title="Select an update interval" 
+            android:title="@string/info_settings_update_interval" 
             android:key="battlelog_service_interval"
             sample:entryList="@array/service_update_intervals_labels" 
             sample:valueList="@array/service_update_intervals_values" 

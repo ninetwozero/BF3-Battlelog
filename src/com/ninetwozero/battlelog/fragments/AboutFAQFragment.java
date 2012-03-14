@@ -54,6 +54,10 @@ public class AboutFAQFragment extends Fragment implements DefaultFragment {
 
     @Override
     public void initFragment(View view) {
+        
+        //Prevent bug
+        setUserVisibleHint(true);
+        
     }
 
     @Override

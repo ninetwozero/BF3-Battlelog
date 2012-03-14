@@ -76,7 +76,7 @@ public class AboutView extends FragmentActivity implements DefaultFragmentActivi
         PublicUtils.setupLocale(this, sharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.viewpager_dashboard);
+        setContentView(R.layout.viewpager_default);
 
         // Get the layoutInflater
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);

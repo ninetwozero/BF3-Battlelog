@@ -104,7 +104,7 @@
 			android:layout_height="fill_parent"
 			android:background="#FDFDFD"
 		>
-		<include layout="@layout/viewpager_default" />
+		<include layout="@layout/viewpager_com" />
 		</RelativeLayout>
 	</SlidingDrawer>
 </RelativeLayout>

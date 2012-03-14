@@ -21,6 +21,7 @@ import java.util.Vector;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ import android.support.v4.view.ViewPager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -73,15 +76,7 @@ public class Dashboard extends FragmentActivity implements DefaultFragmentActivi
     private FriendListDataWrapper friendListData;
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
-
-    // Elements
-    private View wrapFriendRequests;
-    private TabHost mTabHost, cTabHost;
-    private ListView listFeed;
-    private EditText fieldStatusUpdate;
-    private FeedListAdapter feedListAdapter;
-    private TextView feedStatusText, notificationStatusText, friendsStatusText;
-
+    
     // COM-related
     private SlidingDrawer slidingDrawer;
     private TextView slidingDrawerHandle;
@@ -126,7 +121,7 @@ public class Dashboard extends FragmentActivity implements DefaultFragmentActivi
         PublicUtils.setupLocale(this, sharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.viewpager_dashboard);
+        setContentView(R.layout.viewpager_default);
 
         // Get the layoutInflater
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -302,6 +297,45 @@ public class Dashboard extends FragmentActivity implements DefaultFragmentActivi
         }
 
         return true;
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_dashboard, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Let's act!
+        if (item.getItemId() == R.id.option_refresh) {
+
+            fragmentFeed.reload();
+//            fragmentCOM.reload();
+//            fragmentNotifications.reload();
+
+        } else if (item.getItemId() == R.id.option_settings) {
+
+            startActivity(new Intent(this, SettingsView.class));
+            finish();
+
+        } else if (item.getItemId() == R.id.option_logout) {
+
+            new AsyncLogout(this).execute();
+
+        } else if (item.getItemId() == R.id.option_about) {
+
+            startActivity(new Intent(this, AboutView.class));
+
+        }
+
+        // Return true yo
+        return true;
+
     }
 
 }
