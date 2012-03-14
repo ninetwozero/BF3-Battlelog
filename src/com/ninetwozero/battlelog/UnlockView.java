@@ -156,7 +156,7 @@ public class UnlockView extends FragmentActivity implements DefaultFragmentActiv
     }
 
     public Dialog generateDialogPersonaList(final Context context,
-            final long[] personaId, final String[] persona, final long[] ls) {
+            final long[] personaId, final String[] persona, final int[] platform) {
 
         // Attributes
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -168,7 +168,7 @@ public class UnlockView extends FragmentActivity implements DefaultFragmentActiv
         for (int i = 0, max = personaId.length; i < max; i++) {
 
             listNames[i] = persona[i] + " "
-                    + DataBank.resolvePlatformId((int) ls[i]);
+                    + DataBank.resolvePlatformId(platform[i]);
 
         }
         builder.setSingleChoiceItems(

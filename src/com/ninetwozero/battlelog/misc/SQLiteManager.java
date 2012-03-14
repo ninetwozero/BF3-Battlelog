@@ -17,7 +17,7 @@ public class SQLiteManager {
 
     class OpenHelper extends SQLiteOpenHelper {
 
-        OpenHelper(Context context) {
+        public OpenHelper(Context context) {
 
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }

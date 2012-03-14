@@ -39,7 +39,6 @@ import com.ninetwozero.battlelog.CompareView;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.UnlockView;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -88,8 +87,8 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
     }
 
     public void initFragment(View view) {
-        
-        //Progressbar
+
+        // Progressbar
         progressBar = (ProgressBar) view.findViewById(R.id.progress_level);
 
         // Click on the wrap
@@ -109,7 +108,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
                 }
 
-        );
+                );
     }
 
     public void showPersona(PersonaStats pd, boolean toggle) {
@@ -121,8 +120,10 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
         // Let's find it
         View view = getView();
-        if( view == null ) { return; }
-        
+        if (view == null) {
+            return;
+        }
+
         // Persona & rank
         ((TextView) view.findViewById(R.id.string_persona)).setText(pd
                 .getPersonaName());
@@ -202,13 +203,14 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         ((TextView) view.findViewById(R.id.string_stats_spm)).setText(pd
                 .getScorePerMinute() + "");
 
-        //Are we going to compare?
-        if( comparing ) { 
-        
-            ((CompareView) getActivity()).sendToCompare(profileData, personaStats, selectedPersona, toggle);
-         
+        // Are we going to compare?
+        if (comparing) {
+
+            ((CompareView) getActivity()).sendToCompare(profileData, personaStats, selectedPersona,
+                    toggle);
+
         }
-        
+
     }
 
     public Dialog generateDialogPersonaList(final Context context,
@@ -233,7 +235,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
                             // Load the new!
                             showPersona(personaStats.get(selectedPersona), true);
-                            
+
                             // Store selectedPersonaPos
                             selectedPosition = item;
 
@@ -383,16 +385,16 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
     }
 
     public void reload() {
-        
+
         // ASYNC!!!
-        if( personaStats == null ) { 
-            
-            new AsyncCache().execute(); 
-            
-        } else { 
+        if (personaStats == null) {
+
+            new AsyncCache().execute();
+
+        } else {
 
             new AsyncRefresh().execute();
-            
+
         }
 
     }
@@ -409,11 +411,11 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         super.onResume();
 
     }
-    
+
     public Menu prepareOptionsMenu(Menu menu) {
-        
+
         ((MenuItem) menu.findItem(R.id.option_friendadd))
-        .setVisible(false);
+                .setVisible(false);
         ((MenuItem) menu.findItem(R.id.option_frienddel))
                 .setVisible(false);
         ((MenuItem) menu.findItem(R.id.option_compare))
@@ -421,20 +423,20 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         ((MenuItem) menu.findItem(R.id.option_unlocks))
                 .setVisible(true);
         return menu;
-        
+
     }
-    
+
     public boolean handleSelectedOption(MenuItem item) {
-        
+
         if (item.getItemId() == R.id.option_compare) {
-            
+
             startActivity(
 
-                new Intent(
-    
-                        context, CompareView.class
-    
-                ).putExtra(
+            new Intent(
+
+                    context, CompareView.class
+
+            ).putExtra(
 
                     "profile1", SessionKeeper.getProfileData()
 
@@ -469,32 +471,31 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
             startActivity(
 
-                new Intent(
-    
+            new Intent(
+
                     context, UnlockView.class
-    
-                ).putExtra(
 
-                        "profile", profileData
+            ).putExtra(
 
-                ).putExtra(
+                    "profile", profileData
 
-                        "selectedPosition", position
+                    ).putExtra(
 
-                )
+                            "selectedPosition", position
+
+                    )
 
             );
 
         }
-        
+
         return true;
 
-    
     }
 
     public void setComparing(boolean c) {
-        
+
         comparing = c;
     }
-    
+
 }

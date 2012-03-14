@@ -25,6 +25,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -37,10 +39,11 @@ import com.ninetwozero.battlelog.ForumView;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ThreadListAdapter;
 import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class ForumFragment extends ListFragment {
+public class ForumFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
     private Context context;
@@ -78,14 +81,14 @@ public class ForumFragment extends ListFragment {
         locale = sharedPreferences.getString(Constants.SP_BL_LOCALE, "en");
 
         // Init the views
-        initViews(view);
+        initFragment(view);
 
         // Return the view
         return view;
 
     }
 
-    public void initViews(View v) {
+    public void initFragment(View v) {
 
         // Setup the ListView
         textTitle = (TextView) v.findViewById(R.id.text_title);
@@ -338,6 +341,17 @@ public class ForumFragment extends ListFragment {
         textTitle.setText(data.getStringExtra("forumTitle"));
         reload();
 
+    }
+
+    @Override
+    public Menu prepareOptionsMenu(Menu menu) {
+        return menu;
+    }
+
+    @Override
+    public boolean handleSelectedOption(MenuItem item) {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }

@@ -116,8 +116,8 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
         listFeed = (ListView) v.findViewById(android.R.id.list);
         fieldMessage = (EditText) v.findViewById(R.id.field_message);
         textTitle = (TextView) v.findViewById(R.id.text_title);
-        buttonSend = (Button) v.findViewById( R.id.button_send );
-        
+        buttonSend = (Button) v.findViewById(R.id.button_send);
+
         // Setup the listAdapter
         feedListAdapter = new FeedListAdapter(context, feedItems,
                 layoutInflater);
@@ -141,17 +141,17 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
             textTitle.setText(title);
             fieldMessage.setHint(R.string.info_xml_hint_feed);
             wrapInput.setVisibility(canWrite ? View.VISIBLE : View.GONE);
-       
+
         }
-        
-        //Setup the button click 
-        buttonSend.setOnClickListener( 
-                
+
+        // Setup the button click
+        buttonSend.setOnClickListener(
+
                 new OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
-                        
+
                         // Empty message?
                         String message = fieldMessage.getText().toString();
                         if (message.equals("")) {
@@ -162,47 +162,47 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                         }
 
-                        //Let's do it accordingly
-                        if( type == FeedFragment.TYPE_GLOBAL ) {
+                        // Let's do it accordingly
+                        if (type == FeedFragment.TYPE_GLOBAL) {
 
-                            new AsyncStatusUpdate(context, FeedFragment.this).execute(message, sharedPreferences.getString( Constants.SP_BL_CHECKSUM, "" ));
-                        
-                        } else if( type == FeedFragment.TYPE_PROFILE ) {
+                            new AsyncStatusUpdate(context, FeedFragment.this).execute(message,
+                                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+
+                        } else if (type == FeedFragment.TYPE_PROFILE) {
 
                             new AsyncPostToWall(
-                                    
+
                                     context, id, false, FeedFragment.this
-    
+
                             ).execute(
-    
+
                                     sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""),
                                     message
 
-                            );                       
-                            
-                        } else if( type == FeedFragment.TYPE_PLATOON ) {
-                          
+                                    );
+
+                        } else if (type == FeedFragment.TYPE_PLATOON) {
+
                             new AsyncPostToWall(
-                                    
+
                                     context, id, true, FeedFragment.this
-    
+
                             ).execute(
-    
+
                                     sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""),
                                     message
-    
-                                    ); 
-                            
-                        }
-                        
 
-                        //Empty the field
+                                    );
+
+                        }
+
+                        // Empty the field
                         fieldMessage.setText("");
-                        
+
                     }
-        }
+                }
                 );
-        
+
     }
 
     @Override
@@ -248,14 +248,16 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
         }
         menu.add(Constants.MENU_ID_FEED, 1, 0, R.string.label_single_post_view);
-        if( type != FeedFragment.TYPE_PLATOON ) { menu.add(Constants.MENU_ID_FEED, 2, 0, R.string.label_goto_item); }
+        if (type != FeedFragment.TYPE_PLATOON) {
+            menu.add(Constants.MENU_ID_FEED, 2, 0, R.string.label_goto_item);
+        }
 
         return;
 
     }
-    
+
     public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {
-        
+
         try {
 
             // Grab the data
@@ -264,10 +266,9 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
             // REQUESTS
             if (item.getItemId() == 0) {
 
-                new AsyncFeedHooah(context,info.id, false, feedItem.isLiked(), this)
+                new AsyncFeedHooah(context, info.id, false, feedItem.isLiked(), this)
                         .execute(sharedPreferences.getString(
                                 Constants.SP_BL_CHECKSUM, ""));
-                 
 
             } else if (item.getItemId() == 1) {
 
@@ -308,9 +309,9 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
             return false;
 
         }
-        
+
         return true;
-        
+
     }
 
     public class AsyncFeedRefresh extends AsyncTask<Void, Void, Boolean> {
@@ -388,9 +389,9 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
         type = t;
 
     }
-    
+
     public int getType() {
-        
+
         return type;
     }
 
@@ -408,10 +409,14 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
         }
 
     }
-    
-    @Override
-    public Menu prepareOptionsMenu(Menu menu) { return menu; }
 
     @Override
-    public boolean handleSelectedOption(MenuItem item) { return false; }
+    public Menu prepareOptionsMenu(Menu menu) {
+        return menu;
+    }
+
+    @Override
+    public boolean handleSelectedOption(MenuItem item) {
+        return false;
+    }
 }

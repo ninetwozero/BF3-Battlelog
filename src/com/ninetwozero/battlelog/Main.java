@@ -16,10 +16,13 @@ package com.ninetwozero.battlelog;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -30,6 +33,10 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -40,38 +47,47 @@ import android.widget.EditText;
 import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
-import android.widget.TabHost;
-import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
+import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
+import com.ninetwozero.battlelog.fragments.AboutCreditsFragment;
+import com.ninetwozero.battlelog.fragments.AboutFAQFragment;
+import com.ninetwozero.battlelog.fragments.AboutMainFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class Main extends Activity {
+public class Main extends FragmentActivity implements DefaultFragmentActivity {
 
-    // Fields
+    // Attributes
+    private String[] valueFields;
+    private PostData[] postDataArray;
+    private SharedPreferences sharedPreferences;
+    
+    // Elements
     private EditText fieldEmail, fieldPassword;
     private CheckBox checkboxSave;
     private SlidingDrawer slidingDrawer;
-    private TabHost cTabHost;
     private LayoutInflater layoutInflater;
     private OnDrawerOpenListener onDrawerOpenListener;
     private OnDrawerCloseListener onDrawerCloseListener;
     private TextView slidingDrawerHandle;
 
-    // Values
-    private String[] valueFields;
-    private PostData[] postDataArray;
-
-    // SP
-    private SharedPreferences sharedPreferences;
+    // Fragment related
+    private SwipeyTabs tabs;
+    private SwipeyTabsPagerAdapter pagerAdapter;
+    private List<Fragment> listFragments;
+    private FragmentManager fragmentManager;
+    private AboutMainFragment fragmentAbout;
+    private AboutFAQFragment fragmentFAQ;
+    private AboutCreditsFragment fragmentCredits;
+    private ViewPager viewPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +97,8 @@ public class Main extends Activity {
 
         // Set sharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        fragmentManager = getSupportFragmentManager();
 
         // Setup the locale
         PublicUtils.setupLocale(this, sharedPreferences);
@@ -105,21 +123,9 @@ public class Main extends Activity {
         changeLogDialog();
 
         // Let's populate... or shall we not?
-        populateFields();
+        initActivity();
 
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        cTabHost = (TabHost) findViewById(R.id.com_tabhost);
-        cTabHost.setup();
-
-        setupTabsSecondary(new String[] {
-                getString(R.string.label_about),
-                getString(R.string.label_faq),
-                getString(R.string.label_credits)
-        }, new int[] {
-                R.layout.tab_content_main_about, R.layout.tab_content_main_faq,
-                R.layout.tab_content_main_credits
-        });
-
+        //Setup the drawer
         setupDrawer();
 
     }
@@ -133,7 +139,7 @@ public class Main extends Activity {
 
     }
 
-    private void populateFields() {
+    public void initActivity() {
 
         // Get the fields
         fieldEmail = (EditText) findViewById(R.id.field_email);
@@ -331,40 +337,8 @@ public class Main extends Activity {
             // Attach the listeners
             slidingDrawer.setOnDrawerOpenListener(onDrawerOpenListener);
             slidingDrawer.setOnDrawerCloseListener(onDrawerCloseListener);
-        }
-    }
-
-    private void setupTabsSecondary(final String[] titleArray,
-            final int[] layoutArray) {
-
-        // Init
-        TabHost.TabSpec spec;
-
-        // Iterate them tabs
-        for (int i = 0, max = titleArray.length; i < max; i++) {
-
-            // Num
-            final int num = i;
-            View tabview = createTabView(cTabHost.getContext(), titleArray[num]);
-
-            // Let's set the content
-            spec = cTabHost.newTabSpec(titleArray[num]).setIndicator(tabview)
-                    .setContent(
-
-                            new TabContentFactory() {
-
-                                public View createTabContent(String tag) {
-
-                                    return layoutInflater.inflate(layoutArray[num],
-                                            null);
-                                }
-
-                            }
-
-                    );
-
-            // Add the tab
-            cTabHost.addTab(spec);
+            
+            setupFragments();
         }
     }
 
@@ -508,16 +482,6 @@ public class Main extends Activity {
 
     }
 
-    private final View createTabView(final Context context, final String text) {
-
-        View view = LayoutInflater.from(context).inflate(
-                R.layout.profile_tab_layout, null);
-        TextView tv = (TextView) view.findViewById(R.id.tabsText);
-        tv.setText(text);
-        return view;
-
-    }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
 
@@ -551,5 +515,49 @@ public class Main extends Activity {
         PublicUtils.setupLocale(this, sharedPreferences);
 
     }
+    
+    @Override
+    public void setupFragments() {
+        
+        // Do we need to setup the fragments?
+        if (listFragments == null) {
+
+            // Add them to the list
+            listFragments = new Vector<Fragment>();
+            listFragments.add(fragmentAbout = (AboutMainFragment) Fragment.instantiate(this,
+                    AboutMainFragment.class.getName()));
+            listFragments.add(fragmentFAQ = (AboutFAQFragment) Fragment.instantiate(this,
+                    AboutFAQFragment.class.getName()));
+            listFragments.add(fragmentCredits = (AboutCreditsFragment) Fragment.instantiate(this,
+                    AboutCreditsFragment.class.getName()));
+
+            // Get the ViewPager
+            viewPager = (ViewPager) findViewById(R.id.viewpager);
+            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+
+            // Fill the PagerAdapter & set it to the viewpager
+            pagerAdapter = new SwipeyTabsPagerAdapter(
+
+                    fragmentManager,
+                    new String[] {
+                            "About", "FAQ", "Credits"
+                    },
+                    listFragments,
+                    viewPager,
+                    layoutInflater
+                    );
+            viewPager.setAdapter(pagerAdapter);
+            tabs.setAdapter(pagerAdapter);
+
+            // Make sure the tabs follow
+            viewPager.setOnPageChangeListener(tabs);
+            viewPager.setCurrentItem(0);
+
+        }
+        
+    }
+
+    @Override
+    public void reload() {}
 
 }

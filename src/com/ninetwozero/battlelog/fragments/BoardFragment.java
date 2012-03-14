@@ -29,6 +29,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -39,11 +41,12 @@ import com.ninetwozero.battlelog.ForumView;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ForumListAdapter;
 import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class BoardFragment extends ListFragment {
+public class BoardFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
     private Context context;
@@ -79,14 +82,14 @@ public class BoardFragment extends ListFragment {
         forums = new ArrayList<Board.Forum>();
 
         // Init the views
-        initViews(view);
+        initFragment(view);
 
         // Return the view
         return view;
 
     }
 
-    public void initViews(View v) {
+    public void initFragment(View v) {
 
         // Setup the TextView
         textTitle = (TextView) v.findViewById(R.id.text_board_title);
@@ -258,5 +261,16 @@ public class BoardFragment extends ListFragment {
         // CREATE
         return builder.create();
 
+    }
+
+    @Override
+    public Menu prepareOptionsMenu(Menu menu) {
+        return menu;
+    }
+
+    @Override
+    public boolean handleSelectedOption(MenuItem item) {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

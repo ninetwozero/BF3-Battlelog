@@ -100,7 +100,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
         // Let's see if we're allowed to post (before we've gotten the data
         // atleast)
         hasPostingRights = false;
-        
+
     }
 
     public final void showProfile(ProfileInformation data) {
@@ -109,10 +109,12 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
         if (data == null) {
             return;
         }
-        
-        //Get activity
+
+        // Get activity
         Activity activity = getActivity();
-        if( activity == null ) { return; }
+        if (activity == null) {
+            return;
+        }
 
         // Let's start drawing the... layout
         ((TextView) activity.findViewById(R.id.text_username)).setText(data.getUsername());
@@ -288,7 +290,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 // Get...
                 profileInformation = CacheHandler.Profile.select(context,
                         profileData.getProfileId());
-                
+
                 // We got one?!
                 return (profileInformation != null);
 
@@ -314,16 +316,16 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                 // Set the data for the profile
                 showProfile(profileInformation);
-                
-                //Set the profileData...
+
+                // Set the profileData...
                 profileData.setPersonaId(profileInformation
                         .getAllPersonas());
                 profileData.setPersonaName(profileInformation
                         .getAllPersonaNames());
                 profileData.setPlatformId(profileInformation
                         .getAllPlatforms());
-                
-                //...and then send it to the stats
+
+                // ...and then send it to the stats
                 sendToStats(profileData);
 
             } else {
@@ -448,11 +450,13 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
         profileData = p;
     }
-    
+
     public Menu prepareOptionsMenu(Menu menu) {
-        
-        //Is it null?
-        if( profileInformation == null ) { return menu; }
+
+        // Is it null?
+        if (profileInformation == null) {
+            return menu;
+        }
         if (profileInformation.getAllowFriendRequests()) {
 
             if (profileInformation.isFriend()) {
@@ -481,37 +485,37 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
         ((MenuItem) menu.findItem(R.id.option_compare))
                 .setVisible(false);
-        
+
         return menu;
-    
+
     }
-    
+
     public boolean handleSelectedOption(MenuItem item) {
-        
-        if( item.getItemId() == R.id.option_friendadd ) {
+
+        if (item.getItemId() == R.id.option_friendadd) {
 
             new AsyncFriendRequest(context, profileData.getProfileId()).execute(
 
-                sharedPreferences.getString(
+                    sharedPreferences.getString(
 
-                        Constants.SP_BL_CHECKSUM, "")
+                            Constants.SP_BL_CHECKSUM, "")
 
-                );
+                    );
 
         } else if (item.getItemId() == R.id.option_frienddel) {
 
             new AsyncFriendRemove(context, profileData.getProfileId()).execute(
 
-                sharedPreferences.getString(
+                    sharedPreferences.getString(
 
-                        Constants.SP_BL_CHECKSUM, "")
+                            Constants.SP_BL_CHECKSUM, "")
 
-                );
+                    );
 
         }
-        
+
         return true;
-    
+
     }
 
 }

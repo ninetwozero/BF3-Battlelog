@@ -54,11 +54,11 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
     private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
 
-    //Elements
+    // Elements
     private TextView textTitle;
     private ListView listView;
     private PlatoonUserListAdapter platoonUserListAdapter;
-    
+
     // Misc
     private PlatoonData platoonData;
     private PlatoonInformation platoonInformation;
@@ -85,7 +85,6 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
 
@@ -103,18 +102,17 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
     public void initFragment(View v) {
 
-        //Setup the listView
+        // Setup the listView
         listView = (ListView) v.findViewById(android.R.id.list);
         platoonUserListAdapter = new PlatoonUserListAdapter(context, null, layoutInflater);
         listView.setAdapter(platoonUserListAdapter);
-        
-        //Default
+
+        // Default
         isViewingMembers = true;
-        
-        //Get the TextView
+
+        // Get the TextView
         textTitle = (TextView) v.findViewById(R.id.text_title_users);
 
-        
     }
 
     public final void showMembers(PlatoonInformation data) {
@@ -123,14 +121,18 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
         if (data == null) {
             return;
         }
-        
-        //Get the activity
+
+        // Get the activity
         Activity activity = getActivity();
-        if( activity == null ) { return; }
-        
-        //Store the PlatoonInformation
-        if( platoonInformation != data ) { platoonInformation = data; }
-        
+        if (activity == null) {
+            return;
+        }
+
+        // Store the PlatoonInformation
+        if (platoonInformation != data) {
+            platoonInformation = data;
+        }
+
         Log.d(Constants.DEBUG_TAG, "lets update it!");
         // Get the appropriate data for the listview
         if (isViewingMembers) {
@@ -145,22 +147,20 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
         }
 
-        
-
     }
 
     public void reload() {
 
     }
-    
+
     public void setPlatoonData(PlatoonData p) {
 
         platoonData = p;
     }
-    
+
     public Menu prepareOptionsMenu(Menu menu) {
-        
-        //Is it null?
+
+        // Is it null?
         if (isViewingMembers) {
 
             ((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
@@ -181,11 +181,11 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
         }
         return menu;
-    
+
     }
-    
+
     public boolean handleSelectedOption(MenuItem item) {
-        
+
         if (item.getItemId() == R.id.option_members
                 || item.getItemId() == R.id.option_fans) {
 
@@ -196,26 +196,26 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
             startActivity(
 
-                new Intent(
-    
-                        context, PlatoonInviteView.class
-    
-                ).putExtra(
+            new Intent(
+
+                    context, PlatoonInviteView.class
+
+            ).putExtra(
 
                     "platoon", platoonData
 
-                ).putExtra(
+                    ).putExtra(
 
-                    "friends", platoonInformation.getInvitableFriends()
+                            "friends", platoonInformation.getInvitableFriends()
 
-                )
+                    )
 
             );
 
         }
-        
+
         return true;
-    
+
     }
 
     @Override
@@ -224,7 +224,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
         getActivity().openContextMenu(v);
 
     }
-    
+
     public void createContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
 
@@ -263,7 +263,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
                 menu.add(2, 2, 0, R.string.info_platoon_member_kick);
 
             }
-    
+
         } else if (data.getMembershipLevel() == 1) { // Players that want to
             // join
 
@@ -279,88 +279,87 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
         try {
 
-        // Divide & conquer
-        if (item.getGroupId() == 2) {
+            // Divide & conquer
+            if (item.getGroupId() == 2) {
 
-            // Get the data
-            PlatoonMemberData data = (PlatoonMemberData) info.targetView
-                    .getTag();
+                // Get the data
+                PlatoonMemberData data = (PlatoonMemberData) info.targetView
+                        .getTag();
 
-            // ...
-            if (item.getItemId() == 0) {
+                // ...
+                if (item.getItemId() == 0) {
 
-                startActivity(
+                    startActivity(
 
-                new Intent(context, ProfileView.class).putExtra(
+                    new Intent(context, ProfileView.class).putExtra(
 
-                        "profile", data
+                            "profile", data
 
-                        )
+                            )
 
-                );
+                    );
 
-            } else if (item.getItemId() == 1) {
+                } else if (item.getItemId() == 1) {
 
-                if (!data.isAdmin()) {
+                    if (!data.isAdmin()) {
+
+                        Toast.makeText(context,
+                                R.string.info_platoon_member_promoting,
+                                Toast.LENGTH_SHORT).show();
+
+                    } else {
+
+                        Toast.makeText(context,
+                                R.string.info_platoon_member_demoting,
+                                Toast.LENGTH_SHORT).show();
+
+                    }
+                    new AsyncPlatoonMemberManagement(context, data.getProfileId(),
+                            platoonData.getId(), 1).execute(!data.isAdmin());
+
+                } else if (item.getItemId() == 2) {
+
+                    Toast.makeText(context, R.string.info_platoon_member_kicking,
+                            Toast.LENGTH_SHORT).show();
+                    new AsyncPlatoonMemberManagement(context, data.getProfileId(),
+                            platoonData.getId(), 2).execute();
+
+                } else if (item.getItemId() == 3) {
+
+                    Toast.makeText(context, R.string.info_platoon_member_new_ok,
+                            Toast.LENGTH_SHORT).show();
+                    new AsyncPlatoonRespond(
+
+                            context, platoonData.getId(), data.getProfileId(), true
+
+                    ).execute(sharedPreferences.getString(
+                            Constants.SP_BL_CHECKSUM, ""));
+
+                } else if (item.getItemId() == 4) {
 
                     Toast.makeText(context,
-                            R.string.info_platoon_member_promoting,
+                            R.string.info_platoon_member_new_false,
                             Toast.LENGTH_SHORT).show();
+                    new AsyncPlatoonRespond(
 
-                } else {
+                            context, platoonData.getId(), data.getProfileId(), false
 
-                    Toast.makeText(context,
-                            R.string.info_platoon_member_demoting,
-                            Toast.LENGTH_SHORT).show();
+                    ).execute(sharedPreferences.getString(
+                            Constants.SP_BL_CHECKSUM, ""));
 
                 }
-                new AsyncPlatoonMemberManagement(context, data.getProfileId(),
-                        platoonData.getId(), 1).execute(!data.isAdmin());
-
-            } else if (item.getItemId() == 2) {
-
-                Toast.makeText(context, R.string.info_platoon_member_kicking,
-                        Toast.LENGTH_SHORT).show();
-                new AsyncPlatoonMemberManagement(context, data.getProfileId(),
-                        platoonData.getId(), 2).execute();
-
-            } else if (item.getItemId() == 3) {
-
-                Toast.makeText(context, R.string.info_platoon_member_new_ok,
-                        Toast.LENGTH_SHORT).show();
-                new AsyncPlatoonRespond(
-
-                        context, platoonData.getId(), data.getProfileId(), true
-
-                ).execute(sharedPreferences.getString(
-                        Constants.SP_BL_CHECKSUM, ""));
-
-            } else if (item.getItemId() == 4) {
-
-                Toast.makeText(context,
-                        R.string.info_platoon_member_new_false,
-                        Toast.LENGTH_SHORT).show();
-                new AsyncPlatoonRespond(
-
-                        context, platoonData.getId(), data.getProfileId(), false
-
-                ).execute(sharedPreferences.getString(
-                        Constants.SP_BL_CHECKSUM, ""));
 
             }
-            
-        } 
-        
+
         } catch (Exception ex) {
 
             ex.printStackTrace();
             return false;
 
         }
-        
-        return true;
-        
-    }
 
+        return true;
+
+    }
 
 }

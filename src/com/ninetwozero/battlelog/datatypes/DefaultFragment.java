@@ -19,10 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 public interface DefaultFragment {
-    
+
     public void initFragment(View v);
-    public void reload();    
+
+    public void reload();
+
     public Menu prepareOptionsMenu(Menu menu);
+
     public boolean handleSelectedOption(MenuItem item);
 
 }

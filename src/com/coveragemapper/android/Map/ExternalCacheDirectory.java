@@ -17,7 +17,7 @@ public abstract class ExternalCacheDirectory {
     protected final Context mContext;
 
     public static ExternalCacheDirectory getInstance(final Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ECLAIR_MR1) {
             return new ExternalCacheDirectory8(context);
         }
 

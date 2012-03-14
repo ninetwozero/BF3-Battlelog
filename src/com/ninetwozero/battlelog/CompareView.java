@@ -85,12 +85,12 @@ public class CompareView extends FragmentActivity implements DefaultFragmentActi
 
         // Let's set them straight
         profileData = new ProfileData[] {
-            
-            (ProfileData) getIntent().getParcelableExtra("profile1"),
-            (ProfileData) getIntent().getParcelableExtra("profile2")
+
+                (ProfileData) getIntent().getParcelableExtra("profile1"),
+                (ProfileData) getIntent().getParcelableExtra("profile2")
 
         };
-        
+
         // Setup the trinity
         PublicUtils.setupLocale(this, sharedPreferences);
         PublicUtils.setupSession(this, sharedPreferences);
@@ -145,7 +145,7 @@ public class CompareView extends FragmentActivity implements DefaultFragmentActi
 
                 return fragmentStats[0].handleSelectedOption(item);
 
-            } else if (viewPager.getCurrentItem() == 2 ) {
+            } else if (viewPager.getCurrentItem() == 2) {
 
                 return fragmentStats[1].handleSelectedOption(item);
 
@@ -171,8 +171,8 @@ public class CompareView extends FragmentActivity implements DefaultFragmentActi
 
         // We need to initialize
         initActivity();
-        
-        //Let's reload
+
+        // Let's reload
         reload();
 
     }
@@ -225,11 +225,11 @@ public class CompareView extends FragmentActivity implements DefaultFragmentActi
             // Add the profileData
             fragmentStats[0].setProfileData(profileData[0]);
             fragmentStats[1].setProfileData(profileData[1]);
-            
-            //Make them know they're about to compare
+
+            // Make them know they're about to compare
             fragmentStats[0].setComparing(true);
             fragmentStats[1].setComparing(true);
-            
+
             // Get the ViewPager
             viewPager = (ViewPager) findViewById(R.id.viewpager);
             tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
@@ -273,11 +273,12 @@ public class CompareView extends FragmentActivity implements DefaultFragmentActi
         }
         return super.onKeyDown(keyCode, event);
     }
-    
+
     public void sendToCompare(ProfileData p, Map<Long, PersonaStats> ps, long id, boolean toggle) {
-        
-        fragmentCompare.showStats(ps, id, ( (p.getProfileId() == profileData[0].getProfileId() ) ? 0 : 1), toggle);
-        
+
+        fragmentCompare.showStats(ps, id, ((p.getProfileId() == profileData[0].getProfileId()) ? 0
+                : 1), toggle);
+
     }
-    
+
 }

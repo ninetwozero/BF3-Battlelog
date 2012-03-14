@@ -88,7 +88,6 @@
 		        android:id="@+id/wrap_web"
 			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
-	    		android:onClick="onContactClick"
 			>	
 				<ImageView 
 			    	android:id="@+id/image_web"

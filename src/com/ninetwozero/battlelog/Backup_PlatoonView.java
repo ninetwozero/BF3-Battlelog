@@ -1168,16 +1168,11 @@ public class Backup_PlatoonView extends TabActivity {
 
             }
 
-            /*new AsyncPostToWall(
-
-                    this, platoonData.getId(), true
-
-            ).execute(
-
-                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""),
-                    fieldMessage.getText().toString()
-
-                    );*/
+            /*
+             * new AsyncPostToWall( this, platoonData.getId(), true ).execute(
+             * sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""),
+             * fieldMessage.getText().toString() );
+             */
             fieldMessage.setText("");
 
         }
@@ -1193,7 +1188,7 @@ public class Backup_PlatoonView extends TabActivity {
 
         if (mTabHost.getCurrentTab() == 2) {
 
-         // Get the data
+            // Get the data
             PlatoonMemberData data = (PlatoonMemberData) info.targetView
                     .getTag();
 

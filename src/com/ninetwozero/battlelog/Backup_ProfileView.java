@@ -1210,16 +1210,11 @@ public class Backup_ProfileView extends TabActivity {
 
             }
 
-            /*new AsyncPostToWall(
-
-                    CONTEXT, profileData.getProfileId(), false
-
-            ).execute(
-
-                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""),
-                    fieldMessage.getText().toString()
-
-                    );*/
+            /*
+             * new AsyncPostToWall( CONTEXT, profileData.getProfileId(), false
+             * ).execute( sharedPreferences.getString(Constants.SP_BL_CHECKSUM,
+             * ""), fieldMessage.getText().toString() );
+             */
             fieldMessage.setText("");
 
         } else if (v.getId() == R.id.wrap_persona) {

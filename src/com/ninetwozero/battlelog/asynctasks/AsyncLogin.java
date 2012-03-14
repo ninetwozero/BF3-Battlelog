@@ -23,7 +23,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Backup_Dashboard;
+import com.ninetwozero.battlelog.Dashboard;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
@@ -111,7 +111,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
             // Start new
             context.startActivity(
 
-                    new Intent(context, Backup_Dashboard.class).putExtra(
+                    new Intent(context, Dashboard.class).putExtra(
 
                             "myProfile", profile
 

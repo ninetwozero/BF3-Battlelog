@@ -14,12 +14,15 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.AppContributorData;
 import com.ninetwozero.battlelog.datatypes.PlatformData;
 import com.ninetwozero.battlelog.datatypes.VehicleType;
 import com.ninetwozero.battlelog.datatypes.WeaponType;
@@ -111,6 +114,7 @@ public class DataBank {
     private static PlatformData[] PLATFORMS;
     private static String[] LANGUAGES;
     private static String[] LOCALES;
+    private static List<AppContributorData> APP_CONTRIBUTORS;
     private static HashMap<String, String> RANKS;
     private static HashMap<String, VehicleType> VEHICLES;
     private static HashMap<String, String> KIT_ITEMS;
@@ -132,6 +136,7 @@ public class DataBank {
 
         // Init!
         PLATFORMS = new PlatformData[4];
+        APP_CONTRIBUTORS = new ArrayList<AppContributorData>();
         WEAPONS = new HashMap<String, WeaponType>();
         VEHICLES = new HashMap<String, VehicleType>();
         RANKS = new HashMap<String, String>();
@@ -164,6 +169,44 @@ public class DataBank {
         PLATFORMS[1] = new PlatformData(2, "xbox");
         PLATFORMS[2] = new PlatformData(1, "");
         PLATFORMS[3] = new PlatformData(4, "ps3");
+
+        // CONTRIBUTORS
+        APP_CONTRIBUTORS.add(new AppContributorData(R.string.info_credits_code));
+        APP_CONTRIBUTORS
+                .add(new AppContributorData("Lukas Larson", "mailto:lukaslarson@gmail.com"));
+        APP_CONTRIBUTORS.add(new AppContributorData("Martin Nuc", "http://www.nuc.cz/"));
+        APP_CONTRIBUTORS.add(new AppContributorData("Peter Miklo\u0161sko",
+                "https://github.com/peter-budo"));
+        APP_CONTRIBUTORS.add(new AppContributorData(R.string.info_credits_graphics));
+        APP_CONTRIBUTORS.add(new AppContributorData("Marcus Januszewski", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("Stephen 'Dbagjones' Beaudet",
+                "http://djonesradio.com"));
+        APP_CONTRIBUTORS.add(new AppContributorData(R.string.info_credits_translations));
+        APP_CONTRIBUTORS.add(new AppContributorData("Alexander Katsero", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("Angelo Zangarini", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("Arnaud Ligny", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("artsiputsi", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("bagione", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("basr", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("capalex", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("Coval Delanight", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("Cuprax", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("cyrq", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("DarkoKukovec", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("federico", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("fysme", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("Judit Tur", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("Klaus Thenmayer", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("Mirella Lindmark", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("MMario1989", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("neurokirurgi", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("pauldegroot", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("pingus", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("Ricket008", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("sangr1aman", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("waldzias", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("zAo82", "mailto:sbkg0002@gmail.com"));
+        APP_CONTRIBUTORS.add(new AppContributorData("zauriel", ""));
 
         // DIFFICULTIES
         DIFFICULTY_MAP.put("ID_RP_DIFFICULTY_MEDIUM", "Normal");
@@ -1472,4 +1515,10 @@ public class DataBank {
         }
 
     }
+
+    public static List<AppContributorData> getContributors() {
+
+        return APP_CONTRIBUTORS;
+    }
+
 }

@@ -255,19 +255,19 @@ public class Dashboard extends FragmentActivity implements DefaultFragmentActivi
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
-        
-        switch( viewPager.getCurrentItem() ) {
-            
+
+        switch (viewPager.getCurrentItem()) {
+
             case 0:
                 break;
-                
+
             case 1:
                 fragmentFeed.createContextMenu(menu, view, menuInfo);
                 break;
-            
+
             default:
                 break;
-                
+
         }
         return;
 
@@ -291,14 +291,14 @@ public class Dashboard extends FragmentActivity implements DefaultFragmentActivi
 
         }
 
-        switch( viewPager.getCurrentItem() ) {
-            
+        switch (viewPager.getCurrentItem()) {
+
             case 1:
                 return fragmentFeed.handleSelectedContextItem(info, item);
 
-            default: 
-               break;
-            
+            default:
+                break;
+
         }
 
         return true;
