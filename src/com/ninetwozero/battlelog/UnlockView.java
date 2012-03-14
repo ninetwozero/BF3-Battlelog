@@ -368,7 +368,7 @@ public class UnlockView extends FragmentActivity implements DefaultFragmentActiv
 
     public void setupList(UnlockDataWrapper data, int position) {
 
-        ((UnlockFragment) listFragments.get(position)).showUnlocks(getUnlocksForFragment(position));
+        ((UnlockFragment) listFragments.get(position)).showUnlocks(getItemsForFragment(position));
     }
 
     @Override
@@ -400,7 +400,7 @@ public class UnlockView extends FragmentActivity implements DefaultFragmentActiv
 
     }
 
-    public List<UnlockData> getUnlocksForFragment(int p) {
+    public List<UnlockData> getItemsForFragment(int p) {
 
         // Let's see if we got anything
         if (unlocks == null) {

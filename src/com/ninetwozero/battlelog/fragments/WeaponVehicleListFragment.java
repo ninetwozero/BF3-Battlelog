@@ -31,10 +31,12 @@ import android.widget.ListView;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.UnlockView;
 import com.ninetwozero.battlelog.adapters.UnlockListAdapter;
+import com.ninetwozero.battlelog.adapters.WeaponVehicleListAdapter;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
+import com.ninetwozero.battlelog.datatypes.WeaponVehicleListData;
 
-public class UnlockFragment extends ListFragment implements DefaultFragment  {
+public class WeaponVehicleListFragment extends ListFragment implements DefaultFragment  {
 
     // Attributes
     private Context context;
@@ -45,7 +47,7 @@ public class UnlockFragment extends ListFragment implements DefaultFragment  {
     private ListView listView;
 
     // Misc
-    private List<UnlockData> unlocks;
+    private List<UnlockData> items;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -63,7 +65,7 @@ public class UnlockFragment extends ListFragment implements DefaultFragment  {
                 container, false);
 
         // Get the unlocks
-        unlocks = ((UnlockView) getActivity()).getItemsForFragment(viewPagerPosition);
+        items = ((UnlockView) getActivity()).getItemsForFragment(viewPagerPosition);
 
         // Init views
         initFragment(view);
@@ -77,7 +79,7 @@ public class UnlockFragment extends ListFragment implements DefaultFragment  {
 
         // Setup the ListView
         listView = (ListView) v.findViewById(android.R.id.list);
-        listView.setAdapter(new UnlockListAdapter(context, unlocks, layoutInflater));
+        listView.setAdapter(new UnlockListAdapter(context, items, layoutInflater));
 
     }
 
@@ -107,10 +109,10 @@ public class UnlockFragment extends ListFragment implements DefaultFragment  {
 
     }
 
-    public void showUnlocks(List<UnlockData> unlockData) {
+    public void showUnlocks(List<WeaponVehicleListData> unlockData) {
 
         // Let's set the data
-        ((UnlockListAdapter) listView.getAdapter()).setDataArray(unlockData);
+        ((WeaponVehicleListAdapter) listView.getAdapter()).setDataArray(unlockData);
 
     }
 
