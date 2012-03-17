@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.ninetwozero.battlelog.R;
 
 public class Board {
 

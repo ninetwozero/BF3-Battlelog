@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.datatypes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 

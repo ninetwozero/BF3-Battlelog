@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog.misc;
 
 import android.content.SharedPreferences;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 
 public class SessionKeeper {

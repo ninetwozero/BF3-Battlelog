@@ -52,6 +52,7 @@ import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.GeneralSearchResult;
+import com.ninetwozero.battlelog.datatypes.NewsData;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
@@ -126,14 +127,14 @@ public class WebsiteHandler {
                     } else {
 
                         tempString[0] = httpContent.substring(startPosition)
-                                .replace("</div>", "")
-                                .replace(Constants.ELEMENT_ERROR_MESSAGE, "");
-                        Toast.makeText(context, tempString[0] + " ",
-                                Toast.LENGTH_SHORT).show();
+                            .replace("</div>", "")
+                            .replace("\n", "")
+                            .replace(Constants.ELEMENT_ERROR_MESSAGE, "");
+                        tempString[0] = tempString[0].substring(0, tempString[0].indexOf("<div"));
+
+                        throw new WebsiteHandlerException(tempString[0]);
 
                     }
-
-                    return null;
 
                 }
 
@@ -245,6 +246,14 @@ public class WebsiteHandler {
                                 + serviceInterval / 60000 + " minutes");
 
                 // Return it!!
+                Log.d(Constants.DEBUG_TAG, "profile => " + profile);
+                Log.d(Constants.DEBUG_TAG, "-------------------------");
+                Log.d(Constants.DEBUG_TAG, "profile::accountName => " + profile.getAccountName());
+                Log.d(Constants.DEBUG_TAG, "profile::personaId => " + profile.getPersonaId());
+                Log.d(Constants.DEBUG_TAG, "profile::personaName => " + profile.getPersonaName());
+                Log.d(Constants.DEBUG_TAG, "profile::platformId => " + profile.getPlatformId());
+                Log.d(Constants.DEBUG_TAG, "profile::gravarhash => " + profile.getGravatarHash());
+                Log.d(Constants.DEBUG_TAG, "-------------------------");
                 return profile;
 
             } else {
@@ -253,14 +262,9 @@ public class WebsiteHandler {
 
             }
 
-        } catch (RequestHandlerException ex) {
-
-            throw new WebsiteHandlerException(ex.getMessage());
-
         } catch (Exception ex) {
 
-            ex.printStackTrace();
-            throw new WebsiteHandlerException("Failed to log-in.");
+            throw new WebsiteHandlerException(ex.getMessage());
 
         }
 
@@ -6238,7 +6242,7 @@ public class WebsiteHandler {
 
     }
 
-    public static ArrayList<WeaponStats> getWeaponStatisticsForPersona(long profileId,
+    public static List<WeaponStats> getWeaponStatisticsForPersona(long profileId,
             int platformId) { /* TODO: WORK IN PROGRESS */
 
         try {
@@ -6312,4 +6316,83 @@ public class WebsiteHandler {
 
     }
 
+    public static List<NewsData> getNewsForPage(int p) throws WebsiteHandlerException {
+        
+        try {
+            
+            //Init!
+            RequestHandler rh = new RequestHandler();
+            List<NewsData> news = new ArrayList<NewsData>();
+            
+            //Iterate!
+            for( int i = 0, max= 2; i < max; i++) {
+
+                //Let's see
+                int num = (10*p);
+                if( i == 1 ) {
+                    
+                    num += 5;
+                    
+                }
+                
+                //Get the data
+                String httpContent = rh.get(Constants.URL_NEWS.replace("{COUNT}", num + ""), 1);
+                
+                //Did we get something?
+                if( httpContent != null && !httpContent.equals("") ) {
+                    
+                    //JSON!
+                    JSONArray baseArray = new JSONObject(httpContent).getJSONObject("context").getJSONArray("blogPosts");
+                    
+                    //Iterate
+                    for( int count = 0, maxCount = baseArray.length(); count < maxCount; count++ ) {
+                        
+                        //Get the current item
+                        JSONObject item = baseArray.getJSONObject(count);
+                        JSONObject user = item.getJSONObject("user");
+                        
+                        //Handle the data
+                        news.add( 
+                                
+                            new NewsData(
+                                    
+                                Long.parseLong( item.getString("id") ),
+                                item.getLong("creationDate"),
+                                item.getInt("devblogCommentCount"),
+                                item.getString("title"),
+                                item.getString("body"),
+                                new ProfileData(
+            
+                                    user.getString("username"),
+                                    user.getString("username"),
+                                    0,
+                                    Long.parseLong( user.getString("userId") ),
+                                    0,
+                                    user.getString("gravatarMd5")
+                                        
+                                )
+                                
+                            )
+                        
+                        );
+                        
+                    }
+                    
+                }
+
+            }
+            
+            return news;
+            
+        } catch( RequestHandlerException ex ) {
+            
+            throw new WebsiteHandlerException(ex.getMessage());
+            
+        } catch( Exception ex ) {
+            
+             throw new WebsiteHandlerException(ex.getMessage());   
+        }
+        
+    }
+    
 }

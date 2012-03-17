@@ -156,6 +156,9 @@ public final class Constants {
     public static final String URL_FORUM_REPORT = URL_MAIN
             + "viewcontent/reportForumAbuse/{POST_ID}/";
 
+    //News
+    public static final String URL_NEWS = URL_MAIN + "news/{COUNT}/";
+    
     // Fields needed for the posts fields
     public static final String[] FIELD_NAMES_LOGIN = new String[] {
             "email",

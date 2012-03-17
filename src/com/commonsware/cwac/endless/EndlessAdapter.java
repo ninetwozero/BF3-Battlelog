@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
 import com.commonsware.cwac.adapter.AdapterWrapper;
+import com.ninetwozero.battlelog.R;
 
 /**
  * Adapter that assists another adapter in appearing endless. For example, this

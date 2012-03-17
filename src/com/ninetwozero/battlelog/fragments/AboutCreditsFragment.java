@@ -46,7 +46,7 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-
+        
         // Set our attributes
         context = getActivity();
         layoutInflater = inflater;
@@ -65,9 +65,6 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
 
     @Override
     public void initFragment(View view) {
-
-        //Prevent bug
-        setUserVisibleHint(true);
         
         // Get the listview
         listView = (ListView) view.findViewById(android.R.id.list);
@@ -96,17 +93,18 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
 
         // Get the url
         String url = String.valueOf(v.getTag());
-        
+        Log.d(Constants.DEBUG_TAG, "url => " + url);
+
         // Is it empty?
         if (url.equals("")) {
             Toast.makeText(context, R.string.info_credits_nolink, Toast.LENGTH_SHORT).show();
-            return;
-
+        
         } else {  
             // Let's send it somewhere
             startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)));
 
         }
+        return;
         
     }
 

@@ -39,6 +39,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     private boolean savePassword;
     private ProfileData profile;
     private String locale;
+    private String errorMessage;
 
     // Constructor
     public AsyncLogin(Context c) {
@@ -91,8 +92,9 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
             // Did it go ok?
             return (profile != null);
 
-        } catch (WebsiteHandlerException e) {
+        } catch (WebsiteHandlerException ex) {
 
+            errorMessage = ex.getMessage();
             return false;
 
         }
@@ -128,7 +130,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
         } else {
 
-            Toast.makeText(context, R.string.msg_login_fail, Toast.LENGTH_SHORT)
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
                     .show();
 
         }

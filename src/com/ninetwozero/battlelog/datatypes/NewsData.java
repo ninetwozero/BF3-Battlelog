@@ -18,29 +18,32 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.ninetwozero.battlelog.R;
 
-public class CommentData implements Parcelable {
+public class NewsData implements Parcelable {
 
     // Attributes
-    private long id, itemId, timestamp;
-    private String content;
+    private long id, date;
+    private int numComments;
+    private String title, content;
     private ProfileData author;
 
     // Constructs
-    public CommentData(long id, long iId, long cDate, String c, ProfileData a) {
+    public NewsData(long id, long cDate, int n, String t, String c, ProfileData a) {
 
         this.id = id;
-        this.itemId = iId;
-        this.timestamp = cDate;
+        this.date = cDate;
+        this.numComments = n;
+        this.title = t;
         this.content = c;
         this.author = a;
 
     }
 
-    public CommentData(Parcel in) {
+    public NewsData(Parcel in) {
 
         this.id = in.readLong();
-        this.itemId = in.readLong();
-        this.timestamp = in.readLong();
+        this.date = in.readLong();
+        this.numComments = in.readInt();
+        this.title = in.readString();
         this.content = in.readString();
         this.author = in.readParcelable(ProfileData.class.getClassLoader());
 
@@ -51,25 +54,26 @@ public class CommentData implements Parcelable {
         return this.id;
     }
 
-    public long getItemId() {
-        return this.itemId;
+    public long getDate() {
+        return this.date;
     }
 
-    public long getTimestamp() {
-        return this.timestamp;
+    public int getNumComments() {
+        
+        return numComments;
+        
     }
-
+    
+    public String getTitle() {
+        return this.title;
+    }
+    
     public String getContent() {
         return this.content;
     }
 
     public ProfileData getAuthor() {
         return this.author;
-    }
-
-    @Override
-    public String toString() {
-        return getId() + ":" + getAuthor() + " |: " + getContent();
     }
 
     @Override
@@ -81,21 +85,22 @@ public class CommentData implements Parcelable {
     public void writeToParcel(Parcel out, int arg1) {
 
         out.writeLong(this.id);
-        out.writeLong(this.itemId);
-        out.writeLong(this.timestamp);
+        out.writeLong(this.date);
+        out.writeInt(this.numComments);
+        out.writeString(this.title);
         out.writeString(this.content);
         out.writeParcelable(this.author, arg1);
 
     }
 
-    public static final Parcelable.Creator<CommentData> CREATOR = new Parcelable.Creator<CommentData>() {
+    public static final Parcelable.Creator<NewsData> CREATOR = new Parcelable.Creator<NewsData>() {
 
-        public CommentData createFromParcel(Parcel in) {
-            return new CommentData(in);
+        public NewsData createFromParcel(Parcel in) {
+            return new NewsData(in);
         }
 
-        public CommentData[] newArray(int size) {
-            return new CommentData[size];
+        public NewsData[] newArray(int size) {
+            return new NewsData[size];
         }
 
     };

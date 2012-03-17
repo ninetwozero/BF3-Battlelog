@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  
+	This file is part of BF3 Battlelog
+
+    BF3 Battlelog is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    BF3 Battlelog is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ -->
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+	android:background="@drawable/bg_bf3_main"
+	android:padding="10dp"
+>
+	<RelativeLayout
+		android:id="@+id/wrap_persona"    
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_centerHorizontal="true"
+    	android:background="@drawable/widget_dogtag"
+    >
+    	<TextView
+    		android:id="@+id/string000"    
+    		android:text="Active soldier:"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="30dp"
+    		android:layout_marginLeft="60dp"
+    		android:textSize="20sp"
+    	/>
+    	<TextView
+    		android:id="@+id/text_persona"    
+    		android:text="NINETWOZERO"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:layout_below="@id/string000"
+    		android:layout_marginLeft="60dp"
+    		android:textStyle="bold"
+    		android:textSize="20sp"
+    	/>
+    </RelativeLayout>
+	 <ScrollView 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+		android:padding="10dp"
+		android:layout_below="@id/wrap_persona"
+	>
+		<RelativeLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		>
+			<LinearLayout
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:orientation="vertical"
+			    android:layout_centerInParent="true"
+			>
+				<Button
+				    style="@style/MenuButton"
+				    android:id="@+id/button_self"
+				    android:text="@string/label_own_soldier"
+				/>
+
+				<Button
+				    android:id="@+id/button_unlocks"
+				    style="@style/MenuButton"
+				    android:text="@string/label_unlocks" />
+
+				<Button
+				    style="@style/MenuButton"
+				    android:id="@+id/button_assignments"
+				    android:text="@string/label_assignments"
+				/>
+				<Button
+				    style="@style/MenuButton"
+				    android:id="@+id/button_search"
+				    android:text="@string/label_search"
+				/>
+				<Button
+				    style="@style/MenuButton"
+				    android:id="@+id/button_settings"
+				    android:text="@string/label_settings"
+				/>
+			</LinearLayout>
+		</RelativeLayout>
+	</ScrollView>
+</RelativeLayout>
