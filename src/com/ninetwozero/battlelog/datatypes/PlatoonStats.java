@@ -48,20 +48,21 @@ public class PlatoonStats implements Parcelable {
 
     }
 
+    @SuppressWarnings("unchecked")
     public PlatoonStats(Parcel in) {
 
         // Basic attributes
         this.name = in.readString();
         this.id = in.readLong();
 
-        this.globalTop = in.readParcelable(PlatoonStatsItem.class
+        this.globalTop = (List<PlatoonStatsItem>) in.readParcelable(PlatoonStatsItem.class
                 .getClassLoader());
-        this.topPlayers = in.readParcelable(PlatoonStatsItem.class
+        this.topPlayers = (List<PlatoonTopStatsItem>) in.readParcelable(PlatoonStatsItem.class
                 .getClassLoader());
-        this.scores = in
+        this.scores = (List<PlatoonStatsItem>) in
                 .readParcelable(PlatoonStatsItem.class.getClassLoader());
-        this.spm = in.readParcelable(PlatoonStatsItem.class.getClassLoader());
-        this.time = in.readParcelable(PlatoonTopStatsItem.class
+        this.spm = (List<PlatoonStatsItem>) in.readParcelable(PlatoonStatsItem.class.getClassLoader());
+        this.time = (List<PlatoonStatsItem>) in.readParcelable(PlatoonTopStatsItem.class
                 .getClassLoader());
 
     }
