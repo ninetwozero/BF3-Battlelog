@@ -1,27 +1,20 @@
 
 package com.ninetwozero.battlelog;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.KeyEvent;
 
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
-import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class ProfileSettingsView extends PreferenceActivity {
 
     // Attributes
-    private int originalInterval;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -40,10 +33,6 @@ public class ProfileSettingsView extends PreferenceActivity {
         // Let's put 'em there
         addPreferencesFromResource(R.xml.profile_settings_view);
 
-        // Set the originalInterval
-        originalInterval = sharedPreferences.getInt(
-                Constants.SP_BL_INTERVAL_SERVICE, 0);
-
     }
 
     @Override
@@ -52,34 +41,7 @@ public class ProfileSettingsView extends PreferenceActivity {
         // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-            // If the new interval != the old interval, we got to restart the
-            // "alarm"
-            if (originalInterval != sharedPreferences.getInt(
-                    Constants.SP_BL_INTERVAL_SERVICE, 0)) {
-
-                // Get the interval
-                int serviceInterval = sharedPreferences.getInt(
-                        Constants.SP_BL_INTERVAL_SERVICE,
-                        (Constants.HOUR_IN_SECONDS / 2)) * 1000;
-
-                // Restart the AlarmManager
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                PendingIntent pendingIntent = PendingIntent.getService(this, 0,
-                        new Intent(this, BattlelogService.class), 0);
-                alarmManager.cancel(pendingIntent);
-                alarmManager.setInexactRepeating(
-
-                        AlarmManager.ELAPSED_REALTIME, 0, serviceInterval,
-                        pendingIntent
-
-                        );
-
-                Log.d(Constants.DEBUG_TAG,
-                        "Setting the service to update every "
-                                + serviceInterval / 60000 + " minutes");
-            }
-            startActivity(new Intent(this, Backup_Dashboard.class));
-            finish();
+            /* TODO: Here's where we have to update versus battlelog?*/
             return true;
 
         }

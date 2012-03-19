@@ -232,7 +232,7 @@ public class DataBank {
         APP_CONTRIBUTORS.add(new AppContributorData("Judit Tur", ""));
         APP_CONTRIBUTORS.add(new AppContributorData("Klaus Thenmayer", ""));
         APP_CONTRIBUTORS.add(new AppContributorData("Mirella Lindmark", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("MMario1989", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("MMario1989", "http://www.facebook.com/people/M%C3%A1ri%C3%B3-Morvai/100001683668440"));
         APP_CONTRIBUTORS.add(new AppContributorData("neurokirurgi", ""));
         APP_CONTRIBUTORS.add(new AppContributorData("pauldegroot", ""));
         APP_CONTRIBUTORS.add(new AppContributorData("pingus", ""));

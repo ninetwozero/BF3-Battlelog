@@ -486,9 +486,8 @@ public class Backup_Dashboard extends TabActivity {
                 postDataArray[i] = new PostData(
 
                         Constants.FIELD_NAMES_STATUS[i],
-                        (Constants.FIELD_VALUES_STATUS[i] == null) ? valueFieldsArray[i]
-                                : Constants.FIELD_VALUES_STATUS[i]
-
+                        valueFieldsArray[i]
+                                
                         );
 
             }
