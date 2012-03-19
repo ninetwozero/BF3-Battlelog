@@ -415,7 +415,7 @@ public class Backup_Dashboard extends TabActivity {
             notificationListAdapter = new NotificationListAdapter(
 
                     this, items, layoutInflater, SessionKeeper.getProfileData()
-                            .getProfileId()
+                            .getId()
 
                     );
             listNotifications.setAdapter(notificationListAdapter);
@@ -739,7 +739,7 @@ public class Backup_Dashboard extends TabActivity {
             // Feed refresh!
             asyncFeedRefresh = new AsyncFeedRefresh(
 
-                    context, SessionKeeper.getProfileData().getProfileId()
+                    context, SessionKeeper.getProfileData().getId()
 
                     );
             asyncFeedRefresh.execute();
@@ -757,7 +757,7 @@ public class Backup_Dashboard extends TabActivity {
 
         new AsyncComRequest(
 
-                this, ((ProfileData) v.getTag()).getProfileId(), new AsyncComRefresh(
+                this, ((ProfileData) v.getTag()).getId(), new AsyncComRefresh(
 
                         this, listFriendRequests, listFriends, layoutInflater, buttonRefresh,
                         slidingDrawerHandle
@@ -809,7 +809,7 @@ public class Backup_Dashboard extends TabActivity {
             ProfileData selectedUser = (ProfileData) info.targetView.getTag();
 
             // Wait, is the position 0? If so, it's the heading...
-            if (!selectedUser.getAccountName().startsWith("0000000")) {
+            if (!selectedUser.getUsername().startsWith("0000000")) {
 
                 menu.add(menuId, 0, 0, R.string.label_chat_open);
                 menu.add(menuId, 1, 0, R.string.label_soldier_view);
@@ -932,7 +932,7 @@ public class Backup_Dashboard extends TabActivity {
 
                                     "profile2", WebsiteHandler.getPersonaIdFromProfile(
 
-                                            ((ProfileData) info.targetView.getTag()).getProfileId()
+                                            ((ProfileData) info.targetView.getTag()).getId()
 
                                             )
 
@@ -952,7 +952,7 @@ public class Backup_Dashboard extends TabActivity {
 
                             "profile", WebsiteHandler.getPersonaIdFromProfile(
 
-                                    ((ProfileData) info.targetView.getTag()).getProfileId()
+                                    ((ProfileData) info.targetView.getTag()).getId()
 
                                     )
 
@@ -1335,7 +1335,7 @@ public class Backup_Dashboard extends TabActivity {
                 notificationArray = WebsiteHandler.getNotifications(arg0[0]);
                 friendListData = WebsiteHandler.getFriendsCOM(context, arg0[0]);
                 platoonArray = WebsiteHandler.getPlatoonsForUser(context,
-                        SessionKeeper.getProfileData().getAccountName());
+                        SessionKeeper.getProfileData().getUsername());
                 return true;
 
             } catch (WebsiteHandlerException e) {

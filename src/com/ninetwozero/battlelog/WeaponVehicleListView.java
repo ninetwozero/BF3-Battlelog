@@ -107,7 +107,7 @@ public class WeaponVehicleListView extends FragmentActivity implements DefaultFr
         items = new HashMap<Long, WeaponVehicleDataWrapper>();
 
         // Set the selected persona
-        selectedPersona = profileData.getPersonaId();
+        selectedPersona = profileData.getPersona(0).getId();
 
     }
 

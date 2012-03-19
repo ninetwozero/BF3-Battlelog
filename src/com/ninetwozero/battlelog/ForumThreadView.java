@@ -427,7 +427,7 @@ public class ForumThreadView extends ListActivity {
                                                 ).replace(
 
                                                         "{username}",
-                                                        data.getProfileData().getAccountName()
+                                                        data.getProfileData().getUsername()
 
                                                 )
 

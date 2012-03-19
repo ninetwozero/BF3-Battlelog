@@ -15,13 +15,9 @@
 package com.ninetwozero.battlelog.fragments;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,23 +27,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.ninetwozero.battlelog.AssignmentView;
-import com.ninetwozero.battlelog.ForumView;
-import com.ninetwozero.battlelog.PlatoonView;
+import com.ninetwozero.battlelog.ProfileSettingsView;
 import com.ninetwozero.battlelog.ProfileView;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.SearchView;
 import com.ninetwozero.battlelog.UnlockView;
-import com.ninetwozero.battlelog.adapters.DashboardPopupPlatoonListAdapter;
-import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class MenuProfileFragment extends Fragment implements DefaultFragment {
@@ -91,8 +78,7 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
                         SessionKeeper.getProfileData()));        
         
         MENU_INTENTS.put(R.id.button_settings,
-                new Intent(context, ProfileView.class).putExtra("profile",
-                        SessionKeeper.getProfileData()));
+                new Intent(context, ProfileSettingsView.class));
 
         //Add the OnClickListeners
         for( int key : MENU_INTENTS.keySet() ) {

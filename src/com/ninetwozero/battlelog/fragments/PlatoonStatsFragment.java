@@ -232,7 +232,7 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
             if (tempTopStats.getProfile() != null) {
 
                 ((TextView) cacheView.findViewById(R.id.text_name))
-                        .setText(tempTopStats.getProfile().getAccountName()
+                        .setText(tempTopStats.getProfile().getUsername()
                                 + "");
                 ((TextView) cacheView.findViewById(R.id.text_spm))
                         .setText(tempTopStats.getSPM() + "");

@@ -132,7 +132,7 @@ public class ThreadPostListAdapter extends BaseAdapter {
 
                                 ).replace(
 
-                                        "{user}", currentItem.getProfileData().getAccountName()
+                                        "{user}", currentItem.getProfileData().getUsername()
 
                                 )
 

@@ -15,8 +15,10 @@
 package com.ninetwozero.battlelog.misc;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 
 public class SessionKeeper {
@@ -57,27 +59,28 @@ public class SessionKeeper {
         int max = (personaIdString.equals("")) ? 0 : personaIdArray.length;
 
         // We need to init the resulting arrays
-        long[] personaId = new long[max];
-        int[] platformId = new int[max];
+        PersonaData[] persona = new PersonaData[max];
 
         // ...and populate them
         for (int i = 0; i < max; i++) {
-
-            personaId[i] = Long.parseLong(personaIdArray[i]);
-            platformId[i] = Integer.parseInt(platformIdArray[i]);
+            
+            persona[i] = new PersonaData(Long.parseLong(personaIdArray[i]), personaNameArray[i], Integer.parseInt(platformIdArray[i]), "");
 
         }
 
         // If we even *might* have a session
         if (!cookie.equals("")) {
 
-            return new ProfileData(
-
-                    sp.getString(Constants.SP_BL_USERNAME, ""), personaNameArray,
-                    personaId, sp.getLong(Constants.SP_BL_PROFILE_ID, 0),
-                    platformId, sp.getString(Constants.SP_BL_GRAVATAR, "")
+            ProfileData p = new ProfileData(
+                    sp.getLong(Constants.SP_BL_PROFILE_ID, 0),
+                    sp.getString(Constants.SP_BL_USERNAME, ""), 
+                    persona,
+                    sp.getString(Constants.SP_BL_GRAVATAR, "")
 
             );
+            
+            Log.d(Constants.DEBUG_TAG, "p => " + p);
+            return p;
 
         } else {
 

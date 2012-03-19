@@ -157,7 +157,7 @@ public class ThreadListAdapter extends BaseAdapter {
 
                                     ).replace(
 
-                                            "{user}", currentItem.getOwner().getAccountName()
+                                            "{user}", currentItem.getOwner().getUsername()
 
                                     )
 
@@ -182,7 +182,7 @@ public class ThreadListAdapter extends BaseAdapter {
 
                                             "{user}",
                                             currentItem.getLastPoster()
-                                                    .getAccountName()
+                                                    .getUsername()
 
                                     )
 

@@ -105,11 +105,11 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username1}", profileData[0].getAccountName()
+                    "{username1}", profileData[0].getUsername()
 
                     ).replace(
 
-                            "{username2}", profileData[1].getAccountName()
+                            "{username2}", profileData[1].getUsername()
 
                     );
 
@@ -117,7 +117,7 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username}", profileData[0].getAccountName()
+                    "{username}", profileData[0].getUsername()
 
                     );
 
@@ -126,7 +126,7 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username}", profileData[0].getAccountName()
+                    "{username}", profileData[0].getUsername()
 
                     );
 
@@ -134,7 +134,7 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username}", profileData[0].getAccountName()
+                    "{username}", profileData[0].getUsername()
 
                     );
 
@@ -142,7 +142,7 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username}", profileData[0].getAccountName()
+                    "{username}", profileData[0].getUsername()
 
                     );
 
@@ -150,7 +150,7 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username}", profileData[0].getAccountName()
+                    "{username}", profileData[0].getUsername()
 
                     );
 
@@ -158,7 +158,7 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username}", profileData[0].getAccountName()
+                    "{username}", profileData[0].getUsername()
 
                     );
 
@@ -166,11 +166,11 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username1}", profileData[0].getAccountName()
+                    "{username1}", profileData[0].getUsername()
 
                     ).replace(
 
-                            "{username2}", profileData[1].getAccountName()
+                            "{username2}", profileData[1].getUsername()
 
                     );
 
@@ -179,7 +179,7 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username}", profileData[0].getAccountName()
+                    "{username}", profileData[0].getUsername()
 
                     );
 
@@ -189,7 +189,7 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username}", profileData[0].getAccountName()
+                    "{username}", profileData[0].getUsername()
 
                     );
 
@@ -197,7 +197,7 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username}", profileData[0].getAccountName()
+                    "{username}", profileData[0].getUsername()
 
                     );
 
@@ -205,11 +205,11 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username1}", profileData[0].getAccountName()
+                    "{username1}", profileData[0].getUsername()
 
                     ).replace(
 
-                            "{username2}", profileData[1].getAccountName()
+                            "{username2}", profileData[1].getUsername()
 
                     );
 
@@ -218,7 +218,7 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username}", profileData[0].getAccountName()
+                    "{username}", profileData[0].getUsername()
 
                     );
 
@@ -226,7 +226,7 @@ public class FeedItem implements Parcelable {
 
             return this.title.replace(
 
-                    "{username}", profileData[0].getAccountName()
+                    "{username}", profileData[0].getUsername()
 
                     );
 
@@ -275,7 +275,7 @@ public class FeedItem implements Parcelable {
                 return new Intent(c, AssignmentView.class).putExtra(
 
                         "profile", WebsiteHandler
-                                .getPersonaIdFromProfile(profileData[0].getProfileId())
+                                .getPersonaIdFromProfile(profileData[0].getId())
 
                         );
 

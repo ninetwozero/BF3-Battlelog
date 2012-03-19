@@ -43,6 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.datatypes.AssignmentData;
+import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -105,14 +106,14 @@ public class AssignmentView extends Activity {
         }
 
         // Is the profileData null?!
-        if (profileData == null || profileData.getProfileId() == 0) {
+        if (profileData == null || profileData.getId() == 0) {
             finish();
             return;
         }
 
         // Get the pos
         selectedPersona = getIntent().getLongExtra("selectedPersona",
-                profileData.getPersonaId());
+                profileData.getPersona(0).getId());
         selectedPosition = 0;
 
         // Prepare to tango
@@ -319,10 +320,7 @@ public class AssignmentView extends Activity {
 
             generateDialogPersonaList(
 
-                    this, profileData.getPersonaIdArray(),
-                    profileData.getPersonaNameArray(),
-                    profileData.getPlatformIdArray()
-
+                    this, profileData.getPersonaArray()
             ).show();
 
         } else if (item.getItemId() == R.id.option_back) {
@@ -432,19 +430,19 @@ public class AssignmentView extends Activity {
     }
 
     public Dialog generateDialogPersonaList(final Context context,
-            final long[] personaId, final String[] persona, final int[] platform) {
+            final PersonaData[] persona) {
 
         // Attributes
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         // Set the title and the view
         builder.setTitle(R.string.info_dialog_soldierselect);
-        String[] listNames = new String[personaId.length];
+        String[] listNames = new String[persona.length];
 
-        for (int i = 0, max = personaId.length; i < max; i++) {
+        for (int i = 0, max = persona.length; i < max; i++) {
 
-            listNames[i] = persona[i] + " "
-                    + DataBank.resolvePlatformId(platform[i]);
+            listNames[i] = persona[i].getName() + " "
+                    + DataBank.resolvePlatformId(persona[i].getPlatformId());
 
         }
         builder.setSingleChoiceItems(
@@ -453,10 +451,10 @@ public class AssignmentView extends Activity {
 
                     public void onClick(DialogInterface dialog, int item) {
 
-                        if (personaId[item] != selectedPersona) {
+                        if (persona[item].getId() != selectedPersona) {
 
                             // Update it
-                            selectedPersona = profileData.getPersonaId(item);
+                            selectedPersona = profileData.getPersona(item).getId();
 
                             // Update the layout
                             setupList(assignments.get(selectedPersona));

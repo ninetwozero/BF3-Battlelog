@@ -63,7 +63,7 @@ public class SearchDataAdapter extends BaseAdapter {
     public long getItemId(int position) {
 
         GeneralSearchResult temp = this.itemArray.get(position);
-        return (temp.hasProfileData() ? temp.getProfileData().getProfileId()
+        return (temp.hasProfileData() ? temp.getProfileData().getId()
                 : temp.getPlatoonData().getId());
 
     }
@@ -111,7 +111,7 @@ public class SearchDataAdapter extends BaseAdapter {
 
             // Set the fields
             ((TextView) convertView.findViewById(R.id.string_name))
-                    .setText(profileData.getAccountName());
+                    .setText(profileData.getUsername());
             /*
              * ((ImageView) convertView.findViewById( R.id.image_avatar
              * )).setImageBitmap( BitmapFactory.decodeFile(

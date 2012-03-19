@@ -523,4 +523,9 @@
 	<string name="info_credits_nolink">No link to send you to!</string>
 	<string name="info_news_empty">No news found.</string>
 	<string name="info_news_posted_by">Posted by &lt;b>{author}&lt;/b> {date}</string>
+	<string name="info_settings_fullscreen_true">The app will be in fullscreen mode.</string>
+	<string name="info_settings_fullscreen_false">The app will show the title and notification bar.</string>
+	<string name="info_settings_fullscreen">Fullscreen</string>
+	<string name="label_app_settings">Application settings</string>
+	<string name="title_profile_settings">BF3 Battlelog - Setting up your profile</string>
 </resources>

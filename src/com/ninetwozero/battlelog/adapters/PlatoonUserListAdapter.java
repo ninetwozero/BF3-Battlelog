@@ -55,27 +55,18 @@ public class PlatoonUserListAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
 
-        if (getItem(position).getAccountName().startsWith("0000000")) {
-
-            if (getItem(position).getAccountName().equals("00000007")) {
-
-                lastSeparator = position;
-
-            }
+        if ( profileArray.get(position).getId() == 0 ) {
+            
             return 0;
-
-        } else if (lastSeparator > 0 && position > lastSeparator) {
-
-            if (profileArray.get(position).getMembershipLevel() == 1) {
-                return 1;
-            } else {
-                return 2;
-            }
-
+            
+        } else if( profileArray.get(position).getMembershipLevel() == 1) {
+                
+            return 1;
+        
         } else {
-
+        
             return 2;
-
+        
         }
 
     }
@@ -97,13 +88,13 @@ public class PlatoonUserListAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
 
-        return this.profileArray.get(position).getProfileId();
+        return this.profileArray.get(position).getId();
 
     }
 
     public long getPersonaId(int position) {
 
-        return this.profileArray.get(position).getPersonaId();
+        return this.profileArray.get(position).getPersona(0).getId();
 
     }
 
@@ -126,7 +117,7 @@ public class PlatoonUserListAdapter extends BaseAdapter {
 
             // Set the fields
             ((TextView) convertView.findViewById(R.id.text_title))
-                    .setText(currentProfile.getPersonaName());
+                    .setText(currentProfile.getUsername());
             convertView.setOnClickListener(null);
             convertView.setOnLongClickListener(null);
 
@@ -142,7 +133,7 @@ public class PlatoonUserListAdapter extends BaseAdapter {
 
             // Set the TextViews
             textUser = (TextView) convertView.findViewById(R.id.text_user);
-            textUser.setText(currentProfile.getAccountName());
+            textUser.setText(currentProfile.getUsername());
 
             convertView.setTag(currentProfile);
 
@@ -158,7 +149,7 @@ public class PlatoonUserListAdapter extends BaseAdapter {
 
             // Set the TextViews
             textUser = (TextView) convertView.findViewById(R.id.text_user);
-            textUser.setText(currentProfile.getAccountName());
+            textUser.setText(currentProfile.getUsername());
 
             convertView.setTag(currentProfile);
 

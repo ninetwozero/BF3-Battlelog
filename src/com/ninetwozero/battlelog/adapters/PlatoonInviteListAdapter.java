@@ -74,7 +74,7 @@ public class PlatoonInviteListAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
 
-        return this.profileArray.get(position).getProfileId();
+        return this.profileArray.get(position).getId();
 
     }
 
@@ -94,7 +94,7 @@ public class PlatoonInviteListAdapter extends BaseAdapter {
 
         // Set the TextViews
         ((TextView) convertView.findViewById(R.id.text_name))
-                .setText(currentProfile.getAccountName());
+                .setText(currentProfile.getUsername());
 
         // Set the tag either way
         convertView.setTag(currentProfile);

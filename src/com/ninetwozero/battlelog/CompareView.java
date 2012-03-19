@@ -239,8 +239,8 @@ public class CompareView extends FragmentActivity implements DefaultFragmentActi
 
                     fragmentManager,
                     new String[] {
-                            profileData[0].getAccountName(), "Compare",
-                            profileData[1].getAccountName()
+                            profileData[0].getUsername(), "Compare",
+                            profileData[1].getUsername()
                     },
                     listFragments,
                     viewPager,
@@ -276,7 +276,7 @@ public class CompareView extends FragmentActivity implements DefaultFragmentActi
 
     public void sendToCompare(ProfileData p, Map<Long, PersonaStats> ps, long id, boolean toggle) {
 
-        fragmentCompare.showStats(ps, id, ((p.getProfileId() == profileData[0].getProfileId()) ? 0
+        fragmentCompare.showStats(ps, id, ((p.getId() == profileData[0].getId()) ? 0
                 : 1), toggle);
 
     }

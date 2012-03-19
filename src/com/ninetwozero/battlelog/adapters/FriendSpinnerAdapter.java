@@ -64,7 +64,7 @@ public class FriendSpinnerAdapter extends BaseAdapter implements SpinnerAdapter 
     @Override
     public long getItemId(int position) {
 
-        return profileArray.get(position).getProfileId();
+        return profileArray.get(position).getId();
 
     }
 
@@ -85,7 +85,7 @@ public class FriendSpinnerAdapter extends BaseAdapter implements SpinnerAdapter 
 
         // Set the TextView
         ((TextView) convertView.findViewById(android.R.id.text1))
-                .setText(currentItem.getAccountName());
+                .setText(currentItem.getUsername());
 
         // Return the view
         return convertView;

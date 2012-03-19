@@ -124,7 +124,7 @@ public class ForumSearchAdapter extends BaseAdapter {
 
                                 ).replace(
 
-                                        "{user}", currentItem.getOwner().getAccountName()
+                                        "{user}", currentItem.getOwner().getUsername()
 
                                 )
 

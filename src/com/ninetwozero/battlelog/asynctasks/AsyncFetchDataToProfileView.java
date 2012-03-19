@@ -63,7 +63,7 @@ public class AsyncFetchDataToProfileView extends
                     );
 
             // Did we get an actual user?
-            if (userData == null || userData.getPersonaId() == 0) {
+            if (userData == null || userData.getNumPersonas() == 0) {
 
                 // Persona
                 error = context.getString(R.string.msg_search_nouser)

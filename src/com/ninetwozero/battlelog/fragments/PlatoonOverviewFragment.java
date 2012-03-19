@@ -264,7 +264,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
                 // Siiiiiiiiilent refresh
                 new AsyncRefresh(context, platoonData, SessionKeeper
-                        .getProfileData().getProfileId()).execute();
+                        .getProfileData().getId()).execute();
                 if (this.progressDialog != null) {
                     this.progressDialog.dismiss();
                 }
@@ -276,7 +276,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             } else {
 
                 new AsyncRefresh(context, platoonData, SessionKeeper
-                        .getProfileData().getProfileId()).execute();
+                        .getProfileData().getId()).execute();
 
             }
 
@@ -385,7 +385,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
         // ASYNC!!!
         new AsyncRefresh(context, platoonData, SessionKeeper
-                .getProfileData().getProfileId()).execute();
+                .getProfileData().getId()).execute();
 
     }
 
@@ -482,7 +482,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             new AsyncPlatoonRequest(
 
                     context, platoonData.getId(), SessionKeeper.getProfileData()
-                            .getProfileId(), sharedPreferences.getString(
+                            .getId(), sharedPreferences.getString(
                             Constants.SP_BL_CHECKSUM, "")
 
             ).execute(true);
@@ -492,7 +492,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             new AsyncPlatoonRequest(
 
                     context, platoonData.getId(), SessionKeeper.getProfileData()
-                            .getProfileId(), sharedPreferences.getString(
+                            .getId(), sharedPreferences.getString(
                             Constants.SP_BL_CHECKSUM, "")
 
             ).execute(false);

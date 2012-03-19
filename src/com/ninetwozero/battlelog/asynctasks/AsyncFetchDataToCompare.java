@@ -62,7 +62,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
                     );
 
             // Did we get an actual user?
-            if (playerTwo == null || playerTwo.getPersonaId() == 0) {
+            if (playerTwo == null || playerTwo.getNumPersonas() == 0) {
 
                 // Persona
                 error = context.getString(R.string.msg_search_nouser).replace(

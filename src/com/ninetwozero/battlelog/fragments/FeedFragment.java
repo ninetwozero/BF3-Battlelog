@@ -218,7 +218,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
         // Feed refresh!
         new AsyncFeedRefresh(
 
-                context, SessionKeeper.getProfileData().getProfileId()
+                context, SessionKeeper.getProfileData().getId()
 
         ).execute();
 
@@ -289,7 +289,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                         ).putExtra(
 
-                                "profileId", feedItem.getProfile(0).getProfileId()
+                                "profileId", feedItem.getProfile(0).getId()
 
                         )
 

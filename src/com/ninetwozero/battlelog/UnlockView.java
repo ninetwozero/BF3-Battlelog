@@ -43,6 +43,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
@@ -121,7 +122,7 @@ public class UnlockView extends FragmentActivity implements DefaultFragmentActiv
         unlocks = new HashMap<Long, UnlockDataWrapper>();
 
         // Set the selected persona
-        selectedPersona = profileData.getPersonaId();
+        selectedPersona = profileData.getPersona(0).getId();
 
     }
 
@@ -155,48 +156,47 @@ public class UnlockView extends FragmentActivity implements DefaultFragmentActiv
 
     }
 
-    public Dialog generateDialogPersonaList(final Context context,
-            final long[] personaId, final String[] persona, final int[] platform) {
+    public Dialog generateDialogPersonaList(final Context context, final PersonaData[] persona) {
 
         // Attributes
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         // Set the title and the view
         builder.setTitle(R.string.info_dialog_soldierselect);
-        String[] listNames = new String[personaId.length];
+        String[] listNames = new String[persona.length];
 
-        for (int i = 0, max = personaId.length; i < max; i++) {
+        for (int i = 0, max = persona.length; i < max; i++) {
 
-            listNames[i] = persona[i] + " "
-                    + DataBank.resolvePlatformId(platform[i]);
+            listNames[i] = persona[i].getName() + " "
+                    + DataBank.resolvePlatformId(persona[i].getPlatformId());
 
         }
         builder.setSingleChoiceItems(
 
-                listNames, selectedPosition, new DialogInterface.OnClickListener() {
+            listNames, selectedPosition, new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int item) {
+                public void onClick(DialogInterface dialog, int item) {
 
-                        if (personaId[item] != selectedPersona) {
+                    if (persona[item].getId() != selectedPersona) {
 
-                            // Update it
-                            selectedPersona = profileData.getPersonaId(item);
+                        // Store selected position
+                        selectedPosition = item;
+                        
+                        // Update it
+                        selectedPersona = profileData.getPersona(selectedPosition).getId();
 
-                            // Store selected position
-                            selectedPosition = item;
-
-                            // Load the new!
-                            setupList(unlocks.get(selectedPersona), viewPager.getCurrentItem());
-
-                        }
-
-                        dialog.dismiss();
+                        // Load the new!
+                        setupList(unlocks.get(selectedPersona), viewPager.getCurrentItem());
 
                     }
 
+                    dialog.dismiss();
+
                 }
 
-                );
+            }
+
+            );
 
         // CREATE
         return builder.create();
@@ -295,19 +295,19 @@ public class UnlockView extends FragmentActivity implements DefaultFragmentActiv
 
             try {
 
-                if (arg0[0].getPersonaId() == 0) {
+                if (arg0[0].getNumPersonas() == 0) {
 
                     profileData = WebsiteHandler
                             .getPersonaIdFromProfile(profileData);
                     if (selectedPersona == 0) {
-                        selectedPersona = profileData.getPersonaId();
+                        selectedPersona = profileData.getPersona(0).getId();
                     }
                     unlocks = WebsiteHandler.getUnlocksForUser(profileData);
 
                 } else {
 
                     if (selectedPersona == 0) {
-                        selectedPersona = arg0[0].getPersonaId();
+                        selectedPersona = arg0[0].getPersona(0).getId();
                     }
                     unlocks = WebsiteHandler.getUnlocksForUser(arg0[0]);
 
@@ -383,9 +383,7 @@ public class UnlockView extends FragmentActivity implements DefaultFragmentActiv
 
             generateDialogPersonaList(
 
-                    this, profileData.getPersonaIdArray(),
-                    profileData.getPersonaNameArray(),
-                    profileData.getPlatformIdArray()
+                    this, profileData.getPersonaArray()
 
             ).show();
 

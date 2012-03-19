@@ -427,7 +427,7 @@ public class Backup_ForumThreadView extends ListActivity {
                                                 ).replace(
 
                                                         "{username}",
-                                                        data.getProfileData().getAccountName()
+                                                        data.getProfileData().getUsername()
 
                                                 )
 

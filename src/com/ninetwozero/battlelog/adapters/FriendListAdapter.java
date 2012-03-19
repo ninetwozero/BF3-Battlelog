@@ -55,7 +55,7 @@ public class FriendListAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
 
-        if (getItem(position).getAccountName().startsWith("0000000")) {
+        if (getItem(position).getId() == 0 ) {
 
             return 1;
 
@@ -84,13 +84,13 @@ public class FriendListAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
 
-        return this.profileArray.get(position).getProfileId();
+        return this.profileArray.get(position).getId();
 
     }
 
     public long getPersonaId(int position) {
 
-        return this.profileArray.get(position).getPersonaId();
+        return this.profileArray.get(position).getPersona(0).getId();
 
     }
 
@@ -113,7 +113,7 @@ public class FriendListAdapter extends BaseAdapter {
 
             // Set the fields
             ((TextView) convertView.findViewById(R.id.text_title))
-                    .setText(currentProfile.getPersonaName());
+                    .setText(currentProfile.getUsername());
             convertView.setOnClickListener(null);
             convertView.setOnLongClickListener(null);
 
@@ -129,7 +129,7 @@ public class FriendListAdapter extends BaseAdapter {
 
             // Set the TextViews
             textUser = (TextView) convertView.findViewById(R.id.text_user);
-            textUser.setText(currentProfile.getAccountName());
+            textUser.setText(currentProfile.getUsername());
             textStatus = (TextView) convertView.findViewById(R.id.text_status);
 
             // Oh-oh

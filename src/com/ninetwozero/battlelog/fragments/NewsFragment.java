@@ -109,7 +109,7 @@ public class NewsFragment extends ListFragment implements DefaultFragment {
         // Feed refresh!
         new AsyncFeedRefresh(
 
-                context, SessionKeeper.getProfileData().getProfileId()
+                context, SessionKeeper.getProfileData().getId()
 
         ).execute();
 

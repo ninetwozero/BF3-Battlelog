@@ -24,6 +24,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -289,7 +290,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                 // Get...
                 profileInformation = CacheHandler.Profile.select(context,
-                        profileData.getProfileId());
+                        profileData.getId());
 
                 // We got one?!
                 return (profileInformation != null);
@@ -309,7 +310,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                 // Siiiiiiiiilent refresh
                 new AsyncRefresh(SessionKeeper.getProfileData()
-                        .getProfileId()).execute();
+                        .getId()).execute();
                 if (this.progressDialog != null) {
                     this.progressDialog.dismiss();
                 }
@@ -318,12 +319,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 showProfile(profileInformation);
 
                 // Set the profileData...
-                profileData.setPersonaId(profileInformation
-                        .getAllPersonas());
-                profileData.setPersonaName(profileInformation
-                        .getAllPersonaNames());
-                profileData.setPlatformId(profileInformation
-                        .getAllPlatforms());
+                profileData.setPersona( profileInformation.getAllPersonas() );
 
                 // ...and then send it to the stats
                 sendToStats(profileData);
@@ -331,7 +327,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             } else {
 
                 new AsyncRefresh(SessionKeeper.getProfileData()
-                        .getProfileId(), progressDialog).execute();
+                        .getId(), progressDialog).execute();
 
             }
 
@@ -370,7 +366,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
         protected Boolean doInBackground(Void... arg0) {
 
             try {
-
+                
                 // Let's get the personas!
                 profileInformation = WebsiteHandler
                         .getProfileInformationForUser(
@@ -430,7 +426,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
         // ASYNC!!!
         new AsyncRefresh(SessionKeeper.getProfileData()
-                .getProfileId()).execute();
+                .getId()).execute();
 
     }
 
@@ -494,7 +490,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
         if (item.getItemId() == R.id.option_friendadd) {
 
-            new AsyncFriendRequest(context, profileData.getProfileId()).execute(
+            new AsyncFriendRequest(context, profileData.getId()).execute(
 
                     sharedPreferences.getString(
 
@@ -504,7 +500,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
         } else if (item.getItemId() == R.id.option_frienddel) {
 
-            new AsyncFriendRemove(context, profileData.getProfileId()).execute(
+            new AsyncFriendRemove(context, profileData.getId()).execute(
 
                     sharedPreferences.getString(
 

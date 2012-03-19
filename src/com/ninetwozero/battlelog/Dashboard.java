@@ -30,6 +30,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -54,6 +55,7 @@ import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
+import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
@@ -140,7 +142,7 @@ public class Dashboard extends FragmentActivity implements DefaultFragmentActivi
         // Setup the data
         notificationArray = new ArrayList<NotificationData>();
         friendListData = new FriendListDataWrapper(null, null, null);
-
+        
     }
 
     @Override

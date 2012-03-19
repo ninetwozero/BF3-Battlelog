@@ -174,7 +174,7 @@ public class Backup_PlatoonView extends TabActivity {
 
         // ASYNC!!!
         new AsyncPlatoonRefresh(this, platoonData, SessionKeeper
-                .getProfileData().getProfileId()).execute();
+                .getProfileData().getId()).execute();
 
     }
 
@@ -298,7 +298,7 @@ public class Backup_PlatoonView extends TabActivity {
 
                 // Siiiiiiiiilent refresh
                 new AsyncPlatoonRefresh(CONTEXT, platoonData, SessionKeeper
-                        .getProfileData().getProfileId()).execute();
+                        .getProfileData().getId()).execute();
                 if (this.progressDialog != null) {
                     this.progressDialog.dismiss();
                 }
@@ -306,7 +306,7 @@ public class Backup_PlatoonView extends TabActivity {
             } else {
 
                 new AsyncPlatoonRefresh(CONTEXT, platoonData, SessionKeeper
-                        .getProfileData().getProfileId(), progressDialog)
+                        .getProfileData().getId(), progressDialog)
                         .execute();
 
             }
@@ -754,7 +754,7 @@ public class Backup_PlatoonView extends TabActivity {
             if (tempTopStats.getProfile() != null) {
 
                 ((TextView) cacheView.findViewById(R.id.text_name))
-                        .setText(tempTopStats.getProfile().getAccountName()
+                        .setText(tempTopStats.getProfile().getUsername()
                                 + "");
                 ((TextView) cacheView.findViewById(R.id.text_spm))
                         .setText(tempTopStats.getSPM() + "");
@@ -1061,7 +1061,7 @@ public class Backup_PlatoonView extends TabActivity {
             new AsyncPlatoonRequest(
 
                     this, platoonData.getId(), SessionKeeper.getProfileData()
-                            .getProfileId(), sharedPreferences.getString(
+                            .getId(), sharedPreferences.getString(
                             Constants.SP_BL_CHECKSUM, "")
 
             ).execute(true);
@@ -1071,7 +1071,7 @@ public class Backup_PlatoonView extends TabActivity {
             new AsyncPlatoonRequest(
 
                     this, platoonData.getId(), SessionKeeper.getProfileData()
-                            .getProfileId(), sharedPreferences.getString(
+                            .getId(), sharedPreferences.getString(
                             Constants.SP_BL_CHECKSUM, "")
 
             ).execute(false);
@@ -1315,14 +1315,14 @@ public class Backup_PlatoonView extends TabActivity {
                                 Toast.LENGTH_SHORT).show();
 
                     }
-                    new AsyncPlatoonMemberManagement(this, data.getProfileId(),
+                    new AsyncPlatoonMemberManagement(this, data.getId(),
                             platoonData.getId(), 1).execute(!data.isAdmin());
 
                 } else if (item.getItemId() == 2) {
 
                     Toast.makeText(this, R.string.info_platoon_member_kicking,
                             Toast.LENGTH_SHORT).show();
-                    new AsyncPlatoonMemberManagement(this, data.getProfileId(),
+                    new AsyncPlatoonMemberManagement(this, data.getId(),
                             platoonData.getId(), 2).execute();
 
                 } else if (item.getItemId() == 3) {
@@ -1331,7 +1331,7 @@ public class Backup_PlatoonView extends TabActivity {
                             Toast.LENGTH_SHORT).show();
                     new AsyncPlatoonRespond(
 
-                            this, platoonData.getId(), data.getProfileId(), true
+                            this, platoonData.getId(), data.getId(), true
 
                     ).execute(sharedPreferences.getString(
                             Constants.SP_BL_CHECKSUM, ""));
@@ -1343,7 +1343,7 @@ public class Backup_PlatoonView extends TabActivity {
                             Toast.LENGTH_SHORT).show();
                     new AsyncPlatoonRespond(
 
-                            this, platoonData.getId(), data.getProfileId(), false
+                            this, platoonData.getId(), data.getId(), false
 
                     ).execute(sharedPreferences.getString(
                             Constants.SP_BL_CHECKSUM, ""));
@@ -1562,7 +1562,7 @@ public class Backup_PlatoonView extends TabActivity {
 
                 this, platoonData.getId(),
                 ((PlatoonMemberData) ((View) v.getParent()).getTag())
-                        .getProfileId(), (v.getId() == R.id.button_accept)
+                        .getId(), (v.getId() == R.id.button_accept)
 
         ).execute(sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
 

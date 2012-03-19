@@ -289,7 +289,7 @@ public class SinglePostView extends ListActivity {
         // Is the user allowed to post?
         if (!intent.getBooleanExtra("canComment", false)) {
 
-            if (SessionKeeper.getProfileData().getProfileId() != intent
+            if (SessionKeeper.getProfileData().getId() != intent
                     .getLongExtra("profileId", 0)) {
 
                 buttonSend.setVisibility(View.GONE);
@@ -400,11 +400,11 @@ public class SinglePostView extends ListActivity {
         String username = "";
         if (feedItem.getProfile(1) == null) {
 
-            username = feedItem.getProfile(0).getAccountName();
+            username = feedItem.getProfile(0).getUsername();
 
         } else {
 
-            username = feedItem.getProfile(1).getAccountName();
+            username = feedItem.getProfile(1).getUsername();
 
         }
 

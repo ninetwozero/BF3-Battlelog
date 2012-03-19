@@ -97,21 +97,21 @@ public class ChatView extends ListActivity {
         listView = getListView();
         listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
         listView.setAdapter(new ChatListAdapter(this, null, SessionKeeper
-                .getProfileData().getAccountName(), layoutInflater));
+                .getProfileData().getUsername(), layoutInflater));
 
         // Let's get the other chat participant
         profileData = (ProfileData) getIntent().getParcelableExtra("profile");
 
         // Setup the title
         setTitle(getTitle().toString().replace("...",
-                profileData.getAccountName()));
+                profileData.getUsername()));
 
         // Get the elements
         buttonSend = (Button) findViewById(R.id.button_send);
         fieldMessage = (EditText) findViewById(R.id.field_message);
 
         // Try to get the chatid
-        new AsyncGetChatId(profileData.getProfileId())
+        new AsyncGetChatId(profileData.getId())
                 .execute(sharedPreferences.getString(Constants.SP_BL_CHECKSUM,
                         ""));
 
@@ -210,8 +210,8 @@ public class ChatView extends ListActivity {
 
     public void reload() {
 
-        new AsyncChatRefresh(this, listView, profileData.getAccountName(),
-                layoutInflater).execute(profileData.getProfileId());
+        new AsyncChatRefresh(this, listView, profileData.getUsername(),
+                layoutInflater).execute(profileData.getId());
 
     }
 
@@ -223,9 +223,9 @@ public class ChatView extends ListActivity {
             // Send it!
             new AsyncChatSend(
 
-                    this, profileData.getProfileId(), chatId, buttonSend, false,
+                    this, profileData.getId(), chatId, buttonSend, false,
                     new AsyncChatRefresh(this, listView,
-                            profileData.getAccountName(), layoutInflater)
+                            profileData.getUsername(), layoutInflater)
 
             ).execute(
 
@@ -289,7 +289,7 @@ public class ChatView extends ListActivity {
 
             // Let's see what happens.
             ChatMessage m = cm.get(curr);
-            if (m.getSender().equals(profileData.getAccountName())) {
+            if (m.getSender().equals(profileData.getUsername())) {
 
                 // Ooh, ooh, is it fresh?
                 if (m.getTimestamp() > latestChatResponseTimestamp) {

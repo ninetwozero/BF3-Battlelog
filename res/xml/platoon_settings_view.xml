@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sample="http://schemas.android.com/apk/res/com.ninetwozero.battlelog"
+>
+  	<PreferenceCategory android:title="General settings">
+  	    <EditTextPreference
+   	        android:title="Name" 
+   	        android:dialogMessage="What's the name of the platoon?"
+            android:key="platoon_general_name"
+            android:hint="Seven Nation Llama"
+        />
+  	    <EditTextPreference
+   	        android:title="Tag" 
+   	        android:dialogMessage="What's the clan tag for the platoon?"
+            android:key="platoon_general_tag"
+            android:hint="SNL"
+        />
+	    <EditTextPreference
+   	        android:title="Website" 
+   	        android:dialogMessage="What's the website for the platoon?"
+            android:key="platoon_general_web"
+            android:hint="John Doe"
+        />
+  	    <EditTextPreference
+   	        android:title="Presentation" 
+   	        android:dialogMessage="Here's where you can let the other users know a thing or two about yourself."
+            android:key="platoon_general_presentation"
+            android:hint="Hello world!"
+        />
+        <CheckBoxPreference
+   	        android:title="Allow new members" 
+   	        android:summaryOn="Users will be able to apply to join."
+   	        android:summaryOff="Users won't be able to apply to join."
+            android:key="platoon_privacy_info"
+            android:defaultValue="false"
+        />
+   	</PreferenceCategory>
+</PreferenceScreen>

@@ -29,6 +29,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -141,9 +142,9 @@ public class ProfileView extends FragmentActivity implements DefaultFragmentActi
             fragmentStats.setProfileData(profileData);
 
             // We need to set the type
-            fragmentFeed.setTitle(profileData.getAccountName());
+            fragmentFeed.setTitle(profileData.getUsername());
             fragmentFeed.setType(FeedFragment.TYPE_PROFILE);
-            fragmentFeed.setId(profileData.getProfileId());
+            fragmentFeed.setId(profileData.getId());
             fragmentFeed.setCanWrite(false);
 
             // Get the ViewPager
@@ -187,8 +188,8 @@ public class ProfileView extends FragmentActivity implements DefaultFragmentActi
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         // Our own profile, no need to show the "extra" buttons
-        if (profileData.getProfileId() == SessionKeeper.getProfileData()
-                .getProfileId()) {
+        if (profileData.getId() == SessionKeeper.getProfileData()
+                .getId()) {
 
             menu.removeItem(R.id.option_friendadd);
             menu.removeItem(R.id.option_frienddel);

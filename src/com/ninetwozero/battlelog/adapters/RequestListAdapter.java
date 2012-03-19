@@ -61,13 +61,7 @@ public class RequestListAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
 
-        return this.profileArray.get(position).getProfileId();
-
-    }
-
-    public long getPersonaId(int position) {
-
-        return this.profileArray.get(position).getPersonaId();
+        return this.profileArray.get(position).getId();
 
     }
 
@@ -87,7 +81,7 @@ public class RequestListAdapter extends BaseAdapter {
 
         // Set the TextView
         ((TextView) convertView.findViewById(R.id.text_user))
-                .setText(currentProfile.getAccountName());
+                .setText(currentProfile.getUsername());
 
         // Hot-wire the views
         ((ImageView) convertView.findViewById(R.id.button_accept))

@@ -571,7 +571,7 @@ public class Board {
 
         @Override
         public String toString() {
-            return this.profileData.getAccountName() + ":" + this.content;
+            return this.profileData.getUsername() + ":" + this.content;
         }
 
     }

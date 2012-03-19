@@ -25,6 +25,7 @@ import android.text.TextUtils;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
@@ -187,7 +188,7 @@ public class CacheHandler {
         }
 
         public static HashMap<Long, PersonaStats> select(final Context context,
-                final long[] personaId) {
+                final PersonaData[] persona) {
 
             SQLiteManager manager = new SQLiteManager(context);
 
@@ -195,16 +196,16 @@ public class CacheHandler {
 
                 // Init
                 String strQuestionMarks = "?";
-                String[] personaIdArray = new String[personaId.length];
+                String[] personaIdArray = new String[persona.length];
                 HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
 
                 // Loop to string the array
-                for (int i = 0, max = personaId.length; i < max; i++) {
+                for (int i = 0, max = persona.length; i < max; i++) {
 
                     if (i > 0) {
                         strQuestionMarks += ",?";
                     }
-                    personaIdArray[i] = String.valueOf(personaId[i]);
+                    personaIdArray[i] = String.valueOf(persona[i].getId());
 
                 }
 
@@ -486,18 +487,19 @@ public class CacheHandler {
                     int numPlatoons = platoonStringArray.length - 1;
 
                     // Create two new arrays for this
-                    String[] personaNameArray = new String[numPersonas];
-                    long[] personaIdArray = new long[numPersonas];
-                    int[] platformIdArray = new int[numPersonas];
+                    PersonaData[] personaArray = new PersonaData[numPersonas];
                     long[] platoonIdArray = new long[numPlatoons];
-
+                    
                     // Loop for the personas
                     for (int i = 0; i < numPersonas; i++) {
 
-                        personaIdArray[i] = Long
-                                .parseLong(personaStringArray[i]);
-                        platformIdArray[i] = Integer.parseInt(platformStringArray[i]);
-                        personaNameArray[i] = personaNameStringArray[i];
+                        personaArray[i] = new PersonaData(
+                         
+                                Long.parseLong(personaStringArray[i]),
+                                personaNameStringArray[i],
+                                Integer.parseInt(platformStringArray[i]),
+                                null
+                        );
 
                     }
 
@@ -529,7 +531,7 @@ public class CacheHandler {
                                     .getColumnIndex("last_login")),
                             results.getLong(results
                                     .getColumnIndex("status_changed")),
-                            personaIdArray, platformIdArray, platoonIdArray,
+                            personaArray,
                             results.getString(results.getColumnIndex("name")),
                             results.getString(results
                                     .getColumnIndex("username")),
@@ -541,7 +543,6 @@ public class CacheHandler {
                                     .getColumnIndex("status_message")),
                             results.getString(results
                                     .getColumnIndex("current_server")),
-                            personaNameArray,
                             (results.getString(results
                                     .getColumnIndex("allow_friendrequests"))
                                     .equalsIgnoreCase("true")),

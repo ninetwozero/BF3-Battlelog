@@ -11,11 +11,11 @@
  			android:entryValues="@array/language_values"
         /> 
         <CheckBoxPreference
-   	        android:title="Fullscreen" 
-   	        android:summaryOn="The app will be in fullscreen mode."
-   	        android:summaryOff="The app will show the title and notification bar."
+   	        android:title="@string/info_settings_fullscreen" 
+   	        android:summaryOn="@string/info_settings_fullscreen_true"
+   	        android:summaryOff="@string/info_settings_fullscreen_false"
             android:key="fullscreen_mode"
-            android:defaultValue="true"
+            android:defaultValue="false"
         />
   	</PreferenceCategory>
    	<PreferenceCategory android:title="@string/info_settings_chat">

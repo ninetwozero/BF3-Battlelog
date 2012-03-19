@@ -93,7 +93,7 @@ public class CommentListAdapter extends BaseAdapter {
         imageAvatar = (ImageView) convertView.findViewById(R.id.image_avatar);
 
         // Set the TextViews
-        textUsername.setText(currentData.getAuthor().getAccountName());
+        textUsername.setText(currentData.getAuthor().getUsername());
         textMessage.setText(Html.fromHtml(currentData.getContent().replace("<",
                 "&lt;")));
         textTimestamp.setText(PublicUtils.getRelativeDate(context,

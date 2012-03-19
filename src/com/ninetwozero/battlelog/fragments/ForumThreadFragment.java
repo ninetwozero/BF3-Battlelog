@@ -359,7 +359,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                                 ).replace(
 
                                                         "{username}",
-                                                        data.getProfileData().getAccountName()
+                                                        data.getProfileData().getUsername()
 
                                                 )
 

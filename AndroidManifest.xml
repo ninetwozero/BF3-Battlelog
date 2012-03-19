@@ -132,6 +132,12 @@
           	android:theme="@android:style/Theme.Light"
         />
         <activity
+            android:label="@string/title_profile_settings"
+            android:name=".ProfileSettingsView"
+          	android:configChanges="orientation"
+          	android:theme="@android:style/Theme.Light"
+        />
+        <activity
             android:label="@string/title_assignments"
             android:name=".AssignmentView"
           	android:configChanges="orientation"

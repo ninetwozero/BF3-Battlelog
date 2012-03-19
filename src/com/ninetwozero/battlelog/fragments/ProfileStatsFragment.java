@@ -275,12 +275,8 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                 if (profileData != null) {
 
                     personaStats = CacheHandler.Persona.select(context,
-                            profileData.getPersonaIdArray());
-                    selectedPersona = profileData.getPersonaId(0);
-
-                    // Best better keep it updated
-                    personaNames = profileData.getPersonaNameArray();
-                    personaId = profileData.getPersonaIdArray();
+                            profileData.getPersonaArray());
+                    selectedPersona = profileData.getPersona(0).getId();
 
                 } else {
 
@@ -340,15 +336,11 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
             try {
                 // Set the selected persona?
                 selectedPersona = (selectedPersona == 0) ? profileData
-                        .getPersonaId(0) : selectedPersona;
+                        .getPersona(0).getId() : selectedPersona;
 
                 // Grab the stats
                 personaStats = WebsiteHandler.getStatsForUser(context,
                         profileData);
-
-                // Best better keep it updated
-                personaNames = profileData.getPersonaNameArray();
-                personaId = profileData.getPersonaIdArray();
 
                 // ...validate!
                 return (personaStats != null && personaStats.size() > 0);
