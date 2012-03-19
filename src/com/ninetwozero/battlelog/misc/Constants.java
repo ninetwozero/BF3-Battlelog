@@ -90,6 +90,7 @@ public final class Constants {
             + "feed/platoonevents/{PLATOON_ID}/?start={NUMSTART}";
     public static final String URL_PLATOON_INVITE = URL_MAIN
             + "platoon/invitemember/";
+    public static final String URL_PLATOON_EDIT = URL_MAIN + "platoon/edit/{PLATOON_ID}/";
 
     // URLS for FEED
     public static final String URL_FEED_REPORT = URL_MAIN
@@ -116,7 +117,8 @@ public final class Constants {
     public static final String URL_PROFILE = URL_MAIN
             + "user/overviewBoxStats/{UID}/";
     public static final String URL_PROFILE_INFO = URL_MAIN + "user/{UNAME}/";
-
+    public static final String URL_PROFILE_EDIT = URL_MAIN + "profile/update/";
+    
     // URL to JSON-files (STATS-related)
     public static final String URL_STATS_OVERVIEW = URL_MAIN
             + "overviewPopulateStats/{PID}/None/{PLATFORM_ID}/";
@@ -173,30 +175,16 @@ public final class Constants {
             "message",
             "post-check-sum"
     };
-    public static final String[] FIELD_VALUES_STATUS = new String[] {
-            null,
-            null
-    };
-
+    
     public static final String[] FIELD_NAMES_PROFILE_SEARCH = new String[] {
             "username", "post-check-sum"
     };
-    public static final String[] FIELD_VALUES_PROFILE_SEARCH = new String[] {
-            null, null
-    };
-
     public static final String[] FIELD_NAMES_PLATOON_SEARCH = new String[] {
             "searchplat", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_PLATOON_SEARCH = new String[] {
-            null, null
     };
 
     public static final String[] FIELD_NAMES_PLATOON_APPLY = new String[] {
             "platoonId", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_PLATOON_APPLY = new String[] {
-            null, null
     };
 
     public static final String[] FIELD_NAMES_PLATOON_RESPOND = new String[] {
@@ -209,69 +197,54 @@ public final class Constants {
     public static final String[] FIELD_NAMES_PLATOON_INVITE = new String[] {
             "platoonId", "post-check-sum", "userIds[]"
     };
-    public static final String[] FIELD_VALUES_PLATOON_INVITE = new String[] {
-            null, null, null
-    };
-
     public static final String[] FIELD_NAMES_PLATOON_LEAVE = new String[] {
             "platoonId", "userId", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_PLATOON_LEAVE = new String[] {
-            null, null, null
     };
 
     public static final String[] FIELD_NAMES_CHAT = new String[] {
             "message",
             "chatId", "post-check-sum"
     };
-    public static final String[] FIELD_VALUES_CHAT = new String[] {
-            null, null,
-            null
-    };
 
     public static final String[] FIELD_NAMES_FEED_POST = new String[] {
             "wall-message", "post-check-sum", "wall-ownerId", "wall-platoonId"
-    };
-    public static final String[] FIELD_VALUES_FEED_POST = new String[] {
-            null,
-            null, null, null
     };
 
     public static final String[] FIELD_NAMES_FEED_COMMENT = new String[] {
             "comment", "post-check-sum"
     };
-    public static final String[] FIELD_VALUES_FEED_COMMENT = new String[] {
-            null, null
-    };
 
     public static final String[] FIELD_NAMES_FORUM_POST = new String[] {
             "body", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_FORUM_POST = new String[] {
-            null,
-            null
     };
 
     public static final String[] FIELD_NAMES_FORUM_NEW = new String[] {
             "topic", "body", "post-check-sum"
     };
-    public static final String[] FIELD_VALUES_FORUM_NEW = new String[] {
-            null,
-            null, null
-    };
 
     public static final String[] FIELD_NAMES_FORUM_REPORT = new String[] {
             "reason", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_FORUM_REPORT = new String[] {
-            null, null
     };
 
     public static final String[] FIELD_NAMES_CHECKSUM = new String[] {
             "post-check-sum"
     };
-    public static final String[] FIELD_VALUES_CHECKSUM = new String[] {
-            null
+
+    public static final String[] FIELD_NAMES_SETTINGS_PROFILE = new String[] {
+        
+        "profile-edit-gravatar", "profile-edit-personaId[]", "profile-edit-picture[]", 
+        "profile-edit-clantag[]", "profile-edit-clantag-games[]", "profile-edit-name", 
+        "profile-edit-presentation", "profile-edit-birthyear", "profile-edit-birthmonth", 
+        "profile-edit-birthday", "profile-edit-location", "profile-edit-dateformat", 
+        "profile-edit-ampm", "profile-edit-utcoffset", "profile-edit-hidedetails", 
+        "profile-edit-inactivatefeed", "profile-edit-allowfriendrequests", "post-check-sum"
+        
+    };
+    
+    public static final String[] FIELD_NAMES_SETTINGS_PLATOON = new String[] {
+        
+        "name", "tag", "presentation", "website", "allow_members_apply", "post-check-sum"
+        
     };
 
     // HTML-elements to grab
@@ -371,6 +344,7 @@ public final class Constants {
     public static final String SP_BL_PROFILE_ID = "battlelog_profile_id";
     public static final String SP_BL_PERSONA_ID = "battlelog_persona_id";
     public static final String SP_BL_PLATFORM_ID = "battlelog_platform_id";
+    public static final String SP_BL_PERSONA_LOGO = "battlelog_persona_logo";
     public static final String SP_BL_CHECKSUM = "battlelog_post_checksum";
     public static final String SP_BL_GRAVATAR = "battlelog_gravatar_hash";
     public static final String SP_BL_REMEMBER = "remember_password";
