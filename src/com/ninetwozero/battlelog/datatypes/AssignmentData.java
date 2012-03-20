@@ -34,20 +34,20 @@ public class AssignmentData implements Parcelable {
     public AssignmentData(
 
             int rId, int uId, String id, String d, String s,
-            ArrayList<AssignmentData.Objective> c,
-            ArrayList<AssignmentData.Dependency> dp,
-            ArrayList<AssignmentData.Unlock> u
+            List<AssignmentData.Objective> c,
+            List<AssignmentData.Dependency> dp,
+            List<AssignmentData.Unlock> u
 
     ) {
 
-        this.resourceId = rId;
-        this.unlockResourceId = uId;
-        this.id = id;
-        this.description = d;
-        this.set = s;
-        this.objectives = c;
-        this.dependencies = dp;
-        this.unlocks = u;
+        resourceId = rId;
+        unlockResourceId = uId;
+        id = id;
+        description = d;
+        set = s;
+        objectives = c;
+        dependencies = dp;
+        unlocks = u;
 
     }
 
@@ -78,45 +78,45 @@ public class AssignmentData implements Parcelable {
 
     // Getters
     public int getResourceId() {
-        return this.resourceId;
+        return resourceId;
     }
 
     public int getUnlockResourceId() {
-        return this.unlockResourceId;
+        return unlockResourceId;
     }
 
     public String getId() {
-        return this.id;
+        return id;
     }
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     public String getSet() {
-        return this.set;
+        return set;
     }
 
     public List<AssignmentData.Objective> getObjectives() {
-        return this.objectives;
+        return objectives;
     }
 
     public List<AssignmentData.Dependency> getDependencies() {
-        return this.dependencies;
+        return dependencies;
     }
 
     public List<AssignmentData.Unlock> getUnlocks() {
-        return this.unlocks;
+        return unlocks;
     }
 
     public int getProgress() {
 
         // How many?
-        final int numObjectives = this.objectives.size();
+        final int numObjectives = objectives.size();
         double count = 0;
 
         // Iterate
-        for (AssignmentData.Objective obj : this.objectives) {
+        for (AssignmentData.Objective obj : objectives) {
 
             count += (obj.getCurrentValue() / obj.getGoalValue()); // 0 <= x <=
             // 1
@@ -128,7 +128,7 @@ public class AssignmentData implements Parcelable {
 
     public boolean isCompleted() {
 
-        for (AssignmentData.Objective obj : this.objectives) {
+        for (AssignmentData.Objective obj : objectives) {
 
             if (obj.getCurrentValue() < obj.getGoalValue()) {
 
@@ -160,43 +160,43 @@ public class AssignmentData implements Parcelable {
         public Objective(double c, double g, String i, String w, String k,
                 String d, String u) {
 
-            this.currentValue = c;
-            this.goalValue = g;
-            this.id = i;
-            this.weapon = w;
-            this.kit = k;
-            this.description = d;
-            this.unit = u;
+            currentValue = c;
+            goalValue = g;
+            id = i;
+            weapon = w;
+            kit = k;
+            description = d;
+            unit = u;
 
         }
 
         // Getters
         public double getCurrentValue() {
-            return this.currentValue;
+            return currentValue;
         }
 
         public double getGoalValue() {
-            return this.goalValue;
+            return goalValue;
         }
 
         public String getId() {
-            return this.id;
+            return id;
         }
 
         public String getWeapon() {
-            return this.weapon;
+            return weapon;
         }
 
         public String getKit() {
-            return this.kit;
+            return kit;
         }
 
         public String getDescription() {
-            return this.description;
+            return description;
         }
 
         public String getUnit() {
-            return this.unit;
+            return unit;
         }
 
     }
@@ -210,18 +210,18 @@ public class AssignmentData implements Parcelable {
         // Construct
         public Dependency(int c, String i) {
 
-            this.count = c;
-            this.id = i;
+            count = c;
+            id = i;
 
         }
 
         // Getters
         public int getCount() {
-            return this.count;
+            return count;
         }
 
         public String getId() {
-            return this.id;
+            return id;
         }
 
     }
@@ -235,23 +235,23 @@ public class AssignmentData implements Parcelable {
         // Construct
         public Unlock(String i, String t, boolean v) {
 
-            this.id = i;
-            this.type = t;
-            this.visible = v;
+            id = i;
+            type = t;
+            visible = v;
 
         }
 
         // Getters
         public String getId() {
-            return this.id;
+            return id;
         }
 
         public String getType() {
-            return this.type;
+            return type;
         }
 
         public boolean isVisible() {
-            return this.visible;
+            return visible;
         }
 
     }

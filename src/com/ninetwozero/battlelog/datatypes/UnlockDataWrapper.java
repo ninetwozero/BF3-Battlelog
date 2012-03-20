@@ -27,44 +27,44 @@ public class UnlockDataWrapper {
     // Construct
     public UnlockDataWrapper(
 
-            ArrayList<UnlockData> w, List<UnlockData> a, List<UnlockData> k,
-            ArrayList<UnlockData> v, List<UnlockData> s,
-            ArrayList<UnlockData> u
+            List<UnlockData> w, List<UnlockData> a, List<UnlockData> k,
+            List<UnlockData> v, List<UnlockData> s,
+            List<UnlockData> u
 
     ) {
 
-        this.weapons = w;
-        this.attachments = a;
-        this.kitUnlocks = k;
-        this.vehicleUpgrades = v;
-        this.skills = s;
-        this.unlocks = u;
+        weapons = w;
+        attachments = a;
+        kitUnlocks = k;
+        vehicleUpgrades = v;
+        skills = s;
+        unlocks = u;
 
     }
 
     // Getters
     public List<UnlockData> getWeapons() {
-        return this.weapons;
+        return weapons;
     }
 
     public List<UnlockData> getAttachments() {
-        return this.attachments;
+        return attachments;
     }
 
     public List<UnlockData> getKitUnlocks() {
-        return this.kitUnlocks;
+        return kitUnlocks;
     }
 
     public List<UnlockData> getVehicleUpgrades() {
-        return this.vehicleUpgrades;
+        return vehicleUpgrades;
     }
 
     public List<UnlockData> getSkills() {
-        return this.skills;
+        return skills;
     }
 
     public List<UnlockData> getUnlocks() {
-        return this.unlocks;
+        return unlocks;
     }
 
 }

@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -43,12 +44,12 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.SearchView;
 import com.ninetwozero.battlelog.UnlockView;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.PersonaData;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class MenuProfileFragment extends Fragment implements DefaultFragment {
+public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
     // Attributes
     private Context context;
@@ -57,15 +58,15 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
     private SharedPreferences sharedPreferences;
     
     //Elements
-    private RelativeLayout wrapPersona;
-    private TextView textPersona;
-    private ImageView imagePersona;
+    private RelativeLayout wrapPlatoon;
+    private TextView textPlatoon;
+    private ImageView imagePlatoon;
     
-    //Let's store the position & persona
-    private PersonaData[] persona;
-    private long[] personaId;
-    private String[] personaName;
-    private long selectedPersona;
+    //Let's store the position & platoon
+    private PlatoonData[] platoon;
+    private long[] platoonId;
+    private String[] platoonName;
+    private long selectedPlatoon;
     private int selectedPosition;
     
     @Override
@@ -78,7 +79,7 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_dashboard_profile,
+        View view = layoutInflater.inflate(R.layout.tab_content_dashboard_platoon,
                 container, false);
 
         initFragment(view);
@@ -90,22 +91,20 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
     public void initFragment(View view) {
         
         //Let's set the vars
-        persona = SessionKeeper.getProfileData().getPersonaArray();
-        selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
-        selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
         
-        //Set up the Persona box
-        wrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
-        textPersona = (TextView) wrapPersona.findViewById(R.id.text_persona);
-        imagePersona = (ImageView) wrapPersona.findViewById(R.id.image_persona);
-        wrapPersona.setOnClickListener( 
+        //Set up the Platoon box
+        wrapPlatoon = (RelativeLayout) view.findViewById(R.id.wrap_platoon);
+        textPlatoon = (TextView) wrapPlatoon.findViewById(R.id.text_platoon);
+        textPlatoon.setSelected(true);
+        imagePlatoon = (ImageView) wrapPlatoon.findViewById(R.id.image_platoon);
+        wrapPlatoon.setOnClickListener( 
                 
             new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
           
-                    generateDialogPersonaList().show();
+                    generateDialogPlatoonList().show();
 
                     
                 }
@@ -114,11 +113,11 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
             
         );
         
-        //Setup the "persona box"
-        setupPersonaBox();
+        //Setup the "platoon box"
+        setupPlatoonBox();
         
         //Set up the intents
-        MENU_INTENTS = new HashMap<Integer, Intent>();
+        /*MENU_INTENTS = new HashMap<Integer, Intent>();
         MENU_INTENTS.put(R.id.button_unlocks,
                         new Intent(context, UnlockView.class).putExtra("profile",
                                 SessionKeeper.getProfileData()));
@@ -145,7 +144,7 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
                     
                 }} );
         
-        }
+        }*/
         
     }
 
@@ -163,7 +162,7 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
         return false;
     }
 
-    public Dialog generateDialogPersonaList() {
+    public Dialog generateDialogPlatoonList() {
 
         // Attributes
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -172,17 +171,17 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
         builder.setTitle(R.string.info_dialog_soldierselect);
 
         //Do we have items to show?
-        if( personaId == null ) {
+        if( platoonId == null ) {
 
             //Init
-            personaId = new long[persona.length];
-            personaName = new String[persona.length];
+            platoonId = new long[platoon.length];
+            platoonName = new String[platoon.length];
             
             //Iterate
-            for( int count = 0, max = persona.length; count < max; count++ ) {
+            for( int count = 0, max = platoon.length; count < max; count++ ) {
 
-                personaId[count] = persona[count].getId();
-                personaName[count] = persona[count].getName();
+                platoonId[count] = platoon[count].getId();
+                platoonName[count] = platoon[count].getName();
                 
             }
             
@@ -191,26 +190,21 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
         //Set it up
         builder.setSingleChoiceItems(
 
-                personaName, -1, new DialogInterface.OnClickListener() {
+                platoonName, -1, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int item) {
 
-                        if (personaId[item] != selectedPersona) {
+                        if (platoonId[item] != selectedPlatoon) {
 
                             // Update it
-                            selectedPersona = personaId[item];
+                            selectedPlatoon = platoonId[item];
                             
-                            // Store selectedPersonaPos
+                            // Store selectedPlatoonPos
                             selectedPosition = item;
                             
                             // Load the new!
-                            setupPersonaBox();
+                            setupPlatoonBox();
                             
-                            //Save it
-                            SharedPreferences.Editor spEdit = sharedPreferences.edit();
-                            spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
-                            spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);
-                            spEdit.commit();
                         }
 
                         dialog.dismiss();
@@ -226,11 +220,11 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
 
     }
     
-    public void setupPersonaBox() {
+    public void setupPlatoonBox() {
         
         //Let's see...
-        textPersona.setText( persona[selectedPosition].getName() );
-        imagePersona.setImageResource( DataBank.getImageForPersona(persona[selectedPosition].getLogo()) );
+        //textPlatoon.setText( platoon[selectedPosition].getName() );
+        //imagePlatoon.setImageBitmap( BitmapFactory.decodeFile(platoon[selectedPosition].getImage()) );
         
     }
     

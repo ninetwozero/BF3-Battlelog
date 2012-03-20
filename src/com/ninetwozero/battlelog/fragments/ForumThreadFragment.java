@@ -410,7 +410,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         }
 
         // Init
-        ArrayList<String> links = new ArrayList<String>();
+        List<String> links = new ArrayList<String>();
         boolean linkFound = false;
 
         // Let's try to find 'em

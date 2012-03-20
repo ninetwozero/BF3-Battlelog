@@ -33,18 +33,18 @@ public class PlatoonStats implements Parcelable {
 
     // Construct
     public PlatoonStats(String sName, long lId, List<PlatoonStatsItem> gS,
-            ArrayList<PlatoonTopStatsItem> tP, List<PlatoonStatsItem> kS,
-            ArrayList<PlatoonStatsItem> kSPM, List<PlatoonStatsItem> kT) {
+            List<PlatoonTopStatsItem> tP, List<PlatoonStatsItem> kS,
+            List<PlatoonStatsItem> kSPM, List<PlatoonStatsItem> kT) {
 
         // Basic attributes
-        this.name = sName;
-        this.id = lId;
+        name = sName;
+        id = lId;
 
-        this.globalTop = gS;
-        this.topPlayers = tP;
-        this.scores = kS;
-        this.spm = kSPM;
-        this.time = kT;
+        globalTop = gS;
+        topPlayers = tP;
+        scores = kS;
+        spm = kSPM;
+        time = kT;
 
     }
 
@@ -52,17 +52,17 @@ public class PlatoonStats implements Parcelable {
     public PlatoonStats(Parcel in) {
 
         // Basic attributes
-        this.name = in.readString();
-        this.id = in.readLong();
+        name = in.readString();
+        id = in.readLong();
 
-        this.globalTop = (List<PlatoonStatsItem>) in.readParcelable(PlatoonStatsItem.class
+        globalTop = (List<PlatoonStatsItem>) in.readParcelable(PlatoonStatsItem.class
                 .getClassLoader());
-        this.topPlayers = (List<PlatoonTopStatsItem>) in.readParcelable(PlatoonStatsItem.class
+        topPlayers = (List<PlatoonTopStatsItem>) in.readParcelable(PlatoonStatsItem.class
                 .getClassLoader());
-        this.scores = (List<PlatoonStatsItem>) in
+        scores = (List<PlatoonStatsItem>) in
                 .readParcelable(PlatoonStatsItem.class.getClassLoader());
-        this.spm = (List<PlatoonStatsItem>) in.readParcelable(PlatoonStatsItem.class.getClassLoader());
-        this.time = (List<PlatoonStatsItem>) in.readParcelable(PlatoonTopStatsItem.class
+        spm = (List<PlatoonStatsItem>) in.readParcelable(PlatoonStatsItem.class.getClassLoader());
+        time = (List<PlatoonStatsItem>) in.readParcelable(PlatoonTopStatsItem.class
                 .getClassLoader());
 
     }
@@ -77,23 +77,23 @@ public class PlatoonStats implements Parcelable {
     }
 
     public final List<PlatoonTopStatsItem> getTopPlayers() {
-        return this.topPlayers;
+        return topPlayers;
     }
 
     public final List<PlatoonStatsItem> getGlobalTop() {
-        return this.globalTop;
+        return globalTop;
     }
 
     public final List<PlatoonStatsItem> getScores() {
-        return this.scores;
+        return scores;
     }
 
     public final List<PlatoonStatsItem> getSpm() {
-        return this.spm;
+        return spm;
     }
 
     public final List<PlatoonStatsItem> getTime() {
-        return this.time;
+        return time;
     }
 
     @Override

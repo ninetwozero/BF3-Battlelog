@@ -73,7 +73,7 @@ public class Backup_BoardView extends ListActivity {
         // Did it get passed on?
         if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
 
-            ArrayList<ShareableCookie> shareableCookies = icicle
+            List<ShareableCookie> shareableCookies = icicle
                     .getParcelableArrayList(Constants.SUPER_COOKIES);
             RequestHandler.setCookies(shareableCookies);
 

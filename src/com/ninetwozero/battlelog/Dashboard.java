@@ -30,7 +30,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -55,11 +54,11 @@ import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
-import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
 import com.ninetwozero.battlelog.fragments.MenuFragment;
+import com.ninetwozero.battlelog.fragments.MenuPlatoonFragment;
 import com.ninetwozero.battlelog.fragments.MenuProfileFragment;
 import com.ninetwozero.battlelog.fragments.NewsFragment;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -98,6 +97,7 @@ public class Dashboard extends FragmentActivity implements DefaultFragmentActivi
     private NewsFragment fragmentNews;
     private MenuFragment fragmentMenu;
     private MenuProfileFragment fragmentMenuProfile;
+    private MenuPlatoonFragment fragmentMenuPlatoon;
     private FeedFragment fragmentFeed;
     private ViewPager viewPager;
 
@@ -189,10 +189,11 @@ public class Dashboard extends FragmentActivity implements DefaultFragmentActivi
             listFragments = new Vector<Fragment>();
             listFragments.add(fragmentNews = (NewsFragment) Fragment.instantiate(this,
                     NewsFragment.class.getName()));
-            listFragments.add(fragmentMenu = (MenuFragment) Fragment.instantiate(this,
-                    MenuFragment.class.getName()));
+            //listFragments.add(fragmentMenu = (MenuFragment) Fragment.instantiate(this, MenuFragment.class.getName()));
             listFragments.add(fragmentMenuProfile = (MenuProfileFragment) Fragment.instantiate(this,
                     MenuProfileFragment.class.getName()));
+            listFragments.add(fragmentMenuPlatoon = (MenuPlatoonFragment) Fragment.instantiate(this,
+                    MenuPlatoonFragment.class.getName()));
             listFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this,
                     FeedFragment.class.getName()));
 
@@ -209,7 +210,7 @@ public class Dashboard extends FragmentActivity implements DefaultFragmentActivi
 
                     fragmentManager,
                     new String[] {
-                            "NEWS", "HOME", "PROFILE", "FEED"
+                            "NEWS", "PROFILE", "PLATOON", "FEED"
                     },
                     listFragments,
                     viewPager,
@@ -220,7 +221,7 @@ public class Dashboard extends FragmentActivity implements DefaultFragmentActivi
 
             // Make sure the tabs follow
             viewPager.setOnPageChangeListener(tabs);
-            viewPager.setCurrentItem(2);
+            viewPager.setCurrentItem(1);
 
         }
 

@@ -49,11 +49,13 @@ public class SessionKeeper {
         String personaIdString = sp.getString(Constants.SP_BL_PERSONA_ID, "");
         String personaNameString = sp.getString(Constants.SP_BL_PERSONA, "");
         String platformIdString = sp.getString(Constants.SP_BL_PLATFORM_ID, "");
-
+        String personaLogoString = sp.getString(Constants.SP_BL_PERSONA_LOGO, "");
+        
         // Let's split them up...
         String[] personaIdArray = personaIdString.split(":");
         String[] personaNameArray = personaNameString.split(":");
         String[] platformIdArray = platformIdString.split(":");
+        String[] personaLogoArray = personaLogoString.split(":");
 
         // How many do we have?
         int max = (personaIdString.equals("")) ? 0 : personaIdArray.length;
@@ -64,7 +66,7 @@ public class SessionKeeper {
         // ...and populate them
         for (int i = 0; i < max; i++) {
             
-            persona[i] = new PersonaData(Long.parseLong(personaIdArray[i]), personaNameArray[i], Integer.parseInt(platformIdArray[i]), "");
+            persona[i] = new PersonaData(Long.parseLong(personaIdArray[i]), personaNameArray[i], Integer.parseInt(platformIdArray[i]), personaLogoArray[i]);
 
         }
 
@@ -79,7 +81,6 @@ public class SessionKeeper {
 
             );
             
-            Log.d(Constants.DEBUG_TAG, "p => " + p);
             return p;
 
         } else {

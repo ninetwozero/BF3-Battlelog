@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
-import java.util.ArrayList;
 import java.util.List;
 
 public class WeaponVehicleDataWrapper {
@@ -26,7 +24,7 @@ public class WeaponVehicleDataWrapper {
     // Construct
     public WeaponVehicleDataWrapper(
 
-            ArrayList<WeaponVehicleListData> w, ArrayList<WeaponVehicleListData> v
+            List<WeaponVehicleListData> w, List<WeaponVehicleListData> v
     ) {
 
         this.weapons = w;

@@ -46,6 +46,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.AssignmentData;
 import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.Board.SearchResult;
 import com.ninetwozero.battlelog.datatypes.Board.ThreadData;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.CommentData;
@@ -189,6 +190,7 @@ public class WebsiteHandler {
                 String personaNames = "";
                 String personaIds = "";
                 String platformIds = "";
+                String personaLogos = "";
 
                 // We need to append the different parts to the ^ strings
                 for (int i = 0, max = profile.getNumPersonas(); i < max; i++) {
@@ -197,6 +199,7 @@ public class WebsiteHandler {
                     personaIds += String.valueOf(profile.getPersona(i).getId()) + ":";
                     platformIds += String.valueOf(profile.getPersona(i).getPlatformId())
                             + ":";
+                    personaLogos += profile.getPersona(i).getLogo() + ":";
 
                 }
 
@@ -207,10 +210,11 @@ public class WebsiteHandler {
                         profile.getId());
                 spEdit.putString(Constants.SP_BL_PERSONA_ID, personaIds);
                 spEdit.putString(Constants.SP_BL_PLATFORM_ID, platformIds);
+                spEdit.putString(Constants.SP_BL_PERSONA_LOGO, personaLogos);
                 spEdit.putString(Constants.SP_BL_CHECKSUM, tempString[1]);
 
                 // Cookie-related
-                ArrayList<ShareableCookie> sca = RequestHandler.getCookies();
+                List<ShareableCookie> sca = RequestHandler.getCookies();
                 if (sca != null) {
 
                     ShareableCookie sc = sca.get(0);
@@ -247,14 +251,6 @@ public class WebsiteHandler {
                                 + serviceInterval / 60000 + " minutes");
 
                 // Return it!!
-                Log.d(Constants.DEBUG_TAG, "profile => " + profile);
-                Log.d(Constants.DEBUG_TAG, "-------------------------");
-                Log.d(Constants.DEBUG_TAG, "profile::accountName => " + profile.getUsername());
-                Log.d(Constants.DEBUG_TAG, "profile::personaId => " + profile.getPersona(0).getId());
-                Log.d(Constants.DEBUG_TAG, "profile::personaName => " + profile.getPersona(0).getName());
-                Log.d(Constants.DEBUG_TAG, "profile::platformId => " + profile.getPersona(0).getPlatformId());
-                Log.d(Constants.DEBUG_TAG, "profile::gravarhash => " + profile.getGravatarHash());
-                Log.d(Constants.DEBUG_TAG, "-------------------------");
                 return profile;
 
             } else {
@@ -666,7 +662,7 @@ public class WebsiteHandler {
                     // Current soldier
                     JSONObject personaObject = soldierBox.optJSONObject(i)
                             .getJSONObject("persona");
-
+                    
                     // Grab the variable data
                     personaArray[i] = new PersonaData(
                             
@@ -958,12 +954,12 @@ public class WebsiteHandler {
 
             // Init the ArrayLists
             HashMap<Long, UnlockDataWrapper> unlockDataMap = new HashMap<Long, UnlockDataWrapper>();
-            ArrayList<UnlockData> weaponArray;
-            ArrayList<UnlockData> attachmentArray;
-            ArrayList<UnlockData> kitUnlockArray;
-            ArrayList<UnlockData> vehicleUpgradeArray;
-            ArrayList<UnlockData> skillArray;
-            ArrayList<UnlockData> unlockArray;
+            List<UnlockData> weaponArray;
+            List<UnlockData> attachmentArray;
+            List<UnlockData> kitUnlockArray;
+            List<UnlockData> vehicleUpgradeArray;
+            List<UnlockData> skillArray;
+            List<UnlockData> unlockArray;
 
             for (int count = 0, maxCount = pd.getNumPersonas(); count < maxCount; count++) {
 
@@ -1241,10 +1237,10 @@ public class WebsiteHandler {
                 JSONObject tempObj, presenceObj;
 
                 // Arraylists!
-                ArrayList<ProfileData> profileRowRequests = new ArrayList<ProfileData>();
-                ArrayList<ProfileData> profileRowPlaying = new ArrayList<ProfileData>();
-                ArrayList<ProfileData> profileRowOnline = new ArrayList<ProfileData>();
-                ArrayList<ProfileData> profileRowOffline = new ArrayList<ProfileData>();
+                List<ProfileData> profileRowRequests = new ArrayList<ProfileData>();
+                List<ProfileData> profileRowPlaying = new ArrayList<ProfileData>();
+                List<ProfileData> profileRowOnline = new ArrayList<ProfileData>();
+                List<ProfileData> profileRowOffline = new ArrayList<ProfileData>();
 
                 // Grab the lengths
                 int numRequests = requestsObject.length(), numFriends = friendsObject
@@ -1421,7 +1417,7 @@ public class WebsiteHandler {
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
             String httpContent;
-            ArrayList<ProfileData> profileArray = new ArrayList<ProfileData>();
+            List<ProfileData> profileArray = new ArrayList<ProfileData>();
 
             // Get the content
             httpContent = wh.post(Constants.URL_FRIENDS,
@@ -1677,7 +1673,7 @@ public class WebsiteHandler {
 
             // Let's do this!
             RequestHandler wh = new RequestHandler();
-            ArrayList<ChatMessage> messageArray = new ArrayList<ChatMessage>();
+            List<ChatMessage> messageArray = new ArrayList<ChatMessage>();
             String httpContent;
 
             // Get the content
@@ -1723,7 +1719,7 @@ public class WebsiteHandler {
                             );
 
                 }
-                return messageArray;
+                return (ArrayList<ChatMessage>) messageArray;
 
             } else {
 
@@ -1829,7 +1825,7 @@ public class WebsiteHandler {
 
             // Let's go!
             RequestHandler rh = new RequestHandler();
-            ArrayList<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
+            List<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
             String httpContent;
 
             // Get the content
@@ -2003,7 +1999,7 @@ public class WebsiteHandler {
 
             // Let's go!
             RequestHandler rh = new RequestHandler();
-            ArrayList<PlatoonMemberData> fans = new ArrayList<PlatoonMemberData>();
+            List<PlatoonMemberData> fans = new ArrayList<PlatoonMemberData>();
             String httpContent;
 
             // Do the request
@@ -2064,7 +2060,7 @@ public class WebsiteHandler {
 
             }
             // Return
-            return fans;
+            return (ArrayList<PlatoonMemberData>) fans;
 
         } catch (Exception ex) {
 
@@ -2090,11 +2086,11 @@ public class WebsiteHandler {
             PlatoonStats stats = null;
 
             // Arrays to divide the users in
-            ArrayList<PlatoonMemberData> founderMembers = new ArrayList<PlatoonMemberData>();
-            ArrayList<PlatoonMemberData> adminMembers = new ArrayList<PlatoonMemberData>();
-            ArrayList<PlatoonMemberData> regularMembers = new ArrayList<PlatoonMemberData>();
-            ArrayList<PlatoonMemberData> invitedMembers = new ArrayList<PlatoonMemberData>();
-            ArrayList<PlatoonMemberData> requestMembers = new ArrayList<PlatoonMemberData>();
+            List<PlatoonMemberData> founderMembers = new ArrayList<PlatoonMemberData>();
+            List<PlatoonMemberData> adminMembers = new ArrayList<PlatoonMemberData>();
+            List<PlatoonMemberData> regularMembers = new ArrayList<PlatoonMemberData>();
+            List<PlatoonMemberData> invitedMembers = new ArrayList<PlatoonMemberData>();
+            List<PlatoonMemberData> requestMembers = new ArrayList<PlatoonMemberData>();
 
             // Get the content
             String httpContent = rh.get(
@@ -2378,7 +2374,7 @@ public class WebsiteHandler {
             // Attributes
             RequestHandler rh = new RequestHandler();
             HashMap<Long, List<AssignmentData>> assignmentMap = new HashMap<Long, List<AssignmentData>>();
-            ArrayList<AssignmentData> items;
+            List<AssignmentData> items;
 
             for (int count = 0, maxCount = profile.getNumPersonas(); count < maxCount; count++) {
 
@@ -2453,9 +2449,9 @@ public class WebsiteHandler {
                                 .getJSONArray("unlocks");
 
                         // Init
-                        ArrayList<AssignmentData.Objective> criterias = new ArrayList<AssignmentData.Objective>();
-                        ArrayList<AssignmentData.Dependency> dependencies = new ArrayList<AssignmentData.Dependency>();
-                        ArrayList<AssignmentData.Unlock> unlocks = new ArrayList<AssignmentData.Unlock>();
+                        List<AssignmentData.Objective> criterias = new ArrayList<AssignmentData.Objective>();
+                        List<AssignmentData.Dependency> dependencies = new ArrayList<AssignmentData.Dependency>();
+                        List<AssignmentData.Unlock> unlocks = new ArrayList<AssignmentData.Unlock>();
 
                         // Alright, let's do this
                         for (int assignmentCounter = 0, assignmentCount = criteriasJSON
@@ -2574,7 +2570,7 @@ public class WebsiteHandler {
 
             // Attributes
             RequestHandler rh = new RequestHandler();
-            ArrayList<FeedItem> feedItems = new ArrayList<FeedItem>();
+            List<FeedItem> feedItems = new ArrayList<FeedItem>();
             JSONArray jsonArray;
             String url = "";
             String httpContent = null;
@@ -2617,7 +2613,7 @@ public class WebsiteHandler {
             }
 
             // Return it
-            return feedItems;
+            return (ArrayList<FeedItem>) feedItems;
 
         } catch (Exception ex) {
 
@@ -2710,7 +2706,7 @@ public class WebsiteHandler {
 
             // Init
             RequestHandler rh = new RequestHandler();
-            ArrayList<NotificationData> notifications = new ArrayList<NotificationData>();
+            List<NotificationData> notifications = new ArrayList<NotificationData>();
             String httpContent;
 
             // Get the content
@@ -2790,7 +2786,7 @@ public class WebsiteHandler {
             }
 
             // Return!!
-            return notifications;
+            return (ArrayList<NotificationData>) notifications;
 
         } catch (Exception ex) {
 
@@ -2900,14 +2896,14 @@ public class WebsiteHandler {
                 JSONArray currObjNames = null;
 
                 // Let's iterate and create the containers
-                ArrayList<PlatoonStatsItem> arrayGeneral = new ArrayList<PlatoonStatsItem>();
-                ArrayList<PlatoonStatsItem> arrayScore = new ArrayList<PlatoonStatsItem>();
-                ArrayList<PlatoonStatsItem> arraySPM = new ArrayList<PlatoonStatsItem>();
-                ArrayList<PlatoonStatsItem> arrayTime = new ArrayList<PlatoonStatsItem>();
-                ArrayList<PlatoonTopStatsItem> arrayTop = new ArrayList<PlatoonTopStatsItem>();
+                List<PlatoonStatsItem> arrayGeneral = new ArrayList<PlatoonStatsItem>();
+                List<PlatoonStatsItem> arrayScore = new ArrayList<PlatoonStatsItem>();
+                List<PlatoonStatsItem> arraySPM = new ArrayList<PlatoonStatsItem>();
+                List<PlatoonStatsItem> arrayTime = new ArrayList<PlatoonStatsItem>();
+                List<PlatoonTopStatsItem> arrayTop = new ArrayList<PlatoonTopStatsItem>();
 
                 // More temp
-                ArrayList<Integer> tempMid = new ArrayList<Integer>();
+                List<Integer> tempMid = new ArrayList<Integer>();
                 String tempGravatarHash = null;
 
                 // Get the *general* stats
@@ -3290,8 +3286,8 @@ public class WebsiteHandler {
             JSONObject ownerObject = null;
             JSONObject otherUserObject = null;
             FeedItem tempFeedItem = null;
-            ArrayList<CommentData> comments = null;
-            ArrayList<FeedItem> feedItemArray = new ArrayList<FeedItem>();
+            List<CommentData> comments = null;
+            List<FeedItem> feedItemArray = new ArrayList<FeedItem>();
 
             // Iterate over the feed
             for (int i = 0, max = jsonArray.length(); i < max; i++) {
@@ -4279,7 +4275,7 @@ public class WebsiteHandler {
 
             }
 
-            return feedItemArray;
+            return (ArrayList<FeedItem>) feedItemArray;
 
         } catch (Exception ex) {
 
@@ -4296,7 +4292,7 @@ public class WebsiteHandler {
 
             // Let's do this!
             RequestHandler wh = new RequestHandler();
-            ArrayList<CommentData> comments = new ArrayList<CommentData>();
+            List<CommentData> comments = new ArrayList<CommentData>();
             String httpContent;
 
             // Get the content
@@ -4345,7 +4341,7 @@ public class WebsiteHandler {
 
                 }
 
-                return comments;
+                return (ArrayList<CommentData>) comments;
 
             } else {
 
@@ -4766,7 +4762,7 @@ public class WebsiteHandler {
             // Let's login everybody!
             RequestHandler rh = new RequestHandler();
             int numUsers = userId.length;
-            ArrayList<PostData> postData = new ArrayList<PostData>();
+            List<PostData> postData = new ArrayList<PostData>();
 
             // Set the first two fields
             postData.add(new PostData(Constants.FIELD_NAMES_PLATOON_INVITE[0],
@@ -5049,7 +5045,7 @@ public class WebsiteHandler {
         try {
 
             // Init to win it
-            ArrayList<Board.Forum> forums = new ArrayList<Board.Forum>();
+            List<Board.Forum> forums = new ArrayList<Board.Forum>();
             String title = "";
 
             // Setup a RequestHandler
@@ -5148,7 +5144,7 @@ public class WebsiteHandler {
         try {
 
             // Init to winit
-            ArrayList<Board.ThreadData> threads = new ArrayList<Board.ThreadData>();
+            List<Board.ThreadData> threads = new ArrayList<Board.ThreadData>();
 
             // Setup a RequestHandler
             RequestHandler rh = new RequestHandler();
@@ -5285,7 +5281,7 @@ public class WebsiteHandler {
         try {
 
             // Init to winit
-            ArrayList<Board.PostData> posts = new ArrayList<Board.PostData>();
+            List<Board.PostData> posts = new ArrayList<Board.PostData>();
 
             // Setup a RequestHandler
             RequestHandler rh = new RequestHandler();
@@ -5463,7 +5459,7 @@ public class WebsiteHandler {
 
         // Init
         RequestHandler rh = new RequestHandler();
-        ArrayList<Board.SearchResult> threads = new ArrayList<Board.SearchResult>();
+        List<Board.SearchResult> threads = new ArrayList<Board.SearchResult>();
 
         try {
 
@@ -5517,7 +5513,7 @@ public class WebsiteHandler {
                 }
             }
 
-            return threads;
+            return (ArrayList<SearchResult>) threads;
 
         } catch (Exception ex) {
 
@@ -5536,7 +5532,7 @@ public class WebsiteHandler {
             ) throws WebsiteHandlerException {
 
         // Init
-        ArrayList<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
+        List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
         RequestHandler rh = new RequestHandler();
 
         try {
@@ -5681,7 +5677,7 @@ public class WebsiteHandler {
         }
 
         // Return the results
-        return results;
+        return (ArrayList<GeneralSearchResult>) results;
 
     }
 
@@ -5691,7 +5687,7 @@ public class WebsiteHandler {
 
         // Inir
         RequestHandler rh = new RequestHandler();
-        ArrayList<PlatoonData> platoons = new ArrayList<PlatoonData>();
+        List<PlatoonData> platoons = new ArrayList<PlatoonData>();
 
         try {
 
@@ -5752,7 +5748,7 @@ public class WebsiteHandler {
 
                 }
 
-                return platoons;
+                return (ArrayList<PlatoonData>) platoons;
 
             } else {
 
@@ -5883,7 +5879,7 @@ public class WebsiteHandler {
         try {
 
             // Init to winit
-            ArrayList<Board.ThreadData> threads = new ArrayList<Board.ThreadData>();
+            List<Board.ThreadData> threads = new ArrayList<Board.ThreadData>();
 
             // Setup a RequestHandler
             RequestHandler rh = new RequestHandler();
@@ -5993,7 +5989,7 @@ public class WebsiteHandler {
 
             }
 
-            return threads;
+            return (ArrayList<ThreadData>) threads;
 
         } catch (Exception ex) {
 
@@ -6010,7 +6006,7 @@ public class WebsiteHandler {
         try {
 
             // Init to winit
-            ArrayList<Board.PostData> posts = new ArrayList<Board.PostData>();
+            List<Board.PostData> posts = new ArrayList<Board.PostData>();
 
             // Setup a RequestHandler
             RequestHandler rh = new RequestHandler();
@@ -6058,7 +6054,7 @@ public class WebsiteHandler {
 
             }
 
-            return posts;
+            return (ArrayList<Board.PostData>) posts;
 
         } catch (Exception ex) {
 
@@ -6115,7 +6111,7 @@ public class WebsiteHandler {
 
             // Init
             RequestHandler rh = new RequestHandler();
-            ArrayList<WeaponStats> weaponStatsArray = new ArrayList<WeaponStats>();
+            List<WeaponStats> weaponStatsArray = new ArrayList<WeaponStats>();
 
             // Get the data
             String httpContent = rh.get(

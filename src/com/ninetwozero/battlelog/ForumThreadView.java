@@ -478,7 +478,7 @@ public class ForumThreadView extends ListActivity {
         }
 
         // Init
-        ArrayList<String> links = new ArrayList<String>();
+        List<String> links = new ArrayList<String>();
         boolean linkFound = false;
 
         // Let's try to find 'em

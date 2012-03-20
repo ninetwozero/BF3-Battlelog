@@ -36,93 +36,11 @@ public class DataBank {
     public DataBank() {
     }
 
-    // Getters
-    public static String getRankTitle(String key) {
-        return RANKS.containsKey(key) ? RANKS.get(key) : key;
-    }
-
-    public static String getWeaponTitle(String key) {
-        return WEAPONS.containsKey(key) ? WEAPONS.get(key).getName() : key;
-    }
-
-    public static String getWeaponTitleShort(String key) {
-        return WEAPONS_SHORT.containsKey(key) ? WEAPONS_SHORT.get(key) : key;
-    }
-
-    public static String getAttachmentTitle(String key) {
-        return WEAPON_ATTACHMENTS.containsKey(key) ? WEAPON_ATTACHMENTS
-                .get(key) : key;
-    }
-
-    public static String getVehicleTitle(String key) {
-        return VEHICLES.containsKey(key) ? VEHICLES.get(key).getName() : key;
-    }
-
-    public static String getVehicleAddon(String key) {
-        return VEHICLE_ADDONS.containsKey(key) ? VEHICLE_ADDONS.get(key) : key;
-    }
-
-    public static String getSkillTitle(String key) {
-        return SKILLS.containsKey(key) ? SKILLS.get(key) : key;
-    }
-
-    public static String getKitUnlockTitle(String key) {
-        return KIT_ITEMS.containsKey(key) ? KIT_ITEMS.get(key) : key;
-    }
-
-    public static String getUnlockGoal(String key) {
-        return UNLOCK_GOALS.containsKey(key) ? UNLOCK_GOALS.get(key) : key;
-    }
-
-    public static String getAwardTitle(String key) {
-        return AWARDS.containsKey(key) ? AWARDS.get(key) : key;
-    }
-
-    public static String getMapTitle(String key) {
-        return MAPS.containsKey(key) ? MAPS.get(key) : key;
-    }
-
-    public static String getCoopLevelTitle(String key) {
-        return COOP_DATA.containsKey(key) ? COOP_DATA.get(key) : key;
-    }
-
-    public static String getDifficultyTitle(String key) {
-        return DIFFICULTY_MAP.containsKey(key) ? DIFFICULTY_MAP.get(key) : key;
-    }
-
-    public static String[] getAssignmentTitle(String key) {
-        return ASSIGNMENTS.containsKey(key) ? ASSIGNMENTS.get(key)
-                : new String[] {
-                        key, key
-                };
-    }
-
-    public static String getAssignmentCriteria(String key) {
-        return CRITERIAS.containsKey(key) ? CRITERIAS.get(key) : key;
-    }
-
-    public static String getExpansionTitle(String key) {
-        return EXPANSION.containsKey(key) ? EXPANSION.get(key) : key;
-    }
-
-    public static String[] getLanguages() {
-        return LANGUAGES;
-    }
-
-    public static String[] getLocales() {
-        return LOCALES;
-    }
-    
-    public static Intent getContactIntent(int res) {
-        
-        return CONTACT_INTENTS.get(res);
-        
-    }
-
     // Maps
     private static PlatformData[] PLATFORMS;
     private static String[] LANGUAGES;
     private static String[] LOCALES;
+    private static HashMap<String, Integer> PERSONA_IMAGES;
     private static List<AppContributorData> APP_CONTRIBUTORS;
     private static Map<Integer, Intent> CONTACT_INTENTS;
     private static Map<String, String> RANKS;
@@ -147,6 +65,7 @@ public class DataBank {
         // Init!
         PLATFORMS = new PlatformData[4];
         CONTACT_INTENTS = new HashMap<Integer, Intent>();
+        PERSONA_IMAGES = new HashMap<String, Integer>();
         APP_CONTRIBUTORS = new ArrayList<AppContributorData>();
         WEAPONS = new HashMap<String, WeaponType>();
         VEHICLES = new HashMap<String, VehicleType>();
@@ -204,6 +123,9 @@ public class DataBank {
                                 Intent.ACTION_VIEW,
                                 Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y8GLB993JKTCL")));
 
+        // PERSONA IMAGES
+        PERSONA_IMAGES.put("bf3-us-recon", R.drawable.bf3_us_recon);
+        
         // CONTRIBUTORS
         APP_CONTRIBUTORS.add(new AppContributorData(R.string.info_credits_code));
         APP_CONTRIBUTORS
@@ -1365,6 +1287,95 @@ public class DataBank {
 
     }
 
+
+    // Getters
+    public static String getRankTitle(String key) {
+        return RANKS.containsKey(key) ? RANKS.get(key) : key;
+    }
+
+    public static String getWeaponTitle(String key) {
+        return WEAPONS.containsKey(key) ? WEAPONS.get(key).getName() : key;
+    }
+
+    public static String getWeaponTitleShort(String key) {
+        return WEAPONS_SHORT.containsKey(key) ? WEAPONS_SHORT.get(key) : key;
+    }
+
+    public static String getAttachmentTitle(String key) {
+        return WEAPON_ATTACHMENTS.containsKey(key) ? WEAPON_ATTACHMENTS
+                .get(key) : key;
+    }
+
+    public static String getVehicleTitle(String key) {
+        return VEHICLES.containsKey(key) ? VEHICLES.get(key).getName() : key;
+    }
+
+    public static String getVehicleAddon(String key) {
+        return VEHICLE_ADDONS.containsKey(key) ? VEHICLE_ADDONS.get(key) : key;
+    }
+
+    public static String getSkillTitle(String key) {
+        return SKILLS.containsKey(key) ? SKILLS.get(key) : key;
+    }
+
+    public static String getKitUnlockTitle(String key) {
+        return KIT_ITEMS.containsKey(key) ? KIT_ITEMS.get(key) : key;
+    }
+
+    public static String getUnlockGoal(String key) {
+        return UNLOCK_GOALS.containsKey(key) ? UNLOCK_GOALS.get(key) : key;
+    }
+
+    public static String getAwardTitle(String key) {
+        return AWARDS.containsKey(key) ? AWARDS.get(key) : key;
+    }
+
+    public static String getMapTitle(String key) {
+        return MAPS.containsKey(key) ? MAPS.get(key) : key;
+    }
+
+    public static String getCoopLevelTitle(String key) {
+        return COOP_DATA.containsKey(key) ? COOP_DATA.get(key) : key;
+    }
+
+    public static String getDifficultyTitle(String key) {
+        return DIFFICULTY_MAP.containsKey(key) ? DIFFICULTY_MAP.get(key) : key;
+    }
+
+    public static String[] getAssignmentTitle(String key) {
+        return ASSIGNMENTS.containsKey(key) ? ASSIGNMENTS.get(key)
+                : new String[] {
+                        key, key
+                };
+    }
+
+    public static String getAssignmentCriteria(String key) {
+        return CRITERIAS.containsKey(key) ? CRITERIAS.get(key) : key;
+    }
+
+    public static String getExpansionTitle(String key) {
+        return EXPANSION.containsKey(key) ? EXPANSION.get(key) : key;
+    }
+
+    public static String[] getLanguages() {
+        return LANGUAGES;
+    }
+
+    public static String[] getLocales() {
+        return LOCALES;
+    }
+    
+    public static int getImageForPersona(String s) {
+        return PERSONA_IMAGES.containsKey(s) ? PERSONA_IMAGES.get(s) : R.drawable.bf3_persona_none;
+    }
+    
+    public static Intent getContactIntent(int res) {
+        
+        return CONTACT_INTENTS.get(res);
+        
+    }
+
+    
     public static String getLocale(int p) {
 
         Log.d(Constants.DEBUG_TAG, "p => " + p);

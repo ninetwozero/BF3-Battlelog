@@ -345,6 +345,8 @@ public final class Constants {
     public static final String SP_BL_PERSONA_ID = "battlelog_persona_id";
     public static final String SP_BL_PLATFORM_ID = "battlelog_platform_id";
     public static final String SP_BL_PERSONA_LOGO = "battlelog_persona_logo";
+    public static final String SP_BL_PERSONA_CURRENT_ID = "battlelog_persona_current_id";
+    public static final String SP_BL_PERSONA_CURRENT_POS = "battlelog_persona_current_pos";
     public static final String SP_BL_CHECKSUM = "battlelog_post_checksum";
     public static final String SP_BL_GRAVATAR = "battlelog_gravatar_hash";
     public static final String SP_BL_REMEMBER = "remember_password";

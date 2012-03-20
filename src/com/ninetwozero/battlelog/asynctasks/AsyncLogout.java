@@ -40,21 +40,21 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
     // Constructor
     public AsyncLogout(Context c) {
 
-        this.context = c;
-        this.sharedPreferences = PreferenceManager
+        context = c;
+        sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
-        this.spEdit = this.sharedPreferences.edit();
+        spEdit = sharedPreferences.edit();
 
     }
 
     @Override
     protected void onPreExecute() {
 
-        this.progressDialog = new ProgressDialog(this.context);
-        this.progressDialog.setTitle(context.getString(R.string.general_wait));
-        this.progressDialog.setMessage(context.getString(R.string.msg_logout));
-        this.progressDialog.setCancelable(false);
-        this.progressDialog.show();
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle(context.getString(R.string.general_wait));
+        progressDialog.setMessage(context.getString(R.string.msg_logout));
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
     }
 
@@ -75,6 +75,9 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
                 spEdit.putString(Constants.SP_BL_PERSONA, "");
                 spEdit.putString(Constants.SP_BL_PERSONA_ID, "");
                 spEdit.putString(Constants.SP_BL_PLATFORM_ID, "");
+                spEdit.putString(Constants.SP_BL_PERSONA_LOGO, "");
+                spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
+                spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
                 spEdit.putString(Constants.SP_BL_COOKIE_NAME, "");
                 spEdit.putString(Constants.SP_BL_COOKIE_VALUE, "");
 
@@ -86,8 +89,8 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
             wh.close();
 
         } catch (RequestHandlerException ex) {
-
-            Log.e(Constants.DEBUG_TAG, "", ex);
+            
+            ex.printStackTrace();
             return 1;
         }
 
@@ -98,10 +101,10 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
     @Override
     protected void onPostExecute(Integer results) {
 
-        if (this.progressDialog != null && this.progressDialog.isShowing()) {
+        if (progressDialog != null && progressDialog.isShowing()) {
 
-            this.progressDialog.dismiss();
-            ((Activity) this.context).finish();
+            progressDialog.dismiss();
+            ((Activity) context).finish();
 
         }
 
