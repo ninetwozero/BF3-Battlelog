@@ -131,7 +131,7 @@ public class DataBank {
         APP_CONTRIBUTORS
                 .add(new AppContributorData("Lukas Larson", "mailto:lukaslarson@gmail.com"));
         APP_CONTRIBUTORS.add(new AppContributorData("Martin Nuc", "http://www.nuc.cz/"));
-        APP_CONTRIBUTORS.add(new AppContributorData("Peter Miklo\u0161sko",
+        APP_CONTRIBUTORS.add(new AppContributorData("Peter Miklo\u0161ko",
                 "https://github.com/peter-budo"));
         APP_CONTRIBUTORS.add(new AppContributorData(R.string.info_credits_graphics));
         APP_CONTRIBUTORS.add(new AppContributorData("Marcus Januszewski", ""));
