@@ -28,7 +28,6 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncSessionRenew extends AsyncTask<PostData, Integer, Boolean> {
 
@@ -78,7 +77,8 @@ public class AsyncSessionRenew extends AsyncTask<PostData, Integer, Boolean> {
         try {
 
             // Let's try
-            profile = WebsiteHandler.doLogin(context, arg0, true);
+            AsyncLogin login = new AsyncLogin(context, true);
+            profile = login.sessionRenew(arg0);
 
             // Did it go ok?
             return (profile != null);

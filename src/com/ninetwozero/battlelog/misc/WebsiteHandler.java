@@ -25,21 +25,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sf.andhsli.hotspotlogin.SimpleCrypto;
-
 import org.apache.http.HttpEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -67,7 +60,6 @@ import com.ninetwozero.battlelog.datatypes.ProfileComparator;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
-import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.TopStatsComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
@@ -75,7 +67,6 @@ import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
-import com.ninetwozero.battlelog.services.BattlelogService;
 
 /* 
  * Methods of this class should be loaded in AsyncTasks, as they would probably lock up the GUI
@@ -85,191 +76,6 @@ public class WebsiteHandler {
 
     // Let's have this one ready
     public static HashMap<String, Object> feedCache = new HashMap<String, Object>();
-
-    public static ProfileData doLogin(final Context context,
-            final PostData[] postDataArray, final boolean savePassword)
-            throws WebsiteHandlerException {
-
-        // Init
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        SharedPreferences.Editor spEdit = sharedPreferences.edit();
-        String[] tempString = new String[10];
-        String httpContent = "";
-        ProfileData profile = null;
-
-        try {
-
-            // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
-            httpContent = wh.post(Constants.URL_LOGIN, postDataArray, 0);
-
-            // Did we manage?
-            if (!"".equals(httpContent)) {
-
-                // Set the int
-                int startPosition = httpContent
-                        .indexOf(Constants.ELEMENT_UID_LINK);
-                String[] bits;
-
-                // Did we find it?
-                if (startPosition == -1) {
-
-                    // Update the position
-                    startPosition = httpContent
-                            .indexOf(Constants.ELEMENT_ERROR_MESSAGE);
-
-                    // Is it -1 again?
-                    if (startPosition == -1) {
-
-                        throw new WebsiteHandlerException(
-                                "The website won't let us in. Please try again later.");
-
-                    } else {
-
-                        tempString[0] = httpContent.substring(startPosition)
-                            .replace("</div>", "")
-                            .replace("\n", "")
-                            .replace(Constants.ELEMENT_ERROR_MESSAGE, "");
-                        tempString[0] = tempString[0].substring(0, tempString[0].indexOf("<div"));
-
-                        throw new WebsiteHandlerException(tempString[0]);
-
-                    }
-
-                }
-
-                // Cut out the appropriate bits (<a class="SOME CLASS HERE"
-                // href="A LONG LINK HERE">NINETWOZERO
-                tempString[0] = httpContent.substring(startPosition);
-                tempString[0] = tempString[0].substring(0,
-                        tempString[0].indexOf("\">"));
-                bits = TextUtils.split(
-                        tempString[0].replace(Constants.ELEMENT_UID_LINK, ""),
-                        "/");
-
-                // Get the checksum
-                tempString[1] = httpContent.substring(httpContent
-                        .indexOf(Constants.ELEMENT_STATUS_CHECKSUM));
-                tempString[1] = tempString[1].substring(0,
-                        tempString[1].indexOf("\" />")).replace(
-                        Constants.ELEMENT_STATUS_CHECKSUM, "");
-
-                // Let's work on getting the "username", not persona name -->
-                // profileId
-                tempString[2] = httpContent.substring(httpContent
-                        .indexOf(Constants.ELEMENT_USERNAME_LINK));
-                tempString[2] = tempString[2].substring(0,
-                        tempString[2].indexOf("/\">")).replace(
-                        Constants.ELEMENT_USERNAME_LINK, "");
-                profile = WebsiteHandler.getProfileIdFromSearch(tempString[2],
-                        tempString[1]);
-                profile = WebsiteHandler.getPersonaIdFromProfile(profile);
-
-                // Further more, we would actually like to store the userid and
-                // name
-                spEdit.putString(Constants.SP_BL_EMAIL,
-                        postDataArray[0].getValue());
-
-                // Should we remember the password?
-                if (savePassword) {
-
-                    spEdit.putString(Constants.SP_BL_PASSWORD, SimpleCrypto
-                            .encrypt(postDataArray[0].getValue(),
-                                    postDataArray[1].getValue()));
-                    spEdit.putBoolean(Constants.SP_BL_REMEMBER, true);
-
-                } else {
-
-                    spEdit.putString(Constants.SP_BL_PASSWORD, "");
-                    spEdit.putBoolean(Constants.SP_BL_REMEMBER, false);
-                }
-
-                // Init the strings
-                String personaNames = "";
-                String personaIds = "";
-                String platformIds = "";
-
-                // We need to append the different parts to the ^ strings
-                for (int i = 0, max = profile.getNumPersonas(); i < max; i++) {
-
-                    personaNames += profile.getPersona(i).getName() + ":";
-                    personaIds += String.valueOf(profile.getPersona(i).getId()) + ":";
-                    platformIds += String.valueOf(profile.getPersona(i).getPlatformId())
-                            + ":";
-
-                }
-
-                // This we keep!!!
-                spEdit.putString(Constants.SP_BL_USERNAME, tempString[2]);
-                spEdit.putString(Constants.SP_BL_PERSONA, personaNames);
-                spEdit.putLong(Constants.SP_BL_PROFILE_ID,
-                        profile.getId());
-                spEdit.putString(Constants.SP_BL_PERSONA_ID, personaIds);
-                spEdit.putString(Constants.SP_BL_PLATFORM_ID, platformIds);
-                spEdit.putString(Constants.SP_BL_CHECKSUM, tempString[1]);
-
-                // Cookie-related
-                ArrayList<ShareableCookie> sca = RequestHandler.getCookies();
-                if (sca != null) {
-
-                    ShareableCookie sc = sca.get(0);
-                    spEdit.putString(Constants.SP_BL_COOKIE_NAME, sc.getName());
-                    spEdit.putString(Constants.SP_BL_COOKIE_VALUE,
-                            sc.getValue());
-
-                } else {
-
-                    throw new WebsiteHandlerException(
-                            context.getString(R.string.info_login_lostcookie));
-
-                }
-
-                // Co-co-co-commit
-                spEdit.commit();
-
-                // Do we want to start a service?
-                int serviceInterval = sharedPreferences.getInt(
-                        Constants.SP_BL_INTERVAL_SERVICE,
-                        (Constants.HOUR_IN_SECONDS / 2)) * 1000;
-                AlarmManager alarmManager = (AlarmManager) context
-                        .getSystemService(Context.ALARM_SERVICE);
-                alarmManager.setInexactRepeating(
-
-                        AlarmManager.ELAPSED_REALTIME, 0, serviceInterval,
-                        PendingIntent.getService(context, 0, new Intent(
-                                context, BattlelogService.class), 0)
-
-                        );
-
-                Log.d(Constants.DEBUG_TAG,
-                        "Setting the service to update every "
-                                + serviceInterval / 60000 + " minutes");
-
-                // Return it!!
-                Log.d(Constants.DEBUG_TAG, "profile => " + profile);
-                Log.d(Constants.DEBUG_TAG, "-------------------------");
-                Log.d(Constants.DEBUG_TAG, "profile::accountName => " + profile.getUsername());
-                Log.d(Constants.DEBUG_TAG, "profile::personaId => " + profile.getPersona(0).getId());
-                Log.d(Constants.DEBUG_TAG, "profile::personaName => " + profile.getPersona(0).getName());
-                Log.d(Constants.DEBUG_TAG, "profile::platformId => " + profile.getPersona(0).getPlatformId());
-                Log.d(Constants.DEBUG_TAG, "profile::gravarhash => " + profile.getGravatarHash());
-                Log.d(Constants.DEBUG_TAG, "-------------------------");
-                return profile;
-
-            } else {
-
-                return null;
-
-            }
-
-        } catch (Exception ex) {
-
-            throw new WebsiteHandlerException(ex.getMessage());
-
-        }
-
-    }
 
     public static ProfileData getProfileIdFromSearch(final String keyword,
             final String checksum) throws WebsiteHandlerException {
