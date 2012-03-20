@@ -24,7 +24,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,8 +36,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.PlatoonView;
-import com.ninetwozero.battlelog.ProfileView;
+import com.ninetwozero.battlelog.PlatoonActivity;
+import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctasks.AsyncFriendRemove;
 import com.ninetwozero.battlelog.asynctasks.AsyncFriendRequest;
@@ -234,7 +233,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                                 // On-click
                                 startActivity(
 
-                                new Intent(context, PlatoonView.class).putExtra(
+                                new Intent(context, PlatoonActivity.class).putExtra(
 
                                         "platoon", (PlatoonData) v.getTag()
 
@@ -319,7 +318,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 showProfile(profileInformation);
 
                 // Set the profileData...
-                profileData.setPersona( profileInformation.getAllPersonas() );
+                profileData.setPersona(profileInformation.getAllPersonas());
 
                 // ...and then send it to the stats
                 sendToStats(profileData);
@@ -366,7 +365,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
         protected Boolean doInBackground(Void... arg0) {
 
             try {
-                
+
                 // Let's get the personas!
                 profileInformation = WebsiteHandler
                         .getProfileInformationForUser(
@@ -432,13 +431,13 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
     public void sendToStats(ProfileData p) {
 
-        ((ProfileView) context).openStats(p);
+        ((ProfileActivity) context).openStats(p);
 
     }
 
     public void setFeedPermission(boolean c) {
 
-        ((ProfileView) context).setFeedPermission(c);
+        ((ProfileActivity) context).setFeedPermission(c);
 
     }
 

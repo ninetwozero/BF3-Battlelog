@@ -29,12 +29,12 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.UnlockView;
+import com.ninetwozero.battlelog.UnlockActivity;
 import com.ninetwozero.battlelog.adapters.UnlockListAdapter;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 
-public class UnlockFragment extends ListFragment implements DefaultFragment  {
+public class UnlockFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
     private Context context;
@@ -63,7 +63,7 @@ public class UnlockFragment extends ListFragment implements DefaultFragment  {
                 container, false);
 
         // Get the unlocks
-        unlocks = ((UnlockView) getActivity()).getItemsForFragment(viewPagerPosition);
+        unlocks = ((UnlockActivity) getActivity()).getItemsForFragment(viewPagerPosition);
 
         // Init views
         initFragment(view);
@@ -116,7 +116,7 @@ public class UnlockFragment extends ListFragment implements DefaultFragment  {
 
     @Override
     public void reload() {
-        
+
     }
 
     @Override

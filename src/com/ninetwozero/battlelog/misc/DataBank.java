@@ -125,7 +125,7 @@ public class DataBank {
 
         // PERSONA IMAGES
         PERSONA_IMAGES.put("bf3-us-recon", R.drawable.bf3_us_recon);
-        
+
         // CONTRIBUTORS
         APP_CONTRIBUTORS.add(new AppContributorData(R.string.info_credits_code));
         APP_CONTRIBUTORS
@@ -154,7 +154,8 @@ public class DataBank {
         APP_CONTRIBUTORS.add(new AppContributorData("Judit Tur", ""));
         APP_CONTRIBUTORS.add(new AppContributorData("Klaus Thenmayer", ""));
         APP_CONTRIBUTORS.add(new AppContributorData("Mirella Lindmark", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("MMario1989", "http://www.facebook.com/people/M%C3%A1ri%C3%B3-Morvai/100001683668440"));
+        APP_CONTRIBUTORS.add(new AppContributorData("MMario1989",
+                "http://www.facebook.com/people/M%C3%A1ri%C3%B3-Morvai/100001683668440"));
         APP_CONTRIBUTORS.add(new AppContributorData("neurokirurgi", ""));
         APP_CONTRIBUTORS.add(new AppContributorData("pauldegroot", ""));
         APP_CONTRIBUTORS.add(new AppContributorData("pingus", ""));
@@ -1287,7 +1288,6 @@ public class DataBank {
 
     }
 
-
     // Getters
     public static String getRankTitle(String key) {
         return RANKS.containsKey(key) ? RANKS.get(key) : key;
@@ -1364,18 +1364,17 @@ public class DataBank {
     public static String[] getLocales() {
         return LOCALES;
     }
-    
+
     public static int getImageForPersona(String s) {
         return PERSONA_IMAGES.containsKey(s) ? PERSONA_IMAGES.get(s) : R.drawable.bf3_persona_none;
     }
-    
+
     public static Intent getContactIntent(int res) {
-        
+
         return CONTACT_INTENTS.get(res);
-        
+
     }
 
-    
     public static String getLocale(int p) {
 
         Log.d(Constants.DEBUG_TAG, "p => " + p);
@@ -1565,11 +1564,11 @@ public class DataBank {
 
         return APP_CONTRIBUTORS;
     }
-    
+
     public static Map<Integer, Intent> getContactIntents() {
-        
+
         return CONTACT_INTENTS;
-        
+
     }
 
 }

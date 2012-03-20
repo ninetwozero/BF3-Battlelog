@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.datatypes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.View;
 import com.ninetwozero.battlelog.R;
 
 public class ProfileData implements Parcelable {
@@ -29,14 +28,14 @@ public class ProfileData implements Parcelable {
 
     // Constructs
     public ProfileData(Parcel in) {
-        
+
         id = in.readLong();
         username = in.readString();
         gravatarHash = in.readString();
         isOnline = (in.readInt() == 1);
         isPlaying = (in.readInt() == 1);
         persona = in.createTypedArray(PersonaData.CREATOR);
-        
+
     }
 
     public ProfileData(long pf, String un) {
@@ -50,14 +49,16 @@ public class ProfileData implements Parcelable {
 
         id = pf;
         username = un;
-        persona = new PersonaData[] { p };
+        persona = new PersonaData[] {
+            p
+        };
         gravatarHash = im;
 
         isOnline = false;
         isPlaying = false;
 
     }
-    
+
     public ProfileData(long pf, String un, PersonaData[] p, String im) {
 
         id = pf;
@@ -69,25 +70,25 @@ public class ProfileData implements Parcelable {
         isPlaying = false;
 
     }
-        
+
     public ProfileData(long pf, String un, PersonaData p, String im, boolean on, boolean pl) {
 
-        
-        this(pf, un, new PersonaData[] { p }, im);
+        this(pf, un, new PersonaData[] {
+            p
+        }, im);
         isOnline = on;
         isPlaying = pl;
 
     }
-    
+
     public ProfileData(long pf, String un, PersonaData[] p, String im, boolean on, boolean pl) {
 
-        
         this(pf, un, p, im);
         isOnline = on;
         isPlaying = pl;
 
     }
-    
+
     // Getters
     public long getId() {
         return id;
@@ -96,25 +97,25 @@ public class ProfileData implements Parcelable {
     public String getUsername() {
         return username;
     }
-    
+
     public PersonaData getPersona(int p) {
-        
-        return (persona.length != 0)? persona[p] : null;
-        
+
+        return (persona.length != 0) ? persona[p] : null;
+
     }
-    
+
     public PersonaData[] getPersonaArray() {
-        
+
         return persona;
-        
+
     }
-    
+
     public int getNumPersonas() {
-        
+
         return persona.length;
-        
+
     }
-    
+
     public String getGravatarHash() {
         return gravatarHash;
     }
@@ -127,17 +128,17 @@ public class ProfileData implements Parcelable {
     public boolean isPlaying() {
         return isPlaying;
     }
-    
-    //Setters
+
+    // Setters
     public void setPersona(PersonaData[] p) {
-        
+
         persona = p;
-        
+
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        
+
         // Everything else
         dest.writeLong(id);
         dest.writeString(username);
@@ -163,14 +164,14 @@ public class ProfileData implements Parcelable {
         }
 
     };
-    
+
     // toString
     @Override
     public String toString() {
 
         return (
 
-                id + ":" + username + ":pX" + persona.length
+        id + ":" + username + ":pX" + persona.length
 
         );
     }

@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -25,9 +23,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Dashboard;
+import com.ninetwozero.battlelog.DashboardActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.SessionKeeperPackage;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -91,7 +88,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         try {
 
             sessionKeeperPackage = WebsiteHandler.doLogin(context, arg0, savePassword);
-                    
+
             // Did it go ok?
             return (sessionKeeperPackage != null);
 
@@ -100,11 +97,11 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
             errorMessage = ex.getMessage();
             return false;
 
-        } catch( Exception ex ) {
-            
+        } catch (Exception ex) {
+
             errorMessage = context.getString(R.string.general_no_data);
             return false;
-            
+
         }
 
     }
@@ -121,7 +118,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
             // Start new
             context.startActivity(
 
-                    new Intent(context, Dashboard.class).putExtra(
+                    new Intent(context, DashboardActivity.class).putExtra(
 
                             "myProfile", sessionKeeperPackage.getProfileData()
 

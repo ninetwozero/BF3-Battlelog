@@ -55,18 +55,18 @@ public class PlatoonUserListAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
 
-        if ( profileArray.get(position).getId() == 0 ) {
-            
+        if (profileArray.get(position).getId() == 0) {
+
             return 0;
-            
-        } else if( profileArray.get(position).getMembershipLevel() == 1) {
-                
+
+        } else if (profileArray.get(position).getMembershipLevel() == 1) {
+
             return 1;
-        
+
         } else {
-        
+
             return 2;
-        
+
         }
 
     }

@@ -14,18 +14,18 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
+import com.ninetwozero.battlelog.R;
 import java.util.List;
 
 public class WeaponVehicleDataWrapper {
 
     // Attributes
     private List<WeaponVehicleListData> weapons, vehicles;
-    
+
     // Construct
     public WeaponVehicleDataWrapper(
 
-            List<WeaponVehicleListData> w, List<WeaponVehicleListData> v
-    ) {
+            List<WeaponVehicleListData> w, List<WeaponVehicleListData> v) {
 
         this.weapons = w;
         this.vehicles = v;
@@ -37,7 +37,6 @@ public class WeaponVehicleDataWrapper {
         return this.weapons;
     }
 
-   
     public List<WeaponVehicleListData> getVehicles() {
         return this.vehicles;
     }

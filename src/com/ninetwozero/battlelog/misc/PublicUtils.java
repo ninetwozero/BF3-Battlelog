@@ -36,7 +36,7 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
-import com.ninetwozero.battlelog.Main;
+import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
@@ -493,9 +493,10 @@ public class PublicUtils {
 
                         )
 
-                    );
-                
-                SessionKeeper.setPlatoonData( SessionKeeper.generatePlatoonDataFromSharedPreferences(sharedPreferences));
+                        );
+
+                SessionKeeper.setPlatoonData(SessionKeeper
+                        .generatePlatoonDataFromSharedPreferences(sharedPreferences));
 
                 // ...but just to be sure, we try to verify our session
                 // "behind the scenes"
@@ -506,7 +507,7 @@ public class PublicUtils {
                 // Aw man, that backfired.
                 Toast.makeText(context, R.string.info_txt_session_lost,
                         Toast.LENGTH_SHORT).show();
-                ((Activity) context).startActivity(new Intent(context, Main.class));
+                ((Activity) context).startActivity(new Intent(context, MainActivity.class));
                 ((Activity) context).finish();
 
             }

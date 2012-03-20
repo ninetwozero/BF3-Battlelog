@@ -25,7 +25,7 @@ import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.ChatView;
+import com.ninetwozero.battlelog.ChatActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ChatListAdapter;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
@@ -87,8 +87,8 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
                     .setMessageArray(messageArray);
 
             // Do we need to ploop?
-            if (context instanceof ChatView) {
-                ((ChatView) context).notifyNewPost(messageArray);
+            if (context instanceof ChatActivity) {
+                ((ChatActivity) context).notifyNewPost(messageArray);
             }
 
         } else {

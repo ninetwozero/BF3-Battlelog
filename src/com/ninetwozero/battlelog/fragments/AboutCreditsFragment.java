@@ -46,7 +46,7 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        
+
         // Set our attributes
         context = getActivity();
         layoutInflater = inflater;
@@ -65,7 +65,7 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
 
     @Override
     public void initFragment(View view) {
-        
+
         // Get the listview
         listView = (ListView) view.findViewById(android.R.id.list);
         listView.setAdapter(new CreditListAdapter(context, DataBank.getContributors(),
@@ -98,14 +98,14 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
         // Is it empty?
         if (url.equals("")) {
             Toast.makeText(context, R.string.info_credits_nolink, Toast.LENGTH_SHORT).show();
-        
-        } else {  
+
+        } else {
             // Let's send it somewhere
             startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)));
 
         }
         return;
-        
+
     }
 
 }

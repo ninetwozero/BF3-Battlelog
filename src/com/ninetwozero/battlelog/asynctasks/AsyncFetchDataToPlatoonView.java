@@ -9,7 +9,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.PlatoonView;
+import com.ninetwozero.battlelog.PlatoonActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -98,7 +98,7 @@ public class AsyncFetchDataToPlatoonView extends
 
                     new Intent(
 
-                            context, PlatoonView.class
+                            context, PlatoonActivity.class
 
                     ).putExtra(
 

@@ -27,27 +27,26 @@ public class PersonaData implements Parcelable {
 
     // Constructs
     public PersonaData(Parcel in) {
-        
+
         id = in.readLong();
         name = in.readString();
         platformId = in.readInt();
-        logo = in.readString(); //TODO: This needs to be incorporated into SP
-        
+        logo = in.readString(); // TODO: This needs to be incorporated into SP
+
     }
 
     public PersonaData(String n) {
-        
+
         this(0, n, 0, null);
-        
+
     }
-    
+
     public PersonaData(long i, String n, int pId, String l) {
 
         id = i;
         name = n;
         platformId = pId;
         logo = l;
-        
 
     }
 
@@ -55,7 +54,7 @@ public class PersonaData implements Parcelable {
     public long getId() {
         return id;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -63,7 +62,7 @@ public class PersonaData implements Parcelable {
     public String getLogo() {
         return logo;
     }
-    
+
     public int getPlatformId() {
         return platformId;
     }
@@ -101,7 +100,7 @@ public class PersonaData implements Parcelable {
 
         return (
 
-                id + ":" + name + ":" + logo + ":" + platformId
+        id + ":" + name + ":" + logo + ":" + platformId
 
         );
     }

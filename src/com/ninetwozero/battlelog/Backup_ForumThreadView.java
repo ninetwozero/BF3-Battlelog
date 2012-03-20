@@ -218,7 +218,7 @@ public class Backup_ForumThreadView extends ListActivity {
 
         } else if (item.getItemId() == R.id.option_search) {
 
-            startActivity(new Intent(this, ForumSearchView.class));
+            startActivity(new Intent(this, ForumSearchActivity.class));
 
         } else if (item.getItemId() == R.id.option_back) {
 
@@ -408,7 +408,7 @@ public class Backup_ForumThreadView extends ListActivity {
                 switch (item.getItemId()) {
 
                     case 0:
-                        startActivity(new Intent(this, ProfileView.class).putExtra(
+                        startActivity(new Intent(this, ProfileActivity.class).putExtra(
                                 "profile", data.getProfileData()));
                         break;
 
@@ -445,7 +445,7 @@ public class Backup_ForumThreadView extends ListActivity {
                         break;
 
                     case 3:
-                        startActivity(new Intent(this, ForumReportView.class)
+                        startActivity(new Intent(this, ForumReportActivity.class)
                                 .putExtra("postId", data.getPostId()));
                         break;
 
@@ -587,7 +587,7 @@ public class Backup_ForumThreadView extends ListActivity {
 
         } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
 
-            startActivity(new Intent(this, ForumSearchView.class));
+            startActivity(new Intent(this, ForumSearchActivity.class));
 
         }
         return super.onKeyDown(keyCode, event);
@@ -880,7 +880,7 @@ public class Backup_ForumThreadView extends ListActivity {
 
                         String username = currentLink.substring(index + 6,
                                 linkEndPos);
-                        intent = new Intent(context, ProfileView.class)
+                        intent = new Intent(context, ProfileActivity.class)
                                 .putExtra(
 
                                         "profile", WebsiteHandler
@@ -896,7 +896,7 @@ public class Backup_ForumThreadView extends ListActivity {
 
                             long platoonId = Long.parseLong(currentLink
                                     .substring(index + 9, linkEndPos));
-                            intent = new Intent(context, PlatoonView.class)
+                            intent = new Intent(context, PlatoonActivity.class)
                                     .putExtra(
 
                                             "platoon", new PlatoonData(platoonId, 0, 0,
@@ -914,7 +914,7 @@ public class Backup_ForumThreadView extends ListActivity {
                                 long personaId = Long
                                         .parseLong(currentLink.substring(0,
                                                 currentLink.indexOf('/')));
-                                intent = new Intent(context, ProfileView.class)
+                                intent = new Intent(context, ProfileActivity.class)
                                         .putExtra(
 
                                                 "profile",

@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
@@ -89,7 +88,7 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
             wh.close();
 
         } catch (RequestHandlerException ex) {
-            
+
             ex.printStackTrace();
             return 1;
         }

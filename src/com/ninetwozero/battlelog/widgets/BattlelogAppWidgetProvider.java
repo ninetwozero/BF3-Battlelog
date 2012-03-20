@@ -29,7 +29,7 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.widget.RemoteViews;
 
-import com.ninetwozero.battlelog.Main;
+import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
@@ -55,7 +55,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
                 .setAction(ACTION_WIDGET_RECEIVER);
         PendingIntent actionPendingIntent = PendingIntent.getBroadcast(context,
                 0, active, 0);
-        Intent appIntent = new Intent(context, Main.class);
+        Intent appIntent = new Intent(context, MainActivity.class);
         PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0,
                 appIntent, 0);
         appIntent.setAction(ACTION_WIDGET_OPENAPP);

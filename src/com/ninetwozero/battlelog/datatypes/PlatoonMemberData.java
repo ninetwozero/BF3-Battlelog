@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.datatypes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.View;
 import com.ninetwozero.battlelog.R;
 
 public class PlatoonMemberData extends ProfileData implements Parcelable {
@@ -31,25 +30,26 @@ public class PlatoonMemberData extends ProfileData implements Parcelable {
         membershipLevel = m;
 
     }
-    
+
     public PlatoonMemberData(long pf, String un, PersonaData[] p, String im, int m) {
 
         super(pf, un, p, im);
         membershipLevel = m;
 
     }
-        
-    public PlatoonMemberData(long pf, String un, PersonaData p, String im, boolean on, boolean pl, int m) {
 
-        
-        super(pf, un, p , im, on, pl);
+    public PlatoonMemberData(long pf, String un, PersonaData p, String im, boolean on, boolean pl,
+            int m) {
+
+        super(pf, un, p, im, on, pl);
         membershipLevel = m;
 
     }
-    
-    public PlatoonMemberData(long pf, String un, PersonaData[] p, String im, boolean on, boolean pl, int m) {
 
-        super(pf, un, p , im, on, pl);
+    public PlatoonMemberData(long pf, String un, PersonaData[] p, String im, boolean on,
+            boolean pl, int m) {
+
+        super(pf, un, p, im, on, pl);
         membershipLevel = m;
 
     }
@@ -77,12 +77,12 @@ public class PlatoonMemberData extends ProfileData implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        
+
         // Everything else
         super.writeToParcel(dest, flags);
         dest.writeInt(membershipLevel);
     }
-    
+
     public static final Parcelable.Creator<PlatoonMemberData> CREATOR = new Parcelable.Creator<PlatoonMemberData>() {
 
         public PlatoonMemberData createFromParcel(Parcel in) {

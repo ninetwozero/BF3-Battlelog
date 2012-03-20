@@ -25,6 +25,7 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.text.TextUtils;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
@@ -489,17 +490,17 @@ public class CacheHandler {
                     // Create two new arrays for this
                     PersonaData[] personaArray = new PersonaData[numPersonas];
                     long[] platoonIdArray = new long[numPlatoons];
-                    
+
                     // Loop for the personas
                     for (int i = 0; i < numPersonas; i++) {
 
                         personaArray[i] = new PersonaData(
-                         
+
                                 Long.parseLong(personaStringArray[i]),
                                 personaNameStringArray[i],
                                 Integer.parseInt(platformStringArray[i]),
                                 null
-                        );
+                                );
 
                     }
 

@@ -9,7 +9,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.ProfileView;
+import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -96,7 +96,7 @@ public class AsyncFetchDataToProfileView extends
 
                     new Intent(
 
-                            context, ProfileView.class
+                            context, ProfileActivity.class
 
                     ).putExtra(
 

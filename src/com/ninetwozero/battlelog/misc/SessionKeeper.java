@@ -19,6 +19,7 @@ import java.util.List;
 
 import android.content.SharedPreferences;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
@@ -37,6 +38,7 @@ public class SessionKeeper {
     public static ProfileData getProfileData() {
         return SessionKeeper.profileData;
     }
+
     public static List<PlatoonData> getPlatoonData() {
         return SessionKeeper.platoonData;
     }
@@ -45,11 +47,11 @@ public class SessionKeeper {
     public static void setProfileData(ProfileData p) {
         SessionKeeper.profileData = p;
     }
-    
+
     public static void setPlatoonData(List<PlatoonData> p) {
-        
+
         SessionKeeper.platoonData = p;
-        
+
     }
 
     // Generate session data
@@ -62,7 +64,7 @@ public class SessionKeeper {
         String personaNameString = sp.getString(Constants.SP_BL_PERSONA, "");
         String platformIdString = sp.getString(Constants.SP_BL_PLATFORM_ID, "");
         String personaLogoString = sp.getString(Constants.SP_BL_PERSONA_LOGO, "");
-        
+
         // Let's split them up...
         String[] personaIdArray = personaIdString.split(":");
         String[] personaNameArray = personaNameString.split(":");
@@ -77,8 +79,9 @@ public class SessionKeeper {
 
         // ...and populate them
         for (int i = 0; i < max; i++) {
-            
-            persona[i] = new PersonaData(Long.parseLong(personaIdArray[i]), personaNameArray[i], Integer.parseInt(platformIdArray[i]), personaLogoArray[i]);
+
+            persona[i] = new PersonaData(Long.parseLong(personaIdArray[i]), personaNameArray[i],
+                    Integer.parseInt(platformIdArray[i]), personaLogoArray[i]);
 
         }
 
@@ -87,12 +90,12 @@ public class SessionKeeper {
 
             ProfileData p = new ProfileData(
                     sp.getLong(Constants.SP_BL_PROFILE_ID, 0),
-                    sp.getString(Constants.SP_BL_USERNAME, ""), 
+                    sp.getString(Constants.SP_BL_USERNAME, ""),
                     persona,
                     sp.getString(Constants.SP_BL_GRAVATAR, "")
 
-            );
-            
+                    );
+
             return p;
 
         } else {
@@ -102,7 +105,7 @@ public class SessionKeeper {
         }
 
     }
-    
+
     public static ArrayList<PlatoonData> generatePlatoonDataFromSharedPreferences(
             SharedPreferences sp) {
 
@@ -112,7 +115,7 @@ public class SessionKeeper {
         String platoonTagString = sp.getString(Constants.SP_BL_PLATOON_TAG, "");
         String platformIdString = sp.getString(Constants.SP_BL_PLATOON_PLATFORM_ID, "");
         String platoonImageString = sp.getString(Constants.SP_BL_PLATOON_IMAGE, "");
-        
+
         // Let's split them up...
         String[] platoonIdArray = platoonIdString.split(":");
         String[] platoonNameArray = platoonNameString.split(":");
@@ -128,22 +131,22 @@ public class SessionKeeper {
 
         // ...and populate them
         for (int i = 0; i < max; i++) {
-            
+
             platoon.add(
-                    
-                new PlatoonData(
-                    
-                    Long.parseLong(platoonIdArray[i]), 
-                    0,
-                    0,
-                    Integer.parseInt(platformIdArray[i]), 
-                    platoonNameArray[i], 
-                    platoonTagArray[i],
-                    platoonImageArray[i],
-                    true
-                )
-                
-           );
+
+                    new PlatoonData(
+
+                            Long.parseLong(platoonIdArray[i]),
+                            0,
+                            0,
+                            Integer.parseInt(platformIdArray[i]),
+                            platoonNameArray[i],
+                            platoonTagArray[i],
+                            platoonImageArray[i],
+                            true
+                    )
+
+                    );
 
         }
 

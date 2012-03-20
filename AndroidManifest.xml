@@ -14,7 +14,7 @@
    	>
         <activity
             android:label="@string/app_name"
-            android:name=".Main"
+            android:name=".MainActivity"
             android:orientation="vertical"
           	android:configChanges="orientation"
 		>
@@ -36,14 +36,14 @@
 		/>
 		<activity
             android:label="@string/title_about"
-            android:name=".AboutView"
+            android:name=".AboutActivity"
             android:orientation="vertical"
           	android:configChanges="orientation"
           	android:windowSoftInputMode="stateHidden"
        />
         <activity
             android:label="@string/title_main_menu"
-            android:name=".Dashboard"
+            android:name=".DashboardActivity"
             android:orientation="vertical"
           	android:configChanges="orientation"
           	android:windowSoftInputMode="stateHidden"
@@ -56,90 +56,95 @@
         />
         <activity
             android:label="@string/title_profile"
-            android:name=".ProfileView"
+            android:name=".ProfileActivity"
           	android:configChanges="orientation"
 		/>
         <activity
             android:label="@string/title_platoon"
-            android:name=".PlatoonView"
+            android:name=".PlatoonActivity"
           	android:configChanges="orientation"
         />
         <activity
             android:label="@string/title_platoon_invite"
-            android:name=".PlatoonInviteView"
+            android:name=".PlatoonInviteActivity"
           	android:configChanges="orientation"
         />
         <activity
             android:label="@string/title_performance"
-            android:name=".StatsView"
+            android:name=".StatsActivity"
           	android:configChanges="orientation"
         />
         <activity
             android:label="@string/title_chat"
-            android:name=".ChatView"
+            android:name=".ChatActivity"
           	android:configChanges="orientation"
         />
         <activity
             android:label="@string/title_comments"
-            android:name=".SinglePostView"
+            android:name=".SinglePostActivity"
           	android:configChanges="orientation"
           	android:windowSoftInputMode="stateHidden"
         />
         <activity
             android:label="@string/title_comparing_battle_scars"
-            android:name=".CompareView"
+            android:name=".CompareActivity"
           	android:configChanges="orientation"
         />
         <activity
             android:label="@string/title_forum"
-            android:name=".BoardView"
+            android:name=".BoardActivity"
           	android:configChanges="orientation"
         />
         <activity
             android:label="BF3 Battlelog - Browsing the forums"
-            android:name=".ForumView"
+            android:name=".ForumActivity"
           	android:configChanges="orientation"
         />
         <activity
             android:label="@string/title_forum_search"
-            android:name=".ForumSearchView"
+            android:name=".ForumSearchActivity"
           	android:configChanges="orientation"
         />
         <activity
             android:label="@string/title_thread_view"
-            android:name=".ForumThreadView"
+            android:name=".ForumThreadActivity"
           	android:configChanges="orientation"
         />
         <activity
             android:label="@string/title_forum_report"
-            android:name=".ForumReportView"
+            android:name=".ForumReportActivity"
           	android:configChanges="orientation"
         />
         <activity
             android:label="@string/title_unlocks"
-            android:name=".UnlockView"
+            android:name=".UnlockActivity"
           	android:configChanges="orientation"
         />
         <activity
             android:label="@string/title_search"
-            android:name=".SearchView"
+            android:name=".SearchActivity"
           	android:configChanges="orientation"
         />
         <activity
             android:label="@string/title_settings"
-            android:name=".SettingsView"
+            android:name=".SettingsActivity"
           	android:configChanges="orientation"
           	android:theme="@android:style/Theme.Light"
         />
         <activity
             android:label="@string/title_profile_settings"
-            android:name=".ProfileSettingsView"
+            android:name=".ProfileSettingsActivity"
           	android:configChanges="orientation"
           	android:theme="@android:style/Theme.Light"
         />
         <activity
             android:label="@string/title_assignments"
-            android:name=".AssignmentView"
+            android:name=".AssignmentActivity"
+          	android:configChanges="orientation"
+        />	
+        <activity
+            android:label="@string/title_platoon_new"
+            android:name=".PlatoonCreateActivity"
           	android:configChanges="orientation"
         />	
         

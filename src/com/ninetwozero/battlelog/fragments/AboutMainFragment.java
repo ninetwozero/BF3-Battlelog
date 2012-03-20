@@ -14,11 +14,7 @@
 
 package com.ninetwozero.battlelog.fragments;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -60,8 +56,8 @@ public class AboutMainFragment extends Fragment implements DefaultFragment {
 
     @Override
     public void initFragment(View view) {
-        
-        //Prevent bug
+
+        // Prevent bug
         setUserVisibleHint(true);
 
         for (int key : DataBank.getContactIntents().keySet()) {

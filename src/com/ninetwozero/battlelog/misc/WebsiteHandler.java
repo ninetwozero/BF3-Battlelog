@@ -129,9 +129,9 @@ public class WebsiteHandler {
                     } else {
 
                         tempString[0] = httpContent.substring(startPosition)
-                            .replace("</div>", "")
-                            .replace("\n", "")
-                            .replace(Constants.ELEMENT_ERROR_MESSAGE, "");
+                                .replace("</div>", "")
+                                .replace("\n", "")
+                                .replace(Constants.ELEMENT_ERROR_MESSAGE, "");
                         tempString[0] = tempString[0].substring(0, tempString[0].indexOf("<div"));
 
                         throw new WebsiteHandlerException(tempString[0]);
@@ -200,7 +200,7 @@ public class WebsiteHandler {
                 String platoonTags = "";
                 String platoonPlatformIds = "";
                 String platoonImages = "";
-                
+
                 // We need to append the different parts to the ^ strings
                 for (int i = 0, max = profile.getNumPersonas(); i < max; i++) {
 
@@ -211,16 +211,16 @@ public class WebsiteHandler {
                     personaLogos += profile.getPersona(i).getLogo() + ":";
 
                 }
-                
-                //The platoons need to be "cacheable" too
-                for( int i = 0, max = platoons.size(); i < max; i++ ) {
-                    
+
+                // The platoons need to be "cacheable" too
+                for (int i = 0, max = platoons.size(); i < max; i++) {
+
                     platoonIds += platoons.get(i).getId() + ":";
                     platoonNames += platoons.get(i).getName() + ":";
                     platoonTags += platoons.get(i).getTag() + ":";
                     platoonPlatformIds += platoons.get(i).getPlatformId() + ":";
                     platoonImages += platoons.get(i).getImage() + ":";
-                    
+
                 }
 
                 // This we keep!!!
@@ -233,14 +233,13 @@ public class WebsiteHandler {
                 spEdit.putString(Constants.SP_BL_PERSONA_LOGO, personaLogos);
                 spEdit.putString(Constants.SP_BL_CHECKSUM, tempString[1]);
 
-                //Platoons too!
+                // Platoons too!
                 spEdit.putString(Constants.SP_BL_PLATOON_ID, platoonIds);
                 spEdit.putString(Constants.SP_BL_PLATOON, platoonNames);
                 spEdit.putString(Constants.SP_BL_PLATOON_TAG, platoonTags);
                 spEdit.putString(Constants.SP_BL_PLATOON_PLATFORM_ID, platoonPlatformIds);
                 spEdit.putString(Constants.SP_BL_PLATOON_IMAGE, platoonImages);
-                
-                
+
                 // Cookie-related
                 List<ShareableCookie> sca = RequestHandler.getCookies();
                 if (sca != null) {
@@ -278,6 +277,12 @@ public class WebsiteHandler {
                         "Setting the service to update every "
                                 + serviceInterval / 60000 + " minutes");
 
+                Log.d(Constants.DEBUG_TAG, "# of platoons => " + platoons.size());
+                for (PlatoonData p : platoons) {
+
+                    Log.d(Constants.DEBUG_TAG, "p => " + p.getName() + ", " + p.getImage());
+
+                }
                 // Return it!!
                 return new SessionKeeperPackage(profile, platoons);
 
@@ -345,7 +350,7 @@ public class WebsiteHandler {
                             profile = new ProfileData(
                                     Long.parseLong(tempObj.getString("userId")),
                                     tempObj.getString("username"),
-                                    new PersonaData[]{},
+                                    new PersonaData[] {},
                                     tempObj.optString("gravatarMd5", "")
 
                                     );
@@ -364,7 +369,7 @@ public class WebsiteHandler {
                             profile = new ProfileData(
                                     Long.parseLong(tempObj.getString("userId")),
                                     tempObj.getString("username"),
-                                    new PersonaData[]{},
+                                    new PersonaData[] {},
                                     tempObj.optString("gravatarMd5", "")
 
                                     );
@@ -639,10 +644,10 @@ public class WebsiteHandler {
                 return new ProfileData(
                         Long.parseLong(user.getString("userId")),
                         user.getString("username"),
-                        new PersonaData[]{},
+                        new PersonaData[] {},
                         user.optString("gravatarMd5", "")
 
-                        );
+                );
 
             } else {
 
@@ -691,15 +696,15 @@ public class WebsiteHandler {
                     // Current soldier
                     JSONObject personaObject = soldierBox.optJSONObject(i)
                             .getJSONObject("persona");
-                    
+
                     // Grab the variable data
                     personaArray[i] = new PersonaData(
-                            
-                            personaObject.getLong("personaId"),        
+
+                            personaObject.getLong("personaId"),
                             personaObject.getString("personaName"),
                             DataBank.getPlatformIdFromName(personaObject.getString("namespace")),
                             personaObject.getString("picture")
-                    );
+                            );
                 }
 
                 return new ProfileData(
@@ -732,7 +737,8 @@ public class WebsiteHandler {
                     .getId());
             return new ProfileData(
 
-                    p.getId(), p.getUsername(), profile.getPersonaArray(), profile.getGravatarHash()
+                    p.getId(), p.getUsername(), profile.getPersonaArray(),
+                    profile.getGravatarHash()
 
             );
 
@@ -750,7 +756,7 @@ public class WebsiteHandler {
         try {
 
             // Do we have a personaId?
-            if (pd.getNumPersonas() == 0 ) {
+            if (pd.getNumPersonas() == 0) {
 
                 pd = getPersonaIdFromProfile(pd.getId());
 
@@ -864,7 +870,8 @@ public class WebsiteHandler {
 
                                 ).replace(
 
-                                        "{PLATFORM_ID}", profileData.getPersona(i).getPlatformId() + ""), 0
+                                        "{PLATFORM_ID}",
+                                        profileData.getPersona(i).getPlatformId() + ""), 0
 
                         );
 
@@ -1002,15 +1009,17 @@ public class WebsiteHandler {
                 // Get the data
                 String content = "";
 
-                content = wh.get(
+                content = wh
+                        .get(
 
-                        Constants.URL_STATS_UNLOCKS.replace(
+                                Constants.URL_STATS_UNLOCKS.replace(
 
-                                "{PID}", pd.getPersona(count).getId() + ""
+                                        "{PID}", pd.getPersona(count).getId() + ""
 
-                                ).replace(
+                                        ).replace(
 
-                                        "{PLATFORM_ID}", pd.getPersona(count).getPlatformId() + ""), 0
+                                                "{PLATFORM_ID}",
+                                                pd.getPersona(count).getPlatformId() + ""), 0
 
                         );
 
@@ -1289,13 +1298,13 @@ public class WebsiteHandler {
 
                                 new ProfileData(
                                         Long.parseLong(tempObj.getString("userId")),
-                                        tempObj.getString("username"), 
+                                        tempObj.getString("username"),
                                         new PersonaData[] {},
                                         tempObj.optString("gravatarMd5", "")
 
                                 )
 
-                            );
+                                );
 
                     }
 
@@ -1323,7 +1332,7 @@ public class WebsiteHandler {
 
                                         new ProfileData(
                                                 Long.parseLong(tempObj.getString("userId")),
-                                                tempObj.getString("username"), 
+                                                tempObj.getString("username"),
                                                 new PersonaData[] {},
                                                 tempObj.optString("gravatarMd5", ""),
                                                 true,
@@ -1339,7 +1348,7 @@ public class WebsiteHandler {
 
                                         new ProfileData(
                                                 Long.parseLong(tempObj.getString("userId")),
-                                                tempObj.getString("username"), 
+                                                tempObj.getString("username"),
                                                 new PersonaData[] {},
                                                 tempObj.optString("gravatarMd5", ""),
                                                 true,
@@ -1357,7 +1366,7 @@ public class WebsiteHandler {
 
                                     new ProfileData(
                                             Long.parseLong(tempObj.getString("userId")),
-                                            tempObj.getString("username"), 
+                                            tempObj.getString("username"),
                                             new PersonaData[] {},
                                             tempObj.optString("gravatarMd5", "")
 
@@ -1380,8 +1389,8 @@ public class WebsiteHandler {
 
                                 new ProfileData(
 
-                                        0, "00000000", new PersonaData(c.getString(R.string.info_txt_friends_online)), null
-                                        
+                                        0, "00000000", new PersonaData(c
+                                                .getString(R.string.info_txt_friends_online)), null
 
                                 )
 
@@ -1395,8 +1404,9 @@ public class WebsiteHandler {
 
                                 new ProfileData(
 
-                                        0, "00000001", new PersonaData( c
-                                                .getString(R.string.info_txt_friends_offline)), null
+                                        0, "00000001", new PersonaData(c
+                                                .getString(R.string.info_txt_friends_offline)),
+                                        null
 
                                 )
 
@@ -1482,7 +1492,8 @@ public class WebsiteHandler {
                             new ProfileData(
 
                                     Long.parseLong(tempObj
-                                            .getString("userId")), tempObj.getString("username"), new PersonaData[] {}, tempObj.optString(
+                                            .getString("userId")), tempObj.getString("username"),
+                                    new PersonaData[] {}, tempObj.optString(
                                             "gravatarMd5", "")
 
                             )
@@ -1892,7 +1903,7 @@ public class WebsiteHandler {
 
                 // Init the arrays
                 PersonaData[] personaArray = new PersonaData[numSoldiers];
-                
+
                 // Get the username
                 String username = profileCommonObject.getJSONObject("user")
                         .getString("username");
@@ -1926,17 +1937,17 @@ public class WebsiteHandler {
                     // Store them
                     personaArray[i] = new PersonaData(
                             Long.parseLong(personaObject
-                            .getString("personaId")),
+                                    .getString("personaId")),
                             (personaObject.isNull("personaName") ? username
                                     : personaObject.getString("personaName")) + " " + DataBank
                                     .resolvePlatformId(DataBank
                                             .getPlatformIdFromName(personaObject
                                                     .getString("namespace"))),
-                                                    DataBank
-                                                    .getPlatformIdFromName(personaObject
-                                                            .getString("namespace")),
-                                                            null
-                    );
+                            DataBank
+                                    .getPlatformIdFromName(personaObject
+                                            .getString("namespace")),
+                            null
+                            );
 
                 }
 
@@ -2082,7 +2093,7 @@ public class WebsiteHandler {
 
                         )
 
-                    );
+                        );
 
                 // a-z please!
                 Collections.sort(fans, new ProfileComparator());
@@ -2180,7 +2191,7 @@ public class WebsiteHandler {
                     if (!currItem.isNull("persona")) {
 
                         tempProfile = new PlatoonMemberData(
-                                
+
                                 Long.parseLong(currItem.getString("userId")),
                                 currItem.getJSONObject("user").getString("username"),
                                 new PersonaData(
@@ -2191,9 +2202,9 @@ public class WebsiteHandler {
                                                         "personaName"),
                                         profileCommonObject.getInt("platform"),
                                         null
-                                        
+
                                 ),
-                                currItem.optString("gravatarMd5", ""), 
+                                currItem.optString("gravatarMd5", ""),
                                 currItem.getJSONObject("user").getJSONObject("presence")
                                         .getBoolean("isOnline"), currItem
                                         .getJSONObject("user")
@@ -2253,12 +2264,15 @@ public class WebsiteHandler {
                     // Plural?
                     if (founderMembers.size() > 1) {
 
-                        members.add(new PlatoonMemberData(0,c.getString(R.string.info_platoon_member_founder_p), new PersonaData[] {}, null, 0));
+                        members.add(new PlatoonMemberData(0, c
+                                .getString(R.string.info_platoon_member_founder_p),
+                                new PersonaData[] {}, null, 0));
 
                     } else {
 
-                        members.add(new PlatoonMemberData(0,c.getString(R.string.info_platoon_member_founder), new PersonaData[] {}, null, 0));
-
+                        members.add(new PlatoonMemberData(0, c
+                                .getString(R.string.info_platoon_member_founder),
+                                new PersonaData[] {}, null, 0));
 
                     }
 
@@ -2272,12 +2286,15 @@ public class WebsiteHandler {
                     // Plural?
                     if (adminMembers.size() > 1) {
 
-                        members.add(new PlatoonMemberData(0,c.getString(R.string.info_platoon_member_admin_p), new PersonaData[] {}, null, 0));
-
+                        members.add(new PlatoonMemberData(0, c
+                                .getString(R.string.info_platoon_member_admin_p),
+                                new PersonaData[] {}, null, 0));
 
                     } else {
 
-                        members.add(new PlatoonMemberData(0,c.getString(R.string.info_platoon_member_admin), new PersonaData[] {}, null, 0));
+                        members.add(new PlatoonMemberData(0, c
+                                .getString(R.string.info_platoon_member_admin),
+                                new PersonaData[] {}, null, 0));
 
                     }
 
@@ -2291,12 +2308,15 @@ public class WebsiteHandler {
                     // Plural?
                     if (regularMembers.size() > 1) {
 
-                        members.add(new PlatoonMemberData(0,c.getString(R.string.info_platoon_member_regular_p), new PersonaData[] {}, null, 0));
-
+                        members.add(new PlatoonMemberData(0, c
+                                .getString(R.string.info_platoon_member_regular_p),
+                                new PersonaData[] {}, null, 0));
 
                     } else {
 
-                        members.add(new PlatoonMemberData(0,c.getString(R.string.info_platoon_member_regular), new PersonaData[] {}, null, 0));
+                        members.add(new PlatoonMemberData(0, c
+                                .getString(R.string.info_platoon_member_regular),
+                                new PersonaData[] {}, null, 0));
 
                     }
 
@@ -2311,7 +2331,9 @@ public class WebsiteHandler {
                     if (invitedMembers.size() > 0) {
 
                         // Just add them
-                        members.add(new PlatoonMemberData(0,c.getString(R.string.info_platoon_member_invited_label), new PersonaData[] {}, null, 0));
+                        members.add(new PlatoonMemberData(0, c
+                                .getString(R.string.info_platoon_member_invited_label),
+                                new PersonaData[] {}, null, 0));
                         members.addAll(invitedMembers);
 
                     }
@@ -2319,7 +2341,9 @@ public class WebsiteHandler {
                     if (requestMembers.size() > 0) {
 
                         // Just add them
-                        members.add(new PlatoonMemberData(0,c.getString(R.string.info_platoon_member_requested_label), new PersonaData[] {}, null, 0));
+                        members.add(new PlatoonMemberData(0, c
+                                .getString(R.string.info_platoon_member_requested_label),
+                                new PersonaData[] {}, null, 0));
                         members.addAll(requestMembers);
 
                     }
@@ -2413,21 +2437,26 @@ public class WebsiteHandler {
                 // Get the JSON!
                 String httpContent = rh.get(
 
-                        Constants.URL_STATS_ASSIGNMENTS.replace(
+                        Constants.URL_STATS_ASSIGNMENTS
+                                .replace(
 
-                                "{PNAME}", profile.getPersona(count).getName()
+                                        "{PNAME}", profile.getPersona(count).getName()
 
-                                ).replace(
+                                )
+                                .replace(
 
                                         "{PID}", profile.getPersona(count).getId() + ""
 
-                                ).replace(
+                                )
+                                .replace(
 
                                         "{UID}", profile.getId() + ""
 
-                                ).replace(
+                                )
+                                .replace(
 
-                                        "{PLATFORM_ID}", profile.getPersona(count).getPlatformId() + ""), 1
+                                        "{PLATFORM_ID}",
+                                        profile.getPersona(count).getPlatformId() + ""), 1
 
                         );
 
@@ -3020,16 +3049,18 @@ public class WebsiteHandler {
                                     currObjNames.getString(i), currObj.getInt("min"), currObj
                                             .getInt("median"), currObj.getInt("best"), currObj
                                             .getInt("average"), new ProfileData(
-                                                    Long
+                                            Long
                                                     .parseLong(currUser
                                                             .optString("userId", "0")),
-                                            currUser.optString("username", ""), 
+                                            currUser.optString("username", ""),
                                             new PersonaData(
                                                     Long.parseLong(currObj
                                                             .optString(
-                                                                    "bestPersonaId", "")),currUser.optString(
-                                                    "username", ""), platoonData
-                                                    .getPlatformId(), null), tempGravatarHash
+                                                                    "bestPersonaId", "")), currUser
+                                                            .optString(
+                                                                    "username", ""), platoonData
+                                                            .getPlatformId(), null),
+                                            tempGravatarHash
 
                                     )
 
@@ -3084,16 +3115,18 @@ public class WebsiteHandler {
                                     currObjNames.getString(i), currObj.getInt("min"), currObj
                                             .getInt("median"), currObj.getInt("best"), currObj
                                             .getInt("average"), new ProfileData(
-                                                    Long
+                                            Long
                                                     .parseLong(currUser
                                                             .optString("userId", "0")),
-                                            currUser.optString("username", ""), 
+                                            currUser.optString("username", ""),
                                             new PersonaData(
                                                     Long.parseLong(currObj
                                                             .optString(
-                                                                    "bestPersonaId", "")),currUser.optString(
-                                                    "username", ""), platoonData
-                                                    .getPlatformId(), null), tempGravatarHash
+                                                                    "bestPersonaId", "")), currUser
+                                                            .optString(
+                                                                    "username", ""), platoonData
+                                                            .getPlatformId(), null),
+                                            tempGravatarHash
 
                                     )
 
@@ -3148,16 +3181,18 @@ public class WebsiteHandler {
                                     currObjNames.getString(i), currObj.getInt("min"), currObj
                                             .getInt("median"), currObj.getInt("best"), currObj
                                             .getInt("average"), new ProfileData(
-                                                    Long
+                                            Long
                                                     .parseLong(currUser
                                                             .optString("userId", "0")),
-                                            currUser.optString("username", ""), 
+                                            currUser.optString("username", ""),
                                             new PersonaData(
                                                     Long.parseLong(currObj
                                                             .optString(
-                                                                    "bestPersonaId", "")),currUser.optString(
-                                                    "username", ""), platoonData
-                                                    .getPlatformId(), null), tempGravatarHash
+                                                                    "bestPersonaId", "")), currUser
+                                                            .optString(
+                                                                    "username", ""), platoonData
+                                                            .getPlatformId(), null),
+                                            tempGravatarHash
 
                                     )
 
@@ -3236,17 +3271,19 @@ public class WebsiteHandler {
                                     currObjNames.getString(i), currObj.getInt("spm"),
                                     new ProfileData(
                                             Long
-                                            .parseLong(currUser
-                                                    .optString("userId", "0")),
-                                    currUser.optString("username", ""), 
-                                    new PersonaData(
-                                            Long.parseLong(currObj
-                                                    .optString(
-                                                            "bestPersonaId", "0")),currUser.optString(
-                                            "username", ""), platoonData
-                                            .getPlatformId(), null), tempGravatarHash
+                                                    .parseLong(currUser
+                                                            .optString("userId", "0")),
+                                            currUser.optString("username", ""),
+                                            new PersonaData(
+                                                    Long.parseLong(currObj
+                                                            .optString(
+                                                                    "bestPersonaId", "0")),
+                                                    currUser.optString(
+                                                            "username", ""), platoonData
+                                                            .getPlatformId(), null),
+                                            tempGravatarHash
 
-                            )
+                                    )
 
                             )
 
@@ -3441,13 +3478,13 @@ public class WebsiteHandler {
                             numComments, itemTitle, "",
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -3473,13 +3510,13 @@ public class WebsiteHandler {
                             tempSubItem.getString("threadBody"),
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -3506,13 +3543,13 @@ public class WebsiteHandler {
                             tempSubItem.getString("postBody"),
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -3663,13 +3700,13 @@ public class WebsiteHandler {
                                     itemContent + "</b>"), "",
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -3690,13 +3727,13 @@ public class WebsiteHandler {
                                     + tempSubItem.getString("statusMessage"),
                             "", currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -3721,13 +3758,13 @@ public class WebsiteHandler {
                                     ), "", currItem.getString("event"),
                             new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -3762,13 +3799,13 @@ public class WebsiteHandler {
                             numComments, itemTitle, "",
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -3813,13 +3850,13 @@ public class WebsiteHandler {
                             tempSubItem.getString("gameReportComment"),
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -3848,13 +3885,13 @@ public class WebsiteHandler {
                             tempSubItem.getString("blogCommentBody"),
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -3883,13 +3920,13 @@ public class WebsiteHandler {
                             numComments, itemTitle, "",
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -3918,13 +3955,13 @@ public class WebsiteHandler {
                             numComments, itemTitle, "",
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -3953,13 +3990,13 @@ public class WebsiteHandler {
                             numComments, itemTitle, "",
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -3988,13 +4025,13 @@ public class WebsiteHandler {
                             numComments, itemTitle, "",
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -4023,13 +4060,13 @@ public class WebsiteHandler {
                             numComments, itemTitle, "",
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -4061,13 +4098,13 @@ public class WebsiteHandler {
                             tempSubItem.getString("wallBody"),
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -4104,20 +4141,20 @@ public class WebsiteHandler {
                             numComments, itemTitle, "",
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ),
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        friendObject.getString("username"),
-                                        new PersonaData[] {},
-                                        friendObject.getString("gravatarMd5")
+                                    ),
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            friendObject.getString("username"),
+                                            new PersonaData[] {},
+                                            friendObject.getString("gravatarMd5")
 
-                                )
+                                    )
 
                             }, liked, censored, tempGravatarHash
 
@@ -4181,13 +4218,13 @@ public class WebsiteHandler {
                                     itemContent + "</b>"), "",
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -4219,13 +4256,13 @@ public class WebsiteHandler {
                             numComments, itemTitle, "",
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        otherUserObject.getString("username"),
-                                        new PersonaData[] {},
-                                        otherUserObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            otherUserObject.getString("username"),
+                                            new PersonaData[] {},
+                                            otherUserObject.getString("gravatarMd5")
 
-                                ),
+                                    ),
                                     new ProfileData(
                                             Long.parseLong(currItem.getString("ownerId")),
                                             ownerObject.getString("username"),
@@ -4264,13 +4301,13 @@ public class WebsiteHandler {
                             numComments, itemTitle, "",
                             currItem.getString("event"), new ProfileData[] {
 
-                                new ProfileData(
-                                        Long.parseLong(currItem.getString("ownerId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                    new ProfileData(
+                                            Long.parseLong(currItem.getString("ownerId")),
+                                            ownerObject.getString("username"),
+                                            new PersonaData[] {},
+                                            ownerObject.getString("gravatarMd5")
 
-                                ), null
+                                    ), null
 
                             }, liked, censored, tempGravatarHash
 
@@ -5217,16 +5254,16 @@ public class WebsiteHandler {
                                         .getInt("numberOfPosts"),
                                 currObject.getString("title"), new ProfileData(
                                         Long
-                                        .parseLong(ownerObject.getString("userId")),
-                                        ownerObject.getString("username"), 
-                                        new PersonaData[]{},
+                                                .parseLong(ownerObject.getString("userId")),
+                                        ownerObject.getString("username"),
+                                        new PersonaData[] {},
                                         ownerObject.getString("gravatarMd5")
 
                                 ), new ProfileData(
                                         Long
-                                        .parseLong(lastPosterObject.getString("userId")),
-                                        lastPosterObject.getString("username"), 
-                                        new PersonaData[]{},
+                                                .parseLong(lastPosterObject.getString("userId")),
+                                        lastPosterObject.getString("username"),
+                                        new PersonaData[] {},
                                         lastPosterObject.getString("gravatarMd5")
 
                                 ), currObject.getBoolean("isSticky"), currObject
@@ -5269,9 +5306,9 @@ public class WebsiteHandler {
 
                                 ), new ProfileData(
                                         Long
-                                        .parseLong(lastPosterObject.getString("userId")),
-                                        lastPosterObject.getString("username"), 
-                                        new PersonaData[]{},
+                                                .parseLong(lastPosterObject.getString("userId")),
+                                        lastPosterObject.getString("username"),
+                                        new PersonaData[] {},
                                         lastPosterObject.getString("gravatarMd5")
 
                                 ), currObject.getBoolean("isSticky"), currObject
@@ -5344,13 +5381,13 @@ public class WebsiteHandler {
                                 Long.parseLong(currObject.getString("id")), Long
                                         .parseLong(currObject.getString("creationDate")), Long
                                         .parseLong(currObject.getString("threadId")),
-                                        new ProfileData(
-                                                Long.parseLong(ownerObject.getString("ownerId")),
-                                                ownerObject.getString("username"),
-                                                new PersonaData[] {},
-                                                ownerObject.getString("gravatarMd5")
+                                new ProfileData(
+                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        ownerObject.getString("username"),
+                                        new PersonaData[] {},
+                                        ownerObject.getString("gravatarMd5")
 
-                                        ), currObject.getString("formattedBody"), currObject
+                                ), currObject.getString("formattedBody"), currObject
                                         .getInt("abuseCount"), currObject
                                         .getBoolean("isCensored"), currObject
                                         .getBoolean("isOfficial")
@@ -5371,17 +5408,17 @@ public class WebsiteHandler {
                     contextObject.getInt("numPages"),
                     threadObject.getString("title"), new ProfileData(
                             Long
-                            .parseLong(threadOwnerObject.getString("userId")),
-                            threadOwnerObject.getString("username"), 
-                            new PersonaData[]{},
+                                    .parseLong(threadOwnerObject.getString("userId")),
+                            threadOwnerObject.getString("username"),
+                            new PersonaData[] {},
                             threadOwnerObject.getString("gravatarMd5")
 
                     ),
                     new ProfileData(
                             Long
-                            .parseLong(lastPosterObject.getString("userId")),
-                            lastPosterObject.getString("username"), 
-                            new PersonaData[]{},
+                                    .parseLong(lastPosterObject.getString("userId")),
+                            lastPosterObject.getString("username"),
+                            new PersonaData[] {},
                             lastPosterObject.getString("gravatarMd5")
 
                     ), threadObject.getBoolean("isSticky"),
@@ -5524,7 +5561,7 @@ public class WebsiteHandler {
                                                 .getString("title"),
                                         new ProfileData(
                                                 Long
-                                                .parseLong(currentItem.getString("ownerId")),
+                                                        .parseLong(currentItem.getString("ownerId")),
                                                 currentItem.getString("ownerUsername"),
                                                 new PersonaData[] {},
                                                 null),
@@ -5957,9 +5994,9 @@ public class WebsiteHandler {
 
                                 ), new ProfileData(
                                         Long
-                                        .parseLong(lastPosterObject.getString("userId")),
-                                        lastPosterObject.getString("username"), 
-                                        new PersonaData[]{},
+                                                .parseLong(lastPosterObject.getString("userId")),
+                                        lastPosterObject.getString("username"),
+                                        new PersonaData[] {},
                                         lastPosterObject.getString("gravatarMd5")
 
                                 ), currObject.getBoolean("isSticky"), currObject
@@ -6002,9 +6039,9 @@ public class WebsiteHandler {
 
                                 ), new ProfileData(
                                         Long
-                                        .parseLong(lastPosterObject.getString("userId")),
-                                        lastPosterObject.getString("username"), 
-                                        new PersonaData[]{},
+                                                .parseLong(lastPosterObject.getString("userId")),
+                                        lastPosterObject.getString("username"),
+                                        new PersonaData[] {},
                                         lastPosterObject.getString("gravatarMd5")
 
                                 ), currObject.getBoolean("isSticky"), currObject
@@ -6064,13 +6101,13 @@ public class WebsiteHandler {
                                 Long.parseLong(currObject.getString("id")), Long
                                         .parseLong(currObject.getString("creationDate")), Long
                                         .parseLong(currObject.getString("threadId")),
-                                        new ProfileData(
-                                                Long.parseLong(ownerObject.getString("ownerId")),
-                                                ownerObject.getString("username"),
-                                                new PersonaData[] {},
-                                                ownerObject.getString("gravatarMd5")
+                                new ProfileData(
+                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        ownerObject.getString("username"),
+                                        new PersonaData[] {},
+                                        ownerObject.getString("gravatarMd5")
 
-                                        ), currObject.getString("formattedBody"), currObject
+                                ), currObject.getString("formattedBody"), currObject
                                         .getInt("abuseCount"), currObject
                                         .getBoolean("isCensored"), currObject
                                         .getBoolean("isOfficial")
@@ -6206,80 +6243,121 @@ public class WebsiteHandler {
     }
 
     public static List<NewsData> getNewsForPage(int p) throws WebsiteHandlerException {
-        
+
         try {
-            
-            //Init!
+
+            // Init!
             RequestHandler rh = new RequestHandler();
             List<NewsData> news = new ArrayList<NewsData>();
-            
-            //Iterate!
-            for( int i = 0, max= 2; i < max; i++) {
 
-                //Let's see
-                int num = (10*p);
-                if( i == 1 ) {
-                    
+            // Iterate!
+            for (int i = 0, max = 2; i < max; i++) {
+
+                // Let's see
+                int num = (10 * p);
+                if (i == 1) {
+
                     num += 5;
-                    
+
                 }
-                
-                //Get the data
+
+                // Get the data
                 String httpContent = rh.get(Constants.URL_NEWS.replace("{COUNT}", num + ""), 1);
-                
-                //Did we get something?
-                if( httpContent != null && !httpContent.equals("") ) {
-                    
-                    //JSON!
-                    JSONArray baseArray = new JSONObject(httpContent).getJSONObject("context").getJSONArray("blogPosts");
-                    
-                    //Iterate
-                    for( int count = 0, maxCount = baseArray.length(); count < maxCount; count++ ) {
-                        
-                        //Get the current item
+
+                // Did we get something?
+                if (httpContent != null && !httpContent.equals("")) {
+
+                    // JSON!
+                    JSONArray baseArray = new JSONObject(httpContent).getJSONObject("context")
+                            .getJSONArray("blogPosts");
+
+                    // Iterate
+                    for (int count = 0, maxCount = baseArray.length(); count < maxCount; count++) {
+
+                        // Get the current item
                         JSONObject item = baseArray.getJSONObject(count);
                         JSONObject user = item.getJSONObject("user");
-                        
-                        //Handle the data
-                        news.add( 
-                                
-                            new NewsData(
-                                    
-                                Long.parseLong( item.getString("id") ),
-                                item.getLong("creationDate"),
-                                item.getInt("devblogCommentCount"),
-                                item.getString("title"),
-                                item.getString("body"),
-                                new ProfileData(
 
-                                    Long.parseLong( user.getString("userId") ),
-                                    user.getString("username"),
-                                    new PersonaData[] {},
-                                    user.getString("gravatarMd5")
-                                        
+                        // Handle the data
+                        news.add(
+
+                                new NewsData(
+
+                                        Long.parseLong(item.getString("id")),
+                                        item.getLong("creationDate"),
+                                        item.getInt("devblogCommentCount"),
+                                        item.getString("title"),
+                                        item.getString("body"),
+                                        new ProfileData(
+
+                                                Long.parseLong(user.getString("userId")),
+                                                user.getString("username"),
+                                                new PersonaData[] {},
+                                                user.getString("gravatarMd5")
+
+                                        )
+
                                 )
-                                
-                            )
-                        
-                        );
-                        
+
+                                );
+
                     }
-                    
+
                 }
 
             }
-            
+
             return news;
-            
-        } catch( RequestHandlerException ex ) {
-            
+
+        } catch (RequestHandlerException ex) {
+
             throw new WebsiteHandlerException(ex.getMessage());
-            
-        } catch( Exception ex ) {
-            
-             throw new WebsiteHandlerException(ex.getMessage());   
+
+        } catch (Exception ex) {
+
+            throw new WebsiteHandlerException(ex.getMessage());
         }
-        
+
     }
-    
+
+    public static boolean createNewPlatoon(String... params) {
+
+        try {
+
+            // Get the # of params
+            int max = params.length;
+            PostData[] postDataArray = new PostData[max];
+
+            // Let's iterate over the params and create postdata
+            for (int count = 0; count < max; count++) {
+
+                // Set the value
+                postDataArray[count] = new PostData(Constants.FIELD_NAMES_PLATOON_NEW[count],
+                        params[count]);
+
+            }
+
+            // Let's do the actual request
+            RequestHandler rh = new RequestHandler();
+            String httpContent = rh.post(Constants.URL_PLATOON_NEW, postDataArray, 1);
+
+            // Is the httpContent !null?
+            if (httpContent != null && !httpContent.equals("")) {
+
+                // Let's validate further...
+                return !(new JSONObject(httpContent).optJSONObject("data").isNull("platoon"));
+
+            }
+
+            return false;
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            return false;
+
+        }
+
+    }
+
 }

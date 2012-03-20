@@ -35,8 +35,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.PlatoonInviteView;
-import com.ninetwozero.battlelog.ProfileView;
+import com.ninetwozero.battlelog.PlatoonInviteActivity;
+import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.PlatoonUserListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonMemberManagement;
@@ -198,7 +198,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
             new Intent(
 
-                    context, PlatoonInviteView.class
+                    context, PlatoonInviteActivity.class
 
             ).putExtra(
 
@@ -291,7 +291,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
                     startActivity(
 
-                    new Intent(context, ProfileView.class).putExtra(
+                    new Intent(context, ProfileActivity.class).putExtra(
 
                             "profile", data
 

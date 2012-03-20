@@ -9,7 +9,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.CompareView;
+import com.ninetwozero.battlelog.CompareActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -95,7 +95,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
 
                     new Intent(
 
-                            context, CompareView.class
+                            context, CompareActivity.class
 
                     ).putExtra(
 

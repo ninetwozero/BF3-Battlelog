@@ -258,7 +258,7 @@ public class Backup_ForumView extends ListActivity {
 
         } else if (item.getItemId() == R.id.option_search) {
 
-            startActivity(new Intent(this, ForumSearchView.class));
+            startActivity(new Intent(this, ForumSearchActivity.class));
 
         } else if (item.getItemId() == R.id.option_back) {
 
@@ -423,7 +423,7 @@ public class Backup_ForumView extends ListActivity {
 
         } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
 
-            startActivity(new Intent(this, ForumSearchView.class));
+            startActivity(new Intent(this, ForumSearchActivity.class));
 
         }
 

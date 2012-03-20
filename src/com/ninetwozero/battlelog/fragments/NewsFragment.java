@@ -50,7 +50,7 @@ public class NewsFragment extends ListFragment implements DefaultFragment {
     // Elements
     private ListView listView;
     private NewsListAdapter newsListAdapter;
-    
+
     // Misc
     private List<NewsData> newsItems;
     private SharedPreferences sharedPreferences;

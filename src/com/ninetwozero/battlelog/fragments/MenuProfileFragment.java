@@ -36,12 +36,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ninetwozero.battlelog.AssignmentView;
-import com.ninetwozero.battlelog.ProfileSettingsView;
-import com.ninetwozero.battlelog.ProfileView;
+import com.ninetwozero.battlelog.AssignmentActivity;
+import com.ninetwozero.battlelog.ProfileActivity;
+import com.ninetwozero.battlelog.ProfileSettingsActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.SearchView;
-import com.ninetwozero.battlelog.UnlockView;
+import com.ninetwozero.battlelog.SearchActivity;
+import com.ninetwozero.battlelog.UnlockActivity;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -55,19 +55,19 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
     private LayoutInflater layoutInflater;
     private Map<Integer, Intent> MENU_INTENTS;
     private SharedPreferences sharedPreferences;
-    
-    //Elements
+
+    // Elements
     private RelativeLayout wrapPersona;
     private TextView textPersona;
     private ImageView imagePersona;
-    
-    //Let's store the position & persona
+
+    // Let's store the position & persona
     private PersonaData[] persona;
     private long[] personaId;
     private String[] personaName;
     private long selectedPersona;
     private int selectedPosition;
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -76,78 +76,78 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
         context = getActivity();
         layoutInflater = inflater;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        
+
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_dashboard_profile,
                 container, false);
 
         initFragment(view);
-        
+
         return view;
 
     }
-    
+
     public void initFragment(View view) {
-        
-        //Let's set the vars
+
+        // Let's set the vars
         persona = SessionKeeper.getProfileData().getPersonaArray();
         selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
         selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
-        
-        //Set up the Persona box
+
+        // Set up the Persona box
         wrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
-        wrapPersona.setOnClickListener( 
-                
-            new OnClickListener() {
+        wrapPersona.setOnClickListener(
 
-                @Override
-                public void onClick(View v) {
-          
-                    generateDialogPersonaList().show();
+                new OnClickListener() {
 
-                    
+                    @Override
+                    public void onClick(View v) {
+
+                        generateDialogPersonaList().show();
+
+                    }
+
                 }
-                
-            }
-            
-        );
+
+                );
         imagePersona = (ImageView) wrapPersona.findViewById(R.id.image_persona);
         textPersona = (TextView) wrapPersona.findViewById(R.id.text_persona);
         textPersona.setSelected(true);
-        
-        //Setup the "persona box"
+
+        // Setup the "persona box"
         setupPersonaBox();
-        
-        //Set up the intents
+
+        // Set up the intents
         MENU_INTENTS = new HashMap<Integer, Intent>();
         MENU_INTENTS.put(R.id.button_unlocks,
-                        new Intent(context, UnlockView.class).putExtra("profile",
-                                SessionKeeper.getProfileData()));
+                new Intent(context, UnlockActivity.class).putExtra("profile",
+                        SessionKeeper.getProfileData()));
         MENU_INTENTS.put(R.id.button_assignments,
-                        new Intent(context, AssignmentView.class).putExtra("profile",
-                                SessionKeeper.getProfileData()));
-        MENU_INTENTS.put(R.id.button_search, new Intent(context, SearchView.class));
+                new Intent(context, AssignmentActivity.class).putExtra("profile",
+                        SessionKeeper.getProfileData()));
+        MENU_INTENTS.put(R.id.button_search, new Intent(context, SearchActivity.class));
         MENU_INTENTS.put(R.id.button_self,
-                new Intent(context, ProfileView.class).putExtra("profile",
-                        SessionKeeper.getProfileData()));        
-        
-        MENU_INTENTS.put(R.id.button_settings,
-                new Intent(context, ProfileSettingsView.class));
+                new Intent(context, ProfileActivity.class).putExtra("profile",
+                        SessionKeeper.getProfileData()));
 
-        //Add the OnClickListeners
-        for( int key : MENU_INTENTS.keySet() ) {
-            
-            view.findViewById(key).setOnClickListener( new OnClickListener() {
+        MENU_INTENTS.put(R.id.button_settings,
+                new Intent(context, ProfileSettingsActivity.class));
+
+        // Add the OnClickListeners
+        for (int key : MENU_INTENTS.keySet()) {
+
+            view.findViewById(key).setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
 
                     startActivity(MENU_INTENTS.get(v.getId()));
-                    
-                }} );
-        
+
+                }
+            });
+
         }
-        
+
     }
 
     @Override
@@ -168,28 +168,28 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
 
         // Attributes
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        
+
         // Set the title and the view
         builder.setTitle(R.string.info_dialog_soldierselect);
 
-        //Do we have items to show?
-        if( personaId == null ) {
+        // Do we have items to show?
+        if (personaId == null) {
 
-            //Init
+            // Init
             personaId = new long[persona.length];
             personaName = new String[persona.length];
-            
-            //Iterate
-            for( int count = 0, max = persona.length; count < max; count++ ) {
+
+            // Iterate
+            for (int count = 0, max = persona.length; count < max; count++) {
 
                 personaId[count] = persona[count].getId();
                 personaName[count] = persona[count].getName();
-                
+
             }
-            
+
         }
-        
-        //Set it up
+
+        // Set it up
         builder.setSingleChoiceItems(
 
                 personaName, -1, new DialogInterface.OnClickListener() {
@@ -200,14 +200,14 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
 
                             // Update it
                             selectedPersona = personaId[item];
-                            
+
                             // Store selectedPersonaPos
                             selectedPosition = item;
-                            
+
                             // Load the new!
                             setupPersonaBox();
-                            
-                            //Save it
+
+                            // Save it
                             SharedPreferences.Editor spEdit = sharedPreferences.edit();
                             spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
                             spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);
@@ -226,13 +226,14 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
         return builder.create();
 
     }
-    
+
     public void setupPersonaBox() {
-        
-        //Let's see...
-        textPersona.setText( persona[selectedPosition].getName() );
-        imagePersona.setImageResource( DataBank.getImageForPersona(persona[selectedPosition].getLogo()) );
-        
+
+        // Let's see...
+        textPersona.setText(persona[selectedPosition].getName());
+        imagePersona.setImageResource(DataBank.getImageForPersona(persona[selectedPosition]
+                .getLogo()));
+
     }
-    
+
 }

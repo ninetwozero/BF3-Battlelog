@@ -57,11 +57,11 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.Backup_ForumThreadView;
 import com.ninetwozero.battlelog.Backup_ForumView;
-import com.ninetwozero.battlelog.ForumReportView;
-import com.ninetwozero.battlelog.ForumSearchView;
-import com.ninetwozero.battlelog.ForumView;
-import com.ninetwozero.battlelog.PlatoonView;
-import com.ninetwozero.battlelog.ProfileView;
+import com.ninetwozero.battlelog.ForumActivity;
+import com.ninetwozero.battlelog.ForumReportActivity;
+import com.ninetwozero.battlelog.ForumSearchActivity;
+import com.ninetwozero.battlelog.PlatoonActivity;
+import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ThreadPostListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostInThread;
@@ -340,7 +340,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 switch (item.getItemId()) {
 
                     case 0:
-                        startActivity(new Intent(context, ProfileView.class).putExtra(
+                        startActivity(new Intent(context, ProfileActivity.class).putExtra(
                                 "profile", data.getProfileData()));
                         break;
 
@@ -377,7 +377,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                         break;
 
                     case 3:
-                        startActivity(new Intent(context, ForumReportView.class)
+                        startActivity(new Intent(context, ForumReportActivity.class)
                                 .putExtra("postId", data.getPostId()));
                         break;
 
@@ -518,7 +518,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
         } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
 
-            startActivity(new Intent(context, ForumSearchView.class));
+            startActivity(new Intent(context, ForumSearchActivity.class));
             return true;
 
         }
@@ -572,7 +572,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         @Override
         protected void onPreExecute() {
 
-            if (context instanceof ForumView) {
+            if (context instanceof ForumActivity) {
 
                 buttonJump.setText(getString(R.string.label_downloading));
                 buttonJump.setEnabled(false);
@@ -605,7 +605,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         @Override
         protected void onPostExecute(Boolean results) {
 
-            if (context instanceof ForumView) {
+            if (context instanceof ForumActivity) {
 
                 if (results) {
 
@@ -810,7 +810,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                         String username = currentLink.substring(index + 6,
                                 linkEndPos);
-                        intent = new Intent(context, ProfileView.class)
+                        intent = new Intent(context, ProfileActivity.class)
                                 .putExtra(
 
                                         "profile", WebsiteHandler
@@ -826,7 +826,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                             long platoonId = Long.parseLong(currentLink
                                     .substring(index + 9, linkEndPos));
-                            intent = new Intent(context, PlatoonView.class)
+                            intent = new Intent(context, PlatoonActivity.class)
                                     .putExtra(
 
                                             "platoon", new PlatoonData(platoonId, 0, 0,
@@ -844,7 +844,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                 long personaId = Long
                                         .parseLong(currentLink.substring(0,
                                                 currentLink.indexOf('/')));
-                                intent = new Intent(context, ProfileView.class)
+                                intent = new Intent(context, ProfileActivity.class)
                                         .putExtra(
 
                                                 "profile",
