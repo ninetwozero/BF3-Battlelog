@@ -78,20 +78,8 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
                         .getString(Constants.SP_BL_PASSWORD, ""));
 
                 // Do the login
-                ProfileData profileData = WebsiteHandler.doLogin(
-
-                        context, new PostData[] {
-
-                                new PostData(Constants.FIELD_NAMES_LOGIN[0], email),
-                                new PostData(Constants.FIELD_NAMES_LOGIN[1], password),
-                                new PostData(Constants.FIELD_NAMES_LOGIN[2],
-                                        Constants.FIELD_VALUES_LOGIN[2]),
-                                new PostData(Constants.FIELD_NAMES_LOGIN[3],
-                                        Constants.FIELD_VALUES_LOGIN[3]),
-
-                        }, true
-
-                        );
+                AsyncLogin login = new AsyncLogin(context, true);
+                ProfileData profileData = login.sessionRenew(postData(email, password));
 
                 // Did it work?
                 if (profileData != null) {
@@ -224,6 +212,19 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
         // Stop the service!!
         ((Service) context).stopSelf();
 
+    }
+
+    private PostData[] postData(String email, String password){
+        return new PostData[]{
+
+                new PostData(Constants.FIELD_NAMES_LOGIN[0], email),
+                new PostData(Constants.FIELD_NAMES_LOGIN[1], password),
+                new PostData(Constants.FIELD_NAMES_LOGIN[2],
+                        Constants.FIELD_VALUES_LOGIN[2]),
+                new PostData(Constants.FIELD_NAMES_LOGIN[3],
+                        Constants.FIELD_VALUES_LOGIN[3]),
+
+        };
     }
 
 }
