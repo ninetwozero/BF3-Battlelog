@@ -344,9 +344,9 @@ public final class Constants {
     public static final String SP_BL_PROFILE_ID = "battlelog_profile_id";
     public static final String SP_BL_PERSONA_ID = "battlelog_persona_id";
     public static final String SP_BL_PLATFORM_ID = "battlelog_platform_id";
-    public static final String SP_BL_PERSONA_LOGO = "battlelog_persona_logo";
     public static final String SP_BL_PERSONA_CURRENT_ID = "battlelog_persona_current_id";
     public static final String SP_BL_PERSONA_CURRENT_POS = "battlelog_persona_current_pos";
+    public static final String SP_BL_PERSONA_LOGO = "battlelog_persona_logo";
     public static final String SP_BL_CHECKSUM = "battlelog_post_checksum";
     public static final String SP_BL_GRAVATAR = "battlelog_gravatar_hash";
     public static final String SP_BL_REMEMBER = "remember_password";
@@ -358,6 +358,11 @@ public final class Constants {
     public static final String SP_BL_LOCALE = "battlelog_locale";
     public static final String SP_BL_COOKIE_NAME = "battlelog_cookie_name";
     public static final String SP_BL_COOKIE_VALUE = "battlelog_cookie_value";
+    public static final String SP_BL_PLATOON_ID = "battlelog_platoon_id";
+    public static final String SP_BL_PLATOON = "battlelog_platoon";
+    public static final String SP_BL_PLATOON_TAG = "battlelog_platoon";
+    public static final String SP_BL_PLATOON_IMAGE = "battlelog_platoon_image";
+    public static final String SP_BL_PLATOON_PLATFORM_ID = "battlelog_platoon_platform_id";
 
     // Cookie-related
     public static final String COOKIE_DOMAIN = "battlelog.battlefield.com";

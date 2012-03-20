@@ -54,6 +54,7 @@ import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
@@ -221,12 +222,14 @@ public class Dashboard extends FragmentActivity implements DefaultFragmentActivi
 
             // Make sure the tabs follow
             viewPager.setOnPageChangeListener(tabs);
+            viewPager.setOffscreenPageLimit(2);
             viewPager.setCurrentItem(1);
 
         }
 
     }
 
+    @SuppressWarnings("unchecked")
     public void validateSession() {
 
         // We should've gotten a profile
@@ -237,6 +240,9 @@ public class Dashboard extends FragmentActivity implements DefaultFragmentActivi
                 SessionKeeper.setProfileData((ProfileData) getIntent()
                         .getParcelableExtra("myProfile"));
 
+                SessionKeeper.setPlatoonData((ArrayList<PlatoonData>) getIntent().getParcelableExtra("myPlatoon"));
+                
+                
             } else {
 
                 Toast.makeText(this, R.string.info_txt_session_lost,

@@ -48,14 +48,17 @@
 	    		android:layout_height="wrap_content"
 	    		android:textSize="18sp"
 	    	/>
-	    	<TextView
+	    	<com.ninetwozero.battlelog.datatypes.MarqueeTextView
 	    		android:id="@+id/text_persona"    
 	    		android:text="NINETWOZERO"
 	    		android:layout_width="wrap_content"
 	    		android:layout_height="wrap_content"
-	    		android:layout_below="@id/string000"
 	    		android:textStyle="bold"
 	    		android:textSize="20sp"
+	    		android:ellipsize="marquee"
+	    		android:marqueeRepeatLimit="marquee_forever"
+	    		android:scrollHorizontally="true"
+	    		android:singleLine="true"
 	    	/>
     	</LinearLayout>
     </RelativeLayout>

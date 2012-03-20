@@ -96,8 +96,6 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
         
         //Set up the Persona box
         wrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
-        textPersona = (TextView) wrapPersona.findViewById(R.id.text_persona);
-        imagePersona = (ImageView) wrapPersona.findViewById(R.id.image_persona);
         wrapPersona.setOnClickListener( 
                 
             new OnClickListener() {
@@ -113,6 +111,9 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
             }
             
         );
+        imagePersona = (ImageView) wrapPersona.findViewById(R.id.image_persona);
+        textPersona = (TextView) wrapPersona.findViewById(R.id.text_persona);
+        textPersona.setSelected(true);
         
         //Setup the "persona box"
         setupPersonaBox();

@@ -493,7 +493,9 @@ public class PublicUtils {
 
                         )
 
-                        );
+                    );
+                
+                SessionKeeper.setPlatoonData( SessionKeeper.generatePlatoonDataFromSharedPreferences(sharedPreferences));
 
                 // ...but just to be sure, we try to verify our session
                 // "behind the scenes"

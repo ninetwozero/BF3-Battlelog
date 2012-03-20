@@ -68,6 +68,7 @@ import com.ninetwozero.battlelog.datatypes.ProfileComparator;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
+import com.ninetwozero.battlelog.datatypes.SessionKeeperPackage;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.TopStatsComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockComparator;
@@ -85,9 +86,7 @@ import com.ninetwozero.battlelog.services.BattlelogService;
 public class WebsiteHandler {
 
     // Let's have this one ready
-    public static HashMap<String, Object> feedCache = new HashMap<String, Object>();
-
-    public static ProfileData doLogin(final Context context,
+    public static SessionKeeperPackage doLogin(final Context context,
             final PostData[] postDataArray, final boolean savePassword)
             throws WebsiteHandlerException {
 
@@ -98,6 +97,7 @@ public class WebsiteHandler {
         String[] tempString = new String[10];
         String httpContent = "";
         ProfileData profile = null;
+        List<PlatoonData> platoons;
 
         try {
 
@@ -163,9 +163,11 @@ public class WebsiteHandler {
                 tempString[2] = tempString[2].substring(0,
                         tempString[2].indexOf("/\">")).replace(
                         Constants.ELEMENT_USERNAME_LINK, "");
+
                 profile = WebsiteHandler.getProfileIdFromSearch(tempString[2],
                         tempString[1]);
                 profile = WebsiteHandler.getPersonaIdFromProfile(profile);
+                platoons = WebsiteHandler.getPlatoonsForUser(context, profile.getUsername());
 
                 // Further more, we would actually like to store the userid and
                 // name
@@ -192,6 +194,13 @@ public class WebsiteHandler {
                 String platformIds = "";
                 String personaLogos = "";
 
+                // Do it for the platoons too
+                String platoonIds = "";
+                String platoonNames = "";
+                String platoonTags = "";
+                String platoonPlatformIds = "";
+                String platoonImages = "";
+                
                 // We need to append the different parts to the ^ strings
                 for (int i = 0, max = profile.getNumPersonas(); i < max; i++) {
 
@@ -201,6 +210,17 @@ public class WebsiteHandler {
                             + ":";
                     personaLogos += profile.getPersona(i).getLogo() + ":";
 
+                }
+                
+                //The platoons need to be "cacheable" too
+                for( int i = 0, max = platoons.size(); i < max; i++ ) {
+                    
+                    platoonIds += platoons.get(i).getId() + ":";
+                    platoonNames += platoons.get(i).getName() + ":";
+                    platoonTags += platoons.get(i).getTag() + ":";
+                    platoonPlatformIds += platoons.get(i).getPlatformId() + ":";
+                    platoonImages += platoons.get(i).getImage() + ":";
+                    
                 }
 
                 // This we keep!!!
@@ -213,6 +233,14 @@ public class WebsiteHandler {
                 spEdit.putString(Constants.SP_BL_PERSONA_LOGO, personaLogos);
                 spEdit.putString(Constants.SP_BL_CHECKSUM, tempString[1]);
 
+                //Platoons too!
+                spEdit.putString(Constants.SP_BL_PLATOON_ID, platoonIds);
+                spEdit.putString(Constants.SP_BL_PLATOON, platoonNames);
+                spEdit.putString(Constants.SP_BL_PLATOON_TAG, platoonTags);
+                spEdit.putString(Constants.SP_BL_PLATOON_PLATFORM_ID, platoonPlatformIds);
+                spEdit.putString(Constants.SP_BL_PLATOON_IMAGE, platoonImages);
+                
+                
                 // Cookie-related
                 List<ShareableCookie> sca = RequestHandler.getCookies();
                 if (sca != null) {
@@ -251,7 +279,7 @@ public class WebsiteHandler {
                                 + serviceInterval / 60000 + " minutes");
 
                 // Return it!!
-                return profile;
+                return new SessionKeeperPackage(profile, platoons);
 
             } else {
 
@@ -261,6 +289,7 @@ public class WebsiteHandler {
 
         } catch (Exception ex) {
 
+            ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
 
         }
@@ -3282,11 +3311,9 @@ public class WebsiteHandler {
             // Variables that we need
             JSONObject currItem = null;
             JSONObject tempSubItem = null;
-            JSONObject tempCommentItem = null;
             JSONObject ownerObject = null;
             JSONObject otherUserObject = null;
             FeedItem tempFeedItem = null;
-            List<CommentData> comments = null;
             List<FeedItem> feedItemArray = new ArrayList<FeedItem>();
 
             // Iterate over the feed

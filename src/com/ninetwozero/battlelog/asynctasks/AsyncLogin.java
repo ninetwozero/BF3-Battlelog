@@ -14,6 +14,8 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -25,8 +27,9 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.Dashboard;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PostData;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatypes.SessionKeeperPackage;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -37,7 +40,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     private Context context;
     private AsyncLogin origin;
     private boolean savePassword;
-    private ProfileData profile;
+    private SessionKeeperPackage sessionKeeperPackage;
     private String locale;
     private String errorMessage;
 
@@ -87,16 +90,21 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
         try {
 
-            profile = WebsiteHandler.doLogin(context, arg0, savePassword);
-
+            sessionKeeperPackage = WebsiteHandler.doLogin(context, arg0, savePassword);
+                    
             // Did it go ok?
-            return (profile != null);
+            return (sessionKeeperPackage != null);
 
         } catch (WebsiteHandlerException ex) {
 
             errorMessage = ex.getMessage();
             return false;
 
+        } catch( Exception ex ) {
+            
+            errorMessage = context.getString(R.string.general_no_data);
+            return false;
+            
         }
 
     }
@@ -115,13 +123,13 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
                     new Intent(context, Dashboard.class).putExtra(
 
-                            "myProfile", profile
+                            "myProfile", sessionKeeperPackage.getProfileData()
 
                             ).putExtra(
 
                                     "myLocale", locale
 
-                            )
+                            ).putExtra("myPlatoons", sessionKeeperPackage.getPlatoons())
 
                     );
 

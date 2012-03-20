@@ -78,7 +78,7 @@ public class AsyncSessionRenew extends AsyncTask<PostData, Integer, Boolean> {
         try {
 
             // Let's try
-            profile = WebsiteHandler.doLogin(context, arg0, true);
+            profile = WebsiteHandler.doLogin(context, arg0, true).getProfileData();
 
             // Did it go ok?
             return (profile != null);

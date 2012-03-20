@@ -14,17 +14,20 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import android.content.SharedPreferences;
-import android.util.Log;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.ninetwozero.battlelog.R;
+import android.content.SharedPreferences;
+
 import com.ninetwozero.battlelog.datatypes.PersonaData;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 
 public class SessionKeeper {
 
     // Attributes
     private static ProfileData profileData;
+    private static List<PlatoonData> platoonData;
 
     // Construct
     private SessionKeeper() {
@@ -34,10 +37,19 @@ public class SessionKeeper {
     public static ProfileData getProfileData() {
         return SessionKeeper.profileData;
     }
+    public static List<PlatoonData> getPlatoonData() {
+        return SessionKeeper.platoonData;
+    }
 
     // Setters
     public static void setProfileData(ProfileData p) {
         SessionKeeper.profileData = p;
+    }
+    
+    public static void setPlatoonData(List<PlatoonData> p) {
+        
+        SessionKeeper.platoonData = p;
+        
     }
 
     // Generate session data
@@ -88,6 +100,54 @@ public class SessionKeeper {
             return null;
 
         }
+
+    }
+    
+    public static ArrayList<PlatoonData> generatePlatoonDataFromSharedPreferences(
+            SharedPreferences sp) {
+
+        // Get the different strings
+        String platoonIdString = sp.getString(Constants.SP_BL_PLATOON_ID, "");
+        String platoonNameString = sp.getString(Constants.SP_BL_PLATOON, "");
+        String platoonTagString = sp.getString(Constants.SP_BL_PLATOON_TAG, "");
+        String platformIdString = sp.getString(Constants.SP_BL_PLATOON_PLATFORM_ID, "");
+        String platoonImageString = sp.getString(Constants.SP_BL_PLATOON_IMAGE, "");
+        
+        // Let's split them up...
+        String[] platoonIdArray = platoonIdString.split(":");
+        String[] platoonNameArray = platoonNameString.split(":");
+        String[] platoonTagArray = platoonTagString.split(":");
+        String[] platformIdArray = platformIdString.split(":");
+        String[] platoonImageArray = platoonImageString.split(":");
+
+        // How many do we have?
+        int max = (platoonIdString.equals("")) ? 0 : platoonIdArray.length;
+
+        // We need to init the resulting arrays
+        List<PlatoonData> platoon = new ArrayList<PlatoonData>();
+
+        // ...and populate them
+        for (int i = 0; i < max; i++) {
+            
+            platoon.add(
+                    
+                new PlatoonData(
+                    
+                    Long.parseLong(platoonIdArray[i]), 
+                    0,
+                    0,
+                    Integer.parseInt(platformIdArray[i]), 
+                    platoonNameArray[i], 
+                    platoonTagArray[i],
+                    platoonImageArray[i],
+                    true
+                )
+                
+           );
+
+        }
+
+        return (ArrayList<PlatoonData>) platoon;
 
     }
 
