@@ -59,15 +59,15 @@ public class NewsData implements Parcelable {
     }
 
     public int getNumComments() {
-        
+
         return numComments;
-        
+
     }
-    
+
     public String getTitle() {
         return this.title;
     }
-    
+
     public String getContent() {
         return this.content;
     }

@@ -12,7 +12,7 @@ public class FriendListDataWrapper {
 
     // Construct
     public FriendListDataWrapper(List<ProfileData> r,
-            ArrayList<ProfileData> on, List<ProfileData> off) {
+            List<ProfileData> on, List<ProfileData> off) {
 
         // Set the data
         requests = r;
@@ -36,7 +36,7 @@ public class FriendListDataWrapper {
     public List<ProfileData> getFriends() {
 
         // Init
-        ArrayList<ProfileData> merged = new ArrayList<ProfileData>();
+        List<ProfileData> merged = new ArrayList<ProfileData>();
 
         // Merge
         if (this.onlineFriends != null) {

@@ -36,7 +36,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.PlatoonView;
+import com.ninetwozero.battlelog.PlatoonActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonRequest;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
@@ -391,19 +391,19 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
     public void sendToStats(PlatoonInformation p) {
 
-        ((PlatoonView) context).openStats(p);
+        ((PlatoonActivity) context).openStats(p);
 
     }
 
     public void sendToUsers(PlatoonInformation p) {
 
-        ((PlatoonView) context).openMembers(p);
+        ((PlatoonActivity) context).openMembers(p);
 
     }
 
     public void setFeedPermission(boolean c) {
 
-        ((PlatoonView) context).setFeedPermission(c);
+        ((PlatoonActivity) context).setFeedPermission(c);
 
     }
 

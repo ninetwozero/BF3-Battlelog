@@ -34,7 +34,7 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
-public class PlatoonInviteView extends ListActivity {
+public class PlatoonInviteActivity extends ListActivity {
 
     // Attributes
     private final Context CONTEXT = this;

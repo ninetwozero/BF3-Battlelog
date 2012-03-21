@@ -90,6 +90,7 @@ public final class Constants {
             + "feed/platoonevents/{PLATOON_ID}/?start={NUMSTART}";
     public static final String URL_PLATOON_INVITE = URL_MAIN
             + "platoon/invitemember/";
+    public static final String URL_PLATOON_NEW = URL_MAIN + "platoon/newplatoon/";
     public static final String URL_PLATOON_EDIT = URL_MAIN + "platoon/edit/{PLATOON_ID}/";
 
     // URLS for FEED
@@ -118,7 +119,7 @@ public final class Constants {
             + "user/overviewBoxStats/{UID}/";
     public static final String URL_PROFILE_INFO = URL_MAIN + "user/{UNAME}/";
     public static final String URL_PROFILE_EDIT = URL_MAIN + "profile/update/";
-    
+
     // URL to JSON-files (STATS-related)
     public static final String URL_STATS_OVERVIEW = URL_MAIN
             + "overviewPopulateStats/{PID}/None/{PLATFORM_ID}/";
@@ -158,9 +159,9 @@ public final class Constants {
     public static final String URL_FORUM_REPORT = URL_MAIN
             + "viewcontent/reportForumAbuse/{POST_ID}/";
 
-    //News
+    // News
     public static final String URL_NEWS = URL_MAIN + "news/{COUNT}/";
-    
+
     // Fields needed for the posts fields
     public static final String[] FIELD_NAMES_LOGIN = new String[] {
             "email",
@@ -175,7 +176,7 @@ public final class Constants {
             "message",
             "post-check-sum"
     };
-    
+
     public static final String[] FIELD_NAMES_PROFILE_SEARCH = new String[] {
             "username", "post-check-sum"
     };
@@ -231,20 +232,26 @@ public final class Constants {
     };
 
     public static final String[] FIELD_NAMES_SETTINGS_PROFILE = new String[] {
-        
-        "profile-edit-gravatar", "profile-edit-personaId[]", "profile-edit-picture[]", 
-        "profile-edit-clantag[]", "profile-edit-clantag-games[]", "profile-edit-name", 
-        "profile-edit-presentation", "profile-edit-birthyear", "profile-edit-birthmonth", 
-        "profile-edit-birthday", "profile-edit-location", "profile-edit-dateformat", 
-        "profile-edit-ampm", "profile-edit-utcoffset", "profile-edit-hidedetails", 
-        "profile-edit-inactivatefeed", "profile-edit-allowfriendrequests", "post-check-sum"
-        
+
+            "profile-edit-gravatar", "profile-edit-personaId[]", "profile-edit-picture[]",
+            "profile-edit-clantag[]", "profile-edit-clantag-games[]", "profile-edit-name",
+            "profile-edit-presentation", "profile-edit-birthyear", "profile-edit-birthmonth",
+            "profile-edit-birthday", "profile-edit-location", "profile-edit-dateformat",
+            "profile-edit-ampm", "profile-edit-utcoffset", "profile-edit-hidedetails",
+            "profile-edit-inactivatefeed", "profile-edit-allowfriendrequests", "post-check-sum"
+
     };
-    
+
     public static final String[] FIELD_NAMES_SETTINGS_PLATOON = new String[] {
-        
-        "name", "tag", "presentation", "website", "allow_members_apply", "post-check-sum"
-        
+
+            "name", "tag", "presentation", "website", "allow_members_apply", "post-check-sum"
+
+    };
+
+    public static final String[] FIELD_NAMES_PLATOON_NEW = new String[] {
+
+            "name", "tag", "active", "post-check-sum"
+
     };
 
     // HTML-elements to grab
@@ -344,6 +351,8 @@ public final class Constants {
     public static final String SP_BL_PROFILE_ID = "battlelog_profile_id";
     public static final String SP_BL_PERSONA_ID = "battlelog_persona_id";
     public static final String SP_BL_PLATFORM_ID = "battlelog_platform_id";
+    public static final String SP_BL_PERSONA_CURRENT_ID = "battlelog_persona_current_id";
+    public static final String SP_BL_PERSONA_CURRENT_POS = "battlelog_persona_current_pos";
     public static final String SP_BL_PERSONA_LOGO = "battlelog_persona_logo";
     public static final String SP_BL_CHECKSUM = "battlelog_post_checksum";
     public static final String SP_BL_GRAVATAR = "battlelog_gravatar_hash";
@@ -356,6 +365,13 @@ public final class Constants {
     public static final String SP_BL_LOCALE = "battlelog_locale";
     public static final String SP_BL_COOKIE_NAME = "battlelog_cookie_name";
     public static final String SP_BL_COOKIE_VALUE = "battlelog_cookie_value";
+    public static final String SP_BL_PLATOON_ID = "battlelog_platoon_id";
+    public static final String SP_BL_PLATOON = "battlelog_platoon";
+    public static final String SP_BL_PLATOON_TAG = "battlelog_platoon_tag";
+    public static final String SP_BL_PLATOON_IMAGE = "battlelog_platoon_image";
+    public static final String SP_BL_PLATOON_PLATFORM_ID = "battlelog_platoon_platform_id";
+    public static final String SP_BL_PLATOON_CURRENT_ID = "battlelog_platoon_current_id";
+    public static final String SP_BL_PLATOON_CURRENT_POS = "battlelog_platoon_current_pos";
 
     // Cookie-related
     public static final String COOKIE_DOMAIN = "battlelog.battlefield.com";

@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.WeaponVehicleListData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
@@ -81,20 +80,21 @@ public class WeaponVehicleListAdapter extends BaseAdapter {
                     parent, false);
 
         }
-        
-        //Populate fields
+
+        // Populate fields
         ((TextView) convertView.findViewById(R.id.text_title)).setText(data.getTitle());
-        ((ImageView) convertView.findViewById(R.id.image_item)).setImageBitmap( 
-                
-                BitmapFactory.decodeFile( PublicUtils.getCachePath(context) + data.getTitle() + ".png" )
-                
-        );
-        
+        ((ImageView) convertView.findViewById(R.id.image_item)).setImageBitmap(
+
+                BitmapFactory.decodeFile(PublicUtils.getCachePath(context) + data.getTitle()
+                        + ".png")
+
+                );
+
         // Tag it!
         convertView.setTag(data);
         return convertView;
     }
-    
+
     public void setDataArray(List<WeaponVehicleListData> data) {
 
         // Let's do this

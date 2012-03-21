@@ -48,7 +48,7 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class CompareView extends FragmentActivity implements DefaultFragmentActivity {
+public class CompareActivity extends FragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
     private SharedPreferences sharedPreferences;

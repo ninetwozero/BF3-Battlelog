@@ -31,14 +31,15 @@ public class ProfileInformation {
             currentServer;
     private boolean allowFriendRequests, online, playing, friendStatus;
     private List<PlatoonData> platoons;
-    
+
     // Other
-    String personaString, personaIdString, personaPlatformString, platoonIdString; 
+    String personaString, personaIdString, personaPlatformString, platoonIdString;
 
     // Construct(s)
     public ProfileInformation(
 
-            int a, long uid, long dob, long l, long sc, PersonaData[] pe, String n, String u, String p, String loc, String s,
+            int a, long uid, long dob, long l, long sc, PersonaData[] pe, String n, String u,
+            String p, String loc, String s,
             String c, boolean af, boolean o, boolean pl,
             boolean fs, List<PlatoonData> pd
 
@@ -134,22 +135,21 @@ public class ProfileInformation {
     public boolean isFriend() {
         return friendStatus;
     }
-    
 
     public long getPlatoonId(int position) {
         return ((platoons.size() < position) ? platoons.get(position).getId()
                 : platoons.get(0).getId());
     }
-    
+
     public PlatoonData getPlatoon(int position) {
-        
+
         return platoons.get(position);
     }
-    
+
     public int getNumPlatoons() {
-        
+
         return platoons.size();
-        
+
     }
 
     public List<PlatoonData> getPlatoons() {
@@ -159,19 +159,19 @@ public class ProfileInformation {
     public void generate() {
 
         for (PersonaData p : persona) {
-            
+
             personaIdString += p.getId() + ":";
             personaString += p.getName() + ":";
             personaPlatformString += p.getPlatformId() + ":";
-        
+
         }
-        
-        for( PlatoonData p : platoons ) {
-            
+
+        for (PlatoonData p : platoons) {
+
             platoonIdString += p.getId() + ":";
-            
+
         }
-        
+
     }
 
     public final String[] toStringArray() {

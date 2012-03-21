@@ -29,7 +29,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -50,7 +49,7 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class ProfileView extends FragmentActivity implements DefaultFragmentActivity {
+public class ProfileActivity extends FragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
     private SharedPreferences sharedPreferences;

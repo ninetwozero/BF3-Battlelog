@@ -18,7 +18,7 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.services.BattlelogService;
 
-public class SettingsView extends PreferenceActivity {
+public class SettingsActivity extends PreferenceActivity {
 
     // Attributes
     private int originalInterval;

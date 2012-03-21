@@ -32,15 +32,14 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.WeaponVehicleDataWrapper;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
+import com.ninetwozero.battlelog.datatypes.WeaponVehicleDataWrapper;
 import com.ninetwozero.battlelog.fragments.WeaponVehicleListFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class WeaponVehicleListView extends FragmentActivity implements DefaultFragmentActivity {
+public class WeaponVehicleListActivity extends FragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
     private final Context CONTEXT = this;
@@ -148,8 +147,10 @@ public class WeaponVehicleListView extends FragmentActivity implements DefaultFr
 
             // Add them to the list
             listFragments = new Vector<Fragment>();
-            listFragments.add(Fragment.instantiate(this, WeaponVehicleListFragment.class.getName()));
-            listFragments.add(Fragment.instantiate(this, WeaponVehicleListFragment.class.getName()));
+            listFragments
+                    .add(Fragment.instantiate(this, WeaponVehicleListFragment.class.getName()));
+            listFragments
+                    .add(Fragment.instantiate(this, WeaponVehicleListFragment.class.getName()));
 
             // Iterate over the fragments
             for (int i = 0, max = listFragments.size(); i < max; i++) {

@@ -19,9 +19,7 @@ import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -30,39 +28,36 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
+import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.fragments.BoardFragment;
-import com.ninetwozero.battlelog.fragments.ForumFragment;
-import com.ninetwozero.battlelog.fragments.ForumThreadFragment;
+import com.ninetwozero.battlelog.fragments.AboutCreditsFragment;
+import com.ninetwozero.battlelog.fragments.AboutFAQFragment;
+import com.ninetwozero.battlelog.fragments.AboutMainFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class ForumView extends FragmentActivity implements DefaultFragmentActivity {
+public class AboutActivity extends FragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
-    private final Context CONTEXT = this;
+    final private Context context = this;
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
-    private ProfileData profileData;
-    private String locale;
 
     // Fragment related
     private SwipeyTabs tabs;
     private SwipeyTabsPagerAdapter pagerAdapter;
     private List<Fragment> listFragments;
     private FragmentManager fragmentManager;
+    private AboutMainFragment fragmentAbout;
+    private AboutFAQFragment fragmentFAQ;
+    private AboutCreditsFragment fragmentCredits;
     private ViewPager viewPager;
-    private BoardFragment fragmentBoard;
-    private ForumFragment fragmentForum;
-    private ForumThreadFragment fragmentForumThread;
+
+    // Async
+    private AsyncLogout asyncLogout;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -73,30 +68,29 @@ public class ForumView extends FragmentActivity implements DefaultFragmentActivi
         // Set sharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        // Restore the cookies
+        // Should we display a title bar?
         PublicUtils.setupFullscreen(this, sharedPreferences);
         PublicUtils.restoreCookies(this, icicle);
 
-        // Prepare to tango
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fragmentManager = getSupportFragmentManager();
-
-        // Setup the trinity
+        // Setup the locale
         PublicUtils.setupLocale(this, sharedPreferences);
-        PublicUtils.setupSession(this, sharedPreferences);
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
 
-        // Let's setup the fragments too
+        // Get the layoutInflater
+        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        fragmentManager = getSupportFragmentManager();
+
+        // Setup the fragments
         setupFragments();
 
-        // Last but not least - init
+        // Setup COM & feed
         initActivity();
-
     }
 
-    public void initActivity() {
+    public final void initActivity() {
+
     }
 
     @Override
@@ -110,14 +104,13 @@ public class ForumView extends FragmentActivity implements DefaultFragmentActivi
         // Setup the session
         PublicUtils.setupSession(this, sharedPreferences);
 
-        // Reload
-        reload();
-
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+
         super.onConfigurationChanged(newConfig);
+
     }
 
     @Override
@@ -136,12 +129,12 @@ public class ForumView extends FragmentActivity implements DefaultFragmentActivi
 
             // Add them to the list
             listFragments = new Vector<Fragment>();
-            listFragments.add(fragmentBoard = (BoardFragment) Fragment.instantiate(this,
-                    BoardFragment.class.getName()));
-            listFragments.add(fragmentForum = (ForumFragment) Fragment.instantiate(this,
-                    ForumFragment.class.getName()));
-            listFragments.add(fragmentForumThread = (ForumThreadFragment) Fragment.instantiate(
-                    this, ForumThreadFragment.class.getName()));
+            listFragments.add(fragmentAbout = (AboutMainFragment) Fragment.instantiate(this,
+                    AboutMainFragment.class.getName()));
+            listFragments.add(fragmentFAQ = (AboutFAQFragment) Fragment.instantiate(this,
+                    AboutFAQFragment.class.getName()));
+            listFragments.add(fragmentCredits = (AboutCreditsFragment) Fragment.instantiate(this,
+                    AboutCreditsFragment.class.getName()));
 
             // Get the ViewPager
             viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -152,7 +145,7 @@ public class ForumView extends FragmentActivity implements DefaultFragmentActivi
 
                     fragmentManager,
                     new String[] {
-                            "FORUMS", "THREADS", "POSTS"
+                            "About", "FAQ", "Credits"
                     },
                     listFragments,
                     viewPager,
@@ -163,75 +156,14 @@ public class ForumView extends FragmentActivity implements DefaultFragmentActivi
 
             // Make sure the tabs follow
             viewPager.setOnPageChangeListener(tabs);
-            viewPager.setOffscreenPageLimit(2);
             viewPager.setCurrentItem(0);
 
         }
 
     }
 
+    @Override
     public void reload() {
-
-        // ASYNC!!!
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_forumview, menu);
-        return super.onCreateOptionsMenu(menu);
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        // Let's act!
-        if (item.getItemId() == R.id.option_reload) {
-
-            this.reload();
-
-        } else if (item.getItemId() == R.id.option_back) {
-
-            ((Activity) this).finish();
-
-        }
-
-        // Return true yo
-        return true;
-
-    }
-
-    public void openForum(Intent data) {
-
-        fragmentForum.openForum(data);
-        viewPager.setCurrentItem(1, true);
-
-    }
-
-    public void openThread(Intent data) {
-
-        fragmentForumThread.openThread(data);
-        viewPager.setCurrentItem(2, true);
-
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-            if (viewPager.getCurrentItem() > 0) {
-
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
-
-            }
-
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
 }

@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -53,7 +52,7 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class AssignmentView extends Activity {
+public class AssignmentActivity extends Activity {
 
     // SharedPreferences for shizzle
     private SharedPreferences sharedPreferences;
@@ -79,7 +78,7 @@ public class AssignmentView extends Activity {
         // Did it get passed on?
         if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
 
-            ArrayList<ShareableCookie> shareableCookies = icicle
+            List<ShareableCookie> shareableCookies = icicle
                     .getParcelableArrayList(Constants.SUPER_COOKIES);
             RequestHandler.setCookies(shareableCookies);
 
@@ -320,8 +319,7 @@ public class AssignmentView extends Activity {
 
             generateDialogPersonaList(
 
-                    this, profileData.getPersonaArray()
-            ).show();
+                    this, profileData.getPersonaArray()).show();
 
         } else if (item.getItemId() == R.id.option_back) {
 

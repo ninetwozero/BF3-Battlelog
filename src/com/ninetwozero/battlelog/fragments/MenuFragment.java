@@ -37,13 +37,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.AssignmentView;
-import com.ninetwozero.battlelog.ForumView;
-import com.ninetwozero.battlelog.PlatoonView;
-import com.ninetwozero.battlelog.ProfileView;
+import com.ninetwozero.battlelog.AssignmentActivity;
+import com.ninetwozero.battlelog.ForumActivity;
+import com.ninetwozero.battlelog.PlatoonActivity;
+import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.SearchView;
-import com.ninetwozero.battlelog.UnlockView;
+import com.ninetwozero.battlelog.SearchActivity;
+import com.ninetwozero.battlelog.UnlockActivity;
 import com.ninetwozero.battlelog.adapters.DashboardPopupPlatoonListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
@@ -71,41 +71,42 @@ public class MenuFragment extends Fragment implements DefaultFragment {
                 container, false);
 
         initFragment(view);
-        
+
         return view;
 
     }
-    
+
     public void initFragment(View view) {
-        
-        //Set up the intents
+
+        // Set up the intents
         MENU_INTENTS = new HashMap<Integer, Intent>();
         MENU_INTENTS.put(R.id.button_unlocks,
-                        new Intent(context, UnlockView.class).putExtra("profile",
-                                SessionKeeper.getProfileData()));
+                new Intent(context, UnlockActivity.class).putExtra("profile",
+                        SessionKeeper.getProfileData()));
         MENU_INTENTS.put(R.id.button_assignments,
-                        new Intent(context, AssignmentView.class).putExtra("profile",
-                                SessionKeeper.getProfileData()));
-        MENU_INTENTS.put(R.id.button_search, new Intent(context, SearchView.class));
+                new Intent(context, AssignmentActivity.class).putExtra("profile",
+                        SessionKeeper.getProfileData()));
+        MENU_INTENTS.put(R.id.button_search, new Intent(context, SearchActivity.class));
         MENU_INTENTS.put(R.id.button_self,
-                        new Intent(context, ProfileView.class).putExtra("profile",
-                                SessionKeeper.getProfileData()));
-        MENU_INTENTS.put(R.id.button_forum, new Intent(context, ForumView.class));
+                new Intent(context, ProfileActivity.class).putExtra("profile",
+                        SessionKeeper.getProfileData()));
+        MENU_INTENTS.put(R.id.button_forum, new Intent(context, ForumActivity.class));
 
-        //Add the OnClickListeners
-        for( int key : MENU_INTENTS.keySet() ) {
-            
-            view.findViewById(key).setOnClickListener( new OnClickListener() {
+        // Add the OnClickListeners
+        for (int key : MENU_INTENTS.keySet()) {
+
+            view.findViewById(key).setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
 
                     startActivity(MENU_INTENTS.get(v.getId()));
-                    
-                }} );
-        
+
+                }
+            });
+
         }
-        
+
     }
 
     public final void onMenuClick(View v) {
@@ -221,7 +222,7 @@ public class MenuFragment extends Fragment implements DefaultFragment {
                     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                             long arg3) {
 
-                        startActivity(new Intent(context, PlatoonView.class).putExtra(
+                        startActivity(new Intent(context, PlatoonActivity.class).putExtra(
                                 "platoon", ((PlatoonData) arg1.getTag())));
 
                     }

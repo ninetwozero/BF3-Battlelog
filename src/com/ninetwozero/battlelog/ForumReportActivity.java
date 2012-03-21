@@ -14,13 +14,8 @@
 
 package com.ninetwozero.battlelog;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -36,14 +31,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.adapters.ForumSearchAdapter;
-import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class ForumSearchView extends ListActivity {
+public class ForumReportActivity extends Activity {
 
     // Attributes
     private LayoutInflater layoutInflater;
@@ -51,11 +44,11 @@ public class ForumSearchView extends ListActivity {
 
     // Elements
     private ListView listView;
-    private EditText fieldSearch;
-    private Button buttonSearch;
+    private EditText fieldReport;
+    private Button buttonReport;
 
     // Misc
-    private List<Board.SearchResult> threads;
+    private long postId;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -67,46 +60,25 @@ public class ForumSearchView extends ListActivity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         PublicUtils.restoreCookies(this, icicle);
 
+        // Do we have a postId?
+        postId = getIntent().getLongExtra("postId", 0);
+        if (postId == 0) {
+            return;
+        }
+
         // Setup the locale
         PublicUtils.setupLocale(this, sharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.forum_search_view);
+        setContentView(R.layout.forum_report_view);
 
         // Prepare to tango
-        this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Get the elements
-        buttonSearch = (Button) findViewById(R.id.button_search);
-        fieldSearch = (EditText) findViewById(R.id.field_search);
+        buttonReport = (Button) findViewById(R.id.button_report);
+        fieldReport = (EditText) findViewById(R.id.field_reason);
 
-        // Threads!
-        threads = new ArrayList<Board.SearchResult>();
-        setupList(threads);
-    }
-
-    public void setupList(List<Board.SearchResult> results) {
-
-        // Do we have it?
-        if (listView == null) {
-
-            // Get the ListView
-            listView = getListView();
-            listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-
-        }
-
-        // Does it have an adapter?
-        if (listView.getAdapter() == null) {
-
-            listView.setAdapter(new ForumSearchAdapter(this, results,
-                    layoutInflater));
-
-        } else {
-
-            ((ForumSearchAdapter) listView.getAdapter()).setItemArray(results);
-
-        }
     }
 
     @Override
@@ -126,12 +98,20 @@ public class ForumSearchView extends ListActivity {
     public void onClick(View v) {
 
         // Send?
-        if (v.getId() == R.id.button_search) {
+        if (v.getId() == R.id.button_report) {
 
-            // Send it!
-            new AsyncForumSearch(this)
-                    .execute(fieldSearch.getText().toString());
+            // Get & validate
+            String reason = fieldReport.getText().toString();
+            if (reason.equals("")) {
 
+                Toast.makeText(this, R.string.info_forum_report_error,
+                        Toast.LENGTH_SHORT).show();
+
+            } else {
+
+                new AsyncReportPost(this, postId).execute(reason);
+
+            }
         }
 
     }
@@ -160,22 +140,27 @@ public class ForumSearchView extends ListActivity {
 
     }
 
-    public class AsyncForumSearch extends AsyncTask<String, Void, Boolean> {
+    public class AsyncReportPost extends AsyncTask<String, Void, Boolean> {
 
         // Attributes
         private Context context;
+        private long postId;
 
-        // Construct
-        public AsyncForumSearch(Context c) {
+        // Constructs
+        public AsyncReportPost(Context c, long p) {
+
             this.context = c;
+            this.postId = p;
+
         }
 
         @Override
         protected void onPreExecute() {
 
-            if (context instanceof ForumSearchView) {
+            if (context instanceof ForumReportActivity) {
 
-                ((ForumSearchView) context).toggleSearchButton();
+                buttonReport.setText(R.string.info_report_active);
+                buttonReport.setEnabled(false);
 
             }
 
@@ -186,8 +171,8 @@ public class ForumSearchView extends ListActivity {
 
             try {
 
-                threads = WebsiteHandler.searchInForums(context, arg0[0]);
-                return true;
+                return WebsiteHandler.reportPostInThread(context, postId,
+                        arg0[0]);
 
             } catch (Exception ex) {
 
@@ -201,61 +186,25 @@ public class ForumSearchView extends ListActivity {
         @Override
         protected void onPostExecute(Boolean results) {
 
-            // Let's evaluate
-            if (results) {
+            if (context instanceof ForumReportActivity) {
 
-                if (context instanceof ForumSearchView) {
+                if (results) {
 
-                    ((ForumSearchView) context).setupList(threads);
-                    ((ForumSearchView) context).toggleSearchButton();
+                    Toast.makeText(context, R.string.info_forum_report_true,
+                            Toast.LENGTH_SHORT).show();
+                    ((ForumReportActivity) context).finish();
 
+                } else {
+
+                    Toast.makeText(context, R.string.info_forum_report_false,
+                            Toast.LENGTH_SHORT).show();
+                    buttonReport.setText(R.string.label_report);
+                    buttonReport.setEnabled(true);
                 }
-
-            } else {
-
-                if (context instanceof ForumSearchView) {
-
-                    ((ForumSearchView) context).toggleSearchButton();
-
-                }
-                Toast.makeText(context, R.string.info_xml_generic_error,
-                        Toast.LENGTH_SHORT).show();
 
             }
 
         }
-
-    }
-
-    public void toggleSearchButton() {
-
-        buttonSearch.setEnabled(!buttonSearch.isEnabled());
-
-        // Update the text
-        if (buttonSearch.isEnabled()) {
-            buttonSearch.setText(R.string.label_search);
-        } else {
-            buttonSearch.setText("...");
-        }
-
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int p, long id) {
-
-        startActivity(
-
-        new Intent(this, Backup_ForumThreadView.class).putExtra(
-
-                "threadId", id
-
-                ).putExtra(
-
-                        "threadTitle", ((Board.SearchResult) v.getTag()).getTitle()
-
-                )
-
-        );
 
     }
 

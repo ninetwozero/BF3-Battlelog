@@ -12,7 +12,7 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class ProfileSettingsView extends PreferenceActivity {
+public class ProfileSettingsActivity extends PreferenceActivity {
 
     // Attributes
     private SharedPreferences sharedPreferences;
@@ -41,7 +41,8 @@ public class ProfileSettingsView extends PreferenceActivity {
         // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-            /* TODO: Here's where we have to update versus battlelog?*/
+            /* TODO: Here's where we have to update versus battlelog? */
+            finish();
             return true;
 
         }

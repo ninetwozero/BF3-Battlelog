@@ -55,7 +55,7 @@ public class FriendListAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
 
-        if (getItem(position).getId() == 0 ) {
+        if (getItem(position).getId() == 0) {
 
             return 1;
 

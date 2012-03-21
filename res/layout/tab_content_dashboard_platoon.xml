@@ -20,7 +20,7 @@
 	android:padding="10dp"
 >
 	<RelativeLayout
-		android:id="@+id/wrap_persona"    
+		android:id="@+id/wrap_platoon"    
     	android:layout_width="250dp"
     	android:layout_height="wrap_content"
     	android:layout_centerHorizontal="true"
@@ -28,29 +28,29 @@
     	android:padding="5dp"
     >
     	<ImageView
-    	    android:id="@+id/image_persona"    
+    	    android:id="@+id/image_platoon"    
     		android:layout_width="48dp"
     		android:layout_height="48dp"
-    		android:src="@drawable/bf3_us_recon"
+    		android:src="@drawable/testimg_platoon"
   			android:layout_marginRight="5dp"
   			android:layout_centerVertical="true"
     	/>
     	<LinearLayout
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content"
-    		android:layout_toRightOf="@id/image_persona"
+    		android:layout_toRightOf="@id/image_platoon"
     		android:orientation="vertical"
   			android:layout_centerVertical="true">
 	    	<TextView
 	    		android:id="@+id/string000"    
-	    		android:text="Active soldier:"
+	    		android:text="Active platoon:"
 	    		android:layout_width="wrap_content"
 	    		android:layout_height="wrap_content"
 	    		android:textSize="18sp"
 	    	/>
 	    	<com.ninetwozero.battlelog.datatypes.MarqueeTextView
-	    		android:id="@+id/text_persona"    
-	    		android:text="NINETWOZERO"
+	    		android:id="@+id/text_platoon"    
+	    		android:text="BF3 Battlelog (unofficial) [NTZ]"
 	    		android:layout_width="wrap_content"
 	    		android:layout_height="wrap_content"
 	    		android:textStyle="bold"
@@ -66,29 +66,28 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 		android:padding="10dp"
-		android:layout_below="@id/wrap_persona"
+		android:layout_below="@id/wrap_platoon"
 	>
-    <LinearLayout
+		<LinearLayout
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:orientation="vertical"
-			android:gravity="center"
+		    android:gravity="center"
 		>
+			<Button
+			    android:id="@+id/button_new"
+			    style="@style/MenuButton"
+			    android:text="Create a platoon" 
+			/>
 			<Button
 			    style="@style/MenuButton"
 			    android:id="@+id/button_self"
-			    android:text="@string/label_own_soldier"
+			    android:text="My platoons"
 			/>
-	
-			<Button
-			    android:id="@+id/button_unlocks"
-			    style="@style/MenuButton"
-			    android:text="@string/label_unlocks" />
-	
 			<Button
 			    style="@style/MenuButton"
-			    android:id="@+id/button_assignments"
-			    android:text="@string/label_assignments"
+			    android:id="@+id/button_invites"
+			    android:text="My invites"
 			/>
 			<Button
 			    style="@style/MenuButton"

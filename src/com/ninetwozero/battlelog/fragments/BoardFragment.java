@@ -37,7 +37,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.ninetwozero.battlelog.ForumView;
+import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ForumListAdapter;
 import com.ninetwozero.battlelog.datatypes.Board;
@@ -140,7 +140,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
     public void onListItemClick(ListView l, View v, int pos, long id) {
 
         // Always called from this one
-        ForumView parent = (ForumView) getActivity();
+        ForumActivity parent = (ForumActivity) getActivity();
 
         // Let's open the forum
         parent.openForum(

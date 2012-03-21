@@ -41,7 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.SinglePostView;
+import com.ninetwozero.battlelog.SinglePostActivity;
 import com.ninetwozero.battlelog.adapters.FeedListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
@@ -277,7 +277,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                 new Intent(
 
-                        context, SinglePostView.class
+                        context, SinglePostActivity.class
 
                 ).putExtra(
 

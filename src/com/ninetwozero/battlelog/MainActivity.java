@@ -15,9 +15,7 @@
 package com.ninetwozero.battlelog;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
@@ -30,7 +28,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -63,13 +60,13 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class Main extends FragmentActivity implements DefaultFragmentActivity {
+public class MainActivity extends FragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
     private String[] valueFields;
     private PostData[] postDataArray;
     private SharedPreferences sharedPreferences;
-    
+
     // Elements
     private EditText fieldEmail, fieldPassword;
     private CheckBox checkboxSave;
@@ -125,7 +122,7 @@ public class Main extends FragmentActivity implements DefaultFragmentActivity {
         // Let's populate... or shall we not?
         initActivity();
 
-        //Setup the drawer
+        // Setup the drawer
         setupDrawer();
 
     }
@@ -223,7 +220,7 @@ public class Main extends FragmentActivity implements DefaultFragmentActivity {
 
         if (SessionKeeper.getProfileData() != null) {
 
-            startActivity(new Intent(this, Dashboard.class));
+            startActivity(new Intent(this, DashboardActivity.class));
             finish();
 
         } else if (!sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE,
@@ -242,12 +239,16 @@ public class Main extends FragmentActivity implements DefaultFragmentActivity {
                     );
             startActivity(
 
-            new Intent(this, Dashboard.class)
+            new Intent(this, DashboardActivity.class)
                     .putExtra(
 
                             "myProfile",
                             SessionKeeper
-                                    .generateProfileDataFromSharedPreferences(sharedPreferences))
+                                    .generateProfileDataFromSharedPreferences(sharedPreferences)
+                    ).putExtra(
+                            "myPlatoon",
+                            SessionKeeper
+                                    .generatePlatoonDataFromSharedPreferences(sharedPreferences))
 
             );
             finish();
@@ -337,7 +338,7 @@ public class Main extends FragmentActivity implements DefaultFragmentActivity {
             // Attach the listeners
             slidingDrawer.setOnDrawerOpenListener(onDrawerOpenListener);
             slidingDrawer.setOnDrawerCloseListener(onDrawerCloseListener);
-            
+
             setupFragments();
         }
     }
@@ -478,10 +479,10 @@ public class Main extends FragmentActivity implements DefaultFragmentActivity {
         PublicUtils.setupLocale(this, sharedPreferences);
 
     }
-    
+
     @Override
     public void setupFragments() {
-        
+
         // Do we need to setup the fragments?
         if (listFragments == null) {
 
@@ -518,10 +519,11 @@ public class Main extends FragmentActivity implements DefaultFragmentActivity {
             viewPager.setOffscreenPageLimit(2);
 
         }
-        
+
     }
 
     @Override
-    public void reload() {}
+    public void reload() {
+    }
 
 }

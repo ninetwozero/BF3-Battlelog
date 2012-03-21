@@ -50,7 +50,7 @@ import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class ChatView extends ListActivity {
+public class ChatActivity extends ListActivity {
 
     // Attributes
     private long chatId;

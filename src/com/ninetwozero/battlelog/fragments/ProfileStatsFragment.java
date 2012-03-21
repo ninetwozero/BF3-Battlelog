@@ -35,9 +35,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.CompareView;
+import com.ninetwozero.battlelog.CompareActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.UnlockView;
+import com.ninetwozero.battlelog.UnlockActivity;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
@@ -206,7 +206,8 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         // Are we going to compare?
         if (comparing) {
 
-            ((CompareView) getActivity()).sendToCompare(profileData, personaStats, selectedPersona,
+            ((CompareActivity) getActivity()).sendToCompare(profileData, personaStats,
+                    selectedPersona,
                     toggle);
 
         }
@@ -426,7 +427,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
             new Intent(
 
-                    context, CompareView.class
+                    context, CompareActivity.class
 
             ).putExtra(
 
@@ -465,7 +466,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
             new Intent(
 
-                    context, UnlockView.class
+                    context, UnlockActivity.class
 
             ).putExtra(
 

@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.misc;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -460,7 +461,7 @@ public class CacheHandler {
                 if (results.moveToFirst()) {
 
                     // Any platoons?
-                    ArrayList<PlatoonData> platoons = new ArrayList<PlatoonData>();
+                    List<PlatoonData> platoons = new ArrayList<PlatoonData>();
 
                     // Get the strings
                     String personaIdString = results.getString(results
@@ -489,17 +490,17 @@ public class CacheHandler {
                     // Create two new arrays for this
                     PersonaData[] personaArray = new PersonaData[numPersonas];
                     long[] platoonIdArray = new long[numPlatoons];
-                    
+
                     // Loop for the personas
                     for (int i = 0; i < numPersonas; i++) {
 
                         personaArray[i] = new PersonaData(
-                         
+
                                 Long.parseLong(personaStringArray[i]),
                                 personaNameStringArray[i],
                                 Integer.parseInt(platformStringArray[i]),
                                 null
-                        );
+                                );
 
                     }
 
@@ -861,7 +862,7 @@ public class CacheHandler {
                 // Init
                 String strQuestionMarks = "?";
                 String[] PlatoonIdArray = new String[platoonId.length];
-                ArrayList<PlatoonData> stats = new ArrayList<PlatoonData>();
+                List<PlatoonData> stats = new ArrayList<PlatoonData>();
 
                 // Loop to string the array
                 for (int i = 0, max = platoonId.length; i < max; i++) {
@@ -920,7 +921,7 @@ public class CacheHandler {
                 // Platoon Platoon BABY
                 results.close();
                 manager.close();
-                return stats;
+                return (ArrayList<PlatoonData>) stats;
 
             } catch (Exception ex) {
 

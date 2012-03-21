@@ -1082,7 +1082,7 @@ public class Backup_PlatoonView extends TabActivity {
 
             new Intent(
 
-                    this, PlatoonInviteView.class
+                    this, PlatoonInviteActivity.class
 
             ).putExtra(
 
@@ -1292,7 +1292,7 @@ public class Backup_PlatoonView extends TabActivity {
 
                     startActivity(
 
-                    new Intent(CONTEXT, ProfileView.class).putExtra(
+                    new Intent(CONTEXT, ProfileActivity.class).putExtra(
 
                             "profile", data
 
@@ -1379,7 +1379,7 @@ public class Backup_PlatoonView extends TabActivity {
 
                     new Intent(
 
-                            this, SinglePostView.class
+                            this, SinglePostActivity.class
 
                     ).putExtra(
 

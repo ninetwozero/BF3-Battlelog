@@ -66,7 +66,7 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class ForumThreadView extends ListActivity {
+public class ForumThreadActivity extends ListActivity {
 
     // Attributes
     private final Context CONTEXT = this;
@@ -218,7 +218,7 @@ public class ForumThreadView extends ListActivity {
 
         } else if (item.getItemId() == R.id.option_search) {
 
-            startActivity(new Intent(this, ForumSearchView.class));
+            startActivity(new Intent(this, ForumSearchActivity.class));
 
         } else if (item.getItemId() == R.id.option_back) {
 
@@ -408,7 +408,7 @@ public class ForumThreadView extends ListActivity {
                 switch (item.getItemId()) {
 
                     case 0:
-                        startActivity(new Intent(this, ProfileView.class).putExtra(
+                        startActivity(new Intent(this, ProfileActivity.class).putExtra(
                                 "profile", data.getProfileData()));
                         break;
 
@@ -445,7 +445,7 @@ public class ForumThreadView extends ListActivity {
                         break;
 
                     case 3:
-                        startActivity(new Intent(this, ForumReportView.class)
+                        startActivity(new Intent(this, ForumReportActivity.class)
                                 .putExtra("postId", data.getPostId()));
                         break;
 
@@ -478,7 +478,7 @@ public class ForumThreadView extends ListActivity {
         }
 
         // Init
-        ArrayList<String> links = new ArrayList<String>();
+        List<String> links = new ArrayList<String>();
         boolean linkFound = false;
 
         // Let's try to find 'em
@@ -587,7 +587,7 @@ public class ForumThreadView extends ListActivity {
 
         } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
 
-            startActivity(new Intent(this, ForumSearchView.class));
+            startActivity(new Intent(this, ForumSearchActivity.class));
 
         }
         return super.onKeyDown(keyCode, event);
@@ -639,7 +639,7 @@ public class ForumThreadView extends ListActivity {
         @Override
         protected void onPreExecute() {
 
-            if (context instanceof ForumThreadView) {
+            if (context instanceof ForumThreadActivity) {
 
                 buttonJump.setText(getString(R.string.label_downloading));
                 buttonJump.setEnabled(false);
@@ -672,11 +672,11 @@ public class ForumThreadView extends ListActivity {
         @Override
         protected void onPostExecute(Boolean results) {
 
-            if (context instanceof ForumThreadView) {
+            if (context instanceof ForumThreadActivity) {
 
                 if (results) {
 
-                    ((ThreadPostListAdapter) ((ForumThreadView) context)
+                    ((ThreadPostListAdapter) ((ForumThreadActivity) context)
                             .getListView().getAdapter()).set(posts);
                     buttonJump
                             .setText(getString(R.string.info_xml_feed_button_jump));
@@ -880,7 +880,7 @@ public class ForumThreadView extends ListActivity {
 
                         String username = currentLink.substring(index + 6,
                                 linkEndPos);
-                        intent = new Intent(context, ProfileView.class)
+                        intent = new Intent(context, ProfileActivity.class)
                                 .putExtra(
 
                                         "profile", WebsiteHandler
@@ -896,7 +896,7 @@ public class ForumThreadView extends ListActivity {
 
                             long platoonId = Long.parseLong(currentLink
                                     .substring(index + 9, linkEndPos));
-                            intent = new Intent(context, PlatoonView.class)
+                            intent = new Intent(context, PlatoonActivity.class)
                                     .putExtra(
 
                                             "platoon", new PlatoonData(platoonId, 0, 0,
@@ -914,7 +914,7 @@ public class ForumThreadView extends ListActivity {
                                 long personaId = Long
                                         .parseLong(currentLink.substring(0,
                                                 currentLink.indexOf('/')));
-                                intent = new Intent(context, ProfileView.class)
+                                intent = new Intent(context, ProfileActivity.class)
                                         .putExtra(
 
                                                 "profile",
@@ -932,7 +932,7 @@ public class ForumThreadView extends ListActivity {
                                     long threadId = Long.parseLong(currentLink
                                             .substring(index + 17, linkEndPos));
                                     intent = new Intent(context,
-                                            ForumThreadView.class).putExtra(
+                                            ForumThreadActivity.class).putExtra(
 
                                             "threadId", threadId
 

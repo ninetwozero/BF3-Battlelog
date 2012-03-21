@@ -50,7 +50,7 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class PlatoonView extends FragmentActivity implements DefaultFragmentActivity {
+public class PlatoonActivity extends FragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
     private final Context CONTEXT = this;

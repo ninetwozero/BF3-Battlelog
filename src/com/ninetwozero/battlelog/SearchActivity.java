@@ -43,7 +43,7 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class SearchView extends ListActivity {
+public class SearchActivity extends ListActivity {
 
     // Attributes
     private LayoutInflater layoutInflater;
@@ -175,9 +175,9 @@ public class SearchView extends ListActivity {
         @Override
         protected void onPreExecute() {
 
-            if (context instanceof SearchView) {
+            if (context instanceof SearchActivity) {
 
-                ((SearchView) context).toggleSearchButton();
+                ((SearchActivity) context).toggleSearchButton();
 
             }
 
@@ -207,18 +207,18 @@ public class SearchView extends ListActivity {
             // Let's evaluate
             if (results) {
 
-                if (context instanceof SearchView) {
+                if (context instanceof SearchActivity) {
 
-                    ((SearchView) context).setupList(searchResults);
-                    ((SearchView) context).toggleSearchButton();
+                    ((SearchActivity) context).setupList(searchResults);
+                    ((SearchActivity) context).toggleSearchButton();
 
                 }
 
             } else {
 
-                if (context instanceof SearchView) {
+                if (context instanceof SearchActivity) {
 
-                    ((SearchView) context).toggleSearchButton();
+                    ((SearchActivity) context).toggleSearchButton();
 
                 }
                 Toast.makeText(context, R.string.info_xml_generic_error,
@@ -253,12 +253,12 @@ public class SearchView extends ListActivity {
         // Build the intent
         if (result.hasProfileData()) {
 
-            intent = new Intent(this, ProfileView.class).putExtra("profile",
+            intent = new Intent(this, ProfileActivity.class).putExtra("profile",
                     result.getProfileData());
 
         } else {
 
-            intent = new Intent(this, PlatoonView.class).putExtra("platoon",
+            intent = new Intent(this, PlatoonActivity.class).putExtra("platoon",
                     result.getPlatoonData());
         }
 

@@ -18,8 +18,8 @@
 package com.ninetwozero.battlelog.misc;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -36,7 +36,7 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
-import com.ninetwozero.battlelog.Main;
+import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
@@ -425,7 +425,7 @@ public class PublicUtils {
         // Did it get passed on?
         if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
 
-            ArrayList<ShareableCookie> shareableCookies = icicle
+            List<ShareableCookie> shareableCookies = icicle
                     .getParcelableArrayList(Constants.SUPER_COOKIES);
 
             if (shareableCookies != null) {
@@ -495,6 +495,9 @@ public class PublicUtils {
 
                         );
 
+                SessionKeeper.setPlatoonData(SessionKeeper
+                        .generatePlatoonDataFromSharedPreferences(sharedPreferences));
+
                 // ...but just to be sure, we try to verify our session
                 // "behind the scenes"
                 new AsyncSessionValidate(context, sharedPreferences).execute();
@@ -504,7 +507,7 @@ public class PublicUtils {
                 // Aw man, that backfired.
                 Toast.makeText(context, R.string.info_txt_session_lost,
                         Toast.LENGTH_SHORT).show();
-                ((Activity) context).startActivity(new Intent(context, Main.class));
+                ((Activity) context).startActivity(new Intent(context, MainActivity.class));
                 ((Activity) context).finish();
 
             }

@@ -1,7 +1,6 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Parcel;
@@ -27,21 +26,21 @@ public class Board {
         public Forum(String fTitle, String fDescription, long nPosts,
                 long nThreads, long nPages, List<Board.ThreadData> aThreads) {
 
-            this.forumId = 0;
-            this.categoryId = 0;
-            this.latestPostDate = 0;
-            this.latestPostThreadId = 0;
-            this.latestPostId = 0;
-            this.numPosts = nPosts;
-            this.numThreads = nThreads;
-            this.numPages = nPages;
+            forumId = 0;
+            categoryId = 0;
+            latestPostDate = 0;
+            latestPostThreadId = 0;
+            latestPostId = 0;
+            numPosts = nPosts;
+            numThreads = nThreads;
+            numPages = nPages;
 
-            this.title = fTitle;
-            this.description = fDescription;
-            this.latestThreadTitle = null;
-            this.latestPostUsername = null;
+            title = fTitle;
+            description = fDescription;
+            latestThreadTitle = null;
+            latestPostUsername = null;
 
-            this.threads = aThreads;
+            threads = aThreads;
 
         }
 
@@ -53,39 +52,39 @@ public class Board {
 
         ) {
 
-            this.forumId = fId;
-            this.categoryId = cId;
-            this.latestPostDate = lpDate;
-            this.latestPostThreadId = lpTId;
-            this.latestPostId = lpId;
-            this.numPosts = nPosts;
-            this.numThreads = nThreads;
-            this.numPages = nPages;
+            forumId = fId;
+            categoryId = cId;
+            latestPostDate = lpDate;
+            latestPostThreadId = lpTId;
+            latestPostId = lpId;
+            numPosts = nPosts;
+            numThreads = nThreads;
+            numPages = nPages;
 
-            this.title = t;
-            this.description = d;
-            this.latestThreadTitle = ltTitle;
-            this.latestPostUsername = lpUser;
+            title = t;
+            description = d;
+            latestThreadTitle = ltTitle;
+            latestPostUsername = lpUser;
 
-            this.threads = null;
+            threads = null;
 
         }
 
         public Forum(Parcel in) {
 
-            this.forumId = in.readLong();
-            this.categoryId = in.readLong();
-            this.latestPostDate = in.readLong();
-            this.latestPostThreadId = in.readLong();
-            this.latestPostId = in.readLong();
-            this.numPosts = in.readLong();
-            this.numThreads = in.readLong();
-            this.numPages = in.readLong();
+            forumId = in.readLong();
+            categoryId = in.readLong();
+            latestPostDate = in.readLong();
+            latestPostThreadId = in.readLong();
+            latestPostId = in.readLong();
+            numPosts = in.readLong();
+            numThreads = in.readLong();
+            numPages = in.readLong();
 
-            this.title = in.readString();
-            this.description = in.readString();
-            this.latestThreadTitle = in.readString();
-            this.latestPostUsername = in.readString();
+            title = in.readString();
+            description = in.readString();
+            latestThreadTitle = in.readString();
+            latestPostUsername = in.readString();
 
             in.readTypedList(threads, Board.ThreadData.CREATOR);
 
@@ -93,55 +92,55 @@ public class Board {
 
         // Getters
         public long getForumId() {
-            return this.forumId;
+            return forumId;
         }
 
         public long getCategoryId() {
-            return this.categoryId;
+            return categoryId;
         }
 
         public long getLatestPostDate() {
-            return this.latestPostDate;
+            return latestPostDate;
         }
 
         public long getLatestPostForumId() {
-            return this.latestPostThreadId;
+            return latestPostThreadId;
         }
 
         public long getLatestPostId() {
-            return this.latestPostId;
+            return latestPostId;
         }
 
         public long getNumPosts() {
-            return this.numPosts;
+            return numPosts;
         }
 
         public long getNumThreads() {
-            return this.numThreads;
+            return numThreads;
         }
 
         public long getNumPages() {
-            return this.numPages;
+            return numPages;
         }
 
         public String getTitle() {
-            return this.title;
+            return title;
         }
 
         public String getDescription() {
-            return this.description;
+            return description;
         }
 
         public String getLatestThreadTitle() {
-            return this.latestThreadTitle;
+            return latestThreadTitle;
         }
 
         public String getLatestPostUsername() {
-            return this.latestPostUsername;
+            return latestPostUsername;
         }
 
         public List<Board.ThreadData> getThreads() {
-            return this.threads;
+            return threads;
         }
 
         @Override
@@ -152,19 +151,19 @@ public class Board {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
 
-            dest.writeLong(this.forumId);
-            dest.writeLong(this.categoryId);
-            dest.writeLong(this.latestPostDate);
-            dest.writeLong(this.latestPostThreadId);
-            dest.writeLong(this.latestPostId);
-            dest.writeLong(this.numPosts);
-            dest.writeLong(this.numThreads);
-            dest.writeLong(this.numPages);
+            dest.writeLong(forumId);
+            dest.writeLong(categoryId);
+            dest.writeLong(latestPostDate);
+            dest.writeLong(latestPostThreadId);
+            dest.writeLong(latestPostId);
+            dest.writeLong(numPosts);
+            dest.writeLong(numThreads);
+            dest.writeLong(numPages);
 
-            dest.writeString(this.title);
-            dest.writeString(this.description);
-            dest.writeString(this.latestThreadTitle);
-            dest.writeString(this.latestPostUsername);
+            dest.writeString(title);
+            dest.writeString(description);
+            dest.writeString(latestThreadTitle);
+            dest.writeString(latestPostUsername);
 
             dest.writeTypedList(threads);
 
@@ -198,37 +197,37 @@ public class Board {
 
         // Construct
         public ThreadData(String t) {
-            this.title = t;
+            title = t;
         }
 
         public ThreadData(Parcel in) {
 
-            this.threadId = in.readLong();
-            this.date = in.readLong();
-            this.lastPostDate = in.readLong();
+            threadId = in.readLong();
+            date = in.readLong();
+            lastPostDate = in.readLong();
 
-            this.numOfficialPosts = in.readInt();
-            this.numPosts = in.readInt();
-            this.numCurrentPage = in.readInt();
-            this.numTotalPages = in.readInt();
+            numOfficialPosts = in.readInt();
+            numPosts = in.readInt();
+            numCurrentPage = in.readInt();
+            numTotalPages = in.readInt();
 
-            this.title = in.readString();
+            title = in.readString();
 
-            this.owner = in.readParcelable(ProfileData.class.getClassLoader());
-            this.lastPoster = in.readParcelable(ProfileData.class
+            owner = in.readParcelable(ProfileData.class.getClassLoader());
+            lastPoster = in.readParcelable(ProfileData.class
                     .getClassLoader());
 
-            this.sticky = (in.readInt() == 1);
-            this.locked = (in.readInt() == 1);
+            sticky = (in.readInt() == 1);
+            locked = (in.readInt() == 1);
 
-            this.censorPosts = (in.readInt() == 1);
-            this.deletePosts = (in.readInt() == 1);
-            this.editPosts = (in.readInt() == 1);
-            this.admin = (in.readInt() == 1);
+            censorPosts = (in.readInt() == 1);
+            deletePosts = (in.readInt() == 1);
+            editPosts = (in.readInt() == 1);
+            admin = (in.readInt() == 1);
             ;
-            this.postOfficial = (in.readInt() == 1);
-            this.viewLatestPosts = (in.readInt() == 1);
-            this.viewPostHistory = (in.readInt() == 1);
+            postOfficial = (in.readInt() == 1);
+            viewLatestPosts = (in.readInt() == 1);
+            viewPostHistory = (in.readInt() == 1);
 
             in.readTypedList(posts, Board.PostData.CREATOR);
 
@@ -241,32 +240,32 @@ public class Board {
 
         ) {
 
-            this.threadId = tId;
-            this.date = tDate;
-            this.lastPostDate = lpDate;
+            threadId = tId;
+            date = tDate;
+            lastPostDate = lpDate;
 
-            this.numOfficialPosts = nOffPosts;
-            this.numPosts = nPosts;
-            this.numCurrentPage = 0;
-            this.numTotalPages = 0;
+            numOfficialPosts = nOffPosts;
+            numPosts = nPosts;
+            numCurrentPage = 0;
+            numTotalPages = 0;
 
-            this.title = t;
+            title = t;
 
-            this.owner = o;
-            this.lastPoster = lp;
+            owner = o;
+            lastPoster = lp;
 
-            this.sticky = st;
-            this.locked = lo;
+            sticky = st;
+            locked = lo;
 
-            this.censorPosts = false;
-            this.deletePosts = false;
-            this.editPosts = false;
-            this.admin = false;
-            this.postOfficial = false;
-            this.viewLatestPosts = false;
-            this.viewPostHistory = false;
+            censorPosts = false;
+            deletePosts = false;
+            editPosts = false;
+            admin = false;
+            postOfficial = false;
+            viewLatestPosts = false;
+            viewPostHistory = false;
 
-            this.posts = null;
+            posts = null;
 
         }
 
@@ -277,122 +276,122 @@ public class Board {
                 ProfileData lp, boolean st, boolean lo, boolean cePosts,
                 boolean ccPosts, boolean cdPosts, boolean cpOfficial,
                 boolean cvlPosts, boolean cvpHistory, boolean ad,
-                ArrayList<Board.PostData> aPosts
+                List<Board.PostData> aPosts
 
         ) {
 
-            this.threadId = tId;
-            this.date = tDate;
-            this.lastPostDate = lpDate;
+            threadId = tId;
+            date = tDate;
+            lastPostDate = lpDate;
 
-            this.numOfficialPosts = nOffPosts;
-            this.numPosts = nPosts;
-            this.numCurrentPage = nCurrPage;
-            this.numTotalPages = nPages;
+            numOfficialPosts = nOffPosts;
+            numPosts = nPosts;
+            numCurrentPage = nCurrPage;
+            numTotalPages = nPages;
 
-            this.title = t;
+            title = t;
 
-            this.owner = o;
-            this.lastPoster = lp;
+            owner = o;
+            lastPoster = lp;
 
-            this.sticky = st;
-            this.locked = lo;
+            sticky = st;
+            locked = lo;
 
-            this.censorPosts = ccPosts;
-            this.deletePosts = cdPosts;
-            this.editPosts = cePosts;
-            this.admin = ad;
-            this.postOfficial = cpOfficial;
-            this.viewLatestPosts = cvlPosts;
-            this.viewPostHistory = cvpHistory;
+            censorPosts = ccPosts;
+            deletePosts = cdPosts;
+            editPosts = cePosts;
+            admin = ad;
+            postOfficial = cpOfficial;
+            viewLatestPosts = cvlPosts;
+            viewPostHistory = cvpHistory;
 
-            this.posts = aPosts;
+            posts = aPosts;
 
         }
 
         // Getters
         public long getThreadId() {
-            return this.threadId;
+            return threadId;
         }
 
         public long getDate() {
-            return this.date;
+            return date;
         }
 
         public long getLastPostDate() {
-            return this.lastPostDate;
+            return lastPostDate;
         }
 
         public int getNumOfficialPosts() {
-            return this.numOfficialPosts;
+            return numOfficialPosts;
         }
 
         public int getNumPosts() {
-            return this.numPosts + this.numOfficialPosts;
+            return numPosts + numOfficialPosts;
         }
 
         public int getNumCurrentPage() {
-            return this.numCurrentPage;
+            return numCurrentPage;
         }
 
         public int getNumPages() {
-            return this.numTotalPages;
+            return numTotalPages;
         }
 
         public String getTitle() {
-            return this.title;
+            return title;
         }
 
         public ProfileData getOwner() {
-            return this.owner;
+            return owner;
         }
 
         public ProfileData getLastPoster() {
-            return this.lastPoster;
+            return lastPoster;
         }
 
         public boolean isSticky() {
-            return this.sticky;
+            return sticky;
         }
 
         public boolean isLocked() {
-            return this.locked;
+            return locked;
         }
 
         public boolean hasOfficialResponse() {
-            return (this.numOfficialPosts > 0);
+            return (numOfficialPosts > 0);
         }
 
         public boolean canEditPosts() {
-            return this.editPosts;
+            return editPosts;
         }
 
         public boolean canCensorPosts() {
-            return this.censorPosts;
+            return censorPosts;
         }
 
         public boolean canDeletePosts() {
-            return this.deletePosts;
+            return deletePosts;
         }
 
         public boolean canPostOfficial() {
-            return this.postOfficial;
+            return postOfficial;
         }
 
         public boolean canViewLatestPosts() {
-            return this.viewLatestPosts;
+            return viewLatestPosts;
         }
 
         public boolean canViewPostHistory() {
-            return this.viewPostHistory;
+            return viewPostHistory;
         }
 
         public boolean isAdmin() {
-            return this.admin;
+            return admin;
         }
 
         public List<Board.PostData> getPosts() {
-            return this.posts;
+            return posts;
         }
 
         @Override
@@ -403,32 +402,32 @@ public class Board {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
 
-            dest.writeLong(this.threadId);
-            dest.writeLong(this.date);
-            dest.writeLong(this.lastPostDate);
+            dest.writeLong(threadId);
+            dest.writeLong(date);
+            dest.writeLong(lastPostDate);
 
-            dest.writeInt(this.numOfficialPosts);
-            dest.writeInt(this.numPosts);
-            dest.writeInt(this.numCurrentPage);
-            dest.writeInt(this.numTotalPages);
+            dest.writeInt(numOfficialPosts);
+            dest.writeInt(numPosts);
+            dest.writeInt(numCurrentPage);
+            dest.writeInt(numTotalPages);
 
-            dest.writeString(this.title);
+            dest.writeString(title);
 
-            dest.writeParcelable(this.owner, flags);
-            dest.writeParcelable(this.lastPoster, flags);
+            dest.writeParcelable(owner, flags);
+            dest.writeParcelable(lastPoster, flags);
 
-            dest.writeInt(this.sticky ? 1 : 0);
-            dest.writeInt(this.locked ? 1 : 0);
+            dest.writeInt(sticky ? 1 : 0);
+            dest.writeInt(locked ? 1 : 0);
 
-            dest.writeInt(this.censorPosts ? 1 : 0);
-            dest.writeInt(this.deletePosts ? 1 : 0);
-            dest.writeInt(this.editPosts ? 1 : 0);
-            dest.writeInt(this.admin ? 1 : 0);
-            dest.writeInt(this.postOfficial ? 1 : 0);
-            dest.writeInt(this.viewLatestPosts ? 1 : 0);
-            dest.writeInt(this.viewPostHistory ? 1 : 0);
+            dest.writeInt(censorPosts ? 1 : 0);
+            dest.writeInt(deletePosts ? 1 : 0);
+            dest.writeInt(editPosts ? 1 : 0);
+            dest.writeInt(admin ? 1 : 0);
+            dest.writeInt(postOfficial ? 1 : 0);
+            dest.writeInt(viewLatestPosts ? 1 : 0);
+            dest.writeInt(viewPostHistory ? 1 : 0);
 
-            dest.writeTypedList(this.posts);
+            dest.writeTypedList(posts);
 
         }
 
@@ -446,7 +445,7 @@ public class Board {
 
         @Override
         public String toString() {
-            return this.owner + ":" + this.title;
+            return owner + ":" + title;
         }
 
     }
@@ -468,70 +467,70 @@ public class Board {
 
         ) {
 
-            this.postId = pId;
-            this.date = d;
-            this.threadId = thId;
+            postId = pId;
+            date = d;
+            threadId = thId;
 
-            this.profileData = p;
+            profileData = p;
 
-            this.content = c;
+            content = c;
 
-            this.numReports = cReports;
+            numReports = cReports;
 
-            this.censored = iCensored;
-            this.official = iOfficial;
+            censored = iCensored;
+            official = iOfficial;
 
         }
 
         public PostData(Parcel in) {
 
-            this.postId = in.readLong();
-            this.date = in.readLong();
-            this.threadId = in.readLong();
+            postId = in.readLong();
+            date = in.readLong();
+            threadId = in.readLong();
 
-            this.profileData = in.readParcelable(ProfileData.class
+            profileData = in.readParcelable(ProfileData.class
                     .getClassLoader());
 
-            this.content = in.readString();
+            content = in.readString();
 
-            this.numReports = in.readInt();
+            numReports = in.readInt();
 
-            this.censored = (in.readInt() == 1);
-            this.official = (in.readInt() == 1);
+            censored = (in.readInt() == 1);
+            official = (in.readInt() == 1);
 
         }
 
         // Getters
         public long getPostId() {
-            return this.postId;
+            return postId;
         }
 
         public long getDate() {
-            return this.date;
+            return date;
         }
 
         public long getThreadId() {
-            return this.threadId;
+            return threadId;
         }
 
         public ProfileData getProfileData() {
-            return this.profileData;
+            return profileData;
         }
 
         public String getContent() {
-            return this.content;
+            return content;
         }
 
         public int getNumReports() {
-            return this.numReports;
+            return numReports;
         }
 
         public boolean isCensored() {
-            return this.censored;
+            return censored;
         }
 
         public boolean isOfficial() {
-            return this.official;
+            return official;
         }
 
         @Override
@@ -542,18 +541,18 @@ public class Board {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
 
-            dest.writeLong(this.postId);
-            dest.writeLong(this.date);
-            dest.writeLong(this.threadId);
+            dest.writeLong(postId);
+            dest.writeLong(date);
+            dest.writeLong(threadId);
 
-            dest.writeParcelable(this.profileData, flags);
+            dest.writeParcelable(profileData, flags);
 
-            dest.writeString(this.content);
+            dest.writeString(content);
 
-            dest.writeInt(this.numReports);
+            dest.writeInt(numReports);
 
-            dest.writeInt(this.censored ? 1 : 0);
-            dest.writeInt(this.official ? 1 : 0);
+            dest.writeInt(censored ? 1 : 0);
+            dest.writeInt(official ? 1 : 0);
 
         }
 
@@ -571,7 +570,7 @@ public class Board {
 
         @Override
         public String toString() {
-            return this.profileData.getUsername() + ":" + this.content;
+            return profileData.getUsername() + ":" + content;
         }
 
     }
@@ -586,20 +585,20 @@ public class Board {
 
         // Construct
         public SearchResult(String t) {
-            this.title = t;
+            title = t;
         }
 
         public SearchResult(Parcel in) {
 
-            this.threadId = in.readLong();
-            this.date = in.readLong();
+            threadId = in.readLong();
+            date = in.readLong();
 
-            this.title = in.readString();
+            title = in.readString();
 
-            this.owner = in.readParcelable(ProfileData.class.getClassLoader());
+            owner = in.readParcelable(ProfileData.class.getClassLoader());
 
-            this.sticky = (in.readInt() == 1);
-            this.official = (in.readInt() == 1);
+            sticky = (in.readInt() == 1);
+            official = (in.readInt() == 1);
 
         }
 
@@ -609,41 +608,41 @@ public class Board {
 
         ) {
 
-            this.threadId = tId;
-            this.date = tDate;
+            threadId = tId;
+            date = tDate;
 
-            this.title = t;
+            title = t;
 
-            this.owner = o;
+            owner = o;
 
-            this.sticky = st;
-            this.official = of;
+            sticky = st;
+            official = of;
 
         }
 
         // Getters
         public long getThreadId() {
-            return this.threadId;
+            return threadId;
         }
 
         public long getDate() {
-            return this.date;
+            return date;
         }
 
         public String getTitle() {
-            return this.title;
+            return title;
         }
 
         public ProfileData getOwner() {
-            return this.owner;
+            return owner;
         }
 
         public boolean isSticky() {
-            return this.sticky;
+            return sticky;
         }
 
         public boolean isOfficial() {
-            return this.official;
+            return official;
         }
 
         @Override
@@ -654,15 +653,15 @@ public class Board {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
 
-            dest.writeLong(this.threadId);
-            dest.writeLong(this.date);
+            dest.writeLong(threadId);
+            dest.writeLong(date);
 
-            dest.writeString(this.title);
+            dest.writeString(title);
 
-            dest.writeParcelable(this.owner, flags);
+            dest.writeParcelable(owner, flags);
 
-            dest.writeInt(this.sticky ? 1 : 0);
-            dest.writeInt(this.official ? 1 : 0);
+            dest.writeInt(sticky ? 1 : 0);
+            dest.writeInt(official ? 1 : 0);
 
         }
 
@@ -680,7 +679,7 @@ public class Board {
 
         @Override
         public String toString() {
-            return this.owner + ":" + this.title;
+            return owner + ":" + title;
         }
 
     }

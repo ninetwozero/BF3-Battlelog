@@ -27,12 +27,20 @@ public class WeaponVehicleListData {
         title = t;
         slug = s;
         image = i;
-        
+
     }
 
     // Getters
-    public String getTitle() { return title; }
-    public String getSlug() { return slug; }
-    public String getImage() { return image; }
-    
+    public String getTitle() {
+        return title;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
 }

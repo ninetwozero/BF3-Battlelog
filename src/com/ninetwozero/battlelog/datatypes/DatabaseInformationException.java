@@ -3,6 +3,7 @@ package com.ninetwozero.battlelog.datatypes;
 
 import com.ninetwozero.battlelog.R;
 
+
 public class DatabaseInformationException extends Exception {
 
     private static final long serialVersionUID = -4284315651483396603L;

@@ -23,7 +23,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Main;
+import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
@@ -78,7 +78,7 @@ public class AsyncSessionRenew extends AsyncTask<PostData, Integer, Boolean> {
         try {
 
             // Let's try
-            profile = WebsiteHandler.doLogin(context, arg0, true);
+            profile = WebsiteHandler.doLogin(context, arg0, true).getProfileData();
 
             // Did it go ok?
             return (profile != null);
@@ -109,7 +109,7 @@ public class AsyncSessionRenew extends AsyncTask<PostData, Integer, Boolean> {
 
             Toast.makeText(context, R.string.info_session_renew_fail,
                     Toast.LENGTH_SHORT).show();
-            context.startActivity(new Intent(context, Main.class));
+            context.startActivity(new Intent(context, MainActivity.class));
             ((Activity) context).finish();
 
         }

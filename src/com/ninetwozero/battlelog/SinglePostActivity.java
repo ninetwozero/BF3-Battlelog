@@ -52,7 +52,7 @@ import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class SinglePostView extends ListActivity {
+public class SinglePostActivity extends ListActivity {
 
     // Attributes
     private Intent intent;
@@ -187,7 +187,7 @@ public class SinglePostView extends ListActivity {
 
         } else if (v.getId() == R.id.image_avatar) {
 
-            startActivity(new Intent(this, ProfileView.class).putExtra(
+            startActivity(new Intent(this, ProfileActivity.class).putExtra(
                     "profile", (ProfileData) v.getTag()));
 
         }

@@ -55,7 +55,7 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class UnlockView extends FragmentActivity implements DefaultFragmentActivity {
+public class UnlockActivity extends FragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
     private final Context CONTEXT = this;
@@ -173,30 +173,30 @@ public class UnlockView extends FragmentActivity implements DefaultFragmentActiv
         }
         builder.setSingleChoiceItems(
 
-            listNames, selectedPosition, new DialogInterface.OnClickListener() {
+                listNames, selectedPosition, new DialogInterface.OnClickListener() {
 
-                public void onClick(DialogInterface dialog, int item) {
+                    public void onClick(DialogInterface dialog, int item) {
 
-                    if (persona[item].getId() != selectedPersona) {
+                        if (persona[item].getId() != selectedPersona) {
 
-                        // Store selected position
-                        selectedPosition = item;
-                        
-                        // Update it
-                        selectedPersona = profileData.getPersona(selectedPosition).getId();
+                            // Store selected position
+                            selectedPosition = item;
 
-                        // Load the new!
-                        setupList(unlocks.get(selectedPersona), viewPager.getCurrentItem());
+                            // Update it
+                            selectedPersona = profileData.getPersona(selectedPosition).getId();
+
+                            // Load the new!
+                            setupList(unlocks.get(selectedPersona), viewPager.getCurrentItem());
+
+                        }
+
+                        dialog.dismiss();
 
                     }
 
-                    dialog.dismiss();
-
                 }
 
-            }
-
-            );
+                );
 
         // CREATE
         return builder.create();

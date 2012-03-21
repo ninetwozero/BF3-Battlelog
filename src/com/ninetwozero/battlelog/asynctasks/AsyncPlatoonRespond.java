@@ -19,7 +19,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.PlatoonView;
+import com.ninetwozero.battlelog.PlatoonActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
@@ -70,7 +70,7 @@ public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
         Toast.makeText(context, R.string.info_platoon_req_ok,
                 Toast.LENGTH_SHORT).show();
         if (context != null) {
-            ((PlatoonView) context).reload();
+            ((PlatoonActivity) context).reload();
         }
         return;
 

@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -73,7 +72,7 @@ public class Backup_BoardView extends ListActivity {
         // Did it get passed on?
         if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
 
-            ArrayList<ShareableCookie> shareableCookies = icicle
+            List<ShareableCookie> shareableCookies = icicle
                     .getParcelableArrayList(Constants.SUPER_COOKIES);
             RequestHandler.setCookies(shareableCookies);
 
@@ -164,7 +163,7 @@ public class Backup_BoardView extends ListActivity {
 
         } else if (item.getItemId() == R.id.option_search) {
 
-            startActivity(new Intent(this, ForumSearchView.class));
+            startActivity(new Intent(this, ForumSearchActivity.class));
 
         }
 
@@ -326,7 +325,7 @@ public class Backup_BoardView extends ListActivity {
         // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_SEARCH) {
 
-            startActivity(new Intent(this, ForumSearchView.class));
+            startActivity(new Intent(this, ForumSearchActivity.class));
 
         }
         return super.onKeyDown(keyCode, event);
