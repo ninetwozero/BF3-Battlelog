@@ -1,9 +1,12 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
 import java.util.ArrayList;
 import java.util.List;
+
+import android.util.Log;
+
+import com.ninetwozero.battlelog.misc.Constants;
 
 public class SessionKeeperPackage {
 
@@ -27,6 +30,7 @@ public class SessionKeeperPackage {
     }
 
     public ArrayList<PlatoonData> getPlatoons() {
+        Log.d(Constants.DEBUG_TAG, "platoons => " + platoons);
         return (ArrayList<PlatoonData>) platoons;
     }
 

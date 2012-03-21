@@ -29,6 +29,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -117,8 +118,8 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         textPlatoon.setSelected(true);
 
         // Setup the "platoon box"
-        setupPlatoonBox();
-
+        setupPlatoonBox();       
+        
         // Set up the intents
         MENU_INTENTS = new HashMap<Integer, Intent>();
         MENU_INTENTS.put(R.id.button_new, new Intent(context, PlatoonCreateActivity.class));

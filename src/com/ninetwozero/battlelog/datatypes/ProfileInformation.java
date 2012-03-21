@@ -17,8 +17,10 @@ package com.ninetwozero.battlelog.datatypes;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ProfileInformation {
@@ -158,6 +160,13 @@ public class ProfileInformation {
 
     public void generate() {
 
+        //Reset
+        personaIdString = "";
+        personaString = "";
+        personaPlatformString = "";
+        platoonIdString = "";
+        
+        //Iterate
         for (PersonaData p : persona) {
 
             personaIdString += p.getId() + ":";
@@ -166,6 +175,7 @@ public class ProfileInformation {
 
         }
 
+        //Iterate
         for (PlatoonData p : platoons) {
 
             platoonIdString += p.getId() + ":";
@@ -176,6 +186,10 @@ public class ProfileInformation {
 
     public final String[] toStringArray() {
 
+        //Do we need to generate?
+        if(personaIdString == null ) { generate(); }
+        
+        //Return it!
         return new String[] {
 
                 age + "",
@@ -189,9 +203,13 @@ public class ProfileInformation {
                 (location == null) ? "" : location,
                 (statusMessage == null) ? "" : statusMessage,
                 (currentServer == null) ? "" : currentServer,
-                personaIdString, personaString, personaPlatformString,
-                allowFriendRequests ? "1" : "0", online ? "1" : "0",
-                playing ? "1" : "0", friendStatus ? "1" : "0",
+                personaIdString, 
+                personaString, 
+                personaPlatformString,
+                allowFriendRequests ? "1" : "0", 
+                        online ? "1" : "0",
+                playing ? "1" : "0", 
+                        friendStatus ? "1" : "0",
                 platoonIdString
 
         };

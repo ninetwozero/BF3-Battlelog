@@ -21,9 +21,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +46,7 @@ import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.CacheHandler;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -51,7 +55,8 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
     // Attributes
     private Context context;
     private LayoutInflater layoutInflater;
-
+    private SharedPreferences sharedPreferences;
+    
     // Elements
     private RelativeLayout wrapPersona;
     private ProgressBar progressBar;
@@ -60,7 +65,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
     private ProfileData profileData;
     private HashMap<Long, PersonaStats> personaStats;
     private long[] personaId;
-    private String[] personaNames;
+    private String[] personaName;
     private long selectedPersona;
     private int selectedPosition;
     private boolean comparing;
@@ -73,6 +78,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         // Set our attributes
         context = getActivity();
         layoutInflater = inflater;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_profile_stats,
@@ -100,9 +106,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                     @Override
                     public void onClick(View sv) {
 
-                        generateDialogPersonaList(context,
-                                personaId,
-                                personaNames).show();
+                        generateDialogPersonaList().show();
 
                     }
 
@@ -133,7 +137,6 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                 .getRankId() + "");
 
         // Progress
-
         progressBar.setMax((int) pd.getPointsNeededToLvlUp());
         progressBar.setProgress((int) pd.getPointsProgressLvl());
         ((TextView) view.findViewById(R.id.string_progress_curr)).setText(pd
@@ -214,8 +217,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
     }
 
-    public Dialog generateDialogPersonaList(final Context context,
-            final long[] personaId, final String[] persona) {
+    public Dialog generateDialogPersonaList() {
 
         // Attributes
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -223,9 +225,27 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         // Set the title and the view
         builder.setTitle(R.string.info_dialog_soldierselect);
 
+        // Do we have items to show?
+        if (personaId == null) {
+
+            // Init
+            personaId = new long[profileData.getNumPersonas()];
+            personaName = new String[profileData.getNumPersonas()];
+
+            // Iterate
+            for (int count = 0, max = personaId.length; count < max; count++) {
+
+                personaId[count] = profileData.getPersona(count).getId();
+                personaName[count] = profileData.getPersona(count).getName();
+
+            }
+
+        }
+
+        // Set it up
         builder.setSingleChoiceItems(
 
-                persona, -1, new DialogInterface.OnClickListener() {
+                personaName, -1, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int item) {
 
@@ -234,12 +254,14 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                             // Update it
                             selectedPersona = personaId[item];
 
-                            // Load the new!
-                            showPersona(personaStats.get(selectedPersona), true);
-
                             // Store selectedPersonaPos
                             selectedPosition = item;
 
+                            // Save it
+                            SharedPreferences.Editor spEdit = sharedPreferences.edit();
+                            spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
+                            spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);
+                            spEdit.commit();
                         }
 
                         dialog.dismiss();
@@ -273,11 +295,11 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
             try {
 
                 // Get...
-                if (profileData != null) {
+                if (profileData != null && profileData.getNumPersonas() > 0) {
 
                     personaStats = CacheHandler.Persona.select(context,
                             profileData.getPersonaArray());
-                    selectedPersona = profileData.getPersona(0).getId();
+                    selectedPersona = profileData.getPersona(selectedPosition).getId();
 
                 } else {
 
@@ -335,14 +357,19 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         protected Boolean doInBackground(Void... arg0) {
 
             try {
-                // Set the selected persona?
-                selectedPersona = (selectedPersona == 0) ? profileData
-                        .getPersona(0).getId() : selectedPersona;
 
-                // Grab the stats
-                personaStats = WebsiteHandler.getStatsForUser(context,
-                        profileData);
+                //Do we have any personas?
+                if( profileData.getNumPersonas() > 0 ) {
+                    
+                    // Set the selected persona?
+                    selectedPersona = (selectedPersona == 0) ? profileData
+                            .getPersona(0).getId() : selectedPersona;
+    
+                    // Grab the stats
+                    personaStats = WebsiteHandler.getStatsForUser(context,
+                            profileData);
 
+                }
                 // ...validate!
                 return (personaStats != null && personaStats.size() > 0);
 
@@ -358,6 +385,8 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         @Override
         protected void onPostExecute(Boolean result) {
 
+            Log.d(Constants.DEBUG_TAG, "personaStats (refresh) => " + personaStats);
+            
             // Fail?
             if (!result) {
 
@@ -394,6 +423,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
     public void setProfileData(ProfileData p) {
 
+        Log.d(Constants.DEBUG_TAG, "profileData (stats) => " + profileData);
         profileData = p;
 
     }

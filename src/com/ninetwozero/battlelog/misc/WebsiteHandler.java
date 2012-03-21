@@ -277,12 +277,6 @@ public class WebsiteHandler {
                         "Setting the service to update every "
                                 + serviceInterval / 60000 + " minutes");
 
-                Log.d(Constants.DEBUG_TAG, "# of platoons => " + platoons.size());
-                for (PlatoonData p : platoons) {
-
-                    Log.d(Constants.DEBUG_TAG, "p => " + p.getName() + ", " + p.getImage());
-
-                }
                 // Return it!!
                 return new SessionKeeperPackage(profile, platoons);
 
@@ -5640,10 +5634,10 @@ public class WebsiteHandler {
                                 new GeneralSearchResult(
 
                                         new ProfileData(
-                                                Long.parseLong(tempObj.getString("ownerId")),
+                                                Long.parseLong(tempObj.getString("userId")),
                                                 tempObj.getString("username"),
                                                 new PersonaData[] {},
-                                                tempObj.getString("gravatarMd5")
+                                                tempObj.optString("gravatarMd5")
 
                                         )
 

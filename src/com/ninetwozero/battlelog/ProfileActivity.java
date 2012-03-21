@@ -29,6 +29,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -137,6 +138,7 @@ public class ProfileActivity extends FragmentActivity implements DefaultFragment
                     FeedFragment.class.getName()));
 
             // Add the profileData
+            Log.d(Constants.DEBUG_TAG, "profileData (activity-level) => " + profileData);
             fragmentOverview.setProfileData(profileData);
             fragmentStats.setProfileData(profileData);
 
