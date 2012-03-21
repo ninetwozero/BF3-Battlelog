@@ -64,7 +64,7 @@
  			android:gravity="center"
 	    />
 	    <Button
-	        style="@style/RegularButton"
+	        style="@style/MenuButton"
 	        android:id="@+id/button_create"
 	        android:text="Create platoon"
 	        android:layout_marginTop="5dp"

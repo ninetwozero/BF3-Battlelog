@@ -21,6 +21,7 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,6 +42,7 @@ import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
 import com.ninetwozero.battlelog.datatypes.PlatoonStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonStatsItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonTopStatsItem;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
@@ -89,6 +91,10 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
 
         // Get the activity
         Activity activity = getActivity();
+
+        Log.d(Constants.DEBUG_TAG, "pi => " + pi);
+        Log.d(Constants.DEBUG_TAG, "activity => " + activity);
+
         if (activity == null) {
             return;
         }
@@ -358,6 +364,8 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
     }
 
     public void reload() {
+
+        showStats(platoonInformation);
 
     }
 
