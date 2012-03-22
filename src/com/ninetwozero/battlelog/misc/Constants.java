@@ -363,6 +363,7 @@ public final class Constants {
     public static final String SP_BL_LANG = "app_locale";
     public static final String SP_BL_FULLSCREEN = "fullscreen_mode";
     public static final String SP_BL_LOCALE = "battlelog_locale";
+    public static final String SP_BL_LOCALE_POSITION = "battlelog_locale_pos";
     public static final String SP_BL_COOKIE_NAME = "battlelog_cookie_name";
     public static final String SP_BL_COOKIE_VALUE = "battlelog_cookie_value";
     public static final String SP_BL_PLATOON_ID = "battlelog_platoon_id";

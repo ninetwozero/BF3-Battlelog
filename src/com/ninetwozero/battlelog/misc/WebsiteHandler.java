@@ -5293,7 +5293,7 @@ public class WebsiteHandler {
                                         .getInt("numberOfOfficialPosts"), currObject
                                         .getInt("numberOfPosts"),
                                 currObject.getString("title"), new ProfileData(
-                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        Long.parseLong(ownerObject.getString("userId")),
                                         ownerObject.getString("username"),
                                         new PersonaData[] {},
                                         ownerObject.getString("gravatarMd5")
@@ -5376,7 +5376,7 @@ public class WebsiteHandler {
                                         .parseLong(currObject.getString("creationDate")), Long
                                         .parseLong(currObject.getString("threadId")),
                                 new ProfileData(
-                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        Long.parseLong(ownerObject.getString("userId")),
                                         ownerObject.getString("username"),
                                         new PersonaData[] {},
                                         ownerObject.getString("gravatarMd5")
@@ -5981,7 +5981,7 @@ public class WebsiteHandler {
                                         .getInt("numberOfOfficialPosts"), currObject
                                         .getInt("numberOfPosts"),
                                 currObject.getString("title"), new ProfileData(
-                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        Long.parseLong(ownerObject.getString("userId")),
                                         ownerObject.getString("username"),
                                         new PersonaData[] {},
                                         ownerObject.getString("gravatarMd5")
@@ -6026,7 +6026,7 @@ public class WebsiteHandler {
                                         .getInt("numberOfOfficialPosts"), currObject
                                         .getInt("numberOfPosts"),
                                 currObject.getString("title"), new ProfileData(
-                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        Long.parseLong(ownerObject.getString("userId")),
                                         ownerObject.getString("username"),
                                         new PersonaData[] {},
                                         ownerObject.getString("gravatarMd5")
@@ -6096,7 +6096,7 @@ public class WebsiteHandler {
                                         .parseLong(currObject.getString("creationDate")), Long
                                         .parseLong(currObject.getString("threadId")),
                                 new ProfileData(
-                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        Long.parseLong(ownerObject.getString("userId")),
                                         ownerObject.getString("username"),
                                         new PersonaData[] {},
                                         ownerObject.getString("gravatarMd5")

@@ -1357,6 +1357,10 @@ public class DataBank {
         return EXPANSION.containsKey(key) ? EXPANSION.get(key) : key;
     }
 
+    public static String getLanguage(int p) {
+        return LANGUAGES[p];
+    }
+
     public static String[] getLanguages() {
         return LANGUAGES;
     }

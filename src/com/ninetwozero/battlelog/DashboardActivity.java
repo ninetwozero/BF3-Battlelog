@@ -58,6 +58,7 @@ import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
+import com.ninetwozero.battlelog.fragments.MenuForumFragment;
 import com.ninetwozero.battlelog.fragments.MenuFragment;
 import com.ninetwozero.battlelog.fragments.MenuPlatoonFragment;
 import com.ninetwozero.battlelog.fragments.MenuProfileFragment;
@@ -99,6 +100,7 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
     private MenuFragment fragmentMenu;
     private MenuProfileFragment fragmentMenuProfile;
     private MenuPlatoonFragment fragmentMenuPlatoon;
+    private MenuForumFragment fragmentMenuForum;
     private FeedFragment fragmentFeed;
     private ViewPager viewPager;
 
@@ -198,6 +200,9 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
             listFragments.add(fragmentMenuPlatoon = (MenuPlatoonFragment) Fragment.instantiate(
                     this,
                     MenuPlatoonFragment.class.getName()));
+            listFragments.add(fragmentMenuForum = (MenuForumFragment) Fragment.instantiate(
+                    this,
+                    MenuForumFragment.class.getName()));
             listFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this,
                     FeedFragment.class.getName()));
 
@@ -217,7 +222,7 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
                     fragmentManager,
                     new String[] {
-                            "NEWS", "PROFILE", "PLATOON", "FEED"
+                            "NEWS", "PROFILE", "PLATOON", "FORUM", "FEED"
                     },
                     listFragments,
                     viewPager,
