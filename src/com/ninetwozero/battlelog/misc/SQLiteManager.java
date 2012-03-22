@@ -456,7 +456,7 @@ public class SQLiteManager {
 
         // Let's bind the parameters
         for (int j = 1; j <= countValues; j++) {
-            //Log.d(Constants.DEBUG_TAG, fields[j-1] + " =>" + values[j-1]);
+            // Log.d(Constants.DEBUG_TAG, fields[j-1] + " =>" + values[j-1]);
             STATEMENT.bindString(j, values[j - 1]);
         }
 

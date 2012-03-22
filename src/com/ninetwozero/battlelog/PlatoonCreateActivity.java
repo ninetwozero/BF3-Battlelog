@@ -62,9 +62,9 @@ public class PlatoonCreateActivity extends Activity {
 
         // Init the fields
         initActivity();
-        
+
     }
-    
+
     public void initActivity() {
 
         textName = (EditText) findViewById(R.id.text_name);

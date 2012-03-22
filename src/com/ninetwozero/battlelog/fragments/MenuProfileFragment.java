@@ -183,7 +183,8 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
             for (int count = 0, max = persona.length; count < max; count++) {
 
                 personaId[count] = persona[count].getId();
-                personaName[count] = persona[count].getName();
+                personaName[count] = persona[count].getName() + "["
+                        + DataBank.resolvePlatformId(persona[count].getPlatformId()) + "]";
 
             }
 

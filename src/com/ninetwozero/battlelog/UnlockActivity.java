@@ -36,6 +36,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,16 +44,15 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.fragments.UnlockFragment;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class UnlockActivity extends FragmentActivity implements DefaultFragmentActivity {
@@ -65,7 +65,9 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
     private HashMap<Long, UnlockDataWrapper> unlocks;
     private long selectedPersona;
     private int selectedPosition;
-
+    private long[] personaId;
+    private String[] personaName;
+    
     // Fragment related
     private SwipeyTabs tabs;
     private SwipeyTabsPagerAdapter pagerAdapter;
@@ -121,9 +123,17 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
         // Init to winit
         unlocks = new HashMap<Long, UnlockDataWrapper>();
 
-        // Set the selected persona
-        selectedPersona = profileData.getPersona(0).getId();
+        //Let's try something out
+        if( profileData.getId() == SessionKeeper.getProfileData().getId() ) {
 
+            selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
+            selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
+            
+        } else {
+            
+            selectedPersona = profileData.getPersona(0).getId();
+            
+        }
     }
 
     @Override
@@ -156,37 +166,56 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
 
     }
 
-    public Dialog generateDialogPersonaList(final Context context, final PersonaData[] persona) {
+    public Dialog generateDialogPersonaList() {
 
         // Attributes
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         // Set the title and the view
         builder.setTitle(R.string.info_dialog_soldierselect);
-        String[] listNames = new String[persona.length];
 
-        for (int i = 0, max = persona.length; i < max; i++) {
+        // Do we have items to show?
+        if (personaId == null) {
 
-            listNames[i] = persona[i].getName() + " "
-                    + DataBank.resolvePlatformId(persona[i].getPlatformId());
+            // Init
+            personaId = new long[profileData.getNumPersonas()];
+            personaName = new String[profileData.getNumPersonas()];
+
+            // Iterate
+            for (int count = 0, max = personaId.length; count < max; count++) {
+
+                personaId[count] = profileData.getPersona(count).getId();
+                personaName[count] = profileData.getPersona(count).getName();
+
+            }
 
         }
+
+        // Set it up
         builder.setSingleChoiceItems(
 
-                listNames, selectedPosition, new DialogInterface.OnClickListener() {
+                personaName, -1, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int item) {
 
-                        if (persona[item].getId() != selectedPersona) {
-
-                            // Store selected position
-                            selectedPosition = item;
+                        if (personaId[item] != selectedPersona) {
 
                             // Update it
-                            selectedPersona = profileData.getPersona(selectedPosition).getId();
+                            selectedPersona = personaId[item];
+
+                            // Store selectedPersonaPos
+                            selectedPosition = item;
 
                             // Load the new!
                             setupList(unlocks.get(selectedPersona), viewPager.getCurrentItem());
+                            
+                            // Save it
+                            if( profileData.getId() == SessionKeeper.getProfileData().getId() ) {
+                                SharedPreferences.Editor spEdit = sharedPreferences.edit();
+                                spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
+                                spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);
+                                spEdit.commit();
+                            }
 
                         }
 
@@ -268,8 +297,8 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
 
         public AsyncGetDataSelf(Context c) {
 
-            this.context = c;
-            this.progressDialog = null;
+            context = c;
+            progressDialog = null;
 
         }
 
@@ -279,12 +308,12 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
             // Let's see
             if (unlocks == null) {
 
-                this.progressDialog = new ProgressDialog(this.context);
-                this.progressDialog.setTitle(context
+                progressDialog = new ProgressDialog(context);
+                progressDialog.setTitle(context
                         .getString(R.string.general_wait));
-                this.progressDialog
+                progressDialog
                         .setMessage(getString(R.string.general_downloading));
-                this.progressDialog.show();
+                progressDialog.show();
 
             }
 
@@ -330,11 +359,11 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
             // Fail?
             if (!result) {
 
-                if (this.progressDialog != null)
-                    this.progressDialog.dismiss();
-                Toast.makeText(this.context, R.string.general_no_data,
+                if (progressDialog != null)
+                    progressDialog.dismiss();
+                Toast.makeText(context, R.string.general_no_data,
                         Toast.LENGTH_SHORT).show();
-                ((Activity) this.context).finish();
+                ((Activity) context).finish();
                 return;
 
             }
@@ -350,8 +379,8 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
             }
 
             // Go go go
-            if (this.progressDialog != null)
-                this.progressDialog.dismiss();
+            if (progressDialog != null)
+                progressDialog.dismiss();
             return;
         }
 
@@ -377,15 +406,11 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
         // Let's act!
         if (item.getItemId() == R.id.option_reload) {
 
-            this.reload();
+            reload();
 
         } else if (item.getItemId() == R.id.option_change) {
 
-            generateDialogPersonaList(
-
-                    this, profileData.getPersonaArray()
-
-            ).show();
+            generateDialogPersonaList().show();
 
         } else if (item.getItemId() == R.id.option_back) {
 

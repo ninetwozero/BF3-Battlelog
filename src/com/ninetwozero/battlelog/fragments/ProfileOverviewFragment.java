@@ -366,13 +366,13 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
             try {
 
-                //Let's try something
-                if( profileData.getNumPersonas() == 0 ) {
-                    
+                // Let's try something
+                if (profileData.getNumPersonas() == 0) {
+
                     profileData = WebsiteHandler.getPersonaIdFromProfile(profileData.getId());
-                    
+
                 }
-                
+
                 // Let's get the personas!
                 profileInformation = WebsiteHandler
                         .getProfileInformationForUser(
@@ -385,7 +385,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                 // ...and then send it to the stats
                 sendToStats(profileData);
-                
+
                 return (profileInformation != null);
 
             } catch (WebsiteHandlerException ex) {

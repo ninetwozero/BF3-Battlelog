@@ -28,6 +28,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,14 +43,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.datatypes.AssignmentData;
-import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AssignmentActivity extends Activity {
@@ -61,6 +61,8 @@ public class AssignmentActivity extends Activity {
     private HashMap<Long, List<AssignmentData>> assignments;
     private long selectedPersona;
     private int selectedPosition;
+    private long[] personaId;
+    private String[] personaName;
 
     // Elements
     private TableLayout tableAssignments;
@@ -74,17 +76,10 @@ public class AssignmentActivity extends Activity {
 
         // Set sharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Did it get passed on?
-        if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
-
-            List<ShareableCookie> shareableCookies = icicle
-                    .getParcelableArrayList(Constants.SUPER_COOKIES);
-            RequestHandler.setCookies(shareableCookies);
-
-        }
+        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Setup the locale
+        PublicUtils.setupSession(this, sharedPreferences);
         PublicUtils.setupLocale(this, sharedPreferences);
 
         // Set the content view
@@ -100,25 +95,33 @@ public class AssignmentActivity extends Activity {
 
             Toast.makeText(this, R.string.info_general_noprofile,
                     Toast.LENGTH_SHORT).show();
-            return;
-
-        }
-
-        // Is the profileData null?!
-        if (profileData == null || profileData.getId() == 0) {
             finish();
             return;
+
         }
+        
+        //Let's call initActivity()
+        initActivity();
 
-        // Get the pos
-        selectedPersona = getIntent().getLongExtra("selectedPersona",
-                profileData.getPersona(0).getId());
-        selectedPosition = 0;
-
+    }
+    
+    public void initActivity() {
+        
         // Prepare to tango
-        this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.textEmpty = (TextView) findViewById(R.id.text_empty);
-
+        textEmpty = (TextView) findViewById(R.id.text_empty);
+        
+        //Let's try something out
+        if( profileData.getId() == SessionKeeper.getProfileData().getId() ) {
+            
+            selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
+            selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
+            
+        } else {
+            
+            selectedPersona = profileData.getPersona(0).getId();
+            
+        }
+        
     }
 
     @Override
@@ -133,7 +136,7 @@ public class AssignmentActivity extends Activity {
         PublicUtils.setupSession(this, sharedPreferences);
 
         // Reload the layout
-        this.reload();
+        reload();
 
     }
 
@@ -217,24 +220,24 @@ public class AssignmentActivity extends Activity {
     public void reload() {
 
         // ASYNC!!!
-        new GetDataSelfAsync(this).execute(profileData);
+        new AsyncReload(this).execute(profileData);
 
     }
 
     public void doFinish() {
     }
 
-    private class GetDataSelfAsync extends
+    private class AsyncReload extends
             AsyncTask<ProfileData, Void, Boolean> {
 
         // Attributes
         Context context;
         ProgressDialog progressDialog;
 
-        public GetDataSelfAsync(Context c) {
+        public AsyncReload(Context c) {
 
-            this.context = c;
-            this.progressDialog = null;
+            context = c;
+            progressDialog = null;
 
         }
 
@@ -244,12 +247,12 @@ public class AssignmentActivity extends Activity {
             // Let's see if we got data already
             if (assignments == null) {
 
-                this.progressDialog = new ProgressDialog(this.context);
-                this.progressDialog.setTitle(context
+                progressDialog = new ProgressDialog(context);
+                progressDialog.setTitle(context
                         .getString(R.string.general_wait));
-                this.progressDialog
+                progressDialog
                         .setMessage(getString(R.string.general_downloading));
-                this.progressDialog.show();
+                progressDialog.show();
 
             }
 
@@ -278,21 +281,21 @@ public class AssignmentActivity extends Activity {
             // Fail?
             if (!result) {
 
-                if (this.progressDialog != null)
-                    this.progressDialog.dismiss();
-                Toast.makeText(this.context, R.string.general_no_data,
+                if (progressDialog != null)
+                    progressDialog.dismiss();
+                Toast.makeText(context, R.string.general_no_data,
                         Toast.LENGTH_SHORT).show();
-                ((Activity) this.context).finish();
+                ((Activity) context).finish();
                 return;
 
             }
-
+            
             // Do actual stuff
             setupList(assignments.get(selectedPersona));
 
             // Go go go
-            if (this.progressDialog != null)
-                this.progressDialog.dismiss();
+            if (progressDialog != null)
+                progressDialog.dismiss();
             return;
         }
 
@@ -313,13 +316,11 @@ public class AssignmentActivity extends Activity {
         // Let's act!
         if (item.getItemId() == R.id.option_reload) {
 
-            this.reload();
+            reload();
 
         } else if (item.getItemId() == R.id.option_change) {
 
-            generateDialogPersonaList(
-
-                    this, profileData.getPersonaArray()).show();
+            generateDialogPersonaList().show();
 
         } else if (item.getItemId() == R.id.option_back) {
 
@@ -427,39 +428,57 @@ public class AssignmentActivity extends Activity {
 
     }
 
-    public Dialog generateDialogPersonaList(final Context context,
-            final PersonaData[] persona) {
+    public Dialog generateDialogPersonaList() {
 
         // Attributes
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         // Set the title and the view
         builder.setTitle(R.string.info_dialog_soldierselect);
-        String[] listNames = new String[persona.length];
 
-        for (int i = 0, max = persona.length; i < max; i++) {
+        // Do we have items to show?
+        if (personaId == null) {
 
-            listNames[i] = persona[i].getName() + " "
-                    + DataBank.resolvePlatformId(persona[i].getPlatformId());
+            // Init
+            personaId = new long[profileData.getNumPersonas()];
+            personaName = new String[profileData.getNumPersonas()];
+
+            // Iterate
+            for (int count = 0, max = personaId.length; count < max; count++) {
+
+                personaId[count] = profileData.getPersona(count).getId();
+                personaName[count] = profileData.getPersona(count).getName();
+
+            }
 
         }
+
+        // Set it up
         builder.setSingleChoiceItems(
 
-                listNames, selectedPosition, new DialogInterface.OnClickListener() {
+                personaName, -1, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int item) {
 
-                        if (persona[item].getId() != selectedPersona) {
+                        if (personaId[item] != selectedPersona) {
 
                             // Update it
-                            selectedPersona = profileData.getPersona(item).getId();
-
-                            // Update the layout
-                            setupList(assignments.get(selectedPersona));
+                            selectedPersona = personaId[item];
 
                             // Store selectedPersonaPos
                             selectedPosition = item;
 
+                            // Update the layout
+                            setupList(assignments.get(selectedPersona));
+                            
+                            // Save it
+                            if( profileData.getId() == SessionKeeper.getProfileData().getId() ) {
+                                SharedPreferences.Editor spEdit = sharedPreferences.edit();
+                                spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
+                                spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);
+                                spEdit.commit();
+                            }
+                            
                         }
 
                         dialog.dismiss();
@@ -474,5 +493,4 @@ public class AssignmentActivity extends Activity {
         return builder.create();
 
     }
-
 }

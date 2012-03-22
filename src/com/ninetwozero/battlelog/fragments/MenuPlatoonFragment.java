@@ -118,8 +118,8 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         textPlatoon.setSelected(true);
 
         // Setup the "platoon box"
-        setupPlatoonBox();       
-        
+        setupPlatoonBox();
+
         // Set up the intents
         MENU_INTENTS = new HashMap<Integer, Intent>();
         MENU_INTENTS.put(R.id.button_new, new Intent(context, PlatoonCreateActivity.class));

@@ -47,6 +47,7 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -56,7 +57,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
     private Context context;
     private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
-    
+
     // Elements
     private RelativeLayout wrapPersona;
     private ProgressBar progressBar;
@@ -97,6 +98,14 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         // Progressbar
         progressBar = (ProgressBar) view.findViewById(R.id.progress_level);
 
+        //Let's try something out
+        if( profileData.getId() == SessionKeeper.getProfileData().getId() ) {
+            
+            selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
+            selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
+            
+        }
+        
         // Click on the wrap
         wrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
         wrapPersona.setOnClickListener(
@@ -258,10 +267,13 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                             selectedPosition = item;
 
                             // Save it
-                            SharedPreferences.Editor spEdit = sharedPreferences.edit();
-                            spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
-                            spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);
-                            spEdit.commit();
+                            if( profileData.getId() == SessionKeeper.getProfileData().getId() ) {
+                                SharedPreferences.Editor spEdit = sharedPreferences.edit();
+                                spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
+                                spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);
+                                spEdit.commit();
+                            }
+
                         }
 
                         dialog.dismiss();
@@ -358,13 +370,13 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
             try {
 
-                //Do we have any personas?
-                if( profileData.getNumPersonas() > 0 ) {
-                    
+                // Do we have any personas?
+                if (profileData.getNumPersonas() > 0) {
+
                     // Set the selected persona?
                     selectedPersona = (selectedPersona == 0) ? profileData
                             .getPersona(0).getId() : selectedPersona;
-    
+
                     // Grab the stats
                     personaStats = WebsiteHandler.getStatsForUser(context,
                             profileData);
@@ -385,8 +397,6 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         @Override
         protected void onPostExecute(Boolean result) {
 
-            Log.d(Constants.DEBUG_TAG, "personaStats (refresh) => " + personaStats);
-            
             // Fail?
             if (!result) {
 
@@ -423,7 +433,6 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
     public void setProfileData(ProfileData p) {
 
-        Log.d(Constants.DEBUG_TAG, "profileData (stats) => " + profileData);
         profileData = p;
 
     }
