@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.datatypes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.ninetwozero.battlelog.R;
 
 public class ProfileData implements Parcelable {
 
@@ -50,7 +49,7 @@ public class ProfileData implements Parcelable {
         id = pf;
         username = un;
         persona = new PersonaData[] {
-            p
+                p
         };
         gravatarHash = im;
 
@@ -74,7 +73,7 @@ public class ProfileData implements Parcelable {
     public ProfileData(long pf, String un, PersonaData p, String im, boolean on, boolean pl) {
 
         this(pf, un, new PersonaData[] {
-            p
+                p
         }, im);
         isOnline = on;
         isPlaying = pl;

@@ -531,4 +531,7 @@
 	<string name="title_platoon_new">BF3 Battlelog - Creating a new platoon</string>
 	<string name="info_platoon_new_empty_name">You need to enter a name for the platoon.</string>
 	<string name="info_platoon_new_empty_tag">You need to enter a tag for the platoon.</string>
+	<string name="info_platoon_new_creating">Creating the platoon...</string>
+	<string name="info_platoon_new_true">The platoon has been created!</string>
+	<string name="info_platoon_new_false">The platoon could not be created.</string>
 </resources>

@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -67,7 +69,12 @@ public class PlatoonCreateActivity extends Activity {
         textName = (EditText) findViewById(R.id.text_name);
         textTag = (EditText) findViewById(R.id.text_tag);
         checkboxActive = (CheckedTextView) findViewById(R.id.checkbox_active);
-   
+        checkboxActive.setOnClickListener(new OnClickListener() {
+            public void onClick(View v)
+            {
+                ((CheckedTextView) v).toggle();
+            }
+        });
 
     }
 
@@ -109,7 +116,7 @@ public class PlatoonCreateActivity extends Activity {
             }
 
             // Actually fire off the AsyncTask to create the platoon
-            new AsyncCreate().execute(stringName, stringTag, stringActive,
+            new AsyncCreate(this).execute(stringName, stringTag, stringActive,
                     sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
 
         }
@@ -118,10 +125,59 @@ public class PlatoonCreateActivity extends Activity {
 
     private class AsyncCreate extends AsyncTask<String, Void, Boolean> {
 
+        // Attributes
+        private Context context;
+        private ProgressDialog progressDialog;
+
+        public AsyncCreate(Context c) {
+
+            context = c;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+            if (context != null) {
+
+                progressDialog = new ProgressDialog(context);
+                progressDialog.setTitle(R.string.general_wait);
+                progressDialog.setMessage(context.getString(R.string.info_platoon_new_creating));
+                progressDialog.show();
+
+            }
+
+        }
+
         @Override
         protected Boolean doInBackground(String... arg0) {
 
             return WebsiteHandler.createNewPlatoon(arg0[0], arg0[1], arg0[2], arg0[3]);
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+
+            if (context != null) {
+
+                // So... what's up?
+                if (result) {
+
+                    Toast.makeText(context, R.string.info_platoon_new_true, Toast.LENGTH_SHORT)
+                            .show();
+                    ((Activity) context).finish();
+
+                } else {
+
+                    Toast.makeText(context, R.string.info_platoon_new_false, Toast.LENGTH_SHORT)
+                            .show();
+
+                }
+
+                progressDialog.dismiss();
+
+            }
 
         }
 

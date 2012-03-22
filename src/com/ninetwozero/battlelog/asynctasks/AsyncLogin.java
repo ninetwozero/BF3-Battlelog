@@ -126,7 +126,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
                                     "myLocale", locale
 
-                            ).putExtra("myPlatoons", sessionKeeperPackage.getPlatoons())
+                            ).putExtra("myPlatoon", sessionKeeperPackage.getPlatoons())
 
                     );
 

@@ -237,16 +237,16 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     public void setupPlatoonBox() {
 
         // Let's see...
-        if (platoonData != null && textPlatoon != null) {
+        if (platoonData != null && platoonData.size() == 0 && textPlatoon != null) {
 
-            //Let's validate our digits
-            if( (platoonData.size()-1) < selectedPosition ) {
-                
-                selectedPosition = platoonData.size()-1;
+            // Let's validate our digits
+            if ((platoonData.size() - 1) < selectedPosition) {
+
+                selectedPosition = platoonData.size() - 1;
                 selectedPlatoon = platoonData.get(selectedPosition).getId();
-                
+
             }
-            
+
             textPlatoon.setText(platoonData.get(selectedPosition).getName() + "["
                     + platoonData.get(selectedPosition).getTag() + "]");
             imagePlatoon.setImageBitmap(BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
