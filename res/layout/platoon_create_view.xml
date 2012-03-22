@@ -34,7 +34,7 @@
 	    	android:layout_height="fill_parent"
 	    	android:singleLine="true"
 	    	android:maxLength="22"
-	    	android:hint="What would you like to call your platoon?"
+	    	android:hint="John Does"
 	        android:layout_marginTop="5dp"
 	        android:layout_marginBottom="5dp"
 	    />
@@ -49,7 +49,7 @@
 	    	android:layout_height="fill_parent"
 	    	android:singleLine="true"
 	    	android:maxLength="4"
-	    	android:hint="Enter four characters that represent your platoon"
+	    	android:hint="ABCD"
 	        android:layout_marginTop="5dp"
 	        android:layout_marginBottom="5dp"
 	    />
