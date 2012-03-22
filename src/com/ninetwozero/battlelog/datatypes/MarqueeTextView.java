@@ -18,7 +18,6 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.widget.TextView;
-import com.ninetwozero.battlelog.R;
 
 public class MarqueeTextView extends TextView {
 

@@ -33,8 +33,6 @@ import com.ninetwozero.battlelog.UnlockActivity;
 import com.ninetwozero.battlelog.adapters.UnlockListAdapter;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class UnlockFragment extends ListFragment implements DefaultFragment {
 
@@ -76,7 +74,7 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
     }
 
     public void initFragment(View v) {
-        
+
         // Setup the ListView
         listView = (ListView) v.findViewById(android.R.id.list);
         listView.setAdapter(new UnlockListAdapter(context, unlocks, layoutInflater));

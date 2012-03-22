@@ -28,7 +28,6 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -99,29 +98,29 @@ public class AssignmentActivity extends Activity {
             return;
 
         }
-        
-        //Let's call initActivity()
+
+        // Let's call initActivity()
         initActivity();
 
     }
-    
+
     public void initActivity() {
-        
+
         // Prepare to tango
         textEmpty = (TextView) findViewById(R.id.text_empty);
-        
-        //Let's try something out
-        if( profileData.getId() == SessionKeeper.getProfileData().getId() ) {
-            
+
+        // Let's try something out
+        if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
+
             selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
             selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
-            
+
         } else {
-            
+
             selectedPersona = profileData.getPersona(0).getId();
-            
+
         }
-        
+
     }
 
     @Override
@@ -289,7 +288,7 @@ public class AssignmentActivity extends Activity {
                 return;
 
             }
-            
+
             // Do actual stuff
             setupList(assignments.get(selectedPersona));
 
@@ -470,15 +469,15 @@ public class AssignmentActivity extends Activity {
 
                             // Update the layout
                             setupList(assignments.get(selectedPersona));
-                            
+
                             // Save it
-                            if( profileData.getId() == SessionKeeper.getProfileData().getId() ) {
+                            if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
                                 SharedPreferences.Editor spEdit = sharedPreferences.edit();
                                 spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
                                 spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);
                                 spEdit.commit();
                             }
-                            
+
                         }
 
                         dialog.dismiss();

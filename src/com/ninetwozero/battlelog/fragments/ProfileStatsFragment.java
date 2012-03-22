@@ -26,7 +26,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,7 +46,6 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -98,14 +96,14 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         // Progressbar
         progressBar = (ProgressBar) view.findViewById(R.id.progress_level);
 
-        //Let's try something out
-        if( profileData.getId() == SessionKeeper.getProfileData().getId() ) {
-            
+        // Let's try something out
+        if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
+
             selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
             selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
-            
+
         }
-        
+
         // Click on the wrap
         wrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
         wrapPersona.setOnClickListener(
@@ -267,7 +265,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                             selectedPosition = item;
 
                             // Save it
-                            if( profileData.getId() == SessionKeeper.getProfileData().getId() ) {
+                            if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
                                 SharedPreferences.Editor spEdit = sharedPreferences.edit();
                                 spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
                                 spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);

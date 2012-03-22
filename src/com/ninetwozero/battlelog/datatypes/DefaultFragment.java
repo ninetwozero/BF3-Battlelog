@@ -17,7 +17,6 @@ package com.ninetwozero.battlelog.datatypes;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import com.ninetwozero.battlelog.R;
 
 public interface DefaultFragment {
 

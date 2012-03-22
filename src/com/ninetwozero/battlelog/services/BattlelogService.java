@@ -21,7 +21,6 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctasks.AsyncServiceTask;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;

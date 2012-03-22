@@ -36,7 +36,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -67,7 +66,7 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
     private int selectedPosition;
     private long[] personaId;
     private String[] personaName;
-    
+
     // Fragment related
     private SwipeyTabs tabs;
     private SwipeyTabsPagerAdapter pagerAdapter;
@@ -123,16 +122,16 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
         // Init to winit
         unlocks = new HashMap<Long, UnlockDataWrapper>();
 
-        //Let's try something out
-        if( profileData.getId() == SessionKeeper.getProfileData().getId() ) {
+        // Let's try something out
+        if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
 
             selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
             selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
-            
+
         } else {
-            
+
             selectedPersona = profileData.getPersona(0).getId();
-            
+
         }
     }
 
@@ -208,9 +207,9 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
 
                             // Load the new!
                             setupList(unlocks.get(selectedPersona), viewPager.getCurrentItem());
-                            
+
                             // Save it
-                            if( profileData.getId() == SessionKeeper.getProfileData().getId() ) {
+                            if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
                                 SharedPreferences.Editor spEdit = sharedPreferences.edit();
                                 spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
                                 spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);

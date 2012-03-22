@@ -17,7 +17,6 @@ package com.ninetwozero.battlelog.datatypes;
 import android.content.Context;
 import android.util.Log;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 
