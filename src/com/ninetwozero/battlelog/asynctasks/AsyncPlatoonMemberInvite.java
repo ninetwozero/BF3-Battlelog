@@ -32,7 +32,7 @@ public class AsyncPlatoonMemberInvite extends AsyncTask<String, Void, Integer> {
     public AsyncPlatoonMemberInvite(Context c, long[] uId, long pId) {
 
         context = c;
-        userId = uId;
+        userId = uId.clone();
         platoonId = pId;
 
     }

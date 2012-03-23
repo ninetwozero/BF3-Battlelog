@@ -35,7 +35,7 @@ public class DashboardMenuAdapter extends BaseAdapter {
     public DashboardMenuAdapter(Context c, DashboardItem[] d, LayoutInflater l) {
 
         context = c;
-        items = d;
+        items = d.clone();
         layoutInflater = l;
 
     }

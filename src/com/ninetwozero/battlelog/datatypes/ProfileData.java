@@ -82,7 +82,7 @@ public class ProfileData implements Parcelable {
 
     public ProfileData(long pf, String un, PersonaData[] p, String im, boolean on, boolean pl) {
 
-        this(pf, un, p.clone(), im);
+        this(pf, un, p, im);
         isOnline = on;
         isPlaying = pl;
 
@@ -131,7 +131,7 @@ public class ProfileData implements Parcelable {
     // Setters
     public void setPersona(PersonaData[] p) {
 
-        persona = p;
+        persona = p.clone();
 
     }
 
