@@ -62,7 +62,7 @@ public class ProfileData implements Parcelable {
 
         id = pf;
         username = un;
-        persona = p;
+        persona = p.clone();
         gravatarHash = im;
 
         isOnline = false;
@@ -82,7 +82,7 @@ public class ProfileData implements Parcelable {
 
     public ProfileData(long pf, String un, PersonaData[] p, String im, boolean on, boolean pl) {
 
-        this(pf, un, p, im);
+        this(pf, un, p.clone(), im);
         isOnline = on;
         isPlaying = pl;
 
