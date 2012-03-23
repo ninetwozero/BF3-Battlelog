@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.ninetwozero.battlelog.datatypes.DatabaseInformationException;
 
@@ -25,9 +26,9 @@ public class SQLiteManager {
         @Override
         public void onCreate(SQLiteDatabase db) {
 
-            db.execSQL("CREATE TABLE "
+            db.execSQL("CREATE TABLE IF NOT EXISTS `"
                     + DatabaseStructure.PersonaStatistics.TABLE_NAME
-                    + " ("
+                    + "` ("
                     + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID
                     + " INTEGER PRIMARY KEY, "
                     + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_RANK
@@ -103,9 +104,9 @@ public class SQLiteManager {
                     + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_TOTAL
                     + " INTEGER" + ")");
 
-            db.execSQL("CREATE TABLE "
+            db.execSQL("CREATE TABLE IF NOT EXISTS `"
                     + DatabaseStructure.UserProfile.TABLE_NAME
-                    + " ("
+                    + "` ("
                     + DatabaseStructure.UserProfile.COLUMN_NAME_ID
                     + " INTEGER PRIMARY KEY, "
                     + DatabaseStructure.UserProfile.COLUMN_NAME_NUM_AGE
@@ -149,9 +150,9 @@ public class SQLiteManager {
 
             db.execSQL(
 
-                    "CREATE TABLE "
+                    "CREATE TABLE IF NOT EXISTS `"
                             + DatabaseStructure.PlatoonProfile.TABLE_NAME
-                            + " ("
+                            + "` ("
                             + DatabaseStructure.PlatoonProfile.COLUMN_NAME_ID
                             + " INTEGER PRIMARY KEY, "
                             + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID
@@ -180,14 +181,41 @@ public class SQLiteManager {
                             + " )"
 
                     );
+            
+                db.execSQL(
+
+                    "CREATE TABLE IF NOT EXISTS `"
+                            + DatabaseStructure.SavedThread.TABLE_NAME
+                            + "` ("
+                            + DatabaseStructure.SavedThread.COLUMN_NAME_ID
+                            + " INTEGER PRIMARY KEY, "
+                            + DatabaseStructure.SavedThread.COLUMN_NAME_NUM_ID
+                            + " INTEGER UNIQUE, "
+                            + DatabaseStructure.SavedThread.COLUMN_NAME_STRING_TITLE
+                            + " STRING, "
+                            + DatabaseStructure.SavedThread.COLUMN_NAME_NUM_DATE_LAST_POST
+                            + " INTEGER, "
+                            + DatabaseStructure.SavedThread.COLUMN_NAME_STRING_LAST_AUTHOR
+                            + " STRING, "
+                            + DatabaseStructure.SavedThread.COLUMN_NAME_NUM_LAST_AUTHOR_ID
+                            + " INTEGER, "
+                            + DatabaseStructure.SavedThread.COLUMN_NAME_NUM_LAST_PAGE_ID
+                            + " INTEGER, "
+                            + DatabaseStructure.SavedThread.COLUMN_NAME_NUM_DATE_READ
+                            + " INTEGER, "
+                            + DatabaseStructure.SavedThread.COLUMN_NAME_NUM_DATE_CHECKED
+                            + " INTEGER "
+                            + " )"
+
+                    );
 
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+            
             /* TODO: Handle DB UPDATEs */
-            if ((newVersion - 2) > oldVersion) {
+            if( oldVersion == 1 ) {
 
                 onCreate(db);
 
@@ -217,7 +245,7 @@ public class SQLiteManager {
     }
 
     private static final String DATABASE_NAME = "app.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private Context CONTEXT;
     private SQLiteDatabase DB;
     private SQLiteStatement STATEMENT;

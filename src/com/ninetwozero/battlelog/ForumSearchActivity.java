@@ -37,7 +37,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ForumSearchAdapter;
-import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.ForumSearchResult;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -55,7 +55,7 @@ public class ForumSearchActivity extends ListActivity {
     private Button buttonSearch;
 
     // Misc
-    private List<Board.SearchResult> threads;
+    private List<ForumSearchResult> threads;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -81,11 +81,11 @@ public class ForumSearchActivity extends ListActivity {
         fieldSearch = (EditText) findViewById(R.id.field_search);
 
         // Threads!
-        threads = new ArrayList<Board.SearchResult>();
+        threads = new ArrayList<ForumSearchResult>();
         setupList(threads);
     }
 
-    public void setupList(List<Board.SearchResult> results) {
+    public void setupList(List<ForumSearchResult> results) {
 
         // Do we have it?
         if (listView == null) {
@@ -251,7 +251,7 @@ public class ForumSearchActivity extends ListActivity {
 
                 ).putExtra(
 
-                        "threadTitle", ((Board.SearchResult) v.getTag()).getTitle()
+                        "threadTitle", ((ForumSearchResult) v.getTag()).getTitle()
 
                 )
 

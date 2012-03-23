@@ -14,6 +14,9 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
+import java.util.List;
+
+import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -30,14 +33,17 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.DashboardActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.*;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
+import com.ninetwozero.battlelog.datatypes.PostData;
+import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
+import com.ninetwozero.battlelog.datatypes.SessionKeeperPackage;
+import com.ninetwozero.battlelog.datatypes.ShareableCookie;
+import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 import com.ninetwozero.battlelog.services.BattlelogService;
-import net.sf.andhsli.hotspotlogin.SimpleCrypto;
-
-import java.util.List;
 
 public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 

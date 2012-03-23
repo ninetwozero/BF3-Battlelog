@@ -27,7 +27,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Backup_Dashboard;
+import com.ninetwozero.battlelog.DashboardActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.SessionKeeperPackage;
@@ -130,7 +130,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
                 battlelogNotification.when = System.currentTimeMillis();
 
                 // Create a new intent
-                Intent notificationIntent = new Intent(context, Backup_Dashboard.class)
+                Intent notificationIntent = new Intent(context, DashboardActivity.class)
                         .putExtra(
 
                                 "openCOMCenter", true

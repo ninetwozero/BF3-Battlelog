@@ -43,7 +43,8 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ThreadListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncCreateNewThread;
-import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.ForumData;
+import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -55,7 +56,7 @@ public class Backup_ForumView extends ListActivity {
     private final Context CONTEXT = this;
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
-    private Board.Forum currentForum;
+    private ForumData currentForum;
     private long forumId;
     private String forumTitle, locale;
     private int currentPage = 1;
@@ -294,7 +295,7 @@ public class Backup_ForumView extends ListActivity {
 
                 ).putExtra(
 
-                        "threadTitle", ((Board.ThreadData) v.getTag()).getTitle()
+                        "threadTitle", ((ForumThreadData) v.getTag()).getTitle()
 
                 )
 
@@ -457,7 +458,7 @@ public class Backup_ForumView extends ListActivity {
         private Context context;
         private long forumId;
         private int page;
-        private List<Board.ThreadData> threads;
+        private List<ForumThreadData> threads;
 
         // Constructs
         public AsyncLoadMore(Context c, long f) {

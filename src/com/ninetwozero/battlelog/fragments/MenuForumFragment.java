@@ -40,15 +40,12 @@ import android.widget.TextView;
 
 import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.ForumSearchActivity;
-import com.ninetwozero.battlelog.ProfileActivity;
-import com.ninetwozero.battlelog.ProfileSettingsActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
+import com.ninetwozero.battlelog.datatypes.ForumData;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
-import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class MenuForumFragment extends Fragment implements DefaultFragment {
 
@@ -64,7 +61,7 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
     private ImageView imageLanguage;
 
     // Let's store the position & persona
-    private List<Board.Forum> forums;
+    private List<ForumData> forums;
     private PersonaData[] persona;
     private String selectedLocale;
     private String selectedLanguage;
@@ -85,7 +82,7 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
         selectedLanguage = DataBank.getLanguage(selectedPosition);
         
         // Let's get that data
-        forums = new ArrayList<Board.Forum>();
+        forums = new ArrayList<ForumData>();
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_dashboard_forum,

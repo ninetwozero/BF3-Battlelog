@@ -29,9 +29,9 @@
     >
     	<ImageView
     	    android:id="@+id/image_language"    
-    		android:layout_width="48dp"
-    		android:layout_height="48dp"
-    		android:src="@drawable/bf3_us_recon"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:src="@drawable/locale_us"
   			android:layout_marginRight="5dp"
   			android:layout_centerVertical="true"
     	/>

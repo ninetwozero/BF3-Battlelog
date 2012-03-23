@@ -65,8 +65,9 @@ import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ThreadPostListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostInThread;
-import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
+import com.ninetwozero.battlelog.datatypes.ForumPostData;
+import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -78,7 +79,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     private Context context;
     private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
-    private Board.ThreadData threadData;
+    private ForumThreadData ForumThreadData;
 
     // Elements
     private ListView listView;
@@ -172,7 +173,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         }
 
         // Set it up
-        if (threadData == null) {
+        if (ForumThreadData == null) {
 
             new AsyncGetPosts(context).execute(threadId);
 
@@ -233,9 +234,9 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
             try {
 
-                threadData = WebsiteHandler.getPostsForThread(locale,
+                ForumThreadData = WebsiteHandler.getPostsForThread(locale,
                         arg0[0]);
-                return (threadData != null);
+                return (ForumThreadData != null);
 
             } catch (Exception ex) {
 
@@ -254,12 +255,12 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 if (context != null) {
 
                     // Let's set it up
-                    listAdapter.set(threadData.getPosts());
+                    listAdapter.set(ForumThreadData.getPosts());
 
                     // Update the title
-                    textTitle.setText(threadData.getTitle());
+                    textTitle.setText(ForumThreadData.getTitle());
 
-                    if (threadData.getNumPages() > 1) {
+                    if (ForumThreadData.getNumPages() > 1) {
 
                         wrapButtons.setVisibility(View.VISIBLE);
                         buttonJump
@@ -278,7 +279,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                     }
 
                     // Do we need to hide?
-                    if (threadData.isLocked()) {
+                    if (ForumThreadData.isLocked()) {
                         slidingDrawer.setVisibility(View.GONE);
                     } else {
                         slidingDrawer.setVisibility(View.VISIBLE);
@@ -331,7 +332,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         try {
 
             // Let's get the item
-            Board.PostData data = (Board.PostData) info.targetView.getTag();
+            ForumPostData data = (ForumPostData) info.targetView.getTag();
 
             // Divide & conquer
             if (item.getGroupId() == 0) {
@@ -559,7 +560,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         private Context context;
         private long threadId;
         private int page;
-        private List<Board.PostData> posts;
+        private List<ForumPostData> posts;
 
         // Constructs
         public AsyncLoadPage(Context c, long t) {
@@ -625,7 +626,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 } else {
                     buttonPrev.setEnabled(false);
                 }
-                if (page != threadData.getNumPages()) {
+                if (page != ForumThreadData.getNumPages()) {
                     buttonNext.setEnabled(true);
                 } else {
                     buttonNext.setEnabled(false);
@@ -716,9 +717,9 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         builder.setView(layout);
 
         // How many pages do we have?
-        if (pageArray == null || (pageArray.length != threadData.getNumPages())) {
+        if (pageArray == null || (pageArray.length != ForumThreadData.getNumPages())) {
 
-            pageArray = new Integer[threadData.getNumPages()];
+            pageArray = new Integer[ForumThreadData.getNumPages()];
             for (int i = 0, max = pageArray.length; i < max; i++) {
 
                 pageArray[i] = i;
@@ -736,7 +737,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         // Set the text
         textView.setText(getString(R.string.info_xml_enternumber).replace(
                 "{min}", "1")
-                .replace("{max}", threadData.getNumPages() + ""));
+                .replace("{max}", ForumThreadData.getNumPages() + ""));
 
         // Dialog options
         builder.setPositiveButton(
@@ -749,7 +750,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                         if (!pageString.equals("")) {
 
                             int page = Integer.parseInt(pageString);
-                            if (0 < page && page <= threadData.getNumPages()) {
+                            if (0 < page && page <= ForumThreadData.getNumPages()) {
 
                                 currentPage = page;
                                 new AsyncLoadPage(context, threadId)

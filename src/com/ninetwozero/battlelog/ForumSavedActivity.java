@@ -15,54 +15,38 @@
 package com.ninetwozero.battlelog;
 
 import java.util.List;
-import java.util.Vector;
 
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListView;
 
-import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.fragments.BoardFragment;
-import com.ninetwozero.battlelog.fragments.ForumFragment;
-import com.ninetwozero.battlelog.fragments.ForumThreadFragment;
+import com.ninetwozero.battlelog.datatypes.SavedForumThreadData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class ForumActivity extends FragmentActivity implements DefaultFragmentActivity {
+public class ForumSavedActivity extends ListActivity {
 
     // Attributes
     private final Context CONTEXT = this;
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
-    private ProfileData profileData;
-    private String locale;
 
-    // Fragment related
-    private SwipeyTabs tabs;
-    private SwipeyTabsPagerAdapter pagerAdapter;
-    private List<Fragment> listFragments;
-    private FragmentManager fragmentManager;
-    private ViewPager viewPager;
-    private BoardFragment fragmentBoard;
-    private ForumFragment fragmentForum;
-    private ForumThreadFragment fragmentForumThread;
+    // Elements
+    private ListView listView;
+
+    // Misc
+    private List<SavedForumThreadData> threads;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -79,17 +63,13 @@ public class ForumActivity extends FragmentActivity implements DefaultFragmentAc
 
         // Prepare to tango
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fragmentManager = getSupportFragmentManager();
 
         // Setup the trinity
         PublicUtils.setupLocale(this, sharedPreferences);
         PublicUtils.setupSession(this, sharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.viewpager_default);
-
-        // Let's setup the fragments too
-        setupFragments();
+        setContentView(R.layout.forum_saved_view);
 
         // Last but not least - init
         initActivity();
@@ -129,47 +109,6 @@ public class ForumActivity extends FragmentActivity implements DefaultFragmentAc
 
     }
 
-    public void setupFragments() {
-
-        // Do we need to setup the fragments?
-        if (listFragments == null) {
-
-            // Add them to the list
-            listFragments = new Vector<Fragment>();
-            listFragments.add(fragmentBoard = (BoardFragment) Fragment.instantiate(this,
-                    BoardFragment.class.getName()));
-            listFragments.add(fragmentForum = (ForumFragment) Fragment.instantiate(this,
-                    ForumFragment.class.getName()));
-            listFragments.add(fragmentForumThread = (ForumThreadFragment) Fragment.instantiate(
-                    this, ForumThreadFragment.class.getName()));
-
-            // Get the ViewPager
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
-            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
-
-            // Fill the PagerAdapter & set it to the viewpager
-            pagerAdapter = new SwipeyTabsPagerAdapter(
-
-                    fragmentManager,
-                    new String[] {
-                            "FORUMS", "THREADS", "POSTS"
-                    },
-                    listFragments,
-                    viewPager,
-                    layoutInflater
-                    );
-            viewPager.setAdapter(pagerAdapter);
-            tabs.setAdapter(pagerAdapter);
-
-            // Make sure the tabs follow
-            viewPager.setOnPageChangeListener(tabs);
-            viewPager.setOffscreenPageLimit(2);
-            viewPager.setCurrentItem(0);
-
-        }
-
-    }
-
     public void reload() {
 
         // ASYNC!!!
@@ -204,33 +143,11 @@ public class ForumActivity extends FragmentActivity implements DefaultFragmentAc
 
     }
 
-    public void openForum(Intent data) {
-
-        fragmentForum.openForum(data);
-        viewPager.setCurrentItem(1, true);
-
-    }
-
-    public void openThread(Intent data) {
-
-        fragmentForumThread.openThread(data);
-        viewPager.setCurrentItem(2, true);
-
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-            if (viewPager.getCurrentItem() > 0) {
-
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
-                return true;
-
-            }
-
         }
         return super.onKeyDown(keyCode, event);
     }

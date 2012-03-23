@@ -38,8 +38,9 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ThreadListAdapter;
-import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
+import com.ninetwozero.battlelog.datatypes.ForumData;
+import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -49,7 +50,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
     private Context context;
     private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
-    private Board.Forum forumData;
+    private ForumData forumData;
 
     // Elements
     private ListView listView;
@@ -186,7 +187,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
                         ).putExtra(
 
-                                "threadTitle", ((Board.ThreadData) v.getTag()).getTitle()
+                                "threadTitle", ((ForumThreadData) v.getTag()).getTitle()
 
                         )
 
@@ -273,7 +274,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
         private Context context;
         private long forumId;
         private int page;
-        private List<Board.ThreadData> threads;
+        private List<ForumThreadData> threads;
 
         // Constructs
         public AsyncLoadMore(Context c, long f) {

@@ -58,8 +58,9 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ThreadPostListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostInThread;
-import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
+import com.ninetwozero.battlelog.datatypes.ForumPostData;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -72,7 +73,7 @@ public class ForumThreadActivity extends ListActivity {
     private final Context CONTEXT = this;
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
-    private Board.ThreadData currentThread;
+    private ForumThreadData currentThread;
     private long threadId;
     private String threadTitle, locale;
     private int currentPage;
@@ -399,7 +400,7 @@ public class ForumThreadActivity extends ListActivity {
         try {
 
             // Let's get the item
-            Board.PostData data = (Board.PostData) info.targetView.getTag();
+            ForumPostData data = (ForumPostData) info.targetView.getTag();
 
             // Divide & conquer
             if (item.getGroupId() == 0) {
@@ -626,7 +627,7 @@ public class ForumThreadActivity extends ListActivity {
         private Context context;
         private long threadId;
         private int page;
-        private List<Board.PostData> posts;
+        private List<ForumPostData> posts;
 
         // Constructs
         public AsyncLoadPage(Context c, long t) {
