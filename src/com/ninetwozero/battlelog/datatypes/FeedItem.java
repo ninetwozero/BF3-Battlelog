@@ -53,7 +53,7 @@ public class FeedItem implements Parcelable {
         this.title = t;
         this.content = c;
         this.type = type;
-        this.profileData = pd;
+        this.profileData = pd.clone();
         this.liked = il;
         this.censored = cs;
         this.gravatarHash = im;

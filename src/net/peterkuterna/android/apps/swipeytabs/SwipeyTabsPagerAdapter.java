@@ -42,7 +42,7 @@ public class SwipeyTabsPagerAdapter extends FragmentPagerAdapter implements Swip
             ViewPager v, LayoutInflater l) {
         super(fm);
 
-        titles = t;
+        titles = t.clone();
         fragments = f;
         viewPager = v;
         layoutInflater = l;

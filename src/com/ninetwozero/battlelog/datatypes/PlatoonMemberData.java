@@ -32,7 +32,7 @@ public class PlatoonMemberData extends ProfileData implements Parcelable {
 
     public PlatoonMemberData(long pf, String un, PersonaData[] p, String im, int m) {
 
-        super(pf, un, p, im);
+        super(pf, un, p.clone(), im);
         membershipLevel = m;
 
     }
@@ -48,7 +48,7 @@ public class PlatoonMemberData extends ProfileData implements Parcelable {
     public PlatoonMemberData(long pf, String un, PersonaData[] p, String im, boolean on,
             boolean pl, int m) {
 
-        super(pf, un, p, im, on, pl);
+        super(pf, un, p.clone(), im, on, pl);
         membershipLevel = m;
 
     }

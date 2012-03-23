@@ -50,7 +50,7 @@ public class ProfileInformation {
         dateOfBirth = dob;
         lastlogin = l;
         statusMessageChanged = sc;
-        persona = pe;
+        persona = pe.clone();
         name = n;
         username = u;
         presentation = p;
