@@ -93,7 +93,7 @@ public class Backup_ForumView extends ListActivity {
         // Get the forumId
         forumId = getIntent().getLongExtra("forumId", 0);
         forumTitle = getIntent().getStringExtra("forumTitle");
-        locale = sharedPreferences.getString(Constants.SP_BL_LOCALE, "en");
+        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
 
         // Update the title
         this.setTitle(getTitle().toString().replace("...", forumTitle));
@@ -392,7 +392,7 @@ public class Backup_ForumView extends ListActivity {
 
         // Ready... set... go!
         new AsyncCreateNewThread(this, forumId).execute(title, content,
-                sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+                sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 
@@ -481,8 +481,7 @@ public class Backup_ForumView extends ListActivity {
             try {
 
                 page = arg0[0];
-                threads = WebsiteHandler.getThreadsForForum(this.forumId, page,
-                        locale);
+                threads = WebsiteHandler.getThreadsForForum(locale, this.forumId, page);
                 return true;
 
             } catch (Exception ex) {

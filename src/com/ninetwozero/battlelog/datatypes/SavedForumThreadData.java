@@ -14,72 +14,112 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import java.util.List;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class SavedForumThreadData implements Parcelable {
-    public static final String COLUMN_NAME_NUM_ID = "thread_id";
-    public static final String COLUMN_NAME_NUM_DATE_LAST_POST = "date_last_post";
-    public static final String COLUMN_NAME_STRING_LAST_AUTHOR = "last_post_author";
-    public static final String COLUMN_NAME_NUM_LAST_AUTHOR_ID = "last_post_author_id";
-    public static final String COLUMN_NAME_NUM_LAST_PAGE_ID = "last_page_id";
-    public static final String COLUMN_NAME_NUM_DATE_READ = "date_read";
-    public static final String COLUMN_NAME_NUM_DATE_CHECKED = "date_checked";
+
     // Attributes
-    private long threadId, dateLastPost, dateLastChecked, dateLastRead;
+    private long id, forumId, dateLastPost, dateLastChecked, dateLastRead, profileId;
     private String title;
     private ProfileData lastPoster;
     private int numPageLastRead;
 
     // Construct
-    public SavedForumThreadData(String t) {
+    public SavedForumThreadData(long i, String t, long fId, long dlp, ProfileData p, long dlc,
+            long dlr, int n, long pId) {
+        id = i;
         title = t;
+        forumId = fId;
+        dateLastPost = dlp;
+        lastPoster = p;
+        dateLastChecked = dlc;
+        dateLastRead = dlr;
+        numPageLastRead = n;
+        profileId = pId;
+
     }
 
     public SavedForumThreadData(Parcel in) {
 
-        threadId = in.readLong();
+        id = in.readLong();
+        title = in.readString();
+        forumId = in.readLong();
+        dateLastPost = in.readLong();
         lastPoster = in.readParcelable(ProfileData.class.getClassLoader());
-
- 
-
-    }
-
-    public SavedForumThreadData(
-
-            long tId, long tDate, long lpDate, int nOffPosts, int nPosts, String t,
-            ProfileData o, ProfileData lp, boolean st, boolean lo
-
-    ) {
-
-        threadId = tId;
-       
-        title = t;
-
-        lastPoster = lp;
-
+        dateLastChecked = in.readLong();
+        dateLastRead = in.readLong();
+        numPageLastRead = in.readInt();
 
     }
 
     // Getters
-    public long getThreadId() {
-        return threadId;
+    public long getId() {
+        return id;
     }
-
-   
 
     public String getTitle() {
         return title;
     }
 
-    
+    public long getForumId() {
+
+        return forumId;
+
+    }
+
+    public long getProfileId() {
+
+        return profileId;
+
+    }
+
+    public long getDateLastPost() {
+
+        return dateLastPost;
+
+    }
+
     public ProfileData getLastPoster() {
         return lastPoster;
     }
 
-    
+    public long getDateLastChecked() {
+
+        return dateLastChecked;
+
+    }
+
+    public long getDateLastRead() {
+
+        return dateLastRead;
+
+    }
+
+    public int getNumPageLastRead() {
+
+        return numPageLastRead;
+    }
+
+    public String[] toStringArray() {
+
+        return new String[] {
+
+                id + "",
+                forumId + "",
+                title,
+                dateLastPost + "",
+                lastPoster.getUsername(),
+                lastPoster.getId() + "",
+                numPageLastRead + "",
+                dateLastRead + "",
+                dateLastChecked + "",
+                profileId + "",
+
+        };
+
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -88,6 +128,15 @@ public class SavedForumThreadData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
+        dest.writeLong(id);
+        dest.writeString(title);
+        dest.writeLong(forumId);
+        dest.writeLong(dateLastPost);
+        dest.writeParcelable(lastPoster, flags);
+        dest.writeLong(dateLastChecked);
+        dest.writeLong(dateLastRead);
+        dest.writeInt(numPageLastRead);
+        dest.writeLong(profileId);
 
     }
 

@@ -95,7 +95,7 @@ Merci de votre soutien !
 </string>
 	<string name="general_invalid_email">Adresse e-mail non valide.</string>
 	<string name="general_invalid_password">Veuillez saisir votre mot de passe.</string>
-	<string name="general_changelog_version">Historique des versions</string>
+	<string name="general_changelog_version">Historique des versions {version}</string>
 	<string name="general_wait">Veuillez patienter</string>
 	<string name="general_downloading">Téléchargement des données...</string>
 	<string name="general_no_data">Aucune donnée trouvée.</string>

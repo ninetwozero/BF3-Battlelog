@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.datatypes.DatabaseInformationException;
 
@@ -181,29 +180,33 @@ public class SQLiteManager {
                             + " )"
 
                     );
-            
-                db.execSQL(
+
+            db.execSQL(
 
                     "CREATE TABLE IF NOT EXISTS `"
-                            + DatabaseStructure.SavedThread.TABLE_NAME
+                            + DatabaseStructure.ForumThreads.TABLE_NAME
                             + "` ("
-                            + DatabaseStructure.SavedThread.COLUMN_NAME_ID
+                            + DatabaseStructure.ForumThreads.COLUMN_NAME_ID
                             + " INTEGER PRIMARY KEY, "
-                            + DatabaseStructure.SavedThread.COLUMN_NAME_NUM_ID
+                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID
                             + " INTEGER UNIQUE, "
-                            + DatabaseStructure.SavedThread.COLUMN_NAME_STRING_TITLE
+                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_FORUM_ID
+                            + " INTEGER, "
+                            + DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_TITLE
                             + " STRING, "
-                            + DatabaseStructure.SavedThread.COLUMN_NAME_NUM_DATE_LAST_POST
+                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST
                             + " INTEGER, "
-                            + DatabaseStructure.SavedThread.COLUMN_NAME_STRING_LAST_AUTHOR
+                            + DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR
                             + " STRING, "
-                            + DatabaseStructure.SavedThread.COLUMN_NAME_NUM_LAST_AUTHOR_ID
+                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_AUTHOR_ID
                             + " INTEGER, "
-                            + DatabaseStructure.SavedThread.COLUMN_NAME_NUM_LAST_PAGE_ID
+                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_PAGE_ID
                             + " INTEGER, "
-                            + DatabaseStructure.SavedThread.COLUMN_NAME_NUM_DATE_READ
+                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_READ
                             + " INTEGER, "
-                            + DatabaseStructure.SavedThread.COLUMN_NAME_NUM_DATE_CHECKED
+                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED
+                            + " INTEGER, "
+                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_PROFILE_ID
                             + " INTEGER "
                             + " )"
 
@@ -213,9 +216,9 @@ public class SQLiteManager {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            
+
             /* TODO: Handle DB UPDATEs */
-            if( oldVersion == 1 ) {
+            if (oldVersion == 1) {
 
                 onCreate(db);
 

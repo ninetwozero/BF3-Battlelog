@@ -1938,7 +1938,7 @@ public class WebsiteHandler {
                 friends = WebsiteHandler.getFriends(
 
                         PreferenceManager.getDefaultSharedPreferences(c)
-                                .getString(Constants.SP_BL_CHECKSUM, ""), false
+                                .getString(Constants.SP_BL_PROFILE_CHECKSUM, ""), false
 
                         );
 
@@ -5022,7 +5022,9 @@ public class WebsiteHandler {
 
                         new ForumThreadData(
 
-                                Long.parseLong(currObject.getString("id")), currObject
+                                Long.parseLong(currObject.getString("id")),
+                                forumId,
+                                currObject
                                         .getLong("creationDate"), currObject
                                         .getLong("lastPostDate"), currObject
                                         .getInt("numberOfOfficialPosts"), currObject
@@ -5068,7 +5070,8 @@ public class WebsiteHandler {
 
                         new ForumThreadData(
 
-                                Long.parseLong(currObject.getString("id")), currObject
+                                Long.parseLong(currObject.getString("id")),
+                                forumId, currObject
                                         .getLong("creationDate"), currObject
                                         .getLong("lastPostDate"), currObject
                                         .getInt("numberOfOfficialPosts"), currObject
@@ -5175,7 +5178,9 @@ public class WebsiteHandler {
 
             return new ForumThreadData(
 
-                    threadObject.getLong("id"), threadObject.getLong("creationDate"),
+                    Long.parseLong(threadObject.getString("id")),
+                    Long.parseLong(threadObject.getString("forumId")),
+                    threadObject.getLong("creationDate"),
                     threadObject.getLong("lastPostDate"),
                     threadObject.getInt("numberOfOfficialPosts"),
                     threadObject.getInt("numberOfPosts"),
@@ -5218,7 +5223,8 @@ public class WebsiteHandler {
     }
 
     public static boolean postReplyInThread(final Context c, final String body,
-            final String chksm, final long tId) {
+            final String chksm, final ForumThreadData threadData, final boolean cache,
+            final long uid) {
 
         try {
 
@@ -5228,7 +5234,7 @@ public class WebsiteHandler {
             // POST!
             String httpContent = rh.post(
 
-                    Constants.URL_FORUM_POST.replace("{THREAD_ID}", tId + ""),
+                    Constants.URL_FORUM_POST.replace("{THREAD_ID}", threadData.getId() + ""),
                     new PostData[] {
 
                             new PostData(Constants.FIELD_NAMES_FORUM_POST[0],
@@ -5240,8 +5246,24 @@ public class WebsiteHandler {
 
                     );
 
-            // Let's do it
-            return (!"".equals(httpContent));
+            // How'd it go?
+            if (!"".equals(httpContent)) {
+
+                // Are we to cache it?
+                if (cache) {
+
+                    return CacheHandler.Forum.insert(c, threadData, uid) > -1;
+
+                }
+
+                // Return
+                return true;
+
+            } else {
+
+                return false;
+
+            }
 
         } catch (Exception ex) {
 
@@ -5712,8 +5734,8 @@ public class WebsiteHandler {
 
     }
 
-    public static ArrayList<ForumThreadData> getThreadsForForum(long forumId,
-            int page, String locale) throws WebsiteHandlerException {
+    public static List<ForumThreadData> getThreadsForForum(String locale, long forumId,
+            int page) throws WebsiteHandlerException {
 
         try {
 
@@ -5756,7 +5778,8 @@ public class WebsiteHandler {
 
                         new ForumThreadData(
 
-                                Long.parseLong(currObject.getString("id")), currObject
+                                Long.parseLong(currObject.getString("id")),
+                                forumId, currObject
                                         .getLong("creationDate"), currObject
                                         .getLong("lastPostDate"), currObject
                                         .getInt("numberOfOfficialPosts"), currObject
@@ -5801,7 +5824,8 @@ public class WebsiteHandler {
 
                         new ForumThreadData(
 
-                                Long.parseLong(currObject.getString("id")), currObject
+                                Long.parseLong(currObject.getString("id")),
+                                forumId, currObject
                                         .getLong("creationDate"), currObject
                                         .getLong("lastPostDate"), currObject
                                         .getInt("numberOfOfficialPosts"), currObject
@@ -5828,7 +5852,7 @@ public class WebsiteHandler {
 
             }
 
-            return (ArrayList<ForumThreadData>) threads;
+            return threads;
 
         } catch (Exception ex) {
 

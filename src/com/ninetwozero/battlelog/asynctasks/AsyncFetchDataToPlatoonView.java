@@ -58,7 +58,7 @@ public class AsyncFetchDataToPlatoonView extends
             platoon = WebsiteHandler.getPlatoonIdFromSearch(
 
                     searchString,
-                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, "")
+                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 
                     );
 

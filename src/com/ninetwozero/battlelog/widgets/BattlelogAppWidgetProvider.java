@@ -128,7 +128,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
                                         + "  K/D: " + Math.floor(playerData.getKDRatio() * 100) / 100));
                 profileDataArray = WebsiteHandler.getFriends(
 
-                        sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""), true
+                        sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""), true
 
                         );
                 numFriendsOnline = profileDataArray.size();

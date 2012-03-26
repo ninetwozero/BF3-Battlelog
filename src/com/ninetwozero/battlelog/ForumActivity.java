@@ -30,14 +30,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatypes.SavedForumThreadData;
 import com.ninetwozero.battlelog.fragments.BoardFragment;
 import com.ninetwozero.battlelog.fragments.ForumFragment;
 import com.ninetwozero.battlelog.fragments.ForumThreadFragment;
@@ -63,6 +68,7 @@ public class ForumActivity extends FragmentActivity implements DefaultFragmentAc
     private BoardFragment fragmentBoard;
     private ForumFragment fragmentForum;
     private ForumThreadFragment fragmentForumThread;
+    private SavedForumThreadData savedThread;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -97,6 +103,7 @@ public class ForumActivity extends FragmentActivity implements DefaultFragmentAc
     }
 
     public void initActivity() {
+
     }
 
     @Override
@@ -112,6 +119,9 @@ public class ForumActivity extends FragmentActivity implements DefaultFragmentAc
 
         // Reload
         reload();
+
+        // Let's try this
+        openFromIntent(getIntent());
 
     }
 
@@ -186,12 +196,28 @@ public class ForumActivity extends FragmentActivity implements DefaultFragmentAc
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        if (viewPager.getCurrentItem() == 2) {
+
+            fragmentForumThread.prepareOptionsMenu(menu);
+
+        }
+        return super.onPrepareOptionsMenu(menu);
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         // Let's act!
         if (item.getItemId() == R.id.option_reload) {
 
             this.reload();
+
+        } else if (item.getItemId() == R.id.option_save) {
+
+            fragmentForumThread.handleSelectedOption(item);
 
         } else if (item.getItemId() == R.id.option_back) {
 
@@ -233,6 +259,74 @@ public class ForumActivity extends FragmentActivity implements DefaultFragmentAc
 
         }
         return super.onKeyDown(keyCode, event);
+
+    }
+
+    public void openFromIntent(Intent intent) {
+
+        // Do we have a saved thread?
+        if (intent.hasExtra("savedThread") && savedThread == null) {
+
+            savedThread = intent.getParcelableExtra("savedThread");
+            openForum(new Intent().putExtra("forumTitle", "N/A").putExtra("forumId",
+                    savedThread.getForumId()));
+            openThread(new Intent().putExtra("threadTitle", savedThread.getTitle()).putExtra(
+                    "threadId", savedThread.getId()));
+
+        }
+
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view,
+            ContextMenuInfo menuInfo) {
+
+        switch (viewPager.getCurrentItem()) {
+
+            case 0:
+                break;
+
+            case 1:
+                break;
+
+            case 2:
+                fragmentForumThread.createContextMenu(menu, view, menuInfo);
+                break;
+
+        }
+        return;
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        // Declare...
+        AdapterView.AdapterContextMenuInfo info;
+
+        // Let's try to get some menu information via a try/catch
+        try {
+
+            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        } catch (ClassCastException e) {
+
+            e.printStackTrace();
+            return false;
+
+        }
+
+        switch (viewPager.getCurrentItem()) {
+
+            case 2:
+                return fragmentForumThread.handleSelectedContextItem(info, item);
+
+            default:
+                break;
+
+        }
+
+        return true;
     }
 
 }

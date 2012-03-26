@@ -464,7 +464,7 @@ public class Backup_Dashboard extends TabActivity {
             // Let's set 'em values
             valueFieldsArray[0] = fieldStatusUpdate.getText().toString();
             valueFieldsArray[1] = sharedPreferences.getString(
-                    Constants.SP_BL_CHECKSUM, "");
+                    Constants.SP_BL_PROFILE_CHECKSUM, "");
 
             // Validate
             if (valueFieldsArray[0].equals("")) {
@@ -565,7 +565,7 @@ public class Backup_Dashboard extends TabActivity {
             } else {
 
                 // Are we running a service?
-                if (!sharedPreferences.getBoolean(Constants.SP_BL_REMEMBER,
+                if (!sharedPreferences.getBoolean(Constants.SP_BL_PROFILE_REMEMBER,
                         false)) {
 
                     if (asyncLogout == null) {
@@ -726,7 +726,7 @@ public class Backup_Dashboard extends TabActivity {
 
         // Done? No? Let's populate in an async task!
         new AsyncCOMReload().execute(sharedPreferences.getString(
-                Constants.SP_BL_CHECKSUM, ""));
+                Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 
@@ -763,7 +763,7 @@ public class Backup_Dashboard extends TabActivity {
 
                 ), (v.getId() == R.id.button_accept)
 
-        ).execute(sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+        ).execute(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 
@@ -975,7 +975,7 @@ public class Backup_Dashboard extends TabActivity {
 
                     ).execute(
 
-                            sharedPreferences.getString(Constants.SP_BL_CHECKSUM, "")
+                            sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 
                             );
 

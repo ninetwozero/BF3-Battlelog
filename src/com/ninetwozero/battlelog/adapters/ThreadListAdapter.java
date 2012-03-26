@@ -62,14 +62,14 @@ public class ThreadListAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
 
-        return itemArray.get(position).getThreadId();
+        return itemArray.get(position).getId();
 
     }
 
     @Override
     public int getItemViewType(int position) {
 
-        if (getItem(position).getThreadId() == 0) {
+        if (getItem(position).getId() == 0) {
             return 1;
         } else {
             return 0;

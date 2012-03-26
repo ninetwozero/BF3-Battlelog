@@ -86,7 +86,7 @@ public class Backup_BoardView extends ListActivity {
 
         // Prepare to tango
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        locale = sharedPreferences.getString(Constants.SP_BL_LOCALE, "en");
+        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
 
         // Init
         initLayout();
@@ -291,7 +291,7 @@ public class Backup_BoardView extends ListActivity {
                     public void onClick(DialogInterface dialog, int item) {
 
                         sharedPreferences.edit()
-                                .putString(Constants.SP_BL_LOCALE, locales[item])
+                                .putString(Constants.SP_BL_FORUM_LOCALE, locales[item])
                                 .commit();
                         locale = locales[item];
                         reload();

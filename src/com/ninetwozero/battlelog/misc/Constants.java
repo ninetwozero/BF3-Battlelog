@@ -286,7 +286,7 @@ public final class Constants {
     public static final String FILE_SHPREF = "battlelog";
 
     // Changelog version
-    public final static int CHANGELOG_VERSION = 9;
+    public final static int CHANGELOG_VERSION = 2;
 
     // MENU IDs
     public final static int MENU_ID_FEED = 2;
@@ -344,26 +344,27 @@ public final class Constants {
     public static final String SP_V_FILE = "file_version";
     public static final String SP_V_CHANGELOG = "latest_changelog_version";
     public static final String SP_BL_SERVICE = "allow_service";
-    public static final String SP_BL_EMAIL = "origin_email";
-    public static final String SP_BL_PASSWORD = "origin_password";
-    public static final String SP_BL_USERNAME = "battlelog_username";
-    public static final String SP_BL_PERSONA = "battlelog_persona";
+    public static final String SP_BL_PROFILE_EMAIL = "origin_email";
+    public static final String SP_BL_PROFILE_PASSWORD = "origin_password";
+    public static final String SP_BL_PROFILE_NAME = "battlelog_username";
+    public static final String SP_BL_PERSONA_NAME = "battlelog_persona";
     public static final String SP_BL_PROFILE_ID = "battlelog_profile_id";
     public static final String SP_BL_PERSONA_ID = "battlelog_persona_id";
     public static final String SP_BL_PLATFORM_ID = "battlelog_platform_id";
     public static final String SP_BL_PERSONA_CURRENT_ID = "battlelog_persona_current_id";
     public static final String SP_BL_PERSONA_CURRENT_POS = "battlelog_persona_current_pos";
     public static final String SP_BL_PERSONA_LOGO = "battlelog_persona_logo";
-    public static final String SP_BL_CHECKSUM = "battlelog_post_checksum";
-    public static final String SP_BL_GRAVATAR = "battlelog_gravatar_hash";
-    public static final String SP_BL_REMEMBER = "remember_password";
+    public static final String SP_BL_PROFILE_CHECKSUM = "battlelog_post_checksum";
+    public static final String SP_BL_PROFILE_GRAVATAR = "battlelog_gravatar_hash";
+    public static final String SP_BL_PROFILE_REMEMBER = "remember_password";
     public static final String SP_BL_INTERVAL_SERVICE = "battlelog_service_interval";
     public static final String SP_BL_INTERVAL_CHAT = "battlelog_chat_interval";
     public static final String SP_BL_NUM_FEED = "battlelog_feed_count";
     public static final String SP_BL_LANG = "app_locale";
     public static final String SP_BL_FULLSCREEN = "fullscreen_mode";
-    public static final String SP_BL_LOCALE = "battlelog_locale";
-    public static final String SP_BL_LOCALE_POSITION = "battlelog_locale_pos";
+    public static final String SP_BL_FORUM_LOCALE = "battlelog_locale";
+    public static final String SP_BL_FORUM_LOCALE_POSITION = "battlelog_locale_pos";
+    public static final String SP_BL_FORUM_CACHE = "battlelog_enable_forum_cache";
     public static final String SP_BL_COOKIE_NAME = "battlelog_cookie_name";
     public static final String SP_BL_COOKIE_VALUE = "battlelog_cookie_value";
     public static final String SP_BL_PLATOON_ID = "battlelog_platoon_id";

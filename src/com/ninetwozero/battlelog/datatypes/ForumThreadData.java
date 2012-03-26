@@ -14,6 +14,7 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
+import java.util.Calendar;
 import java.util.List;
 
 import android.os.Parcel;
@@ -22,7 +23,7 @@ import android.os.Parcelable;
 public class ForumThreadData implements Parcelable {
 
     // Attributes
-    private long threadId, date, lastPostDate;
+    private long id, forumId, date, lastPostDate;
     private int numOfficialPosts, numPosts, numCurrentPage, numTotalPages;
     private String title;
     private ProfileData owner, lastPoster;
@@ -38,7 +39,8 @@ public class ForumThreadData implements Parcelable {
 
     public ForumThreadData(Parcel in) {
 
-        threadId = in.readLong();
+        id = in.readLong();
+        forumId = in.readLong();
         date = in.readLong();
         lastPostDate = in.readLong();
 
@@ -60,7 +62,7 @@ public class ForumThreadData implements Parcelable {
         deletePosts = (in.readInt() == 1);
         editPosts = (in.readInt() == 1);
         admin = (in.readInt() == 1);
-        ;
+
         postOfficial = (in.readInt() == 1);
         viewLatestPosts = (in.readInt() == 1);
         viewPostHistory = (in.readInt() == 1);
@@ -71,12 +73,13 @@ public class ForumThreadData implements Parcelable {
 
     public ForumThreadData(
 
-            long tId, long tDate, long lpDate, int nOffPosts, int nPosts, String t,
+            long tId, long fId, long tDate, long lpDate, int nOffPosts, int nPosts, String t,
             ProfileData o, ProfileData lp, boolean st, boolean lo
 
     ) {
 
-        threadId = tId;
+        id = tId;
+        forumId = fId;
         date = tDate;
         lastPostDate = lpDate;
 
@@ -107,7 +110,7 @@ public class ForumThreadData implements Parcelable {
 
     public ForumThreadData(
 
-            long tId, long tDate, long lpDate, int nOffPosts, int nPosts,
+            long tId, long fId, long tDate, long lpDate, int nOffPosts, int nPosts,
             int nCurrPage, int nPages, String t, ProfileData o,
             ProfileData lp, boolean st, boolean lo, boolean cePosts,
             boolean ccPosts, boolean cdPosts, boolean cpOfficial,
@@ -116,7 +119,8 @@ public class ForumThreadData implements Parcelable {
 
     ) {
 
-        threadId = tId;
+        id = tId;
+        forumId = fId;
         date = tDate;
         lastPostDate = lpDate;
 
@@ -146,8 +150,13 @@ public class ForumThreadData implements Parcelable {
     }
 
     // Getters
-    public long getThreadId() {
-        return threadId;
+    public long getId() {
+        return id;
+    }
+
+    public long getForumId() {
+
+        return forumId;
     }
 
     public long getDate() {
@@ -238,7 +247,8 @@ public class ForumThreadData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
-        dest.writeLong(threadId);
+        dest.writeLong(id);
+        dest.writeLong(forumId);
         dest.writeLong(date);
         dest.writeLong(lastPostDate);
 
@@ -282,6 +292,28 @@ public class ForumThreadData implements Parcelable {
     @Override
     public String toString() {
         return owner + ":" + title;
+    }
+
+    public String[] toStringArray() {
+
+        // Let's det the date
+        String time = String.valueOf(Calendar.getInstance().getTimeInMillis() / 1000);
+
+        // Return a new String[]
+        return new String[] {
+
+                id + "",
+                forumId + "",
+                title,
+                lastPostDate + "",
+                lastPoster.getUsername(),
+                lastPoster.getId() + "",
+                numTotalPages + "",
+                time,
+                time
+
+        };
+
     }
 
 }

@@ -64,7 +64,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
                 // The user is active, so how many notifications does he have?
                 int numNotifications = WebsiteHandler.getNewNotificationsCount(
 
-                        sharedPreferences.getString(Constants.SP_BL_CHECKSUM, "")
+                        sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 
                         );
                 return numNotifications;
@@ -73,13 +73,14 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 
                 // Attributes
                 String email = sharedPreferences.getString(
-                        Constants.SP_BL_EMAIL, "");
+                        Constants.SP_BL_PROFILE_EMAIL, "");
                 String password = SimpleCrypto.decrypt(email, sharedPreferences
-                        .getString(Constants.SP_BL_PASSWORD, ""));
+                        .getString(Constants.SP_BL_PROFILE_PASSWORD, ""));
 
                 // Do the login
                 AsyncLogin login = new AsyncLogin(context, true);
-                SessionKeeperPackage sessionKeeperPackage = login.renewSession(postData(email, password));
+                SessionKeeperPackage sessionKeeperPackage = login.renewSession(postData(email,
+                        password));
 
                 // Did it work?
                 if (sessionKeeperPackage != null) {
@@ -102,16 +103,16 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
     }
 
     private PostData[] postData(String email, String password) {
-        return new PostData[]{
+        return new PostData[] {
 
-        new PostData(Constants.FIELD_NAMES_LOGIN[0], email),
-        new PostData(Constants.FIELD_NAMES_LOGIN[1], password),
-        new PostData(Constants.FIELD_NAMES_LOGIN[2],
-                Constants.FIELD_VALUES_LOGIN[2]),
-        new PostData(Constants.FIELD_NAMES_LOGIN[3],
-                Constants.FIELD_VALUES_LOGIN[3]),
+                new PostData(Constants.FIELD_NAMES_LOGIN[0], email),
+                new PostData(Constants.FIELD_NAMES_LOGIN[1], password),
+                new PostData(Constants.FIELD_NAMES_LOGIN[2],
+                        Constants.FIELD_VALUES_LOGIN[2]),
+                new PostData(Constants.FIELD_NAMES_LOGIN[3],
+                        Constants.FIELD_VALUES_LOGIN[3]),
 
-};
+        };
     }
 
     @Override

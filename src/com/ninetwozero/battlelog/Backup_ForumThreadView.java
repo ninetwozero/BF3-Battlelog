@@ -108,7 +108,7 @@ public class Backup_ForumThreadView extends ListActivity {
 
         // Prepare to tango
         this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        locale = sharedPreferences.getString(Constants.SP_BL_LOCALE, "en");
+        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
 
         // Get the threadId
         threadId = getIntent().getLongExtra("threadId", 0);
@@ -555,8 +555,8 @@ public class Backup_ForumThreadView extends ListActivity {
         content = BBCodeUtils.toBBCode(content, selectedQuotes);
 
         // Ready... set... go!
-        new AsyncPostInThread(this, threadId).execute(content,
-                sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+        new AsyncPostInThread(this, currentThread, false).execute(content,
+                sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 
@@ -755,7 +755,7 @@ public class Backup_ForumThreadView extends ListActivity {
                         // Get the current link
                         String currentLink = links.get(arg2);
                         new AsyncLinkHandling(context).execute(currentLink,
-                                sharedPreferences.getString(Constants.SP_BL_CHECKSUM,
+                                sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
                                         ""));
 
                         // Dismiss the dialog

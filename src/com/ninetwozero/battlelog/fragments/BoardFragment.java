@@ -76,7 +76,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
                 container, false);
 
         // Get the unlocks
-        locale = sharedPreferences.getString(Constants.SP_BL_LOCALE, "en");
+        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
 
         // Let's get that data
         forums = new ArrayList<ForumData>();
@@ -246,7 +246,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
                     public void onClick(DialogInterface dialog, int item) {
 
                         sharedPreferences.edit()
-                                .putString(Constants.SP_BL_LOCALE, locales[item])
+                                .putString(Constants.SP_BL_FORUM_LOCALE, locales[item])
                                 .commit();
                         locale = locales[item];
                         reload();

@@ -158,13 +158,15 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         return;
 
     }
-    
-    public SessionKeeperPackage renewSession(PostData[] postData) throws WebsiteHandlerException, RequestHandlerException {
+
+    public SessionKeeperPackage renewSession(PostData[] postData) throws WebsiteHandlerException,
+            RequestHandlerException {
         return doLogin(postData);
     }
 
     // Let's have this one ready
-    private SessionKeeperPackage doLogin(PostData[] postData) throws WebsiteHandlerException, RequestHandlerException {
+    private SessionKeeperPackage doLogin(PostData[] postData) throws WebsiteHandlerException,
+            RequestHandlerException {
         this.postData = postData.clone();
 
         try {
@@ -174,7 +176,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
             String httpContent = wh.post(Constants.URL_LOGIN, this.postData, 0);
 
             // Did we manage?
-            return httpContent.length() >0 ? profileData(httpContent) : null;
+            return httpContent.length() > 0 ? profileData(httpContent) : null;
 
         } catch (Exception ex) {
 
@@ -190,7 +192,8 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         int startPosition = httpContent.indexOf(Constants.ELEMENT_UID_LINK);
 
         // Did we find it?
-        return startPosition == -1 ? elementUidLinkError(httpContent) : processHttpContent(httpContent);
+        return startPosition == -1 ? elementUidLinkError(httpContent)
+                : processHttpContent(httpContent);
     }
 
     private SessionKeeperPackage processHttpContent(String httpContent) throws Exception {
@@ -202,11 +205,12 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         // profileId
         String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "/\">");
 
-        ProfileData profile = WebsiteHandler.getProfileIdFromSearch(soldierName,postCheckSum);
+        ProfileData profile = WebsiteHandler.getProfileIdFromSearch(soldierName, postCheckSum);
         profile = WebsiteHandler.getPersonaIdFromProfile(profile);
-        List<PlatoonData> platoons = WebsiteHandler.getPlatoonsForUser(context, profile.getUsername());
-        SharedPreferences sharedPreferences = addToSharedPreferences(profile, platoons, postCheckSum, soldierName);
-
+        List<PlatoonData> platoons = WebsiteHandler.getPlatoonsForUser(context,
+                profile.getUsername());
+        SharedPreferences sharedPreferences = addToSharedPreferences(profile, platoons,
+                postCheckSum, soldierName);
 
         // Do we want to start a service?
         int serviceInterval = sharedPreferences.getInt(
@@ -223,27 +227,29 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         return new SessionKeeperPackage(profile, platoons);
     }
 
-    private SharedPreferences addToSharedPreferences(ProfileData profile, List<PlatoonData> platoons, String postCheckSum, String soldierName) throws Exception {
+    private SharedPreferences addToSharedPreferences(ProfileData profile,
+            List<PlatoonData> platoons, String postCheckSum, String soldierName) throws Exception {
         // Init
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
         SharedPreferences.Editor spEdit = sharedPreferences.edit();
         // Further more, we would actually like to store the userid and
         // name
-        spEdit.putString(Constants.SP_BL_EMAIL,
+        spEdit.putString(Constants.SP_BL_PROFILE_EMAIL,
                 postData[0].getValue());
 
         // Should we remember the password?
         if (savePassword) {
 
-            spEdit.putString(Constants.SP_BL_PASSWORD, SimpleCrypto
+            spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, SimpleCrypto
                     .encrypt(postData[0].getValue(),
                             postData[1].getValue()));
-            spEdit.putBoolean(Constants.SP_BL_REMEMBER, true);
+            spEdit.putBoolean(Constants.SP_BL_PROFILE_REMEMBER, true);
 
         } else {
 
-            spEdit.putString(Constants.SP_BL_PASSWORD, "");
-            spEdit.putBoolean(Constants.SP_BL_REMEMBER, false);
+            spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, "");
+            spEdit.putBoolean(Constants.SP_BL_PROFILE_REMEMBER, false);
         }
 
         // Init the strings
@@ -282,14 +288,14 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         }
 
         // This we keep!!!
-        spEdit.putString(Constants.SP_BL_USERNAME, soldierName);
-        spEdit.putString(Constants.SP_BL_PERSONA, personaNames);
+        spEdit.putString(Constants.SP_BL_PROFILE_NAME, soldierName);
+        spEdit.putString(Constants.SP_BL_PERSONA_NAME, personaNames);
         spEdit.putLong(Constants.SP_BL_PROFILE_ID,
                 profile.getId());
         spEdit.putString(Constants.SP_BL_PERSONA_ID, personaIds);
         spEdit.putString(Constants.SP_BL_PLATFORM_ID, platformIds);
         spEdit.putString(Constants.SP_BL_PERSONA_LOGO, personaLogos);
-        spEdit.putString(Constants.SP_BL_CHECKSUM, postCheckSum);
+        spEdit.putString(Constants.SP_BL_PROFILE_CHECKSUM, postCheckSum);
 
         // Platoons too!
         spEdit.putString(Constants.SP_BL_PLATOON_ID, platoonIds);
@@ -328,10 +334,11 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
                 PendingIntent.getService(context, 0, new Intent(
                         context, BattlelogService.class), 0)
 
-        );
+                );
     }
 
-    private SessionKeeperPackage elementUidLinkError(String httpContent) throws WebsiteHandlerException {
+    private SessionKeeperPackage elementUidLinkError(String httpContent)
+            throws WebsiteHandlerException {
         int startPosition;// Update the position
         startPosition = httpContent.indexOf(Constants.ELEMENT_ERROR_MESSAGE);
 
@@ -354,7 +361,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         }
     }
 
-    private String substringFrom(String content, String expression, String endsWith){
+    private String substringFrom(String content, String expression, String endsWith) {
         String result = content.substring(content
                 .indexOf(expression));
         return result.substring(0,

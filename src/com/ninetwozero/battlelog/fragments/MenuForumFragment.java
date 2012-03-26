@@ -39,6 +39,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.ForumActivity;
+import com.ninetwozero.battlelog.ForumSavedActivity;
 import com.ninetwozero.battlelog.ForumSearchActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
@@ -77,10 +78,10 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Get the unlocks
-        selectedLocale = sharedPreferences.getString(Constants.SP_BL_LOCALE, "en");
-        selectedPosition = sharedPreferences.getInt(Constants.SP_BL_LOCALE_POSITION, 0);
+        selectedLocale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
+        selectedPosition = sharedPreferences.getInt(Constants.SP_BL_FORUM_LOCALE_POSITION, 0);
         selectedLanguage = DataBank.getLanguage(selectedPosition);
-        
+
         // Let's get that data
         forums = new ArrayList<ForumData>();
 
@@ -105,13 +106,14 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
                     @Override
                     public void onClick(View v) {
 
-                        generateDialogLanguageList(context, DataBank.getLanguages(), DataBank.getLocales()).show();
+                        generateDialogLanguageList(context, DataBank.getLanguages(),
+                                DataBank.getLocales()).show();
 
                     }
 
                 }
 
-        );
+                );
         imageLanguage = (ImageView) wrapLanguage.findViewById(R.id.image_language);
         textLanguage = (TextView) wrapLanguage.findViewById(R.id.text_language);
         textLanguage.setSelected(true);
@@ -123,7 +125,7 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
         MENU_INTENTS = new HashMap<Integer, Intent>();
         MENU_INTENTS.put(R.id.button_view, new Intent(context, ForumActivity.class));
         MENU_INTENTS.put(R.id.button_search, new Intent(context, ForumSearchActivity.class));
-        MENU_INTENTS.put(R.id.button_saved, new Intent(context, ForumSearchActivity.class));
+        MENU_INTENTS.put(R.id.button_saved, new Intent(context, ForumSavedActivity.class));
 
         // Add the OnClickListeners
         for (int key : MENU_INTENTS.keySet()) {
@@ -174,14 +176,14 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
                         selectedPosition = item;
                         selectedLocale = locales[selectedPosition];
                         selectedLanguage = languages[selectedPosition];
-                        
+
                         SharedPreferences.Editor spEdit = sharedPreferences.edit();
-                        spEdit.putString(Constants.SP_BL_LOCALE, selectedLocale);
-                        spEdit.putInt(Constants.SP_BL_LOCALE_POSITION, selectedPosition);
+                        spEdit.putString(Constants.SP_BL_FORUM_LOCALE, selectedLocale);
+                        spEdit.putInt(Constants.SP_BL_FORUM_LOCALE_POSITION, selectedPosition);
                         spEdit.commit();
-                        
+
                         setupLanguageBox();
-                        
+
                         dialog.dismiss();
 
                     }
@@ -194,12 +196,12 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
         return builder.create();
 
     }
-    
+
     public void setupLanguageBox() {
 
         // Let's see...
         textLanguage.setText(selectedLanguage);
-        //imageLanguage.setImageResource(DataBank.getImageForPersona(persona[selectedPosition].getLogo()));
+        // imageLanguage.setImageResource(DataBank.getImageForPersona(persona[selectedPosition].getLogo()));
 
     }
 

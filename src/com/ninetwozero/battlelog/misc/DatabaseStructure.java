@@ -2,7 +2,6 @@
 package com.ninetwozero.battlelog.misc;
 
 
-
 public final class DatabaseStructure {
 
     // Declare the Table-data for each "part"
@@ -170,12 +169,12 @@ public final class DatabaseStructure {
                     COLUMN_NAME_STRING_WEB, COLUMN_NAME_BOOL_VISIBLE,
 
             };
-            
+
         }
-    
+
     }
-    
-    public static final class SavedThread {
+
+    public static final class ForumThreads {
 
         // Table-name
         public static final String TABLE_NAME = "saved_threads";
@@ -183,6 +182,8 @@ public final class DatabaseStructure {
         // Field-names
         public static final String COLUMN_NAME_ID = "_id";
         public static final String COLUMN_NAME_NUM_ID = "thread_id";
+        public static final String COLUMN_NAME_NUM_FORUM_ID = "forum_id";
+        public static final String COLUMN_NAME_NUM_PROFILE_ID = "profile_id";
         public static final String COLUMN_NAME_STRING_TITLE = "thread_title";
         public static final String COLUMN_NAME_NUM_DATE_LAST_POST = "date_last_post";
         public static final String COLUMN_NAME_STRING_LAST_AUTHOR = "last_post_author";
@@ -199,15 +200,16 @@ public final class DatabaseStructure {
 
             return new String[] {
 
-                    COLUMN_NAME_ID,
                     COLUMN_NAME_NUM_ID,
+                    COLUMN_NAME_NUM_FORUM_ID,
                     COLUMN_NAME_STRING_TITLE,
                     COLUMN_NAME_NUM_DATE_LAST_POST,
                     COLUMN_NAME_STRING_LAST_AUTHOR,
                     COLUMN_NAME_NUM_LAST_AUTHOR_ID,
                     COLUMN_NAME_NUM_LAST_PAGE_ID,
                     COLUMN_NAME_NUM_DATE_READ,
-                    COLUMN_NAME_NUM_DATE_CHECKED
+                    COLUMN_NAME_NUM_DATE_CHECKED,
+                    COLUMN_NAME_NUM_PROFILE_ID
 
             };
 

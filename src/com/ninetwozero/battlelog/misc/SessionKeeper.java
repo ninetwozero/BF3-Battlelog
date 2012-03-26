@@ -60,7 +60,7 @@ public class SessionKeeper {
         // Get the different strings
         String cookie = sp.getString(Constants.SP_BL_COOKIE_VALUE, "");
         String personaIdString = sp.getString(Constants.SP_BL_PERSONA_ID, "");
-        String personaNameString = sp.getString(Constants.SP_BL_PERSONA, "");
+        String personaNameString = sp.getString(Constants.SP_BL_PERSONA_NAME, "");
         String platformIdString = sp.getString(Constants.SP_BL_PLATFORM_ID, "");
         String personaLogoString = sp.getString(Constants.SP_BL_PERSONA_LOGO, "");
 
@@ -89,9 +89,9 @@ public class SessionKeeper {
 
             ProfileData p = new ProfileData(
                     sp.getLong(Constants.SP_BL_PROFILE_ID, 0),
-                    sp.getString(Constants.SP_BL_USERNAME, ""),
+                    sp.getString(Constants.SP_BL_PROFILE_NAME, ""),
                     persona,
-                    sp.getString(Constants.SP_BL_GRAVATAR, "")
+                    sp.getString(Constants.SP_BL_PROFILE_GRAVATAR, "")
 
                     );
 

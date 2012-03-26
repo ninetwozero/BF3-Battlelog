@@ -20,19 +20,23 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.Backup_ForumThreadView;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.ForumThreadData;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
 
     // Attributes
     private Context context;
-    private long threadId;
+    private ForumThreadData threadData;
+    private boolean cache;
 
     // Construct
-    public AsyncPostInThread(Context c, long tId) {
+    public AsyncPostInThread(Context c, ForumThreadData t, boolean ca) {
 
         this.context = c;
-        this.threadId = tId;
+        this.threadData = t;
+        this.cache = ca;
 
     }
 
@@ -44,7 +48,8 @@ public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
             // How'd it go?
             return WebsiteHandler.postReplyInThread(
 
-                    this.context, arg0[0], arg0[1], this.threadId
+                    this.context, arg0[0], arg0[1], this.threadData, this.cache, SessionKeeper
+                            .getProfileData().getId()
 
                     );
 

@@ -63,7 +63,7 @@ public class AsyncSessionValidate extends AsyncTask<PostData, Integer, Boolean> 
         if (!results) {
 
             // Get the e-mail
-            String email = sharedPreferences.getString(Constants.SP_BL_EMAIL,
+            String email = sharedPreferences.getString(Constants.SP_BL_PROFILE_EMAIL,
                     "");
 
             // Let's renew it
@@ -76,7 +76,7 @@ public class AsyncSessionValidate extends AsyncTask<PostData, Integer, Boolean> 
 
                                 Constants.FIELD_NAMES_LOGIN[1], SimpleCrypto.decrypt(
                                         email, sharedPreferences.getString(
-                                                Constants.SP_BL_PASSWORD, ""))
+                                                Constants.SP_BL_PROFILE_PASSWORD, ""))
 
                         ), new PostData(Constants.FIELD_NAMES_LOGIN[2], ""),
                         new PostData(Constants.FIELD_NAMES_LOGIN[3],

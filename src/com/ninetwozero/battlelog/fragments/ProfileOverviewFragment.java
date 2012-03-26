@@ -503,7 +503,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                     sharedPreferences.getString(
 
-                            Constants.SP_BL_CHECKSUM, "")
+                            Constants.SP_BL_PROFILE_CHECKSUM, "")
 
                     );
 
@@ -513,7 +513,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                     sharedPreferences.getString(
 
-                            Constants.SP_BL_CHECKSUM, "")
+                            Constants.SP_BL_PROFILE_CHECKSUM, "")
 
                     );
 
