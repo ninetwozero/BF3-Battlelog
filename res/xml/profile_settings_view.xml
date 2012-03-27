@@ -32,12 +32,19 @@
             android:key="profile_info_presentation"
             android:hint="Hello world!"
         />
+<!--
   	    <EditTextPreference
-   	        android:title="Birthday" 
+   	        android:title="Birthday"
    	        android:dialogMessage="When's your birthday? Here's how to enter it: YEAR-month-day"
             android:key="profile_info_birthday"
             android:hint="YYYY-mm-dd"
         />
+-->
+          <com.ninetwozero.battlelog.preference.DatePickerPreference
+              android:key="profile_info_presentation"
+              android:dialogMessage="When's your birthday? Setting today day will hide this information."
+              android:title="Birthday"
+              />
   	</PreferenceCategory>
   	<PreferenceCategory android:title="Demographic information">
   	    <!-- DROPDOWN COUNTRY-->
