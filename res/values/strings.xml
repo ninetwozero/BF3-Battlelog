@@ -534,4 +534,7 @@
 	<string name="info_platoon_new_creating">Creating the platoon...</string>
 	<string name="info_platoon_new_true">The platoon has been created!</string>
 	<string name="info_platoon_new_false">The platoon could not be created.</string>
+
+    <!--PROFILE INFO SETTINGS DO NOT TRANSLATE ! ! ! -->
+    <string name="profile_info_birthday">profile_info_birthday</string>
 </resources>

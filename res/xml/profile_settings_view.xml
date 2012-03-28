@@ -41,7 +41,7 @@
         />
 -->
           <com.ninetwozero.battlelog.preference.DatePickerPreference
-              android:key="profile_info_presentation"
+              android:key="@string/profile_info_birthday"
               android:dialogMessage="When's your birthday? Setting today day will hide this information."
               android:title="Birthday"
               />
