@@ -1,5 +1,6 @@
 package com.ninetwozero.battlelog.preference;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -8,6 +9,8 @@ import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.DatePicker;
+
+import static com.ninetwozero.battlelog.datatypes.ProfileSettings.PROFILE_INFO_BIRTHDAY;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,6 +28,13 @@ public class DatePickerPreference extends DialogPreference implements DatePicker
 
     public DatePickerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @Override
+    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+        builder.setTitle(getTitle());
+        builder.setMessage(getDialogMessage());
+        super.onPrepareDialogBuilder(builder);
     }
 
     @Override
@@ -74,7 +84,7 @@ public class DatePickerPreference extends DialogPreference implements DatePicker
     private void sharedPreferences(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(getKey(), getDate());
+        editor.putString(PROFILE_INFO_BIRTHDAY, getDate());
         editor.commit();
     }
     

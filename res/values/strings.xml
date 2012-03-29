@@ -534,7 +534,8 @@
 	<string name="info_platoon_new_creating">Creating the platoon...</string>
 	<string name="info_platoon_new_true">The platoon has been created!</string>
 	<string name="info_platoon_new_false">The platoon could not be created.</string>
-
-    <!--PROFILE INFO SETTINGS DO NOT TRANSLATE ! ! ! -->
-    <string name="profile_info_birthday">profile_info_birthday</string>
+    
+    <!-- PROFILE INFO SETTINGS plese translate -->
+    <string name="profile_info_birthday_msg">Selecting birthday will make it VISIBLE on your profile. Leave it as today or date in future will HIDE this information from your profile.</string>
+    <string name="birthday">Birthday</string>
 </resources>
