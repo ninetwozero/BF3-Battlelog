@@ -80,7 +80,7 @@
         <item >fi</item>
         <item >sv</item>
     </string-array>
-   <!--  translation starts here -->
+    
    <string name="changelog">
        * Fixed the forum (sorry!) &lt;br /&gt;
        * Fixed the underlying service from crashing (finally?!) &lt;br /&gt;
@@ -534,7 +534,6 @@
 	<string name="info_platoon_new_creating">Creating the platoon...</string>
 	<string name="info_platoon_new_true">The platoon has been created!</string>
 	<string name="info_platoon_new_false">The platoon could not be created.</string>
-<<<<<<< HEAD
 	<string name="info_forum_empty_saved">No saved threads found.</string>
 	<string name="info_xml_forum_posts">Posts</string>
 	<string name="title_forum_saved">BF3 Battlelog - Viewing the saved threads</string>
@@ -546,14 +545,10 @@
 	<string name="info_forum_saved_check">Check for updates</string>
 	<string name="info_forum_saved_remove">Remove the thread from the list</string>
 	<string name="info_forum_saved_heading">Saved forum threads</string>
-=======
-    
-    <!-- PROFILE INFO SETTINGS plese translate -->
     <string name="profile_info_birthday_msg">Selecting birthday will make it VISIBLE on your profile. Leave it as today or date in future will HIDE this information from your profile.</string>
     <string name="birthday">Birthday</string>
     <string name="country">Country</string>
     <string name="profile_info_country">Please enter country name.</string>
     <string name="country_hint">Example: United Kingdom</string> <!-- Please keep country name in English format -->
     <string name="country_not_found">Country was NOT found. Will use previous stored country or nothing if country was not stored previously.</string>
->>>>>>> master-devel
 </resources>
