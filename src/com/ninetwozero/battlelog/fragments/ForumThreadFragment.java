@@ -39,6 +39,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -150,6 +151,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         buttonJump = (Button) v.findViewById(R.id.button_jump);
         buttonPrev = (Button) v.findViewById(R.id.button_prev);
         buttonNext = (Button) v.findViewById(R.id.button_next);
+        buttonPost = (Button) v.findViewById(R.id.button_new);
         wrapButtons = (RelativeLayout) v.findViewById(R.id.wrap_buttons);
 
         // Last but not least, the loader
@@ -166,6 +168,80 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
             openThread(storedRequest);
 
         }
+
+        // Let's set the onClick events
+        buttonNext.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // Increment the page #
+                currentPage++;
+
+                // Let's do this
+                new AsyncLoadPage(context, threadId).execute(currentPage);
+
+            }
+
+        });
+
+        // Let's set the onClick events
+        buttonPrev.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // "Decrement"?
+                currentPage--;
+
+                // Let's do this
+                new AsyncLoadPage(context, threadId).execute(currentPage);
+
+            }
+
+        });
+
+        // Let's set the onClick events
+        buttonJump.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // Generate a dialog
+                generateDialogPage(context).show();
+
+            }
+
+        });
+
+        // Let's set the onClick events
+        buttonPost.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // Generate a dialog
+                String content = textareaContent.getText().toString();
+
+                // Validate
+                if (content.equals("")) {
+
+                    Toast.makeText(context, "You need to enter some content for your reply.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+
+                // Parse for the BBCODE!
+                content = BBCodeUtils.toBBCode(content, selectedQuotes);
+
+                // Ready... set... go!
+                new AsyncPostInThread(context, threadData, false).execute(content,
+                        sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+
+            }
+
+        });
 
     }
 
@@ -1029,7 +1105,11 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         // Get the actual menu item and tag
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 
-        /* TODO: ADD ALTERNATIVES */
+        // Show the menu
+        menu.add(0, 0, 0, R.string.info_profile_view);
+        menu.add(0, 1, 0, R.string.info_forum_quote);
+        menu.add(0, 2, 0, R.string.info_forum_links);
+        menu.add(0, 3, 0, R.string.info_forum_report);
 
         return;
 
@@ -1039,7 +1119,67 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
         try {
 
-            /* TODO: ADD HANDLERS TO ALTERNATIVES ABOVE */
+            // Let's get the item
+            ForumPostData data = (ForumPostData) info.targetView.getTag();
+
+            // Divide & conquer
+            if (item.getGroupId() == 0) {
+
+                // REQUESTS
+                switch (item.getItemId()) {
+
+                    case 0:
+                        startActivity(new Intent(context, ProfileActivity.class).putExtra(
+                                "profile", data.getProfileData()));
+                        break;
+
+                    case 1:
+                        Toast.makeText(context, R.string.info_forum_quote_warning,
+                                Toast.LENGTH_SHORT).show();
+                        textareaContent.setText(
+
+                                textareaContent.getText().insert(
+
+                                        textareaContent.getSelectionStart(),
+                                        Constants.BBCODE_TAG_QUOTE_IN.replace(
+
+                                                "{number}", data.getPostId() + ""
+
+                                                ).replace(
+
+                                                        "{username}",
+                                                        data.getProfileData().getUsername()
+
+                                                )
+
+                                        )
+
+                                );
+                        selectedQuotes
+                                .put(data.getPostId(),
+                                        (data.isCensored() ? getString(R.string.general_censored)
+                                                : data.getContent()));
+                        break;
+
+                    case 2:
+                        generatePopupWithLinks(data.getContent());
+                        break;
+
+                    case 3:
+                        startActivity(new Intent(context, ForumReportActivity.class)
+                                .putExtra("postId", data.getPostId()));
+                        break;
+
+                    default:
+                        Toast.makeText(context, R.string.msg_unimplemented,
+                                Toast.LENGTH_SHORT).show();
+                        break;
+
+                }
+
+            }
+
+            return true;
 
         } catch (Exception ex) {
 
@@ -1047,8 +1187,6 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
             return false;
 
         }
-
-        return true;
 
     }
 }

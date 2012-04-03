@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog.asynctasks;
 
 import android.os.AsyncTask;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;

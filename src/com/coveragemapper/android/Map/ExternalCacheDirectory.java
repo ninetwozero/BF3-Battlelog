@@ -12,6 +12,7 @@ import java.io.File;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
+import com.ninetwozero.battlelog.R;
 
 public abstract class ExternalCacheDirectory {
     protected final Context mContext;

@@ -544,4 +544,5 @@
 	<string name="info_forum_saved_goto">Go to thread</string>
 	<string name="info_forum_saved_check">Check for updates</string>
 	<string name="info_forum_saved_remove">Remove the thread from the list</string>
+	<string name="info_forum_saved_heading">Saved forum threads</string>
 </resources>

@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,9 +39,12 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ThreadListAdapter;
+import com.ninetwozero.battlelog.asynctasks.AsyncCreateNewThread;
+import com.ninetwozero.battlelog.asynctasks.AsyncPostInThread;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.ForumData;
 import com.ninetwozero.battlelog.datatypes.ForumThreadData;
+import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -56,7 +60,8 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
     private ListView listView;
     private ThreadListAdapter threadListAdapter;
     private TextView textTitle;
-    private Button buttonMore;
+    private Button buttonMore, buttonPost;
+    private EditText textareaTitle, textareaContent;
 
     // Misc
     private long forumId;
@@ -97,7 +102,13 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
         textTitle = (TextView) v.findViewById(R.id.text_title);
         listView = (ListView) v.findViewById(android.R.id.list);
         listView.setAdapter(threadListAdapter = new ThreadListAdapter(context, null, layoutInflater));
+        getActivity().registerForContextMenu(listView);
+        buttonPost = (Button) v.findViewById(R.id.button_new);
         buttonMore = (Button) v.findViewById(R.id.button_more);
+        textareaTitle = (EditText) v.findViewById(R.id.textarea_title);
+        textareaContent = (EditText) v.findViewById(R.id.textarea_content);
+
+        // Set the click listeners
         buttonMore.setOnClickListener(
 
                 new OnClickListener() {
@@ -119,6 +130,42 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
                 }
 
                 );
+
+        // Let's set the onClick events
+        buttonPost.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // Let's get the content
+                String title = textareaTitle.getText().toString();
+                String content = textareaContent.getText().toString();
+
+                // Let's see
+                if (title.equals("")) {
+
+                    Toast.makeText(context, "You need to enter a title for your thread.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+
+                } else if (content.equals("")) {
+
+                    Toast.makeText(context, "You need to enter some content for your thread.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+
+                // Parse for the BBCODE!
+                content = BBCodeUtils.toBBCode(content, null);
+
+                // Ready... set... go!
+                new AsyncCreateNewThread(context, forumId).execute(title, content,
+                        sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+
+            }
+
+        });
 
         currentPage = 1;
         loadFresh = false;

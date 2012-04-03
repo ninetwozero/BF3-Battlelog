@@ -18,6 +18,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.ninetwozero.battlelog.PlatoonActivity;
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncPlatoonMemberManagement extends

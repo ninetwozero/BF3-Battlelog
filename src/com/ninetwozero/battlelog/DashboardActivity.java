@@ -103,6 +103,7 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
     private MenuForumFragment fragmentMenuForum;
     private FeedFragment fragmentFeed;
     private ViewPager viewPager;
+    private final int VIEWPAGER_POSITION_FEED = 4;
 
     // Async
     private AsyncLogout asyncLogout;
@@ -281,10 +282,7 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
         switch (viewPager.getCurrentItem()) {
 
-            case 0:
-                break;
-
-            case 1:
+            case VIEWPAGER_POSITION_FEED:
                 fragmentFeed.createContextMenu(menu, view, menuInfo);
                 break;
 
@@ -316,7 +314,7 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
         switch (viewPager.getCurrentItem()) {
 
-            case 1:
+            case VIEWPAGER_POSITION_FEED:
                 return fragmentFeed.handleSelectedContextItem(info, item);
 
             default:

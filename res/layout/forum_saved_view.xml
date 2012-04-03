@@ -2,18 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="10dp">
-    
+    android:paddingTop="5dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+>    
+	<TextView
+	    style="@style/InfoHeading"
+	  	android:id="@+id/text_title"
+	  	android:text="@string/info_forum_saved_heading"
+	  	android:padding="5dp"
+	  	android:layout_marginBottom="0dp"
+	/>
 	<ListView
-	  	android:id="@android:id/list"
+	    android:id="@android:id/list"
 	  	android:layout_width="fill_parent"
 	  	android:layout_height="fill_parent"
+	  	android:layout_below="@id/text_title"
 	/>
 	<TextView
 	  	android:id="@android:id/empty"
-	  	android:layout_width="wrap_content"
-	  	android:layout_height="wrap_content"
+	  	android:layout_width="fill_parent"
+	  	android:layout_height="fill_parent"
+	  	android:layout_below="@android:id/list"
 	  	android:text="@string/info_forum_empty_saved"
-	  	android:layout_centerInParent="true"
+		android:gravity="center"
 	/>
 </RelativeLayout>

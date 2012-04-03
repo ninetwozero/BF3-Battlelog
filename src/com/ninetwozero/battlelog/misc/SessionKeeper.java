@@ -19,6 +19,7 @@ import java.util.List;
 
 import android.content.SharedPreferences;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;

@@ -419,7 +419,8 @@ public class MainActivity extends FragmentActivity implements DefaultFragmentAct
                 (ViewGroup) findViewById(R.id.dialog_root));
 
         // Set the title and the view
-        builder.setTitle(getString(R.string.general_changelog_version).replace("{version}", Constants.CHANGELOG_VERSION + ""));
+        builder.setTitle(getString(R.string.general_changelog_version).replace("{version}",
+                Constants.CHANGELOG_VERSION + ""));
 
         // Grab the fields
         final TextView textView = (TextView) layout

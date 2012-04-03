@@ -35,7 +35,6 @@
 			    android:id="@+id/button_prev"
 			    android:layout_width="wrap_content"
 			    android:text="&lt;"
-			    android:onClick="onClick"
 			    android:layout_alignParentLeft="true"
 				android:enabled="false"
 			/>
@@ -44,7 +43,6 @@
 			    android:id="@+id/button_next"
 			    android:layout_width="wrap_content"
 			    android:text="&gt;"
-			    android:onClick="onClick"
 			    android:layout_alignParentRight="true"
 				android:enabled="false"
 			/>
@@ -53,7 +51,6 @@
 			    android:id="@+id/button_jump"
 			    android:layout_width="250dp"
 			    android:text="@string/info_xml_feed_button_jump"
-			    android:onClick="onClick"
 			    android:layout_toRightOf="@id/button_prev"
 			    android:layout_toLeftOf="@id/button_next"
 			    android:layout_marginLeft="10dp"
@@ -135,7 +132,6 @@
 				android:id="@+id/button_new"
 				style="@style/RegularButton"
 				android:text="@string/label_post"
-				android:onClick="onPostSubmit"  
 				android:layout_alignParentBottom="true"
 				android:layout_centerInParent="true"
 				android:layout_width="fill_parent"

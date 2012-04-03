@@ -124,7 +124,14 @@ public class DataBank {
                                 Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y8GLB993JKTCL")));
 
         // PERSONA IMAGES
+        PERSONA_IMAGES.put("bf3-us-engineer", R.drawable.bf3_us_engineer);
+        PERSONA_IMAGES.put("bf3-ru-engineer", R.drawable.bf3_ru_engineer);
+        PERSONA_IMAGES.put("bf3-us-assault", R.drawable.bf3_us_assault);
+        PERSONA_IMAGES.put("bf3-ru-assault", R.drawable.bf3_ru_assault);
+        PERSONA_IMAGES.put("bf3-us-support", R.drawable.bf3_us_support);
+        PERSONA_IMAGES.put("bf3-ru-support", R.drawable.bf3_ru_support);
         PERSONA_IMAGES.put("bf3-us-recon", R.drawable.bf3_us_recon);
+        PERSONA_IMAGES.put("bf3-ru-recon", R.drawable.bf3_ru_recon);
 
         // CONTRIBUTORS
         APP_CONTRIBUTORS.add(new AppContributorData(R.string.info_credits_code));
@@ -138,7 +145,7 @@ public class DataBank {
         APP_CONTRIBUTORS.add(new AppContributorData("Stephen 'Dbagjones' Beaudet",
                 "http://djonesradio.com"));
         APP_CONTRIBUTORS.add(new AppContributorData(R.string.info_credits_translations));
-        APP_CONTRIBUTORS.add(new AppContributorData("Alexander Katsero", ""));
+        APP_CONTRIBUTORS.add(new AppContributorData("Alexander Katsero", "http://vk.com/crybot"));
         APP_CONTRIBUTORS.add(new AppContributorData("Angelo Zangarini", ""));
         APP_CONTRIBUTORS.add(new AppContributorData("Arnaud Ligny", ""));
         APP_CONTRIBUTORS.add(new AppContributorData("artsiputsi", ""));
