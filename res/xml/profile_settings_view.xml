@@ -1,107 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-	xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sample="http://schemas.android.com/apk/res/com.ninetwozero.battlelog"
->
-  	<PreferenceCategory android:title="General settings">
-  	    <EditTextPreference
-   	        android:title="Gravatar e-mail" 
-            android:key="profile_general_gravatar"
-            android:hint="user@example.com"
-        />
-  	</PreferenceCategory>
-  	<PreferenceCategory android:title="Soldier settings">
-  	    <EditTextPreference
-   	        android:title="Clan tag" 
-            android:key="profile_soldier_clantag"
-            android:hint="ABCD"
-        />
-	    <!-- Dropdown with different "soldier images" here -->
-  	    <!--  Dogtag dropdown here? -->
-  	</PreferenceCategory>
-  	<PreferenceCategory android:title="Profile information">
-  	    <EditTextPreference
-   	        android:title="Name" 
-   	        android:dialogMessage="What's your name?"
-            android:key="profile_info_name"
-            android:hint="John Doe"
-        />
-  	    <EditTextPreference
-   	        android:title="Presentation" 
-   	        android:dialogMessage="Here's where you can let the other users know a thing or two about yourself."
-            android:key="profile_info_presentation"
-            android:hint="Hello world!"
-        />
-  	    <EditTextPreference
-   	        android:title="Birthday" 
-   	        android:dialogMessage="When's your birthday? Here's how to enter it: YEAR-month-day"
-            android:key="profile_info_birthday"
-            android:hint="YYYY-mm-dd"
-        />
-  	</PreferenceCategory>
-  	<PreferenceCategory android:title="Demographic information">
-  	    <!-- DROPDOWN COUNTRY-->
-  	    <!-- DATE/TIME FORMAT-->
-  	    <!-- LOCAL TIME? -->
-  	</PreferenceCategory>
-  	<PreferenceCategory android:title="Privacy settings">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:sample="http://schemas.android.com/apk/res/com.ninetwozero.battlelog"
+        >
+    <PreferenceCategory android:title="General settings">
+        <EditTextPreference
+                android:title="Gravatar e-mail"
+                android:key="profile_general_gravatar"
+                android:hint="user@example.com"
+                />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Soldier settings">
+        <EditTextPreference
+                android:title="Clan tag"
+                android:key="profile_soldier_clantag"
+                android:hint="ABCD"
+                />
+        <!-- Dropdown with different "soldier images" here -->
+        <!--  Dogtag dropdown here? -->
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Profile information">
+        <EditTextPreference
+                android:title="Name"
+                android:dialogMessage="What's your name?"
+                android:key="profile_info_name"
+                android:hint="John Doe"
+                />
+        <EditTextPreference
+                android:title="Presentation"
+                android:dialogMessage="Here's where you can let the other users know a thing or two about yourself."
+                android:key="profile_info_presentation"
+                android:hint="Hello world!"
+                />
+        <com.ninetwozero.battlelog.preference.DatePickerPreference
+                android:dialogMessage="@string/profile_info_birthday_msg"
+                android:title="@string/birthday"
+                />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Demographic information">
+        <com.ninetwozero.battlelog.preference.CountryPreference
+            android:title="@string/country"
+            android:dialogMessage="@string/profile_info_country"
+            />
+        <!-- DATE/TIME FORMAT-->
+        <!-- LOCAL TIME? -->
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Privacy settings">
         <CheckBoxPreference
-   	        android:title="Show personal info on profile" 
-   	        android:summaryOn="Your personal info is visible for anyone to view."
-   	        android:summaryOff="Your personal info is not visible for everyone."
-            android:key="profile_privacy_info"
-            android:defaultValue="false"
-        />
+                android:title="Show personal info on profile"
+                android:summaryOn="Your personal info is visible for anyone to view."
+                android:summaryOff="Your personal info is not visible for everyone."
+                android:key="profile_privacy_info"
+                android:defaultValue="false"
+                />
         <CheckBoxPreference
-   	        android:title="Share game activity" 
-   	        android:summaryOn="Your game events and activity will be posted to your Battle feed."
-   	        android:summaryOff="Your game events and activity will NOT be posted to your Battle feed."
-            android:key="profile_privacy_post"
-            android:defaultValue="false"
-        />
+                android:title="Share game activity"
+                android:summaryOn="Your game events and activity will be posted to your Battle feed."
+                android:summaryOff="Your game events and activity will NOT be posted to your Battle feed."
+                android:key="profile_privacy_post"
+                android:defaultValue="false"
+                />
         <CheckBoxPreference
-   	        android:title="Allow friend requests" 
-   	        android:summaryOn="Other players will be able to send you friend requests."
-   	        android:summaryOff="Other players will be unable to send you friend requests."
-            android:key="profile_privacy_friends"
-            android:defaultValue="false"
-        />
-  	</PreferenceCategory>
-  	<PreferenceCategory android:title="Sound notifications (web)">
+                android:title="Allow friend requests"
+                android:summaryOn="Other players will be able to send you friend requests."
+                android:summaryOff="Other players will be unable to send you friend requests."
+                android:key="profile_privacy_friends"
+                android:defaultValue="false"
+                />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Sound notifications (web)">
         <CheckBoxPreference
-   	        android:title="Mute chat notification" 
-   	        android:summaryOn="You will be notified of new chat messages."
-   	        android:summaryOff="You will not be notified of new chat messages."
-            android:key="profile_sound_chat"
-            android:defaultValue="false"
-        />
+                android:title="Mute chat notification"
+                android:summaryOn="You will be notified of new chat messages."
+                android:summaryOff="You will not be notified of new chat messages."
+                android:key="profile_sound_chat"
+                android:defaultValue="false"
+                />
         <CheckBoxPreference
-   	        android:title="Mute event notification" 
-   	        android:summaryOn="You will be notified of new events."
-   	        android:summaryOff="You will not be notified of new events."
-            android:key="profile_sound_notification"
-            android:defaultValue="false"
-        />
+                android:title="Mute event notification"
+                android:summaryOn="You will be notified of new events."
+                android:summaryOff="You will not be notified of new events."
+                android:key="profile_sound_notification"
+                android:defaultValue="false"
+                />
         <CheckBoxPreference
-   	        android:title="Mute battle report notification" 
-   	        android:summaryOn="You will be notified of new Battle reports."
-   	        android:summaryOff="You will not be notified of new Battle reports."
-            android:key="profile_sound_br"
-            android:defaultValue="false"
-        />
+                android:title="Mute battle report notification"
+                android:summaryOn="You will be notified of new Battle reports."
+                android:summaryOff="You will not be notified of new Battle reports."
+                android:key="profile_sound_br"
+                android:defaultValue="false"
+                />
         <CheckBoxPreference
-   	        android:title="Mute friend request notification" 
-   	        android:summaryOn="You will be notified of new friend requests."
-   	        android:summaryOff="You will not be notified of new friend requests."
-   	        android:key="profile_sound_friend"
-            android:defaultValue="false"
-        />
+                android:title="Mute friend request notification"
+                android:summaryOn="You will be notified of new friend requests."
+                android:summaryOff="You will not be notified of new friend requests."
+                android:key="profile_sound_friend"
+                android:defaultValue="false"
+                />
         <CheckBoxPreference
-   	        android:title="Mute game notification" 
-   	        android:summaryOn="You will be notified when the game is ready."
-   	        android:summaryOff="You will not be notified when the game is ready."            
-   	        android:key="profile_sound_game"
-            android:defaultValue="false"
-        />
-   	</PreferenceCategory>
+                android:title="Mute game notification"
+                android:summaryOn="You will be notified when the game is ready."
+                android:summaryOff="You will not be notified when the game is ready."
+                android:key="profile_sound_game"
+                android:defaultValue="false"
+                />
+    </PreferenceCategory>
 </PreferenceScreen>
