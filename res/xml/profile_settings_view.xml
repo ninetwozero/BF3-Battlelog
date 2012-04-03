@@ -38,7 +38,10 @@
                 />
     </PreferenceCategory>
     <PreferenceCategory android:title="Demographic information">
-        <!-- DROPDOWN COUNTRY-->
+        <com.ninetwozero.battlelog.preference.CountryPreference
+            android:title="@string/country"
+            android:dialogMessage="@string/profile_info_country"
+            />
         <!-- DATE/TIME FORMAT-->
         <!-- LOCAL TIME? -->
     </PreferenceCategory>
