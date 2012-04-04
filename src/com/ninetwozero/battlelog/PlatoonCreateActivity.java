@@ -117,7 +117,7 @@ public class PlatoonCreateActivity extends Activity {
 
             // Actually fire off the AsyncTask to create the platoon
             new AsyncCreate(this).execute(stringName, stringTag, stringActive,
-                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
         }
 

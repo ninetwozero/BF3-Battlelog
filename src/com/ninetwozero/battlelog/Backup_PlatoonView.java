@@ -1062,7 +1062,7 @@ public class Backup_PlatoonView extends TabActivity {
 
                     this, platoonData.getId(), SessionKeeper.getProfileData()
                             .getId(), sharedPreferences.getString(
-                            Constants.SP_BL_CHECKSUM, "")
+                            Constants.SP_BL_PROFILE_CHECKSUM, "")
 
             ).execute(true);
 
@@ -1072,7 +1072,7 @@ public class Backup_PlatoonView extends TabActivity {
 
                     this, platoonData.getId(), SessionKeeper.getProfileData()
                             .getId(), sharedPreferences.getString(
-                            Constants.SP_BL_CHECKSUM, "")
+                            Constants.SP_BL_PROFILE_CHECKSUM, "")
 
             ).execute(false);
 
@@ -1334,7 +1334,7 @@ public class Backup_PlatoonView extends TabActivity {
                             this, platoonData.getId(), data.getId(), true
 
                     ).execute(sharedPreferences.getString(
-                            Constants.SP_BL_CHECKSUM, ""));
+                            Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
                 } else if (item.getItemId() == 4) {
 
@@ -1346,7 +1346,7 @@ public class Backup_PlatoonView extends TabActivity {
                             this, platoonData.getId(), data.getId(), false
 
                     ).execute(sharedPreferences.getString(
-                            Constants.SP_BL_CHECKSUM, ""));
+                            Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
                 }
 
@@ -1366,7 +1366,7 @@ public class Backup_PlatoonView extends TabActivity {
 
                             sharedPreferences.getString(
 
-                                    Constants.SP_BL_CHECKSUM, ""
+                                    Constants.SP_BL_PROFILE_CHECKSUM, ""
 
                                     )
 
@@ -1564,7 +1564,7 @@ public class Backup_PlatoonView extends TabActivity {
                 ((PlatoonMemberData) ((View) v.getParent()).getTag())
                         .getId(), (v.getId() == R.id.button_accept)
 
-        ).execute(sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+        ).execute(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 

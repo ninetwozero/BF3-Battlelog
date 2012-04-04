@@ -86,7 +86,7 @@ public class AsyncSessionRenew extends AsyncTask<PostData, Integer, Boolean> {
 
         } catch (WebsiteHandlerException e) {
             return false;
-        } catch (RequestHandlerException e){
+        } catch (RequestHandlerException e) {
             return false;
         }
 

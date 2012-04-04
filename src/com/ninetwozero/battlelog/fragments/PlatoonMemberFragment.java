@@ -333,7 +333,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
                             context, platoonData.getId(), data.getId(), true
 
                     ).execute(sharedPreferences.getString(
-                            Constants.SP_BL_CHECKSUM, ""));
+                            Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
                 } else if (item.getItemId() == 4) {
 
@@ -345,7 +345,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
                             context, platoonData.getId(), data.getId(), false
 
                     ).execute(sharedPreferences.getString(
-                            Constants.SP_BL_CHECKSUM, ""));
+                            Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
                 }
 

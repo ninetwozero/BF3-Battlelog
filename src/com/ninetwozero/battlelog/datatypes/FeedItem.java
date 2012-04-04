@@ -20,7 +20,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.ninetwozero.battlelog.AssignmentActivity;
-import com.ninetwozero.battlelog.Backup_ForumThreadView;
+import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.PlatoonActivity;
 import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
@@ -289,7 +289,7 @@ public class FeedItem implements Parcelable {
         } else if (type.equals("createdforumthread")
                 || type.equals("wroteforumpost")) {
 
-            return new Intent(c, Backup_ForumThreadView.class).putExtra(
+            return new Intent(c, ForumActivity.class).putExtra(
 
                     "threadId", this.itemId
 
@@ -297,7 +297,7 @@ public class FeedItem implements Parcelable {
 
                             "threadTitle", "N/A"
 
-                    );
+                    ).putExtra("forumId", 0).putExtra("forumTitle", "N/A");
 
         } else if (
 

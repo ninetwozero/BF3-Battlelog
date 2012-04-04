@@ -97,7 +97,7 @@
 	</string>
 	<string name="general_invalid_email">Endereço de email inválido </string>
 	<string name="general_invalid_password">Por favor introduza a sua password. </string>
-	<string name="general_changelog_version">Versão do registo de alterações </string>
+	<string name="general_changelog_version">Versão do registo de alterações  {version}</string>
 	<string name="general_wait">Aguarde por favor</string>
 	<string name="general_downloading">Fazendo download dos dados... </string>
 	<string name="general_no_data">Não foram encontrados dados. </string>

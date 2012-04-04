@@ -125,7 +125,7 @@ public class PlatoonInviteActivity extends ListActivity {
 
                     this, selectedIds, platoonData.getId()
 
-            ).execute(sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+            ).execute(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
         } else if (v.getId() == R.id.button_cancel) {
 

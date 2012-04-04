@@ -25,18 +25,18 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.ForumSearchResult;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ForumSearchAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private List<Board.SearchResult> itemArray;
+    private List<ForumSearchResult> itemArray;
     private LayoutInflater layoutInflater;
 
     // Construct
-    public ForumSearchAdapter(Context c, List<Board.SearchResult> m,
+    public ForumSearchAdapter(Context c, List<ForumSearchResult> m,
             LayoutInflater l) {
 
         context = c;
@@ -53,7 +53,7 @@ public class ForumSearchAdapter extends BaseAdapter {
     }
 
     @Override
-    public Board.SearchResult getItem(int position) {
+    public ForumSearchResult getItem(int position) {
 
         return this.itemArray.get(position);
 
@@ -84,7 +84,7 @@ public class ForumSearchAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the current item
-        Board.SearchResult currentItem = getItem(position);
+        ForumSearchResult currentItem = getItem(position);
 
         // Recycle
         if (convertView == null) {
@@ -140,14 +140,14 @@ public class ForumSearchAdapter extends BaseAdapter {
 
     }
 
-    public void setItemArray(List<Board.SearchResult> array) {
+    public void setItemArray(List<ForumSearchResult> array) {
 
         this.itemArray = array;
         this.notifyDataSetInvalidated();
 
     }
 
-    public void addItem(List<Board.SearchResult> array) {
+    public void addItem(List<ForumSearchResult> array) {
 
         this.itemArray.addAll(array);
 
