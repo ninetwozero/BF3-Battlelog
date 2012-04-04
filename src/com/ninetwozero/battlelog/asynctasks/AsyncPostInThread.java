@@ -18,7 +18,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Backup_ForumThreadView;
+import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
@@ -46,6 +46,7 @@ public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
         try {
 
             // How'd it go?
+            threadData.setNumPosts(threadData.getNumPosts()+1);
             return WebsiteHandler.postReplyInThread(
 
                     this.context, arg0[0], arg0[1], this.threadData, this.cache, SessionKeeper
@@ -70,10 +71,10 @@ public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
 
             Toast.makeText(this.context, R.string.info_forum_newpost_true,
                     Toast.LENGTH_SHORT).show();
-            if (context instanceof Backup_ForumThreadView) {
+            if (context instanceof ForumActivity) {
 
-                ((Backup_ForumThreadView) this.context).reload();
-                ((Backup_ForumThreadView) this.context).resetPostFields();
+                ((ForumActivity) this.context).reload();
+                ((ForumActivity) this.context).resetPostFields();
 
             }
 

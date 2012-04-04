@@ -35,15 +35,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.SavedThreadListAdapter;
+import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.datatypes.SavedForumThreadData;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class ForumSavedActivity extends ListActivity {
 
@@ -57,7 +60,8 @@ public class ForumSavedActivity extends ListActivity {
 
     // Misc
     private List<SavedForumThreadData> threads;
-
+    private String locale;
+    
     @Override
     public void onCreate(Bundle icicle) {
 
@@ -80,7 +84,7 @@ public class ForumSavedActivity extends ListActivity {
 
         // Set the content view
         setContentView(R.layout.forum_saved_view);
-
+        
         // Last but not least - init
         initActivity();
 
@@ -88,9 +92,12 @@ public class ForumSavedActivity extends ListActivity {
 
     public void initActivity() {
 
+        //Get the ListView
         listView = getListView();
         registerForContextMenu(listView);
 
+        //Get the locale
+        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
     }
 
     @Override
@@ -217,25 +224,47 @@ public class ForumSavedActivity extends ListActivity {
 
     }
 
-    public class AsyncRefresh extends AsyncTask<Long, Void, Boolean> {
+    public class AsyncRefresh extends AsyncTask<SavedForumThreadData, Void, Boolean> {
 
         // Attributes
+        private Context context;
+        private View imageBar;
+        private ForumThreadData forumThread;
+        
+        public AsyncRefresh(Context c, RelativeLayout r) {
 
-        public AsyncRefresh() {
-
+            context = c;
+            imageBar = r.findViewById(R.id.bar_status);
+            
         }
 
         @Override
         protected void onPreExecute() {
+            
+            imageBar.setBackgroundColor(context.getResources().getColor(R.color.orange));
+            
         }
 
         @Override
-        protected Boolean doInBackground(Long... arg0) {
+        protected Boolean doInBackground(SavedForumThreadData ... t) {
 
             try {
-
-                return true;
-
+                
+                //Get the thread
+                forumThread = WebsiteHandler.getPostsForThread(locale, t[0].getId());
+                boolean status = (forumThread.getNumPosts() > t[0].getNumPosts() );
+                
+                //Update the saved forum thread
+                t[0].setUnread(status);
+                t[0].setDateLastPost(forumThread.getLastPostDate());
+                t[0].setLastPoster(forumThread.getLastPoster());
+                t[0].setDateLastChecked( System.currentTimeMillis()/1000 );
+                
+                //Are there new posts?
+                CacheHandler.Forum.updateAfterRefresh(context, t[0]);
+                
+                return status;
+                
             } catch (Exception ex) {
 
                 ex.printStackTrace();
@@ -247,22 +276,71 @@ public class ForumSavedActivity extends ListActivity {
 
         @Override
         protected void onPostExecute(Boolean result) {
-
-            if (result) {
-
-                // Siiiiiiiiilent refresh
-
+            
+            if( result ) {
+                
+                imageBar.setBackgroundColor(context.getResources().getColor(R.color.green));
+                
             } else {
-
+                
+                imageBar.setBackgroundColor(context.getResources().getColor(R.color.lightgrey));
+                
             }
-
-            // Get back here!
-            return;
-
+            
+            //Update the ListView
+            ((SavedThreadListAdapter) listView.getAdapter()).notifyDataSetChanged();
+            
         }
 
     }
+    public class AsyncDelete extends AsyncTask<SavedForumThreadData, Void, Boolean> {
 
+        // Attributes
+        private Context context;
+        
+        public AsyncDelete(Context c) {
+
+            context = c;
+            
+        }
+
+        @Override
+        protected Boolean doInBackground(SavedForumThreadData ... t) {
+
+            try {
+                
+                //Delete the item
+                return CacheHandler.Forum.delete(context, new long[] { t[0].getId() });
+                
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+                return false;
+
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            
+            /* TODO: TOAST? */
+            if( result ) {
+                
+                Toast.makeText(context, "The thread has been removed from the list.", Toast.LENGTH_SHORT).show();
+            
+            } else {
+                
+                Toast.makeText(context, "The thread could not be removed from the list.", Toast.LENGTH_SHORT).show();    
+                
+            }
+            
+            //Update the ListView
+            reload();
+            
+        }
+
+    }
     @Override
     public void onListItemClick(ListView lv, View v, int p, long id) {
 
@@ -310,12 +388,11 @@ public class ForumSavedActivity extends ListActivity {
 
         } else if (item.getItemId() == 1) {
 
-            Toast.makeText(this, R.string.msg_unimplemented, Toast.LENGTH_SHORT).show();
-            // new AsyncRefresh().execute(thread.getId());
+            new AsyncRefresh(this, (RelativeLayout) info.targetView).execute(thread);
 
         } else if (item.getItemId() == 2) {
 
-            Toast.makeText(this, R.string.msg_unimplemented, Toast.LENGTH_SHORT).show();
+            new AsyncDelete(this).execute(thread);
         }
 
         return true;

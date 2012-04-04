@@ -245,7 +245,7 @@ public class ForumSearchActivity extends ListActivity {
 
         startActivity(
 
-        new Intent(this, Backup_ForumThreadView.class).putExtra(
+        new Intent(this, ForumActivity.class).putExtra(
 
                 "threadId", id
 

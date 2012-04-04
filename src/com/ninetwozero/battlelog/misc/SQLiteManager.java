@@ -207,6 +207,10 @@ public class SQLiteManager {
                             + " INTEGER, "
                             + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED
                             + " INTEGER, "
+                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS
+                            + " INTEGER, "
+                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD
+                            + " INTEGER, "
                             + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_PROFILE_ID
                             + " INTEGER "
                             + " )"

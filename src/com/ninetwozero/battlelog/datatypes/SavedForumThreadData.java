@@ -16,7 +16,10 @@ package com.ninetwozero.battlelog.datatypes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.misc.Constants;
 
 public class SavedForumThreadData implements Parcelable {
 
@@ -24,11 +27,14 @@ public class SavedForumThreadData implements Parcelable {
     private long id, forumId, dateLastPost, dateLastChecked, dateLastRead, profileId;
     private String title;
     private ProfileData lastPoster;
-    private int numPageLastRead;
+    private int numPageLastRead, numPosts;
+    private boolean unread;
 
     // Construct
     public SavedForumThreadData(long i, String t, long fId, long dlp, ProfileData p, long dlc,
-            long dlr, int n, long pId) {
+            long dlr, int nplr, int np, boolean u, long pId) {
+        
+        Log.d(Constants.DEBUG_TAG, "n => " + nplr);
         id = i;
         title = t;
         forumId = fId;
@@ -36,7 +42,9 @@ public class SavedForumThreadData implements Parcelable {
         lastPoster = p;
         dateLastChecked = dlc;
         dateLastRead = dlr;
-        numPageLastRead = n;
+        numPageLastRead = nplr;
+        numPosts = np;
+        unread = u;
         profileId = pId;
 
     }
@@ -51,6 +59,9 @@ public class SavedForumThreadData implements Parcelable {
         dateLastChecked = in.readLong();
         dateLastRead = in.readLong();
         numPageLastRead = in.readInt();
+        numPosts = in.readInt();
+        unread = in.readInt() == 1;
+        profileId = in.readLong();
 
     }
 
@@ -101,7 +112,50 @@ public class SavedForumThreadData implements Parcelable {
 
         return numPageLastRead;
     }
+    
+    public int getNumPosts() {
 
+        return numPosts;
+    }
+    
+    public boolean hasUnread() {
+        
+        return unread;
+    }
+    
+    //Setters
+    public void setDateLastPost(long d) {
+
+        dateLastPost = d;
+
+    }
+
+    public void setLastPoster(ProfileData l) {
+        lastPoster = l;
+    }
+    
+    public void setNumPosts(int n) {
+        
+        numPosts = n;
+    }
+    
+    public void setDateLastRead(long d) {
+        
+        dateLastRead = d;
+    }
+    
+    public void setDateLastChecked(long d) {
+        
+        dateLastChecked = d;
+        
+    }
+    
+    public void setUnread(boolean b) {
+        
+        unread = b;
+    
+    }
+    
     public String[] toStringArray() {
 
         return new String[] {
@@ -113,6 +167,8 @@ public class SavedForumThreadData implements Parcelable {
                 lastPoster.getUsername(),
                 lastPoster.getId() + "",
                 numPageLastRead + "",
+                numPosts + "",
+                unread ? "1" : "0",
                 dateLastRead + "",
                 dateLastChecked + "",
                 profileId + "",
@@ -137,6 +193,8 @@ public class SavedForumThreadData implements Parcelable {
         dest.writeLong(dateLastChecked);
         dest.writeLong(dateLastRead);
         dest.writeInt(numPageLastRead);
+        dest.writeInt(numPosts);
+        dest.writeInt(unread ? 1 : 0);
         dest.writeLong(profileId);
 
     }

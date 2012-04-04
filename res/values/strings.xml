@@ -543,7 +543,7 @@
 	<string name="info_forum_adapter_last_checked">Last checked &lt;b>{date}&lt;/b></string>
 	<string name="info_forum_saved_goto">Go to thread</string>
 	<string name="info_forum_saved_check">Check for updates</string>
-	<string name="info_forum_saved_remove">Remove the thread from the list</string>
+	<string name="info_forum_saved_remove">Remove the thread</string>
 	<string name="info_forum_saved_heading">Saved forum threads</string>
     <string name="profile_info_birthday_msg">Selecting birthday will make it VISIBLE on your profile. Leave it as today or date in future will HIDE this information from your profile.</string>
     <string name="birthday">Birthday</string>

@@ -69,18 +69,14 @@ public class SavedThreadListAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
 
-        if (getItem(position).getId() == 0) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return 0;
 
     }
 
     @Override
     public int getViewTypeCount() {
 
-        return 2;
+        return 1;
 
     }
 
@@ -138,6 +134,10 @@ public class SavedThreadListAdapter extends BaseAdapter {
                         )
 
                 );
+
+        convertView.findViewById(R.id.bar_status).setBackgroundColor(
+                context.getResources().getColor(
+                        currentItem.hasUnread() ? R.color.green : R.color.lightgrey));
 
         // Store the object
         convertView.setTag(currentItem);

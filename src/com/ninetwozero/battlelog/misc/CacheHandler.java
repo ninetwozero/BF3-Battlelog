@@ -23,9 +23,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
@@ -989,9 +989,9 @@ public class CacheHandler {
                     if (i == (max - 1)) {
 
                         valueArray[i + 1] = uid + "";
-
+                        break;
                     }
-
+                    
                 }
 
                 // Get them!!
@@ -1006,8 +1006,8 @@ public class CacheHandler {
                 manager.close();
                 return results;
 
-            } catch (SQLiteConstraintException ex) { // Duplicate input, no
-                // worries!
+            } catch (SQLiteConstraintException ex) {
+                // Duplicate input, no worries!
 
                 manager.close();
                 return 0;
@@ -1079,6 +1079,50 @@ public class CacheHandler {
                         DatabaseStructure.ForumThreads.TABLE_NAME,
                         DatabaseStructure.ForumThreads.getColumns(),
                         thread.toStringArray(),
+                        DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
+                        thread.getId()
+
+                        );
+
+                manager.close();
+                return true;
+
+            } catch (Exception ex) {
+
+                manager.close();
+                ex.printStackTrace();
+                return false;
+
+            }
+
+        }
+        
+        public static boolean updateAfterRefresh(Context context, SavedForumThreadData thread) {
+
+            // Use the SQLiteManager to get a cursor
+            SQLiteManager manager = new SQLiteManager(context);
+
+            try {
+                // UPDATE them!!
+                manager.update(
+
+                        DatabaseStructure.ForumThreads.TABLE_NAME,
+                        new String[] {
+                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD,
+                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST,
+                            DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR,
+                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_AUTHOR_ID,
+                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED,
+                            
+                        },
+                        new String[] { 
+
+                            thread.hasUnread() ? "1" : "0",
+                            thread.getDateLastPost() + "",
+                            thread.getLastPoster().getUsername(),
+                            thread.getLastPoster().getId() + "",    
+                            thread.getDateLastChecked() + ""
+                        },
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                         thread.getId()
 
@@ -1190,7 +1234,11 @@ public class CacheHandler {
                                 results.getLong(results
                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_READ)),
                                 results.getInt(results
-                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID)),
+                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_PAGE_ID)),
+                                results.getInt(results
+                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS)),
+                                results.getInt(results
+                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD)) == 1,
                                 results.getLong(results
                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_PROFILE_ID))
                                 );
@@ -1262,7 +1310,12 @@ public class CacheHandler {
                                         results.getLong(results
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_READ)),
                                         results.getInt(results
-                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID)),
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_PAGE_ID)),
+                                        results.getInt(results
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS)),
+                                        results.getInt(results
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS)) == 1,
+                                                        
                                         uid
                                 )
                                 );

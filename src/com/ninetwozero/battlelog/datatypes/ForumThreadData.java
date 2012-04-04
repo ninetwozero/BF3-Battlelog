@@ -19,7 +19,9 @@ import java.util.List;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.ninetwozero.battlelog.R;
+import android.util.Log;
+
+import com.ninetwozero.battlelog.misc.Constants;
 
 public class ForumThreadData implements Parcelable {
 
@@ -239,6 +241,13 @@ public class ForumThreadData implements Parcelable {
     public List<ForumPostData> getPosts() {
         return posts;
     }
+    
+    //Setters
+    public void setNumPosts(int n) {
+        
+        numPosts = n;
+        
+    }
 
     @Override
     public int describeContents() {
@@ -257,7 +266,7 @@ public class ForumThreadData implements Parcelable {
         dest.writeInt(numPosts);
         dest.writeInt(numCurrentPage);
         dest.writeInt(numTotalPages);
-
+        
         dest.writeString(title);
 
         dest.writeParcelable(owner, flags);
@@ -310,6 +319,8 @@ public class ForumThreadData implements Parcelable {
                 lastPoster.getUsername(),
                 lastPoster.getId() + "",
                 numTotalPages + "",
+                numPosts + "",
+                "0",
                 time,
                 time
 

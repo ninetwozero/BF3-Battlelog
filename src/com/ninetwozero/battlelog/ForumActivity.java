@@ -271,7 +271,7 @@ public class ForumActivity extends FragmentActivity implements DefaultFragmentAc
             openForum(new Intent().putExtra("forumTitle", "N/A").putExtra("forumId",
                     savedThread.getForumId()));
             openThread(new Intent().putExtra("threadTitle", savedThread.getTitle()).putExtra(
-                    "threadId", savedThread.getId()));
+                    "threadId", savedThread.getId()).putExtra("pageId", savedThread.getNumPageLastRead()));
 
         }
 
@@ -327,6 +327,21 @@ public class ForumActivity extends FragmentActivity implements DefaultFragmentAc
         }
 
         return true;
+
     }
 
+    public void resetPostFields() {
+        
+        switch( viewPager.getCurrentItem() ) {
+         
+            case 2:
+                fragmentForumThread.resetPostFields();
+                break;
+                
+            default:
+                break;
+        }
+        
+    }
+    
 }

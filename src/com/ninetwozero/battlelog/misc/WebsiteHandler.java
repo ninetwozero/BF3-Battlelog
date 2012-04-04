@@ -5129,12 +5129,12 @@ public class WebsiteHandler {
             RequestHandler rh = new RequestHandler();
             final String httpContent = rh.get(
 
-                    Constants.URL_FORUM_THREAD.replace("{LOCALE}", locale)
-                            .replace("{THREAD_ID}", threadId + "")
-                            .replace("{PAGE}", "1"), 1
+            Constants.URL_FORUM_THREAD.replace("{LOCALE}", locale)
+                    .replace("{THREAD_ID}", threadId + "")
+                    .replace("{PAGE}", "1"), 1
 
-                    );
-
+            );
+            
             // Let's parse it!
             JSONObject contextObject = new JSONObject(httpContent)
                     .getJSONObject("context");
@@ -5216,7 +5216,7 @@ public class WebsiteHandler {
         } catch (Exception ex) {
 
             ex.printStackTrace();
-            throw new WebsiteHandlerException("No threads found.");
+            throw new WebsiteHandlerException("No thread data found.");
 
         }
 
@@ -5880,7 +5880,9 @@ public class WebsiteHandler {
                             .replace("{PAGE}", page + ""), 1
 
                     );
-
+Log.d(Constants.DEBUG_TAG, "The link => " + Constants.URL_FORUM_THREAD.replace("{LOCALE}", locale)
+                            .replace("{THREAD_ID}", threadId + "")
+                            .replace("{PAGE}", page + ""));
             // Let's parse it!
             JSONArray postArray = new JSONObject(httpContent).getJSONObject(
                     "context").getJSONArray("posts");
@@ -5922,7 +5924,7 @@ public class WebsiteHandler {
         } catch (Exception ex) {
 
             ex.printStackTrace();
-            throw new WebsiteHandlerException("No threads found.");
+            throw new WebsiteHandlerException("No posts found for the thread.");
 
         }
 

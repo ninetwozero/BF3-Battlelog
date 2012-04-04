@@ -190,6 +190,8 @@ public final class DatabaseStructure {
         public static final String COLUMN_NAME_STRING_LAST_AUTHOR = "last_post_author";
         public static final String COLUMN_NAME_NUM_LAST_AUTHOR_ID = "last_post_author_id";
         public static final String COLUMN_NAME_NUM_LAST_PAGE_ID = "last_page_id";
+        public static final String COLUMN_NAME_NUM_POSTS = "num_posts";
+        public static final String COLUMN_NAME_NUM_HAS_UNREAD = "has_unread";
         public static final String COLUMN_NAME_NUM_DATE_READ = "date_read";
         public static final String COLUMN_NAME_NUM_DATE_CHECKED = "date_checked";
 
@@ -200,7 +202,7 @@ public final class DatabaseStructure {
         public static final String[] getColumns() {
 
             return new String[] {
-
+                    
                     COLUMN_NAME_NUM_ID,
                     COLUMN_NAME_NUM_FORUM_ID,
                     COLUMN_NAME_STRING_TITLE,
@@ -208,8 +210,10 @@ public final class DatabaseStructure {
                     COLUMN_NAME_STRING_LAST_AUTHOR,
                     COLUMN_NAME_NUM_LAST_AUTHOR_ID,
                     COLUMN_NAME_NUM_LAST_PAGE_ID,
+                    COLUMN_NAME_NUM_POSTS,
                     COLUMN_NAME_NUM_DATE_READ,
                     COLUMN_NAME_NUM_DATE_CHECKED,
+                    COLUMN_NAME_NUM_HAS_UNREAD,
                     COLUMN_NAME_NUM_PROFILE_ID
 
             };
