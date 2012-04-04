@@ -18,7 +18,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Backup_ForumView;
+import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -65,10 +65,10 @@ public class AsyncCreateNewThread extends AsyncTask<String, Void, Boolean> {
 
             Toast.makeText(this.context, R.string.info_forum_newthread_true,
                     Toast.LENGTH_SHORT).show();
-            if (context instanceof Backup_ForumView) {
+            if (context instanceof ForumActivity) {
 
-                ((Backup_ForumView) this.context).manualReload();
-                ((Backup_ForumView) this.context).resetPostFields();
+                ((ForumActivity) this.context).reload();
+                ((ForumActivity) this.context).resetPostFields();
             }
 
         } else {

@@ -94,7 +94,7 @@ Stuur problemen of bugs naar support@ninetwozero.com en/of
 Dank je wel voor het meedenken!</string>
 	<string name="general_invalid_email">Onbekend e-mail adres.</string>
 	<string name="general_invalid_password">Geef je wachtwoord op.</string>
-	<string name="general_changelog_version">Changelog versie</string>
+	<string name="general_changelog_version">Changelog versie {version}</string>
 	<string name="general_wait">Moment geduld</string>
 	<string name="general_downloading">Bezig de data op te halen...</string>
 	<string name="general_no_data">Geen data gevonden.</string>

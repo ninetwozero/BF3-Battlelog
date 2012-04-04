@@ -57,7 +57,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
             playerTwo = WebsiteHandler.getProfileIdFromSearch(
 
                     searchString,
-                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, "")
+                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 
                     );
 

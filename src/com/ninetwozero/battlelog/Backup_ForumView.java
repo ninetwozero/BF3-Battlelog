@@ -43,7 +43,8 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ThreadListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncCreateNewThread;
-import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.ForumData;
+import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -55,7 +56,7 @@ public class Backup_ForumView extends ListActivity {
     private final Context CONTEXT = this;
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
-    private Board.Forum currentForum;
+    private ForumData currentForum;
     private long forumId;
     private String forumTitle, locale;
     private int currentPage = 1;
@@ -92,7 +93,7 @@ public class Backup_ForumView extends ListActivity {
         // Get the forumId
         forumId = getIntent().getLongExtra("forumId", 0);
         forumTitle = getIntent().getStringExtra("forumTitle");
-        locale = sharedPreferences.getString(Constants.SP_BL_LOCALE, "en");
+        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
 
         // Update the title
         this.setTitle(getTitle().toString().replace("...", forumTitle));
@@ -294,7 +295,7 @@ public class Backup_ForumView extends ListActivity {
 
                 ).putExtra(
 
-                        "threadTitle", ((Board.ThreadData) v.getTag()).getTitle()
+                        "threadTitle", ((ForumThreadData) v.getTag()).getTitle()
 
                 )
 
@@ -391,7 +392,7 @@ public class Backup_ForumView extends ListActivity {
 
         // Ready... set... go!
         new AsyncCreateNewThread(this, forumId).execute(title, content,
-                sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+                sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 
@@ -457,7 +458,7 @@ public class Backup_ForumView extends ListActivity {
         private Context context;
         private long forumId;
         private int page;
-        private List<Board.ThreadData> threads;
+        private List<ForumThreadData> threads;
 
         // Constructs
         public AsyncLoadMore(Context c, long f) {
@@ -480,8 +481,7 @@ public class Backup_ForumView extends ListActivity {
             try {
 
                 page = arg0[0];
-                threads = WebsiteHandler.getThreadsForForum(this.forumId, page,
-                        locale);
+                threads = WebsiteHandler.getThreadsForForum(locale, this.forumId, page);
                 return true;
 
             } catch (Exception ex) {

@@ -97,7 +97,7 @@
 	</string>
 	<string name="general_invalid_email">Ne važeći e-mail</string>
 	<string name="general_invalid_password">Molim ukucajte vašu lozinku</string>
-	<string name="general_changelog_version">Changelog version</string>
+	<string name="general_changelog_version">Changelog version {version}</string>
 	<string name="general_wait">Molim sačekajte</string>
 	<string name="general_downloading">Preuzimanje datoteka</string>
 	<string name="general_no_data">Nema pronadjenih datoteka</string>

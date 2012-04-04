@@ -78,7 +78,7 @@ public class AsyncComRefresh extends AsyncTask<Void, Integer, Boolean> {
 
             // Let's get this!!
             profileArray = WebsiteHandler.getFriendsCOM(context,
-                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
             return true;
 
         } catch (WebsiteHandlerException e) {

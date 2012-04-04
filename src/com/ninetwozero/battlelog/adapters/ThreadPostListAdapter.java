@@ -25,18 +25,18 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.ForumPostData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ThreadPostListAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private List<Board.PostData> itemArray;
+    private List<ForumPostData> itemArray;
     private LayoutInflater layoutInflater;
 
     // Construct
-    public ThreadPostListAdapter(Context c, List<Board.PostData> m,
+    public ThreadPostListAdapter(Context c, List<ForumPostData> m,
             LayoutInflater l) {
 
         context = c;
@@ -53,7 +53,7 @@ public class ThreadPostListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Board.PostData getItem(int position) {
+    public ForumPostData getItem(int position) {
 
         return this.itemArray.get(position);
 
@@ -88,7 +88,7 @@ public class ThreadPostListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the current item
-        Board.PostData currentItem = getItem(position);
+        ForumPostData currentItem = getItem(position);
 
         // Recycle
         if (convertView == null) {
@@ -148,14 +148,14 @@ public class ThreadPostListAdapter extends BaseAdapter {
 
     }
 
-    public void set(List<Board.PostData> array) {
+    public void set(List<ForumPostData> array) {
 
         this.itemArray = array;
         this.notifyDataSetChanged();
 
     }
 
-    public void add(List<Board.PostData> array) {
+    public void add(List<ForumPostData> array) {
 
         this.itemArray.addAll(array);
         this.notifyDataSetChanged();

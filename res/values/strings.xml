@@ -80,7 +80,7 @@
         <item >fi</item>
         <item >sv</item>
     </string-array>
-   <!--  translation starts here -->
+    
    <string name="changelog">
        * Fixed the forum (sorry!) &lt;br /&gt;
        * Fixed the underlying service from crashing (finally?!) &lt;br /&gt;
@@ -99,7 +99,7 @@
 	</string>
 	<string name="general_invalid_email">Invalid e-mail address.</string>
 	<string name="general_invalid_password">Please enter your password.</string>
-	<string name="general_changelog_version">Changelog version</string>
+	<string name="general_changelog_version">Changelog version {version}</string>
 	<string name="general_wait">Please wait</string>
 	<string name="general_downloading">Downloading the data...</string>
 	<string name="general_no_data">No data found.</string>
@@ -534,8 +534,17 @@
 	<string name="info_platoon_new_creating">Creating the platoon...</string>
 	<string name="info_platoon_new_true">The platoon has been created!</string>
 	<string name="info_platoon_new_false">The platoon could not be created.</string>
-    
-    <!-- PROFILE INFO SETTINGS plese translate -->
+	<string name="info_forum_empty_saved">No saved threads found.</string>
+	<string name="info_xml_forum_posts">Posts</string>
+	<string name="title_forum_saved">BF3 Battlelog - Viewing the saved threads</string>
+	<string name="info_xml_forum_save">Save thread</string>
+	<string name="info_forum_save_true">The thread has been saved.</string>
+	<string name="info_forum_save_false">The thread could not be saved.</string>
+	<string name="info_forum_adapter_last_checked">Last checked &lt;b>{date}&lt;/b></string>
+	<string name="info_forum_saved_goto">Go to thread</string>
+	<string name="info_forum_saved_check">Check for updates</string>
+	<string name="info_forum_saved_remove">Remove the thread</string>
+	<string name="info_forum_saved_heading">Saved forum threads</string>
     <string name="profile_info_birthday_msg">Selecting birthday will make it VISIBLE on your profile. Leave it as today or date in future will HIDE this information from your profile.</string>
     <string name="birthday">Birthday</string>
     <string name="country">Country</string>

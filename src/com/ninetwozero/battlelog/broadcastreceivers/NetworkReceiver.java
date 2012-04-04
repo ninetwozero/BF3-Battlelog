@@ -34,7 +34,7 @@ public class NetworkReceiver extends BroadcastReceiver {
                     .getDefaultSharedPreferences(context);
 
             // Let's see if we have a password to use if needing to login
-            if (!sharedPreferences.getString(Constants.SP_BL_PASSWORD, "").equals("")) {
+            if (!sharedPreferences.getString(Constants.SP_BL_PROFILE_PASSWORD, "").equals("")) {
 
                 // Set the alarm
                 alarmManager.setInexactRepeating(

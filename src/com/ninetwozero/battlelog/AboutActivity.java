@@ -145,7 +145,9 @@ public class AboutActivity extends FragmentActivity implements DefaultFragmentAc
 
                     fragmentManager,
                     new String[] {
-                            "About", "FAQ", "Credits"
+                            getString(R.string.label_about), getString(R.string.label_faq),
+                            getString(R.string.label_credits)
+
                     },
                     listFragments,
                     viewPager,

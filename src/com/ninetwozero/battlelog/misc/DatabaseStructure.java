@@ -171,6 +171,53 @@ public final class DatabaseStructure {
             };
 
         }
+
+    }
+
+    public static final class ForumThreads {
+
+        // Table-name
+        public static final String TABLE_NAME = "saved_threads";
+
+        // Field-names
+        public static final String COLUMN_NAME_ID = "_id";
+        public static final String COLUMN_NAME_NUM_ID = "thread_id";
+        public static final String COLUMN_NAME_NUM_FORUM_ID = "forum_id";
+        public static final String COLUMN_NAME_NUM_PROFILE_ID = "profile_id";
+        public static final String COLUMN_NAME_STRING_TITLE = "thread_title";
+        public static final String COLUMN_NAME_NUM_DATE_LAST_POST = "date_last_post";
+        public static final String COLUMN_NAME_STRING_LAST_AUTHOR = "last_post_author";
+        public static final String COLUMN_NAME_NUM_LAST_AUTHOR_ID = "last_post_author_id";
+        public static final String COLUMN_NAME_NUM_LAST_PAGE_ID = "last_page_id";
+        public static final String COLUMN_NAME_NUM_POSTS = "num_posts";
+        public static final String COLUMN_NAME_NUM_HAS_UNREAD = "has_unread";
+        public static final String COLUMN_NAME_NUM_DATE_READ = "date_read";
+        public static final String COLUMN_NAME_NUM_DATE_CHECKED = "date_checked";
+
+        // Sort order
+        public static final String DEFAULT_SORT_ORDER = "`_id` DESC";
+
+        // Getter
+        public static final String[] getColumns() {
+
+            return new String[] {
+
+                    COLUMN_NAME_NUM_ID,
+                    COLUMN_NAME_NUM_FORUM_ID,
+                    COLUMN_NAME_STRING_TITLE,
+                    COLUMN_NAME_NUM_DATE_LAST_POST,
+                    COLUMN_NAME_STRING_LAST_AUTHOR,
+                    COLUMN_NAME_NUM_LAST_AUTHOR_ID,
+                    COLUMN_NAME_NUM_LAST_PAGE_ID,
+                    COLUMN_NAME_NUM_POSTS,
+                    COLUMN_NAME_NUM_DATE_READ,
+                    COLUMN_NAME_NUM_DATE_CHECKED,
+                    COLUMN_NAME_NUM_HAS_UNREAD,
+                    COLUMN_NAME_NUM_PROFILE_ID
+
+            };
+
+        }
     }
 
     // Non-initializable

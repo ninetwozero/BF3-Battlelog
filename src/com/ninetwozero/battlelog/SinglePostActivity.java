@@ -177,7 +177,7 @@ public class SinglePostActivity extends ListActivity {
 
             ).execute(
 
-                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""),
+                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
                     fieldMessage.getText().toString()
 
                     );

@@ -78,7 +78,7 @@ public class SettingsActivity extends PreferenceActivity {
                         "Setting the service to update every "
                                 + serviceInterval / 60000 + " minutes");
             }
-            startActivity(new Intent(this, Backup_Dashboard.class));
+            startActivity(new Intent(this, DashboardActivity.class));
             finish();
             return true;
 

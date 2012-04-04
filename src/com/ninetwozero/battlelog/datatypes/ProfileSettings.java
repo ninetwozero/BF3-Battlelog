@@ -1,3 +1,4 @@
+
 package com.ninetwozero.battlelog.datatypes;
 
 import java.util.HashMap;

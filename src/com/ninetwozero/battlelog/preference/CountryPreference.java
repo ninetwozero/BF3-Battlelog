@@ -1,4 +1,13 @@
+
 package com.ninetwozero.battlelog.preference;
+
+import static com.ninetwozero.battlelog.datatypes.ProfileSettings.COUNTRY;
+import static com.ninetwozero.battlelog.datatypes.ProfileSettings.PROFILE_INFO_COUNTRY;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,15 +20,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.COUNTRY;
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.PROFILE_INFO_COUNTRY;
 
 public class CountryPreference extends DialogPreference {
     private AutoCompleteTextView textView;
@@ -69,7 +71,8 @@ public class CountryPreference extends DialogPreference {
     }
 
     private ArrayAdapter<String> countryAdapter() {
-        return new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, countriesArray());
+        return new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line,
+                countriesArray());
     }
 
     private String[] countriesArray() {
@@ -107,8 +110,9 @@ public class CountryPreference extends DialogPreference {
         }
     }
 
-    private boolean validOrEmpty(){
-        return validator.isValid(textView.getText().toString()) || textView.getText().toString().length() == 0;
+    private boolean validOrEmpty() {
+        return validator.isValid(textView.getText().toString())
+                || textView.getText().toString().length() == 0;
     }
 
     private String keyToValue() {
@@ -117,15 +121,15 @@ public class CountryPreference extends DialogPreference {
 
     private String stringToKey() {
         String entry = textView.getText().toString();
-        for(String country : countriesList()){
-            if(country.equalsIgnoreCase(entry)){
+        for (String country : countriesList()) {
+            if (country.equalsIgnoreCase(entry)) {
                 return country;
             }
         }
         return "";
     }
 
-    private String valueToKey(String value){
+    private String valueToKey(String value) {
         for (Map.Entry<String, String> entry : COUNTRY.entrySet()) {
             if (value.equalsIgnoreCase(entry.getValue())) {
                 return entry.getKey();
@@ -139,8 +143,8 @@ public class CountryPreference extends DialogPreference {
         @Override
         public boolean isValid(CharSequence charSequence) {
             String value = charSequence.toString();
-            for(String country : countriesList()){
-                if(country.equalsIgnoreCase(value)){
+            for (String country : countriesList()) {
+                if (country.equalsIgnoreCase(value)) {
                     return true;
                 }
             }

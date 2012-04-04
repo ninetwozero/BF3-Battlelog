@@ -97,7 +97,7 @@
 	</string>
 	<string name="general_invalid_email">Ugyldig e-mail adresse.</string>
 	<string name="general_invalid_password">Indtast venligst dit password.</string>
-	<string name="general_changelog_version">Ændringslog version</string>
+	<string name="general_changelog_version">Ændringslog version {version}</string>
 	<string name="general_wait">Vent venligst</string>
 	<string name="general_downloading">Downloader data...</string>
 	<string name="general_no_data">Ingen data fundet.</string>

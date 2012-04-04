@@ -25,17 +25,17 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.ForumData;
 
 public class ForumListAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private List<Board.Forum> itemArray;
+    private List<ForumData> itemArray;
     private LayoutInflater layoutInflater;
 
     // Construct
-    public ForumListAdapter(Context c, List<Board.Forum> m,
+    public ForumListAdapter(Context c, List<ForumData> m,
             LayoutInflater l) {
 
         context = c;
@@ -52,7 +52,7 @@ public class ForumListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Board.Forum getItem(int position) {
+    public ForumData getItem(int position) {
 
         return this.itemArray.get(position);
 
@@ -83,7 +83,7 @@ public class ForumListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the current item
-        Board.Forum currentItem = getItem(position);
+        ForumData currentItem = getItem(position);
 
         // Recycle
         if (convertView == null) {
@@ -123,7 +123,7 @@ public class ForumListAdapter extends BaseAdapter {
 
     }
 
-    public void setItemArray(List<Board.Forum> array) {
+    public void setItemArray(List<ForumData> array) {
 
         this.itemArray = array;
         this.notifyDataSetInvalidated();

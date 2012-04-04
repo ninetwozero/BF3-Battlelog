@@ -129,7 +129,6 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
         MENU_INTENTS.put(R.id.button_self,
                 new Intent(context, ProfileActivity.class).putExtra("profile",
                         SessionKeeper.getProfileData()));
-
         MENU_INTENTS.put(R.id.button_settings,
                 new Intent(context, ProfileSettingsActivity.class));
 

@@ -97,7 +97,7 @@
 	</string>
 	<string name="general_invalid_email">Ungültige E-Mail Adresse.</string>
 	<string name="general_invalid_password">Bitte Passwort eingeben</string>
-	<string name="general_changelog_version">Changelog Version</string>
+	<string name="general_changelog_version">Changelog Version {version}</string>
 	<string name="general_wait">Bitte warten</string>
 	<string name="general_downloading">Daten werden heruntergeladen ...</string>
 	<string name="general_no_data">Keine Daten gefunden.</string>
