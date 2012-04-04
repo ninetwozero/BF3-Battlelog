@@ -260,7 +260,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         }
 
         // Set it up
-        if (threadData == null || currentPage == 1 ) {
+        if (threadData == null || currentPage == 1) {
 
             new AsyncGetPosts(context, threadId).execute(currentPage);
 
@@ -334,18 +334,18 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
             try {
 
-                //Store the param
+                // Store the param
                 tempPageId = arg0[0];
-                
-                //Get the threadData
+
+                // Get the threadData
                 threadData = WebsiteHandler.getPostsForThread(locale, tempThreadId);
-                
-                //Do we need to get a specific page here already
-                if( arg0[0] > 1 ) {
-                    
+
+                // Do we need to get a specific page here already
+                if (arg0[0] > 1) {
+
                     posts = WebsiteHandler.getPostsForThread(tempThreadId, tempPageId, locale);
-                } 
-                
+                }
+
                 return (threadData != null);
 
             } catch (Exception ex) {
@@ -365,14 +365,14 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 if (context != null) {
 
                     // Let's set it up
-                    if( tempPageId > 1 ) {
-                     
+                    if (tempPageId > 1) {
+
                         listAdapter.set(posts);
-                        
+
                     } else {
-                        
+
                         listAdapter.set(threadData.getPosts());
-                    
+
                     }
 
                     // Update the title
@@ -992,25 +992,25 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                                             );
                                     openThread(intent);
-                                    
 
                                 } else {
 
                                     index = currentLink.indexOf("forum/view/");
                                     if (index > -1) {
 
-                                       ((ForumActivity) context).openForum( new Intent().putExtra( "forumId",
-                                            Long.parseLong(currentLink
-                                                    .substring(index + 11,
-                                                            linkEndPos))
+                                        ((ForumActivity) context).openForum(new Intent().putExtra(
+                                                "forumId",
+                                                Long.parseLong(currentLink
+                                                        .substring(index + 11,
+                                                                linkEndPos))
 
-                                            ).putExtra(
+                                                ).putExtra(
 
-                                                    "forumTitle", "N/A"
+                                                        "forumTitle", "N/A"
 
-                                            )
-                                            
-                                        );
+                                                )
+
+                                                );
 
                                     } else {
 

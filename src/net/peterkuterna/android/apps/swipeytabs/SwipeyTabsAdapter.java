@@ -18,7 +18,6 @@ package net.peterkuterna.android.apps.swipeytabs;
 
 import android.support.v4.view.PagerAdapter;
 import android.widget.TextView;
-import com.ninetwozero.battlelog.R;
 
 public interface SwipeyTabsAdapter {
 

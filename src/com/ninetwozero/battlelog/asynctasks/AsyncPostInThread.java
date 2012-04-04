@@ -46,7 +46,7 @@ public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
         try {
 
             // How'd it go?
-            threadData.setNumPosts(threadData.getNumPosts()+1);
+            threadData.setNumPosts(threadData.getNumPosts() + 1);
             return WebsiteHandler.postReplyInThread(
 
                     this.context, arg0[0], arg0[1], this.threadData, this.cache, SessionKeeper

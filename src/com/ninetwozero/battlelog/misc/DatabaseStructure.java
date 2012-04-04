@@ -1,7 +1,6 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import com.ninetwozero.battlelog.R;
 
 public final class DatabaseStructure {
 
@@ -202,7 +201,7 @@ public final class DatabaseStructure {
         public static final String[] getColumns() {
 
             return new String[] {
-                    
+
                     COLUMN_NAME_NUM_ID,
                     COLUMN_NAME_NUM_FORUM_ID,
                     COLUMN_NAME_STRING_TITLE,

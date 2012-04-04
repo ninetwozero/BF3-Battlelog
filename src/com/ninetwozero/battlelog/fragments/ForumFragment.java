@@ -40,7 +40,6 @@ import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ThreadListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncCreateNewThread;
-import com.ninetwozero.battlelog.asynctasks.AsyncPostInThread;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.ForumData;
 import com.ninetwozero.battlelog.datatypes.ForumThreadData;

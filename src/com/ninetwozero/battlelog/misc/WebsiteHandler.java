@@ -5129,12 +5129,12 @@ public class WebsiteHandler {
             RequestHandler rh = new RequestHandler();
             final String httpContent = rh.get(
 
-            Constants.URL_FORUM_THREAD.replace("{LOCALE}", locale)
-                    .replace("{THREAD_ID}", threadId + "")
-                    .replace("{PAGE}", "1"), 1
+                    Constants.URL_FORUM_THREAD.replace("{LOCALE}", locale)
+                            .replace("{THREAD_ID}", threadId + "")
+                            .replace("{PAGE}", "1"), 1
 
-            );
-            
+                    );
+
             // Let's parse it!
             JSONObject contextObject = new JSONObject(httpContent)
                     .getJSONObject("context");
@@ -5880,7 +5880,8 @@ public class WebsiteHandler {
                             .replace("{PAGE}", page + ""), 1
 
                     );
-Log.d(Constants.DEBUG_TAG, "The link => " + Constants.URL_FORUM_THREAD.replace("{LOCALE}", locale)
+            Log.d(Constants.DEBUG_TAG,
+                    "The link => " + Constants.URL_FORUM_THREAD.replace("{LOCALE}", locale)
                             .replace("{THREAD_ID}", threadId + "")
                             .replace("{PAGE}", page + ""));
             // Let's parse it!

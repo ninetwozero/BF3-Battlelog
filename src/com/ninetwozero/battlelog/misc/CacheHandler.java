@@ -23,7 +23,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.datatypes.ForumThreadData;
@@ -991,7 +990,7 @@ public class CacheHandler {
                         valueArray[i + 1] = uid + "";
                         break;
                     }
-                    
+
                 }
 
                 // Get them!!
@@ -1096,7 +1095,7 @@ public class CacheHandler {
             }
 
         }
-        
+
         public static boolean updateAfterRefresh(Context context, SavedForumThreadData thread) {
 
             // Use the SQLiteManager to get a cursor
@@ -1108,20 +1107,20 @@ public class CacheHandler {
 
                         DatabaseStructure.ForumThreads.TABLE_NAME,
                         new String[] {
-                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD,
-                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST,
-                            DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR,
-                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_AUTHOR_ID,
-                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED,
-                            
-                        },
-                        new String[] { 
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_AUTHOR_ID,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED,
 
-                            thread.hasUnread() ? "1" : "0",
-                            thread.getDateLastPost() + "",
-                            thread.getLastPoster().getUsername(),
-                            thread.getLastPoster().getId() + "",    
-                            thread.getDateLastChecked() + ""
+                        },
+                        new String[] {
+
+                                thread.hasUnread() ? "1" : "0",
+                                thread.getDateLastPost() + "",
+                                thread.getLastPoster().getUsername(),
+                                thread.getLastPoster().getId() + "",
+                                thread.getDateLastChecked() + ""
                         },
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                         thread.getId()
@@ -1140,7 +1139,7 @@ public class CacheHandler {
             }
 
         }
-        
+
         public static boolean updateAfterView(Context context, SavedForumThreadData thread) {
 
             // Use the SQLiteManager to get a cursor
@@ -1152,16 +1151,16 @@ public class CacheHandler {
 
                         DatabaseStructure.ForumThreads.TABLE_NAME,
                         new String[] {
-                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD,
-                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_READ,
-                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED,
-                            
-                        },
-                        new String[] { 
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_READ,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED,
 
-                            "0",
-                            thread.getDateLastRead() + "",
-                            thread.getDateLastChecked() + ""
+                        },
+                        new String[] {
+
+                                "0",
+                                thread.getDateLastRead() + "",
+                                thread.getDateLastChecked() + ""
                         },
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                         thread.getId()
@@ -1354,7 +1353,7 @@ public class CacheHandler {
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS)),
                                         results.getInt(results
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD)) == 1,
-                                                        
+
                                         uid
                                 )
                                 );

@@ -18,7 +18,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.Constants;
 
 public class SavedForumThreadData implements Parcelable {
@@ -33,7 +32,7 @@ public class SavedForumThreadData implements Parcelable {
     // Construct
     public SavedForumThreadData(long i, String t, long fId, long dlp, ProfileData p, long dlc,
             long dlr, int nplr, int np, boolean u, long pId) {
-        
+
         Log.d(Constants.DEBUG_TAG, "n => " + nplr);
         id = i;
         title = t;
@@ -112,18 +111,18 @@ public class SavedForumThreadData implements Parcelable {
 
         return numPageLastRead;
     }
-    
+
     public int getNumPosts() {
 
         return numPosts;
     }
-    
+
     public boolean hasUnread() {
-        
+
         return unread;
     }
-    
-    //Setters
+
+    // Setters
     public void setDateLastPost(long d) {
 
         dateLastPost = d;
@@ -133,29 +132,29 @@ public class SavedForumThreadData implements Parcelable {
     public void setLastPoster(ProfileData l) {
         lastPoster = l;
     }
-    
+
     public void setNumPosts(int n) {
-        
+
         numPosts = n;
     }
-    
+
     public void setDateLastRead(long d) {
-        
+
         dateLastRead = d;
     }
-    
+
     public void setDateLastChecked(long d) {
-        
+
         dateLastChecked = d;
-        
+
     }
-    
+
     public void setUnread(boolean b) {
-        
+
         unread = b;
-    
+
     }
-    
+
     public String[] toStringArray() {
 
         return new String[] {

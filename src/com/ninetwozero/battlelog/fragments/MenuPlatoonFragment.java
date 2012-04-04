@@ -29,7 +29,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -220,16 +219,17 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
                             spEdit.putInt(Constants.SP_BL_PLATOON_CURRENT_POS, selectedPosition);
                             spEdit.commit();
 
-                            //Reset these
+                            // Reset these
                             MENU_INTENTS.put(
                                     R.id.button_self,
                                     new Intent(context, PlatoonActivity.class).putExtra("platoon",
                                             platoonData.get(selectedPosition)));
                             MENU_INTENTS.put(
                                     R.id.button_settings,
-                                    new Intent(context, ProfileSettingsActivity.class).putExtra("platoon",
+                                    new Intent(context, ProfileSettingsActivity.class).putExtra(
+                                            "platoon",
                                             platoonData.get(selectedPosition)));
-                            
+
                         }
 
                         dialog.dismiss();
@@ -246,7 +246,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     }
 
     public void setupPlatoonBox() {
-        
+
         // Let's see...
         if (platoonData != null && platoonData.size() > 0 && textPlatoon != null) {
 
@@ -257,8 +257,8 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
                 selectedPlatoon = platoonData.get(selectedPosition).getId();
 
             }
-            
-            //Set the text
+
+            // Set the text
             textPlatoon.setText(platoonData.get(selectedPosition).getName() + "["
                     + platoonData.get(selectedPosition).getTag() + "]");
             imagePlatoon.setImageBitmap(BitmapFactory.decodeFile(PublicUtils.getCachePath(context)

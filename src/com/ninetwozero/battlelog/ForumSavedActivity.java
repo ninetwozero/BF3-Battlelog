@@ -25,7 +25,6 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -62,7 +61,7 @@ public class ForumSavedActivity extends ListActivity {
     // Misc
     private List<SavedForumThreadData> threads;
     private String locale;
-    
+
     @Override
     public void onCreate(Bundle icicle) {
 
@@ -85,7 +84,7 @@ public class ForumSavedActivity extends ListActivity {
 
         // Set the content view
         setContentView(R.layout.forum_saved_view);
-        
+
         // Last but not least - init
         initActivity();
 
@@ -93,11 +92,11 @@ public class ForumSavedActivity extends ListActivity {
 
     public void initActivity() {
 
-        //Get the ListView
+        // Get the ListView
         listView = getListView();
         registerForContextMenu(listView);
 
-        //Get the locale
+        // Get the locale
         locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
     }
 
@@ -231,41 +230,41 @@ public class ForumSavedActivity extends ListActivity {
         private Context context;
         private View imageBar;
         private ForumThreadData forumThread;
-        
+
         public AsyncRefresh(Context c, RelativeLayout r) {
 
             context = c;
             imageBar = r.findViewById(R.id.bar_status);
-            
+
         }
 
         @Override
         protected void onPreExecute() {
-            
+
             imageBar.setBackgroundColor(context.getResources().getColor(R.color.orange));
-            
+
         }
 
         @Override
-        protected Boolean doInBackground(SavedForumThreadData ... t) {
+        protected Boolean doInBackground(SavedForumThreadData... t) {
 
             try {
-                
-                //Get the thread
+
+                // Get the thread
                 forumThread = WebsiteHandler.getPostsForThread(locale, t[0].getId());
-                boolean status = (forumThread.getNumPosts() > t[0].getNumPosts() );
-                
-                //Update the saved forum thread
+                boolean status = (forumThread.getNumPosts() > t[0].getNumPosts());
+
+                // Update the saved forum thread
                 t[0].setUnread(status);
                 t[0].setDateLastPost(forumThread.getLastPostDate());
                 t[0].setLastPoster(forumThread.getLastPoster());
-                t[0].setDateLastChecked( System.currentTimeMillis()/1000 );
-                
-                //Are there new posts?
+                t[0].setDateLastChecked(System.currentTimeMillis() / 1000);
+
+                // Are there new posts?
                 CacheHandler.Forum.updateAfterRefresh(context, t[0]);
-                
+
                 return status;
-                
+
             } catch (Exception ex) {
 
                 ex.printStackTrace();
@@ -277,45 +276,46 @@ public class ForumSavedActivity extends ListActivity {
 
         @Override
         protected void onPostExecute(Boolean result) {
-            
-            if( result ) {
-                
+
+            if (result) {
+
                 imageBar.setBackgroundColor(context.getResources().getColor(R.color.green));
-                
+
             } else {
-                
+
                 imageBar.setBackgroundColor(context.getResources().getColor(R.color.lightgrey));
-                
+
             }
-            
-            //Update the ListView
+
+            // Update the ListView
             ((SavedThreadListAdapter) listView.getAdapter()).notifyDataSetChanged();
-            
+
         }
 
     }
+
     public class AsyncUpdate extends AsyncTask<SavedForumThreadData, Void, Boolean> {
 
         // Attributes
         private Context context;
-        
+
         public AsyncUpdate(Context c) {
 
             context = c;
-            
+
         }
 
         @Override
-        protected Boolean doInBackground(SavedForumThreadData ... t) {
+        protected Boolean doInBackground(SavedForumThreadData... t) {
 
             try {
-                
-                //Delete the item
-                t[0].setDateLastChecked(System.currentTimeMillis()/1000);
-                t[0].setDateLastRead(System.currentTimeMillis()/1000);
+
+                // Delete the item
+                t[0].setDateLastChecked(System.currentTimeMillis() / 1000);
+                t[0].setDateLastRead(System.currentTimeMillis() / 1000);
                 t[0].setUnread(false);
                 return CacheHandler.Forum.updateAfterView(context, t[0]);
-                
+
             } catch (Exception ex) {
 
                 ex.printStackTrace();
@@ -327,33 +327,35 @@ public class ForumSavedActivity extends ListActivity {
 
         @Override
         protected void onPostExecute(Boolean result) {
-            
-            //Update the ListView
+
+            // Update the ListView
             reload();
-            
+
         }
 
-    } 
-    
+    }
+
     public class AsyncDelete extends AsyncTask<SavedForumThreadData, Void, Boolean> {
 
         // Attributes
         private Context context;
-        
+
         public AsyncDelete(Context c) {
 
             context = c;
-            
+
         }
 
         @Override
-        protected Boolean doInBackground(SavedForumThreadData ... t) {
+        protected Boolean doInBackground(SavedForumThreadData... t) {
 
             try {
-                
-                //Delete the item
-                return CacheHandler.Forum.delete(context, new long[] { t[0].getId() });
-                
+
+                // Delete the item
+                return CacheHandler.Forum.delete(context, new long[] {
+                    t[0].getId()
+                });
+
             } catch (Exception ex) {
 
                 ex.printStackTrace();
@@ -365,25 +367,27 @@ public class ForumSavedActivity extends ListActivity {
 
         @Override
         protected void onPostExecute(Boolean result) {
-            
+
             /* TODO: TOAST? */
-            if( result ) {
-                
-                Toast.makeText(context, "The thread has been removed from the list.", Toast.LENGTH_SHORT).show();
-            
+            if (result) {
+
+                Toast.makeText(context, "The thread has been removed from the list.",
+                        Toast.LENGTH_SHORT).show();
+
             } else {
-                
-                Toast.makeText(context, "The thread could not be removed from the list.", Toast.LENGTH_SHORT).show();    
-                
+
+                Toast.makeText(context, "The thread could not be removed from the list.",
+                        Toast.LENGTH_SHORT).show();
+
             }
-            
-            //Update the ListView
+
+            // Update the ListView
             reload();
-            
+
         }
 
     }
-    
+
     @Override
     public void onListItemClick(ListView lv, View v, int p, long id) {
 
@@ -442,5 +446,4 @@ public class ForumSavedActivity extends ListActivity {
         return true;
     }
 
-    
 }
