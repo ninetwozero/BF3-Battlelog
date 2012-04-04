@@ -40,8 +40,8 @@ import android.widget.TextView;
 import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ForumListAdapter;
-import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
+import com.ninetwozero.battlelog.datatypes.ForumData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
@@ -58,7 +58,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
 
     // Misc
     private String locale;
-    private List<Board.Forum> forums;
+    private List<ForumData> forums;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -76,10 +76,10 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
                 container, false);
 
         // Get the unlocks
-        locale = sharedPreferences.getString(Constants.SP_BL_LOCALE, "en");
+        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
 
         // Let's get that data
-        forums = new ArrayList<Board.Forum>();
+        forums = new ArrayList<ForumData>();
 
         // Init the views
         initFragment(view);
@@ -151,7 +151,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
 
                         ).putExtra(
 
-                                "forumTitle", ((Board.Forum) v.getTag()).getTitle()
+                                "forumTitle", ((ForumData) v.getTag()).getTitle()
 
                         )
 
@@ -196,7 +196,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
 
                 Object[] result = WebsiteHandler.getAllForums(locale);
                 title = (String) result[0];
-                forums = (List<Board.Forum>) result[1];
+                forums = (List<ForumData>) result[1];
                 return (forums != null);
 
             } catch (Exception ex) {
@@ -246,7 +246,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
                     public void onClick(DialogInterface dialog, int item) {
 
                         sharedPreferences.edit()
-                                .putString(Constants.SP_BL_LOCALE, locales[item])
+                                .putString(Constants.SP_BL_FORUM_LOCALE, locales[item])
                                 .commit();
                         locale = locales[item];
                         reload();

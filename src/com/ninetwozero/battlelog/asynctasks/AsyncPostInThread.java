@@ -18,21 +18,25 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Backup_ForumThreadView;
+import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.ForumThreadData;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
 
     // Attributes
     private Context context;
-    private long threadId;
+    private ForumThreadData threadData;
+    private boolean cache;
 
     // Construct
-    public AsyncPostInThread(Context c, long tId) {
+    public AsyncPostInThread(Context c, ForumThreadData t, boolean ca) {
 
         this.context = c;
-        this.threadId = tId;
+        this.threadData = t;
+        this.cache = ca;
 
     }
 
@@ -42,9 +46,11 @@ public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
         try {
 
             // How'd it go?
+            threadData.setNumPosts(threadData.getNumPosts() + 1);
             return WebsiteHandler.postReplyInThread(
 
-                    this.context, arg0[0], arg0[1], this.threadId
+                    this.context, arg0[0], arg0[1], this.threadData, this.cache, SessionKeeper
+                            .getProfileData().getId()
 
                     );
 
@@ -65,10 +71,10 @@ public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
 
             Toast.makeText(this.context, R.string.info_forum_newpost_true,
                     Toast.LENGTH_SHORT).show();
-            if (context instanceof Backup_ForumThreadView) {
+            if (context instanceof ForumActivity) {
 
-                ((Backup_ForumThreadView) this.context).reload();
-                ((Backup_ForumThreadView) this.context).resetPostFields();
+                ((ForumActivity) this.context).reload();
+                ((ForumActivity) this.context).resetPostFields();
 
             }
 

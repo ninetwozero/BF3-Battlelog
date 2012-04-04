@@ -166,7 +166,8 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
                         if (type == FeedFragment.TYPE_GLOBAL) {
 
                             new AsyncStatusUpdate(context, FeedFragment.this).execute(message,
-                                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+                                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
+                                            ""));
 
                         } else if (type == FeedFragment.TYPE_PROFILE) {
 
@@ -176,7 +177,8 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                             ).execute(
 
-                                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""),
+                                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
+                                            ""),
                                     message
 
                                     );
@@ -189,7 +191,8 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                             ).execute(
 
-                                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""),
+                                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
+                                            ""),
                                     message
 
                                     );
@@ -268,7 +271,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                 new AsyncFeedHooah(context, info.id, false, feedItem.isLiked(), this)
                         .execute(sharedPreferences.getString(
-                                Constants.SP_BL_CHECKSUM, ""));
+                                Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
             } else if (item.getItemId() == 1) {
 

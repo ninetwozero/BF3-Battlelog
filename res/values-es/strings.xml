@@ -97,7 +97,7 @@
 	</string>
 	<string name="general_invalid_email">Dirección de correo electrónico no válida.</string>
 	<string name="general_invalid_password">Por favor, introduzca su contraseña.</string>
-	<string name="general_changelog_version">De cambios de versión</string>
+	<string name="general_changelog_version">De cambios de versión {version}</string>
 	<string name="general_wait">Por favor espere</string>
 	<string name="general_downloading">Descarga de los datos...</string>
 	<string name="general_no_data">No se encontraron datos.</string>

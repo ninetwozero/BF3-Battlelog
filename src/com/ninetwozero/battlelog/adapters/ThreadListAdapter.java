@@ -25,18 +25,18 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ThreadListAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private List<Board.ThreadData> itemArray;
+    private List<ForumThreadData> itemArray;
     private LayoutInflater layoutInflater;
 
     // Construct
-    public ThreadListAdapter(Context c, List<Board.ThreadData> m,
+    public ThreadListAdapter(Context c, List<ForumThreadData> m,
             LayoutInflater l) {
 
         context = c;
@@ -53,23 +53,23 @@ public class ThreadListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Board.ThreadData getItem(int position) {
+    public ForumThreadData getItem(int position) {
 
-        return this.itemArray.get(position);
+        return itemArray.get(position);
 
     }
 
     @Override
     public long getItemId(int position) {
 
-        return this.itemArray.get(position).getThreadId();
+        return itemArray.get(position).getId();
 
     }
 
     @Override
     public int getItemViewType(int position) {
 
-        if (getItem(position).getThreadId() == 0) {
+        if (getItem(position).getId() == 0) {
             return 1;
         } else {
             return 0;
@@ -88,7 +88,7 @@ public class ThreadListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the current item
-        Board.ThreadData currentItem = getItem(position);
+        ForumThreadData currentItem = getItem(position);
 
         // Recycle
         if (getItemViewType(position) == 1) {
@@ -221,17 +221,17 @@ public class ThreadListAdapter extends BaseAdapter {
 
     }
 
-    public void set(List<Board.ThreadData> array) {
+    public void set(List<ForumThreadData> array) {
 
-        this.itemArray = array;
-        this.notifyDataSetInvalidated();
+        itemArray = array;
+        notifyDataSetInvalidated();
 
     }
 
-    public void add(List<Board.ThreadData> array) {
+    public void add(List<ForumThreadData> array) {
 
-        this.itemArray.addAll(array); /* TODO FIX THIS */
-        this.notifyDataSetChanged();
+        itemArray.addAll(array); /* TODO FIX THIS */
+        notifyDataSetChanged();
 
     }
 

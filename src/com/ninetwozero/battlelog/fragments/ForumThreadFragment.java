@@ -32,6 +32,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -39,10 +40,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -55,8 +58,6 @@ import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.Backup_ForumThreadView;
-import com.ninetwozero.battlelog.Backup_ForumView;
 import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.ForumReportActivity;
 import com.ninetwozero.battlelog.ForumSearchActivity;
@@ -65,11 +66,14 @@ import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ThreadPostListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostInThread;
-import com.ninetwozero.battlelog.datatypes.Board;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
+import com.ninetwozero.battlelog.datatypes.ForumPostData;
+import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
+import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class ForumThreadFragment extends ListFragment implements DefaultFragment {
@@ -78,7 +82,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     private Context context;
     private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
-    private Board.ThreadData threadData;
+    private ForumThreadData threadData;
 
     // Elements
     private ListView listView;
@@ -99,6 +103,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     private int currentPage;
     private HashMap<Long, String> selectedQuotes;
     private Integer[] pageArray;
+    private boolean isCaching;
+    private Intent storedRequest;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,8 +120,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         View view = layoutInflater.inflate(R.layout.forum_thread_view,
                 container, false);
 
-        // Get the unlocks
-        locale = sharedPreferences.getString(Constants.SP_BL_LOCALE, "en");
+        // Get the locale
+        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
 
         // Init the Fragment
         initFragment(view);
@@ -127,6 +133,9 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     }
 
     public void initFragment(View v) {
+
+        // Are we to cache?
+        isCaching = sharedPreferences.getBoolean(Constants.SP_BL_FORUM_CACHE, true);
 
         // Setup the text
         textTitle = (TextView) v.findViewById(R.id.text_title_thread);
@@ -141,6 +150,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         buttonJump = (Button) v.findViewById(R.id.button_jump);
         buttonPrev = (Button) v.findViewById(R.id.button_prev);
         buttonNext = (Button) v.findViewById(R.id.button_next);
+        buttonPost = (Button) v.findViewById(R.id.button_new);
         wrapButtons = (RelativeLayout) v.findViewById(R.id.wrap_buttons);
 
         // Last but not least, the loader
@@ -150,9 +160,87 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         if (selectedQuotes == null) {
             selectedQuotes = new HashMap<Long, String>();
         }
-        if (currentPage == 0) {
-            currentPage = 1;
+
+        // Do we have one?
+        if (storedRequest != null) {
+
+            openThread(storedRequest);
+
         }
+
+        // Let's set the onClick events
+        buttonNext.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // Increment the page #
+                currentPage++;
+
+                // Let's do this
+                new AsyncLoadPage(context, threadId).execute(currentPage);
+
+            }
+
+        });
+
+        // Let's set the onClick events
+        buttonPrev.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // "Decrement"?
+                currentPage--;
+
+                // Let's do this
+                new AsyncLoadPage(context, threadId).execute(currentPage);
+
+            }
+
+        });
+
+        // Let's set the onClick events
+        buttonJump.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // Generate a dialog
+                generateDialogPage(context).show();
+
+            }
+
+        });
+
+        // Let's set the onClick events
+        buttonPost.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // Generate a dialog
+                String content = textareaContent.getText().toString();
+
+                // Validate
+                if (content.equals("")) {
+
+                    Toast.makeText(context, "You need to enter some content for your reply.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+
+                // Parse for the BBCODE!
+                content = BBCodeUtils.toBBCode(content, selectedQuotes);
+
+                // Ready... set... go!
+                new AsyncPostInThread(context, threadData, false).execute(content,
+                        sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+
+            }
+
+        });
 
     }
 
@@ -166,15 +254,15 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
     public void reload() {
 
-        // Do we have a forumId?
+        // Do we have a threadId?
         if (threadId == 0) {
             return;
         }
 
         // Set it up
-        if (threadData == null) {
+        if (threadData == null || currentPage == 1) {
 
-            new AsyncGetPosts(context).execute(threadId);
+            new AsyncGetPosts(context, threadId).execute(currentPage);
 
         } else {
 
@@ -193,22 +281,35 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
     public void openThread(Intent data) {
 
-        threadId = data.getLongExtra("threadId", 0);
-        textTitle.setText(data.getStringExtra("threadTitle"));
-        reload();
+        if (textTitle == null) {
+
+            storedRequest = data;
+
+        } else {
+
+            threadId = data.getLongExtra("threadId", 0);
+            textTitle.setText(data.getStringExtra("threadTitle"));
+            currentPage = data.getIntExtra("pageId", 1);
+            reload();
+
+        }
 
     }
 
-    private class AsyncGetPosts extends AsyncTask<Long, Void, Boolean> {
+    private class AsyncGetPosts extends AsyncTask<Integer, Void, Boolean> {
 
         // Attributes
         private Context context;
+        private long tempThreadId;
+        private int tempPageId;
+        private List<ForumPostData> posts;
         private RotateAnimation rotateAnimation;
 
         // Construct
-        public AsyncGetPosts(Context c) {
+        public AsyncGetPosts(Context c, long t) {
 
             context = c;
+            tempThreadId = t;
 
         }
 
@@ -229,12 +330,22 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         }
 
         @Override
-        protected Boolean doInBackground(Long... arg0) {
+        protected Boolean doInBackground(Integer... arg0) {
 
             try {
 
-                threadData = WebsiteHandler.getPostsForThread(locale,
-                        arg0[0]);
+                // Store the param
+                tempPageId = arg0[0];
+
+                // Get the threadData
+                threadData = WebsiteHandler.getPostsForThread(locale, tempThreadId);
+
+                // Do we need to get a specific page here already
+                if (arg0[0] > 1) {
+
+                    posts = WebsiteHandler.getPostsForThread(tempThreadId, tempPageId, locale);
+                }
+
                 return (threadData != null);
 
             } catch (Exception ex) {
@@ -254,7 +365,15 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 if (context != null) {
 
                     // Let's set it up
-                    listAdapter.set(threadData.getPosts());
+                    if (tempPageId > 1) {
+
+                        listAdapter.set(posts);
+
+                    } else {
+
+                        listAdapter.set(threadData.getPosts());
+
+                    }
 
                     // Update the title
                     textTitle.setText(threadData.getTitle());
@@ -264,8 +383,9 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                         wrapButtons.setVisibility(View.VISIBLE);
                         buttonJump
                                 .setText(getString(R.string.info_xml_feed_button_jump));
-                        buttonPrev.setEnabled(false);
-                        buttonNext.setEnabled(true);
+                        Log.d(Constants.DEBUG_TAG, "currentPage => " + currentPage);
+                        buttonPrev.setEnabled(currentPage > 1);
+                        buttonNext.setEnabled(currentPage < threadData.getNumPages());
                         buttonJump.setEnabled(true);
 
                     } else {
@@ -290,7 +410,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
             // Hide it
             wrapLoader.setVisibility(View.GONE);
-            rotateAnimation.cancel();
+            rotateAnimation.reset();
+
         }
 
     }
@@ -331,7 +452,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         try {
 
             // Let's get the item
-            Board.PostData data = (Board.PostData) info.targetView.getTag();
+            ForumPostData data = (ForumPostData) info.targetView.getTag();
 
             // Divide & conquer
             if (item.getGroupId() == 0) {
@@ -486,8 +607,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         content = BBCodeUtils.toBBCode(content, selectedQuotes);
 
         // Ready... set... go!
-        new AsyncPostInThread(context, threadId).execute(content,
-                sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+        new AsyncPostInThread(context, threadData, isCaching).execute(content,
+                sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 
@@ -559,7 +680,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         private Context context;
         private long threadId;
         private int page;
-        private List<Board.PostData> posts;
+        private List<ForumPostData> posts;
 
         // Constructs
         public AsyncLoadPage(Context c, long t) {
@@ -685,7 +806,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                         // Get the current link
                         String currentLink = links.get(arg2);
                         new AsyncLinkHandling(context).execute(currentLink,
-                                sharedPreferences.getString(Constants.SP_BL_CHECKSUM,
+                                sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
                                         ""));
 
                         // Dismiss the dialog
@@ -861,8 +982,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                                     long threadId = Long.parseLong(currentLink
                                             .substring(index + 17, linkEndPos));
-                                    intent = new Intent(context,
-                                            Backup_ForumThreadView.class).putExtra(
+                                    intent = new Intent().putExtra(
 
                                             "threadId", threadId
 
@@ -871,15 +991,14 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                                     "threadTitle", "N/A"
 
                                             );
+                                    openThread(intent);
 
                                 } else {
 
                                     index = currentLink.indexOf("forum/view/");
                                     if (index > -1) {
 
-                                        intent = new Intent(context,
-                                                Backup_ForumView.class).putExtra(
-
+                                        ((ForumActivity) context).openForum(new Intent().putExtra(
                                                 "forumId",
                                                 Long.parseLong(currentLink
                                                         .substring(index + 11,
@@ -888,6 +1007,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                                 ).putExtra(
 
                                                         "forumTitle", "N/A"
+
+                                                )
 
                                                 );
 
@@ -944,13 +1065,151 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
     @Override
     public Menu prepareOptionsMenu(Menu menu) {
+
+        menu.findItem(R.id.option_save).setVisible(true);
         return menu;
     }
 
     @Override
     public boolean handleSelectedOption(MenuItem item) {
-        // TODO Auto-generated method stub
+
+        if (item.getItemId() == R.id.option_save) {
+
+            // Do we want to cache? Yes we want to do!
+            new AsyncDoCache(context).execute();
+            return true;
+        }
         return false;
     }
 
+    private class AsyncDoCache extends AsyncTask<Void, Void, Boolean> {
+
+        // Attributes
+        private Context context;
+
+        public AsyncDoCache(Context c) {
+
+            context = c;
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... arg0) {
+
+            return (CacheHandler.Forum.insert(context, threadData, SessionKeeper.getProfileData()
+                    .getId()) > -1);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+
+            if (context != null) {
+
+                if (result) {
+
+                    Toast.makeText(context, R.string.info_forum_save_true, Toast.LENGTH_SHORT)
+                            .show();
+
+                } else {
+
+                    Toast.makeText(context, R.string.info_forum_save_false, Toast.LENGTH_SHORT)
+                            .show();
+
+                }
+
+            }
+        }
+
+    }
+
+    public void createContextMenu(ContextMenu menu, View view,
+            ContextMenuInfo menuInfo) {
+
+        // Get the actual menu item and tag
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+
+        // Show the menu
+        menu.add(0, 0, 0, R.string.info_profile_view);
+        menu.add(0, 1, 0, R.string.info_forum_quote);
+        menu.add(0, 2, 0, R.string.info_forum_links);
+        menu.add(0, 3, 0, R.string.info_forum_report);
+
+        return;
+
+    }
+
+    public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {
+
+        try {
+
+            // Let's get the item
+            ForumPostData data = (ForumPostData) info.targetView.getTag();
+
+            // Divide & conquer
+            if (item.getGroupId() == 0) {
+
+                // REQUESTS
+                switch (item.getItemId()) {
+
+                    case 0:
+                        startActivity(new Intent(context, ProfileActivity.class).putExtra(
+                                "profile", data.getProfileData()));
+                        break;
+
+                    case 1:
+                        Toast.makeText(context, R.string.info_forum_quote_warning,
+                                Toast.LENGTH_SHORT).show();
+                        textareaContent.setText(
+
+                                textareaContent.getText().insert(
+
+                                        textareaContent.getSelectionStart(),
+                                        Constants.BBCODE_TAG_QUOTE_IN.replace(
+
+                                                "{number}", data.getPostId() + ""
+
+                                                ).replace(
+
+                                                        "{username}",
+                                                        data.getProfileData().getUsername()
+
+                                                )
+
+                                        )
+
+                                );
+                        selectedQuotes
+                                .put(data.getPostId(),
+                                        (data.isCensored() ? getString(R.string.general_censored)
+                                                : data.getContent()));
+                        break;
+
+                    case 2:
+                        generatePopupWithLinks(data.getContent());
+                        break;
+
+                    case 3:
+                        startActivity(new Intent(context, ForumReportActivity.class)
+                                .putExtra("postId", data.getPostId()));
+                        break;
+
+                    default:
+                        Toast.makeText(context, R.string.msg_unimplemented,
+                                Toast.LENGTH_SHORT).show();
+                        break;
+
+                }
+
+            }
+
+            return true;
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            return false;
+
+        }
+
+    }
 }

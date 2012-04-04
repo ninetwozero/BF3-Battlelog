@@ -112,7 +112,7 @@ public class ChatActivity extends ListActivity {
 
         // Try to get the chatid
         new AsyncGetChatId(profileData.getId())
-                .execute(sharedPreferences.getString(Constants.SP_BL_CHECKSUM,
+                .execute(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
                         ""));
 
     }
@@ -229,7 +229,7 @@ public class ChatActivity extends ListActivity {
 
             ).execute(
 
-                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""),
+                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
                     fieldMessage.getText().toString()
 
                     );

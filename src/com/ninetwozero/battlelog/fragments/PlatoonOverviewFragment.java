@@ -483,7 +483,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
                     context, platoonData.getId(), SessionKeeper.getProfileData()
                             .getId(), sharedPreferences.getString(
-                            Constants.SP_BL_CHECKSUM, "")
+                            Constants.SP_BL_PROFILE_CHECKSUM, "")
 
             ).execute(true);
 
@@ -493,7 +493,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
                     context, platoonData.getId(), SessionKeeper.getProfileData()
                             .getId(), sharedPreferences.getString(
-                            Constants.SP_BL_CHECKSUM, "")
+                            Constants.SP_BL_PROFILE_CHECKSUM, "")
 
             ).execute(false);
 

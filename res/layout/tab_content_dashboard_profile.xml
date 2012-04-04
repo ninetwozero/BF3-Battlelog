@@ -16,8 +16,8 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-	android:background="@drawable/bg_bf3_main"
 	android:padding="10dp"
+	android:background="@drawable/bg_bf3_main"
 >
 	<RelativeLayout
 		android:id="@+id/wrap_persona"    

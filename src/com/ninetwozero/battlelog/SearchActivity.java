@@ -132,7 +132,7 @@ public class SearchActivity extends ListActivity {
             // Send it!
             new AsyncForumSearch(this).execute(
                     fieldSearch.getText().toString(),
-                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
         }
 

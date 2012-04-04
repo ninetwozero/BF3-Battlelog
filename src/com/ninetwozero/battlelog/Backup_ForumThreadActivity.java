@@ -58,7 +58,8 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ThreadPostListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncPostInThread;
-import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.ForumPostData;
+import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -66,13 +67,13 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class ForumThreadActivity extends ListActivity {
+public class Backup_ForumThreadActivity extends ListActivity {
 
     // Attributes
     private final Context CONTEXT = this;
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
-    private Board.ThreadData currentThread;
+    private ForumThreadData currentThread;
     private long threadId;
     private String threadTitle, locale;
     private int currentPage;
@@ -107,7 +108,7 @@ public class ForumThreadActivity extends ListActivity {
 
         // Prepare to tango
         this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        locale = sharedPreferences.getString(Constants.SP_BL_LOCALE, "en");
+        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
 
         // Get the threadId
         threadId = getIntent().getLongExtra("threadId", 0);
@@ -399,7 +400,7 @@ public class ForumThreadActivity extends ListActivity {
         try {
 
             // Let's get the item
-            Board.PostData data = (Board.PostData) info.targetView.getTag();
+            ForumPostData data = (ForumPostData) info.targetView.getTag();
 
             // Divide & conquer
             if (item.getGroupId() == 0) {
@@ -554,8 +555,8 @@ public class ForumThreadActivity extends ListActivity {
         content = BBCodeUtils.toBBCode(content, selectedQuotes);
 
         // Ready... set... go!
-        new AsyncPostInThread(this, threadId).execute(content,
-                sharedPreferences.getString(Constants.SP_BL_CHECKSUM, ""));
+        new AsyncPostInThread(this, currentThread, false).execute(content,
+                sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 
@@ -626,7 +627,7 @@ public class ForumThreadActivity extends ListActivity {
         private Context context;
         private long threadId;
         private int page;
-        private List<Board.PostData> posts;
+        private List<ForumPostData> posts;
 
         // Constructs
         public AsyncLoadPage(Context c, long t) {
@@ -639,7 +640,7 @@ public class ForumThreadActivity extends ListActivity {
         @Override
         protected void onPreExecute() {
 
-            if (context instanceof ForumThreadActivity) {
+            if (context instanceof Backup_ForumThreadActivity) {
 
                 buttonJump.setText(getString(R.string.label_downloading));
                 buttonJump.setEnabled(false);
@@ -672,11 +673,11 @@ public class ForumThreadActivity extends ListActivity {
         @Override
         protected void onPostExecute(Boolean results) {
 
-            if (context instanceof ForumThreadActivity) {
+            if (context instanceof Backup_ForumThreadActivity) {
 
                 if (results) {
 
-                    ((ThreadPostListAdapter) ((ForumThreadActivity) context)
+                    ((ThreadPostListAdapter) ((Backup_ForumThreadActivity) context)
                             .getListView().getAdapter()).set(posts);
                     buttonJump
                             .setText(getString(R.string.info_xml_feed_button_jump));
@@ -754,7 +755,7 @@ public class ForumThreadActivity extends ListActivity {
                         // Get the current link
                         String currentLink = links.get(arg2);
                         new AsyncLinkHandling(context).execute(currentLink,
-                                sharedPreferences.getString(Constants.SP_BL_CHECKSUM,
+                                sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
                                         ""));
 
                         // Dismiss the dialog
@@ -932,7 +933,7 @@ public class ForumThreadActivity extends ListActivity {
                                     long threadId = Long.parseLong(currentLink
                                             .substring(index + 17, linkEndPos));
                                     intent = new Intent(context,
-                                            ForumThreadActivity.class).putExtra(
+                                            Backup_ForumThreadActivity.class).putExtra(
 
                                             "threadId", threadId
 

@@ -107,7 +107,6 @@
 				android:id="@+id/button_new"
 				style="@style/RegularButton"
 				android:text="Create new thread!"
-				android:onClick="onPostSubmit"  
 				android:layout_alignParentBottom="true"
 				android:layout_centerHorizontal="true"
 				android:layout_width="fill_parent"

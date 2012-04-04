@@ -38,7 +38,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.adapters.ForumListAdapter;
-import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.datatypes.ForumData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
@@ -53,7 +53,7 @@ public class Backup_BoardView extends ListActivity {
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
     private String title;
-    private List<Board.Forum> forums;
+    private List<ForumData> forums;
     private String locale;
 
     // Elements
@@ -86,7 +86,7 @@ public class Backup_BoardView extends ListActivity {
 
         // Prepare to tango
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        locale = sharedPreferences.getString(Constants.SP_BL_LOCALE, "en");
+        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
 
         // Init
         initLayout();
@@ -197,7 +197,7 @@ public class Backup_BoardView extends ListActivity {
 
                 ).putExtra(
 
-                        "forumTitle", ((Board.Forum) v.getTag()).getTitle()
+                        "forumTitle", ((ForumData) v.getTag()).getTitle()
 
                 )
 
@@ -241,7 +241,7 @@ public class Backup_BoardView extends ListActivity {
 
                 Object[] result = WebsiteHandler.getAllForums(locale);
                 title = (String) result[0];
-                forums = (List<Board.Forum>) result[1];
+                forums = (List<ForumData>) result[1];
                 return (forums != null);
 
             } catch (Exception ex) {
@@ -291,7 +291,7 @@ public class Backup_BoardView extends ListActivity {
                     public void onClick(DialogInterface dialog, int item) {
 
                         sharedPreferences.edit()
-                                .putString(Constants.SP_BL_LOCALE, locales[item])
+                                .putString(Constants.SP_BL_FORUM_LOCALE, locales[item])
                                 .commit();
                         locale = locales[item];
                         reload();

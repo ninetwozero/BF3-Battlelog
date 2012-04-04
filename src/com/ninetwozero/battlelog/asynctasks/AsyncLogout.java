@@ -71,7 +71,7 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
 
                 // Further more, we would actually like to store the userid and
                 // name
-                spEdit.putString(Constants.SP_BL_PERSONA, "");
+                spEdit.putString(Constants.SP_BL_PERSONA_NAME, "");
                 spEdit.putString(Constants.SP_BL_PERSONA_ID, "");
                 spEdit.putString(Constants.SP_BL_PLATFORM_ID, "");
                 spEdit.putString(Constants.SP_BL_PERSONA_LOGO, "");

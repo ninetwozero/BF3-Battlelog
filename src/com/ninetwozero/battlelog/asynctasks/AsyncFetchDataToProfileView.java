@@ -58,7 +58,7 @@ public class AsyncFetchDataToProfileView extends
             userData = WebsiteHandler.getProfileIdFromSearch(
 
                     searchString,
-                    sharedPreferences.getString(Constants.SP_BL_CHECKSUM, "")
+                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 
                     );
 

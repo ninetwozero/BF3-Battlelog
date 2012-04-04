@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,8 +39,11 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ThreadListAdapter;
-import com.ninetwozero.battlelog.datatypes.Board;
+import com.ninetwozero.battlelog.asynctasks.AsyncCreateNewThread;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
+import com.ninetwozero.battlelog.datatypes.ForumData;
+import com.ninetwozero.battlelog.datatypes.ForumThreadData;
+import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -49,19 +53,22 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
     private Context context;
     private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
-    private Board.Forum forumData;
+    private ForumData forumData;
 
     // Elements
     private ListView listView;
     private ThreadListAdapter threadListAdapter;
     private TextView textTitle;
-    private Button buttonMore;
+    private Button buttonMore, buttonPost;
+    private EditText textareaTitle, textareaContent;
 
     // Misc
     private long forumId;
     private long latestRefresh;
     private int currentPage;
+    private boolean loadFresh;
     private String locale;
+    private Intent storedRequest;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,7 +85,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
                 container, false);
 
         // Get the unlocks
-        locale = sharedPreferences.getString(Constants.SP_BL_LOCALE, "en");
+        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
 
         // Init the views
         initFragment(view);
@@ -94,7 +101,13 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
         textTitle = (TextView) v.findViewById(R.id.text_title);
         listView = (ListView) v.findViewById(android.R.id.list);
         listView.setAdapter(threadListAdapter = new ThreadListAdapter(context, null, layoutInflater));
+        getActivity().registerForContextMenu(listView);
+        buttonPost = (Button) v.findViewById(R.id.button_new);
         buttonMore = (Button) v.findViewById(R.id.button_more);
+        textareaTitle = (EditText) v.findViewById(R.id.textarea_title);
+        textareaContent = (EditText) v.findViewById(R.id.textarea_content);
+
+        // Set the click listeners
         buttonMore.setOnClickListener(
 
                 new OnClickListener() {
@@ -109,16 +122,59 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
                         }
 
-                        // Increment
-                        currentPage++;
-
                         // Do the "get more"-thing
-                        new AsyncLoadMore(context, forumId).execute(currentPage);
+                        new AsyncLoadMore(context, forumId).execute(++currentPage);
 
                     }
                 }
 
                 );
+
+        // Let's set the onClick events
+        buttonPost.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // Let's get the content
+                String title = textareaTitle.getText().toString();
+                String content = textareaContent.getText().toString();
+
+                // Let's see
+                if (title.equals("")) {
+
+                    Toast.makeText(context, "You need to enter a title for your thread.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+
+                } else if (content.equals("")) {
+
+                    Toast.makeText(context, "You need to enter some content for your thread.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+
+                // Parse for the BBCODE!
+                content = BBCodeUtils.toBBCode(content, null);
+
+                // Ready... set... go!
+                new AsyncCreateNewThread(context, forumId).execute(title, content,
+                        sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+
+            }
+
+        });
+
+        currentPage = 1;
+        loadFresh = false;
+
+        // Do we have one?
+        if (storedRequest != null) {
+
+            openForum(storedRequest);
+
+        }
 
     }
 
@@ -140,9 +196,10 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
         // Set it up
         long now = System.currentTimeMillis() / 1000;
 
-        if (forumData == null) {
+        if (forumData == null || loadFresh) {
 
             new AsyncGetThreads(context, listView).execute(forumId);
+            loadFresh = false;
 
         } else {
 
@@ -186,7 +243,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
                         ).putExtra(
 
-                                "threadTitle", ((Board.ThreadData) v.getTag()).getTitle()
+                                "threadTitle", ((ForumThreadData) v.getTag()).getTitle()
 
                         )
 
@@ -258,6 +315,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
             if (results) {
 
+                textTitle.setText(forumData.getTitle());
                 ((ThreadListAdapter) list.getAdapter()).set(forumData
                         .getThreads());
 
@@ -273,7 +331,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
         private Context context;
         private long forumId;
         private int page;
-        private List<Board.ThreadData> threads;
+        private List<ForumThreadData> threads;
 
         // Constructs
         public AsyncLoadMore(Context c, long f) {
@@ -296,8 +354,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
             try {
 
                 page = arg0[0];
-                threads = WebsiteHandler.getThreadsForForum(this.forumId, page,
-                        locale);
+                threads = WebsiteHandler.getThreadsForForum(locale, forumId, page);
                 return true;
 
             } catch (Exception ex) {
@@ -337,9 +394,18 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
     public void openForum(Intent data) {
 
-        forumId = data.getLongExtra("forumId", 0);
-        textTitle.setText(data.getStringExtra("forumTitle"));
-        reload();
+        if (textTitle == null) {
+
+            storedRequest = data;
+
+        } else {
+
+            forumId = data.getLongExtra("forumId", 0);
+            textTitle.setText(data.getStringExtra("forumTitle"));
+            loadFresh = true;
+            reload();
+
+        }
 
     }
 

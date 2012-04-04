@@ -158,14 +158,14 @@ public class MainActivity extends FragmentActivity implements DefaultFragmentAct
 
         if (hasEmail()) {
             fieldEmail.setText(sharedPreferences.getString(
-                    Constants.SP_BL_EMAIL, ""));
+                    Constants.SP_BL_PROFILE_EMAIL, ""));
         }
 
     }
 
     private boolean hasEmail() {
 
-        return sharedPreferences.contains(Constants.SP_BL_EMAIL);
+        return sharedPreferences.contains(Constants.SP_BL_PROFILE_EMAIL);
 
     }
 
@@ -179,7 +179,7 @@ public class MainActivity extends FragmentActivity implements DefaultFragmentAct
 
     private boolean isPasswordRemembered() {
 
-        return sharedPreferences.getBoolean(Constants.SP_BL_REMEMBER, false);
+        return sharedPreferences.getBoolean(Constants.SP_BL_PROFILE_REMEMBER, false);
 
     }
 
@@ -194,9 +194,9 @@ public class MainActivity extends FragmentActivity implements DefaultFragmentAct
 
                     // Set the password (decrypted version)
                     fieldPassword.setText(SimpleCrypto.decrypt(
-                            sharedPreferences.getString(Constants.SP_BL_EMAIL,
+                            sharedPreferences.getString(Constants.SP_BL_PROFILE_EMAIL,
                                     ""), sharedPreferences.getString(
-                                    Constants.SP_BL_PASSWORD, "")));
+                                    Constants.SP_BL_PROFILE_PASSWORD, "")));
 
                 } catch (Exception e) {
 
@@ -212,7 +212,7 @@ public class MainActivity extends FragmentActivity implements DefaultFragmentAct
 
     private boolean hasPassword() {
 
-        return !sharedPreferences.getString(Constants.SP_BL_PASSWORD, "")
+        return !sharedPreferences.getString(Constants.SP_BL_PROFILE_PASSWORD, "")
                 .equals("");
     }
 
@@ -259,15 +259,21 @@ public class MainActivity extends FragmentActivity implements DefaultFragmentAct
 
     private void defaultFileCheck() {
 
-        if (sharedPreferences.getInt(Constants.SP_V_FILE, 0) < Constants.CHANGELOG_VERSION) {
+        if (sharedPreferences.getInt(Constants.SP_V_FILE, 0) != Constants.CHANGELOG_VERSION) {
 
             // Get the sharedPreferences
             SharedPreferences.Editor spEdit = sharedPreferences.edit();
+            String username = sharedPreferences.getString(Constants.SP_BL_PROFILE_EMAIL, "");
+            String password = sharedPreferences.getString(Constants.SP_BL_PROFILE_PASSWORD, "");
 
-            // Set it up
+            // Let's clear it out
+            spEdit.clear();
+
+            // Re-fill
+            spEdit.putString(Constants.SP_BL_PROFILE_EMAIL, username);
+            spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, password);
+            spEdit.putBoolean(Constants.SP_BL_PROFILE_REMEMBER, !password.equals(""));
             spEdit.putInt(Constants.SP_V_FILE, Constants.CHANGELOG_VERSION);
-            spEdit.remove(Constants.SP_BL_PERSONA_ID);
-            spEdit.remove(Constants.SP_BL_PLATFORM_ID);
 
             // Commit!!
             spEdit.commit();
@@ -413,8 +419,8 @@ public class MainActivity extends FragmentActivity implements DefaultFragmentAct
                 (ViewGroup) findViewById(R.id.dialog_root));
 
         // Set the title and the view
-        builder.setTitle(getString(R.string.general_changelog_version)
-                + Constants.CHANGELOG_VERSION);
+        builder.setTitle(getString(R.string.general_changelog_version).replace("{version}",
+                Constants.CHANGELOG_VERSION + ""));
 
         // Grab the fields
         final TextView textView = (TextView) layout
@@ -504,7 +510,8 @@ public class MainActivity extends FragmentActivity implements DefaultFragmentAct
 
                     fragmentManager,
                     new String[] {
-                            "About", "FAQ", "Credits"
+                            getString(R.string.label_about), getString(R.string.label_faq),
+                            getString(R.string.label_credits)
                     },
                     listFragments,
                     viewPager,
