@@ -1140,6 +1140,46 @@ public class CacheHandler {
             }
 
         }
+        
+        public static boolean updateAfterView(Context context, SavedForumThreadData thread) {
+
+            // Use the SQLiteManager to get a cursor
+            SQLiteManager manager = new SQLiteManager(context);
+
+            try {
+                // UPDATE them!!
+                manager.update(
+
+                        DatabaseStructure.ForumThreads.TABLE_NAME,
+                        new String[] {
+                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD,
+                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_READ,
+                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED,
+                            
+                        },
+                        new String[] { 
+
+                            "0",
+                            thread.getDateLastRead() + "",
+                            thread.getDateLastChecked() + ""
+                        },
+                        DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
+                        thread.getId()
+
+                        );
+
+                manager.close();
+                return true;
+
+            } catch (Exception ex) {
+
+                manager.close();
+                ex.printStackTrace();
+                return false;
+
+            }
+
+        }
 
         public static boolean update(Context context,
                 HashMap<Long, SavedForumThreadData> threadArray) {
@@ -1212,7 +1252,6 @@ public class CacheHandler {
                 if (results.moveToFirst()) {
 
                     do {
-
                         tempSavedForumThread = new SavedForumThreadData(
 
                                 results.getLong(results
@@ -1314,7 +1353,7 @@ public class CacheHandler {
                                         results.getInt(results
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS)),
                                         results.getInt(results
-                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS)) == 1,
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD)) == 1,
                                                         
                                         uid
                                 )

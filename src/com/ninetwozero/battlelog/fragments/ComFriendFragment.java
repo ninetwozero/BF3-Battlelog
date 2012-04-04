@@ -52,7 +52,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
         layoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_main_credits,
+        View view = layoutInflater.inflate(R.layout.tab_content_com_friends,
                 container, false);
 
         // Let's try this

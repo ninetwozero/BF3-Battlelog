@@ -25,6 +25,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -293,6 +294,47 @@ public class ForumSavedActivity extends ListActivity {
         }
 
     }
+    public class AsyncUpdate extends AsyncTask<SavedForumThreadData, Void, Boolean> {
+
+        // Attributes
+        private Context context;
+        
+        public AsyncUpdate(Context c) {
+
+            context = c;
+            
+        }
+
+        @Override
+        protected Boolean doInBackground(SavedForumThreadData ... t) {
+
+            try {
+                
+                //Delete the item
+                t[0].setDateLastChecked(System.currentTimeMillis()/1000);
+                t[0].setDateLastRead(System.currentTimeMillis()/1000);
+                t[0].setUnread(false);
+                return CacheHandler.Forum.updateAfterView(context, t[0]);
+                
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+                return false;
+
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            
+            //Update the ListView
+            reload();
+            
+        }
+
+    } 
+    
     public class AsyncDelete extends AsyncTask<SavedForumThreadData, Void, Boolean> {
 
         // Attributes
@@ -341,6 +383,7 @@ public class ForumSavedActivity extends ListActivity {
         }
 
     }
+    
     @Override
     public void onListItemClick(ListView lv, View v, int p, long id) {
 
@@ -384,6 +427,7 @@ public class ForumSavedActivity extends ListActivity {
         // Select the correct option
         if (item.getItemId() == 0) {
 
+            new AsyncUpdate(this).execute(thread);
             startActivity(new Intent(this, ForumActivity.class).putExtra("savedThread", thread));
 
         } else if (item.getItemId() == 1) {
