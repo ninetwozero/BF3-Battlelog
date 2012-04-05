@@ -20,5 +20,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@id/swipeytabs"/>
+	
 	<!--  COM HERE -->
+	<include layout="@layout/com_center_slider"  />	  
 </RelativeLayout>

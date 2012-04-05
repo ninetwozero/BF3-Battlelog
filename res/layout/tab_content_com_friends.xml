@@ -16,53 +16,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
 >			
+	<ListView
+    	android:id="@android:id/list"  
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:fastScrollEnabled="true"
+    />
 	<TextView 
-	    android:id="@+id/text_status_friends"
+	    android:id="@android:id/empty"
 	    android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="@string/info_xml_no_friends"
 		android:layout_centerInParent="true"
-		android:visibility="gone"
-    />
-    <View 
-		android:id="@+id/topalign"  
-		android:layout_width="fill_parent"
-		android:layout_height="0dp"
-	/>
-    <RelativeLayout
-    	android:id="@+id/wrap_friends_requests"  
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" 
-	>
-		<TextView
-		    style="@style/FriendHeadingRow"
-			android:id="@+id/header_friends_requests"
-			android:text="@string/info_xml_friend_requests"
-    	/>
-	    <ListView
-	    	android:id="@+id/list_requests"  
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/header_friends_requests"
-			android:fastScrollEnabled="true"
-	    />
-    </RelativeLayout>
-    <View 
-		android:id="@+id/centeralign"  
-		android:layout_width="fill_parent"
-		android:layout_height="0dp"
-		android:layout_below="@id/wrap_friends_requests"
-		android:layout_alignWithParentIfMissing="@id/topalign" 
-	/>
-   <ListView
-    	android:id="@+id/list_friends"  
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:layout_alignWithParentIfMissing="@id/topalign"
-		android:layout_above="@id/button_refresh"
-		android:layout_below="@id/wrap_friends_requests"
-		android:fastScrollEnabled="true"
     />
 </RelativeLayout>

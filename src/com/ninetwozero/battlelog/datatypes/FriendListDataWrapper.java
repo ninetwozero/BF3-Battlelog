@@ -1,66 +1,53 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FriendListDataWrapper {
 
     // Attributes
-    private List<ProfileData> requests, onlineFriends, offlineFriends;
+    private int numRequests, numPlaying, numOnline, numOffline;
+    private List<ProfileData> friends;
 
     // Construct
-    public FriendListDataWrapper(List<ProfileData> r,
-            List<ProfileData> on, List<ProfileData> off) {
+    public FriendListDataWrapper(List<ProfileData> f, int r, int np, int on, int of) {
 
         // Set the data
-        requests = r;
-        onlineFriends = on;
-        offlineFriends = off;
+        friends = f;
+        numRequests = r;
+        numPlaying = np;
+        numOnline = on;
+        numOffline = of;
     }
 
     // Getters
-    public List<ProfileData> getRequests() {
-        return this.requests;
-    }
-
-    public List<ProfileData> getOnlineFriends() {
-        return this.onlineFriends;
-    }
-
-    public List<ProfileData> getOfflineFriends() {
-        return this.offlineFriends;
-    }
-
     public List<ProfileData> getFriends() {
-
-        // Init
-        List<ProfileData> merged = new ArrayList<ProfileData>();
-
-        // Merge
-        if (this.onlineFriends != null) {
-            merged.addAll(this.onlineFriends);
-        }
-        if (this.offlineFriends != null) {
-            merged.addAll(this.offlineFriends);
-        }
-
-        // Return
-        return merged;
+        return friends;
     }
 
-    public int getOnlineCount() {
+    public int getNumRequests() {
 
-        if (this.onlineFriends != null && this.onlineFriends.size() > 0) {
+        return numRequests;
+    }
 
-            return this.onlineFriends.size() - 1;
+    public int getNumPlaying() {
 
-        } else {
+        return numPlaying;
+    }
 
-            return 0;
+    public int getNumOnline() {
 
-        }
+        return numOnline;
+    }
 
+    public int getNumOffline() {
+
+        return numOffline;
+    }
+
+    public int getNumTotalOnline() {
+
+        return numPlaying + numOnline;
     }
 
 }
