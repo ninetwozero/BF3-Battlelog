@@ -55,7 +55,11 @@ public class FriendListAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
 
-        if (getItem(position).getId() == 0) {
+        if (!getItem(position).isFriend()) {
+
+            return 2;
+
+        } else if (getItem(position).getId() == 0) {
 
             return 1;
 
@@ -70,7 +74,7 @@ public class FriendListAdapter extends BaseAdapter {
     @Override
     public int getViewTypeCount() {
 
-        return 2;
+        return 3;
 
     }
 
@@ -101,7 +105,21 @@ public class FriendListAdapter extends BaseAdapter {
         ProfileData currentProfile = getItem(position);
 
         // Let's see what we found
-        if (getItemViewType(position) == 1) {
+        if (getItemViewType(position) == 2) {
+
+            // Recycle
+            if (convertView == null) {
+
+                convertView = layoutInflater.inflate(R.layout.list_item_request,
+                        parent, false);
+
+            }
+
+            // Set the TextView
+            ((TextView) convertView.findViewById(R.id.text_user)).setText(currentProfile
+                    .getUsername());
+
+        } else if (getItemViewType(position) == 1) {
 
             // Can we recycle?
             if (convertView == null) {

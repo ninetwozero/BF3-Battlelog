@@ -1,7 +1,6 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FriendListDataWrapper {
@@ -27,28 +26,28 @@ public class FriendListDataWrapper {
     }
 
     public int getNumRequests() {
-            
+
         return numRequests;
     }
-    
+
     public int getNumPlaying() {
-        
+
         return numPlaying;
     }
-    
+
     public int getNumOnline() {
-        
+
         return numOnline;
     }
-    
+
     public int getNumOffline() {
-        
+
         return numOffline;
     }
 
     public int getNumTotalOnline() {
-        
+
         return numPlaying + numOnline;
     }
-    
+
 }

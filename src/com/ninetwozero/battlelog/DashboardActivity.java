@@ -44,7 +44,6 @@ import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
@@ -121,16 +120,17 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
         // Setup the fragments
         setupFragments();
-        
+
         // Setup COM & feed
         initActivity();
 
     }
 
     public final void initActivity() {
-        
+
         slidingDrawer = (SlidingDrawer) findViewById(R.id.com_slider);
-        
+        slidingDrawerHandle = (TextView) findViewById(R.id.com_slide_handle_text);
+
     }
 
     @Override
@@ -285,8 +285,8 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
     @Override
     public void reload() {
-        
-        //Update the COM
+
+        // Update the COM
         fragmentComFriends.reload();
         fragmentComNotifications.reload();
 
@@ -302,6 +302,9 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
                 case 0:
                     fragmentComFriends.createContextMenu(menu, view, menuInfo);
+                    break;
+
+                default:
                     break;
 
             }
@@ -342,13 +345,30 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
         }
 
-        switch (viewPager.getCurrentItem()) {
+        if (slidingDrawer.isOpened()) {
 
-            case VIEWPAGER_POSITION_FEED:
-                return fragmentFeed.handleSelectedContextItem(info, item);
+            switch (viewPagerCom.getCurrentItem()) {
 
-            default:
-                break;
+                case 0:
+                    fragmentComFriends.handleSelectedContextItem(info, item);
+                    break;
+
+                default:
+                    break;
+
+            }
+
+        } else {
+
+            switch (viewPager.getCurrentItem()) {
+
+                case VIEWPAGER_POSITION_FEED:
+                    return fragmentFeed.handleSelectedContextItem(info, item);
+
+                default:
+                    break;
+
+            }
 
         }
 
@@ -371,7 +391,7 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
         if (item.getItemId() == R.id.option_refresh) {
 
             reload();
-            
+
         } else if (item.getItemId() == R.id.option_settings) {
 
             startActivity(new Intent(this, SettingsActivity.class));
@@ -389,6 +409,12 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
         // Return true yo
         return true;
+
+    }
+
+    public void setComLabel(String str) {
+
+        slidingDrawerHandle.setText(str);
 
     }
 

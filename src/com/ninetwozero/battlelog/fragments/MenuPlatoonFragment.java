@@ -124,14 +124,18 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         MENU_INTENTS.put(R.id.button_new, new Intent(context, PlatoonCreateActivity.class));
         MENU_INTENTS.put(R.id.button_invites, new Intent(context, ProfileSettingsActivity.class));
         MENU_INTENTS.put(R.id.button_search, new Intent(context, SearchActivity.class));
-        MENU_INTENTS.put(
-                R.id.button_self,
-                new Intent(context, PlatoonActivity.class).putExtra("platoon",
-                        platoonData.get(selectedPosition)));
-        MENU_INTENTS.put(
-                R.id.button_settings,
-                new Intent(context, ProfileSettingsActivity.class).putExtra("platoon",
-                        platoonData.get(selectedPosition)));
+
+        if (platoonData != null) {
+
+            MENU_INTENTS.put(
+                    R.id.button_self,
+                    new Intent(context, PlatoonActivity.class).putExtra("platoon",
+                            platoonData.get(selectedPosition)));
+            MENU_INTENTS.put(
+                    R.id.button_settings,
+                    new Intent(context, ProfileSettingsActivity.class).putExtra("platoon",
+                            platoonData.get(selectedPosition)));
+        }
 
         // Add the OnClickListeners
         for (int key : MENU_INTENTS.keySet()) {
@@ -255,6 +259,17 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
                 selectedPosition = platoonData.size() - 1;
                 selectedPlatoon = platoonData.get(selectedPosition).getId();
+
+                // Reset these
+                MENU_INTENTS.put(
+                        R.id.button_self,
+                        new Intent(context, PlatoonActivity.class).putExtra("platoon",
+                                platoonData.get(selectedPosition)));
+                MENU_INTENTS.put(
+                        R.id.button_settings,
+                        new Intent(context, ProfileSettingsActivity.class).putExtra(
+                                "platoon",
+                                platoonData.get(selectedPosition)));
 
             }
 

@@ -553,4 +553,6 @@
     <string name="country_not_found">Country was NOT found. Will use previous stored country or nothing if country was not stored previously.</string>
     <string name="label_com_accept">Accept</string>
     <string name="label_com_reject">Reject</string>
+    <string name="info_txt_friends_playing">Playing</string>
+    <string name="info_xml_friends_pending">Pending</string>
 </resources>

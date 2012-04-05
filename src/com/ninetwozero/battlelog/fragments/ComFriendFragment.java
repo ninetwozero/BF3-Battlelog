@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.AssignmentActivity;
 import com.ninetwozero.battlelog.ChatActivity;
 import com.ninetwozero.battlelog.CompareActivity;
+import com.ninetwozero.battlelog.DashboardActivity;
 import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.UnlockActivity;
@@ -106,7 +107,8 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
     @Override
     public void reload() {
 
-        new AsyncRefresh().execute(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+        new AsyncRefresh().execute(sharedPreferences
+                .getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 
@@ -289,6 +291,8 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
         @Override
         protected void onPreExecute() {
 
+            ((DashboardActivity) context).setComLabel(context.getString(R.string.label_wait));
+
         }
 
         @Override
@@ -314,6 +318,9 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
             if (results) {
 
                 // Display the friend list
+                ((DashboardActivity) context).setComLabel(context.getString(
+                        R.string.label_com_handle).replace("{num}",
+                        friendListData.getNumTotalOnline() + ""));
                 display(friendListData);
 
             }
@@ -385,10 +392,9 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
     @Override
     public void onResume() {
-        
+
         super.onResume();
         reload();
     }
-    
-    
+
 }

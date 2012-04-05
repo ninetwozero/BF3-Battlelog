@@ -1062,9 +1062,12 @@ public class WebsiteHandler {
                 int numPlaying = 0;
                 int numOnline = 0;
                 int numOffline = 0;
-                
+
                 // Got requests?
                 if (numRequests > 0) {
+
+                    // Temp
+                    ProfileData tempProfileData;
 
                     // Iterate baby!
                     for (int i = 0, max = requestsObject.length(); i < max; i++) {
@@ -1075,27 +1078,29 @@ public class WebsiteHandler {
                         // Save it
                         profileRowRequests.add(
 
-                                new ProfileData(
+                                tempProfileData = new ProfileData(
                                         Long.parseLong(tempObj.getString("userId")),
                                         tempObj.getString("username"),
                                         new PersonaData[] {},
                                         tempObj.optString("gravatarMd5", "")
 
-                                )
+                                        )
 
                                 );
+
+                        tempProfileData.setFriend(false);
 
                     }
 
                     // Sort it out
                     Collections.sort(profileRowRequests,
                             new ProfileComparator());
-                    friends.add( new ProfileData(0, c.getString(R.string.info_xml_friend_requests)));
+                    friends.add(new ProfileData(c.getString(R.string.info_xml_friend_requests)));
                     friends.addAll(profileRowRequests);
 
                 }
 
-                //Do we have more than... well, at least one friend?
+                // Do we have more than... well, at least one friend?
                 if (numFriends > 0) {
 
                     // Iterate baby!
@@ -1168,54 +1173,29 @@ public class WebsiteHandler {
                     // First add the separators)...
                     if (numPlaying > 0) {
 
-                        profileRowPlaying.add(
-
-                                new ProfileData(
-
-                                        0,c.getString(R.string.info_txt_friends_online)
-
-                                )
-
-                                );
-
                         Collections.sort(profileRowPlaying, new ProfileComparator());
-                        friends.addAll( profileRowPlaying );
+                        friends.add(new ProfileData(c.getString(R.string.info_txt_friends_playing)));
+                        friends.addAll(profileRowPlaying);
                     }
-                    
+
                     if (numOnline > 0) {
-
-                        profileRowOnline.add(
-
-                                new ProfileData(
-
-                                        0, c.getString(R.string.info_txt_friends_offline)
-                                )
-
-                                );
 
                         // ...then we sort it out...
                         Collections.sort(profileRowOnline, new ProfileComparator());
-                        friends.addAll( profileRowOnline);
+                        friends.add(new ProfileData(c.getString(R.string.info_txt_friends_online)));
+                        friends.addAll(profileRowOnline);
                     }
 
                     if (numOffline > 0) {
 
-                        profileRowOffline.add(
-
-                                new ProfileData(
-
-                                        0, c.getString(R.string.info_txt_friends_offline)
-
-                                )
-
-                                );
-
                         Collections.sort(profileRowOffline, new ProfileComparator());
-                        friends.addAll( profileRowOffline);
+                        friends.add(new ProfileData(c.getString(R.string.info_txt_friends_offline)));
+                        friends.addAll(profileRowOffline);
                     }
                 }
 
-                return new FriendListDataWrapper(friends, numRequests, numPlaying, numOnline, numOffline);
+                return new FriendListDataWrapper(friends, numRequests, numPlaying, numOnline,
+                        numOffline);
 
             } else {
 

@@ -17,37 +17,23 @@ package com.ninetwozero.battlelog.fragments;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.AssignmentActivity;
-import com.ninetwozero.battlelog.ChatActivity;
-import com.ninetwozero.battlelog.CompareActivity;
-import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.UnlockActivity;
 import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
@@ -102,7 +88,8 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
     @Override
     public void reload() {
 
-        new AsyncRefresh().execute(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+        new AsyncRefresh().execute(sharedPreferences
+                .getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 
@@ -215,14 +202,13 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
         // Do we have it already? If no, we init
         notificationListAdapter.setItemArray(items);
 
-
     }
 
     @Override
     public void onResume() {
-        
+
         super.onResume();
         reload();
     }
-    
+
 }
