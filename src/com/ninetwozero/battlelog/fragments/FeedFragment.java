@@ -219,7 +219,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
     public void reload() {
 
         // Feed refresh!
-        new AsyncFeedRefresh(
+        new AsyncRefresh(
 
                 context, SessionKeeper.getProfileData().getId()
 
@@ -317,13 +317,13 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
     }
 
-    public class AsyncFeedRefresh extends AsyncTask<Void, Void, Boolean> {
+    private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
         // Attributes
         private Context context;
         private long activeProfileId;
 
-        public AsyncFeedRefresh(Context c, long pId) {
+        public AsyncRefresh(Context c, long pId) {
 
             this.context = c;
             this.activeProfileId = pId;

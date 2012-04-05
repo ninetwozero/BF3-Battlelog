@@ -1090,6 +1090,7 @@ public class WebsiteHandler {
                     // Sort it out
                     Collections.sort(profileRowRequests,
                             new ProfileComparator());
+                    friends.add( new ProfileData(0, c.getString(R.string.info_xml_friend_requests)));
                     friends.addAll(profileRowRequests);
 
                 }
@@ -1171,8 +1172,7 @@ public class WebsiteHandler {
 
                                 new ProfileData(
 
-                                        0, "00000000", new PersonaData(c
-                                                .getString(R.string.info_txt_friends_online)), null
+                                        0,c.getString(R.string.info_txt_friends_online)
 
                                 )
 
@@ -1188,10 +1188,7 @@ public class WebsiteHandler {
 
                                 new ProfileData(
 
-                                        0, "00000001", new PersonaData(c
-                                                .getString(R.string.info_txt_friends_offline)),
-                                        null
-
+                                        0, c.getString(R.string.info_txt_friends_offline)
                                 )
 
                                 );
@@ -1207,9 +1204,7 @@ public class WebsiteHandler {
 
                                 new ProfileData(
 
-                                        0, "00000001", new PersonaData(c
-                                                .getString(R.string.info_txt_friends_offline)),
-                                        null
+                                        0, c.getString(R.string.info_txt_friends_offline)
 
                                 )
 

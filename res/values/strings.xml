@@ -551,4 +551,6 @@
     <string name="profile_info_country">Please enter country name.</string>
     <string name="country_hint">Example: United Kingdom</string> <!-- Please keep country name in English format -->
     <string name="country_not_found">Country was NOT found. Will use previous stored country or nothing if country was not stored previously.</string>
+    <string name="label_com_accept">Accept</string>
+    <string name="label_com_reject">Reject</string>
 </resources>
