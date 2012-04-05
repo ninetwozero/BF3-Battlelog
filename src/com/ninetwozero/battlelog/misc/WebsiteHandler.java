@@ -1050,15 +1050,19 @@ public class WebsiteHandler {
                 JSONObject tempObj, presenceObj;
 
                 // Arraylists!
+                List<ProfileData> friends = new ArrayList<ProfileData>();
                 List<ProfileData> profileRowRequests = new ArrayList<ProfileData>();
                 List<ProfileData> profileRowPlaying = new ArrayList<ProfileData>();
                 List<ProfileData> profileRowOnline = new ArrayList<ProfileData>();
                 List<ProfileData> profileRowOffline = new ArrayList<ProfileData>();
 
                 // Grab the lengths
-                int numRequests = requestsObject.length(), numFriends = friendsObject
-                        .length();
-
+                int numRequests = requestsObject.length();
+                int numFriends = friendsObject.length();
+                int numPlaying = 0;
+                int numOnline = 0;
+                int numOffline = 0;
+                
                 // Got requests?
                 if (numRequests > 0) {
 
@@ -1086,13 +1090,15 @@ public class WebsiteHandler {
                     // Sort it out
                     Collections.sort(profileRowRequests,
                             new ProfileComparator());
+                    friends.addAll(profileRowRequests);
 
                 }
 
+                //Do we have more than... well, at least one friend?
                 if (numFriends > 0) {
 
                     // Iterate baby!
-                    for (int i = 0, max = friendsObject.length(); i < max; i++) {
+                    for (int i = 0; i < numFriends; i++) {
 
                         // Grab the object
                         tempObj = friendsObject.optJSONObject(i);
@@ -1154,11 +1160,12 @@ public class WebsiteHandler {
                     }
 
                     // How many "online" friends do we have? Playing + idle
-                    numFriends = profileRowPlaying.size()
-                            + profileRowOnline.size();
+                    numPlaying = profileRowPlaying.size();
+                    numOnline = profileRowOnline.size();
+                    numOffline = profileRowOffline.size();
 
                     // First add the separators)...
-                    if (numFriends > 0) {
+                    if (numPlaying > 0) {
 
                         profileRowPlaying.add(
 
@@ -1171,9 +1178,30 @@ public class WebsiteHandler {
 
                                 );
 
+                        Collections.sort(profileRowPlaying, new ProfileComparator());
+                        friends.addAll( profileRowPlaying );
+                    }
+                    
+                    if (numOnline > 0) {
+
+                        profileRowOnline.add(
+
+                                new ProfileData(
+
+                                        0, "00000001", new PersonaData(c
+                                                .getString(R.string.info_txt_friends_offline)),
+                                        null
+
+                                )
+
+                                );
+
+                        // ...then we sort it out...
+                        Collections.sort(profileRowOnline, new ProfileComparator());
+                        friends.addAll( profileRowOnline);
                     }
 
-                    if (profileRowOffline.size() > 0) {
+                    if (numOffline > 0) {
 
                         profileRowOffline.add(
 
@@ -1187,22 +1215,12 @@ public class WebsiteHandler {
 
                                 );
 
+                        Collections.sort(profileRowOffline, new ProfileComparator());
+                        friends.addAll( profileRowOffline);
                     }
-
-                    // ...then we sort it out...
-                    Collections
-                            .sort(profileRowPlaying, new ProfileComparator());
-                    Collections.sort(profileRowOnline, new ProfileComparator());
-                    Collections
-                            .sort(profileRowOffline, new ProfileComparator());
-
-                    // ...sprinkle a little merging here and there...
-                    profileRowPlaying.addAll(profileRowOnline);
-
                 }
 
-                return new FriendListDataWrapper(profileRowRequests,
-                        profileRowPlaying, profileRowOffline);
+                return new FriendListDataWrapper(friends, numRequests, numPlaying, numOnline, numOffline);
 
             } else {
 

@@ -77,20 +77,20 @@ public class FriendListAdapter extends BaseAdapter {
     @Override
     public ProfileData getItem(int position) {
 
-        return this.profileArray.get(position);
+        return profileArray.get(position);
 
     }
 
     @Override
     public long getItemId(int position) {
 
-        return this.profileArray.get(position).getId();
+        return profileArray.get(position).getId();
 
     }
 
     public long getPersonaId(int position) {
 
-        return this.profileArray.get(position).getPersona(0).getId();
+        return profileArray.get(position).getPersona(0).getId();
 
     }
 
@@ -168,7 +168,8 @@ public class FriendListAdapter extends BaseAdapter {
     }
 
     public void setItemArray(List<ProfileData> data) {
-        this.profileArray = data;
+        profileArray = data;
+        notifyDataSetChanged();
     }
 
 }
