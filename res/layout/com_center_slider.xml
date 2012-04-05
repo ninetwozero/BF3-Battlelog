@@ -13,6 +13,7 @@
  -->
 <SlidingDrawer 
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipeytabs="http://schemas.android.com/apk/res/com.ninetwozero.battlelog"
 	android:id="@+id/com_slider"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -53,41 +54,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:background="#FDFDFD"
-	>	<TabHost
-			android:id="@+id/com_tabhost" 
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-		>
-			<RelativeLayout 
-				android:layout_width="fill_parent" 
-				android:layout_height="fill_parent"
-			>
-				<TabWidget 
-				    android:id="@android:id/tabs"
-					android:layout_width="fill_parent" 
-					android:layout_height="wrap_content" 
-					android:layout_alignParentTop="true"
-				/>
-				<Button
-			    	android:id="@+id/button_refresh" 
-					android:layout_width="fill_parent"
-					android:layout_height="40dp"
-			     	android:text="@string/lable_refresh"
-			     	android:background="@drawable/gradient_greytodarkgrey"
-			     	android:textColor="#FFFFFF"
-			    	android:gravity="center"
-			     	android:layout_alignParentBottom="true"
-			     	android:onClick="onClick"
-			     />
-				<FrameLayout 
-				    android:id="@android:id/tabcontent"
-					android:layout_width="fill_parent" 
-					android:layout_height="fill_parent"
-					android:layout_below="@android:id/tabs"
-					android:layout_above="@id/button_refresh"
-				>
-				</FrameLayout>
-			</RelativeLayout>    
-		</TabHost>
+	>	
+		<include layout="@layout/viewpager_com" />
 	</RelativeLayout>
 </SlidingDrawer>

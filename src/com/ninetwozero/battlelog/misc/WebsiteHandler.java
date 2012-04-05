@@ -1050,17 +1050,24 @@ public class WebsiteHandler {
                 JSONObject tempObj, presenceObj;
 
                 // Arraylists!
+                List<ProfileData> friends = new ArrayList<ProfileData>();
                 List<ProfileData> profileRowRequests = new ArrayList<ProfileData>();
                 List<ProfileData> profileRowPlaying = new ArrayList<ProfileData>();
                 List<ProfileData> profileRowOnline = new ArrayList<ProfileData>();
                 List<ProfileData> profileRowOffline = new ArrayList<ProfileData>();
 
                 // Grab the lengths
-                int numRequests = requestsObject.length(), numFriends = friendsObject
-                        .length();
+                int numRequests = requestsObject.length();
+                int numFriends = friendsObject.length();
+                int numPlaying = 0;
+                int numOnline = 0;
+                int numOffline = 0;
 
                 // Got requests?
                 if (numRequests > 0) {
+
+                    // Temp
+                    ProfileData tempProfileData;
 
                     // Iterate baby!
                     for (int i = 0, max = requestsObject.length(); i < max; i++) {
@@ -1071,28 +1078,33 @@ public class WebsiteHandler {
                         // Save it
                         profileRowRequests.add(
 
-                                new ProfileData(
+                                tempProfileData = new ProfileData(
                                         Long.parseLong(tempObj.getString("userId")),
                                         tempObj.getString("username"),
                                         new PersonaData[] {},
                                         tempObj.optString("gravatarMd5", "")
 
-                                )
+                                        )
 
                                 );
+
+                        tempProfileData.setFriend(false);
 
                     }
 
                     // Sort it out
                     Collections.sort(profileRowRequests,
                             new ProfileComparator());
+                    friends.add(new ProfileData(c.getString(R.string.info_xml_friend_requests)));
+                    friends.addAll(profileRowRequests);
 
                 }
 
+                // Do we have more than... well, at least one friend?
                 if (numFriends > 0) {
 
                     // Iterate baby!
-                    for (int i = 0, max = friendsObject.length(); i < max; i++) {
+                    for (int i = 0; i < numFriends; i++) {
 
                         // Grab the object
                         tempObj = friendsObject.optJSONObject(i);
@@ -1154,55 +1166,36 @@ public class WebsiteHandler {
                     }
 
                     // How many "online" friends do we have? Playing + idle
-                    numFriends = profileRowPlaying.size()
-                            + profileRowOnline.size();
+                    numPlaying = profileRowPlaying.size();
+                    numOnline = profileRowOnline.size();
+                    numOffline = profileRowOffline.size();
 
                     // First add the separators)...
-                    if (numFriends > 0) {
+                    if (numPlaying > 0) {
 
-                        profileRowPlaying.add(
-
-                                new ProfileData(
-
-                                        0, "00000000", new PersonaData(c
-                                                .getString(R.string.info_txt_friends_online)), null
-
-                                )
-
-                                );
-
+                        Collections.sort(profileRowPlaying, new ProfileComparator());
+                        friends.add(new ProfileData(c.getString(R.string.info_txt_friends_playing)));
+                        friends.addAll(profileRowPlaying);
                     }
 
-                    if (profileRowOffline.size() > 0) {
+                    if (numOnline > 0) {
 
-                        profileRowOffline.add(
-
-                                new ProfileData(
-
-                                        0, "00000001", new PersonaData(c
-                                                .getString(R.string.info_txt_friends_offline)),
-                                        null
-
-                                )
-
-                                );
-
+                        // ...then we sort it out...
+                        Collections.sort(profileRowOnline, new ProfileComparator());
+                        friends.add(new ProfileData(c.getString(R.string.info_txt_friends_online)));
+                        friends.addAll(profileRowOnline);
                     }
 
-                    // ...then we sort it out...
-                    Collections
-                            .sort(profileRowPlaying, new ProfileComparator());
-                    Collections.sort(profileRowOnline, new ProfileComparator());
-                    Collections
-                            .sort(profileRowOffline, new ProfileComparator());
+                    if (numOffline > 0) {
 
-                    // ...sprinkle a little merging here and there...
-                    profileRowPlaying.addAll(profileRowOnline);
-
+                        Collections.sort(profileRowOffline, new ProfileComparator());
+                        friends.add(new ProfileData(c.getString(R.string.info_txt_friends_offline)));
+                        friends.addAll(profileRowOffline);
+                    }
                 }
 
-                return new FriendListDataWrapper(profileRowRequests,
-                        profileRowPlaying, profileRowOffline);
+                return new FriendListDataWrapper(friends, numRequests, numPlaying, numOnline,
+                        numOffline);
 
             } else {
 

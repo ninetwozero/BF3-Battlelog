@@ -59,19 +59,20 @@ public class NotificationListAdapter extends BaseAdapter {
     @Override
     public NotificationData getItem(int position) {
 
-        return this.itemArray.get(position);
+        return itemArray.get(position);
 
     }
 
     @Override
     public long getItemId(int position) {
 
-        return this.itemArray.get(position).getItemId();
+        return itemArray.get(position).getItemId();
 
     }
 
     public void setItemArray(List<NotificationData> ia) {
-        this.itemArray = ia;
+        itemArray = ia;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -90,7 +91,7 @@ public class NotificationListAdapter extends BaseAdapter {
 
         // Set the views
         ((TextView) convertView.findViewById(R.id.text_message)).setText(Html
-                .fromHtml(currentItem.getMessage(context, this.activeUserId)));
+                .fromHtml(currentItem.getMessage(context, activeUserId)));
         ((TextView) convertView.findViewById(R.id.text_date))
                 .setText(PublicUtils.getRelativeDate(context,
                         currentItem.getDate()));
@@ -102,10 +103,4 @@ public class NotificationListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    @Override
-    public void notifyDataSetChanged() {
-
-        super.notifyDataSetChanged();
-
-    }
 }
