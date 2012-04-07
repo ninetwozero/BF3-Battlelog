@@ -30,9 +30,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +61,8 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
     // Elements
     private ListView listView;
     private ThreadListAdapter threadListAdapter;
-    private TextView textTitle;
+    private TextView textTitle;    
+    private RelativeLayout wrapLoader; 
     private Button buttonMore, buttonPost;
     private EditText textareaTitle, textareaContent;
 
@@ -166,6 +170,9 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
         });
 
+        // Last but not least, the loader
+        wrapLoader = (RelativeLayout) v.findViewById(R.id.wrap_loader);
+        
         currentPage = 1;
         loadFresh = false;
 
@@ -256,6 +263,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
         // Attributes
         private Context context;
         private ListView list;
+        private RotateAnimation rotateAnimation;
 
         // Construct
         public AsyncGetThreads(Context c, ListView l) {
@@ -270,7 +278,13 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
             if (context != null) {
 
-                /* TODO: ADD OVERLAY WITH LOADER UNTIL THINGS ARE LOADED */
+                rotateAnimation = new RotateAnimation(0, 359,
+                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                rotateAnimation.setDuration(1600);
+                rotateAnimation.setRepeatCount(RotateAnimation.INFINITE);
+                wrapLoader.setVisibility(View.VISIBLE);
+                wrapLoader.findViewById(R.id.image_loader).setAnimation(rotateAnimation);
+                rotateAnimation.start();
 
             }
 
@@ -303,13 +317,17 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
                     buttonMore.setVisibility(View.VISIBLE);
                     buttonMore
-                            .setText(getString(R.string.info_xml_feed_button_pagination));
+                            .setText(R.string.info_xml_feed_button_pagination);
 
                 } else {
 
                     buttonMore.setVisibility(View.GONE);
 
                 }
+                
+                // Hide it
+                wrapLoader.setVisibility(View.GONE);
+                rotateAnimation.reset();
 
             }
 
@@ -344,7 +362,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
         @Override
         protected void onPreExecute() {
 
-            buttonMore.setText(getString(R.string.label_downloading));
+            buttonMore.setText(R.string.label_downloading);
             buttonMore.setEnabled(false);
         }
 

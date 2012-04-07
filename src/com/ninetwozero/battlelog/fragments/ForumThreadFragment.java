@@ -320,6 +320,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                 rotateAnimation = new RotateAnimation(0, 359,
                         Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                rotateAnimation.setDuration(1600);
                 rotateAnimation.setRepeatCount(RotateAnimation.INFINITE);
                 wrapLoader.setVisibility(View.VISIBLE);
                 wrapLoader.findViewById(R.id.image_loader).setAnimation(rotateAnimation);
@@ -382,7 +383,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                         wrapButtons.setVisibility(View.VISIBLE);
                         buttonJump
-                                .setText(getString(R.string.info_xml_feed_button_jump));
+                                .setText(R.string.info_xml_feed_button_jump);
                         Log.d(Constants.DEBUG_TAG, "currentPage => " + currentPage);
                         buttonPrev.setEnabled(currentPage > 1);
                         buttonNext.setEnabled(currentPage < threadData.getNumPages());
@@ -695,7 +696,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
             if (context instanceof ForumActivity) {
 
-                buttonJump.setText(getString(R.string.label_downloading));
+                buttonJump.setText(R.string.label_downloading);
                 buttonJump.setEnabled(false);
                 buttonPrev.setEnabled(false);
                 buttonNext.setEnabled(false);
