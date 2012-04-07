@@ -369,7 +369,8 @@ public class ProfileActivity extends FragmentActivity implements DefaultFragment
             if (viewPager.getCurrentItem() > 0) {
 
                 viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
-
+                return true;
+                
             }
 
         }

@@ -83,12 +83,6 @@ public class RequestListAdapter extends BaseAdapter {
         ((TextView) convertView.findViewById(R.id.text_user))
                 .setText(currentProfile.getUsername());
 
-        // Hot-wire the views
-        ((ImageView) convertView.findViewById(R.id.button_accept))
-                .setTag(currentProfile);
-        ((ImageView) convertView.findViewById(R.id.button_decline))
-                .setTag(currentProfile);
-
         // Set the tag so it's up for grabs
         convertView.setTag(currentProfile);
 
