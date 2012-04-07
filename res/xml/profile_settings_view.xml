@@ -42,7 +42,14 @@
             android:title="@string/country"
             android:dialogMessage="@string/profile_info_country"
             />
-        <!-- DATE/TIME FORMAT-->
+        <com.ninetwozero.battlelog.preference.DateTimePreference
+            android:title="@string/date_format"
+            android:key="profile_info_date_format"
+            />
+        <com.ninetwozero.battlelog.preference.DateTimePreference
+            android:title="@string/time_format"
+            android:key="profile_info_time_format"
+            />
         <!-- LOCAL TIME? -->
     </PreferenceCategory>
     <PreferenceCategory android:title="Privacy settings">
