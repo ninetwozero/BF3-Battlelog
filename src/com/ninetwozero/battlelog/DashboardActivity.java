@@ -31,6 +31,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -417,5 +418,27 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
         slidingDrawerHandle.setText(str);
 
     }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 
+        // Hotkeys
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            if( slidingDrawer.isOpened() ) {
+                
+                slidingDrawer.animateClose();
+                return true;
+                
+            } else if (viewPager.getCurrentItem() > 1) {
+
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+                return true;
+
+            }
+
+        }
+        return super.onKeyDown(keyCode, event);
+
+    }
 }
