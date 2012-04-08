@@ -1,8 +1,7 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ProfileSettings {
 
@@ -261,4 +260,19 @@ public class ProfileSettings {
 
         }
     };
+    public static final String PROFILE_INFO_DATE_FORMAT = "profile_info_date_format";
+    public static final List<String> DATE_PATTERNS = new ArrayList<String>(){
+        {
+            add("dd.MM.yyyy | MM.dd");
+            add("yyyy-MM-dd | dd/MM");
+            add("dd/MM/yyyy | dd/MM");
+            add("MM.dd.yyyy | MM.dd");
+            add("MM/dd/yyyy | MM/dd");
+        }
+    };
+    public static final CharSequence[] DATE_FORMAT_VALUES = new CharSequence[]{"de", "iso", "es", "us", "uk"};
+
+    public static final String PROFILE_INFO_TIME_FORMAT = "profile_info_time_format";
+    public static final CharSequence[] TIME_FORMATS = new CharSequence[]{"24 hour clock", "12 hour clock (AM/PM)"};
+    public static final CharSequence[] TIME_FORMAT_VALUES = new CharSequence[]{"12", "24"};
 }
