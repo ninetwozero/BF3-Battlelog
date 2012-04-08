@@ -28,6 +28,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
@@ -167,5 +168,22 @@ public class AboutActivity extends FragmentActivity implements DefaultFragmentAc
     @Override
     public void reload() {
     }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 
+        // Hotkeys
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            if (viewPager.getCurrentItem() > 0) {
+
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+                return true;
+
+            }
+
+        }
+        return super.onKeyDown(keyCode, event);
+
+    }
 }

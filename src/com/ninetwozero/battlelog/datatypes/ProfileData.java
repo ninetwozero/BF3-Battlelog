@@ -24,6 +24,7 @@ public class ProfileData implements Parcelable {
     protected String username, gravatarHash;
     protected PersonaData[] persona;
     protected boolean isPlaying, isOnline;
+    protected boolean isFriend = true;
 
     // Constructs
     public ProfileData(Parcel in) {
@@ -34,12 +35,19 @@ public class ProfileData implements Parcelable {
         isOnline = (in.readInt() == 1);
         isPlaying = (in.readInt() == 1);
         persona = in.createTypedArray(PersonaData.CREATOR);
+        isFriend = (in.readInt() == 1);
+    }
+
+    public ProfileData(String un) {
+
+        id = 0;
+        username = un;
 
     }
 
-    public ProfileData(long pf, String un) {
+    public ProfileData(long u, String un) {
 
-        id = pf;
+        id = u;
         username = un;
 
     }
@@ -128,11 +136,21 @@ public class ProfileData implements Parcelable {
         return isPlaying;
     }
 
+    public boolean isFriend() {
+
+        return isFriend;
+    }
+
     // Setters
     public void setPersona(PersonaData[] p) {
 
         persona = p.clone();
 
+    }
+
+    public void setFriend(boolean b) {
+
+        isFriend = b;
     }
 
     @Override
@@ -145,6 +163,7 @@ public class ProfileData implements Parcelable {
         dest.writeInt(isOnline ? 1 : 0);
         dest.writeInt(isPlaying ? 1 : 0);
         dest.writeTypedArray(persona, flags);
+        dest.writeInt(isFriend ? 1 : 0);
     }
 
     @Override

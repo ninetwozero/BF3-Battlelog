@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -32,34 +31,28 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.adapters.FriendListAdapter;
-import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
-import com.ninetwozero.battlelog.adapters.RequestListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
-import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.fragments.ComFriendFragment;
+import com.ninetwozero.battlelog.fragments.ComNotificationFragment;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
 import com.ninetwozero.battlelog.fragments.MenuForumFragment;
-import com.ninetwozero.battlelog.fragments.MenuFragment;
 import com.ninetwozero.battlelog.fragments.MenuPlatoonFragment;
 import com.ninetwozero.battlelog.fragments.MenuProfileFragment;
 import com.ninetwozero.battlelog.fragments.NewsFragment;
@@ -72,10 +65,6 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
     // Attributes
     final private Context context = this;
-    private String[] valueFieldsArray;
-    private PostData[] postDataArray;
-    private List<NotificationData> notificationArray;
-    private FriendListDataWrapper friendListData;
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
 
@@ -84,25 +73,21 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
     private TextView slidingDrawerHandle;
     private OnDrawerOpenListener onDrawerOpenListener;
     private OnDrawerCloseListener onDrawerCloseListener;
-    private ListView listFriendRequests, listFriends, listNotifications;
-    private NotificationListAdapter notificationListAdapter;
-    private FriendListAdapter friendListAdapter;
-    private RequestListAdapter friendRequestListAdapter;
-    private OnItemClickListener onItemClickListener;
     private Button buttonRefresh;
 
     // Fragment related
-    private SwipeyTabs tabs;
-    private SwipeyTabsPagerAdapter pagerAdapter;
-    private List<Fragment> listFragments;
+    private SwipeyTabs tabs, tabsCom;
+    private SwipeyTabsPagerAdapter pagerAdapter, pagerAdapterCom;
+    private List<Fragment> listFragments, listFragmentsCom;
     private FragmentManager fragmentManager;
     private NewsFragment fragmentNews;
-    private MenuFragment fragmentMenu;
     private MenuProfileFragment fragmentMenuProfile;
     private MenuPlatoonFragment fragmentMenuPlatoon;
     private MenuForumFragment fragmentMenuForum;
     private FeedFragment fragmentFeed;
-    private ViewPager viewPager;
+    private ComFriendFragment fragmentComFriends;
+    private ComNotificationFragment fragmentComNotifications;
+    private ViewPager viewPager, viewPagerCom;
     private final int VIEWPAGER_POSITION_FEED = 4;
 
     // Async
@@ -128,7 +113,7 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
         PublicUtils.setupLocale(this, sharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.viewpager_default);
+        setContentView(R.layout.viewpager_dashboard);
 
         // Get the layoutInflater
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -139,13 +124,13 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
         // Setup COM & feed
         initActivity();
+
     }
 
     public final void initActivity() {
 
-        // Setup the data
-        notificationArray = new ArrayList<NotificationData>();
-        friendListData = new FriendListDataWrapper(null, null, null);
+        slidingDrawer = (SlidingDrawer) findViewById(R.id.com_slider);
+        slidingDrawerHandle = (TextView) findViewById(R.id.com_slide_handle_text);
 
     }
 
@@ -175,12 +160,6 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(Constants.SUPER_COOKIES,
                 RequestHandler.getCookies());
-
-    }
-
-    public void onMenuClick(View v) {
-
-        ((MenuFragment) fragmentMenu).onMenuClick(v);
 
     }
 
@@ -239,6 +218,41 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
         }
 
+        if (listFragmentsCom == null) {
+
+            // Add them to the list
+            listFragmentsCom = new Vector<Fragment>();
+            listFragmentsCom.add(fragmentComFriends = (ComFriendFragment) Fragment.instantiate(
+                    this,
+                    ComFriendFragment.class.getName()));
+            listFragmentsCom.add(fragmentComNotifications = (ComNotificationFragment) Fragment
+                    .instantiate(this, ComNotificationFragment.class.getName()));
+
+            // Get the ViewPager
+            viewPagerCom = (ViewPager) findViewById(R.id.viewpager_sub);
+            tabsCom = (SwipeyTabs) findViewById(R.id.swipeytabs_sub);
+
+            // Fill the PagerAdapter & set it to the viewpager
+            pagerAdapterCom = new SwipeyTabsPagerAdapter(
+
+                    fragmentManager,
+                    new String[] {
+                            "FRIENDS", "NOTIFICATIONS"
+                    },
+                    listFragmentsCom,
+                    viewPager,
+                    layoutInflater
+                    );
+            viewPagerCom.setAdapter(pagerAdapterCom);
+            tabsCom.setAdapter(pagerAdapterCom);
+
+            // Make sure the tabs follow
+            viewPagerCom.setOnPageChangeListener(tabsCom);
+            viewPagerCom.setOffscreenPageLimit(1);
+            viewPagerCom.setCurrentItem(0);
+
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -272,7 +286,10 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
     @Override
     public void reload() {
-        // TODO COM
+
+        // Update the COM
+        fragmentComFriends.reload();
+        fragmentComNotifications.reload();
 
     }
 
@@ -280,17 +297,34 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
 
-        switch (viewPager.getCurrentItem()) {
+        if (slidingDrawer.isOpened()) {
 
-            case VIEWPAGER_POSITION_FEED:
-                fragmentFeed.createContextMenu(menu, view, menuInfo);
-                break;
+            switch (viewPagerCom.getCurrentItem()) {
 
-            default:
-                break;
+                case 0:
+                    fragmentComFriends.createContextMenu(menu, view, menuInfo);
+                    break;
+
+                default:
+                    break;
+
+            }
+
+        } else {
+
+            switch (viewPager.getCurrentItem()) {
+
+                case VIEWPAGER_POSITION_FEED:
+                    fragmentFeed.createContextMenu(menu, view, menuInfo);
+                    break;
+
+                default:
+                    break;
+
+            }
+            return;
 
         }
-        return;
 
     }
 
@@ -312,13 +346,30 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
         }
 
-        switch (viewPager.getCurrentItem()) {
+        if (slidingDrawer.isOpened()) {
 
-            case VIEWPAGER_POSITION_FEED:
-                return fragmentFeed.handleSelectedContextItem(info, item);
+            switch (viewPagerCom.getCurrentItem()) {
 
-            default:
-                break;
+                case 0:
+                    fragmentComFriends.handleSelectedContextItem(info, item);
+                    break;
+
+                default:
+                    break;
+
+            }
+
+        } else {
+
+            switch (viewPager.getCurrentItem()) {
+
+                case VIEWPAGER_POSITION_FEED:
+                    return fragmentFeed.handleSelectedContextItem(info, item);
+
+                default:
+                    break;
+
+            }
 
         }
 
@@ -340,9 +391,7 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
         // Let's act!
         if (item.getItemId() == R.id.option_refresh) {
 
-            fragmentFeed.reload();
-            // fragmentCOM.reload();
-            // fragmentNotifications.reload();
+            reload();
 
         } else if (item.getItemId() == R.id.option_settings) {
 
@@ -364,4 +413,32 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
     }
 
+    public void setComLabel(String str) {
+
+        slidingDrawerHandle.setText(str);
+
+    }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        // Hotkeys
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            if( slidingDrawer.isOpened() ) {
+                
+                slidingDrawer.animateClose();
+                return true;
+                
+            } else if (viewPager.getCurrentItem() > 1) {
+
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+                return true;
+
+            }
+
+        }
+        return super.onKeyDown(keyCode, event);
+
+    }
 }

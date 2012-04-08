@@ -353,7 +353,7 @@ public class ForumSavedActivity extends ListActivity {
 
                 // Delete the item
                 return CacheHandler.Forum.delete(context, new long[] {
-                    t[0].getId()
+                        t[0].getId()
                 });
 
             } catch (Exception ex) {

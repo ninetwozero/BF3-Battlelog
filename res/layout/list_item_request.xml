@@ -24,26 +24,16 @@
 		android:text="NINETWOZERO"
 		android:textSize="16sp"
 		android:layout_centerVertical="true"
+		android:layout_alignParentLeft="true"
 	/>
-	<ImageView 
-	    android:id="@+id/button_decline"
+	<TextView 
+	    android:id="@+id/string_000"
 	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"     
-		android:src="@drawable/button_decline_xml"
+	    android:layout_height="wrap_content"
+		android:text="@string/info_xml_friends_pending"
+		android:textSize="16sp"
+		android:layout_centerVertical="true"
 		android:layout_alignParentRight="true"
-		android:layout_marginLeft="10dp"
-		android:layout_centerVertical="true"
-		android:clickable="true"
-    	android:onClick="onRequestActionClick"
-    />
-	<ImageView 
-	    android:id="@+id/button_accept"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"    
-		android:src="@drawable/button_accept_xml"
-		android:layout_toLeftOf="@id/button_decline"
-		android:layout_centerVertical="true"
-    	android:clickable="true"
-    	android:onClick="onRequestActionClick"
-    />
+		android:textColor="@color/grey"
+	/>
 </RelativeLayout>
