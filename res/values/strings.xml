@@ -545,14 +545,19 @@
 	<string name="info_forum_saved_check">Check for updates</string>
 	<string name="info_forum_saved_remove">Remove the thread</string>
 	<string name="info_forum_saved_heading">Saved forum threads</string>
-    <string name="profile_info_birthday_msg">Selecting birthday will make it VISIBLE on your profile. Leave it as today or date in future will HIDE this information from your profile.</string>
-    <string name="birthday">Birthday</string>
-    <string name="country">Country</string>
-    <string name="profile_info_country">Please enter country name.</string>
-    <string name="country_hint">Example: United Kingdom</string> <!-- Please keep country name in English format -->
-    <string name="country_not_found">Country was NOT found. Will use previous stored country or nothing if country was not stored previously.</string>
     <string name="label_com_accept">Accept</string>
     <string name="label_com_reject">Reject</string>
     <string name="info_txt_friends_playing">Playing</string>
     <string name="info_xml_friends_pending">Pending</string>
+    <!-- PROFILE SETTINGS -->
+    <string name="profile_info_birthday_msg">Selecting birthday will make it VISIBLE on your profile. Leave it as today or date in future will HIDE this information from your profile.</string>
+    <string name="birthday">Birthday</string>
+    <string name="country">Country</string>
+    <string name="profile_info_country">Please enter country name.</string>
+    <string name="country_hint">Example: United Kingdom</string> <!-- In translations enter your country, however please keep country name in English format -->
+    <string name="country_not_found">Country was NOT found. Will use previous stored country or nothing if country was not stored previously.</string>
+    <string name="date_format">Date format</string>
+    <string name="profile_info_date_format">Please select date format you wish to use.</string>
+    <string name="time_format">Time format</string>
+    <string name="profile_info_time_format">Please select time format you wish to use.</string>
 </resources>
