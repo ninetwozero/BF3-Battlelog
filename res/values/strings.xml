@@ -555,4 +555,5 @@
     <string name="label_com_reject">Reject</string>
     <string name="info_txt_friends_playing">Playing</string>
     <string name="info_xml_friends_pending">Pending</string>
+    <string name="widget_name_social">BF3 Battlelog - Social</string>
 </resources>

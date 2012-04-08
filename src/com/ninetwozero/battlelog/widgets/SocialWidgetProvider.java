@@ -40,10 +40,9 @@ import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class BattlelogAppWidgetProvider extends AppWidgetProvider {
+public class SocialWidgetProvider extends AppWidgetProvider {
 
-    public static final String DEBUG_TAG = "WidgetProvider";
-    public static final String ACTION_WIDGET_RECEIVER = "ActionReceiverWidget";
+    public static final String ACTION_WIDGET_RECEIVER = "SocialWidgetReciever";
     public static final String ACTION_WIDGET_OPENAPP = "Main";
 
     @Override
@@ -51,7 +50,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
             int[] appWidgetIds) {
 
         // Attributes
-        Intent active = new Intent(context, BattlelogAppWidgetProvider.class)
+        Intent active = new Intent(context, SocialWidgetProvider.class)
                 .setAction(ACTION_WIDGET_RECEIVER);
         PendingIntent actionPendingIntent = PendingIntent.getBroadcast(context,
                 0, active, 0);
@@ -61,18 +60,14 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
         appIntent.setAction(ACTION_WIDGET_OPENAPP);
 
         RemoteViews remoteView = null;
-        ProfileData profileData = null;
-        PersonaStats playerData = null;
-        List<ProfileData> profileDataArray = null;
         SharedPreferences sharedPreferences = null;
         ComponentName BattlelogListWidget;
-        int numFriendsOnline = 0;
 
         // Set the values
         sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         remoteView = new RemoteViews(context.getPackageName(),
-                R.layout.widget_dogtag);
+                R.layout.widget_social);
         final Resources res = context.getResources();
 
         // Set the session if needed
@@ -157,7 +152,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
         remoteView.setOnClickPendingIntent(R.id.widget_button2,
                 appPendingIntent);
         BattlelogListWidget = new ComponentName(context,
-                BattlelogAppWidgetProvider.class);
+                SocialWidgetProvider.class);
         appWidgetManager.updateAppWidget(BattlelogListWidget, remoteView);
 
     }
@@ -170,7 +165,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
         AppWidgetManager appWidgetManager = AppWidgetManager
                 .getInstance(context);
         ComponentName thisAppWidget = new ComponentName(context,
-                BattlelogAppWidgetProvider.class);
+                SocialWidgetProvider.class);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
 
         // UPDATE IT !!!!
