@@ -50,7 +50,10 @@
             android:title="@string/time_format"
             android:key="profile_info_time_format"
             />
-        <!-- LOCAL TIME? -->
+        <com.ninetwozero.battlelog.preference.LocalTimeListPreference
+            android:title="@string/local_time"
+            android:key="profile_info_local_time"
+            />
     </PreferenceCategory>
     <PreferenceCategory android:title="Privacy settings">
         <CheckBoxPreference

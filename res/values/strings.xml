@@ -558,4 +558,5 @@
     <string name="country_not_found">Country was NOT found. Will use previous stored country or nothing if country was not stored previously.</string>
     <string name="date_format">Date format</string>
     <string name="time_format">Time format</string>
+    <string name="local_time">Your local time</string>
 </resources>
