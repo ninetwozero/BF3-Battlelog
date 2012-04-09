@@ -260,7 +260,6 @@ public class ProfileSettings {
 
         }
     };
-    public static final String PROFILE_INFO_DATE_FORMAT = "profile_info_date_format";
     public static final List<String> DATE_PATTERNS = new ArrayList<String>(){
         {
             add("dd.MM.yyyy | MM.dd");
@@ -272,7 +271,12 @@ public class ProfileSettings {
     };
     public static final CharSequence[] DATE_FORMAT_VALUES = new CharSequence[]{"de", "iso", "es", "us", "uk"};
 
-    public static final String PROFILE_INFO_TIME_FORMAT = "profile_info_time_format";
     public static final CharSequence[] TIME_FORMATS = new CharSequence[]{"24 hour clock", "12 hour clock (AM/PM)"};
     public static final CharSequence[] TIME_FORMAT_VALUES = new CharSequence[]{"12", "24"};
+
+    public static final CharSequence[] LOCAL_TIME_VALUES =
+            new CharSequence[]{"-720", "-660", "-600", "-570", "-540", "-480", "-420", "-360", "-300", "-270", "-240"
+                    , "-210", "-180", "-150", "-120", "-60", "0", "60", "120", "180", "210", "240", "270", "300", "330"
+                    , "345", "360", "390", "420", "480", "540", "570", "600", "630", "660", "690", "720", "765", "780"
+                    , "825", "840"};
 }
