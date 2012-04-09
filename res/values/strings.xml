@@ -549,6 +549,7 @@
     <string name="label_com_reject">Reject</string>
     <string name="info_txt_friends_playing">Playing</string>
     <string name="info_xml_friends_pending">Pending</string>
+    
     <!-- PROFILE SETTINGS -->
     <string name="profile_info_birthday_msg">Selecting birthday will make it VISIBLE on your profile. Leave it as today or date in future will HIDE this information from your profile.</string>
     <string name="birthday">Birthday</string>
@@ -559,4 +560,8 @@
     <string name="date_format">Date format</string>
     <string name="time_format">Time format</string>
     <string name="local_time">Your local time</string>
+    
+	<!-- WIDGET -->
+    <string name="widget_name_social">BF3 Battlelog - Social</string>
+
 </resources>

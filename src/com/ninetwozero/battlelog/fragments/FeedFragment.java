@@ -75,11 +75,6 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
     private long id;
     private boolean canWrite;
 
-    // Constants
-    public final static int TYPE_GLOBAL = 0;
-    public final static int TYPE_PROFILE = 1;
-    public final static int TYPE_PLATOON = 2;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -124,19 +119,19 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
         listFeed.setAdapter(feedListAdapter);
 
         // Handle the *type*-specific events here
-        if (type == FeedFragment.TYPE_GLOBAL) {
+        if (type == FeedItem.TYPE_GLOBAL) {
 
             textTitle.setText(R.string.info_feed_title_global);
             fieldMessage.setHint(R.string.info_xml_hint_status);
             wrapInput.setVisibility(canWrite ? View.VISIBLE : View.GONE);
 
-        } else if (type == FeedFragment.TYPE_PROFILE) {
+        } else if (type == FeedItem.TYPE_PROFILE) {
 
             textTitle.setText(title);
             fieldMessage.setHint(R.string.info_xml_hint_feed);
             wrapInput.setVisibility(canWrite ? View.VISIBLE : View.GONE);
 
-        } else if (type == FeedFragment.TYPE_PLATOON) {
+        } else if (type == FeedItem.TYPE_PLATOON) {
 
             textTitle.setText(title);
             fieldMessage.setHint(R.string.info_xml_hint_feed);
@@ -163,13 +158,13 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
                         }
 
                         // Let's do it accordingly
-                        if (type == FeedFragment.TYPE_GLOBAL) {
+                        if (type == FeedItem.TYPE_GLOBAL) {
 
                             new AsyncStatusUpdate(context, FeedFragment.this).execute(message,
                                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
                                             ""));
 
-                        } else if (type == FeedFragment.TYPE_PROFILE) {
+                        } else if (type == FeedItem.TYPE_PROFILE) {
 
                             new AsyncPostToWall(
 
@@ -183,7 +178,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                                     );
 
-                        } else if (type == FeedFragment.TYPE_PLATOON) {
+                        } else if (type == FeedItem.TYPE_PLATOON) {
 
                             new AsyncPostToWall(
 
@@ -251,7 +246,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
         }
         menu.add(Constants.MENU_ID_FEED, 1, 0, R.string.label_single_post_view);
-        if (type != FeedFragment.TYPE_PLATOON) {
+        if (type != FeedItem.TYPE_PLATOON) {
             menu.add(Constants.MENU_ID_FEED, 2, 0, R.string.label_goto_item);
         }
 

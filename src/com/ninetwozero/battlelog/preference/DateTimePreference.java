@@ -1,4 +1,16 @@
+
 package com.ninetwozero.battlelog.preference;
+
+import static com.ninetwozero.battlelog.datatypes.ProfileSettings.DATE_FORMAT_VALUES;
+import static com.ninetwozero.battlelog.datatypes.ProfileSettings.DATE_PATTERNS;
+import static com.ninetwozero.battlelog.datatypes.ProfileSettings.TIME_FORMATS;
+import static com.ninetwozero.battlelog.datatypes.ProfileSettings.TIME_FORMAT_VALUES;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -8,15 +20,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
 import com.ninetwozero.battlelog.R;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.*;
 
 public class DateTimePreference extends ListPreference {
 
@@ -43,15 +48,15 @@ public class DateTimePreference extends ListPreference {
         super.onPrepareDialogBuilder(builder);
     }
 
-    private ListAdapter adapter(){
+    private ListAdapter adapter() {
         return new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_singlechoice);
     }
 
-    private CharSequence[] entries(){
+    private CharSequence[] entries() {
         return isDateFormat() ? listOfDates() : TIME_FORMATS;
     }
 
-    private CharSequence[] entryValues(){
+    private CharSequence[] entryValues() {
         return isDateFormat() ? DATE_FORMAT_VALUES : TIME_FORMAT_VALUES;
     }
 
@@ -64,7 +69,7 @@ public class DateTimePreference extends ListPreference {
         return list.toArray(new CharSequence[list.size()]);
     }
 
-    private boolean isDateFormat(){
+    private boolean isDateFormat() {
         return getTitle().equals(dateTitle());
     }
 

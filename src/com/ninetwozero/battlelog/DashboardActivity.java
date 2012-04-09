@@ -47,6 +47,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.fragments.ComFriendFragment;
@@ -190,7 +191,7 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
             fragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
 
             // Setup the feed
-            fragmentFeed.setType(FeedFragment.TYPE_GLOBAL);
+            fragmentFeed.setType(FeedItem.TYPE_GLOBAL);
             fragmentFeed.setCanWrite(true);
 
             // Get the ViewPager
@@ -418,18 +419,18 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
         slidingDrawerHandle.setText(str);
 
     }
-    
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-            if( slidingDrawer.isOpened() ) {
-                
+            if (slidingDrawer.isOpened()) {
+
                 slidingDrawer.animateClose();
                 return true;
-                
+
             } else if (viewPager.getCurrentItem() > 1) {
 
                 viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);

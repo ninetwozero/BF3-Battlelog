@@ -31,13 +31,6 @@
             	<category android:name="android.intent.category.LAUNCHER" />    
             </intent-filter>
         </activity>
-        <activity
-            android:label="@string/title_main_menu"
-            android:name=".Backup_Dashboard"
-            android:orientation="vertical"
-          	android:configChanges="orientation"
-          	android:windowSoftInputMode="stateHidden"
-		/>
 		<activity
             android:label="@string/title_about"
             android:name=".AboutActivity"
@@ -172,9 +165,20 @@
 			</intent-filter>
 			<meta-data
 				android:name="android.appwidget.provider"
-				android:resource="@xml/appwidget">  
+				android:resource="@xml/widget_settings_dogtag">  
 			</meta-data>
 		</receiver>
+		<!-- <receiver android:name=".widgets.SocialWidgetProvider" android:label="@string/widget_name_social">
+			<intent-filter>
+		         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+		         <action android:name="android.appwidget.action.ACTION_WIDGET_RECEIVER" />
+			</intent-filter>
+			<meta-data
+				android:name="android.appwidget.provider"
+				android:resource="@xml/widget_settings_social">  
+			</meta-data>
+		</receiver>
+		-->
 		<service android:enabled="true" android:name=".services.BattlelogService" />
     </application>
 </manifest>

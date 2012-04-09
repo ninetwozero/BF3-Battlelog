@@ -61,8 +61,8 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
     // Elements
     private ListView listView;
     private ThreadListAdapter threadListAdapter;
-    private TextView textTitle;    
-    private RelativeLayout wrapLoader; 
+    private TextView textTitle;
+    private RelativeLayout wrapLoader;
     private Button buttonMore, buttonPost;
     private EditText textareaTitle, textareaContent;
 
@@ -172,7 +172,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
         // Last but not least, the loader
         wrapLoader = (RelativeLayout) v.findViewById(R.id.wrap_loader);
-        
+
         currentPage = 1;
         loadFresh = false;
 
@@ -324,7 +324,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
                     buttonMore.setVisibility(View.GONE);
 
                 }
-                
+
                 // Hide it
                 wrapLoader.setVisibility(View.GONE);
                 rotateAnimation.reset();
