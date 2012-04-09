@@ -66,6 +66,7 @@ import com.ninetwozero.battlelog.datatypes.TopStatsComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
+import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 
@@ -6021,6 +6022,107 @@ public class WebsiteHandler {
 
             // Return it!
             return weaponStatsArray;
+
+        } catch (RequestHandlerException ex) {
+
+            ex.printStackTrace();
+            return null;
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            return null;
+
+        }
+
+    }
+
+    public static List<WeaponDataWrapper> getWeapon(ProfileData p, WeaponStats weaponStats) {
+
+        try {
+
+            // Init
+            RequestHandler rh = new RequestHandler();
+            List<UnlockData> unlockArray = new ArrayList<UnlockData>();
+            List<WeaponDataWrapper> weaponDataArray = new ArrayList<WeaponDataWrapper>();
+
+            // Iterate per persona
+            for (int i = 0, max = p.getNumPersonas(); i < max; i++) {
+
+                // Get the data
+                String httpContent = rh.get(
+
+                        Constants.URL_STATS_WEAPONS_INFO.replace(
+
+                                "{PNAME}", p.getPersona(i).getName()
+
+                                ).replace(
+
+                                        "{PID}", p.getPersona(i).getId() + ""
+
+                                ).replace(
+
+                                        "{SLUG}", weaponStats.getSlug()
+
+                                ).replace(
+
+                                        "{PLATFORM_ID}", p.getPersona(i).getPlatformId() + ""
+
+                                ), 0
+
+                        );
+
+                // So... how'd it go?
+                if (httpContent != null && !httpContent.equals("")) {
+
+                    //Clear the unlockArray
+                    unlockArray = new ArrayList<UnlockData>();
+                    weaponDataArray = new ArrayList<WeaponDataWrapper>();
+                    
+                    // Woo, we got results
+                    JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
+                    JSONArray unlockObjectArray = baseObject.getJSONObject("itemWeapon").getJSONArray("unlocks"); 
+                    
+                    //Let's iterate over the unlocks
+                    for( int count = 0, maxCount = unlockObjectArray.length(); count < maxCount; count++) {
+                        
+                        //Get the current item
+                        JSONObject unlockObject = unlockObjectArray.getJSONObject(count);
+                        JSONObject unlockObjectBy = unlockObject.getJSONObject("unlockedBy");
+                        
+
+                        //Populate the array
+                        unlockArray.add( 
+                                
+                            new UnlockData(
+                            
+                                    weaponStats.getKitId(),
+                                    unlockObjectBy.getDouble("completion"),
+                                    unlockObjectBy.getLong("valueNeeded"),
+                                    unlockObjectBy.getLong("actualValue"),
+                                    weaponStats.getName(),
+                                    unlockObject.getString("unlockId"),
+                                    unlockObjectBy.getString("codeNeeded"),
+                                    unlockObjectBy.getString("unlockType")
+                                    
+                            ) 
+                            
+                        );
+                        
+                    }
+                    
+                    //Add the data array to the WeaponDataWrapper
+                    weaponDataArray.add( 
+                            
+                            new WeaponDataWrapper()
+                            
+                    );
+                }
+
+            }
+
+            // Return it!
+            return weaponDataArray;
 
         } catch (RequestHandlerException ex) {
 

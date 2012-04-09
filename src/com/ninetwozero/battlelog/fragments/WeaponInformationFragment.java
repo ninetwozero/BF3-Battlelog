@@ -18,23 +18,24 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.UnlockActivity;
-import com.ninetwozero.battlelog.adapters.UnlockListAdapter;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 
-public class UnlockFragment extends ListFragment implements DefaultFragment {
+public class WeaponInformationFragment extends Fragment implements DefaultFragment {
 
     // Attributes
     private Context context;
@@ -42,7 +43,8 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
     private int viewPagerPosition;
 
     // Elements
-    private ListView listView;
+    private ImageView imageItem;
+    private TextView textTitle, textDesc, textSpecs;
 
     // Misc
     private List<UnlockData> unlocks;
@@ -59,15 +61,8 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
                 .getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_unlocks,
+        View view = layoutInflater.inflate(R.layout.tab_content_weapon_info,
                 container, false);
-
-        // Get the unlocks
-        if( context instanceof UnlockActivity ) {
-            
-            unlocks = ((UnlockActivity) context).getItemsForFragment(viewPagerPosition);
-        
-        }
 
         // Init views
         initFragment(view);
@@ -78,10 +73,12 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
     }
 
     public void initFragment(View v) {
-
-        // Setup the ListView
-        listView = (ListView) v.findViewById(android.R.id.list);
-        listView.setAdapter(new UnlockListAdapter(context, unlocks, layoutInflater));
+        
+        //Let's setup the fields
+        imageItem = (ImageView) v.findViewById(R.id.image_item);
+        textTitle = (TextView) v.findViewById(R.id.text_title);
+        textDesc = (TextView) v.findViewById(R.id.text_desc);
+        textSpecs = (TextView) v.findViewById(R.id.text_specs);
 
     }
 
@@ -103,24 +100,12 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
         viewPagerPosition = p;
 
     }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int pos, long id) {
-
-        // TODO: OPEN WEAPON STATISTICS
-
-    }
-
-    public void showUnlocks(List<UnlockData> unlockData) {
-
-        // Let's set the data
-        ((UnlockListAdapter) listView.getAdapter()).setDataArray(unlockData);
-
-    }
-
+    
     @Override
     public void reload() {
 
+        new AsyncRefresh().execute();
+        
     }
 
     @Override
@@ -131,5 +116,51 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
     @Override
     public boolean handleSelectedOption(MenuItem item) {
         return false;
+    }
+    
+    private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
+        
+        @Override
+        protected Boolean doInBackground(Void... arg) {
+            
+            try {
+
+                
+                return true;   
+
+            } catch( Exception ex ) {
+                
+                ex.printStackTrace();
+                return false;
+            }
+        }
+        
+        @Override
+        protected void onPostExecute(Boolean result) {
+            
+            if( context != null ) {
+                
+                if( result ) {
+                    
+                    show(new Object());
+                    
+                } else {
+                    
+                    Toast.makeText(context, R.string.general_no_data, Toast.LENGTH_SHORT).show();
+                    
+                }
+                
+            }
+        }
+        
+    }
+    
+    private void show(Object o) {
+        
+        imageItem.setImageResource(0);
+        textTitle.setText("");
+        textDesc.setText("");
+        textSpecs.setText("");
+    
     }
 }

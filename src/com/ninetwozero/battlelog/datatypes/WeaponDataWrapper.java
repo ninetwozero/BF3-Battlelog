@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--  
+/*
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,18 +10,19 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent"
-    android:id="@+id/dialog_root"
-    android:padding="10dp"
-    android:background="#FFFFFF"
->
-    <TextView
-    	android:id="@+id/feed_content"
-    	android:layout_width="fill_parent" 
-    	android:layout_height="wrap_content"
-    />
-</RelativeLayout>
+ */
+
+package com.ninetwozero.battlelog.datatypes;
+
+public class WeaponDataWrapper {
+
+    //Attributes
+    
+    public WeaponDataWrapper() {}
+
+    /* TODO: 
+     * 
+     * WeaponDataWrapper needs to have a grip of... WeaponStats, List<UnlockData> (as well as imageResourceId + other things??)
+     */
+    
+}
