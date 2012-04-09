@@ -168,7 +168,7 @@ public class AboutActivity extends FragmentActivity implements DefaultFragmentAc
     @Override
     public void reload() {
     }
-    
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 

@@ -12,34 +12,10 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
  -->
-<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@android:id/tabhost" 
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
->
-	<RelativeLayout 
-	    android:layout_width="fill_parent" 
-		android:layout_height="fill_parent"
-	>
-		<TabWidget 
-		    android:id="@android:id/tabs"
-			android:layout_width="fill_parent" 
-			android:layout_height="wrap_content" 
-		/>
-		<FrameLayout 
-		    android:id="@android:id/tabcontent"
-			android:layout_width="fill_parent" 
-			android:layout_height="fill_parent"
-			android:layout_below="@android:id/tabs"
-		>
-		</FrameLayout>
-		<TextView
-		    android:id="@+id/text_empty"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"
-		    android:text="@string/info_unlocks_empty"
-			android:layout_below="@android:id/tabs"
-			android:gravity="center"
-		/>
-	</RelativeLayout>
-</TabHost>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke android:width="4dp" android:color="#FF00FF00" />
+    <solid android:color="#ffffff" />
+    <padding android:left="7dp" android:top="7dp"
+            android:right="7dp" android:bottom="7dp" />
+    <corners android:radius="4dp" />
+</shape> 

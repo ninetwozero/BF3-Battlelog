@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-
 public class WeaponVehicleListData {
 
     // Attributes

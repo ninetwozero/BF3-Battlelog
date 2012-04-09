@@ -1,4 +1,5 @@
-/*
+<?xml version="1.0" encoding="utf-8"?>
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -10,21 +11,16 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- */
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
-package com.ninetwozero.battlelog.datatypes;
+    <item
+        android:bottom="4dp"
+        android:drawable="@drawable/bg_bf3_main"
+        android:left="4dp"
+        android:right="4dp"
+        android:top="4dp"
+        android:radius="20dp"/>
+    <item android:drawable="@drawable/widget_social_bg_stroke"/>
 
-public class WebsiteHandlerException extends Exception {
-
-    private static final long serialVersionUID = -4284315651483396603L;
-
-    public WebsiteHandlerException() {
-        super("WebsiteHandlerException");
-    }
-
-    public WebsiteHandlerException(String detailMessage) {
-        super((detailMessage == null) ? "No error message found"
-                : detailMessage);
-    }
-
-}
+</layer-list>

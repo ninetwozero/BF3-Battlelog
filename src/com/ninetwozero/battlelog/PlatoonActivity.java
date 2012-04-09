@@ -40,6 +40,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
@@ -310,7 +311,7 @@ public class PlatoonActivity extends FragmentActivity implements DefaultFragment
 
             // We need to set the type
             fragmentFeed.setTitle(platoonData.getName());
-            fragmentFeed.setType(FeedFragment.TYPE_PLATOON);
+            fragmentFeed.setType(FeedItem.TYPE_PLATOON);
             fragmentFeed.setId(platoonData.getId());
             fragmentFeed.setCanWrite(false);
 
@@ -370,7 +371,7 @@ public class PlatoonActivity extends FragmentActivity implements DefaultFragment
 
                 viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
                 return true;
-                
+
             }
 
         }
