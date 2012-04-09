@@ -14,11 +14,8 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.preference.ListPreference;
-import android.preference.PreferenceManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -42,14 +39,12 @@ public class DateTimePreference extends ListPreference {
         view.setAdapter(adapter());
         setEntries(entries());
         setEntryValues(entryValues());
-        setDefaultValue(initializeIndex());
         return view;
     }
 
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         builder.setTitle(getTitle());
-        builder.setMessage(getDialogMessage());
         super.onPrepareDialogBuilder(builder);
     }
 
@@ -63,21 +58,6 @@ public class DateTimePreference extends ListPreference {
 
     private CharSequence[] entryValues(){
         return isDateFormat() ? DATE_FORMAT_VALUES : TIME_FORMAT_VALUES;
-    }
-
-    private int initializeIndex() {
-        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        return preference.contains(PROFILE_INFO_DATE_FORMAT) ? parseIndex(preference.getString(PROFILE_INFO_DATE_FORMAT, "-1")) : -1;
-    }
-
-    private int parseIndex(String index) {
-        try {
-            return Integer.parseInt(index);
-        } catch (NumberFormatException e) {
-            Log.d("DateTimePreference", "Failed to parse SharedPreference string to int");
-        }
-        return -1;
     }
 
     private CharSequence[] listOfDates() {
