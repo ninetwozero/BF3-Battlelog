@@ -15,7 +15,6 @@
 package com.ninetwozero.battlelog;
 
 import java.util.List;
-import java.util.TimeZone;
 import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
@@ -30,7 +29,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -421,18 +419,18 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
         slidingDrawerHandle.setText(str);
 
     }
-    
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-            if( slidingDrawer.isOpened() ) {
-                
+            if (slidingDrawer.isOpened()) {
+
                 slidingDrawer.animateClose();
                 return true;
-                
+
             } else if (viewPager.getCurrentItem() > 1) {
 
                 viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);

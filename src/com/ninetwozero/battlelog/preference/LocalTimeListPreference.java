@@ -1,4 +1,15 @@
+
 package com.ninetwozero.battlelog.preference;
+
+import static com.ninetwozero.battlelog.datatypes.ProfileSettings.LOCAL_TIME_VALUES;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,11 +21,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.LOCAL_TIME_VALUES;
 
 public class LocalTimeListPreference extends ListPreference {
 
@@ -38,22 +44,22 @@ public class LocalTimeListPreference extends ListPreference {
         return view;
     }
 
-    private ListAdapter adapter(){
+    private ListAdapter adapter() {
         return new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_singlechoice);
     }
 
-    private CharSequence[] entries(){
+    private CharSequence[] entries() {
         return listOfTimes();
     }
 
-    private CharSequence[] entryValues(){
+    private CharSequence[] entryValues() {
         return LOCAL_TIME_VALUES;
     }
 
-    private CharSequence[] listOfTimes(){
+    private CharSequence[] listOfTimes() {
         Date today = new Date(today());
         List<String> hours = new ArrayList<String>();
-        for(CharSequence value : LOCAL_TIME_VALUES){
+        for (CharSequence value : LOCAL_TIME_VALUES) {
             hours.add(timeWithOffset(today, value));
         }
         return hours.toArray(new CharSequence[hours.size()]);
@@ -64,17 +70,16 @@ public class LocalTimeListPreference extends ListPreference {
         return formatter().format(date.getTime() + offsetValue(value));
     }
 
-
-    private int initializeIndex(){
+    private int initializeIndex() {
         return timeSharedPreference() != -1 ? timeSharedPreference() : indexFromTimeZone();
     }
 
-    private int indexFromTimeZone(){
+    private int indexFromTimeZone() {
         TimeZone zone = TimeZone.getDefault();
-        return indexOf(""+zone.getRawOffset() / MILLISECONDS_TO_MINUTE);
+        return indexOf("" + zone.getRawOffset() / MILLISECONDS_TO_MINUTE);
     }
 
-    private int indexOf(CharSequence value){
+    private int indexOf(CharSequence value) {
         List<CharSequence> valuesList = Arrays.asList(LOCAL_TIME_VALUES);
         return valuesList.indexOf(value) != -1 ? valuesList.indexOf(value) : 0;
     }
@@ -85,19 +90,20 @@ public class LocalTimeListPreference extends ListPreference {
         return indexOf(preference.getString(getKey(), "0"));
     }
 
-    private long today(){
+    private long today() {
         return Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis();
     }
 
-    private SimpleDateFormat formatter(){
+    private SimpleDateFormat formatter() {
         return new SimpleDateFormat("HH:mm");
     }
 
-    private long offsetValue(CharSequence value){
-        try{
+    private long offsetValue(CharSequence value) {
+        try {
             return Integer.parseInt(value.toString()) * MILLISECONDS_TO_MINUTE;
-        }catch(NumberFormatException e){
-            Log.d("LocalTimeListPreference", "Failed to parse local time CharSequence \"" + value.toString() + "\" to long");
+        } catch (NumberFormatException e) {
+            Log.d("LocalTimeListPreference",
+                    "Failed to parse local time CharSequence \"" + value.toString() + "\" to long");
         }
         return 0;
     }

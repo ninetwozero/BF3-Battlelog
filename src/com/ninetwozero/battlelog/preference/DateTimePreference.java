@@ -1,8 +1,8 @@
+
 package com.ninetwozero.battlelog.preference;
 
 import static com.ninetwozero.battlelog.datatypes.ProfileSettings.DATE_FORMAT_VALUES;
 import static com.ninetwozero.battlelog.datatypes.ProfileSettings.DATE_PATTERNS;
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.PROFILE_INFO_DATE_FORMAT;
 import static com.ninetwozero.battlelog.datatypes.ProfileSettings.TIME_FORMATS;
 import static com.ninetwozero.battlelog.datatypes.ProfileSettings.TIME_FORMAT_VALUES;
 
@@ -48,15 +48,15 @@ public class DateTimePreference extends ListPreference {
         super.onPrepareDialogBuilder(builder);
     }
 
-    private ListAdapter adapter(){
+    private ListAdapter adapter() {
         return new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_singlechoice);
     }
 
-    private CharSequence[] entries(){
+    private CharSequence[] entries() {
         return isDateFormat() ? listOfDates() : TIME_FORMATS;
     }
 
-    private CharSequence[] entryValues(){
+    private CharSequence[] entryValues() {
         return isDateFormat() ? DATE_FORMAT_VALUES : TIME_FORMAT_VALUES;
     }
 
@@ -69,7 +69,7 @@ public class DateTimePreference extends ListPreference {
         return list.toArray(new CharSequence[list.size()]);
     }
 
-    private boolean isDateFormat(){
+    private boolean isDateFormat() {
         return getTitle().equals(dateTitle());
     }
 

@@ -136,7 +136,8 @@ public class SocialWidgetProvider extends AppWidgetProvider {
                         context,
                         PreferenceManager.getDefaultSharedPreferences(context).getString(
                                 Constants.SP_BL_PROFILE_CHECKSUM, ""));
-                feedItems = WebsiteHandler.getFeed(context, FeedItem.TYPE_GLOBAL, 0, Constants.DEFAULT_NUM_FEED,
+                feedItems = WebsiteHandler.getFeed(context, FeedItem.TYPE_GLOBAL, 0,
+                        Constants.DEFAULT_NUM_FEED,
                         SessionKeeper.getProfileData().getId());
                 Log.d(Constants.DEBUG_TAG, "feedItems => " + feedItems);
                 return (feedItems != null && friends != null);
@@ -174,15 +175,26 @@ public class SocialWidgetProvider extends AppWidgetProvider {
         // Draw the GUI
         RemoteViews remoteView = new RemoteViews(c.getPackageName(), R.layout.widget_social);
         remoteView.setTextViewText(R.id.text_title, SessionKeeper.getProfileData().getUsername());
-        remoteView.setTextViewText(R.id.text_online, friends.getNumTotalOnline() + "");
-        remoteView.setTextViewText(R.id.text_playing, friends.getNumPlaying() + "");
+
+        // Let's see what's up!
+        if (friends != null) {
+
+            remoteView.setTextViewText(R.id.text_online, friends.getNumTotalOnline() + "");
+            remoteView.setTextViewText(R.id.text_playing, friends.getNumPlaying() + "");
+
+        } else {
+
+            remoteView.setTextViewText(R.id.text_online, "TBA");
+            remoteView.setTextViewText(R.id.text_playing, "TBA");
+
+        }
 
         // If the feed items are gone...
         if (feedItems != null && feedItems.size() > 0) {
 
             // Let's iterate the feed items
             for (int count = 0, max = FEED_DATE_IDS.length; count < max; count++) {
-                
+
                 remoteView.setTextViewText(FEED_CONTENT_IDS[count],
                         Html.fromHtml(feedItems.get(feedPageId + count).getTitle()));
                 remoteView
@@ -191,6 +203,13 @@ public class SocialWidgetProvider extends AppWidgetProvider {
                 remoteView.setOnClickPendingIntent(FEED_WRAP_IDS[count], PendingIntent.getActivity(
                         c, 0, feedItems.get(feedPageId + count).getIntent(c), 0));
             }
+
+            remoteView.setTextViewText(R.id.text_latest, "Latest updates");
+
+        } else {
+
+            remoteView.removeAllViews(R.id.wrap_feed);
+            remoteView.setTextViewText(R.id.text_latest, "No connection to Battlelog");
 
         }
         // Set the click listeners

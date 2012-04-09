@@ -168,7 +168,7 @@
 				android:resource="@xml/widget_settings_dogtag">  
 			</meta-data>
 		</receiver>
-		<receiver android:name=".widgets.SocialWidgetProvider" android:label="@string/widget_name_social">
+		<!-- <receiver android:name=".widgets.SocialWidgetProvider" android:label="@string/widget_name_social">
 			<intent-filter>
 		         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 		         <action android:name="android.appwidget.action.ACTION_WIDGET_RECEIVER" />
@@ -178,6 +178,7 @@
 				android:resource="@xml/widget_settings_social">  
 			</meta-data>
 		</receiver>
+		-->
 		<service android:enabled="true" android:name=".services.BattlelogService" />
     </application>
 </manifest>

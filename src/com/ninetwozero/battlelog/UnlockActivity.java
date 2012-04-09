@@ -36,6 +36,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -130,6 +131,7 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
 
         } else {
 
+            Log.d(Constants.DEBUG_TAG, "profileData => " + profileData);
             selectedPersona = profileData.getPersona(0).getId();
 
         }

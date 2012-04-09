@@ -371,7 +371,7 @@ public class PlatoonActivity extends FragmentActivity implements DefaultFragment
 
                 viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
                 return true;
-                
+
             }
 
         }

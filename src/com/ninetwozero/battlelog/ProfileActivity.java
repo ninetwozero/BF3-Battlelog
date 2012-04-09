@@ -371,7 +371,7 @@ public class ProfileActivity extends FragmentActivity implements DefaultFragment
 
                 viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
                 return true;
-                
+
             }
 
         }
