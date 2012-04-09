@@ -118,7 +118,8 @@ public final class Constants {
     public static final String URL_PROFILE = URL_MAIN
             + "user/overviewBoxStats/{UID}/";
     public static final String URL_PROFILE_INFO = URL_MAIN + "user/{UNAME}/";
-    public static final String URL_PROFILE_EDIT = URL_MAIN + "profile/update/";
+    public static final String URL_PROFILE_SETTINGS = URL_MAIN + "profile/edit/";
+    public static final String URL_PROFILE_SETTINGS_EDIT = URL_MAIN + "profile/update/";
 
     // URL to JSON-files (STATS-related)
     public static final String URL_STATS_OVERVIEW = URL_MAIN
@@ -174,7 +175,8 @@ public final class Constants {
 
     public static final String[] FIELD_NAMES_STATUS = new String[] {
             "message",
-            "post-check-sum"
+            "post-check-sum",
+            "urls[]"
     };
 
     public static final String[] FIELD_NAMES_PROFILE_SEARCH = new String[] {

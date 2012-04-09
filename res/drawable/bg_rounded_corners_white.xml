@@ -13,9 +13,7 @@
     GNU General Public License for more details.
  -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <stroke android:width="4dp" android:color="#FF00FF00" />
-    <solid android:color="#ffffff" />
-    <padding android:left="7dp" android:top="7dp"
-            android:right="7dp" android:bottom="7dp" />
-    <corners android:radius="4dp" />
+    <stroke android:width="2dp" android:color="#EEEEEE" />
+    <solid android:color="#AAFFFFFF" />
+    <corners android:radius="10dp" />
 </shape> 

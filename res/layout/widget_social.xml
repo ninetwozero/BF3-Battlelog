@@ -1,110 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/full_widget"
-    android:layout_width="match_parent"
-    android:layout_height="210dp"
-    android:gravity="center" >
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout3"
-        android:layout_width="258dip"
-        android:layout_height="wrap_content"
-        android:gravity="bottom" >
+<!--  
+	This file is part of BF3 Battlelog
 
-        <ImageView
-            android:id="@+id/dogtag"
-            android:layout_width="wrap_content"
-            android:layout_height="110dp"
-            android:src="@drawable/widget_dogtag" />
+    BF3 Battlelog is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout1"
-            android:layout_width="124dip"
-            android:layout_height="90dip"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="60dip" 
-        >
-			<TextView
-	            android:id="@+id/label"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="Error"
-	            android:textColor="@android:color/black"
-	            android:textSize="12sp" android:padding="3dip"
-	        />
-	        <TextView
-	            android:id="@+id/title"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/general_no_data"
-	            android:textColor="@android:color/black"
-	            android:textSize="11sp" android:padding="3dip"
-	        	android:layout_below="@id/label"
-	        />
-	        <TextView
-	            android:id="@+id/stats"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/info_connect_bl"
-	            android:textColor="@android:color/black"
-	            android:textSize="11sp" android:padding="3dip"
-	        	android:layout_below="@id/title"
-	       	/>
-	        <TextView
-	            android:id="@+id/string001"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/info_widget_friends_online"
-	            android:textColor="@android:color/black"
-	            android:textSize="13sp" 
-	            android:padding="3dip"
-	        	android:layout_below="@id/stats"    
-	        />
-	        <TextView
-	            android:id="@+id/friends"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="0"
-	            android:textColor="#ff0000"
-	            android:textSize="15sp"
-	        	android:layout_below="@id/stats"
-	        	android:layout_alignBaseline="@id/string001"
-	        	android:layout_toRightOf="@id/string001"
-	        />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout2"
-            android:layout_width="40dp"
-            android:layout_height="80dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="40dp" 
-           	
-            >
-
-            <Button
-                android:id="@+id/widget_button"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:background="@drawable/widget_updatebutton"
-                android:textSize="8sp" />
-
-            <Button
-                android:id="@+id/widget_button2"
-                android:layout_width="30dip"
-                android:layout_height="30dip"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:background="@drawable/bg_bf3_main"
-                android:textSize="9sp"
-                android:text="BF3"
-                android:textStyle="bold"
-                android:textColor="#ffffff"
-            />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-</RelativeLayout>
+    BF3 Battlelog is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:minWidth="320dp"
+    android:minHeight="320dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+	android:background="@drawable/widget_social_bg_stroke"
+	android:padding="10dp"
+	android:orientation="vertical"
+>
+ 	<TextView
+ 	    android:id="@+id/text_user"
+   	  	style="@style/InfoHeadingWidget"
+	    android:text="NINETWOZERO"
+	    android:padding="5dp"
+ 	/> 
+ 	<RelativeLayout
+ 	    android:id="@+id/wrap_online"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:padding="5dp"
+ 	    android:background="@drawable/bg_rounded_corners"
+ 	    android:layout_marginBottom="5dp"
+    >
+	 	<TextView
+	 	    android:id="@+id/string_online"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Friends online"
+			android:layout_alignParentLeft="true"
+	 		android:textColor="#FFFFFF"
+	 	/>    
+	 	<TextView
+	 	    android:id="@+id/text_online"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="100"
+	 		android:layout_alignParentRight="true"
+	 		android:textColor="#FFFFFF"
+	 	/>
+ 	</RelativeLayout> 
+ 	<RelativeLayout
+ 	    android:id="@+id/wrap_playing"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:padding="5dp"
+ 	    android:background="@drawable/bg_rounded_corners"
+ 	    android:layout_marginBottom="5dp"
+    >
+	 	<TextView
+	 	    android:id="@+id/string_playing"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="--- Friends playing"
+			android:layout_alignParentLeft="true"
+	 		android:textColor="#FFFFFF"
+	 	/>    
+	 	<TextView
+	 	    android:id="@+id/text_playing"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="50"
+	 		android:layout_alignParentRight="true"
+	 		android:textColor="#FFFFFF"
+	 	/>
+ 	</RelativeLayout>
+ 	<TextView
+ 	    android:id="@+id/string_latest"
+   	  	style="@style/InfoHeadingWidget"
+	    android:text="Latest updates"
+	    android:padding="5dp"
+ 	/> 
+ 	<RelativeLayout
+ 	    android:id="@+id/wrap_feed_0"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:padding="5dp"
+ 	    android:background="@drawable/bg_rounded_corners"
+ 	    android:layout_marginBottom="5dp"
+    >
+	 	<TextView
+	 	    android:id="@+id/text_content_0"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="ninetwozero posted a forum post in the thread: FOO CAR STAR"
+		    android:maxLines="2"
+			android:layout_alignParentLeft="true"
+	 		android:textColor="#FFFFFF"
+	 	/>    
+	 	<TextView
+	 	    android:id="@+id/text_date_0"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="6 minutes ago"
+		    android:layout_below="@id/text_content_0"
+	 		android:layout_alignParentRight="true"
+	 		android:textColor="#777777"
+	 	/>
+ 	</RelativeLayout>
+ 	<RelativeLayout
+ 	    android:id="@+id/wrap_feed_1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:padding="5dp"
+ 	    android:background="@drawable/bg_rounded_corners"
+ 	    android:layout_marginBottom="5dp"
+    >
+	 	<TextView
+	 	    android:id="@+id/text_content_1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="ninetwozero ate two cookies: chocolate chip and plain chocolate ones"
+		    android:maxLines="2"
+			android:layout_alignParentLeft="true"
+	 		android:textColor="#FFFFFF"
+	 	/>    
+	 	<TextView
+	 	    android:id="@+id/text_date_1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="16 minutes ago"
+		    android:layout_below="@id/text_content_1"
+	 		android:layout_alignParentRight="true"
+	 		android:textColor="#777777"
+	 	/>
+ 	</RelativeLayout>
+ 	<RelativeLayout
+ 	    android:id="@+id/wrap_feed_2"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:padding="5dp"
+ 	    android:background="@drawable/bg_rounded_corners"
+ 	    android:layout_marginBottom="5dp"
+    >
+	 	<TextView
+	 	    android:id="@+id/text_content_2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="ninetwozero: I'm getting hungry, better head off to bed."
+		    android:maxLines="2"
+			android:layout_alignParentLeft="true"
+	 		android:textColor="#FFFFFF"
+	 	/>    
+	 	<TextView
+	 	    android:id="@+id/text_date_2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="1 hour ago"
+		    android:layout_below="@id/text_content_2"
+	 		android:layout_alignParentRight="true"
+	 		android:textColor="#777777"
+	 	/>
+ 	</RelativeLayout>
+	<RelativeLayout
+ 	    android:id="@+id/wrap_buttons"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:padding="5dp"
+ 	    android:background="@drawable/bg_rounded_corners"
+ 	    android:layout_marginBottom="5dp"
+    >
+	 	<Button
+	 	    style="@style/RegularButton"
+	 		android:id="@+id/button_prev"    
+	 		android:text="&lt;"
+	 		android:textStyle="bold"
+	 		android:layout_alignParentLeft="true"
+	 	/>
+	 	<Button
+	 	    style="@style/RegularButton"
+	 		android:id="@+id/button_next"    
+	 		android:text="&gt;"
+	 		android:textStyle="bold"
+	 		android:layout_alignParentRight="true"
+	 	/>
+	 	<Button
+	 	    style="@style/RegularButton"
+	 		android:id="@+id/button_refresh"    
+	 		android:text="Refresh"
+	 		android:layout_toLeftOf="@id/button_next"
+	 		android:layout_toRightOf="@id/button_prev"
+	 		android:layout_marginLeft="5dp"
+	 		android:layout_marginRight="5dp"
+	 	/>
+ 	</RelativeLayout>
+ </LinearLayout> 

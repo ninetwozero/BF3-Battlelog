@@ -23,20 +23,20 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.Color;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.PersonaStats;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.ShareableCookie;
+import com.ninetwozero.battlelog.datatypes.FeedItem;
+import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
@@ -44,6 +44,19 @@ public class SocialWidgetProvider extends AppWidgetProvider {
 
     public static final String ACTION_WIDGET_RECEIVER = "SocialWidgetReciever";
     public static final String ACTION_WIDGET_OPENAPP = "Main";
+    public static int feedPageId = 0;
+    private static FriendListDataWrapper friends;
+    public static List<FeedItem> feedItems;
+
+    public static final int FEED_WRAP_IDS[] = new int[] {
+            R.id.wrap_feed_0, R.id.wrap_feed_1, R.id.wrap_feed_2
+    };
+    public static final int FEED_CONTENT_IDS[] = new int[] {
+            R.id.text_content_0, R.id.text_content_1, R.id.text_content_2
+    };
+    public static final int FEED_DATE_IDS[] = new int[] {
+            R.id.text_date_0, R.id.text_date_1, R.id.text_date_2
+    };
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -59,101 +72,28 @@ public class SocialWidgetProvider extends AppWidgetProvider {
                 appIntent, 0);
         appIntent.setAction(ACTION_WIDGET_OPENAPP);
 
-        RemoteViews remoteView = null;
         SharedPreferences sharedPreferences = null;
-        ComponentName BattlelogListWidget;
 
         // Set the values
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        remoteView = new RemoteViews(context.getPackageName(),
-                R.layout.widget_social);
-        final Resources res = context.getResources();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Set the session if needed
         SessionKeeper.setProfileData(SessionKeeper
                 .generateProfileDataFromSharedPreferences(sharedPreferences));
 
+        // Let's setup the session
+        PublicUtils.setupSession(context, sharedPreferences);
+
         // if service == active
         if (SessionKeeper.getProfileData() == null) {
 
-            remoteView.setTextViewText(R.id.label,
-                    Html.fromHtml("<b>Error</b>"));
-            remoteView.setTextViewText(R.id.title,
-                    res.getString(R.string.general_no_data));
-            remoteView.setTextViewText(R.id.stats,
-                    res.getString(R.string.info_connect_bl));
-            remoteView.setTextColor(R.id.friends, Color.RED);
-            remoteView.setTextViewText(R.id.friends, "0");
+            Log.d(Constants.DEBUG_TAG, "No session to use in the widget");
 
         } else {
 
-            // Let's update it
-            RequestHandler.setCookies(
-
-                    new ShareableCookie(
-
-                            sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
-                            sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, ""),
-                            Constants.COOKIE_DOMAIN
-
-                    )
-
-                    );
-
-            try {
-
-                playerData = WebsiteHandler.getStatsForPersona(SessionKeeper
-                        .getProfileData());
-                remoteView.setTextViewText(
-
-                        R.id.label, playerData.getPersonaName()
-
-                        );
-                remoteView.setTextViewText(
-
-                        R.id.title,
-                        res.getString(R.string.info_xml_rank)
-                                + playerData.getRankId());
-                remoteView
-                        .setTextViewText(
-
-                                R.id.stats,
-                                ("W/L: " + Math.floor(playerData.getWLRatio() * 100) / 100
-                                        + "  K/D: " + Math.floor(playerData.getKDRatio() * 100) / 100));
-                profileDataArray = WebsiteHandler.getFriends(
-
-                        sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""), true
-
-                        );
-                numFriendsOnline = profileDataArray.size();
-
-            } catch (WebsiteHandlerException e) {
-
-                e.printStackTrace();
-
-            }
-
-            if (numFriendsOnline > 0) {
-
-                remoteView.setTextColor(R.id.friends, Color.BLACK);
-                remoteView.setTextViewText(R.id.friends, "" + numFriendsOnline);
-
-            } else {
-
-                remoteView.setTextColor(R.id.friends, Color.RED);
-                remoteView.setTextViewText(R.id.friends, "0");
-
-            }
+            new AsyncRefresh(context, appWidgetManager).execute();
 
         }
-        remoteView.setOnClickPendingIntent(R.id.widget_button,
-                actionPendingIntent);
-        remoteView.setOnClickPendingIntent(R.id.widget_button2,
-                appPendingIntent);
-        BattlelogListWidget = new ComponentName(context,
-                SocialWidgetProvider.class);
-        appWidgetManager.updateAppWidget(BattlelogListWidget, remoteView);
 
     }
 
@@ -173,4 +113,93 @@ public class SocialWidgetProvider extends AppWidgetProvider {
 
     }
 
+    private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
+
+        // Attributes
+        private Context context;
+        private String message;
+        private AppWidgetManager appWidgetManager;
+
+        public AsyncRefresh(Context c, AppWidgetManager a) {
+
+            context = c;
+            appWidgetManager = a;
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... arg) {
+
+            try {
+
+                friends = WebsiteHandler.getFriendsCOM(
+                        context,
+                        PreferenceManager.getDefaultSharedPreferences(context).getString(
+                                Constants.SP_BL_PROFILE_CHECKSUM, ""));
+                feedItems = WebsiteHandler.getFeed(context, FeedItem.TYPE_GLOBAL, 0, Constants.DEFAULT_NUM_FEED,
+                        SessionKeeper.getProfileData().getId());
+                Log.d(Constants.DEBUG_TAG, "feedItems => " + feedItems);
+                return (feedItems != null && friends != null);
+
+            } catch (WebsiteHandlerException ex) {
+
+                ex.printStackTrace();
+                message = ex.getMessage();
+                return false;
+
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean results) {
+
+            if (context != null) {
+
+                drawLayout(context, results, appWidgetManager);
+
+                if (!results) {
+
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+
+        }
+    }
+
+    private void drawLayout(Context c, boolean r, AppWidgetManager a) {
+
+        // Draw the GUI
+        RemoteViews remoteView = new RemoteViews(c.getPackageName(), R.layout.widget_social);
+        remoteView.setTextViewText(R.id.text_title, SessionKeeper.getProfileData().getUsername());
+        remoteView.setTextViewText(R.id.text_online, friends.getNumTotalOnline() + "");
+        remoteView.setTextViewText(R.id.text_playing, friends.getNumPlaying() + "");
+
+        // If the feed items are gone...
+        if (feedItems != null && feedItems.size() > 0) {
+
+            // Let's iterate the feed items
+            for (int count = 0, max = FEED_DATE_IDS.length; count < max; count++) {
+                
+                remoteView.setTextViewText(FEED_CONTENT_IDS[count],
+                        Html.fromHtml(feedItems.get(feedPageId + count).getTitle()));
+                remoteView
+                        .setTextViewText(FEED_DATE_IDS[count], PublicUtils.getRelativeDate(c,
+                                feedItems.get(feedPageId + count).getDate()));
+                remoteView.setOnClickPendingIntent(FEED_WRAP_IDS[count], PendingIntent.getActivity(
+                        c, 0, feedItems.get(feedPageId + count).getIntent(c), 0));
+            }
+
+        }
+        // Set the click listeners
+        // remoteView.setOnClickPendingIntent(R.id.widget_button,
+        // actionPendingIntent);
+        // remoteView.setOnClickPendingIntent(R.id.widget_button2,
+        // appPendingIntent);
+        ComponentName widgetComponent = new ComponentName(c, SocialWidgetProvider.class);
+        a.updateAppWidget(widgetComponent, remoteView);
+
+    }
 }

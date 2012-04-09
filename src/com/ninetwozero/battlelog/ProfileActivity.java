@@ -41,6 +41,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
 import com.ninetwozero.battlelog.fragments.ProfileOverviewFragment;
@@ -144,7 +145,7 @@ public class ProfileActivity extends FragmentActivity implements DefaultFragment
 
             // We need to set the type
             fragmentFeed.setTitle(profileData.getUsername());
-            fragmentFeed.setType(FeedFragment.TYPE_PROFILE);
+            fragmentFeed.setType(FeedItem.TYPE_PROFILE);
             fragmentFeed.setId(profileData.getId());
             fragmentFeed.setCanWrite(false);
 

@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog;
 
 import java.util.List;
+import java.util.TimeZone;
 import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
@@ -29,6 +30,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -47,6 +49,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.fragments.ComFriendFragment;
@@ -190,7 +193,7 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
             fragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
 
             // Setup the feed
-            fragmentFeed.setType(FeedFragment.TYPE_GLOBAL);
+            fragmentFeed.setType(FeedItem.TYPE_GLOBAL);
             fragmentFeed.setCanWrite(true);
 
             // Get the ViewPager

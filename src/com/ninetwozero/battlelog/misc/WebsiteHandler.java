@@ -68,7 +68,6 @@ import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.fragments.FeedFragment;
 
 /* 
  * Methods of this class should be loaded in AsyncTasks, as they would probably lock up the GUI
@@ -2404,15 +2403,15 @@ public class WebsiteHandler {
             // What's the url?
             switch (type) {
 
-                case FeedFragment.TYPE_GLOBAL:
+                case FeedItem.TYPE_GLOBAL:
                     url = Constants.URL_FRIEND_FEED;
                     break;
 
-                case FeedFragment.TYPE_PROFILE:
+                case FeedItem.TYPE_PROFILE:
                     url = Constants.URL_PROFILE_FEED.replace("{PID}", id + "");
                     break;
 
-                case FeedFragment.TYPE_PLATOON:
+                case FeedItem.TYPE_PLATOON:
                     url = Constants.URL_PLATOON_FEED.replace("{PLATOON_ID}", id + "");
                     break;
 

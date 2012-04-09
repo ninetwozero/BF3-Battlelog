@@ -1,5 +1,17 @@
 package com.ninetwozero.battlelog.preference;
 
+import static com.ninetwozero.battlelog.datatypes.ProfileSettings.DATE_FORMAT_VALUES;
+import static com.ninetwozero.battlelog.datatypes.ProfileSettings.DATE_PATTERNS;
+import static com.ninetwozero.battlelog.datatypes.ProfileSettings.PROFILE_INFO_DATE_FORMAT;
+import static com.ninetwozero.battlelog.datatypes.ProfileSettings.TIME_FORMATS;
+import static com.ninetwozero.battlelog.datatypes.ProfileSettings.TIME_FORMAT_VALUES;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,15 +23,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
 import com.ninetwozero.battlelog.R;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.*;
 
 public class DateTimePreference extends ListPreference {
 

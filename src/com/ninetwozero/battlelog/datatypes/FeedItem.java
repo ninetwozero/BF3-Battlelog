@@ -29,6 +29,11 @@ import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class FeedItem implements Parcelable {
 
+    // Constants
+    public final static int TYPE_GLOBAL = 0;
+    public final static int TYPE_PROFILE = 1;
+    public final static int TYPE_PLATOON = 2;
+    
     // Attributes
     private long id, itemId, date;
     private int numLikes, numComments;
