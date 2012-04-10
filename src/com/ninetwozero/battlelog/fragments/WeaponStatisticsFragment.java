@@ -18,7 +18,6 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -27,19 +26,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.SingleWeaponActivity;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
+import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 
-public class WeaponInformationFragment extends Fragment implements DefaultFragment {
+public class WeaponStatisticsFragment extends Fragment implements DefaultFragment {
 
     // Attributes
     private Context context;
@@ -47,13 +44,11 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     private int viewPagerPosition;
 
     // Elements
-    private ImageView imageItem;
-    private TextView textTitle, textDesc, textSpecs;
+    private TextView textKills, textHS, textSF, textSH, textAccuracy, textTE, textSS, textSSP;
 
     // Misc
     private ProfileData profileData;
     private WeaponStats weaponStats;
-    private long selectedPersona;
     private SharedPreferences sharedPreferences;
     private HashMap<Long, WeaponDataWrapper> weaponDataWrapper;
 
@@ -68,7 +63,7 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
                 .getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_weapon_info,
+        View view = layoutInflater.inflate(R.layout.tab_content_weapon_stats,
                 container, false);
 
         // Init views
@@ -82,10 +77,14 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     public void initFragment(View v) {
         
         //Let's setup the fields
-        imageItem = (ImageView) v.findViewById(R.id.image_item);
-        textTitle = (TextView) v.findViewById(R.id.text_title);
-        textDesc = (TextView) v.findViewById(R.id.text_desc);
-        textSpecs = (TextView) v.findViewById(R.id.text_specs);
+        textKills = (TextView) v.findViewById(R.id.text_kills);
+        textHS = (TextView) v.findViewById(R.id.text_hs);
+        textSF  = (TextView) v.findViewById(R.id.text_sf);
+        textSH = (TextView) v.findViewById(R.id.text_sh);
+        textAccuracy = (TextView) v.findViewById(R.id.text_accuracy);
+        textTE = (TextView) v.findViewById(R.id.text_time);
+        textSS = (TextView) v.findViewById(R.id.text_sstars);
+        textSSP = (TextView) v.findViewById(R.id.text_sstars_progress);
 
     }
 
@@ -101,11 +100,6 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         return viewPagerPosition;
 
     }
-
-    public void setSelectedPersona(long p) {
-        
-        selectedPersona = p;
-    }
     
     public void setProfileData(ProfileData p){
         
@@ -115,8 +109,8 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     
     @Override
     public void reload() {
-
-        new AsyncRefresh().execute();
+        
+        ((DefaultFragmentActivity) context).reload();
         
     }
 
@@ -130,52 +124,17 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         return false;
     }
     
-    private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
+    public void show(WeaponStats w) {
         
-        @Override
-        protected Boolean doInBackground(Void... arg) {
-            
-            try {
-
-                weaponDataWrapper = WebsiteHandler.getWeapon(profileData, weaponStats);
-                return true;   
-
-            } catch( Exception ex ) {
-                
-                ex.printStackTrace();
-                return false;
-            }
-        }
+        textKills.setText(w.getKills() + "");
+        textHS.setText(w.getHeadshots() + "");
+        textSF.setText(w.getShotsFired() + "");
+        textSH.setText(w.getShotsHit() + "");
+        textAccuracy.setText(w.getAccuracy() + "");
+        textTE.setText(PublicUtils.getRelativeDate(context,w.getTimeEquipped()));
+        textSS.setText(w.getServiceStars() + "");
+        textSSP.setText(w.getServiceStarProgress() + "");
         
-        @Override
-        protected void onPostExecute(Boolean result) {
-            
-            if( context != null ) {
-                
-                if( result ) {
-                    
-                    show(weaponDataWrapper.get(selectedPersona));
-                    
-                } else {
-                    
-                    Toast.makeText(context, R.string.general_no_data, Toast.LENGTH_SHORT).show();
-                    
-                }
-                
-            }
-        }
-        
-    }
-    
-    private void show(WeaponDataWrapper w) {
-        
-        imageItem.setImageResource(w.getImageId());
-        textTitle.setText(w.getName());
-        textDesc.setText(w.getDescription());
-        textSpecs.setText(w.getSpecifications());
-        
-        //Update the previous
-        ((SingleWeaponActivity) context).showData(w);
     }
     
 }

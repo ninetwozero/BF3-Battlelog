@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,6 +69,7 @@ import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
+import com.ninetwozero.battlelog.datatypes.WeaponStatsComparator;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 
 /* 
@@ -5963,65 +5965,74 @@ public class WebsiteHandler {
 
     }
 
-    public static List<WeaponStats> getWeaponStatisticsForPersona(long profileId,
-            int platformId) { /* TODO: WORK IN PROGRESS */
+    public static Map<Long, List<WeaponStats>> getWeaponStatisticsForPersona(ProfileData p) { /* TODO: WORK IN PROGRESS */
 
         try {
 
             // Init
             RequestHandler rh = new RequestHandler();
-            List<WeaponStats> weaponStatsArray = new ArrayList<WeaponStats>();
+            Map<Long, List<WeaponStats>> weaponStatsMap = new HashMap<Long, List<WeaponStats>>();
 
-            // Get the data
-            String httpContent = rh.get(
+            for( int i = 0, max = p.getNumPersonas(); i < max; i++ ) {
 
-                    Constants.URL_STATS_WEAPONS.replace("{PID}", profileId + "").replace(
-                            "{PLATFORM_ID}", platformId + ""),
-                    0
-
-                    );
-
-            // So... how'd it go?
-            if (httpContent != null && !httpContent.equals("")) {
-
-                // Woo, we got results
-                JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
-                JSONArray weaponStats = baseObject.getJSONArray("mainWeaponStats");
-
-                // Let's iterate over the JSONArray
-                for (int count = 0, maxCount = weaponStats.length(); count < maxCount; count++) {
-
-                    // Get the current item
-                    JSONObject currentItem = weaponStats.getJSONObject(count);
-
-                    // Store it
-                    weaponStatsArray.add(
-
-                            new WeaponStats(
-
-                                    currentItem.getString("name"),
-                                    currentItem.getString("guid"),
-                                    currentItem.getString("slug"),
-                                    currentItem.getInt("kills"),
-                                    currentItem.getInt("headshots"),
-                                    currentItem.getInt("kitId"),
-                                    currentItem.getLong("shotsFired"),
-                                    currentItem.getLong("shotsHit"),
-                                    currentItem.getLong("timeEquipped"),
-                                    currentItem.getDouble("accuracy"),
-                                    currentItem.getDouble("serviceStars"),
-                                    currentItem.getDouble("serviceStarProgress")
-
-                            )
-
-                            );
-
+                //Init the array
+                List<WeaponStats> weaponStatsArray = new ArrayList<WeaponStats>();
+                
+                // Get the data
+                String httpContent = rh.get(
+    
+                        Constants.URL_STATS_WEAPONS.replace("{PID}", p.getPersona(i).getId() + "").replace(
+                                "{PLATFORM_ID}", p.getPersona(i).getPlatformId() + ""),
+                        0
+    
+                        );
+    
+                // So... how'd it go?
+                if (httpContent != null && !httpContent.equals("")) {
+    
+                    // Woo, we got results
+                    JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
+                    JSONArray weaponStats = baseObject.getJSONArray("mainWeaponStats");
+    
+                    // Let's iterate over the JSONArray
+                    for (int count = 0, maxCount = weaponStats.length(); count < maxCount; count++) {
+    
+                        // Get the current item
+                        JSONObject currentItem = weaponStats.getJSONObject(count);
+    
+                        // Store it
+                        weaponStatsArray.add(
+    
+                                new WeaponStats(
+    
+                                        currentItem.getString("name"),
+                                        currentItem.getString("guid"),
+                                        currentItem.getString("slug"),
+                                        currentItem.getInt("kills"),
+                                        currentItem.getInt("headshots"),
+                                        currentItem.optInt("kitId", 999),
+                                        currentItem.getLong("shotsFired"),
+                                        currentItem.getLong("shotsHit"),
+                                        currentItem.getLong("timeEquipped"),
+                                        currentItem.getDouble("accuracy"),
+                                        currentItem.getDouble("serviceStars"),
+                                        currentItem.optDouble("serviceStarProgress", 0.0)
+    
+                                )
+    
+                                );
+    
+                    }
+    
                 }
-
+                
+                Collections.sort(weaponStatsArray, new WeaponStatsComparator());
+                weaponStatsMap.put( p.getPersona(i).getId(), weaponStatsArray );
+                
             }
 
             // Return it!
-            return weaponStatsArray;
+            return weaponStatsMap;
 
         } catch (RequestHandlerException ex) {
 
@@ -6037,14 +6048,14 @@ public class WebsiteHandler {
 
     }
 
-    public static List<WeaponDataWrapper> getWeapon(ProfileData p, WeaponStats weaponStats) {
+    public static HashMap<Long, WeaponDataWrapper> getWeapon(ProfileData p, WeaponStats weaponStats) {
 
         try {
 
             // Init
             RequestHandler rh = new RequestHandler();
             List<UnlockData> unlockArray = new ArrayList<UnlockData>();
-            List<WeaponDataWrapper> weaponDataArray = new ArrayList<WeaponDataWrapper>();
+            HashMap<Long, WeaponDataWrapper> weaponDataArray = new HashMap<Long, WeaponDataWrapper>();
 
             // Iterate per persona
             for (int i = 0, max = p.getNumPersonas(); i < max; i++) {
@@ -6075,48 +6086,61 @@ public class WebsiteHandler {
                 // So... how'd it go?
                 if (httpContent != null && !httpContent.equals("")) {
 
-                    //Clear the unlockArray
+                    // Clear the unlockArray
                     unlockArray = new ArrayList<UnlockData>();
-                    weaponDataArray = new ArrayList<WeaponDataWrapper>();
-                    
+
                     // Woo, we got results
                     JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
-                    JSONArray unlockObjectArray = baseObject.getJSONObject("itemWeapon").getJSONArray("unlocks"); 
-                    
-                    //Let's iterate over the unlocks
-                    for( int count = 0, maxCount = unlockObjectArray.length(); count < maxCount; count++) {
-                        
-                        //Get the current item
+                    JSONArray unlockObjectArray = baseObject.getJSONObject("itemWeapon")
+                            .getJSONArray("unlocks");
+
+                    // Let's iterate over the unlocks
+                    for (int count = 0, maxCount = unlockObjectArray.length(); count < maxCount; count++) {
+
+                        // Get the current item
                         JSONObject unlockObject = unlockObjectArray.getJSONObject(count);
                         JSONObject unlockObjectBy = unlockObject.getJSONObject("unlockedBy");
-                        
 
-                        //Populate the array
-                        unlockArray.add( 
-                                
-                            new UnlockData(
-                            
-                                    weaponStats.getKitId(),
-                                    unlockObjectBy.getDouble("completion"),
-                                    unlockObjectBy.getLong("valueNeeded"),
-                                    unlockObjectBy.getLong("actualValue"),
-                                    weaponStats.getName(),
-                                    unlockObject.getString("unlockId"),
-                                    unlockObjectBy.getString("codeNeeded"),
-                                    unlockObjectBy.getString("unlockType")
-                                    
-                            ) 
-                            
-                        );
-                        
+                        // Populate the array
+                        unlockArray.add(
+
+                                new UnlockData(
+
+                                        weaponStats.getKitId(),
+                                        unlockObjectBy.getDouble("completion"),
+                                        unlockObjectBy.getLong("valueNeeded"),
+                                        unlockObjectBy.getLong("actualValue"),
+                                        weaponStats.getName(),
+                                        unlockObject.getString("unlockId"),
+                                        unlockObjectBy.getString("codeNeeded"),
+                                        unlockObjectBy.getString("unlockType")
+
+                                )
+
+                                );
+
                     }
-                    
-                    //Add the data array to the WeaponDataWrapper
-                    weaponDataArray.add( 
-                            
-                            new WeaponDataWrapper()
-                            
-                    );
+
+                    // Add the data array to the WeaponDataWrapper
+                    /*
+                     * TODO: Resolve resources from name and return an array or
+                     * something for use down below
+                     */
+                    weaponDataArray.put(
+
+                            p.getPersona(i).getId(),
+                            new WeaponDataWrapper(
+
+                                    R.drawable.assignment_01_u,
+                                    "This is a description",
+                                    "This is a specification",
+                                    weaponStats.getName(),
+                                    weaponStats,
+                                    unlockArray
+
+                            )
+
+                            );
                 }
 
             }

@@ -150,6 +150,19 @@
           	android:configChanges="orientation"
         />	
         
+        <activity
+            android:label="TODO"
+            android:name=".WeaponListActivity"
+          	android:configChanges="orientation"
+          	android:windowSoftInputMode="stateHidden"
+        />
+        <activity
+            android:label="TODO"
+            android:name=".SingleWeaponActivity"
+          	android:configChanges="orientation"
+          	android:windowSoftInputMode="stateHidden"
+        />
+        
 		<!-- 	TODO: This currently kills the app (and the phone) so it won\'t be active. 
 				ANYONE KNOWS HOW THIS WORKS???
         <receiver android:name="com.ninetwozero.battlelog.broadcastreceivers.NetworkReceiver">

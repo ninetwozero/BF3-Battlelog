@@ -392,7 +392,8 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
         // Let's act!
         if (item.getItemId() == R.id.option_refresh) {
 
-            reload();
+            startActivity(new Intent(this, WeaponListActivity.class).putExtra("profile", SessionKeeper.getProfileData()));
+            //reload();
 
         } else if (item.getItemId() == R.id.option_settings) {
 

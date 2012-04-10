@@ -20,168 +20,45 @@
 	<RelativeLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-	    android:paddingTop="5dp"
-	    android:paddingLeft="10dp"
-	    android:paddingRight="10dp"
-	    android:paddingBottom="10dp"
+	    android:padding="10dp"
 	>		
-		<TextView 
-		   	android:id="@+id/string_kills"
-		    android:layout_width="wrap_content"
+		<ImageView
+		    android:id="@+id/image_item"
+		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
-		    android:text="Kills"
-	    	android:layout_alignParentLeft="true"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
+			android:src="@drawable/assignment_01_u"
+			android:scaleType="centerInside"
+			android:layout_centerHorizontal="true"
+		/>
+		<TextView 
+		   	style="@style/InfoHeading"
+		    android:id="@+id/text_title"
+		    android:text="FAMAS"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/image_item"
 	    />
 		<TextView 
-		   	android:id="@+id/text_kills"
+		   	android:id="@+id/text_desc"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:text="133338"
-	    	android:layout_alignParentRight="true"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
+		    android:text="M40A3 is a neat gun. I can't quite remember if it's actually in BF3, but atleast I've seen it in Call of Duty: Modern Warfare."
+	    	android:padding="5dp"
+	    	android:layout_below="@id/text_title"
 	    />
 		<TextView 
-			android:id="@+id/string_hs"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Headshots"
-			android:layout_alignParentLeft="true"
-			android:layout_below="@+id/string_kills"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
+		   	style="@style/InfoHeading"
+		    android:id="@+id/text_specs"
+		    android:text="Specifications"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/text_desc"
+	    />
 		<TextView 
-			android:id="@+id/text_hs"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="1234"
-			android:layout_alignParentRight="true"
-			android:layout_below="@+id/string_kills"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
-		<TextView 
-			android:id="@+id/string_sf"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Shots fired"
-			android:layout_alignParentLeft="true"
-			android:layout_below="@+id/string_hs"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
-		<TextView 
-			android:id="@+id/text_sf"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="20003"
-			android:layout_alignParentRight="true"
-			android:layout_below="@+id/string_hs"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
-		<TextView 
-			android:id="@+id/string_sh"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Shots hit"
-			android:layout_alignParentLeft="true"
-			android:layout_below="@+id/string_sf"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
-		<TextView 
-			android:id="@+id/text_sh"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="16001"
-			android:layout_alignParentRight="true"
-			android:layout_below="@+id/string_sf"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
-		<TextView 
-			android:id="@+id/string_accuracy"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Accuracy"
-			android:layout_alignParentLeft="true"
-			android:layout_below="@+id/string_sh"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
-		<TextView 
-			android:id="@+id/text_accuracy"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="80%"
-			android:layout_alignParentRight="true"
-			android:layout_below="@+id/string_sh"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
-		<TextView 
-			android:id="@+id/string_time"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Time played"
-			android:layout_alignParentLeft="true"
-			android:layout_below="@+id/string_accuracy"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
-		<TextView 
-			android:id="@+id/text_time"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="3D 23H 59M"
-			android:layout_alignParentRight="true"
-			android:layout_below="@+id/string_accuracy"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
-		<TextView 
-			android:id="@+id/string_sstars"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Service stars"
-			android:layout_alignParentLeft="true"
-			android:layout_below="@+id/string_time"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
-		<TextView 
-			android:id="@+id/text_sstars"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="30"
-			android:layout_alignParentRight="true"
-			android:layout_below="@+id/string_time"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
-		<TextView 
-			android:id="@+id/string_sstars_progress"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Service star progress"
-			android:layout_alignParentLeft="true"
-			android:layout_below="@+id/string_sstars"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
-		<TextView 
-			android:id="@+id/text_sstars_progress"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="33%"
-			android:layout_alignParentRight="true"
-			android:layout_below="@+id/string_sstars"
-	    	android:paddingTop="5dp"
-	    	android:paddingBottom="5dp"
-		/>
+		   	android:id="@+id/text_specs_content"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Ammo: 4000 mm AP"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/text_specs"
+	    />
 	</RelativeLayout>
 </ScrollView>

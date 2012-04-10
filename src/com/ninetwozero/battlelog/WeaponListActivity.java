@@ -14,7 +14,9 @@
 
 package com.ninetwozero.battlelog;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
@@ -22,6 +24,7 @@ import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -29,29 +32,27 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.widget.Toast;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
-import com.ninetwozero.battlelog.fragments.UnlockFragment;
-import com.ninetwozero.battlelog.fragments.WeaponInformationFragment;
-import com.ninetwozero.battlelog.fragments.WeaponStatisticsFragment;
+import com.ninetwozero.battlelog.fragments.WeaponListFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
-import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
-public class SingleWeaponActivity extends FragmentActivity implements DefaultFragmentActivity {
+public class WeaponListActivity extends FragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
     private final Context CONTEXT = this;
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
     private ProfileData profileData;
+    private Map<Long, List<WeaponStats>> items;
     private long selectedPersona;
     private int selectedPosition;
-    private WeaponStats weaponStats;
 
     // Fragment related
     private SwipeyTabs tabs;
@@ -59,9 +60,6 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
     private List<Fragment> listFragments;
     private FragmentManager fragmentManager;
     private ViewPager viewPager;
-    private WeaponInformationFragment fragmentWeaponInfo;
-    private WeaponStatisticsFragment fragmentWeaponStats;
-    private UnlockFragment fragmentUnlocks;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -90,17 +88,6 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
             return;
 
         }
-        
-        if( getIntent().hasExtra("weapon") ) {
-            
-            weaponStats = getIntent().getParcelableExtra("weaponStats");
-        
-        } else {
-         
-            return;
-            
-        }
-        
 
         // Setup the trinity
         PublicUtils.setupLocale(this, sharedPreferences);
@@ -118,17 +105,10 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
     }
 
     public void initActivity() {
-        
+
+        // Are we there yet?
         // Set the selected persona
-        if( SessionKeeper.getProfileData().getId() != profileData.getId() ) {
-            
-            selectedPersona = profileData.getPersona(0).getId();
-        
-        } else {
-            
-            selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
-            
-        }
+        selectedPersona = profileData.getPersona(0).getId();
 
     }
 
@@ -169,13 +149,16 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
 
             // Add them to the list
             listFragments = new Vector<Fragment>();
-            listFragments.add(fragmentWeaponInfo = (WeaponInformationFragment) Fragment.instantiate(this, WeaponInformationFragment.class.getName()));
-            listFragments.add(fragmentWeaponStats = (WeaponStatisticsFragment) Fragment.instantiate(this, WeaponStatisticsFragment.class.getName()));
-            listFragments.add(fragmentUnlocks = (UnlockFragment) Fragment.instantiate(this, UnlockFragment.class.getName()));
+            listFragments
+                    .add(Fragment.instantiate(this, WeaponListFragment.class.getName()));
 
-            //Let's set the selectedPersona
-            fragmentWeaponInfo.setSelectedPersona(selectedPersona);
-            
+            // Iterate over the fragments
+            for (int i = 0, max = listFragments.size(); i < max; i++) {
+
+                ((WeaponListFragment) listFragments.get(i)).setViewPagerPosition(i);
+
+            }
+
             // Get the ViewPager
             viewPager = (ViewPager) findViewById(R.id.viewpager);
             tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
@@ -185,7 +168,7 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
 
                     fragmentManager,
                     new String[] {
-                            "INFORMATION", "STATISTICS", "UNLOCKS"
+                            "WEAPONS"
                     },
                     listFragments,
                     viewPager,
@@ -196,7 +179,6 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
 
             // Make sure the tabs follow
             viewPager.setOnPageChangeListener(tabs);
-            viewPager.setOffscreenPageLimit(2);
             viewPager.setCurrentItem(0);
 
         }
@@ -204,15 +186,87 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
     }
 
     public void reload() {
-        
-        fragmentWeaponInfo.reload();
-        
+
+        new AsyncRefresh(this).execute();
+
     }
 
-    public void showData(WeaponDataWrapper w) {
-        
-        fragmentWeaponStats.show(w.getWeaponStats());
-        fragmentUnlocks.showUnlocks(w.getUnlocks());
-        
+    public void doFinish() {
     }
+
+    private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
+
+        // Attributes
+        private Context context;
+
+        // Construct
+        public AsyncRefresh(Context c) {
+
+            context = c;
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... arg) {
+
+            try {
+
+                items = WebsiteHandler.getWeaponStatisticsForPersona(profileData);
+                return true;
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+
+            if (context != null) {
+
+                if (result) {
+
+                    ((WeaponListFragment) listFragments.get(viewPager.getCurrentItem()))
+                            .showWeapons(items.get(selectedPersona));
+
+                } else {
+
+                    Toast.makeText(context, R.string.general_no_data, Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        }
+
+    }
+
+    public List<WeaponStats> getItemsForFragment(int p) {
+
+        // Let's see if we got anything
+        if (items == null || items.get(selectedPersona) == null) {
+
+            return new ArrayList<WeaponStats>();
+
+        } else {
+
+            // Get the UnlockDataWrapper
+            return items.get(selectedPersona);
+
+            /*
+             * UnlockDataunlockDataWrapper = unlocks.get(selectedPersona); // Is
+             * the UnlockDataWrapper null? if (unlockDataWrapper == null) {
+             * return new ArrayList<UnlockData>(); } // Switch over the position
+             * switch (p) { case 0: return unlockDataWrapper.getWeapons(); case
+             * 1: return unlockDataWrapper.getAttachments(); case 2: return
+             * unlockDataWrapper.getKitUnlocks(); case 3: return
+             * unlockDataWrapper.getVehicleUpgrades(); case 4: return
+             * unlockDataWrapper.getSkills(); default: return null; }
+             */
+
+        }
+
+    }
+
 }

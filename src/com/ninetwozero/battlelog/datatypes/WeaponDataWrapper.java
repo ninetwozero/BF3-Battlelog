@@ -14,15 +14,77 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
+import java.util.List;
+
 public class WeaponDataWrapper {
 
-    //Attributes
-    
-    public WeaponDataWrapper() {}
+    // Attributes
+    private int imageId;
+    private String name, description, specifications;
+    private WeaponStats weaponStats;
+    private List<UnlockData> unlocks;
 
-    /* TODO: 
-     * 
-     * WeaponDataWrapper needs to have a grip of... WeaponStats, List<UnlockData> (as well as imageResourceId + other things??)
-     */
-    
+    public WeaponDataWrapper(int i, String n, String d, String s, WeaponStats w, List<UnlockData> u) {
+
+        imageId = i;
+        name = n;
+        description = d;
+        specifications = s;
+        weaponStats = w;
+        unlocks = u;
+
+    }
+
+    // Getters
+    public int getImageId() {
+
+        return imageId;
+    }
+
+    public String getName() {
+
+        return name;
+    }
+
+    public String getDescription() {
+
+        return description;
+    }
+
+    public String getSpecifications() {
+
+        return specifications;
+    }
+
+    public WeaponStats getWeaponStats() {
+
+        return weaponStats;
+    }
+
+    public List<UnlockData> getUnlocks() {
+
+        return unlocks;
+    }
+
+    // Setters
+    public void setImage(int i) {
+
+        imageId = i;
+    }
+
+    public void setName(String n) {
+
+        name = n;
+    }
+
+    public void setWeaponStats(WeaponStats w) {
+
+        weaponStats = w;
+    }
+
+    public void setUnlocks(List<UnlockData> u) {
+
+        unlocks = u;
+    }
+
 }
