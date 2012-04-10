@@ -1,3 +1,5 @@
+package com.ninetwozero.battlelog.datatypes;
+
 /*
 	This file is part of BF3 Battlelog
 
@@ -11,8 +13,6 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
  */
-
-package com.ninetwozero.battlelog.datatypes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
