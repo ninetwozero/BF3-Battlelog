@@ -170,21 +170,21 @@
 	 	    android:layout_marginBottom="5dp"
 	    >
 		 	<Button
-		 	    style="@style/RegularButton"
+		 	    style="@style/FragmentButton"
 		 		android:id="@+id/button_prev"    
 		 		android:text="&lt;"
 		 		android:textStyle="bold"
 		 		android:layout_alignParentLeft="true"
 		 	/>
 		 	<Button
-		 	    style="@style/RegularButton"
+		 	    style="@style/FragmentButton"
 		 		android:id="@+id/button_next"    
 		 		android:text="&gt;"
 		 		android:textStyle="bold"
 		 		android:layout_alignParentRight="true"
 		 	/>
 		 	<Button
-		 	    style="@style/RegularButton"
+		 	    style="@style/FragmentButton"
 		 		android:id="@+id/button_refresh"    
 		 		android:text="Refresh"
 		 		android:layout_toLeftOf="@id/button_next"
