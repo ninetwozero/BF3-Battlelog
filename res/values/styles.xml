@@ -55,7 +55,11 @@
 		<item name="android:background">@drawable/button_orange_bg</item>
 		<item name="android:paddingTop">10dp</item>
 		<item name="android:paddingBottom">10dp</item>
+		<item name="android:onClick">onClick</item>
     </style>  
+    <style name="FragmentButton" parent="@style/RegularButton">
+       	<item name="android:onClick"></item>
+    </style>
     <style name="MenuButton" parent="@style/RegularButton">
 	    <item name="android:layout_width">250dp</item>
 	    <item name="android:layout_height">45dp</item>
