@@ -19,15 +19,22 @@ import java.util.List;
 public class WeaponDataWrapper {
 
     // Attributes
-    private int imageId;
-    private String name, description, specifications;
+    private int imageId, numUnlocked;
+    private String name, guid, description, specifications;
     private WeaponStats weaponStats;
     private List<UnlockData> unlocks;
 
-    public WeaponDataWrapper(int i, String n, String d, String s, WeaponStats w, List<UnlockData> u) {
+    public WeaponDataWrapper(String n, String g, int nu, WeaponStats w, List<UnlockData> u) {
+        
+        this(0, n, g, nu, null, null, w, u);
+    }
+    
+    public WeaponDataWrapper(int i, String n, String g, int nu, String d, String s, WeaponStats w, List<UnlockData> u) {
 
         imageId = i;
+        numUnlocked = nu;
         name = n;
+        guid = g;
         description = d;
         specifications = s;
         weaponStats = w;
@@ -40,10 +47,25 @@ public class WeaponDataWrapper {
 
         return imageId;
     }
+    
+    public int getNumUnlocked() {
+        
+        return numUnlocked;
+    }
+    
+    public int getNumUnlocks() {
+        
+        return unlocks.size();
+    }
 
     public String getName() {
 
         return name;
+    }
+    
+    public String getGuid() {
+        
+        return guid;
     }
 
     public String getDescription() {

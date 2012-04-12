@@ -15,7 +15,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="5dp"
+    android:padding="10dp"
+	android:paddingBottom="5dp"
 >
 	<LinearLayout
 	    android:id="@+id/wrap_sstars"
@@ -24,7 +25,7 @@
 	    android:padding="5dp"
 	    android:gravity="center"
 	    android:orientation="vertical"
-	    android:background="@drawable/bg_rounded_corners_white"
+	    android:background="@drawable/bg_rounded_corners"
 	    android:layout_marginRight="5dp"
 	   	>	
 	   	<TextView
@@ -34,13 +35,14 @@
 		    android:text="555"
 	    	android:gravity="center"
 		    android:textSize="32sp"
+		    android:textColor="#FFFFFF"
 		/>
 
 	   	<ImageView
 	   	    android:id="@+id/image_sstars"
 	   	    android:layout_width="20dp"
 	   	    android:layout_height="20dp"
-	   	    android:src="@android:drawable/star_on" />
+	   	    android:src="@drawable/servicestar31" />
 
    	</LinearLayout> 
 	<ImageView 

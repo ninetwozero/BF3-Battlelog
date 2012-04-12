@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.adapters;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,17 +27,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
+import com.ninetwozero.battlelog.misc.Constants;
 
 public class WeaponListAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private List<WeaponStats> dataArray;
+    private List<WeaponDataWrapper> dataArray;
     private LayoutInflater layoutInflater;
 
     // Construct
-    public WeaponListAdapter(Context c, List<WeaponStats> u,
+    public WeaponListAdapter(Context c, List<WeaponDataWrapper> u,
             LayoutInflater l) {
 
         context = c;
@@ -53,7 +56,7 @@ public class WeaponListAdapter extends BaseAdapter {
     }
 
     @Override
-    public WeaponStats getItem(int position) {
+    public WeaponDataWrapper getItem(int position) {
 
         return dataArray.get(position);
 
@@ -70,7 +73,11 @@ public class WeaponListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the current item
-        WeaponStats data = getItem(position);
+        WeaponDataWrapper base = getItem(position);
+        WeaponStats data = base.getWeaponStats();
+        
+        //Calculate teh unlock progress
+        double unlockProgress = base.getNumUnlocks() == 0 ? 1 : base.getNumUnlocked()/((double) base.getNumUnlocks());
 
         // Recycle
         if (convertView == null) {
@@ -83,12 +90,25 @@ public class WeaponListAdapter extends BaseAdapter {
         // Populate fields
         ((TextView) convertView.findViewById(R.id.text_title)).setText(data.getName());
         ((TextView) convertView.findViewById(R.id.text_sstars)).setText(data.getServiceStars() + "");
-        ((TextView) convertView.findViewById(R.id.text_progress)).setText(data.getServiceStarProgress() + "%");
         
-        // Setup the ProgressBar
+        // Setup the progress
         ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progress_unlocks);
-        progressBar.setMax(100);
-        progressBar.setProgress((int)data.getServiceStarProgress()*100);
+        TextView textProgress = (TextView) convertView.findViewById(R.id.text_progress);
+        if( unlockProgress >= 1.0 ) {
+
+            progressBar.setVisibility(View.GONE);
+            textProgress.setVisibility( View.GONE );
+            
+        } else {
+        
+            progressBar.setMax(1000);
+            progressBar.setProgress(((int)(unlockProgress * 1000)));
+            progressBar.setVisibility(View.VISIBLE);
+            
+            textProgress.setText( (Math.round(unlockProgress * 1000)/10.0) + "%");
+            textProgress.setVisibility( View.VISIBLE);
+            
+        }
         
         //Last but not least - the almighty image
         ((ImageView) convertView.findViewById(R.id.image_item)).setImageResource( R.drawable.assignment_01_u );
@@ -98,7 +118,7 @@ public class WeaponListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setDataArray(List<WeaponStats> data) {
+    public void setDataArray(List<WeaponDataWrapper> data) {
 
         // Let's do this
         dataArray = data;

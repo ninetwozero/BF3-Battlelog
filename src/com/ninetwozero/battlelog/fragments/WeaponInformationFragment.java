@@ -22,6 +22,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +38,7 @@ import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class WeaponInformationFragment extends Fragment implements DefaultFragment {
@@ -93,6 +95,11 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     public void onResume() {
 
         super.onResume();
+        if( profileData != null ) {
+            
+            reload();
+        
+        }
 
     }
 
@@ -111,6 +118,11 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         
         profileData = p;
         
+    }
+    
+    public void setWeaponStats(WeaponStats w) {
+        
+        weaponStats = w;
     }
     
     @Override
@@ -136,7 +148,7 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         protected Boolean doInBackground(Void... arg) {
             
             try {
-
+                
                 weaponDataWrapper = WebsiteHandler.getWeapon(profileData, weaponStats);
                 return true;   
 
@@ -153,7 +165,7 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
             if( context != null ) {
                 
                 if( result ) {
-                    
+                    Log.d(Constants.DEBUG_TAG, "selectedPersona => " + selectedPersona);
                     show(weaponDataWrapper.get(selectedPersona));
                     
                 } else {

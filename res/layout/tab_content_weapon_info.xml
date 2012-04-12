@@ -47,18 +47,18 @@
 	    />
 		<TextView 
 		   	style="@style/InfoHeading"
-		    android:id="@+id/text_specs"
+		    android:id="@+id/string_specs"
 		    android:text="Specifications"
 	    	android:padding="5dp"
 	    	android:layout_below="@id/text_desc"
 	    />
 		<TextView 
-		   	android:id="@+id/text_specs_content"
+		   	android:id="@+id/text_specs"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:text="Ammo: 4000 mm AP"
 	    	android:padding="5dp"
-	    	android:layout_below="@id/text_specs"
+	    	android:layout_below="@id/string_specs"
 	    />
 	</RelativeLayout>
 </ScrollView>

@@ -24,6 +24,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -369,19 +370,18 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 // Let's try something
                 if (profileData.getNumPersonas() == 0) {
 
-                    profileData = WebsiteHandler.getPersonaIdFromProfile(profileData.getId());
+                    profileData = WebsiteHandler.getPersonaIdFromProfile(profileData);
 
                 }
-
+                
                 // Let's get the personas!
-                profileInformation = WebsiteHandler
-                        .getProfileInformationForUser(
+                profileInformation = WebsiteHandler.getProfileInformationForUser(
 
-                                context,
-                                profileData,
-                                activeProfileId
+                        context,
+                        profileData,
+                        activeProfileId
 
-                        );
+                );
 
                 // ...and then send it to the stats
                 sendToStats(profileData);

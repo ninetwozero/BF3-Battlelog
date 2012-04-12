@@ -16,6 +16,9 @@ package com.ninetwozero.battlelog.datatypes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import com.ninetwozero.battlelog.misc.Constants;
 
 public class ProfileData implements Parcelable {
 
@@ -29,6 +32,7 @@ public class ProfileData implements Parcelable {
     // Constructs
     public ProfileData(Parcel in) {
 
+        //Init from the parcel
         id = in.readLong();
         username = in.readString();
         gravatarHash = in.readString();
@@ -36,6 +40,7 @@ public class ProfileData implements Parcelable {
         isPlaying = (in.readInt() == 1);
         persona = in.createTypedArray(PersonaData.CREATOR);
         isFriend = (in.readInt() == 1);
+    
     }
 
     public ProfileData(String un) {

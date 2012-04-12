@@ -22,6 +22,7 @@ import java.util.Vector;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -31,11 +32,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
 import com.ninetwozero.battlelog.fragments.WeaponListFragment;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -50,7 +53,7 @@ public class WeaponListActivity extends FragmentActivity implements DefaultFragm
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
     private ProfileData profileData;
-    private Map<Long, List<WeaponStats>> items;
+    private Map<Long, List<WeaponDataWrapper>> items;
     private long selectedPersona;
     private int selectedPosition;
 
@@ -242,12 +245,12 @@ public class WeaponListActivity extends FragmentActivity implements DefaultFragm
 
     }
 
-    public List<WeaponStats> getItemsForFragment(int p) {
+    public List<WeaponDataWrapper> getItemsForFragment(int p) {
 
         // Let's see if we got anything
         if (items == null || items.get(selectedPersona) == null) {
 
-            return new ArrayList<WeaponStats>();
+            return new ArrayList<WeaponDataWrapper>();
 
         } else {
 
@@ -266,6 +269,13 @@ public class WeaponListActivity extends FragmentActivity implements DefaultFragm
              */
 
         }
+
+    }
+
+    public void open(WeaponStats w) {
+        Log.d(Constants.DEBUG_TAG, "w => " + w);
+        startActivity(new Intent(this, SingleWeaponActivity.class).putExtra("profile", profileData)
+                .putExtra("weapon", w));
 
     }
 

@@ -349,16 +349,16 @@ public final class Constants {
     public static final String SP_BL_PROFILE_EMAIL = "origin_email";
     public static final String SP_BL_PROFILE_PASSWORD = "origin_password";
     public static final String SP_BL_PROFILE_NAME = "battlelog_username";
-    public static final String SP_BL_PERSONA_NAME = "battlelog_persona";
     public static final String SP_BL_PROFILE_ID = "battlelog_profile_id";
-    public static final String SP_BL_PERSONA_ID = "battlelog_persona_id";
-    public static final String SP_BL_PLATFORM_ID = "battlelog_platform_id";
-    public static final String SP_BL_PERSONA_CURRENT_ID = "battlelog_persona_current_id";
-    public static final String SP_BL_PERSONA_CURRENT_POS = "battlelog_persona_current_pos";
-    public static final String SP_BL_PERSONA_LOGO = "battlelog_persona_logo";
     public static final String SP_BL_PROFILE_CHECKSUM = "battlelog_post_checksum";
     public static final String SP_BL_PROFILE_GRAVATAR = "battlelog_gravatar_hash";
     public static final String SP_BL_PROFILE_REMEMBER = "remember_password";
+    public static final String SP_BL_PERSONA_NAME = "battlelog_persona";
+    public static final String SP_BL_PERSONA_ID = "battlelog_persona_id";
+    public static final String SP_BL_PERSONA_CURRENT_ID = "battlelog_persona_current_id";
+    public static final String SP_BL_PERSONA_CURRENT_POS = "battlelog_persona_current_pos";
+    public static final String SP_BL_PERSONA_LOGO = "battlelog_persona_logo";
+    public static final String SP_BL_PLATFORM_ID = "battlelog_platform_id";
     public static final String SP_BL_INTERVAL_SERVICE = "battlelog_service_interval";
     public static final String SP_BL_INTERVAL_CHAT = "battlelog_chat_interval";
     public static final String SP_BL_NUM_FEED = "battlelog_feed_count";
@@ -376,7 +376,8 @@ public final class Constants {
     public static final String SP_BL_PLATOON_PLATFORM_ID = "battlelog_platoon_platform_id";
     public static final String SP_BL_PLATOON_CURRENT_ID = "battlelog_platoon_current_id";
     public static final String SP_BL_PLATOON_CURRENT_POS = "battlelog_platoon_current_pos";
-
+    public static final String SP_BL_UNLOCKS_LIMIT_MIN = "battlelog_unlocks_progress_min";
+    
     // Cookie-related
     public static final String COOKIE_DOMAIN = "battlelog.battlefield.com";
 

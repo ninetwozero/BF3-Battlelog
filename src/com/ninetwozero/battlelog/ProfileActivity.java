@@ -139,7 +139,6 @@ public class ProfileActivity extends FragmentActivity implements DefaultFragment
                     FeedFragment.class.getName()));
 
             // Add the profileData
-            Log.d(Constants.DEBUG_TAG, "profileData (activity-level) => " + profileData);
             fragmentOverview.setProfileData(profileData);
             fragmentStats.setProfileData(profileData);
 

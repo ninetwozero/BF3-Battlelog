@@ -28,6 +28,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
@@ -68,7 +69,7 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
 
         // onCreate - save the instance state
         super.onCreate(icicle);
-
+        
         // Set sharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -93,14 +94,13 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
         
         if( getIntent().hasExtra("weapon") ) {
             
-            weaponStats = getIntent().getParcelableExtra("weaponStats");
-        
+            weaponStats = getIntent().getParcelableExtra("weapon");
+            
         } else {
          
             return;
             
         }
-        
 
         // Setup the trinity
         PublicUtils.setupLocale(this, sharedPreferences);
@@ -109,11 +109,11 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
         // Set the content view
         setContentView(R.layout.viewpager_default);
 
-        // Let's setup the fragments too
-        setupFragments();
-
         // Last but not least - init
         initActivity();
+        
+        // Let's setup the fragments too
+        setupFragments();
 
     }
 
@@ -126,7 +126,7 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
         
         } else {
             
-            selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
+            selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, profileData.getPersona(0).getId());
             
         }
 
@@ -142,9 +142,6 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
 
         // Setup the session
         PublicUtils.setupSession(this, sharedPreferences);
-
-        // Reload
-        reload();
 
     }
 
@@ -174,6 +171,8 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
             listFragments.add(fragmentUnlocks = (UnlockFragment) Fragment.instantiate(this, UnlockFragment.class.getName()));
 
             //Let's set the selectedPersona
+            fragmentWeaponInfo.setProfileData(profileData);
+            fragmentWeaponInfo.setWeaponStats(weaponStats);
             fragmentWeaponInfo.setSelectedPersona(selectedPersona);
             
             // Get the ViewPager

@@ -130,8 +130,8 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
         textHS.setText(w.getHeadshots() + "");
         textSF.setText(w.getShotsFired() + "");
         textSH.setText(w.getShotsHit() + "");
-        textAccuracy.setText(w.getAccuracy() + "");
-        textTE.setText(PublicUtils.getRelativeDate(context,w.getTimeEquipped()));
+        textAccuracy.setText( (Math.round(w.getAccuracy()*1000)/10.0) + "%");
+        textTE.setText(PublicUtils.timeToLiteral(w.getTimeEquipped()));
         textSS.setText(w.getServiceStars() + "");
         textSSP.setText(w.getServiceStarProgress() + "");
         
