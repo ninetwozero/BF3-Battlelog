@@ -14,29 +14,19 @@
 
 package com.ninetwozero.battlelog.fragments;
 
-import java.util.HashMap;
-
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.CompareActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.UnlockActivity;
@@ -44,10 +34,13 @@ import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.dialog.ProfilePersonaListDialog;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
+
+import java.util.HashMap;
 
 public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
@@ -63,8 +56,6 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
     // Misc
     private ProfileData profileData;
     private HashMap<Long, PersonaStats> personaStats;
-    private long[] personaId;
-    private String[] personaName;
     private long selectedPersona;
     private int selectedPosition;
     private boolean comparing;
@@ -112,14 +103,9 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
                     @Override
                     public void onClick(View sv) {
-
-                        generateDialogPersonaList().show();
-
+                        new ProfilePersonaListDialog(context, profileData).show();
                     }
-
-                }
-
-                );
+                });
     }
 
     public void showPersona(PersonaStats pd, boolean toggle) {
@@ -221,69 +207,6 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                     toggle);
 
         }
-
-    }
-
-    public Dialog generateDialogPersonaList() {
-
-        // Attributes
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        // Set the title and the view
-        builder.setTitle(R.string.info_dialog_soldierselect);
-
-        // Do we have items to show?
-        if (personaId == null) {
-
-            // Init
-            personaId = new long[profileData.getNumPersonas()];
-            personaName = new String[profileData.getNumPersonas()];
-
-            // Iterate
-            for (int count = 0, max = personaId.length; count < max; count++) {
-
-                personaId[count] = profileData.getPersona(count).getId();
-                personaName[count] = profileData.getPersona(count).getName();
-
-            }
-
-        }
-
-        // Set it up
-        builder.setSingleChoiceItems(
-
-                personaName, -1, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int item) {
-
-                        if (personaId[item] != selectedPersona) {
-
-                            // Update it
-                            selectedPersona = personaId[item];
-
-                            // Store selectedPersonaPos
-                            selectedPosition = item;
-
-                            // Save it
-                            if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
-                                SharedPreferences.Editor spEdit = sharedPreferences.edit();
-                                spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
-                                spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);
-                                spEdit.commit();
-                            }
-
-                        }
-
-                        dialog.dismiss();
-
-                    }
-
-                }
-
-                );
-
-        // CREATE
-        return builder.create();
 
     }
 
