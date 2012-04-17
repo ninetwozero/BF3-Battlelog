@@ -241,7 +241,7 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
                             "FRIENDS", "NOTIFICATIONS"
                     },
                     listFragmentsCom,
-                    viewPager,
+                    viewPagerCom,
                     layoutInflater
                     );
             viewPagerCom.setAdapter(pagerAdapterCom);
