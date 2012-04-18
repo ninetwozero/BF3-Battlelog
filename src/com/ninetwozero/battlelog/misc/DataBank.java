@@ -33,7 +33,7 @@ import com.ninetwozero.battlelog.datatypes.WeaponType;
 public class DataBank {
 
     // Construct = none
-    public DataBank() {
+    private DataBank() {
     }
 
     // Maps

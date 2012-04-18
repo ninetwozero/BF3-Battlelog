@@ -6075,7 +6075,7 @@ public class WebsiteHandler {
                         // Get the current item
                         JSONObject unlockObject = unlockObjectArray.getJSONObject(count);
                         JSONObject unlockObjectBy = unlockObject.getJSONObject("unlockedBy");
-
+                        
                         // Populate the array
                         unlockArray.add(
 
@@ -6088,14 +6088,17 @@ public class WebsiteHandler {
                                         weaponStats.getName(),
                                         unlockObject.getString("unlockId"),
                                         unlockObjectBy.getString("codeNeeded"),
-                                        unlockObjectBy.getString("unlockType")
+                                        UnlockData.CATEGORY_ATTACHMENT
 
                                 )
 
                                 );
 
                     }
-
+                    
+                    //Sort the unlocks
+                    Collections.sort(unlockArray, new UnlockComparator());
+                    
                     // Add the data array to the WeaponDataWrapper
                     /*
                      * TODO: Resolve image resources from name/guid and return

@@ -39,6 +39,7 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.DrawableResourceList;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class WeaponInformationFragment extends Fragment implements DefaultFragment {
@@ -88,6 +89,9 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         textTitle = (TextView) v.findViewById(R.id.text_title);
         textDesc = (TextView) v.findViewById(R.id.text_desc);
         textSpecs = (TextView) v.findViewById(R.id.text_specs);
+        
+        //Let's see
+        selectedPersona = ( selectedPersona == 0 ) ? profileData.getPersona(0).getId() : selectedPersona;
 
     }
 
@@ -181,7 +185,11 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     
     private void show(WeaponDataWrapper w) {
         
-        imageItem.setImageResource(w.getImageId());
+        Log.d(Constants.DEBUG_TAG, "w => " + w);
+        //No need to pass null
+        if( w == null ) { return; }
+        
+        imageItem.setImageResource( DrawableResourceList.getWeapon(w.getGuid()) );
         textTitle.setText(w.getName());
         textDesc.setText(w.getDescription());
         textSpecs.setText(w.getSpecifications());

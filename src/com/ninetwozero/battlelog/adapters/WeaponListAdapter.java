@@ -17,7 +17,6 @@ package com.ninetwozero.battlelog.adapters;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ import android.widget.TextView;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
-import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.DrawableResourceList;
 
 public class WeaponListAdapter extends BaseAdapter {
 
@@ -111,7 +110,7 @@ public class WeaponListAdapter extends BaseAdapter {
         }
         
         //Last but not least - the almighty image
-        ((ImageView) convertView.findViewById(R.id.image_item)).setImageResource( R.drawable.assignment_01_u );
+        ((ImageView) convertView.findViewById(R.id.image_item)).setImageResource( DrawableResourceList.getWeapon( data.getGuid() ) );
 
         // Tag it!
         convertView.setTag(data);

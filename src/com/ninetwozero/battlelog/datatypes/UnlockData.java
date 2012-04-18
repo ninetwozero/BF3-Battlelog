@@ -19,6 +19,7 @@ import android.util.Log;
 
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
+import com.ninetwozero.battlelog.misc.DrawableResourceList;
 
 public class UnlockData {
 
@@ -108,10 +109,40 @@ public class UnlockData {
 
         } else {
 
-            return "";
+            return unlockIdentifier;
 
         }
 
+    }
+    
+    public int getImageResource() {
+        
+        if (type.equals(CATEGORY_WEAPON)) {
+
+            return DrawableResourceList.getWeapon(unlockIdentifier);
+
+        } else if (type.equals(CATEGORY_ATTACHMENT)) {
+
+            return DrawableResourceList.getAttachment(unlockIdentifier);
+
+        } else if (type.equals(CATEGORY_VEHICLE)) {
+
+            return DrawableResourceList.getVehicleUpgrade(unlockIdentifier);
+
+        } else if (type.equals(CATEGORY_KIT)) {
+
+            return DrawableResourceList.getKit(unlockIdentifier);
+
+        } else if (type.equals(CATEGORY_SKILL)) {
+
+            return DrawableResourceList.getSkill(unlockIdentifier);
+
+        } else {
+
+            return 0;
+
+        }
+        
     }
 
     public String getName() {
@@ -140,7 +171,7 @@ public class UnlockData {
 
         } else {
 
-            return "";
+            return getTitle();
 
         }
 

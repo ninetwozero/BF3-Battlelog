@@ -273,7 +273,7 @@ public class WeaponListActivity extends FragmentActivity implements DefaultFragm
     }
 
     public void open(WeaponStats w) {
-        Log.d(Constants.DEBUG_TAG, "w => " + w);
+        
         startActivity(new Intent(this, SingleWeaponActivity.class).putExtra("profile", profileData)
                 .putExtra("weapon", w));
 
