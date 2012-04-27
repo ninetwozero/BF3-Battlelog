@@ -14,6 +14,7 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import com.ninetwozero.battlelog.R;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

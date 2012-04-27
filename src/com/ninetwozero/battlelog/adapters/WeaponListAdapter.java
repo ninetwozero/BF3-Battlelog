@@ -73,7 +73,7 @@ public class WeaponListAdapter extends BaseAdapter {
 
         // Get the current item
         WeaponDataWrapper base = getItem(position);
-        WeaponStats data = base.getWeaponStats();
+        WeaponStats data = base.getStats();
         
         //Calculate teh unlock progress
         double unlockProgress = base.getNumUnlocks() == 0 ? 1 : base.getNumUnlocked()/((double) base.getNumUnlocks());
@@ -113,7 +113,7 @@ public class WeaponListAdapter extends BaseAdapter {
         ((ImageView) convertView.findViewById(R.id.image_item)).setImageResource( DrawableResourceList.getWeapon( data.getGuid() ) );
 
         // Tag it!
-        convertView.setTag(data);
+        convertView.setTag(base);
         return convertView;
     }
 

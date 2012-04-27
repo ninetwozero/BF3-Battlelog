@@ -214,7 +214,7 @@ public class WeaponListActivity extends FragmentActivity implements DefaultFragm
 
             try {
 
-                items = WebsiteHandler.getWeaponStatisticsForPersona(profileData);
+                items = WebsiteHandler.getWeapons(profileData);
                 return true;
 
             } catch (Exception ex) {
@@ -272,7 +272,7 @@ public class WeaponListActivity extends FragmentActivity implements DefaultFragm
 
     }
 
-    public void open(WeaponStats w) {
+    public void open(WeaponDataWrapper w) {
         
         startActivity(new Intent(this, SingleWeaponActivity.class).putExtra("profile", profileData)
                 .putExtra("weapon", w));

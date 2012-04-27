@@ -106,7 +106,7 @@ public class WeaponListFragment extends ListFragment implements DefaultFragment 
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
 
-        ((WeaponListActivity)context).open((WeaponStats) v.getTag());
+        ((WeaponListActivity)context).open((WeaponDataWrapper) v.getTag());
 
     }
 

@@ -70,6 +70,7 @@ import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapperComparator;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
+import com.ninetwozero.battlelog.datatypes.WeaponInfo;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 
 /* 
@@ -5890,13 +5891,7 @@ public class WebsiteHandler {
 
     }
 
-    public static Map<Long, List<WeaponDataWrapper>> getWeaponStatisticsForPersona(ProfileData p) { /*
-                                                                                                     * TODO
-                                                                                                     * :
-                                                                                                     * WORK
-                                                                                                     * IN
-                                                                                                     * PROGRESS
-                                                                                                     */
+    public static Map<Long, List<WeaponDataWrapper>> getWeapons(ProfileData p) {
 
         try {
 
@@ -5924,18 +5919,24 @@ public class WebsiteHandler {
 
                     // Woo, we got results
                     JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
+                    JSONObject weaponInfoObject = baseObject.getJSONObject("bf3GadgetsLocale").getJSONObject("weapons");
                     JSONArray weaponStats = baseObject.getJSONArray("mainWeaponStats");
                     JSONObject unlockMap = baseObject.getJSONObject("unlocksAdded");
-
+                    
                     // Let's iterate over the JSONArray
                     for (int count = 0, maxCount = weaponStats.length(); count < maxCount; count++) {
 
                         // Get the current item
+                        int numUnlocked = 0;
                         List<UnlockData> unlocks = new ArrayList<UnlockData>();
                         JSONObject currentItem = weaponStats.getJSONObject(count);
-                        int numUnlocked = 0;
+
+                        //Determine the GUID
                         String guid = currentItem.isNull("duplicateOf") ? "guid" : "duplicateOf";
 
+                        //Get the "current weapon information"
+                        JSONObject currentWeapon = weaponInfoObject.getJSONObject(currentItem.getString("guid"));
+                        
                         // Do we have unlocks for this item?
                         if (!unlockMap.isNull(currentItem.getString(guid))) {
 
@@ -5965,15 +5966,25 @@ public class WebsiteHandler {
                             }
 
                         }
-
+                        /* TODO: VALIDATE BURST MODES */
                         // Store it
                         weaponDataArray.add(
 
                                 new WeaponDataWrapper(
 
-                                        currentItem.getString("name"),
-                                        currentItem.getString("guid"),
                                         numUnlocked,
+                                        new WeaponInfo(
+                                            currentItem.getString("guid"),
+                                            currentItem.getString("name"),
+                                            currentItem.getString("slug"),
+                                            currentWeapon.optInt("rateOfFire", 1),
+                                            WeaponInfo.RANGE_VLONG,
+                                            "Marshmallows",
+                                            currentWeapon.getBoolean("fireModeAuto"),
+                                            currentWeapon.getBoolean("fireModeBurst"),
+                                            currentWeapon.getBoolean("fireModeSingle")
+                                                
+                                        ),
                                         new WeaponStats(
 
                                                 currentItem.getString("name"),
@@ -6022,10 +6033,10 @@ public class WebsiteHandler {
 
     }
 
-    public static HashMap<Long, WeaponDataWrapper> getWeapon(ProfileData p, WeaponStats weaponStats) {
+    public static HashMap<Long, WeaponDataWrapper> getWeapon(ProfileData p, WeaponInfo weaponInfo, WeaponStats weaponStats) {
 
         try {
-
+            
             // Init
             RequestHandler rh = new RequestHandler();
             List<UnlockData> unlockArray = new ArrayList<UnlockData>();
@@ -6100,21 +6111,13 @@ public class WebsiteHandler {
                     Collections.sort(unlockArray, new UnlockComparator());
                     
                     // Add the data array to the WeaponDataWrapper
-                    /*
-                     * TODO: Resolve image resources from name/guid and return
-                     * an array or something for use down below
-                     */
                     weaponDataArray.put(
 
                             p.getPersona(i).getId(),
                             new WeaponDataWrapper(
 
-                                    R.drawable.assignment_01_u,
-                                    weaponStats.getName(),
-                                    weaponStats.getGuid(),
                                     0,
-                                    "This is a description",
-                                    "This is a specification",
+                                    weaponInfo,
                                     weaponStats,
                                     unlockArray
 

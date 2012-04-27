@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.util.Log;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.Constants;
 
 public class SessionKeeperPackage {

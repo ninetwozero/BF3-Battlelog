@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
+import com.ninetwozero.battlelog.datatypes.WeaponInfo;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
 import com.ninetwozero.battlelog.fragments.UnlockFragment;
 import com.ninetwozero.battlelog.fragments.WeaponInformationFragment;
@@ -52,6 +53,8 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
     private ProfileData profileData;
     private long selectedPersona;
     private int selectedPosition;
+    private WeaponDataWrapper weaponDataWrapper;
+    private WeaponInfo weaponInfo;
     private WeaponStats weaponStats;
 
     // Fragment related
@@ -94,7 +97,9 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
         
         if( getIntent().hasExtra("weapon") ) {
             
-            weaponStats = getIntent().getParcelableExtra("weapon");
+            weaponDataWrapper = getIntent().getParcelableExtra("weapon");
+            weaponInfo = weaponDataWrapper.getData();
+            weaponStats = weaponDataWrapper.getStats();
             
         } else {
          
@@ -172,6 +177,7 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
 
             //Let's set the selectedPersona
             fragmentWeaponInfo.setProfileData(profileData);
+            fragmentWeaponInfo.setWeaponInfo(weaponInfo);
             fragmentWeaponInfo.setWeaponStats(weaponStats);
             fragmentWeaponInfo.setSelectedPersona(selectedPersona);
             
@@ -210,7 +216,7 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
 
     public void showData(WeaponDataWrapper w) {
         
-        fragmentWeaponStats.show(w.getWeaponStats());
+        fragmentWeaponStats.show(w.getStats());
         fragmentUnlocks.showUnlocks(w.getUnlocks());
         
     }

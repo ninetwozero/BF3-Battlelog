@@ -53,12 +53,109 @@
 	    	android:layout_below="@id/text_desc"
 	    />
 		<TextView 
-		   	android:id="@+id/text_specs"
+		   	android:id="@+id/string_rate_full"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:text="Ammo: 4000 mm AP"
+		    android:text="@string/info_weapon_rate_full"
 	    	android:padding="5dp"
 	    	android:layout_below="@id/string_specs"
+	    	android:layout_alignParentLeft="true"
+	    />
+		<TextView 
+		   	android:id="@+id/text_rate_full"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/general_no"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/string_specs"
+	    	android:layout_alignParentRight="true"
+	    />
+		<TextView 
+		   	android:id="@+id/string_rate_single"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/info_weapon_rate_single"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/string_rate_full"
+	    	android:layout_alignParentLeft="true"
+	    />
+		<TextView 
+		   	android:id="@+id/text_rate_single"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/general_yes"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/string_rate_full"
+	    	android:layout_alignParentRight="true"
+	    />
+		<TextView 
+		   	android:id="@+id/string_rate_burst"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/info_weapon_rate_burst"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/text_rate_single"
+	    	android:layout_alignParentLeft="true"
+	    />
+		<TextView 
+		   	android:id="@+id/text_rate_burst"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/general_yes"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/text_rate_single"
+	    	android:layout_alignParentRight="true"
+	    /><TextView 
+		   	android:id="@+id/string_rate_num"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/info_weapon_rate_num"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/text_rate_burst"
+	    	android:layout_alignParentLeft="true"
+	    />
+		<TextView 
+		   	android:id="@+id/text_rate_num"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="200"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/text_rate_burst"
+	    	android:layout_alignParentRight="true"
+	    /><TextView 
+		   	android:id="@+id/string_ammo"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Ammunition"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/text_rate_num"
+	    	android:layout_alignParentLeft="true"
+	    />
+		<TextView 
+		   	android:id="@+id/text_ammo"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="20 [7.62x51mm NATO]"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/text_rate_num"
+	    	android:layout_alignParentRight="true"
+	    /><TextView 
+		   	android:id="@+id/string_range"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Range"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/text_ammo"
+	    	android:layout_alignParentLeft="true"
+	    />
+		<TextView 
+		   	android:id="@+id/text_range"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/info_weapon_range_short"
+	    	android:padding="5dp"
+	    	android:layout_below="@id/text_ammo"
+	    	android:layout_alignParentRight="true"
 	    />
 	</RelativeLayout>
 </ScrollView>

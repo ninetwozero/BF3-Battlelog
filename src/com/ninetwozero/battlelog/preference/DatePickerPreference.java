@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.DatePicker;
+import com.ninetwozero.battlelog.R;
 
 public class DatePickerPreference extends DialogPreference implements
         DatePicker.OnDateChangedListener {

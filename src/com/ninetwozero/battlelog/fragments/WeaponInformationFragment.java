@@ -22,7 +22,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,9 +36,10 @@ import com.ninetwozero.battlelog.SingleWeaponActivity;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
+import com.ninetwozero.battlelog.datatypes.WeaponInfo;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DrawableResourceList;
+import com.ninetwozero.battlelog.misc.StringResourceList;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class WeaponInformationFragment extends Fragment implements DefaultFragment {
@@ -51,10 +51,11 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
 
     // Elements
     private ImageView imageItem;
-    private TextView textTitle, textDesc, textSpecs;
+    private TextView textTitle, textDesc, textAuto, textBurst, textSingle, textAmmo, textRange, textRateOfFire;
 
     // Misc
     private ProfileData profileData;
+    private WeaponInfo weaponInfo;
     private WeaponStats weaponStats;
     private long selectedPersona;
     private SharedPreferences sharedPreferences;
@@ -88,7 +89,12 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         imageItem = (ImageView) v.findViewById(R.id.image_item);
         textTitle = (TextView) v.findViewById(R.id.text_title);
         textDesc = (TextView) v.findViewById(R.id.text_desc);
-        textSpecs = (TextView) v.findViewById(R.id.text_specs);
+        textAuto = (TextView) v.findViewById(R.id.text_rate_full);
+        textBurst = (TextView) v.findViewById(R.id.text_rate_burst);
+        textSingle = (TextView) v.findViewById(R.id.text_rate_single);
+        textAmmo = (TextView) v.findViewById(R.id.text_ammo);
+        textRange = (TextView) v.findViewById(R.id.text_range);
+        textRateOfFire = (TextView) v.findViewById(R.id.text_rate_num);
         
         //Let's see
         selectedPersona = ( selectedPersona == 0 ) ? profileData.getPersona(0).getId() : selectedPersona;
@@ -124,6 +130,12 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         
     }
     
+    public void setWeaponInfo(WeaponInfo w) {
+        
+        weaponInfo = w;
+        
+    }
+    
     public void setWeaponStats(WeaponStats w) {
         
         weaponStats = w;
@@ -153,7 +165,7 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
             
             try {
                 
-                weaponDataWrapper = WebsiteHandler.getWeapon(profileData, weaponStats);
+                weaponDataWrapper = WebsiteHandler.getWeapon(profileData, weaponInfo, weaponStats);
                 return true;   
 
             } catch( Exception ex ) {
@@ -169,7 +181,7 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
             if( context != null ) {
                 
                 if( result ) {
-                    Log.d(Constants.DEBUG_TAG, "selectedPersona => " + selectedPersona);
+                    
                     show(weaponDataWrapper.get(selectedPersona));
                     
                 } else {
@@ -185,14 +197,20 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     
     private void show(WeaponDataWrapper w) {
         
-        Log.d(Constants.DEBUG_TAG, "w => " + w);
         //No need to pass null
-        if( w == null ) { return; }
+        if( w == null || w.getData() == null) { return; }
         
-        imageItem.setImageResource( DrawableResourceList.getWeapon(w.getGuid()) );
-        textTitle.setText(w.getName());
-        textDesc.setText(w.getDescription());
-        textSpecs.setText(w.getSpecifications());
+        imageItem.setImageResource( DrawableResourceList.getWeapon(w.getData().getIdentifier()) );
+        textTitle.setText(w.getData().getName());
+        textDesc.setText( StringResourceList.getWeapon( w.getData().getIdentifier() ) );
+        
+        //Add fields for the text, and set the data
+        textAuto.setText( w.getData().isAuto() ? R.string.general_yes : R.string.general_no );
+        textBurst.setText( w.getData().isBurst() ? R.string.general_yes : R.string.general_no );
+        textSingle.setText( w.getData().isSingle() ? R.string.general_yes : R.string.general_no );
+        textAmmo.setText(w.getData().getAmmo());
+        textRange.setText(w.getData().getRangeTitle());
+        textRateOfFire.setText(w.getData().getRateOfFire() + "");
         
         //Update the previous
         ((SingleWeaponActivity) context).showData(w);

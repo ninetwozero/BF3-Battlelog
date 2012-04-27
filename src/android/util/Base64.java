@@ -16,6 +16,7 @@
 
 package android.util;
 
+import com.ninetwozero.battlelog.R;
 import java.io.UnsupportedEncodingException;
 
 /**

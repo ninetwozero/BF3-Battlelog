@@ -1,6 +1,8 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import com.ninetwozero.battlelog.R;
+
 public final class DatabaseStructure {
 
     // Declare the Table-data for each "part"

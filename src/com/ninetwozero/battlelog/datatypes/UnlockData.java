@@ -15,13 +15,14 @@
 package com.ninetwozero.battlelog.datatypes;
 
 import android.content.Context;
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.DrawableResourceList;
 
-public class UnlockData {
+public class UnlockData implements Parcelable {
 
     // Attributes
     private int kitId;
@@ -35,6 +36,19 @@ public class UnlockData {
     public final static String CATEGORY_KIT = "kitItemUnlock";
     public final static String CATEGORY_VEHICLE = "vehicleAddonUnlock";
     public final static String CATEGORY_SKILL = "soldierSpecializationUnlock";
+    
+    public UnlockData(Parcel in) {
+        
+        kitId = in.readInt();
+        unlockPercentage = in.readDouble();
+        scoreNeeded = in.readLong();
+        scoreCurrent = in.readLong();
+        parentIdentifier = in.readString();
+        unlockIdentifier = in.readString();
+        objective = in.readString();
+        type = in.readString();
+        
+    }
     
     public UnlockData(int k, double u, long scn, long scc, String pi,
             String ui, String o, String t) {
@@ -253,4 +267,36 @@ public class UnlockData {
             return "N/A";
 
     }
+    
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int arg1) {
+
+        out.writeInt(kitId);
+        out.writeDouble(unlockPercentage);
+        out.writeLong(scoreNeeded);
+        out.writeLong(scoreCurrent);
+        out.writeString(parentIdentifier);
+        out.writeString(unlockIdentifier);
+        out.writeString(objective);
+        out.writeString(type);
+
+    }
+
+    public static final Parcelable.Creator<UnlockData> CREATOR = new Parcelable.Creator<UnlockData>() {
+
+        public UnlockData createFromParcel(Parcel in) {
+            return new UnlockData(in);
+        }
+
+        public UnlockData[] newArray(int size) {
+            return new UnlockData[size];
+        }
+
+    };
 }

@@ -16,38 +16,37 @@ package com.ninetwozero.battlelog.datatypes;
 
 import java.util.List;
 
-public class WeaponDataWrapper {
+import android.os.Parcel;
+import android.os.Parcelable;
+import com.ninetwozero.battlelog.R;
+
+public class WeaponDataWrapper implements Parcelable {
 
     // Attributes
-    private int imageId, numUnlocked;
-    private String name, guid, description, specifications;
-    private WeaponStats weaponStats;
+    private int numUnlocked;
+    private WeaponInfo data;
+    private WeaponStats stats;
     private List<UnlockData> unlocks;
+  
+    public WeaponDataWrapper(int nu, WeaponInfo d, WeaponStats w, List<UnlockData> u) {
 
-    public WeaponDataWrapper(String n, String g, int nu, WeaponStats w, List<UnlockData> u) {
-        
-        this(0, n, g, nu, null, null, w, u);
-    }
-    
-    public WeaponDataWrapper(int i, String n, String g, int nu, String d, String s, WeaponStats w, List<UnlockData> u) {
-
-        imageId = i;
         numUnlocked = nu;
-        name = n;
-        guid = g;
-        description = d;
-        specifications = s;
-        weaponStats = w;
+        data = d;
+        stats = w;
         unlocks = u;
 
     }
-
-    // Getters
-    public int getImageId() {
-
-        return imageId;
-    }
     
+    public WeaponDataWrapper(Parcel in) {
+        
+        numUnlocked = in.readInt();
+        data = in.readParcelable(WeaponInfo.class.getClassLoader());
+        stats = in.readParcelable(WeaponStats.class.getClassLoader());
+        unlocks = in.createTypedArrayList(UnlockData.CREATOR);
+        
+    }
+
+    // Getters    
     public int getNumUnlocked() {
         
         return numUnlocked;
@@ -57,30 +56,15 @@ public class WeaponDataWrapper {
         
         return unlocks.size();
     }
-
-    public String getName() {
-
-        return name;
-    }
     
-    public String getGuid() {
-        
-        return guid;
+    public WeaponInfo getData() {
+
+        return data;
     }
 
-    public String getDescription() {
+    public WeaponStats getStats() {
 
-        return description;
-    }
-
-    public String getSpecifications() {
-
-        return specifications;
-    }
-
-    public WeaponStats getWeaponStats() {
-
-        return weaponStats;
+        return stats;
     }
 
     public List<UnlockData> getUnlocks() {
@@ -89,19 +73,14 @@ public class WeaponDataWrapper {
     }
 
     // Setters
-    public void setImage(int i) {
-
-        imageId = i;
+    public void setData(WeaponInfo d) {
+        
+        data = d;
+        
     }
+    public void setStats(WeaponStats w) {
 
-    public void setName(String n) {
-
-        name = n;
-    }
-
-    public void setWeaponStats(WeaponStats w) {
-
-        weaponStats = w;
+        stats = w;
     }
 
     public void setUnlocks(List<UnlockData> u) {
@@ -109,4 +88,32 @@ public class WeaponDataWrapper {
         unlocks = u;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int arg1) {
+
+        out.writeInt(numUnlocked);
+        out.writeParcelable(data, arg1);
+        out.writeParcelable(stats, arg1);
+        out.writeTypedList(unlocks);
+        
+
+    }
+
+    public static final Parcelable.Creator<WeaponDataWrapper> CREATOR = new Parcelable.Creator<WeaponDataWrapper>() {
+
+        public WeaponDataWrapper createFromParcel(Parcel in) {
+            return new WeaponDataWrapper(in);
+        }
+
+        public WeaponDataWrapper[] newArray(int size) {
+            return new WeaponDataWrapper[size];
+        }
+
+    };
+    
 }
