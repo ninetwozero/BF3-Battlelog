@@ -4522,14 +4522,10 @@ public class WebsiteHandler {
             // Let's login everybody!
             RequestHandler rh = new RequestHandler();
             int numUsers = userId.length;
-            List<PostData> postData = new ArrayList<PostData>();
-
-            // Set the first two fields
-            postData.add(new PostData(Constants.FIELD_NAMES_PLATOON_INVITE[0],
-                    platoonId + ""));
-            postData.add(new PostData(Constants.FIELD_NAMES_PLATOON_INVITE[1],
-                    checksum));
-
+            List<PostData> postData = new ArrayList<PostData>(){{
+                add(new PostData(Constants.FIELD_NAMES_PLATOON_INVITE[0],platoonId + ""));
+                add(new PostData(Constants.FIELD_NAMES_PLATOON_INVITE[1],checksum));
+            }};
             // We need to construct the array
             for (int i = 2, max = (numUsers + 2); i < max; i++) {
 
@@ -4544,7 +4540,7 @@ public class WebsiteHandler {
 
             // Get the content
             String httpContent = rh.post(Constants.URL_PLATOON_INVITE,
-                    postData, 2);
+                    postData.toArray(new PostData[postData.size()]), 2);
 
             // Did we manage?
             if (!"".equals(httpContent)) {
