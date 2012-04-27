@@ -77,7 +77,6 @@ public class RequestHandler {
         // Check defaults
         if (link.equals(""))
             throw new RequestHandlerException("No link found.");
-
         // Default
         String httpContent = "";
         try {
@@ -85,27 +84,8 @@ public class RequestHandler {
             // Init the HTTP-related attributes
             HttpGet httpGet = new HttpGet(link.replace(" ", "%20"));
 
-            // Do we need those extra headers?
-            if (extraHeaders == 1) {
-
-                httpGet.setHeader("X-Requested-With", "XMLHttpRequest");
-                httpGet.setHeader("X-AjaxNavigation", "1");
+                httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(extraHeaders - 1));
                 httpGet.setHeader("Referer", link);
-                httpGet.setHeader("Accept",
-                        "application/json, text/javascript, */*");
-                httpGet.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded; charset=UTF-8");
-
-            } else if (extraHeaders == 2) {
-
-                httpGet.setHeader("X-JSON", "1");
-                httpGet.setHeader("Referer", link);
-                httpGet.setHeader("Accept",
-                        "application/json, text/javascript, */*");
-                httpGet.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded; charset=UTF-8");
-
-            }
 
             HttpResponse httpResponse = RequestHandler.httpClient
                     .execute(httpGet);
@@ -151,15 +131,8 @@ public class RequestHandler {
 
             // Do we need those extra headers?
             if (extraHeaders) {
-
-                httpGet.setHeader("X-Requested-With", "XMLHttpRequest");
-                httpGet.setHeader("X-AjaxNavigation", "1");
+                httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(0));
                 httpGet.setHeader("Referer", link);
-                httpGet.setHeader("Accept",
-                        "application/json, text/javascript, */*");
-                httpGet.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded; charset=UTF-8");
-
             }
 
             HttpResponse httpResponse = RequestHandler.httpClient
@@ -201,15 +174,8 @@ public class RequestHandler {
 
             // Do we need those extra headers?
             if (extraHeaders) {
-
-                httpGet.setHeader("X-Requested-With", "XMLHttpRequest");
-                httpGet.setHeader("X-AjaxNavigation", "1");
+                httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(0));
                 httpGet.setHeader("Referer", link);
-                httpGet.setHeader("Accept",
-                        "application/json, text/javascript, */*");
-                httpGet.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded; charset=UTF-8");
-
             }
 
             HttpResponse httpResponse = RequestHandler.httpClient
@@ -330,7 +296,7 @@ public class RequestHandler {
         }
 
     }
-
+    //TODO make extraHeaders return position 0,1,2 instead of 1,2,3 also is there a reason for 0 value check?
     public String post(String link, PostData[] postDataArray, int extraHeaders)
             throws RequestHandlerException {
 
@@ -338,10 +304,6 @@ public class RequestHandler {
         if (link.equals(""))
             throw new RequestHandlerException("No link found.");
 
-        // DEBUG
-        // for( PostData p : postDataArray) { Log.d(Constants.debugTag,
-        // p.getField() + " => " + p.getValue()); }
-
         // Init...
         HttpPost httpPost = new HttpPost(link);
 
@@ -349,145 +311,11 @@ public class RequestHandler {
         if (extraHeaders > 0) {
 
             if (extraHeaders == 1) {
-
-                // Set headers
-                httpPost.setHeader("Host", "battlelog.battlefield.com");
-                httpPost.setHeader("X-Requested-With", "XMLHttpRequest");
-                httpPost.setHeader("X-AjaxNavigation", "1");
-                httpPost.setHeader("Accept-Encoding", "gzip, deflate");
-                httpPost.setHeader("Referer", Constants.URL_MAIN);
-                httpPost.setHeader("Accept",
-                        "application/json, text/javascript, */*");
-                httpPost.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded; charset=UTF-8");
-
+                httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders -1));
             } else if (extraHeaders == 2) {
-
-                // Set headers
-                httpPost.setHeader("Host", "battlelog.battlefield.com");
-                httpPost.setHeader("X-Requested-With", "XMLHttpRequest");
-                httpPost.setHeader("Accept-Encoding", "gzip, deflate");
-                httpPost.setHeader("Referer", Constants.URL_MAIN);
-                httpPost.setHeader("Accept",
-                        "application/json, text/javascript, */*");
-                httpPost.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded; charset=UTF-8");
-
+                httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders -1));
             } else if (extraHeaders == 3) {
-
-                httpPost.setHeader("Host", "battlelog.battlefield.com");
-                httpPost.setHeader("X-Requested-With", "XMLHttpRequest");
-                httpPost.setHeader("Accept-Encoding", "gzip, deflate");
-                httpPost.setHeader("Referer", Constants.URL_MAIN);
-                httpPost.setHeader("Accept",
-                        "application/json, text/javascript, */*");
-                httpPost.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded; charset=UTF-8");
-                httpPost.setHeader("Accept-Charset", "utf-8,ISO-8859-1;");
-
-            }
-
-        }
-
-        // More init
-        List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
-        HttpEntity httpEntity;
-        HttpResponse httpResponse;
-        String httpContent = "";
-
-        // Iterate over the fields and add the NameValuePairs
-        for (PostData data : postDataArray) {
-
-            nameValuePairs.add(new BasicNameValuePair(data.getField(), (data
-                    .isHash()) ? this.hash(data.getValue()) : data.getValue()));
-
-        }
-
-        try {
-
-            // Set the entity
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
-                    HTTP.UTF_8));
-            httpResponse = httpClient.execute(httpPost);
-            httpEntity = httpResponse.getEntity();
-
-            // Anything?
-            if (httpEntity != null) {
-
-                // Get the content!
-                httpContent = EntityUtils.toString(httpEntity);
-
-            } else {
-
-                Log.d(Constants.DEBUG_TAG, "The response was null. Weird.");
-
-            }
-
-        } catch (UnknownHostException ex) {
-
-            throw new RequestHandlerException(
-                    "Host unreachable - please restart your 3G connection and try again.");
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        }
-
-        return httpContent;
-
-    }
-
-    public String post(String link, List<PostData> postDataArray,
-            int extraHeaders) throws RequestHandlerException {
-
-        // Check so it's not empty
-        if (link.equals(""))
-            throw new RequestHandlerException("No link found.");
-
-        // Init...
-        HttpPost httpPost = new HttpPost(link);
-
-        // Do we need 'em?
-        if (extraHeaders > 0) {
-
-            if (extraHeaders == 1) {
-
-                // Set headers
-                httpPost.setHeader("Host", "battlelog.battlefield.com");
-                httpPost.setHeader("X-Requested-With", "XMLHttpRequest");
-                httpPost.setHeader("X-AjaxNavigation", "1");
-                httpPost.setHeader("Accept-Encoding", "gzip, deflate");
-                httpPost.setHeader("Referer", Constants.URL_MAIN);
-                httpPost.setHeader("Accept",
-                        "application/json, text/javascript, */*");
-                httpPost.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded; charset=UTF-8");
-
-            } else if (extraHeaders == 2) {
-
-                // Set headers
-                httpPost.setHeader("Host", "battlelog.battlefield.com");
-                httpPost.setHeader("X-Requested-With", "XMLHttpRequest");
-                httpPost.setHeader("Accept-Encoding", "gzip, deflate");
-                httpPost.setHeader("Referer", Constants.URL_MAIN);
-                httpPost.setHeader("Accept",
-                        "application/json, text/javascript, */*");
-                httpPost.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded; charset=UTF-8");
-
-            } else if (extraHeaders == 3) {
-
-                httpPost.setHeader("Host", "battlelog.battlefield.com");
-                httpPost.setHeader("X-Requested-With", "XMLHttpRequest");
-                httpPost.setHeader("Accept-Encoding", "gzip, deflate");
-                httpPost.setHeader("Referer", Constants.URL_MAIN);
-                httpPost.setHeader("Accept",
-                        "application/json, text/javascript, */*");
-                httpPost.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded; charset=UTF-8");
-                httpPost.setHeader("Accept-Charset", "utf-8,ISO-8859-1;");
-
+                httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders -1));
             }
 
         }
