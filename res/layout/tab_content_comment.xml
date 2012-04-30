@@ -19,22 +19,14 @@
     android:orientation="vertical" 
 	android:paddingTop="5dp"
 	android:paddingLeft="10dp"
+	android:paddingBottom="10dp"
 	android:paddingRight="10dp"
 >		
-	
-	<TextView 
-	    style="@style/InfoHeading"
-	    android:id="@+id/text_title"
-	    android:text="NINETWOZERO"
-		android:padding="5dp"
-	/>
 	<RelativeLayout
 	    android:id="@+id/wrap_input"
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:paddingBottom="10dp"
-	    android:layout_below="@id/text_title"
-	    android:visibility="gone"
 	>  
 		<Button
 		    style="@style/RegularButton"
@@ -48,7 +40,7 @@
 		  	android:id="@+id/field_message"
 		  	android:layout_width="fill_parent"
 		  	android:layout_height="wrap_content"
-		  	android:hint="@string/info_xml_hint_feed"
+		  	android:hint="@string/info_comments_hint_input"
 		  	android:layout_toLeftOf="@id/button_send"
 		    android:layout_marginRight="6dp"
 		    android:layout_centerVertical="true"
@@ -56,11 +48,47 @@
 		    android:maxLength="1000"
 		 />
 	</RelativeLayout>
+	<RelativeLayout
+	    android:id="@+id/wrap_buttons"    
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+		android:paddingTop="10dp"
+	>
+		<Button
+		    style="@style/RegularButton"
+		    android:id="@+id/button_prev"
+		    android:layout_width="wrap_content"
+		    android:text="&lt;"
+		    android:layout_alignParentLeft="true"
+			android:enabled="false"
+		/>
+		<Button
+		    style="@style/RegularButton"
+		    android:id="@+id/button_next"
+		    android:layout_width="wrap_content"
+		    android:text="&gt;"
+		    android:layout_alignParentRight="true"
+			android:enabled="false"
+		/>
+		<Button
+		    style="@style/RegularButton"
+		    android:id="@+id/button_jump"
+		    android:layout_width="250dp"
+		    android:text="@string/info_xml_feed_button_jump"
+		    android:layout_toRightOf="@id/button_prev"
+		    android:layout_toLeftOf="@id/button_next"
+		    android:layout_marginLeft="10dp"
+		    android:layout_marginRight="10dp"
+			android:enabled="false"
+		/>
+	</RelativeLayout>
    	<ListView
 	    android:id="@android:id/list"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 		android:layout_below="@id/wrap_input"
+		android:layout_above="@id/wrap_buttons"
 		android:paddingBottom="5dp"
 		android:fastScrollEnabled="true"
 	/>
@@ -68,7 +96,7 @@
 	    android:id="@android:id/empty"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-		    android:text="@string/info_xml_no_feed"	
+		    android:text="@string/info_comments_empty"	
 		    android:layout_centerInParent="true"
 		/>
 </RelativeLayout>

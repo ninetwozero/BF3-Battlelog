@@ -162,6 +162,9 @@ public final class Constants {
 
     // News
     public static final String URL_NEWS = URL_MAIN + "news/{COUNT}/";
+    public static final String URL_NEWS_COMMENTS = URL_MAIN + "news/view/{ARTICLE_ID}/{PAGE}/";
+    public static final String URL_NEWS_COMMENTS_NEW = URL_MAIN
+            + "comment/postcomment/{ARTICLE_ID}/devblog-comment/";
 
     // Fields needed for the posts fields
     public static final String[] FIELD_NAMES_LOGIN = new String[] {
@@ -227,6 +230,10 @@ public final class Constants {
 
     public static final String[] FIELD_NAMES_FORUM_REPORT = new String[] {
             "reason", "post-check-sum"
+    };
+    
+    public static final String[] FIELD_NAMES_COMMENTS_NEW = new String[] {
+        "comment", "post-check-sum"
     };
 
     public static final String[] FIELD_NAMES_CHECKSUM = new String[] {
@@ -377,7 +384,7 @@ public final class Constants {
     public static final String SP_BL_PLATOON_CURRENT_ID = "battlelog_platoon_current_id";
     public static final String SP_BL_PLATOON_CURRENT_POS = "battlelog_platoon_current_pos";
     public static final String SP_BL_UNLOCKS_LIMIT_MIN = "battlelog_unlocks_progress_min";
-    
+
     // Cookie-related
     public static final String COOKIE_DOMAIN = "battlelog.battlefield.com";
 

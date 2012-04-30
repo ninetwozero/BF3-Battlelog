@@ -57,6 +57,15 @@ public class ProfileData implements Parcelable {
         username = un;
 
     }
+    
+
+    public ProfileData(long u, String un, String im) {
+
+        id = u;
+        username = un;
+        gravatarHash = im;
+
+    }
 
     public ProfileData(long pf, String un, PersonaData p, String im) {
 

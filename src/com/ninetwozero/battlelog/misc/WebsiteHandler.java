@@ -69,8 +69,8 @@ import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapperComparator;
-import com.ninetwozero.battlelog.datatypes.WeaponStats;
 import com.ninetwozero.battlelog.datatypes.WeaponInfo;
+import com.ninetwozero.battlelog.datatypes.WeaponStats;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 
 /* 
@@ -4522,10 +4522,12 @@ public class WebsiteHandler {
             // Let's login everybody!
             RequestHandler rh = new RequestHandler();
             int numUsers = userId.length;
-            List<PostData> postData = new ArrayList<PostData>(){{
-                add(new PostData(Constants.FIELD_NAMES_PLATOON_INVITE[0],platoonId + ""));
-                add(new PostData(Constants.FIELD_NAMES_PLATOON_INVITE[1],checksum));
-            }};
+            List<PostData> postData = new ArrayList<PostData>() {
+                {
+                    add(new PostData(Constants.FIELD_NAMES_PLATOON_INVITE[0], platoonId + ""));
+                    add(new PostData(Constants.FIELD_NAMES_PLATOON_INVITE[1], checksum));
+                }
+            };
             // We need to construct the array
             for (int i = 2, max = (numUsers + 2); i < max; i++) {
 
@@ -5906,7 +5908,7 @@ public class WebsiteHandler {
                         Constants.URL_STATS_WEAPONS.replace("{PID}", p.getPersona(i).getId() + "")
                                 .replace(
                                         "{PLATFORM_ID}", p.getPersona(i).getPlatformId() + ""),
-                        0
+                        1
 
                         );
 
@@ -5915,10 +5917,11 @@ public class WebsiteHandler {
 
                     // Woo, we got results
                     JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
-                    JSONObject weaponInfoObject = baseObject.getJSONObject("bf3GadgetsLocale").getJSONObject("weapons");
+                    JSONObject weaponInfoObject = baseObject.getJSONObject("bf3GadgetsLocale")
+                            .getJSONObject("weapons");
                     JSONArray weaponStats = baseObject.getJSONArray("mainWeaponStats");
                     JSONObject unlockMap = baseObject.getJSONObject("unlocksAdded");
-                    
+
                     // Let's iterate over the JSONArray
                     for (int count = 0, maxCount = weaponStats.length(); count < maxCount; count++) {
 
@@ -5927,12 +5930,13 @@ public class WebsiteHandler {
                         List<UnlockData> unlocks = new ArrayList<UnlockData>();
                         JSONObject currentItem = weaponStats.getJSONObject(count);
 
-                        //Determine the GUID
+                        // Determine the GUID
                         String guid = currentItem.isNull("duplicateOf") ? "guid" : "duplicateOf";
 
-                        //Get the "current weapon information"
-                        JSONObject currentWeapon = weaponInfoObject.getJSONObject(currentItem.getString("guid"));
-                        
+                        // Get the "current weapon information"
+                        JSONObject currentWeapon = weaponInfoObject.getJSONObject(currentItem
+                                .getString("guid"));
+
                         // Do we have unlocks for this item?
                         if (!unlockMap.isNull(currentItem.getString(guid))) {
 
@@ -5970,16 +5974,16 @@ public class WebsiteHandler {
 
                                         numUnlocked,
                                         new WeaponInfo(
-                                            currentItem.getString("guid"),
-                                            currentItem.getString("name"),
-                                            currentItem.getString("slug"),
-                                            currentWeapon.optInt("rateOfFire", 1),
-                                            WeaponInfo.RANGE_VLONG,
-                                            "Marshmallows",
-                                            currentWeapon.getBoolean("fireModeAuto"),
-                                            currentWeapon.getBoolean("fireModeBurst"),
-                                            currentWeapon.getBoolean("fireModeSingle")
-                                                
+                                                currentItem.getString("guid"),
+                                                currentItem.getString("name"),
+                                                currentItem.getString("slug"),
+                                                currentWeapon.optInt("rateOfFire", 1),
+                                                WeaponInfo.RANGE_VLONG,
+                                                "Marshmallows",
+                                                currentWeapon.getBoolean("fireModeAuto"),
+                                                currentWeapon.getBoolean("fireModeBurst"),
+                                                currentWeapon.getBoolean("fireModeSingle")
+
                                         ),
                                         new WeaponStats(
 
@@ -6029,10 +6033,11 @@ public class WebsiteHandler {
 
     }
 
-    public static HashMap<Long, WeaponDataWrapper> getWeapon(ProfileData p, WeaponInfo weaponInfo, WeaponStats weaponStats) {
+    public static HashMap<Long, WeaponDataWrapper> getWeapon(ProfileData p, WeaponInfo weaponInfo,
+            WeaponStats weaponStats) {
 
         try {
-            
+
             // Init
             RequestHandler rh = new RequestHandler();
             List<UnlockData> unlockArray = new ArrayList<UnlockData>();
@@ -6060,7 +6065,7 @@ public class WebsiteHandler {
 
                                         "{PLATFORM_ID}", p.getPersona(i).getPlatformId() + ""
 
-                                ), 0
+                                ), 1
 
                         );
 
@@ -6082,7 +6087,7 @@ public class WebsiteHandler {
                         // Get the current item
                         JSONObject unlockObject = unlockObjectArray.getJSONObject(count);
                         JSONObject unlockObjectBy = unlockObject.getJSONObject("unlockedBy");
-                        
+
                         // Populate the array
                         unlockArray.add(
 
@@ -6102,10 +6107,10 @@ public class WebsiteHandler {
                                 );
 
                     }
-                    
-                    //Sort the unlocks
+
+                    // Sort the unlocks
                     Collections.sort(unlockArray, new UnlockComparator());
-                    
+
                     // Add the data array to the WeaponDataWrapper
                     weaponDataArray.put(
 
@@ -6207,6 +6212,66 @@ public class WebsiteHandler {
             }
 
             return news;
+
+        } catch (RequestHandlerException ex) {
+
+            throw new WebsiteHandlerException(ex.getMessage());
+
+        } catch (Exception ex) {
+
+            throw new WebsiteHandlerException(ex.getMessage());
+        }
+
+    }
+
+    public static List<CommentData> getCommentsForNews(NewsData n, int pageId) throws WebsiteHandlerException {
+
+        try {
+
+            // Init!
+            RequestHandler rh = new RequestHandler();
+            List<CommentData> comments = new ArrayList<CommentData>();
+
+            // Get the data
+            String httpContent = rh.get(Constants.URL_NEWS_COMMENTS.replace("{ARTICLE_ID}", n.getId() + "").replace("{PAGE}", pageId + ""), 1);
+
+            // Did we get something?
+            if (httpContent != null && !httpContent.equals("")) {
+
+                // JSON!
+                JSONArray commentArray = new JSONObject(httpContent).getJSONObject("context")
+                        .getJSONObject("blogPost").getJSONArray("comments");
+
+                // Iterate
+                for (int count = 0, maxCount = commentArray.length(); count < maxCount; count++) {
+
+                    // Get the current item
+                    JSONObject item = commentArray.getJSONObject(count);
+                    JSONObject user = item.getJSONObject("user");
+
+                    // Handle the data
+                    comments.add(
+
+                            new CommentData(
+
+                                    Long.parseLong(item.getString("id")),
+                                    Long.parseLong(item.getString("itemId")),
+                                    item.getLong("creationDate"),
+                                    item.getString("body"),
+                                    new ProfileData(
+                                            Long.parseLong(user.getString("userId")),
+                                            user.getString("username"),
+                                            user.getString("gravatarMd5")
+                                    )
+                            )
+
+                    );
+
+                }
+                
+            }
+
+            return comments;
 
         } catch (RequestHandlerException ex) {
 

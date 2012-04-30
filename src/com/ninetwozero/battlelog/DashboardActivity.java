@@ -56,7 +56,7 @@ import com.ninetwozero.battlelog.fragments.FeedFragment;
 import com.ninetwozero.battlelog.fragments.MenuForumFragment;
 import com.ninetwozero.battlelog.fragments.MenuPlatoonFragment;
 import com.ninetwozero.battlelog.fragments.MenuProfileFragment;
-import com.ninetwozero.battlelog.fragments.NewsFragment;
+import com.ninetwozero.battlelog.fragments.NewsListFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -81,7 +81,7 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
     private SwipeyTabsPagerAdapter pagerAdapter, pagerAdapterCom;
     private List<Fragment> listFragments, listFragmentsCom;
     private FragmentManager fragmentManager;
-    private NewsFragment fragmentNews;
+    private NewsListFragment fragmentNews;
     private MenuProfileFragment fragmentMenuProfile;
     private MenuPlatoonFragment fragmentMenuPlatoon;
     private MenuForumFragment fragmentMenuForum;
@@ -171,8 +171,8 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
             // Add them to the list
             listFragments = new Vector<Fragment>();
-            listFragments.add(fragmentNews = (NewsFragment) Fragment.instantiate(this,
-                    NewsFragment.class.getName()));
+            listFragments.add(fragmentNews = (NewsListFragment) Fragment.instantiate(this,
+                    NewsListFragment.class.getName()));
             // listFragments.add(fragmentMenu = (MenuFragment)
             // Fragment.instantiate(this, MenuFragment.class.getName()));
             listFragments.add(fragmentMenuProfile = (MenuProfileFragment) Fragment.instantiate(

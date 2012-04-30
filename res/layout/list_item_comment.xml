@@ -24,13 +24,13 @@
 		android:layout_alignParentLeft="true"
 		android:src="@drawable/default_avatar"
 		android:onClick="onClick"
+		android:layout_marginRight="5dp"
 	/>
 	<RelativeLayout
 	    android:id="@+id/wrap_top"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/image_avatar"
-		android:layout_marginLeft="5dp"
 		android:layout_marginBottom="5dp"
 	>
 	   	<TextView 

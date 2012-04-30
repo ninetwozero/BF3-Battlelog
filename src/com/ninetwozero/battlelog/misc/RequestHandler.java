@@ -84,9 +84,8 @@ public class RequestHandler {
 
             // Init the HTTP-related attributes
             HttpGet httpGet = new HttpGet(link.replace(" ", "%20"));
-
-                httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(extraHeaders - 1));
-                httpGet.setHeader("Referer", link);
+            httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(extraHeaders - 1));
+            httpGet.setHeader("Referer", link);
 
             HttpResponse httpResponse = RequestHandler.httpClient
                     .execute(httpGet);

@@ -1,187 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ninetwozero.battlelog"
-    android:versionCode="13"
-	android:versionName="2.0"
     android:installLocation="internalOnly"
-> 
-	<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="8" />
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.VIBRATE" />
-	
+    android:versionCode="13"
+    android:versionName="2.0" >
+
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="8" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:icon="@drawable/app_logo"
-        android:label="@string/app_name" 
-       	android:theme="@android:style/Theme.Light"
-   	>
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Light" >
         <activity
-            android:label="@string/app_name"
             android:name=".MainActivity"
-            android:orientation="vertical"
-          	android:configChanges="orientation"
-		>
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:orientation="vertical" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-				<action android:name="com.ninetwozero.battlelog.widgets.BattlelogAppWidgetProvider.ACTION_WIDGET_OPENAPP"/>
-            	<category android:name="android.intent.category.LAUNCHER" />    
+                <action android:name="com.ninetwozero.battlelog.widgets.BattlelogAppWidgetProvider.ACTION_WIDGET_OPENAPP" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<activity
-            android:label="@string/title_about"
+        <activity
             android:name=".AboutActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_about"
             android:orientation="vertical"
-          	android:configChanges="orientation"
-          	android:windowSoftInputMode="stateHidden"
-       />
+            android:windowSoftInputMode="stateHidden" />
         <activity
-            android:label="@string/title_main_menu"
             android:name=".DashboardActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_main_menu"
             android:orientation="vertical"
-          	android:configChanges="orientation"
-          	android:windowSoftInputMode="stateHidden"
-       />
-       <activity
-            android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".DebugActivity"
-            android:orientation="vertical"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:orientation="vertical" />
         <activity
-            android:label="@string/title_profile"
             android:name=".ProfileActivity"
-          	android:configChanges="orientation"
-		/>
+            android:configChanges="orientation"
+            android:label="@string/title_profile" />
         <activity
-            android:label="@string/title_platoon"
             android:name=".PlatoonActivity"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_platoon" />
         <activity
-            android:label="@string/title_platoon_invite"
             android:name=".PlatoonInviteActivity"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_platoon_invite" />
         <activity
-            android:label="@string/title_performance"
             android:name=".StatsActivity"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_performance" />
         <activity
-            android:label="@string/title_chat"
             android:name=".ChatActivity"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_chat" />
         <activity
-            android:label="@string/title_comments"
             android:name=".SinglePostActivity"
-          	android:configChanges="orientation"
-          	android:windowSoftInputMode="stateHidden"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_comments"
+            android:windowSoftInputMode="stateHidden" />
         <activity
-            android:label="@string/title_comparing_battle_scars"
             android:name=".CompareActivity"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_comparing_battle_scars" />
         <activity
-            android:label="@string/title_forum"
             android:name=".BoardActivity"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_forum" />
         <activity
-            android:label="BF3 Battlelog - Browsing the forums"
             android:name=".ForumActivity"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="BF3 Battlelog - Browsing the forums" />
         <activity
-            android:label="@string/title_forum_search"
             android:name=".ForumSearchActivity"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_forum_search" />
         <activity
-            android:label="@string/title_forum_saved"
             android:name=".ForumSavedActivity"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_forum_saved" />
         <activity
-            android:label="@string/title_thread_view"
             android:name=".Backup_ForumThreadActivity"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_thread_view" />
         <activity
-            android:label="@string/title_forum_report"
             android:name=".ForumReportActivity"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_forum_report" />
         <activity
-            android:label="@string/title_unlocks"
             android:name=".UnlockActivity"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_unlocks" />
         <activity
-            android:label="@string/title_search"
             android:name=".SearchActivity"
-          	android:configChanges="orientation"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_search" />
         <activity
-            android:label="@string/title_settings"
             android:name=".SettingsActivity"
-          	android:configChanges="orientation"
-          	android:theme="@android:style/Theme.Light"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_settings"
+            android:theme="@android:style/Theme.Light" />
         <activity
-            android:label="@string/title_profile_settings"
             android:name=".ProfileSettingsActivity"
-          	android:configChanges="orientation"
-          	android:theme="@android:style/Theme.Light"
-        />
+            android:configChanges="orientation"
+            android:label="@string/title_profile_settings"
+            android:theme="@android:style/Theme.Light" />
         <activity
-            android:label="@string/title_assignments"
             android:name=".AssignmentActivity"
-          	android:configChanges="orientation"
-        />	
+            android:configChanges="orientation"
+            android:label="@string/title_assignments" />
         <activity
-            android:label="@string/title_platoon_new"
             android:name=".PlatoonCreateActivity"
-          	android:configChanges="orientation"
-        />	
-        
+            android:configChanges="orientation"
+            android:label="@string/title_platoon_new" />
         <activity
-            android:label="TODO"
             android:name=".WeaponListActivity"
-          	android:configChanges="orientation"
-          	android:windowSoftInputMode="stateHidden"
-        />
-        <activity
+            android:configChanges="orientation"
             android:label="TODO"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".SingleWeaponActivity"
-          	android:configChanges="orientation"
-          	android:windowSoftInputMode="stateHidden"
-        />
-        
-		<!-- 	TODO: This currently kills the app (and the phone) so it won\'t be active. 
+            android:configChanges="orientation"
+            android:label="TODO"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".SingleNewsActivity"
+            android:configChanges="orientation"
+            android:label="TODO"
+            android:windowSoftInputMode="stateHidden" />
+
+        <!--
+    	TODO: This currently kills the app (and the phone) so it won\'t be active. 
 				ANYONE KNOWS HOW THIS WORKS???
         <receiver android:name="com.ninetwozero.battlelog.broadcastreceivers.NetworkReceiver">
 			<intent-filter>
 				<action android:name="android.net.conn.CONNECTIVITY_CHANGE"></action>
 			</intent-filter>
 		</receiver>
-		-->
-		<receiver android:name=".widgets.BattlelogAppWidgetProvider" android:label="@string/widget_name">
-			<intent-filter>
-		         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-		         <action android:name="android.appwidget.action.ACTION_WIDGET_RECEIVER" />
-			</intent-filter>
-			<meta-data
-				android:name="android.appwidget.provider"
-				android:resource="@xml/widget_settings_dogtag">  
-			</meta-data>
-		</receiver>
-		<!-- <receiver android:name=".widgets.SocialWidgetProvider" android:label="@string/widget_name_social">
+        -->
+        <receiver
+            android:name=".widgets.BattlelogAppWidgetProvider"
+            android:label="@string/widget_name" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.ACTION_WIDGET_RECEIVER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_settings_dogtag" >
+            </meta-data>
+        </receiver>
+        <!--
+        <receiver android:name=".widgets.SocialWidgetProvider" android:label="@string/widget_name_social">
 			<intent-filter>
 		         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 		         <action android:name="android.appwidget.action.ACTION_WIDGET_RECEIVER" />
@@ -191,7 +179,10 @@
 				android:resource="@xml/widget_settings_social">  
 			</meta-data>
 		</receiver>
-		-->
-		<service android:enabled="true" android:name=".services.BattlelogService" />
+        -->
+        <service
+            android:name=".services.BattlelogService"
+            android:enabled="true" />
     </application>
+
 </manifest>

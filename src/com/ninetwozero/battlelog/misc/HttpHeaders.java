@@ -3,6 +3,7 @@ package com.ninetwozero.battlelog.misc;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 
+import com.ninetwozero.battlelog.R;
 import java.util.ArrayList;
 import java.util.List;
 

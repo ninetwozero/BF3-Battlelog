@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.adapters;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -100,22 +101,36 @@ public class CommentListAdapter extends BaseAdapter {
                 currentData.getTimestamp()));
 
         // Set the gravatar
-        imageAvatar.setImageBitmap(
+        Bitmap b = BitmapFactory.decodeFile(
+    
+            PublicUtils.getCachePath(context)
+                    + currentData.getAuthor().getGravatarHash() + ".png"
+    
+        );
 
-                BitmapFactory.decodeFile(
-
-                        PublicUtils.getCachePath(context)
-                                + currentData.getAuthor().getGravatarHash() + ".png"
-
-                        )
-
-                );
+        if( b == null ) {
+            
+            imageAvatar.setImageResource(R.drawable.default_avatar);
+        
+        } else {
+         
+            imageAvatar.setImageBitmap(b);
+            
+        }
+        
         imageAvatar.setTag(currentData.getAuthor());
 
         // Store the object
         convertView.setTag(currentData);
 
         return convertView;
+    }
+
+    public void setItemArray(List<CommentData> c) {
+        
+        comments = c;
+        notifyDataSetChanged();
+        
     }
 
 }

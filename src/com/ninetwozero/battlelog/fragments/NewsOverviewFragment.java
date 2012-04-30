@@ -14,14 +14,12 @@
 
 package com.ninetwozero.battlelog.fragments;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -30,31 +28,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.NewsListAdapter;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.NewsData;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.SessionKeeper;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 
-public class NewsFragment extends ListFragment implements DefaultFragment {
+public class NewsOverviewFragment extends Fragment implements DefaultFragment {
 
     // Attributes
     private Context context;
     private LayoutInflater layoutInflater;
 
     // Elements
-    private ListView listView;
-    private NewsListAdapter newsListAdapter;
+    private TextView textTitle, textBy, textContent;
 
     // Misc
-    private List<NewsData> newsItems;
+    private NewsData newsData;
     private SharedPreferences sharedPreferences;
-    private int start;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,7 +59,7 @@ public class NewsFragment extends ListFragment implements DefaultFragment {
                 .getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_feed,
+        View view = layoutInflater.inflate(R.layout.tab_content_news_overview,
                 container, false);
 
         // Init
@@ -84,17 +76,25 @@ public class NewsFragment extends ListFragment implements DefaultFragment {
         reload();
 
     }
+    
+    public void setNewsData(NewsData n) {
+        
+        newsData = n;
+    }
 
     public void initFragment(View v) {
 
         // Get the elements
-        listView = (ListView) v.findViewById(android.R.id.list);
+        textTitle = (TextView) v.findViewById(R.id.text_title);
+        textBy = (TextView) v.findViewById(R.id.text_author);
+        textContent = (TextView) v.findViewById(R.id.text_content);
 
-        // Setup the listAdapter
-        newsListAdapter = new NewsListAdapter(context, newsItems,
-                layoutInflater);
-        listView.setAdapter(newsListAdapter);
-
+        // Set the values
+        textTitle.setText(newsData.getTitle());
+        textBy.setText(Html.fromHtml(getString(R.string.info_news_posted_by).replace("{author}",
+                newsData.getAuthor().getUsername()).replace("{date}",
+                PublicUtils.getRelativeDate(context, newsData.getDate()))));
+        textContent.setText(Html.fromHtml(newsData.getContent()));
     }
 
     @Override
@@ -105,21 +105,6 @@ public class NewsFragment extends ListFragment implements DefaultFragment {
     }
 
     public void reload() {
-
-        // Feed refresh!
-        new AsyncFeedRefresh(
-
-                context, SessionKeeper.getProfileData().getId()
-
-        ).execute();
-
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int pos, long id) {
-
-        Toast.makeText(context, "CLICK!", Toast.LENGTH_SHORT).show();
-
     }
 
     public void createContextMenu(ContextMenu menu, View view,
@@ -132,69 +117,6 @@ public class NewsFragment extends ListFragment implements DefaultFragment {
     public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {
 
         return false;
-
-    }
-
-    public class AsyncFeedRefresh extends AsyncTask<Void, Void, Boolean> {
-
-        // Attributes
-        private Context context;
-
-        public AsyncFeedRefresh(Context c, long pId) {
-
-            this.context = c;
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... arg0) {
-
-            try {
-
-                // Get...
-                newsItems = WebsiteHandler.getNewsForPage(start);
-
-                // ...validate!
-                return (newsItems != null);
-
-            } catch (WebsiteHandlerException ex) {
-
-                ex.printStackTrace();
-                return false;
-
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-
-            // Fail?
-            if (!result) {
-
-                Toast.makeText(this.context, R.string.info_news_empty,
-                        Toast.LENGTH_SHORT).show();
-                return;
-
-            }
-
-            // Update
-            newsListAdapter.setItemArray(newsItems);
-
-            // Get back here!
-            return;
-
-        }
-
-    }
-
-    public void setStart(int s) {
-
-        start = s;
 
     }
 

@@ -20,20 +20,12 @@
 	android:paddingTop="5dp"
 	android:paddingLeft="10dp"
 	android:paddingRight="10dp"
->		
-	
-	<TextView 
-	    style="@style/InfoHeading"
-	    android:id="@+id/text_title"
-	    android:text="NINETWOZERO"
-		android:padding="5dp"
-	/>
+>
 	<RelativeLayout
 	    android:id="@+id/wrap_input"
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:paddingBottom="10dp"
-	    android:layout_below="@id/text_title"
 	    android:visibility="gone"
 	>  
 		<Button
@@ -68,7 +60,7 @@
 	    android:id="@android:id/empty"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-		    android:text="@string/info_xml_no_feed"	
+		    android:text="@string/info_news_empty"	
 		    android:layout_centerInParent="true"
 		/>
 </RelativeLayout>
