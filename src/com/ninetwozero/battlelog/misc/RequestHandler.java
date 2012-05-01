@@ -84,9 +84,9 @@ public class RequestHandler {
 
             // Init the HTTP-related attributes
             HttpGet httpGet = new HttpGet(link.replace(" ", "%20"));
-            httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(extraHeaders - 1));
+            httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(extraHeaders));
             httpGet.setHeader("Referer", link);
-
+                
             HttpResponse httpResponse = RequestHandler.httpClient
                     .execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
@@ -296,7 +296,7 @@ public class RequestHandler {
         }
 
     }
-    //TODO make extraHeaders return position 0,1,2 instead of 1,2,3 also is there a reason for 0 value check?
+
     public String post(String link, PostData[] postDataArray, int extraHeaders)
             throws RequestHandlerException {
 
@@ -311,11 +311,11 @@ public class RequestHandler {
         if (extraHeaders > 0) {
 
             if (extraHeaders == 1) {
-                httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders -1));
+                httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders));
             } else if (extraHeaders == 2) {
-                httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders -1));
+                httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders));
             } else if (extraHeaders == 3) {
-                httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders -1));
+                httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders));
             }
 
         }
