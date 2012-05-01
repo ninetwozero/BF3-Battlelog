@@ -6224,7 +6224,8 @@ public class WebsiteHandler {
 
     }
 
-    public static List<CommentData> getCommentsForNews(NewsData n, int pageId) throws WebsiteHandlerException {
+    public static List<CommentData> getCommentsForNews(NewsData n, int pageId)
+            throws WebsiteHandlerException {
 
         try {
 
@@ -6233,7 +6234,9 @@ public class WebsiteHandler {
             List<CommentData> comments = new ArrayList<CommentData>();
 
             // Get the data
-            String httpContent = rh.get(Constants.URL_NEWS_COMMENTS.replace("{ARTICLE_ID}", n.getId() + "").replace("{PAGE}", pageId + ""), 1);
+            String httpContent = rh.get(
+                    Constants.URL_NEWS_COMMENTS.replace("{ARTICLE_ID}", n.getId() + "").replace(
+                            "{PAGE}", pageId + ""), 1);
 
             // Did we get something?
             if (httpContent != null && !httpContent.equals("")) {
@@ -6265,10 +6268,10 @@ public class WebsiteHandler {
                                     )
                             )
 
-                    );
+                            );
 
                 }
-                
+
             }
 
             return comments;
@@ -6319,6 +6322,55 @@ public class WebsiteHandler {
 
             ex.printStackTrace();
             return false;
+
+        }
+
+    }
+
+    public static boolean commentOnNews(String comment, NewsData n, String checksum)
+            throws WebsiteHandlerException {
+
+        try {
+
+            // Let's login everybody!
+            RequestHandler wh = new RequestHandler();
+            String httpContent = wh.post(
+
+                    Constants.URL_NEWS_COMMENTS_NEW.replace(
+
+                            "{ARTICLE_ID}", n.getId() + ""
+
+                            ), new PostData[] {
+
+                            new PostData(
+
+                                    Constants.FIELD_NAMES_COMMENTS_NEW[0], comment
+
+                            ),
+                            new PostData(
+
+                                    Constants.FIELD_NAMES_COMMENTS_NEW[1], checksum
+
+                            )
+                    }, 2
+
+                    );
+
+            // Did we manage?
+            if (!"".equals(httpContent)) {
+
+                return true;
+
+            } else {
+
+                return false;
+
+            }
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            throw new WebsiteHandlerException(ex.getMessage());
 
         }
 

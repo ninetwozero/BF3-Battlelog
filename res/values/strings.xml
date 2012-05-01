@@ -857,5 +857,7 @@
 <string name="info_comments_heading">COMMENTS</string>
 <string name="info_comments_empty">No comments found.</string>
 <string name="info_comments_hint_input">Your comment here...</string>
+<string name="info_news_comment_true">The comment has been posted!</string>
+<string name="info_news_comment_false">The comment could not be posted.</string>
 
 </resources>
