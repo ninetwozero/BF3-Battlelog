@@ -8,6 +8,8 @@ import java.util.List;
 
 public final class HttpHeaders {
 
+    private static final Header[] emptyHeader = new BasicHeader[]{};
+
     private static final Header[] ajaxGetHeader = new BasicHeader[]{
             new BasicHeader("X-Requested-With", "XMLHttpRequest"),
             new BasicHeader("X-AjaxNavigation", "1"),
@@ -50,11 +52,13 @@ public final class HttpHeaders {
     };
 
     public static final List<Header[]> GET_HEADERS = new ArrayList<Header[]>() {{
+        add(emptyHeader);
         add(ajaxGetHeader);
         add(jsonGetHeader);
     }};
 
     public static final List<Header[]> POST_HEADERS = new ArrayList<Header[]>() {{
+        add(emptyHeader);
         add(ajaxPostHeader);
         add(jsonPostHeader);
         add(jsonPostHeaderWithCharset);
