@@ -95,6 +95,7 @@ public class WeaponListAdapter extends BaseAdapter {
         TextView textProgress = (TextView) convertView.findViewById(R.id.text_progress);
         if( unlockProgress >= 1.0 ) {
 
+            ((TextView) convertView.findViewById(R.id.text_status)).setText(R.string.info_unlocks_done);
             progressBar.setVisibility(View.GONE);
             textProgress.setVisibility( View.GONE );
             
@@ -106,6 +107,8 @@ public class WeaponListAdapter extends BaseAdapter {
             
             textProgress.setText( (Math.round(unlockProgress * 1000)/10.0) + "%");
             textProgress.setVisibility( View.VISIBLE);
+
+            ((TextView) convertView.findViewById(R.id.text_status)).setText(base.getNumUnlocks() + "/" + base.getNumUnlocks());
             
         }
         

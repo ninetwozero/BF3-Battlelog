@@ -1,50 +1,60 @@
 package com.ninetwozero.battlelog.dialog;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
-public class ProfilePersonaListDialog extends AlertDialog {
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.DefaultFragment;
+import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.fragments.ProfileStatsFragment;
+
+public class ProfilePersonaListDialog extends AlertDialog.Builder {
+    
+    // Attributes
+    private Context context;
     private ProfileData profileData;
+    private DefaultFragment fragment;
     private long[] personaId;
     private String[] personaName;
 
-    public ProfilePersonaListDialog(Context context, ProfileData profileData) {
-        super(context);
-        this.profileData = profileData;
+    public ProfilePersonaListDialog(Context c, DefaultFragment f, ProfileData pd) {
+        super(c);
+        context = c;
+        fragment = f;
+        profileData = pd;
+        
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.info_dialog_soldierselect);
+    public AlertDialog create() {
+        
+        setTitle(R.string.info_dialog_soldierselect);
         personaId = personaId().clone();
         personaName = personaName().clone();
 
-        builder.setSingleChoiceItems(
+        setSingleChoiceItems(
 
                 personaName, -1, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int item) {
                 updateSharedPreference(item);
+                fragment.reload();
+                dialog.dismiss();
             }
         });
-        builder.create();
-
-        super.onCreate(savedInstanceState);
+        
+        return super.create();
     }
-
+    
     private long[] personaId(){
         long[] id = new long[profileData.getNumPersonas()];
         for(int i = 0; i < profileData.getNumPersonas(); i++){
@@ -62,7 +72,7 @@ public class ProfilePersonaListDialog extends AlertDialog {
     }
 
     private void updateSharedPreference(int item){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putLong(SP_BL_PERSONA_CURRENT_ID, personaId[item]);
         editor.putInt(SP_BL_PERSONA_CURRENT_POS, item);

@@ -859,5 +859,8 @@
 <string name="info_comments_hint_input">Your comment here...</string>
 <string name="info_news_comment_true">The comment has been posted!</string>
 <string name="info_news_comment_false">The comment could not be posted.</string>
+<string name="label_menu_weapons">My weapons</string>
+<string name="info_general_empty">Nothing to show.</string>
+<string name="info_unlocks_done">All unlocked</string>
 
 </resources>

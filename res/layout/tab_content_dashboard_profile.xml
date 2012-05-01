@@ -79,7 +79,11 @@
 			    android:id="@+id/button_self"
 			    android:text="@string/label_own_soldier"
 			/>
-	
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_weapon"
+			    android:text="@string/label_menu_weapons"
+			/>
 			<Button
 			    android:id="@+id/button_unlocks"
 			    style="@style/MenuButton"
@@ -89,11 +93,6 @@
 			    style="@style/MenuButton"
 			    android:id="@+id/button_assignments"
 			    android:text="@string/label_assignments"
-			/>
-			<Button
-			    style="@style/MenuButton"
-			    android:id="@+id/button_search"
-			    android:text="@string/label_search"
 			/>
 			<Button
 			    style="@style/MenuButton"

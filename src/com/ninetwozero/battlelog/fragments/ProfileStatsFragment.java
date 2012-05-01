@@ -14,19 +14,32 @@
 
 package com.ninetwozero.battlelog.fragments;
 
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
+
+import java.util.HashMap;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.CompareActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.UnlockActivity;
@@ -39,8 +52,6 @@ import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.misc.WebsiteHandler;
-
-import java.util.HashMap;
 
 public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
@@ -60,6 +71,8 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
     private int selectedPosition;
     private boolean comparing;
     private boolean loadCache;
+    private String[] personaNames;
+    private long[] personaIds;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,6 +108,21 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
         }
 
+        // How many personas do we have?
+        int numPersonas = profileData.getNumPersonas();
+
+        // Init the arrays
+        personaIds = new long[numPersonas];
+        personaNames = new String[numPersonas];
+
+        // Iterate for the horde
+        for (int count = 0; count < numPersonas; count++) {
+
+            personaIds[count] = profileData.getPersona(count).getId();
+            personaNames[count] = profileData.getPersona(count).getName();
+
+        }
+
         // Click on the wrap
         wrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
         wrapPersona.setOnClickListener(
@@ -103,9 +131,17 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
                     @Override
                     public void onClick(View sv) {
-                        new ProfilePersonaListDialog(context, profileData).show();
+                        generateDialogPersonaList(
+                                personaIds,
+                                personaNames).show();
                     }
                 });
+    }
+
+    public void showPersona(long pid) {
+
+        showPersona(personaStats.get(pid), true);
+
     }
 
     public void showPersona(PersonaStats pd, boolean toggle) {
@@ -232,6 +268,8 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
                     personaStats = CacheHandler.Persona.select(context,
                             profileData.getPersonaArray());
+
+                    // Is this the user?
                     selectedPersona = profileData.getPersona(selectedPosition).getId();
 
                 } else {
@@ -449,6 +487,66 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
     public void setComparing(boolean c) {
 
         comparing = c;
+    }
+
+    public Dialog generateDialogPersonaList(final long[] personaId, final String[] persona) {
+
+        // Attributes
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        // Set the title and the view
+        builder.setTitle(R.string.info_dialog_soldierselect);
+
+        builder.setSingleChoiceItems(
+
+                persona, -1, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        if (personaId[item] != selectedPersona) {
+
+                            // Update it
+
+                            selectedPersona = personaId[item];
+
+                            // Load the new!
+                            showPersona(personaStats.get(selectedPersona), true);
+
+                            // Store selectedPersonaPos
+                            selectedPosition = item;
+
+                            // Let's update SP
+                            updateSharedPreference();
+
+                        }
+
+                        dialog.dismiss();
+
+                    }
+
+                }
+
+                );
+
+        // CREATE
+        return builder.create();
+
+    }
+
+    private void updateSharedPreference() {
+
+        // Is this someone else than the logged in user?
+        if (SessionKeeper.getProfileData().getId() != profileData.getId()) {
+
+            return;
+
+        }
+        // Update the sharedPreferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(SP_BL_PERSONA_CURRENT_ID, selectedPersona);
+        editor.putInt(SP_BL_PERSONA_CURRENT_POS, selectedPosition);
+        editor.commit();
+
     }
 
 }

@@ -76,8 +76,9 @@ public class AssignmentActivity extends Activity {
         // Set sharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        
         // Setup the locale
+        PublicUtils.setupFullscreen(this, sharedPreferences);
         PublicUtils.setupSession(this, sharedPreferences);
         PublicUtils.setupLocale(this, sharedPreferences);
 

@@ -5908,7 +5908,7 @@ public class WebsiteHandler {
                         Constants.URL_STATS_WEAPONS.replace("{PID}", p.getPersona(i).getId() + "")
                                 .replace(
                                         "{PLATFORM_ID}", p.getPersona(i).getPlatformId() + ""),
-                        1
+                        0
 
                         );
 
@@ -6065,7 +6065,7 @@ public class WebsiteHandler {
 
                                         "{PLATFORM_ID}", p.getPersona(i).getPlatformId() + ""
 
-                                ), 1
+                                ), 0
 
                         );
 

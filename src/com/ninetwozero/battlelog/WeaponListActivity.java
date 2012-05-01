@@ -152,8 +152,7 @@ public class WeaponListActivity extends FragmentActivity implements DefaultFragm
 
             // Add them to the list
             listFragments = new Vector<Fragment>();
-            listFragments
-                    .add(Fragment.instantiate(this, WeaponListFragment.class.getName()));
+            listFragments.add(Fragment.instantiate(this, WeaponListFragment.class.getName()));
 
             // Iterate over the fragments
             for (int i = 0, max = listFragments.size(); i < max; i++) {
@@ -273,7 +272,7 @@ public class WeaponListActivity extends FragmentActivity implements DefaultFragm
     }
 
     public void open(WeaponDataWrapper w) {
-        
+
         startActivity(new Intent(this, SingleWeaponActivity.class).putExtra("profile", profileData)
                 .putExtra("weapon", w));
 

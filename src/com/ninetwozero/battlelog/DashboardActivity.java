@@ -392,8 +392,7 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
         // Let's act!
         if (item.getItemId() == R.id.option_refresh) {
 
-            startActivity(new Intent(this, WeaponListActivity.class).putExtra("profile", SessionKeeper.getProfileData()));
-            //reload();
+            reload();
 
         } else if (item.getItemId() == R.id.option_settings) {
 
@@ -439,6 +438,10 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
             }
 
+        } else if(keyCode == KeyEvent.KEYCODE_SEARCH ) {
+            
+            startActivity( new Intent(this, SearchActivity.class) );
+            
         }
         return super.onKeyDown(keyCode, event);
 

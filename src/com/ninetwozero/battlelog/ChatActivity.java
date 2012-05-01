@@ -84,7 +84,8 @@ public class ChatActivity extends ListActivity {
             finish();
         }
 
-        // Setup the locale
+        // Setup important stuff
+        PublicUtils.setupFullscreen(this, sharedPreferences);
         PublicUtils.setupLocale(this, sharedPreferences);
 
         // Set the content view

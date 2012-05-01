@@ -91,11 +91,6 @@
 			/>
 			<Button
 			    style="@style/MenuButton"
-			    android:id="@+id/button_search"
-			    android:text="@string/label_search"
-			/>
-			<Button
-			    style="@style/MenuButton"
 			    android:id="@+id/button_settings"
 			    android:text="@string/label_settings"
 			/>

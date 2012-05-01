@@ -62,7 +62,7 @@ public class WeaponListFragment extends ListFragment implements DefaultFragment 
                 .getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_unlocks,
+        View view = layoutInflater.inflate(R.layout.tab_content_items,
                 container, false);
 
         // Get the unlocks

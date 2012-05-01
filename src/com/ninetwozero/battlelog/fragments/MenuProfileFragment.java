@@ -40,8 +40,8 @@ import com.ninetwozero.battlelog.AssignmentActivity;
 import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.ProfileSettingsActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.SearchActivity;
 import com.ninetwozero.battlelog.UnlockActivity;
+import com.ninetwozero.battlelog.WeaponListActivity;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -122,10 +122,13 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
         MENU_INTENTS.put(R.id.button_unlocks,
                 new Intent(context, UnlockActivity.class).putExtra("profile",
                         SessionKeeper.getProfileData()));
+        MENU_INTENTS.put(
+                R.id.button_weapon,
+                new Intent(context, WeaponListActivity.class).putExtra("profile",
+                        SessionKeeper.getProfileData()));
         MENU_INTENTS.put(R.id.button_assignments,
                 new Intent(context, AssignmentActivity.class).putExtra("profile",
                         SessionKeeper.getProfileData()));
-        MENU_INTENTS.put(R.id.button_search, new Intent(context, SearchActivity.class));
         MENU_INTENTS.put(R.id.button_self,
                 new Intent(context, ProfileActivity.class).putExtra("profile",
                         SessionKeeper.getProfileData()));
@@ -192,7 +195,7 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
         // Set it up
         builder.setSingleChoiceItems(
 
-                personaName, -1, new DialogInterface.OnClickListener() {
+                personaName, selectedPosition, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int item) {
 
