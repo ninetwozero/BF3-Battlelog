@@ -1635,10 +1635,7 @@ public class WebsiteHandler {
                             Long.parseLong(personaObject
                                     .getString("personaId")),
                             (personaObject.isNull("personaName") ? username
-                                    : personaObject.getString("personaName")) + " " + DataBank
-                                    .resolvePlatformId(DataBank
-                                            .getPlatformIdFromName(personaObject
-                                                    .getString("namespace"))),
+                                    : personaObject.getString("personaName")),
                             DataBank
                                     .getPlatformIdFromName(personaObject
                                             .getString("namespace")),
