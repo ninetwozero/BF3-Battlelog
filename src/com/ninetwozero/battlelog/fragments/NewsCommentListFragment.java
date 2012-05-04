@@ -194,12 +194,11 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
 
     }
 
-    
     public void setNewsData(NewsData n) {
-        
+
         newsData = n;
     }
-    
+
     public void setPageId(int s) {
 
         pageId = s;

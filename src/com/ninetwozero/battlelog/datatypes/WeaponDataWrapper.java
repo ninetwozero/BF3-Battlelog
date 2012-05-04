@@ -18,7 +18,6 @@ import java.util.List;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.ninetwozero.battlelog.R;
 
 public class WeaponDataWrapper implements Parcelable {
 
@@ -27,7 +26,7 @@ public class WeaponDataWrapper implements Parcelable {
     private WeaponInfo data;
     private WeaponStats stats;
     private List<UnlockData> unlocks;
-  
+
     public WeaponDataWrapper(int nu, WeaponInfo d, WeaponStats w, List<UnlockData> u) {
 
         numUnlocked = nu;
@@ -36,27 +35,27 @@ public class WeaponDataWrapper implements Parcelable {
         unlocks = u;
 
     }
-    
+
     public WeaponDataWrapper(Parcel in) {
-        
+
         numUnlocked = in.readInt();
         data = in.readParcelable(WeaponInfo.class.getClassLoader());
         stats = in.readParcelable(WeaponStats.class.getClassLoader());
         unlocks = in.createTypedArrayList(UnlockData.CREATOR);
-        
+
     }
 
-    // Getters    
+    // Getters
     public int getNumUnlocked() {
-        
+
         return numUnlocked;
     }
-    
+
     public int getNumUnlocks() {
-        
+
         return unlocks.size();
     }
-    
+
     public WeaponInfo getData() {
 
         return data;
@@ -74,10 +73,11 @@ public class WeaponDataWrapper implements Parcelable {
 
     // Setters
     public void setData(WeaponInfo d) {
-        
+
         data = d;
-        
+
     }
+
     public void setStats(WeaponStats w) {
 
         stats = w;
@@ -100,7 +100,6 @@ public class WeaponDataWrapper implements Parcelable {
         out.writeParcelable(data, arg1);
         out.writeParcelable(stats, arg1);
         out.writeTypedList(unlocks);
-        
 
     }
 
@@ -115,5 +114,5 @@ public class WeaponDataWrapper implements Parcelable {
         }
 
     };
-    
+
 }

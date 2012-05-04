@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.datatypes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.ninetwozero.battlelog.R;
 
 public class PlatoonTopStatsItem implements Parcelable {
 

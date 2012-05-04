@@ -18,10 +18,8 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.DrawableResourceList;
-import com.ninetwozero.battlelog.misc.StringResourceList;
 
 public class UnlockData implements Parcelable {
 
@@ -31,15 +29,15 @@ public class UnlockData implements Parcelable {
     private long scoreNeeded, scoreCurrent;
     private String parentIdentifier, unlockIdentifier, objective, type;
 
-    //Constants
+    // Constants
     public final static String CATEGORY_WEAPON = "weaponUnlock";
     public final static String CATEGORY_ATTACHMENT = "weaponAddonUnlock";
     public final static String CATEGORY_KIT = "kitItemUnlock";
     public final static String CATEGORY_VEHICLE = "vehicleAddonUnlock";
     public final static String CATEGORY_SKILL = "soldierSpecializationUnlock";
-    
+
     public UnlockData(Parcel in) {
-        
+
         kitId = in.readInt();
         unlockPercentage = in.readDouble();
         scoreNeeded = in.readLong();
@@ -48,9 +46,9 @@ public class UnlockData implements Parcelable {
         unlockIdentifier = in.readString();
         objective = in.readString();
         type = in.readString();
-        
+
     }
-    
+
     public UnlockData(int k, double u, long scn, long scc, String pi,
             String ui, String o, String t) {
 
@@ -88,11 +86,11 @@ public class UnlockData implements Parcelable {
 
     public String getParent() {
 
-        if (type.equals(CATEGORY_ATTACHMENT) ) {
+        if (type.equals(CATEGORY_ATTACHMENT)) {
 
             return DataBank.getWeaponTitle(parentIdentifier);
 
-        } else if ( type.equals(CATEGORY_VEHICLE) ) {
+        } else if (type.equals(CATEGORY_VEHICLE)) {
 
             return DataBank.getVehicleTitle(parentIdentifier);
 
@@ -129,9 +127,9 @@ public class UnlockData implements Parcelable {
         }
 
     }
-    
+
     public int getImageResource() {
-        
+
         if (type.equals(CATEGORY_WEAPON)) {
 
             return DrawableResourceList.getWeapon(unlockIdentifier);
@@ -157,7 +155,7 @@ public class UnlockData implements Parcelable {
             return 0;
 
         }
-        
+
     }
 
     public String getName(Context c) {
@@ -250,7 +248,7 @@ public class UnlockData implements Parcelable {
 
     public String getType() {
         return type;
-    }    
+    }
 
     @Override
     public int describeContents() {

@@ -95,7 +95,7 @@ public class UnlockListAdapter extends BaseAdapter {
         ((TextView) convertView.findViewById(R.id.text_unlock_percent))
                 .setText(currentUnlock.getUnlockPercentage() + "%");
         ((ImageView) convertView.findViewById(R.id.image_unlock))
-                .setImageResource( currentUnlock.getImageResource());
+                .setImageResource(currentUnlock.getImageResource());
 
         // Title
         ((TextView) convertView.findViewById(R.id.text_unlock_title))

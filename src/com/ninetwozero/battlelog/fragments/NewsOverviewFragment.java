@@ -76,9 +76,9 @@ public class NewsOverviewFragment extends Fragment implements DefaultFragment {
         reload();
 
     }
-    
+
     public void setNewsData(NewsData n) {
-        
+
         newsData = n;
     }
 

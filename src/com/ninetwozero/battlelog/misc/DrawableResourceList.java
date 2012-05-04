@@ -18,25 +18,25 @@ import java.util.HashMap;
 
 import com.ninetwozero.battlelog.R;
 
-
 public class DrawableResourceList {
 
-    //Attributes
-    private static HashMap<String, Integer> weapons; //<GUID, resId>
-    private static HashMap<String, Integer> attachments; //<GUID, resId>
-    private static HashMap<String, Integer> vehicles; //<GUID, resId>
-    private static HashMap<String, Integer> vehicleUpgrades; //<GUID, resId>
-    private static HashMap<String, Integer> kits; //<GUID, resId>
-    private static HashMap<String, Integer> awards; //<GUID, resId>
-    private static HashMap<String, Integer> skills; //<GUID, resId>
-    private static HashMap<String, Integer> dogtags; //<GUID, resId>
-    
+    // Attributes
+    private static HashMap<String, Integer> weapons; // <GUID, resId>
+    private static HashMap<String, Integer> attachments; // <GUID, resId>
+    private static HashMap<String, Integer> vehicles; // <GUID, resId>
+    private static HashMap<String, Integer> vehicleUpgrades; // <GUID, resId>
+    private static HashMap<String, Integer> kits; // <GUID, resId>
+    private static HashMap<String, Integer> awards; // <GUID, resId>
+    private static HashMap<String, Integer> skills; // <GUID, resId>
+    private static HashMap<String, Integer> dogtags; // <GUID, resId>
+
     // Construct = none
-    private DrawableResourceList() {}
- 
+    private DrawableResourceList() {
+    }
+
     static {
 
-        //Let's init
+        // Let's init
         weapons = new HashMap<String, Integer>();
         attachments = new HashMap<String, Integer>();
         vehicles = new HashMap<String, Integer>();
@@ -45,8 +45,8 @@ public class DrawableResourceList {
         awards = new HashMap<String, Integer>();
         skills = new HashMap<String, Integer>();
         dogtags = new HashMap<String, Integer>();
-        
-        //Fill 'em up
+
+        // Fill 'em up
         weapons.put("75D1FFC8-D442-4212-B668-96AED9030FC6", R.drawable.w_rpk);
         weapons.put("DC356150-2A5F-4FCA-BE6C-B993EE7F8A8B", R.drawable.w_fgm148);
         weapons.put("CB018ADD-3648-4504-9359-9BAFB8D92F7D", R.drawable.w_mk11_russian);
@@ -135,8 +135,8 @@ public class DrawableResourceList {
         weapons.put("D20984F3-364E-4C06-9879-09280EDF6DF3", R.drawable.w_xp1_qbz95b);
         weapons.put("95E00B23-BAD4-4F3B-A85E-990204EFF26B", R.drawable.w_xp1_mg36);
         weapons.put("BFAC29DB-5193-4E69-96D9-37D4124C44C2", R.drawable.w_smaw);
-        
-        //Set up the vehicles
+
+        // Set up the vehicles
         vehicles.put("F998F5E4-220D-463A-A437-1C18D5C3A19E", R.drawable.v_btr90);
         vehicles.put("89BEA1D6-2FF4-11DE-8C23-DAB1D69416DE", R.drawable.v_mi28);
         vehicles.put("C645317B-45BB-E082-7E5C-918388C22D59", R.drawable.v_pantsir);
@@ -169,7 +169,7 @@ public class DrawableResourceList {
         vehicles.put("A36C9712-54B3-A5FF-8627-7BC7EFA0C668", R.drawable.v_tunguska);
         vehicles.put("19B63F53-5FD5-4A82-9EF8-B43A2243E9D9", R.drawable.v_centurion);
 
-        //Vehicle upgrades
+        // Vehicle upgrades
         vehicleUpgrades.put("ID_P_VUNAME_JETAVIONIC", R.drawable.vu_jetavionics);
         vehicleUpgrades.put("ID_P_VUNAME_AHBRADAR", R.drawable.vu_attackhelibelowradar);
         vehicleUpgrades.put("ID_P_VUNAME_MBTPREVENT", R.drawable.vu_mbtpreventive);
@@ -247,7 +247,7 @@ public class DrawableResourceList {
         vehicleUpgrades.put("ID_P_VUNAME_AAAA", R.drawable.vu_aastinger);
         vehicleUpgrades.put("ID_P_VUNAME_SHSTEALTH", R.drawable.vu_scoutstealth);
 
-        //Attachments
+        // Attachments
         attachments.put("ID_P_ANAME_FLECHETTE", R.drawable.a_flechette);
         attachments.put("ID_P_ANAME_FOREGRIP", R.drawable.a_foregrip);
         attachments.put("55ADFBFC-12CC-28E7-4DA4-3D4C49CDF7F3", R.drawable.a_40mm_shotgunshell);
@@ -279,7 +279,7 @@ public class DrawableResourceList {
         attachments.put("ID_P_ANAME_M145", R.drawable.a_m145);
         attachments.put("ID_P_ANAME_SGA_FLECH", R.drawable.a_flechette);
 
-        //Kits
+        // Kits
         kits.put("DC9734CD-D3D7-4870-A6A9-07B99BEE6DAC", R.drawable.k_soflam);
         kits.put("90E12AB5-CF0F-4439-AFD0-C86E6C71BB7D", R.drawable.k_mine);
         kits.put("6EF48118-EF16-4D47-BD18-F57792D88AB1", R.drawable.k_m224_mortar);
@@ -295,7 +295,7 @@ public class DrawableResourceList {
         kits.put("7D11603B-8188-45FD-AD95-B27A4B35980E", R.drawable.k_defib);
         kits.put("00F16262-38F3-45F0-B577-C243CDB10A9E", R.drawable.k_medkit);
 
-        //Skills
+        // Skills
         skills.put("BCE7C360-DFE6-4BF0-B020-7F2482177652", R.drawable.s_explresist);
         skills.put("7B001B2F-5B24-4AE8-9C2E-3B8663E2F6C0", R.drawable.s_explosives);
         skills.put("A8C8F62B-0E6C-462B-8489-4A5C46C9170F", R.drawable.s_grenades);
@@ -313,59 +313,58 @@ public class DrawableResourceList {
                 R.drawable.s_explresist2);
         skills.put("350432B9-5B42-49F4-8343-CD20DE1B82BD", R.drawable.s_sprint);
 
-        //Awards
+        // Awards
         /* TODO: */
-        
-        
+
     }
-    
-    //Getters
+
+    // Getters
     public static int getWeapon(String s) {
-        
+
         return weapons.containsKey(s) ? weapons.get(s) : 0;
-        
+
     }
-    
+
     public static int getAttachment(String s) {
-        
+
         return attachments.containsKey(s) ? attachments.get(s) : 0;
-        
+
     }
-    
+
     public static int getVehicle(String s) {
-        
+
         return vehicles.containsKey(s) ? vehicles.get(s) : 0;
-        
+
     }
-    
+
     public static int getVehicleUpgrade(String s) {
-        
+
         return vehicleUpgrades.containsKey(s) ? vehicleUpgrades.get(s) : 0;
-        
+
     }
-    
+
     public static int getKit(String s) {
-        
+
         return kits.containsKey(s) ? kits.get(s) : 0;
-        
+
     }
-    
+
     public static int getAward(String s) {
-        
+
         return awards.containsKey(s) ? awards.get(s) : 0;
-        
+
     }
-    
+
     public static int getSkill(String s) {
-        
+
         return skills.containsKey(s) ? skills.get(s) : 0;
-        
+
     }
-    
+
     public static int getDogtag(String s) {
-        
+
         return dogtags.containsKey(s) ? dogtags.get(s) : 0;
-        
+
     }
-    
+
 }

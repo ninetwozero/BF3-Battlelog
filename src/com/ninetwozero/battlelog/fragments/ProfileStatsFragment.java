@@ -30,13 +30,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -134,11 +134,14 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                     @Override
                     public void onClick(View sv) {
 
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        ProfilePersonaListDialog dialog = ProfilePersonaListDialog.newInstance(profileData);
-                        dialog.show(transaction, "ProfilePersonaListDialog");
-                        reload();
-                        
+                        if (personaArrayLength() > 1) {
+                            FragmentTransaction transaction = getFragmentManager()
+                                    .beginTransaction();
+                            ProfilePersonaListDialog dialog = ProfilePersonaListDialog
+                                    .newInstance(profileData);
+                            dialog.show(transaction, "ProfilePersonaListDialog");
+                            reload();
+                        }
                     }
                 });
     }
@@ -160,6 +163,10 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         View view = getView();
         if (view == null) {
             return;
+        }
+
+        if (personaArrayLength() == 1) {
+            ((ImageView) view.findViewById(R.id.img_persona_list)).setVisibility(View.INVISIBLE);
         }
 
         // Persona & rank
@@ -251,6 +258,10 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
     }
 
+    private int personaArrayLength() {
+        return profileData.getPersonaArray().length;
+    }
+
     public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
 
         // Attributes
@@ -331,7 +342,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
         @Override
         protected Boolean doInBackground(Void... arg0) {
-            
+
             try {
 
                 // Do we have any personas?

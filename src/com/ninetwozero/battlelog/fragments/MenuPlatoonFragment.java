@@ -43,7 +43,6 @@ import com.ninetwozero.battlelog.PlatoonActivity;
 import com.ninetwozero.battlelog.PlatoonCreateActivity;
 import com.ninetwozero.battlelog.ProfileSettingsActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.SearchActivity;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.misc.Constants;

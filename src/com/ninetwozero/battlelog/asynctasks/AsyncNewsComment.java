@@ -80,7 +80,7 @@ public class AsyncNewsComment extends AsyncTask<String, Void, Boolean> {
         // How'd it go?
         if (result) {
             fragmentComments.reload();
-           
+
             buttonSend.setText(R.string.label_send);
             buttonSend.setEnabled(true);
             ((EditText) fragmentComments.getView().findViewById(R.id.field_message)).setText("");

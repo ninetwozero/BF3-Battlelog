@@ -75,11 +75,11 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
     }
 
     public void initFragment(View v) {
-        
-        //Let's setup the fields
+
+        // Let's setup the fields
         textKills = (TextView) v.findViewById(R.id.text_kills);
         textHS = (TextView) v.findViewById(R.id.text_hs);
-        textSF  = (TextView) v.findViewById(R.id.text_sf);
+        textSF = (TextView) v.findViewById(R.id.text_sf);
         textSH = (TextView) v.findViewById(R.id.text_sh);
         textAccuracy = (TextView) v.findViewById(R.id.text_accuracy);
         textTE = (TextView) v.findViewById(R.id.text_time);
@@ -100,18 +100,18 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
         return viewPagerPosition;
 
     }
-    
-    public void setProfileData(ProfileData p){
-        
+
+    public void setProfileData(ProfileData p) {
+
         profileData = p;
-        
+
     }
-    
+
     @Override
     public void reload() {
-        
+
         ((DefaultFragmentActivity) context).reload();
-        
+
     }
 
     @Override
@@ -123,18 +123,18 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
     public boolean handleSelectedOption(MenuItem item) {
         return false;
     }
-    
+
     public void show(WeaponStats w) {
-        
+
         textKills.setText(w.getKills() + "");
         textHS.setText(w.getHeadshots() + "");
         textSF.setText(w.getShotsFired() + "");
         textSH.setText(w.getShotsHit() + "");
-        textAccuracy.setText( (Math.round(w.getAccuracy()*1000)/10.0) + "%");
+        textAccuracy.setText((Math.round(w.getAccuracy() * 1000) / 10.0) + "%");
         textTE.setText(PublicUtils.timeToLiteral(w.getTimeEquipped()));
         textSS.setText(w.getServiceStars() + "");
         textSSP.setText(w.getServiceStarProgress() + "");
-        
+
     }
-    
+
 }

@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.datatypes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.ninetwozero.battlelog.R;
 
 public class WeaponStats implements Parcelable {
 
@@ -62,20 +61,55 @@ public class WeaponStats implements Parcelable {
 
     }
 
-    //Getters
-    public String getName() { return name; }
-    public String getGuid() { return guid; }
-    public String getSlug() { return slug; }
-    public int getKills() { return kills; }
-    public int getHeadshots() { return headshots; }
-    public int getKitId() { return kitId; }
-    public long getShotsFired() { return shotsFired; }
-    public long getShotsHit() { return shotsHit; }
-    public long getTimeEquipped() { return timeEquipped; }
-    public double getAccuracy() { return accuracy; }
-    public double getServiceStars() { return serviceStars; }
-    public double getServiceStarProgress() { return serviceStarProgress; }
-    
+    // Getters
+    public String getName() {
+        return name;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public int getHeadshots() {
+        return headshots;
+    }
+
+    public int getKitId() {
+        return kitId;
+    }
+
+    public long getShotsFired() {
+        return shotsFired;
+    }
+
+    public long getShotsHit() {
+        return shotsHit;
+    }
+
+    public long getTimeEquipped() {
+        return timeEquipped;
+    }
+
+    public double getAccuracy() {
+        return accuracy;
+    }
+
+    public double getServiceStars() {
+        return serviceStars;
+    }
+
+    public double getServiceStarProgress() {
+        return serviceStarProgress;
+    }
+
     @Override
     public int describeContents() {
         return 0;

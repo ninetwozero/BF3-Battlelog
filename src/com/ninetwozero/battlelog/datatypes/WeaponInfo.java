@@ -14,11 +14,10 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.ninetwozero.battlelog.R;
 
 public class WeaponInfo implements Parcelable {
 
@@ -27,14 +26,14 @@ public class WeaponInfo implements Parcelable {
     private int range, rateOfFire;
     private boolean rateAuto, rateBurst, rateSingle;
 
-    //Constants
+    // Constants
     final public static int RANGE_SHORT = 0;
     final public static int RANGE_MEDIUM = 1;
     final public static int RANGE_LONG = 2;
     final public static int RANGE_VLONG = 3;
-    
+
     public WeaponInfo(Parcel in) {
-        
+
         identifier = in.readString();
         name = in.readString();
         slug = in.readString();
@@ -46,9 +45,8 @@ public class WeaponInfo implements Parcelable {
         rateBurst = in.readInt() == 1;
         rateSingle = in.readInt() == 1;
 
-        
     }
-    
+
     public WeaponInfo(String i, String n, String l, int rof, int r,
             String a, boolean ra, boolean rb, boolean rs) {
 
@@ -58,7 +56,7 @@ public class WeaponInfo implements Parcelable {
         rateOfFire = rof;
         range = r;
         ammo = a;
-        
+
         rateAuto = ra;
         rateBurst = rb;
         rateSingle = rs;
@@ -81,30 +79,30 @@ public class WeaponInfo implements Parcelable {
     public final int getRateOfFire() {
         return rateOfFire;
     }
-    
+
     public final int getRange() {
         return range;
     }
 
     public final boolean isAuto() {
-        
+
         return rateAuto;
     }
 
     public final boolean isBurst() {
-        
+
         return rateBurst;
     }
 
     public final boolean isSingle() {
-        
+
         return rateSingle;
     }
-    
+
     public final int getRangeTitle() {
-        
-        switch(range) {
-            
+
+        switch (range) {
+
             case WeaponInfo.RANGE_SHORT:
                 return R.string.info_weapon_range_short;
 
@@ -114,17 +112,16 @@ public class WeaponInfo implements Parcelable {
                 return R.string.info_weapon_range_long;
             case WeaponInfo.RANGE_VLONG:
                 return R.string.info_weapon_range_vlong;
-                
+
             default:
                 return R.string.general_not_available;
         }
     }
 
-
     public final String getAmmo() {
         return ammo;
     }
-    
+
     @Override
     public int describeContents() {
         return 0;
@@ -132,7 +129,7 @@ public class WeaponInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel out, int arg1) {
-        
+
         out.writeString(identifier);
         out.writeString(name);
         out.writeString(slug);

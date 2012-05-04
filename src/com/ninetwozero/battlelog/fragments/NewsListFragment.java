@@ -120,7 +120,8 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
 
-        context.startActivity( new Intent(context, SingleNewsActivity.class).putExtra("news", (NewsData) v.getTag()));
+        context.startActivity(new Intent(context, SingleNewsActivity.class).putExtra("news",
+                (NewsData) v.getTag()));
 
     }
 

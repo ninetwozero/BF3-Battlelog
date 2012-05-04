@@ -21,7 +21,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import com.ninetwozero.battlelog.R;
 
 public class LocalTimeListPreference extends ListPreference {
 

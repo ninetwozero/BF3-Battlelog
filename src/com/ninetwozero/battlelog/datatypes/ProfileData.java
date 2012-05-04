@@ -1,25 +1,22 @@
+
 package com.ninetwozero.battlelog.datatypes;
 
 /*
-	This file is part of BF3 Battlelog
+ This file is part of BF3 Battlelog
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+ BF3 Battlelog is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+ BF3 Battlelog is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
  */
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
-
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.misc.Constants;
 
 public class ProfileData implements Parcelable {
 
@@ -33,7 +30,7 @@ public class ProfileData implements Parcelable {
     // Constructs
     public ProfileData(Parcel in) {
 
-        //Init from the parcel
+        // Init from the parcel
         id = in.readLong();
         username = in.readString();
         gravatarHash = in.readString();
@@ -41,7 +38,7 @@ public class ProfileData implements Parcelable {
         isPlaying = (in.readInt() == 1);
         persona = in.createTypedArray(PersonaData.CREATOR);
         isFriend = (in.readInt() == 1);
-    
+
     }
 
     public ProfileData(String un) {
@@ -57,7 +54,6 @@ public class ProfileData implements Parcelable {
         username = un;
 
     }
-    
 
     public ProfileData(long u, String un, String im) {
 

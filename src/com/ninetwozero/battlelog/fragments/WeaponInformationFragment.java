@@ -51,7 +51,8 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
 
     // Elements
     private ImageView imageItem;
-    private TextView textTitle, textDesc, textAuto, textBurst, textSingle, textAmmo, textRange, textRateOfFire;
+    private TextView textTitle, textDesc, textAuto, textBurst, textSingle, textAmmo, textRange,
+            textRateOfFire;
 
     // Misc
     private ProfileData profileData;
@@ -84,8 +85,8 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     }
 
     public void initFragment(View v) {
-        
-        //Let's setup the fields
+
+        // Let's setup the fields
         imageItem = (ImageView) v.findViewById(R.id.image_item);
         textTitle = (TextView) v.findViewById(R.id.text_title);
         textDesc = (TextView) v.findViewById(R.id.text_desc);
@@ -95,9 +96,10 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         textAmmo = (TextView) v.findViewById(R.id.text_ammo);
         textRange = (TextView) v.findViewById(R.id.text_range);
         textRateOfFire = (TextView) v.findViewById(R.id.text_rate_num);
-        
-        //Let's see
-        selectedPersona = ( selectedPersona == 0 ) ? profileData.getPersona(0).getId() : selectedPersona;
+
+        // Let's see
+        selectedPersona = (selectedPersona == 0) ? profileData.getPersona(0).getId()
+                : selectedPersona;
 
     }
 
@@ -105,10 +107,10 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     public void onResume() {
 
         super.onResume();
-        if( profileData != null ) {
-            
+        if (profileData != null) {
+
             reload();
-        
+
         }
 
     }
@@ -120,32 +122,32 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     }
 
     public void setSelectedPersona(long p) {
-        
+
         selectedPersona = p;
     }
-    
-    public void setProfileData(ProfileData p){
-        
+
+    public void setProfileData(ProfileData p) {
+
         profileData = p;
-        
+
     }
-    
+
     public void setWeaponInfo(WeaponInfo w) {
-        
+
         weaponInfo = w;
-        
+
     }
-    
+
     public void setWeaponStats(WeaponStats w) {
-        
+
         weaponStats = w;
     }
-    
+
     @Override
     public void reload() {
 
         new AsyncRefresh().execute();
-        
+
     }
 
     @Override
@@ -157,63 +159,65 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     public boolean handleSelectedOption(MenuItem item) {
         return false;
     }
-    
+
     private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
-        
+
         @Override
         protected Boolean doInBackground(Void... arg) {
-            
-            try {
-                
-                weaponDataWrapper = WebsiteHandler.getWeapon(profileData, weaponInfo, weaponStats);
-                return true;   
 
-            } catch( Exception ex ) {
-                
+            try {
+
+                weaponDataWrapper = WebsiteHandler.getWeapon(profileData, weaponInfo, weaponStats);
+                return true;
+
+            } catch (Exception ex) {
+
                 ex.printStackTrace();
                 return false;
             }
         }
-        
+
         @Override
         protected void onPostExecute(Boolean result) {
-            
-            if( context != null ) {
-                
-                if( result ) {
-                    
+
+            if (context != null) {
+
+                if (result) {
+
                     show(weaponDataWrapper.get(selectedPersona));
-                    
+
                 } else {
-                    
+
                     Toast.makeText(context, R.string.general_no_data, Toast.LENGTH_SHORT).show();
-                    
+
                 }
-                
+
             }
         }
-        
+
     }
-    
+
     private void show(WeaponDataWrapper w) {
-        
-        //No need to pass null
-        if( w == null || w.getData() == null) { return; }
-        
-        imageItem.setImageResource( DrawableResourceList.getWeapon(w.getData().getIdentifier()) );
+
+        // No need to pass null
+        if (w == null || w.getData() == null) {
+            return;
+        }
+
+        imageItem.setImageResource(DrawableResourceList.getWeapon(w.getData().getIdentifier()));
         textTitle.setText(w.getData().getName());
-        textDesc.setText( StringResourceList.getWeaponDescription( w.getData().getIdentifier() ) );
-        
-        //Add fields for the text, and set the data
-        textAuto.setText( w.getData().isAuto() ? R.string.general_yes : R.string.general_no );
-        textBurst.setText( w.getData().isBurst() ? R.string.general_yes : R.string.general_no );
-        textSingle.setText( w.getData().isSingle() ? R.string.general_yes : R.string.general_no );
+        textDesc.setText(StringResourceList.getWeaponDescription(w.getData().getIdentifier()));
+
+        // Add fields for the text, and set the data
+        textAuto.setText(w.getData().isAuto() ? R.string.general_yes : R.string.general_no);
+        textBurst.setText(w.getData().isBurst() ? R.string.general_yes : R.string.general_no);
+        textSingle.setText(w.getData().isSingle() ? R.string.general_yes : R.string.general_no);
         textAmmo.setText(w.getData().getAmmo());
         textRange.setText(w.getData().getRangeTitle());
         textRateOfFire.setText(w.getData().getRateOfFire() + "");
-        
-        //Update the previous
+
+        // Update the previous
         ((SingleWeaponActivity) context).showData(w);
     }
-    
+
 }

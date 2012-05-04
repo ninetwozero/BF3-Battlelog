@@ -1,8 +1,6 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
-
 public class DashboardItem {
 
     // Attributes

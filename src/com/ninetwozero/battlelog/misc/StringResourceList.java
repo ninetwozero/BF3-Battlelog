@@ -18,25 +18,28 @@ import java.util.HashMap;
 
 import com.ninetwozero.battlelog.R;
 
-
 public class StringResourceList {
 
-    //Attributes
-    private static HashMap<String, Integer> descriptionWeapons; //<GUID, resId>
-    private static HashMap<String, Integer> descriptionAttachments; //<GUID, resId>
-    private static HashMap<String, Integer> descriptionVehicles; //<GUID, resId>
-    private static HashMap<String, Integer> descriptionVehicleUpgrades; //<GUID, resId>
-    private static HashMap<String, Integer> descriptionKits; //<GUID, resId>
-    private static HashMap<String, Integer> descriptionAwards; //<GUID, resId>
-    private static HashMap<String, Integer> descriptionSkills; //<GUID, resId>
-    private static HashMap<String, Integer> descriptionDogtags; //<GUID, resId>
-    
+    // Attributes
+    private static HashMap<String, Integer> descriptionWeapons; // <GUID, resId>
+    private static HashMap<String, Integer> descriptionAttachments; // <GUID,
+                                                                    // resId>
+    private static HashMap<String, Integer> descriptionVehicles; // <GUID,
+                                                                 // resId>
+    private static HashMap<String, Integer> descriptionVehicleUpgrades; // <GUID,
+                                                                        // resId>
+    private static HashMap<String, Integer> descriptionKits; // <GUID, resId>
+    private static HashMap<String, Integer> descriptionAwards; // <GUID, resId>
+    private static HashMap<String, Integer> descriptionSkills; // <GUID, resId>
+    private static HashMap<String, Integer> descriptionDogtags; // <GUID, resId>
+
     // Construct = none
-    private StringResourceList() {}
- 
+    private StringResourceList() {
+    }
+
     static {
 
-        //Let's init
+        // Let's init
         descriptionWeapons = new HashMap<String, Integer>();
         descriptionAttachments = new HashMap<String, Integer>();
         descriptionVehicles = new HashMap<String, Integer>();
@@ -45,8 +48,8 @@ public class StringResourceList {
         descriptionAwards = new HashMap<String, Integer>();
         descriptionSkills = new HashMap<String, Integer>();
         descriptionDogtags = new HashMap<String, Integer>();
-        
-        //Fill 'em up
+
+        // Fill 'em up
         descriptionWeapons.put("75D1FFC8-D442-4212-B668-96AED9030FC6", R.string.desc_w_rpk);
         descriptionWeapons.put("DC356150-2A5F-4FCA-BE6C-B993EE7F8A8B", R.string.desc_w_javelin);
         descriptionWeapons.put("CB018ADD-3648-4504-9359-9BAFB8D92F7D", R.string.desc_w_mk11);
@@ -70,12 +73,14 @@ public class StringResourceList {
         descriptionWeapons.put("4F90708E-6875-4A5E-B685-CAF310A0BA95", R.string.desc_w_m1911lit);
         descriptionWeapons.put("386F9329-7DE7-6FB9-1366-2877C698D9B7", R.string.desc_w_scarh);
         descriptionWeapons.put("655D5E41-6DB8-4F3C-9F2A-8117AE11699C", R.string.desc_w_mk11);
-        descriptionWeapons.put("AC994B66-DA51-42FB-A234-FCBA33EB9AB7", R.string.desc_w_glock18silenced);
+        descriptionWeapons.put("AC994B66-DA51-42FB-A234-FCBA33EB9AB7",
+                R.string.desc_w_glock18silenced);
         descriptionWeapons.put("2A267103-14F2-4255-B0D4-819139A4E202", R.string.desc_w_ump45);
         descriptionWeapons.put("F3EF48EB-37C3-4F5E-A2ED-ACE7E4D419DD", R.string.desc_w_pdr);
         descriptionWeapons.put("05EB2892-8B51-488E-8956-4350C3D2BA27", R.string.desc_w_m98b);
         descriptionWeapons.put("A4F683C2-40E2-464C-AE85-AFE4462F2D40", R.string.desc_w_m9silenced);
-        descriptionWeapons.put("07A6AB6A-457D-4481-94F9-A3FE15C3D923", R.string.desc_w_mp443silenced);
+        descriptionWeapons.put("07A6AB6A-457D-4481-94F9-A3FE15C3D923",
+                R.string.desc_w_mp443silenced);
         descriptionWeapons.put("6F741867-AE83-CC7D-BFB1-035452D7A5B4", R.string.desc_w_usas12);
         descriptionWeapons.put("4D06B1BF-8002-44E2-851E-EAAC8C4FDD1A", R.string.desc_w_taurus44);
         descriptionWeapons.put("A76BB99E-ABFE-48E9-9972-5D87E5365DAB", R.string.desc_w_m1911);
@@ -86,15 +91,18 @@ public class StringResourceList {
         descriptionWeapons.put("512819DB-3E82-33B7-F1D5-E612C9A396BF", R.string.desc_w_g3);
         descriptionWeapons.put("1EA227D8-2EB5-A63B-52FF-BBA9CFE34AD8", R.string.desc_w_taurus44);
         descriptionWeapons.put("120A0838-9E95-4564-A6F6-5A14A1E0AF85", R.string.desc_w_aks74u);
-        descriptionWeapons.put("AEFD4BF4-4C08-4834-9DFF-1F7C529175AF", R.string.desc_w_glock17silenced);
+        descriptionWeapons.put("AEFD4BF4-4C08-4834-9DFF-1F7C529175AF",
+                R.string.desc_w_glock17silenced);
         descriptionWeapons.put("283C66DE-3866-46CD-A1C0-B456A5916537", R.string.desc_w_40mm);
         descriptionWeapons.put("DB364A96-08FB-4C6E-856B-BD9749AE0A92", R.string.desc_w_glock18);
         descriptionWeapons.put("69A28562-5569-4D76-82FB-98C4047306F1", R.string.desc_w_m4a1);
         descriptionWeapons.put("A0222E93-0887-4FC4-90D4-51838945343E", R.string.desc_w_m93r);
         descriptionWeapons.put("DB94F5EC-74D5-4DB2-9A15-E0C4154BFFD4", R.string.desc_w_f2000);
-        descriptionWeapons.put("1C426722-C0B6-492F-98B2-3B9D2B97C808", R.string.desc_w_m1911silenced);
+        descriptionWeapons.put("1C426722-C0B6-492F-98B2-3B9D2B97C808",
+                R.string.desc_w_m1911silenced);
         descriptionWeapons.put("E43287AB-529D-4803-B585-6C17E2DD6AEB", R.string.desc_w_mp443lit);
-        descriptionWeapons.put("6F3993B9-E8B2-412F-9361-341140FCBF79", R.string.desc_w_taurus44scoped);
+        descriptionWeapons.put("6F3993B9-E8B2-412F-9361-341140FCBF79",
+                R.string.desc_w_taurus44scoped);
         descriptionWeapons.put("A607E88D-90B0-4ECD-B892-8BF66AEF90ED", R.string.desc_w_rpk);
         descriptionWeapons.put("3BA55147-6619-4697-8E2B-AC6B1D183C0E", R.string.desc_w_ak74m);
         descriptionWeapons.put("AEAA518B-9253-40C2-AA18-A11F8F2D474C", R.string.desc_w_m249);
@@ -120,15 +128,14 @@ public class StringResourceList {
         descriptionWeapons.put("414C4598-4089-43E0-82FB-BBF7031D02E8", R.string.desc_w_m240);
         descriptionWeapons.put("FEFBA819-898F-4B66-8596-B6576FA9B28A", R.string.desc_w_svd);
         descriptionWeapons.put("0E0E4701-359B-48FF-B91A-F4B6373435E4", R.string.desc_w_kh2002);
-        descriptionWeapons.put("9B3AF503-2018-4BC9-893F-CD393D3BAD77", R.string.desc_w_m1911tactical);
+        descriptionWeapons.put("9B3AF503-2018-4BC9-893F-CD393D3BAD77",
+                R.string.desc_w_m1911tactical);
         descriptionWeapons.put("E9BEDD8F-899F-3A3C-C561-5E58B350C60D", R.string.desc_w_stinger);
         descriptionWeapons.put("B145A444-BC4D-48BF-806A-0CEFA0EC231B", R.string.desc_w_m9);
         descriptionWeapons.put("B1575807-C480-7286-719C-EE2520292A79", R.string.desc_w_m4a1);
         descriptionWeapons.put("BFAC29DB-5193-4E69-96D9-37D4124C44C2", R.string.desc_w_smaw);
 
-
-        
-        //Set up the vehicles
+        // Set up the vehicles
         descriptionVehicles.put("89BEA1D6-2FF4-11DE-8C23-DAB1D69416DE", R.string.desc_v_mi28);
         descriptionVehicles.put("C645317B-45BB-E082-7E5C-918388C22D59", R.string.desc_v_pantsir);
         descriptionVehicles.put("98E5B9BF-0B68-4AF0-A20D-1A23D6B6BF8B", R.string.desc_v_vodnik);
@@ -157,9 +164,10 @@ public class StringResourceList {
         descriptionVehicles.put("A36C9712-54B3-A5FF-8627-7BC7EFA0C668", R.string.desc_v_9k22);
         descriptionVehicles.put("19B63F53-5FD5-4A82-9EF8-B43A2243E9D9", R.string.desc_v_centurion);
 
-        //Vehicle upgrades
+        // Vehicle upgrades
         descriptionVehicleUpgrades.put("ID_P_VUDESC_MBTCANISTER", R.string.desc_vu_mbtcanister);
-        descriptionVehicleUpgrades.put("ID_P_VUDESC_PILOT_NOPASSIVE", R.string.desc_vu_pilot_nopassive);
+        descriptionVehicleUpgrades.put("ID_P_VUDESC_PILOT_NOPASSIVE",
+                R.string.desc_vu_pilot_nopassive);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_AAARADAR", R.string.desc_vu_aaaradar);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_JETAA", R.string.desc_vu_jetaa);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_AAENVG", R.string.desc_vu_aaenvg);
@@ -172,9 +180,11 @@ public class StringResourceList {
         descriptionVehicleUpgrades.put("ID_P_VUDESC_SHARADAR", R.string.desc_vu_sharadar);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_AHWPNEFF", R.string.desc_vu_ahwpneff);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_AHZOOM", R.string.desc_vu_ahzoom);
-        descriptionVehicleUpgrades.put("ID_P_VUDESC_GUNNER_NOPASSIVE", R.string.desc_vu_gunner_nopassive);
+        descriptionVehicleUpgrades.put("ID_P_VUDESC_GUNNER_NOPASSIVE",
+                R.string.desc_vu_gunner_nopassive);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_IFVENVG", R.string.desc_vu_ifvenvg);
-        descriptionVehicleUpgrades.put("ID_P_VUDESC_GUNNER_NOACTIVE", R.string.desc_vu_gunner_noactive);
+        descriptionVehicleUpgrades.put("ID_P_VUDESC_GUNNER_NOACTIVE",
+                R.string.desc_vu_gunner_noactive);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_SHLASER", R.string.desc_vu_shlaser);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_SHWPNEFF", R.string.desc_vu_shwpneff);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_AHTVG", R.string.desc_vu_ahtvg);
@@ -194,7 +204,8 @@ public class StringResourceList {
         descriptionVehicleUpgrades.put("ID_P_VUDESC_IFVAPFSDS", R.string.desc_vu_ifvapfsds);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_MBTPROX", R.string.desc_vu_mbtprox);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_JETECM", R.string.desc_vu_jetecm);
-        descriptionVehicleUpgrades.put("ID_P_VUDESC_PILOT_NOSTANCE", R.string.desc_vu_pilot_nostance);
+        descriptionVehicleUpgrades.put("ID_P_VUDESC_PILOT_NOSTANCE",
+                R.string.desc_vu_pilot_nostance);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_IFVARMOR", R.string.desc_vu_ifvarmor);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_AHPROX", R.string.desc_vu_ahprox);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_IFVPREVENT", R.string.desc_vu_ifvprevent);
@@ -213,9 +224,11 @@ public class StringResourceList {
         descriptionVehicleUpgrades.put("ID_P_VUDESC_MBTCITV", R.string.desc_vu_mbtcitv);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_IFVAT", R.string.desc_vu_ifvat);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_AHFIREEX", R.string.desc_vu_ahfireex);
-        descriptionVehicleUpgrades.put("ID_P_VUDESC_GUNNER_NOSTANCE", R.string.desc_vu_gunner_nostance);
+        descriptionVehicleUpgrades.put("ID_P_VUDESC_GUNNER_NOSTANCE",
+                R.string.desc_vu_gunner_nostance);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_JETMAVER", R.string.desc_vu_jetmaver);
-        descriptionVehicleUpgrades.put("ID_P_VUDESC_PILOT_NOACTIVE", R.string.desc_vu_pilot_noactive);
+        descriptionVehicleUpgrades.put("ID_P_VUDESC_PILOT_NOACTIVE",
+                R.string.desc_vu_pilot_noactive);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_JETAVIONIC", R.string.desc_vu_jetavionic);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_AHBRADAR", R.string.desc_vu_ahbradar);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_NOSTANCE", R.string.desc_vu_nostance);
@@ -244,7 +257,7 @@ public class StringResourceList {
         descriptionVehicleUpgrades.put("ID_P_VUDESC_MBTCOAX", R.string.desc_vu_mbtcoax);
         descriptionVehicleUpgrades.put("ID_P_VUDESC_MBTSTEALTH", R.string.desc_vu_mbtstealth);
 
-        //Attachments
+        // Attachments
         descriptionAttachments.put("ID_P_ADESC_LIGHT", R.string.desc_a_light);
         descriptionAttachments.put("ID_P_ADESC_BOLT", R.string.desc_a_bolt);
         descriptionAttachments.put("ID_P_ADESC_RX01", R.string.desc_a_rx01);
@@ -284,7 +297,7 @@ public class StringResourceList {
         descriptionAttachments.put("ID_P_ADESC_SUPPRESS", R.string.desc_a_suppress);
         descriptionAttachments.put("ID_P_ADESC_NOSECONDARYRAIL", R.string.desc_a_nosecondaryrail);
 
-        //Kits
+        // Kits
         descriptionKits.put("ID_P_IDESC_M67", R.string.desc_k_m67);
         descriptionKits.put("ID_P_IDESC_MAV", R.string.desc_k_mav);
         descriptionKits.put("ID_P_IDESC_C4", R.string.desc_k_c4);
@@ -302,7 +315,7 @@ public class StringResourceList {
         descriptionKits.put("ID_P_IDESC_AMMO", R.string.desc_k_ammo);
         descriptionKits.put("ID_P_IDESC_BEACON", R.string.desc_k_beacon);
 
-        //Skills
+        // Skills
         descriptionSkills.put("ID_P_SDESC_Suppr2", R.string.desc_s_suppr2);
         descriptionSkills.put("ID_P_SDESC_ExplRes2", R.string.desc_s_explres2);
         descriptionSkills.put("ID_P_SDESC_Sprint", R.string.desc_s_sprint);
@@ -321,60 +334,65 @@ public class StringResourceList {
         descriptionSkills.put("ID_P_SDESC_NoSpec", R.string.desc_s_nospec);
         descriptionSkills.put("ID_P_SDESC_Clips", R.string.desc_s_clips);
 
-
-        //Awards
+        // Awards
         /* TODO: */
-        
-        
+
     }
-    
-    //Getters
+
+    // Getters
     public static int getWeaponDescription(String s) {
-        
-        return descriptionWeapons.containsKey(s) ? descriptionWeapons.get(s) : R.string.desc_not_found;
-        
+
+        return descriptionWeapons.containsKey(s) ? descriptionWeapons.get(s)
+                : R.string.desc_not_found;
+
     }
-    
+
     public static int getAttachmentDescription(String s) {
-        
-        return descriptionAttachments.containsKey(s) ? descriptionAttachments.get(s) : R.string.desc_not_found;
-        
+
+        return descriptionAttachments.containsKey(s) ? descriptionAttachments.get(s)
+                : R.string.desc_not_found;
+
     }
-    
+
     public static int getVehicleDescription(String s) {
-        
-        return descriptionVehicles.containsKey(s) ? descriptionVehicles.get(s) : R.string.desc_not_found;
-        
+
+        return descriptionVehicles.containsKey(s) ? descriptionVehicles.get(s)
+                : R.string.desc_not_found;
+
     }
-    
+
     public static int getVehicleUpgradeDescription(String s) {
-        
-        return descriptionVehicleUpgrades.containsKey(s) ? descriptionVehicleUpgrades.get(s) : R.string.desc_not_found;
-        
+
+        return descriptionVehicleUpgrades.containsKey(s) ? descriptionVehicleUpgrades.get(s)
+                : R.string.desc_not_found;
+
     }
-    
+
     public static int getKitDescription(String s) {
-        
+
         return descriptionKits.containsKey(s) ? descriptionKits.get(s) : R.string.desc_not_found;
-        
+
     }
-    
+
     public static int getAwardDescription(String s) {
-        
-        return descriptionAwards.containsKey(s) ? descriptionAwards.get(s) : R.string.desc_not_found;
-        
+
+        return descriptionAwards.containsKey(s) ? descriptionAwards.get(s)
+                : R.string.desc_not_found;
+
     }
-    
+
     public static int getSkillDescription(String s) {
-        
-        return descriptionSkills.containsKey(s) ? descriptionSkills.get(s) : R.string.desc_not_found;
-        
+
+        return descriptionSkills.containsKey(s) ? descriptionSkills.get(s)
+                : R.string.desc_not_found;
+
     }
-    
+
     public static int getDogtagDescription(String s) {
-        
-        return descriptionDogtags.containsKey(s) ? descriptionDogtags.get(s) : R.string.desc_not_found;
-        
+
+        return descriptionDogtags.containsKey(s) ? descriptionDogtags.get(s)
+                : R.string.desc_not_found;
+
     }
-    
+
 }

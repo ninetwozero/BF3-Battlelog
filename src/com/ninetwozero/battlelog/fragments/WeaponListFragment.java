@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,8 +33,6 @@ import com.ninetwozero.battlelog.WeaponListActivity;
 import com.ninetwozero.battlelog.adapters.WeaponListAdapter;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
-import com.ninetwozero.battlelog.datatypes.WeaponStats;
-import com.ninetwozero.battlelog.misc.Constants;
 
 public class WeaponListFragment extends ListFragment implements DefaultFragment {
 
@@ -106,7 +103,7 @@ public class WeaponListFragment extends ListFragment implements DefaultFragment 
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
 
-        ((WeaponListActivity)context).open((WeaponDataWrapper) v.getTag());
+        ((WeaponListActivity) context).open((WeaponDataWrapper) v.getTag());
 
     }
 

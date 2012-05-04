@@ -32,14 +32,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
-import com.ninetwozero.battlelog.datatypes.WeaponStats;
 import com.ninetwozero.battlelog.fragments.WeaponListFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;

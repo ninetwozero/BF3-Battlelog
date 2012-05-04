@@ -24,7 +24,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -373,7 +372,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                     profileData = WebsiteHandler.getPersonaIdFromProfile(profileData);
 
                 }
-                
+
                 // Let's get the personas!
                 profileInformation = WebsiteHandler.getProfileInformationForUser(
 
@@ -381,7 +380,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                         profileData,
                         activeProfileId
 
-                );
+                        );
 
                 // ...and then send it to the stats
                 sendToStats(profileData);

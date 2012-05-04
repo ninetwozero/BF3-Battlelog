@@ -1,7 +1,6 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
 import java.util.List;
 
 public class FriendListDataWrapper {

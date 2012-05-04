@@ -54,7 +54,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
@@ -86,7 +85,7 @@ public class RequestHandler {
             HttpGet httpGet = new HttpGet(link.replace(" ", "%20"));
             httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(extraHeaders));
             httpGet.setHeader("Referer", link);
-                
+
             HttpResponse httpResponse = RequestHandler.httpClient
                     .execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();

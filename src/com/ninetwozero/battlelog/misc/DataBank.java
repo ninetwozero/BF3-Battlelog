@@ -28,7 +28,6 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.AppContributorData;
 import com.ninetwozero.battlelog.datatypes.PlatformData;
 import com.ninetwozero.battlelog.datatypes.VehicleType;
-import com.ninetwozero.battlelog.datatypes.WeaponInfo;
 
 public class DataBank {
 
@@ -535,7 +534,6 @@ public class DataBank {
         WEAPONS.put("F3EF48EB-37C3-4F5E-A2ED-ACE7E4D419DD", "PDW-R");
         WEAPONS.put("FE05ACAA-32FC-4FD7-A34B-61413F6F7B1A", "QBB-95");
         WEAPONS.put("FEFBA819-898F-4B66-8596-B6576FA9B28A", "SVD");
-
 
         WEAPON_ATTACHMENTS.put("ID_P_ANAME_LASER", "Laser Sight");
         WEAPON_ATTACHMENTS.put("ID_P_ANAME_FOREGRIP", "Foregrip");

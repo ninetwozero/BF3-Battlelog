@@ -28,7 +28,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
@@ -72,7 +71,7 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
 
         // onCreate - save the instance state
         super.onCreate(icicle);
-        
+
         // Set sharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -94,17 +93,17 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
             return;
 
         }
-        
-        if( getIntent().hasExtra("weapon") ) {
-            
+
+        if (getIntent().hasExtra("weapon")) {
+
             weaponDataWrapper = getIntent().getParcelableExtra("weapon");
             weaponInfo = weaponDataWrapper.getData();
             weaponStats = weaponDataWrapper.getStats();
-            
+
         } else {
-         
+
             return;
-            
+
         }
 
         // Setup the trinity
@@ -116,23 +115,24 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
 
         // Last but not least - init
         initActivity();
-        
+
         // Let's setup the fragments too
         setupFragments();
 
     }
 
     public void initActivity() {
-        
+
         // Set the selected persona
-        if( SessionKeeper.getProfileData().getId() != profileData.getId() ) {
-            
+        if (SessionKeeper.getProfileData().getId() != profileData.getId()) {
+
             selectedPersona = profileData.getPersona(0).getId();
-        
+
         } else {
-            
-            selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, profileData.getPersona(0).getId());
-            
+
+            selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID,
+                    profileData.getPersona(0).getId());
+
         }
 
     }
@@ -171,16 +171,19 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
 
             // Add them to the list
             listFragments = new Vector<Fragment>();
-            listFragments.add(fragmentWeaponInfo = (WeaponInformationFragment) Fragment.instantiate(this, WeaponInformationFragment.class.getName()));
-            listFragments.add(fragmentWeaponStats = (WeaponStatisticsFragment) Fragment.instantiate(this, WeaponStatisticsFragment.class.getName()));
-            listFragments.add(fragmentUnlocks = (UnlockFragment) Fragment.instantiate(this, UnlockFragment.class.getName()));
+            listFragments.add(fragmentWeaponInfo = (WeaponInformationFragment) Fragment
+                    .instantiate(this, WeaponInformationFragment.class.getName()));
+            listFragments.add(fragmentWeaponStats = (WeaponStatisticsFragment) Fragment
+                    .instantiate(this, WeaponStatisticsFragment.class.getName()));
+            listFragments.add(fragmentUnlocks = (UnlockFragment) Fragment.instantiate(this,
+                    UnlockFragment.class.getName()));
 
-            //Let's set the selectedPersona
+            // Let's set the selectedPersona
             fragmentWeaponInfo.setProfileData(profileData);
             fragmentWeaponInfo.setWeaponInfo(weaponInfo);
             fragmentWeaponInfo.setWeaponStats(weaponStats);
             fragmentWeaponInfo.setSelectedPersona(selectedPersona);
-            
+
             // Get the ViewPager
             viewPager = (ViewPager) findViewById(R.id.viewpager);
             tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
@@ -209,15 +212,15 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
     }
 
     public void reload() {
-        
+
         fragmentWeaponInfo.reload();
-        
+
     }
 
     public void showData(WeaponDataWrapper w) {
-        
+
         fragmentWeaponStats.show(w.getStats());
         fragmentUnlocks.showUnlocks(w.getUnlocks());
-        
+
     }
 }

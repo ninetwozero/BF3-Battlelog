@@ -102,22 +102,22 @@ public class CommentListAdapter extends BaseAdapter {
 
         // Set the gravatar
         Bitmap b = BitmapFactory.decodeFile(
-    
-            PublicUtils.getCachePath(context)
-                    + currentData.getAuthor().getGravatarHash() + ".png"
-    
-        );
 
-        if( b == null ) {
-            
+                PublicUtils.getCachePath(context)
+                        + currentData.getAuthor().getGravatarHash() + ".png"
+
+                );
+
+        if (b == null) {
+
             imageAvatar.setImageResource(R.drawable.default_avatar);
-        
+
         } else {
-         
+
             imageAvatar.setImageBitmap(b);
-            
+
         }
-        
+
         imageAvatar.setTag(currentData.getAuthor());
 
         // Store the object
@@ -127,10 +127,10 @@ public class CommentListAdapter extends BaseAdapter {
     }
 
     public void setItemArray(List<CommentData> c) {
-        
+
         comments = c;
         notifyDataSetChanged();
-        
+
     }
 
 }

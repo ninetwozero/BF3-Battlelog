@@ -231,9 +231,9 @@ public final class Constants {
     public static final String[] FIELD_NAMES_FORUM_REPORT = new String[] {
             "reason", "post-check-sum"
     };
-    
+
     public static final String[] FIELD_NAMES_COMMENTS_NEW = new String[] {
-        "comment", "post-check-sum"
+            "comment", "post-check-sum"
     };
 
     public static final String[] FIELD_NAMES_CHECKSUM = new String[] {

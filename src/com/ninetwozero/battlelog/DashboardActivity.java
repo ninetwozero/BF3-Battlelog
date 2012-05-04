@@ -438,10 +438,10 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
             }
 
-        } else if(keyCode == KeyEvent.KEYCODE_SEARCH ) {
-            
-            startActivity( new Intent(this, SearchActivity.class) );
-            
+        } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
+
+            startActivity(new Intent(this, SearchActivity.class));
+
         }
         return super.onKeyDown(keyCode, event);
 

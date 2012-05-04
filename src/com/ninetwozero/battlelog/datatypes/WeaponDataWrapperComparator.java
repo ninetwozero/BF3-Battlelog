@@ -1,7 +1,6 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-import com.ninetwozero.battlelog.R;
 import java.util.Comparator;
 
 public class WeaponDataWrapperComparator implements Comparator<WeaponDataWrapper> {
@@ -14,19 +13,19 @@ public class WeaponDataWrapperComparator implements Comparator<WeaponDataWrapper
 
         // Return!
         if (p1.getKills() < p2.getKills()) {
-            
+
             return 1;
-        
+
         } else if (p1.getKills() > p2.getKills()) {
-        
+
             return -1;
 
         } else {
-            
+
             return 0;
-            
+
         }
-        
+
     }
 
 }

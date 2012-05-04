@@ -74,9 +74,10 @@ public class WeaponListAdapter extends BaseAdapter {
         // Get the current item
         WeaponDataWrapper base = getItem(position);
         WeaponStats data = base.getStats();
-        
-        //Calculate teh unlock progress
-        double unlockProgress = base.getNumUnlocks() == 0 ? 1 : base.getNumUnlocked()/((double) base.getNumUnlocks());
+
+        // Calculate teh unlock progress
+        double unlockProgress = base.getNumUnlocks() == 0 ? 1 : base.getNumUnlocked()
+                / ((double) base.getNumUnlocks());
 
         // Recycle
         if (convertView == null) {
@@ -88,32 +89,36 @@ public class WeaponListAdapter extends BaseAdapter {
 
         // Populate fields
         ((TextView) convertView.findViewById(R.id.text_title)).setText(data.getName());
-        ((TextView) convertView.findViewById(R.id.text_sstars)).setText(data.getServiceStars() + "");
-        
+        ((TextView) convertView.findViewById(R.id.text_sstars))
+                .setText(data.getServiceStars() + "");
+
         // Setup the progress
         ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progress_unlocks);
         TextView textProgress = (TextView) convertView.findViewById(R.id.text_progress);
-        if( unlockProgress >= 1.0 ) {
+        if (unlockProgress >= 1.0) {
 
-            ((TextView) convertView.findViewById(R.id.text_status)).setText(R.string.info_unlocks_done);
+            ((TextView) convertView.findViewById(R.id.text_status))
+                    .setText(R.string.info_unlocks_done);
             progressBar.setVisibility(View.GONE);
-            textProgress.setVisibility( View.GONE );
-            
-        } else {
-        
-            progressBar.setMax(1000);
-            progressBar.setProgress(((int)(unlockProgress * 1000)));
-            progressBar.setVisibility(View.VISIBLE);
-            
-            textProgress.setText( (Math.round(unlockProgress * 1000)/10.0) + "%");
-            textProgress.setVisibility( View.VISIBLE);
+            textProgress.setVisibility(View.GONE);
 
-            ((TextView) convertView.findViewById(R.id.text_status)).setText(base.getNumUnlocks() + "/" + base.getNumUnlocks());
-            
+        } else {
+
+            progressBar.setMax(1000);
+            progressBar.setProgress(((int) (unlockProgress * 1000)));
+            progressBar.setVisibility(View.VISIBLE);
+
+            textProgress.setText((Math.round(unlockProgress * 1000) / 10.0) + "%");
+            textProgress.setVisibility(View.VISIBLE);
+
+            ((TextView) convertView.findViewById(R.id.text_status)).setText(base.getNumUnlocks()
+                    + "/" + base.getNumUnlocks());
+
         }
-        
-        //Last but not least - the almighty image
-        ((ImageView) convertView.findViewById(R.id.image_item)).setImageResource( DrawableResourceList.getWeapon( data.getGuid() ) );
+
+        // Last but not least - the almighty image
+        ((ImageView) convertView.findViewById(R.id.image_item))
+                .setImageResource(DrawableResourceList.getWeapon(data.getGuid()));
 
         // Tag it!
         convertView.setTag(base);

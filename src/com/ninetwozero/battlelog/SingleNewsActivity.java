@@ -37,14 +37,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.NewsData;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.fragments.NewsCommentListFragment;
-import com.ninetwozero.battlelog.fragments.FeedFragment;
 import com.ninetwozero.battlelog.fragments.NewsOverviewFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -132,7 +128,8 @@ public class SingleNewsActivity extends FragmentActivity implements DefaultFragm
             listFragments = new Vector<Fragment>();
             listFragments.add(fragmentOverview = (NewsOverviewFragment) Fragment.instantiate(
                     this, NewsOverviewFragment.class.getName()));
-            listFragments.add(fragmentComment = (NewsCommentListFragment) Fragment.instantiate(this,
+            listFragments.add(fragmentComment = (NewsCommentListFragment) Fragment.instantiate(
+                    this,
                     NewsCommentListFragment.class.getName()));
 
             // Add the profileData
@@ -195,7 +192,7 @@ public class SingleNewsActivity extends FragmentActivity implements DefaultFragm
             ((Activity) this).finish();
 
         }
-        
+
         // Return true yo
         return true;
 
@@ -233,7 +230,8 @@ public class SingleNewsActivity extends FragmentActivity implements DefaultFragm
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {}
+            ContextMenuInfo menuInfo) {
+    }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {

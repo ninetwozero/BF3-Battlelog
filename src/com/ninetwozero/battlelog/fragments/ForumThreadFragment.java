@@ -32,7 +32,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -398,30 +397,30 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                     // Do we need to hide?
                     slidingDrawer.setVisibility(threadData.isLocked() ? View.GONE : View.VISIBLE);
-                    
+
                     // Scroll to top
                     listView.post(
-    
-                        new Runnable() {
-    
-                            @Override
-                            public void run() {
 
-                                // Set the selection
-                                listView.setSelection(0);
+                            new Runnable() {
 
-                                // Hide it
-                                wrapLoader.setVisibility(View.GONE);
-                                rotateAnimation.reset();
-    
+                                @Override
+                                public void run() {
+
+                                    // Set the selection
+                                    listView.setSelection(0);
+
+                                    // Hide it
+                                    wrapLoader.setVisibility(View.GONE);
+                                    rotateAnimation.reset();
+
+                                }
+
                             }
-    
-                        }
-    
-                    );
-            
+
+                            );
+
                 }
-                
+
             }
 
         }
