@@ -24,10 +24,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.*;
 import android.view.View.OnClickListener;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.ninetwozero.battlelog.CompareActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.UnlockActivity;
@@ -64,7 +61,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
@@ -104,10 +101,12 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
                     @Override
                     public void onClick(View sv) {
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        ProfilePersonaListDialog dialog = ProfilePersonaListDialog.newInstance(profileData);
-                        dialog.show(transaction, "ProfilePersonaListDialog");
-                        reload();
+                        if (personaArrayLength() > 1) {
+                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                            ProfilePersonaListDialog dialog = ProfilePersonaListDialog.newInstance(profileData);
+                            dialog.show(transaction, "ProfilePersonaListDialog");
+                            reload();
+                        }
                     }
                 });
     }
@@ -123,6 +122,10 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         View view = getView();
         if (view == null) {
             return;
+        }
+
+        if (personaArrayLength() == 1) {
+            ((ImageView) view.findViewById(R.id.img_persona_list)).setVisibility(View.INVISIBLE);
         }
 
         // Persona & rank
@@ -212,6 +215,10 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
         }
 
+    }
+
+    private int personaArrayLength(){
+        return profileData.getPersonaArray().length;
     }
 
     public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
@@ -389,13 +396,13 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
             startActivity(
 
-            new Intent(
+                    new Intent(
 
-                    context, CompareActivity.class
+                            context, CompareActivity.class
 
-            ).putExtra(
+                    ).putExtra(
 
-                    "profile1", SessionKeeper.getProfileData()
+                            "profile1", SessionKeeper.getProfileData()
 
                     ).putExtra(
 
@@ -428,13 +435,13 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
             startActivity(
 
-            new Intent(
+                    new Intent(
 
-                    context, UnlockActivity.class
+                            context, UnlockActivity.class
 
-            ).putExtra(
+                    ).putExtra(
 
-                    "profile", profileData
+                            "profile", profileData
 
                     ).putExtra(
 
