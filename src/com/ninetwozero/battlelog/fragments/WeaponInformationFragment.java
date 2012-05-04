@@ -202,7 +202,7 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         
         imageItem.setImageResource( DrawableResourceList.getWeapon(w.getData().getIdentifier()) );
         textTitle.setText(w.getData().getName());
-        textDesc.setText( StringResourceList.getWeapon( w.getData().getIdentifier() ) );
+        textDesc.setText( StringResourceList.getWeaponDescription( w.getData().getIdentifier() ) );
         
         //Add fields for the text, and set the data
         textAuto.setText( w.getData().isAuto() ? R.string.general_yes : R.string.general_no );

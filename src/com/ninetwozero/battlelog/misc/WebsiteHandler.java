@@ -3298,7 +3298,7 @@ public class WebsiteHandler {
                             // Let's see
                             String parentKey = tempSubItem
                                     .getString("parentLangKeyTitle");
-                            tempKey = DataBank.getWeaponTitleShort(parentKey);
+                            tempKey = DataBank.getWeaponTitle(parentKey);
 
                             // Is it empty?
                             if (!parentKey.equals(tempKey)) {
@@ -3320,7 +3320,7 @@ public class WebsiteHandler {
                                     itemContent += tempKey
                                             + " "
                                             + DataBank
-                                                    .getVehicleAddon(tempSubItem
+                                                    .getVehicleUpgradeTitle(tempSubItem
                                                             .getString("langKeyTitle"));
 
                                 } else {
@@ -3335,15 +3335,15 @@ public class WebsiteHandler {
 
                             // Let's see
                             String key = tempSubItem.getString("langKeyTitle");
-                            tempKey = DataBank.getWeaponTitleShort(key);
+                            tempKey = DataBank.getWeaponTitle(key);
 
                             if (key.equals(tempKey)) {
 
-                                tempKey = DataBank.getVehicleAddon(key);
+                                tempKey = DataBank.getVehicleUpgradeTitle(key);
 
                                 if (key.equals(tempKey)) {
 
-                                    tempKey = DataBank.getKitUnlockTitle(key);
+                                    tempKey = DataBank.getKitTitle(key);
 
                                     if (key.equals(tempKey)) {
 

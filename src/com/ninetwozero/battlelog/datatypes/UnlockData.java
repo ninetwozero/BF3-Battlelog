@@ -21,6 +21,7 @@ import android.os.Parcelable;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.DrawableResourceList;
+import com.ninetwozero.battlelog.misc.StringResourceList;
 
 public class UnlockData implements Parcelable {
 
@@ -99,7 +100,7 @@ public class UnlockData implements Parcelable {
             return "";
     }
 
-    public String getTitle() {
+    public String getTitle(Context c) {
 
         if (type.equals(CATEGORY_WEAPON)) {
 
@@ -111,11 +112,11 @@ public class UnlockData implements Parcelable {
 
         } else if (type.equals(CATEGORY_VEHICLE)) {
 
-            return DataBank.getVehicleAddon(unlockIdentifier);
+            return DataBank.getVehicleUpgradeTitle(unlockIdentifier);
 
         } else if (type.equals(CATEGORY_KIT)) {
 
-            return DataBank.getKitUnlockTitle(unlockIdentifier);
+            return DataBank.getKitTitle(unlockIdentifier);
 
         } else if (type.equals(CATEGORY_SKILL)) {
 
@@ -159,33 +160,33 @@ public class UnlockData implements Parcelable {
         
     }
 
-    public String getName() {
+    public String getName(Context c) {
 
         // Check how it went
         if (type.equals(CATEGORY_WEAPON)) {
 
-            return getTitle();
+            return getTitle(c);
 
         } else if (type.equals(CATEGORY_ATTACHMENT)) {
 
-            return getParent() + " " + getTitle();
+            return getParent() + " " + getTitle(c);
 
         } else if (type.equals(CATEGORY_VEHICLE)) {
 
             // return getParent() + " " + getTitle();
-            return getTitle();
+            return getTitle(c);
 
         } else if (type.equals(CATEGORY_KIT)) {
 
-            return getTitle();
+            return getTitle(c);
 
         } else if (type.equals(CATEGORY_SKILL)) {
 
-            return getTitle();
+            return getTitle(c);
 
         } else {
 
-            return getTitle();
+            return getTitle(c);
 
         }
 
@@ -249,25 +250,7 @@ public class UnlockData implements Parcelable {
 
     public String getType() {
         return type;
-    }
-
-    public String getTypeTitle() {
-
-        if (type.equals(CATEGORY_WEAPON))
-            return "Weapon";
-        else if (type.equals(CATEGORY_ATTACHMENT))
-            return "Attachment";
-        else if (type.equals(CATEGORY_VEHICLE))
-            return "Upgrade";
-        else if (type.equals(CATEGORY_SKILL))
-            return "Skill";
-        else if (type.equals(CATEGORY_KIT))
-            return "Kit";
-        else
-            return "N/A";
-
-    }
-    
+    }    
 
     @Override
     public int describeContents() {

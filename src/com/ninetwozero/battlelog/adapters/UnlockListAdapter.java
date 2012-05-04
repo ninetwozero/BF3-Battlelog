@@ -99,7 +99,7 @@ public class UnlockListAdapter extends BaseAdapter {
 
         // Title
         ((TextView) convertView.findViewById(R.id.text_unlock_title))
-                .setText(currentUnlock.getTitle());
+                .setText(currentUnlock.getTitle(context));
 
         // Description
         ((TextView) convertView.findViewById(R.id.text_unlock_desc))
