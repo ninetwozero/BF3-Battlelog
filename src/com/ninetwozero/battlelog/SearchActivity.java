@@ -67,7 +67,8 @@ public class SearchActivity extends ListActivity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         PublicUtils.restoreCookies(this, icicle);
 
-        // Setup the locale
+        // Setup the important stuff
+        PublicUtils.setupFullscreen(this, sharedPreferences);
         PublicUtils.setupLocale(this, sharedPreferences);
 
         // Set the content view

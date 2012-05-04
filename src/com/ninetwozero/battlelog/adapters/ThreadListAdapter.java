@@ -230,7 +230,7 @@ public class ThreadListAdapter extends BaseAdapter {
 
     public void add(List<ForumThreadData> array) {
 
-        itemArray.addAll(array); /* TODO FIX THIS */
+        itemArray.addAll(array);
         notifyDataSetChanged();
 
     }

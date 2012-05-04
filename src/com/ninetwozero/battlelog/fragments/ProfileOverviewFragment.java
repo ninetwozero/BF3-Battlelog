@@ -369,17 +369,16 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 // Let's try something
                 if (profileData.getNumPersonas() == 0) {
 
-                    profileData = WebsiteHandler.getPersonaIdFromProfile(profileData.getId());
+                    profileData = WebsiteHandler.getPersonaIdFromProfile(profileData);
 
                 }
 
                 // Let's get the personas!
-                profileInformation = WebsiteHandler
-                        .getProfileInformationForUser(
+                profileInformation = WebsiteHandler.getProfileInformationForUser(
 
-                                context,
-                                profileData,
-                                activeProfileId
+                        context,
+                        profileData,
+                        activeProfileId
 
                         );
 

@@ -325,17 +325,33 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
                 }
 
-                // Hide it
-                wrapLoader.setVisibility(View.GONE);
-                rotateAnimation.reset();
+                if (results) {
 
-            }
+                    textTitle.setText(forumData.getTitle());
+                    ((ThreadListAdapter) list.getAdapter()).set(forumData
+                            .getThreads());
 
-            if (results) {
+                    listView.post(
 
-                textTitle.setText(forumData.getTitle());
-                ((ThreadListAdapter) list.getAdapter()).set(forumData
-                        .getThreads());
+                            new Runnable() {
+
+                                @Override
+                                public void run() {
+
+                                    // Set the selection
+                                    listView.setSelection(0);
+
+                                    // Hide it
+                                    wrapLoader.setVisibility(View.GONE);
+                                    rotateAnimation.reset();
+
+                                }
+
+                            }
+
+                            );
+
+                }
 
             }
 

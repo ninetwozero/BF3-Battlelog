@@ -78,6 +78,7 @@ public class AssignmentActivity extends Activity {
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Setup the locale
+        PublicUtils.setupFullscreen(this, sharedPreferences);
         PublicUtils.setupSession(this, sharedPreferences);
         PublicUtils.setupLocale(this, sharedPreferences);
 
