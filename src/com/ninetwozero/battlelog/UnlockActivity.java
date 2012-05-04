@@ -332,14 +332,16 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
                     if (selectedPersona == 0) {
                         selectedPersona = profileData.getPersona(0).getId();
                     }
-                    unlocks = WebsiteHandler.getUnlocksForUser(profileData);
+                    unlocks = WebsiteHandler.getUnlocksForUser(profileData,
+                            sharedPreferences.getInt(Constants.SP_BL_UNLOCKS_LIMIT_MIN, 1));
 
                 } else {
 
                     if (selectedPersona == 0) {
                         selectedPersona = arg0[0].getPersona(0).getId();
                     }
-                    unlocks = WebsiteHandler.getUnlocksForUser(arg0[0]);
+                    unlocks = WebsiteHandler.getUnlocksForUser(arg0[0],
+                            sharedPreferences.getInt(Constants.SP_BL_UNLOCKS_LIMIT_MIN, 1));
 
                 }
 

@@ -32,7 +32,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -382,9 +381,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                     if (threadData.getNumPages() > 1) {
 
                         wrapButtons.setVisibility(View.VISIBLE);
-                        buttonJump
-                                .setText(R.string.info_xml_feed_button_jump);
-                        Log.d(Constants.DEBUG_TAG, "currentPage => " + currentPage);
+                        buttonJump.setText(R.string.info_xml_feed_button_jump);
                         buttonPrev.setEnabled(currentPage > 1);
                         buttonNext.setEnabled(currentPage < threadData.getNumPages());
                         buttonJump.setEnabled(true);
@@ -399,19 +396,32 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                     }
 
                     // Do we need to hide?
-                    if (threadData.isLocked()) {
-                        slidingDrawer.setVisibility(View.GONE);
-                    } else {
-                        slidingDrawer.setVisibility(View.VISIBLE);
-                    }
+                    slidingDrawer.setVisibility(threadData.isLocked() ? View.GONE : View.VISIBLE);
+
+                    // Scroll to top
+                    listView.post(
+
+                            new Runnable() {
+
+                                @Override
+                                public void run() {
+
+                                    // Set the selection
+                                    listView.setSelection(0);
+
+                                    // Hide it
+                                    wrapLoader.setVisibility(View.GONE);
+                                    rotateAnimation.reset();
+
+                                }
+
+                            }
+
+                            );
 
                 }
 
             }
-
-            // Hide it
-            wrapLoader.setVisibility(View.GONE);
-            rotateAnimation.reset();
 
         }
 

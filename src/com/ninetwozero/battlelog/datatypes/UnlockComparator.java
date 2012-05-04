@@ -7,17 +7,20 @@ public class UnlockComparator implements Comparator<UnlockData> {
 
     public int compare(UnlockData o1, UnlockData o2) {
 
-        // Grab the data
-        UnlockData p1 = (UnlockData) o1;
-        UnlockData p2 = (UnlockData) o2;
-
         // Return!
-        if (p1.getUnlockPercentage() < p2.getUnlockPercentage())
-            return 1;
-        if (p1.getUnlockPercentage() > p2.getUnlockPercentage())
+        if (o1.getUnlockPercentage() > o2.getUnlockPercentage()) {
+
             return -1;
-        else
+
+        } else if (o1.getUnlockPercentage() == o2.getUnlockPercentage()) {
+
             return 0;
+
+        } else {
+
+            return 1;
+
+        }
 
     }
 

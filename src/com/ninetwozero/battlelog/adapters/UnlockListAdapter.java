@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -93,12 +94,12 @@ public class UnlockListAdapter extends BaseAdapter {
                         getColorForKit(currentUnlock.getKitId())));
         ((TextView) convertView.findViewById(R.id.text_unlock_percent))
                 .setText(currentUnlock.getUnlockPercentage() + "%");
-        ((TextView) convertView.findViewById(R.id.text_unlock_type))
-                .setText(currentUnlock.getTypeTitle());
+        ((ImageView) convertView.findViewById(R.id.image_unlock))
+                .setImageResource(currentUnlock.getImageResource());
 
         // Title
         ((TextView) convertView.findViewById(R.id.text_unlock_title))
-                .setText(currentUnlock.getName());
+                .setText(currentUnlock.getTitle(context));
 
         // Description
         ((TextView) convertView.findViewById(R.id.text_unlock_desc))

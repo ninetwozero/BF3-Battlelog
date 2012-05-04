@@ -25,45 +25,45 @@ public class CommentData implements Parcelable {
     private ProfileData author;
 
     // Constructs
-    public CommentData(long id, long iId, long cDate, String c, ProfileData a) {
+    public CommentData(long i, long iId, long cDate, String c, ProfileData a) {
 
-        this.id = id;
-        this.itemId = iId;
-        this.timestamp = cDate;
-        this.content = c;
-        this.author = a;
+        id = i;
+        itemId = iId;
+        timestamp = cDate;
+        content = c;
+        author = a;
 
     }
 
     public CommentData(Parcel in) {
 
-        this.id = in.readLong();
-        this.itemId = in.readLong();
-        this.timestamp = in.readLong();
-        this.content = in.readString();
-        this.author = in.readParcelable(ProfileData.class.getClassLoader());
+        id = in.readLong();
+        itemId = in.readLong();
+        timestamp = in.readLong();
+        content = in.readString();
+        author = in.readParcelable(ProfileData.class.getClassLoader());
 
     }
 
     // Getters
     public long getId() {
-        return this.id;
+        return id;
     }
 
     public long getItemId() {
-        return this.itemId;
+        return itemId;
     }
 
     public long getTimestamp() {
-        return this.timestamp;
+        return timestamp;
     }
 
     public String getContent() {
-        return this.content;
+        return content;
     }
 
     public ProfileData getAuthor() {
-        return this.author;
+        return author;
     }
 
     @Override
@@ -79,11 +79,11 @@ public class CommentData implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int arg1) {
 
-        out.writeLong(this.id);
-        out.writeLong(this.itemId);
-        out.writeLong(this.timestamp);
-        out.writeString(this.content);
-        out.writeParcelable(this.author, arg1);
+        out.writeLong(id);
+        out.writeLong(itemId);
+        out.writeLong(timestamp);
+        out.writeString(content);
+        out.writeParcelable(author, arg1);
 
     }
 

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,6 +67,9 @@ import com.ninetwozero.battlelog.datatypes.TopStatsComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockComparator;
 import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
+import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
+import com.ninetwozero.battlelog.datatypes.WeaponDataWrapperComparator;
+import com.ninetwozero.battlelog.datatypes.WeaponInfo;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 
@@ -755,7 +759,7 @@ public class WebsiteHandler {
     }
 
     public static HashMap<Long, UnlockDataWrapper> getUnlocksForUser(
-            final ProfileData pd) throws WebsiteHandlerException {
+            final ProfileData pd, final int minCompletion) throws WebsiteHandlerException {
 
         try {
 
@@ -801,7 +805,6 @@ public class WebsiteHandler {
                 JSONObject dataObject = new JSONObject(content)
                         .getJSONObject("data");
                 JSONArray unlockResults = dataObject.optJSONArray("unlocks");
-                int unlockKit;
 
                 if (dataObject.isNull("unlocks") || unlockResults.length() == 0) {
 
@@ -817,166 +820,36 @@ public class WebsiteHandler {
 
                     // Get the temporary object
                     JSONObject unlockRow = unlockResults.optJSONObject(i);
+                    UnlockData unlockData = getUnlockDataFromJSON(unlockRow, minCompletion);
 
-                    try {
-
-                        unlockKit = unlockRow.getInt("kit");
-
-                    } catch (Exception ex) {
-
-                        unlockKit = 0;
+                    if (unlockData == null) {
+                        continue;
 
                     }
 
-                    // What did we get?
-                    if (!unlockRow.isNull("weaponAddonUnlock")) {
+                    // Send it to the appropriate
+                    if (unlockData.getType().equals(UnlockData.CATEGORY_WEAPON)) {
 
-                        // Get the object
-                        JSONObject detailObject = unlockRow
-                                .getJSONObject("weaponAddonUnlock");
-                        JSONObject unlockDetails = detailObject
-                                .getJSONObject("unlockedBy");
+                        weaponArray.add(unlockData);
 
-                        // Bigger than 0.0 (ie 0.1+)?
-                        if (unlockDetails.getDouble("completion") == 0.0) {
-                            continue;
-                        }
+                    } else if (unlockData.getType().equals(UnlockData.CATEGORY_ATTACHMENT)) {
 
-                        // Add them to the array
-                        attachmentArray.add(
+                        attachmentArray.add(unlockData);
 
-                                new UnlockData(
+                    } else if (unlockData.getType().equals(UnlockData.CATEGORY_KIT)) {
 
-                                        unlockKit, unlockDetails.getDouble("completion"),
-                                        unlockDetails.getLong("valueNeeded"),
-                                        unlockDetails.getLong("actualValue"),
-                                        detailObject.getString("weaponCode"),
-                                        detailObject.getString("unlockId"),
-                                        unlockDetails.getString("codeNeeded"),
-                                        "weapon+"
+                        kitUnlockArray.add(unlockData);
 
-                                )
+                    } else if (unlockData.getType().equals(UnlockData.CATEGORY_VEHICLE)) {
 
-                                );
+                        vehicleUpgradeArray.add(unlockData);
 
-                    } else if (!unlockRow.isNull("kitItemUnlock")) {
+                    } else if (unlockData.getType().equals(UnlockData.CATEGORY_SKILL)) {
 
-                        // Get the object
-                        JSONObject detailObject = unlockRow
-                                .getJSONObject("kitItemUnlock");
-                        JSONObject unlockDetails = detailObject
-                                .getJSONObject("unlockedBy");
+                        skillArray.add(unlockData);
 
-                        // Less than 1.0?
-                        if (unlockDetails.getDouble("completion") < 1.0) {
-                            continue;
-                        }
-
-                        // Add them to the array
-                        kitUnlockArray.add(
-
-                                new UnlockData(
-
-                                        unlockKit, unlockDetails.getDouble("completion"),
-                                        unlockDetails.getLong("valueNeeded"),
-                                        unlockDetails.getLong("actualValue"), unlockRow
-                                                .getString("parentId"), detailObject
-                                                .getString("unlockId"), unlockDetails
-                                                .getString("codeNeeded"), "kit+"
-
-                                )
-
-                                );
-
-                    } else if (!unlockRow.isNull("vehicleAddonUnlock")) {
-
-                        // Get the object
-                        JSONObject detailObject = unlockRow
-                                .getJSONObject("vehicleAddonUnlock");
-                        JSONObject unlockDetails = detailObject
-                                .getJSONObject("unlockedBy");
-
-                        // Less than 1.0?
-                        if (unlockDetails.getDouble("completion") < 1.0) {
-                            continue;
-                        }
-
-                        // Add them to the array
-                        vehicleUpgradeArray.add(
-
-                                new UnlockData(
-
-                                        unlockKit, unlockDetails.getDouble("completion"),
-                                        unlockDetails.getLong("valueNeeded"),
-                                        unlockDetails.getLong("actualValue"), unlockRow
-                                                .getString("parentId"), detailObject
-                                                .getString("unlockId"), unlockDetails
-                                                .getString("codeNeeded"), "vehicle+"
-
-                                )
-
-                                );
-
-                    } else if (!unlockRow.isNull("weaponUnlock")) {
-
-                        // Get the object
-                        JSONObject detailObject = unlockRow
-                                .getJSONObject("weaponUnlock");
-                        JSONObject unlockDetails = detailObject
-                                .getJSONObject("unlockedBy");
-
-                        // Less than 1.0?
-                        if (unlockDetails.getDouble("completion") < 1.0) {
-                            continue;
-                        }
-
-                        // Add them to the array
-                        weaponArray.add(
-
-                                new UnlockData(
-
-                                        unlockKit, unlockDetails.getDouble("completion"),
-                                        unlockDetails.getLong("valueNeeded"),
-                                        unlockDetails.getLong("actualValue"), unlockRow
-                                                .getString("parentId"), detailObject
-                                                .getString("unlockId"), unlockDetails
-                                                .getString("codeNeeded"), "weapon"
-
-                                )
-
-                                );
-
-                    } else if (!unlockRow.isNull("soldierSpecializationUnlock")) {
-
-                        // Get the object
-                        JSONObject detailObject = unlockRow
-                                .getJSONObject("soldierSpecializationUnlock");
-                        JSONObject unlockDetails = detailObject
-                                .getJSONObject("unlockedBy");
-
-                        // Less than 1.0?
-                        if (unlockDetails.getDouble("completion") < 1.0) {
-                            continue;
-                        }
-
-                        // Add them to the array
-                        skillArray.add(
-
-                                new UnlockData(
-
-                                        unlockKit, unlockDetails.getDouble("completion"),
-                                        unlockDetails.getLong("valueNeeded"),
-                                        unlockDetails.getLong("actualValue"), unlockRow
-                                                .getString("parentId"), detailObject
-                                                .getString("unlockId"), unlockDetails
-                                                .getString("codeNeeded"), "skill"
-
-                                )
-
-                                );
-
-                    } else {
                     }
+
                 }
 
                 // Let's put them together
@@ -1006,6 +879,62 @@ public class WebsiteHandler {
         } catch (Exception ex) {
 
             ex.printStackTrace();
+            throw new WebsiteHandlerException(ex.getMessage());
+
+        }
+
+    }
+
+    public static UnlockData getUnlockDataFromJSON(JSONObject row, double minCompletion)
+            throws WebsiteHandlerException {
+
+        try {
+
+            // Attributes
+            final String[] unlockCategories = {
+                    UnlockData.CATEGORY_WEAPON,
+                    UnlockData.CATEGORY_ATTACHMENT,
+                    UnlockData.CATEGORY_VEHICLE,
+                    UnlockData.CATEGORY_KIT,
+                    UnlockData.CATEGORY_SKILL
+            };
+
+            for (String category : unlockCategories) {
+
+                // If the category is null, then we need to loop another one!
+                if (row.isNull(category)) {
+                    continue;
+                }
+
+                // Get the object
+                JSONObject detailObject = row.getJSONObject(category);
+                JSONObject unlockDetails = detailObject
+                        .getJSONObject("unlockedBy");
+
+                // Less than 1.0?
+                if (unlockDetails.getDouble("completion") < minCompletion) {
+                    continue;
+                }
+
+                // Add them to the array
+                return new UnlockData(
+
+                        row.optInt("kit", 0),
+                        unlockDetails.getDouble("completion"),
+                        unlockDetails.optLong("valueNeeded", 0),
+                        unlockDetails.optLong("actualValue", 0),
+                        row.getString("parentId"),
+                        detailObject.getString("unlockId"),
+                        unlockDetails.getString("codeNeeded"), category
+
+                );
+
+            }
+
+            return null;
+
+        } catch (Exception ex) {
+
             throw new WebsiteHandlerException(ex.getMessage());
 
         }
@@ -1073,7 +1002,7 @@ public class WebsiteHandler {
 
                         // Grab the object
                         tempObj = requestsObject.optJSONObject(i);
-
+                        Log.d(Constants.DEBUG_TAG, "friendRequest => " + tempObj.toString(2));
                         // Save it
                         profileRowRequests.add(
 
@@ -1706,10 +1635,7 @@ public class WebsiteHandler {
                             Long.parseLong(personaObject
                                     .getString("personaId")),
                             (personaObject.isNull("personaName") ? username
-                                    : personaObject.getString("personaName")) + " " + DataBank
-                                    .resolvePlatformId(DataBank
-                                            .getPlatformIdFromName(personaObject
-                                                    .getString("namespace"))),
+                                    : personaObject.getString("personaName")),
                             DataBank
                                     .getPlatformIdFromName(personaObject
                                             .getString("namespace")),
@@ -3372,7 +3298,7 @@ public class WebsiteHandler {
                             // Let's see
                             String parentKey = tempSubItem
                                     .getString("parentLangKeyTitle");
-                            tempKey = DataBank.getWeaponTitleShort(parentKey);
+                            tempKey = DataBank.getWeaponTitle(parentKey);
 
                             // Is it empty?
                             if (!parentKey.equals(tempKey)) {
@@ -3394,7 +3320,7 @@ public class WebsiteHandler {
                                     itemContent += tempKey
                                             + " "
                                             + DataBank
-                                                    .getVehicleAddon(tempSubItem
+                                                    .getVehicleUpgradeTitle(tempSubItem
                                                             .getString("langKeyTitle"));
 
                                 } else {
@@ -3409,15 +3335,15 @@ public class WebsiteHandler {
 
                             // Let's see
                             String key = tempSubItem.getString("langKeyTitle");
-                            tempKey = DataBank.getWeaponTitleShort(key);
+                            tempKey = DataBank.getWeaponTitle(key);
 
                             if (key.equals(tempKey)) {
 
-                                tempKey = DataBank.getVehicleAddon(key);
+                                tempKey = DataBank.getVehicleUpgradeTitle(key);
 
                                 if (key.equals(tempKey)) {
 
-                                    tempKey = DataBank.getKitUnlockTitle(key);
+                                    tempKey = DataBank.getKitTitle(key);
 
                                     if (key.equals(tempKey)) {
 
@@ -4593,10 +4519,12 @@ public class WebsiteHandler {
             // Let's login everybody!
             RequestHandler rh = new RequestHandler();
             int numUsers = userId.length;
-            List<PostData> postData = new ArrayList<PostData>(){{
-                add(new PostData(Constants.FIELD_NAMES_PLATOON_INVITE[0],platoonId + ""));
-                add(new PostData(Constants.FIELD_NAMES_PLATOON_INVITE[1],checksum));
-            }};
+            List<PostData> postData = new ArrayList<PostData>() {
+                {
+                    add(new PostData(Constants.FIELD_NAMES_PLATOON_INVITE[0], platoonId + ""));
+                    add(new PostData(Constants.FIELD_NAMES_PLATOON_INVITE[1], checksum));
+                }
+            };
             // We need to construct the array
             for (int i = 2, max = (numUsers + 2); i < max; i++) {
 
@@ -5958,65 +5886,248 @@ public class WebsiteHandler {
 
     }
 
-    public static List<WeaponStats> getWeaponStatisticsForPersona(long profileId,
-            int platformId) { /* TODO: WORK IN PROGRESS */
+    public static Map<Long, List<WeaponDataWrapper>> getWeapons(ProfileData p) {
 
         try {
 
             // Init
             RequestHandler rh = new RequestHandler();
-            List<WeaponStats> weaponStatsArray = new ArrayList<WeaponStats>();
+            Map<Long, List<WeaponDataWrapper>> weaponDataMap = new HashMap<Long, List<WeaponDataWrapper>>();
 
-            // Get the data
-            String httpContent = rh.get(
+            for (int i = 0, max = p.getNumPersonas(); i < max; i++) {
 
-                    Constants.URL_STATS_WEAPONS.replace("{PID}", profileId + "").replace(
-                            "{PLATFORM_ID}", platformId + ""),
-                    0
+                // Init the array
+                List<WeaponDataWrapper> weaponDataArray = new ArrayList<WeaponDataWrapper>();
 
-                    );
+                // Get the data
+                String httpContent = rh.get(
 
-            // So... how'd it go?
-            if (httpContent != null && !httpContent.equals("")) {
+                        Constants.URL_STATS_WEAPONS.replace("{PID}", p.getPersona(i).getId() + "")
+                                .replace(
+                                        "{PLATFORM_ID}", p.getPersona(i).getPlatformId() + ""),
+                        0
 
-                // Woo, we got results
-                JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
-                JSONArray weaponStats = baseObject.getJSONArray("mainWeaponStats");
+                        );
 
-                // Let's iterate over the JSONArray
-                for (int count = 0, maxCount = weaponStats.length(); count < maxCount; count++) {
+                // So... how'd it go?
+                if (httpContent != null && !httpContent.equals("")) {
 
-                    // Get the current item
-                    JSONObject currentItem = weaponStats.getJSONObject(count);
+                    // Woo, we got results
+                    JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
+                    JSONObject weaponInfoObject = baseObject.getJSONObject("bf3GadgetsLocale")
+                            .getJSONObject("weapons");
+                    JSONArray weaponStats = baseObject.getJSONArray("mainWeaponStats");
+                    JSONObject unlockMap = baseObject.getJSONObject("unlocksAdded");
 
-                    // Store it
-                    weaponStatsArray.add(
+                    // Let's iterate over the JSONArray
+                    for (int count = 0, maxCount = weaponStats.length(); count < maxCount; count++) {
 
-                            new WeaponStats(
+                        // Get the current item
+                        int numUnlocked = 0;
+                        List<UnlockData> unlocks = new ArrayList<UnlockData>();
+                        JSONObject currentItem = weaponStats.getJSONObject(count);
 
-                                    currentItem.getString("name"),
-                                    currentItem.getString("guid"),
-                                    currentItem.getString("slug"),
-                                    currentItem.getInt("kills"),
-                                    currentItem.getInt("headshots"),
-                                    currentItem.getInt("kitId"),
-                                    currentItem.getLong("shotsFired"),
-                                    currentItem.getLong("shotsHit"),
-                                    currentItem.getLong("timeEquipped"),
-                                    currentItem.getDouble("accuracy"),
-                                    currentItem.getDouble("serviceStars"),
-                                    currentItem.getDouble("serviceStarProgress")
+                        // Determine the GUID
+                        String guid = currentItem.isNull("duplicateOf") ? "guid" : "duplicateOf";
+
+                        // Get the "current weapon information"
+                        JSONObject currentWeapon = weaponInfoObject.getJSONObject(currentItem
+                                .getString("guid"));
+
+                        // Do we have unlocks for this item?
+                        if (!unlockMap.isNull(currentItem.getString(guid))) {
+
+                            // Unlocks
+                            JSONArray currentUnlocks = unlockMap.getJSONArray(currentItem
+                                    .getString(guid));
+
+                            // Iterate over the unlocks
+                            for (int uCount = 0, maxUCount = currentUnlocks.length(); uCount < maxUCount; uCount++) {
+
+                                // Grab the unlocks
+                                UnlockData unlockData = getUnlockDataFromJSON(
+                                        currentUnlocks.getJSONObject(uCount), 0);
+                                if (unlockData == null) {
+                                    continue;
+                                }
+
+                                // Increment
+                                if (unlockData.getScoreCurrent() >= unlockData.getScoreNeeded()) {
+
+                                    numUnlocked++;
+
+                                }
+
+                                unlocks.add(unlockData);
+
+                            }
+
+                        }
+                        /* TODO: VALIDATE BURST MODES */
+                        // Store it
+                        weaponDataArray.add(
+
+                                new WeaponDataWrapper(
+
+                                        numUnlocked,
+                                        new WeaponInfo(
+                                                currentItem.getString("guid"),
+                                                currentItem.getString("name"),
+                                                currentItem.getString("slug"),
+                                                currentWeapon.optInt("rateOfFire", 1),
+                                                WeaponInfo.RANGE_VLONG,
+                                                "Marshmallows",
+                                                currentWeapon.getBoolean("fireModeAuto"),
+                                                currentWeapon.getBoolean("fireModeBurst"),
+                                                currentWeapon.getBoolean("fireModeSingle")
+
+                                        ),
+                                        new WeaponStats(
+
+                                                currentItem.getString("name"),
+                                                currentItem.getString("guid"),
+                                                currentItem.getString("slug"),
+                                                currentItem.getInt("kills"),
+                                                currentItem.getInt("headshots"),
+                                                currentItem.optInt("kitId", 999),
+                                                currentItem.getLong("shotsFired"),
+                                                currentItem.getLong("shotsHit"),
+                                                currentItem.getLong("timeEquipped"),
+                                                currentItem.getDouble("accuracy"),
+                                                currentItem.getDouble("serviceStars"),
+                                                currentItem.optDouble("serviceStarProgress", 0.0)
+
+                                        ),
+                                        unlocks
+
+                                )
+
+                                );
+
+                    }
+
+                }
+
+                Collections.sort(weaponDataArray, new WeaponDataWrapperComparator());
+                weaponDataMap.put(p.getPersona(i).getId(), weaponDataArray);
+
+            }
+
+            // Return it!
+            return weaponDataMap;
+
+        } catch (RequestHandlerException ex) {
+
+            ex.printStackTrace();
+            return null;
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            return null;
+
+        }
+
+    }
+
+    public static HashMap<Long, WeaponDataWrapper> getWeapon(ProfileData p, WeaponInfo weaponInfo,
+            WeaponStats weaponStats) {
+
+        try {
+
+            // Init
+            RequestHandler rh = new RequestHandler();
+            List<UnlockData> unlockArray = new ArrayList<UnlockData>();
+            HashMap<Long, WeaponDataWrapper> weaponDataArray = new HashMap<Long, WeaponDataWrapper>();
+
+            // Iterate per persona
+            for (int i = 0, max = p.getNumPersonas(); i < max; i++) {
+
+                // Get the data
+                String httpContent = rh.get(
+
+                        Constants.URL_STATS_WEAPONS_INFO.replace(
+
+                                "{PNAME}", p.getPersona(i).getName()
+
+                                ).replace(
+
+                                        "{PID}", p.getPersona(i).getId() + ""
+
+                                ).replace(
+
+                                        "{SLUG}", weaponStats.getSlug()
+
+                                ).replace(
+
+                                        "{PLATFORM_ID}", p.getPersona(i).getPlatformId() + ""
+
+                                ), 0
+
+                        );
+
+                // So... how'd it go?
+                if (httpContent != null && !httpContent.equals("")) {
+
+                    // Clear the unlockArray
+                    unlockArray = new ArrayList<UnlockData>();
+
+                    // Woo, we got results
+                    JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
+                    JSONArray unlockObjectArray = baseObject.getJSONObject("statsItem")
+                            .getJSONObject("itemWeapon")
+                            .getJSONArray("unlocks");
+
+                    // Let's iterate over the unlocks
+                    for (int count = 0, maxCount = unlockObjectArray.length(); count < maxCount; count++) {
+
+                        // Get the current item
+                        JSONObject unlockObject = unlockObjectArray.getJSONObject(count);
+                        JSONObject unlockObjectBy = unlockObject.getJSONObject("unlockedBy");
+
+                        // Populate the array
+                        unlockArray.add(
+
+                                new UnlockData(
+
+                                        weaponStats.getKitId(),
+                                        unlockObjectBy.optDouble("completion", 0),
+                                        unlockObjectBy.optLong("valueNeeded", 0),
+                                        unlockObjectBy.optLong("actualValue", 0),
+                                        weaponStats.getName(),
+                                        unlockObject.getString("unlockId"),
+                                        unlockObjectBy.getString("codeNeeded"),
+                                        UnlockData.CATEGORY_ATTACHMENT
+
+                                )
+
+                                );
+
+                    }
+
+                    // Sort the unlocks
+                    Collections.sort(unlockArray, new UnlockComparator());
+
+                    // Add the data array to the WeaponDataWrapper
+                    weaponDataArray.put(
+
+                            p.getPersona(i).getId(),
+                            new WeaponDataWrapper(
+
+                                    0,
+                                    weaponInfo,
+                                    weaponStats,
+                                    unlockArray
 
                             )
 
                             );
-
                 }
 
             }
 
             // Return it!
-            return weaponStatsArray;
+            return weaponDataArray;
 
         } catch (RequestHandlerException ex) {
 
@@ -6110,6 +6221,69 @@ public class WebsiteHandler {
 
     }
 
+    public static List<CommentData> getCommentsForNews(NewsData n, int pageId)
+            throws WebsiteHandlerException {
+
+        try {
+
+            // Init!
+            RequestHandler rh = new RequestHandler();
+            List<CommentData> comments = new ArrayList<CommentData>();
+
+            // Get the data
+            String httpContent = rh.get(
+                    Constants.URL_NEWS_COMMENTS.replace("{ARTICLE_ID}", n.getId() + "").replace(
+                            "{PAGE}", pageId + ""), 1);
+
+            // Did we get something?
+            if (httpContent != null && !httpContent.equals("")) {
+
+                // JSON!
+                JSONArray commentArray = new JSONObject(httpContent).getJSONObject("context")
+                        .getJSONObject("blogPost").getJSONArray("comments");
+
+                // Iterate
+                for (int count = 0, maxCount = commentArray.length(); count < maxCount; count++) {
+
+                    // Get the current item
+                    JSONObject item = commentArray.getJSONObject(count);
+                    JSONObject user = item.getJSONObject("user");
+
+                    // Handle the data
+                    comments.add(
+
+                            new CommentData(
+
+                                    Long.parseLong(item.getString("id")),
+                                    Long.parseLong(item.getString("itemId")),
+                                    item.getLong("creationDate"),
+                                    item.getString("body"),
+                                    new ProfileData(
+                                            Long.parseLong(user.getString("userId")),
+                                            user.getString("username"),
+                                            user.getString("gravatarMd5")
+                                    )
+                            )
+
+                            );
+
+                }
+
+            }
+
+            return comments;
+
+        } catch (RequestHandlerException ex) {
+
+            throw new WebsiteHandlerException(ex.getMessage());
+
+        } catch (Exception ex) {
+
+            throw new WebsiteHandlerException(ex.getMessage());
+        }
+
+    }
+
     public static boolean createNewPlatoon(String... params) {
 
         try {
@@ -6145,6 +6319,55 @@ public class WebsiteHandler {
 
             ex.printStackTrace();
             return false;
+
+        }
+
+    }
+
+    public static boolean commentOnNews(String comment, NewsData n, String checksum)
+            throws WebsiteHandlerException {
+
+        try {
+
+            // Let's login everybody!
+            RequestHandler wh = new RequestHandler();
+            String httpContent = wh.post(
+
+                    Constants.URL_NEWS_COMMENTS_NEW.replace(
+
+                            "{ARTICLE_ID}", n.getId() + ""
+
+                            ), new PostData[] {
+
+                            new PostData(
+
+                                    Constants.FIELD_NAMES_COMMENTS_NEW[0], comment
+
+                            ),
+                            new PostData(
+
+                                    Constants.FIELD_NAMES_COMMENTS_NEW[1], checksum
+
+                            )
+                    }, 2
+
+                    );
+
+            // Did we manage?
+            if (!"".equals(httpContent)) {
+
+                return true;
+
+            } else {
+
+                return false;
+
+            }
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            throw new WebsiteHandlerException(ex.getMessage());
 
         }
 

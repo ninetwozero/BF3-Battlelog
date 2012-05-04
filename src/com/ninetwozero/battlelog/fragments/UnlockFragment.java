@@ -63,7 +63,11 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
                 container, false);
 
         // Get the unlocks
-        unlocks = ((UnlockActivity) getActivity()).getItemsForFragment(viewPagerPosition);
+        if (context instanceof UnlockActivity) {
+
+            unlocks = ((UnlockActivity) context).getItemsForFragment(viewPagerPosition);
+
+        }
 
         // Init views
         initFragment(view);

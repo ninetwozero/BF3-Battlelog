@@ -15,12 +15,13 @@
 package com.ninetwozero.battlelog.datatypes;
 
 import android.content.Context;
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
+import com.ninetwozero.battlelog.misc.DrawableResourceList;
 
-public class UnlockData {
+public class UnlockData implements Parcelable {
 
     // Attributes
     private int kitId;
@@ -28,17 +29,37 @@ public class UnlockData {
     private long scoreNeeded, scoreCurrent;
     private String parentIdentifier, unlockIdentifier, objective, type;
 
+    // Constants
+    public final static String CATEGORY_WEAPON = "weaponUnlock";
+    public final static String CATEGORY_ATTACHMENT = "weaponAddonUnlock";
+    public final static String CATEGORY_KIT = "kitItemUnlock";
+    public final static String CATEGORY_VEHICLE = "vehicleAddonUnlock";
+    public final static String CATEGORY_SKILL = "soldierSpecializationUnlock";
+
+    public UnlockData(Parcel in) {
+
+        kitId = in.readInt();
+        unlockPercentage = in.readDouble();
+        scoreNeeded = in.readLong();
+        scoreCurrent = in.readLong();
+        parentIdentifier = in.readString();
+        unlockIdentifier = in.readString();
+        objective = in.readString();
+        type = in.readString();
+
+    }
+
     public UnlockData(int k, double u, long scn, long scc, String pi,
             String ui, String o, String t) {
 
-        this.kitId = k;
-        this.unlockPercentage = u;
-        this.scoreNeeded = scn;
-        this.scoreCurrent = scc;
-        this.parentIdentifier = pi;
-        this.unlockIdentifier = ui;
-        this.objective = o;
-        this.type = t;
+        kitId = k;
+        unlockPercentage = u;
+        scoreNeeded = scn;
+        scoreCurrent = scc;
+        parentIdentifier = pi;
+        unlockIdentifier = ui;
+        objective = o;
+        type = t;
 
     }
 
@@ -52,93 +73,118 @@ public class UnlockData {
     }
 
     public double getUnlockPercentage() {
-        return Math.round(this.unlockPercentage * 100) / 100;
+        return Math.round(unlockPercentage * 100) / 100;
     }
 
     public long getScoreNeeded() {
-        return this.scoreNeeded;
+        return scoreNeeded;
     }
 
     public long getScoreCurrent() {
-        return this.scoreCurrent;
+        return scoreCurrent;
     }
 
     public String getParent() {
 
-        if (this.type == "weapon+") {
+        if (type.equals(CATEGORY_ATTACHMENT)) {
 
-            return DataBank.getWeaponTitle(this.parentIdentifier);
+            return DataBank.getWeaponTitle(parentIdentifier);
 
-        } else if (this.type == "vehicle+") {
+        } else if (type.equals(CATEGORY_VEHICLE)) {
 
-            return DataBank.getVehicleTitle(this.parentIdentifier);
+            return DataBank.getVehicleTitle(parentIdentifier);
 
         } else
             return "";
     }
 
-    public String getTitle() {
+    public String getTitle(Context c) {
 
-        if (this.type.equals("weapon")) {
+        if (type.equals(CATEGORY_WEAPON)) {
 
-            return DataBank.getWeaponTitle(this.unlockIdentifier);
+            return DataBank.getWeaponTitle(unlockIdentifier);
 
-        } else if (this.type.equals("weapon+")) {
+        } else if (type.equals(CATEGORY_ATTACHMENT)) {
 
-            if (DataBank.getAttachmentTitle(this.unlockIdentifier).equals(
-                    this.unlockIdentifier)) {
-                Log.d(Constants.DEBUG_TAG, this.unlockIdentifier);
-            }
+            return DataBank.getAttachmentTitle(unlockIdentifier);
 
-            return DataBank.getAttachmentTitle(this.unlockIdentifier);
+        } else if (type.equals(CATEGORY_VEHICLE)) {
 
-        } else if (this.type.equals("vehicle+")) {
+            return DataBank.getVehicleUpgradeTitle(unlockIdentifier);
 
-            return DataBank.getVehicleAddon(this.unlockIdentifier);
+        } else if (type.equals(CATEGORY_KIT)) {
 
-        } else if (this.type.equals("kit+")) {
+            return DataBank.getKitTitle(unlockIdentifier);
 
-            return DataBank.getKitUnlockTitle(this.unlockIdentifier);
+        } else if (type.equals(CATEGORY_SKILL)) {
 
-        } else if (this.type.equals("skill")) {
-
-            return DataBank.getSkillTitle(this.unlockIdentifier);
+            return DataBank.getSkillTitle(unlockIdentifier);
 
         } else {
 
-            return "";
+            return unlockIdentifier;
 
         }
 
     }
 
-    public String getName() {
+    public int getImageResource() {
 
-        // Check how it went
-        if (this.type.equals("weapon")) {
+        if (type.equals(CATEGORY_WEAPON)) {
 
-            return getTitle();
+            return DrawableResourceList.getWeapon(unlockIdentifier);
 
-        } else if (this.type.equals("weapon+")) {
+        } else if (type.equals(CATEGORY_ATTACHMENT)) {
 
-            return getParent() + " " + getTitle();
+            return DrawableResourceList.getAttachment(unlockIdentifier);
 
-        } else if (this.type.equals("vehicle+")) {
+        } else if (type.equals(CATEGORY_VEHICLE)) {
 
-            // return getParent() + " " + getTitle();
-            return getTitle();
+            return DrawableResourceList.getVehicleUpgrade(unlockIdentifier);
 
-        } else if (this.type.equals("kit+")) {
+        } else if (type.equals(CATEGORY_KIT)) {
 
-            return getTitle();
+            return DrawableResourceList.getKit(unlockIdentifier);
 
-        } else if (this.type.equals("skill")) {
+        } else if (type.equals(CATEGORY_SKILL)) {
 
-            return getTitle();
+            return DrawableResourceList.getSkill(unlockIdentifier);
 
         } else {
 
-            return "";
+            return 0;
+
+        }
+
+    }
+
+    public String getName(Context c) {
+
+        // Check how it went
+        if (type.equals(CATEGORY_WEAPON)) {
+
+            return getTitle(c);
+
+        } else if (type.equals(CATEGORY_ATTACHMENT)) {
+
+            return getParent() + " " + getTitle(c);
+
+        } else if (type.equals(CATEGORY_VEHICLE)) {
+
+            // return getParent() + " " + getTitle();
+            return getTitle(c);
+
+        } else if (type.equals(CATEGORY_KIT)) {
+
+            return getTitle(c);
+
+        } else if (type.equals(CATEGORY_SKILL)) {
+
+            return getTitle(c);
+
+        } else {
+
+            return getTitle(c);
 
         }
 
@@ -146,40 +192,40 @@ public class UnlockData {
 
     public String getObjective() {
 
-        if (this.objective.startsWith("sc_")) {
+        if (objective.startsWith("sc_")) {
 
-            return DataBank.getUnlockGoal(this.objective).replace(
+            return DataBank.getUnlockGoal(objective).replace(
 
                     "{scoreCurr}/{scoreNeeded}",
-                    this.scoreCurrent + "/" + this.scoreNeeded
+                    scoreCurrent + "/" + scoreNeeded
 
                     );
 
-        } else if ("rank".equals(this.objective)) {
+        } else if ("rank".equals(objective)) {
 
-            return DataBank.getUnlockGoal(this.objective).replace(
+            return DataBank.getUnlockGoal(objective).replace(
 
-                    "{rank}", this.getScoreNeeded() + ""
+                    "{rank}", getScoreNeeded() + ""
 
                     ).replace(
 
-                            "{rankCurr}", this.getScoreCurrent() + ""
+                            "{rankCurr}", getScoreCurrent() + ""
 
                     );
 
-        } else if (this.objective.startsWith("c_")) {
+        } else if (objective.startsWith("c_")) {
 
             return DataBank.getUnlockGoal("c_").replace(
 
                     "{scoreCurr}/{scoreNeeded} {name}",
-                    this.scoreCurrent + "/" + this.scoreNeeded + " "
+                    scoreCurrent + "/" + scoreNeeded + " "
                             + getParent()
 
                     );
 
-        } else if (this.objective.startsWith("xpm")) {
+        } else if (objective.startsWith("xpm")) {
 
-            String digits = this.objective.subSequence(4, 6).toString();
+            String digits = objective.subSequence(4, 6).toString();
 
             if (digits.startsWith("0")) {
                 digits = digits.substring(1);
@@ -196,28 +242,42 @@ public class UnlockData {
 
         }
 
-        return this.objective;
+        return objective;
 
     }
 
     public String getType() {
-        return this.type;
+        return type;
     }
 
-    public String getTypeTitle() {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-        if (this.type.equals("weapon"))
-            return "Weapon";
-        else if (this.type.equals("weapon+"))
-            return "Attachment";
-        else if (this.type.equals("vehicle+"))
-            return "Upgrade";
-        else if (this.type.equals("skill"))
-            return "Skill";
-        else if (this.type.equals("kit+"))
-            return "Kit";
-        else
-            return "N/A";
+    @Override
+    public void writeToParcel(Parcel out, int arg1) {
+
+        out.writeInt(kitId);
+        out.writeDouble(unlockPercentage);
+        out.writeLong(scoreNeeded);
+        out.writeLong(scoreCurrent);
+        out.writeString(parentIdentifier);
+        out.writeString(unlockIdentifier);
+        out.writeString(objective);
+        out.writeString(type);
 
     }
+
+    public static final Parcelable.Creator<UnlockData> CREATOR = new Parcelable.Creator<UnlockData>() {
+
+        public UnlockData createFromParcel(Parcel in) {
+            return new UnlockData(in);
+        }
+
+        public UnlockData[] newArray(int size) {
+            return new UnlockData[size];
+        }
+
+    };
 }
