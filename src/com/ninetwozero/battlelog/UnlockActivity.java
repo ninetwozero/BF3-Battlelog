@@ -49,11 +49,11 @@ import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.fragments.UnlockFragment;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class UnlockActivity extends FragmentActivity implements DefaultFragmentActivity {
 

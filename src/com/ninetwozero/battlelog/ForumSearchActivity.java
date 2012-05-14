@@ -38,10 +38,10 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ForumSearchAdapter;
 import com.ninetwozero.battlelog.datatypes.ForumSearchResult;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class ForumSearchActivity extends ListActivity {
 

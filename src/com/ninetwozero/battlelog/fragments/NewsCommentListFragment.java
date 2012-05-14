@@ -39,8 +39,8 @@ import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.NewsData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class NewsCommentListFragment extends ListFragment implements DefaultFragment {
 

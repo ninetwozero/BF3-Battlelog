@@ -22,8 +22,8 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncSessionValidate extends AsyncTask<PostData, Integer, Boolean> {
 

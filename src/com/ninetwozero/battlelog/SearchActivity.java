@@ -38,10 +38,10 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.SearchDataAdapter;
 import com.ninetwozero.battlelog.datatypes.GeneralSearchResult;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class SearchActivity extends ListActivity {
 

@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.NewsData;
 import com.ninetwozero.battlelog.fragments.NewsCommentListFragment;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 
 public class AsyncNewsComment extends AsyncTask<String, Void, Boolean> {
 

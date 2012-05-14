@@ -31,9 +31,9 @@ import com.ninetwozero.battlelog.DashboardActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.SessionKeeperPackage;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 

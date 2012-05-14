@@ -29,7 +29,7 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.CommentListAdapter;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 
 public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
 

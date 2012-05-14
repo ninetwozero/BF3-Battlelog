@@ -21,8 +21,8 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ForumThreadData;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
 

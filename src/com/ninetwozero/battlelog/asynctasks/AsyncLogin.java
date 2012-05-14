@@ -40,9 +40,9 @@ import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.datatypes.SessionKeeperPackage;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {

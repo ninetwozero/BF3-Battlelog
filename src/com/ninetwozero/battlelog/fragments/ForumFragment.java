@@ -46,9 +46,9 @@ import com.ninetwozero.battlelog.asynctasks.AsyncCreateNewThread;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.ForumData;
 import com.ninetwozero.battlelog.datatypes.ForumThreadData;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class ForumFragment extends ListFragment implements DefaultFragment {
 

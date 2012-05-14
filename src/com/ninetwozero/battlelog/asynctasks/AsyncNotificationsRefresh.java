@@ -27,7 +27,7 @@ import android.widget.TextView;
 import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 
 public class AsyncNotificationsRefresh extends
         AsyncTask<String, Integer, Boolean> {

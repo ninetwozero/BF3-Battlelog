@@ -18,7 +18,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.ninetwozero.battlelog.PlatoonActivity;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 
 public class AsyncPlatoonMemberManagement extends
         AsyncTask<Boolean, Void, Boolean> {

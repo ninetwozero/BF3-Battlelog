@@ -25,7 +25,7 @@ import com.ninetwozero.battlelog.PlatoonActivity;
 import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.UnlockActivity;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 
 public class FeedItem implements Parcelable {
 

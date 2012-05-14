@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 
 public class AsyncCreateNewThread extends AsyncTask<String, Void, Boolean> {
 

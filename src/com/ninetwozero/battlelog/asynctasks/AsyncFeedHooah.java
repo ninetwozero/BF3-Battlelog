@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 
 public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
 

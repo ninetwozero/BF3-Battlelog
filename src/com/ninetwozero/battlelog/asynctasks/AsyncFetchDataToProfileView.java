@@ -12,8 +12,8 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncFetchDataToProfileView extends
         AsyncTask<String, Void, Boolean> {

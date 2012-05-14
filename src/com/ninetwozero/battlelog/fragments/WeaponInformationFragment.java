@@ -38,9 +38,9 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponInfo;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 import com.ninetwozero.battlelog.misc.DrawableResourceList;
 import com.ninetwozero.battlelog.misc.StringResourceList;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class WeaponInformationFragment extends Fragment implements DefaultFragment {
 

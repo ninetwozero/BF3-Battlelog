@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.PlatoonActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 
 public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
 

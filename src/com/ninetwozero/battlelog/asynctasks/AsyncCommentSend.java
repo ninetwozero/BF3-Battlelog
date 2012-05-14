@@ -21,8 +21,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
 

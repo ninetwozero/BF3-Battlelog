@@ -39,10 +39,10 @@ import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.fragments.WeaponListFragment;
+import com.ninetwozero.battlelog.handlers.WebsiteHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
-import com.ninetwozero.battlelog.misc.WebsiteHandler;
 
 public class WeaponListActivity extends FragmentActivity implements DefaultFragmentActivity {
 
