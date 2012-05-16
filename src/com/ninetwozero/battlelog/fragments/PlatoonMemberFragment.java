@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -133,7 +132,6 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
             platoonInformation = data;
         }
 
-        Log.d(Constants.DEBUG_TAG, "lets update it!");
         // Get the appropriate data for the listview
         if (isViewingMembers) {
 

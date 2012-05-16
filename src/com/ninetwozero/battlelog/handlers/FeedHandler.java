@@ -746,7 +746,7 @@ public class FeedHandler {
                     tempSubItem = currItem.optJSONObject("GAMEACCESS");
 
                     // Set it!
-                    itemTitle = "<b>{username} now has access to <b>{title}</b> for <b>Battlefield 3</b>. "
+                    itemTitle = "<b>{username} now has access to <b>{title}</b> for <b>Battlefield 3</b>."
                             .replace(
 
                                     "{title}", DataBank.getExpansionTitle(tempSubItem
@@ -846,9 +846,14 @@ public class FeedHandler {
 
                 // Get the content, and create a JSONArray
                 httpContent = rh.get(
-                        url.replace("{NUMSTART}", String.valueOf(i * 10)),
+                        url.replace(
+                                "{NUMSTART}", 
+                                String.valueOf(i * 10)
+                        ),
                         RequestHandler.HEADER_AJAX
                         );
+                
+                // Convert the JSON
                 jsonArray = new JSONObject(httpContent).getJSONObject("data")
                         .getJSONArray("feedEvents");
 
@@ -877,10 +882,7 @@ public class FeedHandler {
 
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
-            String httpContent;
-
-            // Get the content
-            httpContent = wh.post(
+            String httpContent = wh.post(
 
                     RequestHandler.generateUrl(URL_HOOAH, postId),
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
@@ -889,16 +891,7 @@ public class FeedHandler {
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
-
-                return true;
-
-            } else {
-
-                throw new WebsiteHandlerException(
-                        "Could not hooah the message.");
-
-            }
+            return (!"".equals(httpContent));
 
         } catch (RequestHandlerException ex) {
 
@@ -915,10 +908,7 @@ public class FeedHandler {
 
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
-            String httpContent;
-
-            // Get the content
-            httpContent = wh.post(
+            String httpContent = wh.post(
 
                     RequestHandler.generateUrl(URL_UNHOOAH, postId),
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
@@ -927,16 +917,7 @@ public class FeedHandler {
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
-
-                return true;
-
-            } else {
-
-                throw new WebsiteHandlerException(
-                        "Could not un-hooah the message.");
-
-            }
+            return (!"".equals(httpContent));
 
         } catch (RequestHandlerException ex) {
 

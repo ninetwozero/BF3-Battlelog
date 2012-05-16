@@ -82,15 +82,12 @@ public class CommentHandler {
             // Let's do this!
             RequestHandler wh = new RequestHandler();
             List<CommentData> comments = new ArrayList<CommentData>();
-            String httpContent;
-
-            // Get the content
-            httpContent = wh.get(
+            String httpContent = wh.get(
 
                     RequestHandler.generateUrl(URL_LIST, postId), 
                     RequestHandler.HEADER_NORMAL
 
-                    );
+            );
 
             // Did we manage?
             if (!"".equals(httpContent)) {

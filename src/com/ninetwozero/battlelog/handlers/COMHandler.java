@@ -38,7 +38,7 @@ public class COMHandler {
             + "comcenter/hideChat/{CID}/";
     public static final String URL_SETACTIVE = Constants.URL_MAIN
             + "comcenter/setActive/";
-    
+
     // Constants
     public static final String[] FIELD_NAMES_CHAT = new String[] {
             "message",
@@ -92,10 +92,7 @@ public class COMHandler {
             // Let's do this!
             RequestHandler wh = new RequestHandler();
             List<ChatMessage> messageArray = new ArrayList<ChatMessage>();
-            String httpContent;
-
-            // Get the content
-            httpContent = wh.post(
+            String httpContent = wh.post(
 
                     RequestHandler.generateUrl(URL_CONTENTS, profileId),
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
@@ -153,10 +150,7 @@ public class COMHandler {
 
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
-            String httpContent;
-
-            // Get the content
-            httpContent = wh.post(
+            String httpContent = wh.post(
 
                     URL_SEND,
                     RequestHandler.generatePostData(
@@ -171,16 +165,7 @@ public class COMHandler {
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
-
-                return true;
-
-            } else {
-
-                throw new WebsiteHandlerException(
-                        "Could not send the chat message.");
-
-            }
+            return (!"".equals(httpContent));
 
         } catch (RequestHandlerException ex) {
 
@@ -222,10 +207,7 @@ public class COMHandler {
 
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
-            String httpContent;
-
-            // Get the content
-            httpContent = wh.post(
+            String httpContent = wh.post(
 
                     URL_FRIENDS,
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
@@ -391,12 +373,9 @@ public class COMHandler {
         try {
 
             // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
-            String httpContent;
             List<ProfileData> profileArray = new ArrayList<ProfileData>();
-
-            // Get the content
-            httpContent = wh.post(
+            RequestHandler wh = new RequestHandler();
+            String httpContent = wh.post(
 
                     URL_FRIENDS,
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
@@ -468,11 +447,8 @@ public class COMHandler {
 
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
-            String httpContent;
             String url = accepting ? Constants.URL_FRIEND_ACCEPT : Constants.URL_FRIEND_DECLINE;
-
-            // Get the content
-            httpContent = wh.post(
+            String httpContent = wh.post(
 
                     RequestHandler.generateUrl(url, pId),
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
@@ -490,7 +466,7 @@ public class COMHandler {
         }
 
     }
-    
+
     public static boolean sendFriendRequest(long profileId, String checksum)
             throws WebsiteHandlerException {
 
@@ -499,7 +475,7 @@ public class COMHandler {
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
             String httpContent = wh.post(
-                    
+
                     RequestHandler.generateUrl(URL_FRIEND_REQUESTS, profileId),
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
                     RequestHandler.HEADER_AJAX
@@ -508,7 +484,7 @@ public class COMHandler {
 
             // Did we manage?
             return (httpContent != null);
-            
+
         } catch (Exception ex) {
 
             ex.printStackTrace();
@@ -530,19 +506,11 @@ public class COMHandler {
                     RequestHandler.generateUrl(URL_FRIEND_DELETE, profileId),
                     RequestHandler.HEADER_AJAX
 
-            );
+                    );
 
             // Did we manage?
-            if (httpContent != null) {
-
-                return true;
-
-            } else {
-
-                return false;
-
-            }
-
+            return (httpContent != null);
+            
         } catch (Exception ex) {
 
             ex.printStackTrace();
@@ -551,7 +519,7 @@ public class COMHandler {
         }
 
     }
-    
+
     /* TODO */
     public static boolean setActive() throws WebsiteHandlerException {
 
@@ -563,16 +531,8 @@ public class COMHandler {
             JSONObject httpResponse = new JSONObject(httpContent);
 
             // Is it ok?
-            if (httpResponse.optString("message", "FAIL").equals("OK")) {
-
-                return true;
-
-            } else {
-
-                return false;
-
-            }
-
+            return (httpResponse.optString("message", "FAIL").equals("OK"));
+            
         } catch (RequestHandlerException ex) {
 
             throw new WebsiteHandlerException(ex.getMessage());

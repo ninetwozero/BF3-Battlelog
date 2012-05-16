@@ -26,9 +26,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
@@ -70,21 +68,12 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
     private LayoutInflater layoutInflater;
     private OnDrawerOpenListener onDrawerOpenListener;
     private OnDrawerCloseListener onDrawerCloseListener;
-    private TextView slidingDrawerHandle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         // onCreate - save the instance state
         super.onCreate(savedInstanceState);
-
-        // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fragmentManager = getSupportFragmentManager();
-
-        // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
 
         // Set the content view
         setContentView(R.layout.main);
@@ -305,7 +294,6 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
         if (slidingDrawer == null) {
 
             slidingDrawer = (SlidingDrawer) findViewById(R.id.about_slider);
-            slidingDrawerHandle = (TextView) findViewById(R.id.about_slide_handle_text);
 
             // Set the drawer listeners
             onDrawerCloseListener = new OnDrawerCloseListener() {
@@ -439,12 +427,6 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
@@ -466,9 +448,6 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
     public void onResume() {
 
         super.onResume();
-
-        // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
 
     }
 

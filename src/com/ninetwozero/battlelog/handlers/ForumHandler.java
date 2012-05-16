@@ -40,7 +40,7 @@ public class ForumHandler {
             + "dosearch/?q={SEARCH_STRING}&snippet=text&fetch=threadId%2CforumId%2Ctitle%2Ctimestamp";
     public static final String URL_REPORT = Constants.URL_MAIN
             + "viewcontent/reportForumAbuse/{POST_ID}/";
-    
+
     // Attributes
     public static final String[] FIELD_NAMES_POST = new String[] {
             "body", "post-check-sum"
@@ -53,7 +53,7 @@ public class ForumHandler {
     public static final String[] FIELD_NAMES_REPORT = new String[] {
             "reason", "post-check-sum"
     };
-    
+
     public static boolean reportPostInThread(Context c, long pId, String r)
             throws WebsiteHandlerException {
 
@@ -63,7 +63,7 @@ public class ForumHandler {
             final String httpContent = rh.post(
 
                     RequestHandler.generateUrl(URL_REPORT, pId),
-                    RequestHandler.generatePostData(FIELD_NAMES_REPORT, r, ""), 
+                    RequestHandler.generatePostData(FIELD_NAMES_REPORT, r, ""),
                     RequestHandler.HEADER_AJAX
 
                     );

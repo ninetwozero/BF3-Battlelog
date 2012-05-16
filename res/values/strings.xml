@@ -468,6 +468,7 @@
 	<string name="info_platoon_invite_fail">Invites could not be sent!</string>
 	<string name="info_platoon_invite_passed">Some invites have been sent, some not!</string>
 	<string name="info_platoon_req_ok">Join request responded to.</string>
+	<string name="info_platoon_req_fail">Join request could not be responded to.</string>
 	<string name="info_forum_report_error">You need to enter a reason for reporting this post.</string>
 	<string name="general_nonetwork">No network connection available!</string>
 	<string name="info_comment_report">Reporting comment number</string>

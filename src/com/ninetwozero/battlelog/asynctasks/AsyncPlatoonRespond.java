@@ -67,9 +67,14 @@ public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
     protected void onPostExecute(Boolean results) {
 
         // Let the user know and then refresh!
-        Toast.makeText(context, R.string.info_platoon_req_ok,
-                Toast.LENGTH_SHORT).show();
         if (context != null) {
+
+            Toast.makeText(
+                    context,
+                    results ? R.string.info_platoon_req_ok : R.string.info_platoon_req_fail,
+                    Toast.LENGTH_SHORT
+                    ).show();
+
             ((PlatoonActivity) context).reload();
         }
         return;

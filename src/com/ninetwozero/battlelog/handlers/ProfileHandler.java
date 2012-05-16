@@ -111,11 +111,8 @@ public class ProfileHandler {
 
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
-            String httpContent;
             ProfileData profile = null;
-
-            // Get the content
-            httpContent = wh.post(
+            String httpContent = wh.post(
 
                     URL_SEARCH, 
                     RequestHandler.generatePostData(
@@ -216,10 +213,7 @@ public class ProfileHandler {
 
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
-            String httpContent;
-
-            // Get the content
-            httpContent = wh.get(
+            String httpContent = wh.get(
                     RequestHandler.generateUrl(URL_OVERVIEW, personaId, 0),
                     RequestHandler.HEADER_NORMAL);
 
@@ -260,12 +254,12 @@ public class ProfileHandler {
 
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
-            String httpContent;
-
-            // Get the content
-            httpContent = wh.get(
+            String httpContent = wh.get(
+                    
                     URL_PROFILE.replace("{UID}", profileId + ""),
-                    RequestHandler.HEADER_NORMAL);
+                    RequestHandler.HEADER_NORMAL
+                    
+            );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -594,9 +588,7 @@ public class ProfileHandler {
                 unlockArray = new ArrayList<UnlockData>();
 
                 // Get the data
-                String content = "";
-
-                content = wh.get(
+                String content = wh.get(
 
                         RequestHandler.generateUrl(
                                 URL_UNLOCKS,
@@ -756,10 +748,7 @@ public class ProfileHandler {
             // Let's go!
             RequestHandler rh = new RequestHandler();
             List<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
-            String httpContent;
-
-            // Get the content
-            httpContent = rh.get(
+            String httpContent = rh.get(
                     RequestHandler.generateUrl(
                             URL_INFO,
                             profileData.getUsername()

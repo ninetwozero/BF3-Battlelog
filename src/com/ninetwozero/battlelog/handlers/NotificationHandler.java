@@ -22,10 +22,7 @@ public class NotificationHandler {
 
             // Init
             RequestHandler rh = new RequestHandler();
-            String httpContent;
-
-            // Get the content
-            httpContent = rh.post(
+            String httpContent = rh.post(
 
                     Constants.URL_NOTIFICATIONS_TOP5,
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
@@ -63,10 +60,7 @@ public class NotificationHandler {
             // Init
             RequestHandler rh = new RequestHandler();
             List<NotificationData> notifications = new ArrayList<NotificationData>();
-            String httpContent;
-
-            // Get the content
-            httpContent = rh.get(Constants.URL_NOTIFICATIONS_ALL, RequestHandler.HEADER_AJAX);
+            String httpContent = rh.get(Constants.URL_NOTIFICATIONS_ALL, RequestHandler.HEADER_AJAX);
 
             // Got httpContent
             if (!"".equals(httpContent)) {

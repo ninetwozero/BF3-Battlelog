@@ -150,16 +150,7 @@ public class PlatoonHandler {
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
-
-                return true;
-
-            } else {
-
-                throw new WebsiteHandlerException(
-                        "Could not respond to the platoon request.");
-
-            }
+            return (!"".equals(httpContent));
 
         } catch (RequestHandlerException ex) {
 
@@ -176,10 +167,7 @@ public class PlatoonHandler {
 
             // Let's set it up!
             RequestHandler wh = new RequestHandler();
-            String httpContent;
-
-            // Do the actual request
-            httpContent = wh.post(
+            String httpContent = wh.post(
 
                     URL_APPLY,
                     RequestHandler.generatePostData(
@@ -195,25 +183,23 @@ public class PlatoonHandler {
             // What up?
             if (httpContent == null || httpContent.equals("")) {
 
-                throw new WebsiteHandlerException("Invalid request"); // Invalid request
+                throw new WebsiteHandlerException("Invalid request");
 
             } else {
 
-                if (httpContent.equals("success")) { // OK!
-
+                if (httpContent.equals("success")) {
+                    
                     return true;
 
-                } else if (httpContent.equals("wrongplatform")) { // Wrong
-                    // platform
-
+                } else if (httpContent.equals("wrongplatform")) { 
+                    
                     throw new WebsiteHandlerException("Wrong platform.");
 
-                } else if (httpContent.equals("maxmembersreached")) { // Full
-                    // platoon
+                } else if (httpContent.equals("maxmembersreached")) { 
 
                     throw new WebsiteHandlerException("The platoon has reached its level cap.");
 
-                } else { // unknown
+                } else {
 
                     throw new WebsiteHandlerException("Unknown request");
 
@@ -238,10 +224,7 @@ public class PlatoonHandler {
 
             // Let's set it up!
             RequestHandler wh = new RequestHandler();
-            String httpContent;
-
-            // Do the actual request
-            httpContent = wh.post(
+            String httpContent = wh.post(
 
                     URL_LEAVE,
                     RequestHandler.generatePostData(
@@ -275,11 +258,8 @@ public class PlatoonHandler {
 
             // Let's do this!
             RequestHandler wh = new RequestHandler();
-            String httpContent;
             PlatoonData platoon = null;
-
-            // Get the content
-            httpContent = wh.post(
+            String httpContent = wh.post(
 
                     URL_SEARCH,
                     RequestHandler.generatePostData(

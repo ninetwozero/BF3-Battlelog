@@ -31,23 +31,23 @@ public class PlatoonInformation {
     // Construct(s)
     public PlatoonInformation(
 
-            long id, long d, int pId, int gId, int nF, int nM, int bcId, String n,
+            long i, long d, int pId, int gId, int nF, int nM, int bcId, String n,
             String t, String p, String w, int v
 
     ) {
 
-        this.id = id;
-        this.date = d;
-        this.platformId = pId;
-        this.gameId = gId;
-        this.numFans = nF;
-        this.numMembers = nM;
-        this.blazeClubId = bcId;
-        this.name = n;
-        this.tag = t;
-        this.presentation = p;
-        this.website = w;
-        this.visible = (v == 1);
+        id = i;
+        date = d;
+        platformId = pId;
+        gameId = gId;
+        numFans = nF;
+        numMembers = nM;
+        blazeClubId = bcId;
+        name = n;
+        tag = t;
+        presentation = p;
+        website = w;
+        visible = (v == 1);
 
     }
 
@@ -61,113 +61,113 @@ public class PlatoonInformation {
 
     ) {
 
-        this.platformId = pId;
-        this.gameId = g;
-        this.numFans = nF;
-        this.numMembers = nM;
-        this.blazeClubId = bcId;
-        this.id = i;
-        this.date = d;
-        this.name = n;
-        this.tag = t;
-        this.presentation = p;
-        this.website = w;
-        this.visible = v;
-        this.isMember = ism;
-        this.isAdmin = isa;
-        this.allowNewMembers = a;
-        this.members = m;
-        this.fans = fa;
-        this.invitableFriends = pd;
-        this.stats = st;
+        platformId = pId;
+        gameId = g;
+        numFans = nF;
+        numMembers = nM;
+        blazeClubId = bcId;
+        id = i;
+        date = d;
+        name = n;
+        tag = t;
+        presentation = p;
+        website = w;
+        visible = v;
+        isMember = ism;
+        isAdmin = isa;
+        allowNewMembers = a;
+        members = m;
+        fans = fa;
+        invitableFriends = pd;
+        stats = st;
 
     }
 
     // Getters
     public int getPlatformId() {
-        return this.platformId;
+        return platformId;
     }
 
     public int getGameId() {
-        return this.gameId;
+        return gameId;
     }
 
     public int getNumFans() {
-        return this.numFans;
+        return numFans;
     }
 
     public int getNumMembers() {
-        return this.numMembers;
+        return numMembers;
     }
 
     public int getBlazeClubId() {
-        return this.blazeClubId;
+        return blazeClubId;
     }
 
     public boolean isMember() {
-        return this.isMember;
+        return isMember;
     }
 
     public boolean isAdmin() {
-        return this.isAdmin;
+        return isAdmin;
     }
 
     public long getId() {
-        return this.id;
+        return id;
     }
 
     public long getDate() {
-        return this.date;
+        return date;
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public String getTag() {
-        return this.tag;
+        return tag;
     }
 
     public String getPresentation() {
-        return this.presentation;
+        return presentation;
     }
 
     public String getWebsite() {
-        return this.website;
+        return website;
     }
 
     public boolean isVisible() {
-        return this.visible;
+        return visible;
     }
 
     public boolean isOpenForNewMembers() {
-        return this.allowNewMembers;
+        return allowNewMembers;
     }
 
     public ArrayList<PlatoonMemberData> getMembers() {
-        return (ArrayList<PlatoonMemberData>) this.members;
+        return (ArrayList<PlatoonMemberData>) members;
     }
 
     public ArrayList<PlatoonMemberData> getFans() {
-        return (ArrayList<PlatoonMemberData>) this.fans;
+        return (ArrayList<PlatoonMemberData>) fans;
     }
 
     public ArrayList<ProfileData> getInvitableFriends() {
-        return (ArrayList<ProfileData>) this.invitableFriends;
+        return (ArrayList<ProfileData>) invitableFriends;
     }
 
     public PlatoonStats getStats() {
-        return this.stats;
+        return stats;
     }
 
     public String[] toStringArray() {
 
         return new String[] {
 
-                this.id + "", this.platformId + "", this.gameId + "",
-                this.numFans + "", this.numMembers + "", this.blazeClubId + "",
-                this.date + "", this.name, this.tag, this.presentation,
-                this.website, (this.visible ? 1 : 0) + "",
+                id + "", platformId + "", gameId + "",
+                numFans + "", numMembers + "", blazeClubId + "",
+                date + "", name, tag, presentation,
+                website, (visible ? 1 : 0) + "",
 
         };
 
