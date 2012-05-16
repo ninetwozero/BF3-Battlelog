@@ -9,7 +9,6 @@ import org.json.JSONObject;
 
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.NewsData;
-import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -23,10 +22,10 @@ public class CommentHandler {
             + "feed/getComments/{POST_ID}/";
     public static final String URL_COMMENT = Constants.URL_MAIN
             + "comment/postcomment/{POST_ID}/feed-item-comment/";
-   
+
     // Attributes
     public static final String[] FIELD_NAMES_COMMENT = new String[] {
-        "comment", "post-check-sum"
+            "comment", "post-check-sum"
     };
 
     public static boolean commentOnFeedPost(long postId, String checksum,
@@ -47,8 +46,8 @@ public class CommentHandler {
                             FIELD_NAMES_COMMENT,
                             comment,
                             checksum
-                 
-                    ),
+
+                            ),
                     RequestHandler.HEADER_JSON
 
                     );
@@ -57,8 +56,8 @@ public class CommentHandler {
             if (!"".equals(httpContent)) {
 
                 // Hopefully this goes as planned
-                return (!httpContent.equals("Internal server error")); 
-                
+                return (!httpContent.equals("Internal server error"));
+
             } else {
 
                 throw new WebsiteHandlerException("Could not post the comment.");
@@ -84,10 +83,10 @@ public class CommentHandler {
             List<CommentData> comments = new ArrayList<CommentData>();
             String httpContent = wh.get(
 
-                    RequestHandler.generateUrl(URL_LIST, postId), 
+                    RequestHandler.generateUrl(URL_LIST, postId),
                     RequestHandler.HEADER_NORMAL
 
-            );
+                    );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -110,13 +109,12 @@ public class CommentHandler {
                                     postId,
                                     Long.parseLong(tempObject.getString("itemId")),
                                     Long.parseLong(tempObject.getString("creationDate")),
-                                    tempObject.getString("body"), new ProfileData(
-                                            Long.parseLong(tempOwnerItem.getString("ownerId")),
-                                            tempOwnerItem.getString("username"),
-                                            new PersonaData[] {},
-                                            tempOwnerItem.getString("gravatarMd5")
+                                    tempObject.getString("body"),
+                                    new ProfileData.Builder(
 
-                                    )
+                                            Long.parseLong(tempOwnerItem.getString("ownerId")),
+                                            tempOwnerItem.getString("username")
+                                    ).gravatarHash(tempOwnerItem.getString("gravatarMd5")).build()
 
                             )
 
@@ -150,12 +148,12 @@ public class CommentHandler {
 
                     RequestHandler.generateUrl(Constants.URL_NEWS_COMMENTS_NEW, n.getId()),
                     RequestHandler.generatePostData(
-                            
-                            FIELD_NAMES_COMMENT, 
+
+                            FIELD_NAMES_COMMENT,
                             comment,
                             checksum
 
-                    ),
+                            ),
                     RequestHandler.HEADER_JSON
 
                     );
@@ -186,8 +184,8 @@ public class CommentHandler {
 
                     RequestHandler.generateUrl(Constants.URL_NEWS_COMMENTS, n.getId(), pageId),
                     RequestHandler.HEADER_AJAX
-                    
-            );
+
+                    );
 
             // Did we get something?
             if (httpContent != null && !httpContent.equals("")) {
@@ -212,11 +210,11 @@ public class CommentHandler {
                                     Long.parseLong(item.getString("itemId")),
                                     item.getLong("creationDate"),
                                     item.getString("body"),
-                                    new ProfileData(
-                                            Long.parseLong(user.getString("userId")),
-                                            user.getString("username"),
-                                            user.getString("gravatarMd5")
-                                    )
+                                    new ProfileData.Builder(
+
+                                            Long.parseLong(user.getString("ownerId")),
+                                            user.getString("username")
+                                    ).gravatarHash(user.getString("gravatarMd5")).build()
                             )
 
                             );

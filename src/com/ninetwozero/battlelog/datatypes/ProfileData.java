@@ -21,13 +21,20 @@ import android.os.Parcelable;
 public class ProfileData implements Parcelable {
 
     // Attributes
-    protected long id;
-    protected String username, gravatarHash;
-    protected PersonaData[] persona;
-    protected boolean isPlaying, isOnline;
-    protected boolean isFriend = true;
+    private long id;
+    private String username, gravatarHash;
+    private PersonaData[] persona;
+    private boolean isPlaying, isOnline;
+    private boolean isFriend;
+    private int membershipLevel;
 
     // Constructs
+    public ProfileData(String u) {
+
+        username = u;
+
+    }
+
     public ProfileData(Parcel in) {
 
         // Init from the parcel
@@ -38,72 +45,20 @@ public class ProfileData implements Parcelable {
         isPlaying = (in.readInt() == 1);
         persona = in.createTypedArray(PersonaData.CREATOR);
         isFriend = (in.readInt() == 1);
+        membershipLevel = in.readInt();
 
     }
 
-    public ProfileData(String un) {
+    protected ProfileData(Builder builder) {
 
-        id = 0;
-        username = un;
-
-    }
-
-    public ProfileData(long u, String un) {
-
-        id = u;
-        username = un;
-
-    }
-
-    public ProfileData(long u, String un, String im) {
-
-        id = u;
-        username = un;
-        gravatarHash = im;
-
-    }
-
-    public ProfileData(long pf, String un, PersonaData p, String im) {
-
-        id = pf;
-        username = un;
-        persona = new PersonaData[] {
-                p
-        };
-        gravatarHash = im;
-
-        isOnline = false;
-        isPlaying = false;
-
-    }
-
-    public ProfileData(long pf, String un, PersonaData[] p, String im) {
-
-        id = pf;
-        username = un;
-        persona = p.clone();
-        gravatarHash = im;
-
-        isOnline = false;
-        isPlaying = false;
-
-    }
-
-    public ProfileData(long pf, String un, PersonaData p, String im, boolean on, boolean pl) {
-
-        this(pf, un, new PersonaData[] {
-                p
-        }, im);
-        isOnline = on;
-        isPlaying = pl;
-
-    }
-
-    public ProfileData(long pf, String un, PersonaData[] p, String im, boolean on, boolean pl) {
-
-        this(pf, un, p, im);
-        isOnline = on;
-        isPlaying = pl;
+        id = builder.id;
+        username = builder.username;
+        gravatarHash = builder.gravatarHash;
+        isOnline = builder.isOnline;
+        isPlaying = builder.isPlaying;
+        persona = builder.persona;
+        isFriend = builder.isFriend;
+        membershipLevel = builder.membershipLevel;
 
     }
 
@@ -152,6 +107,16 @@ public class ProfileData implements Parcelable {
         return isFriend;
     }
 
+    public boolean isAdmin() {
+
+        return (membershipLevel == 128);
+    }
+
+    public int getMembershipLevel() {
+
+        return membershipLevel;
+    }
+
     // Setters
     public void setPersona(PersonaData[] p) {
 
@@ -175,6 +140,7 @@ public class ProfileData implements Parcelable {
         dest.writeInt(isPlaying ? 1 : 0);
         dest.writeTypedArray(persona, flags);
         dest.writeInt(isFriend ? 1 : 0);
+        dest.writeInt(membershipLevel);
     }
 
     @Override
@@ -193,6 +159,79 @@ public class ProfileData implements Parcelable {
         }
 
     };
+
+    public static class Builder {
+
+        // Required params
+        private final long id;
+        private final String username;
+
+        // Optional parameters
+        private String gravatarHash = "";
+        private boolean isOnline = false;
+        private boolean isPlaying = false;
+        private boolean isFriend = true;
+        private PersonaData[] persona = null;
+        private int membershipLevel = 0;
+
+        // Create the mandatory builder
+        public Builder(long i, String u) {
+
+            id = i;
+            username = u;
+
+        }
+
+        // Set the data
+        public Builder gravatarHash(String s) {
+
+            gravatarHash = s;
+            return this;
+
+        }
+
+        public Builder isOnline(boolean b) {
+
+            isOnline = b;
+            return this;
+
+        }
+
+        public Builder isPlaying(boolean b) {
+
+            isPlaying = b;
+            return this;
+
+        }
+
+        public Builder isFriend(boolean b) {
+
+            isFriend = b;
+            return this;
+
+        }
+
+        public Builder persona(PersonaData... p) {
+
+            persona = p;
+            return this;
+
+        }
+
+        public Builder membershipLevel(int i) {
+
+            membershipLevel = i;
+            return this;
+
+        }
+
+        public ProfileData build() {
+
+            return new ProfileData(this);
+
+        }
+
+    }
 
     // toString
     @Override

@@ -72,7 +72,7 @@ public class RequestHandler {
     public static final int HEADER_AJAX = 1;
     public static final int HEADER_JSON = 2;
     public static final int HEADER_GZIP = 3;
-    
+
     // Constructor
     public RequestHandler() {
     }
@@ -269,9 +269,9 @@ public class RequestHandler {
 
             // Let's see...
             if (httpContent == null || httpContent.length <= 0) {
-                
+
                 return false;
-                
+
             } else {
                 fileStream = new FileOutputStream(path);
 
@@ -607,38 +607,39 @@ public class RequestHandler {
         }
 
     }
-    
+
     public static String generateUrl(String base, Object... data) {
-        
+
         // Iterate and fix
-        for( Object d : data ) {
+        for (Object d : data) {
 
             base = base.replaceFirst("\\{[^\\}]+\\}", String.valueOf(d));
-            
+
         }
         return base;
-        
+
     }
-    
+
     public static PostData[] generatePostData(String[] fields, Object... data) {
 
         // Init
         PostData[] postData = new PostData[fields.length];
- 
+
         // Iterate over the fields
-        for( int i = 0, max = postData.length; i < max; i++ ) {
-            
+        for (int i = 0, max = postData.length; i < max; i++) {
+
             // If it's null, we skip it
-            if( data[i] == null ) continue;
-            
+            if (data[i] == null)
+                continue;
+
             // Save the PostData
             postData[i] = new PostData(fields[i], String.valueOf(data[i]));
-            
+
         }
-        
+
         // Return
         return postData;
-        
+
     }
 
 }

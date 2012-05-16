@@ -37,7 +37,7 @@ public class CustomFragmentActivity extends FragmentActivity {
 
     // Attributes
     protected SharedPreferences sharedPreferences;
-    protected LayoutInflater layoutInflater; 
+    protected LayoutInflater layoutInflater;
 
     // Fragment related
     protected SwipeyTabs tabs;
@@ -45,7 +45,7 @@ public class CustomFragmentActivity extends FragmentActivity {
     protected FragmentManager fragmentManager;
     protected ViewPager viewPager;
     protected List<Fragment> listFragments;
-    
+
     @Override
     public void onCreate(Bundle icicle) {
 

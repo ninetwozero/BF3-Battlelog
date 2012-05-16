@@ -60,17 +60,17 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
 
         // onCreate - save the instance state
         super.onCreate(icicle);
-        
+
         // Get the intent
-        if(!getIntent().hasExtra("platoon")) {
-            
+        if (!getIntent().hasExtra("platoon")) {
+
             return;
-            
-        } 
-        
+
+        }
+
         // Get the platoon data
         platoonData = (PlatoonData) getIntent().getParcelableExtra("platoon");
-        
+
         // Set the content view
         setContentView(R.layout.viewpager_default);
 

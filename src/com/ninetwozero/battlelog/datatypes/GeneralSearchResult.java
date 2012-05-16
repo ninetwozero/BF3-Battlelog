@@ -34,10 +34,11 @@ public class GeneralSearchResult implements Parcelable {
 
     // Getters
     public String getName() {
-        
+
         return (profile != null) ? profile.getUsername() : platoon.getName();
-        
+
     }
+
     public boolean hasPlatoonData() {
         return platoon != null;
     }

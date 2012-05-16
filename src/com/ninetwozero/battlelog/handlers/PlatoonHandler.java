@@ -35,7 +35,6 @@ import com.ninetwozero.battlelog.datatypes.GeneralSearchResult;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
-import com.ninetwozero.battlelog.datatypes.PlatoonMemberData;
 import com.ninetwozero.battlelog.datatypes.PlatoonStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonStatsItem;
 import com.ninetwozero.battlelog.datatypes.PlatoonTopStatsItem;
@@ -50,7 +49,7 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
 public class PlatoonHandler {
-    
+
     // URLS
     public static final String URL_INFO = Constants.URL_MAIN + "platoon/{PLATOON_ID}/";
     public static final String URL_FANS = Constants.URL_MAIN
@@ -80,33 +79,32 @@ public class PlatoonHandler {
     public static final String URL_THUMBS = Constants.URL_STATIC_CONTENT
             + "prod/emblems/60/{BADGE_PATH}";
 
-    
     // Constants
     public static final String[] FIELD_NAMES_SETTINGS = new String[] {
 
-        "name", "tag", "presentation", "website", "allow_members_apply", "post-check-sum"
+            "name", "tag", "presentation", "website", "allow_members_apply", "post-check-sum"
 
     };
-    
+
     public static final String[] FIELD_NAMES_SEARCH = new String[] {
-        "searchplat", "post-check-sum"
+            "searchplat", "post-check-sum"
     };
-    
+
     public static final String[] FIELD_NAMES_APPLY = new String[] {
             "platoonId", "post-check-sum"
     };
-    
+
     public static final String[] FIELD_NAMES_RESPOND = new String[] {
             "apply-action", "userIds[]", "post-check-sum", "accept", "deny"
     };
     public static final String[] FIELD_VALUES_RESPOND = new String[] {
             "", null, null, "accept", "deny"
     };
-    
+
     public static final String[] FIELD_NAMES_INVITE = new String[] {
             "platoonId", "post-check-sum", "userIds[]"
     };
-    
+
     public static final String[] FIELD_NAMES_LEAVE = new String[] {
             "platoonId", "userId", "post-check-sum"
     };
@@ -114,8 +112,7 @@ public class PlatoonHandler {
     public static final String[] FIELD_NAMES_NEW = new String[] {
             "name", "tag", "active", "post-check-sum"
     };
-    
-    
+
     // Constants
     public static final int FILTER_PROMOTE = 0;
     public static final int FILTER_DEMOTE = 1;
@@ -123,8 +120,8 @@ public class PlatoonHandler {
 
     public static final int STATE_OK = -1;
     public static final int STATE_FAIL = 0;
-    public static final int STATE_ERROR = 1;    
-    
+    public static final int STATE_ERROR = 1;
+
     public static boolean answerPlatoonRequest(long plId, long pId,
             Boolean accepting, String checksum) throws WebsiteHandlerException {
 
@@ -136,7 +133,7 @@ public class PlatoonHandler {
 
                     RequestHandler.generateUrl(URL_RESPOND, plId),
                     RequestHandler.generatePostData(
-                            
+
                             FIELD_NAMES_RESPOND,
                             "",
                             pId,
@@ -144,7 +141,7 @@ public class PlatoonHandler {
                             accepting ? FIELD_VALUES_RESPOND[3] : null,
                             !accepting ? FIELD_VALUES_RESPOND[4] : null
 
-                    ),
+                            ),
                     RequestHandler.HEADER_NORMAL
 
                     );
@@ -174,11 +171,11 @@ public class PlatoonHandler {
                             FIELD_NAMES_APPLY,
                             platoonId,
                             checksum
-                            
-                    ),
+
+                            ),
                     RequestHandler.HEADER_GZIP
 
-            );
+                    );
 
             // What up?
             if (httpContent == null || httpContent.equals("")) {
@@ -188,14 +185,14 @@ public class PlatoonHandler {
             } else {
 
                 if (httpContent.equals("success")) {
-                    
+
                     return true;
 
-                } else if (httpContent.equals("wrongplatform")) { 
-                    
+                } else if (httpContent.equals("wrongplatform")) {
+
                     throw new WebsiteHandlerException("Wrong platform.");
 
-                } else if (httpContent.equals("maxmembersreached")) { 
+                } else if (httpContent.equals("maxmembersreached")) {
 
                     throw new WebsiteHandlerException("The platoon has reached its level cap.");
 
@@ -228,20 +225,20 @@ public class PlatoonHandler {
 
                     URL_LEAVE,
                     RequestHandler.generatePostData(
-                    
+
                             FIELD_NAMES_LEAVE,
                             platoonId,
                             userId,
                             checksum
-                            
-                    ),
+
+                            ),
                     RequestHandler.HEADER_GZIP
 
-            );
+                    );
 
             // What up?
             return (httpContent != null & !httpContent.equals(""));
-            
+
         } catch (Exception ex) {
 
             ex.printStackTrace();
@@ -263,12 +260,12 @@ public class PlatoonHandler {
 
                     URL_SEARCH,
                     RequestHandler.generatePostData(
-                            
+
                             FIELD_NAMES_SEARCH,
                             keyword,
                             checksum
-                            
-                    ),
+
+                            ),
                     RequestHandler.HEADER_GZIP
 
                     );
@@ -364,17 +361,17 @@ public class PlatoonHandler {
             // Let's do the actual request
             RequestHandler rh = new RequestHandler();
             String httpContent = rh.post(
-                    
-                    URL_NEW, 
+
+                    URL_NEW,
                     RequestHandler.generatePostData(
-                            
+
                             FIELD_NAMES_NEW,
                             params
-                            
-                    ),
+
+                            ),
                     RequestHandler.HEADER_AJAX
-                    
-            );
+
+                    );
 
             // Is the httpContent !null?
             if (httpContent != null && !httpContent.equals("")) {
@@ -407,11 +404,11 @@ public class PlatoonHandler {
 
             // Get the content
             String httpContent = rh.get(
-                    
+
                     RequestHandler.generateUrl(ProfileHandler.URL_INFO, username),
                     RequestHandler.HEADER_AJAX
-                    
-            );
+
+                    );
 
             // Is it ok?
             if (!"".equals(httpContent)) {
@@ -501,10 +498,10 @@ public class PlatoonHandler {
             // Get the actual stream
             HttpEntity httpEntity = rh.getHttpEntity(
 
-                    RequestHandler.generateUrl(URL_IMAGE, h), 
+                    RequestHandler.generateUrl(URL_IMAGE, h),
                     true
 
-            );
+                    );
 
             // Init
             int bytesRead = 0;
@@ -555,7 +552,7 @@ public class PlatoonHandler {
         }
 
     }
-    
+
     public static int sendPlatoonInvite(final Object[] userId,
             final long platoonId, final String checksum)
             throws WebsiteHandlerException {
@@ -566,18 +563,18 @@ public class PlatoonHandler {
             RequestHandler rh = new RequestHandler();
             int numUsers = userId.length;
             String httpContent = rh.post(
-                    
+
                     URL_INVITE,
                     RequestHandler.generatePostData(
-                    
+
                             FIELD_NAMES_INVITE,
                             platoonId,
                             checksum,
                             userId
-                            
-                    ),
+
+                            ),
                     RequestHandler.HEADER_JSON
-            );
+                    );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -600,10 +597,10 @@ public class PlatoonHandler {
                 } else if (numErrors < numUsers) {
 
                     return STATE_ERROR;
-                    
+
                 }
 
-            } 
+            }
 
             // Fallback
             return STATE_FAIL;
@@ -708,15 +705,15 @@ public class PlatoonHandler {
             String httpContent = rh.get(
 
                     RequestHandler.generateUrl(
-                            
+
                             URL_STATS,
                             platoonData.getId(),
                             platoonData.getPlatformId()
-                            
-                    ),
+
+                            ),
                     RequestHandler.HEADER_AJAX
 
-            );
+                    );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -885,21 +882,19 @@ public class PlatoonHandler {
 
                                     currObjNames.getString(i), currObj.getInt("min"), currObj
                                             .getInt("median"), currObj.getInt("best"), currObj
-                                            .getInt("average"), new ProfileData(
-                                            Long
-                                                    .parseLong(currUser
-                                                            .optString("userId", "0")),
-                                            currUser.optString("username", ""),
+                                            .getInt("average"),
+                                    new ProfileData.Builder(
+                                            Long.parseLong(currUser.optString("userId", "0")),
+                                            currUser.optString("username", "")
+                                    ).persona(
                                             new PersonaData(
                                                     Long.parseLong(currObj
                                                             .optString(
                                                                     "bestPersonaId", "")), currUser
                                                             .optString(
                                                                     "username", ""), platoonData
-                                                            .getPlatformId(), null),
-                                            tempGravatarHash
-
-                                    )
+                                                            .getPlatformId(), null)
+                                            ).gravatarHash(tempGravatarHash).build()
 
                             )
 
@@ -951,21 +946,19 @@ public class PlatoonHandler {
 
                                     currObjNames.getString(i), currObj.getInt("min"), currObj
                                             .getInt("median"), currObj.getInt("best"), currObj
-                                            .getInt("average"), new ProfileData(
-                                            Long
-                                                    .parseLong(currUser
-                                                            .optString("userId", "0")),
-                                            currUser.optString("username", ""),
+                                            .getInt("average"),
+                                    new ProfileData.Builder(
+                                            Long.parseLong(currUser.optString("userId", "0")),
+                                            currUser.optString("username", "")
+                                    ).persona(
                                             new PersonaData(
                                                     Long.parseLong(currObj
                                                             .optString(
                                                                     "bestPersonaId", "")), currUser
                                                             .optString(
                                                                     "username", ""), platoonData
-                                                            .getPlatformId(), null),
-                                            tempGravatarHash
-
-                                    )
+                                                            .getPlatformId(), null)
+                                            ).gravatarHash(tempGravatarHash).build()
 
                             )
 
@@ -1017,21 +1010,19 @@ public class PlatoonHandler {
 
                                     currObjNames.getString(i), currObj.getInt("min"), currObj
                                             .getInt("median"), currObj.getInt("best"), currObj
-                                            .getInt("average"), new ProfileData(
-                                            Long
-                                                    .parseLong(currUser
-                                                            .optString("userId", "0")),
-                                            currUser.optString("username", ""),
+                                            .getInt("average"),
+                                    new ProfileData.Builder(
+                                            Long.parseLong(currUser.optString("userId", "0")),
+                                            currUser.optString("username", "")
+                                    ).persona(
                                             new PersonaData(
                                                     Long.parseLong(currObj
                                                             .optString(
                                                                     "bestPersonaId", "")), currUser
                                                             .optString(
                                                                     "username", ""), platoonData
-                                                            .getPlatformId(), null),
-                                            tempGravatarHash
-
-                                    )
+                                                            .getPlatformId(), null)
+                                            ).gravatarHash(tempGravatarHash).build()
 
                             )
 
@@ -1106,21 +1097,10 @@ public class PlatoonHandler {
                             new PlatoonTopStatsItem(
 
                                     currObjNames.getString(i), currObj.getInt("spm"),
-                                    new ProfileData(
-                                            Long
-                                                    .parseLong(currUser
-                                                            .optString("userId", "0")),
-                                            currUser.optString("username", ""),
-                                            new PersonaData(
-                                                    Long.parseLong(currObj
-                                                            .optString(
-                                                                    "bestPersonaId", "0")),
-                                                    currUser.optString(
-                                                            "username", ""), platoonData
-                                                            .getPlatformId(), null),
-                                            tempGravatarHash
-
-                                    )
+                                    new ProfileData.Builder(
+                                            Long.parseLong(currUser.optString("userId", "0")),
+                                            currUser.optString("username", "")
+                                    ).gravatarHash(tempGravatarHash).build()
 
                             )
 
@@ -1176,14 +1156,14 @@ public class PlatoonHandler {
 
     }
 
-    public static ArrayList<PlatoonMemberData> getFansForPlatoon(
+    public static ArrayList<ProfileData> getFansForPlatoon(
             final long platoonId) throws WebsiteHandlerException {
 
         try {
 
             // Let's go!
             RequestHandler rh = new RequestHandler();
-            List<PlatoonMemberData> fans = new ArrayList<PlatoonMemberData>();
+            List<ProfileData> fans = new ArrayList<ProfileData>();
             String httpContent;
 
             // Do the request
@@ -1212,13 +1192,10 @@ public class PlatoonHandler {
                     // Store him in the ArrayList
                     fans.add(
 
-                            new PlatoonMemberData(
-
-                                    Long.parseLong(tempObject.getString("userId")),
-                                    tempObject.getString("username"),
-                                    new PersonaData[] {},
-                                    tempObject.optString("gravatarMd5", ""), 0)
-
+                            new ProfileData.Builder(
+                                    Long.parseLong(tempObject.optString("userId", "0")),
+                                    tempObject.optString("username", "")
+                            ).gravatarHash(tempObject.optString("gravatarMd5")).build()
                             );
 
                 }
@@ -1229,22 +1206,14 @@ public class PlatoonHandler {
             if (fans.size() > 0) {
 
                 // Add a header just 'cause we can
-                fans.add(
-
-                        new PlatoonMemberData(
-
-                                0, "Loyal fans", new PersonaData[] {}, null, 0
-
-                        )
-
-                        );
+                fans.add(new ProfileData("Loyal fans"));
 
                 // a-z please!
                 Collections.sort(fans, new ProfileComparator());
 
             }
             // Return
-            return (ArrayList<PlatoonMemberData>) fans;
+            return (ArrayList<ProfileData>) fans;
 
         } catch (Exception ex) {
 
@@ -1264,25 +1233,25 @@ public class PlatoonHandler {
 
             // Let's go!
             RequestHandler rh = new RequestHandler();
-            List<PlatoonMemberData> fans = new ArrayList<PlatoonMemberData>();
-            List<PlatoonMemberData> members = new ArrayList<PlatoonMemberData>();
+            List<ProfileData> fans = new ArrayList<ProfileData>();
+            List<ProfileData> members = new ArrayList<ProfileData>();
             List<ProfileData> friends = new ArrayList<ProfileData>();
             PlatoonStats stats = null;
 
             // Arrays to divide the users in
-            List<PlatoonMemberData> founderMembers = new ArrayList<PlatoonMemberData>();
-            List<PlatoonMemberData> adminMembers = new ArrayList<PlatoonMemberData>();
-            List<PlatoonMemberData> regularMembers = new ArrayList<PlatoonMemberData>();
-            List<PlatoonMemberData> invitedMembers = new ArrayList<PlatoonMemberData>();
-            List<PlatoonMemberData> requestMembers = new ArrayList<PlatoonMemberData>();
+            List<ProfileData> founderMembers = new ArrayList<ProfileData>();
+            List<ProfileData> adminMembers = new ArrayList<ProfileData>();
+            List<ProfileData> regularMembers = new ArrayList<ProfileData>();
+            List<ProfileData> invitedMembers = new ArrayList<ProfileData>();
+            List<ProfileData> requestMembers = new ArrayList<ProfileData>();
 
             // Get the content
             String httpContent = rh.get(
-            
-                    RequestHandler.generateUrl(URL_INFO, pData.getId()), 
+
+                    RequestHandler.generateUrl(URL_INFO, pData.getId()),
                     RequestHandler.HEADER_AJAX
-            
-            );
+
+                    );
             boolean isAdmin = false;
             boolean isMember = false;
 
@@ -1319,7 +1288,7 @@ public class PlatoonHandler {
                 for (int counter = 0, max = idArray.length(); counter < max; counter++) {
 
                     // Temporary var
-                    PlatoonMemberData tempProfile;
+                    ProfileData tempProfile;
 
                     // Get the current item
                     currItem = memberArray.optJSONObject(idArray
@@ -1337,29 +1306,34 @@ public class PlatoonHandler {
                     // If we have a persona >> add it to the members
                     if (!currItem.isNull("persona")) {
 
-                        tempProfile = new PlatoonMemberData(
+                        tempProfile = new ProfileData.Builder(
 
                                 Long.parseLong(currItem.getString("userId")),
-                                currItem.getJSONObject("user").getString("username"),
-                                new PersonaData(
-                                        Long.parseLong(currItem
-                                                .getString("personaId")),
-                                        currItem
-                                                .getJSONObject("persona").getString(
-                                                        "personaName"),
-                                        profileCommonObject.getInt("platform"),
-                                        null
+                                currItem.getJSONObject("user").getString("username")
+                                ).persona(
+                                        new PersonaData(
+                                                Long.parseLong(currItem
+                                                        .getString("personaId")),
+                                                currItem
+                                                        .getJSONObject("persona").getString(
+                                                                "personaName"),
+                                                profileCommonObject.getInt("platform"),
+                                                null
 
-                                ),
-                                currItem.optString("gravatarMd5", ""),
-                                currItem.getJSONObject("user").getJSONObject("presence")
-                                        .getBoolean("isOnline"), currItem
-                                        .getJSONObject("user")
-                                        .getJSONObject("presence")
-                                        .getBoolean("isPlaying"),
-                                currItem.getInt("membershipLevel")
-
-                                );
+                                        )
+                                        )
+                                        .gravatarHash(currItem.optString("gravatarMd5", ""))
+                                        .isOnline(
+                                                currItem.getJSONObject("user")
+                                                        .getJSONObject("presence")
+                                                        .getBoolean("isOnline")
+                                        )
+                                        .isPlaying(
+                                                currItem.getJSONObject("user")
+                                                        .getJSONObject("presence")
+                                                        .getBoolean("isPlaying")
+                                        ).membershipLevel(currItem.getInt("membershipLevel"))
+                                        .build();
 
                     } else {
 
@@ -1411,15 +1385,13 @@ public class PlatoonHandler {
                     // Plural?
                     if (founderMembers.size() > 1) {
 
-                        members.add(new PlatoonMemberData(0, c
-                                .getString(R.string.info_platoon_member_founder_p),
-                                new PersonaData[] {}, null, 0));
+                        members.add(new ProfileData(c
+                                .getString(R.string.info_platoon_member_founder_p)));
 
                     } else {
 
-                        members.add(new PlatoonMemberData(0, c
-                                .getString(R.string.info_platoon_member_founder),
-                                new PersonaData[] {}, null, 0));
+                        members.add(new ProfileData(c
+                                .getString(R.string.info_platoon_member_founder)));
 
                     }
 
@@ -1433,15 +1405,12 @@ public class PlatoonHandler {
                     // Plural?
                     if (adminMembers.size() > 1) {
 
-                        members.add(new PlatoonMemberData(0, c
-                                .getString(R.string.info_platoon_member_admin_p),
-                                new PersonaData[] {}, null, 0));
+                        members.add(new ProfileData(c
+                                .getString(R.string.info_platoon_member_admin_p)));
 
                     } else {
 
-                        members.add(new PlatoonMemberData(0, c
-                                .getString(R.string.info_platoon_member_admin),
-                                new PersonaData[] {}, null, 0));
+                        members.add(new ProfileData(c.getString(R.string.info_platoon_member_admin)));
 
                     }
 
@@ -1455,15 +1424,13 @@ public class PlatoonHandler {
                     // Plural?
                     if (regularMembers.size() > 1) {
 
-                        members.add(new PlatoonMemberData(0, c
-                                .getString(R.string.info_platoon_member_regular_p),
-                                new PersonaData[] {}, null, 0));
+                        members.add(new ProfileData(c
+                                .getString(R.string.info_platoon_member_regular_p)));
 
                     } else {
 
-                        members.add(new PlatoonMemberData(0, c
-                                .getString(R.string.info_platoon_member_regular),
-                                new PersonaData[] {}, null, 0));
+                        members.add(new ProfileData(c
+                                .getString(R.string.info_platoon_member_regular)));
 
                     }
 
@@ -1478,9 +1445,8 @@ public class PlatoonHandler {
                     if (invitedMembers.size() > 0) {
 
                         // Just add them
-                        members.add(new PlatoonMemberData(0, c
-                                .getString(R.string.info_platoon_member_invited_label),
-                                new PersonaData[] {}, null, 0));
+                        members.add(new ProfileData(c
+                                .getString(R.string.info_platoon_member_invited_label)));
                         members.addAll(invitedMembers);
 
                     }
@@ -1488,9 +1454,8 @@ public class PlatoonHandler {
                     if (requestMembers.size() > 0) {
 
                         // Just add them
-                        members.add(new PlatoonMemberData(0, c
-                                .getString(R.string.info_platoon_member_requested_label),
-                                new PersonaData[] {}, null, 0));
+                        members.add(new ProfileData(c
+                                .getString(R.string.info_platoon_member_requested_label)));
                         members.addAll(requestMembers);
 
                     }
@@ -1563,7 +1528,6 @@ public class PlatoonHandler {
 
     }
 
-    
     public static ArrayList<GeneralSearchResult> search(
 
             Context context, String keyword, String checksum
@@ -1581,15 +1545,15 @@ public class PlatoonHandler {
 
                     URL_SEARCH,
                     RequestHandler.generatePostData(
-                            
+
                             FIELD_NAMES_SEARCH,
                             keyword,
                             checksum
 
-                    ), 
+                            ),
                     RequestHandler.HEADER_NORMAL
 
-            );
+                    );
             // Did we manage?
             if (!"".equals(httpContent)) {
 
@@ -1640,7 +1604,7 @@ public class PlatoonHandler {
             throw new WebsiteHandlerException(ex.getMessage());
 
         }
-        
+
         // Return the results
         return (ArrayList<GeneralSearchResult>) results;
 

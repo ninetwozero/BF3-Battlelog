@@ -58,7 +58,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
     // Attributes
     final private Context context = this;
-    
+
     // COM-related
     private SlidingDrawer slidingDrawer;
     private TextView slidingDrawerHandle;

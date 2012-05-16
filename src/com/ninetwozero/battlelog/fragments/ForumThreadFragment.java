@@ -946,7 +946,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                         intent = new Intent(context, ProfileActivity.class)
                                 .putExtra(
 
-                                        "profile", ProfileHandler.getProfileIdFromSearch(username, arg0[1])
+                                        "profile",
+                                        ProfileHandler.getProfileIdFromSearch(username, arg0[1])
 
                                 );
 

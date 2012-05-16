@@ -64,12 +64,12 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
         super.onCreate(icicle);
 
         // Get the intent
-        if(!getIntent().hasExtra("profile")) {
+        if (!getIntent().hasExtra("profile")) {
 
             return;
-            
+
         }
-        
+
         // Get the profile
         profileData = getIntent().getParcelableExtra("profile");
 
@@ -106,12 +106,12 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
     public void onResume() {
 
         super.onResume();
-        
+
         // Reload
         reload();
 
     }
-    
+
     public Dialog generateDialogPersonaList() {
 
         // Attributes

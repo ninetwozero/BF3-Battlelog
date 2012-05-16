@@ -23,13 +23,10 @@ import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
@@ -37,9 +34,6 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.fragments.WeaponListFragment;
 import com.ninetwozero.battlelog.handlers.ProfileHandler;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.misc.RequestHandler;
 
 public class WeaponListActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
@@ -55,31 +49,15 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         // onCreate - save the instance state
         super.onCreate(icicle);
 
-        // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Restore the cookies
-        PublicUtils.setupFullscreen(this, sharedPreferences);
-        PublicUtils.restoreCookies(this, icicle);
-
-        // Prepare to tango
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fragmentManager = getSupportFragmentManager();
-
         // Get the intent
-        if (getIntent().hasExtra("profile")) {
-
-            profileData = getIntent().getParcelableExtra("profile");
-
-        } else {
+        if (!getIntent().hasExtra("profile")) {
 
             return;
 
         }
 
-        // Setup the trinity
-        PublicUtils.setupLocale(this, sharedPreferences);
-        PublicUtils.setupSession(this, sharedPreferences);
+        // Get the profile
+        profileData = getIntent().getParcelableExtra("profile");
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
@@ -105,28 +83,8 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
 
         super.onResume();
 
-        // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
-
-        // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
-
         // Reload
         reload();
-
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-                RequestHandler.getCookies());
 
     }
 

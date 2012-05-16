@@ -31,7 +31,6 @@ import android.graphics.Bitmap;
 
 import com.ninetwozero.battlelog.datatypes.GeneralSearchResult;
 import com.ninetwozero.battlelog.datatypes.NewsData;
-import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.datatypes.SearchComparator;
@@ -247,26 +246,26 @@ public class WebsiteHandler {
 
     }
 
-    
-    public static List<GeneralSearchResult> search(Context c, String k, String ch) throws WebsiteHandlerException {
-        
+    public static List<GeneralSearchResult> search(Context c, String k, String ch)
+            throws WebsiteHandlerException {
+
         try {
-            
+
             // Get the results
             List<GeneralSearchResult> results = ProfileHandler.search(c, k, ch);
             results.addAll(PlatoonHandler.search(c, k, ch));
-            
+
             // Sort & return
             Collections.sort(results, new SearchComparator());
             return results;
-            
-        } catch( WebsiteHandlerException ex ) {
-            
+
+        } catch (WebsiteHandlerException ex) {
+
             throw ex;
-            
+
         }
     }
-    
+
     public static List<NewsData> getNewsForPage(int p) throws WebsiteHandlerException {
 
         try {
@@ -288,11 +287,11 @@ public class WebsiteHandler {
 
                 // Get the data
                 String httpContent = rh.get(
-                        
+
                         RequestHandler.generateUrl(Constants.URL_NEWS, num),
                         RequestHandler.HEADER_AJAX
-                        
-                );
+
+                        );
 
                 // Did we get something?
                 if (httpContent != null && !httpContent.equals("")) {
@@ -318,14 +317,16 @@ public class WebsiteHandler {
                                         item.getInt("devblogCommentCount"),
                                         item.getString("title"),
                                         item.getString("body"),
-                                        new ProfileData(
+                                        new ProfileData.Builder(
 
                                                 Long.parseLong(user.getString("userId")),
-                                                user.getString("username"),
-                                                new PersonaData[] {},
+                                                user.getString("username")
+
+                                        ).gravatarHash(
+
                                                 user.getString("gravatarMd5")
 
-                                        )
+                                                ).build()
 
                                 )
 

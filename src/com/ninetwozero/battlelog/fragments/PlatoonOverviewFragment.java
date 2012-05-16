@@ -326,10 +326,10 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
                 // Get...
                 platoonInformation = PlatoonHandler.getProfileInformationForPlatoon(
 
-                                context, this.platoonData, sharedPreferences.getInt(
-                                        Constants.SP_BL_NUM_FEED,
-                                        Constants.DEFAULT_NUM_FEED),
-                                this.activeProfileId
+                        context, this.platoonData, sharedPreferences.getInt(
+                                Constants.SP_BL_NUM_FEED,
+                                Constants.DEFAULT_NUM_FEED),
+                        this.activeProfileId
 
                         );
 

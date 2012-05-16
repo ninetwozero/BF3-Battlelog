@@ -42,12 +42,12 @@ public class AsyncPlatoonMemberManagement extends
     @Override
     protected Boolean doInBackground(Boolean... arg0) {
 
-       try {
+        try {
 
             if (arg0.length == 0) {
 
                 return PlatoonHandler.alterPlatoonMembership(userId,
-                        platoonId, PlatoonHandler.FILTER_KICK );
+                        platoonId, PlatoonHandler.FILTER_KICK);
 
             } else if (!arg0[0]) {
 

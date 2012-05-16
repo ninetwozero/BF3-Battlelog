@@ -100,7 +100,7 @@ public class PlatoonInviteActivity extends ListActivity {
 
     public void onListItemClick(ListView lv, View v, int pos, long id) {
 
-        if ( selectedIds[pos].equals(0) ) {
+        if (selectedIds[pos].equals(0)) {
 
             selectedIds[pos] = id;
             ((CheckBox) v.findViewById(R.id.checkbox)).setChecked(true);

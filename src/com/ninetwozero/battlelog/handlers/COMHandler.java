@@ -14,7 +14,6 @@ import android.content.Context;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
-import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.ProfileComparator;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
@@ -256,13 +255,16 @@ public class COMHandler {
                         // Save it
                         profileRowRequests.add(
 
-                                tempProfileData = new ProfileData(
-                                        Long.parseLong(tempObj.getString("userId")),
-                                        tempObj.getString("username"),
-                                        new PersonaData[] {},
-                                        tempObj.optString("gravatarMd5", "")
+                                tempProfileData = new ProfileData.Builder(
 
-                                        )
+                                        Long.parseLong(tempObj.getString("userId")),
+                                        tempObj.getString("username")
+
+                                        ).gravatarHash(
+
+                                                tempObj.optString("gravatarMd5", "")
+
+                                                ).build()
 
                                 );
 
@@ -289,16 +291,11 @@ public class COMHandler {
                         presenceObj = tempObj.getJSONObject("presence");
 
                         // Save it
-                        ProfileData tempProfile = new ProfileData(
-
-                                Long.parseLong(tempObj.getString("userId")),
-                                tempObj.getString("username"),
-                                new PersonaData[] {},
-                                tempObj.optString("gravatarMd5", ""),
-                                presenceObj.getBoolean("isOnline"),
-                                presenceObj.getBoolean("isPlaying")
-
-                                );
+                        ProfileData tempProfile = new ProfileData.Builder(Long.parseLong(tempObj
+                                .getString("userId")), tempObj.getString("username"))
+                                .gravatarHash(tempObj.optString("gravatarMd5", ""))
+                                .isOnline(presenceObj.getBoolean("isOnline"))
+                                .isPlaying(presenceObj.getBoolean("isPlaying")).build();
 
                         if (tempProfile.isPlaying()) {
 
@@ -407,14 +404,12 @@ public class COMHandler {
                     // Save it
                     profileArray.add(
 
-                            new ProfileData(
+                            new ProfileData.Builder(
 
-                                    Long.parseLong(tempObj
-                                            .getString("userId")), tempObj.getString("username"),
-                                    tempObj.optString(
-                                            "gravatarMd5", "")
+                                    Long.parseLong(tempObj.getString("userId")), tempObj
+                                            .getString("username")
 
-                            )
+                            ).gravatarHash(tempObj.optString("gravatarMd5", "")).build()
 
                             );
                 }
@@ -510,7 +505,7 @@ public class COMHandler {
 
             // Did we manage?
             return (httpContent != null);
-            
+
         } catch (Exception ex) {
 
             ex.printStackTrace();
@@ -532,7 +527,7 @@ public class COMHandler {
 
             // Is it ok?
             return (httpResponse.optString("message", "FAIL").equals("OK"));
-            
+
         } catch (RequestHandlerException ex) {
 
             throw new WebsiteHandlerException(ex.getMessage());

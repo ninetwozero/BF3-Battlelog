@@ -135,7 +135,7 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
         reload();
 
     }
-    
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {

@@ -43,7 +43,7 @@ import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonRespond;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
-import com.ninetwozero.battlelog.datatypes.PlatoonMemberData;
+import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.misc.Constants;
 
 public class PlatoonMemberFragment extends ListFragment implements DefaultFragment {
@@ -230,7 +230,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 
         // Get the data
-        PlatoonMemberData data = (PlatoonMemberData) info.targetView
+        ProfileData data = (ProfileData) info.targetView
                 .getTag();
 
         // General
@@ -281,7 +281,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
             if (item.getGroupId() == 2) {
 
                 // Get the data
-                PlatoonMemberData data = (PlatoonMemberData) info.targetView
+                ProfileData data = (ProfileData) info.targetView
                         .getTag();
 
                 // ...

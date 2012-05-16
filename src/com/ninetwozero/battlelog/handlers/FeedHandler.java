@@ -15,7 +15,6 @@ import android.util.Log;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
-import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -25,7 +24,7 @@ import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
 public class FeedHandler {
-    
+
     // URLS
     public static final String URL_FEED = Constants.URL_MAIN + "feed/?start={NUMSTART}";
     public static final String URL_PLATOON = Constants.URL_MAIN
@@ -45,7 +44,7 @@ public class FeedHandler {
             + "like/postlike/{POST_ID}/feed-item-like/";
     public static final String URL_UNHOOAH = Constants.URL_MAIN
             + "like/postunlike/{POST_ID}/feed-item-like/";
-    
+
     // Constants
     public static final String[] FIELD_NAMES_POST = new String[] {
             "wall-message", "post-check-sum", "wall-ownerId", "wall-platoonId"
@@ -133,9 +132,9 @@ public class FeedHandler {
                         title, content, "n/a",
                         new ProfileData[] {
 
-                                new ProfileData(uid, username[0], gravatar),
-                                new ProfileData(0, username[1], null)
-
+                                new ProfileData.Builder(uid, username[0]).gravatarHash(gravatar)
+                                        .build(),
+                                new ProfileData.Builder(0, username[1]).build()
                         },
                         false,
                         false,
@@ -255,13 +254,10 @@ public class FeedHandler {
                 }
 
                 // Set the first profile
-                profile1 = new ProfileData(
+                profile1 = new ProfileData.Builder(
                         Long.parseLong(currItem.getString("ownerId")),
-                        ownerObject.getString("username"),
-                        new PersonaData[] {},
-                        ownerObject.getString("gravatarMd5")
-
-                        );
+                        ownerObject.getString("username")
+                        ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
 
                 // What do we have *here*?
                 if (!currItem.isNull("BECAMEFRIENDS")) {
@@ -271,14 +267,11 @@ public class FeedHandler {
                     JSONObject friendUser = tempSubItem
                             .getJSONObject("friendUser");
 
-                    // Set the profile
-                    profile2 = new ProfileData(
+                    // Set the first profile
+                    profile2 = new ProfileData.Builder(
                             Long.parseLong(currItem.getString("ownerId")),
-                            friendUser.getString("username"),
-                            new PersonaData[] {},
-                            friendUser.getString("gravatarMd5")
-
-                            );
+                            ownerObject.getString("username")
+                            ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
 
                     // Get the title
                     itemTitle = context.getString(R.string.info_p_friendship);
@@ -657,13 +650,11 @@ public class FeedHandler {
 
                             );
 
-                    profile2 = new ProfileData(
-
-                            Long.parseLong(currItem.getString("ownerId")),
-                            friendObject.getString("username"),
-                            friendObject.getString("gravatarMd5")
-
-                            );
+                    // Set the second profile
+                    profile2 = new ProfileData.Builder(
+                            Long.parseLong(friendObject.getString("ownerId")),
+                            ownerObject.getString("username")
+                            ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
 
                 } else if (!currItem.isNull("RECEIVEDAWARD")) {
 
@@ -731,14 +722,10 @@ public class FeedHandler {
                     tempGravatarHash = otherUserObject.getString("gravatarMd5");
 
                     // Set the other profile
-                    profile2 = new ProfileData(
-
+                    profile2 = new ProfileData.Builder(
                             Long.parseLong(currItem.getString("ownerId")),
-                            ownerObject.getString("username"),
-                            new PersonaData[] {},
-                            ownerObject.getString("gravatarMd5")
-
-                            );
+                            ownerObject.getString("username")
+                            ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
 
                 } else if (!currItem.isNull("GAMEACCESS")) {
 
@@ -847,12 +834,12 @@ public class FeedHandler {
                 // Get the content, and create a JSONArray
                 httpContent = rh.get(
                         url.replace(
-                                "{NUMSTART}", 
+                                "{NUMSTART}",
                                 String.valueOf(i * 10)
-                        ),
+                                ),
                         RequestHandler.HEADER_AJAX
                         );
-                
+
                 // Convert the JSON
                 jsonArray = new JSONObject(httpContent).getJSONObject("data")
                         .getJSONArray("feedEvents");

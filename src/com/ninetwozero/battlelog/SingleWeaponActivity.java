@@ -55,15 +55,15 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
         super.onCreate(icicle);
 
         // Get the intent
-        if ( !getIntent().hasExtra("profile") || !getIntent().hasExtra("weapon")) {
+        if (!getIntent().hasExtra("profile") || !getIntent().hasExtra("weapon")) {
 
             finish();
-            
+
         }
-        
+
         // Get the profile
         profileData = getIntent().getParcelableExtra("profile");
-        
+
         // Get the weapon information
         weaponDataWrapper = getIntent().getParcelableExtra("weapon");
         weaponInfo = weaponDataWrapper.getData();

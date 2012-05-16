@@ -1261,12 +1261,12 @@ public class CacheHandler {
                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_FORUM_ID)),
                                 results.getLong(results
                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST)),
-                                new ProfileData(
+                                new ProfileData.Builder(
                                         results.getLong(results
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID)),
                                         results.getString(results
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR))
-                                ),
+                                ).build(),
                                 results.getLong(results
                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED)),
                                 results.getLong(results
@@ -1337,12 +1337,12 @@ public class CacheHandler {
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_FORUM_ID)),
                                         results.getLong(results
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST)),
-                                        new ProfileData(
+                                        new ProfileData.Builder(
                                                 results.getLong(results
                                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID)),
                                                 results.getString(results
                                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR))
-                                        ),
+                                        ).build(),
                                         results.getLong(results
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED)),
                                         results.getLong(results

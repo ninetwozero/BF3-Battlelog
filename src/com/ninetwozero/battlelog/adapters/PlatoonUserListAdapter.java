@@ -24,19 +24,19 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.PlatoonMemberData;
+import com.ninetwozero.battlelog.datatypes.ProfileData;
 
 public class PlatoonUserListAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private List<PlatoonMemberData> profileArray;
+    private List<ProfileData> profileArray;
     private LayoutInflater layoutInflater;
     private TextView textUser;
     private int lastSeparator;
 
     // Construct
-    public PlatoonUserListAdapter(Context c, List<PlatoonMemberData> p,
+    public PlatoonUserListAdapter(Context c, List<ProfileData> p,
             LayoutInflater l) {
 
         context = c;
@@ -79,7 +79,7 @@ public class PlatoonUserListAdapter extends BaseAdapter {
     }
 
     @Override
-    public PlatoonMemberData getItem(int position) {
+    public ProfileData getItem(int position) {
 
         return this.profileArray.get(position);
 
@@ -102,7 +102,7 @@ public class PlatoonUserListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the current item
-        PlatoonMemberData currentProfile = getItem(position);
+        ProfileData currentProfile = getItem(position);
 
         // Let's see what we found
         if (getItemViewType(position) == 0) {
@@ -158,7 +158,7 @@ public class PlatoonUserListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setProfileArray(List<PlatoonMemberData> pa) {
+    public void setProfileArray(List<ProfileData> pa) {
         profileArray = pa;
         notifyDataSetChanged();
     }

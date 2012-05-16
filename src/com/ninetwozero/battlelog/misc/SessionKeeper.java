@@ -87,15 +87,13 @@ public class SessionKeeper {
         // If we even *might* have a session
         if (!cookie.equals("")) {
 
-            ProfileData p = new ProfileData(
+            return new ProfileData.Builder(
                     sp.getLong(Constants.SP_BL_PROFILE_ID, 0),
-                    sp.getString(Constants.SP_BL_PROFILE_NAME, ""),
-                    persona,
+                    sp.getString(Constants.SP_BL_PROFILE_NAME, "")
+
+            ).persona(persona).gravatarHash(
                     sp.getString(Constants.SP_BL_PROFILE_GRAVATAR, "")
-
-                    );
-
-            return p;
+                    ).build();
 
         } else {
 

@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +66,6 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
     private EditText fieldEmail, fieldPassword;
     private CheckBox checkboxSave;
     private SlidingDrawer slidingDrawer;
-    private LayoutInflater layoutInflater;
     private OnDrawerOpenListener onDrawerOpenListener;
     private OnDrawerCloseListener onDrawerCloseListener;
 
@@ -470,6 +470,9 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
             viewPager = (ViewPager) findViewById(R.id.viewpager_sub);
             tabs = (SwipeyTabs) findViewById(R.id.swipeytabs_sub);
 
+            Log.d(Constants.DEBUG_TAG, "viewPager => " + viewPager);
+            Log.d(Constants.DEBUG_TAG, "tabs => " + tabs);
+
             // Fill the PagerAdapter & set it to the viewpager
             pagerAdapter = new SwipeyTabsPagerAdapter(
 
@@ -482,6 +485,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
                     viewPager,
                     layoutInflater
                     );
+            Log.d(Constants.DEBUG_TAG, "pagerAdapter => " + pagerAdapter);
             viewPager.setAdapter(pagerAdapter);
             tabs.setAdapter(pagerAdapter);
 

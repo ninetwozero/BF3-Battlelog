@@ -30,7 +30,7 @@ import com.ninetwozero.battlelog.fragments.AboutFAQFragment;
 import com.ninetwozero.battlelog.fragments.AboutMainFragment;
 
 public class AboutActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
-    
+
     @Override
     public void onCreate(Bundle icicle) {
 

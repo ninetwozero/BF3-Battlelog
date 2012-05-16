@@ -50,18 +50,17 @@ public class AssignmentData implements Parcelable {
     }
 
     public AssignmentData(Parcel in) {
-        
+
         resourceId = in.readInt();
         unlockResourceId = in.readInt();
         id = in.readString();
         description = in.readString();
         set = in.readString();
-        
-       
+
         objectives = in.createTypedArrayList(AssignmentData.Objective.CREATOR);
         dependencies = in.createTypedArrayList(AssignmentData.Dependency.CREATOR);
         unlocks = in.createTypedArrayList(AssignmentData.Unlock.CREATOR);
-        
+
     }
 
     @Override
@@ -71,7 +70,7 @@ public class AssignmentData implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        
+
         dest.writeInt(resourceId);
         dest.writeInt(unlockResourceId);
         dest.writeString(id);
@@ -80,7 +79,7 @@ public class AssignmentData implements Parcelable {
         dest.writeList(objectives);
         dest.writeList(dependencies);
         dest.writeList(unlocks);
-    
+
     }
 
     public static final Parcelable.Creator<AssignmentData> CREATOR = new Parcelable.Creator<AssignmentData>() {
@@ -188,9 +187,9 @@ public class AssignmentData implements Parcelable {
             unit = u;
 
         }
-        
+
         public Objective(Parcel in) {
-            
+
             currentValue = in.readDouble();
             goalValue = in.readDouble();
             id = in.readString();
@@ -198,7 +197,7 @@ public class AssignmentData implements Parcelable {
             kit = in.readString();
             description = in.readString();
             unit = in.readString();
-            
+
         }
 
         // Getters
@@ -245,7 +244,7 @@ public class AssignmentData implements Parcelable {
             dest.writeString(kit);
             dest.writeString(description);
             dest.writeString(unit);
-            
+
         }
 
         public static final Parcelable.Creator<AssignmentData.Objective> CREATOR = new Parcelable.Creator<AssignmentData.Objective>() {
@@ -259,10 +258,10 @@ public class AssignmentData implements Parcelable {
             }
 
         };
-        
+
     }
 
-    public static class Dependency implements Parcelable{
+    public static class Dependency implements Parcelable {
 
         // Attributes
         private int count;
@@ -275,12 +274,12 @@ public class AssignmentData implements Parcelable {
             id = i;
 
         }
-        
+
         public Dependency(Parcel in) {
-            
+
             count = in.readInt();
             id = in.readString();
-            
+
         }
 
         // Getters
@@ -290,8 +289,8 @@ public class AssignmentData implements Parcelable {
 
         public String getId() {
             return id;
-        }        
-        
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -302,7 +301,7 @@ public class AssignmentData implements Parcelable {
 
             dest.writeInt(count);
             dest.writeString(id);
-            
+
         }
 
         public static final Parcelable.Creator<AssignmentData.Dependency> CREATOR = new Parcelable.Creator<AssignmentData.Dependency>() {
@@ -333,13 +332,13 @@ public class AssignmentData implements Parcelable {
             visible = v;
 
         }
-        
+
         public Unlock(Parcel in) {
-            
+
             id = in.readString();
             type = in.readString();
             visible = in.readInt() == 1;
-            
+
         }
 
         // Getters
@@ -354,7 +353,7 @@ public class AssignmentData implements Parcelable {
         public boolean isVisible() {
             return visible;
         }
-      
+
         @Override
         public int describeContents() {
             return 0;
@@ -365,8 +364,8 @@ public class AssignmentData implements Parcelable {
 
             dest.writeString(id);
             dest.writeString(type);
-            dest.writeInt( visible ? 1 : 0 );
-            
+            dest.writeInt(visible ? 1 : 0);
+
         }
 
         public static final Parcelable.Creator<AssignmentData.Unlock> CREATOR = new Parcelable.Creator<AssignmentData.Unlock>() {

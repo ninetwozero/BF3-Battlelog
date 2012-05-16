@@ -241,7 +241,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
                         )
 
                 );
-/* TODO: Move profile2 population into ASYNCTASK */
+                /* TODO: Move profile2 population into ASYNCTASK */
             } else if (item.getItemId() == MENU_POS_ASSIGNMENTS) {
 
                 startActivity(

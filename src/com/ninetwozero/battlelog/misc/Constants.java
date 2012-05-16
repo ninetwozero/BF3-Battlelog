@@ -27,7 +27,7 @@ public final class Constants {
 
     // URLs that REQUIRE POST-DATA
     public static final String URL_LOGIN = Constants.URL_MAIN_SECURE + "gate/login/";
-    
+
     public static final String URL_FRIEND_ACCEPT = Constants.URL_MAIN
             + "friend/acceptFriendship/{UID}/";
     public static final String URL_FRIEND_DECLINE = Constants.URL_MAIN
@@ -37,12 +37,13 @@ public final class Constants {
     public static final String URL_NOTIFICATIONS_TOP5 = Constants.URL_MAIN
             + "notification/loadNotifications/";
     public static final String URL_LOGOUT = Constants.URL_MAIN + "session/logout/";
-    
+
     // URLs to JSON-files (FEED-related)
 
     // News
     public static final String URL_NEWS = Constants.URL_MAIN + "news/{COUNT}/";
-    public static final String URL_NEWS_COMMENTS = Constants.URL_MAIN + "news/view/{ARTICLE_ID}/{PAGE}/";
+    public static final String URL_NEWS_COMMENTS = Constants.URL_MAIN
+            + "news/view/{ARTICLE_ID}/{PAGE}/";
     public static final String URL_NEWS_COMMENTS_NEW = Constants.URL_MAIN
             + "comment/postcomment/{ARTICLE_ID}/devblog-comment/";
 

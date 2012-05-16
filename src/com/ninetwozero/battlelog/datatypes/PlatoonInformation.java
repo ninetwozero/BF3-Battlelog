@@ -24,7 +24,7 @@ public class PlatoonInformation {
     private long id, date;
     private String name, tag, presentation, website;
     private boolean visible, isMember, isAdmin, allowNewMembers;
-    private List<PlatoonMemberData> members, fans;
+    private List<ProfileData> members, fans;
     private List<ProfileData> invitableFriends;
     private PlatoonStats stats;
 
@@ -55,8 +55,8 @@ public class PlatoonInformation {
 
             long i, long d, int pId, int g, int nF, int nM, int bcId, String n,
             String t, String p, String w, boolean v, boolean ism, boolean isa,
-            boolean a, List<PlatoonMemberData> m,
-            List<PlatoonMemberData> fa, List<ProfileData> pd,
+            boolean a, List<ProfileData> m,
+            List<ProfileData> fa, List<ProfileData> pd,
             PlatoonStats st
 
     ) {
@@ -144,12 +144,12 @@ public class PlatoonInformation {
         return allowNewMembers;
     }
 
-    public ArrayList<PlatoonMemberData> getMembers() {
-        return (ArrayList<PlatoonMemberData>) members;
+    public ArrayList<ProfileData> getMembers() {
+        return (ArrayList<ProfileData>) members;
     }
 
-    public ArrayList<PlatoonMemberData> getFans() {
-        return (ArrayList<PlatoonMemberData>) fans;
+    public ArrayList<ProfileData> getFans() {
+        return (ArrayList<ProfileData>) fans;
     }
 
     public ArrayList<ProfileData> getInvitableFriends() {

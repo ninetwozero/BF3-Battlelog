@@ -54,12 +54,12 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
 
         // onCreate - save the instance state
         super.onCreate(icicle);
-        
+
         // Get the intent
-        if(!getIntent().hasExtra("profile")) {
-            
+        if (!getIntent().hasExtra("profile")) {
+
             return;
-            
+
         }
 
         // Get the profile

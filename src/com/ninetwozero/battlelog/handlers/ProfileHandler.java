@@ -81,7 +81,6 @@ public class ProfileHandler {
     public static final String URL_PROFILE = Constants.URL_MAIN
             + "user/overviewBoxStats/{UID}/";
 
-    
     // Constants
     public static final String[] FIELD_NAMES_SETTINGS = new String[] {
 
@@ -93,17 +92,17 @@ public class ProfileHandler {
             "profile-edit-inactivatefeed", "profile-edit-allowfriendrequests", "post-check-sum"
 
     };
-    
+
     public static final String[] FIELD_NAMES_SEARCH = new String[] {
             "username", "post-check-sum"
     };
-    
+
     public static final String[] FIELD_NAMES_STATUS = new String[] {
             "message",
             "post-check-sum",
             "urls[]"
     };
-    
+
     public static ProfileData getProfileIdFromSearch(final String keyword,
             final String checksum) throws WebsiteHandlerException {
 
@@ -114,17 +113,17 @@ public class ProfileHandler {
             ProfileData profile = null;
             String httpContent = wh.post(
 
-                    URL_SEARCH, 
+                    URL_SEARCH,
                     RequestHandler.generatePostData(
-                            
+
                             FIELD_NAMES_SEARCH,
                             keyword,
                             checksum
-                            
-                    ),
+
+                            ),
                     RequestHandler.HEADER_NORMAL
 
-            );
+                    );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -148,13 +147,10 @@ public class ProfileHandler {
                         // A perfect match?
                         if (tempObj.getString("username").equals(keyword)) {
 
-                            profile = new ProfileData(
+                            profile = new ProfileData.Builder(
                                     Long.parseLong(tempObj.getString("userId")),
-                                    tempObj.getString("username"),
-                                    new PersonaData[] {},
-                                    tempObj.optString("gravatarMd5", "")
-
-                                    );
+                                    tempObj.getString("username")
+                                    ).gravatarHash(tempObj.optString("gravatarMd5", "")).build();
 
                             break;
 
@@ -167,13 +163,11 @@ public class ProfileHandler {
                         // Somewhat of a match? Get the "best" one!
                         if (costOld > costCurrent) {
 
-                            profile = new ProfileData(
+                            profile = new ProfileData.Builder(
                                     Long.parseLong(tempObj.getString("userId")),
-                                    tempObj.getString("username"),
-                                    new PersonaData[] {},
-                                    tempObj.optString("gravatarMd5", "")
+                                    tempObj.getString("username")
+                                    ).gravatarHash(tempObj.optString("gravatarMd5", "")).build();
 
-                                    );
                         }
 
                         // Shuffle!
@@ -224,13 +218,10 @@ public class ProfileHandler {
                 JSONObject user = new JSONObject(httpContent).getJSONObject(
                         "data").getJSONObject("user");
 
-                return new ProfileData(
+                return new ProfileData.Builder(
                         Long.parseLong(user.getString("userId")),
-                        user.getString("username"),
-                        new PersonaData[] {},
-                        user.optString("gravatarMd5", "")
-
-                );
+                        user.getString("username")).gravatarHash(user.optString("gravatarMd5", ""))
+                        .build();
 
             } else {
 
@@ -255,11 +246,11 @@ public class ProfileHandler {
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
             String httpContent = wh.get(
-                    
+
                     URL_PROFILE.replace("{UID}", profileId + ""),
                     RequestHandler.HEADER_NORMAL
-                    
-            );
+
+                    );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -291,11 +282,8 @@ public class ProfileHandler {
                             );
                 }
 
-                return new ProfileData(
-
-                        profileId, personaArray[0].getName(), personaArray, null
-
-                );
+                return new ProfileData.Builder(profileId, personaArray[0].getName()).persona(
+                        personaArray).build();
 
             } else {
 
@@ -317,14 +305,12 @@ public class ProfileHandler {
 
         try {
 
-            ProfileData profile = ProfileHandler.getPersonaIdFromProfile(p
-                    .getId());
-            return new ProfileData(
+            ProfileData profile = ProfileHandler.getPersonaIdFromProfile(p.getId());
+            return new ProfileData.Builder(p.getId(), p.getUsername()).persona(
 
-                    p.getId(), p.getUsername(), profile.getPersonaArray(),
-                    profile.getGravatarHash()
+                    profile.getPersonaArray()
 
-            );
+                    ).gravatarHash(profile.getGravatarHash()).build();
 
         } catch (Exception ex) {
 
@@ -592,9 +578,9 @@ public class ProfileHandler {
 
                         RequestHandler.generateUrl(
                                 URL_UNLOCKS,
-                                pd.getPersona(count).getId(), 
+                                pd.getPersona(count).getId(),
                                 pd.getPersona(count).getPlatformId()
-                        ),
+                                ),
                         RequestHandler.HEADER_NORMAL
 
                         );
@@ -752,9 +738,9 @@ public class ProfileHandler {
                     RequestHandler.generateUrl(
                             URL_INFO,
                             profileData.getUsername()
-                    ), 
+                            ),
                     RequestHandler.HEADER_AJAX
-            );
+                    );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -921,12 +907,12 @@ public class ProfileHandler {
 
                     URL_STATUS,
                     RequestHandler.generatePostData(
-                            
+
                             FIELD_NAMES_STATUS,
                             content,
                             checksum
 
-                    ),
+                            ),
                     RequestHandler.HEADER_NORMAL
 
                     );
@@ -972,15 +958,15 @@ public class ProfileHandler {
 
                     URL_SEARCH,
                     RequestHandler.generatePostData(
-                            
+
                             FIELD_NAMES_SEARCH,
                             keyword,
                             checksum
 
-                    ), 
+                            ),
                     RequestHandler.HEADER_NORMAL
 
-            );
+                    );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -1003,13 +989,10 @@ public class ProfileHandler {
 
                                 new GeneralSearchResult(
 
-                                        new ProfileData(
-                                                Long.parseLong(tempObj.getString("userId")),
-                                                tempObj.getString("username"),
-                                                new PersonaData[] {},
-                                                tempObj.optString("gravatarMd5")
-
-                                        )
+                                        new ProfileData.Builder(Long.parseLong(tempObj
+                                                .getString("userId")), tempObj
+                                                .getString("username")).gravatarHash(
+                                                tempObj.optString("gravatarMd5")).build()
 
                                 )
 
@@ -1020,10 +1003,10 @@ public class ProfileHandler {
 
             }
 
-        } catch(Exception ex ) {
-            
+        } catch (Exception ex) {
+
             throw new WebsiteHandlerException(ex.getMessage());
-            
+
         }
         // Return the results
         return (ArrayList<GeneralSearchResult>) results;
@@ -1047,11 +1030,11 @@ public class ProfileHandler {
                 String httpContent = rh.get(
 
                         RequestHandler.generateUrl(
-                                
+
                                 URL_WEAPONS,
-                                p.getPersona(i).getId(), 
+                                p.getPersona(i).getId(),
                                 p.getPersona(i).getPlatformId()
-                        ),
+                                ),
                         RequestHandler.HEADER_NORMAL
 
                         );
@@ -1194,17 +1177,17 @@ public class ProfileHandler {
                 String httpContent = rh.get(
 
                         RequestHandler.generateUrl(
-                                
+
                                 URL_WEAPONS_INFO,
                                 p.getPersona(i).getName(),
-                                p.getPersona(i).getId(), 
-                                weaponStats.getSlug(), 
+                                p.getPersona(i).getId(),
+                                weaponStats.getSlug(),
                                 p.getPersona(i).getPlatformId()
-                        
-                        ), 
+
+                                ),
                         RequestHandler.HEADER_NORMAL
 
-                );
+                        );
 
                 // So... how'd it go?
                 if (httpContent != null && !httpContent.equals("")) {
@@ -1282,7 +1265,7 @@ public class ProfileHandler {
         }
 
     }
-    
+
     public static HashMap<Long, List<AssignmentData>> getAssignments(
             Context c, ProfileData profile) throws WebsiteHandlerException {
 
@@ -1302,17 +1285,17 @@ public class ProfileHandler {
                 String httpContent = rh.get(
 
                         RequestHandler.generateUrl(
-                                
-                                URL_ASSIGNMENTS, 
+
+                                URL_ASSIGNMENTS,
                                 profile.getPersona(count).getName(),
                                 profile.getPersona(count).getId(),
                                 profile.getId(),
                                 profile.getPersona(count).getPlatformId()
-                                
-                        ), 
+
+                                ),
                         RequestHandler.HEADER_AJAX
 
-                );
+                        );
 
                 // Parse the JSON!
                 JSONObject topLevel = new JSONObject(httpContent)
@@ -1474,6 +1457,5 @@ public class ProfileHandler {
         }
 
     }
-    
 
 }

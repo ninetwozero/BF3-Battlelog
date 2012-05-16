@@ -13,7 +13,6 @@ import com.ninetwozero.battlelog.datatypes.ForumData;
 import com.ninetwozero.battlelog.datatypes.ForumPostData;
 import com.ninetwozero.battlelog.datatypes.ForumSearchResult;
 import com.ninetwozero.battlelog.datatypes.ForumThreadData;
-import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.CacheHandler;
@@ -136,21 +135,17 @@ public class ForumHandler {
                                         .getLong("lastPostDate"), currObject
                                         .getInt("numberOfOfficialPosts"), currObject
                                         .getInt("numberOfPosts"),
-                                currObject.getString("title"), new ProfileData(
-                                        Long.parseLong(ownerObject.getString("userId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
-
-                                ), new ProfileData(
-                                        Long
-                                                .parseLong(lastPosterObject.getString("userId")),
-                                        lastPosterObject.getString("username"),
-                                        new PersonaData[] {},
-                                        lastPosterObject.getString("gravatarMd5")
-
-                                ), currObject.getBoolean("isSticky"), currObject
-                                        .getBoolean("isLocked")
+                                currObject.getString("title"),
+                                new ProfileData.Builder(
+                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        ownerObject.getString("username")
+                                ).gravatarHash(ownerObject.getString("gravatarMd5")).build(),
+                                new ProfileData.Builder(
+                                        Long.parseLong(lastPosterObject.getString("ownerId")),
+                                        lastPosterObject.getString("username")
+                                ).gravatarHash(lastPosterObject.getString("gravatarMd5")).build(),
+                                currObject.getBoolean("isSticky"),
+                                currObject.getBoolean("isLocked")
 
                         )
 
@@ -182,21 +177,17 @@ public class ForumHandler {
                                         .getLong("lastPostDate"), currObject
                                         .getInt("numberOfOfficialPosts"), currObject
                                         .getInt("numberOfPosts"),
-                                currObject.getString("title"), new ProfileData(
-                                        Long.parseLong(ownerObject.getString("userId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
-
-                                ), new ProfileData(
-                                        Long
-                                                .parseLong(lastPosterObject.getString("userId")),
-                                        lastPosterObject.getString("username"),
-                                        new PersonaData[] {},
-                                        lastPosterObject.getString("gravatarMd5")
-
-                                ), currObject.getBoolean("isSticky"), currObject
-                                        .getBoolean("isLocked")
+                                currObject.getString("title"),
+                                new ProfileData.Builder(
+                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        ownerObject.getString("username")
+                                ).gravatarHash(ownerObject.getString("gravatarMd5")).build(),
+                                new ProfileData.Builder(
+                                        Long.parseLong(lastPosterObject.getString("ownerId")),
+                                        lastPosterObject.getString("username")
+                                ).gravatarHash(lastPosterObject.getString("gravatarMd5")).build(),
+                                currObject.getBoolean("isSticky"),
+                                currObject.getBoolean("isLocked")
 
                         )
 
@@ -258,16 +249,15 @@ public class ForumHandler {
                                 Long.parseLong(currObject.getString("id")), Long
                                         .parseLong(currObject.getString("creationDate")), Long
                                         .parseLong(currObject.getString("threadId")),
-                                new ProfileData(
-                                        Long.parseLong(ownerObject.getString("userId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
 
-                                ), currObject.getString("formattedBody"), currObject
-                                        .getInt("abuseCount"), currObject
-                                        .getBoolean("isCensored"), currObject
-                                        .getBoolean("isOfficial")
+                                new ProfileData.Builder(
+                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        ownerObject.getString("username")
+                                ).gravatarHash(ownerObject.getString("gravatarMd5")).build(),
+                                currObject.getString("formattedBody"),
+                                currObject.getInt("abuseCount"),
+                                currObject.getBoolean("isCensored"),
+                                currObject.getBoolean("isOfficial")
 
                         )
 
@@ -331,12 +321,9 @@ public class ForumHandler {
                                                 .getLong("timestamp"),
                                         currentItem
                                                 .getString("title"),
-                                        new ProfileData(
-                                                Long
-                                                        .parseLong(currentItem.getString("ownerId")),
-                                                currentItem.getString("ownerUsername"),
-                                                new PersonaData[] {},
-                                                null),
+                                        new ProfileData.Builder(
+                                                Long.parseLong(currentItem.getString("ownerId")),
+                                                currentItem.getString("ownerUsername")).build(),
                                         currentItem.getBoolean("isSticky"), currentItem
                                                 .getBoolean("isOfficial")
 
@@ -518,22 +505,18 @@ public class ForumHandler {
                                         .getLong("lastPostDate"), currObject
                                         .getInt("numberOfOfficialPosts"), currObject
                                         .getInt("numberOfPosts"),
-                                currObject.getString("title"), new ProfileData(
-                                        Long
-                                                .parseLong(ownerObject.getString("userId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                currObject.getString("title"),
 
-                                ), new ProfileData(
-                                        Long
-                                                .parseLong(lastPosterObject.getString("userId")),
-                                        lastPosterObject.getString("username"),
-                                        new PersonaData[] {},
-                                        lastPosterObject.getString("gravatarMd5")
-
-                                ), currObject.getBoolean("isSticky"), currObject
-                                        .getBoolean("isLocked")
+                                new ProfileData.Builder(
+                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        ownerObject.getString("username")
+                                ).gravatarHash(ownerObject.getString("gravatarMd5")).build(),
+                                new ProfileData.Builder(
+                                        Long.parseLong(lastPosterObject.getString("ownerId")),
+                                        lastPosterObject.getString("username")
+                                ).gravatarHash(lastPosterObject.getString("gravatarMd5")).build(),
+                                currObject.getBoolean("isSticky"),
+                                currObject.getBoolean("isLocked")
 
                         )
 
@@ -565,21 +548,18 @@ public class ForumHandler {
                                         .getLong("lastPostDate"), currObject
                                         .getInt("numberOfOfficialPosts"), currObject
                                         .getInt("numberOfPosts"),
-                                currObject.getString("title"), new ProfileData(
-                                        Long.parseLong(ownerObject.getString("userId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
+                                currObject.getString("title"),
 
-                                ), new ProfileData(
-                                        Long
-                                                .parseLong(lastPosterObject.getString("userId")),
-                                        lastPosterObject.getString("username"),
-                                        new PersonaData[] {},
-                                        lastPosterObject.getString("gravatarMd5")
-
-                                ), currObject.getBoolean("isSticky"), currObject
-                                        .getBoolean("isLocked")
+                                new ProfileData.Builder(
+                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        ownerObject.getString("username")
+                                ).gravatarHash(ownerObject.getString("gravatarMd5")).build(),
+                                new ProfileData.Builder(
+                                        Long.parseLong(lastPosterObject.getString("ownerId")),
+                                        lastPosterObject.getString("username")
+                                ).gravatarHash(lastPosterObject.getString("gravatarMd5")).build(),
+                                currObject.getBoolean("isSticky"),
+                                currObject.getBoolean("isLocked")
 
                         )
 
@@ -654,16 +634,14 @@ public class ForumHandler {
                                 Long.parseLong(currObject.getString("id")), Long
                                         .parseLong(currObject.getString("creationDate")), Long
                                         .parseLong(currObject.getString("threadId")),
-                                new ProfileData(
+                                new ProfileData.Builder(
                                         Long.parseLong(ownerObject.getString("userId")),
-                                        ownerObject.getString("username"),
-                                        new PersonaData[] {},
-                                        ownerObject.getString("gravatarMd5")
-
-                                ), currObject.getString("formattedBody"), currObject
-                                        .getInt("abuseCount"), currObject
-                                        .getBoolean("isCensored"), currObject
-                                        .getBoolean("isOfficial")
+                                        ownerObject.getString("username")
+                                ).gravatarHash(ownerObject.getString("gravatarMd5")).build(),
+                                currObject.getString("formattedBody"),
+                                currObject.getInt("abuseCount"),
+                                currObject.getBoolean("isCensored"),
+                                currObject.getBoolean("isOfficial")
 
                         )
 
@@ -681,22 +659,16 @@ public class ForumHandler {
                     threadObject.getInt("numberOfPosts"),
                     contextObject.getInt("currentPage"),
                     contextObject.getInt("numPages"),
-                    threadObject.getString("title"), new ProfileData(
-                            Long
-                                    .parseLong(threadOwnerObject.getString("userId")),
-                            threadOwnerObject.getString("username"),
-                            new PersonaData[] {},
-                            threadOwnerObject.getString("gravatarMd5")
-
-                    ),
-                    new ProfileData(
-                            Long
-                                    .parseLong(lastPosterObject.getString("userId")),
-                            lastPosterObject.getString("username"),
-                            new PersonaData[] {},
-                            lastPosterObject.getString("gravatarMd5")
-
-                    ), threadObject.getBoolean("isSticky"),
+                    threadObject.getString("title"),
+                    new ProfileData.Builder(
+                            Long.parseLong(threadOwnerObject.getString("ownerId")),
+                            threadOwnerObject.getString("username")
+                    ).gravatarHash(threadOwnerObject.getString("gravatarMd5")).build(),
+                    new ProfileData.Builder(
+                            Long.parseLong(lastPosterObject.getString("ownerId")),
+                            lastPosterObject.getString("username")
+                    ).gravatarHash(lastPosterObject.getString("gravatarMd5")).build(),
+                    threadObject.getBoolean("isSticky"),
                     threadObject.getBoolean("isLocked"),
                     contextObject.getBoolean("canEditPosts"),
                     contextObject.getBoolean("canCensorPosts"),

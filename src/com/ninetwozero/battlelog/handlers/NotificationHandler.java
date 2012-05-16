@@ -60,7 +60,8 @@ public class NotificationHandler {
             // Init
             RequestHandler rh = new RequestHandler();
             List<NotificationData> notifications = new ArrayList<NotificationData>();
-            String httpContent = rh.get(Constants.URL_NOTIFICATIONS_ALL, RequestHandler.HEADER_AJAX);
+            String httpContent = rh
+                    .get(Constants.URL_NOTIFICATIONS_ALL, RequestHandler.HEADER_AJAX);
 
             // Got httpContent
             if (!"".equals(httpContent)) {
