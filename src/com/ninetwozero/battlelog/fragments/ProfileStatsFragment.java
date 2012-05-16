@@ -72,7 +72,6 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
     private long selectedPersona;
     private int selectedPosition;
     private boolean comparing;
-    private boolean loadCache;
     private String[] personaNames;
     private long[] personaIds;
 

@@ -8,10 +8,13 @@ import java.util.Map;
 
 public class ProfileSettings {
 
+    private static final long serialVersionUID = 7336622399859889307L;
+
     public static final String PROFILE_INFO_BIRTHDAY = "profile_info_birthday";
     public static final String PROFILE_INFO_COUNTRY = "profile_info_country";
 
     public static final Map<String, String> COUNTRY = new HashMap<String, String>() {
+
         {
             put("Select your location", "");
             put("Afghanistan", "AF");

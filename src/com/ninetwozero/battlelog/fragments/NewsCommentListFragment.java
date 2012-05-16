@@ -17,10 +17,8 @@ package com.ninetwozero.battlelog.fragments;
 import java.util.List;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -54,7 +52,6 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
 
     // Misc
     private List<CommentData> comments;
-    private SharedPreferences sharedPreferences;
     private NewsData newsData;
     private int pageId;
 
@@ -65,8 +62,6 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
         // Set our attributes
         context = getActivity();
         layoutInflater = inflater;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_comment,

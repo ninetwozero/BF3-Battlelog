@@ -15,9 +15,7 @@
 package com.ninetwozero.battlelog.fragments;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.ContextMenu;
@@ -46,7 +44,6 @@ public class NewsOverviewFragment extends Fragment implements DefaultFragment {
 
     // Misc
     private NewsData newsData;
-    private SharedPreferences sharedPreferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,8 +52,6 @@ public class NewsOverviewFragment extends Fragment implements DefaultFragment {
         // Set our attributes
         context = getActivity();
         layoutInflater = inflater;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_news_overview,

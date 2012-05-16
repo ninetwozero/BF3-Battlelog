@@ -30,7 +30,6 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
@@ -63,16 +62,7 @@ public class SocialWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
             int[] appWidgetIds) {
 
-        // Attributes
-        Intent active = new Intent(context, SocialWidgetProvider.class)
-                .setAction(ACTION_WIDGET_RECEIVER);
-        PendingIntent actionPendingIntent = PendingIntent.getBroadcast(context,
-                0, active, 0);
-        Intent appIntent = new Intent(context, MainActivity.class);
-        PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0,
-                appIntent, 0);
-        appIntent.setAction(ACTION_WIDGET_OPENAPP);
-
+        // Get the SP
         SharedPreferences sharedPreferences = null;
 
         // Set the values

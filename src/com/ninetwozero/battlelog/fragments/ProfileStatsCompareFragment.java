@@ -17,8 +17,6 @@ package com.ninetwozero.battlelog.fragments;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -27,26 +25,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
 
 public class ProfileStatsCompareFragment extends Fragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
     private LayoutInflater layoutInflater;
-
-    // SharedPreferences for shizzle
-    private SharedPreferences sharedPreferences;
-    private ProgressBar progressBar;
-    // private GetDataSelfAsync getDataAsync;
-    private ProfileData playerOne, playerTwo;
-    private int selectedPosition;
     private long[] selectedPersona;
     private Map<Long, PersonaStats> personaStats;
     private int[] differences;
@@ -202,7 +190,6 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
         layoutInflater = inflater;
 
         // Let's inflate & return the view
@@ -219,7 +206,6 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
 
     public void initFragment(View view) {
 
-        progressBar = (ProgressBar) view.findViewById(R.id.progress_level);
         personaStats = new HashMap<Long, PersonaStats>();
         selectedPersona = new long[2];
 

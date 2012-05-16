@@ -35,7 +35,6 @@ import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.COMHandler;
 import com.ninetwozero.battlelog.handlers.NotificationHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
@@ -147,52 +146,6 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
 
             // R-turn
             return;
-
-        }
-
-    }
-
-    private class AsyncRequest extends AsyncTask<String, Integer, Boolean> {
-
-        // Attribute
-        private long profileId;
-        private boolean response;
-
-        // Constructor
-        public AsyncRequest(long p, boolean r) {
-
-            this.profileId = p;
-            this.response = r;
-        }
-
-        @Override
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected Boolean doInBackground(String... arg0) {
-
-            try {
-
-                // Let's get this!!
-                return COMHandler.answerFriendRequest(profileId, response,
-                        arg0[0]);
-
-            } catch (WebsiteHandlerException e) {
-
-                return false;
-
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(Boolean results) {
-
-            // Let the user know and then refresh!
-            Toast.makeText(context, R.string.info_friendreq_resp_ok,
-                    Toast.LENGTH_SHORT).show();
-            reload();
 
         }
 

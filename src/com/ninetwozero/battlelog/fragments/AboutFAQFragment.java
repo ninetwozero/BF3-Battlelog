@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -29,7 +28,6 @@ import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 public class AboutFAQFragment extends Fragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
     private LayoutInflater layoutInflater;
 
     @Override
@@ -37,7 +35,6 @@ public class AboutFAQFragment extends Fragment implements DefaultFragment {
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
         layoutInflater = inflater;
 
         // Let's inflate & return the view

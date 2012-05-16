@@ -17,9 +17,7 @@ package com.ninetwozero.battlelog.fragments;
 import java.util.List;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,7 +44,6 @@ public class WeaponListFragment extends ListFragment implements DefaultFragment 
 
     // Misc
     private List<WeaponDataWrapper> items;
-    private SharedPreferences sharedPreferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,8 +52,6 @@ public class WeaponListFragment extends ListFragment implements DefaultFragment 
         // Set our attributes
         context = getActivity();
         layoutInflater = inflater;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_items,

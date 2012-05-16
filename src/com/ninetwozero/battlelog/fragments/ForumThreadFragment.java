@@ -91,14 +91,12 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     private RelativeLayout wrapButtons, wrapLoader;
     private Button buttonPost, buttonPrev, buttonNext, buttonJump;
     private SlidingDrawer slidingDrawer;
-    private TextView slidingDrawerHandle;
     private OnDrawerOpenListener onDrawerOpenListener;
     private OnDrawerCloseListener onDrawerCloseListener;
     private EditText textareaContent;
 
     // Misc
     private long threadId;
-    private long latestRefresh;
     private String locale;
     private int currentPage;
     private HashMap<Long, String> selectedQuotes;
@@ -578,7 +576,6 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         if (slidingDrawer == null) {
 
             slidingDrawer = (SlidingDrawer) v.findViewById(R.id.post_slider);
-            slidingDrawerHandle = (TextView) v.findViewById(R.id.post_slide_handle_text);
 
             // Set the drawer listeners
             onDrawerCloseListener = new OnDrawerCloseListener() {

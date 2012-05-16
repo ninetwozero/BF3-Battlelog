@@ -18,10 +18,8 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -55,7 +53,6 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
 
     // Misc
     private List<NewsData> newsItems;
-    private SharedPreferences sharedPreferences;
     private int start;
 
     @Override
@@ -65,8 +62,6 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
         // Set our attributes
         context = getActivity();
         layoutInflater = inflater;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_dashboard_news,

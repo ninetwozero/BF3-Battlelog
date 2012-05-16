@@ -37,7 +37,6 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
 import com.ninetwozero.battlelog.datatypes.PlatoonStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonStatsItem;
@@ -59,10 +58,7 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
     private TableRow cacheTableRow;
 
     // Misc
-    private PlatoonData platoonData;
     private PlatoonInformation platoonInformation;
-    private long selectedPersona;
-    private int selectedPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -366,12 +362,6 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
     public void reload() {
 
         showStats(platoonInformation);
-
-    }
-
-    public void setPlatoonData(PlatoonData p) {
-
-        platoonData = p;
 
     }
 

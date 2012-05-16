@@ -14,12 +14,8 @@
 
 package com.ninetwozero.battlelog.fragments;
 
-import java.util.HashMap;
-
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,8 +27,6 @@ import android.widget.TextView;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
@@ -46,12 +40,6 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
     // Elements
     private TextView textKills, textHS, textSF, textSH, textAccuracy, textTE, textSS, textSSP;
 
-    // Misc
-    private ProfileData profileData;
-    private WeaponStats weaponStats;
-    private SharedPreferences sharedPreferences;
-    private HashMap<Long, WeaponDataWrapper> weaponDataWrapper;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -59,8 +47,6 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
         // Set our attributes
         context = getActivity();
         layoutInflater = inflater;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_weapon_stats,
@@ -98,12 +84,6 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
     public int getViewPagerPosition() {
 
         return viewPagerPosition;
-
-    }
-
-    public void setProfileData(ProfileData p) {
-
-        profileData = p;
 
     }
 

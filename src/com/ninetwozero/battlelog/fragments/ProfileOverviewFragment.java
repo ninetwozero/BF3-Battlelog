@@ -62,8 +62,6 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
     // Misc
     private ProfileData profileData;
     private ProfileInformation profileInformation;
-    private long selectedPersona;
-    private int selectedPosition;
     private boolean hasPostingRights;
 
     @Override

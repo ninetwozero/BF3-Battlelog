@@ -17,10 +17,8 @@ package com.ninetwozero.battlelog.fragments;
 import java.util.HashMap;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -59,7 +57,6 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     private WeaponInfo weaponInfo;
     private WeaponStats weaponStats;
     private long selectedPersona;
-    private SharedPreferences sharedPreferences;
     private HashMap<Long, WeaponDataWrapper> weaponDataWrapper;
 
     @Override
@@ -69,8 +66,6 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         // Set our attributes
         context = getActivity();
         layoutInflater = inflater;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_weapon_info,

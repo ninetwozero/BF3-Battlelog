@@ -269,9 +269,9 @@ public class FeedHandler {
 
                     // Set the first profile
                     profile2 = new ProfileData.Builder(
-                            Long.parseLong(currItem.getString("ownerId")),
-                            ownerObject.getString("username")
-                            ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
+                            Long.parseLong(friendUser.getString("ownerId")),
+                            friendUser.getString("username")
+                            ).gravatarHash(friendUser.getString("gravatarMd5")).build();
 
                     // Get the title
                     itemTitle = context.getString(R.string.info_p_friendship);

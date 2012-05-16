@@ -14,9 +14,7 @@
 
 package com.ninetwozero.battlelog.fragments;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import android.app.AlertDialog;
@@ -43,8 +41,6 @@ import com.ninetwozero.battlelog.ForumSavedActivity;
 import com.ninetwozero.battlelog.ForumSearchActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.ForumData;
-import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 
@@ -62,8 +58,6 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
     private ImageView imageLanguage;
 
     // Let's store the position & persona
-    private List<ForumData> forums;
-    private PersonaData[] persona;
     private String selectedLocale;
     private String selectedLanguage;
     private int selectedPosition;
@@ -81,9 +75,6 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
         selectedLocale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
         selectedPosition = sharedPreferences.getInt(Constants.SP_BL_FORUM_LOCALE_POSITION, 0);
         selectedLanguage = DataBank.getLanguage(selectedPosition);
-
-        // Let's get that data
-        forums = new ArrayList<ForumData>();
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_dashboard_forum,

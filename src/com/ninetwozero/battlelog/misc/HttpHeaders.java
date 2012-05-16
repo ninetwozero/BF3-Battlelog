@@ -53,6 +53,9 @@ public final class HttpHeaders {
     };
 
     public static final List<Header[]> GET_HEADERS = new ArrayList<Header[]>() {
+
+        private static final long serialVersionUID = 8337984543829725911L;
+
         {
             add(emptyHeader);
             add(ajaxGetHeader);
@@ -61,6 +64,9 @@ public final class HttpHeaders {
     };
 
     public static final List<Header[]> POST_HEADERS = new ArrayList<Header[]>() {
+
+        private static final long serialVersionUID = -2164345116720011770L;
+
         {
             add(emptyHeader);
             add(ajaxPostHeader);

@@ -274,7 +274,6 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
 
             // Add the profileData
             fragmentOverview.setPlatoonData(platoonData);
-            fragmentStats.setPlatoonData(platoonData);
             fragmentMember.setPlatoonData(platoonData);
 
             // We need to set the type
