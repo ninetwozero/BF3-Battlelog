@@ -28,16 +28,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -51,16 +45,11 @@ import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.fragments.UnlockFragment;
 import com.ninetwozero.battlelog.handlers.ProfileHandler;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class UnlockActivity extends FragmentActivity implements DefaultFragmentActivity {
+public class UnlockActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
-    private final Context CONTEXT = this;
-    private SharedPreferences sharedPreferences;
-    private LayoutInflater layoutInflater;
     private ProfileData profileData;
     private HashMap<Long, UnlockDataWrapper> unlocks;
     private long selectedPersona;
@@ -68,44 +57,21 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
     private long[] personaId;
     private String[] personaName;
 
-    // Fragment related
-    private SwipeyTabs tabs;
-    private SwipeyTabsPagerAdapter pagerAdapter;
-    private List<Fragment> listFragments;
-    private FragmentManager fragmentManager;
-    private ViewPager viewPager;
-
     @Override
     public void onCreate(Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
 
-        // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Restore the cookies
-        PublicUtils.setupFullscreen(this, sharedPreferences);
-        PublicUtils.restoreCookies(this, icicle);
-
-        // Prepare to tango
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fragmentManager = getSupportFragmentManager();
-
         // Get the intent
-        if (getIntent().hasExtra("profile")) {
-
-            profileData = getIntent().getParcelableExtra("profile");
-
-        } else {
+        if(!getIntent().hasExtra("profile")) {
 
             return;
-
+            
         }
-
-        // Setup the trinity
-        PublicUtils.setupLocale(this, sharedPreferences);
-        PublicUtils.setupSession(this, sharedPreferences);
+        
+        // Get the profile
+        profileData = getIntent().getParcelableExtra("profile");
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
@@ -131,7 +97,6 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
 
         } else {
 
-            Log.d(Constants.DEBUG_TAG, "profileData => " + profileData);
             selectedPersona = profileData.getPersona(0).getId();
 
         }
@@ -141,32 +106,12 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
     public void onResume() {
 
         super.onResume();
-
-        // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
-
-        // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
-
+        
         // Reload
         reload();
 
     }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-                RequestHandler.getCookies());
-
-    }
-
+    
     public Dialog generateDialogPersonaList() {
 
         // Attributes

@@ -21,18 +21,13 @@ import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -57,18 +52,13 @@ import com.ninetwozero.battlelog.fragments.MenuForumFragment;
 import com.ninetwozero.battlelog.fragments.MenuPlatoonFragment;
 import com.ninetwozero.battlelog.fragments.MenuProfileFragment;
 import com.ninetwozero.battlelog.fragments.NewsListFragment;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class DashboardActivity extends FragmentActivity implements DefaultFragmentActivity {
+public class DashboardActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
     final private Context context = this;
-    private SharedPreferences sharedPreferences;
-    private LayoutInflater layoutInflater;
-
+    
     // COM-related
     private SlidingDrawer slidingDrawer;
     private TextView slidingDrawerHandle;
@@ -77,22 +67,15 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
     private Button buttonRefresh;
 
     // Fragment related
-    private SwipeyTabs tabs, tabsCom;
-    private SwipeyTabsPagerAdapter pagerAdapter, pagerAdapterCom;
-    private List<Fragment> listFragments, listFragmentsCom;
-    private FragmentManager fragmentManager;
-    private NewsListFragment fragmentNews;
-    private MenuProfileFragment fragmentMenuProfile;
+    private SwipeyTabs tabsCom;
+    private SwipeyTabsPagerAdapter pagerAdapterCom;
+    private List<Fragment> listFragmentsCom;
     private MenuPlatoonFragment fragmentMenuPlatoon;
-    private MenuForumFragment fragmentMenuForum;
     private FeedFragment fragmentFeed;
     private ComFriendFragment fragmentComFriends;
     private ComNotificationFragment fragmentComNotifications;
     private ViewPager viewPager, viewPagerCom;
     private final int VIEWPAGER_POSITION_FEED = 4;
-
-    // Async
-    private AsyncLogout asyncLogout;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -103,22 +86,11 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
         // Set sharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        // Should we display a title bar?
-        PublicUtils.setupFullscreen(this, sharedPreferences);
-        PublicUtils.restoreCookies(this, icicle);
-
         // Validate our session
         validateSession();
 
-        // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
-
         // Set the content view
         setContentView(R.layout.viewpager_dashboard);
-
-        // Get the layoutInflater
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fragmentManager = getSupportFragmentManager();
 
         // Setup the fragments
         setupFragments();
@@ -140,28 +112,6 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
         super.onResume();
 
-        // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
-
-        // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
-
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-
-        super.onConfigurationChanged(newConfig);
-
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-                RequestHandler.getCookies());
-
     }
 
     public void setupFragments() {
@@ -171,17 +121,15 @@ public class DashboardActivity extends FragmentActivity implements DefaultFragme
 
             // Add them to the list
             listFragments = new Vector<Fragment>();
-            listFragments.add(fragmentNews = (NewsListFragment) Fragment.instantiate(this,
+            listFragments.add(Fragment.instantiate(this,
                     NewsListFragment.class.getName()));
-            // listFragments.add(fragmentMenu = (MenuFragment)
-            // Fragment.instantiate(this, MenuFragment.class.getName()));
-            listFragments.add(fragmentMenuProfile = (MenuProfileFragment) Fragment.instantiate(
+            listFragments.add(Fragment.instantiate(
                     this,
                     MenuProfileFragment.class.getName()));
             listFragments.add(fragmentMenuPlatoon = (MenuPlatoonFragment) Fragment.instantiate(
                     this,
                     MenuPlatoonFragment.class.getName()));
-            listFragments.add(fragmentMenuForum = (MenuForumFragment) Fragment.instantiate(
+            listFragments.add(Fragment.instantiate(
                     this,
                     MenuForumFragment.class.getName()));
             listFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this,

@@ -14,25 +14,17 @@
 
 package com.ninetwozero.battlelog;
 
-import java.util.List;
 import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,26 +37,14 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
 import com.ninetwozero.battlelog.fragments.ProfileOverviewFragment;
 import com.ninetwozero.battlelog.fragments.ProfileStatsFragment;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class ProfileActivity extends FragmentActivity implements DefaultFragmentActivity {
-
-    // Attributes
-    private SharedPreferences sharedPreferences;
-    private LayoutInflater layoutInflater;
+public class ProfileActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Fragment related
-    private SwipeyTabs tabs;
-    private SwipeyTabsPagerAdapter pagerAdapter;
-    private List<Fragment> listFragments;
-    private FragmentManager fragmentManager;
     private ProfileOverviewFragment fragmentOverview;
     private ProfileStatsFragment fragmentStats;
     private FeedFragment fragmentFeed;
-    private ViewPager viewPager;
 
     // Misc
     private ProfileData profileData;
@@ -74,32 +54,16 @@ public class ProfileActivity extends FragmentActivity implements DefaultFragment
 
         // onCreate - save the instance state
         super.onCreate(icicle);
-
-        // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Restore the cookies
-        PublicUtils.setupFullscreen(this, sharedPreferences);
-        PublicUtils.restoreCookies(this, icicle);
-
-        // Prepare to tango
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fragmentManager = getSupportFragmentManager();
-
+        
         // Get the intent
-        if (getIntent().hasExtra("profile")) {
-
-            profileData = getIntent().getParcelableExtra("profile");
-
-        } else {
-
+        if(!getIntent().hasExtra("profile")) {
+            
             return;
-
+            
         }
 
-        // Setup the trinity
-        PublicUtils.setupLocale(this, sharedPreferences);
-        PublicUtils.setupSession(this, sharedPreferences);
+        // Get the profile
+        profileData = getIntent().getParcelableExtra("profile");
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
@@ -269,28 +233,8 @@ public class ProfileActivity extends FragmentActivity implements DefaultFragment
 
         super.onResume();
 
-        // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
-
-        // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
-
         // We need to initialize
         initActivity();
-
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-                RequestHandler.getCookies());
 
     }
 

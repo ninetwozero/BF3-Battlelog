@@ -14,26 +14,18 @@
 
 package com.ninetwozero.battlelog;
 
-import java.util.List;
 import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,31 +33,14 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.SavedForumThreadData;
 import com.ninetwozero.battlelog.fragments.BoardFragment;
 import com.ninetwozero.battlelog.fragments.ForumFragment;
 import com.ninetwozero.battlelog.fragments.ForumThreadFragment;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class ForumActivity extends FragmentActivity implements DefaultFragmentActivity {
-
-    // Attributes
-    private final Context CONTEXT = this;
-    private SharedPreferences sharedPreferences;
-    private LayoutInflater layoutInflater;
-    private ProfileData profileData;
-    private String locale;
+public class ForumActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Fragment related
-    private SwipeyTabs tabs;
-    private SwipeyTabsPagerAdapter pagerAdapter;
-    private List<Fragment> listFragments;
-    private FragmentManager fragmentManager;
-    private ViewPager viewPager;
-    private BoardFragment fragmentBoard;
     private ForumFragment fragmentForum;
     private ForumThreadFragment fragmentForumThread;
     private SavedForumThreadData savedThread;
@@ -75,21 +50,6 @@ public class ForumActivity extends FragmentActivity implements DefaultFragmentAc
 
         // onCreate - save the instance state
         super.onCreate(icicle);
-
-        // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Restore the cookies
-        PublicUtils.setupFullscreen(this, sharedPreferences);
-        PublicUtils.restoreCookies(this, icicle);
-
-        // Prepare to tango
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fragmentManager = getSupportFragmentManager();
-
-        // Setup the trinity
-        PublicUtils.setupLocale(this, sharedPreferences);
-        PublicUtils.setupSession(this, sharedPreferences);
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
@@ -111,31 +71,11 @@ public class ForumActivity extends FragmentActivity implements DefaultFragmentAc
 
         super.onResume();
 
-        // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
-
-        // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
-
         // Reload
         reload();
 
         // Let's try this
         openFromIntent(getIntent());
-
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-                RequestHandler.getCookies());
 
     }
 
@@ -146,7 +86,7 @@ public class ForumActivity extends FragmentActivity implements DefaultFragmentAc
 
             // Add them to the list
             listFragments = new Vector<Fragment>();
-            listFragments.add(fragmentBoard = (BoardFragment) Fragment.instantiate(this,
+            listFragments.add(Fragment.instantiate(this,
                     BoardFragment.class.getName()));
             listFragments.add(fragmentForum = (ForumFragment) Fragment.instantiate(this,
                     ForumFragment.class.getName()));

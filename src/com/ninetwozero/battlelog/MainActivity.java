@@ -15,7 +15,6 @@
 package com.ninetwozero.battlelog;
 
 import java.io.File;
-import java.util.List;
 import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
@@ -31,8 +30,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.KeyEvent;
@@ -60,12 +57,11 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class MainActivity extends FragmentActivity implements DefaultFragmentActivity {
+public class MainActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
     private String[] valueFields;
     private PostData[] postDataArray;
-    private SharedPreferences sharedPreferences;
 
     // Elements
     private EditText fieldEmail, fieldPassword;
@@ -75,16 +71,6 @@ public class MainActivity extends FragmentActivity implements DefaultFragmentAct
     private OnDrawerOpenListener onDrawerOpenListener;
     private OnDrawerCloseListener onDrawerCloseListener;
     private TextView slidingDrawerHandle;
-
-    // Fragment related
-    private SwipeyTabs tabs;
-    private SwipeyTabsPagerAdapter pagerAdapter;
-    private List<Fragment> listFragments;
-    private FragmentManager fragmentManager;
-    private AboutMainFragment fragmentAbout;
-    private AboutFAQFragment fragmentFAQ;
-    private AboutCreditsFragment fragmentCredits;
-    private ViewPager viewPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -494,11 +480,11 @@ public class MainActivity extends FragmentActivity implements DefaultFragmentAct
 
             // Add them to the list
             listFragments = new Vector<Fragment>();
-            listFragments.add(fragmentAbout = (AboutMainFragment) Fragment.instantiate(this,
+            listFragments.add(Fragment.instantiate(this,
                     AboutMainFragment.class.getName()));
-            listFragments.add(fragmentFAQ = (AboutFAQFragment) Fragment.instantiate(this,
+            listFragments.add(Fragment.instantiate(this,
                     AboutFAQFragment.class.getName()));
-            listFragments.add(fragmentCredits = (AboutCreditsFragment) Fragment.instantiate(this,
+            listFragments.add(Fragment.instantiate(this,
                     AboutCreditsFragment.class.getName()));
 
             // Get the ViewPager

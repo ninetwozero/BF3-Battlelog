@@ -23,14 +23,11 @@ import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.widget.Toast;
@@ -44,23 +41,13 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class WeaponListActivity extends FragmentActivity implements DefaultFragmentActivity {
+public class WeaponListActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
-    private final Context CONTEXT = this;
-    private SharedPreferences sharedPreferences;
-    private LayoutInflater layoutInflater;
     private ProfileData profileData;
     private Map<Long, List<WeaponDataWrapper>> items;
     private long selectedPersona;
     private int selectedPosition;
-
-    // Fragment related
-    private SwipeyTabs tabs;
-    private SwipeyTabsPagerAdapter pagerAdapter;
-    private List<Fragment> listFragments;
-    private FragmentManager fragmentManager;
-    private ViewPager viewPager;
 
     @Override
     public void onCreate(Bundle icicle) {

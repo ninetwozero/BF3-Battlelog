@@ -14,21 +14,13 @@
 
 package com.ninetwozero.battlelog;
 
-import java.util.List;
 import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
@@ -39,16 +31,11 @@ import com.ninetwozero.battlelog.fragments.UnlockFragment;
 import com.ninetwozero.battlelog.fragments.WeaponInformationFragment;
 import com.ninetwozero.battlelog.fragments.WeaponStatisticsFragment;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class SingleWeaponActivity extends FragmentActivity implements DefaultFragmentActivity {
+public class SingleWeaponActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
-    private final Context CONTEXT = this;
-    private SharedPreferences sharedPreferences;
-    private LayoutInflater layoutInflater;
     private ProfileData profileData;
     private long selectedPersona;
     private int selectedPosition;
@@ -57,11 +44,6 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
     private WeaponStats weaponStats;
 
     // Fragment related
-    private SwipeyTabs tabs;
-    private SwipeyTabsPagerAdapter pagerAdapter;
-    private List<Fragment> listFragments;
-    private FragmentManager fragmentManager;
-    private ViewPager viewPager;
     private WeaponInformationFragment fragmentWeaponInfo;
     private WeaponStatisticsFragment fragmentWeaponStats;
     private UnlockFragment fragmentUnlocks;
@@ -72,43 +54,20 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
         // onCreate - save the instance state
         super.onCreate(icicle);
 
-        // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Restore the cookies
-        PublicUtils.setupFullscreen(this, sharedPreferences);
-        PublicUtils.restoreCookies(this, icicle);
-
-        // Prepare to tango
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fragmentManager = getSupportFragmentManager();
-
         // Get the intent
-        if (getIntent().hasExtra("profile")) {
+        if ( !getIntent().hasExtra("profile") || !getIntent().hasExtra("weapon")) {
 
-            profileData = getIntent().getParcelableExtra("profile");
-
-        } else {
-
-            return;
-
+            finish();
+            
         }
-
-        if (getIntent().hasExtra("weapon")) {
-
-            weaponDataWrapper = getIntent().getParcelableExtra("weapon");
-            weaponInfo = weaponDataWrapper.getData();
-            weaponStats = weaponDataWrapper.getStats();
-
-        } else {
-
-            return;
-
-        }
-
-        // Setup the trinity
-        PublicUtils.setupLocale(this, sharedPreferences);
-        PublicUtils.setupSession(this, sharedPreferences);
+        
+        // Get the profile
+        profileData = getIntent().getParcelableExtra("profile");
+        
+        // Get the weapon information
+        weaponDataWrapper = getIntent().getParcelableExtra("weapon");
+        weaponInfo = weaponDataWrapper.getData();
+        weaponStats = weaponDataWrapper.getStats();
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
@@ -141,26 +100,6 @@ public class SingleWeaponActivity extends FragmentActivity implements DefaultFra
     public void onResume() {
 
         super.onResume();
-
-        // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
-
-        // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
-
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-                RequestHandler.getCookies());
 
     }
 

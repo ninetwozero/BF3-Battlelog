@@ -14,26 +14,18 @@
 
 package com.ninetwozero.battlelog;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,24 +36,12 @@ import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.fragments.ProfileStatsCompareFragment;
 import com.ninetwozero.battlelog.fragments.ProfileStatsFragment;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class CompareActivity extends FragmentActivity implements DefaultFragmentActivity {
-
-    // Attributes
-    private SharedPreferences sharedPreferences;
-    private LayoutInflater layoutInflater;
+public class CompareActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Fragment related
-    private SwipeyTabs tabs;
-    private SwipeyTabsPagerAdapter pagerAdapter;
-    private List<Fragment> listFragments;
-    private FragmentManager fragmentManager;
     private ProfileStatsFragment[] fragmentStats;
     private ProfileStatsCompareFragment fragmentCompare;
-    private ViewPager viewPager;
 
     // Misc
     private ProfileData[] profileData;
@@ -72,17 +52,6 @@ public class CompareActivity extends FragmentActivity implements DefaultFragment
         // onCreate - save the instance state
         super.onCreate(icicle);
 
-        // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Restore the cookies
-        PublicUtils.setupFullscreen(this, sharedPreferences);
-        PublicUtils.restoreCookies(this, icicle);
-
-        // Prepare to tango
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fragmentManager = getSupportFragmentManager();
-
         // Let's set them straight
         profileData = new ProfileData[] {
 
@@ -90,10 +59,6 @@ public class CompareActivity extends FragmentActivity implements DefaultFragment
                 (ProfileData) getIntent().getParcelableExtra("profile2")
 
         };
-
-        // Setup the trinity
-        PublicUtils.setupLocale(this, sharedPreferences);
-        PublicUtils.setupSession(this, sharedPreferences);
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
@@ -163,12 +128,6 @@ public class CompareActivity extends FragmentActivity implements DefaultFragment
 
         super.onResume();
 
-        // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
-
-        // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
-
         // We need to initialize
         initActivity();
 
@@ -176,21 +135,7 @@ public class CompareActivity extends FragmentActivity implements DefaultFragment
         reload();
 
     }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-                RequestHandler.getCookies());
-
-    }
-
+    
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
@@ -276,8 +221,14 @@ public class CompareActivity extends FragmentActivity implements DefaultFragment
 
     public void sendToCompare(ProfileData p, Map<Long, PersonaStats> ps, long id, boolean toggle) {
 
-        fragmentCompare.showStats(ps, id, ((p.getId() == profileData[0].getId()) ? 0
-                : 1), toggle);
+        fragmentCompare.showStats(
+
+                ps,
+                id,
+                p.getId() == profileData[0].getId() ? 0 : 1,
+                toggle
+
+                );
 
     }
 

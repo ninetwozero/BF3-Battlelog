@@ -25,7 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.TabHost;
 
 import com.ninetwozero.battlelog.adapters.PlatoonInviteListAdapter;
 import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonMemberInvite;
