@@ -189,7 +189,7 @@ public class SearchActivity extends ListActivity {
 
             try {
 
-                searchResults = WebsiteHandler.searchBattlelog(context,
+                searchResults = WebsiteHandler.search(context,
                         arg0[0], arg0[1]);
                 return true;
 

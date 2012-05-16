@@ -18,7 +18,7 @@ import android.os.AsyncTask;
 
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.COMHandler;
 
 public class AsyncSessionSetActive extends
         AsyncTask<PostData, Integer, Boolean> {
@@ -32,7 +32,7 @@ public class AsyncSessionSetActive extends
 
         try {
 
-            return WebsiteHandler.setActive();
+            return COMHandler.setActive();
 
         } catch (WebsiteHandlerException e) {
 

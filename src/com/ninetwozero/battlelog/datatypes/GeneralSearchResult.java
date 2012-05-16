@@ -13,40 +13,45 @@ public class GeneralSearchResult implements Parcelable {
     // Constructs
     public GeneralSearchResult(PlatoonData p) {
 
-        this.platoon = p;
-        this.profile = null;
+        platoon = p;
+        profile = null;
 
     }
 
     public GeneralSearchResult(ProfileData p) {
 
-        this.platoon = null;
-        this.profile = p;
+        platoon = null;
+        profile = p;
 
     }
 
     public GeneralSearchResult(Parcel in) {
 
-        this.platoon = in.readParcelable(PlatoonData.class.getClassLoader());
-        this.profile = in.readParcelable(ProfileData.class.getClassLoader());
+        platoon = in.readParcelable(PlatoonData.class.getClassLoader());
+        profile = in.readParcelable(ProfileData.class.getClassLoader());
 
     }
 
     // Getters
+    public String getName() {
+        
+        return (profile != null) ? profile.getUsername() : platoon.getName();
+        
+    }
     public boolean hasPlatoonData() {
-        return this.platoon != null;
+        return platoon != null;
     }
 
     public PlatoonData getPlatoonData() {
-        return this.platoon;
+        return platoon;
     }
 
     public boolean hasProfileData() {
-        return this.profile != null;
+        return profile != null;
     }
 
     public ProfileData getProfileData() {
-        return this.profile;
+        return profile;
     }
 
     @Override

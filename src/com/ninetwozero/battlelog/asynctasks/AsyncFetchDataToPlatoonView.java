@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.PlatoonActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.PlatoonHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 
 public class AsyncFetchDataToPlatoonView extends
@@ -55,7 +55,7 @@ public class AsyncFetchDataToPlatoonView extends
         try {
 
             // Post the world!
-            platoon = WebsiteHandler.getPlatoonIdFromSearch(
+            platoon = PlatoonHandler.getPlatoonIdFromSearch(
 
                     searchString,
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")

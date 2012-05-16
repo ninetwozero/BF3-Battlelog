@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ProfileHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 
 public class AsyncFetchDataToProfileView extends
@@ -55,7 +55,7 @@ public class AsyncFetchDataToProfileView extends
         try {
 
             // Post the world!
-            userData = WebsiteHandler.getProfileIdFromSearch(
+            userData = ProfileHandler.getProfileIdFromSearch(
 
                     searchString,
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")

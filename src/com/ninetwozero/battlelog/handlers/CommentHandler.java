@@ -1,3 +1,4 @@
+
 package com.ninetwozero.battlelog.handlers;
 
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import org.json.JSONObject;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.NewsData;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
-import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -17,6 +17,18 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
 public class CommentHandler {
+
+    // URLS
+    public static final String URL_LIST = Constants.URL_MAIN
+            + "feed/getComments/{POST_ID}/";
+    public static final String URL_COMMENT = Constants.URL_MAIN
+            + "comment/postcomment/{POST_ID}/feed-item-comment/";
+   
+    // Attributes
+    public static final String[] FIELD_NAMES_COMMENT = new String[] {
+        "comment", "post-check-sum"
+    };
+
     public static boolean commentOnFeedPost(long postId, String checksum,
             String comment) throws WebsiteHandlerException {
 
@@ -29,19 +41,15 @@ public class CommentHandler {
             // Get the content
             httpContent = wh.post(
 
-                    Constants.URL_COMMENT.replace("{POST_ID}", postId + ""),
-                    new PostData[] {
+                    RequestHandler.generateUrl(URL_COMMENT, postId),
+                    RequestHandler.generatePostData(
 
-                            new PostData(
-
-                                    Constants.FIELD_NAMES_FEED_COMMENT[0], comment
-
-                            ), new PostData(
-
-                                    Constants.FIELD_NAMES_FEED_COMMENT[1], checksum
-
-                            )
-                    }, 2 // Noticed the 2?
+                            FIELD_NAMES_COMMENT,
+                            comment,
+                            checksum
+                 
+                    ),
+                    RequestHandler.HEADER_JSON
 
                     );
 
@@ -49,16 +57,8 @@ public class CommentHandler {
             if (!"".equals(httpContent)) {
 
                 // Hopefully this goes as planned
-                if (!httpContent.equals("Internal server error")) {
-
-                    return true;
-
-                } else {
-
-                    return false;
-
-                }
-
+                return (!httpContent.equals("Internal server error")); 
+                
             } else {
 
                 throw new WebsiteHandlerException("Could not post the comment.");
@@ -87,11 +87,8 @@ public class CommentHandler {
             // Get the content
             httpContent = wh.get(
 
-                    Constants.URL_FEED_COMMENTS.replace(
-
-                            "{POST_ID}", postId + ""
-
-                            ), 0
+                    RequestHandler.generateUrl(URL_LIST, postId), 
+                    RequestHandler.HEADER_NORMAL
 
                     );
 
@@ -144,7 +141,7 @@ public class CommentHandler {
 
         }
     }
-    
+
     public static boolean commentOnNews(String comment, NewsData n, String checksum)
             throws WebsiteHandlerException {
 
@@ -154,36 +151,20 @@ public class CommentHandler {
             RequestHandler wh = new RequestHandler();
             String httpContent = wh.post(
 
-                    Constants.URL_NEWS_COMMENTS_NEW.replace(
+                    RequestHandler.generateUrl(Constants.URL_NEWS_COMMENTS_NEW, n.getId()),
+                    RequestHandler.generatePostData(
+                            
+                            FIELD_NAMES_COMMENT, 
+                            comment,
+                            checksum
 
-                            "{ARTICLE_ID}", n.getId() + ""
-
-                            ), new PostData[] {
-
-                            new PostData(
-
-                                    Constants.FIELD_NAMES_COMMENTS_NEW[0], comment
-
-                            ),
-                            new PostData(
-
-                                    Constants.FIELD_NAMES_COMMENTS_NEW[1], checksum
-
-                            )
-                    }, 2
+                    ),
+                    RequestHandler.HEADER_JSON
 
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
-
-                return true;
-
-            } else {
-
-                return false;
-
-            }
+            return (!"".equals(httpContent));
 
         } catch (Exception ex) {
 
@@ -193,7 +174,6 @@ public class CommentHandler {
         }
 
     }
-    
 
     public static List<CommentData> getCommentsForNews(NewsData n, int pageId)
             throws WebsiteHandlerException {
@@ -206,8 +186,11 @@ public class CommentHandler {
 
             // Get the data
             String httpContent = rh.get(
-                    Constants.URL_NEWS_COMMENTS.replace("{ARTICLE_ID}", n.getId() + "").replace(
-                            "{PAGE}", pageId + ""), 1);
+
+                    RequestHandler.generateUrl(Constants.URL_NEWS_COMMENTS, n.getId(), pageId),
+                    RequestHandler.HEADER_AJAX
+                    
+            );
 
             // Did we get something?
             if (httpContent != null && !httpContent.equals("")) {

@@ -20,16 +20,16 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.PlatoonHandler;
 
 public class AsyncPlatoonMemberInvite extends AsyncTask<String, Void, Integer> {
 
     // Attributes
     private Context context;
     private long platoonId;
-    private long[] userId;
+    private Object[] userId;
 
-    public AsyncPlatoonMemberInvite(Context c, long[] uId, long pId) {
+    public AsyncPlatoonMemberInvite(Context c, Object[] uId, long pId) {
 
         context = c;
         userId = uId.clone();
@@ -42,7 +42,7 @@ public class AsyncPlatoonMemberInvite extends AsyncTask<String, Void, Integer> {
 
         try {
 
-            return WebsiteHandler.sendPlatoonInvite(userId, platoonId, arg0[0]);
+            return PlatoonHandler.sendPlatoonInvite(userId, platoonId, arg0[0]);
 
         } catch (Exception ex) {
 
@@ -60,29 +60,25 @@ public class AsyncPlatoonMemberInvite extends AsyncTask<String, Void, Integer> {
 
             switch (result) {
 
-                case -1:
-                    Toast.makeText(context, R.string.msg_error, Toast.LENGTH_SHORT)
-                            .show();
-                    ((Activity) context).finish();
-                    break;
-
-                case 0:
+                case PlatoonHandler.STATE_OK:
                     Toast.makeText(context, R.string.info_platoon_invite_ok,
                             Toast.LENGTH_SHORT).show();
                     ((Activity) context).finish();
                     break;
 
-                case 1:
+                case PlatoonHandler.STATE_ERROR:
+                    Toast.makeText(context, R.string.info_platoon_invite_passed,
+                            Toast.LENGTH_SHORT).show();
+                    ((Activity) context).finish();
+                    break;
+
+                case PlatoonHandler.STATE_FAIL:
                     Toast.makeText(context, R.string.info_platoon_invite_fail,
                             Toast.LENGTH_SHORT).show();
                     break;
 
-                case 2:
-                    Toast.makeText(context, R.string.info_platoon_invite_passed,
-                            Toast.LENGTH_SHORT).show();
-                    break;
-
                 default:
+                    Toast.makeText(context, R.string.msg_error, Toast.LENGTH_SHORT).show();
                     ((Activity) context).finish();
                     break;
 

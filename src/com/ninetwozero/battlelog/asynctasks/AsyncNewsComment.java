@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.NewsData;
 import com.ninetwozero.battlelog.fragments.NewsCommentListFragment;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.CommentHandler;
 
 public class AsyncNewsComment extends AsyncTask<String, Void, Boolean> {
 
@@ -62,7 +62,7 @@ public class AsyncNewsComment extends AsyncTask<String, Void, Boolean> {
 
         try {
 
-            return WebsiteHandler.commentOnNews(arg0[0], newsData, arg0[1]);
+            return CommentHandler.commentOnNews(arg0[0], newsData, arg0[1]);
 
         } catch (Exception ex) {
 

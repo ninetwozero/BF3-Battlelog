@@ -40,7 +40,8 @@ import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.datatypes.SessionKeeperPackage;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.PlatoonHandler;
+import com.ninetwozero.battlelog.handlers.ProfileHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.services.BattlelogService;
@@ -205,9 +206,9 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         // profileId
         String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "/\">");
 
-        ProfileData profile = WebsiteHandler.getProfileIdFromSearch(soldierName, postCheckSum);
-        profile = WebsiteHandler.getPersonaIdFromProfile(profile);
-        List<PlatoonData> platoons = WebsiteHandler.getPlatoonsForUser(context,
+        ProfileData profile = ProfileHandler.getProfileIdFromSearch(soldierName, postCheckSum);
+        profile = ProfileHandler.getPersonaIdFromProfile(profile);
+        List<PlatoonData> platoons = PlatoonHandler.getPlatoonsForUser(context,
                 profile.getUsername());
         SharedPreferences sharedPreferences = addToSharedPreferences(profile, platoons,
                 postCheckSum, soldierName);

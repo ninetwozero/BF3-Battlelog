@@ -46,7 +46,7 @@ import com.ninetwozero.battlelog.asynctasks.AsyncCreateNewThread;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.ForumData;
 import com.ninetwozero.battlelog.datatypes.ForumThreadData;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ForumHandler;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
 
@@ -295,7 +295,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
             try {
 
-                forumData = WebsiteHandler.getThreadsForForum(locale,
+                forumData = ForumHandler.getThreadsForForum(locale,
                         arg0[0]);
                 return (forumData != null);
 
@@ -388,7 +388,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
             try {
 
                 page = arg0[0];
-                threads = WebsiteHandler.getThreadsForForum(locale, forumId, page);
+                threads = ForumHandler.getThreadsForForum(locale, forumId, page);
                 return true;
 
             } catch (Exception ex) {

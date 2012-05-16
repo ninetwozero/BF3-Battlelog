@@ -19,7 +19,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.COMHandler;
 
 public class AsyncFriendRemove extends AsyncTask<String, Integer, Boolean> {
 
@@ -45,7 +45,7 @@ public class AsyncFriendRemove extends AsyncTask<String, Integer, Boolean> {
 
         try {
 
-            return WebsiteHandler.removeFriend(profileId);
+            return COMHandler.removeFriend(profileId);
 
         } catch (Exception ex) {
 

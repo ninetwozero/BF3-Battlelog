@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.FeedHandler;
 
 public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
@@ -62,7 +62,7 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
         try {
 
-            return WebsiteHandler.postToWall(profileId, arg0[0], arg0[1],
+            return FeedHandler.postToWall(profileId, arg0[0], arg0[1],
                     isPlatoon);
 
         } catch (Exception ex) {

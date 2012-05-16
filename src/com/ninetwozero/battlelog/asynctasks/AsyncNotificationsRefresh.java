@@ -27,7 +27,7 @@ import android.widget.TextView;
 import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.NotificationHandler;
 
 public class AsyncNotificationsRefresh extends
         AsyncTask<String, Integer, Boolean> {
@@ -60,7 +60,7 @@ public class AsyncNotificationsRefresh extends
         try {
 
             // Let's get this!!
-            notifications = WebsiteHandler.getNotifications(arg0[0]);
+            notifications = NotificationHandler.getNotifications(arg0[0]);
             return true;
 
         } catch (WebsiteHandlerException e) {

@@ -49,7 +49,7 @@ import com.ninetwozero.battlelog.datatypes.UnlockData;
 import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.fragments.UnlockFragment;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ProfileHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -327,12 +327,11 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
 
                 if (arg0[0].getNumPersonas() == 0) {
 
-                    profileData = WebsiteHandler
-                            .getPersonaIdFromProfile(profileData);
+                    profileData = ProfileHandler.getPersonaIdFromProfile(profileData);
                     if (selectedPersona == 0) {
                         selectedPersona = profileData.getPersona(0).getId();
                     }
-                    unlocks = WebsiteHandler.getUnlocksForUser(profileData,
+                    unlocks = ProfileHandler.getUnlocksForUser(profileData,
                             sharedPreferences.getInt(Constants.SP_BL_UNLOCKS_LIMIT_MIN, 1));
 
                 } else {
@@ -340,7 +339,7 @@ public class UnlockActivity extends FragmentActivity implements DefaultFragmentA
                     if (selectedPersona == 0) {
                         selectedPersona = arg0[0].getPersona(0).getId();
                     }
-                    unlocks = WebsiteHandler.getUnlocksForUser(arg0[0],
+                    unlocks = ProfileHandler.getUnlocksForUser(arg0[0],
                             sharedPreferences.getInt(Constants.SP_BL_UNLOCKS_LIMIT_MIN, 1));
 
                 }

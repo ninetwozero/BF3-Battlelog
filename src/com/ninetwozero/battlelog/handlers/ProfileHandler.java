@@ -25,13 +25,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.AssignmentData;
 import com.ninetwozero.battlelog.datatypes.GeneralSearchResult;
-import com.ninetwozero.battlelog.datatypes.NewsData;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
@@ -51,6 +52,58 @@ import com.ninetwozero.battlelog.misc.RequestHandler;
 
 public class ProfileHandler {
 
+    // URLS
+    public static final String URL_INFO = Constants.URL_MAIN + "user/{UNAME}/";
+    public static final String URL_SETTINGS = Constants.URL_MAIN + "profile/edit/";
+    public static final String URL_SETTINGS_EDIT = Constants.URL_MAIN + "profile/update/";
+    public static final String URL_OVERVIEW = Constants.URL_MAIN
+            + "overviewPopulateStats/{PID}/None/{PLATFORM_ID}/";
+    public static final String URL_WEAPONS = Constants.URL_MAIN
+            + "weaponsPopulateStats/{PID}/{PLATFORM_ID}/";
+    public static final String URL_WEAPONS_INFO = Constants.URL_MAIN
+            + "statsitemPopulateStats/iteminfo/{PNAME}/{PID}/{SLUG}/{PLATFORM_ID}/";
+    public static final String URL_VEHICLES = Constants.URL_MAIN
+            + "vehiclesPopulateStats/{PID}/{PLATFORM_ID}/";
+    public static final String URL_AWARDS = Constants.URL_MAIN
+            + "awardsPopulateStats/{PID}/{PLATFORM_ID}/";
+    public static final String URL_UNLOCKS = Constants.URL_MAIN
+            + "upcomingUnlocksPopulateStats/{PID}/{PLATFORM_ID}/";
+    public static final String URL_DOGTAGS = Constants.URL_MAIN
+            + "soldier/dogtagsPopulateStats/{PID}/{UID}/{PLATFORM_ID}/";
+    public static final String URL_ASSIGNMENTS = Constants.URL_MAIN
+            + "soldier/missionsPopulateStats/{PNAME}/{PID}/{UID}/{PLATFORM_ID}/";
+    public static final String URL_ALL = Constants.URL_MAIN
+            + "indexstats/{PID}/{PLATFORM_NAME}/";
+    public static final String URL_SEARCH = Constants.URL_MAIN
+            + "search/getMatches/";
+    public static final String URL_STATUS = Constants.URL_MAIN
+            + "user/setStatusmessage/";
+    public static final String URL_PROFILE = Constants.URL_MAIN
+            + "user/overviewBoxStats/{UID}/";
+
+    
+    // Constants
+    public static final String[] FIELD_NAMES_SETTINGS = new String[] {
+
+            "profile-edit-gravatar", "profile-edit-personaId[]", "profile-edit-picture[]",
+            "profile-edit-clantag[]", "profile-edit-clantag-games[]", "profile-edit-name",
+            "profile-edit-presentation", "profile-edit-birthyear", "profile-edit-birthmonth",
+            "profile-edit-birthday", "profile-edit-location", "profile-edit-dateformat",
+            "profile-edit-ampm", "profile-edit-utcoffset", "profile-edit-hidedetails",
+            "profile-edit-inactivatefeed", "profile-edit-allowfriendrequests", "post-check-sum"
+
+    };
+    
+    public static final String[] FIELD_NAMES_SEARCH = new String[] {
+            "username", "post-check-sum"
+    };
+    
+    public static final String[] FIELD_NAMES_STATUS = new String[] {
+            "message",
+            "post-check-sum",
+            "urls[]"
+    };
+    
     public static ProfileData getProfileIdFromSearch(final String keyword,
             final String checksum) throws WebsiteHandlerException {
 
@@ -64,16 +117,17 @@ public class ProfileHandler {
             // Get the content
             httpContent = wh.post(
 
-                    Constants.URL_PROFILE_SEARCH, new PostData[] {
+                    URL_SEARCH, 
+                    RequestHandler.generatePostData(
+                            
+                            FIELD_NAMES_SEARCH,
+                            keyword,
+                            checksum
+                            
+                    ),
+                    RequestHandler.HEADER_NORMAL
 
-                            new PostData(Constants.FIELD_NAMES_PROFILE_SEARCH[0],
-                                    keyword),
-                            new PostData(Constants.FIELD_NAMES_PROFILE_SEARCH[1],
-                                    checksum)
-
-                    }, 0
-
-                    );
+            );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -166,8 +220,8 @@ public class ProfileHandler {
 
             // Get the content
             httpContent = wh.get(
-                    Constants.URL_STATS_OVERVIEW.replace("{PID}",
-                            personaId + "").replace("{PLATFORM_ID}", "0"), 0);
+                    RequestHandler.generateUrl(URL_OVERVIEW, personaId, 0),
+                    RequestHandler.HEADER_NORMAL);
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -210,7 +264,8 @@ public class ProfileHandler {
 
             // Get the content
             httpContent = wh.get(
-                    Constants.URL_PROFILE.replace("{UID}", profileId + ""), 0);
+                    URL_PROFILE.replace("{UID}", profileId + ""),
+                    RequestHandler.HEADER_NORMAL);
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -303,13 +358,12 @@ public class ProfileHandler {
             // Get the data
             String content = wh.get(
 
-                    Constants.URL_STATS_OVERVIEW.replace(
-
-                            "{PID}", pd.getPersona(0).getId() + ""
-
-                            ).replace(
-
-                                    "{PLATFORM_ID}", pd.getPersona(0).getPlatformId() + ""), 0
+                    RequestHandler.generateUrl(
+                            URL_OVERVIEW,
+                            pd.getPersona(0).getId(),
+                            pd.getPersona(0).getPlatformId()
+                            ),
+                    RequestHandler.HEADER_NORMAL
 
                     );
 
@@ -399,14 +453,12 @@ public class ProfileHandler {
                 // Get the data
                 String httpContent = wh.get(
 
-                        Constants.URL_STATS_OVERVIEW.replace(
-
-                                "{PID}", profileData.getPersona(i).getId() + ""
-
-                                ).replace(
-
-                                        "{PLATFORM_ID}",
-                                        profileData.getPersona(i).getPlatformId() + ""), 0
+                        RequestHandler.generateUrl(
+                                URL_OVERVIEW,
+                                profileData.getPersona(i).getId(),
+                                profileData.getPersona(i).getPlatformId()
+                                ),
+                        RequestHandler.HEADER_NORMAL
 
                         );
 
@@ -544,17 +596,14 @@ public class ProfileHandler {
                 // Get the data
                 String content = "";
 
-                content = wh
-                        .get(
+                content = wh.get(
 
-                                Constants.URL_STATS_UNLOCKS.replace(
-
-                                        "{PID}", pd.getPersona(count).getId() + ""
-
-                                        ).replace(
-
-                                                "{PLATFORM_ID}",
-                                                pd.getPersona(count).getPlatformId() + ""), 0
+                        RequestHandler.generateUrl(
+                                URL_UNLOCKS,
+                                pd.getPersona(count).getId(), 
+                                pd.getPersona(count).getPlatformId()
+                        ),
+                        RequestHandler.HEADER_NORMAL
 
                         );
 
@@ -711,8 +760,12 @@ public class ProfileHandler {
 
             // Get the content
             httpContent = rh.get(
-                    Constants.URL_PROFILE_INFO.replace("{UNAME}",
-                            profileData.getUsername()), 1);
+                    RequestHandler.generateUrl(
+                            URL_INFO,
+                            profileData.getUsername()
+                    ), 
+                    RequestHandler.HEADER_AJAX
+            );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -869,39 +922,6 @@ public class ProfileHandler {
         }
 
     }
-/* TODO */
-    public static boolean setActive() throws WebsiteHandlerException {
-
-        try {
-
-            // Let's see
-            String httpContent = new RequestHandler().get(
-                    Constants.URL_CHAT_SETACTIVE, 1);
-            JSONObject httpResponse = new JSONObject(httpContent);
-
-            // Is it ok?
-            if (httpResponse.optString("message", "FAIL").equals("OK")) {
-
-                return true;
-
-            } else {
-
-                return false;
-
-            }
-
-        } catch (RequestHandlerException ex) {
-
-            throw new WebsiteHandlerException(ex.getMessage());
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();
-            return false;
-
-        }
-
-    }
 
     public static boolean updateStatus(String content, String checksum) {
 
@@ -910,22 +930,15 @@ public class ProfileHandler {
             RequestHandler rh = new RequestHandler();
             String httpContent = rh.post(
 
-                    Constants.URL_STATUS_SEND,
-                    new PostData[] {
+                    URL_STATUS,
+                    RequestHandler.generatePostData(
+                            
+                            FIELD_NAMES_STATUS,
+                            content,
+                            checksum
 
-                            new PostData(
-
-                                    Constants.FIELD_NAMES_STATUS[0],
-                                    content
-                            ),
-                            new PostData(
-
-                                    Constants.FIELD_NAMES_STATUS[1],
-                                    checksum
-                            )
-
-                    },
-                    0
+                    ),
+                    RequestHandler.HEADER_NORMAL
 
                     );
 
@@ -953,7 +966,7 @@ public class ProfileHandler {
     }
 
     //
-    public static ArrayList<GeneralSearchResult> searchBattlelog(
+    public static ArrayList<GeneralSearchResult> search(
 
             Context context, String keyword, String checksum
 
@@ -968,16 +981,17 @@ public class ProfileHandler {
             // Get the content
             String httpContent = rh.post(
 
-                    Constants.URL_PROFILE_SEARCH, new PostData[] {
+                    URL_SEARCH,
+                    RequestHandler.generatePostData(
+                            
+                            FIELD_NAMES_SEARCH,
+                            keyword,
+                            checksum
 
-                            new PostData(Constants.FIELD_NAMES_PROFILE_SEARCH[0],
-                                    keyword),
-                            new PostData(Constants.FIELD_NAMES_PROFILE_SEARCH[1],
-                                    checksum)
+                    ), 
+                    RequestHandler.HEADER_NORMAL
 
-                    }, 0
-
-                    );
+            );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -993,10 +1007,7 @@ public class ProfileHandler {
                     for (int i = 0, max = searchResultsProfile.length(); i < max; i++) {
 
                         // Get the JSONObject
-                        JSONObject tempObj = searchResultsProfile
-                                .optJSONObject(i);
-                        String gravatarHash = tempObj.optString("gravatarMd5",
-                                "");
+                        JSONObject tempObj = searchResultsProfile.optJSONObject(i);
 
                         // Save it into an array
                         results.add(
@@ -1020,71 +1031,11 @@ public class ProfileHandler {
 
             }
 
-            // Get the content
-            httpContent = rh.post(
-
-                    Constants.URL_PLATOON_SEARCH, new PostData[] {
-
-                            new PostData(Constants.FIELD_NAMES_PLATOON_SEARCH[0],
-                                    keyword),
-                            new PostData(Constants.FIELD_NAMES_PLATOON_SEARCH[1],
-                                    checksum)
-
-                    }, 3
-
-                    );
-
-            // Did we manage?
-            if (!"".equals(httpContent)) {
-
-                // Generate an object
-                JSONArray searchResultsPlatoon = new JSONArray(httpContent);
-
-                // Did we get any results?
-                if (searchResultsPlatoon.length() > 0) {
-
-                    // Iterate baby!
-                    for (int i = 0, max = searchResultsPlatoon.length(); i < max; i++) {
-
-                        // Get the JSONObject
-                        JSONObject tempObj = searchResultsPlatoon
-                                .optJSONObject(i);
-                        final String filename = tempObj.getString("id")
-                                + ".jpeg";
-
-                        // Add it to the ArrayList
-                        results.add(
-
-                                new GeneralSearchResult(
-
-                                        new PlatoonData(
-
-                                                Long.parseLong(tempObj.getString("id")), tempObj
-                                                        .getInt("fanCounter"), tempObj
-                                                        .getInt("memberCounter"), tempObj
-                                                        .getInt("platform"), tempObj
-                                                        .getString("name"),
-                                                tempObj.getString("tag"), filename, true
-
-                                        )
-
-                                )
-
-                                );
-
-                    }
-
-                }
-
-            }
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();
+        } catch(Exception ex ) {
+            
             throw new WebsiteHandlerException(ex.getMessage());
-
+            
         }
-
         // Return the results
         return (ArrayList<GeneralSearchResult>) results;
 
@@ -1106,10 +1057,13 @@ public class ProfileHandler {
                 // Get the data
                 String httpContent = rh.get(
 
-                        Constants.URL_STATS_WEAPONS.replace("{PID}", p.getPersona(i).getId() + "")
-                                .replace(
-                                        "{PLATFORM_ID}", p.getPersona(i).getPlatformId() + ""),
-                        0
+                        RequestHandler.generateUrl(
+                                
+                                URL_WEAPONS,
+                                p.getPersona(i).getId(), 
+                                p.getPersona(i).getPlatformId()
+                        ),
+                        RequestHandler.HEADER_NORMAL
 
                         );
 
@@ -1250,25 +1204,18 @@ public class ProfileHandler {
                 // Get the data
                 String httpContent = rh.get(
 
-                        Constants.URL_STATS_WEAPONS_INFO.replace(
+                        RequestHandler.generateUrl(
+                                
+                                URL_WEAPONS_INFO,
+                                p.getPersona(i).getName(),
+                                p.getPersona(i).getId(), 
+                                weaponStats.getSlug(), 
+                                p.getPersona(i).getPlatformId()
+                        
+                        ), 
+                        RequestHandler.HEADER_NORMAL
 
-                                "{PNAME}", p.getPersona(i).getName()
-
-                                ).replace(
-
-                                        "{PID}", p.getPersona(i).getId() + ""
-
-                                ).replace(
-
-                                        "{SLUG}", weaponStats.getSlug()
-
-                                ).replace(
-
-                                        "{PLATFORM_ID}", p.getPersona(i).getPlatformId() + ""
-
-                                ), 0
-
-                        );
+                );
 
                 // So... how'd it go?
                 if (httpContent != null && !httpContent.equals("")) {
@@ -1346,83 +1293,198 @@ public class ProfileHandler {
         }
 
     }
-
-    public static List<NewsData> getNewsForPage(int p) throws WebsiteHandlerException {
+    
+    public static HashMap<Long, List<AssignmentData>> getAssignments(
+            Context c, ProfileData profile) throws WebsiteHandlerException {
 
         try {
 
-            // Init!
+            // Attributes
             RequestHandler rh = new RequestHandler();
-            List<NewsData> news = new ArrayList<NewsData>();
+            HashMap<Long, List<AssignmentData>> assignmentMap = new HashMap<Long, List<AssignmentData>>();
+            List<AssignmentData> items;
 
-            // Iterate!
-            for (int i = 0, max = 2; i < max; i++) {
+            for (int count = 0, maxCount = profile.getNumPersonas(); count < maxCount; count++) {
 
-                // Let's see
-                int num = (10 * p);
-                if (i == 1) {
+                // Init
+                items = new ArrayList<AssignmentData>();
 
-                    num += 5;
+                // Get the JSON!
+                String httpContent = rh.get(
+
+                        RequestHandler.generateUrl(
+                                
+                                URL_ASSIGNMENTS, 
+                                profile.getPersona(count).getName(),
+                                profile.getPersona(count).getId(),
+                                profile.getId(),
+                                profile.getPersona(count).getPlatformId()
+                                
+                        ), 
+                        RequestHandler.HEADER_AJAX
+
+                );
+
+                // Parse the JSON!
+                JSONObject topLevel = new JSONObject(httpContent)
+                        .getJSONObject("data");
+                if (topLevel.isNull("missionTrees")) {
+
+                    assignmentMap.put(profile.getPersona(count).getId(), items);
+                    continue;
 
                 }
 
-                // Get the data
-                String httpContent = rh.get(Constants.URL_NEWS.replace("{COUNT}", num + ""), 1);
+                JSONObject missionTrees = topLevel
+                        .getJSONObject("missionTrees");
+                JSONArray missionLines = missionTrees.getJSONObject("512")
+                        .getJSONArray("missionLines");
+                int numCurrentAssignment = 0;
+                for (int i = 0, max = missionLines.length(); i < max; i++) {
 
-                // Did we get something?
-                if (httpContent != null && !httpContent.equals("")) {
+                    // Let's see if we need to tell the dev
+                    if (max > Constants.ASSIGNMENT_RESOURCES_SCHEMATICS.length) {
 
-                    // JSON!
-                    JSONArray baseArray = new JSONObject(httpContent).getJSONObject("context")
-                            .getJSONArray("blogPosts");
+                        Toast.makeText(
 
-                    // Iterate
-                    for (int count = 0, maxCount = baseArray.length(); count < maxCount; count++) {
+                                c, c.getString(R.string.info_assignments_new_unknown),
+                                Toast.LENGTH_SHORT
 
-                        // Get the current item
-                        JSONObject item = baseArray.getJSONObject(count);
-                        JSONObject user = item.getJSONObject("user");
+                                ).show();
 
-                        // Handle the data
-                        news.add(
+                        return null;
 
-                                new NewsData(
+                    }
 
-                                        Long.parseLong(item.getString("id")),
-                                        item.getLong("creationDate"),
-                                        item.getInt("devblogCommentCount"),
-                                        item.getString("title"),
-                                        item.getString("body"),
-                                        new ProfileData(
+                    // Get the JSONObject per loop
+                    JSONArray missions = missionLines.getJSONObject(i)
+                            .getJSONArray("missions");
+                    for (int missionCounter = 0, missionCount = missions
+                            .length(); missionCounter < missionCount; missionCounter++) {
 
-                                                Long.parseLong(user.getString("userId")),
-                                                user.getString("username"),
-                                                new PersonaData[] {},
-                                                user.getString("gravatarMd5")
+                        JSONObject assignment = missions
+                                .getJSONObject(missionCounter);
+                        JSONArray criteriasJSON = assignment
+                                .getJSONArray("criterias");
+                        JSONArray dependenciesJSON = assignment
+                                .getJSONArray("dependencies");
+                        JSONArray unlocksJSON = assignment
+                                .getJSONArray("unlocks");
 
-                                        )
+                        // Init
+                        List<AssignmentData.Objective> criterias = new ArrayList<AssignmentData.Objective>();
+                        List<AssignmentData.Dependency> dependencies = new ArrayList<AssignmentData.Dependency>();
+                        List<AssignmentData.Unlock> unlocks = new ArrayList<AssignmentData.Unlock>();
+
+                        // Alright, let's do this
+                        for (int assignmentCounter = 0, assignmentCount = criteriasJSON
+                                .length(); assignmentCounter < assignmentCount; assignmentCounter++) {
+
+                            // Get the current item
+                            JSONObject currentItem = criteriasJSON
+                                    .getJSONObject(assignmentCounter);
+
+                            // New object!
+                            criterias.add(
+
+                                    new AssignmentData.Objective(
+
+                                            currentItem.getDouble("actualValue"), currentItem
+                                                    .getDouble("completionValue"), currentItem
+                                                    .getString("statCode"), currentItem
+                                                    .getString("paramX"), currentItem
+                                                    .getString("paramY"), currentItem
+                                                    .getString("descriptionID"), currentItem
+                                                    .getString("unit")
+
+                                    )
+
+                                    );
+
+                        }
+
+                        // Alright, let's do this
+                        for (int counter = 0, maxCounter = dependenciesJSON
+                                .length(); counter < maxCounter; counter++) {
+
+                            // Get the current item
+                            JSONObject currentItem = dependenciesJSON
+                                    .getJSONObject(counter);
+
+                            // New object!
+                            dependencies.add(
+
+                                    new AssignmentData.Dependency(
+
+                                            currentItem.getInt("count"), currentItem
+                                                    .getString("code")
+
+                                    )
+
+                                    );
+
+                        }
+
+                        // Alright, let's do this
+                        for (int counter = 0, maxCounter = unlocksJSON.length(); counter < maxCounter; counter++) {
+
+                            // Get the current item
+                            JSONObject currentItem = unlocksJSON
+                                    .getJSONObject(counter);
+
+                            // New object!
+                            unlocks.add(
+
+                                    new AssignmentData.Unlock(
+
+                                            currentItem.getString("unlockId"), currentItem
+                                                    .getString("unlockType"), currentItem
+                                                    .getBoolean("visible")
+
+                                    )
+
+                                    );
+
+                        }
+
+                        // Add the assignment
+                        items.add(
+
+                                new AssignmentData(
+
+                                        Constants.ASSIGNMENT_RESOURCES_SCHEMATICS[numCurrentAssignment],
+                                        Constants.ASSIGNMENT_RESOURCES_UNLOCKS[numCurrentAssignment],
+                                        assignment.getString("stringID"), assignment
+                                                .getString("descriptionID"), assignment
+                                                .getString("license"), criterias,
+                                        dependencies, unlocks
 
                                 )
 
                                 );
 
+                        // Update the digit
+                        numCurrentAssignment++;
+
                     }
+
+                    // Add the items
+                    assignmentMap.put(profile.getPersona(count).getId(), items);
 
                 }
 
             }
 
-            return news;
-
-        } catch (RequestHandlerException ex) {
-
-            throw new WebsiteHandlerException(ex.getMessage());
+            return assignmentMap;
 
         } catch (Exception ex) {
 
+            ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
+
         }
 
     }
+    
 
 }

@@ -35,7 +35,8 @@ import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.COMHandler;
+import com.ninetwozero.battlelog.handlers.NotificationHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
@@ -123,7 +124,7 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
             try {
 
                 // Let's get this!
-                notifications = WebsiteHandler.getNotifications(arg0[0]);
+                notifications = NotificationHandler.getNotifications(arg0[0]);
                 return true;
 
             } catch (WebsiteHandlerException e) {
@@ -174,7 +175,7 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
             try {
 
                 // Let's get this!!
-                return WebsiteHandler.answerFriendRequest(profileId, response,
+                return COMHandler.answerFriendRequest(profileId, response,
                         arg0[0]);
 
             } catch (WebsiteHandlerException e) {

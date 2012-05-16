@@ -31,7 +31,8 @@ import com.ninetwozero.battlelog.DashboardActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.SessionKeeperPackage;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.COMHandler;
+import com.ninetwozero.battlelog.handlers.NotificationHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
@@ -59,10 +60,10 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 
         try {
             // Let's try to setActive
-            if (WebsiteHandler.setActive()) {
+            if (COMHandler.setActive()) {
 
                 // The user is active, so how many notifications does he have?
-                int numNotifications = WebsiteHandler.getNewNotificationsCount(
+                int numNotifications = NotificationHandler.getNewNotificationsCount(
 
                         sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 

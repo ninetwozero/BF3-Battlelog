@@ -1,3 +1,4 @@
+
 package com.ninetwozero.battlelog.handlers;
 
 import java.util.ArrayList;
@@ -8,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ninetwozero.battlelog.datatypes.NotificationData;
-import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -27,11 +27,9 @@ public class NotificationHandler {
             // Get the content
             httpContent = rh.post(
 
-                    Constants.URL_NOTIFICATIONS_TOP5, new PostData[] {
-
-                        new PostData(Constants.FIELD_NAMES_CHECKSUM[0], checksum)
-
-                    }, 3
+                    Constants.URL_NOTIFICATIONS_TOP5,
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.HEADER_GZIP
 
                     );
 
@@ -68,11 +66,7 @@ public class NotificationHandler {
             String httpContent;
 
             // Get the content
-            httpContent = rh.get(
-
-                    Constants.URL_NOTIFICATIONS_ALL, 1
-
-                    );
+            httpContent = rh.get(Constants.URL_NOTIFICATIONS_ALL, RequestHandler.HEADER_AJAX);
 
             // Got httpContent
             if (!"".equals(httpContent)) {

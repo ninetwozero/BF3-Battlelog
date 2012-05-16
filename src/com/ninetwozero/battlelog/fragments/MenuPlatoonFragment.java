@@ -45,7 +45,7 @@ import com.ninetwozero.battlelog.ProfileSettingsActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.PlatoonHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
@@ -292,7 +292,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         @Override
         protected Boolean doInBackground(String... arg0) {
             try {
-                platoonData = WebsiteHandler.getPlatoonsForUser(context, arg0[0]);
+                platoonData = PlatoonHandler.getPlatoonsForUser(context, arg0[0]);
                 return (platoonData != null);
             } catch (Exception ex) {
                 ex.printStackTrace();

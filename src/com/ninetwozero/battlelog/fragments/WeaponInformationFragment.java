@@ -38,7 +38,7 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WeaponInfo;
 import com.ninetwozero.battlelog.datatypes.WeaponStats;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ProfileHandler;
 import com.ninetwozero.battlelog.misc.DrawableResourceList;
 import com.ninetwozero.battlelog.misc.StringResourceList;
 
@@ -167,7 +167,7 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
 
             try {
 
-                weaponDataWrapper = WebsiteHandler.getWeapon(profileData, weaponInfo, weaponStats);
+                weaponDataWrapper = ProfileHandler.getWeapon(profileData, weaponInfo, weaponStats);
                 return true;
 
             } catch (Exception ex) {

@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.FeedHandler;
 
 public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
 
@@ -55,11 +55,11 @@ public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
             // Did we manage?
             if (liked) {
 
-                return WebsiteHandler.unHooahInFeed(postId, arg0[0]);
+                return FeedHandler.unHooahInFeed(postId, arg0[0]);
 
             } else {
 
-                return WebsiteHandler.doHooahInFeed(postId, arg0[0]);
+                return FeedHandler.doHooahInFeed(postId, arg0[0]);
 
             }
 

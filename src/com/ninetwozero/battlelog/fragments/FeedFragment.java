@@ -49,7 +49,7 @@ import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.FeedHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
@@ -335,7 +335,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Get...
-                feedItems = WebsiteHandler.getFeed(
+                feedItems = FeedHandler.getFeed(
 
                         context, type, id, sharedPreferences.getInt(Constants.SP_BL_NUM_FEED,
                                 Constants.DEFAULT_NUM_FEED), activeProfileId

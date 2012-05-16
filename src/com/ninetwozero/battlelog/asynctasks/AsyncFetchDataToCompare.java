@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.CompareActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ProfileHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 
 public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
@@ -54,7 +54,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
         try {
 
             // Post the world!
-            playerTwo = WebsiteHandler.getProfileIdFromSearch(
+            playerTwo = ProfileHandler.getProfileIdFromSearch(
 
                     searchString,
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")

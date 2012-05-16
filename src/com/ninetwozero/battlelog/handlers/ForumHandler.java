@@ -1,3 +1,4 @@
+
 package com.ninetwozero.battlelog.handlers;
 
 import java.util.ArrayList;
@@ -7,14 +8,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.datatypes.ForumData;
 import com.ninetwozero.battlelog.datatypes.ForumPostData;
 import com.ninetwozero.battlelog.datatypes.ForumSearchResult;
 import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
-import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.CacheHandler;
@@ -23,8 +22,38 @@ import com.ninetwozero.battlelog.misc.RequestHandler;
 
 public class ForumHandler {
 
+    // URLS
+    public static final String URL_LIST = Constants.URL_MAIN + "forum/";
+    public static final String URL_LIST_LOCALIZED = Constants.URL_MAIN
+            + "{LOCALE}/forum/";
+    public static final String URL_FORUM = URL_LIST_LOCALIZED
+            + "view/{FORUM_ID}/{PAGE}/";
+    public static final String URL_THREAD = URL_LIST_LOCALIZED
+            + "threadview/{THREAD_ID}/{PAGE}/";
+    public static final String URL_POST = URL_LIST
+            + "createpost/{THREAD_ID}/";
+    public static final String URL_SIMILAR = URL_LIST
+            + "dofindsimilar?title={title}&body={body}";
+    public static final String URL_NEW = URL_LIST
+            + "createthread/{FORUM_ID}/";
+    public static final String URL_SEARCH = URL_LIST
+            + "dosearch/?q={SEARCH_STRING}&snippet=text&fetch=threadId%2CforumId%2Ctitle%2Ctimestamp";
+    public static final String URL_REPORT = Constants.URL_MAIN
+            + "viewcontent/reportForumAbuse/{POST_ID}/";
+    
+    // Attributes
+    public static final String[] FIELD_NAMES_POST = new String[] {
+            "body", "post-check-sum"
+    };
 
+    public static final String[] FIELD_NAMES_NEW = new String[] {
+            "topic", "body", "post-check-sum"
+    };
 
+    public static final String[] FIELD_NAMES_REPORT = new String[] {
+            "reason", "post-check-sum"
+    };
+    
     public static boolean reportPostInThread(Context c, long pId, String r)
             throws WebsiteHandlerException {
 
@@ -33,27 +62,15 @@ public class ForumHandler {
             RequestHandler rh = new RequestHandler();
             final String httpContent = rh.post(
 
-                    Constants.URL_FORUM_REPORT.replace("{POST_ID}", pId + ""),
-                    new PostData[] {
-
-                            new PostData(
-
-                                    Constants.FIELD_NAMES_FORUM_REPORT[0], r
-
-                            ), new PostData(
-
-                                    Constants.FIELD_NAMES_FORUM_REPORT[1], ""
-
-                            )
-
-                    }, 1
+                    RequestHandler.generateUrl(URL_REPORT, pId),
+                    RequestHandler.generatePostData(FIELD_NAMES_REPORT, r, ""), 
+                    RequestHandler.HEADER_AJAX
 
                     );
 
             // Let's parse it!
-            int status = new JSONObject(httpContent).getJSONObject("data")
-                    .getInt("success");
-            return (status == 1);
+            return (new JSONObject(httpContent).getJSONObject("data")
+                    .getInt("success") == 1);
 
         } catch (Exception ex) {
 
@@ -76,9 +93,14 @@ public class ForumHandler {
             RequestHandler rh = new RequestHandler();
             final String httpContent = rh.get(
 
-                    Constants.URL_FORUM_FORUM.replace("{LOCALE}", locale)
-                            .replace("{FORUM_ID}", forumId + "")
-                            .replace("{PAGE}", page + ""), 1
+                    RequestHandler.generateUrl(
+
+                            URL_FORUM,
+                            locale,
+                            forumId,
+                            page
+
+                            ), RequestHandler.HEADER_AJAX
 
                     );
 
@@ -205,15 +227,18 @@ public class ForumHandler {
             RequestHandler rh = new RequestHandler();
             final String httpContent = rh.get(
 
-                    Constants.URL_FORUM_THREAD.replace("{LOCALE}", locale)
-                            .replace("{THREAD_ID}", threadId + "")
-                            .replace("{PAGE}", page + ""), 1
+                    RequestHandler.generateUrl(
+
+                            URL_THREAD,
+                            locale,
+                            threadId,
+                            page
+
+                            ),
+                    RequestHandler.HEADER_AJAX
 
                     );
-            Log.d(Constants.DEBUG_TAG,
-                    "The link => " + Constants.URL_FORUM_THREAD.replace("{LOCALE}", locale)
-                            .replace("{THREAD_ID}", threadId + "")
-                            .replace("{PAGE}", page + ""));
+
             // Let's parse it!
             JSONArray postArray = new JSONObject(httpContent).getJSONObject(
                     "context").getJSONArray("posts");
@@ -261,7 +286,7 @@ public class ForumHandler {
 
     }
 
-    public static ArrayList<ForumSearchResult> searchInForums(
+    public static ArrayList<ForumSearchResult> search(
 
             final Context c, final String keyword
 
@@ -276,7 +301,8 @@ public class ForumHandler {
             // Let's do the actual search
             String httpContent = rh.get(
 
-                    Constants.URL_FORUM_SEARCH.replace("{SEARCH_STRING}", keyword), 1
+                    RequestHandler.generateUrl(URL_SEARCH, keyword),
+                    RequestHandler.HEADER_AJAX
 
                     );
             if (!"".equals(httpContent)) {
@@ -333,8 +359,6 @@ public class ForumHandler {
         }
 
     }
-    
-
 
     public static Object[] getAllForums(String locale)
             throws WebsiteHandlerException {
@@ -349,7 +373,8 @@ public class ForumHandler {
             RequestHandler rh = new RequestHandler();
             final String httpContent = rh.get(
 
-                    Constants.URL_FORUM_LIST_LOCALIZED.replace("{LOCALE}", locale), 1
+                    RequestHandler.generateUrl(URL_LIST_LOCALIZED, locale),
+                    RequestHandler.HEADER_AJAX
 
                     );
 
@@ -447,9 +472,15 @@ public class ForumHandler {
             RequestHandler rh = new RequestHandler();
             final String httpContent = rh.get(
 
-                    Constants.URL_FORUM_FORUM.replace("{LOCALE}", locale)
-                            .replace("{FORUM_ID}", forumId + "")
-                            .replace("{PAGE}", 1 + ""), 1
+                    RequestHandler.generateUrl(
+
+                            URL_FORUM,
+                            locale,
+                            forumId,
+                            1
+
+                            ),
+                    RequestHandler.HEADER_AJAX
 
                     );
 
@@ -587,9 +618,15 @@ public class ForumHandler {
             RequestHandler rh = new RequestHandler();
             final String httpContent = rh.get(
 
-                    Constants.URL_FORUM_THREAD.replace("{LOCALE}", locale)
-                            .replace("{THREAD_ID}", threadId + "")
-                            .replace("{PAGE}", "1"), 1
+                    RequestHandler.generateUrl(
+
+                            URL_THREAD,
+                            locale,
+                            threadId,
+                            1
+
+                            ),
+                    RequestHandler.HEADER_AJAX
 
                     );
 
@@ -692,15 +729,9 @@ public class ForumHandler {
             // POST!
             String httpContent = rh.post(
 
-                    Constants.URL_FORUM_POST.replace("{THREAD_ID}", threadData.getId() + ""),
-                    new PostData[] {
-
-                            new PostData(Constants.FIELD_NAMES_FORUM_POST[0],
-                                    body),
-                            new PostData(Constants.FIELD_NAMES_FORUM_POST[1],
-                                    chksm)
-
-                    }, 1
+                    RequestHandler.generateUrl(URL_POST, threadData.getId()),
+                    RequestHandler.generatePostData(FIELD_NAMES_POST, body, chksm),
+                    RequestHandler.HEADER_AJAX
 
                     );
 
@@ -744,17 +775,9 @@ public class ForumHandler {
             // POST!
             String httpContent = rh.post(
 
-                    Constants.URL_FORUM_NEW.replace("{FORUM_ID}", fId + ""),
-                    new PostData[] {
-
-                            new PostData(Constants.FIELD_NAMES_FORUM_NEW[0],
-                                    topic),
-                            new PostData(Constants.FIELD_NAMES_FORUM_NEW[1],
-                                    body),
-                            new PostData(Constants.FIELD_NAMES_FORUM_NEW[2],
-                                    chksm)
-
-                    }, 1
+                    RequestHandler.generateUrl(URL_NEW, fId),
+                    RequestHandler.generatePostData(FIELD_NAMES_NEW, topic, body, chksm),
+                    RequestHandler.HEADER_AJAX
 
                     );
 
@@ -769,5 +792,5 @@ public class ForumHandler {
         }
 
     }
-    
+
 }

@@ -31,7 +31,7 @@ public class AssignmentData implements Parcelable {
     // Constructs
     public AssignmentData(
 
-            int rId, int uId, String id, String d, String s,
+            int rId, int uId, String i, String d, String s,
             List<AssignmentData.Objective> c,
             List<AssignmentData.Dependency> dp,
             List<AssignmentData.Unlock> u
@@ -40,7 +40,7 @@ public class AssignmentData implements Parcelable {
 
         resourceId = rId;
         unlockResourceId = uId;
-        id = id;
+        id = i;
         description = d;
         set = s;
         objectives = c;
@@ -50,16 +50,37 @@ public class AssignmentData implements Parcelable {
     }
 
     public AssignmentData(Parcel in) {
+        
+        resourceId = in.readInt();
+        unlockResourceId = in.readInt();
+        id = in.readString();
+        description = in.readString();
+        set = in.readString();
+        
+       
+        objectives = in.createTypedArrayList(AssignmentData.Objective.CREATOR);
+        dependencies = in.createTypedArrayList(AssignmentData.Dependency.CREATOR);
+        unlocks = in.createTypedArrayList(AssignmentData.Unlock.CREATOR);
+        
     }
 
     @Override
-    /* TODO */
     public int describeContents() {
         return 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        
+        dest.writeInt(resourceId);
+        dest.writeInt(unlockResourceId);
+        dest.writeString(id);
+        dest.writeString(description);
+        dest.writeString(set);
+        dest.writeList(objectives);
+        dest.writeList(dependencies);
+        dest.writeList(unlocks);
+    
     }
 
     public static final Parcelable.Creator<AssignmentData> CREATOR = new Parcelable.Creator<AssignmentData>() {
@@ -148,7 +169,7 @@ public class AssignmentData implements Parcelable {
     }
 
     // Subclass
-    public static class Objective {
+    public static class Objective implements Parcelable {
 
         // Attributes
         private double currentValue, goalValue;
@@ -166,6 +187,18 @@ public class AssignmentData implements Parcelable {
             description = d;
             unit = u;
 
+        }
+        
+        public Objective(Parcel in) {
+            
+            currentValue = in.readDouble();
+            goalValue = in.readDouble();
+            id = in.readString();
+            weapon = in.readString();
+            kit = in.readString();
+            description = in.readString();
+            unit = in.readString();
+            
         }
 
         // Getters
@@ -197,9 +230,39 @@ public class AssignmentData implements Parcelable {
             return unit;
         }
 
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+
+            dest.writeDouble(currentValue);
+            dest.writeDouble(goalValue);
+            dest.writeString(id);
+            dest.writeString(weapon);
+            dest.writeString(kit);
+            dest.writeString(description);
+            dest.writeString(unit);
+            
+        }
+
+        public static final Parcelable.Creator<AssignmentData.Objective> CREATOR = new Parcelable.Creator<AssignmentData.Objective>() {
+
+            public AssignmentData.Objective createFromParcel(Parcel in) {
+                return new AssignmentData.Objective(in);
+            }
+
+            public AssignmentData.Objective[] newArray(int size) {
+                return new AssignmentData.Objective[size];
+            }
+
+        };
+        
     }
 
-    public static class Dependency {
+    public static class Dependency implements Parcelable{
 
         // Attributes
         private int count;
@@ -212,6 +275,13 @@ public class AssignmentData implements Parcelable {
             id = i;
 
         }
+        
+        public Dependency(Parcel in) {
+            
+            count = in.readInt();
+            id = in.readString();
+            
+        }
 
         // Getters
         public int getCount() {
@@ -220,11 +290,36 @@ public class AssignmentData implements Parcelable {
 
         public String getId() {
             return id;
+        }        
+        
+        @Override
+        public int describeContents() {
+            return 0;
         }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+
+            dest.writeInt(count);
+            dest.writeString(id);
+            
+        }
+
+        public static final Parcelable.Creator<AssignmentData.Dependency> CREATOR = new Parcelable.Creator<AssignmentData.Dependency>() {
+
+            public AssignmentData.Dependency createFromParcel(Parcel in) {
+                return new AssignmentData.Dependency(in);
+            }
+
+            public AssignmentData.Dependency[] newArray(int size) {
+                return new AssignmentData.Dependency[size];
+            }
+
+        };
 
     }
 
-    public static class Unlock {
+    public static class Unlock implements Parcelable {
 
         // Attributes
         private String id, type;
@@ -237,6 +332,14 @@ public class AssignmentData implements Parcelable {
             type = t;
             visible = v;
 
+        }
+        
+        public Unlock(Parcel in) {
+            
+            id = in.readString();
+            type = in.readString();
+            visible = in.readInt() == 1;
+            
         }
 
         // Getters
@@ -251,6 +354,32 @@ public class AssignmentData implements Parcelable {
         public boolean isVisible() {
             return visible;
         }
+      
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+
+            dest.writeString(id);
+            dest.writeString(type);
+            dest.writeInt( visible ? 1 : 0 );
+            
+        }
+
+        public static final Parcelable.Creator<AssignmentData.Unlock> CREATOR = new Parcelable.Creator<AssignmentData.Unlock>() {
+
+            public AssignmentData.Unlock createFromParcel(Parcel in) {
+                return new AssignmentData.Unlock(in);
+            }
+
+            public AssignmentData.Unlock[] newArray(int size) {
+                return new AssignmentData.Unlock[size];
+            }
+
+        };
 
     }
 }

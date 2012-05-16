@@ -29,7 +29,7 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.CommentListAdapter;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.CommentHandler;
 
 public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
 
@@ -61,7 +61,7 @@ public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
         try {
 
             // Let's get this!!
-            comments = WebsiteHandler.getCommentsForPost(commentId[0]);
+            comments = CommentHandler.getCommentsForPost(commentId[0]);
             return true;
 
         } catch (WebsiteHandlerException e) {

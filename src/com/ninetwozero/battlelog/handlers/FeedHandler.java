@@ -1,3 +1,4 @@
+
 package com.ninetwozero.battlelog.handlers;
 
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
-import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -25,6 +25,32 @@ import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
 public class FeedHandler {
+    
+    // URLS
+    public static final String URL_FEED = Constants.URL_MAIN + "feed/?start={NUMSTART}";
+    public static final String URL_PLATOON = Constants.URL_MAIN
+            + "feed/platoonevents/{PLATOON_ID}/?start={NUMSTART}";
+    public static final String URL_FRIEND_FEED = Constants.URL_MAIN
+            + "feed/homeevents/?start={NUMSTART}";
+    public static final String URL_PROFILE = Constants.URL_MAIN
+            + "feed/profileevents/{PID}/?start={NUMSTART}";
+    public static final String URL_SINGLE = Constants.URL_MAIN
+            + "feed/show/{POST_ID}/";
+    public static final String URL_POST = Constants.URL_MAIN + "wall/postmessage";
+    public static final String URL_REPORT = Constants.URL_MAIN
+            + "viewcontent/reportFeedItemAbuse/{POST_ID}/0/"; /* TODO */
+    public static final String URL_REPORT_COMMENT = Constants.URL_MAIN
+            + "viewcontent/reportFeedItemAbuse/{POST_ID}/{CID}/"; /* TODO */
+    public static final String URL_HOOAH = Constants.URL_MAIN
+            + "like/postlike/{POST_ID}/feed-item-like/";
+    public static final String URL_UNHOOAH = Constants.URL_MAIN
+            + "like/postunlike/{POST_ID}/feed-item-like/";
+    
+    // Constants
+    public static final String[] FIELD_NAMES_POST = new String[] {
+            "wall-message", "post-check-sum", "wall-ownerId", "wall-platoonId"
+    };
+
     public static FeedItem getPostForNotification(NotificationData n) {
 
         // Init
@@ -34,8 +60,11 @@ public class FeedHandler {
 
             // Get the data
             String httpContent = rh.get(
-                    Constants.URL_FEED_SINGLE.replace("{POST_ID}",
-                            n.getItemId() + ""), 1);
+
+                    RequestHandler.generateUrl(URL_SINGLE, n.getItemId()),
+                    RequestHandler.HEADER_AJAX
+
+                    );
 
             // Did we actually get it?
             if (!"".equals(httpContent)) {
@@ -85,12 +114,9 @@ public class FeedHandler {
                 }
                 while (matcherTitle.find()) {
 
-                    Log.d(Constants.DEBUG_TAG, "matcherTitle.group() => "
-                            + matcherTitle.group());
                     username[1] = matcherTitle.group(1);
                     title = "<b>" + matcherTitle.group(2) + "</b>";
                     title += matcherTitle.group(3);
-                    Log.d(Constants.DEBUG_TAG, "title => " + title);
                     break;
                 }
                 while (matcherContent.find()) {
@@ -102,21 +128,18 @@ public class FeedHandler {
 
                 return new FeedItem(
 
-                        id, id, date, 0, // numLikes
-                        0, // numComments
-                        title, content, "n/a", // type
+                        id, id, date, 0,
+                        0,
+                        title, content, "n/a",
                         new ProfileData[] {
 
-                                new ProfileData(
+                                new ProfileData(uid, username[0], gravatar),
+                                new ProfileData(0, username[1], null)
 
-                                        uid, username[0], new PersonaData[] {}, gravatar),
-                                new ProfileData(
-
-                                        0, username[1], new PersonaData[] {}, null)
-
-                        }, false, // liked
-                        false, // censored
-                        gravatar // gravatar
+                        },
+                        false,
+                        false,
+                        gravatar
 
                 );
 
@@ -142,25 +165,17 @@ public class FeedHandler {
             RequestHandler wh = new RequestHandler();
             String httpContent = wh.post(
 
-                    Constants.URL_FEED_POST, new PostData[] {
+                    URL_POST,
+                    RequestHandler.generatePostData(
 
-                            new PostData(
-
-                                    Constants.FIELD_NAMES_FEED_POST[0], content
-
-                            ),
-                            new PostData(
-
-                                    Constants.FIELD_NAMES_FEED_POST[1], checksum
+                            FIELD_NAMES_POST,
+                            content,
+                            checksum,
+                            !isPlatoon ? profileId : null,
+                            isPlatoon ? profileId : null
 
                             ),
-                            new PostData(
-
-                                    Constants.FIELD_NAMES_FEED_POST[(!isPlatoon ? 2 : 3)],
-                                    profileId + ""
-
-                            )
-                    }, 2
+                    RequestHandler.HEADER_JSON
 
                     );
 
@@ -168,22 +183,12 @@ public class FeedHandler {
             if (!"".equals(httpContent)) {
 
                 // Check the JSON
-                String status = new JSONObject(httpContent).optString(
-                        "message", "");
-                if (status.equals("WALL_POST_CREATED")
-                        || status.equals("PLATOONWALL_POST_CREATED")) {
-
-                    return true;
-
-                } else {
-
-                    return false;
-
-                }
+                String status = new JSONObject(httpContent).optString("message", "");
+                return (status.matches("_POST_CREATED"));
 
             } else {
 
-                return false;
+                throw new WebsiteHandlerException("Post could not be saved.");
 
             }
 
@@ -195,6 +200,7 @@ public class FeedHandler {
         }
 
     }
+
     private static ArrayList<FeedItem> getFeedItemsFromJSON(Context context,
             JSONArray jsonArray, long activeProfileId)
             throws WebsiteHandlerException {
@@ -221,31 +227,13 @@ public class FeedHandler {
                     continue;
                 }
 
-                /*
-                 * //Once per loop comments = new ArrayList<CommentData>();
-                 * //Let's get the comments if( currItem.getInt("numComments") >
-                 * 2 ) { comments = WebsiteHandler.getCommentsForPost(
-                 * Long.parseLong(currItem.getString("id")) ); } else if(
-                 * currItem.getInt( "numComments" ) == 0 ) { //For now, we do
-                 * nothing here } else { //Iterate, as there's only comment1 &
-                 * comment2 for( int cCounter = 1; cCounter < 3; cCounter++ ) {
-                 * //No comment? if( currItem.isNull( "comment"+cCounter ) )
-                 * break; //Grab a temporary comment and add it to our ArrayList
-                 * tempCommentItem = currItem.getJSONObject( "comment"+cCounter
-                 * ); JSONObject tempOwnerItem =
-                 * currItem.getJSONObject("owner"); comments.add( new
-                 * CommentData( Long.parseLong(
-                 * tempCommentItem.getString("id")), 0, tempCommentItem.getLong(
-                 * "creationDate" ), tempCommentItem.getLong( "ownerId" ),
-                 * tempOwnerItem.getString("username"),
-                 * tempCommentItem.getString( "body" ),
-                 * tempOwnerItem.getString("gravatarMd5") ) ); } }
-                 */
-
                 // Variables if *modification* is needed
                 String itemTitle = "";
                 String itemContent = "";
                 String tempGravatarHash = ownerObject.getString("gravatarMd5");
+
+                // Temporary
+                ProfileData profile1 = null, profile2 = null;
 
                 // Process the likes
                 JSONArray likeUsers = currItem.getJSONArray("likeUserIds");
@@ -266,6 +254,15 @@ public class FeedHandler {
 
                 }
 
+                // Set the first profile
+                profile1 = new ProfileData(
+                        Long.parseLong(currItem.getString("ownerId")),
+                        ownerObject.getString("username"),
+                        new PersonaData[] {},
+                        ownerObject.getString("gravatarMd5")
+
+                        );
+
                 // What do we have *here*?
                 if (!currItem.isNull("BECAMEFRIENDS")) {
 
@@ -274,34 +271,17 @@ public class FeedHandler {
                     JSONObject friendUser = tempSubItem
                             .getJSONObject("friendUser");
 
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments,
-                            context.getString(R.string.info_p_friendship), "",
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ),
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            friendUser.getString("username"),
-                                            new PersonaData[] {},
-                                            friendUser.getString("gravatarMd5")
-
-                                    )
-
-                            }, liked, censored, tempGravatarHash
+                    // Set the profile
+                    profile2 = new ProfileData(
+                            Long.parseLong(currItem.getString("ownerId")),
+                            friendUser.getString("username"),
+                            new PersonaData[] {},
+                            friendUser.getString("gravatarMd5")
 
                             );
+
+                    // Get the title
+                    itemTitle = context.getString(R.string.info_p_friendship);
 
                 } else if (!currItem.isNull("ASSIGNMENTCOMPLETE")) {
 
@@ -325,27 +305,6 @@ public class FeedHandler {
 
                             );
 
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle, "",
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
-
-                            );
-
                 } else if (!currItem.isNull("CREATEDFORUMTHREAD")) {
 
                     // Grab the specific object
@@ -356,27 +315,7 @@ public class FeedHandler {
                                     "{thread}", tempSubItem.getString("threadTitle")
 
                             );
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle,
-                            tempSubItem.getString("threadBody"),
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
-
-                            );
+                    itemContent = tempSubItem.getString("threadBody");
 
                 } else if (!currItem.isNull("WROTEFORUMPOST")) {
 
@@ -388,28 +327,7 @@ public class FeedHandler {
                                     "{thread}", tempSubItem.getString("threadTitle")
 
                             );
-
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle,
-                            tempSubItem.getString("postBody"),
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
-
-                            );
+                    itemContent = tempSubItem.getString("postBody");
 
                 } else if (!currItem.isNull("GAMEREPORT")) {
 
@@ -417,18 +335,15 @@ public class FeedHandler {
                     JSONArray tempStatsArray = currItem.optJSONObject(
                             "GAMEREPORT").optJSONArray("statItems");
 
-                    if (tempStatsArray.length() > 1) {
+                    // INit the String
+                    String tempTitle = "";
 
-                        itemTitle = context
-                                .getString(R.string.info_p_newunlocks);
+                    // Set the things straight
+                    itemTitle = context
+                            .getString(tempStatsArray.length() > 1 ? R.string.info_p_newunlocks
+                                    : R.string.info_p_newunlock);
 
-                    } else {
-
-                        itemTitle = context
-                                .getString(R.string.info_p_newunlock);
-
-                    }
-
+                    /* TODO: EXPORT TO SMALLER METHODS */
                     for (int statsCounter = 0, maxCounter = tempStatsArray
                             .length(); statsCounter < maxCounter; statsCounter++) {
 
@@ -436,8 +351,8 @@ public class FeedHandler {
                         String tempKey;
                         tempSubItem = tempStatsArray
                                 .optJSONObject(statsCounter);
-                        if (itemContent.equals("")) {
-                            itemContent = "<b>";
+                        if (tempTitle.equals("")) {
+                            tempTitle = "<b>";
                         }
 
                         // Do we need to append anything?
@@ -445,11 +360,11 @@ public class FeedHandler {
 
                             if (statsCounter == (maxCounter - 1)) {
 
-                                itemContent += " </b>and<b> ";
+                                tempTitle += " </b>and<b> ";
 
                             } else {
 
-                                itemContent += ", ";
+                                tempTitle += ", ";
 
                             }
 
@@ -466,7 +381,7 @@ public class FeedHandler {
                             // Is it empty?
                             if (!parentKey.equals(tempKey)) {
 
-                                itemContent += tempKey
+                                tempTitle += tempKey
                                         + " "
                                         + DataBank
                                                 .getAttachmentTitle(tempSubItem
@@ -480,7 +395,7 @@ public class FeedHandler {
                                 // Validate
                                 if (!parentKey.equals(tempKey)) {
 
-                                    itemContent += tempKey
+                                    tempTitle += tempKey
                                             + " "
                                             + DataBank
                                                     .getVehicleUpgradeTitle(tempSubItem
@@ -488,7 +403,7 @@ public class FeedHandler {
 
                                 } else {
 
-                                    itemContent += tempKey;
+                                    tempTitle += tempKey;
 
                                 }
 
@@ -514,31 +429,29 @@ public class FeedHandler {
 
                                         if (key.equals(tempKey)) {
 
-                                            Log.d(Constants.DEBUG_TAG, tempKey
-                                                    + " => " + tempKey);
-                                            itemContent += tempKey;
+                                            tempTitle += tempKey;
 
                                         } else {
 
-                                            itemContent += tempKey;
+                                            tempTitle += tempKey;
 
                                         }
 
                                     } else {
 
-                                        itemContent += tempKey;
+                                        tempTitle += tempKey;
 
                                     }
 
                                 } else {
 
-                                    itemContent += tempKey;
+                                    tempTitle += tempKey;
 
                                 }
 
                             } else {
 
-                                itemContent += tempKey;
+                                tempTitle += tempKey;
 
                             }
 
@@ -546,83 +459,26 @@ public class FeedHandler {
 
                     }
 
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle.replace("{item}",
-                                    itemContent + "</b>"), "",
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
-
-                            );
+                    itemTitle = itemTitle.replace("{item}", tempTitle + "</b>");
 
                 } else if (!currItem.isNull("STATUSMESSAGE")) {
 
                     // Get the JSON-Object
                     tempSubItem = currItem.optJSONObject("STATUSMESSAGE");
 
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, "<b>{username}</b> "
-                                    + tempSubItem.getString("statusMessage"),
-                            "", currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
-
-                            );
+                    // Set the title
+                    itemTitle = "<b>{username}</b> {message}"
+                            + tempSubItem.getString("statusMessage");
 
                 } else if (!currItem.isNull("ADDEDFAVSERVER")) {
 
                     // Get it!
                     tempSubItem = currItem.getJSONObject("ADDEDFAVSERVER");
 
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
+                    // Set the title
+                    itemTitle = context.getString(R.string.info_p_favserver).replace(
 
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, context.getString(
-                                    R.string.info_p_favserver).replace(
-
-                                    "{server}", tempSubItem.getString("serverName")
-
-                                    ), "", currItem.getString("event"),
-                            new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
+                            "{server}", tempSubItem.getString("serverName")
 
                             );
 
@@ -643,27 +499,6 @@ public class FeedHandler {
                             ).replace(
 
                                     "{rank}", tempSubItem.getString("rank")
-
-                            );
-
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle, "",
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
 
                             );
 
@@ -695,28 +530,7 @@ public class FeedHandler {
                                             .getInt("gameMode"))
 
                             );
-
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle,
-                            tempSubItem.getString("gameReportComment"),
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
-
-                            );
+                    itemContent = tempSubItem.getString("gameReportComment");
 
                 } else if (!currItem.isNull("COMMENTEDBLOG")) {
 
@@ -731,27 +545,7 @@ public class FeedHandler {
 
                             );
 
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle,
-                            tempSubItem.getString("blogCommentBody"),
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
-
-                            );
+                    itemContent = tempSubItem.getString("blogCommentBody");
 
                 } else if (!currItem.isNull("JOINEDPLATOON")) {
 
@@ -764,27 +558,6 @@ public class FeedHandler {
                             .replace(
 
                                     "{platoon}", tempSubItem.getString("name")
-
-                            );
-
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle, "",
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
 
                             );
 
@@ -802,27 +575,6 @@ public class FeedHandler {
 
                             );
 
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle, "",
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
-
-                            );
-
                 } else if (!currItem.isNull("CREATEDPLATOON")) {
 
                     // Get it!
@@ -834,27 +586,6 @@ public class FeedHandler {
                             R.string.info_p_platoon_create).replace(
 
                             "{platoon}", tempSubItem.getString("name")
-
-                            );
-
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle, "",
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
 
                             );
 
@@ -872,27 +603,6 @@ public class FeedHandler {
 
                             );
 
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle, "",
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
-
-                            );
-
                 } else if (!currItem.isNull("LEFTPLATOON")) {
 
                     // Get it!
@@ -904,27 +614,6 @@ public class FeedHandler {
                             .replace(
 
                                     "{platoon}", tempSubItem.getString("name")
-
-                            );
-
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle, "",
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
 
                             );
 
@@ -944,27 +633,7 @@ public class FeedHandler {
 
                             );
 
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle,
-                            tempSubItem.getString("wallBody"),
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
-
-                            );
+                    itemContent = tempSubItem.getString("wallBody");
 
                 } else if (!currItem.isNull("LEVELCOMPLETE")) {
 
@@ -988,31 +657,11 @@ public class FeedHandler {
 
                             );
 
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
+                    profile2 = new ProfileData(
 
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle, "",
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ),
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            friendObject.getString("username"),
-                                            new PersonaData[] {},
-                                            friendObject.getString("gravatarMd5")
-
-                                    )
-
-                            }, liked, censored, tempGravatarHash
+                            Long.parseLong(currItem.getString("ownerId")),
+                            friendObject.getString("username"),
+                            friendObject.getString("gravatarMd5")
 
                             );
 
@@ -1022,16 +671,13 @@ public class FeedHandler {
                     JSONArray tempStatsArray = currItem.optJSONObject(
                             "RECEIVEDAWARD").optJSONArray("statItems");
 
+                    // Init a String
+                    String tempTitle = "";
+
                     // Set it!
-                    if (tempStatsArray.length() > 1) {
-
-                        itemTitle = context.getString(R.string.info_p_awards);
-
-                    } else {
-
-                        itemTitle = context.getString(R.string.info_p_award);
-
-                    }
+                    itemTitle = context
+                            .getString(tempStatsArray.length() > 1 ? R.string.info_p_awards
+                                    : R.string.info_p_award);
 
                     for (int statsCounter = 0, maxCounter = tempStatsArray
                             .length(); statsCounter < maxCounter; statsCounter++) {
@@ -1040,8 +686,8 @@ public class FeedHandler {
                         tempSubItem = tempStatsArray
                                 .optJSONObject(statsCounter);
                         String tempKey = tempSubItem.getString("langKeyTitle");
-                        if (itemContent.equals("")) {
-                            itemContent = "<b>";
+                        if (tempTitle.equals("")) {
+                            tempTitle = "<b>";
                         }
 
                         // Do we need to append anything?
@@ -1049,42 +695,23 @@ public class FeedHandler {
 
                             if (statsCounter == (maxCounter - 1)) {
 
-                                itemContent += " </b>and<b> ";
+                                tempTitle += " </b>and<b> ";
 
                             } else {
 
-                                itemContent += ", ";
+                                tempTitle += ", ";
 
                             }
 
                         }
 
                         // Weapon? Attachment?
-                        itemContent += DataBank.getAwardTitle(tempKey);
+                        tempTitle += DataBank.getAwardTitle(tempKey);
 
                     }
 
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle.replace("{award}",
-                                    itemContent + "</b>"), "",
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
-
-                            );
+                    // Set the title
+                    itemTitle = itemTitle.replace("{award}", tempTitle + "</b>");
 
                 } else if (!currItem.isNull("RECEIVEDWALLPOST")) {
 
@@ -1103,31 +730,13 @@ public class FeedHandler {
                     otherUserObject = tempSubItem.getJSONObject("writerUser");
                     tempGravatarHash = otherUserObject.getString("gravatarMd5");
 
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
+                    // Set the other profile
+                    profile2 = new ProfileData(
 
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle, "",
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            otherUserObject.getString("username"),
-                                            new PersonaData[] {},
-                                            otherUserObject.getString("gravatarMd5")
-
-                                    ),
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    )
-
-                            }, liked, censored, tempGravatarHash
+                            Long.parseLong(currItem.getString("ownerId")),
+                            ownerObject.getString("username"),
+                            new PersonaData[] {},
+                            ownerObject.getString("gravatarMd5")
 
                             );
 
@@ -1148,39 +757,33 @@ public class FeedHandler {
                     // Let's get it!
                     tempGravatarHash = ownerObject.getString("gravatarMd5");
 
-                    // Temporary storage
-                    tempFeedItem = new FeedItem(
-
-                            Long.parseLong(currItem.getString("id")),
-                            Long.parseLong(currItem.getString("itemId")),
-                            currItem.getLong("creationDate"), numLikes,
-                            numComments, itemTitle, "",
-                            currItem.getString("event"), new ProfileData[] {
-
-                                    new ProfileData(
-                                            Long.parseLong(currItem.getString("ownerId")),
-                                            ownerObject.getString("username"),
-                                            new PersonaData[] {},
-                                            ownerObject.getString("gravatarMd5")
-
-                                    ), null
-
-                            }, liked, censored, tempGravatarHash
-
-                            );
-
                 } else {
 
                     Log.d(Constants.DEBUG_TAG,
                             "event => " + currItem.getString("event"));
-                    tempFeedItem = null;
+                    continue;
 
                 }
+
+                // Temporary storage
+                tempFeedItem = new FeedItem(
+
+                        Long.parseLong(currItem.getString("id")),
+                        Long.parseLong(currItem.getString("itemId")),
+                        currItem.getLong("creationDate"), numLikes,
+                        numComments,
+                        itemTitle, itemContent,
+                        currItem.getString("event"), new ProfileData[] {
+
+                                profile1,
+                                profile2
+
+                        }, liked, censored, tempGravatarHash
+
+                        );
 
                 // Append it to the array
-                if (tempFeedItem != null) {
-                    feedItemArray.add(tempFeedItem);
-                }
+                feedItemArray.add(tempFeedItem);
 
                 // Fix a filename
                 String filename = tempGravatarHash + ".png";
@@ -1221,19 +824,19 @@ public class FeedHandler {
             switch (type) {
 
                 case FeedItem.TYPE_GLOBAL:
-                    url = Constants.URL_FRIEND_FEED;
+                    url = URL_FRIEND_FEED;
                     break;
 
                 case FeedItem.TYPE_PROFILE:
-                    url = Constants.URL_PROFILE_FEED.replace("{PID}", id + "");
+                    url = RequestHandler.generateUrl(URL_PROFILE, id);
                     break;
 
                 case FeedItem.TYPE_PLATOON:
-                    url = Constants.URL_PLATOON_FEED.replace("{PLATOON_ID}", id + "");
+                    url = RequestHandler.generateUrl(URL_PLATOON, id);
                     break;
 
                 default:
-                    url = Constants.URL_FRIEND_FEED;
+                    url = URL_FRIEND_FEED;
                     break;
 
             }
@@ -1243,8 +846,9 @@ public class FeedHandler {
 
                 // Get the content, and create a JSONArray
                 httpContent = rh.get(
-                        url.replace("{NUMSTART}",
-                                String.valueOf(i * 10)), 1);
+                        url.replace("{NUMSTART}", String.valueOf(i * 10)),
+                        RequestHandler.HEADER_AJAX
+                        );
                 jsonArray = new JSONObject(httpContent).getJSONObject("data")
                         .getJSONArray("feedEvents");
 
@@ -1266,7 +870,6 @@ public class FeedHandler {
 
     }
 
-
     public static boolean doHooahInFeed(long postId, String checksum)
             throws WebsiteHandlerException {
 
@@ -1279,15 +882,9 @@ public class FeedHandler {
             // Get the content
             httpContent = wh.post(
 
-                    Constants.URL_HOOAH.replace("{POST_ID}", postId + ""),
-                    new PostData[] {
-
-                        new PostData(
-
-                                Constants.FIELD_NAMES_CHECKSUM[0], checksum
-
-                        )
-                    }, 1
+                    RequestHandler.generateUrl(URL_HOOAH, postId),
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.HEADER_AJAX
 
                     );
 
@@ -1323,15 +920,9 @@ public class FeedHandler {
             // Get the content
             httpContent = wh.post(
 
-                    Constants.URL_UNHOOAH.replace("{POST_ID}", postId + ""),
-                    new PostData[] {
-
-                        new PostData(
-
-                                Constants.FIELD_NAMES_CHECKSUM[0], checksum
-
-                        )
-                    }, 1
+                    RequestHandler.generateUrl(URL_UNHOOAH, postId),
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.HEADER_AJAX
 
                     );
 

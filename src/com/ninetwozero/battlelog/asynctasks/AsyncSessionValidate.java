@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.COMHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 
 public class AsyncSessionValidate extends AsyncTask<PostData, Integer, Boolean> {
@@ -47,7 +47,7 @@ public class AsyncSessionValidate extends AsyncTask<PostData, Integer, Boolean> 
 
         try {
 
-            return WebsiteHandler.setActive();
+            return COMHandler.setActive();
 
         } catch (WebsiteHandlerException e) {
 

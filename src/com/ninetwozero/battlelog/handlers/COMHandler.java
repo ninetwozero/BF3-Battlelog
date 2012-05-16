@@ -1,3 +1,4 @@
+
 package com.ninetwozero.battlelog.handlers;
 
 import java.util.ArrayList;
@@ -9,13 +10,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
-import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ProfileComparator;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
@@ -24,7 +23,28 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
 public class COMHandler {
+
+    // URLS
+    public static final String URL_FRIENDS = Constants.URL_MAIN + "comcenter/sync/";
+    public static final String URL_FRIEND_REQUESTS = Constants.URL_MAIN
+            + "friend/requestFriendship/{UID}/";
+    public static final String URL_FRIEND_DELETE = Constants.URL_MAIN
+            + "friend/removeFriend/{UID}/";
+    public static final String URL_CONTENTS = Constants.URL_MAIN
+            + "comcenter/getChatId/{UID}/";
+    public static final String URL_SEND = Constants.URL_MAIN
+            + "comcenter/sendChatMessage/";
+    public static final String URL_CLOSE = Constants.URL_MAIN
+            + "comcenter/hideChat/{CID}/";
+    public static final String URL_SETACTIVE = Constants.URL_MAIN
+            + "comcenter/setActive/";
     
+    // Constants
+    public static final String[] FIELD_NAMES_CHAT = new String[] {
+            "message",
+            "chatId", "post-check-sum"
+    };
+
     public static Long getChatId(long profileId, String checksum)
             throws WebsiteHandlerException {
 
@@ -37,17 +57,9 @@ public class COMHandler {
             // Get the content
             httpContent = wh.post(
 
-                    Constants.URL_CHAT_CONTENTS.replace(
-
-                            "{UID}", profileId + ""), new PostData[] {
-
-                        new PostData(
-
-                                Constants.FIELD_NAMES_CHECKSUM[0], checksum
-
-                        )
-
-                    }, 0
+                    RequestHandler.generateUrl(URL_CONTENTS, profileId),
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.HEADER_NORMAL
 
                     );
 
@@ -85,17 +97,9 @@ public class COMHandler {
             // Get the content
             httpContent = wh.post(
 
-                    Constants.URL_CHAT_CONTENTS.replace(
-
-                            "{UID}", profileId + ""), new PostData[] {
-
-                        new PostData(
-
-                                Constants.FIELD_NAMES_CHECKSUM[0], checksum
-
-                        )
-
-                    }, 0
+                    RequestHandler.generateUrl(URL_CONTENTS, profileId),
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.HEADER_NORMAL
 
                     );
 
@@ -154,22 +158,15 @@ public class COMHandler {
             // Get the content
             httpContent = wh.post(
 
-                    Constants.URL_CHAT_SEND, new PostData[] {
-                            new PostData(
+                    URL_SEND,
+                    RequestHandler.generatePostData(
 
-                                    Constants.FIELD_NAMES_CHAT[2], checksum
-
-                            ), new PostData(
-
-                                    Constants.FIELD_NAMES_CHAT[1], chatId
-
-                            ), new PostData(
-
-                                    Constants.FIELD_NAMES_CHAT[0], message
-
-                            )
-
-                    }, 1
+                            FIELD_NAMES_CHAT,
+                            message,
+                            chatId,
+                            checksum
+                            ),
+                    RequestHandler.HEADER_AJAX
 
                     );
 
@@ -203,13 +200,8 @@ public class COMHandler {
 
             // Get the content
             rh.get(
-
-                    Constants.URL_CHAT_CLOSE.replace(
-
-                            "{CID}", chatId + ""
-
-                            ), 1
-
+                    RequestHandler.generateUrl(URL_CLOSE, chatId),
+                    RequestHandler.HEADER_AJAX
                     );
 
             // Did we manage?
@@ -235,15 +227,9 @@ public class COMHandler {
             // Get the content
             httpContent = wh.post(
 
-                    Constants.URL_FRIENDS, new PostData[] {
-
-                        new PostData(
-
-                                Constants.FIELD_NAMES_CHECKSUM[0], checksum
-
-                        )
-
-                    }, 0
+                    URL_FRIENDS,
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.HEADER_NORMAL
 
                     );
 
@@ -284,7 +270,7 @@ public class COMHandler {
 
                         // Grab the object
                         tempObj = requestsObject.optJSONObject(i);
-                        Log.d(Constants.DEBUG_TAG, "friendRequest => " + tempObj.toString(2));
+
                         // Save it
                         profileRowRequests.add(
 
@@ -321,55 +307,28 @@ public class COMHandler {
                         presenceObj = tempObj.getJSONObject("presence");
 
                         // Save it
-                        if (presenceObj.getBoolean("isOnline")) {
+                        ProfileData tempProfile = new ProfileData(
 
-                            if (presenceObj.getBoolean("isPlaying")) {
+                                Long.parseLong(tempObj.getString("userId")),
+                                tempObj.getString("username"),
+                                new PersonaData[] {},
+                                tempObj.optString("gravatarMd5", ""),
+                                presenceObj.getBoolean("isOnline"),
+                                presenceObj.getBoolean("isPlaying")
 
-                                profileRowPlaying.add(
+                                );
 
-                                        new ProfileData(
-                                                Long.parseLong(tempObj.getString("userId")),
-                                                tempObj.getString("username"),
-                                                new PersonaData[] {},
-                                                tempObj.optString("gravatarMd5", ""),
-                                                true,
-                                                true
+                        if (tempProfile.isPlaying()) {
 
-                                        )
+                            profileRowPlaying.add(tempProfile);
 
-                                        );
+                        } else if (tempProfile.isOnline()) {
 
-                            } else {
-
-                                profileRowOnline.add(
-
-                                        new ProfileData(
-                                                Long.parseLong(tempObj.getString("userId")),
-                                                tempObj.getString("username"),
-                                                new PersonaData[] {},
-                                                tempObj.optString("gravatarMd5", ""),
-                                                true,
-                                                false
-
-                                        )
-
-                                        );
-
-                            }
+                            profileRowOnline.add(tempProfile);
 
                         } else {
 
-                            profileRowOffline.add(
-
-                                    new ProfileData(
-                                            Long.parseLong(tempObj.getString("userId")),
-                                            tempObj.getString("username"),
-                                            new PersonaData[] {},
-                                            tempObj.optString("gravatarMd5", "")
-
-                                    )
-
-                                    );
+                            profileRowOffline.add(tempProfile);
 
                         }
 
@@ -437,11 +396,13 @@ public class COMHandler {
             List<ProfileData> profileArray = new ArrayList<ProfileData>();
 
             // Get the content
-            httpContent = wh.post(Constants.URL_FRIENDS,
-                    new PostData[] {
-                        new PostData(
-                                Constants.FIELD_NAMES_CHECKSUM[0], checksum)
-                    }, 0);
+            httpContent = wh.post(
+
+                    URL_FRIENDS,
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.HEADER_NORMAL
+
+                    );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -471,7 +432,7 @@ public class COMHandler {
 
                                     Long.parseLong(tempObj
                                             .getString("userId")), tempObj.getString("username"),
-                                    new PersonaData[] {}, tempObj.optString(
+                                    tempObj.optString(
                                             "gravatarMd5", "")
 
                             )
@@ -508,61 +469,118 @@ public class COMHandler {
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
             String httpContent;
+            String url = accepting ? Constants.URL_FRIEND_ACCEPT : Constants.URL_FRIEND_DECLINE;
 
             // Get the content
-            if (accepting) {
+            httpContent = wh.post(
 
-                httpContent = wh.post(
+                    RequestHandler.generateUrl(url, pId),
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.HEADER_NORMAL
 
-                        Constants.URL_FRIEND_ACCEPT.replace(
-
-                                "{UID}", pId + ""), new PostData[] {
-
-                            new PostData(
-
-                                    Constants.FIELD_NAMES_CHECKSUM[0], checksum
-
-                            )
-
-                        }, 0
-
-                        );
-
-            } else {
-
-                httpContent = wh.post(
-
-                        Constants.URL_FRIEND_DECLINE.replace(
-
-                                "{UID}", pId + ""), new PostData[] {
-
-                            new PostData(
-
-                                    Constants.FIELD_NAMES_CHECKSUM[0], checksum
-
-                            )
-
-                        }, 0
-
-                        );
-
-            }
+                    );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
+            return !"".equals(httpContent);
+
+        } catch (RequestHandlerException ex) {
+
+            throw new WebsiteHandlerException(ex.getMessage());
+
+        }
+
+    }
+    
+    public static boolean sendFriendRequest(long profileId, String checksum)
+            throws WebsiteHandlerException {
+
+        try {
+
+            // Let's login everybody!
+            RequestHandler wh = new RequestHandler();
+            String httpContent = wh.post(
+                    
+                    RequestHandler.generateUrl(URL_FRIEND_REQUESTS, profileId),
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.HEADER_AJAX
+
+                    );
+
+            // Did we manage?
+            return (httpContent != null);
+            
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            throw new WebsiteHandlerException(ex.getMessage());
+
+        }
+
+    }
+
+    public static boolean removeFriend(long profileId)
+            throws WebsiteHandlerException {
+
+        try {
+
+            // Let's login everybody!
+            RequestHandler wh = new RequestHandler();
+            String httpContent = wh.get(
+
+                    RequestHandler.generateUrl(URL_FRIEND_DELETE, profileId),
+                    RequestHandler.HEADER_AJAX
+
+            );
+
+            // Did we manage?
+            if (httpContent != null) {
 
                 return true;
 
             } else {
 
-                throw new WebsiteHandlerException(
-                        "Could not respond to the friend request.");
+                return false;
+
+            }
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            throw new WebsiteHandlerException(ex.getMessage());
+
+        }
+
+    }
+    
+    /* TODO */
+    public static boolean setActive() throws WebsiteHandlerException {
+
+        try {
+
+            // Let's see
+            String httpContent = new RequestHandler().get(
+                    URL_SETACTIVE, RequestHandler.HEADER_AJAX);
+            JSONObject httpResponse = new JSONObject(httpContent);
+
+            // Is it ok?
+            if (httpResponse.optString("message", "FAIL").equals("OK")) {
+
+                return true;
+
+            } else {
+
+                return false;
 
             }
 
         } catch (RequestHandlerException ex) {
 
             throw new WebsiteHandlerException(ex.getMessage());
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            return false;
 
         }
 

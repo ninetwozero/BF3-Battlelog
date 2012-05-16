@@ -44,7 +44,7 @@ import com.ninetwozero.battlelog.asynctasks.AsyncChatSend;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.COMHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -150,7 +150,7 @@ public class ChatActivity extends ListActivity {
 
             try {
 
-                this.chatId = WebsiteHandler.getChatId(profileId, arg0[0]);
+                this.chatId = COMHandler.getChatId(profileId, arg0[0]);
                 return true;
 
             } catch (WebsiteHandlerException ex) {

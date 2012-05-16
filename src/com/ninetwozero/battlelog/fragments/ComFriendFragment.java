@@ -46,7 +46,8 @@ import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.COMHandler;
+import com.ninetwozero.battlelog.handlers.ProfileHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
@@ -231,7 +232,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                         ).putExtra(
 
-                                "profile2", WebsiteHandler.getPersonaIdFromProfile(
+                                "profile2", ProfileHandler.getPersonaIdFromProfile(
 
                                         profileData.getId()
 
@@ -240,7 +241,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
                         )
 
                 );
-
+/* TODO: Move profile2 population into ASYNCTASK */
             } else if (item.getItemId() == MENU_POS_ASSIGNMENTS) {
 
                 startActivity(
@@ -251,7 +252,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 ).putExtra(
 
-                        "profile", WebsiteHandler.getPersonaIdFromProfile(
+                        "profile", ProfileHandler.getPersonaIdFromProfile(
 
                                 profileData.getId()
 
@@ -301,7 +302,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Let's get this!
-                friendListData = WebsiteHandler.getFriendsCOM(context, arg0[0]);
+                friendListData = COMHandler.getFriendsCOM(context, arg0[0]);
                 return true;
 
             } catch (WebsiteHandlerException e) {
@@ -355,7 +356,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Let's get this!!
-                return WebsiteHandler.answerFriendRequest(profileId, response,
+                return COMHandler.answerFriendRequest(profileId, response,
                         arg0[0]);
 
             } catch (WebsiteHandlerException e) {

@@ -25,7 +25,7 @@ import com.ninetwozero.battlelog.PlatoonActivity;
 import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.UnlockActivity;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ProfileHandler;
 
 public class FeedItem implements Parcelable {
 
@@ -279,8 +279,7 @@ public class FeedItem implements Parcelable {
 
                 return new Intent(c, AssignmentActivity.class).putExtra(
 
-                        "profile", WebsiteHandler
-                                .getPersonaIdFromProfile(profileData[0].getId())
+                        "profile", ProfileHandler.getPersonaIdFromProfile(profileData[0].getId())
 
                         );
 

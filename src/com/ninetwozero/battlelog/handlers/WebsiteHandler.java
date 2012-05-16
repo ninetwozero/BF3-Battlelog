@@ -20,67 +20,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.http.HttpEntity;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.AssignmentData;
-import com.ninetwozero.battlelog.datatypes.ChatMessage;
-import com.ninetwozero.battlelog.datatypes.CommentData;
-import com.ninetwozero.battlelog.datatypes.FeedItem;
-import com.ninetwozero.battlelog.datatypes.ForumData;
-import com.ninetwozero.battlelog.datatypes.ForumPostData;
-import com.ninetwozero.battlelog.datatypes.ForumSearchResult;
-import com.ninetwozero.battlelog.datatypes.ForumThreadData;
-import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.GeneralSearchResult;
 import com.ninetwozero.battlelog.datatypes.NewsData;
-import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.PersonaData;
-import com.ninetwozero.battlelog.datatypes.PersonaStats;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
-import com.ninetwozero.battlelog.datatypes.PlatoonMemberData;
-import com.ninetwozero.battlelog.datatypes.PlatoonStats;
-import com.ninetwozero.battlelog.datatypes.PlatoonStatsItem;
-import com.ninetwozero.battlelog.datatypes.PlatoonTopStatsItem;
-import com.ninetwozero.battlelog.datatypes.PostData;
-import com.ninetwozero.battlelog.datatypes.ProfileComparator;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.ProfileInformation;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
-import com.ninetwozero.battlelog.datatypes.TopStatsComparator;
-import com.ninetwozero.battlelog.datatypes.UnlockComparator;
-import com.ninetwozero.battlelog.datatypes.UnlockData;
-import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
-import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
-import com.ninetwozero.battlelog.datatypes.WeaponDataWrapperComparator;
-import com.ninetwozero.battlelog.datatypes.WeaponInfo;
-import com.ninetwozero.battlelog.datatypes.WeaponStats;
+import com.ninetwozero.battlelog.datatypes.SearchComparator;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
-import com.ninetwozero.battlelog.misc.CacheHandler.Forum;
-import com.ninetwozero.battlelog.misc.CacheHandler.Persona;
-import com.ninetwozero.battlelog.misc.CacheHandler.Platoon;
-import com.ninetwozero.battlelog.misc.CacheHandler.Profile;
 
 /* 
  * Methods of this class should be loaded in AsyncTasks, as they would probably lock up the GUI
@@ -125,21 +83,14 @@ public class WebsiteHandler {
             // Any size requirements? Otherwise we just pick the standard number
             return new RequestHandler().getImageFromStream(
 
-                    Constants.URL_GRAVATAR.replace(
+                    RequestHandler.generateUrl(
+                            Constants.URL_GRAVATAR,
+                            hash,
+                            ((size > 0) ? size : Constants.DEFAULT_AVATAR_SIZE),
+                            Constants.DEFAULT_AVATAR_SIZE
 
-                            "{hash}", hash
-
-                            ).replace(
-
-                                    "{size}", ((size > 0) ? size : Constants.DEFAULT_AVATAR_SIZE
-
-                                            ) + ""
-
-                            ).replace(
-
-                                    "{default}", Constants.DEFAULT_AVATAR_SIZE + ""
-
-                            ), true
+                            ),
+                    true
 
                     );
 
@@ -170,9 +121,7 @@ public class WebsiteHandler {
             // Get the actual stream
             HttpEntity httpEntity = rh.getHttpEntity(
 
-                    Constants.URL_GRAVATAR.replace("{hash}", h)
-                            .replace("{size}", s + "")
-                            .replace("{default}", s + ""), false
+                    RequestHandler.generateUrl(Constants.URL_GRAVATAR, h, s, s), false
 
                     );
 
@@ -244,7 +193,7 @@ public class WebsiteHandler {
             // Get the actual stream
             HttpEntity httpEntity = rh.getHttpEntity(
 
-                    Constants.URL_PLATOON_IMAGE.replace("{BADGE_PATH}", h), true
+                    RequestHandler.generateUrl(PlatoonHandler.URL_IMAGE, h), true
 
                     );
 
@@ -298,6 +247,26 @@ public class WebsiteHandler {
 
     }
 
+    
+    public static List<GeneralSearchResult> search(Context c, String k, String ch) throws WebsiteHandlerException {
+        
+        try {
+            
+            // Get the results
+            List<GeneralSearchResult> results = ProfileHandler.search(c, k, ch);
+            results.addAll(PlatoonHandler.search(c, k, ch));
+            
+            // Sort & return
+            Collections.sort(results, new SearchComparator());
+            return results;
+            
+        } catch( WebsiteHandlerException ex ) {
+            
+            throw ex;
+            
+        }
+    }
+    
     public static List<NewsData> getNewsForPage(int p) throws WebsiteHandlerException {
 
         try {
@@ -318,7 +287,12 @@ public class WebsiteHandler {
                 }
 
                 // Get the data
-                String httpContent = rh.get(Constants.URL_NEWS.replace("{COUNT}", num + ""), 1);
+                String httpContent = rh.get(
+                        
+                        RequestHandler.generateUrl(Constants.URL_NEWS, num),
+                        RequestHandler.HEADER_AJAX
+                        
+                );
 
                 // Did we get something?
                 if (httpContent != null && !httpContent.equals("")) {

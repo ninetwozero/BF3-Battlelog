@@ -69,7 +69,8 @@ import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.ForumPostData;
 import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ForumHandler;
+import com.ninetwozero.battlelog.handlers.ProfileHandler;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -338,12 +339,12 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 tempPageId = arg0[0];
 
                 // Get the threadData
-                threadData = WebsiteHandler.getPostsForThread(locale, tempThreadId);
+                threadData = ForumHandler.getPostsForThread(locale, tempThreadId);
 
                 // Do we need to get a specific page here already
                 if (arg0[0] > 1) {
 
-                    posts = WebsiteHandler.getPostsForThread(tempThreadId, tempPageId, locale);
+                    posts = ForumHandler.getPostsForThread(tempThreadId, tempPageId, locale);
                 }
 
                 return (threadData != null);
@@ -721,7 +722,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
             try {
 
                 page = arg0[0];
-                posts = WebsiteHandler.getPostsForThread(this.threadId, page,
+                posts = ForumHandler.getPostsForThread(this.threadId, page,
                         locale);
                 return true;
 
@@ -945,9 +946,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                         intent = new Intent(context, ProfileActivity.class)
                                 .putExtra(
 
-                                        "profile", WebsiteHandler
-                                                .getProfileIdFromSearch(username,
-                                                        arg0[1])
+                                        "profile", ProfileHandler.getProfileIdFromSearch(username, arg0[1])
 
                                 );
 
@@ -980,8 +979,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                         .putExtra(
 
                                                 "profile",
-                                                WebsiteHandler
-                                                        .getProfileIdFromPersona(personaId)
+                                                ProfileHandler.getProfileIdFromPersona(personaId)
 
                                         );
 

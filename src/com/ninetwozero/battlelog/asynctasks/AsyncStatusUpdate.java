@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ProfileHandler;
 
 public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
 
@@ -61,7 +61,7 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
         try {
 
             // Let's login everybody!
-            return WebsiteHandler.updateStatus(arg0[0], arg0[1]);
+            return ProfileHandler.updateStatus(arg0[0], arg0[1]);
 
         } catch (Exception ex) {
 

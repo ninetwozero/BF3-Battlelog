@@ -31,7 +31,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ForumHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -171,7 +171,7 @@ public class ForumReportActivity extends Activity {
 
             try {
 
-                return WebsiteHandler.reportPostInThread(context, postId,
+                return ForumHandler.reportPostInThread(context, postId,
                         arg0[0]);
 
             } catch (Exception ex) {

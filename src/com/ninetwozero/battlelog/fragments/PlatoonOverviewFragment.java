@@ -43,7 +43,7 @@ import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.PlatoonHandler;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -324,8 +324,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             try {
 
                 // Get...
-                platoonInformation = WebsiteHandler
-                        .getProfileInformationForPlatoon(
+                platoonInformation = PlatoonHandler.getProfileInformationForPlatoon(
 
                                 context, this.platoonData, sharedPreferences.getInt(
                                         Constants.SP_BL_NUM_FEED,

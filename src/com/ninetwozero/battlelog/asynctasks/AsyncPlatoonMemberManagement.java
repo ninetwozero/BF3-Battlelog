@@ -18,7 +18,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.ninetwozero.battlelog.PlatoonActivity;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.PlatoonHandler;
 
 public class AsyncPlatoonMemberManagement extends
         AsyncTask<Boolean, Void, Boolean> {
@@ -42,37 +42,31 @@ public class AsyncPlatoonMemberManagement extends
     @Override
     protected Boolean doInBackground(Boolean... arg0) {
 
-        if (what == 1 || what == 2) { // RESPOND TO REQUEST
+       try {
 
-            try {
+            if (arg0.length == 0) {
 
-                if (arg0.length == 0) {
+                return PlatoonHandler.alterPlatoonMembership(userId,
+                        platoonId, PlatoonHandler.FILTER_KICK );
 
-                    return WebsiteHandler.alterPlatoonMembership(userId,
-                            platoonId, 2);
+            } else if (!arg0[0]) {
 
-                } else if (!arg0[0]) {
+                return PlatoonHandler.alterPlatoonMembership(userId,
+                        platoonId, PlatoonHandler.FILTER_DEMOTE);
 
-                    return WebsiteHandler.alterPlatoonMembership(userId,
-                            platoonId, 1);
+            } else {
 
-                } else {
-
-                    return WebsiteHandler.alterPlatoonMembership(userId,
-                            platoonId, 0);
-
-                }
-
-            } catch (Exception ex) {
-
-                ex.printStackTrace();
-                return false;
+                return PlatoonHandler.alterPlatoonMembership(userId,
+                        platoonId, PlatoonHandler.FILTER_PROMOTE);
 
             }
 
-        }
+        } catch (Exception ex) {
 
-        return true;
+            ex.printStackTrace();
+            return false;
+
+        }
 
     }
 

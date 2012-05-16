@@ -37,13 +37,11 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class PlatoonInviteActivity extends ListActivity {
 
     // Attributes
-    private final Context CONTEXT = this;
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
     private PlatoonData platoonData;
     private List<ProfileData> friends;
-    private long[] selectedIds;
-    private TabHost mTabHost;
+    private Object[] selectedIds;
 
     // Elements
     private ListView listView;
@@ -76,7 +74,7 @@ public class PlatoonInviteActivity extends ListActivity {
         }
 
         // Fix it
-        selectedIds = new long[friends.size()];
+        selectedIds = new Object[friends.size()];
 
         // Setup the locale
         PublicUtils.setupLocale(this, sharedPreferences);
@@ -103,7 +101,7 @@ public class PlatoonInviteActivity extends ListActivity {
 
     public void onListItemClick(ListView lv, View v, int pos, long id) {
 
-        if (selectedIds[pos] == 0) {
+        if ( selectedIds[pos].equals(0) ) {
 
             selectedIds[pos] = id;
             ((CheckBox) v.findViewById(R.id.checkbox)).setChecked(true);

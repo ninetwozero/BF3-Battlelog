@@ -38,7 +38,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.adapters.ForumSearchAdapter;
 import com.ninetwozero.battlelog.datatypes.ForumSearchResult;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ForumHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -187,7 +187,7 @@ public class ForumSearchActivity extends ListActivity {
 
             try {
 
-                threads = WebsiteHandler.searchInForums(context, arg0[0]);
+                threads = ForumHandler.search(context, arg0[0]);
                 return true;
 
             } catch (Exception ex) {

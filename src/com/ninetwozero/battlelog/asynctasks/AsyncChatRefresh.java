@@ -30,7 +30,7 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ChatListAdapter;
 import com.ninetwozero.battlelog.datatypes.ChatMessage;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.COMHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 
 public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
@@ -64,7 +64,7 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
         try {
 
             // Let's get this!!
-            messageArray = WebsiteHandler.getChatMessages(chatId[0],
+            messageArray = COMHandler.getChatMessages(chatId[0],
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
             return true;
 

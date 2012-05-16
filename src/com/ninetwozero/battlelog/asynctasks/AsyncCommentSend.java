@@ -21,7 +21,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.CommentHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 
 public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
@@ -61,7 +61,7 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
         try {
 
             // Did we manage?
-            if (WebsiteHandler.commentOnFeedPost(postId, arg0[0], arg0[1])) {
+            if (CommentHandler.commentOnFeedPost(postId, arg0[0], arg0[1])) {
                 return true;
             } else {
                 return false;

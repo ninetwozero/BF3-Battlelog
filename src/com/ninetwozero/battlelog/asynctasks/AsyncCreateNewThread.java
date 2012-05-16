@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ForumHandler;
 
 public class AsyncCreateNewThread extends AsyncTask<String, Void, Boolean> {
 
@@ -42,7 +42,7 @@ public class AsyncCreateNewThread extends AsyncTask<String, Void, Boolean> {
         try {
 
             // How'd it go?
-            return WebsiteHandler.createNewThreadInForum(
+            return ForumHandler.createNewThreadInForum(
 
                     this.context, arg0[0], arg0[1], arg0[2], this.forumId
 

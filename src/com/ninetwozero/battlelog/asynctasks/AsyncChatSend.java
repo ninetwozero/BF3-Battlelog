@@ -20,7 +20,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.COMHandler;
 
 public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
 
@@ -72,7 +72,7 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
         try {
 
             // Did we manage?
-            if (WebsiteHandler.sendChatMessages(chatId, arg0[0], arg0[1])) {
+            if (COMHandler.sendChatMessages(chatId, arg0[0], arg0[1])) {
                 return true;
             } else {
                 return false;

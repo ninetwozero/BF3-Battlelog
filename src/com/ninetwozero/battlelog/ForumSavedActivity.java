@@ -41,7 +41,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.adapters.SavedThreadListAdapter;
 import com.ninetwozero.battlelog.datatypes.ForumThreadData;
 import com.ninetwozero.battlelog.datatypes.SavedForumThreadData;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ForumHandler;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -251,7 +251,7 @@ public class ForumSavedActivity extends ListActivity {
             try {
 
                 // Get the thread
-                forumThread = WebsiteHandler.getPostsForThread(locale, t[0].getId());
+                forumThread = ForumHandler.getPostsForThread(locale, t[0].getId());
                 boolean status = (forumThread.getNumPosts() > t[0].getNumPosts());
 
                 // Update the saved forum thread

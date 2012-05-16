@@ -35,7 +35,8 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.COMHandler;
+import com.ninetwozero.battlelog.handlers.FeedHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
@@ -132,11 +133,11 @@ public class SocialWidgetProvider extends AppWidgetProvider {
 
             try {
 
-                friends = WebsiteHandler.getFriendsCOM(
+                friends = COMHandler.getFriendsCOM(
                         context,
                         PreferenceManager.getDefaultSharedPreferences(context).getString(
                                 Constants.SP_BL_PROFILE_CHECKSUM, ""));
-                feedItems = WebsiteHandler.getFeed(context, FeedItem.TYPE_GLOBAL, 0,
+                feedItems = FeedHandler.getFeed(context, FeedItem.TYPE_GLOBAL, 0,
                         Constants.DEFAULT_NUM_FEED,
                         SessionKeeper.getProfileData().getId());
                 Log.d(Constants.DEBUG_TAG, "feedItems => " + feedItems);

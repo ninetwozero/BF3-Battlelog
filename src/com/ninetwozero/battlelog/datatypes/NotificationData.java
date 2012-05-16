@@ -24,67 +24,67 @@ public class NotificationData implements Parcelable {
 
     ) {
 
-        this.itemId = iId;
-        this.ownerId = oId;
-        this.commenterId = cId;
-        this.date = d;
-        this.typeId = tId;
-        this.owner = oName;
-        this.commenter = cName;
-        this.type = t;
-        this.extra = x;
+        itemId = iId;
+        ownerId = oId;
+        commenterId = cId;
+        date = d;
+        typeId = tId;
+        owner = oName;
+        commenter = cName;
+        type = t;
+        extra = x;
 
     }
 
     public NotificationData(Parcel in) {
 
-        this.itemId = in.readLong();
-        this.ownerId = in.readLong();
-        this.commenterId = in.readLong();
-        this.date = in.readLong();
-        this.typeId = in.readInt();
-        this.owner = in.readString();
-        this.commenter = in.readString();
-        this.type = in.readString();
-        this.extra = in.readString();
+        itemId = in.readLong();
+        ownerId = in.readLong();
+        commenterId = in.readLong();
+        date = in.readLong();
+        typeId = in.readInt();
+        owner = in.readString();
+        commenter = in.readString();
+        type = in.readString();
+        extra = in.readString();
 
     }
 
     // Getters
     public long getItemId() {
-        return this.itemId;
+        return itemId;
     }
 
     public long getOwnerId() {
-        return this.ownerId;
+        return ownerId;
     }
 
     public long getCommenterId() {
-        return this.commenterId;
+        return commenterId;
     }
 
     public long getDate() {
-        return this.date;
+        return date;
     }
 
     public int getTypeId() {
-        return this.typeId;
+        return typeId;
     }
 
     public String getOwner() {
-        return this.owner;
+        return owner;
     }
 
     public String getCommenter() {
-        return this.commenter;
+        return commenter;
     }
 
     public String getType() {
-        return this.type;
+        return type;
     }
 
     public String getExtra() {
-        return this.extra;
+        return extra;
     }
 
     // Generate a message
@@ -92,13 +92,13 @@ public class NotificationData implements Parcelable {
 
         // What have we here?
         String message;
-        if (this.type.equals("feedcomment")) {
+        if (type.equals("feedcomment")) {
 
-            if (0 == this.ownerId || userId == this.ownerId) {
+            if (0 == ownerId || userId == ownerId) {
 
                 message = c.getString(R.string.info_feed_comment_own).replace(
 
-                        "{action}", resolveActionFromId(c, this.typeId)
+                        "{action}", resolveActionFromId(c, typeId)
 
                         );
 
@@ -109,7 +109,7 @@ public class NotificationData implements Parcelable {
                     message = c.getString(R.string.info_feed_comment_other)
                             .replace(
 
-                                    "{action}", resolveActionFromId(c, this.typeId)
+                                    "{action}", resolveActionFromId(c, typeId)
 
                             );
 
@@ -118,7 +118,7 @@ public class NotificationData implements Parcelable {
                     message = c.getString(R.string.info_feed_comment_other_v2)
                             .replace(
 
-                                    "{action}", resolveActionFromId(c, this.typeId)
+                                    "{action}", resolveActionFromId(c, typeId)
 
                             );
 
@@ -126,14 +126,14 @@ public class NotificationData implements Parcelable {
 
             }
 
-        } else if (this.type.equals("feedcommentreply")) {
+        } else if (type.equals("feedcommentreply")) {
 
-            if (0 == this.ownerId || userId == this.ownerId) {
+            if (0 == ownerId || userId == ownerId) {
 
                 message = c.getString(R.string.info_feed_comment_own_2)
                         .replace(
 
-                                "{action}", resolveActionFromId(c, this.typeId)
+                                "{action}", resolveActionFromId(c, typeId)
 
                         );
 
@@ -144,7 +144,7 @@ public class NotificationData implements Parcelable {
                     message = c.getString(R.string.info_feed_comment_other_2)
                             .replace(
 
-                                    "{action}", resolveActionFromId(c, this.typeId)
+                                    "{action}", resolveActionFromId(c, typeId)
 
                             );
 
@@ -154,7 +154,7 @@ public class NotificationData implements Parcelable {
                             .getString(R.string.info_feed_comment_other_v2_2)
                             .replace(
 
-                                    "{action}", resolveActionFromId(c, this.typeId)
+                                    "{action}", resolveActionFromId(c, typeId)
 
                             );
 
@@ -162,17 +162,17 @@ public class NotificationData implements Parcelable {
 
             }
 
-        } else if (this.type.equals("wallpostcreated")) {
+        } else if (type.equals("wallpostcreated")) {
 
             message = c.getString(R.string.info_feed_post_own);
 
-        } else if (this.type.equals("feedlike")) {
+        } else if (type.equals("feedlike")) {
 
-            if (0 == this.ownerId || userId == this.ownerId) {
+            if (0 == ownerId || userId == ownerId) {
 
                 message = c.getString(R.string.info_feed_hooah_own).replace(
 
-                        "{action}", resolveActionFromId(c, this.typeId)
+                        "{action}", resolveActionFromId(c, typeId)
 
                         );
 
@@ -183,7 +183,7 @@ public class NotificationData implements Parcelable {
                     message = c.getString(R.string.info_feed_hooah_other)
                             .replace(
 
-                                    "{action}", resolveActionFromId(c, this.typeId)
+                                    "{action}", resolveActionFromId(c, typeId)
 
                             );
 
@@ -192,7 +192,7 @@ public class NotificationData implements Parcelable {
                     message = c.getString(R.string.info_feed_hooah_other_2)
                             .replace(
 
-                                    "{action}", resolveActionFromId(c, this.typeId)
+                                    "{action}", resolveActionFromId(c, typeId)
 
                             );
 
@@ -200,97 +200,97 @@ public class NotificationData implements Parcelable {
 
             }
 
-        } else if (this.type.equals("platoonjoinrequestaccepted")) {
+        } else if (type.equals("platoonjoinrequestaccepted")) {
 
             message = c.getString(R.string.info_platoon_join_ok).replace(
 
-                    "{platoon}", this.extra
+                    "{platoon}", extra
 
                     );
 
-        } else if (this.type.equals("platoonjoinrequestdeclined")) {
+        } else if (type.equals("platoonjoinrequestdeclined")) {
 
             message = c.getString(R.string.info_platoon_join_no).replace(
 
-                    "{platoon}", this.extra
+                    "{platoon}", extra
 
                     );
 
-        } else if (this.type.equals("platooninviterequest")) {
+        } else if (type.equals("platooninviterequest")) {
 
             message = c.getString(R.string.info_platoon_invite).replace(
 
-                    "{platoon}", this.extra
+                    "{platoon}", extra
 
                     );
 
-        } else if (this.type.equals("platoonpromoted")) {
+        } else if (type.equals("platoonpromoted")) {
 
             message = c.getString(R.string.info_platoon_promote).replace(
 
-                    "{platoon}", this.extra
+                    "{platoon}", extra
 
                     );
 
-        } else if (this.type.equals("platoonkicked")) {
+        } else if (type.equals("platoonkicked")) {
 
             message = c.getString(R.string.info_platoon_kick).replace(
 
-                    "{platoon}", this.extra
+                    "{platoon}", extra
 
                     );
-        } else if (this.type.equals("platoondemoted")) {
+        } else if (type.equals("platoondemoted")) {
 
             message = c.getString(R.string.info_platoon_demote).replace(
 
-                    "{platoon}", this.extra
+                    "{platoon}", extra
 
                     );
 
-        } else if (this.type.equals("platoonjoinrequest")) {
+        } else if (type.equals("platoonjoinrequest")) {
 
             message = c.getString(R.string.info_platoon_join_request).replace(
 
-                    "{platoon}", this.extra
+                    "{platoon}", extra
 
                     );
 
-        } else if (this.type.equals("platoonmemberjoined")) {
+        } else if (type.equals("platoonmemberjoined")) {
 
             message = c.getString(R.string.info_platoon_join_request_ok)
                     .replace(
 
-                            "{platoon}", this.extra
+                            "{platoon}", extra
 
                     );
 
-        } else if (this.type.equals("platoonleft")) {
+        } else if (type.equals("platoonleft")) {
 
             message = c.getString(R.string.info_platoon_left).replace(
 
-                    "{platoon}", this.extra
+                    "{platoon}", extra
 
                     );
 
-        } else if (this.type.equals("friendrequestaccepted")) {
+        } else if (type.equals("friendrequestaccepted")) {
 
             message = c.getString(R.string.info_feed_friend_accept);
 
         } else {
 
             message = c.getString(R.string.info_unknown_notification);
-            Log.d(Constants.DEBUG_TAG, "noticationType => " + this.type);
+            Log.d(Constants.DEBUG_TAG, "noticationType => " + type);
         }
 
-        return message.replace("{username}", this.commenter).replace("{owner}",
-                this.owner);
+        return message.replace("{username}", commenter).replace("{owner}",
+                owner);
 
     }
 
     // Misc
     public String resolveActionFromId(Context c, int id) {
 
-        switch (this.typeId) {
+        switch (typeId) {
 
             case 1: // Friendship
                 return c.getString(R.string.info_friendship);
@@ -319,7 +319,7 @@ public class NotificationData implements Parcelable {
             case 13: // Platoon activity
             case 15:
             case 16: // Platoon activity
-            case 17: // New platoon /* TODO */
+            case 17: // New platoon
                 return c.getString(R.string.info_platoon_activity);
 
             case 20: // Platoon wall post
@@ -332,8 +332,8 @@ public class NotificationData implements Parcelable {
                 return c.getString(R.string.info_p_activated_expansion);
 
             default:
-                Log.d(Constants.DEBUG_TAG, "noticationType => " + this.type + ":"
-                        + this.typeId);
+                Log.d(Constants.DEBUG_TAG, "noticationType => " + type + ":"
+                        + typeId);
                 return "{unknown action}";
         }
 
@@ -345,8 +345,8 @@ public class NotificationData implements Parcelable {
 
         return (
 
-        "(" + this.itemId + ")" + " " + this.commenter + "(" + this.commenterId
-                + ") <" + this.type + "> " + this.owner + "(" + this.ownerId + ")"
+        "(" + itemId + ")" + " " + commenter + "(" + commenterId
+                + ") <" + type + "> " + owner + "(" + ownerId + ")"
 
         );
     }
@@ -354,22 +354,21 @@ public class NotificationData implements Parcelable {
     @Override
     public int describeContents() {
 
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
-        dest.writeLong(this.itemId);
-        dest.writeLong(this.ownerId);
-        dest.writeLong(this.commenterId);
-        dest.writeLong(this.date);
-        dest.writeInt(this.typeId);
-        dest.writeString(this.owner);
-        dest.writeString(this.commenter);
-        dest.writeString(this.type);
-        dest.writeString(this.extra);
+        dest.writeLong(itemId);
+        dest.writeLong(ownerId);
+        dest.writeLong(commenterId);
+        dest.writeLong(date);
+        dest.writeInt(typeId);
+        dest.writeString(owner);
+        dest.writeString(commenter);
+        dest.writeString(type);
+        dest.writeString(extra);
 
     }
 

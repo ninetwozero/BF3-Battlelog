@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.ForumActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ForumThreadData;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ForumHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
@@ -47,7 +47,7 @@ public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
 
             // How'd it go?
             threadData.setNumPosts(threadData.getNumPosts() + 1);
-            return WebsiteHandler.postReplyInThread(
+            return ForumHandler.postReplyInThread(
 
                     this.context, arg0[0], arg0[1], this.threadData, this.cache, SessionKeeper
                             .getProfileData().getId()

@@ -42,7 +42,7 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.ForumListAdapter;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.ForumData;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ForumHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 
@@ -194,7 +194,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
 
             try {
 
-                Object[] result = WebsiteHandler.getAllForums(locale);
+                Object[] result = ForumHandler.getAllForums(locale);
                 title = (String) result[0];
                 forums = (List<ForumData>) result[1];
                 return (forums != null);

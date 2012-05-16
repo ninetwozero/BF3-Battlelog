@@ -39,7 +39,7 @@ import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.NewsData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.CommentHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class NewsCommentListFragment extends ListFragment implements DefaultFragment {
@@ -158,7 +158,7 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
             try {
 
                 // Get...
-                comments = WebsiteHandler.getCommentsForNews(newsData, pageId);
+                comments = CommentHandler.getCommentsForNews(newsData, pageId);
 
                 // ...validate!
                 return (comments != null);

@@ -39,7 +39,7 @@ import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
 import com.ninetwozero.battlelog.fragments.WeaponListFragment;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.handlers.ProfileHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -211,7 +211,7 @@ public class WeaponListActivity extends FragmentActivity implements DefaultFragm
 
             try {
 
-                items = WebsiteHandler.getWeapons(profileData);
+                items = ProfileHandler.getWeapons(profileData);
                 return true;
 
             } catch (Exception ex) {
