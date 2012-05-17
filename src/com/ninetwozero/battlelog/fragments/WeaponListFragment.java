@@ -72,7 +72,7 @@ public class WeaponListFragment extends ListFragment implements DefaultFragment 
 
         // Setup the ListView
         listView = (ListView) v.findViewById(android.R.id.list);
-        listView.setAdapter(new WeaponListAdapter(context, items, layoutInflater));
+        listView.setAdapter(new WeaponListAdapter(items, layoutInflater));
 
     }
 
