@@ -100,8 +100,7 @@ public class SearchActivity extends ListActivity {
         // Does it have an adapter?
         if (listView.getAdapter() == null) {
 
-            listView.setAdapter(new SearchDataAdapter(this, results,
-                    layoutInflater));
+            listView.setAdapter(new SearchDataAdapter(results, layoutInflater));
 
         } else {
 

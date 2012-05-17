@@ -91,8 +91,7 @@ public class PlatoonInviteActivity extends ListActivity {
         if (listView == null) {
 
             listView = getListView();
-            listView.setAdapter(new PlatoonInviteListAdapter(this, friends,
-                    layoutInflater));
+            listView.setAdapter(new PlatoonInviteListAdapter(friends, layoutInflater));
 
         }
 

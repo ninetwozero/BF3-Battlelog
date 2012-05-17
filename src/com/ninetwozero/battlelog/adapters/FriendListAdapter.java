@@ -32,7 +32,6 @@ public class FriendListAdapter extends BaseAdapter {
     private Context context;
     private List<ProfileData> profileArray;
     private LayoutInflater layoutInflater;
-    private String tempStatus;
     private TextView textUser, textStatus;
 
     // Construct

@@ -272,11 +272,11 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
 
                 if (arg0[0].getNumPersonas() == 0) {
 
-                    profileData = ProfileHandler.getPersonaIdFromProfile(profileData);
+                    profileData = ProfileHandler.getPersonaId(profileData);
                     if (selectedPersona == 0) {
                         selectedPersona = profileData.getPersona(0).getId();
                     }
-                    unlocks = ProfileHandler.getUnlocksForUser(profileData,
+                    unlocks = ProfileHandler.getUnlocks(profileData,
                             sharedPreferences.getInt(Constants.SP_BL_UNLOCKS_LIMIT_MIN, 1));
 
                 } else {
@@ -284,7 +284,7 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
                     if (selectedPersona == 0) {
                         selectedPersona = arg0[0].getPersona(0).getId();
                     }
-                    unlocks = ProfileHandler.getUnlocksForUser(arg0[0],
+                    unlocks = ProfileHandler.getUnlocks(arg0[0],
                             sharedPreferences.getInt(Constants.SP_BL_UNLOCKS_LIMIT_MIN, 1));
 
                 }

@@ -44,7 +44,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -337,12 +336,12 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 tempPageId = arg0[0];
 
                 // Get the threadData
-                threadData = ForumHandler.getPostsForThread(locale, tempThreadId);
+                threadData = ForumHandler.getPosts(locale, tempThreadId);
 
                 // Do we need to get a specific page here already
                 if (arg0[0] > 1) {
 
-                    posts = ForumHandler.getPostsForThread(tempThreadId, tempPageId, locale);
+                    posts = ForumHandler.getPosts(tempThreadId, tempPageId, locale);
                 }
 
                 return (threadData != null);
@@ -719,7 +718,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
             try {
 
                 page = arg0[0];
-                posts = ForumHandler.getPostsForThread(this.threadId, page,
+                posts = ForumHandler.getPosts(this.threadId, page,
                         locale);
                 return true;
 
@@ -944,7 +943,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                 .putExtra(
 
                                         "profile",
-                                        ProfileHandler.getProfileIdFromSearch(username, arg0[1])
+                                        ProfileHandler.getProfileId(username, arg0[1])
 
                                 );
 
@@ -977,7 +976,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                         .putExtra(
 
                                                 "profile",
-                                                ProfileHandler.getProfileIdFromPersona(personaId)
+                                                ProfileHandler.getProfileId(personaId)
 
                                         );
 
@@ -1131,9 +1130,6 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
     public void createContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
-
-        // Get the actual menu item and tag
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 
         // Show the menu
         menu.add(0, 0, 0, R.string.info_profile_view);

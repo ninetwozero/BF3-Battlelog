@@ -353,7 +353,6 @@ public class AssignmentActivity extends Activity {
         // Init
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         AssignmentData assignment = assignments.get(selectedPersona).get(id);
-        AssignmentData.Unlock unlocks = assignment.getUnlocks().get(0);
 
         View dialog = layoutInflater.inflate(R.layout.popup_dialog_view, null);
         LinearLayout wrapObjectives = (LinearLayout) dialog

@@ -51,7 +51,6 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class ForumSavedActivity extends ListActivity {
 
     // Attributes
-    private final Context CONTEXT = this;
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
 
@@ -251,7 +250,7 @@ public class ForumSavedActivity extends ListActivity {
             try {
 
                 // Get the thread
-                forumThread = ForumHandler.getPostsForThread(locale, t[0].getId());
+                forumThread = ForumHandler.getPosts(locale, t[0].getId());
                 boolean status = (forumThread.getNumPosts() > t[0].getNumPosts());
 
                 // Update the saved forum thread

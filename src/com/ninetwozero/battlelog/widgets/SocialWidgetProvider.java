@@ -123,11 +123,11 @@ public class SocialWidgetProvider extends AppWidgetProvider {
 
             try {
 
-                friends = COMHandler.getFriendsCOM(
+                friends = COMHandler.getFriendsForCOM(
                         context,
                         PreferenceManager.getDefaultSharedPreferences(context).getString(
                                 Constants.SP_BL_PROFILE_CHECKSUM, ""));
-                feedItems = FeedHandler.getFeed(context, FeedItem.TYPE_GLOBAL, 0,
+                feedItems = FeedHandler.get(context, FeedItem.TYPE_GLOBAL, 0,
                         Constants.DEFAULT_NUM_FEED,
                         SessionKeeper.getProfileData().getId());
                 Log.d(Constants.DEBUG_TAG, "feedItems => " + feedItems);

@@ -295,7 +295,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
             try {
 
-                forumData = ForumHandler.getThreadsForForum(locale,
+                forumData = ForumHandler.getThreads(locale,
                         arg0[0]);
                 return (forumData != null);
 
@@ -388,7 +388,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
             try {
 
                 page = arg0[0];
-                threads = ForumHandler.getThreadsForForum(locale, forumId, page);
+                threads = ForumHandler.getThreads(locale, forumId, page);
                 return true;
 
             } catch (Exception ex) {

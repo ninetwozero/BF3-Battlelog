@@ -102,10 +102,10 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
             try {
 
-                playerData = ProfileHandler.getStatsForPersona(SessionKeeper
+                playerData = ProfileHandler.getStats(SessionKeeper
                         .getProfileData());
 
-                friends = COMHandler.getFriendsCOM(
+                friends = COMHandler.getFriendsForCOM(
                         context,
                         sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 

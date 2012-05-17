@@ -34,9 +34,9 @@ public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
     // Construct
     public AsyncPostInThread(Context c, ForumThreadData t, boolean ca) {
 
-        this.context = c;
-        this.threadData = t;
-        this.cache = ca;
+        context = c;
+        threadData = t;
+        cache = ca;
 
     }
 
@@ -47,9 +47,9 @@ public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
 
             // How'd it go?
             threadData.setNumPosts(threadData.getNumPosts() + 1);
-            return ForumHandler.postReplyInThread(
+            return ForumHandler.reply(
 
-                    this.context, arg0[0], arg0[1], this.threadData, this.cache, SessionKeeper
+                    context, arg0[0], arg0[1], threadData, cache, SessionKeeper
                             .getProfileData().getId()
 
                     );
@@ -69,18 +69,18 @@ public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
         // Well, how'd it go?
         if (results) {
 
-            Toast.makeText(this.context, R.string.info_forum_newpost_true,
+            Toast.makeText(context, R.string.info_forum_newpost_true,
                     Toast.LENGTH_SHORT).show();
             if (context instanceof ForumActivity) {
 
-                ((ForumActivity) this.context).reload();
-                ((ForumActivity) this.context).resetPostFields();
+                ((ForumActivity) context).reload();
+                ((ForumActivity) context).resetPostFields();
 
             }
 
         } else {
 
-            Toast.makeText(this.context, R.string.info_forum_newpost_false,
+            Toast.makeText(context, R.string.info_forum_newpost_false,
                     Toast.LENGTH_SHORT).show();
 
         }

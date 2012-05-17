@@ -39,7 +39,6 @@ public class CommentListAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private TextView textUsername, textMessage, textTimestamp;
     private ImageView imageAvatar;
-    private String thisUser;
 
     // Construct
     public CommentListAdapter(Context c, List<CommentData> cd,

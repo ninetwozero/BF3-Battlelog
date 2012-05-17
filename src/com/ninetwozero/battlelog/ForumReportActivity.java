@@ -21,14 +21,12 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.handlers.ForumHandler;
@@ -39,11 +37,9 @@ import com.ninetwozero.battlelog.misc.RequestHandler;
 public class ForumReportActivity extends Activity {
 
     // Attributes
-    private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
 
     // Elements
-    private ListView listView;
     private EditText fieldReport;
     private Button buttonReport;
 
@@ -71,9 +67,6 @@ public class ForumReportActivity extends Activity {
 
         // Set the content view
         setContentView(R.layout.forum_report_view);
-
-        // Prepare to tango
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Get the elements
         buttonReport = (Button) findViewById(R.id.button_report);
@@ -171,7 +164,7 @@ public class ForumReportActivity extends Activity {
 
             try {
 
-                return ForumHandler.reportPostInThread(context, postId,
+                return ForumHandler.reportPost(context, postId,
                         arg0[0]);
 
             } catch (Exception ex) {

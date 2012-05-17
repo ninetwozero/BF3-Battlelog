@@ -8,13 +8,12 @@ import java.util.Map;
 
 public class ProfileSettings {
 
-    private static final long serialVersionUID = 7336622399859889307L;
-
     public static final String PROFILE_INFO_BIRTHDAY = "profile_info_birthday";
     public static final String PROFILE_INFO_COUNTRY = "profile_info_country";
 
     public static final Map<String, String> COUNTRY = new HashMap<String, String>() {
-
+        private static final long serialVersionUID = 7336622399859889307L;
+        
         {
             put("Select your location", "");
             put("Afghanistan", "AF");
@@ -267,6 +266,7 @@ public class ProfileSettings {
         }
     };
     public static final List<String> DATE_PATTERNS = new ArrayList<String>() {
+        private static final long serialVersionUID = 7336622399859889307L;
         {
             add("dd.MM.yyyy | MM.dd");
             add("yyyy-MM-dd | dd/MM");

@@ -33,7 +33,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -113,7 +112,7 @@ public class SinglePostActivity extends ListActivity {
         if (notification != null) {
 
             // Get data here async
-            new AsyncGetDataForPost(this).execute(notification);
+            new AsyncGetDataForPost().execute(notification);
 
         } else {
 
@@ -172,7 +171,7 @@ public class SinglePostActivity extends ListActivity {
             // Send it!
             new AsyncCommentSend(
 
-                    this, item.getId(), buttonSend, false, new AsyncCommentsRefresh(
+                    this, item.getId(), buttonSend, new AsyncCommentsRefresh(
                             this, listView, layoutInflater)
 
             ).execute(
@@ -235,21 +234,6 @@ public class SinglePostActivity extends ListActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-
-        // Declare...
-        AdapterView.AdapterContextMenuInfo info;
-
-        // Let's try to get some menu information via a try/catch
-        try {
-
-            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        } catch (ClassCastException e) {
-
-            e.printStackTrace();
-            return false;
-
-        }
 
         try {
 
@@ -318,16 +302,6 @@ public class SinglePostActivity extends ListActivity {
 
     public class AsyncGetDataForPost extends
             AsyncTask<NotificationData, Void, Boolean> {
-
-        // Attributes
-        private Context context;
-
-        // Constructs
-        public AsyncGetDataForPost(Context c) {
-
-            this.context = c;
-
-        }
 
         @Override
         protected Boolean doInBackground(NotificationData... arg0) {

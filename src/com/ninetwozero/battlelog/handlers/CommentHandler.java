@@ -22,25 +22,25 @@ public class CommentHandler {
             + "feed/getComments/{POST_ID}/";
     public static final String URL_COMMENT = Constants.URL_MAIN
             + "comment/postcomment/{POST_ID}/feed-item-comment/";
-
+    public static final String URL_NEWS_LIST = Constants.URL_MAIN
+            + "news/view/{ARTICLE_ID}/{PAGE}/";
+    public static final String URL_NEWS_COMMENT = Constants.URL_MAIN
+            + "comment/postcomment/{ARTICLE_ID}/devblog-comment/";
     // Attributes
     public static final String[] FIELD_NAMES_COMMENT = new String[] {
             "comment", "post-check-sum"
     };
 
-    public static boolean commentOnFeedPost(long postId, String checksum,
-            String comment) throws WebsiteHandlerException {
+    public static boolean post(long postId, String checksum,
+            String comment, boolean news) throws WebsiteHandlerException {
 
         try {
 
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
-            String httpContent;
+            String httpContent = wh.post(
 
-            // Get the content
-            httpContent = wh.post(
-
-                    RequestHandler.generateUrl(URL_COMMENT, postId),
+                    RequestHandler.generateUrl( news ? URL_NEWS_COMMENT : URL_COMMENT, postId),
                     RequestHandler.generatePostData(
 
                             FIELD_NAMES_COMMENT,
@@ -73,7 +73,7 @@ public class CommentHandler {
 
     }
 
-    public static ArrayList<CommentData> getCommentsForPost(long postId)
+    public static ArrayList<CommentData> get(long postId)
             throws WebsiteHandlerException {
 
         try {
@@ -137,40 +137,7 @@ public class CommentHandler {
         }
     }
 
-    public static boolean commentOnNews(String comment, NewsData n, String checksum)
-            throws WebsiteHandlerException {
-
-        try {
-
-            // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
-            String httpContent = wh.post(
-
-                    RequestHandler.generateUrl(Constants.URL_NEWS_COMMENTS_NEW, n.getId()),
-                    RequestHandler.generatePostData(
-
-                            FIELD_NAMES_COMMENT,
-                            comment,
-                            checksum
-
-                            ),
-                    RequestHandler.HEADER_JSON
-
-                    );
-
-            // Did we manage?
-            return (!"".equals(httpContent));
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();
-            throw new WebsiteHandlerException(ex.getMessage());
-
-        }
-
-    }
-
-    public static List<CommentData> getCommentsForNews(NewsData n, int pageId)
+    public static List<CommentData> get(NewsData n, int pageId)
             throws WebsiteHandlerException {
 
         try {
@@ -182,7 +149,7 @@ public class CommentHandler {
             // Get the data
             String httpContent = rh.get(
 
-                    RequestHandler.generateUrl(Constants.URL_NEWS_COMMENTS, n.getId(), pageId),
+                    RequestHandler.generateUrl(URL_NEWS_LIST, n.getId(), pageId),
                     RequestHandler.HEADER_AJAX
 
                     );

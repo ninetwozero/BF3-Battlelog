@@ -155,7 +155,7 @@ public class FeedHandler {
 
     }
 
-    public static boolean postToWall(long profileId, String checksum,
+    public static boolean post(long profileId, String checksum,
             String content, boolean isPlatoon) throws WebsiteHandlerException {
 
         try {
@@ -795,7 +795,7 @@ public class FeedHandler {
         }
     }
 
-    public static ArrayList<FeedItem> getFeed(Context context, int type, long id, int num,
+    public static ArrayList<FeedItem> get(Context context, int type, long id, int num,
             long profileId) throws WebsiteHandlerException {
 
         try {
@@ -862,7 +862,7 @@ public class FeedHandler {
 
     }
 
-    public static boolean doHooahInFeed(long postId, String checksum)
+    public static boolean hooah(long postId, String checksum)
             throws WebsiteHandlerException {
 
         try {
@@ -888,7 +888,7 @@ public class FeedHandler {
 
     }
 
-    public static boolean unHooahInFeed(long postId, String checksum)
+    public static boolean unhooah(long postId, String checksum)
             throws WebsiteHandlerException {
 
         try {

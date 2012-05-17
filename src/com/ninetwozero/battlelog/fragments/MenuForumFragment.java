@@ -192,7 +192,7 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
 
         // Let's see...
         textLanguage.setText(selectedLanguage);
-        // imageLanguage.setImageResource(DataBank.getImageForPersona(persona[selectedPosition].getLogo()));
+        imageLanguage.setImageResource(R.drawable.locale_us);
 
     }
 

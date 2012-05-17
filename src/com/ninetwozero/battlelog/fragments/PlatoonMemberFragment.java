@@ -103,7 +103,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
         // Setup the listView
         listView = (ListView) v.findViewById(android.R.id.list);
-        platoonUserListAdapter = new PlatoonUserListAdapter(context, null, layoutInflater);
+        platoonUserListAdapter = new PlatoonUserListAdapter(null, layoutInflater);
         listView.setAdapter(platoonUserListAdapter);
 
         // Default
@@ -313,14 +313,14 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
                     }
                     new AsyncPlatoonMemberManagement(context, data.getId(),
-                            platoonData.getId(), 1).execute(!data.isAdmin());
+                            platoonData.getId()).execute(!data.isAdmin());
 
                 } else if (item.getItemId() == 2) {
 
                     Toast.makeText(context, R.string.info_platoon_member_kicking,
                             Toast.LENGTH_SHORT).show();
                     new AsyncPlatoonMemberManagement(context, data.getId(),
-                            platoonData.getId(), 2).execute();
+                            platoonData.getId()).execute();
 
                 } else if (item.getItemId() == 3) {
 

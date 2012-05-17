@@ -1,7 +1,6 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,11 +19,10 @@ public class AsyncFetchDataToProfileView extends
 
     // Context
     private Context context;
-    private Activity origin;
     private SharedPreferences sharedPreferences;
 
     // Data
-    ProfileData userData;
+    private ProfileData userData;
 
     // Error message
     private String error;
@@ -32,7 +30,6 @@ public class AsyncFetchDataToProfileView extends
     public AsyncFetchDataToProfileView(Context c) {
 
         context = c;
-        origin = (Activity) context;
         sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
 
@@ -55,7 +52,7 @@ public class AsyncFetchDataToProfileView extends
         try {
 
             // Post the world!
-            userData = ProfileHandler.getProfileIdFromSearch(
+            userData = ProfileHandler.getProfileId(
 
                     searchString,
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")

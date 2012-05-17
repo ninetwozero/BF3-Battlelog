@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.ninetwozero.battlelog.handlers.COMHandler;
@@ -22,20 +21,13 @@ import com.ninetwozero.battlelog.handlers.COMHandler;
 public class AsyncChatClose extends AsyncTask<Void, Integer, Boolean> {
 
     // Attribute
-    Context context;
-    long chatId;
-    String httpContent;
+    private long chatId;
 
     // Constructor
-    public AsyncChatClose(Context c, long cId) {
+    public AsyncChatClose(long cId) {
 
-        this.context = c;
-        this.chatId = cId;
+        chatId = cId;
 
-    }
-
-    @Override
-    protected void onPreExecute() {
     }
 
     @Override
@@ -44,11 +36,7 @@ public class AsyncChatClose extends AsyncTask<Void, Integer, Boolean> {
         try {
 
             // Did we manage?
-            if (COMHandler.closeChatWindow(chatId)) {
-                return true;
-            } else {
-                return false;
-            }
+            return COMHandler.closeChat(chatId);
 
         } catch (Exception ex) {
 
@@ -57,10 +45,6 @@ public class AsyncChatClose extends AsyncTask<Void, Integer, Boolean> {
 
         }
 
-    }
-
-    @Override
-    protected void onPostExecute(Boolean results) {
     }
 
 }

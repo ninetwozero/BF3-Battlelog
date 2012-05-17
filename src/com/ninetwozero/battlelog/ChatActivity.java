@@ -205,7 +205,7 @@ public class ChatActivity extends ListActivity {
     public void onDestroy() {
 
         super.onDestroy();
-        new AsyncChatClose(this, chatId).execute();
+        new AsyncChatClose(chatId).execute();
 
     }
 

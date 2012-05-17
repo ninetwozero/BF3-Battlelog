@@ -83,7 +83,7 @@ public class COMHandler {
 
     }
 
-    public static ArrayList<ChatMessage> getChatMessages(long profileId,
+    public static List<ChatMessage> getMessages(long profileId,
             String checksum) throws WebsiteHandlerException {
 
         try {
@@ -142,7 +142,7 @@ public class COMHandler {
 
     }
 
-    public static boolean sendChatMessages(long chatId, String checksum,
+    public static boolean sendMessage(long chatId, String checksum,
             String message) throws WebsiteHandlerException {
 
         try {
@@ -174,7 +174,7 @@ public class COMHandler {
 
     }
 
-    public static boolean closeChatWindow(long chatId)
+    public static boolean closeChat(long chatId)
             throws WebsiteHandlerException {
 
         try {
@@ -199,7 +199,7 @@ public class COMHandler {
 
     }
 
-    public static final FriendListDataWrapper getFriendsCOM(final Context c,
+    public static final FriendListDataWrapper getFriendsForCOM(final Context c,
             final String checksum) throws WebsiteHandlerException {
 
         try {

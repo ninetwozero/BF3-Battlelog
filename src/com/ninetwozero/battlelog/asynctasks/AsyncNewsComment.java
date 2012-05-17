@@ -1,11 +1,8 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,28 +14,17 @@ import com.ninetwozero.battlelog.handlers.CommentHandler;
 
 public class AsyncNewsComment extends AsyncTask<String, Void, Boolean> {
 
-    // Context
+    // Attributes
     private Context context;
-    private Activity origin;
-    private SharedPreferences sharedPreferences;
-    private boolean isPlatoon;
-
-    // Data
     private NewsCommentListFragment fragmentComments;
     private NewsData newsData;
 
     // Elements
     private Button buttonSend;
 
-    // Error message
-    private String error;
-
     public AsyncNewsComment(Context c, NewsData n, NewsCommentListFragment f) {
 
         context = c;
-        origin = (Activity) context;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
         newsData = n;
         fragmentComments = f;
 
@@ -62,7 +48,7 @@ public class AsyncNewsComment extends AsyncTask<String, Void, Boolean> {
 
         try {
 
-            return CommentHandler.commentOnNews(arg0[0], newsData, arg0[1]);
+            return CommentHandler.post(newsData.getId(), arg0[0], arg0[1], true);
 
         } catch (Exception ex) {
 

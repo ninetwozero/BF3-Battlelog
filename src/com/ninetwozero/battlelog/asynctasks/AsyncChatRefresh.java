@@ -40,18 +40,13 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
     private SharedPreferences sharedPreferences;
     private List<ChatMessage> messageArray = new ArrayList<ChatMessage>();
     private ListView listView;
-    private LayoutInflater layoutInflater;
-    private String username; // The user that's using the chat on "this" end
 
     // Constructor
     public AsyncChatRefresh(Context c, ListView lv, String u, LayoutInflater l) {
 
-        this.context = c;
-        this.listView = lv;
-        this.layoutInflater = l;
-        this.sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        this.username = u;
+        context = c;
+        listView = lv;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     @Override
@@ -64,7 +59,7 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
         try {
 
             // Let's get this!!
-            messageArray = COMHandler.getChatMessages(chatId[0],
+            messageArray = COMHandler.getMessages(chatId[0],
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
             return true;
 
@@ -83,8 +78,7 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
         if (results) {
 
             // Set the almighty adapter
-            ((ChatListAdapter) listView.getAdapter())
-                    .setMessageArray(messageArray);
+            ((ChatListAdapter) listView.getAdapter()).setMessageArray(messageArray);
 
             // Do we need to ploop?
             if (context instanceof ChatActivity) {

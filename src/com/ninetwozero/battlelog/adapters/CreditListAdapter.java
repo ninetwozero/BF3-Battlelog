@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.adapters;
 
 import java.util.List;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,15 +28,13 @@ import com.ninetwozero.battlelog.datatypes.AppContributorData;
 public class CreditListAdapter extends BaseAdapter {
 
     // Attributes
-    private Context context;
     private List<AppContributorData> contributors;
     private LayoutInflater layoutInflater;
 
     // Construct
-    public CreditListAdapter(Context c, List<AppContributorData> a,
+    public CreditListAdapter(List<AppContributorData> a,
             LayoutInflater l) {
 
-        context = c;
         contributors = a;
         layoutInflater = l;
 

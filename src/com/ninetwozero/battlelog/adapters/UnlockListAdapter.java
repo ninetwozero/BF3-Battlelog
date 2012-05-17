@@ -36,7 +36,6 @@ public class UnlockListAdapter extends BaseAdapter {
     private Context context;
     private List<UnlockData> dataArray;
     private LayoutInflater layoutInflater;
-    private String tempStatus;
     private ProgressBar progressBar;
 
     // Construct

@@ -52,7 +52,7 @@ public class NotificationHandler {
 
     }
 
-    public static ArrayList<NotificationData> getNotifications(String checksum)
+    public static ArrayList<NotificationData> get(String checksum)
             throws WebsiteHandlerException {
 
         try {

@@ -68,8 +68,7 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
 
         // Get the listview
         listView = (ListView) view.findViewById(android.R.id.list);
-        listView.setAdapter(new CreditListAdapter(context, DataBank.getContributors(),
-                layoutInflater));
+        listView.setAdapter(new CreditListAdapter(DataBank.getContributors(), layoutInflater));
 
     }
 

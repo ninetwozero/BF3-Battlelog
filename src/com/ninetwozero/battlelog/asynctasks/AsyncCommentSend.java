@@ -27,22 +27,18 @@ import com.ninetwozero.battlelog.misc.Constants;
 public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
 
     // Attribute
-    Context context;
-    Button buttonSend;
-    long postId;
-    boolean fromWidget;
-    String httpContent;
-    AsyncCommentsRefresh asyncCommentsRefresh;
+    private Context context;
+    private Button buttonSend;
+    private long postId;
+    private AsyncCommentsRefresh asyncCommentsRefresh;
 
     // Constructor
-    public AsyncCommentSend(Context c, long pId, Button b, boolean w,
-            AsyncCommentsRefresh acr) {
+    public AsyncCommentSend(Context c, long pId, Button b, AsyncCommentsRefresh acr) {
 
-        this.context = c;
-        this.postId = pId;
-        this.fromWidget = w;
-        this.buttonSend = b;
-        this.asyncCommentsRefresh = acr;
+        context = c;
+        postId = pId;
+        buttonSend = b;
+        asyncCommentsRefresh = acr;
 
     }
 
@@ -61,12 +57,8 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
         try {
 
             // Did we manage?
-            if (CommentHandler.commentOnFeedPost(postId, arg0[0], arg0[1])) {
-                return true;
-            } else {
-                return false;
-            }
-
+            return (CommentHandler.post(postId, arg0[0], arg0[1], false));
+            
         } catch (Exception ex) {
 
             Log.e(Constants.DEBUG_TAG, "", ex);
@@ -79,22 +71,19 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
     @Override
     protected void onPostExecute(Boolean results) {
 
-        if (!fromWidget) {
+        // Reload
+        asyncCommentsRefresh.execute(postId);
 
-            // Reload
-            asyncCommentsRefresh.execute(postId);
+        // Set the button
+        buttonSend.setEnabled(true);
+        buttonSend.setText(R.string.label_send);
 
-            // Set the button
-            buttonSend.setEnabled(true);
-            buttonSend.setText(R.string.label_send);
-
-            if (results)
-                Toast.makeText(context, R.string.msg_comment_ok,
-                        Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(context, R.string.msg_comment_fail,
-                        Toast.LENGTH_SHORT).show();
-
+        if (results) {
+            Toast.makeText(context, R.string.msg_comment_ok,
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, R.string.msg_comment_fail,
+                    Toast.LENGTH_SHORT).show();
         }
         return;
 

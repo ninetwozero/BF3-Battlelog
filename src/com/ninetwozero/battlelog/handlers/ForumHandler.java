@@ -53,7 +53,7 @@ public class ForumHandler {
             "reason", "post-check-sum"
     };
 
-    public static boolean reportPostInThread(Context c, long pId, String r)
+    public static boolean reportPost(Context c, long pId, String r)
             throws WebsiteHandlerException {
 
         try {
@@ -80,7 +80,7 @@ public class ForumHandler {
 
     }
 
-    public static List<ForumThreadData> getThreadsForForum(String locale, long forumId,
+    public static List<ForumThreadData> getThreads(String locale, long forumId,
             int page) throws WebsiteHandlerException {
 
         try {
@@ -206,7 +206,7 @@ public class ForumHandler {
 
     }
 
-    public static List<ForumPostData> getPostsForThread(long threadId,
+    public static List<ForumPostData> getPosts(long threadId,
             int page, String locale) throws WebsiteHandlerException {
 
         try {
@@ -347,7 +347,7 @@ public class ForumHandler {
 
     }
 
-    public static Object[] getAllForums(String locale)
+    public static Object[] getForums(String locale)
             throws WebsiteHandlerException {
 
         try {
@@ -447,7 +447,7 @@ public class ForumHandler {
 
     }
 
-    public static ForumData getThreadsForForum(String locale, long forumId)
+    public static ForumData getThreads(String locale, long forumId)
             throws WebsiteHandlerException {
 
         try {
@@ -586,7 +586,7 @@ public class ForumHandler {
 
     }
 
-    public static ForumThreadData getPostsForThread(String locale,
+    public static ForumThreadData getPosts(String locale,
             long threadId) throws WebsiteHandlerException {
 
         try {
@@ -689,7 +689,7 @@ public class ForumHandler {
 
     }
 
-    public static boolean postReplyInThread(final Context c, final String body,
+    public static boolean reply(final Context c, final String body,
             final String chksm, final ForumThreadData threadData, final boolean cache,
             final long uid) {
 
@@ -735,7 +735,7 @@ public class ForumHandler {
 
     }
 
-    public static boolean createNewThreadInForum(final Context c,
+    public static boolean create(final Context c,
             final String topic, final String body, final String chksm,
             final long fId) {
 

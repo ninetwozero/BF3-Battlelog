@@ -15,7 +15,6 @@
 package com.ninetwozero.battlelog.asynctasks;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -28,17 +27,16 @@ public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
 
     // Attribute
     private Context context;
-    private SharedPreferences sharedPreferences;
     private long platoonId, profileId;
     private boolean response;
 
     // Constructor
     public AsyncPlatoonRespond(Context c, long plId, long pId, boolean r) {
 
-        this.context = c;
-        this.platoonId = plId;
-        this.profileId = pId;
-        this.response = r;
+        context = c;
+        platoonId = plId;
+        profileId = pId;
+        response = r;
 
     }
 

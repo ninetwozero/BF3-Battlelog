@@ -17,9 +17,7 @@ package com.ninetwozero.battlelog.asynctasks;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,20 +31,15 @@ public class AsyncNotificationsRefresh extends
         AsyncTask<String, Integer, Boolean> {
 
     // Attribute
-    private Context context;
     private List<NotificationData> notifications = new ArrayList<NotificationData>();
     private ListView listNotifications;
     private TextView status;
-    private LayoutInflater layoutInflater;
 
     // Constructor
-    public AsyncNotificationsRefresh(Context c, ListView f, TextView s,
-            LayoutInflater l) {
+    public AsyncNotificationsRefresh(ListView f, TextView s) {
 
-        this.context = c;
-        this.listNotifications = f;
-        this.layoutInflater = l;
-        this.status = s;
+        listNotifications = f;
+        status = s;
 
     }
 
@@ -60,7 +53,7 @@ public class AsyncNotificationsRefresh extends
         try {
 
             // Let's get this!!
-            notifications = NotificationHandler.getNotifications(arg0[0]);
+            notifications = NotificationHandler.get(arg0[0]);
             return true;
 
         } catch (WebsiteHandlerException e) {

@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckedTextView;
@@ -36,7 +35,6 @@ public class PlatoonCreateActivity extends Activity {
 
     // SharedPreferences for shizzle
     private SharedPreferences sharedPreferences;
-    private LayoutInflater layoutInflater;
 
     // Elements
     private EditText textName, textTag;
@@ -51,7 +49,6 @@ public class PlatoonCreateActivity extends Activity {
 
         // Set sharedPreferences & LayoutInflater
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Setup the locale
         PublicUtils.setupLocale(this, sharedPreferences);
@@ -152,7 +149,7 @@ public class PlatoonCreateActivity extends Activity {
         @Override
         protected Boolean doInBackground(String... arg0) {
 
-            return PlatoonHandler.createNewPlatoon(arg0[0], arg0[1], arg0[2], arg0[3]);
+            return PlatoonHandler.create(arg0[0], arg0[1], arg0[2], arg0[3]);
 
         }
 

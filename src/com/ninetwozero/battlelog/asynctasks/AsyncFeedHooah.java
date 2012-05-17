@@ -28,18 +28,17 @@ public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
     private Context context;
     private long postId;
     private boolean fromWidget, liked;
-    private String httpContent;
     private FeedFragment feedFragment;
 
     // Constructor
     public AsyncFeedHooah(Context c, long pId, boolean w, boolean l,
             FeedFragment f) {
 
-        this.context = c;
-        this.postId = pId;
-        this.fromWidget = w;
-        this.liked = l;
-        this.feedFragment = f;
+        context = c;
+        postId = pId;
+        fromWidget = w;
+        liked = l;
+        feedFragment = f;
 
     }
 
@@ -55,11 +54,11 @@ public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
             // Did we manage?
             if (liked) {
 
-                return FeedHandler.unHooahInFeed(postId, arg0[0]);
+                return FeedHandler.unhooah(postId, arg0[0]);
 
             } else {
 
-                return FeedHandler.doHooahInFeed(postId, arg0[0]);
+                return FeedHandler.hooah(postId, arg0[0]);
 
             }
 

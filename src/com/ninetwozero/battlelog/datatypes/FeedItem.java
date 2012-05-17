@@ -279,7 +279,7 @@ public class FeedItem implements Parcelable {
 
                 return new Intent(c, AssignmentActivity.class).putExtra(
 
-                        "profile", ProfileHandler.getPersonaIdFromProfile(profileData[0].getId())
+                        "profile", ProfileHandler.getPersonaId(profileData[0].getId())
 
                         );
 

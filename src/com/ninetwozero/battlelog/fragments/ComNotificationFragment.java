@@ -123,7 +123,7 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
             try {
 
                 // Let's get this!
-                notifications = NotificationHandler.getNotifications(arg0[0]);
+                notifications = NotificationHandler.get(arg0[0]);
                 return true;
 
             } catch (WebsiteHandlerException e) {

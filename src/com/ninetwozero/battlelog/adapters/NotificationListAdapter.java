@@ -34,8 +34,6 @@ public class NotificationListAdapter extends BaseAdapter {
     private Context context;
     private List<NotificationData> itemArray;
     private LayoutInflater layoutInflater;
-    private String tempStatus;
-    private TextView textPersona, textStatus;
     private long activeUserId;
 
     // Construct

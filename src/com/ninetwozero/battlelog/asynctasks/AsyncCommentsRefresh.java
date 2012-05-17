@@ -18,9 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -35,7 +33,6 @@ public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
 
     // Attribute
     private Context context;
-    private SharedPreferences sharedPreferences;
     private List<CommentData> comments = new ArrayList<CommentData>();
     private ListView listView;
     private LayoutInflater layoutInflater;
@@ -43,11 +40,9 @@ public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
     // Constructor
     public AsyncCommentsRefresh(Context c, ListView lv, LayoutInflater l) {
 
-        this.context = c;
-        this.listView = lv;
-        this.layoutInflater = l;
-        this.sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        context = c;
+        listView = lv;
+        layoutInflater = l;
 
     }
 
@@ -61,7 +56,7 @@ public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
         try {
 
             // Let's get this!!
-            comments = CommentHandler.getCommentsForPost(commentId[0]);
+            comments = CommentHandler.get(commentId[0]);
             return true;
 
         } catch (WebsiteHandlerException e) {

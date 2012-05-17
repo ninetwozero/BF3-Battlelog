@@ -35,8 +35,6 @@ public class DashboardPopupPlatoonListAdapter extends BaseAdapter {
     private Context context;
     private List<PlatoonData> platoonArray;
     private LayoutInflater layoutInflater;
-    private String tempStatus;
-    private TextView textPersona, textStatus;
 
     // Construct
     public DashboardPopupPlatoonListAdapter(Context c,

@@ -3,7 +3,6 @@ package com.ninetwozero.battlelog;
 
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -17,7 +16,6 @@ public class ProfileSettingsActivity extends PreferenceActivity {
 
     // Attributes
     private SharedPreferences sharedPreferences;
-    private Resources resources;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -28,7 +26,6 @@ public class ProfileSettingsActivity extends PreferenceActivity {
 
         // Set sharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        resources = this.getResources();
         PublicUtils.restoreCookies(this, icicle);
 
         // Setup the locale

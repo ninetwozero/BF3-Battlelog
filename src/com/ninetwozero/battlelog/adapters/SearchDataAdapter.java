@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.adapters;
 
 import java.util.List;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,15 +30,13 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 public class SearchDataAdapter extends BaseAdapter {
 
     // Attributes
-    private Context context;
     private List<GeneralSearchResult> itemArray;
     private LayoutInflater layoutInflater;
 
     // Construct
-    public SearchDataAdapter(Context c, List<GeneralSearchResult> m,
+    public SearchDataAdapter(List<GeneralSearchResult> m,
             LayoutInflater l) {
 
-        context = c;
         itemArray = m;
         layoutInflater = l;
 

@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.adapters;
 
 import java.util.List;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,17 +28,14 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 public class PlatoonUserListAdapter extends BaseAdapter {
 
     // Attributes
-    private Context context;
     private List<ProfileData> profileArray;
     private LayoutInflater layoutInflater;
     private TextView textUser;
-    private int lastSeparator;
 
     // Construct
-    public PlatoonUserListAdapter(Context c, List<ProfileData> p,
+    public PlatoonUserListAdapter(List<ProfileData> p,
             LayoutInflater l) {
 
-        context = c;
         profileArray = p;
         layoutInflater = l;
 

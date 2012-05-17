@@ -60,7 +60,7 @@ public class AsyncPlatoonRequest extends AsyncTask<Boolean, Integer, Integer> {
 
             } else {
 
-                return PlatoonHandler.closePlatoonMembership(platoonId,
+                return PlatoonHandler.leave(platoonId,
                         profileId, checksum) ? 0 : -1;
 
             }

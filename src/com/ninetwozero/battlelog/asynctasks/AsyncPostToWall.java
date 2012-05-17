@@ -1,11 +1,8 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,8 +15,6 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
     // Context
     private Context context;
-    private Activity origin;
-    private SharedPreferences sharedPreferences;
     private boolean isPlatoon;
 
     // Data
@@ -29,15 +24,9 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
     // Elements
     private Button buttonSend;
 
-    // Error message
-    private String error;
-
     public AsyncPostToWall(Context c, long pId, boolean p, FeedFragment f) {
 
         context = c;
-        origin = (Activity) context;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
         profileId = pId;
         isPlatoon = p;
         fragmentFeed = f;
@@ -62,7 +51,7 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
         try {
 
-            return FeedHandler.postToWall(profileId, arg0[0], arg0[1],
+            return FeedHandler.post(profileId, arg0[0], arg0[1],
                     isPlatoon);
 
         } catch (Exception ex) {
@@ -80,12 +69,10 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
         // How'd it go?
         if (result) {
-            if (!isPlatoon) {
-                fragmentFeed.reload();
-            } else {
-                fragmentFeed.reload();
-            }
-
+            
+            // Let's reload
+            fragmentFeed.reload();
+            
             buttonSend.setText(R.string.label_send);
             buttonSend.setEnabled(true);
             ((EditText) fragmentFeed.getView().findViewById(R.id.field_message)).setText("");

@@ -42,7 +42,7 @@ public class AsyncPlatoonMemberInvite extends AsyncTask<String, Void, Integer> {
 
         try {
 
-            return PlatoonHandler.sendPlatoonInvite(userId, platoonId, arg0[0]);
+            return PlatoonHandler.sendInvite(userId, platoonId, arg0[0]);
 
         } catch (Exception ex) {
 

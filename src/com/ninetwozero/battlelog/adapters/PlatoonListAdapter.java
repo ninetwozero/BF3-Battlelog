@@ -35,8 +35,6 @@ public class PlatoonListAdapter extends BaseAdapter {
     private Context context;
     private List<PlatoonData> platoonArray;
     private LayoutInflater layoutInflater;
-    private String tempStatus;
-    private TextView textPersona, textStatus;
 
     // Construct
     public PlatoonListAdapter(Context c, List<PlatoonData> p,

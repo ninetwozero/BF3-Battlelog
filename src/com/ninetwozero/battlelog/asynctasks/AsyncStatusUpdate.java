@@ -28,15 +28,14 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
 
     // Attribute
     private Context context;
-    private String httpContent;
     private FeedFragment fragmentFeed;
     private Button buttonSend;
 
     // Constructor
     public AsyncStatusUpdate(Context c, FeedFragment f) {
 
-        this.context = c;
-        this.fragmentFeed = f;
+        context = c;
+        fragmentFeed = f;
 
     }
 
@@ -80,7 +79,7 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
             if (results) {
 
                 // Yay
-                Toast.makeText(this.context, R.string.msg_status_ok,
+                Toast.makeText(context, R.string.msg_status_ok,
                         Toast.LENGTH_SHORT).show();
                 ((EditText) fragmentFeed.getView().findViewById(R.id.field_message))
                         .setText("");
@@ -88,7 +87,7 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
 
             } else {
 
-                Toast.makeText(this.context, R.string.msg_status_fail,
+                Toast.makeText(context, R.string.msg_status_fail,
                         Toast.LENGTH_SHORT).show();
 
             }

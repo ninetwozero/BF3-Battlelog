@@ -19,7 +19,6 @@ import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -33,10 +32,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.SlidingDrawer;
-import android.widget.SlidingDrawer.OnDrawerCloseListener;
-import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,15 +52,9 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class DashboardActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
-    // Attributes
-    final private Context context = this;
-
     // COM-related
     private SlidingDrawer slidingDrawer;
     private TextView slidingDrawerHandle;
-    private OnDrawerOpenListener onDrawerOpenListener;
-    private OnDrawerCloseListener onDrawerCloseListener;
-    private Button buttonRefresh;
 
     // Fragment related
     private SwipeyTabs tabsCom;
@@ -204,7 +194,6 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
     }
 
-    @SuppressWarnings("unchecked")
     public void validateSession() {
 
         // We should've gotten a profile

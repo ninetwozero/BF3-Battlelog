@@ -1,7 +1,6 @@
 
 package com.ninetwozero.battlelog.asynctasks;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,7 +19,6 @@ public class AsyncFetchDataToPlatoonView extends
 
     // Context
     private Context context;
-    private Activity origin;
     private SharedPreferences sharedPreferences;
 
     // Data
@@ -32,7 +30,6 @@ public class AsyncFetchDataToPlatoonView extends
     public AsyncFetchDataToPlatoonView(Context c) {
 
         context = c;
-        origin = (Activity) context;
         sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
 
@@ -55,7 +52,7 @@ public class AsyncFetchDataToPlatoonView extends
         try {
 
             // Post the world!
-            platoon = PlatoonHandler.getPlatoonIdFromSearch(
+            platoon = PlatoonHandler.getPlatoonId(
 
                     searchString,
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")

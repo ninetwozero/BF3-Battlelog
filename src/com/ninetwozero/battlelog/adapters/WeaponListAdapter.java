@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.adapters;
 
 import java.util.List;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,15 +32,13 @@ import com.ninetwozero.battlelog.misc.DrawableResourceList;
 public class WeaponListAdapter extends BaseAdapter {
 
     // Attributes
-    private Context context;
     private List<WeaponDataWrapper> dataArray;
     private LayoutInflater layoutInflater;
 
     // Construct
-    public WeaponListAdapter(Context c, List<WeaponDataWrapper> u,
+    public WeaponListAdapter(List<WeaponDataWrapper> u,
             LayoutInflater l) {
-
-        context = c;
+        
         dataArray = u;
         layoutInflater = l;
 

@@ -72,7 +72,7 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
         try {
 
             // Did we manage?
-            if (COMHandler.sendChatMessages(chatId, arg0[0], arg0[1])) {
+            if (COMHandler.sendMessage(chatId, arg0[0], arg0[1])) {
                 return true;
             } else {
                 return false;

@@ -103,7 +103,7 @@ public class ProfileHandler {
             "urls[]"
     };
 
-    public static ProfileData getProfileIdFromSearch(final String keyword,
+    public static ProfileData getProfileId(final String keyword,
             final String checksum) throws WebsiteHandlerException {
 
         try {
@@ -175,7 +175,7 @@ public class ProfileHandler {
 
                     }
 
-                    return ProfileHandler.getPersonaIdFromProfile(profile);
+                    return ProfileHandler.getPersonaId(profile);
 
                 }
 
@@ -200,7 +200,7 @@ public class ProfileHandler {
 
     }
 
-    public static ProfileData getProfileIdFromPersona(final long personaId)
+    public static ProfileData getProfileId(final long personaId)
             throws WebsiteHandlerException {
 
         try {
@@ -238,7 +238,7 @@ public class ProfileHandler {
 
     }
 
-    public static ProfileData getPersonaIdFromProfile(final long profileId)
+    public static ProfileData getPersonaId(final long profileId)
             throws WebsiteHandlerException {
 
         try {
@@ -300,12 +300,12 @@ public class ProfileHandler {
 
     }
 
-    public static ProfileData getPersonaIdFromProfile(final ProfileData p)
+    public static ProfileData getPersonaId(final ProfileData p)
             throws WebsiteHandlerException {
 
         try {
 
-            ProfileData profile = ProfileHandler.getPersonaIdFromProfile(p.getId());
+            ProfileData profile = ProfileHandler.getPersonaId(p.getId());
             return new ProfileData.Builder(p.getId(), p.getUsername()).persona(
 
                     profile.getPersonaArray()
@@ -320,7 +320,7 @@ public class ProfileHandler {
         }
     }
 
-    public static PersonaStats getStatsForPersona(ProfileData pd)
+    public static PersonaStats getStats(ProfileData pd)
             throws WebsiteHandlerException {
 
         try {
@@ -328,7 +328,7 @@ public class ProfileHandler {
             // Do we have a personaId?
             if (pd.getNumPersonas() == 0) {
 
-                pd = getPersonaIdFromProfile(pd.getId());
+                pd = getPersonaId(pd.getId());
 
             }
 
@@ -409,7 +409,7 @@ public class ProfileHandler {
 
     }
 
-    public static HashMap<Long, PersonaStats> getStatsForUser(
+    public static HashMap<Long, PersonaStats> getStats(
             final Context context, final ProfileData pd)
             throws WebsiteHandlerException {
 
@@ -422,7 +422,7 @@ public class ProfileHandler {
             // Do we have a personaId?
             if (profileData.getNumPersonas() == 0) {
 
-                profileData = getPersonaIdFromProfile(pd.getId());
+                profileData = getPersonaId(pd.getId());
 
             }
 
@@ -547,7 +547,7 @@ public class ProfileHandler {
 
     }
 
-    public static HashMap<Long, UnlockDataWrapper> getUnlocksForUser(
+    public static HashMap<Long, UnlockDataWrapper> getUnlocks(
             final ProfileData pd, final int minCompletion) throws WebsiteHandlerException {
 
         try {
@@ -725,7 +725,7 @@ public class ProfileHandler {
 
     }
 
-    public static ProfileInformation getProfileInformationForUser(
+    public static ProfileInformation getInformation(
             Context context, ProfileData profileData,
             long activeProfileId) throws WebsiteHandlerException {
 
@@ -1448,6 +1448,94 @@ public class ProfileHandler {
             }
 
             return assignmentMap;
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            throw new WebsiteHandlerException(ex.getMessage());
+
+        }
+
+    }
+    
+    public static ArrayList<PlatoonData> getPlatoons(
+            final Context context, final String username)
+            throws WebsiteHandlerException {
+
+        // Inir
+        RequestHandler rh = new RequestHandler();
+        List<PlatoonData> platoons = new ArrayList<PlatoonData>();
+
+        try {
+
+            // Get the content
+            String httpContent = rh.get(
+
+                    RequestHandler.generateUrl(ProfileHandler.URL_INFO, username),
+                    RequestHandler.HEADER_AJAX
+
+                    );
+
+            // Is it ok?
+            if (!"".equals(httpContent)) {
+
+                // JSON
+                JSONArray platoonArray = new JSONObject(httpContent)
+                        .getJSONObject("context")
+                        .getJSONObject("profileCommon")
+                        .getJSONArray("platoons");
+
+                // Validate the platoons
+                if (platoonArray != null && platoonArray.length() > 0) {
+
+                    // Iterate!!
+                    for (int i = 0, max = platoonArray.length(); i < max; i++) {
+
+                        // Get the current item
+                        JSONObject currItem = platoonArray.getJSONObject(i);
+
+                        // Let's cache the gravatar
+                        String title = currItem.getString("id") + ".jpeg";
+
+                        // Is it cached?
+                        if (!CacheHandler.isCached(context, title)) {
+
+                            WebsiteHandler.cacheBadge(
+
+                                    context, currItem.getString("badgePath"), title,
+                                    Constants.DEFAULT_BADGE_SIZE
+
+                                    );
+
+                        }
+
+                        // Add to the ArrayList
+                        platoons.add(
+
+                                new PlatoonData(
+
+                                        Long.parseLong(currItem.getString("id")), currItem
+                                                .getInt("fanCounter"), currItem
+                                                .getInt("memberCounter"), currItem
+                                                .getInt("platform"),
+                                        currItem.getString("name"), currItem
+                                                .getString("tag"), title, !currItem
+                                                .getBoolean("hidden")
+
+                                )
+
+                                );
+                    }
+
+                }
+
+                return (ArrayList<PlatoonData>) platoons;
+
+            } else {
+
+                return null;
+
+            }
 
         } catch (Exception ex) {
 

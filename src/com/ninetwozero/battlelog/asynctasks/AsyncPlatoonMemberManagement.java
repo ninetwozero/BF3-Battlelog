@@ -25,17 +25,15 @@ public class AsyncPlatoonMemberManagement extends
 
     // Attributes
     private Context context;
-    private int what;
     private long platoonId;
     private long userId;
 
     // Constructs
-    public AsyncPlatoonMemberManagement(Context c, long uId, long pId, int w) {
+    public AsyncPlatoonMemberManagement(Context c, long uId, long pId) {
 
         context = c;
         userId = uId;
         platoonId = pId;
-        what = w;
 
     }
 
@@ -46,17 +44,17 @@ public class AsyncPlatoonMemberManagement extends
 
             if (arg0.length == 0) {
 
-                return PlatoonHandler.alterPlatoonMembership(userId,
+                return PlatoonHandler.editMember(userId,
                         platoonId, PlatoonHandler.FILTER_KICK);
 
             } else if (!arg0[0]) {
 
-                return PlatoonHandler.alterPlatoonMembership(userId,
+                return PlatoonHandler.editMember(userId,
                         platoonId, PlatoonHandler.FILTER_DEMOTE);
 
             } else {
 
-                return PlatoonHandler.alterPlatoonMembership(userId,
+                return PlatoonHandler.editMember(userId,
                         platoonId, PlatoonHandler.FILTER_PROMOTE);
 
             }

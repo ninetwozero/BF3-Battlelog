@@ -232,7 +232,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                         ).putExtra(
 
-                                "profile2", ProfileHandler.getPersonaIdFromProfile(
+                                "profile2", ProfileHandler.getPersonaId(
 
                                         profileData.getId()
 
@@ -252,7 +252,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 ).putExtra(
 
-                        "profile", ProfileHandler.getPersonaIdFromProfile(
+                        "profile", ProfileHandler.getPersonaId(
 
                                 profileData.getId()
 
@@ -302,7 +302,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Let's get this!
-                friendListData = COMHandler.getFriendsCOM(context, arg0[0]);
+                friendListData = COMHandler.getFriendsForCOM(context, arg0[0]);
                 return true;
 
             } catch (WebsiteHandlerException e) {

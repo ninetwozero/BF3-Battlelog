@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.adapters;
 
 import java.util.List;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,16 +27,14 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 
 public class FriendSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
-    private Context context;
     private List<ProfileData> profileArray;
     private LayoutInflater layoutInflater;
 
-    public FriendSpinnerAdapter(Context c, List<ProfileData> p,
+    public FriendSpinnerAdapter(List<ProfileData> p,
             LayoutInflater l) {
 
-        this.context = c;
-        this.profileArray = p;
-        this.layoutInflater = l;
+        profileArray = p;
+        layoutInflater = l;
     }
 
     @Override
@@ -57,7 +54,7 @@ public class FriendSpinnerAdapter extends BaseAdapter implements SpinnerAdapter 
     @Override
     public ProfileData getItem(int position) {
 
-        return this.profileArray.get(position);
+        return profileArray.get(position);
     }
 
     @Override
@@ -76,7 +73,7 @@ public class FriendSpinnerAdapter extends BaseAdapter implements SpinnerAdapter 
         // Recycle view - it's good for Mother Nature!
         if (convertView == null) {
 
-            convertView = this.layoutInflater.inflate(
+            convertView = layoutInflater.inflate(
                     android.R.layout.simple_spinner_dropdown_item, parent,
                     false);
 

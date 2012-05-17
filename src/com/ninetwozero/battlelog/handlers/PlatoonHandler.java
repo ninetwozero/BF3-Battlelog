@@ -213,7 +213,7 @@ public class PlatoonHandler {
 
     }
 
-    public static boolean closePlatoonMembership(final long platoonId,
+    public static boolean leave(final long platoonId,
             final long userId, final String checksum)
             throws WebsiteHandlerException {
 
@@ -248,7 +248,7 @@ public class PlatoonHandler {
 
     }
 
-    public static PlatoonData getPlatoonIdFromSearch(final String keyword,
+    public static PlatoonData getPlatoonId(final String keyword,
             final String checksum) throws WebsiteHandlerException {
 
         try {
@@ -354,7 +354,7 @@ public class PlatoonHandler {
 
     }
 
-    public static boolean createNewPlatoon(Object... params) {
+    public static boolean create(Object... params) {
 
         try {
 
@@ -387,94 +387,6 @@ public class PlatoonHandler {
 
             ex.printStackTrace();
             return false;
-
-        }
-
-    }
-
-    public static ArrayList<PlatoonData> getPlatoonsForUser(
-            final Context context, final String username)
-            throws WebsiteHandlerException {
-
-        // Inir
-        RequestHandler rh = new RequestHandler();
-        List<PlatoonData> platoons = new ArrayList<PlatoonData>();
-
-        try {
-
-            // Get the content
-            String httpContent = rh.get(
-
-                    RequestHandler.generateUrl(ProfileHandler.URL_INFO, username),
-                    RequestHandler.HEADER_AJAX
-
-                    );
-
-            // Is it ok?
-            if (!"".equals(httpContent)) {
-
-                // JSON
-                JSONArray platoonArray = new JSONObject(httpContent)
-                        .getJSONObject("context")
-                        .getJSONObject("profileCommon")
-                        .getJSONArray("platoons");
-
-                // Validate the platoons
-                if (platoonArray != null && platoonArray.length() > 0) {
-
-                    // Iterate!!
-                    for (int i = 0, max = platoonArray.length(); i < max; i++) {
-
-                        // Get the current item
-                        JSONObject currItem = platoonArray.getJSONObject(i);
-
-                        // Let's cache the gravatar
-                        String title = currItem.getString("id") + ".jpeg";
-
-                        // Is it cached?
-                        if (!CacheHandler.isCached(context, title)) {
-
-                            WebsiteHandler.cacheBadge(
-
-                                    context, currItem.getString("badgePath"), title,
-                                    Constants.DEFAULT_BADGE_SIZE
-
-                                    );
-
-                        }
-
-                        // Add to the ArrayList
-                        platoons.add(
-
-                                new PlatoonData(
-
-                                        Long.parseLong(currItem.getString("id")), currItem
-                                                .getInt("fanCounter"), currItem
-                                                .getInt("memberCounter"), currItem
-                                                .getInt("platform"),
-                                        currItem.getString("name"), currItem
-                                                .getString("tag"), title, !currItem
-                                                .getBoolean("hidden")
-
-                                )
-
-                                );
-                    }
-
-                }
-
-                return (ArrayList<PlatoonData>) platoons;
-
-            } else {
-
-                return null;
-
-            }
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();
-            throw new WebsiteHandlerException(ex.getMessage());
 
         }
 
@@ -553,7 +465,7 @@ public class PlatoonHandler {
 
     }
 
-    public static int sendPlatoonInvite(final Object[] userId,
+    public static int sendInvite(final Object[] userId,
             final long platoonId, final String checksum)
             throws WebsiteHandlerException {
 
@@ -614,7 +526,7 @@ public class PlatoonHandler {
 
     }
 
-    public static boolean alterPlatoonMembership(final long userId,
+    public static boolean editMember(final long userId,
             final long platoonId, final int filter)
             throws WebsiteHandlerException {
 
@@ -693,7 +605,7 @@ public class PlatoonHandler {
 
     }
 
-    public static PlatoonStats getStatsForPlatoon(final Context context,
+    public static PlatoonStats getStats(final Context context,
             final PlatoonData platoonData) throws WebsiteHandlerException {
 
         try {
@@ -742,7 +654,7 @@ public class PlatoonHandler {
                                 .getJSONObject("platoon");
 
                         // Return and reloop
-                        return getStatsForPlatoon(
+                        return getStats(
 
                                 context,
                                 new PlatoonData(
@@ -1156,7 +1068,7 @@ public class PlatoonHandler {
 
     }
 
-    public static ArrayList<ProfileData> getFansForPlatoon(
+    public static ArrayList<ProfileData> getFans(
             final long platoonId) throws WebsiteHandlerException {
 
         try {
@@ -1223,7 +1135,7 @@ public class PlatoonHandler {
         }
     }
 
-    public static PlatoonInformation getProfileInformationForPlatoon(
+    public static PlatoonInformation getInformation(
 
             final Context c, final PlatoonData pData, final int num, final long aPId
 
@@ -1463,10 +1375,10 @@ public class PlatoonHandler {
                 }
 
                 // Let's get 'em fans too
-                fans = PlatoonHandler.getFansForPlatoon(pData.getId());
+                fans = PlatoonHandler.getFans(pData.getId());
 
                 // Oh man, don't forget the stats!!!
-                stats = PlatoonHandler.getStatsForPlatoon(c, pData);
+                stats = PlatoonHandler.getStats(c, pData);
 
                 // Required
                 long platoonId = Long.parseLong(profileCommonObject

@@ -335,7 +335,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Get...
-                feedItems = FeedHandler.getFeed(
+                feedItems = FeedHandler.get(
 
                         context, type, id, sharedPreferences.getInt(Constants.SP_BL_NUM_FEED,
                                 Constants.DEFAULT_NUM_FEED), activeProfileId
