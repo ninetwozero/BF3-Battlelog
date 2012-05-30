@@ -269,7 +269,7 @@ public class FeedHandler {
 
                     // Set the first profile
                     profile2 = new ProfileData.Builder(
-                            Long.parseLong(friendUser.getString("ownerId")),
+                            Long.parseLong(friendUser.getString("userId")),
                             friendUser.getString("username")
                             ).gravatarHash(friendUser.getString("gravatarMd5")).build();
 
@@ -652,7 +652,7 @@ public class FeedHandler {
 
                     // Set the second profile
                     profile2 = new ProfileData.Builder(
-                            Long.parseLong(friendObject.getString("ownerId")),
+                            Long.parseLong(friendObject.getString("userId")),
                             ownerObject.getString("username")
                             ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
 

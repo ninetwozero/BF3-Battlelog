@@ -30,7 +30,8 @@ public class ProfileData implements Parcelable {
 
     // Constructs
     public ProfileData(String u) {
-
+        
+        id = 0;
         username = u;
 
     }

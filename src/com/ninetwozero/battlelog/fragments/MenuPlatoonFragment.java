@@ -123,7 +123,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         MENU_INTENTS.put(R.id.button_new, new Intent(context, PlatoonCreateActivity.class));
         MENU_INTENTS.put(R.id.button_invites, new Intent(context, ProfileSettingsActivity.class));
 
-        if (platoonData != null) {
+        if (platoonData != null && platoonData.size() > 0) {
 
             MENU_INTENTS.put(
                     R.id.button_self,

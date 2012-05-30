@@ -137,11 +137,11 @@ public class ForumHandler {
                                         .getInt("numberOfPosts"),
                                 currObject.getString("title"),
                                 new ProfileData.Builder(
-                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        Long.parseLong(ownerObject.getString("userId")),
                                         ownerObject.getString("username")
                                 ).gravatarHash(ownerObject.getString("gravatarMd5")).build(),
                                 new ProfileData.Builder(
-                                        Long.parseLong(lastPosterObject.getString("ownerId")),
+                                        Long.parseLong(lastPosterObject.getString("userId")),
                                         lastPosterObject.getString("username")
                                 ).gravatarHash(lastPosterObject.getString("gravatarMd5")).build(),
                                 currObject.getBoolean("isSticky"),
@@ -179,11 +179,11 @@ public class ForumHandler {
                                         .getInt("numberOfPosts"),
                                 currObject.getString("title"),
                                 new ProfileData.Builder(
-                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        Long.parseLong(ownerObject.getString("userId")),
                                         ownerObject.getString("username")
                                 ).gravatarHash(ownerObject.getString("gravatarMd5")).build(),
                                 new ProfileData.Builder(
-                                        Long.parseLong(lastPosterObject.getString("ownerId")),
+                                        Long.parseLong(lastPosterObject.getString("userId")),
                                         lastPosterObject.getString("username")
                                 ).gravatarHash(lastPosterObject.getString("gravatarMd5")).build(),
                                 currObject.getBoolean("isSticky"),
@@ -251,7 +251,7 @@ public class ForumHandler {
                                         .parseLong(currObject.getString("threadId")),
 
                                 new ProfileData.Builder(
-                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        Long.parseLong(ownerObject.getString("userId")),
                                         ownerObject.getString("username")
                                 ).gravatarHash(ownerObject.getString("gravatarMd5")).build(),
                                 currObject.getString("formattedBody"),
@@ -322,7 +322,7 @@ public class ForumHandler {
                                         currentItem
                                                 .getString("title"),
                                         new ProfileData.Builder(
-                                                Long.parseLong(currentItem.getString("ownerId")),
+                                                Long.parseLong(currentItem.getString("userId")),
                                                 currentItem.getString("ownerUsername")).build(),
                                         currentItem.getBoolean("isSticky"), currentItem
                                                 .getBoolean("isOfficial")
@@ -508,11 +508,11 @@ public class ForumHandler {
                                 currObject.getString("title"),
 
                                 new ProfileData.Builder(
-                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        Long.parseLong(ownerObject.getString("userId")),
                                         ownerObject.getString("username")
                                 ).gravatarHash(ownerObject.getString("gravatarMd5")).build(),
                                 new ProfileData.Builder(
-                                        Long.parseLong(lastPosterObject.getString("ownerId")),
+                                        Long.parseLong(lastPosterObject.getString("userId")),
                                         lastPosterObject.getString("username")
                                 ).gravatarHash(lastPosterObject.getString("gravatarMd5")).build(),
                                 currObject.getBoolean("isSticky"),
@@ -551,11 +551,11 @@ public class ForumHandler {
                                 currObject.getString("title"),
 
                                 new ProfileData.Builder(
-                                        Long.parseLong(ownerObject.getString("ownerId")),
+                                        Long.parseLong(ownerObject.getString("userId")),
                                         ownerObject.getString("username")
                                 ).gravatarHash(ownerObject.getString("gravatarMd5")).build(),
                                 new ProfileData.Builder(
-                                        Long.parseLong(lastPosterObject.getString("ownerId")),
+                                        Long.parseLong(lastPosterObject.getString("userId")),
                                         lastPosterObject.getString("username")
                                 ).gravatarHash(lastPosterObject.getString("gravatarMd5")).build(),
                                 currObject.getBoolean("isSticky"),
@@ -661,11 +661,11 @@ public class ForumHandler {
                     contextObject.getInt("numPages"),
                     threadObject.getString("title"),
                     new ProfileData.Builder(
-                            Long.parseLong(threadOwnerObject.getString("ownerId")),
+                            Long.parseLong(threadOwnerObject.getString("userId")),
                             threadOwnerObject.getString("username")
                     ).gravatarHash(threadOwnerObject.getString("gravatarMd5")).build(),
                     new ProfileData.Builder(
-                            Long.parseLong(lastPosterObject.getString("ownerId")),
+                            Long.parseLong(lastPosterObject.getString("userId")),
                             lastPosterObject.getString("username")
                     ).gravatarHash(lastPosterObject.getString("gravatarMd5")).build(),
                     threadObject.getBoolean("isSticky"),
