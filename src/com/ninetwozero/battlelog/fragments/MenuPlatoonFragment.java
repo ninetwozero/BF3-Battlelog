@@ -45,6 +45,7 @@ import com.ninetwozero.battlelog.ProfileSettingsActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
+import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.handlers.ProfileHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -158,7 +159,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     @Override
     public void reload() {
 
-        new AsyncRefresh().execute(SessionKeeper.getProfileData().getUsername());
+        new AsyncRefresh().execute(SessionKeeper.getProfileData());
 
     }
 
@@ -288,11 +289,11 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
     }
 
-    public class AsyncRefresh extends AsyncTask<String, Void, Boolean> {
+    public class AsyncRefresh extends AsyncTask<ProfileData, Void, Boolean> {
         @Override
-        protected Boolean doInBackground(String... arg0) {
+        protected Boolean doInBackground(ProfileData... arg0) {
             try {
-                platoonData = ProfileHandler.getPlatoons(context, arg0[0]);
+                platoonData = new ProfileHandler(arg0[0]).getPlatoons(context);
                 return (platoonData != null);
             } catch (Exception ex) {
                 ex.printStackTrace();

@@ -25,23 +25,23 @@ import com.ninetwozero.battlelog.handlers.COMHandler;
 public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
 
     // Attribute
-    Context context;
-    Button buttonSend;
-    long chatId, profileId;
-    boolean fromWidget;
-    String httpContent;
-    AsyncChatRefresh asyncChatRefresh;
+    private Context context;
+    private Button buttonSend;
+    private long chatId, profileId;
+    private boolean fromWidget;
+    private String httpContent;
+    private AsyncChatRefresh asyncChatRefresh;
 
     // Constructor
     public AsyncChatSend(Context c, long cId, Button b, boolean w,
             AsyncChatRefresh acr) {
 
-        this.context = c;
-        this.chatId = cId;
-        this.profileId = 0;
-        this.fromWidget = w;
-        this.buttonSend = b;
-        this.asyncChatRefresh = acr;
+        context = c;
+        chatId = cId;
+        profileId = 0;
+        fromWidget = w;
+        buttonSend = b;
+        asyncChatRefresh = acr;
 
     }
 
@@ -49,7 +49,7 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
             AsyncChatRefresh acr) {
 
         this(c, cId, b, w, acr);
-        this.profileId = pId;
+        profileId = pId;
 
     }
 
@@ -72,11 +72,7 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
         try {
 
             // Did we manage?
-            if (COMHandler.sendMessage(chatId, arg0[0], arg0[1])) {
-                return true;
-            } else {
-                return false;
-            }
+            return new COMHandler(arg0[0]).sendMessage(chatId, arg0[1]);
 
         } catch (Exception ex) {
 

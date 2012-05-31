@@ -156,7 +156,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
 
             try {
 
-                items = ProfileHandler.getWeapons(profileData);
+                items = new ProfileHandler(profileData).getWeapons();
                 return true;
 
             } catch (Exception ex) {

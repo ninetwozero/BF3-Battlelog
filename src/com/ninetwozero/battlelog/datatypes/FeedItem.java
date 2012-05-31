@@ -50,57 +50,57 @@ public class FeedItem implements Parcelable {
 
     ) {
 
-        this.id = i;
-        this.itemId = iid;
-        this.date = nDate;
-        this.numLikes = num;
-        this.numComments = numC;
-        this.title = t;
-        this.content = c;
-        this.type = type;
-        this.profileData = pd.clone();
-        this.liked = il;
-        this.censored = cs;
-        this.gravatarHash = im;
+        id = i;
+        itemId = iid;
+        date = nDate;
+        numLikes = num;
+        numComments = numC;
+        title = t;
+        content = c;
+        type = type;
+        profileData = pd.clone();
+        liked = il;
+        censored = cs;
+        gravatarHash = im;
 
     }
 
     public FeedItem(Parcel in) {
 
-        this.id = in.readLong();
-        this.itemId = in.readLong();
-        this.date = in.readLong();
-        this.numLikes = in.readInt();
-        this.numComments = in.readInt();
-        this.title = in.readString();
-        this.content = in.readString();
-        this.type = in.readString();
-        this.liked = (in.readInt() == 1);
-        this.censored = (in.readInt() == 1);
-        this.gravatarHash = in.readString();
-        this.profileData = in.createTypedArray(ProfileData.CREATOR);
+        id = in.readLong();
+        itemId = in.readLong();
+        date = in.readLong();
+        numLikes = in.readInt();
+        numComments = in.readInt();
+        title = in.readString();
+        content = in.readString();
+        type = in.readString();
+        liked = (in.readInt() == 1);
+        censored = (in.readInt() == 1);
+        gravatarHash = in.readString();
+        profileData = in.createTypedArray(ProfileData.CREATOR);
 
     }
 
     // Getters
     public long getId() {
-        return this.id;
+        return id;
     }
 
     public long getItemId() {
-        return this.itemId;
+        return itemId;
     }
 
     public long getDate() {
-        return this.date;
+        return date;
     }
 
     public int getNumComments() {
-        return this.numComments;
+        return numComments;
     }
 
     public int getNumLikes() {
-        return this.numLikes;
+        return numLikes;
     }
 
     public String getTitle() {
@@ -108,7 +108,7 @@ public class FeedItem implements Parcelable {
         // Get the correct format depending on the type
         if (type.equals("becamefriends")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username1}", profileData[0].getUsername()
 
@@ -120,7 +120,7 @@ public class FeedItem implements Parcelable {
 
         } else if (type.equals("assignmentcomplete")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username}", profileData[0].getUsername()
 
@@ -129,7 +129,7 @@ public class FeedItem implements Parcelable {
         } else if (type.equals("createdforumthread")
                 || type.equals("wroteforumpost")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username}", profileData[0].getUsername()
 
@@ -137,7 +137,7 @@ public class FeedItem implements Parcelable {
 
         } else if (type.equals("gamereport")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username}", profileData[0].getUsername()
 
@@ -145,7 +145,7 @@ public class FeedItem implements Parcelable {
 
         } else if (type.equals("statusmessage")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username}", profileData[0].getUsername()
 
@@ -153,7 +153,7 @@ public class FeedItem implements Parcelable {
 
         } else if (type.equals("addedfavserver")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username}", profileData[0].getUsername()
 
@@ -161,7 +161,7 @@ public class FeedItem implements Parcelable {
 
         } else if (type.equals("rankedup")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username}", profileData[0].getUsername()
 
@@ -169,7 +169,7 @@ public class FeedItem implements Parcelable {
 
         } else if (type.equals("levelcomplete")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username1}", profileData[0].getUsername()
 
@@ -182,7 +182,7 @@ public class FeedItem implements Parcelable {
         } else if (type.equals("kickedplatoon") || type.equals("joinedplatoon")
                 || type.equals("leftplatoon")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username}", profileData[0].getUsername()
 
@@ -192,7 +192,7 @@ public class FeedItem implements Parcelable {
                 || type.equals("platoonbadgesaved")
                 || type.equals("receivedplatoonwallpost")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username}", profileData[0].getUsername()
 
@@ -200,7 +200,7 @@ public class FeedItem implements Parcelable {
 
         } else if (type.equals("receivedaward")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username}", profileData[0].getUsername()
 
@@ -208,7 +208,7 @@ public class FeedItem implements Parcelable {
 
         } else if (type.equals("receivedwallpost")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username1}", profileData[0].getUsername()
 
@@ -221,7 +221,7 @@ public class FeedItem implements Parcelable {
         } else if (type.equals("commentedgamereport")
                 || type.equals("commentedblog")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username}", profileData[0].getUsername()
 
@@ -229,7 +229,7 @@ public class FeedItem implements Parcelable {
 
         } else if (type.equals("gameaccess")) {
 
-            return this.title.replace(
+            return title.replace(
 
                     "{username}", profileData[0].getUsername()
 
@@ -237,38 +237,38 @@ public class FeedItem implements Parcelable {
 
         } else {
 
-            return this.title;
+            return title;
 
         }
 
     }
 
     public String getContent() {
-        return this.content;
+        return content;
     }
 
     public String getType() {
-        return this.type;
+        return type;
     }
 
     public ProfileData[] getProfileData() {
-        return this.profileData;
+        return profileData;
     }
 
     public ProfileData getProfile(int i) {
-        return (i <= this.profileData.length) ? this.profileData[i] : null;
+        return (i <= profileData.length) ? profileData[i] : null;
     }
 
     public boolean isLiked() {
-        return this.liked;
+        return liked;
     }
 
     public boolean isCensored() {
-        return this.censored;
+        return censored;
     }
 
     public String getAvatarForPost() {
-        return this.gravatarHash;
+        return gravatarHash;
     }
 
     public Intent getIntent(Context c) {
@@ -295,7 +295,7 @@ public class FeedItem implements Parcelable {
 
             return new Intent(c, ForumActivity.class).putExtra(
 
-                    "threadId", this.itemId
+                    "threadId", itemId
 
                     ).putExtra(
 
@@ -313,12 +313,12 @@ public class FeedItem implements Parcelable {
         ) {
 
             return new Intent(c, PlatoonActivity.class).putExtra("platoon",
-                    new PlatoonData(this.itemId));
+                    new PlatoonData(itemId));
 
         } else if (type.equals("gamereport")) {
 
             return new Intent(c, UnlockActivity.class).putExtra("profile",
-                    this.profileData[0]);
+                    profileData[0]);
 
         } else if (
 
@@ -402,18 +402,18 @@ public class FeedItem implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
-        dest.writeLong(this.id);
-        dest.writeLong(this.itemId);
-        dest.writeLong(this.date);
-        dest.writeInt(this.numLikes);
-        dest.writeInt(this.numComments);
-        dest.writeString(this.title);
-        dest.writeString(this.content);
-        dest.writeString(this.type);
-        dest.writeInt(this.liked ? 1 : 0);
-        dest.writeInt(this.censored ? 1 : 0);
-        dest.writeString(this.gravatarHash);
-        dest.writeTypedArray(this.profileData, flags);
+        dest.writeLong(id);
+        dest.writeLong(itemId);
+        dest.writeLong(date);
+        dest.writeInt(numLikes);
+        dest.writeInt(numComments);
+        dest.writeString(title);
+        dest.writeString(content);
+        dest.writeString(type);
+        dest.writeInt(liked ? 1 : 0);
+        dest.writeInt(censored ? 1 : 0);
+        dest.writeString(gravatarHash);
+        dest.writeTypedArray(profileData, flags);
 
     }
 

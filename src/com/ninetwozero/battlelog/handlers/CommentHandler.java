@@ -8,14 +8,16 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.ninetwozero.battlelog.datatypes.CommentData;
-import com.ninetwozero.battlelog.datatypes.NewsData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class CommentHandler {
+public class CommentHandler extends DefaultHandler {
+
+    // Attributes
+    private long id;
+    private int type;
 
     // URLS
     public static final String URL_LIST = Constants.URL_MAIN
@@ -31,16 +33,24 @@ public class CommentHandler {
             "comment", "post-check-sum"
     };
 
-    public static boolean post(long postId, String checksum,
-            String comment, boolean news) throws WebsiteHandlerException {
+    public CommentHandler(long i, int t) {
+
+        requestHandler = new RequestHandler();
+        id = i;
+        type = t;
+
+    }
+
+    public boolean post(String checksum,
+            String comment) throws WebsiteHandlerException {
 
         try {
 
-            // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
-            String httpContent = wh.post(
+            // Let's post!
+            boolean isNews = (type == CommentData.TYPE_NEWS);
+            String httpContent = requestHandler.post(
 
-                    RequestHandler.generateUrl( news ? URL_NEWS_COMMENT : URL_COMMENT, postId),
+                    RequestHandler.generateUrl(isNews ? URL_NEWS_COMMENT : URL_COMMENT, id),
                     RequestHandler.generatePostData(
 
                             FIELD_NAMES_COMMENT,
@@ -72,29 +82,55 @@ public class CommentHandler {
         }
 
     }
+    
+    public ArrayList<CommentData> get() throws WebsiteHandlerException {
+        
+        return get(0);
+        
+    }
 
-    public static ArrayList<CommentData> get(long postId)
+    public ArrayList<CommentData> get(int pId)
             throws WebsiteHandlerException {
 
         try {
 
             // Let's do this!
-            RequestHandler wh = new RequestHandler();
             List<CommentData> comments = new ArrayList<CommentData>();
-            String httpContent = wh.get(
+            boolean isFeed = (type == CommentData.TYPE_FEED);
 
-                    RequestHandler.generateUrl(URL_LIST, postId),
-                    RequestHandler.HEADER_NORMAL
+            // Get the content
+            String httpContent = requestHandler.get(
+
+                    RequestHandler.generateUrl(
+
+                            isFeed ? URL_LIST : URL_NEWS_COMMENT,
+                            id
+                            ),
+                    isFeed ? RequestHandler.HEADER_NORMAL : RequestHandler.HEADER_AJAX
 
                     );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
 
-                // Get the messages
-                JSONArray commentArray = new JSONObject(httpContent)
-                        .getJSONObject("data").getJSONArray("comments");
-                JSONObject tempObject;
+                // Init
+                JSONObject dataObject = null;
+                JSONObject tempObject = null;
+
+                // Is it a feed?
+                if (isFeed) {
+
+                    dataObject = new JSONObject(httpContent).getJSONObject("context")
+                            .getJSONObject("blogPost");
+
+                } else {
+
+                    dataObject = new JSONObject(httpContent).getJSONObject("data");
+
+                }
+
+                // Get the comment array
+                JSONArray commentArray = dataObject.getJSONArray("comments");
 
                 // Iterate
                 for (int i = 0, max = commentArray.length(); i < max; i++) {
@@ -106,7 +142,7 @@ public class CommentHandler {
 
                             new CommentData(
 
-                                    postId,
+                                    id,
                                     Long.parseLong(tempObject.getString("itemId")),
                                     Long.parseLong(tempObject.getString("creationDate")),
                                     tempObject.getString("body"),
@@ -137,69 +173,4 @@ public class CommentHandler {
         }
     }
 
-    public static List<CommentData> get(NewsData n, int pageId)
-            throws WebsiteHandlerException {
-
-        try {
-
-            // Init!
-            RequestHandler rh = new RequestHandler();
-            List<CommentData> comments = new ArrayList<CommentData>();
-
-            // Get the data
-            String httpContent = rh.get(
-
-                    RequestHandler.generateUrl(URL_NEWS_LIST, n.getId(), pageId),
-                    RequestHandler.HEADER_AJAX
-
-                    );
-
-            // Did we get something?
-            if (httpContent != null && !httpContent.equals("")) {
-
-                // JSON!
-                JSONArray commentArray = new JSONObject(httpContent).getJSONObject("context")
-                        .getJSONObject("blogPost").getJSONArray("comments");
-
-                // Iterate
-                for (int count = 0, maxCount = commentArray.length(); count < maxCount; count++) {
-
-                    // Get the current item
-                    JSONObject item = commentArray.getJSONObject(count);
-                    JSONObject user = item.getJSONObject("user");
-
-                    // Handle the data
-                    comments.add(
-
-                            new CommentData(
-
-                                    Long.parseLong(item.getString("id")),
-                                    Long.parseLong(item.getString("itemId")),
-                                    item.getLong("creationDate"),
-                                    item.getString("body"),
-                                    new ProfileData.Builder(
-
-                                            Long.parseLong(user.getString("ownerId")),
-                                            user.getString("username")
-                                    ).gravatarHash(user.getString("gravatarMd5")).build()
-                            )
-
-                            );
-
-                }
-
-            }
-
-            return comments;
-
-        } catch (RequestHandlerException ex) {
-
-            throw new WebsiteHandlerException(ex.getMessage());
-
-        } catch (Exception ex) {
-
-            throw new WebsiteHandlerException(ex.getMessage());
-        }
-
-    }
 }

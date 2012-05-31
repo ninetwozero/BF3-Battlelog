@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
 import com.ninetwozero.battlelog.handlers.FeedHandler;
 
@@ -51,8 +52,7 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
         try {
 
-            return FeedHandler.post(profileId, arg0[0], arg0[1],
-                    isPlatoon);
+            return new FeedHandler(profileId, isPlatoon ? FeedItem.TYPE_PLATOON : FeedItem.TYPE_PROFILE).post(arg0[0], arg0[1]);
 
         } catch (Exception ex) {
 

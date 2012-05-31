@@ -187,7 +187,7 @@ public class ForumSearchActivity extends ListActivity {
 
             try {
 
-                threads = ForumHandler.search(context, arg0[0]);
+                threads = new ForumHandler().search(context, arg0[0]);
                 return true;
 
             } catch (Exception ex) {

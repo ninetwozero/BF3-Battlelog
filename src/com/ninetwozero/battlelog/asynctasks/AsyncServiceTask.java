@@ -63,7 +63,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
             if (COMHandler.setActive()) {
 
                 // The user is active, so how many notifications does he have?
-                int numNotifications = NotificationHandler.getNewNotificationsCount(
+                int numNotifications = new NotificationHandler().getNewNotificationsCount(
 
                         sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 

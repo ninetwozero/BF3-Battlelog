@@ -153,7 +153,7 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
             try {
 
                 // Get...
-                comments = CommentHandler.get(newsData, pageId);
+                comments = new CommentHandler(newsData.getId(), CommentData.TYPE_NEWS).get(pageId);
 
                 // ...validate!
                 return (comments != null);

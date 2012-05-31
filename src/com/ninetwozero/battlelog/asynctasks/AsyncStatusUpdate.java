@@ -22,7 +22,8 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
-import com.ninetwozero.battlelog.handlers.ProfileHandler;
+import com.ninetwozero.battlelog.handlers.COMHandler;
+import com.ninetwozero.battlelog.misc.Constants;
 
 public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
 
@@ -30,7 +31,7 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
     private Context context;
     private FeedFragment fragmentFeed;
     private Button buttonSend;
-
+    
     // Constructor
     public AsyncStatusUpdate(Context c, FeedFragment f) {
 
@@ -60,7 +61,7 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
         try {
 
             // Let's login everybody!
-            return ProfileHandler.updateStatus(arg0[0], arg0[1]);
+            return new COMHandler(arg0[1]).updateStatus(arg0[0]);
 
         } catch (Exception ex) {
 

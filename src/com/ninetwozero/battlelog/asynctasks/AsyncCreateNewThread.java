@@ -42,9 +42,11 @@ public class AsyncCreateNewThread extends AsyncTask<String, Void, Boolean> {
         try {
 
             // How'd it go?
-            return ForumHandler.create(
+            ForumHandler forumHandler = new ForumHandler();
+            forumHandler.setForumId(forumId);
+            return forumHandler.create(
 
-                    this.context, arg0[0], arg0[1], arg0[2], this.forumId
+                    this.context, arg0[0], arg0[1], arg0[2]
 
                     );
 

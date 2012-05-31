@@ -312,15 +312,13 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
                                 Toast.LENGTH_SHORT).show();
 
                     }
-                    new AsyncPlatoonMemberManagement(context, data.getId(),
-                            platoonData.getId()).execute(!data.isAdmin());
+                    new AsyncPlatoonMemberManagement(context, data.getId(), platoonData).execute(!data.isAdmin());
 
                 } else if (item.getItemId() == 2) {
 
                     Toast.makeText(context, R.string.info_platoon_member_kicking,
                             Toast.LENGTH_SHORT).show();
-                    new AsyncPlatoonMemberManagement(context, data.getId(),
-                            platoonData.getId()).execute();
+                    new AsyncPlatoonMemberManagement(context, data.getId(), platoonData).execute();
 
                 } else if (item.getItemId() == 3) {
 
@@ -328,7 +326,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
                             Toast.LENGTH_SHORT).show();
                     new AsyncPlatoonRespond(
 
-                            context, platoonData.getId(), data.getId(), true
+                            context, platoonData, data.getId(), true
 
                     ).execute(sharedPreferences.getString(
                             Constants.SP_BL_PROFILE_CHECKSUM, ""));
@@ -340,7 +338,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
                             Toast.LENGTH_SHORT).show();
                     new AsyncPlatoonRespond(
 
-                            context, platoonData.getId(), data.getId(), false
+                            context, platoonData, data.getId(), false
 
                     ).execute(sharedPreferences.getString(
                             Constants.SP_BL_PROFILE_CHECKSUM, ""));

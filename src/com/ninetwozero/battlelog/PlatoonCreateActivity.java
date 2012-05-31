@@ -33,7 +33,7 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class PlatoonCreateActivity extends Activity {
 
-    // SharedPreferences for shizzle
+    // SharedPreferences for shizzles
     private SharedPreferences sharedPreferences;
 
     // Elements

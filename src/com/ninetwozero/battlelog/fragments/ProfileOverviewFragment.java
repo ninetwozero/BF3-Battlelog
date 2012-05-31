@@ -372,10 +372,9 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 }
 
                 // Let's get the personas!
-                profileInformation = ProfileHandler.getInformation(
+                profileInformation = new ProfileHandler(profileData).getInformation(
 
                         context,
-                        profileData,
                         activeProfileId
 
                         );

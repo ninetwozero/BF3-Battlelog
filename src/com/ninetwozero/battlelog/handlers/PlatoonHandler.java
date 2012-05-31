@@ -48,7 +48,10 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class PlatoonHandler {
+public class PlatoonHandler extends DefaultHandler {
+
+    // Attributes
+    private PlatoonData platoonData;
 
     // URLS
     public static final String URL_INFO = Constants.URL_MAIN + "platoon/{PLATOON_ID}/";
@@ -122,16 +125,22 @@ public class PlatoonHandler {
     public static final int STATE_FAIL = 0;
     public static final int STATE_ERROR = 1;
 
-    public static boolean answerPlatoonRequest(long plId, long pId,
-            Boolean accepting, String checksum) throws WebsiteHandlerException {
+    public PlatoonHandler(PlatoonData p) {
+
+        requestHandler = new RequestHandler();
+        platoonData = p;
+
+    }
+
+    public boolean answerPlatoonRequest(long pId, Boolean accepting, String checksum)
+            throws WebsiteHandlerException {
 
         try {
 
             // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
-            String httpContent = wh.post(
+            String httpContent = requestHandler.post(
 
-                    RequestHandler.generateUrl(URL_RESPOND, plId),
+                    RequestHandler.generateUrl(URL_RESPOND, platoonData.getId()),
                     RequestHandler.generatePostData(
 
                             FIELD_NAMES_RESPOND,
@@ -157,19 +166,17 @@ public class PlatoonHandler {
 
     }
 
-    public static boolean applyForPlatoonMembership(final long platoonId,
-            final String checksum) throws WebsiteHandlerException {
+    public boolean applyForPlatoonMembership(final String checksum) throws WebsiteHandlerException {
 
         try {
 
             // Let's set it up!
-            RequestHandler wh = new RequestHandler();
-            String httpContent = wh.post(
+            String httpContent = requestHandler.post(
 
                     URL_APPLY,
                     RequestHandler.generatePostData(
                             FIELD_NAMES_APPLY,
-                            platoonId,
+                            platoonData.getId(),
                             checksum
 
                             ),
@@ -213,21 +220,19 @@ public class PlatoonHandler {
 
     }
 
-    public static boolean leave(final long platoonId,
-            final long userId, final String checksum)
+    public boolean leave(final long userId, final String checksum)
             throws WebsiteHandlerException {
 
         try {
 
             // Let's set it up!
-            RequestHandler wh = new RequestHandler();
-            String httpContent = wh.post(
+            String httpContent = requestHandler.post(
 
                     URL_LEAVE,
                     RequestHandler.generatePostData(
 
                             FIELD_NAMES_LEAVE,
-                            platoonId,
+                            platoonData.getId(),
                             userId,
                             checksum
 
@@ -254,9 +259,8 @@ public class PlatoonHandler {
         try {
 
             // Let's do this!
-            RequestHandler wh = new RequestHandler();
             PlatoonData platoon = null;
-            String httpContent = wh.post(
+            String httpContent = new RequestHandler().post(
 
                     URL_SEARCH,
                     RequestHandler.generatePostData(
@@ -359,8 +363,7 @@ public class PlatoonHandler {
         try {
 
             // Let's do the actual request
-            RequestHandler rh = new RequestHandler();
-            String httpContent = rh.post(
+            String httpContent = new RequestHandler().post(
 
                     URL_NEW,
                     RequestHandler.generatePostData(
@@ -396,9 +399,6 @@ public class PlatoonHandler {
 
         try {
 
-            // Let's set it up
-            RequestHandler rh = new RequestHandler();
-
             // Get the external cache dir
             String cacheDir = PublicUtils.getCachePath(c);
 
@@ -408,7 +408,7 @@ public class PlatoonHandler {
             }
 
             // Get the actual stream
-            HttpEntity httpEntity = rh.getHttpEntity(
+            HttpEntity httpEntity = new RequestHandler().getHttpEntity(
 
                     RequestHandler.generateUrl(URL_IMAGE, h),
                     true
@@ -465,22 +465,20 @@ public class PlatoonHandler {
 
     }
 
-    public static int sendInvite(final Object[] userId,
-            final long platoonId, final String checksum)
+    public int sendInvite(final Object[] userId, final String checksum)
             throws WebsiteHandlerException {
 
         try {
 
             // Let's login everybody
-            RequestHandler rh = new RequestHandler();
             int numUsers = userId.length;
-            String httpContent = rh.post(
+            String httpContent = requestHandler.post(
 
                     URL_INVITE,
                     RequestHandler.generatePostData(
 
                             FIELD_NAMES_INVITE,
-                            platoonId,
+                            platoonData.getId(),
                             checksum,
                             userId
 
@@ -526,8 +524,7 @@ public class PlatoonHandler {
 
     }
 
-    public static boolean editMember(final long userId,
-            final long platoonId, final int filter)
+    public boolean editMember(final long userId, final int filter)
             throws WebsiteHandlerException {
 
         try {
@@ -542,7 +539,7 @@ public class PlatoonHandler {
 
                         URL_PROMOTE,
                         userId,
-                        platoonId
+                        platoonData.getId()
 
                         );
 
@@ -552,7 +549,7 @@ public class PlatoonHandler {
 
                         URL_DEMOTE,
                         userId,
-                        platoonId
+                        platoonData.getId()
 
                         );
 
@@ -562,15 +559,14 @@ public class PlatoonHandler {
 
                         URL_KICK,
                         userId,
-                        platoonId
+                        platoonData.getId()
 
                         );
 
             }
 
             // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
-            String httpContent = wh.get(url, RequestHandler.HEADER_JSON);
+            String httpContent = requestHandler.get(url, RequestHandler.HEADER_JSON);
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -605,16 +601,12 @@ public class PlatoonHandler {
 
     }
 
-    public static PlatoonStats getStats(final Context context,
-            final PlatoonData platoonData) throws WebsiteHandlerException {
+    public PlatoonStats getStats(final Context context) throws WebsiteHandlerException {
 
         try {
 
-            // Let's go!
-            RequestHandler rh = new RequestHandler();
-
             // Get the content
-            String httpContent = rh.get(
+            String httpContent = requestHandler.get(
 
                     RequestHandler.generateUrl(
 
@@ -641,7 +633,7 @@ public class PlatoonHandler {
                     if (platoonData.getPlatformId() == 0) {
 
                         // Get the content
-                        String tempHttpContent = rh.get(
+                        String tempHttpContent = requestHandler.get(
 
                                 RequestHandler.generateUrl(URL_INFO, platoonData.getId()),
                                 RequestHandler.HEADER_AJAX
@@ -654,23 +646,19 @@ public class PlatoonHandler {
                                 .getJSONObject("platoon");
 
                         // Return and reloop
-                        return getStats(
+                        platoonData = new PlatoonData(
 
-                                context,
-                                new PlatoonData(
+                                platoonData.getId(), tempPlatoonData
+                                        .getInt("fanCounter"), tempPlatoonData
+                                        .getInt("memberCounter"),
+                                tempPlatoonData.getInt("platform"),
+                                tempPlatoonData.getString("name"),
+                                tempPlatoonData.getString("tag"),
+                                platoonData.getId() + ".jpeg",
+                                tempPlatoonData.getBoolean("hidden")
 
-                                        platoonData.getId(), tempPlatoonData
-                                                .getInt("fanCounter"), tempPlatoonData
-                                                .getInt("memberCounter"),
-                                        tempPlatoonData.getInt("platform"),
-                                        tempPlatoonData.getString("name"),
-                                        tempPlatoonData.getString("tag"),
-                                        platoonData.getId() + ".jpeg",
-                                        tempPlatoonData.getBoolean("hidden")
-
-                                )
-
-                        );
+                                );
+                        return getStats(context);
 
                     } else {
 
@@ -998,7 +986,7 @@ public class PlatoonHandler {
                     // Do we need to download a new image?
                     if (!CacheHandler.isCached(context, filename)) {
 
-                        WebsiteHandler.cacheGravatar(context, filename,
+                        ProfileHandler.cacheGravatar(context, filename,
                                 Constants.DEFAULT_AVATAR_SIZE);
 
                     }
@@ -1068,20 +1056,18 @@ public class PlatoonHandler {
 
     }
 
-    public static ArrayList<ProfileData> getFans(
-            final long platoonId) throws WebsiteHandlerException {
+    public ArrayList<ProfileData> getFans() throws WebsiteHandlerException {
 
         try {
 
             // Let's go!
-            RequestHandler rh = new RequestHandler();
             List<ProfileData> fans = new ArrayList<ProfileData>();
             String httpContent;
 
             // Do the request
-            httpContent = rh.get(
+            httpContent = requestHandler.get(
 
-                    RequestHandler.generateUrl(URL_FANS, platoonId),
+                    RequestHandler.generateUrl(URL_FANS, platoonData.getId()),
                     RequestHandler.HEADER_AJAX
 
                     );
@@ -1135,16 +1121,15 @@ public class PlatoonHandler {
         }
     }
 
-    public static PlatoonInformation getInformation(
+    public PlatoonInformation getInformation(
 
-            final Context c, final PlatoonData pData, final int num, final long aPId
+            final Context c, final int num, final long aPId
 
             ) throws WebsiteHandlerException {
 
         try {
 
             // Let's go!
-            RequestHandler rh = new RequestHandler();
             List<ProfileData> fans = new ArrayList<ProfileData>();
             List<ProfileData> members = new ArrayList<ProfileData>();
             List<ProfileData> friends = new ArrayList<ProfileData>();
@@ -1158,9 +1143,9 @@ public class PlatoonHandler {
             List<ProfileData> requestMembers = new ArrayList<ProfileData>();
 
             // Get the content
-            String httpContent = rh.get(
+            String httpContent = requestHandler.get(
 
-                    RequestHandler.generateUrl(URL_INFO, pData.getId()),
+                    RequestHandler.generateUrl(URL_INFO, platoonData.getId()),
                     RequestHandler.HEADER_AJAX
 
                     );
@@ -1188,10 +1173,11 @@ public class PlatoonHandler {
                 JSONObject currItem;
 
                 // Get the user's friends
-                friends = COMHandler.getFriends(
+                friends = new COMHandler(PreferenceManager.getDefaultSharedPreferences(c)
+                        .getString(Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriends(
 
-                        PreferenceManager.getDefaultSharedPreferences(c)
-                                .getString(Constants.SP_BL_PROFILE_CHECKSUM, ""), false
+                        aPId,
+                        false
 
                         );
 
@@ -1375,10 +1361,10 @@ public class PlatoonHandler {
                 }
 
                 // Let's get 'em fans too
-                fans = PlatoonHandler.getFans(pData.getId());
+                fans = getFans();
 
                 // Oh man, don't forget the stats!!!
-                stats = PlatoonHandler.getStats(c, pData);
+                stats = getStats(c);
 
                 // Required
                 long platoonId = Long.parseLong(profileCommonObject
@@ -1388,7 +1374,7 @@ public class PlatoonHandler {
                 // Is the image already cached?
                 if (!CacheHandler.isCached(c, filename)) {
 
-                    WebsiteHandler.cacheBadge(c,
+                    PlatoonHandler.cacheBadge(c,
                             profileCommonObject.getString("badgePath"),
                             filename, Constants.DEFAULT_BADGE_SIZE);
 
@@ -1448,12 +1434,11 @@ public class PlatoonHandler {
 
         // Init
         List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
-        RequestHandler rh = new RequestHandler();
 
         try {
 
             // Get the content
-            String httpContent = rh.post(
+            String httpContent = new RequestHandler().post(
 
                     URL_SEARCH,
                     RequestHandler.generatePostData(

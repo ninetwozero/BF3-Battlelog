@@ -194,7 +194,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
 
             try {
 
-                Object[] result = ForumHandler.getForums(locale);
+                Object[] result = new ForumHandler().getForums(locale);
                 title = (String) result[0];
                 forums = (List<ForumData>) result[1];
                 return (forums != null);

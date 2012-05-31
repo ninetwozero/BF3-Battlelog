@@ -47,7 +47,7 @@ public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
 
             // How'd it go?
             threadData.setNumPosts(threadData.getNumPosts() + 1);
-            return ForumHandler.reply(
+            return new ForumHandler().reply(
 
                     context, arg0[0], arg0[1], threadData, cache, SessionKeeper
                             .getProfileData().getId()

@@ -52,7 +52,7 @@ public class AsyncFetchDataToProfileView extends
         try {
 
             // Post the world!
-            userData = ProfileHandler.getProfileId(
+            userData = ProfileHandler.getProfileIdFromName(
 
                     searchString,
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")

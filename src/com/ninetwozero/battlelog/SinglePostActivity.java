@@ -45,7 +45,7 @@ import com.ninetwozero.battlelog.asynctasks.AsyncCommentsRefresh;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.handlers.FeedHandler;
+import com.ninetwozero.battlelog.handlers.NotificationHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
@@ -308,7 +308,7 @@ public class SinglePostActivity extends ListActivity {
 
             try {
 
-                item = FeedHandler.getPostForNotification(arg0[0]);
+                item = new NotificationHandler().getPostForNotification(arg0[0]);
                 return true;
 
             } catch (Exception ex) {

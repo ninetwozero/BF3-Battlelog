@@ -24,9 +24,9 @@ import com.ninetwozero.battlelog.handlers.COMHandler;
 public class AsyncFriendRemove extends AsyncTask<String, Integer, Boolean> {
 
     // Attribute
-    Context context;
-    long profileId;
-    String httpContent;
+    private Context context;
+    private long profileId;
+    private String httpContent;
 
     // Constructor
     public AsyncFriendRemove(Context c, long pId) {
@@ -45,7 +45,7 @@ public class AsyncFriendRemove extends AsyncTask<String, Integer, Boolean> {
 
         try {
 
-            return COMHandler.removeFriend(profileId);
+            return new COMHandler(arg0[0]).removeFriend(profileId);
 
         } catch (Exception ex) {
 

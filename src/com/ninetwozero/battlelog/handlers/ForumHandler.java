@@ -19,8 +19,11 @@ import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class ForumHandler {
+public class ForumHandler extends DefaultHandler {
 
+    // Attributes
+    private long forumId;
+    private long threadId;
     // URLS
     public static final String URL_LIST = Constants.URL_MAIN + "forum/";
     public static final String URL_LIST_LOCALIZED = Constants.URL_MAIN
@@ -53,13 +56,27 @@ public class ForumHandler {
             "reason", "post-check-sum"
     };
 
+    // Set
+    public void setForumId(long i) {
+        forumId = i;
+    }
+
+    public void setThreadId(long i) {
+        threadId = i;
+    }
+
+    public ForumHandler() {
+
+        requestHandler = new RequestHandler();
+
+    }
+
     public static boolean reportPost(Context c, long pId, String r)
             throws WebsiteHandlerException {
 
         try {
             // Setup a RequestHandler
-            RequestHandler rh = new RequestHandler();
-            final String httpContent = rh.post(
+            final String httpContent = new RequestHandler().post(
 
                     RequestHandler.generateUrl(URL_REPORT, pId),
                     RequestHandler.generatePostData(FIELD_NAMES_REPORT, r, ""),
@@ -80,8 +97,7 @@ public class ForumHandler {
 
     }
 
-    public static List<ForumThreadData> getThreads(String locale, long forumId,
-            int page) throws WebsiteHandlerException {
+    public List<ForumThreadData> getThreads(String locale, int page) throws WebsiteHandlerException {
 
         try {
 
@@ -89,8 +105,7 @@ public class ForumHandler {
             List<ForumThreadData> threads = new ArrayList<ForumThreadData>();
 
             // Setup a RequestHandler
-            RequestHandler rh = new RequestHandler();
-            final String httpContent = rh.get(
+            final String httpContent = requestHandler.get(
 
                     RequestHandler.generateUrl(
 
@@ -206,8 +221,7 @@ public class ForumHandler {
 
     }
 
-    public static List<ForumPostData> getPosts(long threadId,
-            int page, String locale) throws WebsiteHandlerException {
+    public List<ForumPostData> getPosts(int page, String locale) throws WebsiteHandlerException {
 
         try {
 
@@ -215,8 +229,7 @@ public class ForumHandler {
             List<ForumPostData> posts = new ArrayList<ForumPostData>();
 
             // Setup a RequestHandler
-            RequestHandler rh = new RequestHandler();
-            final String httpContent = rh.get(
+            final String httpContent = requestHandler.get(
 
                     RequestHandler.generateUrl(
 
@@ -276,20 +289,16 @@ public class ForumHandler {
 
     }
 
-    public static ArrayList<ForumSearchResult> search(
-
-            final Context c, final String keyword
-
-            ) throws WebsiteHandlerException {
+    public static ArrayList<ForumSearchResult> search(final Context c, final String keyword)
+            throws WebsiteHandlerException {
 
         // Init
-        RequestHandler rh = new RequestHandler();
         List<ForumSearchResult> threads = new ArrayList<ForumSearchResult>();
 
         try {
 
             // Let's do the actual search
-            String httpContent = rh.get(
+            String httpContent = new RequestHandler().get(
 
                     RequestHandler.generateUrl(URL_SEARCH, keyword),
                     RequestHandler.HEADER_AJAX
@@ -347,8 +356,7 @@ public class ForumHandler {
 
     }
 
-    public static Object[] getForums(String locale)
-            throws WebsiteHandlerException {
+    public Object[] getForums(String locale) throws WebsiteHandlerException {
 
         try {
 
@@ -357,8 +365,7 @@ public class ForumHandler {
             String title = "";
 
             // Setup a RequestHandler
-            RequestHandler rh = new RequestHandler();
-            final String httpContent = rh.get(
+            final String httpContent = requestHandler.get(
 
                     RequestHandler.generateUrl(URL_LIST_LOCALIZED, locale),
                     RequestHandler.HEADER_AJAX
@@ -447,8 +454,7 @@ public class ForumHandler {
 
     }
 
-    public static ForumData getThreads(String locale, long forumId)
-            throws WebsiteHandlerException {
+    public ForumData getThreads(String locale, long forumId) throws WebsiteHandlerException {
 
         try {
 
@@ -456,8 +462,7 @@ public class ForumHandler {
             List<ForumThreadData> threads = new ArrayList<ForumThreadData>();
 
             // Setup a RequestHandler
-            RequestHandler rh = new RequestHandler();
-            final String httpContent = rh.get(
+            final String httpContent = requestHandler.get(
 
                     RequestHandler.generateUrl(
 
@@ -586,8 +591,7 @@ public class ForumHandler {
 
     }
 
-    public static ForumThreadData getPosts(String locale,
-            long threadId) throws WebsiteHandlerException {
+    public ForumThreadData getPosts(String locale) throws WebsiteHandlerException {
 
         try {
 
@@ -595,8 +599,7 @@ public class ForumHandler {
             List<ForumPostData> posts = new ArrayList<ForumPostData>();
 
             // Setup a RequestHandler
-            RequestHandler rh = new RequestHandler();
-            final String httpContent = rh.get(
+            final String httpContent = requestHandler.get(
 
                     RequestHandler.generateUrl(
 
@@ -689,17 +692,14 @@ public class ForumHandler {
 
     }
 
-    public static boolean reply(final Context c, final String body,
+    public boolean reply(final Context c, final String body,
             final String chksm, final ForumThreadData threadData, final boolean cache,
             final long uid) {
 
         try {
 
-            // Setup a RequestHandler
-            RequestHandler rh = new RequestHandler();
-
             // POST!
-            String httpContent = rh.post(
+            String httpContent = requestHandler.post(
 
                     RequestHandler.generateUrl(URL_POST, threadData.getId()),
                     RequestHandler.generatePostData(FIELD_NAMES_POST, body, chksm),
@@ -735,19 +735,14 @@ public class ForumHandler {
 
     }
 
-    public static boolean create(final Context c,
-            final String topic, final String body, final String chksm,
-            final long fId) {
+    public boolean create(final Context c, final String topic, final String body, final String chksm) {
 
         try {
 
-            // Setup a RequestHandler
-            RequestHandler rh = new RequestHandler();
-
             // POST!
-            String httpContent = rh.post(
+            String httpContent = requestHandler.post(
 
-                    RequestHandler.generateUrl(URL_NEW, fId),
+                    RequestHandler.generateUrl(URL_NEW, forumId),
                     RequestHandler.generatePostData(FIELD_NAMES_NEW, topic, body, chksm),
                     RequestHandler.HEADER_AJAX
 

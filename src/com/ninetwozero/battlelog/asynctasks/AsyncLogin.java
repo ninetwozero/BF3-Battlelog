@@ -205,10 +205,9 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         // profileId
         String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "/\">");
 
-        ProfileData profile = ProfileHandler.getProfileId(soldierName, postCheckSum);
+        ProfileData profile = ProfileHandler.getProfileIdFromName(soldierName, postCheckSum);
         profile = ProfileHandler.resolveFullProfileDataFromProfileData(profile);
-        List<PlatoonData> platoons = ProfileHandler.getPlatoons(context,
-                profile.getUsername());
+        List<PlatoonData> platoons = new ProfileHandler(profile).getPlatoons(context);
         SharedPreferences sharedPreferences = addToSharedPreferences(profile, platoons,
                 postCheckSum, soldierName);
 

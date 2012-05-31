@@ -57,6 +57,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
     private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
     private ForumData forumData;
+    private ForumHandler forumHandler;
 
     // Elements
     private ListView listView;
@@ -90,7 +91,8 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
         // Get the unlocks
         locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
-
+        forumHandler = new ForumHandler();
+        
         // Init the views
         initFragment(view);
 
@@ -295,7 +297,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
             try {
 
-                forumData = ForumHandler.getThreads(locale,
+                forumData = new ForumHandler().getThreads(locale,
                         arg0[0]);
                 return (forumData != null);
 
@@ -388,7 +390,8 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
             try {
 
                 page = arg0[0];
-                threads = ForumHandler.getThreads(locale, forumId, page);
+                forumHandler.setForumId(forumId);
+                threads = forumHandler.getThreads(locale, page);
                 return true;
 
             } catch (Exception ex) {

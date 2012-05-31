@@ -19,6 +19,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.handlers.PlatoonHandler;
 
@@ -26,16 +27,17 @@ public class AsyncPlatoonRequest extends AsyncTask<Boolean, Integer, Integer> {
 
     // Attribute
     private Context context;
-    private long profileId, platoonId;
+    private long profileId;
+    private PlatoonData platoonData;
     private String checksum;
     private boolean isJoinRequest;
 
     // Constructor
-    public AsyncPlatoonRequest(Context c, long plId, long pId, String ch) {
+    public AsyncPlatoonRequest(Context c, PlatoonData p, long pId, String ch) {
 
         this.context = c;
         this.profileId = pId;
-        this.platoonId = plId;
+        this.platoonData = p;
         this.checksum = ch;
 
     }
@@ -55,13 +57,11 @@ public class AsyncPlatoonRequest extends AsyncTask<Boolean, Integer, Integer> {
             // Let's get this!!
             if (isJoinRequest) {
 
-                return PlatoonHandler.applyForPlatoonMembership(platoonId,
-                        checksum) ? 0 : -1;
+                return new PlatoonHandler(platoonData).applyForPlatoonMembership(checksum) ? 0 : -1;
 
             } else {
 
-                return PlatoonHandler.leave(platoonId,
-                        profileId, checksum) ? 0 : -1;
+                return new PlatoonHandler(platoonData).leave(profileId, checksum) ? 0 : -1;
 
             }
 

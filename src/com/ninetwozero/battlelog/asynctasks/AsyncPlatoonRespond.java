@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.PlatoonActivity;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.handlers.PlatoonHandler;
 
@@ -27,14 +28,15 @@ public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
 
     // Attribute
     private Context context;
-    private long platoonId, profileId;
+    private PlatoonData platoonData;
+    private long profileId;
     private boolean response;
 
     // Constructor
-    public AsyncPlatoonRespond(Context c, long plId, long pId, boolean r) {
+    public AsyncPlatoonRespond(Context c, PlatoonData p, long pId, boolean r) {
 
         context = c;
-        platoonId = plId;
+        platoonData = p;
         profileId = pId;
         response = r;
 
@@ -50,8 +52,7 @@ public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
         try {
 
             // Let's get this!!
-            return PlatoonHandler.answerPlatoonRequest(platoonId, profileId,
-                    response, arg0[0]);
+            return new PlatoonHandler(platoonData).answerPlatoonRequest(profileId, response, arg0[0]);
 
         } catch (WebsiteHandlerException e) {
 

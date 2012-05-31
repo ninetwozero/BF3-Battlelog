@@ -25,8 +25,9 @@ public class CommentData implements Parcelable {
     private ProfileData author;
     
     // Constants
-    public final static int TYPE_FEED = 0;
-    public final static int TYPE_NEWS = 1;
+    public final static int TYPE_NONE = 0;
+    public final static int TYPE_FEED = 1;
+    public final static int TYPE_NEWS = 2;
 
     // Constructs
     public CommentData(long i, long iId, long cDate, String c, ProfileData a) {

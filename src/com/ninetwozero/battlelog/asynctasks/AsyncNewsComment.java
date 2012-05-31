@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.NewsData;
 import com.ninetwozero.battlelog.fragments.NewsCommentListFragment;
 import com.ninetwozero.battlelog.handlers.CommentHandler;
@@ -48,7 +49,7 @@ public class AsyncNewsComment extends AsyncTask<String, Void, Boolean> {
 
         try {
 
-            return CommentHandler.post(newsData.getId(), arg0[0], arg0[1], true);
+            return new CommentHandler(newsData.getId(), CommentData.TYPE_NEWS).post(arg0[0], arg0[1]);
 
         } catch (Exception ex) {
 

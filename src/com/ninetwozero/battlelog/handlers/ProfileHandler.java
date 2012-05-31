@@ -14,12 +14,17 @@
 
 package com.ninetwozero.battlelog.handlers;
 
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +55,10 @@ import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class ProfileHandler {
+public class ProfileHandler extends DefaultHandler {
+
+    // Attributes
+    private ProfileData profileData;
 
     // URLS
     public static final String URL_INFO = Constants.URL_MAIN + "user/{UNAME}/";
@@ -76,8 +84,6 @@ public class ProfileHandler {
             + "indexstats/{PID}/{PLATFORM_NAME}/";
     public static final String URL_SEARCH = Constants.URL_MAIN
             + "search/getMatches/";
-    public static final String URL_STATUS = Constants.URL_MAIN
-            + "user/setStatusmessage/";
     public static final String URL_PROFILE = Constants.URL_MAIN
             + "user/overviewBoxStats/{UID}/";
 
@@ -97,21 +103,20 @@ public class ProfileHandler {
             "username", "post-check-sum"
     };
 
-    public static final String[] FIELD_NAMES_STATUS = new String[] {
-            "message",
-            "post-check-sum",
-            "urls[]"
-    };
+    public ProfileHandler(ProfileData pd) {
 
-    public static ProfileData getProfileId(final String keyword,
-            final String checksum) throws WebsiteHandlerException {
+        requestHandler = new RequestHandler();
+        profileData = pd;
+
+    }
+
+    public static ProfileData getProfileIdFromName(final String keyword, final String checksum) throws WebsiteHandlerException {
 
         try {
 
             // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
             ProfileData profile = null;
-            String httpContent = wh.post(
+            String httpContent = new RequestHandler().post(
 
                     URL_SEARCH,
                     RequestHandler.generatePostData(
@@ -175,7 +180,7 @@ public class ProfileHandler {
 
                     }
 
-                    return ProfileHandler.resolveFullProfileDataFromProfileData(profile);
+                    return resolveFullProfileDataFromProfileData(profile);
 
                 }
 
@@ -200,15 +205,13 @@ public class ProfileHandler {
 
     }
 
-    public static ProfileData resolveFullProfileDataFromPersonaId(final long personaId)
+    public static ProfileData resolveFullProfileFromPersonaId(final long personaId)
             throws WebsiteHandlerException {
 
         try {
 
             // Let's login everybody!
-            
-            RequestHandler wh = new RequestHandler();
-            String httpContent = wh.get(
+            String httpContent = new RequestHandler().get(
                     RequestHandler.generateUrl(URL_OVERVIEW, personaId, 0),
                     RequestHandler.HEADER_NORMAL);
 
@@ -244,9 +247,8 @@ public class ProfileHandler {
 
         try {
 
-            // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
-            String httpContent = wh.get(
+            // Let's get the profile everybody
+            String httpContent = new RequestHandler().get(
 
                     URL_PROFILE.replace("{UID}", profileId + ""),
                     RequestHandler.HEADER_NORMAL
@@ -306,7 +308,7 @@ public class ProfileHandler {
 
         try {
 
-            ProfileData profile = ProfileHandler.resolveFullProfileDataFromProfileId(p.getId());
+            ProfileData profile = resolveFullProfileDataFromProfileId(p.getId());
             return new ProfileData.Builder(p.getId(), p.getUsername()).persona(
 
                     profile.getPersonaArray()
@@ -321,28 +323,25 @@ public class ProfileHandler {
         }
     }
 
-    public static PersonaStats getStats(ProfileData pd)
+    public PersonaStats getStats()
             throws WebsiteHandlerException {
 
         try {
 
             // Do we have a personaId?
-            if (pd.getNumPersonas() == 0) {
+            if (profileData.getNumPersonas() == 0) {
 
-                pd = resolveFullProfileDataFromProfileId(pd.getId());
+                profileData = resolveFullProfileDataFromProfileId(profileData.getId());
 
             }
 
-            // Let's see...
-            RequestHandler wh = new RequestHandler();
-
             // Get the data
-            String content = wh.get(
+            String content = requestHandler.get(
 
                     RequestHandler.generateUrl(
                             URL_OVERVIEW,
-                            pd.getPersona(0).getId(),
-                            pd.getPersona(0).getPlatformId()
+                            profileData.getPersona(0).getId(),
+                            profileData.getPersona(0).getPlatformId()
                             ),
                     RequestHandler.HEADER_NORMAL
 
@@ -368,10 +367,10 @@ public class ProfileHandler {
             // Yay
             return new PersonaStats(
 
-                    pd.getUsername(), pd.getPersona(0).getName(),
+                    profileData.getUsername(), profileData.getPersona(0).getName(),
                     currRankInfo.getString("name"),
-                    statsOverview.getLong("rank"), pd.getPersona(0).getId(),
-                    pd.getId(), pd.getPersona(0).getPlatformId(),
+                    statsOverview.getLong("rank"), profileData.getPersona(0).getId(),
+                    profileData.getId(), profileData.getPersona(0).getPlatformId(),
                     statsOverview.getLong("timePlayed"),
                     currRankInfo.getLong("pointsNeeded"),
                     nextRankInfo.getLong("pointsNeeded"),
@@ -410,29 +409,26 @@ public class ProfileHandler {
 
     }
 
-    public static HashMap<Long, PersonaStats> getStats(
-            final Context context, final ProfileData pd)
+    public HashMap<Long, PersonaStats> getStats(final Context context)
             throws WebsiteHandlerException {
 
         try {
 
             // Init
             HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
-            ProfileData profileData = pd;
 
             // Do we have a personaId?
             if (profileData.getNumPersonas() == 0) {
 
-                profileData = resolveFullProfileDataFromProfileId(pd.getId());
+                profileData = resolveFullProfileDataFromProfileId(profileData.getId());
 
             }
 
             // Let's see...
-            RequestHandler wh = new RequestHandler();
             for (int i = 0, max = profileData.getNumPersonas(); i < max; i++) {
 
                 // Get the data
-                String httpContent = wh.get(
+                String httpContent = requestHandler.get(
 
                         RequestHandler.generateUrl(
                                 URL_OVERVIEW,
@@ -548,13 +544,10 @@ public class ProfileHandler {
 
     }
 
-    public static HashMap<Long, UnlockDataWrapper> getUnlocks(
-            final ProfileData pd, final int minCompletion) throws WebsiteHandlerException {
+    public HashMap<Long, UnlockDataWrapper> getUnlocks(final int minCompletion)
+            throws WebsiteHandlerException {
 
         try {
-
-            // Init the RequestHandler
-            RequestHandler wh = new RequestHandler();
 
             // Init the ArrayLists
             HashMap<Long, UnlockDataWrapper> unlockDataMap = new HashMap<Long, UnlockDataWrapper>();
@@ -565,7 +558,7 @@ public class ProfileHandler {
             List<UnlockData> skillArray;
             List<UnlockData> unlockArray;
 
-            for (int count = 0, maxCount = pd.getNumPersonas(); count < maxCount; count++) {
+            for (int count = 0, maxCount = profileData.getNumPersonas(); count < maxCount; count++) {
 
                 weaponArray = new ArrayList<UnlockData>();
                 attachmentArray = new ArrayList<UnlockData>();
@@ -575,12 +568,12 @@ public class ProfileHandler {
                 unlockArray = new ArrayList<UnlockData>();
 
                 // Get the data
-                String content = wh.get(
+                String content = requestHandler.get(
 
                         RequestHandler.generateUrl(
                                 URL_UNLOCKS,
-                                pd.getPersona(count).getId(),
-                                pd.getPersona(count).getPlatformId()
+                                profileData.getPersona(count).getId(),
+                                profileData.getPersona(count).getPlatformId()
                                 ),
                         RequestHandler.HEADER_NORMAL
 
@@ -593,7 +586,7 @@ public class ProfileHandler {
 
                 if (dataObject.isNull("unlocks") || unlockResults.length() == 0) {
 
-                    unlockDataMap.put(pd.getPersona(count).getId(),
+                    unlockDataMap.put(profileData.getPersona(count).getId(),
                             new UnlockDataWrapper(null, null, null, null, null,
                                     null));
                     continue;
@@ -652,7 +645,7 @@ public class ProfileHandler {
                 Collections.sort(skillArray, new UnlockComparator());
                 Collections.sort(unlockArray, new UnlockComparator());
 
-                unlockDataMap.put(pd.getPersona(count).getId(),
+                unlockDataMap.put(profileData.getPersona(count).getId(),
                         new UnlockDataWrapper(weaponArray, attachmentArray,
                                 kitUnlockArray, vehicleUpgradeArray,
                                 skillArray, unlockArray));
@@ -670,7 +663,7 @@ public class ProfileHandler {
 
     }
 
-    public static UnlockData getUnlockDataFromJSON(JSONObject row, double minCompletion)
+    public UnlockData getUnlockDataFromJSON(JSONObject row, double minCompletion)
             throws WebsiteHandlerException {
 
         try {
@@ -726,16 +719,15 @@ public class ProfileHandler {
 
     }
 
-    public static ProfileInformation getInformation(
-            Context context, ProfileData profileData,
-            long activeProfileId) throws WebsiteHandlerException {
+    public ProfileInformation getInformation(Context context, long activeProfileId)
+            throws WebsiteHandlerException {
 
         try {
 
             // Let's go!
-            RequestHandler rh = new RequestHandler();
+
             List<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
-            String httpContent = rh.get(
+            String httpContent = requestHandler.get(
                     RequestHandler.generateUrl(
                             URL_INFO,
                             profileData.getUsername()
@@ -830,7 +822,7 @@ public class ProfileHandler {
                     // Is it cached?
                     if (!CacheHandler.isCached(context, title)) {
 
-                        WebsiteHandler.cacheBadge(
+                        PlatoonHandler.cacheBadge(
 
                                 context, currItem.getString("badgePath"), title,
                                 Constants.DEFAULT_BADGE_SIZE
@@ -899,63 +891,17 @@ public class ProfileHandler {
 
     }
 
-    public static boolean updateStatus(String content, String checksum) {
-
-        try {
-
-            RequestHandler rh = new RequestHandler();
-            String httpContent = rh.post(
-
-                    URL_STATUS,
-                    RequestHandler.generatePostData(
-
-                            FIELD_NAMES_STATUS,
-                            content,
-                            checksum
-
-                            ),
-                    RequestHandler.HEADER_NORMAL
-
-                    );
-
-            // Did we manage?
-            if (httpContent != null && !httpContent.equals("")) {
-
-                // Set the int
-                int startPosition = httpContent
-                        .indexOf(Constants.ELEMENT_STATUS_OK);
-
-                // Did we find it?
-                return (startPosition > -1);
-
-            }
-
-            return false;
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();
-            return false;
-
-        }
-
-    }
-
     //
-    public static ArrayList<GeneralSearchResult> search(
-
-            Context context, String keyword, String checksum
-
-            ) throws WebsiteHandlerException {
+    public static ArrayList<GeneralSearchResult> search(Context context, String keyword, String checksum)
+            throws WebsiteHandlerException {
 
         // Init
         List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
-        RequestHandler rh = new RequestHandler();
 
         try {
 
             // Get the content
-            String httpContent = rh.post(
+            String httpContent = new RequestHandler().post(
 
                     URL_SEARCH,
                     RequestHandler.generatePostData(
@@ -1014,27 +960,26 @@ public class ProfileHandler {
 
     }
 
-    public static Map<Long, List<WeaponDataWrapper>> getWeapons(ProfileData p) {
+    public Map<Long, List<WeaponDataWrapper>> getWeapons() {
 
         try {
 
             // Init
-            RequestHandler rh = new RequestHandler();
             Map<Long, List<WeaponDataWrapper>> weaponDataMap = new HashMap<Long, List<WeaponDataWrapper>>();
 
-            for (int i = 0, max = p.getNumPersonas(); i < max; i++) {
+            for (int i = 0, max = profileData.getNumPersonas(); i < max; i++) {
 
                 // Init the array
                 List<WeaponDataWrapper> weaponDataArray = new ArrayList<WeaponDataWrapper>();
 
                 // Get the data
-                String httpContent = rh.get(
+                String httpContent = requestHandler.get(
 
                         RequestHandler.generateUrl(
 
                                 URL_WEAPONS,
-                                p.getPersona(i).getId(),
-                                p.getPersona(i).getPlatformId()
+                                profileData.getPersona(i).getId(),
+                                profileData.getPersona(i).getPlatformId()
                                 ),
                         RequestHandler.HEADER_NORMAL
 
@@ -1140,7 +1085,7 @@ public class ProfileHandler {
                 }
 
                 Collections.sort(weaponDataArray, new WeaponDataWrapperComparator());
-                weaponDataMap.put(p.getPersona(i).getId(), weaponDataArray);
+                weaponDataMap.put(profileData.getPersona(i).getId(), weaponDataArray);
 
             }
 
@@ -1161,29 +1106,28 @@ public class ProfileHandler {
 
     }
 
-    public static HashMap<Long, WeaponDataWrapper> getWeapon(ProfileData p, WeaponInfo weaponInfo,
-            WeaponStats weaponStats) {
+    public HashMap<Long, WeaponDataWrapper> getWeapon(WeaponInfo weaponInfo, WeaponStats weaponStats) {
 
         try {
 
             // Init
-            RequestHandler rh = new RequestHandler();
+
             List<UnlockData> unlockArray = new ArrayList<UnlockData>();
             HashMap<Long, WeaponDataWrapper> weaponDataArray = new HashMap<Long, WeaponDataWrapper>();
 
             // Iterate per persona
-            for (int i = 0, max = p.getNumPersonas(); i < max; i++) {
+            for (int i = 0, max = profileData.getNumPersonas(); i < max; i++) {
 
                 // Get the data
-                String httpContent = rh.get(
+                String httpContent = requestHandler.get(
 
                         RequestHandler.generateUrl(
 
                                 URL_WEAPONS_INFO,
-                                p.getPersona(i).getName(),
-                                p.getPersona(i).getId(),
+                                profileData.getPersona(i).getName(),
+                                profileData.getPersona(i).getId(),
                                 weaponStats.getSlug(),
-                                p.getPersona(i).getPlatformId()
+                                profileData.getPersona(i).getPlatformId()
 
                                 ),
                         RequestHandler.HEADER_NORMAL
@@ -1235,7 +1179,7 @@ public class ProfileHandler {
                     // Add the data array to the WeaponDataWrapper
                     weaponDataArray.put(
 
-                            p.getPersona(i).getId(),
+                            profileData.getPersona(i).getId(),
                             new WeaponDataWrapper(
 
                                     0,
@@ -1267,31 +1211,30 @@ public class ProfileHandler {
 
     }
 
-    public static HashMap<Long, List<AssignmentData>> getAssignments(
-            Context c, ProfileData profile) throws WebsiteHandlerException {
+    public HashMap<Long, List<AssignmentData>> getAssignments(Context c)
+            throws WebsiteHandlerException {
 
         try {
 
             // Attributes
-            RequestHandler rh = new RequestHandler();
             HashMap<Long, List<AssignmentData>> assignmentMap = new HashMap<Long, List<AssignmentData>>();
             List<AssignmentData> items;
 
-            for (int count = 0, maxCount = profile.getNumPersonas(); count < maxCount; count++) {
+            for (int count = 0, maxCount = profileData.getNumPersonas(); count < maxCount; count++) {
 
                 // Init
                 items = new ArrayList<AssignmentData>();
 
                 // Get the JSON!
-                String httpContent = rh.get(
+                String httpContent = requestHandler.get(
 
                         RequestHandler.generateUrl(
 
                                 URL_ASSIGNMENTS,
-                                profile.getPersona(count).getName(),
-                                profile.getPersona(count).getId(),
-                                profile.getId(),
-                                profile.getPersona(count).getPlatformId()
+                                profileData.getPersona(count).getName(),
+                                profileData.getPersona(count).getId(),
+                                profileData.getId(),
+                                profileData.getPersona(count).getPlatformId()
 
                                 ),
                         RequestHandler.HEADER_AJAX
@@ -1303,7 +1246,7 @@ public class ProfileHandler {
                         .getJSONObject("data");
                 if (topLevel.isNull("missionTrees")) {
 
-                    assignmentMap.put(profile.getPersona(count).getId(), items);
+                    assignmentMap.put(profileData.getPersona(count).getId(), items);
                     continue;
 
                 }
@@ -1442,7 +1385,7 @@ public class ProfileHandler {
                     }
 
                     // Add the items
-                    assignmentMap.put(profile.getPersona(count).getId(), items);
+                    assignmentMap.put(profileData.getPersona(count).getId(), items);
 
                 }
 
@@ -1458,21 +1401,20 @@ public class ProfileHandler {
         }
 
     }
-    
-    public static ArrayList<PlatoonData> getPlatoons(
-            final Context context, final String username)
+
+    public ArrayList<PlatoonData> getPlatoons(final Context context)
             throws WebsiteHandlerException {
 
         // Inir
-        RequestHandler rh = new RequestHandler();
+
         List<PlatoonData> platoons = new ArrayList<PlatoonData>();
 
         try {
 
             // Get the content
-            String httpContent = rh.get(
+            String httpContent = requestHandler.get(
 
-                    RequestHandler.generateUrl(ProfileHandler.URL_INFO, username),
+                    RequestHandler.generateUrl(ProfileHandler.URL_INFO, profileData.getUsername()),
                     RequestHandler.HEADER_AJAX
 
                     );
@@ -1501,7 +1443,7 @@ public class ProfileHandler {
                         // Is it cached?
                         if (!CacheHandler.isCached(context, title)) {
 
-                            WebsiteHandler.cacheBadge(
+                            PlatoonHandler.cacheBadge(
 
                                     context, currItem.getString("badgePath"), title,
                                     Constants.DEFAULT_BADGE_SIZE
@@ -1542,6 +1484,75 @@ public class ProfileHandler {
 
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
+
+        }
+
+    }
+    
+    public static boolean cacheGravatar(Context c, String h, int s) {
+
+        try {
+
+            // Get the external cache dir
+            String cacheDir = PublicUtils.getCachePath(c);
+
+            // How does it end?
+            if (!cacheDir.endsWith("/")) {
+                cacheDir += "/";
+            }
+
+            // Get the actual stream
+            HttpEntity httpEntity = new RequestHandler().getHttpEntity(
+
+                    RequestHandler.generateUrl(Constants.URL_GRAVATAR, h, s, s), false
+
+                    );
+
+            // Init
+            int bytesRead = 0;
+            int offset = 0;
+            int contentLength = (int) httpEntity.getContentLength();
+            byte[] data = new byte[contentLength];
+
+            // Build a path
+            String filepath = cacheDir + h;
+
+            // Handle the streams
+            InputStream imageStream = httpEntity.getContent();
+            BufferedInputStream in = new BufferedInputStream(imageStream);
+
+            // Iterate
+            while (offset < contentLength) {
+
+                bytesRead = in.read(data, offset, data.length - offset);
+                if (bytesRead == -1) {
+                    break;
+                }
+                offset += bytesRead;
+
+            }
+
+            // Alright?
+            if (offset != contentLength) {
+
+                throw new IOException("Only read " + offset
+                        + " bytes; Expected " + contentLength + " bytes");
+
+            }
+
+            // Close the stream
+            in.close();
+            FileOutputStream out = new FileOutputStream(filepath);
+            out.write(data);
+            out.flush();
+            out.close();
+
+            return true;
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            return false;
 
         }
 

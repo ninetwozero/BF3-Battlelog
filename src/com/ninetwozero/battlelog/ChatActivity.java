@@ -150,7 +150,7 @@ public class ChatActivity extends ListActivity {
 
             try {
 
-                this.chatId = COMHandler.getChatId(profileId, arg0[0]);
+                chatId = new COMHandler(arg0[0]).getChatId(profileId);
                 return true;
 
             } catch (WebsiteHandlerException ex) {

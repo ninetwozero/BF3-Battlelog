@@ -324,9 +324,9 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             try {
 
                 // Get...
-                platoonInformation = PlatoonHandler.getInformation(
+                platoonInformation = new PlatoonHandler(this.platoonData).getInformation(
 
-                        context, this.platoonData, sharedPreferences.getInt(
+                        context, sharedPreferences.getInt(
                                 Constants.SP_BL_NUM_FEED,
                                 Constants.DEFAULT_NUM_FEED),
                         this.activeProfileId
@@ -480,8 +480,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
             new AsyncPlatoonRequest(
 
-                    context, platoonData.getId(), SessionKeeper.getProfileData()
-                            .getId(), sharedPreferences.getString(
+                    context, platoonData, SessionKeeper.getProfileData().getId(), sharedPreferences.getString(
                             Constants.SP_BL_PROFILE_CHECKSUM, "")
 
             ).execute(true);
@@ -490,7 +489,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
             new AsyncPlatoonRequest(
 
-                    context, platoonData.getId(), SessionKeeper.getProfileData()
+                    context, platoonData, SessionKeeper.getProfileData()
                             .getId(), sharedPreferences.getString(
                             Constants.SP_BL_PROFILE_CHECKSUM, "")
 

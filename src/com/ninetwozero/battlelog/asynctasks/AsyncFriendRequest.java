@@ -24,9 +24,9 @@ import com.ninetwozero.battlelog.handlers.COMHandler;
 public class AsyncFriendRequest extends AsyncTask<String, Integer, Boolean> {
 
     // Attribute
-    Context context;
-    long profileId;
-    String httpContent;
+    private Context context;
+    private long profileId;
+    private String httpContent;
 
     // Constructor
     public AsyncFriendRequest(Context c, long pId) {
@@ -45,7 +45,7 @@ public class AsyncFriendRequest extends AsyncTask<String, Integer, Boolean> {
 
         try {
 
-            return COMHandler.sendFriendRequest(profileId, arg0[0]);
+            return new COMHandler(arg0[0]).sendFriendRequest(profileId);
 
         } catch (Exception ex) {
 

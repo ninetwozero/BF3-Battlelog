@@ -43,18 +43,22 @@ import com.ninetwozero.battlelog.misc.RequestHandler;
  * Methods of this class should be loaded in AsyncTasks, as they would probably lock up the GUI
  */
 
-public class WebsiteHandler {
-
-    public static String downloadZip(Context context, String url, String title)
+public class WebsiteHandler extends DefaultHandler {
+    
+    public WebsiteHandler() {
+        
+        requestHandler = new RequestHandler();
+        
+    }
+    
+    public String downloadZip(Context context, String url, String title)
             throws WebsiteHandlerException {
 
         try {
 
-            // Attributes
-            RequestHandler rh = new RequestHandler();
 
             // Get the *content*
-            if (!rh.saveFileFromURI(Constants.URL_IMAGE_PACK, "",
+            if (!requestHandler.saveFileFromURI(Constants.URL_IMAGE_PACK, "",
                     "imagepack-001.zip")) {
 
                 return "<this is supposed to be the path to the zip>";
@@ -74,7 +78,7 @@ public class WebsiteHandler {
 
     }
 
-    public static Bitmap downloadGravatarToBitmap(String hash, int size)
+    public Bitmap downloadGravatarToBitmap(String hash, int size)
             throws WebsiteHandlerException {
 
         try {
@@ -102,150 +106,6 @@ public class WebsiteHandler {
 
     }
 
-    public static boolean cacheGravatar(Context c, String h, int s) {
-
-        try {
-
-            // Let's set it up
-            RequestHandler rh = new RequestHandler();
-
-            // Get the external cache dir
-            String cacheDir = PublicUtils.getCachePath(c);
-
-            // How does it end?
-            if (!cacheDir.endsWith("/")) {
-                cacheDir += "/";
-            }
-
-            // Get the actual stream
-            HttpEntity httpEntity = rh.getHttpEntity(
-
-                    RequestHandler.generateUrl(Constants.URL_GRAVATAR, h, s, s), false
-
-                    );
-
-            // Init
-            int bytesRead = 0;
-            int offset = 0;
-            int contentLength = (int) httpEntity.getContentLength();
-            byte[] data = new byte[contentLength];
-
-            // Build a path
-            String filepath = cacheDir + h;
-
-            // Handle the streams
-            InputStream imageStream = httpEntity.getContent();
-            BufferedInputStream in = new BufferedInputStream(imageStream);
-
-            // Iterate
-            while (offset < contentLength) {
-
-                bytesRead = in.read(data, offset, data.length - offset);
-                if (bytesRead == -1) {
-                    break;
-                }
-                offset += bytesRead;
-
-            }
-
-            // Alright?
-            if (offset != contentLength) {
-
-                throw new IOException("Only read " + offset
-                        + " bytes; Expected " + contentLength + " bytes");
-
-            }
-
-            // Close the stream
-            in.close();
-            FileOutputStream out = new FileOutputStream(filepath);
-            out.write(data);
-            out.flush();
-            out.close();
-
-            return true;
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();
-            return false;
-
-        }
-
-    }
-
-    public static boolean cacheBadge(Context c, String h, String fName, int s) {
-
-        try {
-
-            // Let's set it up
-            RequestHandler rh = new RequestHandler();
-
-            // Get the external cache dir
-            String cacheDir = PublicUtils.getCachePath(c);
-
-            // How does it end?
-            if (!cacheDir.endsWith("/")) {
-                cacheDir += "/";
-            }
-
-            // Get the actual stream
-            HttpEntity httpEntity = rh.getHttpEntity(
-
-                    RequestHandler.generateUrl(PlatoonHandler.URL_IMAGE, h), true
-
-                    );
-
-            // Init
-            int bytesRead = 0;
-            int offset = 0;
-            int contentLength = (int) httpEntity.getContentLength();
-            byte[] data = new byte[contentLength];
-
-            // Handle the streams
-            InputStream imageStream = httpEntity.getContent();
-            BufferedInputStream in = new BufferedInputStream(imageStream);
-
-            // Build a path
-            String filepath = cacheDir + fName;
-
-            // Iterate
-            while (offset < contentLength) {
-
-                bytesRead = in.read(data, offset, data.length - offset);
-                if (bytesRead == -1) {
-                    break;
-                }
-                offset += bytesRead;
-
-            }
-
-            // Alright?
-            if (offset != contentLength) {
-
-                throw new IOException("Only read " + offset
-                        + " bytes; Expected " + contentLength + " bytes");
-
-            }
-
-            // Close the in-stream, start the outbound
-            in.close();
-            FileOutputStream out = new FileOutputStream(filepath);
-            out.write(data);
-            out.flush();
-            out.close();
-
-            return true;
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();
-            return false;
-
-        }
-
-    }
-
     public static List<GeneralSearchResult> search(Context c, String k, String ch)
             throws WebsiteHandlerException {
 
@@ -266,12 +126,11 @@ public class WebsiteHandler {
         }
     }
 
-    public static List<NewsData> getNewsForPage(int p) throws WebsiteHandlerException {
+    public List<NewsData> getNewsForPage(int p) throws WebsiteHandlerException {
 
         try {
 
             // Init!
-            RequestHandler rh = new RequestHandler();
             List<NewsData> news = new ArrayList<NewsData>();
 
             // Iterate!
@@ -286,7 +145,7 @@ public class WebsiteHandler {
                 }
 
                 // Get the data
-                String httpContent = rh.get(
+                String httpContent = requestHandler.get(
 
                         RequestHandler.generateUrl(Constants.URL_NEWS, num),
                         RequestHandler.HEADER_AJAX

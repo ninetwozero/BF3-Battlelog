@@ -250,7 +250,9 @@ public class ForumSavedActivity extends ListActivity {
             try {
 
                 // Get the thread
-                forumThread = ForumHandler.getPosts(locale, t[0].getId());
+                ForumHandler forumHandler = new ForumHandler();
+                new ForumHandler().setThreadId(t[0].getId());
+                forumThread = new ForumHandler().getPosts(locale);
                 boolean status = (forumThread.getNumPosts() > t[0].getNumPosts());
 
                 // Update the saved forum thread

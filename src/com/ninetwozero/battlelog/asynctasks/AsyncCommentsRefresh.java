@@ -56,7 +56,7 @@ public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
         try {
 
             // Let's get this!!
-            comments = CommentHandler.get(commentId[0]);
+            comments = new CommentHandler(commentId[0], CommentData.TYPE_NEWS).get();
             return true;
 
         } catch (WebsiteHandlerException e) {

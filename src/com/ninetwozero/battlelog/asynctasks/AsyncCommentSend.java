@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.handlers.CommentHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 
@@ -57,7 +58,7 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
         try {
 
             // Did we manage?
-            return (CommentHandler.post(postId, arg0[0], arg0[1], false));
+            return (new CommentHandler(postId, CommentData.TYPE_NEWS).post(arg0[0], arg0[1]));
             
         } catch (Exception ex) {
 

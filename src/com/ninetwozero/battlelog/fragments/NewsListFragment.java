@@ -154,7 +154,7 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Get...
-                newsItems = WebsiteHandler.getNewsForPage(start);
+                newsItems = new WebsiteHandler().getNewsForPage(start);
 
                 // ...validate!
                 return (newsItems != null);

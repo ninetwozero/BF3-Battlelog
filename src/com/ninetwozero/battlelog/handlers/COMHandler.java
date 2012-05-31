@@ -21,9 +21,13 @@ import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class COMHandler {
+public class COMHandler extends DefaultHandler {
+
+    // Attributes
+    private String checksum;
 
     // URLS
+    public static final String URL_STATUS = Constants.URL_MAIN + "user/setStatusmessage/";
     public static final String URL_FRIENDS = Constants.URL_MAIN + "comcenter/sync/";
     public static final String URL_FRIEND_REQUESTS = Constants.URL_MAIN
             + "friend/requestFriendship/{UID}/";
@@ -44,17 +48,25 @@ public class COMHandler {
             "chatId", "post-check-sum"
     };
 
-    public static Long getChatId(long profileId, String checksum)
+    public static final String[] FIELD_NAMES_STATUS = new String[] {
+            "message",
+            "post-check-sum",
+            "urls[]"
+    };
+
+    public COMHandler(String c) {
+
+        requestHandler = new RequestHandler();
+        checksum = c;
+    }
+
+    public Long getChatId(long profileId)
             throws WebsiteHandlerException {
 
         try {
 
             // Let's do this!
-            RequestHandler wh = new RequestHandler();
-            String httpContent;
-
-            // Get the content
-            httpContent = wh.post(
+            String httpContent = requestHandler.post(
 
                     RequestHandler.generateUrl(URL_CONTENTS, profileId),
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
@@ -66,8 +78,7 @@ public class COMHandler {
             if (!"".equals(httpContent)) {
 
                 // Get the messages
-                return new JSONObject(httpContent).getJSONObject("data")
-                        .getLong("chatId");
+                return new JSONObject(httpContent).getJSONObject("data").getLong("chatId");
 
             } else {
 
@@ -83,15 +94,13 @@ public class COMHandler {
 
     }
 
-    public static List<ChatMessage> getMessages(long profileId,
-            String checksum) throws WebsiteHandlerException {
+    public List<ChatMessage> getMessages(long profileId) throws WebsiteHandlerException {
 
         try {
 
             // Let's do this!
-            RequestHandler wh = new RequestHandler();
             List<ChatMessage> messageArray = new ArrayList<ChatMessage>();
-            String httpContent = wh.post(
+            String httpContent = requestHandler.post(
 
                     RequestHandler.generateUrl(URL_CONTENTS, profileId),
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
@@ -142,14 +151,12 @@ public class COMHandler {
 
     }
 
-    public static boolean sendMessage(long chatId, String checksum,
-            String message) throws WebsiteHandlerException {
+    public boolean sendMessage(long chatId, String message) throws WebsiteHandlerException {
 
         try {
 
             // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
-            String httpContent = wh.post(
+            String httpContent = requestHandler.post(
 
                     URL_SEND,
                     RequestHandler.generatePostData(
@@ -179,11 +186,8 @@ public class COMHandler {
 
         try {
 
-            // Let's login everybody!
-            RequestHandler rh = new RequestHandler();
-
             // Get the content
-            rh.get(
+            new RequestHandler().get(
                     RequestHandler.generateUrl(URL_CLOSE, chatId),
                     RequestHandler.HEADER_AJAX
                     );
@@ -199,14 +203,13 @@ public class COMHandler {
 
     }
 
-    public static final FriendListDataWrapper getFriendsForCOM(final Context c,
-            final String checksum) throws WebsiteHandlerException {
+    public final FriendListDataWrapper getFriendsForCOM(final Context c)
+            throws WebsiteHandlerException {
 
         try {
 
             // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
-            String httpContent = wh.post(
+            String httpContent = requestHandler.post(
 
                     URL_FRIENDS,
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
@@ -364,15 +367,14 @@ public class COMHandler {
 
     }
 
-    public static final List<ProfileData> getFriends(String checksum,
+    public final List<ProfileData> getFriends(long profileId,
             boolean noOffline) throws WebsiteHandlerException {
 
         try {
 
             // Let's login everybody!
             List<ProfileData> profileArray = new ArrayList<ProfileData>();
-            RequestHandler wh = new RequestHandler();
-            String httpContent = wh.post(
+            String httpContent = requestHandler.post(
 
                     URL_FRIENDS,
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
@@ -435,17 +437,16 @@ public class COMHandler {
 
     }
 
-    public static boolean answerFriendRequest(long pId, Boolean accepting,
-            String checksum) throws WebsiteHandlerException {
+    public boolean answerFriendRequest(long profileId, Boolean accepting)
+            throws WebsiteHandlerException {
 
         try {
 
             // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
             String url = accepting ? Constants.URL_FRIEND_ACCEPT : Constants.URL_FRIEND_DECLINE;
-            String httpContent = wh.post(
+            String httpContent = requestHandler.post(
 
-                    RequestHandler.generateUrl(url, pId),
+                    RequestHandler.generateUrl(url, profileId),
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
                     RequestHandler.HEADER_NORMAL
 
@@ -462,14 +463,13 @@ public class COMHandler {
 
     }
 
-    public static boolean sendFriendRequest(long profileId, String checksum)
+    public boolean sendFriendRequest(long profileId)
             throws WebsiteHandlerException {
 
         try {
 
             // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
-            String httpContent = wh.post(
+            String httpContent = requestHandler.post(
 
                     RequestHandler.generateUrl(URL_FRIEND_REQUESTS, profileId),
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
@@ -489,14 +489,13 @@ public class COMHandler {
 
     }
 
-    public static boolean removeFriend(long profileId)
+    public boolean removeFriend(long profileId)
             throws WebsiteHandlerException {
 
         try {
 
             // Let's login everybody!
-            RequestHandler wh = new RequestHandler();
-            String httpContent = wh.get(
+            String httpContent = requestHandler.get(
 
                     RequestHandler.generateUrl(URL_FRIEND_DELETE, profileId),
                     RequestHandler.HEADER_AJAX
@@ -515,14 +514,55 @@ public class COMHandler {
 
     }
 
+    public boolean updateStatus(String content) {
+
+        try {
+
+            String httpContent = requestHandler.post(
+
+                    URL_STATUS,
+                    RequestHandler.generatePostData(
+
+                            FIELD_NAMES_STATUS,
+                            content,
+                            checksum
+
+                            ),
+                    RequestHandler.HEADER_NORMAL
+
+                    );
+
+            // Did we manage?
+            if (httpContent != null && !httpContent.equals("")) {
+
+                // Set the int
+                int startPosition = httpContent
+                        .indexOf(Constants.ELEMENT_STATUS_OK);
+
+                // Did we find it?
+                return (startPosition > -1);
+
+            }
+
+            return false;
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            return false;
+
+        }
+
+    }
+
     /* TODO */
     public static boolean setActive() throws WebsiteHandlerException {
 
         try {
 
             // Let's see
-            String httpContent = new RequestHandler().get(
-                    URL_SETACTIVE, RequestHandler.HEADER_AJAX);
+            String httpContent = new RequestHandler()
+                    .get(URL_SETACTIVE, RequestHandler.HEADER_AJAX);
             JSONObject httpResponse = new JSONObject(httpContent);
 
             // Is it ok?

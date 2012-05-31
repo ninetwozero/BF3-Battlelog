@@ -188,8 +188,7 @@ public class SearchActivity extends ListActivity {
 
             try {
 
-                searchResults = WebsiteHandler.search(context,
-                        arg0[0], arg0[1]);
+                searchResults = new WebsiteHandler().search(context, arg0[0], arg0[1]);
                 return true;
 
             } catch (Exception ex) {

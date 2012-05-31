@@ -20,20 +20,21 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.handlers.PlatoonHandler;
 
 public class AsyncPlatoonMemberInvite extends AsyncTask<String, Void, Integer> {
 
     // Attributes
     private Context context;
-    private long platoonId;
+    private PlatoonData platoonData;
     private Object[] userId;
 
-    public AsyncPlatoonMemberInvite(Context c, Object[] uId, long pId) {
+    public AsyncPlatoonMemberInvite(Context c, Object[] uId, PlatoonData p) {
 
         context = c;
         userId = uId.clone();
-        platoonId = pId;
+        platoonData = p;
 
     }
 
@@ -42,7 +43,7 @@ public class AsyncPlatoonMemberInvite extends AsyncTask<String, Void, Integer> {
 
         try {
 
-            return PlatoonHandler.sendInvite(userId, platoonId, arg0[0]);
+            return new PlatoonHandler(platoonData).sendInvite(userId, arg0[0]);
 
         } catch (Exception ex) {
 

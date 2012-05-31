@@ -231,8 +231,8 @@ public class AssignmentActivity extends Activity {
             AsyncTask<ProfileData, Void, Boolean> {
 
         // Attributes
-        Context context;
-        ProgressDialog progressDialog;
+        private Context context;
+        private ProgressDialog progressDialog;
 
         public AsyncReload(Context c) {
 
@@ -263,7 +263,8 @@ public class AssignmentActivity extends Activity {
 
             try {
 
-                assignments = ProfileHandler.getAssignments(context, arg0[0]);
+                ProfileHandler profileHandler = new ProfileHandler(arg0[0]);
+                assignments = profileHandler.getAssignments(context);
                 return (assignments != null);
 
             } catch (WebsiteHandlerException ex) {

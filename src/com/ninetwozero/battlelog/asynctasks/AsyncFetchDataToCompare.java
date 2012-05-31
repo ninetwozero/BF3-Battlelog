@@ -50,7 +50,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
         try {
 
             // Post the world!
-            playerTwo = ProfileHandler.getProfileId(
+            playerTwo = ProfileHandler.getProfileIdFromName(
 
                     searchString,
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")

@@ -352,8 +352,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                             .getPersona(0).getId() : selectedPersona;
 
                     // Grab the stats
-                    personaStats = ProfileHandler.getStats(context,
-                            profileData);
+                    personaStats = new ProfileHandler(profileData).getStats(context);
 
                 }
                 // ...validate!

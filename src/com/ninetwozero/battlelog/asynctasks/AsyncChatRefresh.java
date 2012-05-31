@@ -59,8 +59,7 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
         try {
 
             // Let's get this!!
-            messageArray = COMHandler.getMessages(chatId[0],
-                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+            messageArray = new COMHandler(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")).getMessages(chatId[0]);
             return true;
 
         } catch (WebsiteHandlerException e) {

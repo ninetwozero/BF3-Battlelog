@@ -18,6 +18,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.ninetwozero.battlelog.PlatoonActivity;
+import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.handlers.PlatoonHandler;
 
 public class AsyncPlatoonMemberManagement extends
@@ -25,15 +26,15 @@ public class AsyncPlatoonMemberManagement extends
 
     // Attributes
     private Context context;
-    private long platoonId;
+    private PlatoonData platoonData;
     private long userId;
 
     // Constructs
-    public AsyncPlatoonMemberManagement(Context c, long uId, long pId) {
+    public AsyncPlatoonMemberManagement(Context c, long uId, PlatoonData p) {
 
         context = c;
         userId = uId;
-        platoonId = pId;
+        platoonData = p;
 
     }
 
@@ -44,18 +45,15 @@ public class AsyncPlatoonMemberManagement extends
 
             if (arg0.length == 0) {
 
-                return PlatoonHandler.editMember(userId,
-                        platoonId, PlatoonHandler.FILTER_KICK);
+                return new PlatoonHandler(platoonData).editMember(userId, PlatoonHandler.FILTER_KICK);
 
             } else if (!arg0[0]) {
 
-                return PlatoonHandler.editMember(userId,
-                        platoonId, PlatoonHandler.FILTER_DEMOTE);
+                return new PlatoonHandler(platoonData).editMember(userId, PlatoonHandler.FILTER_DEMOTE);
 
             } else {
 
-                return PlatoonHandler.editMember(userId,
-                        platoonId, PlatoonHandler.FILTER_PROMOTE);
+                return new PlatoonHandler(platoonData).editMember(userId, PlatoonHandler.FILTER_PROMOTE);
 
             }
 

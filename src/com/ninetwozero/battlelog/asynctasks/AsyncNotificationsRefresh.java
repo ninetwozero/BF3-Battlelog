@@ -53,7 +53,7 @@ public class AsyncNotificationsRefresh extends
         try {
 
             // Let's get this!!
-            notifications = NotificationHandler.get(arg0[0]);
+            notifications = new NotificationHandler().get(arg0[0]);
             return true;
 
         } catch (WebsiteHandlerException e) {

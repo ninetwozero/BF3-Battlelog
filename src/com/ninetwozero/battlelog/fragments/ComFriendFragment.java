@@ -302,7 +302,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Let's get this!
-                friendListData = COMHandler.getFriendsForCOM(context, arg0[0]);
+                friendListData = new COMHandler(arg0[0]).getFriendsForCOM(context);
                 return true;
 
             } catch (WebsiteHandlerException e) {
@@ -356,8 +356,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Let's get this!!
-                return COMHandler.answerFriendRequest(profileId, response,
-                        arg0[0]);
+                return new COMHandler(arg0[0]).answerFriendRequest(profileId, response);
 
             } catch (WebsiteHandlerException e) {
 

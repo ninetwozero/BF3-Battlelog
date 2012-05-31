@@ -82,6 +82,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
     private ForumThreadData threadData;
+    private ForumHandler forumHandler = new ForumHandler();
 
     // Elements
     private ListView listView;
@@ -336,12 +337,13 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 tempPageId = arg0[0];
 
                 // Get the threadData
-                threadData = ForumHandler.getPosts(locale, tempThreadId);
+                forumHandler.setThreadId(tempThreadId);
+                threadData = forumHandler.getPosts(locale);
 
                 // Do we need to get a specific page here already
                 if (arg0[0] > 1) {
 
-                    posts = ForumHandler.getPosts(tempThreadId, tempPageId, locale);
+                    posts = forumHandler.getPosts(tempPageId, locale);
                 }
 
                 return (threadData != null);
@@ -718,8 +720,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
             try {
 
                 page = arg0[0];
-                posts = ForumHandler.getPosts(this.threadId, page,
-                        locale);
+                forumHandler.setThreadId(threadId);
+                posts = forumHandler.getPosts(page, locale);
                 return true;
 
             } catch (Exception ex) {
@@ -943,7 +945,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                 .putExtra(
 
                                         "profile",
-                                        ProfileHandler.getProfileId(username, arg0[1])
+                                        ProfileHandler.getProfileIdFromName(username, arg0[1])
 
                                 );
 
