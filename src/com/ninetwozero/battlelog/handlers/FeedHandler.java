@@ -252,7 +252,7 @@ public class FeedHandler extends DefaultHandler {
                         String tempKey;
                         tempSubItem = tempStatsArray
                                 .optJSONObject(statsCounter);
-                        if (tempTitle.equals("")) {
+                        if ( tempTitle.length() == 0 ) {
                             tempTitle.append("<b>");
                         }
 
@@ -584,7 +584,7 @@ public class FeedHandler extends DefaultHandler {
                             ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
 
                 } else if (!currItem.isNull("RECEIVEDAWARD")) {
-
+/* TODO: GLITCHING: DOUBLE OUTPUT */
                     // Get it!
                     JSONArray tempStatsArray = currItem.optJSONObject(
                             "RECEIVEDAWARD").optJSONArray("statItems");
@@ -596,7 +596,7 @@ public class FeedHandler extends DefaultHandler {
                         tempSubItem = tempStatsArray
                                 .optJSONObject(statsCounter);
                         String tempKey = tempSubItem.getString("langKeyTitle");
-                        if (tempTitle.equals("")) {
+                        if ( tempTitle.length() == 0 ) {
                             tempTitle.append("<b>");
                         }
 

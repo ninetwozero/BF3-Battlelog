@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.ninetwozero.battlelog.AssignmentActivity;
 import com.ninetwozero.battlelog.ForumActivity;
@@ -26,6 +27,7 @@ import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.UnlockActivity;
 import com.ninetwozero.battlelog.handlers.ProfileHandler;
+import com.ninetwozero.battlelog.misc.Constants;
 
 public class FeedItem implements Parcelable {
 
@@ -46,7 +48,7 @@ public class FeedItem implements Parcelable {
     public FeedItem(
 
             long i, long iid, long nDate, int num, int numC, String t, String c,
-            String type, ProfileData[] pd, boolean il, boolean cs, String im
+            String tp, ProfileData[] pd, boolean il, boolean cs, String im
 
     ) {
 
@@ -57,7 +59,7 @@ public class FeedItem implements Parcelable {
         numComments = numC;
         title = t;
         content = c;
-        type = type;
+        type = tp;
         profileData = pd.clone();
         liked = il;
         censored = cs;
