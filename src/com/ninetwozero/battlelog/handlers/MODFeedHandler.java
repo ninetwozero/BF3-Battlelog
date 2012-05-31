@@ -222,6 +222,10 @@ public class MODFeedHandler extends DefaultHandler {
             FeedItem tempFeedItem = null;
             List<FeedItem> feedItemArray = new ArrayList<FeedItem>();
 
+            StringBuilder tempTitle = new StringBuilder();
+            StringBuilder itemTitle = new StringBuilder();
+            StringBuilder itemContent = new StringBuilder();
+
             // Iterate over the feed
             for (int i = 0, max = jsonArray.length(); i < max; i++) {
 
@@ -235,8 +239,11 @@ public class MODFeedHandler extends DefaultHandler {
                 }
 
                 // Variables if *modification* is needed
-                String itemTitle = "";
-                String itemContent = "";
+                tempTitle.setLength(0);
+                itemTitle.setLength(0);
+                itemContent.setLength(0);
+
+                // Gravataurus
                 String tempGravatarHash = ownerObject.getString("gravatarMd5");
 
                 // Temporary
@@ -282,7 +289,7 @@ public class MODFeedHandler extends DefaultHandler {
                             ).gravatarHash(friendUser.getString("gravatarMd5")).build();
 
                     // Get the title
-                    itemTitle = context.getString(R.string.info_p_friendship);
+                    itemTitle.append(context.getString(R.string.info_p_friendship));
 
                 } else if (!currItem.isNull("ASSIGNMENTCOMPLETE")) {
 
@@ -294,15 +301,17 @@ public class MODFeedHandler extends DefaultHandler {
                             .getString("langKeyTitle"));
 
                     // Set the title
-                    itemTitle = context
-                            .getString(R.string.info_txt_assignment_ok)
-                            .replace(
+                    itemTitle.append(
+
+                            context.getString(R.string.info_txt_assignment_ok).replace(
 
                                     "{assignment}", tempInfo[0]
 
-                            ).replace(
+                                    ).replace(
 
-                                    "{unlock}", tempInfo[1]
+                                            "{unlock}", tempInfo[1]
+
+                                    )
 
                             );
 
@@ -310,39 +319,34 @@ public class MODFeedHandler extends DefaultHandler {
 
                     // Grab the specific object
                     tempSubItem = currItem.optJSONObject("CREATEDFORUMTHREAD");
-                    itemTitle = context.getString(R.string.info_p_forumthread)
-                            .replace(
+                    itemTitle.append(context.getString(R.string.info_p_forumthread).replace(
 
                                     "{thread}", tempSubItem.getString("threadTitle")
 
-                            );
-                    itemContent = tempSubItem.getString("threadBody");
+                            )
+                            
+                    );
+                    itemContent.append(tempSubItem.getString("threadBody"));
 
                 } else if (!currItem.isNull("WROTEFORUMPOST")) {
 
                     // Grab the specific object
                     tempSubItem = currItem.optJSONObject("WROTEFORUMPOST");
-                    itemTitle = context.getString(R.string.info_p_forumpost)
+                    itemTitle.append(context.getString(R.string.info_p_forumpost)
                             .replace(
 
                                     "{thread}", tempSubItem.getString("threadTitle")
 
-                            );
-                    itemContent = tempSubItem.getString("postBody");
+                            )
+                            
+                    );
+                    itemContent.append(tempSubItem.getString("postBody"));
 
                 } else if (!currItem.isNull("GAMEREPORT")) {
 
                     // Grab the specific object
                     JSONArray tempStatsArray = currItem.optJSONObject(
                             "GAMEREPORT").optJSONArray("statItems");
-
-                    // INit the String
-                    String tempTitle = "";
-
-                    // Set the things straight
-                    itemTitle = context
-                            .getString(tempStatsArray.length() > 1 ? R.string.info_p_newunlocks
-                                    : R.string.info_p_newunlock);
 
                     /* TODO: EXPORT TO SMALLER METHODS */
                     for (int statsCounter = 0, maxCounter = tempStatsArray
@@ -353,7 +357,7 @@ public class MODFeedHandler extends DefaultHandler {
                         tempSubItem = tempStatsArray
                                 .optJSONObject(statsCounter);
                         if (tempTitle.equals("")) {
-                            tempTitle = "<b>";
+                            tempTitle.append("<b>");
                         }
 
                         // Do we need to append anything?
@@ -361,11 +365,11 @@ public class MODFeedHandler extends DefaultHandler {
 
                             if (statsCounter == (maxCounter - 1)) {
 
-                                tempTitle += " </b>and<b> ";
+                                tempTitle.append(" </b>and<b> ");
 
                             } else {
 
-                                tempTitle += ", ";
+                                tempTitle.append(", ");
 
                             }
 
@@ -382,11 +386,7 @@ public class MODFeedHandler extends DefaultHandler {
                             // Is it empty?
                             if (!parentKey.equals(tempKey)) {
 
-                                tempTitle += tempKey
-                                        + " "
-                                        + DataBank
-                                                .getAttachmentTitle(tempSubItem
-                                                        .getString("langKeyTitle"));
+                                tempTitle.append(tempKey).append(" ").append(DataBank.getAttachmentTitle(tempSubItem.getString("langKeyTitle")));
 
                             } else {
 
@@ -396,15 +396,11 @@ public class MODFeedHandler extends DefaultHandler {
                                 // Validate
                                 if (!parentKey.equals(tempKey)) {
 
-                                    tempTitle += tempKey
-                                            + " "
-                                            + DataBank
-                                                    .getVehicleUpgradeTitle(tempSubItem
-                                                            .getString("langKeyTitle"));
+                                    tempTitle.append(tempKey).append(" ").append(DataBank.getVehicleUpgradeTitle(tempSubItem.getString("langKeyTitle")));
 
                                 } else {
 
-                                    tempTitle += tempKey;
+                                    tempTitle.append(tempKey);
 
                                 }
 
@@ -430,37 +426,44 @@ public class MODFeedHandler extends DefaultHandler {
 
                                         if (key.equals(tempKey)) {
 
-                                            tempTitle += tempKey;
+                                            tempTitle.append(tempKey);
 
                                         } else {
 
-                                            tempTitle += tempKey;
+                                            tempTitle.append(tempKey);
 
                                         }
 
                                     } else {
 
-                                        tempTitle += tempKey;
+                                        tempTitle.append(tempKey);
 
                                     }
 
                                 } else {
 
-                                    tempTitle += tempKey;
+                                    tempTitle.append(tempKey);
 
                                 }
 
                             } else {
 
-                                tempTitle += tempKey;
+                                tempTitle.append(tempKey);
 
                             }
 
                         }
 
                     }
+                    
 
-                    itemTitle = itemTitle.replace("{item}", tempTitle + "</b>");
+
+                    // Set the things straight
+                    itemTitle.append(
+                            context.getString(tempStatsArray.length() > 1 ? R.string.info_p_newunlocks
+                                    : R.string.info_p_newunlock).replace("{item}", tempTitle + "</b>")
+                                    
+                    );
 
                 } else if (!currItem.isNull("STATUSMESSAGE")) {
 
@@ -468,8 +471,7 @@ public class MODFeedHandler extends DefaultHandler {
                     tempSubItem = currItem.optJSONObject("STATUSMESSAGE");
 
                     // Set the title
-                    itemTitle = "<b>{username}</b> {message}"
-                            + tempSubItem.getString("statusMessage");
+                    itemTitle.append("<b>{username}</b> ").append(tempSubItem.getString("statusMessage"));
 
                 } else if (!currItem.isNull("ADDEDFAVSERVER")) {
 
@@ -477,11 +479,12 @@ public class MODFeedHandler extends DefaultHandler {
                     tempSubItem = currItem.getJSONObject("ADDEDFAVSERVER");
 
                     // Set the title
-                    itemTitle = context.getString(R.string.info_p_favserver).replace(
+                    itemTitle.append(context.getString(R.string.info_p_favserver).replace(
 
                             "{server}", tempSubItem.getString("serverName")
 
-                            );
+                            )
+                    );
 
                 } else if (!currItem.isNull("RANKEDUP")) {
 
@@ -489,7 +492,7 @@ public class MODFeedHandler extends DefaultHandler {
                     tempSubItem = currItem.getJSONObject("RANKEDUP");
 
                     // Set it!
-                    itemTitle = context
+                    itemTitle.append(context
                             .getString(R.string.info_p_promotion)
                             .replace(
 
@@ -501,7 +504,9 @@ public class MODFeedHandler extends DefaultHandler {
 
                                     "{rank}", tempSubItem.getString("rank")
 
-                            );
+                            )
+                            
+                    );
 
                 } else if (!currItem.isNull("COMMENTEDGAMEREPORT")) {
 
@@ -509,7 +514,7 @@ public class MODFeedHandler extends DefaultHandler {
                     tempSubItem = currItem.getJSONObject("COMMENTEDGAMEREPORT");
 
                     // Set it!
-                    itemTitle = context
+                    itemTitle.append(context
                             .getString(R.string.info_p_greport_comment)
                             .replace(
 
@@ -530,8 +535,10 @@ public class MODFeedHandler extends DefaultHandler {
                                     DataBank.getGameModeFromId(tempSubItem
                                             .getInt("gameMode"))
 
-                            );
-                    itemContent = tempSubItem.getString("gameReportComment");
+                            )
+                            
+                    );
+                    itemContent.append(tempSubItem.getString("gameReportComment"));
 
                 } else if (!currItem.isNull("COMMENTEDBLOG")) {
 
@@ -539,14 +546,16 @@ public class MODFeedHandler extends DefaultHandler {
                     tempSubItem = currItem.getJSONObject("COMMENTEDBLOG");
 
                     // Set it!
-                    itemTitle = context.getString(R.string.info_p_blog_comment)
+                    itemTitle.append(context.getString(R.string.info_p_blog_comment)
                             .replace(
 
                                     "{post name}", tempSubItem.getString("blogTitle")
 
+                                    )
+                                    
                             );
 
-                    itemContent = tempSubItem.getString("blogCommentBody");
+                    itemContent.append(tempSubItem.getString("blogCommentBody"));
 
                 } else if (!currItem.isNull("JOINEDPLATOON")) {
 
@@ -555,11 +564,13 @@ public class MODFeedHandler extends DefaultHandler {
                             .getJSONObject("platoon");
 
                     // Set it!
-                    itemTitle = context.getString(R.string.info_p_platoon_join)
+                    itemTitle.append(context.getString(R.string.info_p_platoon_join)
                             .replace(
 
                                     "{platoon}", tempSubItem.getString("name")
 
+                                    )
+                                    
                             );
 
                 } else if (!currItem.isNull("KICKEDPLATOON")) {
@@ -569,11 +580,13 @@ public class MODFeedHandler extends DefaultHandler {
                             .getJSONObject("platoon");
 
                     // Set it!
-                    itemTitle = context.getString(R.string.info_p_platoon_kick)
+                    itemTitle.append(context.getString(R.string.info_p_platoon_kick)
                             .replace(
 
                                     "{platoon}", tempSubItem.getString("name")
 
+                                    )
+                                    
                             );
 
                 } else if (!currItem.isNull("CREATEDPLATOON")) {
@@ -583,11 +596,13 @@ public class MODFeedHandler extends DefaultHandler {
                             .getJSONObject("platoon");
 
                     // Set it!
-                    itemTitle = context.getString(
+                    itemTitle.append(context.getString(
                             R.string.info_p_platoon_create).replace(
 
                             "{platoon}", tempSubItem.getString("name")
 
+                                    )
+                                    
                             );
 
                 } else if (!currItem.isNull("PLATOONBADGESAVED")) {
@@ -597,11 +612,13 @@ public class MODFeedHandler extends DefaultHandler {
                             .getJSONObject("platoon");
 
                     // Set it!
-                    itemTitle = context
+                    itemTitle.append(context
                             .getString(R.string.info_p_platoon_badge).replace(
 
                                     "{platoon}", tempSubItem.getString("name")
 
+                                    )
+                                    
                             );
 
                 } else if (!currItem.isNull("LEFTPLATOON")) {
@@ -611,11 +628,13 @@ public class MODFeedHandler extends DefaultHandler {
                             .getJSONObject("platoon");
 
                     // Set it!
-                    itemTitle = context.getString(R.string.info_p_platoon_left)
+                    itemTitle.append(context.getString(R.string.info_p_platoon_left)
                             .replace(
 
                                     "{platoon}", tempSubItem.getString("name")
 
+                                    )
+                                    
                             );
 
                 } else if (!currItem.isNull("RECEIVEDPLATOONWALLPOST")) {
@@ -625,16 +644,18 @@ public class MODFeedHandler extends DefaultHandler {
                             .getJSONObject("RECEIVEDPLATOONWALLPOST");
 
                     // Set it!
-                    itemTitle = context.getString(R.string.info_p_platoon_feed)
+                    itemTitle.append(context.getString(R.string.info_p_platoon_feed)
                             .replace(
 
                                     "{platoon}",
                                     tempSubItem.getJSONObject("platoon")
                                             .getString("name")
 
+                                    )
+                                    
                             );
 
-                    itemContent = tempSubItem.getString("wallBody");
+                    itemContent.append(tempSubItem.getString("wallBody"));
 
                 } else if (!currItem.isNull("LEVELCOMPLETE")) {
 
@@ -644,7 +665,7 @@ public class MODFeedHandler extends DefaultHandler {
                             .getJSONObject("friend");
 
                     // Set it!
-                    itemTitle = context
+                    itemTitle.append(context
                             .getString(R.string.info_p_coop_level_comp)
                             .replace(
 
@@ -656,6 +677,8 @@ public class MODFeedHandler extends DefaultHandler {
 
                                     "{difficulty}", tempSubItem.getString("difficulty")
 
+                                    )
+                                    
                             );
 
                     // Set the second profile
@@ -670,14 +693,6 @@ public class MODFeedHandler extends DefaultHandler {
                     JSONArray tempStatsArray = currItem.optJSONObject(
                             "RECEIVEDAWARD").optJSONArray("statItems");
 
-                    // Init a String
-                    String tempTitle = "";
-
-                    // Set it!
-                    itemTitle = context
-                            .getString(tempStatsArray.length() > 1 ? R.string.info_p_awards
-                                    : R.string.info_p_award);
-
                     for (int statsCounter = 0, maxCounter = tempStatsArray
                             .length(); statsCounter < maxCounter; statsCounter++) {
 
@@ -686,7 +701,7 @@ public class MODFeedHandler extends DefaultHandler {
                                 .optJSONObject(statsCounter);
                         String tempKey = tempSubItem.getString("langKeyTitle");
                         if (tempTitle.equals("")) {
-                            tempTitle = "<b>";
+                            tempTitle.append("<b>");
                         }
 
                         // Do we need to append anything?
@@ -694,23 +709,26 @@ public class MODFeedHandler extends DefaultHandler {
 
                             if (statsCounter == (maxCounter - 1)) {
 
-                                tempTitle += " </b>and<b> ";
+                                tempTitle.append("</b> and <b>");
 
                             } else {
 
-                                tempTitle += ", ";
+                                tempTitle.append(", ");
 
                             }
 
                         }
 
                         // Weapon? Attachment?
-                        tempTitle += DataBank.getAwardTitle(tempKey);
+                        tempTitle.append(DataBank.getAwardTitle(tempKey));
 
                     }
 
                     // Set the title
-                    itemTitle = itemTitle.replace("{award}", tempTitle + "</b>");
+                    itemTitle.append(context
+                            .getString(tempStatsArray.length() > 1 ? R.string.info_p_awards
+                                    : R.string.info_p_award).replace("{award}", tempTitle + "</b>"));
+                    itemTitle.append(itemTitle);
 
                 } else if (!currItem.isNull("RECEIVEDWALLPOST")) {
 
@@ -718,12 +736,14 @@ public class MODFeedHandler extends DefaultHandler {
                     tempSubItem = currItem.optJSONObject("RECEIVEDWALLPOST");
 
                     // Set it!
-                    itemTitle = "<b>{username1} » {username2}:</b> {message}"
+                    itemTitle.append("<b>{username1} » {username2}:</b> {message}"
                             .replace(
 
                                     "{message}", tempSubItem.getString("wallBody")
 
-                            );
+                            )
+                            
+                    );
 
                     // Let's get it!
                     otherUserObject = tempSubItem.getJSONObject("writerUser");
@@ -741,21 +761,22 @@ public class MODFeedHandler extends DefaultHandler {
                     tempSubItem = currItem.optJSONObject("GAMEACCESS");
 
                     // Set it!
-                    itemTitle = "<b>{username} now has access to <b>{title}</b> for <b>Battlefield 3</b>."
+                    itemTitle.append("<b>{username} now has access to <b>{title}</b> for <b>Battlefield 3</b>."
                             .replace(
 
                                     "{title}", DataBank.getExpansionTitle(tempSubItem
                                             .getString("expansion"))
 
-                            );
+                            )
+                            
+                    );
 
                     // Let's get it!
                     tempGravatarHash = ownerObject.getString("gravatarMd5");
 
                 } else {
 
-                    Log.d(Constants.DEBUG_TAG,
-                            "event => " + currItem.getString("event"));
+                    Log.d(Constants.DEBUG_TAG, "event => " + currItem.getString("event"));
                     continue;
 
                 }
@@ -767,7 +788,7 @@ public class MODFeedHandler extends DefaultHandler {
                         Long.parseLong(currItem.getString("itemId")),
                         currItem.getLong("creationDate"), numLikes,
                         numComments,
-                        itemTitle, itemContent,
+                        itemTitle.toString(), itemContent.toString(),
                         currItem.getString("event"), new ProfileData[] {
 
                                 profile1,

@@ -198,7 +198,7 @@ public class CacheHandler {
             try {
 
                 // Init
-                String strQuestionMarks = "?";
+                StringBuilder strQuestionMarks = new StringBuilder("(?");
                 String[] personaIdArray = new String[persona.length];
                 HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
 
@@ -206,11 +206,12 @@ public class CacheHandler {
                 for (int i = 0, max = persona.length; i < max; i++) {
 
                     if (i > 0) {
-                        strQuestionMarks += ",?";
+                        strQuestionMarks.append(", ?");
                     }
                     personaIdArray[i] = String.valueOf(persona[i].getId());
 
                 }
+                strQuestionMarks.append(")");
 
                 // Use the SQLiteManager to get a cursor
                 Cursor results = manager
@@ -219,7 +220,7 @@ public class CacheHandler {
                                 DatabaseStructure.PersonaStatistics.TABLE_NAME,
                                 null,
                                 DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA
-                                        + " IN (" + strQuestionMarks + ")",
+                                        + " IN " + strQuestionMarks,
                                 personaIdArray,
                                 null,
                                 null,
@@ -862,7 +863,7 @@ public class CacheHandler {
             try {
 
                 // Init
-                String strQuestionMarks = "?";
+                StringBuilder strQuestionMarks = new StringBuilder("(?");
                 String[] PlatoonIdArray = new String[platoonId.length];
                 List<PlatoonData> stats = new ArrayList<PlatoonData>();
 
@@ -870,18 +871,19 @@ public class CacheHandler {
                 for (int i = 0, max = platoonId.length; i < max; i++) {
 
                     if (i > 0) {
-                        strQuestionMarks += ",?";
+                        strQuestionMarks.append(", ?");
                     }
                     PlatoonIdArray[i] = String.valueOf(platoonId[i]);
 
                 }
+                strQuestionMarks.append(")");
 
                 // Use the SQLiteManager to get a cursor
                 Cursor results = manager.query(
 
                         DatabaseStructure.PlatoonProfile.TABLE_NAME, null,
                         DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID
-                                + " IN (" + strQuestionMarks + ")",
+                                + " IN " + strQuestionMarks,
                         PlatoonIdArray, null, null,
                         DatabaseStructure.PlatoonProfile.DEFAULT_SORT_ORDER
 

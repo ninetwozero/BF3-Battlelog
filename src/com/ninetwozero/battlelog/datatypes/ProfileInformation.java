@@ -33,7 +33,10 @@ public class ProfileInformation {
     private List<PlatoonData> platoons;
 
     // Other
-    String personaString, personaIdString, personaPlatformString, platoonIdString;
+    private StringBuilder personaString = new StringBuilder();
+    private StringBuilder personaIdString = new StringBuilder();
+    private StringBuilder personaPlatformString = new StringBuilder();
+    private StringBuilder platoonIdString = new StringBuilder();
 
     // Construct(s)
     public ProfileInformation(
@@ -157,26 +160,26 @@ public class ProfileInformation {
     }
 
     public void generate() {
-
+        
         // Reset
-        personaIdString = "";
-        personaString = "";
-        personaPlatformString = "";
-        platoonIdString = "";
+        personaIdString.setLength(0);
+        personaString.setLength(0);
+        personaPlatformString.setLength(0);
+        platoonIdString.setLength(0);
 
         // Iterate
         for (PersonaData p : persona) {
 
-            personaIdString += p.getId() + ":";
-            personaString += p.getName() + ":";
-            personaPlatformString += p.getPlatformId() + ":";
+            personaIdString.append(p.getId() + ":");
+            personaString.append(p.getName() + ":");
+            personaPlatformString.append(p.getPlatformId() + ":");
 
         }
 
         // Iterate
         for (PlatoonData p : platoons) {
 
-            platoonIdString += p.getId() + ":";
+            platoonIdString.append(p.getId() + ":");
 
         }
 
@@ -203,14 +206,14 @@ public class ProfileInformation {
                 (location == null) ? "" : location,
                 (statusMessage == null) ? "" : statusMessage,
                 (currentServer == null) ? "" : currentServer,
-                personaIdString,
-                personaString,
-                personaPlatformString,
+                personaIdString.toString(),
+                personaString.toString(),
+                personaPlatformString.toString(),
                 allowFriendRequests ? "1" : "0",
                 online ? "1" : "0",
                 playing ? "1" : "0",
                 friendStatus ? "1" : "0",
-                platoonIdString
+                platoonIdString.toString()
 
         };
 

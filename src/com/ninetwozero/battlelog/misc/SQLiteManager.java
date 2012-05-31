@@ -284,7 +284,7 @@ public class SQLiteManager {
             throws DatabaseInformationException {
 
         // Construct the Where
-        String stringWhere = "";
+        StringBuilder stringWhere = new StringBuilder();
 
         // How many values did we actually get?
         if (values == null || values.length == 0) {
@@ -293,23 +293,23 @@ public class SQLiteManager {
 
         } else if (values.length == 1) {
 
-            stringWhere = field + " = ?";
+            stringWhere.append(field).append(" = ?");
 
         } else {
 
             for (int i = 0; i < values.length; i++) {
 
                 if (i == 0)
-                    stringWhere += field + " = ?";
+                    stringWhere.append(field).append(" = ?");
                 else
-                    stringWhere += " AND " + field + "= ?";
+                    stringWhere.append(" AND ").append(field).append(" = ?");
 
             }
 
         }
 
         // Let's remove from the DB
-        return DB.delete(table, stringWhere, values);
+        return DB.delete(table, stringWhere.toString(), values);
 
     }
 
@@ -337,7 +337,8 @@ public class SQLiteManager {
         int countRows = values.size();
         int countValues = (countRows > 0) ? values.get(0).length : 0;
 
-        String stringFields = "", stringValues = "";
+        StringBuilder stringFields = new StringBuilder();
+        StringBuilder stringValues = new StringBuilder();
 
         // Validate the number, ie 6 fields should have 6^(n rows) values
         if (countValues % countFields != 0) {
@@ -360,20 +361,20 @@ public class SQLiteManager {
             } else {
 
                 // Append the fields
-                stringFields = TextUtils.join(",", fields);
+                stringFields.append(TextUtils.join(",", fields));
 
                 // Let's bind the parameters
                 for (int i = 0; i < countRows; i++) {
 
-                    stringValues += (i > 0) ? ", (" : "(";
+                    stringValues.append((i > 0) ? ", (" : "(");
 
                     for (int j = 0; j < countValues; j++) {
 
-                        stringValues += (j > 0) ? ", ?" : "?";
+                        stringValues.append((j > 0) ? ", ?" : "?");
 
                     }
 
-                    stringValues += ")";
+                    stringValues.append(")");
 
                 }
 
@@ -450,7 +451,8 @@ public class SQLiteManager {
         int countFields = fields.length;
         int countValues = values.length;
 
-        String stringFields = "", stringValues = "";
+        StringBuilder stringFields = new StringBuilder();
+        StringBuilder stringValues = new StringBuilder();
 
         // Validate the number, ie 6 fields should have 6^(n rows) values
         if (countValues % countFields != 0) {
@@ -473,11 +475,20 @@ public class SQLiteManager {
             } else {
 
                 // Append the fields
-                stringFields = TextUtils.join(",", fields);
+                stringFields.append(TextUtils.join(",", fields));
 
                 // Let's bind the parameters
                 for (int j = 0; j < countValues; j++) {
-                    stringValues += (j > 0) ? ", ?" : "?";
+
+                        stringValues.append((j > 0) ? ", ?" : "?");
+
+                }
+                // Append the fields
+                stringFields.append(TextUtils.join(",", fields));
+
+                // Let's bind the parameters
+                for (int j = 0; j < countValues; j++) {
+                    stringValues.append((j > 0) ? ", ?" : "?");
                 }
 
             }
