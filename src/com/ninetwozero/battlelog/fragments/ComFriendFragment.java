@@ -232,7 +232,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                         ).putExtra(
 
-                                "profile2", ProfileHandler.getPersonaId(
+                                "profile2", ProfileHandler.resolveFullProfileDataFromProfileId(
 
                                         profileData.getId()
 
@@ -252,7 +252,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 ).putExtra(
 
-                        "profile", ProfileHandler.getPersonaId(
+                        "profile", ProfileHandler.resolveFullProfileDataFromProfileId(
 
                                 profileData.getId()
 

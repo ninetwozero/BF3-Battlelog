@@ -6,7 +6,7 @@ import com.ninetwozero.battlelog.misc.RequestHandler;
 public class DefaultHandler {
 
     //Attributes
-    protected static RequestHandler requestHandler = new RequestHandler();
+    protected RequestHandler requestHandler;
     protected String httpContent;
     
 }

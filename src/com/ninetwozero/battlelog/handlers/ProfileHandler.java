@@ -175,7 +175,7 @@ public class ProfileHandler {
 
                     }
 
-                    return ProfileHandler.getPersonaId(profile);
+                    return ProfileHandler.resolveFullProfileDataFromProfileData(profile);
 
                 }
 
@@ -200,12 +200,13 @@ public class ProfileHandler {
 
     }
 
-    public static ProfileData getProfileId(final long personaId)
+    public static ProfileData resolveFullProfileDataFromPersonaId(final long personaId)
             throws WebsiteHandlerException {
 
         try {
 
             // Let's login everybody!
+            
             RequestHandler wh = new RequestHandler();
             String httpContent = wh.get(
                     RequestHandler.generateUrl(URL_OVERVIEW, personaId, 0),
@@ -238,7 +239,7 @@ public class ProfileHandler {
 
     }
 
-    public static ProfileData getPersonaId(final long profileId)
+    public static ProfileData resolveFullProfileDataFromProfileId(final long profileId)
             throws WebsiteHandlerException {
 
         try {
@@ -300,12 +301,12 @@ public class ProfileHandler {
 
     }
 
-    public static ProfileData getPersonaId(final ProfileData p)
+    public static ProfileData resolveFullProfileDataFromProfileData(final ProfileData p)
             throws WebsiteHandlerException {
 
         try {
 
-            ProfileData profile = ProfileHandler.getPersonaId(p.getId());
+            ProfileData profile = ProfileHandler.resolveFullProfileDataFromProfileId(p.getId());
             return new ProfileData.Builder(p.getId(), p.getUsername()).persona(
 
                     profile.getPersonaArray()
@@ -328,7 +329,7 @@ public class ProfileHandler {
             // Do we have a personaId?
             if (pd.getNumPersonas() == 0) {
 
-                pd = getPersonaId(pd.getId());
+                pd = resolveFullProfileDataFromProfileId(pd.getId());
 
             }
 
@@ -422,7 +423,7 @@ public class ProfileHandler {
             // Do we have a personaId?
             if (profileData.getNumPersonas() == 0) {
 
-                profileData = getPersonaId(pd.getId());
+                profileData = resolveFullProfileDataFromProfileId(pd.getId());
 
             }
 

@@ -367,7 +367,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 // Let's try something
                 if (profileData.getNumPersonas() == 0) {
 
-                    profileData = ProfileHandler.getPersonaId(profileData);
+                    profileData = ProfileHandler.resolveFullProfileDataFromProfileData(profileData);
 
                 }
 

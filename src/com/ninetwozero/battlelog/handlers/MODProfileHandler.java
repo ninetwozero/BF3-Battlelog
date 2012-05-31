@@ -50,10 +50,9 @@ import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 
-public class MODProfileHandler {
+public class MODProfileHandler extends DefaultHandler {
 
     // Attributes
-    private RequestHandler requestHandler;
     private ProfileData profileData;
 
     // URLS
@@ -120,7 +119,6 @@ public class MODProfileHandler {
         try {
 
             // Let's login everybody!
-
             ProfileData profile = null;
             String httpContent = requestHandler.post(
 
@@ -186,7 +184,7 @@ public class MODProfileHandler {
 
                     }
 
-                    return getPersonaId(profile);
+                    return resolveFullProfileDataFromProfileData(profile);
 
                 }
 
@@ -211,13 +209,12 @@ public class MODProfileHandler {
 
     }
 
-    public ProfileData getProfileId(final long personaId)
+    public ProfileData resolveFullProfileFromPersonaId(final long personaId)
             throws WebsiteHandlerException {
 
         try {
 
             // Let's login everybody!
-
             String httpContent = requestHandler.get(
                     RequestHandler.generateUrl(URL_OVERVIEW, personaId, 0),
                     RequestHandler.HEADER_NORMAL);
@@ -249,7 +246,7 @@ public class MODProfileHandler {
 
     }
 
-    public ProfileData getPersonaId(final long profileId)
+    public ProfileData resolveFullProfileDataFromProfileId(final long profileId)
             throws WebsiteHandlerException {
 
         try {
@@ -310,13 +307,13 @@ public class MODProfileHandler {
 
     }
 
-    public ProfileData getPersonaId(final ProfileData p)
+    public ProfileData resolveFullProfileDataFromProfileData(final ProfileData p)
             throws WebsiteHandlerException {
 
         try {
 
-            ProfileData profile = getPersonaId(p.getId());
-            return new ProfileData.Builder(p.getId(), p.getUsername()).persona(
+            ProfileData profile = resolveFullProfileDataFromProfileId(profileData.getId());
+            return new ProfileData.Builder(profileData.getId(), profileData.getUsername()).persona(
 
                     profile.getPersonaArray()
 
@@ -338,7 +335,7 @@ public class MODProfileHandler {
             // Do we have a personaId?
             if (profileData.getNumPersonas() == 0) {
 
-                profileData = getPersonaId(profileData.getId());
+                profileData = resolveFullProfileDataFromProfileId(profileData.getId());
 
             }
 
@@ -416,8 +413,7 @@ public class MODProfileHandler {
 
     }
 
-    public HashMap<Long, PersonaStats> getStats(
-            final Context context)
+    public HashMap<Long, PersonaStats> getStats(final Context context)
             throws WebsiteHandlerException {
 
         try {
@@ -428,7 +424,7 @@ public class MODProfileHandler {
             // Do we have a personaId?
             if (profileData.getNumPersonas() == 0) {
 
-                profileData = getPersonaId(profileData.getId());
+                profileData = resolveFullProfileDataFromProfileId(profileData.getId());
 
             }
 
@@ -552,7 +548,8 @@ public class MODProfileHandler {
 
     }
 
-    public HashMap<Long, UnlockDataWrapper> getUnlocks(final int minCompletion) throws WebsiteHandlerException {
+    public HashMap<Long, UnlockDataWrapper> getUnlocks(final int minCompletion)
+            throws WebsiteHandlerException {
 
         try {
 
@@ -726,16 +723,15 @@ public class MODProfileHandler {
 
     }
 
-    public ProfileInformation getInformation(
-            Context context,
-            long activeProfileId) throws WebsiteHandlerException {
+    public ProfileInformation getInformation(Context context, long activeProfileId)
+            throws WebsiteHandlerException {
 
         try {
 
             // Let's go!
-            RequestHandler rh = new RequestHandler();
+
             List<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
-            String httpContent = rh.get(
+            String httpContent = requestHandler.get(
                     RequestHandler.generateUrl(
                             URL_INFO,
                             profileData.getUsername()
@@ -903,8 +899,7 @@ public class MODProfileHandler {
 
         try {
 
-            RequestHandler rh = new RequestHandler();
-            String httpContent = rh.post(
+            String httpContent = requestHandler.post(
 
                     URL_STATUS,
                     RequestHandler.generatePostData(
@@ -942,20 +937,16 @@ public class MODProfileHandler {
     }
 
     //
-    public ArrayList<GeneralSearchResult> search(
-
-            Context context, String keyword, String checksum
-
-            ) throws WebsiteHandlerException {
+    public ArrayList<GeneralSearchResult> search(Context context, String keyword, String checksum)
+            throws WebsiteHandlerException {
 
         // Init
         List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
-        RequestHandler rh = new RequestHandler();
 
         try {
 
             // Get the content
-            String httpContent = rh.post(
+            String httpContent = requestHandler.post(
 
                     URL_SEARCH,
                     RequestHandler.generatePostData(
@@ -1014,27 +1005,26 @@ public class MODProfileHandler {
 
     }
 
-    public Map<Long, List<WeaponDataWrapper>> getWeapons(ProfileData p) {
+    public Map<Long, List<WeaponDataWrapper>> getWeapons() {
 
         try {
 
             // Init
-            RequestHandler rh = new RequestHandler();
             Map<Long, List<WeaponDataWrapper>> weaponDataMap = new HashMap<Long, List<WeaponDataWrapper>>();
 
-            for (int i = 0, max = p.getNumPersonas(); i < max; i++) {
+            for (int i = 0, max = profileData.getNumPersonas(); i < max; i++) {
 
                 // Init the array
                 List<WeaponDataWrapper> weaponDataArray = new ArrayList<WeaponDataWrapper>();
 
                 // Get the data
-                String httpContent = rh.get(
+                String httpContent = requestHandler.get(
 
                         RequestHandler.generateUrl(
 
                                 URL_WEAPONS,
-                                p.getPersona(i).getId(),
-                                p.getPersona(i).getPlatformId()
+                                profileData.getPersona(i).getId(),
+                                profileData.getPersona(i).getPlatformId()
                                 ),
                         RequestHandler.HEADER_NORMAL
 
@@ -1140,7 +1130,7 @@ public class MODProfileHandler {
                 }
 
                 Collections.sort(weaponDataArray, new WeaponDataWrapperComparator());
-                weaponDataMap.put(p.getPersona(i).getId(), weaponDataArray);
+                weaponDataMap.put(profileData.getPersona(i).getId(), weaponDataArray);
 
             }
 
@@ -1161,29 +1151,28 @@ public class MODProfileHandler {
 
     }
 
-    public HashMap<Long, WeaponDataWrapper> getWeapon(ProfileData p, WeaponInfo weaponInfo,
-            WeaponStats weaponStats) {
+    public HashMap<Long, WeaponDataWrapper> getWeapon(WeaponInfo weaponInfo, WeaponStats weaponStats) {
 
         try {
 
             // Init
-            RequestHandler rh = new RequestHandler();
+
             List<UnlockData> unlockArray = new ArrayList<UnlockData>();
             HashMap<Long, WeaponDataWrapper> weaponDataArray = new HashMap<Long, WeaponDataWrapper>();
 
             // Iterate per persona
-            for (int i = 0, max = p.getNumPersonas(); i < max; i++) {
+            for (int i = 0, max = profileData.getNumPersonas(); i < max; i++) {
 
                 // Get the data
-                String httpContent = rh.get(
+                String httpContent = requestHandler.get(
 
                         RequestHandler.generateUrl(
 
                                 URL_WEAPONS_INFO,
-                                p.getPersona(i).getName(),
-                                p.getPersona(i).getId(),
+                                profileData.getPersona(i).getName(),
+                                profileData.getPersona(i).getId(),
                                 weaponStats.getSlug(),
-                                p.getPersona(i).getPlatformId()
+                                profileData.getPersona(i).getPlatformId()
 
                                 ),
                         RequestHandler.HEADER_NORMAL
@@ -1235,7 +1224,7 @@ public class MODProfileHandler {
                     // Add the data array to the WeaponDataWrapper
                     weaponDataArray.put(
 
-                            p.getPersona(i).getId(),
+                            profileData.getPersona(i).getId(),
                             new WeaponDataWrapper(
 
                                     0,
@@ -1267,31 +1256,30 @@ public class MODProfileHandler {
 
     }
 
-    public HashMap<Long, List<AssignmentData>> getAssignments(
-            Context c, ProfileData profile) throws WebsiteHandlerException {
+    public HashMap<Long, List<AssignmentData>> getAssignments(Context c)
+            throws WebsiteHandlerException {
 
         try {
 
             // Attributes
-            RequestHandler rh = new RequestHandler();
             HashMap<Long, List<AssignmentData>> assignmentMap = new HashMap<Long, List<AssignmentData>>();
             List<AssignmentData> items;
 
-            for (int count = 0, maxCount = profile.getNumPersonas(); count < maxCount; count++) {
+            for (int count = 0, maxCount = profileData.getNumPersonas(); count < maxCount; count++) {
 
                 // Init
                 items = new ArrayList<AssignmentData>();
 
                 // Get the JSON!
-                String httpContent = rh.get(
+                String httpContent = requestHandler.get(
 
                         RequestHandler.generateUrl(
 
                                 URL_ASSIGNMENTS,
-                                profile.getPersona(count).getName(),
-                                profile.getPersona(count).getId(),
-                                profile.getId(),
-                                profile.getPersona(count).getPlatformId()
+                                profileData.getPersona(count).getName(),
+                                profileData.getPersona(count).getId(),
+                                profileData.getId(),
+                                profileData.getPersona(count).getPlatformId()
 
                                 ),
                         RequestHandler.HEADER_AJAX
@@ -1303,7 +1291,7 @@ public class MODProfileHandler {
                         .getJSONObject("data");
                 if (topLevel.isNull("missionTrees")) {
 
-                    assignmentMap.put(profile.getPersona(count).getId(), items);
+                    assignmentMap.put(profileData.getPersona(count).getId(), items);
                     continue;
 
                 }
@@ -1442,7 +1430,7 @@ public class MODProfileHandler {
                     }
 
                     // Add the items
-                    assignmentMap.put(profile.getPersona(count).getId(), items);
+                    assignmentMap.put(profileData.getPersona(count).getId(), items);
 
                 }
 
@@ -1459,18 +1447,17 @@ public class MODProfileHandler {
 
     }
 
-    public ArrayList<PlatoonData> getPlatoons(
-            final Context context, final String username)
+    public ArrayList<PlatoonData> getPlatoons(final Context context, final String username)
             throws WebsiteHandlerException {
 
         // Inir
-        RequestHandler rh = new RequestHandler();
+
         List<PlatoonData> platoons = new ArrayList<PlatoonData>();
 
         try {
 
             // Get the content
-            String httpContent = rh.get(
+            String httpContent = requestHandler.get(
 
                     RequestHandler.generateUrl(ProfileHandler.URL_INFO, username),
                     RequestHandler.HEADER_AJAX

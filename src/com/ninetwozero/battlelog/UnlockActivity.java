@@ -272,7 +272,7 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
 
                 if (arg0[0].getNumPersonas() == 0) {
 
-                    profileData = ProfileHandler.getPersonaId(profileData);
+                    profileData = ProfileHandler.resolveFullProfileDataFromProfileData(profileData);
                     if (selectedPersona == 0) {
                         selectedPersona = profileData.getPersona(0).getId();
                     }
