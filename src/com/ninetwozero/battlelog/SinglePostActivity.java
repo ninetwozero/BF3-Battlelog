@@ -59,7 +59,8 @@ public class SinglePostActivity extends ListActivity {
     private LayoutInflater layoutInflater;
     private FeedItem item;
     private NotificationData notification;
-
+    private int pageId = 1;
+    
     // Elements
     private ListView listView;
     private TextView textHeading, textTitle, textContent, textDate;
@@ -84,7 +85,7 @@ public class SinglePostActivity extends ListActivity {
         setContentView(R.layout.single_post_view);
 
         // Prepare to tango
-        this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Get the ListView
         listView = getListView();
@@ -107,18 +108,9 @@ public class SinglePostActivity extends ListActivity {
             return;
 
         }
-
-        // Get data if we need it via the id
-        if (notification != null) {
-
-            // Get data here async
-            new AsyncGetDataForPost().execute(notification);
-
-        } else {
-
-            setupLayout(item);
-
-        }
+        
+        initLayout();
+        show(item);
 
     }
 
@@ -157,8 +149,7 @@ public class SinglePostActivity extends ListActivity {
     public void reload() {
 
         if (item != null) {
-            new AsyncCommentsRefresh(this, listView, layoutInflater)
-                    .execute(item.getId());
+            new AsyncCommentsRefresh(this, item.getId(), listView, layoutInflater).execute(pageId);
         }
 
     }
@@ -169,12 +160,7 @@ public class SinglePostActivity extends ListActivity {
         if (v.getId() == R.id.button_send) {
 
             // Send it!
-            new AsyncCommentSend(
-
-                    this, item.getId(), buttonSend, new AsyncCommentsRefresh(
-                            this, listView, layoutInflater)
-
-            ).execute(
+            new AsyncCommentSend(this, item.getId(), buttonSend).execute(
 
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
                     fieldMessage.getText().toString()
@@ -326,7 +312,7 @@ public class SinglePostActivity extends ListActivity {
             // Let's see...
             if (results) {
 
-                setupLayout(item);
+                show(item);
                 reload();
 
             }
@@ -335,7 +321,20 @@ public class SinglePostActivity extends ListActivity {
 
     }
 
-    public void setupLayout(FeedItem feedItem) {
+    public void initLayout() {
+
+        // Get the fields
+        textHeading = (TextView) findViewById(R.id.text_heading);
+        textTitle = (TextView) findViewById(R.id.text_title);
+        textContent = (TextView) findViewById(R.id.text_content);
+        textDate = (TextView) findViewById(R.id.text_date);
+        fieldMessage = (EditText) findViewById(R.id.field_message);
+        buttonSend = (Button) findViewById(R.id.button_send);
+        imageAvatar = (ImageView) findViewById(R.id.image_avatar);
+
+    }
+
+    public void show(FeedItem feedItem) {
 
         // Let's do this
         if (feedItem == null) {
@@ -344,30 +343,6 @@ public class SinglePostActivity extends ListActivity {
                     .show();
             return;
 
-        }
-
-        // Get the fields
-        if (textHeading == null) {
-            textHeading = (TextView) findViewById(R.id.text_heading);
-        }
-        if (textTitle == null) {
-            textTitle = (TextView) findViewById(R.id.text_title);
-        }
-        if (textContent == null) {
-            textContent = (TextView) findViewById(R.id.text_content);
-        }
-        if (textDate == null) {
-            textDate = (TextView) findViewById(R.id.text_date);
-        }
-        if (fieldMessage == null) {
-            fieldMessage = (EditText) findViewById(R.id.field_message);
-        }
-        if (buttonSend == null) {
-            buttonSend = (Button) findViewById(R.id.button_send);
-        }
-        if (imageAvatar == null) {
-
-            imageAvatar = (ImageView) findViewById(R.id.image_avatar);
         }
 
         // Set up the top-place

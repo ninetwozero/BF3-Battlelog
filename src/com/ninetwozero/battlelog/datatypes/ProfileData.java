@@ -86,7 +86,7 @@ public class ProfileData implements Parcelable {
 
     public int getNumPersonas() {
 
-        return persona.length;
+        return (persona == null) ? 0 : persona.length;
 
     }
 

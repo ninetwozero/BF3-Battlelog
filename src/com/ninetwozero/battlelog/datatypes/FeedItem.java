@@ -18,7 +18,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.AssignmentActivity;
 import com.ninetwozero.battlelog.ForumActivity;
@@ -27,7 +26,6 @@ import com.ninetwozero.battlelog.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.UnlockActivity;
 import com.ninetwozero.battlelog.handlers.ProfileHandler;
-import com.ninetwozero.battlelog.misc.Constants;
 
 public class FeedItem implements Parcelable {
 

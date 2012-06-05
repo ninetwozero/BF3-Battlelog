@@ -3,8 +3,6 @@ package com.ninetwozero.battlelog.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,7 +12,6 @@ import android.util.Log;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
-import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.RequestHandlerException;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -194,7 +191,7 @@ public class FeedHandler extends DefaultHandler {
                     JSONObject statsItem = tempSubItem
                             .getJSONArray("statItems").getJSONObject(0);
                     String[] tempInfo = DataBank.getAssignmentTitle(statsItem
-                            .getString("langKeyTitle"));
+                            .getString("nameSID"));
 
                     // Set the title
                     itemTitle.append(
@@ -217,11 +214,11 @@ public class FeedHandler extends DefaultHandler {
                     tempSubItem = currItem.optJSONObject("CREATEDFORUMTHREAD");
                     itemTitle.append(context.getString(R.string.info_p_forumthread).replace(
 
-                                    "{thread}", tempSubItem.getString("threadTitle")
+                            "{thread}", tempSubItem.getString("threadTitle")
 
                             )
-                            
-                    );
+
+                            );
                     itemContent.append(tempSubItem.getString("threadBody"));
 
                 } else if (!currItem.isNull("WROTEFORUMPOST")) {
@@ -234,8 +231,8 @@ public class FeedHandler extends DefaultHandler {
                                     "{thread}", tempSubItem.getString("threadTitle")
 
                             )
-                            
-                    );
+
+                            );
                     itemContent.append(tempSubItem.getString("postBody"));
 
                 } else if (!currItem.isNull("GAMEREPORT")) {
@@ -252,7 +249,7 @@ public class FeedHandler extends DefaultHandler {
                         String tempKey;
                         tempSubItem = tempStatsArray
                                 .optJSONObject(statsCounter);
-                        if ( tempTitle.length() == 0 ) {
+                        if (tempTitle.length() == 0) {
                             tempTitle.append("<b>");
                         }
 
@@ -272,17 +269,21 @@ public class FeedHandler extends DefaultHandler {
                         }
 
                         // Weapon? Attachment?
-                        if (!tempSubItem.isNull("parentLangKeyTitle")) {
+                        if (!tempSubItem.isNull("parentnameSID")) {
 
                             // Let's see
                             String parentKey = tempSubItem
-                                    .getString("parentLangKeyTitle");
+                                    .getString("parentnameSID");
                             tempKey = DataBank.getWeaponTitle(parentKey);
 
                             // Is it empty?
                             if (!parentKey.equals(tempKey)) {
 
-                                tempTitle.append(tempKey).append(" ").append(DataBank.getAttachmentTitle(tempSubItem.getString("langKeyTitle")));
+                                tempTitle
+                                        .append(tempKey)
+                                        .append(" ")
+                                        .append(DataBank.getAttachmentTitle(tempSubItem
+                                                .getString("nameSID")));
 
                             } else {
 
@@ -292,7 +293,11 @@ public class FeedHandler extends DefaultHandler {
                                 // Validate
                                 if (!parentKey.equals(tempKey)) {
 
-                                    tempTitle.append(tempKey).append(" ").append(DataBank.getVehicleUpgradeTitle(tempSubItem.getString("langKeyTitle")));
+                                    tempTitle
+                                            .append(tempKey)
+                                            .append(" ")
+                                            .append(DataBank.getVehicleUpgradeTitle(tempSubItem
+                                                    .getString("nameSID")));
 
                                 } else {
 
@@ -305,7 +310,7 @@ public class FeedHandler extends DefaultHandler {
                         } else {
 
                             // Let's see
-                            String key = tempSubItem.getString("langKeyTitle");
+                            String key = tempSubItem.getString("nameSID");
                             tempKey = DataBank.getWeaponTitle(key);
 
                             if (key.equals(tempKey)) {
@@ -351,15 +356,15 @@ public class FeedHandler extends DefaultHandler {
                         }
 
                     }
-                    
-
 
                     // Set the things straight
                     itemTitle.append(
-                            context.getString(tempStatsArray.length() > 1 ? R.string.info_p_newunlocks
-                                    : R.string.info_p_newunlock).replace("{item}", tempTitle + "</b>")
-                                    
-                    );
+                            context.getString(
+                                    tempStatsArray.length() > 1 ? R.string.info_p_newunlocks
+                                            : R.string.info_p_newunlock).replace("{item}",
+                                    tempTitle + "</b>")
+
+                            );
 
                 } else if (!currItem.isNull("STATUSMESSAGE")) {
 
@@ -367,7 +372,8 @@ public class FeedHandler extends DefaultHandler {
                     tempSubItem = currItem.optJSONObject("STATUSMESSAGE");
 
                     // Set the title
-                    itemTitle.append("<b>{username}</b> ").append(tempSubItem.getString("statusMessage"));
+                    itemTitle.append("<b>{username}</b> ").append(
+                            tempSubItem.getString("statusMessage"));
 
                 } else if (!currItem.isNull("ADDEDFAVSERVER")) {
 
@@ -380,7 +386,7 @@ public class FeedHandler extends DefaultHandler {
                             "{server}", tempSubItem.getString("serverName")
 
                             )
-                    );
+                            );
 
                 } else if (!currItem.isNull("RANKEDUP")) {
 
@@ -394,15 +400,15 @@ public class FeedHandler extends DefaultHandler {
 
                                     "{rank title}",
                                     DataBank.getRankTitle(tempSubItem
-                                            .getString("langKeyTitle"))
+                                            .getString("nameSID"))
 
                             ).replace(
 
                                     "{rank}", tempSubItem.getString("rank")
 
                             )
-                            
-                    );
+
+                            );
 
                 } else if (!currItem.isNull("COMMENTEDGAMEREPORT")) {
 
@@ -432,8 +438,8 @@ public class FeedHandler extends DefaultHandler {
                                             .getInt("gameMode"))
 
                             )
-                            
-                    );
+
+                            );
                     itemContent.append(tempSubItem.getString("gameReportComment"));
 
                 } else if (!currItem.isNull("COMMENTEDBLOG")) {
@@ -447,8 +453,8 @@ public class FeedHandler extends DefaultHandler {
 
                                     "{post name}", tempSubItem.getString("blogTitle")
 
-                                    )
-                                    
+                            )
+
                             );
 
                     itemContent.append(tempSubItem.getString("blogCommentBody"));
@@ -465,8 +471,8 @@ public class FeedHandler extends DefaultHandler {
 
                                     "{platoon}", tempSubItem.getString("name")
 
-                                    )
-                                    
+                            )
+
                             );
 
                 } else if (!currItem.isNull("KICKEDPLATOON")) {
@@ -481,8 +487,8 @@ public class FeedHandler extends DefaultHandler {
 
                                     "{platoon}", tempSubItem.getString("name")
 
-                                    )
-                                    
+                            )
+
                             );
 
                 } else if (!currItem.isNull("CREATEDPLATOON")) {
@@ -497,8 +503,8 @@ public class FeedHandler extends DefaultHandler {
 
                             "{platoon}", tempSubItem.getString("name")
 
-                                    )
-                                    
+                            )
+
                             );
 
                 } else if (!currItem.isNull("PLATOONBADGESAVED")) {
@@ -513,8 +519,8 @@ public class FeedHandler extends DefaultHandler {
 
                                     "{platoon}", tempSubItem.getString("name")
 
-                                    )
-                                    
+                            )
+
                             );
 
                 } else if (!currItem.isNull("LEFTPLATOON")) {
@@ -529,8 +535,8 @@ public class FeedHandler extends DefaultHandler {
 
                                     "{platoon}", tempSubItem.getString("name")
 
-                                    )
-                                    
+                            )
+
                             );
 
                 } else if (!currItem.isNull("RECEIVEDPLATOONWALLPOST")) {
@@ -547,8 +553,8 @@ public class FeedHandler extends DefaultHandler {
                                     tempSubItem.getJSONObject("platoon")
                                             .getString("name")
 
-                                    )
-                                    
+                            )
+
                             );
 
                     itemContent.append(tempSubItem.getString("wallBody"));
@@ -573,8 +579,8 @@ public class FeedHandler extends DefaultHandler {
 
                                     "{difficulty}", tempSubItem.getString("difficulty")
 
-                                    )
-                                    
+                            )
+
                             );
 
                     // Set the second profile
@@ -584,7 +590,7 @@ public class FeedHandler extends DefaultHandler {
                             ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
 
                 } else if (!currItem.isNull("RECEIVEDAWARD")) {
-/* TODO: GLITCHING: DOUBLE OUTPUT */
+                    /* TODO: GLITCHING: DOUBLE OUTPUT */
                     // Get it!
                     JSONArray tempStatsArray = currItem.optJSONObject(
                             "RECEIVEDAWARD").optJSONArray("statItems");
@@ -593,10 +599,9 @@ public class FeedHandler extends DefaultHandler {
                             .length(); statsCounter < maxCounter; statsCounter++) {
 
                         // Let's get the item
-                        tempSubItem = tempStatsArray
-                                .optJSONObject(statsCounter);
-                        String tempKey = tempSubItem.getString("langKeyTitle");
-                        if ( tempTitle.length() == 0 ) {
+                        tempSubItem = tempStatsArray.optJSONObject(statsCounter);
+                        String tempKey = tempSubItem.getString("nameSID");
+                        if (tempTitle.length() == 0) {
                             tempTitle.append("<b>");
                         }
 
@@ -621,10 +626,16 @@ public class FeedHandler extends DefaultHandler {
                     }
 
                     // Set the title
-                    itemTitle.append(context
-                            .getString(tempStatsArray.length() > 1 ? R.string.info_p_awards
-                                    : R.string.info_p_award).replace("{award}", tempTitle + "</b>"));
-                    itemTitle.append(itemTitle);
+                    itemTitle.append(
+
+                            context.getString(
+
+                                    tempStatsArray.length() > 1 ? R.string.info_p_awards
+                                            : R.string.info_p_award
+
+                                    ).replace("{award}", tempTitle + "</b>")
+
+                            );
 
                 } else if (!currItem.isNull("RECEIVEDWALLPOST")) {
 
@@ -638,8 +649,8 @@ public class FeedHandler extends DefaultHandler {
                                     "{message}", tempSubItem.getString("wallBody")
 
                             )
-                            
-                    );
+
+                            );
 
                     // Let's get it!
                     otherUserObject = tempSubItem.getJSONObject("writerUser");
@@ -657,15 +668,16 @@ public class FeedHandler extends DefaultHandler {
                     tempSubItem = currItem.optJSONObject("GAMEACCESS");
 
                     // Set it!
-                    itemTitle.append("<b>{username} now has access to <b>{title}</b> for <b>Battlefield 3</b>."
-                            .replace(
+                    itemTitle
+                            .append("<b>{username} now has access to <b>{title}</b> for <b>Battlefield 3</b>."
+                                    .replace(
 
-                                    "{title}", DataBank.getExpansionTitle(tempSubItem
-                                            .getString("expansion"))
+                                            "{title}", DataBank.getExpansionTitle(tempSubItem
+                                                    .getString("expansion"))
 
-                            )
-                            
-                    );
+                                    )
+
+                            );
 
                     // Let's get it!
                     tempGravatarHash = ownerObject.getString("gravatarMd5");

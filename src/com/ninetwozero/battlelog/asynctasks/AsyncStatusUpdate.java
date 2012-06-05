@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
 import com.ninetwozero.battlelog.handlers.COMHandler;
-import com.ninetwozero.battlelog.misc.Constants;
 
 public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
 

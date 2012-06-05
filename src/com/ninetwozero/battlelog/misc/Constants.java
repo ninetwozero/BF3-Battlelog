@@ -33,9 +33,9 @@ public final class Constants {
     public static final String URL_FRIEND_DECLINE = Constants.URL_MAIN
             + "friend/declineFriendship/{UID}/";
     public static final String URL_NOTIFICATIONS_ALL = Constants.URL_MAIN
-            + "notification/";
+            + "updates/";
     public static final String URL_NOTIFICATIONS_TOP5 = Constants.URL_MAIN
-            + "notification/loadNotifications/";
+            + "updates/loadNotifications/";
     public static final String URL_LOGOUT = Constants.URL_MAIN + "session/logout/";
 
     // URLs to JSON-files (FEED-related)
@@ -58,9 +58,9 @@ public final class Constants {
     };
 
     // HTML-elements to grab
-    public static final String ELEMENT_UID_LINK = "<a class=\"main-loggedin-leftcolumn-active-soldier-name\" href=\"/bf3/soldier/";
+    public static final String ELEMENT_UID_LINK = "<a class=\"base-header-soldier-link\" href=\"/bf3/soldier/";
     public static final String ELEMENT_ERROR_MESSAGE = "<div class=\"gate-login-errormsg wfont\">";
-    public static final String ELEMENT_USERNAME_LINK = "<a href=\"/bf3/user/";
+    public static final String ELEMENT_USERNAME_LINK = "<div class=\"base-header-profile-username\">";
     public static final String ELEMENT_STATUS_OK = "";
     public static final String ELEMENT_STATUS_CHECKSUM = "<input type=\"hidden\" name=\"post-check-sum\" value=\"";
 

@@ -525,7 +525,8 @@ public class COMHandler extends DefaultHandler {
 
                             FIELD_NAMES_STATUS,
                             content,
-                            checksum
+                            checksum,
+                            ""
 
                             ),
                     RequestHandler.HEADER_NORMAL

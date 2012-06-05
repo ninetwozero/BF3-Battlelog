@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.CommentData;
+import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.handlers.CommentHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 
@@ -31,15 +32,13 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
     private Context context;
     private Button buttonSend;
     private long postId;
-    private AsyncCommentsRefresh asyncCommentsRefresh;
 
     // Constructor
-    public AsyncCommentSend(Context c, long pId, Button b, AsyncCommentsRefresh acr) {
+    public AsyncCommentSend(Context c, long pId, Button b) {
 
         context = c;
         postId = pId;
         buttonSend = b;
-        asyncCommentsRefresh = acr;
 
     }
 
@@ -73,8 +72,8 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
     protected void onPostExecute(Boolean results) {
 
         // Reload
-        asyncCommentsRefresh.execute(postId);
-
+        ((DefaultFragmentActivity) context).reload();
+        
         // Set the button
         buttonSend.setEnabled(true);
         buttonSend.setText(R.string.label_send);

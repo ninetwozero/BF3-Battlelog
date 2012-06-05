@@ -152,7 +152,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
             // Make sure the tabs follow
             viewPager.setOnPageChangeListener(tabs);
-            viewPager.setOffscreenPageLimit(2);
+            viewPager.setOffscreenPageLimit(4);
             viewPager.setCurrentItem(1);
 
         }

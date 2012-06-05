@@ -26,7 +26,6 @@ public class AsyncFriendRequest extends AsyncTask<String, Integer, Boolean> {
     // Attribute
     private Context context;
     private long profileId;
-    private String httpContent;
 
     // Constructor
     public AsyncFriendRequest(Context c, long pId) {

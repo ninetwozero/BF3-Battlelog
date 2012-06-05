@@ -29,18 +29,20 @@ import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.handlers.CommentHandler;
 
-public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
+public class AsyncCommentsRefresh extends AsyncTask<Integer, Integer, Boolean> {
 
     // Attribute
     private Context context;
+    private long postId;
     private List<CommentData> comments = new ArrayList<CommentData>();
     private ListView listView;
     private LayoutInflater layoutInflater;
 
     // Constructor
-    public AsyncCommentsRefresh(Context c, ListView lv, LayoutInflater l) {
+    public AsyncCommentsRefresh(Context c, long i, ListView lv, LayoutInflater l) {
 
         context = c;
+        postId = i;
         listView = lv;
         layoutInflater = l;
 
@@ -51,16 +53,16 @@ public class AsyncCommentsRefresh extends AsyncTask<Long, Integer, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Long... commentId) {
+    protected Boolean doInBackground(Integer... page) {
 
         try {
 
             // Let's get this!!
-            comments = new CommentHandler(commentId[0], CommentData.TYPE_NEWS).get();
+            comments = new CommentHandler(postId, CommentData.TYPE_NEWS).get(page[0]);
             return true;
+        } catch (WebsiteHandlerException ex) {
 
-        } catch (WebsiteHandlerException e) {
-
+            ex.printStackTrace();
             return false;
 
         }

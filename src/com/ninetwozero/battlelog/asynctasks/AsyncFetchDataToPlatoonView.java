@@ -12,7 +12,6 @@ import com.ninetwozero.battlelog.PlatoonActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.handlers.PlatoonHandler;
-import com.ninetwozero.battlelog.handlers.ProfileHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 
 public class AsyncFetchDataToPlatoonView extends

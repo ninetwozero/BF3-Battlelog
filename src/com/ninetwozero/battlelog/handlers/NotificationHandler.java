@@ -10,6 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
@@ -45,6 +47,8 @@ public class NotificationHandler extends DefaultHandler {
             // Got httpContent
             if (!"".equals(httpContent)) {
 
+                Log.d(Constants.DEBUG_TAG, "httpContent => " + httpContent);
+                
                 // Grab the notifications
                 return new JSONObject(httpContent).getJSONObject("data")
                         .getInt("numUnread");

@@ -38,7 +38,7 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
     // Attributes
     private ProfileData profileData;
     private long selectedPersona;
-    private int selectedPosition;
+    //private int selectedPosition;
     private WeaponDataWrapper weaponDataWrapper;
     private WeaponInfo weaponInfo;
     private WeaponStats weaponStats;

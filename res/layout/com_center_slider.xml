@@ -13,7 +13,6 @@
  -->
 <SlidingDrawer 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:swipeytabs="http://schemas.android.com/apk/res/com.ninetwozero.battlelog"
 	android:id="@+id/com_slider"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"

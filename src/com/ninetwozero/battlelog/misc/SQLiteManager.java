@@ -324,6 +324,66 @@ public class SQLiteManager {
         return DB.delete(table, "1", null);
 
     }
+    
+    public long insert(String table, String[] fields, String[] values)
+            throws DatabaseInformationException {
+
+        // Let's validate the table
+        if (table == null || table.equals(""))
+            throw new DatabaseInformationException("No table selected.");
+
+        // Get the number of fields and values
+        int countFields = fields.length;
+        int countValues = values.length;
+
+        StringBuilder stringFields = new StringBuilder();
+        StringBuilder stringValues = new StringBuilder();
+
+        // Validate the number, ie 6 fields should have 6^(n rows) values
+        if (countValues % countFields != 0) {
+
+            throw new DatabaseInformationException(
+                    "Database mismatch - numFields <> numValues.");
+
+        } else {
+
+            if (countFields == 0) {
+
+                throw new DatabaseInformationException(
+                        "Storage failed - no fields found.");
+
+            } else if (countValues == 0) {
+
+                throw new DatabaseInformationException(
+                        "Storage failed - no values found.");
+
+            } else {
+
+                // Append the fields
+                stringFields.append(TextUtils.join(",", fields));
+
+                // Let's bind the parameters
+                for (int j = 0; j < countValues; j++) {
+
+                    stringValues.append((j == 0) ? "?" : ", ?");
+
+                }
+
+            }
+
+        }
+
+        STATEMENT = DB.compileStatement("INSERT INTO " + table + "( "
+                + stringFields + ") VALUES " + "(" + stringValues + ")");
+
+        // Let's bind the parameters
+        for (int j = 1; j <= countValues; j++) {
+            STATEMENT.bindString(j, values[j - 1]);
+        }
+
+        // STATEMENT.bindString( 1, name );
+        return STATEMENT.executeInsert();
+    }
 
     public long insert(String table, String[] fields, List<String[]> values)
             throws DatabaseInformationException {
@@ -366,7 +426,7 @@ public class SQLiteManager {
                 // Let's bind the parameters
                 for (int i = 0; i < countRows; i++) {
 
-                    stringValues.append((i > 0) ? ", (" : "(");
+                    stringValues.append( (i == 0) ? "(" : ", (");
 
                     for (int j = 0; j < countValues; j++) {
 
@@ -398,7 +458,7 @@ public class SQLiteManager {
         // STATEMENT.bindString( 1, name );
         return STATEMENT.executeInsert();
     }
-
+    
     public int update(String table, String[] fields, String[] values,
             String whereField, long id) throws DatabaseInformationException {
 
@@ -439,75 +499,7 @@ public class SQLiteManager {
                 });
 
     }
-
-    public long insert(String table, String[] fields, String[] values)
-            throws DatabaseInformationException {
-
-        // Let's validate the table
-        if (table == null || table.equals(""))
-            throw new DatabaseInformationException("No table selected.");
-
-        // Get the number of fields and values
-        int countFields = fields.length;
-        int countValues = values.length;
-
-        StringBuilder stringFields = new StringBuilder();
-        StringBuilder stringValues = new StringBuilder();
-
-        // Validate the number, ie 6 fields should have 6^(n rows) values
-        if (countValues % countFields != 0) {
-
-            throw new DatabaseInformationException(
-                    "Database mismatch - numFields <> numValues.");
-
-        } else {
-
-            if (countFields == 0) {
-
-                throw new DatabaseInformationException(
-                        "Storage failed - no fields found.");
-
-            } else if (countValues == 0) {
-
-                throw new DatabaseInformationException(
-                        "Storage failed - no values found.");
-
-            } else {
-
-                // Append the fields
-                stringFields.append(TextUtils.join(",", fields));
-
-                // Let's bind the parameters
-                for (int j = 0; j < countValues; j++) {
-
-                        stringValues.append((j > 0) ? ", ?" : "?");
-
-                }
-                // Append the fields
-                stringFields.append(TextUtils.join(",", fields));
-
-                // Let's bind the parameters
-                for (int j = 0; j < countValues; j++) {
-                    stringValues.append((j > 0) ? ", ?" : "?");
-                }
-
-            }
-
-        }
-
-        STATEMENT = DB.compileStatement("INSERT INTO " + table + "( "
-                + stringFields + ") VALUES " + "(" + stringValues + ")");
-
-        // Let's bind the parameters
-        for (int j = 1; j <= countValues; j++) {
-            // Log.d(Constants.DEBUG_TAG, fields[j-1] + " =>" + values[j-1]);
-            STATEMENT.bindString(j, values[j - 1]);
-        }
-
-        // STATEMENT.bindString( 1, name );
-        return STATEMENT.executeInsert();
-    }
-
+    
     public final Cursor query(String t, String[] p, String s, String[] sA,
             String g, String h, String o) throws DatabaseInformationException {
 

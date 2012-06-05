@@ -26,7 +26,6 @@ public class AsyncFriendRemove extends AsyncTask<String, Integer, Boolean> {
     // Attribute
     private Context context;
     private long profileId;
-    private String httpContent;
 
     // Constructor
     public AsyncFriendRemove(Context c, long pId) {

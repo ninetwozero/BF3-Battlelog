@@ -41,7 +41,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
     private ProfileData profileData;
     private Map<Long, List<WeaponDataWrapper>> items;
     private long selectedPersona;
-    private int selectedPosition;
+    //private int selectedPosition;
 
     @Override
     public void onCreate(Bundle icicle) {

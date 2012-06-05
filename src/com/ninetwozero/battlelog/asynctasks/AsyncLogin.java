@@ -201,11 +201,12 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         // Get the checksum
         String postCheckSum = substringFrom(httpContent, Constants.ELEMENT_STATUS_CHECKSUM, "\" />");
 
-        // Let's work on getting the "username", not persona name -->
-        // profileId
-        String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "/\">");
+        // Let's work on getting the "username", not persona name --> profileId
+        String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>")
+                .trim();
 
         ProfileData profile = ProfileHandler.getProfileIdFromName(soldierName, postCheckSum);
+        Log.d(Constants.DEBUG_TAG, "profile => " + profile);
         profile = ProfileHandler.resolveFullProfileDataFromProfileData(profile);
         List<PlatoonData> platoons = new ProfileHandler(profile).getPlatoons(context);
         SharedPreferences sharedPreferences = addToSharedPreferences(profile, platoons,
@@ -217,10 +218,6 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
                 (Constants.HOUR_IN_SECONDS / 2)) * 1000;
 
         startAlarmManager(serviceInterval);
-
-        Log.d(Constants.DEBUG_TAG,
-                "Setting the service to update every "
-                        + serviceInterval / 60000 + " minutes");
 
         // Return it!!
         return new SessionKeeperPackage(profile, platoons);

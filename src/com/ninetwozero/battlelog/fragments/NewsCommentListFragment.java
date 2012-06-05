@@ -104,11 +104,7 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
     public void reload() {
 
         // Feed refresh!
-        new AsyncRefresh(
-
-                context, SessionKeeper.getProfileData().getId()
-
-        ).execute();
+        new AsyncRefresh(context, SessionKeeper.getProfileData().getId()).execute();
 
     }
 

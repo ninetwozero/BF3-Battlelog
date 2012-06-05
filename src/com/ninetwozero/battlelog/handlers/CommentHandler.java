@@ -85,7 +85,7 @@ public class CommentHandler extends DefaultHandler {
     
     public ArrayList<CommentData> get() throws WebsiteHandlerException {
         
-        return get(0);
+        return get(1);
         
     }
 
@@ -98,8 +98,9 @@ public class CommentHandler extends DefaultHandler {
             List<CommentData> comments = new ArrayList<CommentData>();
             boolean isFeed = (type == CommentData.TYPE_FEED);
 
-            // Get the content
-            String httpContent = requestHandler.get(
+            // Get the content depending on the pagee
+            String httpContent = "";
+            requestHandler.get(
 
                     RequestHandler.generateUrl(
 

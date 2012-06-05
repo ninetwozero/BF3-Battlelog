@@ -16,7 +16,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 
 public class ProfilePersonaListDialog extends DialogFragment implements
@@ -24,7 +23,6 @@ public class ProfilePersonaListDialog extends DialogFragment implements
 
     // Attributes
     private ProfileData profileData;
-    private DefaultFragment fragment;
     private long[] personaId;
     private String[] personaName;
 

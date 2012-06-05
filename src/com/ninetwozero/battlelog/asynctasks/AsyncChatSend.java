@@ -29,7 +29,6 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
     private Button buttonSend;
     private long chatId, profileId;
     private boolean fromWidget;
-    private String httpContent;
     private AsyncChatRefresh asyncChatRefresh;
 
     // Constructor

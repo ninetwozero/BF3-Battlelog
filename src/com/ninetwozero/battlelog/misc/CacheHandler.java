@@ -487,9 +487,11 @@ public class CacheHandler {
                             platoonIdString, ":");
 
                     // How many do we have? -1 due to last occurence being empty
-                    int numPersonas = personaStringArray.length - 1;
-                    int numPlatoons = platoonStringArray.length - 1;
-
+                    int numPersonas = personaStringArray.length;
+                    int numPlatoons = platoonStringArray.length;
+                    numPersonas = numPersonas == 0 ? 0 : numPersonas-1;
+                    numPlatoons = numPlatoons == 0 ? 0 : numPlatoons-1;
+                    
                     // Create two new arrays for this
                     PersonaData[] personaArray = new PersonaData[numPersonas];
                     long[] platoonIdArray = new long[numPlatoons];
@@ -510,8 +512,7 @@ public class CacheHandler {
                     // loop the platoons
                     for (int i = 0; i < numPlatoons; i++) {
 
-                        platoonIdArray[i] = Long
-                                .parseLong(platoonStringArray[i]);
+                        platoonIdArray[i] = Long.parseLong(platoonStringArray[i]);
 
                     }
 

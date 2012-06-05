@@ -164,8 +164,7 @@ public class ForumReportActivity extends Activity {
 
             try {
 
-                return new ForumHandler().reportPost(context, postId,
-                        arg0[0]);
+                return ForumHandler.reportPost(context, postId, arg0[0]);
 
             } catch (Exception ex) {
 
