@@ -42,6 +42,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.asynctasks.AsyncCommentSend;
 import com.ninetwozero.battlelog.asynctasks.AsyncCommentsRefresh;
+import com.ninetwozero.battlelog.datatypes.DefaultActivity;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
@@ -51,7 +52,7 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class SinglePostActivity extends ListActivity {
+public class SinglePostActivity extends ListActivity implements DefaultActivity {
 
     // Attributes
     private Intent intent;
@@ -109,7 +110,7 @@ public class SinglePostActivity extends ListActivity {
 
         }
         
-        initLayout();
+        init();
         show(item);
 
     }
@@ -321,7 +322,7 @@ public class SinglePostActivity extends ListActivity {
 
     }
 
-    public void initLayout() {
+    public void init() {
 
         // Get the fields
         textHeading = (TextView) findViewById(R.id.text_heading);

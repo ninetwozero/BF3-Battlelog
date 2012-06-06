@@ -63,14 +63,14 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         setContentView(R.layout.viewpager_default);
 
         // Let's setup the fragments too
-        setupFragments();
+        setup();
 
         // Last but not least - init
-        initActivity();
+        init();
 
     }
 
-    public void initActivity() {
+    public void init() {
 
         // Are we there yet?
         // Set the selected persona
@@ -88,7 +88,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
 
     }
 
-    public void setupFragments() {
+    public void setup() {
 
         // Do we need to setup the fragments?
         if (listFragments == null) {

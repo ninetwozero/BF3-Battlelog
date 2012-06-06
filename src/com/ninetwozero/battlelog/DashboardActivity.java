@@ -83,14 +83,14 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
         setContentView(R.layout.viewpager_dashboard);
 
         // Setup the fragments
-        setupFragments();
+        setup();
 
         // Setup COM & feed
-        initActivity();
+        init();
 
     }
 
-    public final void initActivity() {
+    public final void init() {
 
         slidingDrawer = (SlidingDrawer) findViewById(R.id.com_slider);
         slidingDrawerHandle = (TextView) findViewById(R.id.com_slide_handle_text);
@@ -104,7 +104,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
     }
 
-    public void setupFragments() {
+    public void setup() {
 
         // Do we need to setup the fragments?
         if (listFragments == null) {

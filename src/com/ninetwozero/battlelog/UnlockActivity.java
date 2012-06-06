@@ -77,14 +77,14 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
         setContentView(R.layout.viewpager_default);
 
         // Let's setup the fragments too
-        setupFragments();
+        setup();
 
         // Last but not least - init
-        initActivity();
+        init();
 
     }
 
-    public void initActivity() {
+    public void init() {
 
         // Init to winit
         unlocks = new HashMap<Long, UnlockDataWrapper>();
@@ -178,7 +178,7 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
 
     }
 
-    public void setupFragments() {
+    public void setup() {
 
         // Do we need to setup the fragments?
         if (listFragments == null) {

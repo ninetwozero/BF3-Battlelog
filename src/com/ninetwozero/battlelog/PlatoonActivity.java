@@ -75,14 +75,14 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
         setContentView(R.layout.viewpager_default);
 
         // Let's setup the fragments too
-        setupFragments();
+        setup();
 
         // Init
-        initActivity();
+        init();
 
     }
 
-    public void initActivity() {
+    public void init() {
 
     }
 
@@ -179,7 +179,7 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
         PublicUtils.setupSession(this, sharedPreferences);
 
         // We need to initialize
-        initActivity();
+        init();
 
     }
 
@@ -256,7 +256,7 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
         return true;
     }
 
-    public void setupFragments() {
+    public void setup() {
 
         // Do we need to setup the fragments?
         if (listFragments == null) {

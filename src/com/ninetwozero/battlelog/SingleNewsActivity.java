@@ -101,14 +101,14 @@ public class SingleNewsActivity extends FragmentActivity implements DefaultFragm
         setContentView(R.layout.viewpager_default);
 
         // Let's setup the fragments too
-        setupFragments();
+        setup();
 
         // Init
-        initActivity();
+        init();
 
     }
 
-    public void initActivity() {
+    public void init() {
 
     }
 
@@ -119,7 +119,7 @@ public class SingleNewsActivity extends FragmentActivity implements DefaultFragm
 
     }
 
-    public void setupFragments() {
+    public void setup() {
 
         // Do we need to setup the fragments?
         if (listFragments == null) {
@@ -210,7 +210,7 @@ public class SingleNewsActivity extends FragmentActivity implements DefaultFragm
         PublicUtils.setupSession(this, sharedPreferences);
 
         // We need to initialize
-        initActivity();
+        init();
 
     }
 

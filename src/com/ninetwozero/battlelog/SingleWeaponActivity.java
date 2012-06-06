@@ -73,14 +73,14 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
         setContentView(R.layout.viewpager_default);
 
         // Last but not least - init
-        initActivity();
+        init();
 
         // Let's setup the fragments too
-        setupFragments();
+        setup();
 
     }
 
-    public void initActivity() {
+    public void init() {
 
         // Set the selected persona
         if (SessionKeeper.getProfileData().getId() != profileData.getId()) {
@@ -103,7 +103,7 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
 
     }
 
-    public void setupFragments() {
+    public void setup() {
 
         // Do we need to setup the fragments?
         if (listFragments == null) {

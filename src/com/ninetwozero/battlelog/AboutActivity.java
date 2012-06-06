@@ -41,13 +41,13 @@ public class AboutActivity extends CustomFragmentActivity implements DefaultFrag
         setContentView(R.layout.viewpager_default);
 
         // Setup the fragments
-        setupFragments();
+        setup();
 
         // Setup COM & feed
-        initActivity();
+        init();
     }
 
-    public final void initActivity() {
+    public final void init() {
 
     }
 
@@ -65,7 +65,7 @@ public class AboutActivity extends CustomFragmentActivity implements DefaultFrag
 
     }
 
-    public void setupFragments() {
+    public void setup() {
 
         // Do we need to setup the fragments?
         if (listFragments == null) {

@@ -64,14 +64,14 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
         setContentView(R.layout.viewpager_default);
 
         // Let's setup the fragments too
-        setupFragments();
+        setup();
 
         // Init
-        initActivity();
+        init();
 
     }
 
-    public void initActivity() {
+    public void init() {
 
     }
 
@@ -129,7 +129,7 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
         super.onResume();
 
         // We need to initialize
-        initActivity();
+        init();
 
         // Let's reload
         reload();
@@ -151,7 +151,7 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
 
     }
 
-    public void setupFragments() {
+    public void setup() {
 
         // Do we need to setup the fragments?
         if (listFragments == null) {

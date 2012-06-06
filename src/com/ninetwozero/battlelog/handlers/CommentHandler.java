@@ -7,6 +7,8 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
@@ -47,10 +49,10 @@ public class CommentHandler extends DefaultHandler {
         try {
 
             // Let's post!
-            boolean isNews = (type == CommentData.TYPE_NEWS);
+            boolean isFeed = (type == CommentData.TYPE_FEED);
             String httpContent = requestHandler.post(
 
-                    RequestHandler.generateUrl(isNews ? URL_NEWS_COMMENT : URL_COMMENT, id),
+                    RequestHandler.generateUrl(isFeed ? URL_COMMENT : URL_NEWS_COMMENT, id),
                     RequestHandler.generatePostData(
 
                             FIELD_NAMES_COMMENT,
@@ -82,11 +84,11 @@ public class CommentHandler extends DefaultHandler {
         }
 
     }
-    
+
     public ArrayList<CommentData> get() throws WebsiteHandlerException {
-        
+
         return get(1);
-        
+
     }
 
     public ArrayList<CommentData> get(int pId)
@@ -99,27 +101,29 @@ public class CommentHandler extends DefaultHandler {
             boolean isFeed = (type == CommentData.TYPE_FEED);
 
             // Get the content depending on the pagee
-            String httpContent = "";
-            requestHandler.get(
+            String httpContent = requestHandler.get(
 
                     RequestHandler.generateUrl(
 
                             isFeed ? URL_LIST : URL_NEWS_COMMENT,
-                            id
+                            id,
+                            pId
                             ),
-                    isFeed ? RequestHandler.HEADER_NORMAL : RequestHandler.HEADER_AJAX
+                    isFeed ? RequestHandler.HEADER_AJAX : RequestHandler.HEADER_NORMAL
 
                     );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
 
+                Log.d(Constants.DEBUG_TAG, "httpContent => " + httpContent);
+
                 // Init
                 JSONObject dataObject = null;
                 JSONObject tempObject = null;
 
                 // Is it a feed?
-                if (isFeed) {
+                if (!isFeed) {
 
                     dataObject = new JSONObject(httpContent).getJSONObject("context")
                             .getJSONObject("blogPost");
@@ -137,8 +141,7 @@ public class CommentHandler extends DefaultHandler {
                 for (int i = 0, max = commentArray.length(); i < max; i++) {
 
                     tempObject = commentArray.optJSONObject(i);
-                    JSONObject tempOwnerItem = tempObject
-                            .getJSONObject("owner");
+                    JSONObject tempOwnerItem = tempObject.getJSONObject("owner");
                     comments.add(
 
                             new CommentData(
@@ -149,7 +152,7 @@ public class CommentHandler extends DefaultHandler {
                                     tempObject.getString("body"),
                                     new ProfileData.Builder(
 
-                                            Long.parseLong(tempOwnerItem.getString("ownerId")),
+                                            Long.parseLong(tempOwnerItem.getString("userId")),
                                             tempOwnerItem.getString("username")
                                     ).gravatarHash(tempOwnerItem.getString("gravatarMd5")).build()
 

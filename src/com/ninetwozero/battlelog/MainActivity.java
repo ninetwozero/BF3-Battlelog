@@ -95,7 +95,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
         changeLogDialog();
 
         // Let's populate... or shall we not?
-        initActivity();
+        init();
 
         // Setup the drawer
         setupDrawer();
@@ -111,7 +111,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 
     }
 
-    public void initActivity() {
+    public void init() {
 
         // Get the fields
         fieldEmail = (EditText) findViewById(R.id.field_email);
@@ -319,7 +319,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
             slidingDrawer.setOnDrawerOpenListener(onDrawerOpenListener);
             slidingDrawer.setOnDrawerCloseListener(onDrawerCloseListener);
 
-            setupFragments();
+            setup();
         }
     }
 
@@ -452,7 +452,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
     }
 
     @Override
-    public void setupFragments() {
+    public void setup() {
 
         // Do we need to setup the fragments?
         if (listFragments == null) {

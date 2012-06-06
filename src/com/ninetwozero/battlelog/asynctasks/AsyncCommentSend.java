@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.CommentData;
-import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatypes.DefaultActivity;
 import com.ninetwozero.battlelog.handlers.CommentHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 
@@ -57,7 +57,7 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
         try {
 
             // Did we manage?
-            return (new CommentHandler(postId, CommentData.TYPE_NEWS).post(arg0[0], arg0[1]));
+            return (new CommentHandler(postId, CommentData.TYPE_FEED).post(arg0[0], arg0[1]));
             
         } catch (Exception ex) {
 
@@ -72,7 +72,11 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
     protected void onPostExecute(Boolean results) {
 
         // Reload
-        ((DefaultFragmentActivity) context).reload();
+        if( context instanceof DefaultActivity ) {
+            
+            ((DefaultActivity) context).reload();
+        
+        }
         
         // Set the button
         buttonSend.setEnabled(true);

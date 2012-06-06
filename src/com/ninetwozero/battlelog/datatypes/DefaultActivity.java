@@ -14,11 +14,9 @@
 
 package com.ninetwozero.battlelog.datatypes;
 
-public interface DefaultFragmentActivity {
+public interface DefaultActivity {
 
     public void init();
-
-    public void setup();
 
     public void reload();
 
