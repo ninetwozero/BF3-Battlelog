@@ -29,7 +29,7 @@ public class CommentHandler extends DefaultHandler {
     public static final String URL_NEWS_LIST = Constants.URL_MAIN
             + "news/view/{ARTICLE_ID}/{PAGE}/";
     public static final String URL_NEWS_COMMENT = Constants.URL_MAIN
-            + "news/view/{ARTICLE_ID}/{PAGE}/";
+            + "news/view/{ARTICLE_ID}/{PAGE}/True";
     // Attributes
     public static final String[] FIELD_NAMES_COMMENT = new String[] {
             "comment", "post-check-sum"
@@ -109,7 +109,7 @@ public class CommentHandler extends DefaultHandler {
                             id,
                             pId
                             ),
-                    isFeed ? RequestHandler.HEADER_AJAX : RequestHandler.HEADER_JSON/*RequestHandler.HEADER_NORMAL*/
+                    isFeed ? RequestHandler.HEADER_NORMAL : RequestHandler.HEADER_AJAX
 
                     );
 
@@ -141,7 +141,7 @@ public class CommentHandler extends DefaultHandler {
                 for (int i = 0, max = commentArray.length(); i < max; i++) {
 
                     tempObject = commentArray.optJSONObject(i);
-                    JSONObject tempOwnerItem = tempObject.getJSONObject("owner");
+                    JSONObject tempOwnerItem = tempObject.getJSONObject("user");
                     comments.add(
 
                             new CommentData(
