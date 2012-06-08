@@ -31,7 +31,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.DashboardActivity;
+import com.ninetwozero.battlelog.activity.DashboardActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.datatypes.PostData;
@@ -42,7 +42,7 @@ import com.ninetwozero.battlelog.datatypes.ShareableCookie;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.handlers.ProfileHandler;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.handlers.RequestHandler;
 import com.ninetwozero.battlelog.services.BattlelogService;
 
 public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
@@ -202,7 +202,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         String postCheckSum = substringFrom(httpContent, Constants.ELEMENT_STATUS_CHECKSUM, "\" />");
 
         // Let's work on getting the "username", not persona name --> profileId
-        String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>").trim();
+        String soldierName = /*"Eddy_J1";*/substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>").trim();
 
         ProfileData profile = ProfileHandler.getProfileIdFromName(soldierName, postCheckSum);
         Log.d(Constants.DEBUG_TAG, "profile => " + profile);

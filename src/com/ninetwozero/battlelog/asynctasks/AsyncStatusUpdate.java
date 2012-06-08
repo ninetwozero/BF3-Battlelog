@@ -21,7 +21,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.fragments.FeedFragment;
+import com.ninetwozero.battlelog.activity.feed.FeedFragment;
 import com.ninetwozero.battlelog.handlers.COMHandler;
 
 public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {

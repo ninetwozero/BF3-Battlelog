@@ -17,6 +17,8 @@ package com.ninetwozero.battlelog;
 import java.io.File;
 import java.util.Vector;
 
+import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
+import com.ninetwozero.battlelog.activity.DashboardActivity;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
@@ -48,12 +50,12 @@ import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
 import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
-import com.ninetwozero.battlelog.fragments.AboutCreditsFragment;
-import com.ninetwozero.battlelog.fragments.AboutFAQFragment;
-import com.ninetwozero.battlelog.fragments.AboutMainFragment;
+import com.ninetwozero.battlelog.activity.aboutapp.AboutCreditsFragment;
+import com.ninetwozero.battlelog.activity.aboutapp.AboutFAQFragment;
+import com.ninetwozero.battlelog.activity.aboutapp.AboutMainFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.misc.RequestHandler;
+import com.ninetwozero.battlelog.handlers.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class MainActivity extends CustomFragmentActivity implements DefaultFragmentActivity {

@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
-import com.ninetwozero.battlelog.fragments.FeedFragment;
+import com.ninetwozero.battlelog.activity.feed.FeedFragment;
 import com.ninetwozero.battlelog.handlers.FeedHandler;
 
 public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {

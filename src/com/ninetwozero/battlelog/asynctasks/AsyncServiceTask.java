@@ -27,7 +27,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.DashboardActivity;
+import com.ninetwozero.battlelog.activity.DashboardActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.PostData;
 import com.ninetwozero.battlelog.datatypes.SessionKeeperPackage;

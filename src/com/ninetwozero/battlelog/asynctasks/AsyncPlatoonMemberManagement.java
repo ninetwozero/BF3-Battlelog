@@ -17,7 +17,7 @@ package com.ninetwozero.battlelog.asynctasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.ninetwozero.battlelog.PlatoonActivity;
+import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.datatypes.PlatoonData;
 import com.ninetwozero.battlelog.handlers.PlatoonHandler;
 

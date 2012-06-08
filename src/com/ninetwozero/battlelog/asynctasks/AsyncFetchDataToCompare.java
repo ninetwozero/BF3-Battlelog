@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.CompareActivity;
+import com.ninetwozero.battlelog.activity.profile.soldier.CompareActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.handlers.ProfileHandler;

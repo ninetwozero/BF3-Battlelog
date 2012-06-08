@@ -19,12 +19,12 @@ import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.ninetwozero.battlelog.AssignmentActivity;
-import com.ninetwozero.battlelog.ForumActivity;
-import com.ninetwozero.battlelog.PlatoonActivity;
-import com.ninetwozero.battlelog.ProfileActivity;
+import com.ninetwozero.battlelog.activity.profile.assignments.AssignmentActivity;
+import com.ninetwozero.battlelog.activity.forum.ForumActivity;
+import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
+import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.UnlockActivity;
+import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.battlelog.handlers.ProfileHandler;
 
 public class FeedItem implements Parcelable {

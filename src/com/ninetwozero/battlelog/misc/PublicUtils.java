@@ -41,6 +41,7 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatypes.ShareableCookie;
+import com.ninetwozero.battlelog.handlers.RequestHandler;
 
 public class PublicUtils {
 

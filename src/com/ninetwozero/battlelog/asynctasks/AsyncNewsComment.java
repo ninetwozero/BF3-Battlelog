@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.NewsData;
-import com.ninetwozero.battlelog.fragments.NewsCommentListFragment;
+import com.ninetwozero.battlelog.activity.news.NewsCommentListFragment;
 import com.ninetwozero.battlelog.handlers.CommentHandler;
 
 public class AsyncNewsComment extends AsyncTask<String, Void, Boolean> {
