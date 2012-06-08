@@ -29,7 +29,7 @@ public class CommentHandler extends DefaultHandler {
     public static final String URL_NEWS_LIST = Constants.URL_MAIN
             + "news/view/{ARTICLE_ID}/{PAGE}/";
     public static final String URL_NEWS_COMMENT = Constants.URL_MAIN
-            + "comment/postcomment/{ARTICLE_ID}/devblog-comment/";
+            + "news/view/{ARTICLE_ID}/{PAGE}/True";
     // Attributes
     public static final String[] FIELD_NAMES_COMMENT = new String[] {
             "comment", "post-check-sum"
@@ -65,7 +65,7 @@ public class CommentHandler extends DefaultHandler {
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
+            if (httpContent.length() == 0) {
 
                 // Hopefully this goes as planned
                 return (!httpContent.equals("Internal server error"));
@@ -114,7 +114,7 @@ public class CommentHandler extends DefaultHandler {
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
+            if (httpContent.length() != 0) {
 
                 Log.d(Constants.DEBUG_TAG, "httpContent => " + httpContent);
 

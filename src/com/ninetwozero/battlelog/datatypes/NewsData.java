@@ -71,8 +71,8 @@ public class NewsData implements Parcelable {
         return this.content;
     }
 
-    public ProfileData getAuthor() {
-        return this.author;
+    public String getAuthorName() {
+        return this.author.getUsername();
     }
 
     @Override

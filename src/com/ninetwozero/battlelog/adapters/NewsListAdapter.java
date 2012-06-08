@@ -88,7 +88,7 @@ public class NewsListAdapter extends BaseAdapter {
 
         // Parse the data
         String authorText = context.getString(R.string.info_news_posted_by)
-                .replace("{author}", currentItem.getAuthor().getUsername())
+                .replace("{author}", currentItem.getAuthorName())
                 .replace("{date}", PublicUtils.getRelativeDate(context, currentItem.getDate()));
 
         // Parse it!

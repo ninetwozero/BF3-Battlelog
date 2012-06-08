@@ -87,7 +87,7 @@ public class NewsOverviewFragment extends Fragment implements DefaultFragment {
         // Set the values
         textTitle.setText(newsData.getTitle());
         textBy.setText(Html.fromHtml(getString(R.string.info_news_posted_by).replace("{author}",
-                newsData.getAuthor().getUsername()).replace("{date}",
+                newsData.getAuthorName()).replace("{date}",
                 PublicUtils.getRelativeDate(context, newsData.getDate()))));
         textContent.setText(Html.fromHtml(newsData.getContent()));
     }
