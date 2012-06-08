@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,7 +49,6 @@ import com.ninetwozero.battlelog.UnlockActivity;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.PersonaStats;
 import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.dialog.ProfilePersonaListDialog;
 import com.ninetwozero.battlelog.handlers.ProfileHandler;
 import com.ninetwozero.battlelog.misc.CacheHandler;
@@ -320,9 +320,6 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
             }
 
-            // Get back here!
-            return;
-
         }
 
     }
@@ -344,6 +341,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
             try {
 
+Log.d(Constants.DEBUG_TAG, "profile => " + profileData);
                 // Do we have any personas?
                 if (profileData.getNumPersonas() > 0) {
 
@@ -358,7 +356,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                 // ...validate!
                 return (personaStats != null && personaStats.size() > 0);
 
-            } catch (WebsiteHandlerException ex) {
+            } catch (Exception ex) {
 
                 ex.printStackTrace();
                 return false;
@@ -381,10 +379,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                 showPersona(personaStats.get(selectedPersona), false);
 
             }
-
-            // Get back here!
-            return;
-
+            
         }
 
     }

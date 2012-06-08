@@ -34,7 +34,6 @@
 		    android:text="@string/label_post"
 		    android:layout_alignParentRight="true"
 		    android:layout_centerVertical="true"
-		    android:onClick=""
 		/>
 		<EditText
 		  	android:id="@+id/field_message"

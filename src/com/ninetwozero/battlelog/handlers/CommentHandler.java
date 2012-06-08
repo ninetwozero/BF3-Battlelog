@@ -105,11 +105,11 @@ public class CommentHandler extends DefaultHandler {
 
                     RequestHandler.generateUrl(
 
-                            isFeed ? URL_LIST : URL_NEWS_COMMENT,
+                            isFeed ? URL_LIST : URL_NEWS_LIST,
                             id,
                             pId
                             ),
-                    isFeed ? RequestHandler.HEADER_AJAX : RequestHandler.HEADER_NORMAL
+                    isFeed ? RequestHandler.HEADER_AJAX : RequestHandler.HEADER_AJAX
 
                     );
 
@@ -141,7 +141,7 @@ public class CommentHandler extends DefaultHandler {
                 for (int i = 0, max = commentArray.length(); i < max; i++) {
 
                     tempObject = commentArray.optJSONObject(i);
-                    JSONObject tempOwnerItem = tempObject.getJSONObject("owner");
+                    JSONObject tempOwnerItem = tempObject.getJSONObject("user");
                     comments.add(
 
                             new CommentData(

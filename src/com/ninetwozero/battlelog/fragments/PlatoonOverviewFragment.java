@@ -280,9 +280,6 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
             }
 
-            // Get back here!
-            return;
-
         }
 
     }
@@ -372,10 +369,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             sendToStats(platoonInformation);
             sendToUsers(platoonInformation);
             setFeedPermission(platoonInformation.isMember() || hasPostingRights);
-
-            // Get back here!
-            return;
-
+            
         }
 
     }

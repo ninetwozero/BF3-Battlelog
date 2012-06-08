@@ -42,6 +42,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.asynctasks.AsyncCommentSend;
 import com.ninetwozero.battlelog.asynctasks.AsyncCommentsRefresh;
+import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.DefaultActivity;
 import com.ninetwozero.battlelog.datatypes.FeedItem;
 import com.ninetwozero.battlelog.datatypes.NotificationData;
@@ -161,7 +162,7 @@ public class SinglePostActivity extends ListActivity implements DefaultActivity 
         if (v.getId() == R.id.button_send) {
 
             // Send it!
-            new AsyncCommentSend(this, item.getId(), buttonSend).execute(
+            new AsyncCommentSend(this, item.getId(), CommentData.TYPE_FEED, buttonSend).execute(
 
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
                     fieldMessage.getText().toString()
