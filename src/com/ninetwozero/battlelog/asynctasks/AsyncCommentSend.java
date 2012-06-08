@@ -32,12 +32,14 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
     private Context context;
     private Button buttonSend;
     private long postId;
-
+    private int type;
+    
     // Constructor
-    public AsyncCommentSend(Context c, long pId, Button b) {
+    public AsyncCommentSend(Context c, long pId, int t, Button b) {
 
         context = c;
         postId = pId;
+        type = t;
         buttonSend = b;
 
     }
@@ -57,7 +59,7 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
         try {
 
             // Did we manage?
-            return (new CommentHandler(postId, CommentData.TYPE_FEED).post(arg0[0], arg0[1]));
+            return (new CommentHandler(postId, type).post(arg0[0], arg0[1]));
             
         } catch (Exception ex) {
 

@@ -17,8 +17,10 @@ package com.ninetwozero.battlelog.fragments;
 import java.util.List;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -26,18 +28,23 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapters.CommentListAdapter;
+import com.ninetwozero.battlelog.asynctasks.AsyncCommentSend;
 import com.ninetwozero.battlelog.datatypes.CommentData;
 import com.ninetwozero.battlelog.datatypes.DefaultFragment;
 import com.ninetwozero.battlelog.datatypes.NewsData;
 import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
 import com.ninetwozero.battlelog.handlers.CommentHandler;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class NewsCommentListFragment extends ListFragment implements DefaultFragment {
@@ -45,10 +52,13 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
     // Attributes
     private Context context;
     private LayoutInflater layoutInflater;
+    private SharedPreferences sharedPreferences;
 
     // Elements
     private ListView listView;
+    private Button button;
     private CommentListAdapter listAdapter;
+    private EditText fieldMessage;
 
     // Misc
     private List<CommentData> comments;
@@ -62,6 +72,7 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
         // Set our attributes
         context = getActivity();
         layoutInflater = inflater;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_comment,
@@ -86,6 +97,32 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
 
         // Get the elements
         listView = (ListView) v.findViewById(android.R.id.list);
+        button = (Button) v.findViewById(R.id.button_send);
+        fieldMessage = (EditText) v.findViewById(R.id.field_message);
+        
+        // Set the click listener
+        button.setOnClickListener(
+                
+            new OnClickListener() {
+                    
+                @Override
+                public void onClick(View view) {
+                    
+                    new AsyncCommentSend(context, newsData.getId(), CommentData.TYPE_NEWS, button).execute(
+
+                            sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
+                            fieldMessage.getText().toString()
+
+                            );
+
+                    // Clear the field
+                    fieldMessage.setText("");
+                    
+                } 
+                
+            }
+            
+        );
 
         // Setup the listAdapter
         listAdapter = new CommentListAdapter(context, comments,
