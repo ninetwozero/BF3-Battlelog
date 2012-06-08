@@ -109,7 +109,7 @@ public class CommentHandler extends DefaultHandler {
                             id,
                             pId
                             ),
-                    isFeed ? RequestHandler.HEADER_AJAX : RequestHandler.HEADER_AJAX
+                    RequestHandler.HEADER_AJAX
 
                     );
 
