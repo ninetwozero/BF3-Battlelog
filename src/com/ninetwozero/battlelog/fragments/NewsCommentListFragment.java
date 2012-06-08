@@ -63,7 +63,7 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
     // Misc
     private List<CommentData> comments;
     private NewsData newsData;
-    private int pageId;
+    private int pageId = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
