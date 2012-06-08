@@ -196,6 +196,7 @@
 	<string name="info_unknown_notification">Unknown notification type.</string>
 	<string name="info_friendship">friendship</string>
 	<string name="info_forum_post">forum post</string>
+	<string name="info_blog_comment">blog comment</string>
 	<string name="info_game_report">game report</string>
 	<string name="info_wallpost">wall post</string>
 	<string name="info_status_message">status message</string>

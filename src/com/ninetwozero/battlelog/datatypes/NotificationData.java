@@ -298,6 +298,9 @@ public class NotificationData implements Parcelable {
             case 2: // Forum post
                 return c.getString(R.string.info_forum_post);
 
+            case 3: // Blog post
+                return c.getString(R.string.info_blog_comment);
+
             case 4: // Game report
                 return c.getString(R.string.info_game_report);
 
@@ -332,8 +335,7 @@ public class NotificationData implements Parcelable {
                 return c.getString(R.string.info_p_activated_expansion);
 
             default:
-                Log.d(Constants.DEBUG_TAG, "noticationType => " + type + ":"
-                        + typeId);
+                Log.d(Constants.DEBUG_TAG, "type => " + type + ":" + typeId);
                 return "{unknown action}";
         }
 

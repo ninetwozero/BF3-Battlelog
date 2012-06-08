@@ -959,45 +959,156 @@ public class DataBank {
                 "Scarred Veteran", "MK3A1"
         });
 
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_1",
-                "100 Assault Rifles kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_2", "20 Noobtube kills");
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_1", new String[] {
+                "Life Saver", "Life Saver Dogtag"
+        });
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_2", new String[] {
+                "Bullet Provider", "Bullet Provider Dogtag"
+        });
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_3", new String[] {
+                "Location Scout", "Location Scout Dogtag"
+        });
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_4", new String[] {
+                "Wrench Wielder", "Wrench Wielder Dogtag"
+        });
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_5", new String[] {
+                "Jack of all trades", "Jack of all trades Dogtag"
+        });
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_6", new String[] {
+                "F2000 Specialist", "F2000 Woodland Oak Camo"
+        });
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_7", new String[] {
+                "Pecheneg Specialist", "Pecheneg Tactical Camo"
+        });
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_8", new String[] {
+                "L96 Specialist", "L96 Digital Woodland Camo"
+        });
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_9", new String[] {
+                "SCAR-H Specialist", "SCAR-H Desert Stripe Camo"
+        });
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_10", new String[] {
+                "Only for the Dedicated", "Secret item"
+        });
+
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_1", new String[] {
+                "Shepard", "AUG A3"
+        });
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_2", new String[] {
+                "Set us up the bomb", "SCAR-L"
+        });
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_3", new String[] {
+                "No shortage", "L86A2"
+        });
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_4", new String[] {
+                "Point Blank", "LSAT"
+        });
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_5", new String[] {
+                "Done Fixing", "ACW-R"
+        });
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_6", new String[] {
+                "My Own Terminator", "MTAR-21"
+        });
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_7", new String[] {
+                "Team Player", "M417"
+        });
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_8", new String[] {
+                "Bullet Point", "JNG-90"
+        });
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_9", new String[] {
+                "These hurt too", "SPAS-12"
+        });
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_10", new String[] {
+                "Hold the trigger", "M5K"
+        });
+
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_1_CRITERIA_1", "10 Revives");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_1_CRITERIA_2", "10 Heals");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_1", "100 Assault Rifles kills");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_2", "20 Noobtube™ kills");
         CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_3", "Win 5 rounds of SQDM");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_3",
-                "Win 5 rounds of Conquest");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_1", "10 repairs");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_2", "Kill 1 enemy with Repair Torch");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_3", "Win 5 rounds of Conquest");
         CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_1", "50 AT rocket kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_2",
-                "Destroy 1 vehicle w/ Repair Torch");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_8_CRITERIA_3", "5 Knife takedowns");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_2", "Destroy 1 vehicle w/ Repair Torch");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_5_CRITERIA_1", "20 LMG kills");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_5_CRITERIA_2", "2 mortar kills");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_3", "50 Ammo Resupplies");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_1", "100 LMG kills");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_2", "50 Suppression Assists");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_7_CRITERIA_1", "20 Sniper Rifle kills");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_7_CRITERIA_2", "5 Laser Designations");
         CRITERIAS.put("ID_XP1_ASSIGNMENT_8_CRITERIA_1", "50 Headshots");
         CRITERIAS.put("ID_XP1_ASSIGNMENT_8_CRITERIA_2", "50 Spot Assists");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_3", "50 Ammo Resupplies");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_2",
-                "50 Suppression Assists");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_1", "100 LMG kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_1_CRITERIA_2", "10 Heals");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_1_CRITERIA_1", "10 Revives");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_1", "10 repairs");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_2",
-                "Kill 1 enemy with Repair Torch");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_4",
-                "Play 2 hours on Sharqi");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_5",
-                "Play 2 hours on 'Oman");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_2", "5 DPV Jeep kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_3", "10 BTR-90 IFV Kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_1", "10 PP-19 Kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_7_CRITERIA_2", "5 Laser Designations");
-        CRITERIAS
-                .put("ID_XP1_ASSIGNMENT_7_CRITERIA_1", "20 Sniper Rifle kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_5_CRITERIA_2", "2 mortar kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_5_CRITERIA_1", "20 LMG kills");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_8_CRITERIA_3", "5 Knife takedowns");
         CRITERIAS.put("ID_XP1_ASSIGNMENT_9_CRITERIA_1", "Arm 10 MCOMs");
         CRITERIAS.put("ID_XP1_ASSIGNMENT_9_CRITERIA_2", "Capture 10 flags");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_9_CRITERIA_3",
-                "Play 2 hours on Karkand");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_9_CRITERIA_3", "Play 2 hours on Karkand");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_1", "10 PP-19 Kills");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_2", "5 DPV Jeep kills");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_3", "10 BTR-90 IFV Kills");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_4", "Play 2 hours on Sharqi");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_5", "Play 2 hours on 'Oman");
+
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_1_CRITERIA_1", "50 F2000 kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_1_CRITERIA_2", "25 F2000 headshots");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_1_CRITERIA_3", "50 squad heals");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_2_CRITERIA_1", "50 PKP Pecheneg kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_2_CRITERIA_2", "50 PKP Pecheneg suppression assists");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_2_CRITERIA_3", "25 M18 Claymore kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_3_CRITERIA_1", "50 L96 kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_3_CRITERIA_2", "25 L96 headshots");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_3_CRITERIA_3", "25 spawns on your Radio Beacon");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_4_CRITERIA_1", "50 SCAR-H kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_4_CRITERIA_2", "50 Squad Repairs");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_4_CRITERIA_3", "25 Shotgun kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_5_CRITERIA_1", "30 Assault Rifle kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_5_CRITERIA_2", "30 Carbine kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_5_CRITERIA_3", "30 Sniper kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_5_CRITERIA_4", "30 LMG kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_5_CRITERIA_5", "15 Pistols kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_6_CRITERIA_1", "100 F2000 kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_6_CRITERIA_2", "50 Squad Revives");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_6_CRITERIA_3", "25 M26 Mass kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_7_CRITERIA_1", "100 PKP Pecheneg kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_7_CRITERIA_2", "50 Squad Resupplies");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_7_CRITERIA_3", "Destroy 25 vehicles with C4");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_8_CRITERIA_1", "100 L96 kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_8_CRITERIA_2", "50 MAV spot assists");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_8_CRITERIA_3", "350 meter head shot with L96");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_9_CRITERIA_1", "100 SCAR-H kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_9_CRITERIA_2", "20 M15 AT Mine kills");
+        CRITERIAS
+                .put("ID_PRE1_ASSIGNMENT_9_CRITERIA_3", "Destroy 5 air vehicles with AT Launchers");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_10_CRITERIA_1", "Get 500 Assault kit kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_10_CRITERIA_2", "Get 500 Engineer kit kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_10_CRITERIA_3", "Get 400 Support kit kills");
+        CRITERIAS.put("ID_PRE1_ASSIGNMENT_10_CRITERIA_4", "Get 300 Recon kit kills");
+
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_1_CRITERIA_1", "10 Squad Revives");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_1_CRITERIA_2", "30 Assault Rifle Kills");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_2_CRITERIA_1", "20 kills with Noobtube™");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_2_CRITERIA_2", "15 kills with hand grenades");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_3_CRITERIA_1", "20 squad resupplies");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_3_CRITERIA_2", "20 kills with LMGs");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_4_CRITERIA_1", "10 kills with C4");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_4_CRITERIA_2", "10 knife takedowns");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_5_CRITERIA_1", "20 AT rocket kills");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_5_CRITERIA_2", "30 kills with carbines");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_6_CRITERIA_1", "Get a kill with EOD bot");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_6_CRITERIA_2", "100 kills with carbines");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_7_CRITERIA_1", "10 T-UGS assists");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_7_CRITERIA_2", "Capture 20 flags");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_8_CRITERIA_1", "50 kills with Snipers");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_8_CRITERIA_3", "Win 3 rounds of CQ DOM");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_9_CRITERIA_1", "20 kills with pistols");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_9_CRITERIA_2", "20 kills with shotguns");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_10_CRITERIA_1", "Finish top5 in Gun Master");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_10_CRITERIA_2", "100 kills with SMGs");
 
         EXPANSION.put("512", "Back to Karkand");
+        EXPANSION.put("1024", "Premium");
+        EXPANSION.put("2048", "Close Quarters");
 
     }
 

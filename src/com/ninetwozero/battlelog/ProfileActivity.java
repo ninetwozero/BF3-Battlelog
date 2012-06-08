@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -37,6 +38,7 @@ import com.ninetwozero.battlelog.datatypes.ProfileData;
 import com.ninetwozero.battlelog.fragments.FeedFragment;
 import com.ninetwozero.battlelog.fragments.ProfileOverviewFragment;
 import com.ninetwozero.battlelog.fragments.ProfileStatsFragment;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class ProfileActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
@@ -64,6 +66,7 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
 
         // Get the profile
         profileData = getIntent().getParcelableExtra("profile");
+        Log.d(Constants.DEBUG_TAG, "profileData['ProfileActivity'] => " + profileData);
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
