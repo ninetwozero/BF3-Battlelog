@@ -1,7 +1,7 @@
 
 package com.ninetwozero.battlelog.preference;
 
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.PROFILE_INFO_BIRTHDAY;
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.PROFILE_INFO_BIRTHDAY;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

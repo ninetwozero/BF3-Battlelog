@@ -35,108 +35,96 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name=".activity.aboutapp.AboutActivity"
             android:configChanges="orientation"
             android:label="@string/title_about"
             android:orientation="vertical"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DashboardActivity"
+            android:name=".activity.DashboardActivity"
             android:configChanges="orientation"
             android:label="@string/title_main_menu"
             android:orientation="vertical"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".activity.profile.soldier.ProfileActivity"
             android:configChanges="orientation"
             android:label="@string/title_profile" />
         <activity
-            android:name=".PlatoonActivity"
+            android:name=".activity.platoon.PlatoonActivity"
             android:configChanges="orientation"
             android:label="@string/title_platoon" />
         <activity
-            android:name=".PlatoonInviteActivity"
+            android:name=".activity.platoon.PlatoonInviteActivity"
             android:configChanges="orientation"
             android:label="@string/title_platoon_invite" />
         <activity
-            android:name=".StatsActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_performance" />
-        <activity
-            android:name=".ChatActivity"
+            android:name=".activity.social.ChatActivity"
             android:configChanges="orientation"
             android:label="@string/title_chat" />
         <activity
-            android:name=".SinglePostActivity"
+            android:name=".activity.forum.SinglePostActivity"
             android:configChanges="orientation"
             android:label="@string/title_comments"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".CompareActivity"
+            android:name=".activity.profile.soldier.CompareActivity"
             android:configChanges="orientation"
             android:label="@string/title_comparing_battle_scars" />
         <activity
-            android:name=".BoardActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_forum" />
-        <activity
-            android:name=".ForumActivity"
+            android:name=".activity.forum.ForumActivity"
             android:configChanges="orientation"
             android:label="BF3 Battlelog - Browsing the forums" />
         <activity
-            android:name=".ForumSearchActivity"
+            android:name=".activity.forum.ForumSearchActivity"
             android:configChanges="orientation"
             android:label="@string/title_forum_search" />
         <activity
-            android:name=".ForumSavedActivity"
+            android:name=".activity.forum.ForumSavedActivity"
             android:configChanges="orientation"
             android:label="@string/title_forum_saved" />
         <activity
-            android:name=".Backup_ForumThreadActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_thread_view" />
-        <activity
-            android:name=".ForumReportActivity"
+            android:name=".activity.forum.ForumReportActivity"
             android:configChanges="orientation"
             android:label="@string/title_forum_report" />
         <activity
-            android:name=".UnlockActivity"
+            android:name=".activity.profile.unlocks.UnlockActivity"
             android:configChanges="orientation"
             android:label="@string/title_unlocks" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".activity.SearchActivity"
             android:configChanges="orientation"
             android:label="@string/title_search" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:configChanges="orientation"
             android:label="@string/title_settings"
             android:theme="@android:style/Theme.Light" />
         <activity
-            android:name=".ProfileSettingsActivity"
+            android:name=".activity.profile.settings.ProfileSettingsActivity"
             android:configChanges="orientation"
             android:label="@string/title_profile_settings"
             android:theme="@android:style/Theme.Light" />
         <activity
-            android:name=".AssignmentActivity"
+            android:name=".activity.profile.assignments.AssignmentActivity"
             android:configChanges="orientation"
             android:label="@string/title_assignments" />
         <activity
-            android:name=".PlatoonCreateActivity"
+            android:name=".activity.platoon.PlatoonCreateActivity"
             android:configChanges="orientation"
             android:label="@string/title_platoon_new" />
         <activity
-            android:name=".WeaponListActivity"
+            android:name=".activity.profile.weapon.WeaponListActivity"
             android:configChanges="orientation"
             android:label="TODO"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".SingleWeaponActivity"
+            android:name=".activity.profile.weapon.SingleWeaponActivity"
             android:configChanges="orientation"
             android:label="TODO"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".SingleNewsActivity"
+            android:name=".activity.news.SingleNewsActivity"
             android:configChanges="orientation"
             android:label="TODO"
             android:windowSoftInputMode="stateHidden" />
@@ -176,7 +164,7 @@
 		</receiver>
         -->
         <service
-            android:name=".services.BattlelogService"
+            android:name=".service.BattlelogService"
             android:enabled="true" />
     </application>
 

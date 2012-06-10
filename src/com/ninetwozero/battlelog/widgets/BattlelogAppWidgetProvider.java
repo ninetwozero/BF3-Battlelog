@@ -29,11 +29,11 @@ import android.widget.RemoteViews;
 
 import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
-import com.ninetwozero.battlelog.datatypes.PersonaStats;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.COMHandler;
-import com.ninetwozero.battlelog.handlers.ProfileHandler;
+import com.ninetwozero.battlelog.datatype.FriendListDataWrapper;
+import com.ninetwozero.battlelog.datatype.PersonaStats;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.COMClient;
+import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
@@ -102,9 +102,9 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
             try {
 
-                playerData = new ProfileHandler(SessionKeeper.getProfileData()).getStats();
+                playerData = new ProfileClient(SessionKeeper.getProfileData()).getStats();
 
-                friends = new COMHandler(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriendsForCOM(context);
+                friends = new COMClient(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriendsForCOM(context);
                 numFriendsOnline = friends.getNumTotalOnline();
                 return true;
 

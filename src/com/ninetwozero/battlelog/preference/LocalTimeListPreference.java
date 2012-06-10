@@ -1,7 +1,7 @@
 
 package com.ninetwozero.battlelog.preference;
 
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.LOCAL_TIME_VALUES;
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.LOCAL_TIME_VALUES;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

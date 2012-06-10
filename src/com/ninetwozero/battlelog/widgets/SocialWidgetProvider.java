@@ -31,11 +31,11 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.FeedItem;
-import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.COMHandler;
-import com.ninetwozero.battlelog.handlers.FeedHandler;
+import com.ninetwozero.battlelog.datatype.FeedItem;
+import com.ninetwozero.battlelog.datatype.FriendListDataWrapper;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.COMClient;
+import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
@@ -123,9 +123,9 @@ public class SocialWidgetProvider extends AppWidgetProvider {
 
             try {
 
-                friends = new COMHandler(PreferenceManager.getDefaultSharedPreferences(context).getString(
+                friends = new COMClient(PreferenceManager.getDefaultSharedPreferences(context).getString(
                         Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriendsForCOM(context);
-                feedItems = new FeedHandler(SessionKeeper.getProfileData().getId(), FeedItem.TYPE_GLOBAL).get(context, 0, Constants.DEFAULT_NUM_FEED);
+                feedItems = new FeedClient(SessionKeeper.getProfileData().getId(), FeedItem.TYPE_GLOBAL).get(context, 0, Constants.DEFAULT_NUM_FEED);
                 
                 return (feedItems != null && friends != null);
 

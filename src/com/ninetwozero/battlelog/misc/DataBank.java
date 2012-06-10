@@ -25,9 +25,9 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.AppContributorData;
-import com.ninetwozero.battlelog.datatypes.PlatformData;
-import com.ninetwozero.battlelog.datatypes.VehicleType;
+import com.ninetwozero.battlelog.datatype.AppContributorData;
+import com.ninetwozero.battlelog.datatype.PlatformData;
+import com.ninetwozero.battlelog.datatype.VehicleType;
 
 public class DataBank {
 
