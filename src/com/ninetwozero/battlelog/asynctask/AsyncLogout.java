@@ -23,8 +23,8 @@ import android.preference.PreferenceManager;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.RequestHandlerException;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.http.RequestHandler;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {

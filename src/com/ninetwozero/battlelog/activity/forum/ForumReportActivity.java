@@ -31,9 +31,9 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.http.ForumClient;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.http.RequestHandler;
 
 public class ForumReportActivity extends Activity {
 

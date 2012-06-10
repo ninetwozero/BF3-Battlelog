@@ -36,10 +36,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ninetwozero.battlelog.activity.profile.assignments.AssignmentActivity;
-import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
-import com.ninetwozero.battlelog.activity.profile.settings.ProfileSettingsActivity;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.profile.assignments.AssignmentActivity;
+import com.ninetwozero.battlelog.activity.profile.settings.ProfileSettingsActivity;
+import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.battlelog.activity.profile.weapon.WeaponListActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;

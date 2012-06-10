@@ -46,10 +46,10 @@ import com.ninetwozero.battlelog.datatype.AssignmentData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.ProfileClient;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class AssignmentActivity extends Activity {

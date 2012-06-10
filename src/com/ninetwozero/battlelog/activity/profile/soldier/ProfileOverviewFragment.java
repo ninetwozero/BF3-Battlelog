@@ -36,8 +36,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.asynctask.AsyncFriendRemove;
 import com.ninetwozero.battlelog.asynctask.AsyncFriendRequest;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;

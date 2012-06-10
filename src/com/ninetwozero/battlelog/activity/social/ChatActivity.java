@@ -46,9 +46,9 @@ import com.ninetwozero.battlelog.datatype.ChatMessage;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.COMClient;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class ChatActivity extends ListActivity {

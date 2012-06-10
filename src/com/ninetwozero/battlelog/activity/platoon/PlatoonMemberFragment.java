@@ -34,8 +34,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.adapter.PlatoonUserListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncPlatoonMemberManagement;
 import com.ninetwozero.battlelog.asynctask.AsyncPlatoonRespond;

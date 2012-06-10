@@ -16,8 +16,6 @@ package com.ninetwozero.battlelog.activity.platoon;
 
 import java.util.Vector;
 
-import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
-import com.ninetwozero.battlelog.R;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
@@ -34,14 +32,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
+import com.ninetwozero.battlelog.activity.feed.FeedFragment;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.PlatoonInformation;
-import com.ninetwozero.battlelog.activity.feed.FeedFragment;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.http.RequestHandler;
 
 public class PlatoonActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 

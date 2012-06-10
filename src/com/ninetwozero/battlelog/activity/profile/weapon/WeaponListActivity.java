@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
-import com.ninetwozero.battlelog.R;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.Context;
@@ -31,6 +29,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;

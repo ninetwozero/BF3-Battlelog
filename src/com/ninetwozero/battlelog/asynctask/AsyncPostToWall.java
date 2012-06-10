@@ -8,8 +8,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
+import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.http.FeedClient;
 
 public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {

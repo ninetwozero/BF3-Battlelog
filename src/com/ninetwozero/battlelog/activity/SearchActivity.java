@@ -41,10 +41,10 @@ import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.adapter.SearchDataAdapter;
 import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.http.WebsiteClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.http.RequestHandler;
 
 public class SearchActivity extends ListActivity {
 

@@ -25,8 +25,8 @@ import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.activity.social.ChatActivity;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.social.ChatActivity;
 import com.ninetwozero.battlelog.adapter.ChatListAdapter;
 import com.ninetwozero.battlelog.datatype.ChatMessage;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;

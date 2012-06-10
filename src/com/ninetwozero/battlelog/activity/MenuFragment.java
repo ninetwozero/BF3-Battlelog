@@ -37,11 +37,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.activity.profile.assignments.AssignmentActivity;
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.forum.ForumActivity;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
+import com.ninetwozero.battlelog.activity.profile.assignments.AssignmentActivity;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.battlelog.adapter.DashboardPopupPlatoonListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncFetchDataToCompare;

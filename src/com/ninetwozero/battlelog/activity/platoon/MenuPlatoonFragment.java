@@ -39,8 +39,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ninetwozero.battlelog.activity.profile.settings.ProfileSettingsActivity;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.profile.settings.ProfileSettingsActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;

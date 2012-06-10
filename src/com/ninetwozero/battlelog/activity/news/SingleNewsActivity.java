@@ -17,7 +17,6 @@ package com.ninetwozero.battlelog.activity.news;
 import java.util.List;
 import java.util.Vector;
 
-import com.ninetwozero.battlelog.R;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
@@ -39,11 +38,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.NewsData;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.http.RequestHandler;
 
 public class SingleNewsActivity extends FragmentActivity implements DefaultFragmentActivity {
 

@@ -14,9 +14,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.service.BattlelogService;
 
 public class SettingsActivity extends PreferenceActivity {

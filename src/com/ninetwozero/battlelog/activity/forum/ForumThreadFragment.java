@@ -56,9 +56,9 @@ import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
-import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.ThreadPostListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncPostInThread;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;

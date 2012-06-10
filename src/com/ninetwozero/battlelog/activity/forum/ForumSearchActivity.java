@@ -40,9 +40,9 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.ForumSearchAdapter;
 import com.ninetwozero.battlelog.datatype.ForumSearchResult;
 import com.ninetwozero.battlelog.http.ForumClient;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.http.RequestHandler;
 
 public class ForumSearchActivity extends ListActivity {
 

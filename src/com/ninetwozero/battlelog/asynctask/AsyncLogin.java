@@ -200,22 +200,13 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
         // Get the checksum
         String postCheckSum = substringFrom(httpContent, Constants.ELEMENT_STATUS_CHECKSUM, "\" />");
-<<<<<<< HEAD:src/com/ninetwozero/battlelog/asynctasks/AsyncLogin.java
-        String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>").trim();
-
-        ProfileData profile = ProfileHandler.getProfileIdFromName(soldierName, postCheckSum);
-        profile = ProfileHandler.resolveFullProfileDataFromProfileData(profile);
-        List<PlatoonData> platoons = new ProfileHandler(profile).getPlatoons(context);
-=======
-
+        
         // Let's work on getting the "username", not persona name --> profileId
         String soldierName = /*"Eddy_J1";*/substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>").trim();
-
         ProfileData profile = ProfileClient.getProfileIdFromName(soldierName, postCheckSum);
-        Log.d(Constants.DEBUG_TAG, "profile => " + profile);
         profile = ProfileClient.resolveFullProfileDataFromProfileData(profile);
         List<PlatoonData> platoons = new ProfileClient(profile).getPlatoons(context);
->>>>>>> 74b858e171425ee680c7ef7df30e2ab061a3616c:src/com/ninetwozero/battlelog/asynctask/AsyncLogin.java
+        Log.d(Constants.DEBUG_TAG, "profile => " + profile);
         SharedPreferences sharedPreferences = addToSharedPreferences(profile, platoons,
                 postCheckSum, soldierName);
 

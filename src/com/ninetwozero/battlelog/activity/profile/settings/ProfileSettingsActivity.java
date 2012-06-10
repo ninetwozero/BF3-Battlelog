@@ -9,9 +9,9 @@ import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.http.RequestHandler;
 
 public class ProfileSettingsActivity extends PreferenceActivity {
 

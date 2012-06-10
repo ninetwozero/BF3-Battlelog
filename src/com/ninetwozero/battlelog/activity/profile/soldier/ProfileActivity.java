@@ -16,8 +16,6 @@ package com.ninetwozero.battlelog.activity.profile.soldier;
 
 import java.util.Vector;
 
-import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
-import com.ninetwozero.battlelog.R;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
@@ -34,20 +32,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
-<<<<<<< HEAD:src/com/ninetwozero/battlelog/ProfileActivity.java
-import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.FeedItem;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.fragments.FeedFragment;
-import com.ninetwozero.battlelog.fragments.ProfileOverviewFragment;
-import com.ninetwozero.battlelog.fragments.ProfileStatsFragment;
-import com.ninetwozero.battlelog.misc.Constants;
-=======
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
+import com.ninetwozero.battlelog.activity.feed.FeedFragment;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.activity.feed.FeedFragment;
->>>>>>> 74b858e171425ee680c7ef7df30e2ab061a3616c:src/com/ninetwozero/battlelog/activity/profile/soldier/ProfileActivity.java
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class ProfileActivity extends CustomFragmentActivity implements DefaultFragmentActivity {

@@ -50,9 +50,9 @@ import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.NotificationData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.http.NotificationClient;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class SinglePostActivity extends ListActivity implements DefaultActivity {
