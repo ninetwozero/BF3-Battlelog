@@ -46,16 +46,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
-import com.ninetwozero.battlelog.asynctasks.AsyncLogin;
-import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.PostData;
-import com.ninetwozero.battlelog.datatypes.ShareableCookie;
+import com.ninetwozero.battlelog.asynctask.AsyncLogin;
+import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatype.PostData;
+import com.ninetwozero.battlelog.datatype.ShareableCookie;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutCreditsFragment;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutFAQFragment;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutMainFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.handlers.RequestHandler;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class MainActivity extends CustomFragmentActivity implements DefaultFragmentActivity {

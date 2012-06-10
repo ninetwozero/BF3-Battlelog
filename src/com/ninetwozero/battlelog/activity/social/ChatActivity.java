@@ -38,17 +38,17 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.ChatListAdapter;
-import com.ninetwozero.battlelog.asynctasks.AsyncChatClose;
-import com.ninetwozero.battlelog.asynctasks.AsyncChatRefresh;
-import com.ninetwozero.battlelog.asynctasks.AsyncChatSend;
-import com.ninetwozero.battlelog.datatypes.ChatMessage;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.COMHandler;
+import com.ninetwozero.battlelog.adapter.ChatListAdapter;
+import com.ninetwozero.battlelog.asynctask.AsyncChatClose;
+import com.ninetwozero.battlelog.asynctask.AsyncChatRefresh;
+import com.ninetwozero.battlelog.asynctask.AsyncChatSend;
+import com.ninetwozero.battlelog.datatype.ChatMessage;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.handlers.RequestHandler;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class ChatActivity extends ListActivity {
@@ -151,7 +151,7 @@ public class ChatActivity extends ListActivity {
 
             try {
 
-                chatId = new COMHandler(arg0[0]).getChatId(profileId);
+                chatId = new COMClient(arg0[0]).getChatId(profileId);
                 return true;
 
             } catch (WebsiteHandlerException ex) {

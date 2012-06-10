@@ -38,21 +38,12 @@ import android.widget.Toast;
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
-import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
-import com.ninetwozero.battlelog.datatypes.ShareableCookie;
-import com.ninetwozero.battlelog.handlers.RequestHandler;
+import com.ninetwozero.battlelog.asynctask.AsyncSessionSetActive;
+import com.ninetwozero.battlelog.asynctask.AsyncSessionValidate;
+import com.ninetwozero.battlelog.datatype.ShareableCookie;
+import com.ninetwozero.battlelog.http.RequestHandler;
 
 public class PublicUtils {
-
-    /**
-     * <p>
-     * Get the Date-string (YYYY-MM-DD
-     * </p>
-     * 
-     * @param date the Date to be formatted in the {X} {unit}
-     * @return String
-     */
 
     public static String getDate(final Long d) {
 
@@ -75,15 +66,6 @@ public class PublicUtils {
         return s + " " + getDate(d);
 
     }
-
-    /**
-     * <p>
-     * Get the "relative" Date-string
-     * </p>
-     * 
-     * @param date the Date to be formatted in the {X} {unit}
-     * @return String
-     */
 
     public static String getRelativeDate(final Context c, final Long d) {
 
@@ -348,7 +330,7 @@ public class PublicUtils {
         for (RunningServiceInfo service : manager
                 .getRunningServices(Integer.MAX_VALUE)) {
 
-            if ("com.ninetwozero.battlelog.services.BattlelogService"
+            if ("com.ninetwozero.battlelog.service.BattlelogService"
                     .equals(service.service.getClassName())) {
                 return true;
             }

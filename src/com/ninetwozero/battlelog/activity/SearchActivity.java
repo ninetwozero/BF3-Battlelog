@@ -39,12 +39,12 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
-import com.ninetwozero.battlelog.adapters.SearchDataAdapter;
-import com.ninetwozero.battlelog.datatypes.GeneralSearchResult;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.adapter.SearchDataAdapter;
+import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
+import com.ninetwozero.battlelog.http.WebsiteClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.handlers.RequestHandler;
+import com.ninetwozero.battlelog.http.RequestHandler;
 
 public class SearchActivity extends ListActivity {
 
@@ -191,7 +191,7 @@ public class SearchActivity extends ListActivity {
 
             try {
 
-                searchResults = WebsiteHandler.search(context, arg0[0], arg0[1]);
+                searchResults = WebsiteClient.search(context, arg0[0], arg0[1]);
                 return true;
 
             } catch (Exception ex) {

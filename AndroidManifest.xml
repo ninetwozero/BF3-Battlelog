@@ -59,10 +59,6 @@
             android:configChanges="orientation"
             android:label="@string/title_platoon_invite" />
         <activity
-            android:name=".StatsActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_performance" />
-        <activity
             android:name=".activity.social.ChatActivity"
             android:configChanges="orientation"
             android:label="@string/title_chat" />
@@ -76,10 +72,6 @@
             android:configChanges="orientation"
             android:label="@string/title_comparing_battle_scars" />
         <activity
-            android:name=".BoardActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_forum" />
-        <activity
             android:name=".activity.forum.ForumActivity"
             android:configChanges="orientation"
             android:label="BF3 Battlelog - Browsing the forums" />
@@ -91,10 +83,6 @@
             android:name=".activity.forum.ForumSavedActivity"
             android:configChanges="orientation"
             android:label="@string/title_forum_saved" />
-        <activity
-            android:name=".Backup_ForumThreadActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_thread_view" />
         <activity
             android:name=".activity.forum.ForumReportActivity"
             android:configChanges="orientation"
@@ -176,7 +164,7 @@
 		</receiver>
         -->
         <service
-            android:name=".services.BattlelogService"
+            android:name=".service.BattlelogService"
             android:enabled="true" />
     </application>
 

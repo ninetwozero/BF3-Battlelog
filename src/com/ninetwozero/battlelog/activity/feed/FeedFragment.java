@@ -42,14 +42,14 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.forum.SinglePostActivity;
-import com.ninetwozero.battlelog.adapters.FeedListAdapter;
-import com.ninetwozero.battlelog.asynctasks.AsyncFeedHooah;
-import com.ninetwozero.battlelog.asynctasks.AsyncPostToWall;
-import com.ninetwozero.battlelog.asynctasks.AsyncStatusUpdate;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.FeedItem;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.FeedHandler;
+import com.ninetwozero.battlelog.adapter.FeedListAdapter;
+import com.ninetwozero.battlelog.asynctask.AsyncFeedHooah;
+import com.ninetwozero.battlelog.asynctask.AsyncPostToWall;
+import com.ninetwozero.battlelog.asynctask.AsyncStatusUpdate;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.FeedItem;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
@@ -335,7 +335,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Get...
-                feedItems = new FeedHandler(id, type).get(
+                feedItems = new FeedClient(id, type).get(
 
                         context, sharedPreferences.getInt(Constants.SP_BL_NUM_FEED,
                                 Constants.DEFAULT_NUM_FEED), activeProfileId

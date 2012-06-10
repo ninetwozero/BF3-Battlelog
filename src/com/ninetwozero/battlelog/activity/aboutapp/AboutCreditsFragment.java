@@ -29,8 +29,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.CreditListAdapter;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
+import com.ninetwozero.battlelog.adapter.CreditListAdapter;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 

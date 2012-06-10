@@ -27,10 +27,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.activity.profile.weapon.WeaponListActivity;
-import com.ninetwozero.battlelog.adapters.WeaponListAdapter;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
+import com.ninetwozero.battlelog.adapter.WeaponListAdapter;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
 
 public class WeaponListFragment extends ListFragment implements DefaultFragment {
 

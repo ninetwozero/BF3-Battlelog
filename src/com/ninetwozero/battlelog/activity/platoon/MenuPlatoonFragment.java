@@ -41,10 +41,10 @@ import android.widget.TextView;
 
 import com.ninetwozero.battlelog.activity.profile.settings.ProfileSettingsActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.handlers.ProfileHandler;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
@@ -291,7 +291,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         @Override
         protected Boolean doInBackground(ProfileData... arg0) {
             try {
-                platoonData = new ProfileHandler(arg0[0]).getPlatoons(context);
+                platoonData = new ProfileClient(arg0[0]).getPlatoons(context);
                 return (platoonData != null);
             } catch (Exception ex) {
                 ex.printStackTrace();

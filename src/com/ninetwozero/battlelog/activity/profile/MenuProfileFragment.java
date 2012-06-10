@@ -42,8 +42,8 @@ import com.ninetwozero.battlelog.activity.profile.settings.ProfileSettingsActivi
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.battlelog.activity.profile.weapon.WeaponListActivity;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.PersonaData;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.PersonaData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.SessionKeeper;

@@ -38,14 +38,14 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.asynctasks.AsyncFriendRemove;
-import com.ninetwozero.battlelog.asynctasks.AsyncFriendRequest;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.ProfileInformation;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.ProfileHandler;
+import com.ninetwozero.battlelog.asynctask.AsyncFriendRemove;
+import com.ninetwozero.battlelog.asynctask.AsyncFriendRequest;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.ProfileInformation;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -366,12 +366,12 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 // Let's try something
                 if (profileData.getNumPersonas() == 0) {
 
-                    profileData = ProfileHandler.resolveFullProfileDataFromProfileData(profileData);
+                    profileData = ProfileClient.resolveFullProfileDataFromProfileData(profileData);
 
                 }
 
                 // Let's get the personas!
-                profileInformation = new ProfileHandler(profileData).getInformation(
+                profileInformation = new ProfileClient(profileData).getInformation(
 
                         context,
                         activeProfileId

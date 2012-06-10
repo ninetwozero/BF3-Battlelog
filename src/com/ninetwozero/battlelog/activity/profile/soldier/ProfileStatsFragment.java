@@ -45,11 +45,11 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.PersonaStats;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.PersonaStats;
+import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.dialog.ProfilePersonaListDialog;
-import com.ninetwozero.battlelog.handlers.ProfileHandler;
+import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
@@ -349,7 +349,7 @@ Log.d(Constants.DEBUG_TAG, "profile => " + profileData);
                             .getPersona(0).getId() : selectedPersona;
 
                     // Grab the stats
-                    personaStats = new ProfileHandler(profileData).getStats(context);
+                    personaStats = new ProfileClient(profileData).getStats(context);
 
                 }
                 // ...validate!

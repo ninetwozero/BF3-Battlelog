@@ -40,12 +40,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.ThreadListAdapter;
-import com.ninetwozero.battlelog.asynctasks.AsyncCreateNewThread;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.ForumData;
-import com.ninetwozero.battlelog.datatypes.ForumThreadData;
-import com.ninetwozero.battlelog.handlers.ForumHandler;
+import com.ninetwozero.battlelog.adapter.ThreadListAdapter;
+import com.ninetwozero.battlelog.asynctask.AsyncCreateNewThread;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.ForumData;
+import com.ninetwozero.battlelog.datatype.ForumThreadData;
+import com.ninetwozero.battlelog.http.ForumClient;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
 
@@ -56,7 +56,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
     private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
     private ForumData forumData;
-    private ForumHandler forumHandler;
+    private ForumClient forumHandler;
 
     // Elements
     private ListView listView;
@@ -90,7 +90,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
         // Get the unlocks
         locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
-        forumHandler = new ForumHandler();
+        forumHandler = new ForumClient();
         
         // Init the views
         initFragment(view);
@@ -296,7 +296,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
             try {
 
-                forumData = new ForumHandler().getThreads(locale,
+                forumData = new ForumClient().getThreads(locale,
                         arg0[0]);
                 return (forumData != null);
 

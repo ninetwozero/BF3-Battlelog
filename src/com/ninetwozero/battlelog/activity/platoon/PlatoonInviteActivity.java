@@ -27,10 +27,10 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.PlatoonInviteListAdapter;
-import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonMemberInvite;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.adapter.PlatoonInviteListAdapter;
+import com.ninetwozero.battlelog.asynctask.AsyncPlatoonMemberInvite;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 

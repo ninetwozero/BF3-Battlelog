@@ -24,11 +24,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
-import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
-import com.ninetwozero.battlelog.datatypes.WeaponInfo;
-import com.ninetwozero.battlelog.datatypes.WeaponStats;
+import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
+import com.ninetwozero.battlelog.datatype.WeaponInfo;
+import com.ninetwozero.battlelog.datatype.WeaponStats;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;

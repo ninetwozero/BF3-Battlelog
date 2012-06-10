@@ -37,12 +37,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.ForumSearchAdapter;
-import com.ninetwozero.battlelog.datatypes.ForumSearchResult;
-import com.ninetwozero.battlelog.handlers.ForumHandler;
+import com.ninetwozero.battlelog.adapter.ForumSearchAdapter;
+import com.ninetwozero.battlelog.datatype.ForumSearchResult;
+import com.ninetwozero.battlelog.http.ForumClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.handlers.RequestHandler;
+import com.ninetwozero.battlelog.http.RequestHandler;
 
 public class ForumSearchActivity extends ListActivity {
 
@@ -188,7 +188,7 @@ public class ForumSearchActivity extends ListActivity {
 
             try {
 
-                threads = ForumHandler.search(context, arg0[0]);
+                threads = ForumClient.search(context, arg0[0]);
                 return true;
 
             } catch (Exception ex) {

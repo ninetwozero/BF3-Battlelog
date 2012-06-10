@@ -39,12 +39,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.UnlockData;
-import com.ninetwozero.battlelog.datatypes.UnlockDataWrapper;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.ProfileHandler;
+import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.UnlockData;
+import com.ninetwozero.battlelog.datatype.UnlockDataWrapper;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
@@ -273,13 +273,13 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
 
                 if (arg0[0].getNumPersonas() == 0) {
 
-                    profileData = ProfileHandler.resolveFullProfileDataFromProfileData(profileData);
+                    profileData = ProfileClient.resolveFullProfileDataFromProfileData(profileData);
                     if (selectedPersona == 0) {
                         selectedPersona = profileData.getPersona(0).getId();
                     }
                     
                     // Get the unlocks
-                    ProfileHandler profileHandler = new ProfileHandler(profileData);
+                    ProfileClient profileHandler = new ProfileClient(profileData);
                     unlocks = profileHandler.getUnlocks(sharedPreferences.getInt(Constants.SP_BL_UNLOCKS_LIMIT_MIN, 1));
 
                 } else {
@@ -289,7 +289,7 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
                     }  
                     
                     // Get the unlocks
-                    ProfileHandler profileHandler = new ProfileHandler(profileData);
+                    ProfileClient profileHandler = new ProfileClient(profileData);
                     unlocks = profileHandler.getUnlocks(sharedPreferences.getInt(Constants.SP_BL_UNLOCKS_LIMIT_MIN, 1));
 
                 }

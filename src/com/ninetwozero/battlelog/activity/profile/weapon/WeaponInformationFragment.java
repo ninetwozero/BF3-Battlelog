@@ -30,13 +30,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.activity.profile.weapon.SingleWeaponActivity;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
-import com.ninetwozero.battlelog.datatypes.WeaponInfo;
-import com.ninetwozero.battlelog.datatypes.WeaponStats;
-import com.ninetwozero.battlelog.handlers.ProfileHandler;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
+import com.ninetwozero.battlelog.datatype.WeaponInfo;
+import com.ninetwozero.battlelog.datatype.WeaponStats;
+import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.DrawableResourceList;
 import com.ninetwozero.battlelog.misc.StringResourceList;
 
@@ -162,7 +161,7 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
 
             try {
 
-                weaponDataWrapper = new ProfileHandler(profileData).getWeapon(weaponInfo, weaponStats);
+                weaponDataWrapper = new ProfileClient(profileData).getWeapon(weaponInfo, weaponStats);
                 return true;
 
             } catch (Exception ex) {

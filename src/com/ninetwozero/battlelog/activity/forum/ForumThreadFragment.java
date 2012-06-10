@@ -59,14 +59,14 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.ThreadPostListAdapter;
-import com.ninetwozero.battlelog.asynctasks.AsyncPostInThread;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.ForumPostData;
-import com.ninetwozero.battlelog.datatypes.ForumThreadData;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.handlers.ForumHandler;
-import com.ninetwozero.battlelog.handlers.ProfileHandler;
+import com.ninetwozero.battlelog.adapter.ThreadPostListAdapter;
+import com.ninetwozero.battlelog.asynctask.AsyncPostInThread;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.ForumPostData;
+import com.ninetwozero.battlelog.datatype.ForumThreadData;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.http.ForumClient;
+import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -79,7 +79,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
     private ForumThreadData threadData;
-    private ForumHandler forumHandler = new ForumHandler();
+    private ForumClient forumHandler = new ForumClient();
 
     // Elements
     private ListView listView;
@@ -942,7 +942,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                 .putExtra(
 
                                         "profile",
-                                        ProfileHandler.getProfileIdFromName(username, arg0[1])
+                                        ProfileClient.getProfileIdFromName(username, arg0[1])
 
                                 );
 
@@ -975,7 +975,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                         .putExtra(
 
                                                 "profile",
-                                                ProfileHandler.resolveFullProfileDataFromProfileId(personaId)
+                                                ProfileClient.resolveFullProfileDataFromProfileId(personaId)
 
                                         );
 

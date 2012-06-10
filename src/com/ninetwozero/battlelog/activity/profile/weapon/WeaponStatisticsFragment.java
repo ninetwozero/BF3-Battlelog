@@ -25,9 +25,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.WeaponStats;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatype.WeaponStats;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class WeaponStatisticsFragment extends Fragment implements DefaultFragment {

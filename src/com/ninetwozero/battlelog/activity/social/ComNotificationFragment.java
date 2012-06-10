@@ -31,11 +31,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.NotificationListAdapter;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.NotificationData;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.NotificationHandler;
+import com.ninetwozero.battlelog.adapter.NotificationListAdapter;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.NotificationData;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.NotificationClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
@@ -123,7 +123,7 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
             try {
 
                 // Let's get this!
-                notifications = new NotificationHandler().get(arg0[0]);
+                notifications = new NotificationClient().get(arg0[0]);
                 return true;
 
             } catch (WebsiteHandlerException e) {

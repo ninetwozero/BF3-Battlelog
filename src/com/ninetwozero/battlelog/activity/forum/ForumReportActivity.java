@@ -30,10 +30,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.handlers.ForumHandler;
+import com.ninetwozero.battlelog.http.ForumClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.handlers.RequestHandler;
+import com.ninetwozero.battlelog.http.RequestHandler;
 
 public class ForumReportActivity extends Activity {
 
@@ -165,7 +165,7 @@ public class ForumReportActivity extends Activity {
 
             try {
 
-                return ForumHandler.reportPost(context, postId, arg0[0]);
+                return ForumClient.reportPost(context, postId, arg0[0]);
 
             } catch (Exception ex) {
 

@@ -42,17 +42,17 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
-import com.ninetwozero.battlelog.asynctasks.AsyncCommentSend;
-import com.ninetwozero.battlelog.asynctasks.AsyncCommentsRefresh;
-import com.ninetwozero.battlelog.datatypes.CommentData;
-import com.ninetwozero.battlelog.datatypes.DefaultActivity;
-import com.ninetwozero.battlelog.datatypes.FeedItem;
-import com.ninetwozero.battlelog.datatypes.NotificationData;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.handlers.NotificationHandler;
+import com.ninetwozero.battlelog.asynctask.AsyncCommentSend;
+import com.ninetwozero.battlelog.asynctask.AsyncCommentsRefresh;
+import com.ninetwozero.battlelog.datatype.CommentData;
+import com.ninetwozero.battlelog.datatype.DefaultActivity;
+import com.ninetwozero.battlelog.datatype.FeedItem;
+import com.ninetwozero.battlelog.datatype.NotificationData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.http.NotificationClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.handlers.RequestHandler;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class SinglePostActivity extends ListActivity implements DefaultActivity {
@@ -298,7 +298,7 @@ public class SinglePostActivity extends ListActivity implements DefaultActivity 
 
             try {
 
-                item = new NotificationHandler().getPostForNotification(arg0[0]);
+                item = new NotificationClient().getPostForNotification(arg0[0]);
                 return true;
 
             } catch (Exception ex) {

@@ -37,12 +37,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonRequest;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.PlatoonHandler;
+import com.ninetwozero.battlelog.asynctask.AsyncPlatoonRequest;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.PlatoonInformation;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.PlatoonClient;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -320,7 +320,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             try {
 
                 // Get...
-                platoonInformation = new PlatoonHandler(this.platoonData).getInformation(
+                platoonInformation = new PlatoonClient(this.platoonData).getInformation(
 
                         context, sharedPreferences.getInt(
                                 Constants.SP_BL_NUM_FEED,

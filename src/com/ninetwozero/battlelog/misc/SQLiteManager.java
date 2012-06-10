@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
 
-import com.ninetwozero.battlelog.datatypes.DatabaseInformationException;
+import com.ninetwozero.battlelog.datatype.DatabaseInformationException;
 
 public class SQLiteManager {
 

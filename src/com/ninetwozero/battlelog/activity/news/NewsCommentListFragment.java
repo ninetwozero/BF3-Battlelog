@@ -37,13 +37,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.CommentListAdapter;
-import com.ninetwozero.battlelog.asynctasks.AsyncCommentSend;
-import com.ninetwozero.battlelog.datatypes.CommentData;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.NewsData;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.CommentHandler;
+import com.ninetwozero.battlelog.adapter.CommentListAdapter;
+import com.ninetwozero.battlelog.asynctask.AsyncCommentSend;
+import com.ninetwozero.battlelog.datatype.CommentData;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.NewsData;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.CommentClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
@@ -186,7 +186,7 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
             try {
 
                 // Get...
-                comments = new CommentHandler(newsData.getId(), CommentData.TYPE_NEWS).get(pageId);
+                comments = new CommentClient(newsData.getId(), CommentData.TYPE_NEWS).get(pageId);
 
                 // ...validate!
                 return (comments != null);

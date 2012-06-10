@@ -34,8 +34,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.SavedForumThreadData;
+import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatype.SavedForumThreadData;
 
 public class ForumActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 

@@ -26,7 +26,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 
-import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 
 public class AboutActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 

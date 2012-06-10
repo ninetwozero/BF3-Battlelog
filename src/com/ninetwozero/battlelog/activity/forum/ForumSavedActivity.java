@@ -39,14 +39,14 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.SavedThreadListAdapter;
-import com.ninetwozero.battlelog.datatypes.ForumThreadData;
-import com.ninetwozero.battlelog.datatypes.SavedForumThreadData;
-import com.ninetwozero.battlelog.handlers.ForumHandler;
+import com.ninetwozero.battlelog.adapter.SavedThreadListAdapter;
+import com.ninetwozero.battlelog.datatype.ForumThreadData;
+import com.ninetwozero.battlelog.datatype.SavedForumThreadData;
+import com.ninetwozero.battlelog.http.ForumClient;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.handlers.RequestHandler;
+import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class ForumSavedActivity extends ListActivity {
@@ -251,7 +251,7 @@ public class ForumSavedActivity extends ListActivity {
             try {
 
                 // Get the thread
-                ForumHandler forumHandler = new ForumHandler();
+                ForumClient forumHandler = new ForumClient();
                 forumHandler.setThreadId(t[0].getId());
                 forumThread = forumHandler.getPosts(locale);
                 boolean status = (forumThread.getNumPosts() > t[0].getNumPosts());

@@ -27,9 +27,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.UnlockListAdapter;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.UnlockData;
+import com.ninetwozero.battlelog.adapter.UnlockListAdapter;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.UnlockData;
 
 public class UnlockFragment extends ListFragment implements DefaultFragment {
 

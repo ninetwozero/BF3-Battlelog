@@ -19,9 +19,9 @@ import java.util.List;
 
 import android.content.SharedPreferences;
 
-import com.ninetwozero.battlelog.datatypes.PersonaData;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
 
 public class SessionKeeper {
 

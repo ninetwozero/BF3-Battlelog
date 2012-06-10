@@ -31,10 +31,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.WeaponDataWrapper;
-import com.ninetwozero.battlelog.handlers.ProfileHandler;
+import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
+import com.ninetwozero.battlelog.http.ProfileClient;
 
 public class WeaponListActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
@@ -157,7 +157,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
 
             try {
 
-                items = new ProfileHandler(profileData).getWeapons();
+                items = new ProfileClient(profileData).getWeapons();
                 return true;
 
             } catch (Exception ex) {

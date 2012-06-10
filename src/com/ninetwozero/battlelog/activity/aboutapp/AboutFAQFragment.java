@@ -23,7 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
 
 public class AboutFAQFragment extends Fragment implements DefaultFragment {
 

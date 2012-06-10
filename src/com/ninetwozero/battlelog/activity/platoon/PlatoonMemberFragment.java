@@ -36,13 +36,13 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.PlatoonUserListAdapter;
-import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonMemberManagement;
-import com.ninetwozero.battlelog.asynctasks.AsyncPlatoonRespond;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.adapter.PlatoonUserListAdapter;
+import com.ninetwozero.battlelog.asynctask.AsyncPlatoonMemberManagement;
+import com.ninetwozero.battlelog.asynctask.AsyncPlatoonRespond;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.PlatoonInformation;
+import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.misc.Constants;
 
 public class PlatoonMemberFragment extends ListFragment implements DefaultFragment {

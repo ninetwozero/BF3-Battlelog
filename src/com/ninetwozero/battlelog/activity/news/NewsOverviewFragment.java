@@ -29,8 +29,8 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.NewsData;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.NewsData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class NewsOverviewFragment extends Fragment implements DefaultFragment {

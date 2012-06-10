@@ -28,7 +28,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.handlers.PlatoonHandler;
+import com.ninetwozero.battlelog.http.PlatoonClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
@@ -150,7 +150,7 @@ public class PlatoonCreateActivity extends Activity {
         @Override
         protected Boolean doInBackground(String... arg0) {
 
-            return PlatoonHandler.create(arg0[0], arg0[1], arg0[2], arg0[3]);
+            return PlatoonClient.create(arg0[0], arg0[1], arg0[2], arg0[3]);
 
         }
 

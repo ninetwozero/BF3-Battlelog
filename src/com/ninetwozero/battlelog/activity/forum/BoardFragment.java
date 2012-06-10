@@ -37,12 +37,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.ninetwozero.battlelog.activity.forum.ForumActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.ForumListAdapter;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.ForumData;
-import com.ninetwozero.battlelog.handlers.ForumHandler;
+import com.ninetwozero.battlelog.adapter.ForumListAdapter;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.ForumData;
+import com.ninetwozero.battlelog.http.ForumClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 
@@ -194,7 +193,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
 
             try {
 
-                Object[] result = new ForumHandler().getForums(locale);
+                Object[] result = new ForumClient().getForums(locale);
                 title = (String) result[0];
                 forums = (List<ForumData>) result[1];
                 return (forums != null);

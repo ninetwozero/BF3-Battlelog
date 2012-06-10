@@ -1,8 +1,8 @@
 
 package com.ninetwozero.battlelog.preference;
 
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.COUNTRY;
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.PROFILE_INFO_COUNTRY;
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.COUNTRY;
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.PROFILE_INFO_COUNTRY;
 
 import java.util.Arrays;
 import java.util.List;

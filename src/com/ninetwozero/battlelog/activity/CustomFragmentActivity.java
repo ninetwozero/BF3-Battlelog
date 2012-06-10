@@ -31,7 +31,7 @@ import android.view.LayoutInflater;
 
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.handlers.RequestHandler;
+import com.ninetwozero.battlelog.http.RequestHandler;
 
 public class CustomFragmentActivity extends FragmentActivity {
 

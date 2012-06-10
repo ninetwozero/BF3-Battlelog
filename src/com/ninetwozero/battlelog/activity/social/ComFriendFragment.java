@@ -40,13 +40,13 @@ import com.ninetwozero.battlelog.activity.DashboardActivity;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
-import com.ninetwozero.battlelog.adapters.FriendListAdapter;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.FriendListDataWrapper;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.COMHandler;
-import com.ninetwozero.battlelog.handlers.ProfileHandler;
+import com.ninetwozero.battlelog.adapter.FriendListAdapter;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.FriendListDataWrapper;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.COMClient;
+import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
@@ -231,11 +231,11 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                         ).putExtra(
 
-                                "profile2", ProfileHandler.resolveFullProfileDataFromProfileId(
+                                "profile2", ProfileClient.resolveFullProfileDataFromProfileId(
 
-                                        profileData.getId()
+                        profileData.getId()
 
-                                        )
+                )
 
                         )
 
@@ -251,11 +251,11 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 ).putExtra(
 
-                        "profile", ProfileHandler.resolveFullProfileDataFromProfileId(
+                        "profile", ProfileClient.resolveFullProfileDataFromProfileId(
 
-                                profileData.getId()
+                        profileData.getId()
 
-                                )
+                )
 
                         )
 
@@ -301,7 +301,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Let's get this!
-                friendListData = new COMHandler(arg0[0]).getFriendsForCOM(context);
+                friendListData = new COMClient(arg0[0]).getFriendsForCOM(context);
                 return true;
 
             } catch (WebsiteHandlerException e) {
@@ -355,7 +355,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Let's get this!!
-                return new COMHandler(arg0[0]).answerFriendRequest(profileId, response);
+                return new COMClient(arg0[0]).answerFriendRequest(profileId, response);
 
             } catch (WebsiteHandlerException e) {
 

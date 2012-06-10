@@ -38,11 +38,11 @@ import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.asynctasks.AsyncLogout;
-import com.ninetwozero.battlelog.datatypes.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatypes.FeedItem;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.asynctask.AsyncLogout;
+import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatype.FeedItem;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.activity.social.ComFriendFragment;
 import com.ninetwozero.battlelog.activity.social.ComNotificationFragment;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;

@@ -33,11 +33,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.adapters.NewsListAdapter;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.NewsData;
-import com.ninetwozero.battlelog.datatypes.WebsiteHandlerException;
-import com.ninetwozero.battlelog.handlers.WebsiteHandler;
+import com.ninetwozero.battlelog.adapter.NewsListAdapter;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.NewsData;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.WebsiteClient;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class NewsListFragment extends ListFragment implements DefaultFragment {
@@ -153,7 +153,7 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Get...
-                newsItems = new WebsiteHandler().getNewsForPage(start);
+                newsItems = new WebsiteClient().getNewsForPage(start);
 
                 // ...validate!
                 return (newsItems != null);

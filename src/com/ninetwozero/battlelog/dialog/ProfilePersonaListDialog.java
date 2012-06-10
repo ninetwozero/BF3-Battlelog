@@ -16,7 +16,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
 
 public class ProfilePersonaListDialog extends DialogFragment implements
         DialogInterface.OnClickListener {

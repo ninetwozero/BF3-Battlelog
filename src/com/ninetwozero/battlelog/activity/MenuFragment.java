@@ -43,10 +43,10 @@ import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
-import com.ninetwozero.battlelog.adapters.DashboardPopupPlatoonListAdapter;
-import com.ninetwozero.battlelog.asynctasks.AsyncFetchDataToCompare;
-import com.ninetwozero.battlelog.datatypes.DefaultFragment;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
+import com.ninetwozero.battlelog.adapter.DashboardPopupPlatoonListAdapter;
+import com.ninetwozero.battlelog.asynctask.AsyncFetchDataToCompare;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class MenuFragment extends Fragment implements DefaultFragment {
