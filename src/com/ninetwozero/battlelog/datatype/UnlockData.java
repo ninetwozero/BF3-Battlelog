@@ -84,11 +84,11 @@ public class UnlockData implements Parcelable {
         return scoreCurrent;
     }
 
-    public String getParent() {
+    public String getParent(Context c) {
 
         if (type.equals(CATEGORY_ATTACHMENT)) {
 
-            return DataBank.getWeaponTitle(parentIdentifier);
+            return DataBank.getWeaponTitle(c, parentIdentifier);
 
         } else if (type.equals(CATEGORY_VEHICLE)) {
 
@@ -102,7 +102,7 @@ public class UnlockData implements Parcelable {
 
         if (type.equals(CATEGORY_WEAPON)) {
 
-            return DataBank.getWeaponTitle(unlockIdentifier);
+            return DataBank.getWeaponTitle(c, unlockIdentifier);
 
         } else if (type.equals(CATEGORY_ATTACHMENT)) {
 
@@ -167,7 +167,7 @@ public class UnlockData implements Parcelable {
 
         } else if (type.equals(CATEGORY_ATTACHMENT)) {
 
-            return getParent() + " " + getTitle(c);
+            return getParent(c) + " " + getTitle(c);
 
         } else if (type.equals(CATEGORY_VEHICLE)) {
 
@@ -190,7 +190,7 @@ public class UnlockData implements Parcelable {
 
     }
 
-    public String getObjective() {
+    public String getObjective(Context c) {
 
         if (objective.startsWith("sc_")) {
 
@@ -219,7 +219,7 @@ public class UnlockData implements Parcelable {
 
                     "{scoreCurr}/{scoreNeeded} {name}",
                     scoreCurrent + "/" + scoreNeeded + " "
-                            + getParent()
+                            + getParent(c)
 
                     );
 

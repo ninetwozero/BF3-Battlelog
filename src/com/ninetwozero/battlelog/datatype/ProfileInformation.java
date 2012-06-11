@@ -148,6 +148,12 @@ public class ProfileInformation {
 
         return platoons.get(position);
     }
+    
+    public int getNumPersonas() {
+
+        return persona.length;
+
+    }
 
     public int getNumPlatoons() {
 

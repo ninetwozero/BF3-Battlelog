@@ -41,93 +41,104 @@ public class PersonaStats implements Parcelable {
             scoreVehicle, scoreCombat, scoreAwards, scoreUnlocks, scoreTotal;
 
     // Construct
+    public PersonaStats(String uName, long uId, String pName, long pId, long plId) {
+        
+        accountName = uName;
+        personaName = pName;
+        rankTitle = "Unknown";
+        rankId = 1;
+        personaId = pId;
+        userId = uId;
+        platformId = plId;
+        
+    }
     public PersonaStats(String aName, String pName, String rTitle, long rId,
             long prsId, long plyrId, long pltfId, long tPlayed,
             long ptsThisLvl, long ptsNxtLvl, int nKills, int nAssists,
             int nVDestroyed, int nVDestroyedAssists, int nHeals, int nRevives,
             int nRepairs, int nResup, int nDeaths, int nWins, int nLosses,
-            double kdRatio, double nAccuracy, double lHS, double lKS,
+            double kDRatio, double nAccuracy, double lHS, double lKS,
             double nSkill, double spm, long scrAssault, long scrEngineer,
             long scrSupport, long scrRecon, long scrVehicle, long scrCombat,
             long scrAwards, long scrUnlocks, long scrTotal) {
 
-        this.accountName = aName;
-        this.personaName = pName;
-        this.rankTitle = rTitle;
-        this.rankId = rId;
-        this.personaId = prsId;
-        this.userId = plyrId;
-        this.platformId = pltfId;
-        this.timePlayed = tPlayed;
-        this.pointsThisLvl = ptsThisLvl;
-        this.pointsNextLvl = ptsNxtLvl;
-        this.numKills = nKills;
-        this.numAssists = nAssists;
-        this.numVehicles = nVDestroyed;
-        this.numVehicleAssists = nVDestroyedAssists;
-        this.numHeals = nHeals;
-        this.numRevives = nRevives;
-        this.numRepairs = nRepairs;
-        this.numResupplies = nResup;
-        this.numDeaths = nDeaths;
-        this.numWins = nWins;
-        this.numLosses = nLosses;
-        this.skill = nSkill;
-        this.kdRatio = kdRatio;
-        this.accuracy = nAccuracy;
-        this.longestHS = lHS;
-        this.longestKS = lKS;
-        this.scorePerMinute = spm;
-        this.scoreAssault = scrAssault;
-        this.scoreEngineer = scrEngineer;
-        this.scoreSupport = scrSupport;
-        this.scoreRecon = scrRecon;
-        this.scoreVehicle = scrVehicle;
-        this.scoreCombat = scrCombat;
-        this.scoreAwards = scrAwards;
-        this.scoreUnlocks = scrUnlocks;
-        this.scoreTotal = scrTotal;
+        accountName = aName;
+        personaName = pName;
+        rankTitle = rTitle;
+        rankId = rId;
+        personaId = prsId;
+        userId = plyrId;
+        platformId = pltfId;
+        timePlayed = tPlayed;
+        pointsThisLvl = ptsThisLvl;
+        pointsNextLvl = ptsNxtLvl;
+        numKills = nKills;
+        numAssists = nAssists;
+        numVehicles = nVDestroyed;
+        numVehicleAssists = nVDestroyedAssists;
+        numHeals = nHeals;
+        numRevives = nRevives;
+        numRepairs = nRepairs;
+        numResupplies = nResup;
+        numDeaths = nDeaths;
+        numWins = nWins;
+        numLosses = nLosses;
+        skill = nSkill;
+        kdRatio = kDRatio;
+        accuracy = nAccuracy;
+        longestHS = lHS;
+        longestKS = lKS;
+        scorePerMinute = spm;
+        scoreAssault = scrAssault;
+        scoreEngineer = scrEngineer;
+        scoreSupport = scrSupport;
+        scoreRecon = scrRecon;
+        scoreVehicle = scrVehicle;
+        scoreCombat = scrCombat;
+        scoreAwards = scrAwards;
+        scoreUnlocks = scrUnlocks;
+        scoreTotal = scrTotal;
 
     }
 
     public PersonaStats(Parcel in) {
 
-        this.accountName = in.readString();
-        this.personaName = in.readString();
-        this.rankId = in.readLong();
-        this.rankTitle = in.readString();
-        this.personaId = in.readLong();
-        this.userId = in.readLong();
-        this.platformId = in.readLong();
-        this.timePlayed = in.readLong();
-        this.pointsThisLvl = in.readLong();
-        this.pointsNextLvl = in.readLong();
-        this.numKills = in.readInt();
-        this.numAssists = in.readInt();
-        this.numVehicles = in.readInt();
-        this.numVehicleAssists = in.readInt();
-        this.numHeals = in.readInt();
-        this.numRevives = in.readInt();
-        this.numRepairs = in.readInt();
-        this.numResupplies = in.readInt();
-        this.numDeaths = in.readInt();
-        this.numWins = in.readInt();
-        this.numLosses = in.readInt();
-        this.skill = in.readDouble();
-        this.kdRatio = in.readDouble();
-        this.accuracy = in.readDouble();
-        this.longestHS = in.readDouble();
-        this.longestKS = in.readDouble();
-        this.scorePerMinute = in.readDouble();
-        this.scoreAssault = in.readLong();
-        this.scoreEngineer = in.readLong();
-        this.scoreSupport = in.readLong();
-        this.scoreRecon = in.readLong();
-        this.scoreVehicle = in.readLong();
-        this.scoreCombat = in.readLong();
-        this.scoreAwards = in.readLong();
-        this.scoreUnlocks = in.readLong();
-        this.scoreTotal = in.readLong();
+        accountName = in.readString();
+        personaName = in.readString();
+        rankId = in.readLong();
+        rankTitle = in.readString();
+        personaId = in.readLong();
+        userId = in.readLong();
+        platformId = in.readLong();
+        timePlayed = in.readLong();
+        pointsThisLvl = in.readLong();
+        pointsNextLvl = in.readLong();
+        numKills = in.readInt();
+        numAssists = in.readInt();
+        numVehicles = in.readInt();
+        numVehicleAssists = in.readInt();
+        numHeals = in.readInt();
+        numRevives = in.readInt();
+        numRepairs = in.readInt();
+        numResupplies = in.readInt();
+        numDeaths = in.readInt();
+        numWins = in.readInt();
+        numLosses = in.readInt();
+        skill = in.readDouble();
+        kdRatio = in.readDouble();
+        accuracy = in.readDouble();
+        longestHS = in.readDouble();
+        longestKS = in.readDouble();
+        scorePerMinute = in.readDouble();
+        scoreAssault = in.readLong();
+        scoreEngineer = in.readLong();
+        scoreSupport = in.readLong();
+        scoreRecon = in.readLong();
+        scoreVehicle = in.readLong();
+        scoreCombat = in.readLong();
+        scoreAwards = in.readLong();
+        scoreUnlocks = in.readLong();
+        scoreTotal = in.readLong();
 
     }
 
@@ -253,7 +264,7 @@ public class PersonaStats implements Parcelable {
     }
 
     public final double getSkill() {
-        return this.skill;
+        return skill;
     }
 
     public final double getScorePerMinute() {
@@ -304,42 +315,42 @@ public class PersonaStats implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int arg1) {
 
-        out.writeString(this.accountName);
-        out.writeString(this.personaName);
-        out.writeLong(this.rankId);
-        out.writeString(this.rankTitle);
-        out.writeLong(this.personaId);
-        out.writeLong(this.userId);
-        out.writeLong(this.platformId);
-        out.writeLong(this.timePlayed);
-        out.writeLong(this.pointsThisLvl);
-        out.writeLong(this.pointsNextLvl);
-        out.writeInt(this.numKills);
-        out.writeInt(this.numAssists);
-        out.writeInt(this.numVehicles);
-        out.writeInt(this.numVehicleAssists);
-        out.writeInt(this.numHeals);
-        out.writeInt(this.numRevives);
-        out.writeInt(this.numRepairs);
-        out.writeInt(this.numResupplies);
-        out.writeInt(this.numDeaths);
-        out.writeInt(this.numWins);
-        out.writeInt(this.numLosses);
-        out.writeDouble(this.skill);
-        out.writeDouble(this.kdRatio);
-        out.writeDouble(this.accuracy);
-        out.writeDouble(this.longestHS);
-        out.writeDouble(this.longestKS);
-        out.writeDouble(this.scorePerMinute);
-        out.writeLong(this.scoreAssault);
-        out.writeLong(this.scoreEngineer);
-        out.writeLong(this.scoreSupport);
-        out.writeLong(this.scoreRecon);
-        out.writeLong(this.scoreVehicle);
-        out.writeLong(this.scoreCombat);
-        out.writeLong(this.scoreAwards);
-        out.writeLong(this.scoreUnlocks);
-        out.writeLong(this.scoreTotal);
+        out.writeString(accountName);
+        out.writeString(personaName);
+        out.writeLong(rankId);
+        out.writeString(rankTitle);
+        out.writeLong(personaId);
+        out.writeLong(userId);
+        out.writeLong(platformId);
+        out.writeLong(timePlayed);
+        out.writeLong(pointsThisLvl);
+        out.writeLong(pointsNextLvl);
+        out.writeInt(numKills);
+        out.writeInt(numAssists);
+        out.writeInt(numVehicles);
+        out.writeInt(numVehicleAssists);
+        out.writeInt(numHeals);
+        out.writeInt(numRevives);
+        out.writeInt(numRepairs);
+        out.writeInt(numResupplies);
+        out.writeInt(numDeaths);
+        out.writeInt(numWins);
+        out.writeInt(numLosses);
+        out.writeDouble(skill);
+        out.writeDouble(kdRatio);
+        out.writeDouble(accuracy);
+        out.writeDouble(longestHS);
+        out.writeDouble(longestKS);
+        out.writeDouble(scorePerMinute);
+        out.writeLong(scoreAssault);
+        out.writeLong(scoreEngineer);
+        out.writeLong(scoreSupport);
+        out.writeLong(scoreRecon);
+        out.writeLong(scoreVehicle);
+        out.writeLong(scoreCombat);
+        out.writeLong(scoreAwards);
+        out.writeLong(scoreUnlocks);
+        out.writeLong(scoreTotal);
 
     }
 
@@ -359,22 +370,22 @@ public class PersonaStats implements Parcelable {
 
         return new String[] {
 
-                this.accountName + "", this.personaName + "", this.rankTitle + "",
-                this.personaId + "", this.userId + "", this.platformId + "",
-                this.rankId + "", this.pointsThisLvl + "",
-                this.pointsNextLvl + "", this.timePlayed + "",
-                this.numKills + "", this.numAssists + "",
-                this.numVehicles + "", this.numVehicleAssists + "",
-                this.numHeals + "", this.numRevives + "", this.numRepairs + "",
-                this.numResupplies + "", this.numDeaths + "",
-                this.numWins + "", this.numLosses + "", this.kdRatio + "",
-                this.accuracy + "", this.longestHS + "", this.longestKS + "",
-                this.skill + "", this.scorePerMinute + "",
-                this.scoreAssault + "", this.scoreEngineer + "",
-                this.scoreSupport + "", this.scoreRecon + "",
-                this.scoreVehicle + "", this.scoreCombat + "",
-                this.scoreAwards + "", this.scoreUnlocks + "",
-                this.scoreTotal + ""
+                accountName + "", personaName + "", rankTitle + "",
+                personaId + "", userId + "", platformId + "",
+                rankId + "", pointsThisLvl + "",
+                pointsNextLvl + "", timePlayed + "",
+                numKills + "", numAssists + "",
+                numVehicles + "", numVehicleAssists + "",
+                numHeals + "", numRevives + "", numRepairs + "",
+                numResupplies + "", numDeaths + "",
+                numWins + "", numLosses + "", kdRatio + "",
+                accuracy + "", longestHS + "", longestKS + "",
+                skill + "", scorePerMinute + "",
+                scoreAssault + "", scoreEngineer + "",
+                scoreSupport + "", scoreRecon + "",
+                scoreVehicle + "", scoreCombat + "",
+                scoreAwards + "", scoreUnlocks + "",
+                scoreTotal + ""
 
         };
 

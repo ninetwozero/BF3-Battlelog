@@ -110,7 +110,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
         // How many personas do we have?
         int numPersonas = profileData.getNumPersonas();
-
+        
         // Init the arrays
         personaIds = new long[numPersonas];
         personaNames = new String[numPersonas];
@@ -262,12 +262,6 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
     public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
 
-        // Attributes
-
-        public AsyncCache() {
-
-        }
-
         @Override
         protected void onPreExecute() {
         }
@@ -276,7 +270,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         protected Boolean doInBackground(Void... arg0) {
 
             try {
-
+                
                 // Get...
                 if (profileData != null && profileData.getNumPersonas() > 0) {
 
@@ -325,10 +319,6 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
     public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
-        public AsyncRefresh() {
-
-        }
-
         @Override
         protected void onPreExecute() {
 
@@ -339,8 +329,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         protected Boolean doInBackground(Void... arg0) {
 
             try {
-
-Log.d(Constants.DEBUG_TAG, "profile => " + profileData);
+                
                 // Do we have any personas?
                 if (profileData.getNumPersonas() > 0) {
 

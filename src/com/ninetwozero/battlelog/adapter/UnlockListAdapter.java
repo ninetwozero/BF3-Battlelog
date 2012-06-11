@@ -102,7 +102,7 @@ public class UnlockListAdapter extends BaseAdapter {
 
         // Description
         ((TextView) convertView.findViewById(R.id.text_unlock_desc))
-                .setText(currentUnlock.getObjective());
+                .setText(currentUnlock.getObjective(context));
 
         // Update the progress
         progressBar.setMax(100);

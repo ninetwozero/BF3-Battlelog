@@ -66,7 +66,6 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
 
         // Get the profile
         profileData = getIntent().getParcelableExtra("profile");
-        Log.d(Constants.DEBUG_TAG, "profileData['ProfileActivity'] => " + profileData);
 
         // Set the content view
         setContentView(R.layout.viewpager_default);

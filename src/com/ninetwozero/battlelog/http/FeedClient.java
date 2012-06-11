@@ -268,12 +268,11 @@ public class FeedClient extends DefaultClient {
                         }
 
                         // Weapon? Attachment?
-                        if (!tempSubItem.isNull("parentnameSID")) {
+                        if (!tempSubItem.isNull("parentNameSID")) {
 
                             // Let's see
-                            String parentKey = tempSubItem
-                                    .getString("parentnameSID");
-                            tempKey = DataBank.getWeaponTitle(parentKey);
+                            String parentKey = tempSubItem.getString("parentNameSID");
+                            tempKey = DataBank.getWeaponTitle(context, parentKey);
 
                             // Is it empty?
                             if (!parentKey.equals(tempKey)) {
@@ -307,48 +306,30 @@ public class FeedClient extends DefaultClient {
                             }
 
                         } else {
-
+                            
                             // Let's see
                             String key = tempSubItem.getString("nameSID");
-                            tempKey = DataBank.getWeaponTitle(key);
+                            String guid = tempSubItem.getString("guid");
 
-                            if (key.equals(tempKey)) {
+                            if (key.startsWith("ID_P_ANAME_")) {
 
-                                tempKey = DataBank.getVehicleUpgradeTitle(key);
+                                tempTitle.append(DataBank.getAttachmentTitle(key));
 
-                                if (key.equals(tempKey)) {
+                            } else if (key.startsWith("ID_P_WNAME_")) {
 
-                                    tempKey = DataBank.getKitTitle(key);
+                                tempTitle.append(DataBank.getWeaponTitle(context, guid));
 
-                                    if (key.equals(tempKey)) {
+                            } else if (key.startsWith("ID_P_VUNAME_")) {
 
-                                        tempKey = DataBank.getSkillTitle(key);
+                                tempTitle.append(DataBank.getVehicleTitle(guid));
 
-                                        if (key.equals(tempKey)) {
+                            } else if (key.startsWith("ID_P_SNAME")) {
 
-                                            tempTitle.append(tempKey);
-
-                                        } else {
-
-                                            tempTitle.append(tempKey);
-
-                                        }
-
-                                    } else {
-
-                                        tempTitle.append(tempKey);
-
-                                    }
-
-                                } else {
-
-                                    tempTitle.append(tempKey);
-
-                                }
+                                tempTitle.append(DataBank.getSkillTitle(key));
 
                             } else {
 
-                                tempTitle.append(tempKey);
+                                tempTitle.append(DataBank.getKitTitle(key));
 
                             }
 
@@ -656,10 +637,11 @@ public class FeedClient extends DefaultClient {
                     tempGravatarHash = otherUserObject.getString("gravatarMd5");
 
                     // Set the other profile
-                    profile2 = new ProfileData.Builder(
-                            Long.parseLong(currItem.getString("ownerId")),
-                            ownerObject.getString("username")
-                            ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
+                    profile2 = profile1;
+                    profile1 = new ProfileData.Builder(
+                            Long.parseLong(otherUserObject.getString("userId")),
+                            otherUserObject.getString("username")
+                            ).gravatarHash(otherUserObject.getString("gravatarMd5")).build();
 
                 } else if (!currItem.isNull("GAMEACCESS")) {
 

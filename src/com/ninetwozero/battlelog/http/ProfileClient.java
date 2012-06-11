@@ -323,37 +323,31 @@ public class ProfileClient extends DefaultClient {
         }
     }
 
-    public PersonaStats getStats()
+    public PersonaStats getStats(String personaName, long personaId, int platformId)
             throws WebsiteHandlerException {
 
         try {
-
-            // Do we have a personaId?
-            if (profileData.getNumPersonas() == 0) {
-
-                profileData = resolveFullProfileDataFromProfileId(profileData.getId());
-
-            }
 
             // Get the data
             String content = requestHandler.get(
 
                     RequestHandler.generateUrl(
                             URL_OVERVIEW,
-                            profileData.getPersona(0).getId(),
-                            profileData.getPersona(0).getPlatformId()
+                            personaId,
+                            platformId
                             ),
                     RequestHandler.HEADER_NORMAL
 
                     );
 
             // JSON Objects
-            JSONObject dataObject = new JSONObject(content)
-                    .getJSONObject("data");
+            JSONObject dataObject = new JSONObject(content).getJSONObject("data");
 
             // Is overviewStats NULL? If so, no data.
             if (dataObject.isNull("overviewStats")) {
-                return null;
+                
+                return new PersonaStats(profileData.getUsername(), profileData.getId(), personaName, personaId, platformId);
+
             }
 
             // Keep it up!
@@ -427,103 +421,9 @@ public class ProfileClient extends DefaultClient {
             // Let's see...
             for (int i = 0, max = profileData.getNumPersonas(); i < max; i++) {
 
-                // Get the data
-                String httpContent = requestHandler.get(
-
-                        RequestHandler.generateUrl(
-                                URL_OVERVIEW,
-                                profileData.getPersona(i).getId(),
-                                profileData.getPersona(i).getPlatformId()
-                                ),
-                        RequestHandler.HEADER_NORMAL
-
-                        );
-
-                // JSON Objects
-                JSONObject dataObject = new JSONObject(httpContent)
-                        .getJSONObject("data");
-
-                // Is overviewStats NULL? If so, no data.
-                if (!dataObject.isNull("overviewStats")) {
-
-                    // Keep it up!
-                    JSONObject statsOverview = dataObject
-                            .getJSONObject("overviewStats");
-                    JSONObject kitScores = statsOverview
-                            .getJSONObject("kitScores");
-                    JSONObject nextRankInfo = dataObject
-                            .getJSONObject("rankNeeded");
-                    JSONObject currRankInfo = dataObject
-                            .getJSONObject("currentRankNeeded");
-
-                    // Yay
-                    stats.put(
-
-                            profileData.getPersona(i).getId(),
-                            new PersonaStats(
-
-                                    profileData.getUsername(), profileData
-                                            .getPersona(i).getName(), currRankInfo
-                                            .getString("name"), statsOverview
-                                            .getLong("rank"), profileData
-                                            .getPersona(i).getId(), profileData
-                                            .getId(), profileData
-                                            .getPersona(i).getPlatformId(), statsOverview
-                                            .getLong("timePlayed"), currRankInfo
-                                            .getLong("pointsNeeded"), nextRankInfo
-                                            .getLong("pointsNeeded"), statsOverview
-                                            .getInt("kills"), statsOverview
-                                            .getInt("killAssists"), statsOverview
-                                            .getInt("vehiclesDestroyed"), statsOverview
-                                            .getInt("vehiclesDestroyedAssists"),
-                                    statsOverview.getInt("heals"),
-                                    statsOverview.getInt("revives"),
-                                    statsOverview.getInt("repairs"),
-                                    statsOverview.getInt("resupplies"),
-                                    statsOverview.getInt("deaths"),
-                                    statsOverview.getInt("numWins"),
-                                    statsOverview.getInt("numLosses"),
-                                    statsOverview.getDouble("kdRatio"),
-                                    statsOverview.getDouble("accuracy"),
-                                    statsOverview.getDouble("longestHeadshot"),
-                                    statsOverview.getDouble("killStreakBonus"),
-                                    statsOverview.getDouble("elo"),
-                                    statsOverview.getDouble("scorePerMinute"),
-                                    kitScores.getLong("1"), kitScores
-                                            .getLong("2"), kitScores
-                                            .getLong("32"), kitScores
-                                            .getLong("8"), statsOverview
-                                            .getLong("sc_vehicle"),
-                                    statsOverview.getLong("combatScore"),
-                                    statsOverview.getLong("sc_award"),
-                                    statsOverview.getLong("sc_unlock"),
-                                    statsOverview.getLong("totalScore")
-
-                            )
-
-                            );
-
-                } else {
-
-                    stats.put(
-
-                            profileData.getPersona(i).getId(),
-                            new PersonaStats(
-
-                                    profileData.getUsername(), profileData
-                                            .getPersona(i).getName(), "Recruit", 0,
-                                    profileData.getPersona(i).getId(), profileData
-                                            .getId(), profileData
-                                            .getPersona(i).getPlatformId(), 0, 0, 0, 0, 0,
-                                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0,
-                                    0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-
-                            )
-
-                            );
-
-                }
-
+                PersonaData current = profileData.getPersona(i);
+                stats.put( current.getId(), getStats(current.getName(), current.getId(), current.getPlatformId() ) );
+                
             }
 
             if (CacheHandler.Persona.insert(context, stats) == 0) {
@@ -1243,8 +1143,7 @@ public class ProfileClient extends DefaultClient {
                         );
 
                 // Parse the JSON!
-                JSONObject topLevel = new JSONObject(httpContent)
-                        .getJSONObject("data");
+                JSONObject topLevel = new JSONObject(httpContent).getJSONObject("data");
                 if (topLevel.isNull("missionTrees")) {
 
                     assignmentMap.put(profileData.getPersona(count).getId(), items);

@@ -314,16 +314,20 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 // Set the data for the profile
                 showProfile(profileInformation);
 
-                // Set the profileData...
-                profileData.setPersona(profileInformation.getAllPersonas());
+                // Set the profileData IF we're down by atleast 1
+                if( profileData.getNumPersonas() < profileInformation.getNumPersonas() ) {
+                    
+                    /* Setting reference, or *fragment variable*? */
+                    profileData.setPersona(profileInformation.getAllPersonas());
+                
+                }
 
                 // ...and then send it to the stats
                 sendToStats(profileData);
 
             } else {
 
-                new AsyncRefresh(SessionKeeper.getProfileData()
-                        .getId(), progressDialog).execute();
+                new AsyncRefresh(SessionKeeper.getProfileData().getId(), progressDialog).execute();
 
             }
 

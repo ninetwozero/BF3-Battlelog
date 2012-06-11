@@ -30,6 +30,7 @@ import android.widget.RemoteViews;
 import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FriendListDataWrapper;
+import com.ninetwozero.battlelog.datatype.PersonaData;
 import com.ninetwozero.battlelog.datatype.PersonaStats;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.COMClient;
@@ -102,7 +103,14 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
             try {
 
-                playerData = new ProfileClient(SessionKeeper.getProfileData()).getStats();
+                PersonaData firstPersona = SessionKeeper.getProfileData().getPersona(0);
+                playerData = new ProfileClient(SessionKeeper.getProfileData()).getStats(
+
+                        firstPersona.getName(),
+                        firstPersona.getId(),
+                        firstPersona.getPlatformId()
+                    
+                );
 
                 friends = new COMClient(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriendsForCOM(context);
                 numFriendsOnline = friends.getNumTotalOnline();
