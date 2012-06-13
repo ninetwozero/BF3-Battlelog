@@ -306,7 +306,7 @@ public class FeedClient extends DefaultClient {
                             }
 
                         } else {
-                            
+
                             // Let's see
                             String key = tempSubItem.getString("nameSID");
                             String guid = tempSubItem.getString("guid");

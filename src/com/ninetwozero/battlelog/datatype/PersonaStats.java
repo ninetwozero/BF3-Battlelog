@@ -42,7 +42,7 @@ public class PersonaStats implements Parcelable {
 
     // Construct
     public PersonaStats(String uName, long uId, String pName, long pId, long plId) {
-        
+
         accountName = uName;
         personaName = pName;
         rankTitle = "Unknown";
@@ -50,8 +50,9 @@ public class PersonaStats implements Parcelable {
         personaId = pId;
         userId = uId;
         platformId = plId;
-        
+
     }
+
     public PersonaStats(String aName, String pName, String rTitle, long rId,
             long prsId, long plyrId, long pltfId, long tPlayed,
             long ptsThisLvl, long ptsNxtLvl, int nKills, int nAssists,

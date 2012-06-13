@@ -368,7 +368,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             sendToStats(platoonInformation);
             sendToUsers(platoonInformation);
             setFeedPermission(platoonInformation.isMember() || hasPostingRights);
-            
+
         }
 
     }
@@ -473,7 +473,8 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
             new AsyncPlatoonRequest(
 
-                    context, platoonData, SessionKeeper.getProfileData().getId(), sharedPreferences.getString(
+                    context, platoonData, SessionKeeper.getProfileData().getId(),
+                    sharedPreferences.getString(
                             Constants.SP_BL_PROFILE_CHECKSUM, "")
 
             ).execute(true);

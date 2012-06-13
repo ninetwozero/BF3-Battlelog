@@ -161,7 +161,8 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
 
             try {
 
-                weaponDataWrapper = new ProfileClient(profileData).getWeapon(weaponInfo, weaponStats);
+                weaponDataWrapper = new ProfileClient(profileData).getWeapon(weaponInfo,
+                        weaponStats);
                 return true;
 
             } catch (Exception ex) {

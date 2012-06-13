@@ -975,7 +975,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                         .putExtra(
 
                                                 "profile",
-                                                ProfileClient.resolveFullProfileDataFromProfileId(personaId)
+                                                ProfileClient
+                                                        .resolveFullProfileDataFromProfileId(personaId)
 
                                         );
 

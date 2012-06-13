@@ -23,7 +23,7 @@ public class CommentData implements Parcelable {
     private long id, itemId, timestamp;
     private String content;
     private ProfileData author;
-    
+
     // Constants
     public final static int TYPE_NONE = 0;
     public final static int TYPE_FEED = 1;

@@ -489,9 +489,9 @@ public class CacheHandler {
                     // How many do we have? -1 due to last occurence being empty
                     int numPersonas = personaStringArray.length;
                     int numPlatoons = platoonStringArray.length;
-                    numPersonas = numPersonas == 0 ? 0 : numPersonas-1;
-                    numPlatoons = numPlatoons == 0 ? 0 : numPlatoons-1;
-                    
+                    numPersonas = numPersonas == 0 ? 0 : numPersonas - 1;
+                    numPlatoons = numPlatoons == 0 ? 0 : numPlatoons - 1;
+
                     // Create two new arrays for this
                     PersonaData[] personaArray = new PersonaData[numPersonas];
                     long[] platoonIdArray = new long[numPlatoons];

@@ -32,7 +32,7 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
     private Button buttonSend;
     private long postId;
     private int type;
-    
+
     // Constructor
     public AsyncCommentSend(Context c, long pId, int t, Button b) {
 
@@ -59,7 +59,7 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
 
             // Did we manage?
             return (new CommentClient(postId, type).post(arg0[0], arg0[1]));
-            
+
         } catch (Exception ex) {
 
             Log.e(Constants.DEBUG_TAG, "", ex);
@@ -73,12 +73,12 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
     protected void onPostExecute(Boolean results) {
 
         // Reload
-        if( context instanceof DefaultActivity ) {
-            
+        if (context instanceof DefaultActivity) {
+
             ((DefaultActivity) context).reload();
-        
+
         }
-        
+
         // Set the button
         buttonSend.setEnabled(true);
         buttonSend.setText(R.string.label_send);

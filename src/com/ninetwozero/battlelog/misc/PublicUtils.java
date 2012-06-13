@@ -451,12 +451,12 @@ public class PublicUtils {
     public static void setupSession(Context context, SharedPreferences sharedPreferences) {
 
         // Let's just check if it's MainActivity, to prevent loops
-        if( context instanceof MainActivity ) { 
-            
-            return; 
-            
+        if (context instanceof MainActivity) {
+
+            return;
+
         }
-        
+
         // Let's set "active" against the website
         new AsyncSessionSetActive().execute();
 

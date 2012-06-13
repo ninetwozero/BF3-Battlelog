@@ -99,30 +99,31 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
         listView = (ListView) v.findViewById(android.R.id.list);
         button = (Button) v.findViewById(R.id.button_send);
         fieldMessage = (EditText) v.findViewById(R.id.field_message);
-        
+
         // Set the click listener
         button.setOnClickListener(
-                
-            new OnClickListener() {
-                    
-                @Override
-                public void onClick(View view) {
-                    
-                    new AsyncCommentSend(context, newsData.getId(), CommentData.TYPE_NEWS, button).execute(
 
-                            sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
-                            fieldMessage.getText().toString()
+                new OnClickListener() {
 
-                            );
+                    @Override
+                    public void onClick(View view) {
 
-                    // Clear the field
-                    fieldMessage.setText("");
-                    
-                } 
-                
-            }
-            
-        );
+                        new AsyncCommentSend(context, newsData.getId(), CommentData.TYPE_NEWS,
+                                button).execute(
+
+                                sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
+                                fieldMessage.getText().toString()
+
+                                );
+
+                        // Clear the field
+                        fieldMessage.setText("");
+
+                    }
+
+                }
+
+                );
 
         // Setup the listAdapter
         listAdapter = new CommentListAdapter(context, comments,

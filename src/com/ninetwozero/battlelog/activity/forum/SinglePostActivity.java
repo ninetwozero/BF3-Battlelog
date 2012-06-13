@@ -64,7 +64,7 @@ public class SinglePostActivity extends ListActivity implements DefaultActivity 
     private FeedItem item;
     private NotificationData notification;
     private int pageId = 1;
-    
+
     // Elements
     private ListView listView;
     private TextView textHeading, textTitle, textContent, textDate;
@@ -112,7 +112,7 @@ public class SinglePostActivity extends ListActivity implements DefaultActivity 
             return;
 
         }
-        
+
         init();
         show(item);
 

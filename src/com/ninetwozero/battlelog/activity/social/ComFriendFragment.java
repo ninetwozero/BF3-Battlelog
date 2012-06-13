@@ -162,7 +162,6 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
         try {
 
             ProfileData profileData = (ProfileData) info.targetView.getTag();
-
             if (item.getItemId() == MENU_POS_CHAT) {
 
                 startActivity(
@@ -233,9 +232,9 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                                 "profile2", ProfileClient.resolveFullProfileDataFromProfileId(
 
-                        profileData.getId()
+                                        profileData.getId()
 
-                )
+                                        )
 
                         )
 
@@ -253,9 +252,9 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                         "profile", ProfileClient.resolveFullProfileDataFromProfileId(
 
-                        profileData.getId()
+                                profileData.getId()
 
-                )
+                                )
 
                         )
 

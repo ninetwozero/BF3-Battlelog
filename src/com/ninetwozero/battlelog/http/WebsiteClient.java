@@ -37,18 +37,17 @@ import com.ninetwozero.battlelog.misc.Constants;
  */
 
 public class WebsiteClient extends DefaultClient {
-    
+
     public WebsiteClient() {
-        
+
         requestHandler = new RequestHandler();
-        
+
     }
-    
+
     public String downloadZip(Context context, String url, String title)
             throws WebsiteHandlerException {
 
         try {
-
 
             // Get the *content*
             if (!requestHandler.saveFileFromURI(Constants.URL_IMAGE_PACK, "",

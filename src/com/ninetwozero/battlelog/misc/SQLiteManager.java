@@ -324,7 +324,7 @@ public class SQLiteManager {
         return DB.delete(table, "1", null);
 
     }
-    
+
     public long insert(String table, String[] fields, String[] values)
             throws DatabaseInformationException {
 
@@ -426,7 +426,7 @@ public class SQLiteManager {
                 // Let's bind the parameters
                 for (int i = 0; i < countRows; i++) {
 
-                    stringValues.append( (i == 0) ? "(" : ", (");
+                    stringValues.append((i == 0) ? "(" : ", (");
 
                     for (int j = 0; j < countValues; j++) {
 
@@ -458,7 +458,7 @@ public class SQLiteManager {
         // STATEMENT.bindString( 1, name );
         return STATEMENT.executeInsert();
     }
-    
+
     public int update(String table, String[] fields, String[] values,
             String whereField, long id) throws DatabaseInformationException {
 
@@ -499,7 +499,7 @@ public class SQLiteManager {
                 });
 
     }
-    
+
     public final Cursor query(String t, String[] p, String s, String[] sA,
             String g, String h, String o) throws DatabaseInformationException {
 

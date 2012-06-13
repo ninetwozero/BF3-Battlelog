@@ -49,11 +49,13 @@ public class AsyncPlatoonMemberManagement extends
 
             } else if (!arg0[0]) {
 
-                return new PlatoonClient(platoonData).editMember(userId, PlatoonClient.FILTER_DEMOTE);
+                return new PlatoonClient(platoonData).editMember(userId,
+                        PlatoonClient.FILTER_DEMOTE);
 
             } else {
 
-                return new PlatoonClient(platoonData).editMember(userId, PlatoonClient.FILTER_PROMOTE);
+                return new PlatoonClient(platoonData).editMember(userId,
+                        PlatoonClient.FILTER_PROMOTE);
 
             }
 

@@ -19,7 +19,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +30,6 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.CreditListAdapter;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 
 public class AboutCreditsFragment extends ListFragment implements DefaultFragment {
@@ -92,7 +90,6 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
 
         // Get the url
         String url = String.valueOf(v.getTag());
-        Log.d(Constants.DEBUG_TAG, "url => " + url);
 
         // Is it empty?
         if (url.equals("")) {

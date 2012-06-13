@@ -55,7 +55,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
                     searchString,
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 
-            );
+                    );
 
             // Did we get an actual user?
             if (playerTwo == null || playerTwo.getNumPersonas() == 0) {

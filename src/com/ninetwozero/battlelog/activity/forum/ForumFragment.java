@@ -91,7 +91,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
         // Get the unlocks
         locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
         forumHandler = new ForumClient();
-        
+
         // Init the views
         initFragment(view);
 

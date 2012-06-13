@@ -49,7 +49,8 @@ public class AsyncNewsComment extends AsyncTask<String, Void, Boolean> {
 
         try {
 
-            return new CommentClient(newsData.getId(), CommentData.TYPE_NEWS).post(arg0[0], arg0[1]);
+            return new CommentClient(newsData.getId(), CommentData.TYPE_NEWS)
+                    .post(arg0[0], arg0[1]);
 
         } catch (Exception ex) {
 

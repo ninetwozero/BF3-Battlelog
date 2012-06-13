@@ -311,7 +311,8 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
                                 Toast.LENGTH_SHORT).show();
 
                     }
-                    new AsyncPlatoonMemberManagement(context, data.getId(), platoonData).execute(!data.isAdmin());
+                    new AsyncPlatoonMemberManagement(context, data.getId(), platoonData)
+                            .execute(!data.isAdmin());
 
                 } else if (item.getItemId() == 2) {
 

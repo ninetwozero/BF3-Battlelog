@@ -148,7 +148,7 @@ public class ProfileInformation {
 
         return platoons.get(position);
     }
-    
+
     public int getNumPersonas() {
 
         return persona.length;
@@ -166,7 +166,7 @@ public class ProfileInformation {
     }
 
     public void generate() {
-        
+
         // Reset
         personaIdString.setLength(0);
         personaString.setLength(0);

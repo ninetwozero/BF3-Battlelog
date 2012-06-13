@@ -52,7 +52,8 @@ public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
         try {
 
             // Let's get this!!
-            return new PlatoonClient(platoonData).answerPlatoonRequest(profileId, response, arg0[0]);
+            return new PlatoonClient(platoonData)
+                    .answerPlatoonRequest(profileId, response, arg0[0]);
 
         } catch (WebsiteHandlerException e) {
 

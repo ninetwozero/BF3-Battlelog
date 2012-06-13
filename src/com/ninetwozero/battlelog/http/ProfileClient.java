@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
@@ -309,7 +310,7 @@ public class ProfileClient extends DefaultClient {
         try {
 
             ProfileData profile = resolveFullProfileDataFromProfileId(p.getId());
-            return new ProfileData.Builder(profile.getId(), profile.getUsername()).persona(
+            return new ProfileData.Builder(p.getId(), p.getUsername()).persona(
 
                     profile.getPersonaArray()
 
@@ -345,8 +346,9 @@ public class ProfileClient extends DefaultClient {
 
             // Is overviewStats NULL? If so, no data.
             if (dataObject.isNull("overviewStats")) {
-                
-                return new PersonaStats(profileData.getUsername(), profileData.getId(), personaName, personaId, platformId);
+
+                return new PersonaStats(profileData.getUsername(), profileData.getId(),
+                        personaName, personaId, platformId);
 
             }
 
@@ -422,8 +424,9 @@ public class ProfileClient extends DefaultClient {
             for (int i = 0, max = profileData.getNumPersonas(); i < max; i++) {
 
                 PersonaData current = profileData.getPersona(i);
-                stats.put( current.getId(), getStats(current.getName(), current.getId(), current.getPlatformId() ) );
-                
+                stats.put(current.getId(),
+                        getStats(current.getName(), current.getId(), current.getPlatformId()));
+
             }
 
             if (CacheHandler.Persona.insert(context, stats) == 0) {
@@ -627,6 +630,10 @@ public class ProfileClient extends DefaultClient {
             // Let's go!
 
             List<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
+            Log.d(Constants.DEBUG_TAG, "Information from => " + RequestHandler.generateUrl(
+                    URL_INFO,
+                    profileData.getUsername()
+                    ));
             String httpContent = requestHandler.get(
                     RequestHandler.generateUrl(
                             URL_INFO,
@@ -727,7 +734,7 @@ public class ProfileClient extends DefaultClient {
                                 context, currItem.getString("badgePath"), title,
                                 Constants.DEFAULT_BADGE_SIZE
 
-                        );
+                                );
 
                     }
 
@@ -1155,39 +1162,39 @@ public class ProfileClient extends DefaultClient {
                 JSONArray missionNames = missionTrees.names();
                 String[] missionIds = new String[missionNames.length()];
 
-                for( int i = 0, max = missionIds.length; i < max; i++ ) {
-                    
+                for (int i = 0, max = missionIds.length; i < max; i++) {
+
                     missionIds[i] = String.valueOf(missionNames.get(i));
-                   
-                }   
-                
-                for( String missionId : missionIds ) {
+
+                }
+
+                for (String missionId : missionIds) {
 
                     JSONArray missionLines = missionTrees.getJSONObject(missionId)
-                        .getJSONArray("missionLines");
+                            .getJSONArray("missionLines");
                     int numCurrentAssignment = 0;
                     for (int i = 0, max = missionLines.length(); i < max; i++) {
-    
+
                         // Let's see if we need to tell the dev
                         if (max > Constants.ASSIGNMENT_RESOURCES_SCHEMATICS.length) {
-    
+
                             Toast.makeText(
-    
+
                                     c, c.getString(R.string.info_assignments_new_unknown),
                                     Toast.LENGTH_SHORT
-    
+
                                     ).show();
-    
+
                             return assignmentMap;
-    
+
                         }
-    
+
                         // Get the JSONObject per loop
                         JSONArray missions = missionLines.getJSONObject(i)
                                 .getJSONArray("missions");
                         for (int missionCounter = 0, missionCount = missions
                                 .length(); missionCounter < missionCount; missionCounter++) {
-    
+
                             JSONObject assignment = missions
                                     .getJSONObject(missionCounter);
                             JSONArray criteriasJSON = assignment
@@ -1196,25 +1203,25 @@ public class ProfileClient extends DefaultClient {
                                     .getJSONArray("dependencies");
                             JSONArray unlocksJSON = assignment
                                     .getJSONArray("unlocks");
-    
+
                             // Init
                             List<AssignmentData.Objective> criterias = new ArrayList<AssignmentData.Objective>();
                             List<AssignmentData.Dependency> dependencies = new ArrayList<AssignmentData.Dependency>();
                             List<AssignmentData.Unlock> unlocks = new ArrayList<AssignmentData.Unlock>();
-    
+
                             // Alright, let's do this
                             for (int assignmentCounter = 0, assignmentCount = criteriasJSON
                                     .length(); assignmentCounter < assignmentCount; assignmentCounter++) {
-    
+
                                 // Get the current item
                                 JSONObject currentItem = criteriasJSON
                                         .getJSONObject(assignmentCounter);
-    
+
                                 // New object!
                                 criterias.add(
-    
+
                                         new AssignmentData.Objective(
-    
+
                                                 currentItem.getDouble("actualValue"), currentItem
                                                         .getDouble("completionValue"), currentItem
                                                         .getString("statCode"), currentItem
@@ -1222,83 +1229,83 @@ public class ProfileClient extends DefaultClient {
                                                         .getString("paramY"), currentItem
                                                         .getString("descriptionID"), currentItem
                                                         .getString("unit")
-    
+
                                         )
-    
+
                                         );
-    
+
                             }
-    
+
                             // Alright, let's do this
                             for (int counter = 0, maxCounter = dependenciesJSON
                                     .length(); counter < maxCounter; counter++) {
-    
+
                                 // Get the current item
                                 JSONObject currentItem = dependenciesJSON
                                         .getJSONObject(counter);
-    
+
                                 // New object!
                                 dependencies.add(
-    
+
                                         new AssignmentData.Dependency(
-    
+
                                                 currentItem.getInt("count"), currentItem
                                                         .getString("code")
-    
+
                                         )
-    
+
                                         );
-    
+
                             }
-    
+
                             // Alright, let's do this
                             for (int counter = 0, maxCounter = unlocksJSON.length(); counter < maxCounter; counter++) {
-    
+
                                 // Get the current item
                                 JSONObject currentItem = unlocksJSON
                                         .getJSONObject(counter);
-    
+
                                 // New object!
                                 unlocks.add(
-    
+
                                         new AssignmentData.Unlock(
-    
+
                                                 currentItem.getString("unlockId"), currentItem
                                                         .getString("unlockType"), currentItem
                                                         .getBoolean("visible")
-    
+
                                         )
-    
+
                                         );
-    
+
                             }
-    
+
                             // Add the assignment
                             items.add(
-    
+
                                     new AssignmentData(
-    
+
                                             Constants.ASSIGNMENT_RESOURCES_SCHEMATICS[numCurrentAssignment],
                                             Constants.ASSIGNMENT_RESOURCES_UNLOCKS[numCurrentAssignment],
                                             assignment.getString("stringID"), assignment
                                                     .getString("descriptionID"), assignment
                                                     .getString("license"), criterias,
                                             dependencies, unlocks
-    
+
                                     )
-    
+
                                     );
-    
+
                             // Update the digit
                             numCurrentAssignment++;
-    
+
                         }
-    
+
                         // Add the items
                         assignmentMap.put(profileData.getPersona(count).getId(), items);
-    
+
                     }
-                    
+
                 }
 
             }
@@ -1360,7 +1367,7 @@ public class ProfileClient extends DefaultClient {
                                     context, currItem.getString("badgePath"), title,
                                     Constants.DEFAULT_BADGE_SIZE
 
-                            );
+                                    );
 
                         }
 

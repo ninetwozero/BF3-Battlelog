@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -51,7 +50,6 @@ import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class DashboardActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
@@ -199,7 +197,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
     }
 
     public void validateSession() {
-        
+
         // We should've gotten a profile
         if (SessionKeeper.getProfileData() == null) {
 
@@ -207,25 +205,22 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
                 // Get 'em
                 ProfileData profileData = getIntent().getParcelableExtra("myProfile");
-                List<PlatoonData> platoonArray = getIntent().getParcelableArrayListExtra("myPlatoon");
-                
+                List<PlatoonData> platoonArray = getIntent().getParcelableArrayListExtra(
+                        "myPlatoon");
+
                 // Set 'em
                 SessionKeeper.setProfileData(profileData);
                 SessionKeeper.setPlatoonData(platoonArray);
-                
 
             } else {
 
-                Toast.makeText(this, R.string.info_txt_session_lost,Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
                 return;
 
             }
 
         }
 
-
-        Log.d(Constants.DEBUG_TAG, "profileData => " + SessionKeeper.getProfileData());
-        
     }
 
     @Override

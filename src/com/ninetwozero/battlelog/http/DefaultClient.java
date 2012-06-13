@@ -3,8 +3,8 @@ package com.ninetwozero.battlelog.http;
 
 public class DefaultClient {
 
-    //Attributes
+    // Attributes
     protected RequestHandler requestHandler;
     protected String httpContent;
-    
+
 }

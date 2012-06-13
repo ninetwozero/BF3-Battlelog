@@ -30,7 +30,7 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
     private Context context;
     private FeedFragment fragmentFeed;
     private Button buttonSend;
-    
+
     // Constructor
     public AsyncStatusUpdate(Context c, FeedFragment f) {
 

@@ -22,11 +22,11 @@ public class NotificationClient extends DefaultClient {
 
     public static final String URL_SINGLE = Constants.URL_MAIN
             + "feed/show/{POST_ID}/";
-    
+
     public NotificationClient() {
-        
+
         requestHandler = new RequestHandler();
-        
+
     }
 
     public int getNewNotificationsCount(String checksum)
@@ -47,7 +47,7 @@ public class NotificationClient extends DefaultClient {
             if (!"".equals(httpContent)) {
 
                 Log.d(Constants.DEBUG_TAG, "httpContent => " + httpContent);
-                
+
                 // Grab the notifications
                 return new JSONObject(httpContent).getJSONObject("data")
                         .getInt("numUnread");
@@ -157,6 +157,7 @@ public class NotificationClient extends DefaultClient {
         }
 
     }
+
     public FeedItem getPostForNotification(NotificationData n) {
 
         try {
@@ -258,5 +259,5 @@ public class NotificationClient extends DefaultClient {
         }
 
     }
-    
+
 }

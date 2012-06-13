@@ -315,11 +315,11 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 showProfile(profileInformation);
 
                 // Set the profileData IF we're down by atleast 1
-                if( profileData.getNumPersonas() < profileInformation.getNumPersonas() ) {
-                    
+                if (profileData.getNumPersonas() < profileInformation.getNumPersonas()) {
+
                     /* Setting reference, or *fragment variable*? */
                     profileData.setPersona(profileInformation.getAllPersonas());
-                
+
                 }
 
                 // ...and then send it to the stats

@@ -57,7 +57,7 @@ public class AsyncCommentsRefresh extends AsyncTask<Integer, Integer, Boolean> {
 
         try {
 
-            // Let's get this!! 
+            // Let's get this!!
             /* TODO: SOLUTION */
             comments = new CommentClient(postId, CommentData.TYPE_FEED).get(page[0]);
             return true;

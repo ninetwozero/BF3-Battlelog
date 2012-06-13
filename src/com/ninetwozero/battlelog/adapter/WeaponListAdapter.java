@@ -38,7 +38,7 @@ public class WeaponListAdapter extends BaseAdapter {
     // Construct
     public WeaponListAdapter(List<WeaponDataWrapper> u,
             LayoutInflater l) {
-        
+
         dataArray = u;
         layoutInflater = l;
 

@@ -52,7 +52,8 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
         try {
 
-            return new FeedClient(profileId, isPlatoon ? FeedItem.TYPE_PLATOON : FeedItem.TYPE_PROFILE).post(arg0[0], arg0[1]);
+            return new FeedClient(profileId, isPlatoon ? FeedItem.TYPE_PLATOON
+                    : FeedItem.TYPE_PROFILE).post(arg0[0], arg0[1]);
 
         } catch (Exception ex) {
 
@@ -69,10 +70,10 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
         // How'd it go?
         if (result) {
-            
+
             // Let's reload
             fragmentFeed.reload();
-            
+
             buttonSend.setText(R.string.label_send);
             buttonSend.setEnabled(true);
             ((EditText) fragmentFeed.getView().findViewById(R.id.field_message)).setText("");

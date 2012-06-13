@@ -13,7 +13,7 @@ public class ProfileSettings {
 
     public static final Map<String, String> COUNTRY = new HashMap<String, String>() {
         private static final long serialVersionUID = 7336622399859889307L;
-        
+
         {
             put("Select your location", "");
             put("Afghanistan", "AF");

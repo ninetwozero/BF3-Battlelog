@@ -57,7 +57,7 @@ public class AsyncFetchDataToProfileView extends
                     searchString,
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 
-            );
+                    );
 
             // Did we get an actual user?
             if (userData == null || userData.getNumPersonas() == 0) {

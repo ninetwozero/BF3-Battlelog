@@ -30,7 +30,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -110,7 +109,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
         // How many personas do we have?
         int numPersonas = profileData.getNumPersonas();
-        
+
         // Init the arrays
         personaIds = new long[numPersonas];
         personaNames = new String[numPersonas];
@@ -270,7 +269,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         protected Boolean doInBackground(Void... arg0) {
 
             try {
-                
+
                 // Get...
                 if (profileData != null && profileData.getNumPersonas() > 0) {
 
@@ -329,7 +328,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         protected Boolean doInBackground(Void... arg0) {
 
             try {
-                
+
                 // Do we have any personas?
                 if (profileData.getNumPersonas() > 0) {
 
@@ -367,7 +366,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                 showPersona(personaStats.get(selectedPersona), false);
 
             }
-            
+
         }
 
     }

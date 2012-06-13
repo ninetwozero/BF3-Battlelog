@@ -123,10 +123,12 @@ public class SocialWidgetProvider extends AppWidgetProvider {
 
             try {
 
-                friends = new COMClient(PreferenceManager.getDefaultSharedPreferences(context).getString(
-                        Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriendsForCOM(context);
-                feedItems = new FeedClient(SessionKeeper.getProfileData().getId(), FeedItem.TYPE_GLOBAL).get(context, 0, Constants.DEFAULT_NUM_FEED);
-                
+                friends = new COMClient(PreferenceManager.getDefaultSharedPreferences(context)
+                        .getString(
+                                Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriendsForCOM(context);
+                feedItems = new FeedClient(SessionKeeper.getProfileData().getId(),
+                        FeedItem.TYPE_GLOBAL).get(context, 0, Constants.DEFAULT_NUM_FEED);
+
                 return (feedItems != null && friends != null);
 
             } catch (WebsiteHandlerException ex) {

@@ -59,7 +59,7 @@ public class FriendListAdapter extends BaseAdapter {
             return 2;
 
         } else if (!getItem(position).isFriend()) {
-            
+
             return 1;
 
         } else {
@@ -105,7 +105,7 @@ public class FriendListAdapter extends BaseAdapter {
 
         // Let's see what we found
         if (getItemViewType(position) == 2) {
-            
+
             // Can we recycle?
             if (convertView == null) {
 

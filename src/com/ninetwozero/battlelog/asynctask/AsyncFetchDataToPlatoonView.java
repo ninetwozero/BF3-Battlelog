@@ -57,7 +57,7 @@ public class AsyncFetchDataToPlatoonView extends
                     searchString,
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 
-            );
+                    );
 
             // Did we get an actual user?
             if (platoon == null || platoon.getId() == 0) {

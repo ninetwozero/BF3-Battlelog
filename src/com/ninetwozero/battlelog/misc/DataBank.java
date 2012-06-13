@@ -1238,6 +1238,7 @@ public class DataBank {
 
         return WEAPONS.containsKey(key) ? c.getString(WEAPONS.get(key)) : key;
     }
+
     public static int getWeaponTitleResourceId(String key) {
         return WEAPONS.containsKey(key) ? WEAPONS.get(key) : R.string.general_not_available;
     }
