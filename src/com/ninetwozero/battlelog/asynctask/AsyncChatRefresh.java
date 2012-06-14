@@ -42,7 +42,7 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
     private ListView listView;
 
     // Constructor
-    public AsyncChatRefresh(Context c, ListView lv, String u, LayoutInflater l) {
+    public AsyncChatRefresh(Context c, ListView lv, LayoutInflater l) {
 
         context = c;
         listView = lv;
@@ -54,13 +54,13 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Long... chatId) {
+    protected Boolean doInBackground(Long... profileId) {
 
         try {
 
             // Let's get this!!
             messageArray = new COMClient(sharedPreferences.getString(
-                    Constants.SP_BL_PROFILE_CHECKSUM, "")).getMessages(chatId[0]);
+                    Constants.SP_BL_PROFILE_CHECKSUM, "")).getMessages(profileId[0]);
             return true;
 
         } catch (WebsiteHandlerException e) {

@@ -39,13 +39,16 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.feed.PostOverviewFragment;
+import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.NewsData;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
-public class SingleNewsActivity extends FragmentActivity implements DefaultFragmentActivity {
+public class SinglePostActivity extends FragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
     private SharedPreferences sharedPreferences;
@@ -56,12 +59,14 @@ public class SingleNewsActivity extends FragmentActivity implements DefaultFragm
     private SwipeyTabsPagerAdapter pagerAdapter;
     private List<Fragment> listFragments;
     private FragmentManager fragmentManager;
-    private NewsOverviewFragment fragmentOverview;
-    private NewsCommentListFragment fragmentComment;
+    private PostOverviewFragment fragmentOverview;
+    private CommentListFragment fragmentComment;
     private ViewPager viewPager;
 
     // Misc
+    private FeedItem feedData;
     private NewsData newsData;
+    private boolean isNews = false;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -81,10 +86,16 @@ public class SingleNewsActivity extends FragmentActivity implements DefaultFragm
         fragmentManager = getSupportFragmentManager();
 
         // Get the intent
-        if (getIntent().hasExtra("news")) {
+        if( getIntent().hasExtra("feed") ) {
+          
+            feedData = getIntent().getParcelableExtra("feed");
+            isNews = false;
+            
+        } else if (getIntent().hasExtra("news")) {
 
             newsData = getIntent().getParcelableExtra("news");
-
+            isNews = true;
+            
         } else {
 
             finish();
@@ -115,6 +126,7 @@ public class SingleNewsActivity extends FragmentActivity implements DefaultFragm
 
         // ASYNC!!
         fragmentOverview.reload();
+        fragmentComment.reload();
 
     }
 
@@ -125,16 +137,27 @@ public class SingleNewsActivity extends FragmentActivity implements DefaultFragm
 
             // Add them to the list
             listFragments = new Vector<Fragment>();
-            listFragments.add(fragmentOverview = (NewsOverviewFragment) Fragment.instantiate(
-                    this, NewsOverviewFragment.class.getName()));
-            listFragments.add(fragmentComment = (NewsCommentListFragment) Fragment.instantiate(
+            listFragments.add(fragmentOverview = (PostOverviewFragment) Fragment.instantiate(
+                    this, PostOverviewFragment.class.getName()));
+            listFragments.add(fragmentComment = (CommentListFragment) Fragment.instantiate(
                     this,
-                    NewsCommentListFragment.class.getName()));
+                    CommentListFragment.class.getName()));
 
             // Add the profileData
-            fragmentOverview.setNewsData(newsData);
-            fragmentComment.setNewsData(newsData);
+            if( !isNews ) { 
 
+                fragmentOverview.setData(feedData);
+                fragmentComment.setId(feedData.getId());
+                fragmentComment.setType(CommentData.TYPE_FEED);
+                
+            } else {
+                
+                fragmentOverview.setData(newsData);
+                fragmentComment.setId(newsData.getId());
+                fragmentComment.setType(CommentData.TYPE_NEWS);
+
+            }
+            
             // Get the ViewPager
             viewPager = (ViewPager) findViewById(R.id.viewpager);
             tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);

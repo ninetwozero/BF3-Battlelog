@@ -49,13 +49,13 @@ import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class ChatActivity extends ListActivity {
 
     // Attributes
     private long chatId;
-    private ProfileData profileData;
+    private ProfileData activeUser;
+    private ProfileData otherUser;
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
 
@@ -81,7 +81,7 @@ public class ChatActivity extends ListActivity {
         PublicUtils.restoreCookies(this, icicle);
 
         // Did we get someone to chat with?
-        if (!getIntent().hasExtra("profile")) {
+        if (!getIntent().hasExtra("activeUser") || !getIntent().hasExtra("otherUser") ) {
             finish();
         }
 
@@ -93,29 +93,26 @@ public class ChatActivity extends ListActivity {
         setContentView(R.layout.chat_view);
 
         // Prepare to tango
-        this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // Let's get the other chat participant
+        activeUser = (ProfileData) getIntent().getParcelableExtra("activeUser");
+        otherUser = (ProfileData) getIntent().getParcelableExtra("otherUser");
 
         // Get the ListView
         listView = getListView();
         listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-        listView.setAdapter(new ChatListAdapter(this, null, SessionKeeper
-                .getProfileData().getUsername(), layoutInflater));
-
-        // Let's get the other chat participant
-        profileData = (ProfileData) getIntent().getParcelableExtra("profile");
-
+        listView.setAdapter(new ChatListAdapter(this, null, activeUser.getUsername(), layoutInflater));
+        
         // Setup the title
-        setTitle(getTitle().toString().replace("...",
-                profileData.getUsername()));
+        setTitle(getTitle().toString().replace("...", otherUser.getUsername()));
 
         // Get the elements
         buttonSend = (Button) findViewById(R.id.button_send);
         fieldMessage = (EditText) findViewById(R.id.field_message);
 
         // Try to get the chatid
-        new AsyncGetChatId(profileData.getId())
-                .execute(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
-                        ""));
+        new AsyncGetChatId(activeUser.getId()).execute(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 
@@ -212,8 +209,8 @@ public class ChatActivity extends ListActivity {
 
     public void reload() {
 
-        new AsyncChatRefresh(this, listView, profileData.getUsername(),
-                layoutInflater).execute(profileData.getId());
+        new AsyncChatRefresh(this, listView,
+                layoutInflater).execute(otherUser.getId());
 
     }
 
@@ -225,9 +222,8 @@ public class ChatActivity extends ListActivity {
             // Send it!
             new AsyncChatSend(
 
-                    this, profileData.getId(), chatId, buttonSend, false,
-                    new AsyncChatRefresh(this, listView,
-                            profileData.getUsername(), layoutInflater)
+                    this, activeUser.getId(), chatId, buttonSend, false,
+                    new AsyncChatRefresh(this, listView, layoutInflater)
 
             ).execute(
 
@@ -291,7 +287,7 @@ public class ChatActivity extends ListActivity {
 
             // Let's see what happens.
             ChatMessage m = cm.get(curr);
-            if (m.getSender().equals(profileData.getUsername())) {
+            if (m.getSender().equals(activeUser.getUsername())) {
 
                 // Ooh, ooh, is it fresh?
                 if (m.getTimestamp() > latestChatResponseTimestamp) {

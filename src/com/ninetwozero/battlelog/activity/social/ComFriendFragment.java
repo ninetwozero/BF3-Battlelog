@@ -171,8 +171,12 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
                         context, ChatActivity.class
 
                 ).putExtra(
+                
+                        "activeUser", SessionKeeper.getProfileData()
+                        
+                ).putExtra(
 
-                        "profile", profileData
+                        "otherUser", profileData
 
                         )
 

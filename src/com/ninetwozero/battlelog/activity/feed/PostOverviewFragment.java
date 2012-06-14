@@ -12,7 +12,7 @@
     GNU General Public License for more details.
  */
 
-package com.ninetwozero.battlelog.activity.news;
+package com.ninetwozero.battlelog.activity.feed;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -30,20 +30,23 @@ import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.NewsData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
-public class NewsOverviewFragment extends Fragment implements DefaultFragment {
+public class PostOverviewFragment extends Fragment implements DefaultFragment {
 
     // Attributes
     private Context context;
     private LayoutInflater layoutInflater;
 
     // Elements
-    private TextView textTitle, textBy, textContent;
+    private TextView textTitle, textInfo, textContent;
 
     // Misc
+    private FeedItem feedItem;
     private NewsData newsData;
+    private boolean isNews = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,7 +57,11 @@ public class NewsOverviewFragment extends Fragment implements DefaultFragment {
         layoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_news_overview,
+        View view = layoutInflater.inflate(
+
+                isNews ? R.layout.tab_content_post_overview_news
+                        : R.layout.tab_content_post_overview_feed,
+
                 container, false);
 
         // Init
@@ -72,24 +79,59 @@ public class NewsOverviewFragment extends Fragment implements DefaultFragment {
 
     }
 
-    public void setNewsData(NewsData n) {
+    public void setData(FeedItem f) {
+
+        feedItem = f;
+        isNews = false;
+    }
+
+    public void setData(NewsData n) {
 
         newsData = n;
+        isNews = true;
     }
 
     public void initFragment(View v) {
 
-        // Get the elements
-        textTitle = (TextView) v.findViewById(R.id.text_title);
-        textBy = (TextView) v.findViewById(R.id.text_author);
-        textContent = (TextView) v.findViewById(R.id.text_content);
-
         // Set the values
+        if (isNews) {
+
+            initNews(v);
+
+        } else {
+
+            initOther(v);
+
+        }
+
+    }
+
+    public void initNews(View v) {
+
+
+        textTitle = (TextView) v.findViewById(R.id.text_title);
+        textContent = (TextView) v.findViewById(R.id.text_content);
+        textInfo = (TextView) v.findViewById(R.id.text_author);
+        
         textTitle.setText(newsData.getTitle());
-        textBy.setText(Html.fromHtml(getString(R.string.info_news_posted_by).replace("{author}",
+        textInfo.setText(Html.fromHtml(getString(R.string.info_news_posted_by).replace(
+                "{author}",
                 newsData.getAuthorName()).replace("{date}",
                 PublicUtils.getRelativeDate(context, newsData.getDate()))));
         textContent.setText(Html.fromHtml(newsData.getContent()));
+
+    }
+
+    public void initOther(View v) {
+
+        textTitle = (TextView) v.findViewById(R.id.text_title);
+        textContent = (TextView) v.findViewById(R.id.text_content);
+        textInfo = (TextView) v.findViewById(R.id.text_date);
+        
+        textTitle.setText(Html.fromHtml(feedItem.getTitle()));
+        textInfo.setText(PublicUtils.getRelativeDate(context, feedItem.getDate()));
+        textContent.setText(Html.fromHtml(feedItem.getContent()));
+
     }
 
     @Override

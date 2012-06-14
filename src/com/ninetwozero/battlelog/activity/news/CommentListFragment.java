@@ -41,19 +41,22 @@ import com.ninetwozero.battlelog.adapter.CommentListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncCommentSend;
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.NewsData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.CommentClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class NewsCommentListFragment extends ListFragment implements DefaultFragment {
+public class CommentListFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
     private Context context;
     private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
-
+    private long id;
+    private int type;
+    
     // Elements
     private ListView listView;
     private Button button;
@@ -62,7 +65,6 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
 
     // Misc
     private List<CommentData> comments;
-    private NewsData newsData;
     private int pageId = 1;
 
     @Override
@@ -108,7 +110,7 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
                     @Override
                     public void onClick(View view) {
 
-                        new AsyncCommentSend(context, newsData.getId(), CommentData.TYPE_NEWS,
+                        new AsyncCommentSend(context, id, type,
                                 button).execute(
 
                                 sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
@@ -132,6 +134,17 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
 
     }
 
+    public void setId(long i) {
+        
+        id = i;
+        
+    }
+    
+    public void setType(int t) {
+        
+        type = t;
+    }
+    
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
 
@@ -187,7 +200,7 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
             try {
 
                 // Get...
-                comments = new CommentClient(newsData.getId(), CommentData.TYPE_NEWS).get(pageId);
+                comments = new CommentClient(id, type).get(pageId);
 
                 // ...validate!
                 return (comments != null);
@@ -221,11 +234,6 @@ public class NewsCommentListFragment extends ListFragment implements DefaultFrag
 
         }
 
-    }
-
-    public void setNewsData(NewsData n) {
-
-        newsData = n;
     }
 
     public void setPageId(int s) {

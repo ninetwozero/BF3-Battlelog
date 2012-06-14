@@ -41,11 +41,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.activity.forum.SinglePostActivity;
+import com.ninetwozero.battlelog.activity.news.SinglePostActivity;
 import com.ninetwozero.battlelog.adapter.FeedListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncFeedHooah;
 import com.ninetwozero.battlelog.asynctask.AsyncPostToWall;
 import com.ninetwozero.battlelog.asynctask.AsyncStatusUpdate;
+import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
@@ -279,15 +280,11 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                 ).putExtra(
 
-                        "feedItem", feedItem
+                        "feed", feedItem
 
                         ).putExtra(
 
                                 "canComment", canWrite
-
-                        ).putExtra(
-
-                                "profileId", feedItem.getProfile(0).getId()
 
                         )
 

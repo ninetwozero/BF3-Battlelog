@@ -42,16 +42,18 @@ public class CommentClient extends DefaultClient {
 
     }
 
-    public boolean post(String checksum,
-            String comment) throws WebsiteHandlerException {
+    public boolean post(String checksum, String comment) throws WebsiteHandlerException {
 
         try {
 
             // Let's post!
             boolean isFeed = (type == CommentData.TYPE_FEED);
+            String url = RequestHandler.generateUrl(isFeed ? URL_COMMENT : URL_NEWS_COMMENT, id, 1);
+
+            // Get the httpContent
             String httpContent = requestHandler.post(
 
-                    RequestHandler.generateUrl(isFeed ? URL_COMMENT : URL_NEWS_COMMENT, id),
+                    url,
                     RequestHandler.generatePostData(
 
                             FIELD_NAMES_COMMENT,
@@ -64,7 +66,7 @@ public class CommentClient extends DefaultClient {
                     );
 
             // Did we manage?
-            if (httpContent.length() == 0) {
+            if (httpContent.length() > 0) {
 
                 // Hopefully this goes as planned
                 return (!httpContent.equals("Internal server error"));

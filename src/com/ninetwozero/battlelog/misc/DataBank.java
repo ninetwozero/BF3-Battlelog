@@ -683,6 +683,7 @@ public class DataBank {
         WEAPON_ATTACHMENTS.put("ID_P_ANAME_M415", "M415 (3.4x)");
         WEAPON_ATTACHMENTS.put("ID_P_ANAME_MAG", "Extended Mags");
         WEAPON_ATTACHMENTS.put("ID_P_ANAME_RX01", "Reflex (RDS)");
+        WEAPON_ATTACHMENTS.put("ID_P_ANAME_SGA_SLUG", "12G Slug");
         WEAPON_ATTACHMENTS.put("FE6292D5-79AD-1230-7B9A-AF80D020E256", "Smoke");
 
         VEHICLE_ADDONS.put("ID_P_VUNAME_IFVWPNEFF", "Belt speed");

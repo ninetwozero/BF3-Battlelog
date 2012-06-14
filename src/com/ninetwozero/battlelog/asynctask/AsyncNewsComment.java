@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.activity.news.NewsCommentListFragment;
+import com.ninetwozero.battlelog.activity.news.CommentListFragment;
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.NewsData;
 import com.ninetwozero.battlelog.http.CommentClient;
@@ -17,13 +17,13 @@ public class AsyncNewsComment extends AsyncTask<String, Void, Boolean> {
 
     // Attributes
     private Context context;
-    private NewsCommentListFragment fragmentComments;
+    private CommentListFragment fragmentComments;
     private NewsData newsData;
 
     // Elements
     private Button buttonSend;
 
-    public AsyncNewsComment(Context c, NewsData n, NewsCommentListFragment f) {
+    public AsyncNewsComment(Context c, NewsData n, CommentListFragment f) {
 
         context = c;
         newsData = n;

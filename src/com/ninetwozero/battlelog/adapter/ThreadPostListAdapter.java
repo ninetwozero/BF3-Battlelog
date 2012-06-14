@@ -32,7 +32,7 @@ public class ThreadPostListAdapter extends BaseAdapter {
 
     // Attributes
     private Context context;
-    private List<ForumPostData> itemArray;
+    private List<ForumPostData> items;
     private LayoutInflater layoutInflater;
 
     // Construct
@@ -40,7 +40,7 @@ public class ThreadPostListAdapter extends BaseAdapter {
             LayoutInflater l) {
 
         context = c;
-        itemArray = m;
+        items = m;
         layoutInflater = l;
 
     }
@@ -48,21 +48,21 @@ public class ThreadPostListAdapter extends BaseAdapter {
     @Override
     public int getCount() {
 
-        return (itemArray != null) ? itemArray.size() : 0;
+        return (items != null) ? items.size() : 0;
 
     }
 
     @Override
     public ForumPostData getItem(int position) {
 
-        return this.itemArray.get(position);
+        return this.items.get(position);
 
     }
 
     @Override
     public long getItemId(int position) {
 
-        return this.itemArray.get(position).getThreadId();
+        return this.items.get(position).getThreadId();
 
     }
 
@@ -98,21 +98,23 @@ public class ThreadPostListAdapter extends BaseAdapter {
 
         }
 
+        // Text
+        TextView textPostedBy = (TextView) convertView.findViewById(R.id.text_posted_by);
+        TextView textView = (TextView) convertView.findViewById(R.id.text_content);
+        
         // Store the object
         if (currentItem.isOfficial()) {
 
-            convertView.setBackgroundColor(context.getResources().getColor(
-                    R.color.officialblue));
-
+            convertView.setBackgroundColor(context.getResources().getColor(R.color.officialblue));
+            textPostedBy.setBackgroundColor(0xEEEEEE);
+            
         } else {
 
-            convertView.setBackgroundColor(context.getResources().getColor(
-                    android.R.color.white));
-
+            convertView.setBackgroundColor(0xfffffff);
+            textPostedBy.setBackgroundColor(0xEEEEEE);
+            
         }
-
-        TextView textView = (TextView) convertView
-                .findViewById(R.id.text_content);
+        
         textView.setText(
 
                 !currentItem.isCensored() ? Html.fromHtml(currentItem.getContent())
@@ -120,7 +122,7 @@ public class ThreadPostListAdapter extends BaseAdapter {
 
                 );
 
-        ((TextView) convertView.findViewById(R.id.text_posted_by)).setText(
+        textPostedBy.setText(
 
                 Html.fromHtml(
 
@@ -150,14 +152,14 @@ public class ThreadPostListAdapter extends BaseAdapter {
 
     public void set(List<ForumPostData> array) {
 
-        this.itemArray = array;
+        this.items = array;
         this.notifyDataSetChanged();
 
     }
 
     public void add(List<ForumPostData> array) {
 
-        this.itemArray.addAll(array);
+        this.items.addAll(array);
         this.notifyDataSetChanged();
 
     }

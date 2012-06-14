@@ -63,11 +63,6 @@
             android:configChanges="orientation"
             android:label="@string/title_chat" />
         <activity
-            android:name=".activity.forum.SinglePostActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_comments"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name=".activity.profile.soldier.CompareActivity"
             android:configChanges="orientation"
             android:label="@string/title_comparing_battle_scars" />
@@ -124,7 +119,7 @@
             android:label="TODO"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.news.SingleNewsActivity"
+            android:name=".activity.news.SinglePostActivity"
             android:configChanges="orientation"
             android:label="TODO"
             android:windowSoftInputMode="stateHidden" />

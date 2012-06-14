@@ -43,8 +43,8 @@ public class ChatListAdapter extends BaseAdapter {
 
         context = c;
         messageArray = m;
-        layoutInflater = l;
         thisUser = tu;
+        layoutInflater = l;
     }
 
     @Override
