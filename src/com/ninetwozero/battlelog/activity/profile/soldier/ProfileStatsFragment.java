@@ -14,46 +14,33 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
-
-import java.util.HashMap;
-
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PersonaStats;
 import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.dialog.ProfilePersonaListDialog;
+import com.ninetwozero.battlelog.dialog.ListDialogFragment;
+import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
 import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class ProfileStatsFragment extends Fragment implements DefaultFragment {
+import java.util.HashMap;
+
+public class ProfileStatsFragment extends Fragment implements DefaultFragment, OnCloseListDialogListener {
 
     // Attributes
     private Context context;
@@ -72,6 +59,12 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
     private boolean comparing;
     private String[] personaNames;
     private long[] personaIds;
+    private final String DIALOG = "dialog";
+    private TextView personaName, rankTitle, rankId, currentLevelPoints, nextLevelPoints, pointsToMake,
+            assaultScore, engineerScore, supportScore, reconScore, vehiclesScore, combatScore, awardsScore,
+            unlocksScore, totalScore, numberOfKills, numberOfAssists, vehiclesDestroyed, vehiclesDestroyedAssists,
+            heals, revives, repairs, resupplies, deaths, kdRatio, numberOfWins, numberOfLosses, wnRatio,
+            accuracy, killStreak, longestHeadshot, skill, timePlayed, scorePerMinute;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,10 +81,18 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
         // Init
         initFragment(view);
-
+        findViews();
+        new AsyncCache().execute();
         // Return
         return view;
 
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        //TODO create loader
+        //getLoaderManager().initLoader()
     }
 
     public void initFragment(View view) {
@@ -132,29 +133,20 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                     public void onClick(View sv) {
 
                         if (personaArrayLength() > 1) {
-                            FragmentTransaction transaction = getFragmentManager()
-                                    .beginTransaction();
-                            ProfilePersonaListDialog dialog = ProfilePersonaListDialog
-                                    .newInstance(profileData);
-                            dialog.show(transaction, "ProfilePersonaListDialog");
-                            reload();
+                            FragmentManager manager = getFragmentManager();
+                            ListDialogFragment dialog = ListDialogFragment.newInstance(profileData.getPersonaArray(), getTag());
+                            dialog.show(manager, DIALOG);
                         }
                     }
                 });
     }
 
-    public void showPersona(long pid) {
-
-        showPersona(personaStats.get(pid), true);
-
+    @Override
+    public void onDialogListSelection() {
+        Log.e("ProfileStatsFragment", "I AM BACK ! ! !");
     }
 
-    public void showPersona(PersonaStats pd, boolean toggle) {
-
-        // Is pd null?
-        if (pd == null) {
-            return;
-        }
+    public void findViews() {
 
         // Let's find it
         View view = getView();
@@ -167,92 +159,96 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         }
 
         // Persona & rank
-        ((TextView) view.findViewById(R.id.string_persona)).setText(pd
-                .getPersonaName());
-        ((TextView) view.findViewById(R.id.string_rank_title)).setText(pd
-                .getRankTitle());
-        ((TextView) view.findViewById(R.id.string_rank_short)).setText(pd
-                .getRankId() + "");
+        personaName = (TextView) view.findViewById(R.id.string_persona);
+        rankTitle = (TextView) view.findViewById(R.id.string_rank_title);
+        rankId = (TextView) view.findViewById(R.id.string_rank_short);
+
+        // Progress
+        currentLevelPoints = (TextView) view.findViewById(R.id.string_progress_curr);
+        nextLevelPoints = (TextView) view.findViewById(R.id.string_progress_max);
+        pointsToMake = (TextView) view.findViewById(R.id.string_progress_left);
+
+        // Score
+        assaultScore = (TextView) view.findViewById(R.id.string_score_assault);
+        engineerScore = (TextView) view.findViewById(R.id.string_score_engineer);
+        supportScore = (TextView) view.findViewById(R.id.string_score_support);
+        reconScore = (TextView) view.findViewById(R.id.string_score_recon);
+        vehiclesScore = (TextView) view.findViewById(R.id.string_score_vehicles);
+        combatScore = (TextView) view.findViewById(R.id.string_score_combat);
+        awardsScore = (TextView) view.findViewById(R.id.string_score_award);
+        unlocksScore = (TextView) view.findViewById(R.id.string_score_unlock);
+        totalScore = (TextView) view.findViewById(R.id.string_score_total);
+
+        // Stats
+        numberOfKills = (TextView) view.findViewById(R.id.string_stats_kills);
+        numberOfAssists = (TextView) view.findViewById(R.id.string_stats_assists);
+        vehiclesDestroyed = (TextView) view.findViewById(R.id.string_stats_vkills);
+        vehiclesDestroyedAssists = (TextView) view.findViewById(R.id.string_stats_vassists);
+        heals = (TextView) view.findViewById(R.id.string_stats_heals);
+        revives = (TextView) view.findViewById(R.id.string_stats_revives);
+        repairs = (TextView) view.findViewById(R.id.string_stats_repairs);
+        resupplies = (TextView) view.findViewById(R.id.string_stats_resupplies);
+        deaths = (TextView) view.findViewById(R.id.string_stats_deaths);
+        kdRatio = (TextView) view.findViewById(R.id.string_stats_kdr);
+        numberOfWins = (TextView) view.findViewById(R.id.string_stats_wins);
+        numberOfLosses = (TextView) view.findViewById(R.id.string_stats_losses);
+        wnRatio = (TextView) view.findViewById(R.id.string_stats_wlr);
+        accuracy = (TextView) view.findViewById(R.id.string_stats_accuracy);
+        killStreak = (TextView) view.findViewById(R.id.string_stats_lks);
+        longestHeadshot = (TextView) view.findViewById(R.id.string_stats_lhs);
+        skill = (TextView) view.findViewById(R.id.string_stats_skill);
+        timePlayed = (TextView) view.findViewById(R.id.string_stats_time);
+        scorePerMinute = (TextView) view.findViewById(R.id.string_stats_spm);
+
+        // Are we going to compare?
+        /*if (comparing) {
+            ((CompareActivity) getActivity()).sendToCompare(profileData, personaStats,selectedPersona,toggle);
+        }*/
+    }
+
+    private void populateStats(PersonaStats pd){
+        personaName.setText(pd.getPersonaName() + pd.resolvePlatformId());
+        rankTitle.setText(pd.getRankTitle());
+        rankId.setText(pd.getRankId() + "");
 
         // Progress
         progressBar.setMax((int) pd.getPointsNeededToLvlUp());
         progressBar.setProgress((int) pd.getPointsProgressLvl());
-        ((TextView) view.findViewById(R.id.string_progress_curr)).setText(pd
-                .getPointsProgressLvl() + "");
-        ((TextView) view.findViewById(R.id.string_progress_max)).setText(pd
-                .getPointsNeededToLvlUp() + "");
-        ((TextView) view.findViewById(R.id.string_progress_left)).setText(pd
-                .getPointsLeft() + "");
+        currentLevelPoints.setText(pd.getPointsProgressLvl() + "");
+        nextLevelPoints.setText(pd.getPointsNeededToLvlUp() + "");
+        pointsToMake.setText(pd.getPointsLeft() + "");
 
         // Score
-        ((TextView) view.findViewById(R.id.string_score_assault)).setText(pd
-                .getScoreAssault() + "");
-        ((TextView) view.findViewById(R.id.string_score_engineer)).setText(pd
-                .getScoreEngineer() + "");
-        ((TextView) view.findViewById(R.id.string_score_support)).setText(pd
-                .getScoreSupport() + "");
-        ((TextView) view.findViewById(R.id.string_score_recon)).setText(pd
-                .getScoreRecon() + "");
-        ((TextView) view.findViewById(R.id.string_score_vehicles)).setText(pd
-                .getScoreVehicles() + "");
-        ((TextView) view.findViewById(R.id.string_score_combat)).setText(pd
-                .getScoreCombat() + "");
-        ((TextView) view.findViewById(R.id.string_score_award)).setText(pd
-                .getScoreAwards() + "");
-        ((TextView) view.findViewById(R.id.string_score_unlock)).setText(pd
-                .getScoreUnlocks() + "");
-        ((TextView) view.findViewById(R.id.string_score_total)).setText(pd
-                .getScoreTotal() + "");
+        assaultScore.setText(pd.getScoreAssault() + "");
+        engineerScore.setText(pd.getScoreEngineer() + "");
+        supportScore.setText(pd.getScoreSupport() + "");
+        reconScore.setText(pd.getScoreRecon() + "");
+        vehiclesScore.setText(pd.getScoreVehicles() + "");
+        combatScore.setText(pd.getScoreCombat() + "");
+        awardsScore.setText(pd.getScoreAwards() + "");
+        unlocksScore.setText(pd.getScoreUnlocks() + "");
+        totalScore.setText(pd.getScoreTotal() + "");
 
         // Stats
-        ((TextView) view.findViewById(R.id.string_stats_kills)).setText(pd
-                .getNumKills() + "");
-        ((TextView) view.findViewById(R.id.string_stats_assists)).setText(pd
-                .getNumAssists() + "");
-        ((TextView) view.findViewById(R.id.string_stats_vkills)).setText(pd
-                .getNumVehicles() + "");
-        ((TextView) view.findViewById(R.id.string_stats_vassists)).setText(pd
-                .getNumVehicleAssists() + "");
-        ((TextView) view.findViewById(R.id.string_stats_heals)).setText(pd
-                .getNumHeals() + "");
-        ((TextView) view.findViewById(R.id.string_stats_revives)).setText(pd
-                .getNumRevives() + "");
-        ((TextView) view.findViewById(R.id.string_stats_repairs)).setText(pd
-                .getNumRepairs() + "");
-        ((TextView) view.findViewById(R.id.string_stats_resupplies)).setText(pd
-                .getNumResupplies() + "");
-        ((TextView) view.findViewById(R.id.string_stats_deaths)).setText(pd
-                .getNumDeaths() + "");
-        ((TextView) view.findViewById(R.id.string_stats_kdr)).setText(pd
-                .getKDRatio() + "");
-        ((TextView) view.findViewById(R.id.string_stats_wins)).setText(pd
-                .getNumWins() + "");
-        ((TextView) view.findViewById(R.id.string_stats_losses)).setText(pd
-                .getNumLosses() + "");
-        ((TextView) view.findViewById(R.id.string_stats_wlr)).setText(pd
-                .getWLRatio() + "");
-        ((TextView) view.findViewById(R.id.string_stats_accuracy)).setText(pd
-                .getAccuracy() + "%");
-        ((TextView) view.findViewById(R.id.string_stats_lks)).setText(pd
-                .getLongestKS() + "");
-        ((TextView) view.findViewById(R.id.string_stats_lhs)).setText(pd
-                .getLongestHS() + " m");
-        ((TextView) view.findViewById(R.id.string_stats_skill)).setText(pd
-                .getSkill() + "");
-        ((TextView) view.findViewById(R.id.string_stats_time)).setText(pd
-                .getTimePlayedString() + "");
-        ((TextView) view.findViewById(R.id.string_stats_spm)).setText(pd
-                .getScorePerMinute() + "");
-
-        // Are we going to compare?
-        if (comparing) {
-
-            ((CompareActivity) getActivity()).sendToCompare(profileData, personaStats,
-                    selectedPersona,
-                    toggle);
-
-        }
-
+        numberOfKills.setText(pd.getNumKills() + "");
+        numberOfAssists.setText(pd.getNumAssists() + "");
+        vehiclesDestroyed.setText(pd.getNumVehicles() + "");
+        vehiclesDestroyedAssists.setText(pd.getNumVehicleAssists() + "");
+        heals.setText(pd.getNumHeals() + "");
+        revives.setText(pd.getNumRevives() + "");
+        repairs.setText(pd.getNumRepairs() + "");
+        resupplies.setText(pd.getNumResupplies() + "");
+        deaths.setText(pd.getNumDeaths() + "");
+        kdRatio.setText(pd.getKDRatio() + "");
+        numberOfWins.setText(pd.getNumWins() + "");
+        numberOfLosses.setText(pd.getNumLosses() + "");
+        wnRatio.setText(pd.getWLRatio() + "");
+        accuracy.setText(pd.getAccuracy() + "%");
+        killStreak.setText(pd.getLongestKS() + "");
+        longestHeadshot.setText(pd.getLongestHS() + " m");
+        skill.setText(pd.getSkill() + "");
+        timePlayed.setText(pd.getTimePlayedString() + "");
+        scorePerMinute.setText(pd.getScorePerMinute() + "");
     }
 
     private int personaArrayLength() {
@@ -260,6 +256,12 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
     }
 
     public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
+
+        // Attributes
+
+        public AsyncCache() {
+
+        }
 
         @Override
         protected void onPreExecute() {
@@ -303,7 +305,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
             if (result) {
 
                 // Siiiiiiiiilent refresh
-                showPersona(personaStats.get(selectedPersona), false);
+                //populateStats(personaStats.get(selectedPersona));
                 new AsyncRefresh().execute();
 
             } else {
@@ -318,6 +320,10 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
     public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
+        public AsyncRefresh() {
+
+        }
+
         @Override
         protected void onPreExecute() {
 
@@ -329,12 +335,12 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
             try {
 
+                Log.d(Constants.DEBUG_TAG, "profile => " + profileData);
                 // Do we have any personas?
                 if (profileData.getNumPersonas() > 0) {
 
                     // Set the selected persona?
-                    selectedPersona = (selectedPersona == 0) ? profileData
-                            .getPersona(0).getId() : selectedPersona;
+                    selectedPersona = (selectedPersona == 0) ? profileData.getPersona(0).getId() : selectedPersona;
 
                     // Grab the stats
                     personaStats = new ProfileClient(profileData).getStats(context);
@@ -363,7 +369,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
             } else {
 
-                showPersona(personaStats.get(selectedPersona), false);
+                populateStats(personaStats.get(selectedPersona));
 
             }
 
@@ -418,25 +424,10 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         if (item.getItemId() == R.id.option_compare) {
 
             startActivity(
-
-            new Intent(
-
-                    context, CompareActivity.class
-
-            ).putExtra(
-
-                    "profile1", SessionKeeper.getProfileData()
-
-                    ).putExtra(
-
-                            "profile2", profileData
-
-                    ).putExtra(
-
-                            "selectedPosition", selectedPosition
-
-                    )
-
+                    new Intent(context, CompareActivity.class)
+                            .putExtra("profile1", SessionKeeper.getProfileData())
+                            .putExtra("profile2", profileData)
+                            .putExtra("selectedPosition", selectedPosition)
             );
 
         } else if (item.getItemId() == R.id.option_unlocks) {
@@ -458,91 +449,15 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
             startActivity(
 
-            new Intent(
-
-                    context, UnlockActivity.class
-
-            ).putExtra(
-
-                    "profile", profileData
-
-                    ).putExtra(
-
-                            "selectedPosition", position
-
-                    )
-
+            new Intent(context, UnlockActivity.class)
+                    .putExtra("profile", profileData)
+                    .putExtra("selectedPosition", position)
             );
-
         }
-
         return true;
-
     }
 
     public void setComparing(boolean c) {
-
         comparing = c;
     }
-
-    public Dialog generateDialogPersonaList(final long[] personaId, final String[] persona) {
-
-        // Attributes
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        // Set the title and the view
-        builder.setTitle(R.string.info_dialog_soldierselect);
-
-        builder.setSingleChoiceItems(
-
-                persona, -1, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int item) {
-
-                        if (personaId[item] != selectedPersona) {
-
-                            // Update it
-
-                            selectedPersona = personaId[item];
-
-                            // Load the new!
-                            showPersona(personaStats.get(selectedPersona), true);
-
-                            // Store selectedPersonaPos
-                            selectedPosition = item;
-
-                            // Let's update SP
-                            updateSharedPreference();
-
-                        }
-
-                        dialog.dismiss();
-
-                    }
-
-                }
-
-                );
-
-        // CREATE
-        return builder.create();
-
-    }
-
-    private void updateSharedPreference() {
-
-        // Is this someone else than the logged in user?
-        if (SessionKeeper.getProfileData().getId() != profileData.getId()) {
-
-            return;
-
-        }
-        // Update the sharedPreferences
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong(SP_BL_PERSONA_CURRENT_ID, selectedPersona);
-        editor.putInt(SP_BL_PERSONA_CURRENT_POS, selectedPosition);
-        editor.commit();
-
-    }
-
 }
