@@ -155,7 +155,6 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
                     .show();
 
         }
-        return;
 
     }
 
@@ -248,70 +247,68 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         }
 
         // Init the strings
-        String personaNames = "";
-        String personaIds = "";
-        String platformIds = "";
-        String personaLogos = "";
+        StringBuilder personaNames = new StringBuilder();
+        StringBuilder personaIds = new StringBuilder();
+        StringBuilder platformIds = new StringBuilder();
+        StringBuilder personaLogos = new StringBuilder();
 
         // Do it for the platoons too
-        String platoonIds = "";
-        String platoonNames = "";
-        String platoonTags = "";
-        String platoonPlatformIds = "";
-        String platoonImages = "";
+        StringBuilder platoonIds = new StringBuilder();
+        StringBuilder platoonNames = new StringBuilder();
+        StringBuilder platoonTags = new StringBuilder();
+        StringBuilder platoonPlatformIds = new StringBuilder();
+        StringBuilder platoonImages = new StringBuilder();
 
         // We need to append the different parts to the ^ strings
         for (int i = 0, max = profile.getNumPersonas(); i < max; i++) {
 
-            personaNames += profile.getPersona(i).getName() + ":";
-            personaIds += String.valueOf(profile.getPersona(i).getId()) + ":";
-            platformIds += String.valueOf(profile.getPersona(i).getPlatformId())
-                    + ":";
-            personaLogos += profile.getPersona(i).getLogo() + ":";
+            personaNames.append(profile.getPersona(i).getName() + ":");
+            personaIds.append(profile.getPersona(i).getId() + ":");
+            platformIds.append(profile.getPersona(i).getPlatformId() + ":");
+            personaLogos.append(profile.getPersona(i).getLogo() + ":");
 
         }
 
         // The platoons need to be "cacheable" too
         for (int i = 0, max = platoons.size(); i < max; i++) {
 
-            platoonIds += platoons.get(i).getId() + ":";
-            platoonNames += platoons.get(i).getName() + ":";
-            platoonTags += platoons.get(i).getTag() + ":";
-            platoonPlatformIds += platoons.get(i).getPlatformId() + ":";
-            platoonImages += platoons.get(i).getImage() + ":";
+            platoonIds.append(platoons.get(i).getId() + ":");
+            platoonNames.append(platoons.get(i).getName() + ":");
+            platoonTags.append(platoons.get(i).getTag() + ":");
+            platoonPlatformIds.append(platoons.get(i).getPlatformId() + ":");
+            platoonImages.append(platoons.get(i).getImage() + ":");
 
         }
 
         // This we keep!!!
         spEdit.putString(Constants.SP_BL_PROFILE_NAME, soldierName);
-        spEdit.putString(Constants.SP_BL_PERSONA_NAME, personaNames);
+        spEdit.putString(Constants.SP_BL_PERSONA_NAME, personaNames.toString());
         spEdit.putLong(Constants.SP_BL_PROFILE_ID,
                 profile.getId());
-        spEdit.putString(Constants.SP_BL_PERSONA_ID, personaIds);
-        spEdit.putString(Constants.SP_BL_PLATFORM_ID, platformIds);
-        spEdit.putString(Constants.SP_BL_PERSONA_LOGO, personaLogos);
+        spEdit.putString(Constants.SP_BL_PERSONA_ID, personaIds.toString());
+        spEdit.putString(Constants.SP_BL_PLATFORM_ID, platformIds.toString());
+        spEdit.putString(Constants.SP_BL_PERSONA_LOGO, personaLogos.toString());
         spEdit.putString(Constants.SP_BL_PROFILE_CHECKSUM, postCheckSum);
 
         // Platoons too!
-        spEdit.putString(Constants.SP_BL_PLATOON_ID, platoonIds);
-        spEdit.putString(Constants.SP_BL_PLATOON, platoonNames);
-        spEdit.putString(Constants.SP_BL_PLATOON_TAG, platoonTags);
-        spEdit.putString(Constants.SP_BL_PLATOON_PLATFORM_ID, platoonPlatformIds);
-        spEdit.putString(Constants.SP_BL_PLATOON_IMAGE, platoonImages);
+        spEdit.putString(Constants.SP_BL_PLATOON_ID, platoonIds.toString());
+        spEdit.putString(Constants.SP_BL_PLATOON, platoonNames.toString());
+        spEdit.putString(Constants.SP_BL_PLATOON_TAG, platoonTags.toString());
+        spEdit.putString(Constants.SP_BL_PLATOON_PLATFORM_ID, platoonPlatformIds.toString());
+        spEdit.putString(Constants.SP_BL_PLATOON_IMAGE, platoonImages.toString());
 
         // Cookie-related
         List<ShareableCookie> sca = RequestHandler.getCookies();
-        if (sca != null) {
-
-            ShareableCookie sc = sca.get(0);
-            spEdit.putString(Constants.SP_BL_COOKIE_NAME, sc.getName());
-            spEdit.putString(Constants.SP_BL_COOKIE_VALUE,
-                    sc.getValue());
-
-        } else {
+        if (sca == null) {
 
             throw new WebsiteHandlerException(
                     context.getString(R.string.info_login_lostcookie));
+
+        } else {
+
+            ShareableCookie sc = sca.get(0);
+            spEdit.putString(Constants.SP_BL_COOKIE_NAME, sc.getName());
+            spEdit.putString(Constants.SP_BL_COOKIE_VALUE, sc.getValue());
 
         }
 

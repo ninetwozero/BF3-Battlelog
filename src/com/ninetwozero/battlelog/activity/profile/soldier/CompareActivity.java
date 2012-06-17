@@ -14,8 +14,8 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
+import java.util.ArrayList;
 import java.util.Map;
-import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
@@ -47,7 +47,7 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
     private ProfileData[] profileData;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
@@ -140,8 +140,6 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
 
-        return;
-
     }
 
     @Override
@@ -157,7 +155,7 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
         if (listFragments == null) {
 
             // Add them to the list
-            listFragments = new Vector<Fragment>();
+            listFragments = new ArrayList<Fragment>();
             fragmentStats = new ProfileStatsFragment[2];
             listFragments.add(fragmentStats[0] = (ProfileStatsFragment) Fragment.instantiate(
                     this, ProfileStatsFragment.class.getName()));
@@ -207,15 +205,12 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && viewPager.getCurrentItem() > 0) {
 
-            if (viewPager.getCurrentItem() > 0) {
-
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
-
-            }
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
 
         }
+
         return super.onKeyDown(keyCode, event);
     }
 

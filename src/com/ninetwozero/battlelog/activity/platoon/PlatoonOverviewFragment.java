@@ -65,12 +65,11 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
     private boolean hasPostingRights;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
@@ -193,27 +192,27 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
                 );
 
         // Do we have a link?!
-        if (data.getWebsite() != null && !data.getWebsite().equals("")) {
+        if ("".equals(data.getWebsite())) {
+
+            ((View) activity.findViewById(R.id.wrap_web)).setVisibility(View.GONE);
+
+        } else {
 
             ((TextView) activity.findViewById(R.id.text_web)).setText(data.getWebsite());
             ((View) activity.findViewById(R.id.wrap_web)).setTag(data.getWebsite());
 
-        } else {
-
-            ((View) activity.findViewById(R.id.wrap_web)).setVisibility(View.GONE);
-
         }
+
         // Do we have a presentation?
-        if (data.getPresentation() != null
-                && !data.getPresentation().equals("")) {
-
-            ((TextView) activity.findViewById(R.id.text_presentation)).setText(data
-                    .getPresentation());
-
-        } else {
+        if (data.getPresentation().equals("")) {
 
             ((TextView) activity.findViewById(R.id.text_presentation))
                     .setText(R.string.info_profile_empty_pres);
+
+        } else {
+
+            ((TextView) activity.findViewById(R.id.text_presentation)).setText(data
+                    .getPresentation());
 
         }
 
@@ -296,7 +295,6 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             this.context = c;
             this.platoonData = pd;
             this.activeProfileId = pId;
-            this.progressDialog = null;
 
         }
 
@@ -352,14 +350,9 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             }
 
             // Do we have a dialog?
-            if (progressDialog != null) {
+            if (progressDialog != null && progressDialog.isShowing()) {
 
-                if (progressDialog.isShowing()) {
-
-                    progressDialog.dismiss();
-                    progressDialog = null;
-
-                }
+                progressDialog.dismiss();
 
             }
 

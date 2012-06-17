@@ -16,8 +16,8 @@ package com.ninetwozero.battlelog.datatype;
 
 public interface DefaultActivity {
 
-    public void init();
+    void init();
 
-    public void reload();
+    void reload();
 
 }

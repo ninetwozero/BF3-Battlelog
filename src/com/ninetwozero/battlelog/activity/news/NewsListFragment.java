@@ -21,14 +21,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -38,7 +35,6 @@ import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.NewsData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.WebsiteClient;
-import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class NewsListFragment extends ListFragment implements DefaultFragment {
 
@@ -55,12 +51,11 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
     private int start;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_dashboard_news,
@@ -103,11 +98,7 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
     public void reload() {
 
         // Feed refresh!
-        new AsyncFeedRefresh(
-
-                context, SessionKeeper.getProfileData().getId()
-
-        ).execute();
+        new AsyncFeedRefresh(context).execute();
 
     }
 
@@ -126,25 +117,12 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
 
     }
 
-    public void createContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
-
-        return;
-
-    }
-
-    public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {
-
-        return false;
-
-    }
-
     public class AsyncFeedRefresh extends AsyncTask<Void, Void, Boolean> {
 
         // Attributes
         private Context context;
 
-        public AsyncFeedRefresh(Context c, long pId) {
+        public AsyncFeedRefresh(Context c) {
 
             this.context = c;
 
@@ -182,15 +160,11 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
 
                 Toast.makeText(this.context, R.string.info_news_empty,
                         Toast.LENGTH_SHORT).show();
-                return;
 
             }
 
             // Update
             newsListAdapter.setItemArray(newsItems);
-
-            // Get back here!
-            return;
 
         }
 

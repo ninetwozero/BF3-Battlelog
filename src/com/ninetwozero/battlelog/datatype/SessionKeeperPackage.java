@@ -30,7 +30,6 @@ public class SessionKeeperPackage {
     }
 
     public ArrayList<PlatoonData> getPlatoons() {
-        Log.d(Constants.DEBUG_TAG, "platoons => " + platoons);
         return (ArrayList<PlatoonData>) platoons;
     }
 

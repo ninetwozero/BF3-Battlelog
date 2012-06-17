@@ -15,7 +15,7 @@
 package com.ninetwozero.battlelog;
 
 import java.io.File;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
@@ -61,15 +61,16 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class MainActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
-    private String[] valueFields;
-    private PostData[] postDataArray;
+    private String[] mValueFields;
+    private PostData[] mPostDataArray;
 
     // Elements
-    private EditText fieldEmail, fieldPassword;
-    private CheckBox checkboxSave;
-    private SlidingDrawer slidingDrawer;
-    private OnDrawerOpenListener onDrawerOpenListener;
-    private OnDrawerCloseListener onDrawerCloseListener;
+    private EditText mFieldEmail;
+    private EditText mFieldPassword;
+    private CheckBox mCheckboxSave;
+    private SlidingDrawer mSlidingDrawer;
+    private OnDrawerOpenListener mOnDrawerOpenListener;
+    private OnDrawerCloseListener mOnDrawerCloseListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,8 +91,8 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
         createSession();
 
         // Initialize the attributes
-        postDataArray = new PostData[Constants.FIELD_NAMES_LOGIN.length];
-        valueFields = new String[2];
+        mPostDataArray = new PostData[Constants.FIELD_NAMES_LOGIN.length];
+        mValueFields = new String[2];
 
         // Do we need to show the cool changelog-dialog?
         changeLogDialog();
@@ -116,9 +117,9 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
     public void init() {
 
         // Get the fields
-        fieldEmail = (EditText) findViewById(R.id.field_email);
-        fieldPassword = (EditText) findViewById(R.id.field_password);
-        checkboxSave = (CheckBox) findViewById(R.id.checkbox_save);
+        mFieldEmail = (EditText) findViewById(R.id.field_email);
+        mFieldPassword = (EditText) findViewById(R.id.field_password);
+        mCheckboxSave = (CheckBox) findViewById(R.id.checkbox_save);
         emailPasswordValues();
 
     }
@@ -134,7 +135,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
     private void setEmail() {
 
         if (hasEmail()) {
-            fieldEmail.setText(sharedPreferences.getString(
+            mFieldEmail.setText(sharedPreferences.getString(
                     Constants.SP_BL_PROFILE_EMAIL, ""));
         }
 
@@ -149,7 +150,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
     private void setCheckbox() {
 
         if (hasEmail()) {
-            checkboxSave.setChecked(isPasswordRemembered());
+            mCheckboxSave.setChecked(isPasswordRemembered());
         }
 
     }
@@ -162,24 +163,19 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 
     private void setPassword() {
 
-        if (hasEmail() && isPasswordRemembered()) {
+        if (hasEmail() && isPasswordRemembered() && hasPassword()) {
 
-            // Do we have a password stored?
-            if (hasPassword()) {
+            try {
 
-                try {
+                // Set the password (decrypted version)
+                mFieldPassword.setText(SimpleCrypto.decrypt(
+                        sharedPreferences.getString(Constants.SP_BL_PROFILE_EMAIL,
+                                ""), sharedPreferences.getString(
+                                Constants.SP_BL_PROFILE_PASSWORD, "")));
 
-                    // Set the password (decrypted version)
-                    fieldPassword.setText(SimpleCrypto.decrypt(
-                            sharedPreferences.getString(Constants.SP_BL_PROFILE_EMAIL,
-                                    ""), sharedPreferences.getString(
-                                    Constants.SP_BL_PROFILE_PASSWORD, "")));
+            } catch (Exception e) {
 
-                } catch (Exception e) {
-
-                    e.printStackTrace();
-
-                }
+                e.printStackTrace();
 
             }
 
@@ -293,33 +289,33 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
     private void setupDrawer() {
 
         // Define the SlidingDrawer
-        if (slidingDrawer == null) {
+        if (mSlidingDrawer == null) {
 
-            slidingDrawer = (SlidingDrawer) findViewById(R.id.about_slider);
+            mSlidingDrawer = (SlidingDrawer) findViewById(R.id.about_slider);
 
             // Set the drawer listeners
-            onDrawerCloseListener = new OnDrawerCloseListener() {
+            mOnDrawerCloseListener = new OnDrawerCloseListener() {
 
                 @Override
                 public void onDrawerClosed() {
 
-                    slidingDrawer.setClickable(false);
+                    mSlidingDrawer.setClickable(false);
                 }
 
             };
-            onDrawerOpenListener = new OnDrawerOpenListener() {
+            mOnDrawerOpenListener = new OnDrawerOpenListener() {
 
                 @Override
                 public void onDrawerOpened() {
 
-                    slidingDrawer.setClickable(true);
+                    mSlidingDrawer.setClickable(true);
                 }
 
             };
 
             // Attach the listeners
-            slidingDrawer.setOnDrawerOpenListener(onDrawerOpenListener);
-            slidingDrawer.setOnDrawerCloseListener(onDrawerCloseListener);
+            mSlidingDrawer.setOnDrawerOpenListener(mOnDrawerOpenListener);
+            mSlidingDrawer.setOnDrawerCloseListener(mOnDrawerCloseListener);
 
             setup();
         }
@@ -332,30 +328,29 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
         if (v.getId() == R.id.button_login) {
 
             // Let's set 'em values
-            valueFields[0] = fieldEmail.getText().toString();
-            valueFields[1] = fieldPassword.getText().toString();
-            if (!validateEmailAndPassword(valueFields[0], valueFields[1]))
-                return;
+            mValueFields[0] = mFieldEmail.getText().toString();
+            mValueFields[1] = mFieldPassword.getText().toString();
+            if (!validateEmailAndPassword(mValueFields[0], mValueFields[1]))
 
-            // Iterate and conquer
-            for (int i = 0, max = Constants.FIELD_NAMES_LOGIN.length; i < max; i++) {
+                // Iterate and conquer
+                for (int i = 0, max = Constants.FIELD_NAMES_LOGIN.length; i < max; i++) {
 
-                postDataArray[i] = new PostData(
-                        Constants.FIELD_NAMES_LOGIN[i],
-                        (Constants.FIELD_VALUES_LOGIN[i] == null) ? valueFields[i]
-                                : Constants.FIELD_VALUES_LOGIN[i]);
+                    mPostDataArray[i] = new PostData(
+                            Constants.FIELD_NAMES_LOGIN[i],
+                            (Constants.FIELD_VALUES_LOGIN[i] == null) ? mValueFields[i]
+                                    : Constants.FIELD_VALUES_LOGIN[i]);
 
-            }
+                }
 
             // Clear the pwd-field
-            if (!checkboxSave.isChecked())
-                fieldPassword.setText("");
+            if (!mCheckboxSave.isChecked())
+                mFieldPassword.setText("");
 
             // Do the async
             if (PublicUtils.isNetworkAvailable(this)) {
 
-                AsyncLogin al = new AsyncLogin(this, checkboxSave.isChecked());
-                al.execute(postDataArray);
+                AsyncLogin al = new AsyncLogin(this, mCheckboxSave.isChecked());
+                al.execute(mPostDataArray);
 
             } else {
 
@@ -363,7 +358,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
                         Toast.LENGTH_SHORT).show();
 
             }
-            return;
+
         }
 
     }
@@ -432,24 +427,13 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && mSlidingDrawer.isOpened()) {
 
-            if (slidingDrawer.isOpened()) {
-
-                slidingDrawer.animateClose();
-                return true;
-
-            }
+            mSlidingDrawer.animateClose();
+            return true;
 
         }
         return super.onKeyDown(keyCode, event);
-
-    }
-
-    @Override
-    public void onResume() {
-
-        super.onResume();
 
     }
 
@@ -460,7 +444,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
         if (listFragments == null) {
 
             // Add them to the list
-            listFragments = new Vector<Fragment>();
+            listFragments = new ArrayList<Fragment>();
             listFragments.add(Fragment.instantiate(this,
                     AboutMainFragment.class.getName()));
             listFragments.add(Fragment.instantiate(this,

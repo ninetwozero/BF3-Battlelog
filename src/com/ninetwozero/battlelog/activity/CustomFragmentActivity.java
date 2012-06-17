@@ -47,7 +47,7 @@ public class CustomFragmentActivity extends FragmentActivity {
     protected List<Fragment> listFragments;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);

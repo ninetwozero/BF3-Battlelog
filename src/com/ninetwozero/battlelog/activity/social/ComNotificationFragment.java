@@ -54,12 +54,11 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
     private ListView listView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
@@ -145,7 +144,6 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
             }
 
             // R-turn
-            return;
 
         }
 

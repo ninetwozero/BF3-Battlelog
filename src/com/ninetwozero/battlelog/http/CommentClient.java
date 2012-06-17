@@ -17,8 +17,8 @@ import com.ninetwozero.battlelog.misc.Constants;
 public class CommentClient extends DefaultClient {
 
     // Attributes
-    private long id;
-    private int type;
+    private long mId;
+    private int mType;
 
     // URLS
     public static final String URL_LIST = Constants.URL_MAIN
@@ -36,9 +36,9 @@ public class CommentClient extends DefaultClient {
 
     public CommentClient(long i, int t) {
 
-        requestHandler = new RequestHandler();
-        id = i;
-        type = t;
+        mRequestHandler = new RequestHandler();
+        mId = i;
+        mType = t;
 
     }
 
@@ -47,11 +47,11 @@ public class CommentClient extends DefaultClient {
         try {
 
             // Let's post!
-            boolean isFeed = (type == CommentData.TYPE_FEED);
-            String url = RequestHandler.generateUrl(isFeed ? URL_COMMENT : URL_NEWS_COMMENT, id, 1);
+            boolean isFeed = (mType == CommentData.TYPE_FEED);
+            String url = RequestHandler.generateUrl(isFeed ? URL_COMMENT : URL_NEWS_COMMENT, mId, 1);
 
             // Get the httpContent
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     url,
                     RequestHandler.generatePostData(
@@ -86,28 +86,28 @@ public class CommentClient extends DefaultClient {
 
     }
 
-    public ArrayList<CommentData> get() throws WebsiteHandlerException {
+    public List<CommentData> get() throws WebsiteHandlerException {
 
         return get(1);
 
     }
 
-    public ArrayList<CommentData> get(int pId)
+    public List<CommentData> get(int pId)
             throws WebsiteHandlerException {
 
         try {
 
             // Let's do this!
             List<CommentData> comments = new ArrayList<CommentData>();
-            boolean isFeed = (type == CommentData.TYPE_FEED);
+            boolean isFeed = (mType == CommentData.TYPE_FEED);
 
             // Get the content depending on the pagee
-            String httpContent = requestHandler.get(
+            String httpContent = mRequestHandler.get(
 
                     RequestHandler.generateUrl(
 
                             isFeed ? URL_LIST : URL_NEWS_LIST,
-                            id,
+                            mId,
                             pId
                             ),
                     RequestHandler.HEADER_AJAX
@@ -115,24 +115,22 @@ public class CommentClient extends DefaultClient {
                     );
 
             // Did we manage?
-            if (httpContent.length() != 0) {
-
-                Log.d(Constants.DEBUG_TAG, "httpContent => " + httpContent);
+            if (httpContent.length() > 0) {
 
                 // Init
                 JSONObject dataObject = null;
                 JSONObject tempObject = null;
 
                 // Is it a feed?
-                if (!isFeed) {
-
-                    dataObject = new JSONObject(httpContent).getJSONObject("context")
-                            .getJSONObject("blogPost");
-
-                } else {
+                if (isFeed) {
 
                     dataObject = new JSONObject(httpContent).getJSONObject("data");
 
+                } else {
+                    
+                    dataObject = new JSONObject(httpContent).getJSONObject("context")
+                            .getJSONObject("blogPost");
+                    
                 }
 
                 // Get the comment array
@@ -147,7 +145,7 @@ public class CommentClient extends DefaultClient {
 
                             new CommentData(
 
-                                    id,
+                                    mId,
                                     Long.parseLong(tempObject.getString("itemId")),
                                     Long.parseLong(tempObject.getString("creationDate")),
                                     tempObject.getString("body"),

@@ -17,27 +17,29 @@ package com.ninetwozero.battlelog.datatype;
 public class WeaponVehicleListData {
 
     // Attributes
-    private String title, slug, image;
+    private final String mTitle;
+    private final String mSlug;
+    private final String mImage;
 
     public WeaponVehicleListData(String t, String s, String i) {
 
-        title = t;
-        slug = s;
-        image = i;
+        mTitle = t;
+        mSlug = s;
+        mImage = i;
 
     }
 
     // Getters
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public String getSlug() {
-        return slug;
+        return mSlug;
     }
 
     public String getImage() {
-        return image;
+        return mImage;
     }
 
 }

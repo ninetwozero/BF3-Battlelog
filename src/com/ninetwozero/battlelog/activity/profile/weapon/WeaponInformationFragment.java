@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.activity.profile.weapon;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -56,15 +56,14 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     private WeaponInfo weaponInfo;
     private WeaponStats weaponStats;
     private long selectedPersona;
-    private HashMap<Long, WeaponDataWrapper> weaponDataWrapper;
+    private Map<Long, WeaponDataWrapper> weaponDataWrapper;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_weapon_info,
@@ -209,7 +208,7 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         textSingle.setText(w.getData().isSingle() ? R.string.general_yes : R.string.general_no);
         textAmmo.setText(w.getData().getAmmo());
         textRange.setText(w.getData().getRangeTitle());
-        textRateOfFire.setText(w.getData().getRateOfFire() + "");
+        textRateOfFire.setText(String.valueOf(w.getData().getRateOfFire()));
 
         // Update the previous
         ((SingleWeaponActivity) context).showData(w);

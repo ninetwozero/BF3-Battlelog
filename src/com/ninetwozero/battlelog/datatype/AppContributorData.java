@@ -38,8 +38,8 @@ public class AppContributorData implements Parcelable {
     public AppContributorData(int s) {
 
         stringId = s;
-        name = null;
-        url = null;
+        name = "";
+        url = "";
 
     }
 

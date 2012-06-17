@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -42,11 +41,12 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
     private ListView listView;
 
     // Constructor
-    public AsyncChatRefresh(Context c, ListView lv, LayoutInflater l) {
+    public AsyncChatRefresh(Context c, ListView lv) {
 
         context = c;
         listView = lv;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
     }
 
     @Override
@@ -91,7 +91,6 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
                     Toast.LENGTH_SHORT).show();
 
         }
-        return;
 
     }
 

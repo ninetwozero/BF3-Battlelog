@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.activity.forum;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -96,18 +97,17 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     private long threadId;
     private String locale;
     private int currentPage;
-    private HashMap<Long, String> selectedQuotes;
+    private Map<Long, String> selectedQuotes;
     private Integer[] pageArray;
     private boolean isCaching;
     private Intent storedRequest;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
         sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
 
@@ -218,11 +218,10 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 String content = textareaContent.getText().toString();
 
                 // Validate
-                if (content.equals("")) {
+                if ("".equals(content)) {
 
                     Toast.makeText(context, "You need to enter some content for your reply.",
                             Toast.LENGTH_SHORT).show();
-                    return;
 
                 }
 
@@ -251,7 +250,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
         // Do we have a threadId?
         if (threadId == 0) {
-            return;
+            getActivity().finish();
         }
 
         // Set it up
@@ -357,66 +356,62 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         @Override
         protected void onPostExecute(Boolean results) {
 
-            if (results) {
+            if (results && context != null) {
 
-                if (context != null) {
+                // Let's set it up
+                if (tempPageId > 1) {
 
-                    // Let's set it up
-                    if (tempPageId > 1) {
+                    listAdapter.set(posts);
 
-                        listAdapter.set(posts);
+                } else {
 
-                    } else {
+                    listAdapter.set(threadData.getPosts());
 
-                        listAdapter.set(threadData.getPosts());
+                }
 
-                    }
+                // Update the title
+                textTitle.setText(threadData.getTitle());
 
-                    // Update the title
-                    textTitle.setText(threadData.getTitle());
+                if (threadData.getNumPages() > 1) {
 
-                    if (threadData.getNumPages() > 1) {
+                    wrapButtons.setVisibility(View.VISIBLE);
+                    buttonJump.setText(R.string.info_xml_feed_button_jump);
+                    buttonPrev.setEnabled(currentPage > 1);
+                    buttonNext.setEnabled(currentPage < threadData.getNumPages());
+                    buttonJump.setEnabled(true);
 
-                        wrapButtons.setVisibility(View.VISIBLE);
-                        buttonJump.setText(R.string.info_xml_feed_button_jump);
-                        buttonPrev.setEnabled(currentPage > 1);
-                        buttonNext.setEnabled(currentPage < threadData.getNumPages());
-                        buttonJump.setEnabled(true);
+                } else {
 
-                    } else {
+                    wrapButtons.setVisibility(View.GONE);
+                    buttonPrev.setEnabled(false);
+                    buttonNext.setEnabled(false);
+                    buttonJump.setEnabled(false);
 
-                        wrapButtons.setVisibility(View.GONE);
-                        buttonPrev.setEnabled(false);
-                        buttonNext.setEnabled(false);
-                        buttonJump.setEnabled(false);
+                }
 
-                    }
+                // Do we need to hide?
+                slidingDrawer.setVisibility(threadData.isLocked() ? View.GONE : View.VISIBLE);
 
-                    // Do we need to hide?
-                    slidingDrawer.setVisibility(threadData.isLocked() ? View.GONE : View.VISIBLE);
+                // Scroll to top
+                listView.post(
 
-                    // Scroll to top
-                    listView.post(
+                        new Runnable() {
 
-                            new Runnable() {
+                            @Override
+                            public void run() {
 
-                                @Override
-                                public void run() {
+                                // Set the selection
+                                listView.setSelection(0);
 
-                                    // Set the selection
-                                    listView.setSelection(0);
-
-                                    // Hide it
-                                    wrapLoader.setVisibility(View.GONE);
-                                    rotateAnimation.reset();
-
-                                }
+                                // Hide it
+                                wrapLoader.setVisibility(View.GONE);
+                                rotateAnimation.reset();
 
                             }
 
-                            );
+                        }
 
-                }
+                        );
 
             }
 
@@ -433,9 +428,6 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         menu.add(0, 1, 0, R.string.info_forum_quote);
         menu.add(0, 2, 0, R.string.info_forum_links);
         menu.add(0, 3, 0, R.string.info_forum_report);
-
-        // RETURN
-        return;
 
     }
 
@@ -481,9 +473,9 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                 textareaContent.getText().insert(
 
                                         textareaContent.getSelectionStart(),
-                                        Constants.BBCODE_TAG_QUOTE_IN.replace(
+                                        BBCodeUtils.TAG_QUOTE_IN.replace(
 
-                                                "{number}", data.getPostId() + ""
+                                                "{number}", String.valueOf(data.getPostId())
 
                                                 ).replace(
 
@@ -554,16 +546,15 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
         }
 
-        if (!linkFound) {
+        if (linkFound) {
+
+            generateDialogLinkList(context, links).show();
+
+        } else {
 
             // No links found
             Toast.makeText(context, R.string.info_forum_links_no,
                     Toast.LENGTH_SHORT).show();
-
-        } else {
-
-            generateDialogLinkList(context, links).show();
-
         }
 
     }
@@ -748,16 +739,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                 }
 
-                if (page != 1) {
-                    buttonPrev.setEnabled(true);
-                } else {
-                    buttonPrev.setEnabled(false);
-                }
-                if (page != threadData.getNumPages()) {
-                    buttonNext.setEnabled(true);
-                } else {
-                    buttonNext.setEnabled(false);
-                }
+                buttonPrev.setEnabled(page != 1);                
+                buttonNext.setEnabled(page == threadData.getNumPages());
                 buttonJump.setEnabled(true);
 
             }
@@ -864,7 +847,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         // Set the text
         textView.setText(getString(R.string.info_xml_enternumber).replace(
                 "{min}", "1")
-                .replace("{max}", threadData.getNumPages() + ""));
+                .replace("{max}", String.valueOf(threadData.getNumPages())));
 
         // Dialog options
         builder.setPositiveButton(
@@ -874,7 +857,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                     public void onClick(DialogInterface dialog, int which) {
 
                         String pageString = textPage.getText().toString();
-                        if (!pageString.equals("")) {
+                        if (!"".equals(pageString)) {
 
                             int page = Integer.parseInt(pageString);
                             if (0 < page && page <= threadData.getNumPages()) {
@@ -1137,8 +1120,6 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         menu.add(0, 2, 0, R.string.info_forum_links);
         menu.add(0, 3, 0, R.string.info_forum_report);
 
-        return;
-
     }
 
     public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {
@@ -1167,9 +1148,9 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                 textareaContent.getText().insert(
 
                                         textareaContent.getSelectionStart(),
-                                        Constants.BBCODE_TAG_QUOTE_IN.replace(
+                                        BBCodeUtils.TAG_QUOTE_IN.replace(
 
-                                                "{number}", data.getPostId() + ""
+                                                "{number}", String.valueOf(data.getPostId())
 
                                                 ).replace(
 

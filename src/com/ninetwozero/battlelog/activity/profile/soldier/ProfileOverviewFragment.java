@@ -64,12 +64,11 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
     private boolean hasPostingRights;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
@@ -105,6 +104,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
         // Do we have valid data?
         if (data == null) {
             return;
+
         }
 
         // Get activity
@@ -142,7 +142,13 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
         }
 
         // Is the status ""?
-        if (!data.getStatusMessage().equals("")) {
+        if ("".equals(data.getStatusMessage())) {
+
+            // Hide the view
+            ((RelativeLayout) activity.findViewById(R.id.wrap_status))
+                    .setVisibility(View.GONE);
+
+        } else {
 
             // Set the status
             ((TextView) activity.findViewById(R.id.text_status)).setText(data
@@ -151,26 +157,17 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                     .setText(PublicUtils.getRelativeDate(context,
                             data.getStatusMessageChanged(),
                             R.string.info_lastupdate));
-
-        } else {
-
-            // Hide the view
-            ((RelativeLayout) activity.findViewById(R.id.wrap_status))
-                    .setVisibility(View.GONE);
-
         }
 
         // Do we have a presentation?
-        if (data.getPresentation() != null
-                && !data.getPresentation().equals("")) {
-
-            ((TextView) activity.findViewById(R.id.text_presentation)).setText(data
-                    .getPresentation());
-
-        } else {
+        if ("".equals(data.getPresentation())) {
 
             ((TextView) activity.findViewById(R.id.text_presentation))
                     .setText(R.string.info_profile_empty_pres);
+        } else {
+
+            ((TextView) activity.findViewById(R.id.text_presentation)).setText(data
+                    .getPresentation());
 
         }
 
@@ -186,6 +183,26 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             ((TextView) activity.findViewById(R.id.text_platoon))
                     .setVisibility(View.GONE);
             platoonWrapper.removeAllViews();
+
+            final OnClickListener onClickListener = new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    // On-click
+                    startActivity(
+
+                    new Intent(context, PlatoonActivity.class).putExtra(
+
+                            "platoon", (PlatoonData) v.getTag()
+
+                            )
+
+                    );
+
+                }
+
+            };
 
             // Iterate over the platoons
             for (PlatoonData currentPlatoon : data.getPlatoons()) {
@@ -205,9 +222,9 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 ((TextView) convertView.findViewById(R.id.text_tag))
                         .setText("[" + currentPlatoon.getTag() + "]");
                 ((TextView) convertView.findViewById(R.id.text_members))
-                        .setText(currentPlatoon.getCountMembers() + "");
+                        .setText(String.valueOf(currentPlatoon.getCountMembers()));
                 ((TextView) convertView.findViewById(R.id.text_fans))
-                        .setText(currentPlatoon.getCountFans() + "");
+                        .setText(String.valueOf(currentPlatoon.getCountFans()));
 
                 // Almost forgot - we got a Bitmap too!
                 ((ImageView) convertView.findViewById(R.id.image_badge))
@@ -220,29 +237,8 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                 // Store it in the tag
                 convertView.setTag(currentPlatoon);
-                convertView.setOnClickListener(
+                convertView.setOnClickListener(onClickListener);
 
-                        new OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-
-                                // On-click
-                                startActivity(
-
-                                new Intent(context, PlatoonActivity.class).putExtra(
-
-                                        "platoon", (PlatoonData) v.getTag()
-
-                                        )
-
-                                );
-
-                            }
-
-                        }
-
-                        );
                 // Add it!
                 platoonWrapper.addView(convertView);
 
@@ -332,7 +328,6 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             }
 
             // Get back here!
-            return;
 
         }
 
@@ -347,7 +342,6 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
         public AsyncRefresh(long pId) {
 
             this.activeProfileId = pId;
-            this.progressDialog = null;
 
         }
 
@@ -408,14 +402,9 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             }
 
             // Do we have a dialog?
-            if (progressDialog != null) {
+            if (progressDialog != null && progressDialog.isShowing()) {
 
-                if (progressDialog.isShowing()) {
-
-                    progressDialog.dismiss();
-                    progressDialog = null;
-
-                }
+                progressDialog.dismiss();
 
             }
 
@@ -424,7 +413,6 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             setFeedPermission(profileInformation.isFriend() || hasPostingRights);
 
             // Get back here!
-            return;
 
         }
 

@@ -74,12 +74,11 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
     private final int MENU_POS_ASSIGNMENTS = 6;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
@@ -152,8 +151,8 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
                 menu.add(0, MENU_POS_ASSIGNMENTS, 0, R.string.label_assignments_view);
 
             }
+
         }
-        return;
 
     }
 
@@ -171,12 +170,12 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
                         context, ChatActivity.class
 
                 ).putExtra(
-                
-                        "activeUser", SessionKeeper.getProfileData()
-                        
-                ).putExtra(
 
-                        "otherUser", profileData
+                        "activeUser", SessionKeeper.getProfileData()
+
+                        ).putExtra(
+
+                                "otherUser", profileData
 
                         )
 
@@ -323,13 +322,10 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
                 // Display the friend list
                 ((DashboardActivity) context).setComLabel(context.getString(
                         R.string.label_com_handle).replace("{num}",
-                        friendListData.getNumTotalOnline() + ""));
+                        String.valueOf(friendListData.getNumTotalOnline())));
                 display(friendListData);
 
             }
-
-            // R-turn
-            return;
 
         }
 

@@ -28,7 +28,7 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class BattlelogService extends Service {
 
     // Attributes
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -39,9 +39,9 @@ public class BattlelogService extends Service {
     public void onCreate() {
 
         // SET THE SHARED PREFERENCES
-        if (sharedPreferences == null) {
+        if (mSharedPreferences == null) {
 
-            sharedPreferences = PreferenceManager
+            mSharedPreferences = PreferenceManager
                     .getDefaultSharedPreferences(this);
 
         }
@@ -54,7 +54,7 @@ public class BattlelogService extends Service {
         Log.d(Constants.DEBUG_TAG, "Service has reached onStartCommand()");
         if (PublicUtils.isNetworkAvailable(this)) {
 
-            new AsyncServiceTask(this, sharedPreferences).execute();
+            new AsyncServiceTask(this, mSharedPreferences).execute();
 
         }
         return Service.START_STICKY;

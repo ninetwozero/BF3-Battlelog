@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.activity.platoon;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
@@ -55,16 +55,14 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
     private PlatoonData platoonData;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
 
         // Get the intent
         if (!getIntent().hasExtra("platoon")) {
-
-            return;
-
+            finish();
         }
 
         // Get the platoon data
@@ -216,8 +214,9 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
                 fragmentFeed.createContextMenu(menu, view, menuInfo);
                 break;
 
+            default:
+                break;
         }
-        return;
 
     }
 
@@ -261,7 +260,7 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
         if (listFragments == null) {
 
             // Add them to the list
-            listFragments = new Vector<Fragment>();
+            listFragments = new ArrayList<Fragment>();
             listFragments.add(fragmentOverview = (PlatoonOverviewFragment) Fragment.instantiate(
                     this, PlatoonOverviewFragment.class.getName()));
             listFragments.add(fragmentStats = (PlatoonStatsFragment) Fragment.instantiate(this,
@@ -331,9 +330,7 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-            if (viewPager.getCurrentItem() > 0) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && viewPager.getCurrentItem() > 0) {
 
                 viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
                 return true;

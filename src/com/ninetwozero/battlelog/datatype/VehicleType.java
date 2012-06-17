@@ -20,36 +20,38 @@ import android.os.Parcelable;
 public class VehicleType implements Parcelable {
 
     // Attributes
-    private String identifier, name, label;
+    private String mIdentifier;
+    private String mName;
+    private String mLabel;
 
     // Construct
     public VehicleType(String i, String n, String l) {
 
-        this.identifier = i;
-        this.name = n;
-        this.label = l;
+        this.mIdentifier = i;
+        this.mName = n;
+        this.mLabel = l;
 
     }
 
     public VehicleType(Parcel in) {
 
-        this.identifier = in.readString();
-        this.name = in.readString();
-        this.label = in.readString();
+        this.mIdentifier = in.readString();
+        this.mName = in.readString();
+        this.mLabel = in.readString();
 
     }
 
     // Getters
     public String getIdentifier() {
-        return this.identifier;
+        return this.mIdentifier;
     }
 
     public String getName() {
-        return this.name;
+        return this.mName;
     }
 
     public String getLabel() {
-        return this.label;
+        return this.mLabel;
     }
 
     @Override
@@ -60,10 +62,11 @@ public class VehicleType implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int arg1) {
 
-        out.writeString(this.identifier);
-        out.writeString(this.name);
-        out.writeString(this.label);
+        out.writeString(this.mIdentifier);
+        out.writeString(this.mName);
+        out.writeString(this.mLabel);
 
     }
 
 }
+

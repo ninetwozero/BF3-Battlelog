@@ -69,12 +69,11 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
     private int selectedPosition;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
@@ -136,20 +135,21 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment {
                 new Intent(context, ProfileSettingsActivity.class));
 
         // Add the OnClickListeners
+        final OnClickListener onClickListener = new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                startActivity(MENU_INTENTS.get(v.getId()));
+
+            }
+        };
+
         for (int key : MENU_INTENTS.keySet()) {
 
-            view.findViewById(key).setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                    startActivity(MENU_INTENTS.get(v.getId()));
-
-                }
-            });
+            view.findViewById(key).setOnClickListener(onClickListener);
 
         }
-
     }
 
     @Override

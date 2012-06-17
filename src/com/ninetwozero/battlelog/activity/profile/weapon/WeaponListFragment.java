@@ -45,12 +45,11 @@ public class WeaponListFragment extends ListFragment implements DefaultFragment 
     private List<WeaponDataWrapper> items;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_items,

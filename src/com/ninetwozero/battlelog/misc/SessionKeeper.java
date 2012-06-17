@@ -23,7 +23,7 @@ import com.ninetwozero.battlelog.datatype.PersonaData;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 
-public class SessionKeeper {
+public final class SessionKeeper {
 
     // Attributes
     private static ProfileData profileData;
@@ -85,7 +85,11 @@ public class SessionKeeper {
         }
 
         // If we even *might* have a session
-        if (!cookie.equals("")) {
+        if ("".equals(cookie)) {
+
+            return null;
+            
+        } else {
 
             return new ProfileData.Builder(
                     sp.getLong(Constants.SP_BL_PROFILE_ID, 0),
@@ -95,15 +99,11 @@ public class SessionKeeper {
                     sp.getString(Constants.SP_BL_PROFILE_GRAVATAR, "")
                     ).build();
 
-        } else {
-
-            return null;
-
         }
 
     }
 
-    public static ArrayList<PlatoonData> generatePlatoonDataFromSharedPreferences(
+    public static List<PlatoonData> generatePlatoonDataFromSharedPreferences(
             SharedPreferences sp) {
 
         // Get the different strings

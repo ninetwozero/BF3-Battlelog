@@ -50,11 +50,6 @@ public class PostData {
         this.hash = false;
     }
 
-    public String find(String f) {
-
-        return (this.field.compareTo(f) == 1) ? this.field : null;
-    }
-
     // Getters
     public String getField() {
 

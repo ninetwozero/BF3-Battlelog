@@ -22,15 +22,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -41,12 +38,9 @@ import com.ninetwozero.battlelog.adapter.CommentListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncCommentSend;
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
-import com.ninetwozero.battlelog.datatype.FeedItem;
-import com.ninetwozero.battlelog.datatype.NewsData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.CommentClient;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class CommentListFragment extends ListFragment implements DefaultFragment {
 
@@ -56,7 +50,7 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
     private SharedPreferences sharedPreferences;
     private long id;
     private int type;
-    
+
     // Elements
     private ListView listView;
     private Button button;
@@ -68,12 +62,11 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
     private int pageId = 1;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
@@ -135,16 +128,16 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
     }
 
     public void setId(long i) {
-        
+
         id = i;
-        
+
     }
-    
+
     public void setType(int t) {
-        
+
         type = t;
     }
-    
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
 
@@ -155,7 +148,7 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
     public void reload() {
 
         // Feed refresh!
-        new AsyncRefresh(context, SessionKeeper.getProfileData().getId()).execute();
+        new AsyncRefresh(context).execute();
 
     }
 
@@ -166,25 +159,12 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
 
     }
 
-    public void createContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
-
-        return;
-
-    }
-
-    public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {
-
-        return false;
-
-    }
-
     public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
         // Attributes
         private Context context;
 
-        public AsyncRefresh(Context c, long pId) {
+        public AsyncRefresh(Context c) {
 
             this.context = c;
 
@@ -222,15 +202,11 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
 
                 Toast.makeText(this.context, R.string.general_no_data,
                         Toast.LENGTH_SHORT).show();
-                return;
 
             }
 
             // Update
             listAdapter.setItemArray(comments);
-
-            // Get back here!
-            return;
 
         }
 

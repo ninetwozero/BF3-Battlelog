@@ -19,7 +19,7 @@ public class ProfileSettingsActivity extends PreferenceActivity {
     private SharedPreferences sharedPreferences;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);

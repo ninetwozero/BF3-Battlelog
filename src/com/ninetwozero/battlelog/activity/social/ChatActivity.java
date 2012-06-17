@@ -71,7 +71,7 @@ public class ChatActivity extends ListActivity {
     private Timer timerReload;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
@@ -81,7 +81,7 @@ public class ChatActivity extends ListActivity {
         PublicUtils.restoreCookies(this, icicle);
 
         // Did we get someone to chat with?
-        if (!getIntent().hasExtra("activeUser") || !getIntent().hasExtra("otherUser") ) {
+        if (!getIntent().hasExtra("activeUser") || !getIntent().hasExtra("otherUser")) {
             finish();
         }
 
@@ -102,8 +102,9 @@ public class ChatActivity extends ListActivity {
         // Get the ListView
         listView = getListView();
         listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-        listView.setAdapter(new ChatListAdapter(this, null, activeUser.getUsername(), layoutInflater));
-        
+        listView.setAdapter(new ChatListAdapter(this, null, activeUser.getUsername(),
+                layoutInflater));
+
         // Setup the title
         setTitle(getTitle().toString().replace("...", otherUser.getUsername()));
 
@@ -112,7 +113,8 @@ public class ChatActivity extends ListActivity {
         fieldMessage = (EditText) findViewById(R.id.field_message);
 
         // Try to get the chatid
-        new AsyncGetChatId(activeUser.getId()).execute(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+        new AsyncGetChatId(activeUser.getId()).execute(sharedPreferences.getString(
+                Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 
@@ -209,8 +211,7 @@ public class ChatActivity extends ListActivity {
 
     public void reload() {
 
-        new AsyncChatRefresh(this, listView,
-                layoutInflater).execute(otherUser.getId());
+        new AsyncChatRefresh(this, listView).execute(otherUser.getId());
 
     }
 
@@ -223,7 +224,7 @@ public class ChatActivity extends ListActivity {
             new AsyncChatSend(
 
                     this, activeUser.getId(), chatId, buttonSend, false,
-                    new AsyncChatRefresh(this, listView, layoutInflater)
+                    new AsyncChatRefresh(this, listView)
 
             ).execute(
 
@@ -273,41 +274,32 @@ public class ChatActivity extends ListActivity {
 
     public void notifyNewPost(List<ChatMessage> cm) {
 
-        // Let's see...
-        if (!sharedPreferences.getBoolean("battlelog_chat_sound", true)) {
-            return;
-        }
-
         // Init!
         boolean hasNewResponse = false;
         boolean isFirstRun = true;
+        boolean playSound = sharedPreferences.getBoolean("battlelog_chat_sound", true);
 
         // Iterate
         for (int curr = cm.size() - 1, min = ((curr > 5) ? curr - 5 : 0); curr > min; curr--) {
 
             // Let's see what happens.
             ChatMessage m = cm.get(curr);
-            if (m.getSender().equals(activeUser.getUsername())) {
+            if (m.getSender().equals(activeUser.getUsername())
+                    && m.getTimestamp() > latestChatResponseTimestamp) {
 
-                // Ooh, ooh, is it fresh?
-                if (m.getTimestamp() > latestChatResponseTimestamp) {
-
-                    hasNewResponse = true;
-                    isFirstRun = (latestChatResponseTimestamp == 0);
-                    latestChatResponseTimestamp = m.getTimestamp();
-                    break;
-
-                }
+                hasNewResponse = true;
+                isFirstRun = (latestChatResponseTimestamp == 0);
+                latestChatResponseTimestamp = m.getTimestamp();
+                break;
 
             }
 
         }
 
         // So, did we have a new response?
-        if (hasNewResponse && !isFirstRun) {
+        if (hasNewResponse && !isFirstRun && playSound) {
 
-            MediaPlayer mediaPlayer = MediaPlayer.create(this,
-                    R.raw.notification);
+            MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.notification);
             mediaPlayer.start();
             mediaPlayer.setOnCompletionListener(
 
@@ -341,36 +333,30 @@ public class ChatActivity extends ListActivity {
 
         }
 
-        return;
-
     }
 
     public void setupTimer() {
 
         // Do we have a connection?
-        if (PublicUtils.isNetworkAvailable(this)) {
+        if (PublicUtils.isNetworkAvailable(this) && timerReload == null) {
 
-            if (timerReload == null) {
+            // Let's reload the chat will we?
+            timerReload = new Timer();
+            timerReload
+                    .schedule(
 
-                // Let's reload the chat will we?
-                timerReload = new Timer();
-                timerReload
-                        .schedule(
+                            new TimerTask() {
 
-                                new TimerTask() {
+                                @Override
+                                public void run() {
 
-                                    @Override
-                                    public void run() {
+                                    reload();
 
-                                        reload();
+                                }
+                            }, 0, sharedPreferences.getInt(Constants.SP_BL_INTERVAL_CHAT,
+                                    25) * 1000
 
-                                    }
-                                }, 0, sharedPreferences.getInt(Constants.SP_BL_INTERVAL_CHAT,
-                                        25) * 1000
-
-                        );
-
-            }
+                    );
 
         }
 

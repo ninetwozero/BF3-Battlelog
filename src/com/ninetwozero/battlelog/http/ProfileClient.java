@@ -58,7 +58,7 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class ProfileClient extends DefaultClient {
 
     // Attributes
-    private ProfileData profileData;
+    private ProfileData mProfileData;
 
     // URLS
     public static final String URL_INFO = Constants.URL_MAIN + "user/{UNAME}/";
@@ -105,8 +105,8 @@ public class ProfileClient extends DefaultClient {
 
     public ProfileClient(ProfileData pd) {
 
-        requestHandler = new RequestHandler();
-        profileData = pd;
+        mRequestHandler = new RequestHandler();
+        mProfileData = pd;
 
     }
 
@@ -132,7 +132,12 @@ public class ProfileClient extends DefaultClient {
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
+
+                throw new WebsiteHandlerException(
+                        "Could not retrieve the ProfileIDs.");
+
+            } else {
 
                 // Generate an object
                 JSONArray searchResults = new JSONObject(httpContent)
@@ -185,12 +190,7 @@ public class ProfileClient extends DefaultClient {
 
                 }
 
-                return null;
-
-            } else {
-
-                throw new WebsiteHandlerException(
-                        "Could not retrieve the ProfileIDs.");
+                return null; /* TODO: <--- remove */
 
             }
 
@@ -217,7 +217,12 @@ public class ProfileClient extends DefaultClient {
                     RequestHandler.HEADER_NORMAL);
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
+
+                throw new WebsiteHandlerException(
+                        "Could not retrieve the Profile.");
+
+            } else {
 
                 // Grab the array
                 JSONObject user = new JSONObject(httpContent).getJSONObject(
@@ -227,11 +232,6 @@ public class ProfileClient extends DefaultClient {
                         Long.parseLong(user.getString("userId")),
                         user.getString("username")).gravatarHash(user.optString("gravatarMd5", ""))
                         .build();
-
-            } else {
-
-                throw new WebsiteHandlerException(
-                        "Could not retrieve the Profile.");
 
             }
 
@@ -251,13 +251,17 @@ public class ProfileClient extends DefaultClient {
             // Let's get the profile everybody
             String httpContent = new RequestHandler().get(
 
-                    URL_PROFILE.replace("{UID}", profileId + ""),
+                    RequestHandler.generateUrl(URL_PROFILE, profileId),
                     RequestHandler.HEADER_NORMAL
 
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
+
+                throw new WebsiteHandlerException("Could not retrieve the PersonaID.");
+
+            } else {
 
                 // Grab the array
                 JSONArray soldierBox = new JSONObject(httpContent)
@@ -288,11 +292,6 @@ public class ProfileClient extends DefaultClient {
 
                 return new ProfileData.Builder(profileId, personaArray[0].getName()).persona(
                         personaArray).build();
-
-            } else {
-
-                throw new WebsiteHandlerException(
-                        "Could not retrieve the PersonaID.");
 
             }
 
@@ -330,7 +329,7 @@ public class ProfileClient extends DefaultClient {
         try {
 
             // Get the data
-            String content = requestHandler.get(
+            String content = mRequestHandler.get(
 
                     RequestHandler.generateUrl(
                             URL_OVERVIEW,
@@ -347,7 +346,7 @@ public class ProfileClient extends DefaultClient {
             // Is overviewStats NULL? If so, no data.
             if (dataObject.isNull("overviewStats")) {
 
-                return new PersonaStats(profileData.getUsername(), profileData.getId(),
+                return new PersonaStats(mProfileData.getUsername(), mProfileData.getId(),
                         personaName, personaId, platformId);
 
             }
@@ -363,10 +362,10 @@ public class ProfileClient extends DefaultClient {
             // Yay
             return new PersonaStats(
 
-                    profileData.getUsername(), profileData.getPersona(0).getName(),
+                    mProfileData.getUsername(), mProfileData.getPersona(0).getName(),
                     currRankInfo.getString("name"),
-                    statsOverview.getLong("rank"), profileData.getPersona(0).getId(),
-                    profileData.getId(), profileData.getPersona(0).getPlatformId(),
+                    statsOverview.getLong("rank"), mProfileData.getPersona(0).getId(),
+                    mProfileData.getId(), mProfileData.getPersona(0).getPlatformId(),
                     statsOverview.getLong("timePlayed"),
                     currRankInfo.getLong("pointsNeeded"),
                     nextRankInfo.getLong("pointsNeeded"),
@@ -414,16 +413,16 @@ public class ProfileClient extends DefaultClient {
             HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
 
             // Do we have a personaId?
-            if (profileData.getNumPersonas() == 0) {
+            if (mProfileData.getNumPersonas() == 0) {
 
-                profileData = resolveFullProfileDataFromProfileId(profileData.getId());
+                mProfileData = resolveFullProfileDataFromProfileId(mProfileData.getId());
 
             }
 
             // Let's see...
-            for (int i = 0, max = profileData.getNumPersonas(); i < max; i++) {
+            for (int i = 0, max = mProfileData.getNumPersonas(); i < max; i++) {
 
-                PersonaData current = profileData.getPersona(i);
+                PersonaData current = mProfileData.getPersona(i);
                 stats.put(current.getId(),
                         getStats(current.getName(), current.getId(), current.getPlatformId()));
 
@@ -461,7 +460,7 @@ public class ProfileClient extends DefaultClient {
             List<UnlockData> skillArray;
             List<UnlockData> unlockArray;
 
-            for (int count = 0, maxCount = profileData.getNumPersonas(); count < maxCount; count++) {
+            for (int count = 0, maxCount = mProfileData.getNumPersonas(); count < maxCount; count++) {
 
                 weaponArray = new ArrayList<UnlockData>();
                 attachmentArray = new ArrayList<UnlockData>();
@@ -471,12 +470,12 @@ public class ProfileClient extends DefaultClient {
                 unlockArray = new ArrayList<UnlockData>();
 
                 // Get the data
-                String content = requestHandler.get(
+                String content = mRequestHandler.get(
 
                         RequestHandler.generateUrl(
                                 URL_UNLOCKS,
-                                profileData.getPersona(count).getId(),
-                                profileData.getPersona(count).getPlatformId()
+                                mProfileData.getPersona(count).getId(),
+                                mProfileData.getPersona(count).getPlatformId()
                                 ),
                         RequestHandler.HEADER_NORMAL
 
@@ -489,7 +488,7 @@ public class ProfileClient extends DefaultClient {
 
                 if (dataObject.isNull("unlocks") || unlockResults.length() == 0) {
 
-                    unlockDataMap.put(profileData.getPersona(count).getId(),
+                    unlockDataMap.put(mProfileData.getPersona(count).getId(),
                             new UnlockDataWrapper(null, null, null, null, null,
                                     null));
                     continue;
@@ -548,7 +547,7 @@ public class ProfileClient extends DefaultClient {
                 Collections.sort(skillArray, new UnlockComparator());
                 Collections.sort(unlockArray, new UnlockComparator());
 
-                unlockDataMap.put(profileData.getPersona(count).getId(),
+                unlockDataMap.put(mProfileData.getPersona(count).getId(),
                         new UnlockDataWrapper(weaponArray, attachmentArray,
                                 kitUnlockArray, vehicleUpgradeArray,
                                 skillArray, unlockArray));
@@ -632,18 +631,22 @@ public class ProfileClient extends DefaultClient {
             List<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
             Log.d(Constants.DEBUG_TAG, "Information from => " + RequestHandler.generateUrl(
                     URL_INFO,
-                    profileData.getUsername()
+                    mProfileData.getUsername()
                     ));
-            String httpContent = requestHandler.get(
+            String httpContent = mRequestHandler.get(
                     RequestHandler.generateUrl(
                             URL_INFO,
-                            profileData.getUsername()
+                            mProfileData.getUsername()
                             ),
                     RequestHandler.HEADER_AJAX
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
+
+                throw new WebsiteHandlerException("Could not get the profile.");
+
+            } else {
 
                 // JSON Objects
                 JSONObject contextObject = new JSONObject(httpContent)
@@ -758,12 +761,12 @@ public class ProfileClient extends DefaultClient {
 
                 ProfileInformation tempProfile = new ProfileInformation(
 
-                        userInfo.optInt("age", 0), profileData.getId(),
+                        userInfo.optInt("age", 0), mProfileData.getId(),
                         userInfo.optLong("birthdate", 0), userInfo.optLong(
                                 "lastLogin", 0), statusMessage.optLong(
                                 "statusMessageChanged", 0), personaArray, userInfo.optString(
                                 "name", "N/A"), username,
-                        userInfo.isNull("presentation") ? null : userInfo
+                        userInfo.isNull("presentation") ? "" : userInfo
                                 .getString("presentation"), userInfo.optString(
                                 "location", "us"), statusMessage.optString(
                                 "statusMessage", ""), playingOn, userInfo.optBoolean(
@@ -783,10 +786,6 @@ public class ProfileClient extends DefaultClient {
                 // RETURN
                 return tempProfile;
 
-            } else {
-
-                throw new WebsiteHandlerException("Could not get the profile.");
-
             }
 
         } catch (Exception ex) {
@@ -799,7 +798,7 @@ public class ProfileClient extends DefaultClient {
     }
 
     //
-    public static ArrayList<GeneralSearchResult> search(Context context, String keyword,
+    public static List<GeneralSearchResult> search(Context context, String keyword,
             String checksum)
             throws WebsiteHandlerException {
 
@@ -875,19 +874,19 @@ public class ProfileClient extends DefaultClient {
             // Init
             Map<Long, List<WeaponDataWrapper>> weaponDataMap = new HashMap<Long, List<WeaponDataWrapper>>();
 
-            for (int i = 0, max = profileData.getNumPersonas(); i < max; i++) {
+            for (int i = 0, max = mProfileData.getNumPersonas(); i < max; i++) {
 
                 // Init the array
                 List<WeaponDataWrapper> weaponDataArray = new ArrayList<WeaponDataWrapper>();
 
                 // Get the data
-                String httpContent = requestHandler.get(
+                String httpContent = mRequestHandler.get(
 
                         RequestHandler.generateUrl(
 
                                 URL_WEAPONS,
-                                profileData.getPersona(i).getId(),
-                                profileData.getPersona(i).getPlatformId()
+                                mProfileData.getPersona(i).getId(),
+                                mProfileData.getPersona(i).getPlatformId()
                                 ),
                         RequestHandler.HEADER_NORMAL
 
@@ -993,7 +992,7 @@ public class ProfileClient extends DefaultClient {
                 }
 
                 Collections.sort(weaponDataArray, new WeaponDataWrapperComparator());
-                weaponDataMap.put(profileData.getPersona(i).getId(), weaponDataArray);
+                weaponDataMap.put(mProfileData.getPersona(i).getId(), weaponDataArray);
 
             }
 
@@ -1024,18 +1023,18 @@ public class ProfileClient extends DefaultClient {
             HashMap<Long, WeaponDataWrapper> weaponDataArray = new HashMap<Long, WeaponDataWrapper>();
 
             // Iterate per persona
-            for (int i = 0, max = profileData.getNumPersonas(); i < max; i++) {
+            for (int i = 0, max = mProfileData.getNumPersonas(); i < max; i++) {
 
                 // Get the data
-                String httpContent = requestHandler.get(
+                String httpContent = mRequestHandler.get(
 
                         RequestHandler.generateUrl(
 
                                 URL_WEAPONS_INFO,
-                                profileData.getPersona(i).getName(),
-                                profileData.getPersona(i).getId(),
+                                mProfileData.getPersona(i).getName(),
+                                mProfileData.getPersona(i).getId(),
                                 weaponStats.getSlug(),
-                                profileData.getPersona(i).getPlatformId()
+                                mProfileData.getPersona(i).getPlatformId()
 
                                 ),
                         RequestHandler.HEADER_NORMAL
@@ -1087,7 +1086,7 @@ public class ProfileClient extends DefaultClient {
                     // Add the data array to the WeaponDataWrapper
                     weaponDataArray.put(
 
-                            profileData.getPersona(i).getId(),
+                            mProfileData.getPersona(i).getId(),
                             new WeaponDataWrapper(
 
                                     0,
@@ -1128,21 +1127,21 @@ public class ProfileClient extends DefaultClient {
             HashMap<Long, List<AssignmentData>> assignmentMap = new HashMap<Long, List<AssignmentData>>();
             List<AssignmentData> items;
 
-            for (int count = 0, maxCount = profileData.getNumPersonas(); count < maxCount; count++) {
+            for (int count = 0, maxCount = mProfileData.getNumPersonas(); count < maxCount; count++) {
 
                 // Init
                 items = new ArrayList<AssignmentData>();
 
                 // Get the JSON!
-                String httpContent = requestHandler.get(
+                String httpContent = mRequestHandler.get(
 
                         RequestHandler.generateUrl(
 
                                 URL_ASSIGNMENTS,
-                                profileData.getPersona(count).getName(),
-                                profileData.getPersona(count).getId(),
-                                profileData.getId(),
-                                profileData.getPersona(count).getPlatformId()
+                                mProfileData.getPersona(count).getName(),
+                                mProfileData.getPersona(count).getId(),
+                                mProfileData.getId(),
+                                mProfileData.getPersona(count).getPlatformId()
 
                                 ),
                         RequestHandler.HEADER_AJAX
@@ -1153,7 +1152,7 @@ public class ProfileClient extends DefaultClient {
                 JSONObject topLevel = new JSONObject(httpContent).getJSONObject("data");
                 if (topLevel.isNull("missionTrees")) {
 
-                    assignmentMap.put(profileData.getPersona(count).getId(), items);
+                    assignmentMap.put(mProfileData.getPersona(count).getId(), items);
                     continue;
 
                 }
@@ -1302,7 +1301,7 @@ public class ProfileClient extends DefaultClient {
                         }
 
                         // Add the items
-                        assignmentMap.put(profileData.getPersona(count).getId(), items);
+                        assignmentMap.put(mProfileData.getPersona(count).getId(), items);
 
                     }
 
@@ -1331,15 +1330,19 @@ public class ProfileClient extends DefaultClient {
         try {
 
             // Get the content
-            String httpContent = requestHandler.get(
+            String httpContent = mRequestHandler.get(
 
-                    RequestHandler.generateUrl(ProfileClient.URL_INFO, profileData.getUsername()),
+                    RequestHandler.generateUrl(ProfileClient.URL_INFO, mProfileData.getUsername()),
                     RequestHandler.HEADER_AJAX
 
                     );
 
             // Is it ok?
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
+
+                return null;
+
+            } else {
 
                 // JSON
                 JSONArray platoonArray = new JSONObject(httpContent)
@@ -1392,10 +1395,6 @@ public class ProfileClient extends DefaultClient {
                 }
 
                 return (ArrayList<PlatoonData>) platoons;
-
-            } else {
-
-                return null;
 
             }
 

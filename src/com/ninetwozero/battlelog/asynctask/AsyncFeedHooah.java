@@ -84,7 +84,6 @@ public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
             feedFragment.reload();
 
         }
-        return;
 
     }
 

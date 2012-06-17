@@ -47,7 +47,7 @@ public class PlatoonInviteActivity extends ListActivity {
     private ListView listView;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
@@ -70,7 +70,7 @@ public class PlatoonInviteActivity extends ListActivity {
         // Is the profileData null?!
         if (platoonData == null || platoonData.getId() == 0) {
             finish();
-            return;
+
         }
 
         // Fix it

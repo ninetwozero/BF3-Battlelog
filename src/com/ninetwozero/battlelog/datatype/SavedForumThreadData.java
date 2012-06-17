@@ -23,154 +23,159 @@ import com.ninetwozero.battlelog.misc.Constants;
 public class SavedForumThreadData implements Parcelable {
 
     // Attributes
-    private long id, forumId, dateLastPost, dateLastChecked, dateLastRead, profileId;
-    private String title;
-    private ProfileData lastPoster;
-    private int numPageLastRead, numPosts;
-    private boolean unread;
+    private long mId;
+    private long mForumId;
+    private long mDateLastPost;
+    private long mDateLastChecked;
+    private long mDateLastRead;
+    private long mProfileId;
+    private String mTitle;
+    private ProfileData mLastPoster;
+    private int mNumPageLastRead;
+    private int mNumPosts;
+    private boolean mUnread;
 
     // Construct
     public SavedForumThreadData(long i, String t, long fId, long dlp, ProfileData p, long dlc,
             long dlr, int nplr, int np, boolean u, long pId) {
 
-        Log.d(Constants.DEBUG_TAG, "n => " + nplr);
-        id = i;
-        title = t;
-        forumId = fId;
-        dateLastPost = dlp;
-        lastPoster = p;
-        dateLastChecked = dlc;
-        dateLastRead = dlr;
-        numPageLastRead = nplr;
-        numPosts = np;
-        unread = u;
-        profileId = pId;
+        mId = i;
+        mTitle = t;
+        mForumId = fId;
+        mDateLastPost = dlp;
+        mLastPoster = p;
+        mDateLastChecked = dlc;
+        mDateLastRead = dlr;
+        mNumPageLastRead = nplr;
+        mNumPosts = np;
+        mUnread = u;
+        mProfileId = pId;
 
     }
 
     public SavedForumThreadData(Parcel in) {
 
-        id = in.readLong();
-        title = in.readString();
-        forumId = in.readLong();
-        dateLastPost = in.readLong();
-        lastPoster = in.readParcelable(ProfileData.class.getClassLoader());
-        dateLastChecked = in.readLong();
-        dateLastRead = in.readLong();
-        numPageLastRead = in.readInt();
-        numPosts = in.readInt();
-        unread = in.readInt() == 1;
-        profileId = in.readLong();
+        mId = in.readLong();
+        mTitle = in.readString();
+        mForumId = in.readLong();
+        mDateLastPost = in.readLong();
+        mLastPoster = in.readParcelable(ProfileData.class.getClassLoader());
+        mDateLastChecked = in.readLong();
+        mDateLastRead = in.readLong();
+        mNumPageLastRead = in.readInt();
+        mNumPosts = in.readInt();
+        mUnread = in.readInt() == 1;
+        mProfileId = in.readLong();
 
     }
 
     // Getters
     public long getId() {
-        return id;
+        return mId;
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public long getForumId() {
 
-        return forumId;
+        return mForumId;
 
     }
 
     public long getProfileId() {
 
-        return profileId;
+        return mProfileId;
 
     }
 
     public long getDateLastPost() {
 
-        return dateLastPost;
+        return mDateLastPost;
 
     }
 
     public ProfileData getLastPoster() {
-        return lastPoster;
+        return mLastPoster;
     }
 
     public long getDateLastChecked() {
 
-        return dateLastChecked;
+        return mDateLastChecked;
 
     }
 
     public long getDateLastRead() {
 
-        return dateLastRead;
+        return mDateLastRead;
 
     }
 
     public int getNumPageLastRead() {
 
-        return numPageLastRead;
+        return mNumPageLastRead;
     }
 
     public int getNumPosts() {
 
-        return numPosts;
+        return mNumPosts;
     }
 
     public boolean hasUnread() {
 
-        return unread;
+        return mUnread;
     }
 
     // Setters
     public void setDateLastPost(long d) {
 
-        dateLastPost = d;
+        mDateLastPost = d;
 
     }
 
     public void setLastPoster(ProfileData l) {
-        lastPoster = l;
+        mLastPoster = l;
     }
 
     public void setNumPosts(int n) {
 
-        numPosts = n;
+        mNumPosts = n;
     }
 
     public void setDateLastRead(long d) {
 
-        dateLastRead = d;
+        mDateLastRead = d;
     }
 
     public void setDateLastChecked(long d) {
 
-        dateLastChecked = d;
+        mDateLastChecked = d;
 
     }
 
     public void setUnread(boolean b) {
 
-        unread = b;
+        mUnread = b;
 
     }
 
-    public String[] toStringArray() {
+    public Object[] toArray() {
 
-        return new String[] {
+        return new Object[] {
 
-                id + "",
-                forumId + "",
-                title,
-                dateLastPost + "",
-                lastPoster.getUsername(),
-                lastPoster.getId() + "",
-                numPageLastRead + "",
-                numPosts + "",
-                unread ? "1" : "0",
-                dateLastRead + "",
-                dateLastChecked + "",
-                profileId + "",
+                mId ,
+                mForumId ,
+                mTitle,
+                mDateLastPost ,
+                mLastPoster.getUsername(),
+                mLastPoster.getId() ,
+                mNumPageLastRead ,
+                mNumPosts ,
+                mUnread ? "1" : "0",
+                mDateLastRead ,
+                mDateLastChecked ,
+                mProfileId ,
 
         };
 
@@ -184,17 +189,17 @@ public class SavedForumThreadData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
-        dest.writeLong(id);
-        dest.writeString(title);
-        dest.writeLong(forumId);
-        dest.writeLong(dateLastPost);
-        dest.writeParcelable(lastPoster, flags);
-        dest.writeLong(dateLastChecked);
-        dest.writeLong(dateLastRead);
-        dest.writeInt(numPageLastRead);
-        dest.writeInt(numPosts);
-        dest.writeInt(unread ? 1 : 0);
-        dest.writeLong(profileId);
+        dest.writeLong(mId);
+        dest.writeString(mTitle);
+        dest.writeLong(mForumId);
+        dest.writeLong(mDateLastPost);
+        dest.writeParcelable(mLastPoster, flags);
+        dest.writeLong(mDateLastChecked);
+        dest.writeLong(mDateLastRead);
+        dest.writeInt(mNumPageLastRead);
+        dest.writeInt(mNumPosts);
+        dest.writeInt(mUnread ? 1 : 0);
+        dest.writeLong(mProfileId);
 
     }
 

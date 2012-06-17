@@ -50,7 +50,7 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class PlatoonClient extends DefaultClient {
 
     // Attributes
-    private PlatoonData platoonData;
+    private PlatoonData mPlatoonData;
 
     // URLS
     public static final String URL_INFO = Constants.URL_MAIN + "platoon/{PLATOON_ID}/";
@@ -126,8 +126,8 @@ public class PlatoonClient extends DefaultClient {
 
     public PlatoonClient(PlatoonData p) {
 
-        requestHandler = new RequestHandler();
-        platoonData = p;
+        mRequestHandler = new RequestHandler();
+        mPlatoonData = p;
 
     }
 
@@ -137,9 +137,9 @@ public class PlatoonClient extends DefaultClient {
         try {
 
             // Let's login everybody!
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
-                    RequestHandler.generateUrl(URL_RESPOND, platoonData.getId()),
+                    RequestHandler.generateUrl(URL_RESPOND, mPlatoonData.getId()),
                     RequestHandler.generatePostData(
 
                             FIELD_NAMES_RESPOND,
@@ -170,12 +170,12 @@ public class PlatoonClient extends DefaultClient {
         try {
 
             // Let's set it up!
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     URL_APPLY,
                     RequestHandler.generatePostData(
                             FIELD_NAMES_APPLY,
-                            platoonData.getId(),
+                            mPlatoonData.getId(),
                             checksum
 
                             ),
@@ -190,15 +190,15 @@ public class PlatoonClient extends DefaultClient {
 
             } else {
 
-                if (httpContent.equals("success")) {
+                if ("success".equals(httpContent)) {
 
                     return true;
 
-                } else if (httpContent.equals("wrongplatform")) {
+                } else if ("wrongplatform".equals(httpContent)) {
 
                     throw new WebsiteHandlerException("Wrong platform.");
 
-                } else if (httpContent.equals("maxmembersreached")) {
+                } else if ("maxmembersreached".equals(httpContent)) {
 
                     throw new WebsiteHandlerException("The platoon has reached its level cap.");
 
@@ -225,13 +225,13 @@ public class PlatoonClient extends DefaultClient {
         try {
 
             // Let's set it up!
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     URL_LEAVE,
                     RequestHandler.generatePostData(
 
                             FIELD_NAMES_LEAVE,
-                            platoonData.getId(),
+                            mPlatoonData.getId(),
                             userId,
                             checksum
 
@@ -241,7 +241,7 @@ public class PlatoonClient extends DefaultClient {
                     );
 
             // What up?
-            return (httpContent != null & !httpContent.equals(""));
+            return !"".equals(httpContent);
 
         } catch (Exception ex) {
 
@@ -471,13 +471,13 @@ public class PlatoonClient extends DefaultClient {
 
             // Let's login everybody
             int numUsers = userId.length;
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     URL_INVITE,
                     RequestHandler.generatePostData(
 
                             FIELD_NAMES_INVITE,
-                            platoonData.getId(),
+                            mPlatoonData.getId(),
                             checksum,
                             userId
 
@@ -538,7 +538,7 @@ public class PlatoonClient extends DefaultClient {
 
                         URL_PROMOTE,
                         userId,
-                        platoonData.getId()
+                        mPlatoonData.getId()
 
                         );
 
@@ -548,7 +548,7 @@ public class PlatoonClient extends DefaultClient {
 
                         URL_DEMOTE,
                         userId,
-                        platoonData.getId()
+                        mPlatoonData.getId()
 
                         );
 
@@ -558,36 +558,28 @@ public class PlatoonClient extends DefaultClient {
 
                         URL_KICK,
                         userId,
-                        platoonData.getId()
+                        mPlatoonData.getId()
 
                         );
 
             }
 
             // Let's login everybody!
-            String httpContent = requestHandler.get(url, RequestHandler.HEADER_JSON);
+            String httpContent = mRequestHandler.get(url, RequestHandler.HEADER_JSON);
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
+
+                return false;
+
+            } else {
 
                 // Check the JSON
                 String status = new JSONObject(httpContent).optString(
                         "message", "");
-                if (status.equals("USER_PROMOTED")
-                        || status.equals("USER_DEMOTED")
-                        || status.equals("MEMBER_KICKED")) {
-
-                    return true;
-
-                } else {
-
-                    return false;
-
-                }
-
-            } else {
-
-                return false;
+                return ("USER_PROMOTED".equals(status)
+                        || "USER_DEMOTED".equals(status)
+                        || "MEMBER_KICKED".equals(status));
 
             }
 
@@ -605,13 +597,13 @@ public class PlatoonClient extends DefaultClient {
         try {
 
             // Get the content
-            String httpContent = requestHandler.get(
+            String httpContent = mRequestHandler.get(
 
                     RequestHandler.generateUrl(
 
                             URL_STATS,
-                            platoonData.getId(),
-                            platoonData.getPlatformId()
+                            mPlatoonData.getId(),
+                            mPlatoonData.getPlatformId()
 
                             ),
                     RequestHandler.HEADER_AJAX
@@ -629,12 +621,12 @@ public class PlatoonClient extends DefaultClient {
                 if (baseObject.isNull("platoonPersonas")) {
 
                     // Do we have a platformId?
-                    if (platoonData.getPlatformId() == 0) {
+                    if (mPlatoonData.getPlatformId() == 0) {
 
                         // Get the content
-                        String tempHttpContent = requestHandler.get(
+                        String tempHttpContent = mRequestHandler.get(
 
-                                RequestHandler.generateUrl(URL_INFO, platoonData.getId()),
+                                RequestHandler.generateUrl(URL_INFO, mPlatoonData.getId()),
                                 RequestHandler.HEADER_AJAX
 
                                 );
@@ -645,15 +637,15 @@ public class PlatoonClient extends DefaultClient {
                                 .getJSONObject("platoon");
 
                         // Return and reloop
-                        platoonData = new PlatoonData(
+                        mPlatoonData = new PlatoonData(
 
-                                platoonData.getId(), tempPlatoonData
+                                mPlatoonData.getId(), tempPlatoonData
                                         .getInt("fanCounter"), tempPlatoonData
                                         .getInt("memberCounter"),
                                 tempPlatoonData.getInt("platform"),
                                 tempPlatoonData.getString("name"),
                                 tempPlatoonData.getString("tag"),
-                                platoonData.getId() + ".jpeg",
+                                mPlatoonData.getId() + ".jpeg",
                                 tempPlatoonData.getBoolean("hidden")
 
                                 );
@@ -791,7 +783,7 @@ public class PlatoonClient extends DefaultClient {
                                                             .optString(
                                                                     "bestPersonaId", "")), currUser
                                                             .optString(
-                                                                    "username", ""), platoonData
+                                                                    "username", ""), mPlatoonData
                                                             .getPlatformId(), null)
                                             ).gravatarHash(tempGravatarHash).build()
 
@@ -855,7 +847,7 @@ public class PlatoonClient extends DefaultClient {
                                                             .optString(
                                                                     "bestPersonaId", "")), currUser
                                                             .optString(
-                                                                    "username", ""), platoonData
+                                                                    "username", ""), mPlatoonData
                                                             .getPlatformId(), null)
                                             ).gravatarHash(tempGravatarHash).build()
 
@@ -919,7 +911,7 @@ public class PlatoonClient extends DefaultClient {
                                                             .optString(
                                                                     "bestPersonaId", "")), currUser
                                                             .optString(
-                                                                    "username", ""), platoonData
+                                                                    "username", ""), mPlatoonData
                                                             .getPlatformId(), null)
                                             ).gravatarHash(tempGravatarHash).build()
 
@@ -1030,7 +1022,7 @@ public class PlatoonClient extends DefaultClient {
                 // Return it now!!
                 return new PlatoonStats(
 
-                        platoonData.getName(), platoonData.getId(), arrayGeneral,
+                        mPlatoonData.getName(), mPlatoonData.getId(), arrayGeneral,
                         arrayTop, arrayScore, arraySPM, arrayTime
 
                 );
@@ -1064,9 +1056,9 @@ public class PlatoonClient extends DefaultClient {
             String httpContent;
 
             // Do the request
-            httpContent = requestHandler.get(
+            httpContent = mRequestHandler.get(
 
-                    RequestHandler.generateUrl(URL_FANS, platoonData.getId()),
+                    RequestHandler.generateUrl(URL_FANS, mPlatoonData.getId()),
                     RequestHandler.HEADER_AJAX
 
                     );
@@ -1100,7 +1092,7 @@ public class PlatoonClient extends DefaultClient {
             }
 
             // Did we get more than 0?
-            if (fans.size() > 0) {
+            if (!fans.isEmpty()) {
 
                 // Add a header just 'cause we can
                 fans.add(new ProfileData("Loyal fans"));
@@ -1142,9 +1134,9 @@ public class PlatoonClient extends DefaultClient {
             List<ProfileData> requestMembers = new ArrayList<ProfileData>();
 
             // Get the content
-            String httpContent = requestHandler.get(
+            String httpContent = mRequestHandler.get(
 
-                    RequestHandler.generateUrl(URL_INFO, platoonData.getId()),
+                    RequestHandler.generateUrl(URL_INFO, mPlatoonData.getId()),
                     RequestHandler.HEADER_AJAX
 
                     );
@@ -1277,7 +1269,7 @@ public class PlatoonClient extends DefaultClient {
                 Collections.sort(founderMembers, new ProfileComparator());
 
                 // ...and then merge them with their *labels*
-                if (founderMembers.size() > 0) {
+                if (!founderMembers.isEmpty()) {
 
                     // Plural?
                     if (founderMembers.size() > 1) {
@@ -1297,7 +1289,7 @@ public class PlatoonClient extends DefaultClient {
 
                 }
 
-                if (adminMembers.size() > 0) {
+                if (!adminMembers.isEmpty()) {
 
                     // Plural?
                     if (adminMembers.size() > 1) {
@@ -1316,7 +1308,7 @@ public class PlatoonClient extends DefaultClient {
 
                 }
 
-                if (regularMembers.size() > 0) {
+                if (!regularMembers.isEmpty()) {
 
                     // Plural?
                     if (regularMembers.size() > 1) {
@@ -1339,7 +1331,7 @@ public class PlatoonClient extends DefaultClient {
                 // Is the user *admin* or higher?
                 if (isAdmin) {
 
-                    if (invitedMembers.size() > 0) {
+                    if (!invitedMembers.isEmpty()) {
 
                         // Just add them
                         members.add(new ProfileData(c
@@ -1348,7 +1340,7 @@ public class PlatoonClient extends DefaultClient {
 
                     }
 
-                    if (requestMembers.size() > 0) {
+                    if (!requestMembers.isEmpty()) {
 
                         // Just add them
                         members.add(new ProfileData(c

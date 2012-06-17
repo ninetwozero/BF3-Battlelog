@@ -77,7 +77,6 @@ public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
 
             ((PlatoonActivity) context).reload();
         }
-        return;
 
     }
 

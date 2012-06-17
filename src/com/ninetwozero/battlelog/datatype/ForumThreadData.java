@@ -301,23 +301,23 @@ public class ForumThreadData implements Parcelable {
         return owner + ":" + title;
     }
 
-    public String[] toStringArray() {
+    public Object[] toArray() {
 
         // Let's det the date
         String time = String.valueOf(Calendar.getInstance().getTimeInMillis() / 1000);
 
         // Return a new String[]
-        return new String[] {
+        return new Object[] {
 
-                id + "",
-                forumId + "",
+                id,
+                forumId,
                 title,
-                lastPostDate + "",
+                lastPostDate,
                 lastPoster.getUsername(),
-                lastPoster.getId() + "",
-                numTotalPages + "",
-                numPosts + "",
-                "0",
+                lastPoster.getId(),
+                numTotalPages,
+                numPosts,
+                0,
                 time,
                 time
 

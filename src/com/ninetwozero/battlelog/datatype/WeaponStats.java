@@ -20,94 +20,102 @@ import android.os.Parcelable;
 public class WeaponStats implements Parcelable {
 
     // Base-section
-    private String name, guid, slug;
-    private int kills, headshots, kitId;
-    private long shotsFired, shotsHit, timeEquipped;
-    private double accuracy, serviceStars, serviceStarProgress;
+    private String mName;
+    private String mGuid;
+    private String mSlug;
+    private int mKills;
+    private int mHeadshots;
+    private int mKitId;
+    private long mShotsFired;
+    private long mShotsHit;
+    private long mTimeEquipped;
+    private double mAccuracy;
+    private double mServiceStars;
+    private double mServiceStarProgress;
 
     // Construct
     public WeaponStats(String n, String g, String s, int k, int h, int kId, long sF, long sH,
             long tE, double a, double sS, double sSP) {
 
-        name = n;
-        guid = g;
-        slug = s;
-        kills = k;
-        headshots = h;
-        kitId = kId;
-        shotsFired = sF;
-        shotsHit = sH;
-        timeEquipped = tE;
-        accuracy = a;
-        serviceStars = sS;
-        serviceStarProgress = sSP;
+        mName = n;
+        mGuid = g;
+        mSlug = s;
+        mKills = k;
+        mHeadshots = h;
+        mKitId = kId;
+        mShotsFired = sF;
+        mShotsHit = sH;
+        mTimeEquipped = tE;
+        mAccuracy = a;
+        mServiceStars = sS;
+        mServiceStarProgress = sSP;
 
     }
 
     public WeaponStats(Parcel in) {
 
-        name = in.readString();
-        guid = in.readString();
-        slug = in.readString();
-        kills = in.readInt();
-        headshots = in.readInt();
-        kitId = in.readInt();
-        shotsFired = in.readLong();
-        shotsHit = in.readLong();
-        timeEquipped = in.readLong();
-        accuracy = in.readDouble();
-        serviceStars = in.readDouble();
-        serviceStarProgress = in.readDouble();
+        mName = in.readString();
+        mGuid = in.readString();
+        mSlug = in.readString();
+        mKills = in.readInt();
+        mHeadshots = in.readInt();
+        mKitId = in.readInt();
+        mShotsFired = in.readLong();
+        mShotsHit = in.readLong();
+        mTimeEquipped = in.readLong();
+        mAccuracy = in.readDouble();
+        mServiceStars = in.readDouble();
+        mServiceStarProgress = in.readDouble();
 
     }
 
     // Getters
     public String getName() {
-        return name;
+        return mName;
     }
 
     public String getGuid() {
-        return guid;
+        return mGuid;
     }
 
     public String getSlug() {
-        return slug;
+        return mSlug;
     }
 
     public int getKills() {
-        return kills;
+        return mKills;
     }
 
     public int getHeadshots() {
-        return headshots;
+        return mHeadshots;
     }
 
     public int getKitId() {
-        return kitId;
+        return mKitId;
     }
 
     public long getShotsFired() {
-        return shotsFired;
+        return mShotsFired;
     }
 
     public long getShotsHit() {
-        return shotsHit;
+        return mShotsHit;
     }
 
     public long getTimeEquipped() {
-        return timeEquipped;
+        return mTimeEquipped;
     }
 
     public double getAccuracy() {
-        return accuracy;
+        return mAccuracy;
     }
 
     public double getServiceStars() {
-        return serviceStars;
+        return mServiceStars;
     }
 
     public double getServiceStarProgress() {
-        return serviceStarProgress;
+        return mServiceStarProgress;
     }
 
     @Override
@@ -118,18 +126,18 @@ public class WeaponStats implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int arg1) {
 
-        out.writeString(name);
-        out.writeString(guid);
-        out.writeString(slug);
-        out.writeInt(kills);
-        out.writeInt(headshots);
-        out.writeInt(kitId);
-        out.writeLong(shotsFired);
-        out.writeLong(shotsHit);
-        out.writeLong(timeEquipped);
-        out.writeDouble(accuracy);
-        out.writeDouble(serviceStars);
-        out.writeDouble(serviceStarProgress);
+        out.writeString(mName);
+        out.writeString(mGuid);
+        out.writeString(mSlug);
+        out.writeInt(mKills);
+        out.writeInt(mHeadshots);
+        out.writeInt(mKitId);
+        out.writeLong(mShotsFired);
+        out.writeLong(mShotsHit);
+        out.writeLong(mTimeEquipped);
+        out.writeDouble(mAccuracy);
+        out.writeDouble(mServiceStars);
+        out.writeDouble(mServiceStarProgress);
 
     }
 

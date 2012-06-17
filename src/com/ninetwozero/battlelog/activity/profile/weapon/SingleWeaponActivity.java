@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.activity.profile.weapon;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
@@ -49,7 +49,7 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
     private UnlockFragment fragmentUnlocks;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
@@ -83,14 +83,14 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
     public void init() {
 
         // Set the selected persona
-        if (SessionKeeper.getProfileData().getId() != profileData.getId()) {
-
-            selectedPersona = profileData.getPersona(0).getId();
-
-        } else {
+        if (SessionKeeper.getProfileData().getId() == profileData.getId()) {
 
             selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID,
                     profileData.getPersona(0).getId());
+
+        } else {
+
+            selectedPersona = profileData.getPersona(0).getId();
 
         }
 
@@ -109,7 +109,7 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
         if (listFragments == null) {
 
             // Add them to the list
-            listFragments = new Vector<Fragment>();
+            listFragments = new ArrayList<Fragment>();
             listFragments.add(fragmentWeaponInfo = (WeaponInformationFragment) Fragment
                     .instantiate(this, WeaponInformationFragment.class.getName()));
             listFragments.add(fragmentWeaponStats = (WeaponStatisticsFragment) Fragment

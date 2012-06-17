@@ -14,8 +14,8 @@
 
 package com.ninetwozero.battlelog.activity;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
@@ -70,7 +70,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
     private final int VIEWPAGER_POSITION_FEED = 4;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
@@ -112,7 +112,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
         if (listFragments == null) {
 
             // Add them to the list
-            listFragments = new Vector<Fragment>();
+            listFragments = new ArrayList<Fragment>();
             listFragments.add(Fragment.instantiate(this,
                     NewsListFragment.class.getName()));
             listFragments.add(Fragment.instantiate(
@@ -162,7 +162,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
         if (listFragmentsCom == null) {
 
             // Add them to the list
-            listFragmentsCom = new Vector<Fragment>();
+            listFragmentsCom = new ArrayList<Fragment>();
             listFragmentsCom.add(fragmentComFriends = (ComFriendFragment) Fragment.instantiate(
                     this,
                     ComFriendFragment.class.getName()));
@@ -215,7 +215,6 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             } else {
 
                 Toast.makeText(this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
-                return;
 
             }
 
@@ -261,7 +260,6 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
                     break;
 
             }
-            return;
 
         }
 

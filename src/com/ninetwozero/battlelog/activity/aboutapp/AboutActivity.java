@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.activity.aboutapp;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
@@ -31,7 +31,7 @@ import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 public class AboutActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
@@ -47,16 +47,8 @@ public class AboutActivity extends CustomFragmentActivity implements DefaultFrag
     }
 
     public final void init() {
-
     }
-
-    @Override
-    public void onResume() {
-
-        super.onResume();
-
-    }
-
+    
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
 
@@ -70,7 +62,7 @@ public class AboutActivity extends CustomFragmentActivity implements DefaultFrag
         if (listFragments == null) {
 
             // Add them to the list
-            listFragments = new Vector<Fragment>();
+            listFragments = new ArrayList<Fragment>();
             listFragments.add(Fragment.instantiate(this, AboutMainFragment.class.getName()));
             listFragments.add(Fragment.instantiate(this, AboutFAQFragment.class.getName()));
             listFragments.add(Fragment.instantiate(this, AboutCreditsFragment.class.getName()));
@@ -108,19 +100,16 @@ public class AboutActivity extends CustomFragmentActivity implements DefaultFrag
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
 
         // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && (viewPager.getCurrentItem() > 0) ) {
 
-            if (viewPager.getCurrentItem() > 0) {
-
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
-                return true;
-
-            }
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+            return true;
 
         }
+        
         return super.onKeyDown(keyCode, event);
 
     }

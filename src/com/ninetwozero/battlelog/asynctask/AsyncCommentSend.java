@@ -90,7 +90,6 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
             Toast.makeText(context, R.string.msg_comment_fail,
                     Toast.LENGTH_SHORT).show();
         }
-        return;
 
     }
 

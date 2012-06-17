@@ -22,70 +22,70 @@ import android.os.Parcelable;
 public class WeaponDataWrapper implements Parcelable {
 
     // Attributes
-    private int numUnlocked;
-    private WeaponInfo data;
-    private WeaponStats stats;
-    private List<UnlockData> unlocks;
+    private int mNumUnlocked;
+    private WeaponInfo mData;
+    private WeaponStats mStats;
+    private List<UnlockData> mUnlocks;
 
     public WeaponDataWrapper(int nu, WeaponInfo d, WeaponStats w, List<UnlockData> u) {
 
-        numUnlocked = nu;
-        data = d;
-        stats = w;
-        unlocks = u;
+        mNumUnlocked = nu;
+        mData = d;
+        mStats = w;
+        mUnlocks = u;
 
     }
 
     public WeaponDataWrapper(Parcel in) {
 
-        numUnlocked = in.readInt();
-        data = in.readParcelable(WeaponInfo.class.getClassLoader());
-        stats = in.readParcelable(WeaponStats.class.getClassLoader());
-        unlocks = in.createTypedArrayList(UnlockData.CREATOR);
+        mNumUnlocked = in.readInt();
+        mData = in.readParcelable(WeaponInfo.class.getClassLoader());
+        mStats = in.readParcelable(WeaponStats.class.getClassLoader());
+        mUnlocks = in.createTypedArrayList(UnlockData.CREATOR);
 
     }
 
     // Getters
     public int getNumUnlocked() {
 
-        return numUnlocked;
+        return mNumUnlocked;
     }
 
     public int getNumUnlocks() {
 
-        return unlocks.size();
+        return mUnlocks.size();
     }
 
     public WeaponInfo getData() {
 
-        return data;
+        return mData;
     }
 
     public WeaponStats getStats() {
 
-        return stats;
+        return mStats;
     }
 
     public List<UnlockData> getUnlocks() {
 
-        return unlocks;
+        return mUnlocks;
     }
 
     // Setters
     public void setData(WeaponInfo d) {
 
-        data = d;
+        mData = d;
 
     }
 
     public void setStats(WeaponStats w) {
 
-        stats = w;
+        mStats = w;
     }
 
     public void setUnlocks(List<UnlockData> u) {
 
-        unlocks = u;
+        mUnlocks = u;
     }
 
     @Override
@@ -96,10 +96,10 @@ public class WeaponDataWrapper implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int arg1) {
 
-        out.writeInt(numUnlocked);
-        out.writeParcelable(data, arg1);
-        out.writeParcelable(stats, arg1);
-        out.writeTypedList(unlocks);
+        out.writeInt(mNumUnlocked);
+        out.writeParcelable(mData, arg1);
+        out.writeParcelable(mStats, arg1);
+        out.writeTypedList(mUnlocks);
 
     }
 

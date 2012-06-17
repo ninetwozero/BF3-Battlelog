@@ -52,45 +52,46 @@ import com.ninetwozero.battlelog.misc.Constants;
 public class ForumFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private SharedPreferences sharedPreferences;
-    private ForumData forumData;
-    private ForumClient forumHandler;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private SharedPreferences mSharedPreferences;
+    private ForumData mForumData;
+    private ForumClient mForumHandler;
 
     // Elements
-    private ListView listView;
-    private ThreadListAdapter threadListAdapter;
-    private TextView textTitle;
-    private RelativeLayout wrapLoader;
-    private Button buttonMore, buttonPost;
-    private EditText textareaTitle, textareaContent;
+    private ListView mListView;
+    private ThreadListAdapter mListAdapter;
+    private TextView mTextTitle;
+    private RelativeLayout mWrapLoader;
+    private Button mButtonMore;
+    private Button mButtonPost;
+    private EditText mTextareaTitle;
+    private EditText mTextareaContent;
 
     // Misc
-    private long forumId;
-    private long latestRefresh;
-    private int currentPage;
-    private boolean loadFresh;
-    private String locale;
-    private Intent storedRequest;
+    private long mForumId;
+    private long mLatestRefresh;
+    private int mCurrentPage;
+    private boolean mLoadFresh;
+    private String mLocale;
+    private Intent mStoredRequest;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        layoutInflater = inflater;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.forum_view,
                 container, false);
 
         // Get the unlocks
-        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
-        forumHandler = new ForumClient();
+        mLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
+        mForumHandler = new ForumClient();
 
         // Init the views
         initFragment(view);
@@ -103,17 +104,17 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
     public void initFragment(View v) {
 
         // Setup the ListView
-        textTitle = (TextView) v.findViewById(R.id.text_title);
-        listView = (ListView) v.findViewById(android.R.id.list);
-        listView.setAdapter(threadListAdapter = new ThreadListAdapter(context, null, layoutInflater));
-        getActivity().registerForContextMenu(listView);
-        buttonPost = (Button) v.findViewById(R.id.button_new);
-        buttonMore = (Button) v.findViewById(R.id.button_more);
-        textareaTitle = (EditText) v.findViewById(R.id.textarea_title);
-        textareaContent = (EditText) v.findViewById(R.id.textarea_content);
+        mTextTitle = (TextView) v.findViewById(R.id.text_title);
+        mListView = (ListView) v.findViewById(android.R.id.list);
+        mListView.setAdapter(mListAdapter = new ThreadListAdapter(mContext, null, mLayoutInflater));
+        getActivity().registerForContextMenu(mListView);
+        mButtonPost = (Button) v.findViewById(R.id.button_new);
+        mButtonMore = (Button) v.findViewById(R.id.button_more);
+        mTextareaTitle = (EditText) v.findViewById(R.id.textarea_title);
+        mTextareaContent = (EditText) v.findViewById(R.id.textarea_content);
 
         // Set the click listeners
-        buttonMore.setOnClickListener(
+        mButtonMore.setOnClickListener(
 
                 new OnClickListener() {
 
@@ -121,14 +122,14 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
                     public void onClick(View sv) {
 
                         // Validate
-                        if ((currentPage - 1) == forumData.getNumPages()) {
+                        if ((mCurrentPage - 1) == mForumData.getNumPages()) {
 
                             sv.setVisibility(View.GONE);
 
                         }
 
                         // Do the "get more"-thing
-                        new AsyncLoadMore(context, forumId).execute(++currentPage);
+                        new AsyncLoadMore(mContext, mForumId).execute(++mCurrentPage);
 
                     }
                 }
@@ -136,27 +137,25 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
                 );
 
         // Let's set the onClick events
-        buttonPost.setOnClickListener(new OnClickListener() {
+        mButtonPost.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
                 // Let's get the content
-                String title = textareaTitle.getText().toString();
-                String content = textareaContent.getText().toString();
+                String title = mTextareaTitle.getText().toString();
+                String content = mTextareaContent.getText().toString();
 
                 // Let's see
-                if (title.equals("")) {
+                if ("".equals(title)) {
 
-                    Toast.makeText(context, "You need to enter a title for your thread.",
+                    Toast.makeText(mContext, "You need to enter a title for your thread.",
                             Toast.LENGTH_SHORT).show();
-                    return;
 
-                } else if (content.equals("")) {
+                } else if ("".equals(content)) {
 
-                    Toast.makeText(context, "You need to enter some content for your thread.",
+                    Toast.makeText(mContext, "You need to enter some content for your thread.",
                             Toast.LENGTH_SHORT).show();
-                    return;
 
                 }
 
@@ -164,23 +163,23 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
                 content = BBCodeUtils.toBBCode(content, null);
 
                 // Ready... set... go!
-                new AsyncCreateNewThread(context, forumId).execute(title, content,
-                        sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+                new AsyncCreateNewThread(mContext, mForumId).execute(title, content,
+                        mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
             }
 
         });
 
         // Last but not least, the loader
-        wrapLoader = (RelativeLayout) v.findViewById(R.id.wrap_loader);
+        mWrapLoader = (RelativeLayout) v.findViewById(R.id.wrap_loader);
 
-        currentPage = 1;
-        loadFresh = false;
+        mCurrentPage = 1;
+        mLoadFresh = false;
 
         // Do we have one?
-        if (storedRequest != null) {
+        if (mStoredRequest != null) {
 
-            openForum(storedRequest);
+            openForum(mStoredRequest);
 
         }
 
@@ -197,41 +196,41 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
     public void reload() {
 
         // Do we have a forumId?
-        if (forumId == 0) {
-            return;
-        }
+        if (mForumId > 0) {
 
-        // Set it up
-        long now = System.currentTimeMillis() / 1000;
+            // Set it up
+            long now = System.currentTimeMillis() / 1000;
 
-        if (forumData == null || loadFresh) {
+            if (mForumData == null || mLoadFresh) {
 
-            new AsyncGetThreads(context, listView).execute(forumId);
-            loadFresh = false;
-
-        } else {
-
-            if ((latestRefresh + 300) < now) {
-
-                new AsyncGetThreads(null, listView).execute(forumId);
+                new AsyncGetThreads(mContext, mListView).execute(mForumId);
+                mLoadFresh = false;
 
             } else {
 
-                Log.d(Constants.DEBUG_TAG, "It's still fresh enough if you ask me!");
+                if ((mLatestRefresh + 300) < now) {
+
+                    new AsyncGetThreads(null, mListView).execute(mForumId);
+
+                } else {
+
+                    Log.d(Constants.DEBUG_TAG, "It's still fresh enough if you ask me!");
+
+                }
 
             }
 
-        }
+            // Save the latest refresh
+            mLatestRefresh = now;
 
-        // Save the latest refresh
-        latestRefresh = now;
+        }
 
     }
 
     public void manualReload() {
 
         // Set it up
-        latestRefresh = 0;
+        mLatestRefresh = 0;
         reload();
 
     }
@@ -283,8 +282,8 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
                         Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 rotateAnimation.setDuration(1600);
                 rotateAnimation.setRepeatCount(RotateAnimation.INFINITE);
-                wrapLoader.setVisibility(View.VISIBLE);
-                wrapLoader.findViewById(R.id.image_loader).setAnimation(rotateAnimation);
+                mWrapLoader.setVisibility(View.VISIBLE);
+                mWrapLoader.findViewById(R.id.image_loader).setAnimation(rotateAnimation);
                 rotateAnimation.start();
 
             }
@@ -296,9 +295,9 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
             try {
 
-                forumData = new ForumClient().getThreads(locale,
+                mForumData = new ForumClient().getThreads(mLocale,
                         arg0[0]);
-                return (forumData != null);
+                return (mForumData != null);
 
             } catch (Exception ex) {
 
@@ -314,25 +313,25 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
             if (context != null) {
 
-                if (forumData.getNumPages() > 1) {
+                if (mForumData.getNumPages() > 1) {
 
-                    buttonMore.setVisibility(View.VISIBLE);
-                    buttonMore
+                    mButtonMore.setVisibility(View.VISIBLE);
+                    mButtonMore
                             .setText(R.string.info_xml_feed_button_pagination);
 
                 } else {
 
-                    buttonMore.setVisibility(View.GONE);
+                    mButtonMore.setVisibility(View.GONE);
 
                 }
 
                 if (results) {
 
-                    textTitle.setText(forumData.getTitle());
-                    ((ThreadListAdapter) list.getAdapter()).set(forumData
+                    mTextTitle.setText(mForumData.getTitle());
+                    ((ThreadListAdapter) list.getAdapter()).set(mForumData
                             .getThreads());
 
-                    listView.post(
+                    mListView.post(
 
                             new Runnable() {
 
@@ -340,10 +339,10 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
                                 public void run() {
 
                                     // Set the selection
-                                    listView.setSelection(0);
+                                    mListView.setSelection(0);
 
                                     // Hide it
-                                    wrapLoader.setVisibility(View.GONE);
+                                    mWrapLoader.setVisibility(View.GONE);
                                     rotateAnimation.reset();
 
                                 }
@@ -379,8 +378,8 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
         @Override
         protected void onPreExecute() {
 
-            buttonMore.setText(R.string.label_downloading);
-            buttonMore.setEnabled(false);
+            mButtonMore.setText(R.string.label_downloading);
+            mButtonMore.setEnabled(false);
         }
 
         @Override
@@ -389,8 +388,8 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
             try {
 
                 page = arg0[0];
-                forumHandler.setForumId(forumId);
-                threads = forumHandler.getThreads(locale, page);
+                mForumHandler.setForumId(forumId);
+                threads = mForumHandler.getThreads(mLocale, page);
                 return true;
 
             } catch (Exception ex) {
@@ -409,8 +408,8 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
                 if (results) {
 
-                    threadListAdapter.add(threads);
-                    buttonMore.setText(R.string.info_xml_feed_button_pagination);
+                    mListAdapter.add(threads);
+                    mButtonMore.setText(R.string.info_xml_feed_button_pagination);
 
                 } else {
 
@@ -420,7 +419,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
                 }
 
-                buttonMore.setEnabled(true);
+                mButtonMore.setEnabled(true);
 
             }
 
@@ -430,15 +429,15 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
     public void openForum(Intent data) {
 
-        if (textTitle == null) {
+        if (mTextTitle == null) {
 
-            storedRequest = data;
+            mStoredRequest = data;
 
         } else {
 
-            forumId = data.getLongExtra("forumId", 0);
-            textTitle.setText(data.getStringExtra("forumTitle"));
-            loadFresh = true;
+            mForumId = data.getLongExtra("forumId", 0);
+            mTextTitle.setText(data.getStringExtra("forumTitle"));
+            mLoadFresh = true;
             reload();
 
         }

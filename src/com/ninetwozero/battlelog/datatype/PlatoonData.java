@@ -24,9 +24,6 @@ public class PlatoonData implements Parcelable {
         this.countFans = 0;
         this.countMembers = 0;
         this.platformId = 0;
-        this.name = null;
-        this.tag = null;
-        this.image = null;
         this.visible = true;
 
     }

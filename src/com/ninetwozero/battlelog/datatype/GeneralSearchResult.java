@@ -14,13 +14,11 @@ public class GeneralSearchResult implements Parcelable {
     public GeneralSearchResult(PlatoonData p) {
 
         platoon = p;
-        profile = null;
 
     }
 
     public GeneralSearchResult(ProfileData p) {
 
-        platoon = null;
         profile = p;
 
     }
@@ -35,7 +33,7 @@ public class GeneralSearchResult implements Parcelable {
     // Getters
     public String getName() {
 
-        return (profile != null) ? profile.getUsername() : platoon.getName();
+        return (profile == null) ? platoon.getName() : profile.getUsername();
 
     }
 

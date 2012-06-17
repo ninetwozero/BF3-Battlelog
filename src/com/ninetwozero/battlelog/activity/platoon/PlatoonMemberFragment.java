@@ -63,12 +63,11 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
     private boolean isViewingMembers;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
@@ -127,7 +126,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
         }
 
         // Store the PlatoonInformation
-        if (platoonInformation != data) {
+        if (!platoonInformation.equals(data)) {
             platoonInformation = data;
         }
 
@@ -237,9 +236,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
         // Let's see... founder? No "admin" options on that user!!
         if (data.getMembershipLevel() == 256) {
-
             return;
-
         }
         if (data.getMembershipLevel() >= 4) { // ^Other actual member
 
@@ -268,7 +265,6 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
             menu.add(2, 4, 0, R.string.info_platoon_member_new_deny);
 
         }
-        return;
 
     }
 
@@ -298,16 +294,15 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
                 } else if (item.getItemId() == 1) {
 
-                    if (!data.isAdmin()) {
-
-                        Toast.makeText(context,
-                                R.string.info_platoon_member_promoting,
-                                Toast.LENGTH_SHORT).show();
-
-                    } else {
+                    if (data.isAdmin()) {
 
                         Toast.makeText(context,
                                 R.string.info_platoon_member_demoting,
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        Toast.makeText(context,
+                                R.string.info_platoon_member_promoting,
                                 Toast.LENGTH_SHORT).show();
 
                     }

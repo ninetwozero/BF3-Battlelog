@@ -20,12 +20,12 @@ import android.view.View;
 
 public interface DefaultFragment {
 
-    public void initFragment(View v);
+    void initFragment(View view);
 
-    public void reload();
+    void reload();
 
-    public Menu prepareOptionsMenu(Menu menu);
+    Menu prepareOptionsMenu(Menu menu);
 
-    public boolean handleSelectedOption(MenuItem item);
+    boolean handleSelectedOption(MenuItem item);
 
 }

@@ -17,7 +17,7 @@ package com.ninetwozero.battlelog.activity.profile.soldier;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -66,20 +66,17 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
     // Misc
     private ProfileData profileData;
-    private HashMap<Long, PersonaStats> personaStats;
+    private Map<Long, PersonaStats> personaStats;
     private long selectedPersona;
     private int selectedPosition;
     private boolean comparing;
-    private String[] personaNames;
-    private long[] personaIds;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Let's inflate & return the view
@@ -104,21 +101,6 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
             selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
             selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
-
-        }
-
-        // How many personas do we have?
-        int numPersonas = profileData.getNumPersonas();
-
-        // Init the arrays
-        personaIds = new long[numPersonas];
-        personaNames = new String[numPersonas];
-
-        // Iterate for the horde
-        for (int count = 0; count < numPersonas; count++) {
-
-            personaIds[count] = profileData.getPersona(count).getId();
-            personaNames[count] = profileData.getPersona(count).getName();
 
         }
 
@@ -153,12 +135,14 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
         // Is pd null?
         if (pd == null) {
+
             return;
         }
 
         // Let's find it
         View view = getView();
         if (view == null) {
+            
             return;
         }
 
@@ -171,78 +155,78 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                 .getPersonaName());
         ((TextView) view.findViewById(R.id.string_rank_title)).setText(pd
                 .getRankTitle());
-        ((TextView) view.findViewById(R.id.string_rank_short)).setText(pd
-                .getRankId() + "");
+        ((TextView) view.findViewById(R.id.string_rank_short)).setText(String.valueOf(pd
+                .getRankId()));
 
         // Progress
         progressBar.setMax((int) pd.getPointsNeededToLvlUp());
         progressBar.setProgress((int) pd.getPointsProgressLvl());
-        ((TextView) view.findViewById(R.id.string_progress_curr)).setText(pd
-                .getPointsProgressLvl() + "");
-        ((TextView) view.findViewById(R.id.string_progress_max)).setText(pd
-                .getPointsNeededToLvlUp() + "");
-        ((TextView) view.findViewById(R.id.string_progress_left)).setText(pd
-                .getPointsLeft() + "");
+        ((TextView) view.findViewById(R.id.string_progress_curr)).setText(String.valueOf(pd
+                .getPointsProgressLvl()));
+        ((TextView) view.findViewById(R.id.string_progress_max)).setText(String.valueOf(pd
+                .getPointsNeededToLvlUp()));
+        ((TextView) view.findViewById(R.id.string_progress_left)).setText(String.valueOf(pd
+                .getPointsLeft()));
 
         // Score
-        ((TextView) view.findViewById(R.id.string_score_assault)).setText(pd
-                .getScoreAssault() + "");
-        ((TextView) view.findViewById(R.id.string_score_engineer)).setText(pd
-                .getScoreEngineer() + "");
-        ((TextView) view.findViewById(R.id.string_score_support)).setText(pd
-                .getScoreSupport() + "");
-        ((TextView) view.findViewById(R.id.string_score_recon)).setText(pd
-                .getScoreRecon() + "");
-        ((TextView) view.findViewById(R.id.string_score_vehicles)).setText(pd
-                .getScoreVehicles() + "");
-        ((TextView) view.findViewById(R.id.string_score_combat)).setText(pd
-                .getScoreCombat() + "");
-        ((TextView) view.findViewById(R.id.string_score_award)).setText(pd
-                .getScoreAwards() + "");
-        ((TextView) view.findViewById(R.id.string_score_unlock)).setText(pd
-                .getScoreUnlocks() + "");
-        ((TextView) view.findViewById(R.id.string_score_total)).setText(pd
-                .getScoreTotal() + "");
+        ((TextView) view.findViewById(R.id.string_score_assault)).setText(String.valueOf(pd
+                .getScoreAssault()));
+        ((TextView) view.findViewById(R.id.string_score_engineer)).setText(String.valueOf(pd
+                .getScoreEngineer()));
+        ((TextView) view.findViewById(R.id.string_score_support)).setText(String.valueOf(pd
+                .getScoreSupport()));
+        ((TextView) view.findViewById(R.id.string_score_recon)).setText(String.valueOf(pd
+                .getScoreRecon()));
+        ((TextView) view.findViewById(R.id.string_score_vehicles)).setText(String.valueOf(pd
+                .getScoreVehicles()));
+        ((TextView) view.findViewById(R.id.string_score_combat)).setText(String.valueOf(pd
+                .getScoreCombat()));
+        ((TextView) view.findViewById(R.id.string_score_award)).setText(String.valueOf(pd
+                .getScoreAwards()));
+        ((TextView) view.findViewById(R.id.string_score_unlock)).setText(String.valueOf(pd
+                .getScoreUnlocks()));
+        ((TextView) view.findViewById(R.id.string_score_total)).setText(String.valueOf(pd
+                .getScoreTotal()));
 
         // Stats
-        ((TextView) view.findViewById(R.id.string_stats_kills)).setText(pd
-                .getNumKills() + "");
-        ((TextView) view.findViewById(R.id.string_stats_assists)).setText(pd
-                .getNumAssists() + "");
-        ((TextView) view.findViewById(R.id.string_stats_vkills)).setText(pd
-                .getNumVehicles() + "");
-        ((TextView) view.findViewById(R.id.string_stats_vassists)).setText(pd
-                .getNumVehicleAssists() + "");
-        ((TextView) view.findViewById(R.id.string_stats_heals)).setText(pd
-                .getNumHeals() + "");
-        ((TextView) view.findViewById(R.id.string_stats_revives)).setText(pd
-                .getNumRevives() + "");
-        ((TextView) view.findViewById(R.id.string_stats_repairs)).setText(pd
-                .getNumRepairs() + "");
-        ((TextView) view.findViewById(R.id.string_stats_resupplies)).setText(pd
-                .getNumResupplies() + "");
-        ((TextView) view.findViewById(R.id.string_stats_deaths)).setText(pd
-                .getNumDeaths() + "");
-        ((TextView) view.findViewById(R.id.string_stats_kdr)).setText(pd
-                .getKDRatio() + "");
-        ((TextView) view.findViewById(R.id.string_stats_wins)).setText(pd
-                .getNumWins() + "");
-        ((TextView) view.findViewById(R.id.string_stats_losses)).setText(pd
-                .getNumLosses() + "");
-        ((TextView) view.findViewById(R.id.string_stats_wlr)).setText(pd
-                .getWLRatio() + "");
+        ((TextView) view.findViewById(R.id.string_stats_kills)).setText(String.valueOf(pd
+                .getNumKills()));
+        ((TextView) view.findViewById(R.id.string_stats_assists)).setText(String.valueOf(pd
+                .getNumAssists()));
+        ((TextView) view.findViewById(R.id.string_stats_vkills)).setText(String.valueOf(pd
+                .getNumVehicles()));
+        ((TextView) view.findViewById(R.id.string_stats_vassists)).setText(String.valueOf(pd
+                .getNumVehicleAssists()));
+        ((TextView) view.findViewById(R.id.string_stats_heals)).setText(String.valueOf(pd
+                .getNumHeals()));
+        ((TextView) view.findViewById(R.id.string_stats_revives)).setText(String.valueOf(pd
+                .getNumRevives()));
+        ((TextView) view.findViewById(R.id.string_stats_repairs)).setText(String.valueOf(pd
+                .getNumRepairs()));
+        ((TextView) view.findViewById(R.id.string_stats_resupplies)).setText(String.valueOf(pd
+                .getNumResupplies()));
+        ((TextView) view.findViewById(R.id.string_stats_deaths)).setText(String.valueOf(pd
+                .getNumDeaths()));
+        ((TextView) view.findViewById(R.id.string_stats_kdr)).setText(String.valueOf(pd
+                .getKDRatio()));
+        ((TextView) view.findViewById(R.id.string_stats_wins)).setText(String.valueOf(pd
+                .getNumWins()));
+        ((TextView) view.findViewById(R.id.string_stats_losses)).setText(String.valueOf(pd
+                .getNumLosses()));
+        ((TextView) view.findViewById(R.id.string_stats_wlr)).setText(String.valueOf(pd
+                .getWLRatio()));
         ((TextView) view.findViewById(R.id.string_stats_accuracy)).setText(pd
                 .getAccuracy() + "%");
-        ((TextView) view.findViewById(R.id.string_stats_lks)).setText(pd
-                .getLongestKS() + "");
+        ((TextView) view.findViewById(R.id.string_stats_lks)).setText(String.valueOf(pd
+                .getLongestKS()));
         ((TextView) view.findViewById(R.id.string_stats_lhs)).setText(pd
                 .getLongestHS() + " m");
-        ((TextView) view.findViewById(R.id.string_stats_skill)).setText(pd
-                .getSkill() + "");
+        ((TextView) view.findViewById(R.id.string_stats_skill)).setText(String.valueOf(pd
+                .getSkill()));
         ((TextView) view.findViewById(R.id.string_stats_time)).setText(pd
-                .getTimePlayedString() + "");
-        ((TextView) view.findViewById(R.id.string_stats_spm)).setText(pd
-                .getScorePerMinute() + "");
+                .getTimePlayedString());
+        ((TextView) view.findViewById(R.id.string_stats_spm)).setText(String.valueOf(pd
+                .getScorePerMinute()));
 
         // Are we going to compare?
         if (comparing) {
@@ -279,14 +263,10 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
                     // Is this the user?
                     selectedPersona = profileData.getPersona(selectedPosition).getId();
 
-                } else {
-
-                    personaStats = null;
-
                 }
 
                 // ...validate!
-                return (personaStats != null && personaStats.size() > 0);
+                return (personaStats != null && !personaStats.isEmpty());
 
             } catch (Exception ex) {
 
@@ -341,7 +321,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
 
                 }
                 // ...validate!
-                return (personaStats != null && personaStats.size() > 0);
+                return (personaStats != null && !personaStats.isEmpty());
 
             } catch (Exception ex) {
 
@@ -356,14 +336,14 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         protected void onPostExecute(Boolean result) {
 
             // Fail?
-            if (!result) {
+            if (result) {
 
-                Toast.makeText(context, R.string.general_no_data,
-                        Toast.LENGTH_SHORT).show();
+                showPersona(personaStats.get(selectedPersona), false);
 
             } else {
 
-                showPersona(personaStats.get(selectedPersona), false);
+                Toast.makeText(context, R.string.general_no_data,
+                        Toast.LENGTH_SHORT).show();
 
             }
 
@@ -535,8 +515,8 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment {
         if (SessionKeeper.getProfileData().getId() != profileData.getId()) {
 
             return;
-
         }
+        
         // Update the sharedPreferences
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(SP_BL_PERSONA_CURRENT_ID, selectedPersona);

@@ -158,7 +158,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 
                     text = context.getString(
                             R.string.info_txt_notification_new_p).replace(
-                            "{num}", results + "");
+                            "{num}", String.valueOf(results));
 
                 }
 

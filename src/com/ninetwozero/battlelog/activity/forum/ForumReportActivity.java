@@ -48,7 +48,7 @@ public class ForumReportActivity extends Activity {
     private long postId;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
@@ -58,10 +58,12 @@ public class ForumReportActivity extends Activity {
         PublicUtils.restoreCookies(this, icicle);
 
         // Do we have a postId?
-        postId = getIntent().getLongExtra("postId", 0);
-        if (postId == 0) {
-            return;
+        if( !getIntent().hasExtra("postId") ) {
+            
+            finish();
+            
         }
+        postId = getIntent().getLongExtra("postId", 0);
 
         // Setup the locale
         PublicUtils.setupLocale(this, sharedPreferences);
@@ -96,7 +98,7 @@ public class ForumReportActivity extends Activity {
 
             // Get & validate
             String reason = fieldReport.getText().toString();
-            if (reason.equals("")) {
+            if ("".equals(reason)) {
 
                 Toast.makeText(this, R.string.info_forum_report_error,
                         Toast.LENGTH_SHORT).show();
@@ -137,8 +139,8 @@ public class ForumReportActivity extends Activity {
     public class AsyncReportPost extends AsyncTask<String, Void, Boolean> {
 
         // Attributes
-        private Context context;
-        private long postId;
+        private final Context context;
+        private final long postId;
 
         // Constructs
         public AsyncReportPost(Context c, long p) {

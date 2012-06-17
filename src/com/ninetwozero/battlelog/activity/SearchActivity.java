@@ -61,7 +61,7 @@ public class SearchActivity extends ListActivity {
     private List<GeneralSearchResult> searchResults;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);

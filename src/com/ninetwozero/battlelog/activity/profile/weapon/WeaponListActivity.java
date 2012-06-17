@@ -17,7 +17,6 @@ package com.ninetwozero.battlelog.activity.profile.weapon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
@@ -46,16 +45,14 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
     // private int selectedPosition;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
 
         // Get the intent
         if (!getIntent().hasExtra("profile")) {
-
-            return;
-
+            finish();
         }
 
         // Get the profile
@@ -96,7 +93,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         if (listFragments == null) {
 
             // Add them to the list
-            listFragments = new Vector<Fragment>();
+            listFragments = new ArrayList<Fragment>();
             listFragments.add(Fragment.instantiate(this, WeaponListFragment.class.getName()));
 
             // Iterate over the fragments

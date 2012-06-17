@@ -70,8 +70,6 @@ public class AsyncFriendRemove extends AsyncTask<String, Integer, Boolean> {
 
         }
 
-        return;
-
     }
 
 }

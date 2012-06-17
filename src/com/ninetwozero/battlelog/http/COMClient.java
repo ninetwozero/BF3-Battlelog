@@ -23,7 +23,7 @@ import com.ninetwozero.battlelog.misc.Constants;
 public class COMClient extends DefaultClient {
 
     // Attributes
-    private String checksum;
+    private String mChecksum;
 
     // URLS
     public static final String URL_STATUS = Constants.URL_MAIN + "user/setStatusmessage/";
@@ -55,8 +55,8 @@ public class COMClient extends DefaultClient {
 
     public COMClient(String c) {
 
-        requestHandler = new RequestHandler();
-        checksum = c;
+        mRequestHandler = new RequestHandler();
+        mChecksum = c;
     }
 
     public Long getChatId(long profileId)
@@ -65,23 +65,23 @@ public class COMClient extends DefaultClient {
         try {
 
             // Let's do this!
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     RequestHandler.generateUrl(URL_CONTENTS, profileId),
-                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
                     RequestHandler.HEADER_NORMAL
 
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
 
-                // Get the messages
-                return new JSONObject(httpContent).getJSONObject("data").getLong("chatId");
+                throw new WebsiteHandlerException("Could not get the chatId");
 
             } else {
 
-                throw new WebsiteHandlerException("Could not get the chatId");
+                // Get the messages
+                return new JSONObject(httpContent).getJSONObject("data").getLong("chatId");
 
             }
 
@@ -99,16 +99,21 @@ public class COMClient extends DefaultClient {
 
             // Let's do this!
             List<ChatMessage> messageArray = new ArrayList<ChatMessage>();
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     RequestHandler.generateUrl(URL_CONTENTS, profileId),
-                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
                     RequestHandler.HEADER_NORMAL
 
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
+
+                throw new WebsiteHandlerException(
+                        "Could not get the chat messages.");
+
+            } else {
 
                 // Get the messages
                 JSONArray messages = new JSONObject(httpContent)
@@ -135,11 +140,6 @@ public class COMClient extends DefaultClient {
                 }
                 return (ArrayList<ChatMessage>) messageArray;
 
-            } else {
-
-                throw new WebsiteHandlerException(
-                        "Could not get the chat messages.");
-
             }
 
         } catch (Exception ex) {
@@ -155,7 +155,7 @@ public class COMClient extends DefaultClient {
         try {
 
             // Let's login everybody!
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     URL_SEND,
                     RequestHandler.generatePostData(
@@ -163,7 +163,7 @@ public class COMClient extends DefaultClient {
                             FIELD_NAMES_CHAT,
                             message,
                             chatId,
-                            checksum
+                            mChecksum
                             ),
                     RequestHandler.HEADER_AJAX
 
@@ -208,16 +208,20 @@ public class COMClient extends DefaultClient {
         try {
 
             // Let's login everybody!
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     URL_FRIENDS,
-                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
                     RequestHandler.HEADER_NORMAL
 
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
+
+                throw new WebsiteHandlerException("Could not retrieve the ProfileIDs.");
+
+            } else {
 
                 // Generate an object
                 JSONObject comData = new JSONObject(httpContent)
@@ -347,11 +351,6 @@ public class COMClient extends DefaultClient {
                 return new FriendListDataWrapper(friends, numRequests, numPlaying, numOnline,
                         numOffline);
 
-            } else {
-
-                throw new WebsiteHandlerException(
-                        "Could not retrieve the ProfileIDs.");
-
             }
 
         } catch (JSONException e) {
@@ -373,16 +372,21 @@ public class COMClient extends DefaultClient {
 
             // Let's login everybody!
             List<ProfileData> profileArray = new ArrayList<ProfileData>();
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     URL_FRIENDS,
-                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
                     RequestHandler.HEADER_NORMAL
 
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
+
+                throw new WebsiteHandlerException(
+                        "Could not retrieve the ProfileIDs.");
+
+            } else {
 
                 // Generate an object
                 JSONArray profileObject = new JSONObject(httpContent)
@@ -417,11 +421,6 @@ public class COMClient extends DefaultClient {
 
                 return profileArray;
 
-            } else {
-
-                throw new WebsiteHandlerException(
-                        "Could not retrieve the ProfileIDs.");
-
             }
 
         } catch (JSONException e) {
@@ -443,10 +442,10 @@ public class COMClient extends DefaultClient {
 
             // Let's login everybody!
             String url = accepting ? Constants.URL_FRIEND_ACCEPT : Constants.URL_FRIEND_DECLINE;
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     RequestHandler.generateUrl(url, profileId),
-                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
                     RequestHandler.HEADER_NORMAL
 
                     );
@@ -468,10 +467,10 @@ public class COMClient extends DefaultClient {
         try {
 
             // Let's login everybody!
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     RequestHandler.generateUrl(URL_FRIEND_REQUESTS, profileId),
-                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
+                    RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
                     RequestHandler.HEADER_AJAX
 
                     );
@@ -494,7 +493,7 @@ public class COMClient extends DefaultClient {
         try {
 
             // Let's login everybody!
-            String httpContent = requestHandler.get(
+            String httpContent = mRequestHandler.get(
 
                     RequestHandler.generateUrl(URL_FRIEND_DELETE, profileId),
                     RequestHandler.HEADER_AJAX
@@ -517,14 +516,14 @@ public class COMClient extends DefaultClient {
 
         try {
 
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     URL_STATUS,
                     RequestHandler.generatePostData(
 
                             FIELD_NAMES_STATUS,
                             content,
-                            checksum,
+                            mChecksum,
                             ""
 
                             ),

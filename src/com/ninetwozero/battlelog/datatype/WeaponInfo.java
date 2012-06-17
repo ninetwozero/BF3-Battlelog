@@ -22,9 +22,15 @@ import com.ninetwozero.battlelog.R;
 public class WeaponInfo implements Parcelable {
 
     // Attributes
-    private String identifier, name, slug, ammo;
-    private int range, rateOfFire;
-    private boolean rateAuto, rateBurst, rateSingle;
+    private String mIdentifier;
+    private String mName;
+    private String mSlug;
+    private String mAmmo;
+    private int mRange;
+    private int mRateOfFire;
+    private boolean mRateAuto;
+    private boolean mRateBurst;
+    private boolean mRateSingle;
 
     // Constants
     final public static int RANGE_SHORT = 0;
@@ -34,74 +40,74 @@ public class WeaponInfo implements Parcelable {
 
     public WeaponInfo(Parcel in) {
 
-        identifier = in.readString();
-        name = in.readString();
-        slug = in.readString();
-        rateOfFire = in.readInt();
-        range = in.readInt();
-        ammo = in.readString();
+        mIdentifier = in.readString();
+        mName = in.readString();
+        mSlug = in.readString();
+        mRateOfFire = in.readInt();
+        mRange = in.readInt();
+        mAmmo = in.readString();
 
-        rateAuto = in.readInt() == 1;
-        rateBurst = in.readInt() == 1;
-        rateSingle = in.readInt() == 1;
+        mRateAuto = in.readInt() == 1;
+        mRateBurst = in.readInt() == 1;
+        mRateSingle = in.readInt() == 1;
 
     }
 
     public WeaponInfo(String i, String n, String l, int rof, int r,
             String a, boolean ra, boolean rb, boolean rs) {
 
-        identifier = i;
-        name = n;
-        slug = l;
-        rateOfFire = rof;
-        range = r;
-        ammo = a;
+        mIdentifier = i;
+        mName = n;
+        mSlug = l;
+        mRateOfFire = rof;
+        mRange = r;
+        mAmmo = a;
 
-        rateAuto = ra;
-        rateBurst = rb;
-        rateSingle = rs;
+        mRateAuto = ra;
+        mRateBurst = rb;
+        mRateSingle = rs;
 
     }
 
     // GETTERS
     public final String getIdentifier() {
-        return identifier;
+        return mIdentifier;
     }
 
     public final String getName() {
-        return name;
+        return mName;
     }
 
     public final String getSlug() {
-        return slug;
+        return mSlug;
     }
 
     public final int getRateOfFire() {
-        return rateOfFire;
+        return mRateOfFire;
     }
 
     public final int getRange() {
-        return range;
+        return mRange;
     }
 
     public final boolean isAuto() {
 
-        return rateAuto;
+        return mRateAuto;
     }
 
     public final boolean isBurst() {
 
-        return rateBurst;
+        return mRateBurst;
     }
 
     public final boolean isSingle() {
 
-        return rateSingle;
+        return mRateSingle;
     }
 
     public final int getRangeTitle() {
 
-        switch (range) {
+        switch (mRange) {
 
             case WeaponInfo.RANGE_SHORT:
                 return R.string.info_weapon_range_short;
@@ -119,7 +125,7 @@ public class WeaponInfo implements Parcelable {
     }
 
     public final String getAmmo() {
-        return ammo;
+        return mAmmo;
     }
 
     @Override
@@ -130,16 +136,16 @@ public class WeaponInfo implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int arg1) {
 
-        out.writeString(identifier);
-        out.writeString(name);
-        out.writeString(slug);
-        out.writeInt(rateOfFire);
-        out.writeInt(range);
-        out.writeString(ammo);
+        out.writeString(mIdentifier);
+        out.writeString(mName);
+        out.writeString(mSlug);
+        out.writeInt(mRateOfFire);
+        out.writeInt(mRange);
+        out.writeString(mAmmo);
 
-        out.writeInt(rateAuto ? 1 : 0);
-        out.writeInt(rateBurst ? 1 : 0);
-        out.writeInt(rateSingle ? 1 : 0);
+        out.writeInt(mRateAuto ? 1 : 0);
+        out.writeInt(mRateBurst ? 1 : 0);
+        out.writeInt(mRateSingle ? 1 : 0);
 
     }
 

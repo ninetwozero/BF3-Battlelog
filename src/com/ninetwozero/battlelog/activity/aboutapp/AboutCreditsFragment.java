@@ -35,22 +35,22 @@ import com.ninetwozero.battlelog.misc.DataBank;
 public class AboutCreditsFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
 
     // Elements
-    private ListView listView;
+    private ListView mListView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        layoutInflater = inflater;
-
+        mContext = getActivity();
+        mLayoutInflater = inflater;
+        
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_main_credits,
+        final View view = mLayoutInflater.inflate(R.layout.tab_content_main_credits,
                 container, false);
 
         // Let's try this
@@ -62,11 +62,11 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
     }
 
     @Override
-    public void initFragment(View view) {
+    public void initFragment(final View view) {
 
         // Get the listview
-        listView = (ListView) view.findViewById(android.R.id.list);
-        listView.setAdapter(new CreditListAdapter(DataBank.getContributors(), layoutInflater));
+        mListView = (ListView) view.findViewById(android.R.id.list);
+        mListView.setAdapter(new CreditListAdapter(DataBank.getContributors(), mLayoutInflater));
 
     }
 
@@ -76,32 +76,31 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
     }
 
     @Override
-    public Menu prepareOptionsMenu(Menu menu) {
-        return menu;
-    }
-
-    @Override
-    public boolean handleSelectedOption(MenuItem item) {
-        return false;
-    }
-
-    @Override
-    public void onListItemClick(ListView lv, View v, int position, long id) {
+    public void onListItemClick(final ListView lv, final View v, final int position, final long id) {
 
         // Get the url
-        String url = String.valueOf(v.getTag());
+        final String url = String.valueOf(v.getTag());
 
         // Is it empty?
-        if (url.equals("")) {
-            Toast.makeText(context, R.string.info_credits_nolink, Toast.LENGTH_SHORT).show();
+        if ("".equals(url)) {
+            Toast.makeText(mContext, R.string.info_credits_nolink, Toast.LENGTH_SHORT).show();
 
         } else {
             // Let's send it somewhere
             startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)));
 
         }
-        return;
 
+    }
+
+    @Override
+    public Menu prepareOptionsMenu(final Menu menu) {
+        return menu;
+    }
+
+    @Override
+    public boolean handleSelectedOption(final MenuItem item) {
+        return false;
     }
 
 }

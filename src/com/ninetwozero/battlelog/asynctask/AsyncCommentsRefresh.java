@@ -89,7 +89,6 @@ public class AsyncCommentsRefresh extends AsyncTask<Integer, Integer, Boolean> {
                     Toast.LENGTH_SHORT).show();
 
         }
-        return;
 
     }
 

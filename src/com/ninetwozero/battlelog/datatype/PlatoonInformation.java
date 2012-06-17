@@ -160,14 +160,14 @@ public class PlatoonInformation {
         return stats;
     }
 
-    public String[] toStringArray() {
+    public Object[] toArray() {
 
-        return new String[] {
+        return new Object[] {
 
-                id + "", platformId + "", gameId + "",
-                numFans + "", numMembers + "", blazeClubId + "",
-                date + "", name, tag, presentation,
-                website, (visible ? 1 : 0) + "",
+                id , platformId , gameId ,
+                numFans , numMembers , blazeClubId ,
+                date , name, tag, presentation,
+                website, (visible ? 1 : 0) ,
 
         };
 

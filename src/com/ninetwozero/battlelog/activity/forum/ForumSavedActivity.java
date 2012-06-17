@@ -27,7 +27,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,7 +62,7 @@ public class ForumSavedActivity extends ListActivity {
     private String locale;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
@@ -165,15 +164,6 @@ public class ForumSavedActivity extends ListActivity {
 
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
     public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
 
         // Attributes
@@ -216,9 +206,6 @@ public class ForumSavedActivity extends ListActivity {
                 listView.setAdapter(new SavedThreadListAdapter(context, threads, layoutInflater));
 
             }
-
-            // Get back here!
-            return;
 
         }
 
@@ -404,8 +391,6 @@ public class ForumSavedActivity extends ListActivity {
         menu.add(0, 0, 0, R.string.info_forum_saved_goto);
         menu.add(0, 1, 0, R.string.info_forum_saved_check);
         menu.add(0, 2, 0, R.string.info_forum_saved_remove);
-
-        return;
 
     }
 

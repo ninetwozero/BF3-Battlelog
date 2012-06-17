@@ -24,105 +24,113 @@ import com.ninetwozero.battlelog.misc.DrawableResourceList;
 public class UnlockData implements Parcelable {
 
     // Attributes
-    private int kitId;
-    private double unlockPercentage;
-    private long scoreNeeded, scoreCurrent;
-    private String parentIdentifier, unlockIdentifier, objective, type;
+    private int mKitId;
+    private double mUnlockPercentage;
+    private long mScoreNeeded;
+    private long mScoreCurrent;
+    private String mParentIdentifier;
+    private String mUnlockIdentifier;
+    private String mObjective;
+    private String mType;
 
     // Constants
-    public final static String CATEGORY_WEAPON = "weaponUnlock";
-    public final static String CATEGORY_ATTACHMENT = "weaponAddonUnlock";
-    public final static String CATEGORY_KIT = "kitItemUnlock";
-    public final static String CATEGORY_VEHICLE = "vehicleAddonUnlock";
-    public final static String CATEGORY_SKILL = "soldierSpecializationUnlock";
+    public static final String CATEGORY_WEAPON = "weaponUnlock";
+    public static final String CATEGORY_ATTACHMENT = "weaponAddonUnlock";
+    public static final String CATEGORY_KIT = "kitItemUnlock";
+    public static final String CATEGORY_VEHICLE = "vehicleAddonUnlock";
+    public static final String CATEGORY_SKILL = "soldierSpecializationUnlock";
 
     public UnlockData(Parcel in) {
 
-        kitId = in.readInt();
-        unlockPercentage = in.readDouble();
-        scoreNeeded = in.readLong();
-        scoreCurrent = in.readLong();
-        parentIdentifier = in.readString();
-        unlockIdentifier = in.readString();
-        objective = in.readString();
-        type = in.readString();
+        mKitId = in.readInt();
+        mUnlockPercentage = in.readDouble();
+        mScoreNeeded = in.readLong();
+        mScoreCurrent = in.readLong();
+        mParentIdentifier = in.readString();
+        mUnlockIdentifier = in.readString();
+        mObjective = in.readString();
+        mType = in.readString();
 
     }
 
     public UnlockData(int k, double u, long scn, long scc, String pi,
             String ui, String o, String t) {
 
-        kitId = k;
-        unlockPercentage = u;
-        scoreNeeded = scn;
-        scoreCurrent = scc;
-        parentIdentifier = pi;
-        unlockIdentifier = ui;
-        objective = o;
-        type = t;
+        mKitId = k;
+        mUnlockPercentage = u;
+        mScoreNeeded = scn;
+        mScoreCurrent = scc;
+        mParentIdentifier = pi;
+        mUnlockIdentifier = ui;
+        mObjective = o;
+        mType = t;
 
     }
 
     // Getters
     public int getKitId() {
-        return kitId;
+        return mKitId;
     }
 
     public String getKitTitle(Context c) {
-        return DataBank.getKitTitle(c, kitId);
+        return DataBank.getKitTitle(c, mKitId);
     }
 
     public double getUnlockPercentage() {
-        return Math.round(unlockPercentage * 100) / 100;
+        return Math.round(mUnlockPercentage * 100) / 100;
     }
 
     public long getScoreNeeded() {
-        return scoreNeeded;
+        return mScoreNeeded;
     }
 
     public long getScoreCurrent() {
-        return scoreCurrent;
+        return mScoreCurrent;
     }
 
     public String getParent(Context c) {
 
-        if (type.equals(CATEGORY_ATTACHMENT)) {
+        if (mType.equals(CATEGORY_ATTACHMENT)) {
 
-            return DataBank.getWeaponTitle(c, parentIdentifier);
+            return DataBank.getWeaponTitle(c, mParentIdentifier);
 
-        } else if (type.equals(CATEGORY_VEHICLE)) {
+        } else if (mType.equals(CATEGORY_VEHICLE)) {
 
-            return DataBank.getVehicleTitle(parentIdentifier);
+            return DataBank.getVehicleTitle(mParentIdentifier);
 
-        } else
+        } else { 
+        
             return "";
+            
+        }
+        
     }
 
     public String getTitle(Context c) {
 
-        if (type.equals(CATEGORY_WEAPON)) {
+        if (mType.equals(CATEGORY_WEAPON)) {
 
-            return DataBank.getWeaponTitle(c, unlockIdentifier);
+            return DataBank.getWeaponTitle(c, mUnlockIdentifier);
 
-        } else if (type.equals(CATEGORY_ATTACHMENT)) {
+        } else if (mType.equals(CATEGORY_ATTACHMENT)) {
 
-            return DataBank.getAttachmentTitle(unlockIdentifier);
+            return DataBank.getAttachmentTitle(mUnlockIdentifier);
 
-        } else if (type.equals(CATEGORY_VEHICLE)) {
+        } else if (mType.equals(CATEGORY_VEHICLE)) {
 
-            return DataBank.getVehicleUpgradeTitle(unlockIdentifier);
+            return DataBank.getVehicleUpgradeTitle(mUnlockIdentifier);
 
-        } else if (type.equals(CATEGORY_KIT)) {
+        } else if (mType.equals(CATEGORY_KIT)) {
 
-            return DataBank.getKitTitle(unlockIdentifier);
+            return DataBank.getKitTitle(mUnlockIdentifier);
 
-        } else if (type.equals(CATEGORY_SKILL)) {
+        } else if (mType.equals(CATEGORY_SKILL)) {
 
-            return DataBank.getSkillTitle(unlockIdentifier);
+            return DataBank.getSkillTitle(mUnlockIdentifier);
 
         } else {
 
-            return unlockIdentifier;
+            return mUnlockIdentifier;
 
         }
 
@@ -130,25 +138,25 @@ public class UnlockData implements Parcelable {
 
     public int getImageResource() {
 
-        if (type.equals(CATEGORY_WEAPON)) {
+        if (mType.equals(CATEGORY_WEAPON)) {
 
-            return DrawableResourceList.getWeapon(unlockIdentifier);
+            return DrawableResourceList.getWeapon(mUnlockIdentifier);
 
-        } else if (type.equals(CATEGORY_ATTACHMENT)) {
+        } else if (mType.equals(CATEGORY_ATTACHMENT)) {
 
-            return DrawableResourceList.getAttachment(unlockIdentifier);
+            return DrawableResourceList.getAttachment(mUnlockIdentifier);
 
-        } else if (type.equals(CATEGORY_VEHICLE)) {
+        } else if (mType.equals(CATEGORY_VEHICLE)) {
 
-            return DrawableResourceList.getVehicleUpgrade(unlockIdentifier);
+            return DrawableResourceList.getVehicleUpgrade(mUnlockIdentifier);
 
-        } else if (type.equals(CATEGORY_KIT)) {
+        } else if (mType.equals(CATEGORY_KIT)) {
 
-            return DrawableResourceList.getKit(unlockIdentifier);
+            return DrawableResourceList.getKit(mUnlockIdentifier);
 
-        } else if (type.equals(CATEGORY_SKILL)) {
+        } else if (mType.equals(CATEGORY_SKILL)) {
 
-            return DrawableResourceList.getSkill(unlockIdentifier);
+            return DrawableResourceList.getSkill(mUnlockIdentifier);
 
         } else {
 
@@ -161,24 +169,24 @@ public class UnlockData implements Parcelable {
     public String getName(Context c) {
 
         // Check how it went
-        if (type.equals(CATEGORY_WEAPON)) {
+        if (mType.equals(CATEGORY_WEAPON)) {
 
             return getTitle(c);
 
-        } else if (type.equals(CATEGORY_ATTACHMENT)) {
+        } else if (mType.equals(CATEGORY_ATTACHMENT)) {
 
             return getParent(c) + " " + getTitle(c);
 
-        } else if (type.equals(CATEGORY_VEHICLE)) {
+        } else if (mType.equals(CATEGORY_VEHICLE)) {
 
             // return getParent() + " " + getTitle();
             return getTitle(c);
 
-        } else if (type.equals(CATEGORY_KIT)) {
+        } else if (mType.equals(CATEGORY_KIT)) {
 
             return getTitle(c);
 
-        } else if (type.equals(CATEGORY_SKILL)) {
+        } else if (mType.equals(CATEGORY_SKILL)) {
 
             return getTitle(c);
 
@@ -192,42 +200,42 @@ public class UnlockData implements Parcelable {
 
     public String getObjective(Context c) {
 
-        if (objective.startsWith("sc_")) {
+        if (mObjective.startsWith("sc_")) {
 
-            return DataBank.getUnlockGoal(objective).replace(
+            return DataBank.getUnlockGoal(mObjective).replace(
 
                     "{scoreCurr}/{scoreNeeded}",
-                    scoreCurrent + "/" + scoreNeeded
+                    mScoreCurrent + "/" + mScoreNeeded
 
                     );
 
-        } else if ("rank".equals(objective)) {
+        } else if ("rank".equals(mObjective)) {
 
-            return DataBank.getUnlockGoal(objective).replace(
+            return DataBank.getUnlockGoal(mObjective).replace(
 
-                    "{rank}", getScoreNeeded() + ""
+                    "{rank}", String.valueOf(getScoreNeeded())
 
                     ).replace(
 
-                            "{rankCurr}", getScoreCurrent() + ""
+                            "{rankCurr}", String.valueOf(getScoreCurrent())
 
                     );
 
-        } else if (objective.startsWith("c_")) {
+        } else if (mObjective.startsWith("c_")) {
 
             return DataBank.getUnlockGoal("c_").replace(
 
                     "{scoreCurr}/{scoreNeeded} {name}",
-                    scoreCurrent + "/" + scoreNeeded + " "
+                    mScoreCurrent + "/" + mScoreNeeded + " "
                             + getParent(c)
 
                     );
 
-        } else if (objective.startsWith("xpm")) {
+        } else if (mObjective.startsWith("xpm")) {
 
-            String digits = objective.subSequence(4, 6).toString();
+            String digits = mObjective.subSequence(4, 6).toString();
 
-            if (digits.startsWith("0")) {
+            if (digits.charAt(0) == 0) {
                 digits = digits.substring(1);
             }
 
@@ -242,12 +250,12 @@ public class UnlockData implements Parcelable {
 
         }
 
-        return objective;
+        return mObjective;
 
     }
 
     public String getType() {
-        return type;
+        return mType;
     }
 
     @Override
@@ -258,14 +266,14 @@ public class UnlockData implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int arg1) {
 
-        out.writeInt(kitId);
-        out.writeDouble(unlockPercentage);
-        out.writeLong(scoreNeeded);
-        out.writeLong(scoreCurrent);
-        out.writeString(parentIdentifier);
-        out.writeString(unlockIdentifier);
-        out.writeString(objective);
-        out.writeString(type);
+        out.writeInt(mKitId);
+        out.writeDouble(mUnlockPercentage);
+        out.writeLong(mScoreNeeded);
+        out.writeLong(mScoreCurrent);
+        out.writeString(mParentIdentifier);
+        out.writeString(mUnlockIdentifier);
+        out.writeString(mObjective);
+        out.writeString(mType);
 
     }
 

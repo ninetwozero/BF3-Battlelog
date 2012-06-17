@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.activity.forum;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
@@ -40,12 +40,12 @@ import com.ninetwozero.battlelog.datatype.SavedForumThreadData;
 public class ForumActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Fragment related
-    private ForumFragment fragmentForum;
-    private ForumThreadFragment fragmentForumThread;
-    private SavedForumThreadData savedThread;
+    private ForumFragment mFragmentForum;
+    private ForumThreadFragment mFragmentForumThread;
+    private SavedForumThreadData mSavedThread;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
@@ -84,12 +84,12 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
         if (listFragments == null) {
 
             // Add them to the list
-            listFragments = new Vector<Fragment>();
+            listFragments = new ArrayList<Fragment>();
             listFragments.add(Fragment.instantiate(this,
                     BoardFragment.class.getName()));
-            listFragments.add(fragmentForum = (ForumFragment) Fragment.instantiate(this,
+            listFragments.add(mFragmentForum = (ForumFragment) Fragment.instantiate(this,
                     ForumFragment.class.getName()));
-            listFragments.add(fragmentForumThread = (ForumThreadFragment) Fragment.instantiate(
+            listFragments.add(mFragmentForumThread = (ForumThreadFragment) Fragment.instantiate(
                     this, ForumThreadFragment.class.getName()));
 
             // Get the ViewPager
@@ -128,7 +128,7 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater inflater = getMenuInflater();
+        final MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_forumview, menu);
         return super.onCreateOptionsMenu(menu);
 
@@ -139,7 +139,7 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
 
         if (viewPager.getCurrentItem() == 2) {
 
-            fragmentForumThread.prepareOptionsMenu(menu);
+            mFragmentForumThread.prepareOptionsMenu(menu);
 
         }
         return super.onPrepareOptionsMenu(menu);
@@ -156,7 +156,7 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
 
         } else if (item.getItemId() == R.id.option_save) {
 
-            fragmentForumThread.handleSelectedOption(item);
+            mFragmentForumThread.handleSelectedOption(item);
 
         } else if (item.getItemId() == R.id.option_back) {
 
@@ -171,14 +171,14 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
 
     public void openForum(Intent data) {
 
-        fragmentForum.openForum(data);
+        mFragmentForum.openForum(data);
         viewPager.setCurrentItem(1, true);
 
     }
 
     public void openThread(Intent data) {
 
-        fragmentForumThread.openThread(data);
+        mFragmentForumThread.openThread(data);
         viewPager.setCurrentItem(2, true);
 
     }
@@ -187,16 +187,13 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && viewPager.getCurrentItem() > 0) {
 
-            if (viewPager.getCurrentItem() > 0) {
-
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
-                return true;
-
-            }
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+            return true;
 
         }
+
         return super.onKeyDown(keyCode, event);
 
     }
@@ -204,14 +201,14 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
     public void openFromIntent(Intent intent) {
 
         // Do we have a saved thread?
-        if (intent.hasExtra("savedThread") && savedThread == null) {
+        if (intent.hasExtra("savedThread") && mSavedThread == null) {
 
-            savedThread = intent.getParcelableExtra("savedThread");
+            mSavedThread = intent.getParcelableExtra("savedThread");
             openForum(new Intent().putExtra("forumTitle", "N/A").putExtra("forumId",
-                    savedThread.getForumId()));
-            openThread(new Intent().putExtra("threadTitle", savedThread.getTitle()).putExtra(
-                    "threadId", savedThread.getId())
-                    .putExtra("pageId", savedThread.getNumPageLastRead()));
+                    mSavedThread.getForumId()));
+            openThread(new Intent().putExtra("threadTitle", mSavedThread.getTitle()).putExtra(
+                    "threadId", mSavedThread.getId())
+                    .putExtra("pageId", mSavedThread.getNumPageLastRead()));
 
         }
 
@@ -221,20 +218,11 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
 
-        switch (viewPager.getCurrentItem()) {
-
-            case 0:
-                break;
-
-            case 1:
-                break;
-
-            case 2:
-                fragmentForumThread.createContextMenu(menu, view, menuInfo);
-                break;
-
+        if( viewPager.getCurrentItem() == 2 ) {
+            
+            mFragmentForumThread.createContextMenu(menu, view, menuInfo);
+            
         }
-        return;
 
     }
 
@@ -256,13 +244,9 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
 
         }
 
-        switch (viewPager.getCurrentItem()) {
+        if (viewPager.getCurrentItem() == 2) {
 
-            case 2:
-                return fragmentForumThread.handleSelectedContextItem(info, item);
-
-            default:
-                break;
+            return mFragmentForumThread.handleSelectedContextItem(info, item);
 
         }
 
@@ -272,14 +256,10 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
 
     public void resetPostFields() {
 
-        switch (viewPager.getCurrentItem()) {
+        if (viewPager.getCurrentItem() == 2) {
 
-            case 2:
-                fragmentForumThread.resetPostFields();
-                break;
+            mFragmentForumThread.resetPostFields();
 
-            default:
-                break;
         }
 
     }

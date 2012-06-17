@@ -42,7 +42,7 @@ public class PlatoonCreateActivity extends Activity {
     private CheckedTextView checkboxActive;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
@@ -99,17 +99,15 @@ public class PlatoonCreateActivity extends Activity {
             String stringActive = checkboxActive.isChecked() ? "1" : "0";
 
             // Validate
-            if (stringName.equals("")) {
+            if ("".equals(stringName)) {
 
                 Toast.makeText(this, R.string.info_platoon_new_empty_name,
                         Toast.LENGTH_SHORT).show();
-                return;
 
-            } else if (stringTag.equals("")) {
+            } else if ("".equals(stringTag)) {
 
                 Toast.makeText(this, R.string.info_platoon_new_empty_tag, Toast.LENGTH_SHORT)
                         .show();
-                return;
 
             }
 

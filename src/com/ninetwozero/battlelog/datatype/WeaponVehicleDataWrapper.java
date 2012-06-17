@@ -19,12 +19,11 @@ import java.util.List;
 public class WeaponVehicleDataWrapper {
 
     // Attributes
-    private List<WeaponVehicleListData> weapons, vehicles;
+    private List<WeaponVehicleListData> weapons;
+    private List<WeaponVehicleListData> vehicles;
 
     // Construct
-    public WeaponVehicleDataWrapper(
-
-            List<WeaponVehicleListData> w, List<WeaponVehicleListData> v) {
+    public WeaponVehicleDataWrapper(List<WeaponVehicleListData> w, List<WeaponVehicleListData> v) {
 
         this.weapons = w;
         this.vehicles = v;

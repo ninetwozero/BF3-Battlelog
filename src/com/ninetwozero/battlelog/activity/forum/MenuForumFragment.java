@@ -45,7 +45,6 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
 
     // Attributes
     private Context context;
-    private LayoutInflater layoutInflater;
     private Map<Integer, Intent> MENU_INTENTS;
     private SharedPreferences sharedPreferences;
 
@@ -60,12 +59,11 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
     private int selectedPosition;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Get the unlocks
@@ -116,17 +114,19 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
         MENU_INTENTS.put(R.id.button_saved, new Intent(context, ForumSavedActivity.class));
 
         // Add the OnClickListeners
+        final OnClickListener onClickListener = new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                startActivity(MENU_INTENTS.get(v.getId()));
+
+            }
+        };
+        
         for (int key : MENU_INTENTS.keySet()) {
 
-            view.findViewById(key).setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                    startActivity(MENU_INTENTS.get(v.getId()));
-
-                }
-            });
+            view.findViewById(key).setOnClickListener(onClickListener);
 
         }
 

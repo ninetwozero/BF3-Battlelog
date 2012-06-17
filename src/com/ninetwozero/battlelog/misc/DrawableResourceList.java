@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 import com.ninetwozero.battlelog.R;
 
-public class DrawableResourceList {
+public final class DrawableResourceList {
 
     // Attributes
     private static HashMap<String, Integer> weapons; // <GUID, resId>

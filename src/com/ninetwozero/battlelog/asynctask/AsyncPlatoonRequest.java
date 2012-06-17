@@ -121,8 +121,6 @@ public class AsyncPlatoonRequest extends AsyncTask<Boolean, Integer, Integer> {
             }
         }
 
-        return;
-
     }
 
 }

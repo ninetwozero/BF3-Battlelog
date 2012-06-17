@@ -209,10 +209,10 @@ public class PublicUtils {
      * @return link the normalized link
      */
 
-    public final static String normalizeUrl(final String s) {
+    public static final String normalizeUrl(final String s) {
 
         // Check if we have a valid prefix
-        if (s.equals("")) {
+        if ("".equals(s)) {
 
             return "";
 
@@ -253,10 +253,11 @@ public class PublicUtils {
         int n = s.length();
         int m = t.length();
 
-        if (n == 0)
+        if (n == 0) {
             return m;
-        else if (m == 0)
+        } else if (m == 0) {
             return n;
+        }
 
         if (n > m) {
 
@@ -306,13 +307,13 @@ public class PublicUtils {
     public static String timeToLiteral(long s) {
 
         // Let's see what we can do
-        if ((s / 60) < 1)
+        if ((s / 60) < 1) {
             return s + "S";
-        else if ((s / 3600) < 1)
+        } else if ((s / 3600) < 1) {
             return (s / 60) + "M " + (s % 60) + "S";
-        else
+        } else {
             return (s / 3600) + "H " + ((s % 3600) / 60) + "M";
-
+        }
     }
 
     /*
@@ -411,13 +412,13 @@ public class PublicUtils {
             List<ShareableCookie> shareableCookies = icicle
                     .getParcelableArrayList(Constants.SUPER_COOKIES);
 
-            if (shareableCookies != null) {
+            if (shareableCookies == null) {
 
-                RequestHandler.setCookies(shareableCookies);
+                ((Activity) context).finish();
 
             } else {
 
-                ((Activity) context).finish();
+                RequestHandler.setCookies(shareableCookies);
 
             }
 
@@ -454,7 +455,7 @@ public class PublicUtils {
         if (context instanceof MainActivity) {
 
             return;
-
+            
         }
 
         // Let's set "active" against the website
@@ -464,8 +465,8 @@ public class PublicUtils {
         if (SessionKeeper.getProfileData() == null) {
 
             // ...but we do indeed have a cookie...
-            if (!sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "")
-                    .equals("")) {
+            String cookieValue = sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "");
+            if ("".equals(cookieValue)) {
 
                 // ...we set the SessionKeeper, but also reload the cookies!
                 // Easy peasy!
@@ -477,8 +478,7 @@ public class PublicUtils {
                         new ShareableCookie(
 
                                 sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
-                                sharedPreferences.getString(
-                                        Constants.SP_BL_COOKIE_VALUE, ""),
+                                cookieValue,
                                 Constants.COOKIE_DOMAIN
 
                         )

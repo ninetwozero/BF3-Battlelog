@@ -14,8 +14,8 @@
 
 package com.ninetwozero.battlelog.activity.profile.assignments;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -58,7 +58,7 @@ public class AssignmentActivity extends Activity {
     private SharedPreferences sharedPreferences;
     private LayoutInflater layoutInflater;
     private ProfileData profileData;
-    private HashMap<Long, List<AssignmentData>> assignments;
+    private Map<Long, List<AssignmentData>> assignments;
     private long selectedPersona;
     private int selectedPosition;
     private long[] personaId;
@@ -69,7 +69,7 @@ public class AssignmentActivity extends Activity {
     private TextView textEmpty;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
@@ -97,7 +97,6 @@ public class AssignmentActivity extends Activity {
             Toast.makeText(this, R.string.info_general_noprofile,
                     Toast.LENGTH_SHORT).show();
             finish();
-            return;
 
         }
 
@@ -151,11 +150,10 @@ public class AssignmentActivity extends Activity {
         }
 
         // Is it empty?
-        if (data == null || data.size() == 0) {
+        if (data == null || data.isEmpty()) {
 
             textEmpty.setVisibility(View.VISIBLE);
             tableAssignments.removeAllViews();
-            return;
 
         } else {
 
@@ -238,7 +236,6 @@ public class AssignmentActivity extends Activity {
         public AsyncReload(Context c) {
 
             context = c;
-            progressDialog = null;
 
         }
 
@@ -283,12 +280,12 @@ public class AssignmentActivity extends Activity {
             // Fail?
             if (!result) {
 
-                if (progressDialog != null)
+                if (progressDialog != null) {
                     progressDialog.dismiss();
+                }
                 Toast.makeText(context, R.string.general_no_data,
                         Toast.LENGTH_SHORT).show();
                 ((Activity) context).finish();
-                return;
 
             }
 
@@ -296,9 +293,10 @@ public class AssignmentActivity extends Activity {
             setupList(assignments.get(selectedPersona));
 
             // Go go go
-            if (progressDialog != null)
+            if (progressDialog != null) {
                 progressDialog.dismiss();
-            return;
+            }
+
         }
 
     }
@@ -425,7 +423,6 @@ public class AssignmentActivity extends Activity {
     public void onPopupClick(View v) {
 
         showDialog(Integer.parseInt(v.getTag().toString()));
-        return;
 
     }
 

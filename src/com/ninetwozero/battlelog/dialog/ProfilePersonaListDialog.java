@@ -18,13 +18,13 @@ import android.support.v4.app.DialogFragment;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 
-public class ProfilePersonaListDialog extends DialogFragment implements
+public final class ProfilePersonaListDialog extends DialogFragment implements
         DialogInterface.OnClickListener {
 
     // Attributes
-    private ProfileData profileData;
-    private long[] personaId;
-    private String[] personaName;
+    private ProfileData mProfileData;
+    private long[] mPersonaId;
+    private String[] mPersonaName;
 
     public static ProfilePersonaListDialog newInstance(ProfileData profileData) {
         ProfilePersonaListDialog dialog = new ProfilePersonaListDialog(profileData);
@@ -34,7 +34,7 @@ public class ProfilePersonaListDialog extends DialogFragment implements
     }
 
     private ProfilePersonaListDialog(ProfileData profileData) {
-        this.profileData = profileData;
+        this.mProfileData = profileData;
     }
 
     @Override
@@ -49,12 +49,12 @@ public class ProfilePersonaListDialog extends DialogFragment implements
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.info_dialog_soldierselect);
-        personaId = personaId().clone();
-        personaName = personaName().clone();
+        mPersonaId = personaId().clone();
+        mPersonaName = personaName().clone();
         builder.setNegativeButton("Cancel", this);
         builder.setSingleChoiceItems(
 
-                personaName, -1, new DialogInterface.OnClickListener() {
+                mPersonaName, -1, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int item) {
                         updateSharedPreference(item);
@@ -66,19 +66,19 @@ public class ProfilePersonaListDialog extends DialogFragment implements
     }
 
     private long[] personaId() {
-        long[] id = new long[profileData.getNumPersonas()];
-        for (int i = 0; i < profileData.getNumPersonas(); i++) {
-            id[i] = profileData.getPersona(i).getId();
+        long[] id = new long[mProfileData.getNumPersonas()];
+        for (int i = 0; i < mProfileData.getNumPersonas(); i++) {
+            id[i] = mProfileData.getPersona(i).getId();
         }
         return id;
     }
 
     private String[] personaName() {
         List<String> name = new ArrayList<String>();
-        for (int i = 0; i < profileData.getNumPersonas(); i++) {
-            name.add(profileData.getPersona(i).getName());
+        for (int i = 0; i < mProfileData.getNumPersonas(); i++) {
+            name.add(mProfileData.getPersona(i).getName());
         }
-        return name.toArray(new String[profileData.getNumPersonas()]);
+        return name.toArray(new String[mProfileData.getNumPersonas()]);
     }
 
     private void updateSharedPreference(int item) {
@@ -86,7 +86,7 @@ public class ProfilePersonaListDialog extends DialogFragment implements
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity()
                 .getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong(SP_BL_PERSONA_CURRENT_ID, personaId[item]);
+        editor.putLong(SP_BL_PERSONA_CURRENT_ID, mPersonaId[item]);
         editor.putInt(SP_BL_PERSONA_CURRENT_POS, item);
         editor.commit();
     }

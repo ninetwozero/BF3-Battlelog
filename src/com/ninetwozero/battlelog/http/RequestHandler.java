@@ -75,18 +75,15 @@ public class RequestHandler {
     public static final int HEADER_JSON = 2;
     public static final int HEADER_GZIP = 3;
 
-    // Constructor
-    public RequestHandler() {
-    }
-
     public String get(String link, int extraHeaders)
             throws RequestHandlerException {
 
         // Check defaults
-        if (link.equals(""))
+        if ("".equals(link)) {
             throw new RequestHandlerException("No link found.");
-        // Default
-        String httpContent = "";
+            
+        }
+        
         try {
 
             // Init the HTTP-related attributes
@@ -102,7 +99,7 @@ public class RequestHandler {
             if (httpEntity != null) {
 
                 // Get the content!
-                httpContent = EntityUtils.toString(httpEntity);
+                return EntityUtils.toString(httpEntity);
 
             }
 
@@ -120,7 +117,7 @@ public class RequestHandler {
 
         }
 
-        return httpContent;
+        return "";
 
     }
 
@@ -128,9 +125,9 @@ public class RequestHandler {
             throws RequestHandlerException {
 
         // Check defaults
-        if (link.equals(""))
+        if ("".equals(link)) {
             throw new RequestHandlerException("No link found.");
-
+        }
         try {
 
             // Init the HTTP-related attributes
@@ -147,15 +144,7 @@ public class RequestHandler {
             HttpEntity httpEntity = httpResponse.getEntity();
 
             // Create the image
-            if (httpEntity != null) {
-
-                return httpEntity;
-
-            } else {
-
-                return null;
-
-            }
+            return httpEntity;
 
         } catch (Exception ex) {
 
@@ -169,9 +158,9 @@ public class RequestHandler {
             throws RequestHandlerException {
 
         // Check defaults
-        if (link.equals(""))
+        if ("".equals(link)) {
             throw new RequestHandlerException("No link found.");
-
+        }
         // Default
         Bitmap image = null;
         try {
@@ -211,25 +200,25 @@ public class RequestHandler {
             String filename) throws RequestHandlerException {
 
         // Check defaults
-        if (link.equals(""))
+        if ("".equals(link)) {
             throw new RequestHandlerException("No link found.");
-
+        }
+    
         // Default
         byte[] httpContent = null;
         FileOutputStream fileStream = null;
         String path = "";
 
         // Let's get a *nice* path
-        if (filename != null && !filename.equals("")) {
+        if ("".equals(filename)) {
 
+            path = directory + System.currentTimeMillis();
+            
+        } else {
+            
             path = directory + filename;
 
-        } else {
-
-            path = directory + String.valueOf(System.currentTimeMillis());
-
         }
-
         // Let's do this!
         try {
 
@@ -310,8 +299,10 @@ public class RequestHandler {
             throws RequestHandlerException {
 
         // Check so it's not empty
-        if (link.equals(""))
+        if ("".equals(link)) {
+
             throw new RequestHandlerException("No link found.");
+        }
 
         // Init...
         HttpPost httpPost = new HttpPost(link);
@@ -333,7 +324,6 @@ public class RequestHandler {
         List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
         HttpEntity httpEntity;
         HttpResponse httpResponse;
-        String httpContent = "";
 
         // Iterate over the fields and add the NameValuePairs
         for (PostData data : postDataArray) {
@@ -355,14 +345,10 @@ public class RequestHandler {
             if (httpEntity != null) {
 
                 // Get the content!
-                httpContent = EntityUtils.toString(httpEntity);
-
-            } else {
-
-                Log.d(Constants.DEBUG_TAG, "The response was null. Weird.");
-
+                return EntityUtils.toString(httpEntity);
+            
             }
-
+            
         } catch (UnknownHostException ex) {
 
             throw new RequestHandlerException(
@@ -374,7 +360,7 @@ public class RequestHandler {
 
         }
 
-        return httpContent;
+        return "";
 
     }
 
@@ -631,8 +617,9 @@ public class RequestHandler {
         for (int i = 0, max = postData.length; i < max; i++) {
 
             // If it's null, we skip it
-            if (data[i] == null)
+            if (data[i] == null) {
                 continue;
+            }
 
             // Save the PostData
             postData[i] = new PostData(fields[i], String.valueOf(data[i]));

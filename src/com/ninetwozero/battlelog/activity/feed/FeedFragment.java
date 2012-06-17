@@ -46,7 +46,6 @@ import com.ninetwozero.battlelog.adapter.FeedListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncFeedHooah;
 import com.ninetwozero.battlelog.asynctask.AsyncPostToWall;
 import com.ninetwozero.battlelog.asynctask.AsyncStatusUpdate;
-import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
@@ -57,34 +56,33 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class FeedFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
 
     // Elements
-    private ListView listFeed;
-    private FeedListAdapter feedListAdapter;
-    private EditText fieldMessage;
-    private TextView textTitle;
-    private RelativeLayout wrapInput;
-    private Button buttonSend;
+    private ListView mListView;
+    private FeedListAdapter mListAdapter;
+    private EditText mFieldMessage;
+    private TextView mTextTitle;
+    private RelativeLayout mWrapInput;
+    private Button mButtonSend;
 
     // Misc
-    private List<FeedItem> feedItems;
-    private SharedPreferences sharedPreferences;
-    private String title;
-    private int type;
-    private long id;
-    private boolean canWrite;
+    private List<FeedItem> mFeedItems;
+    private SharedPreferences mSharedPreferences;
+    private String mTitle;
+    private int mType;
+    private long mId;
+    private boolean mWrite;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        layoutInflater = inflater;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_feed,
@@ -108,40 +106,40 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
     public void initFragment(View v) {
 
         // Get the elements
-        wrapInput = (RelativeLayout) v.findViewById(R.id.wrap_input);
-        listFeed = (ListView) v.findViewById(android.R.id.list);
-        fieldMessage = (EditText) v.findViewById(R.id.field_message);
-        textTitle = (TextView) v.findViewById(R.id.text_title);
-        buttonSend = (Button) v.findViewById(R.id.button_send);
+        mWrapInput = (RelativeLayout) v.findViewById(R.id.wrap_input);
+        mListView = (ListView) v.findViewById(android.R.id.list);
+        mFieldMessage = (EditText) v.findViewById(R.id.field_message);
+        mTextTitle = (TextView) v.findViewById(R.id.text_title);
+        mButtonSend = (Button) v.findViewById(R.id.button_send);
 
         // Setup the listAdapter
-        feedListAdapter = new FeedListAdapter(context, feedItems,
-                layoutInflater);
-        listFeed.setAdapter(feedListAdapter);
+        mListAdapter = new FeedListAdapter(mContext, mFeedItems,
+                mLayoutInflater);
+        mListView.setAdapter(mListAdapter);
 
         // Handle the *type*-specific events here
-        if (type == FeedItem.TYPE_GLOBAL) {
+        if (mType == FeedItem.TYPE_GLOBAL) {
 
-            textTitle.setText(R.string.info_feed_title_global);
-            fieldMessage.setHint(R.string.info_xml_hint_status);
-            wrapInput.setVisibility(canWrite ? View.VISIBLE : View.GONE);
+            mTextTitle.setText(R.string.info_feed_title_global);
+            mFieldMessage.setHint(R.string.info_xml_hint_status);
+            mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
 
-        } else if (type == FeedItem.TYPE_PROFILE) {
+        } else if (mType == FeedItem.TYPE_PROFILE) {
 
-            textTitle.setText(title);
-            fieldMessage.setHint(R.string.info_xml_hint_feed);
-            wrapInput.setVisibility(canWrite ? View.VISIBLE : View.GONE);
+            mTextTitle.setText(mTitle);
+            mFieldMessage.setHint(R.string.info_xml_hint_feed);
+            mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
 
-        } else if (type == FeedItem.TYPE_PLATOON) {
+        } else if (mType == FeedItem.TYPE_PLATOON) {
 
-            textTitle.setText(title);
-            fieldMessage.setHint(R.string.info_xml_hint_feed);
-            wrapInput.setVisibility(canWrite ? View.VISIBLE : View.GONE);
+            mTextTitle.setText(mTitle);
+            mFieldMessage.setHint(R.string.info_xml_hint_feed);
+            mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
 
         }
 
         // Setup the button click
-        buttonSend.setOnClickListener(
+        mButtonSend.setOnClickListener(
 
                 new OnClickListener() {
 
@@ -149,45 +147,44 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
                     public void onClick(View v) {
 
                         // Empty message?
-                        String message = fieldMessage.getText().toString();
-                        if (message.equals("")) {
+                        String message = mFieldMessage.getText().toString();
+                        if ("".equals(message)) {
 
-                            Toast.makeText(context, R.string.info_empty_msg,
+                            Toast.makeText(mContext, R.string.info_empty_msg,
                                     Toast.LENGTH_SHORT).show();
-                            return;
 
                         }
 
                         // Let's do it accordingly
-                        if (type == FeedItem.TYPE_GLOBAL) {
+                        if (mType == FeedItem.TYPE_GLOBAL) {
 
-                            new AsyncStatusUpdate(context, FeedFragment.this).execute(message,
-                                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
+                            new AsyncStatusUpdate(mContext, FeedFragment.this).execute(message,
+                                    mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
                                             ""));
 
-                        } else if (type == FeedItem.TYPE_PROFILE) {
+                        } else if (mType == FeedItem.TYPE_PROFILE) {
 
                             new AsyncPostToWall(
 
-                                    context, id, false, FeedFragment.this
+                                    mContext, mId, false, FeedFragment.this
 
                             ).execute(
 
-                                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
+                                    mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
                                             ""),
                                     message
 
                                     );
 
-                        } else if (type == FeedItem.TYPE_PLATOON) {
+                        } else if (mType == FeedItem.TYPE_PLATOON) {
 
                             new AsyncPostToWall(
 
-                                    context, id, true, FeedFragment.this
+                                    mContext, mId, true, FeedFragment.this
 
                             ).execute(
 
-                                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
+                                    mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
                                             ""),
                                     message
 
@@ -196,7 +193,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
                         }
 
                         // Empty the field
-                        fieldMessage.setText("");
+                        mFieldMessage.setText("");
 
                     }
                 }
@@ -217,7 +214,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
         // Feed refresh!
         new AsyncRefresh(
 
-                context, SessionKeeper.getProfileData().getId()
+                mContext, SessionKeeper.getProfileData().getId()
 
         ).execute();
 
@@ -237,21 +234,15 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 
         // Show the menu
-        if (!((FeedItem) ((View) info.targetView).getTag()).isLiked()) {
-
-            menu.add(Constants.MENU_ID_FEED, 0, 0, R.string.label_hooah);
-
-        } else {
-
-            menu.add(Constants.MENU_ID_FEED, 0, 0, R.string.label_unhooah);
-
-        }
+        FeedItem feedItem = (FeedItem) info.targetView.getTag();
+        menu.add(Constants.MENU_ID_FEED, 0, 0,
+                feedItem.isLiked() ? R.string.label_hooah : R.string.label_unhooah);
         menu.add(Constants.MENU_ID_FEED, 1, 0, R.string.label_single_post_view);
-        if (type != FeedItem.TYPE_PLATOON) {
+
+        // Platoon feeds only have posts that would open a new platoon activity
+        if (mType != FeedItem.TYPE_PLATOON) {
             menu.add(Constants.MENU_ID_FEED, 2, 0, R.string.label_goto_item);
         }
-
-        return;
 
     }
 
@@ -265,8 +256,8 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
             // REQUESTS
             if (item.getItemId() == 0) {
 
-                new AsyncFeedHooah(context, info.id, false, feedItem.isLiked(), this)
-                        .execute(sharedPreferences.getString(
+                new AsyncFeedHooah(mContext, info.id, false, feedItem.isLiked(), this)
+                        .execute(mSharedPreferences.getString(
                                 Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
             } else if (item.getItemId() == 1) {
@@ -276,7 +267,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                 new Intent(
 
-                        context, SinglePostActivity.class
+                        mContext, SinglePostActivity.class
 
                 ).putExtra(
 
@@ -284,7 +275,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                         ).putExtra(
 
-                                "canComment", canWrite
+                                "canComment", mWrite
 
                         )
 
@@ -292,8 +283,8 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
             } else if (item.getItemId() == 2) {
 
-                if (feedItem.getIntent(context) != null) {
-                    startActivity(feedItem.getIntent(context));
+                if (feedItem.getIntent(mContext) != null) {
+                    startActivity(feedItem.getIntent(mContext));
                 }
 
             }
@@ -312,8 +303,8 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
     private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
         // Attributes
-        private Context context;
-        private long activeProfileId;
+        private final Context context;
+        private final long activeProfileId;
 
         public AsyncRefresh(Context c, long pId) {
 
@@ -332,15 +323,15 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Get...
-                feedItems = new FeedClient(id, type).get(
+                mFeedItems = new FeedClient(mId, mType).get(
 
-                        context, sharedPreferences.getInt(Constants.SP_BL_NUM_FEED,
+                        context, mSharedPreferences.getInt(Constants.SP_BL_NUM_FEED,
                                 Constants.DEFAULT_NUM_FEED), activeProfileId
 
                         );
 
                 // ...validate!
-                return (feedItems != null);
+                return (mFeedItems != null);
 
             } catch (WebsiteHandlerException ex) {
 
@@ -359,15 +350,11 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                 Toast.makeText(this.context, R.string.info_feed_empty,
                         Toast.LENGTH_SHORT).show();
-                return;
 
             }
 
             // Update
-            feedListAdapter.setItemArray(feedItems);
-
-            // Get back here!
-            return;
+            mListAdapter.setItemArray(mFeedItems);
 
         }
 
@@ -375,32 +362,32 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
     public void setTitle(String t) {
 
-        title = t;
+        mTitle = t;
 
     }
 
     public void setType(int t) {
 
-        type = t;
+        mType = t;
 
     }
 
     public int getType() {
 
-        return type;
+        return mType;
     }
 
     public void setId(long i) {
 
-        id = i;
+        mId = i;
 
     }
 
     public void setCanWrite(boolean c) {
 
-        canWrite = c;
-        if (wrapInput != null) {
-            wrapInput.setVisibility(canWrite ? View.VISIBLE : View.GONE);
+        mWrite = c;
+        if (mWrapInput != null) {
+            mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
         }
 
     }

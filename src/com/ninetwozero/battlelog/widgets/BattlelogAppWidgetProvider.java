@@ -44,22 +44,22 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
     public static final String DEBUG_TAG = "WidgetProvider";
     public static final String ACTION_WIDGET_RECEIVER = "ActionReceiverWidget";
     public static final String ACTION_WIDGET_OPENAPP = "Main";
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
             int[] appWidgetIds) {
 
         // Set the values
-        sharedPreferences = PreferenceManager
+        mSharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
 
         // Set the session if needed
         SessionKeeper.setProfileData(SessionKeeper
-                .generateProfileDataFromSharedPreferences(sharedPreferences));
+                .generateProfileDataFromSharedPreferences(mSharedPreferences));
 
         // if service == active
-        PublicUtils.setupSession(context, sharedPreferences);
+        PublicUtils.setupSession(context, mSharedPreferences);
 
         // Let's call the AsyncTask
         new AsyncRefresh(context, appWidgetManager).execute();
@@ -85,16 +85,16 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
     private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
         // Attributes
-        private Context context;
-        private AppWidgetManager appWidgetManager;
-        private int numFriendsOnline;
-        private PersonaStats playerData;
-        private FriendListDataWrapper friends;
+        private Context mContext;
+        private AppWidgetManager mAppWidgetManager;
+        private int mNumFriendsOnline;
+        private PersonaStats mPlayerData;
+        private FriendListDataWrapper mFriends;
 
         public AsyncRefresh(Context c, AppWidgetManager a) {
 
-            context = c;
-            appWidgetManager = a;
+            mContext = c;
+            mAppWidgetManager = a;
 
         }
 
@@ -104,7 +104,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
             try {
 
                 PersonaData firstPersona = SessionKeeper.getProfileData().getPersona(0);
-                playerData = new ProfileClient(SessionKeeper.getProfileData()).getStats(
+                mPlayerData = new ProfileClient(SessionKeeper.getProfileData()).getStats(
 
                         firstPersona.getName(),
                         firstPersona.getId(),
@@ -112,9 +112,9 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
                         );
 
-                friends = new COMClient(sharedPreferences.getString(
-                        Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriendsForCOM(context);
-                numFriendsOnline = friends.getNumTotalOnline();
+                mFriends = new COMClient(mSharedPreferences.getString(
+                        Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriendsForCOM(mContext);
+                mNumFriendsOnline = mFriends.getNumTotalOnline();
                 return true;
 
             } catch (WebsiteHandlerException ex) {
@@ -129,10 +129,10 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
         @Override
         protected void onPostExecute(Boolean results) {
 
-            if (context != null) {
+            if (mContext != null) {
 
                 // Let's init a RemoteViews
-                RemoteViews remoteView = new RemoteViews(context.getPackageName(),
+                RemoteViews remoteView = new RemoteViews(mContext.getPackageName(),
                         R.layout.widget_dogtag);
 
                 // Set the views
@@ -140,25 +140,25 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
                     remoteView.setTextViewText(
 
-                            R.id.label, playerData.getPersonaName()
+                            R.id.label, mPlayerData.getPersonaName()
 
                             );
                     remoteView.setTextViewText(
 
                             R.id.title,
-                            context.getString(R.string.info_xml_rank)
-                                    + playerData.getRankId());
+                            mContext.getString(R.string.info_xml_rank)
+                                    + mPlayerData.getRankId());
                     remoteView
                             .setTextViewText(
 
                                     R.id.stats,
-                                    ("W/L: " + Math.floor(playerData.getWLRatio() * 100) / 100
-                                            + "  K/D: " + Math.floor(playerData.getKDRatio() * 100) / 100));
+                                    ("W/L: " + Math.floor(mPlayerData.getWLRatio() * 100) / 100
+                                            + "  K/D: " + Math.floor(mPlayerData.getKDRatio() * 100) / 100));
 
-                    if (numFriendsOnline > 0) {
+                    if (mNumFriendsOnline > 0) {
 
                         remoteView.setTextColor(R.id.friends, Color.BLACK);
-                        remoteView.setTextViewText(R.id.friends, "" + numFriendsOnline);
+                        remoteView.setTextViewText(R.id.friends, String.valueOf(mNumFriendsOnline));
 
                     } else {
 
@@ -172,24 +172,24 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
                     remoteView.setTextViewText(R.id.label,
                             Html.fromHtml("<b>Error</b>"));
                     remoteView.setTextViewText(R.id.title,
-                            context.getString(R.string.general_no_data));
+                            mContext.getString(R.string.general_no_data));
                     remoteView.setTextViewText(R.id.stats,
-                            context.getString(R.string.info_connect_bl));
+                            mContext.getString(R.string.info_connect_bl));
                     remoteView.setTextColor(R.id.friends, Color.RED);
                     remoteView.setTextViewText(R.id.friends, "0");
 
                 }
 
                 remoteView.setOnClickPendingIntent(R.id.widget_button,
-                        PendingIntent.getBroadcast(context,
-                                0, new Intent(context, BattlelogAppWidgetProvider.class)
+                        PendingIntent.getBroadcast(mContext,
+                                0, new Intent(mContext, BattlelogAppWidgetProvider.class)
                                         .setAction(ACTION_WIDGET_RECEIVER), 0));
                 remoteView.setOnClickPendingIntent(
                         R.id.widget_button2,
                         PendingIntent.getActivity(
-                                context, 0, new Intent(context, MainActivity.class).setAction(
+                                mContext, 0, new Intent(mContext, MainActivity.class).setAction(
                                         ACTION_WIDGET_OPENAPP), 0));
-                appWidgetManager.updateAppWidget(new ComponentName(context,
+                mAppWidgetManager.updateAppWidget(new ComponentName(mContext,
                         BattlelogAppWidgetProvider.class), remoteView);
 
             }

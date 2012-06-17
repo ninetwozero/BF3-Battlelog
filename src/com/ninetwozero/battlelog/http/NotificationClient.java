@@ -25,7 +25,7 @@ public class NotificationClient extends DefaultClient {
 
     public NotificationClient() {
 
-        requestHandler = new RequestHandler();
+        mRequestHandler = new RequestHandler();
 
     }
 
@@ -35,7 +35,7 @@ public class NotificationClient extends DefaultClient {
         try {
 
             // Init
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     Constants.URL_NOTIFICATIONS_TOP5,
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
@@ -44,17 +44,14 @@ public class NotificationClient extends DefaultClient {
                     );
 
             // Got httpContent
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
 
-                Log.d(Constants.DEBUG_TAG, "httpContent => " + httpContent);
-
-                // Grab the notifications
-                return new JSONObject(httpContent).getJSONObject("data")
-                        .getInt("numUnread");
+                throw new WebsiteHandlerException("No notifications found.");
 
             } else {
 
-                throw new WebsiteHandlerException("No notifications found.");
+                // Grab the notifications
+                return new JSONObject(httpContent).getJSONObject("data").getInt("numUnread");
 
             }
 
@@ -67,18 +64,22 @@ public class NotificationClient extends DefaultClient {
 
     }
 
-    public ArrayList<NotificationData> get(String checksum)
+    public List<NotificationData> get(String checksum)
             throws WebsiteHandlerException {
 
         try {
 
             // Init
             List<NotificationData> notifications = new ArrayList<NotificationData>();
-            String httpContent = requestHandler.get(Constants.URL_NOTIFICATIONS_ALL,
+            String httpContent = mRequestHandler.get(Constants.URL_NOTIFICATIONS_ALL,
                     RequestHandler.HEADER_AJAX);
 
             // Got httpContent
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
+
+                throw new WebsiteHandlerException("No notifications found.");
+
+            } else {
 
                 // Grab the notifications
                 JSONObject contextObject = new JSONObject(httpContent)
@@ -140,10 +141,6 @@ public class NotificationClient extends DefaultClient {
 
                 }
 
-            } else {
-
-                throw new WebsiteHandlerException("No notifications found.");
-
             }
 
             // Return!!
@@ -163,7 +160,7 @@ public class NotificationClient extends DefaultClient {
         try {
 
             // Get the data
-            String httpContent = requestHandler.get(
+            String httpContent = mRequestHandler.get(
 
                     RequestHandler.generateUrl(URL_SINGLE, n.getItemId()),
                     RequestHandler.HEADER_AJAX

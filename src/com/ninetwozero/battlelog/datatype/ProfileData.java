@@ -21,127 +21,128 @@ import android.os.Parcelable;
 public class ProfileData implements Parcelable {
 
     // Attributes
-    private long id;
-    private String username, gravatarHash;
-    private PersonaData[] persona;
-    private boolean isPlaying, isOnline;
-    private boolean isFriend;
-    private int membershipLevel;
+    private final long mId;
+    private final String mUsername;
+    private String mGravatarHash;
+    private PersonaData[] mPersona;
+    private boolean mPlaying;
+    private boolean mOnline;
+    private boolean mFriend;
+    private int mMembershipLevel;
 
     // Constructs
     public ProfileData(String u) {
 
-        id = 0;
-        username = u;
+        mId = 0;
+        mUsername = u;
 
     }
 
-    public ProfileData(Parcel in) {
+    public ProfileData(final Parcel in) {
 
-        // Init from the parcel
-        id = in.readLong();
-        username = in.readString();
-        gravatarHash = in.readString();
-        isOnline = (in.readInt() == 1);
-        isPlaying = (in.readInt() == 1);
-        persona = in.createTypedArray(PersonaData.CREATOR);
-        isFriend = (in.readInt() == 1);
-        membershipLevel = in.readInt();
+        mId = in.readLong();
+        mUsername = in.readString();
+        mGravatarHash = in.readString();
+        mOnline = (in.readInt() == 1);
+        mPlaying = (in.readInt() == 1);
+        mPersona = in.createTypedArray(PersonaData.CREATOR);
+        mFriend = (in.readInt() == 1);
+        mMembershipLevel = in.readInt();
 
     }
 
-    protected ProfileData(Builder builder) {
+    protected ProfileData(final Builder builder) {
 
-        id = builder.id;
-        username = builder.username;
-        gravatarHash = builder.gravatarHash;
-        isOnline = builder.isOnline;
-        isPlaying = builder.isPlaying;
-        persona = builder.persona;
-        isFriend = builder.isFriend;
-        membershipLevel = builder.membershipLevel;
+        mId = builder.mId;
+        mUsername = builder.mUsername;
+        mGravatarHash = builder.mGravatarHash;
+        mOnline = builder.mOnline;
+        mPlaying = builder.mPlaying;
+        mPersona = builder.mPersona;
+        mFriend = builder.mFriend;
+        mMembershipLevel = builder.mMembershipLevel;
 
     }
 
     // Getters
     public long getId() {
-        return id;
+        return mId;
     }
 
     public String getUsername() {
-        return username;
+        return mUsername;
     }
 
     public PersonaData getPersona(int p) {
 
-        return (persona.length != 0) ? persona[p] : null;
+        return (mPersona.length == 0) ? null : mPersona[p];
 
     }
 
     public PersonaData[] getPersonaArray() {
 
-        return persona;
+        return mPersona.clone();
 
     }
 
     public int getNumPersonas() {
 
-        return (persona == null) ? 0 : persona.length;
+        return (mPersona == null) ? 0 : mPersona.length;
 
     }
 
     public String getGravatarHash() {
-        return gravatarHash;
+        return mGravatarHash;
     }
 
     // is ... ?
     public boolean isOnline() {
-        return isOnline;
+        return mOnline;
     }
 
     public boolean isPlaying() {
-        return isPlaying;
+        return mPlaying;
     }
 
     public boolean isFriend() {
 
-        return isFriend;
+        return mFriend;
     }
 
     public boolean isAdmin() {
 
-        return (membershipLevel == 128);
+        return (mMembershipLevel == 128);
     }
 
     public int getMembershipLevel() {
 
-        return membershipLevel;
+        return mMembershipLevel;
     }
 
     // Setters
     public void setPersona(PersonaData[] p) {
 
-        persona = p.clone();
+        mPersona = p.clone();
 
     }
 
     public void setFriend(boolean b) {
 
-        isFriend = b;
+        mFriend = b;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
         // Everything else
-        dest.writeLong(id);
-        dest.writeString(username);
-        dest.writeString(gravatarHash);
-        dest.writeInt(isOnline ? 1 : 0);
-        dest.writeInt(isPlaying ? 1 : 0);
-        dest.writeTypedArray(persona, flags);
-        dest.writeInt(isFriend ? 1 : 0);
-        dest.writeInt(membershipLevel);
+        dest.writeLong(mId);
+        dest.writeString(mUsername);
+        dest.writeString(mGravatarHash);
+        dest.writeInt(mOnline ? 1 : 0);
+        dest.writeInt(mPlaying ? 1 : 0);
+        dest.writeTypedArray(mPersona, flags);
+        dest.writeInt(mFriend ? 1 : 0);
+        dest.writeInt(mMembershipLevel);
     }
 
     @Override
@@ -164,64 +165,64 @@ public class ProfileData implements Parcelable {
     public static class Builder {
 
         // Required params
-        private final long id;
-        private final String username;
-
-        // Optional parameters
-        private String gravatarHash = "";
-        private boolean isOnline = false;
-        private boolean isPlaying = false;
-        private boolean isFriend = true;
-        private PersonaData[] persona = null;
-        private int membershipLevel = 0;
+        private final long mId;
+        private final String mUsername;
+        
+        // Optional params
+        private String mGravatarHash;
+        private PersonaData[] mPersona;
+        private boolean mPlaying;
+        private boolean mOnline;
+        private boolean mFriend;
+        private int mMembershipLevel;
 
         // Create the mandatory builder
         public Builder(long i, String u) {
 
-            id = i;
-            username = u;
+            mId = i;
+            mUsername = u;
 
         }
 
         // Set the data
         public Builder gravatarHash(String s) {
 
-            gravatarHash = s;
+            mGravatarHash = s;
             return this;
 
         }
 
         public Builder isOnline(boolean b) {
 
-            isOnline = b;
+            mOnline = b;
             return this;
 
         }
 
         public Builder isPlaying(boolean b) {
 
-            isPlaying = b;
+            mPlaying = b;
             return this;
 
         }
 
         public Builder isFriend(boolean b) {
 
-            isFriend = b;
+            mFriend = b;
             return this;
 
         }
 
         public Builder persona(PersonaData... p) {
 
-            persona = p;
+            mPersona = p;
             return this;
 
         }
 
         public Builder membershipLevel(int i) {
 
-            membershipLevel = i;
+            mMembershipLevel = i;
             return this;
 
         }
@@ -240,7 +241,7 @@ public class ProfileData implements Parcelable {
 
         return (
 
-        id + ":" + username + ":pX" + getNumPersonas()
+        mId + ":" + mUsername + ":pX" + getNumPersonas()
 
         );
     }

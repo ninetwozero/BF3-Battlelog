@@ -50,7 +50,7 @@ public class FeedClient extends DefaultClient {
 
     public FeedClient(long i, int t) {
 
-        requestHandler = new RequestHandler();
+        mRequestHandler = new RequestHandler();
         id = i;
         type = t;
     }
@@ -70,7 +70,7 @@ public class FeedClient extends DefaultClient {
                             FIELD_NAMES_POST,
                             content,
                             checksum,
-                            type != FeedItem.TYPE_PLATOON ? id : null,
+                            type == FeedItem.TYPE_PLATOON ? null : id,
                             type == FeedItem.TYPE_PLATOON ? id : null
 
                             ),
@@ -79,15 +79,16 @@ public class FeedClient extends DefaultClient {
                     );
 
             // Did we manage?
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
 
+                throw new WebsiteHandlerException("Post could not be saved.");
+
+            } else {
+                
                 // Check the JSON
                 String status = new JSONObject(httpContent).optString("message", "");
                 return (status.matches("_POST_CREATED"));
 
-            } else {
-
-                throw new WebsiteHandlerException("Post could not be saved.");
 
             }
 
@@ -749,7 +750,7 @@ public class FeedClient extends DefaultClient {
             for (int i = 0, max = Math.round(num / 10); i < max; i++) {
 
                 // Get the content, and create a JSONArray
-                httpContent = requestHandler.get(
+                httpContent = mRequestHandler.get(
                         url.replace(
                                 "{NUMSTART}",
                                 String.valueOf(i * 10)

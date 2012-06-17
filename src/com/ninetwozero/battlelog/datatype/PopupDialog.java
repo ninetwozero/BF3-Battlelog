@@ -16,7 +16,7 @@ public class PopupDialog extends Dialog {
     }
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         super.onCreate(icicle);
         setContentView(R.layout.popup_dialog_view);

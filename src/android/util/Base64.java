@@ -226,7 +226,7 @@ public class Base64 {
         private int state; // state number (0 to 6)
         private int value;
 
-        final private int[] alphabet;
+        private final int[] alphabet;
 
         public Decoder(int flags, byte[] output) {
             this.output = output;
@@ -564,14 +564,14 @@ public class Base64 {
                 '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '_',
         };
 
-        final private byte[] tail;
+        private final byte[] tail;
         /* package */int tailLen;
         private int count;
 
         final public boolean do_padding;
         final public boolean do_newline;
         final public boolean do_cr;
-        final private byte[] alphabet;
+        private final byte[] alphabet;
 
         public Encoder(int flags, byte[] output) {
             this.output = output;
@@ -623,7 +623,6 @@ public class Base64 {
                                 | (input[p++] & 0xff);
                         tailLen = 0;
                     }
-                    ;
                     break;
 
                 case 2:

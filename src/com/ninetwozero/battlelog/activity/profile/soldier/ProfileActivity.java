@@ -14,7 +14,7 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
@@ -50,16 +50,14 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
     private ProfileData profileData;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
 
         // Get the intent
         if (!getIntent().hasExtra("profile")) {
-
-            return;
-
+            finish();
         }
 
         // Get the profile
@@ -93,7 +91,7 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
         if (listFragments == null) {
 
             // Add them to the list
-            listFragments = new Vector<Fragment>();
+            listFragments = new ArrayList<Fragment>();
             listFragments.add(fragmentOverview = (ProfileOverviewFragment) Fragment.instantiate(
                     this, ProfileOverviewFragment.class.getName()));
             listFragments.add(fragmentStats = (ProfileStatsFragment) Fragment.instantiate(this,
@@ -255,7 +253,6 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
                 break;
 
         }
-        return;
 
     }
 
@@ -307,14 +304,10 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && viewPager.getCurrentItem() > 0) {
 
-            if (viewPager.getCurrentItem() > 0) {
-
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
-                return true;
-
-            }
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+            return true;
 
         }
         return super.onKeyDown(keyCode, event);

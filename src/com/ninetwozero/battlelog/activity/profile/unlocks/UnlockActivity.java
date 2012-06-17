@@ -17,7 +17,7 @@ package com.ninetwozero.battlelog.activity.profile.unlocks;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
+import java.util.Map;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
@@ -52,23 +52,21 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
 
     // Attributes
     private ProfileData profileData;
-    private HashMap<Long, UnlockDataWrapper> unlocks;
+    private Map<Long, UnlockDataWrapper> unlocks;
     private long selectedPersona;
     private int selectedPosition;
     private long[] personaId;
     private String[] personaName;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
 
         // Get the intent
         if (!getIntent().hasExtra("profile")) {
-
-            return;
-
+            finish();
         }
 
         // Get the profile
@@ -185,7 +183,7 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
         if (listFragments == null) {
 
             // Add them to the list
-            listFragments = new Vector<Fragment>();
+            listFragments = new ArrayList<Fragment>();
             listFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
             listFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
             listFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
@@ -239,13 +237,12 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
             AsyncTask<ProfileData, Void, Boolean> {
 
         // Attributes
-        Context context;
-        ProgressDialog progressDialog;
+        private Context context;
+        private ProgressDialog progressDialog;
 
         public AsyncGetDataSelf(Context c) {
 
             context = c;
-            progressDialog = null;
 
         }
 
@@ -313,12 +310,13 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
             // Fail?
             if (!result) {
 
-                if (progressDialog != null)
+                if (progressDialog != null) {
                     progressDialog.dismiss();
+
+                }
                 Toast.makeText(context, R.string.general_no_data,
                         Toast.LENGTH_SHORT).show();
                 ((Activity) context).finish();
-                return;
 
             }
 
@@ -333,9 +331,12 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
             }
 
             // Go go go
-            if (progressDialog != null)
+            if (progressDialog != null) {
+
                 progressDialog.dismiss();
-            return;
+
+            }
+
         }
 
     }

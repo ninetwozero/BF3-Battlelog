@@ -92,7 +92,7 @@ public class NotificationData implements Parcelable {
 
         // What have we here?
         String message;
-        if (type.equals("feedcomment")) {
+        if ("feedcomment".equals(type) ) {
 
             if (0 == ownerId || userId == ownerId) {
 
@@ -104,7 +104,7 @@ public class NotificationData implements Parcelable {
 
             } else {
 
-                if (owner.endsWith("s")) {
+                if (owner.endsWith("s") ) {
 
                     message = c.getString(R.string.info_feed_comment_other)
                             .replace(
@@ -126,7 +126,7 @@ public class NotificationData implements Parcelable {
 
             }
 
-        } else if (type.equals("feedcommentreply")) {
+        } else if ("feedcommentreply".equals(type) ) {
 
             if (0 == ownerId || userId == ownerId) {
 
@@ -139,7 +139,7 @@ public class NotificationData implements Parcelable {
 
             } else {
 
-                if (owner.endsWith("s")) {
+                if (owner.endsWith("s") ) {
 
                     message = c.getString(R.string.info_feed_comment_other_2)
                             .replace(
@@ -162,11 +162,11 @@ public class NotificationData implements Parcelable {
 
             }
 
-        } else if (type.equals("wallpostcreated")) {
+        } else if ("wallpostcreated".equals(type) ) {
 
             message = c.getString(R.string.info_feed_post_own);
 
-        } else if (type.equals("feedlike")) {
+        } else if ("feedlike".equals(type) ) {
 
             if (0 == ownerId || userId == ownerId) {
 
@@ -178,7 +178,7 @@ public class NotificationData implements Parcelable {
 
             } else {
 
-                if (owner.endsWith("s")) {
+                if (owner.endsWith("s") ) {
 
                     message = c.getString(R.string.info_feed_hooah_other)
                             .replace(
@@ -200,7 +200,7 @@ public class NotificationData implements Parcelable {
 
             }
 
-        } else if (type.equals("platoonjoinrequestaccepted")) {
+        } else if ("platoonjoinrequestaccepted".equals(type) ) {
 
             message = c.getString(R.string.info_platoon_join_ok).replace(
 
@@ -208,7 +208,7 @@ public class NotificationData implements Parcelable {
 
                     );
 
-        } else if (type.equals("platoonjoinrequestdeclined")) {
+        } else if ("platoonjoinrequestdeclined".equals(type) ) {
 
             message = c.getString(R.string.info_platoon_join_no).replace(
 
@@ -216,7 +216,7 @@ public class NotificationData implements Parcelable {
 
                     );
 
-        } else if (type.equals("platooninviterequest")) {
+        } else if ("platooninviterequest".equals(type) ) {
 
             message = c.getString(R.string.info_platoon_invite).replace(
 
@@ -224,7 +224,7 @@ public class NotificationData implements Parcelable {
 
                     );
 
-        } else if (type.equals("platoonpromoted")) {
+        } else if ("platoonpromoted".equals(type) ) {
 
             message = c.getString(R.string.info_platoon_promote).replace(
 
@@ -232,14 +232,14 @@ public class NotificationData implements Parcelable {
 
                     );
 
-        } else if (type.equals("platoonkicked")) {
+        } else if ("platoonkicked".equals(type) ) {
 
             message = c.getString(R.string.info_platoon_kick).replace(
 
                     "{platoon}", extra
 
                     );
-        } else if (type.equals("platoondemoted")) {
+        } else if ("platoondemoted".equals(type) ) {
 
             message = c.getString(R.string.info_platoon_demote).replace(
 
@@ -247,7 +247,7 @@ public class NotificationData implements Parcelable {
 
                     );
 
-        } else if (type.equals("platoonjoinrequest")) {
+        } else if ("platoonjoinrequest".equals(type) ) {
 
             message = c.getString(R.string.info_platoon_join_request).replace(
 
@@ -255,7 +255,7 @@ public class NotificationData implements Parcelable {
 
                     );
 
-        } else if (type.equals("platoonmemberjoined")) {
+        } else if ("platoonmemberjoined".equals(type) ) {
 
             message = c.getString(R.string.info_platoon_join_request_ok)
                     .replace(
@@ -264,7 +264,7 @@ public class NotificationData implements Parcelable {
 
                     );
 
-        } else if (type.equals("platoonleft")) {
+        } else if ("platoonleft".equals(type) ) {
 
             message = c.getString(R.string.info_platoon_left).replace(
 
@@ -272,7 +272,7 @@ public class NotificationData implements Parcelable {
 
                     );
 
-        } else if (type.equals("friendrequestaccepted")) {
+        } else if ("friendrequestaccepted".equals(type) ) {
 
             message = c.getString(R.string.info_feed_friend_accept);
 

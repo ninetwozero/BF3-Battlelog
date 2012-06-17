@@ -93,15 +93,14 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
             // Reload
             asyncChatRefresh.execute(profileId);
 
-            if (results)
+            if (results) {
                 Toast.makeText(context, R.string.msg_chat_ok,
                         Toast.LENGTH_SHORT).show();
-            else
+            } else {
                 Toast.makeText(context, R.string.msg_chat_fail,
                         Toast.LENGTH_SHORT).show();
-
+            }
         }
-        return;
 
     }
 

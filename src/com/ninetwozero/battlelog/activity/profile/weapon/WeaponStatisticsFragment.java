@@ -41,12 +41,11 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
     private TextView textKills, textHS, textSF, textSH, textAccuracy, textTE, textSS, textSSP;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_weapon_stats,
@@ -106,14 +105,14 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
 
     public void show(WeaponStats w) {
 
-        textKills.setText(w.getKills() + "");
-        textHS.setText(w.getHeadshots() + "");
-        textSF.setText(w.getShotsFired() + "");
-        textSH.setText(w.getShotsHit() + "");
+        textKills.setText(String.valueOf(w.getKills() ));
+        textHS.setText(String.valueOf(w.getHeadshots() ));
+        textSF.setText(String.valueOf(w.getShotsFired() ));
+        textSH.setText(String.valueOf(w.getShotsHit() ));
         textAccuracy.setText((Math.round(w.getAccuracy() * 1000) / 10.0) + "%");
         textTE.setText(PublicUtils.timeToLiteral(w.getTimeEquipped()));
-        textSS.setText(w.getServiceStars() + "");
-        textSSP.setText(w.getServiceStarProgress() + "");
+        textSS.setText(String.valueOf(w.getServiceStars() ));
+        textSSP.setText(String.valueOf(w.getServiceStarProgress()));
 
     }
 

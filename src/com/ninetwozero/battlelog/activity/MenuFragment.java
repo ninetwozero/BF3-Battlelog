@@ -58,12 +58,11 @@ public class MenuFragment extends Fragment implements DefaultFragment {
     private Map<Integer, Intent> MENU_INTENTS;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
-        layoutInflater = inflater;
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_dashboard_menu,
@@ -92,17 +91,19 @@ public class MenuFragment extends Fragment implements DefaultFragment {
         MENU_INTENTS.put(R.id.button_forum, new Intent(context, ForumActivity.class));
 
         // Add the OnClickListeners
+        final OnClickListener onClickListener = new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                startActivity(MENU_INTENTS.get(v.getId()));
+
+            }
+        };
+        
         for (int key : MENU_INTENTS.keySet()) {
 
-            view.findViewById(key).setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                    startActivity(MENU_INTENTS.get(v.getId()));
-
-                }
-            });
+            view.findViewById(key).setOnClickListener(onClickListener);
 
         }
 
@@ -113,18 +114,15 @@ public class MenuFragment extends Fragment implements DefaultFragment {
         if (v.getId() == R.id.button_platoons) {
 
             generatePopupPlatoonList(context, getView()).show();
-            return;
 
         } else if (v.getId() == R.id.button_compare) {
 
             generateDialogCompare(context, getView()).show();
-            return;
 
         } else {
 
             Toast.makeText(context, R.string.msg_unimplemented,
                     Toast.LENGTH_SHORT).show();
-            return;
 
         }
 
@@ -170,16 +168,16 @@ public class MenuFragment extends Fragment implements DefaultFragment {
 
                     public void onClick(DialogInterface dialog, int which) {
 
-                        if (!fieldUsername.getText().toString().equals("")) {
-
-                            new AsyncFetchDataToCompare(context, SessionKeeper
-                                    .getProfileData()).execute(fieldUsername.getText()
-                                    .toString());
-
-                        } else {
+                        String username = fieldUsername.getText().toString();
+                        if ("".equals(username)) {
 
                             Toast.makeText(context, R.string.general_empty_user,
                                     Toast.LENGTH_SHORT).show();
+
+                        } else {
+
+                            new AsyncFetchDataToCompare(context, SessionKeeper
+                                    .getProfileData()).execute(username);
 
                         }
 

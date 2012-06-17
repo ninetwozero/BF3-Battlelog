@@ -111,7 +111,6 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
 
         }
 
-        return;
     }
 
 }

@@ -14,8 +14,8 @@
 
 package com.ninetwozero.battlelog.activity.news;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
@@ -29,14 +29,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.feed.PostOverviewFragment;
@@ -69,7 +66,7 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
     private boolean isNews = false;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
 
         // onCreate - save the instance state
         super.onCreate(icicle);
@@ -86,20 +83,19 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
         fragmentManager = getSupportFragmentManager();
 
         // Get the intent
-        if( getIntent().hasExtra("feed") ) {
-          
+        if (getIntent().hasExtra("feed")) {
+
             feedData = getIntent().getParcelableExtra("feed");
             isNews = false;
-            
+
         } else if (getIntent().hasExtra("news")) {
 
             newsData = getIntent().getParcelableExtra("news");
             isNews = true;
-            
+
         } else {
 
             finish();
-            return;
 
         }
 
@@ -136,7 +132,7 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
         if (listFragments == null) {
 
             // Add them to the list
-            listFragments = new Vector<Fragment>();
+            listFragments = new ArrayList<Fragment>();
             listFragments.add(fragmentOverview = (PostOverviewFragment) Fragment.instantiate(
                     this, PostOverviewFragment.class.getName()));
             listFragments.add(fragmentComment = (CommentListFragment) Fragment.instantiate(
@@ -144,20 +140,20 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
                     CommentListFragment.class.getName()));
 
             // Add the profileData
-            if( !isNews ) { 
+            if (isNews) {
 
-                fragmentOverview.setData(feedData);
-                fragmentComment.setId(feedData.getId());
-                fragmentComment.setType(CommentData.TYPE_FEED);
-                
-            } else {
-                
                 fragmentOverview.setData(newsData);
                 fragmentComment.setId(newsData.getId());
                 fragmentComment.setType(CommentData.TYPE_NEWS);
 
+            } else {
+
+                fragmentOverview.setData(feedData);
+                fragmentComment.setId(feedData.getId());
+                fragmentComment.setType(CommentData.TYPE_FEED);
+
             }
-            
+
             // Get the ViewPager
             viewPager = (ViewPager) findViewById(R.id.viewpager);
             tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
@@ -189,7 +185,7 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
     public boolean onCreateOptionsMenu(Menu menu) {
 
         // Inflate!!
-        MenuInflater inflater = getMenuInflater();
+        final MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_basic, menu);
         return super.onCreateOptionsMenu(menu);
 
@@ -251,27 +247,13 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        return true;
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && viewPager.getCurrentItem() > 0) {
 
-            if (viewPager.getCurrentItem() > 0) {
-
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
-                return true;
-
-            }
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+            return true;
 
         }
         return super.onKeyDown(keyCode, event);

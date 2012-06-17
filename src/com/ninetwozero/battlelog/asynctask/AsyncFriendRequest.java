@@ -70,8 +70,6 @@ public class AsyncFriendRequest extends AsyncTask<String, Integer, Boolean> {
 
         }
 
-        return;
-
     }
 
 }

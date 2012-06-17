@@ -182,6 +182,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 					    android:layout_below="@id/string100"
 						android:layout_alignParentLeft="true"
 				    	android:layout_alignBaseline="@id/string_center_kills"
@@ -191,6 +192,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 				    	android:layout_alignBaseline="@id/string_center_kills"
 					    android:layout_below="@id/string100"
@@ -209,6 +211,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_kills_0"
 				    	android:layout_alignBaseline="@id/string_center_assists"
@@ -218,6 +221,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_kills_0"
 				    	android:layout_alignBaseline="@id/string_center_assists"
@@ -235,6 +239,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 					    android:layout_below="@id/string_center_assists"
 						android:layout_alignParentLeft="true"
 				    	android:layout_alignBaseline="@id/string_center_vkills"
@@ -244,6 +249,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 				    	android:layout_alignBaseline="@id/string_center_vkills"
 					    android:layout_below="@id/string_center_assists"
@@ -262,6 +268,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_vkills_0"
 				    	android:layout_alignBaseline="@id/string_center_vassists"
@@ -271,6 +278,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_vkills_0"
 				    	android:layout_alignBaseline="@id/string_center_vassists"
@@ -288,6 +296,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_vassists_0"
 				    	android:layout_alignBaseline="@id/string_center_heals"
@@ -297,6 +306,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_vassists_0"
 				    	android:layout_alignBaseline="@id/string_center_heals"
@@ -314,6 +324,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_heals_0"
 				    	android:layout_alignBaseline="@id/string_center_revives"
@@ -323,6 +334,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_heals_0"
 				    	android:layout_alignBaseline="@id/string_center_revives"
@@ -340,6 +352,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_revives_0"
 				    	android:layout_alignBaseline="@id/string_center_repairs"
@@ -349,6 +362,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_revives_0"
 				    	android:layout_alignBaseline="@id/string_center_repairs"
@@ -366,6 +380,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_repairs_0"
 				    	android:layout_alignBaseline="@id/string_center_resupplies"
@@ -375,6 +390,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_repairs_0"
 				    	android:layout_alignBaseline="@id/string_center_resupplies"
@@ -392,6 +408,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_resupplies_0"
 				    	android:layout_alignBaseline="@id/string_center_deaths"
@@ -401,6 +418,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_resupplies_0"
 				    	android:layout_alignBaseline="@id/string_center_deaths"
@@ -418,6 +436,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_deaths_0"
 				    	android:layout_alignBaseline="@id/string_center_kdr"
@@ -427,6 +446,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_deaths_0"
 				    	android:layout_alignBaseline="@id/string_center_kdr"
@@ -444,6 +464,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_center_kdr"
 				    	android:layout_alignBaseline="@id/string_center_wins"
@@ -453,6 +474,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_center_kdr"
 				    	android:layout_alignBaseline="@id/string_center_wins"
@@ -470,6 +492,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_wins_0"
 				    	android:layout_alignBaseline="@id/string_center_losses"
@@ -479,6 +502,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_wins_0"
 				    	android:layout_alignBaseline="@id/string_center_losses"
@@ -496,6 +520,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_losses_0"
 				    	android:layout_alignBaseline="@id/string_center_wlr"
@@ -505,6 +530,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_losses_0"
 				    	android:layout_alignBaseline="@id/string_center_wlr"
@@ -522,6 +548,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_center_wlr"
 				    	android:layout_alignBaseline="@id/string_center_accuracy"
@@ -531,6 +558,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_center_wlr"
 				    	android:layout_alignBaseline="@id/string_center_accuracy"
@@ -548,6 +576,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_accuracy_0"
 				    	android:layout_alignBaseline="@id/string_center_lhs"
@@ -557,6 +586,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_accuracy_0"
 				    	android:layout_alignBaseline="@id/string_center_lhs"
@@ -574,10 +604,12 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_lhs_0"
-				    	android:layout_alignBaseline="@id/string_center_lks"
+				    	android:layout_alignBaseline="@id/string_center_lks
 					/>
+					
 					<TextView
 						android:id="@+id/string_stats_lks_1"
 						android:layout_width="wrap_content"
@@ -600,6 +632,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_lks_0"
 				    	android:layout_alignBaseline="@id/string_center_skill"
@@ -609,6 +642,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_lks_0"
 				    	android:layout_alignBaseline="@id/string_center_skill"
@@ -626,6 +660,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_skill_0"
 				    	android:layout_alignBaseline="@id/string_center_time"
@@ -635,6 +670,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_skill_0"
 				    	android:layout_alignBaseline="@id/string_center_time"
@@ -652,6 +688,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_time_0"
 				    	android:layout_alignBaseline="@id/string_center_spm"
@@ -661,6 +698,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 					    android:layout_below="@id/string_stats_time_0"
 				    	android:layout_alignBaseline="@id/string_center_spm"
@@ -695,6 +733,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 0"
+                
 						android:layout_alignParentLeft="true"
 				    	android:layout_below="@id/string200"
 				    	android:layout_alignBaseline="@id/string_center_assault"
@@ -704,6 +743,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="Player 1"
+                
 						android:layout_alignParentRight="true"
 				    	android:layout_below="@id/string200"
 				    	android:layout_alignBaseline="@id/string_center_assault"
@@ -721,6 +761,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 0"
+                
 					android:layout_alignParentLeft="true"
 			    	android:layout_below="@id/string_center_assault"
 			    	android:layout_alignBaseline="@id/string_center_engineer"
@@ -730,6 +771,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 1"
+                
 					android:layout_alignParentRight="true"
 			    	android:layout_below="@id/string_center_assault"
 			    	android:layout_alignBaseline="@id/string_center_engineer"
@@ -747,6 +789,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 0"
+                
 					android:layout_alignParentLeft="true"
 			    	android:layout_below="@id/string_center_engineer"
 			    	android:layout_alignBaseline="@id/string_center_support"
@@ -756,6 +799,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 1"
+                
 					android:layout_alignParentRight="true"
 			    	android:layout_below="@id/string_center_engineer"
 			    	android:layout_alignBaseline="@id/string_center_support"
@@ -773,6 +817,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 0"
+                
 					android:layout_alignParentLeft="true"
 			    	android:layout_below="@id/string_center_recon"
 			    	android:layout_alignBaseline="@id/string_center_recon"
@@ -782,6 +827,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 1"
+                
 					android:layout_alignParentRight="true"
 			    	android:layout_below="@id/string_center_recon"
 			    	android:layout_alignBaseline="@id/string_center_recon"
@@ -799,6 +845,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 0"
+                
 					android:layout_alignParentLeft="true"
 			    	android:layout_below="@id/string_center_recon"
 			    	android:layout_alignBaseline="@id/string_center_vehicles"
@@ -808,6 +855,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 1"
+                
 					android:layout_alignParentRight="true"
 			    	android:layout_below="@id/string_center_recon"
 			    	android:layout_alignBaseline="@id/string_center_vehicles"
@@ -825,6 +873,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 0"
+                
 					android:layout_alignParentLeft="true"
 			    	android:layout_below="@id/string_center_vehicles"
 			    	android:layout_alignBaseline="@id/string_center_combat"
@@ -834,6 +883,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 1"
+                
 					android:layout_alignParentRight="true"
 			    	android:layout_below="@id/string_center_vehicles"
 			    	android:layout_alignBaseline="@id/string_center_combat"
@@ -851,6 +901,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 0"
+                
 					android:layout_alignParentLeft="true"
 				    android:layout_below="@id/string_center_combat"
 			    	android:layout_alignBaseline="@id/string_center_award"
@@ -860,6 +911,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 1"
+                
 					android:layout_alignParentRight="true"
 				    android:layout_below="@id/string_center_combat"
 			    	android:layout_alignBaseline="@id/string_center_award"
@@ -877,6 +929,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 0"
+                
 					android:layout_alignParentLeft="true"
 				    android:layout_below="@id/string_score_award_0"
 			    	android:layout_alignBaseline="@id/string_center_unlock"
@@ -886,6 +939,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 1"
+                
 					android:layout_alignParentRight="true"
 				    android:layout_below="@id/string_score_award_0"
 			    	android:layout_alignBaseline="@id/string_center_unlock"
@@ -903,6 +957,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 0"
+                
 					android:layout_alignParentLeft="true"
 				    android:layout_below="@id/string_center_unlock"
 			    	android:layout_alignBaseline="@id/string_score_center_total"
@@ -912,6 +967,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Player 1"
+                
 					android:layout_alignParentRight="true"
 				    android:layout_below="@id/string_center_unlock"
 			    	android:layout_alignBaseline="@id/string_score_center_total"

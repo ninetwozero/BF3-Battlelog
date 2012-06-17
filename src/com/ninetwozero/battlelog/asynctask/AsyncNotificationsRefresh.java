@@ -70,8 +70,18 @@ public class AsyncNotificationsRefresh extends
         // Fill the listviews!!
         if (listNotifications != null) {
 
-            if (notifications.size() > 0) {
+            if (notifications.isEmpty() ) {
 
+                // Do wee need to think about the listview?
+                if (status.getVisibility() == View.GONE) {
+                    status.setVisibility(View.VISIBLE);
+                }
+                if (listNotifications.getVisibility() != View.GONE) {
+                    listNotifications.setVisibility(View.GONE);
+                }
+
+            } else {
+                
                 // Set the adapter
                 if (status.getVisibility() != View.GONE) {
                     status.setVisibility(View.GONE);
@@ -84,21 +94,9 @@ public class AsyncNotificationsRefresh extends
                 ((NotificationListAdapter) listNotifications.getAdapter())
                         .notifyDataSetChanged();
 
-            } else {
-
-                // Do wee need to think about the listview?
-                if (status.getVisibility() == View.GONE) {
-                    status.setVisibility(View.VISIBLE);
-                }
-                if (listNotifications.getVisibility() != View.GONE) {
-                    listNotifications.setVisibility(View.GONE);
-                }
-
             }
 
         }
-
-        return;
 
     }
 

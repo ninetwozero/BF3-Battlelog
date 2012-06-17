@@ -101,20 +101,20 @@ public class ThreadPostListAdapter extends BaseAdapter {
         // Text
         TextView textPostedBy = (TextView) convertView.findViewById(R.id.text_posted_by);
         TextView textView = (TextView) convertView.findViewById(R.id.text_content);
-        
+
         // Store the object
         if (currentItem.isOfficial()) {
 
             convertView.setBackgroundColor(context.getResources().getColor(R.color.officialblue));
-            textPostedBy.setBackgroundColor(0xEEEEEE);
-            
+            textPostedBy.setBackgroundColor(0xFFEEEEEE);
+
         } else {
 
-            convertView.setBackgroundColor(0xfffffff);
-            textPostedBy.setBackgroundColor(0xEEEEEE);
-            
+            convertView.setBackgroundColor(0xFFFFFFFF);
+            textPostedBy.setBackgroundColor(0xFFEEEEEE);
+
         }
-        
+
         textView.setText(
 
                 !currentItem.isCensored() ? Html.fromHtml(currentItem.getContent())

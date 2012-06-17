@@ -109,7 +109,6 @@ public class AsyncFetchDataToProfileView extends
 
         }
 
-        return;
     }
 
 }

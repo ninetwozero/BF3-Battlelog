@@ -19,8 +19,12 @@ import java.util.List;
 public class UnlockDataWrapper {
 
     // Attributes
-    private List<UnlockData> weapons, attachments, kitUnlocks,
-            vehicleUpgrades, skills, unlocks;
+    private final List<UnlockData> mWeapons;
+    private final List<UnlockData> mAttachments;
+    private final List<UnlockData> mKitUnlocks;
+    private final List<UnlockData> mVehicleUpgrades;
+    private final List<UnlockData> mSkills;
+    private final List<UnlockData> mUnlocks;
 
     // Construct
     public UnlockDataWrapper(
@@ -31,38 +35,38 @@ public class UnlockDataWrapper {
 
     ) {
 
-        weapons = w;
-        attachments = a;
-        kitUnlocks = k;
-        vehicleUpgrades = v;
-        skills = s;
-        unlocks = u;
+        mWeapons = w;
+        mAttachments = a;
+        mKitUnlocks = k;
+        mVehicleUpgrades = v;
+        mSkills = s;
+        mUnlocks = u;
 
     }
 
     // Getters
     public List<UnlockData> getWeapons() {
-        return weapons;
+        return mWeapons;
     }
 
     public List<UnlockData> getAttachments() {
-        return attachments;
+        return mAttachments;
     }
 
     public List<UnlockData> getKitUnlocks() {
-        return kitUnlocks;
+        return mKitUnlocks;
     }
 
     public List<UnlockData> getVehicleUpgrades() {
-        return vehicleUpgrades;
+        return mVehicleUpgrades;
     }
 
     public List<UnlockData> getSkills() {
-        return skills;
+        return mSkills;
     }
 
     public List<UnlockData> getUnlocks() {
-        return unlocks;
+        return mUnlocks;
     }
 
 }

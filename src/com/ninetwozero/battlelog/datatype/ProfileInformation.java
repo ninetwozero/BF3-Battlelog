@@ -24,19 +24,29 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class ProfileInformation {
 
     // Attributes
-    private int age;
-    private long userId, dateOfBirth, lastlogin, statusMessageChanged;
-    private PersonaData[] persona;
-    private String name, username, presentation, location, statusMessage,
-            currentServer;
-    private boolean allowFriendRequests, online, playing, friendStatus;
-    private List<PlatoonData> platoons;
+    private int mAge;
+    private long mUserId;
+    private long mDateOfBirth;
+    private long mLastlogin;
+    private long mStatusMessageChanged;
+    private PersonaData[] mPersona;
+    private String mName;
+    private String mUsername;
+    private String mPresentation;
+    private String mLocation;
+    private String mStatusMessage;
+    private String mCurrentServer;
+    private boolean mAllowFriendRequests;
+    private boolean mOnline;
+    private boolean mPlaying;
+    private boolean mFriendStatus;
+    private List<PlatoonData> mPlatoons;
 
     // Other
-    private StringBuilder personaString = new StringBuilder();
-    private StringBuilder personaIdString = new StringBuilder();
-    private StringBuilder personaPlatformString = new StringBuilder();
-    private StringBuilder platoonIdString = new StringBuilder();
+    private StringBuilder mPersonaString = new StringBuilder();
+    private StringBuilder mPersonaIdString = new StringBuilder();
+    private StringBuilder mPersonaPlatformString = new StringBuilder();
+    private StringBuilder mPlatoonIdString = new StringBuilder();
 
     // Construct(s)
     public ProfileInformation(
@@ -48,178 +58,178 @@ public class ProfileInformation {
 
     ) {
 
-        age = a;
-        userId = uid;
-        dateOfBirth = dob;
-        lastlogin = l;
-        statusMessageChanged = sc;
-        persona = pe.clone();
-        name = n;
-        username = u;
-        presentation = p;
-        location = loc;
-        statusMessage = s;
-        currentServer = c;
-        allowFriendRequests = af;
-        online = o;
-        playing = pl;
-        friendStatus = fs;
-        platoons = pd;
+        mAge = a;
+        mUserId = uid;
+        mDateOfBirth = dob;
+        mLastlogin = l;
+        mStatusMessageChanged = sc;
+        mPersona = pe.clone();
+        mName = n;
+        mUsername = u;
+        mPresentation = p;
+        mLocation = loc;
+        mStatusMessage = s;
+        mCurrentServer = c;
+        mAllowFriendRequests = af;
+        mOnline = o;
+        mPlaying = pl;
+        mFriendStatus = fs;
+        mPlatoons = pd;
 
     }
 
     // Getters
     public int getAge() {
-        return age;
+        return mAge;
     }
 
     public long getUserId() {
-        return userId;
+        return mUserId;
     }
 
     public long getDOB() {
-        return dateOfBirth;
+        return mDateOfBirth;
     }
 
     public String getLastLogin(Context c) {
-        return PublicUtils.getRelativeDate(c, lastlogin,
+        return PublicUtils.getRelativeDate(c, mLastlogin,
                 R.string.info_lastlogin);
     }
 
     public long getStatusMessageChanged() {
-        return statusMessageChanged;
+        return mStatusMessageChanged;
     }
 
     public PersonaData getPersona(int position) {
-        return ((persona.length < position) ? persona[position]
-                : persona[0]);
+        return ((mPersona.length < position) ? mPersona[position]
+                : mPersona[0]);
     }
 
     public PersonaData[] getAllPersonas() {
-        return persona;
+        return mPersona;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public String getUsername() {
-        return username;
+        return mUsername;
     }
 
     public String getPresentation() {
-        return presentation;
+        return mPresentation;
     }
 
     public String getLocation() {
-        return location;
+        return mLocation;
     }
 
     public String getStatusMessage() {
-        return statusMessage;
+        return mStatusMessage;
     }
 
     public String getCurrentServer() {
-        return currentServer;
+        return mCurrentServer;
     }
 
     public boolean getAllowFriendRequests() {
-        return allowFriendRequests;
+        return mAllowFriendRequests;
     }
 
     public boolean isOnline() {
-        return online;
+        return mOnline;
     }
 
     public boolean isPlaying() {
-        return playing;
+        return mPlaying;
     }
 
     public boolean isFriend() {
-        return friendStatus;
+        return mFriendStatus;
     }
 
     public long getPlatoonId(int position) {
-        return ((platoons.size() < position) ? platoons.get(position).getId()
-                : platoons.get(0).getId());
+        return ((mPlatoons.size() < position) ? mPlatoons.get(position).getId()
+                : mPlatoons.get(0).getId());
     }
 
     public PlatoonData getPlatoon(int position) {
 
-        return platoons.get(position);
+        return mPlatoons.get(position);
     }
 
     public int getNumPersonas() {
 
-        return persona.length;
+        return mPersona.length;
 
     }
 
     public int getNumPlatoons() {
 
-        return platoons.size();
+        return mPlatoons.size();
 
     }
 
     public List<PlatoonData> getPlatoons() {
-        return platoons;
+        return mPlatoons;
     }
 
     public void generate() {
 
         // Reset
-        personaIdString.setLength(0);
-        personaString.setLength(0);
-        personaPlatformString.setLength(0);
-        platoonIdString.setLength(0);
+        mPersonaIdString.setLength(0);
+        mPersonaString.setLength(0);
+        mPersonaPlatformString.setLength(0);
+        mPlatoonIdString.setLength(0);
 
         // Iterate
-        for (PersonaData p : persona) {
+        for (PersonaData p : mPersona) {
 
-            personaIdString.append(p.getId() + ":");
-            personaString.append(p.getName() + ":");
-            personaPlatformString.append(p.getPlatformId() + ":");
+            mPersonaIdString.append(p.getId() + ":");
+            mPersonaString.append(p.getName() + ":");
+            mPersonaPlatformString.append(p.getPlatformId() + ":");
 
         }
 
         // Iterate
-        for (PlatoonData p : platoons) {
+        for (PlatoonData p : mPlatoons) {
 
-            platoonIdString.append(p.getId() + ":");
+            mPlatoonIdString.append(p.getId() + ":");
 
         }
 
     }
 
-    public final String[] toStringArray() {
+    public final Object[] toArray() {
 
         // Do we need to generate?
-        if (personaIdString == null) {
+        if (mPersonaIdString == null) {
             generate();
         }
 
         // Return it!
-        return new String[] {
+        return new Object[] {
 
-                age + "",
-                userId + "",
-                dateOfBirth + "",
-                lastlogin + "",
-                statusMessageChanged + "",
-                name,
-                username,
-                (presentation == null) ? "" : presentation,
-                (location == null) ? "" : location,
-                (statusMessage == null) ? "" : statusMessage,
-                (currentServer == null) ? "" : currentServer,
-                personaIdString.toString(),
-                personaString.toString(),
-                personaPlatformString.toString(),
-                allowFriendRequests ? "1" : "0",
-                online ? "1" : "0",
-                playing ? "1" : "0",
-                friendStatus ? "1" : "0",
-                platoonIdString.toString()
+                mAge,
+                mUserId,
+                mDateOfBirth,
+                mLastlogin,
+                mStatusMessageChanged,
+                mName,
+                mUsername,
+                (mPresentation == null) ? "" : mPresentation,
+                (mLocation == null) ? "" : mLocation,
+                (mStatusMessage == null) ? "" : mStatusMessage,
+                (mCurrentServer == null) ? "" : mCurrentServer,
+                mPersonaIdString.toString(),
+                mPersonaString.toString(),
+                mPersonaPlatformString.toString(),
+                mAllowFriendRequests ? "1" : "0",
+                mOnline ? "1" : "0",
+                mPlaying ? "1" : "0",
+                mFriendStatus ? "1" : "0",
+                mPlatoonIdString.toString()
 
         };
 

@@ -39,6 +39,8 @@ import com.ninetwozero.battlelog.datatype.SavedForumThreadData;
  */
 
 public class CacheHandler {
+    
+    private CacheHandler() {}
 
     public static class Persona {
 
@@ -53,7 +55,7 @@ public class CacheHandler {
 
                         DatabaseStructure.PersonaStatistics.TABLE_NAME,
                         DatabaseStructure.PersonaStatistics.getColumns(),
-                        stats.toStringArray()
+                        stats.toArray()
 
                         );
 
@@ -89,7 +91,7 @@ public class CacheHandler {
 
                             DatabaseStructure.PersonaStatistics.TABLE_NAME,
                             DatabaseStructure.PersonaStatistics.getColumns(),
-                            stats.toStringArray()
+                            stats.toArray()
 
                             );
 
@@ -125,7 +127,7 @@ public class CacheHandler {
 
                         DatabaseStructure.PersonaStatistics.TABLE_NAME,
                         DatabaseStructure.PersonaStatistics.getColumns(),
-                        stats.toStringArray(),
+                        stats.toArray(),
                         DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA,
                         stats.getPersonaId()
 
@@ -166,7 +168,7 @@ public class CacheHandler {
                                     DatabaseStructure.PersonaStatistics.TABLE_NAME,
                                     DatabaseStructure.PersonaStatistics
                                             .getColumns(),
-                                    stats.toStringArray(),
+                                    stats.toArray(),
                                     DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA,
                                     stats.getPersonaId()
 
@@ -386,7 +388,7 @@ public class CacheHandler {
 
                         DatabaseStructure.UserProfile.TABLE_NAME,
                         DatabaseStructure.UserProfile.getColumns(),
-                        stats.toStringArray()
+                        stats.toArray()
 
                         );
 
@@ -422,7 +424,7 @@ public class CacheHandler {
 
                         DatabaseStructure.UserProfile.TABLE_NAME,
                         DatabaseStructure.UserProfile.getColumns(),
-                        stats.toStringArray(),
+                        stats.toArray(),
                         DatabaseStructure.UserProfile.COLUMN_NAME_NUM_UID,
                         stats.getUserId()
 
@@ -548,18 +550,15 @@ public class CacheHandler {
                                     .getColumnIndex("status_message")),
                             results.getString(results
                                     .getColumnIndex("current_server")),
-                            (results.getString(results
-                                    .getColumnIndex("allow_friendrequests"))
-                                    .equalsIgnoreCase("true")),
-                            (results.getString(results
-                                    .getColumnIndex("is_online"))
-                                    .equalsIgnoreCase("true")),
-                            (results.getString(results
-                                    .getColumnIndex("is_playing"))
-                                    .equalsIgnoreCase("true")),
-                            (results.getString(results
-                                    .getColumnIndex("is_friend"))
-                                    .equalsIgnoreCase("true")), platoons
+                            results.getString(results.getColumnIndex("allow_friendrequests"))
+                                    .equalsIgnoreCase("true"),
+                            results.getString(results.getColumnIndex("is_online"))
+                                    .equalsIgnoreCase("true"),
+                            results.getString(results.getColumnIndex("is_playing"))
+                                    .equalsIgnoreCase("true"),
+                            results.getString(results.getColumnIndex("is_friend"))
+                                    .equalsIgnoreCase("true"),
+                            platoons
 
                             );
 
@@ -638,7 +637,7 @@ public class CacheHandler {
 
                         DatabaseStructure.PlatoonProfile.TABLE_NAME,
                         DatabaseStructure.PlatoonProfile.getColumns(),
-                        stats.toStringArray()
+                        stats.toArray()
 
                         );
 
@@ -681,7 +680,7 @@ public class CacheHandler {
 
                             DatabaseStructure.PlatoonProfile.TABLE_NAME,
                             DatabaseStructure.PlatoonProfile.getColumns(),
-                            stats.toStringArray()
+                            stats.toArray()
 
                             );
 
@@ -717,7 +716,7 @@ public class CacheHandler {
 
                         DatabaseStructure.PlatoonProfile.TABLE_NAME,
                         DatabaseStructure.PlatoonProfile.getColumns(),
-                        stats.toStringArray(),
+                        stats.toArray(),
                         DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID,
                         stats.getId()
 
@@ -758,7 +757,7 @@ public class CacheHandler {
                                     DatabaseStructure.PlatoonProfile.TABLE_NAME,
                                     DatabaseStructure.PlatoonProfile
                                             .getColumns(),
-                                    stats.toStringArray(),
+                                    stats.toArray(),
                                     DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID,
                                     stats.getId()
 
@@ -983,14 +982,14 @@ public class CacheHandler {
 
             try {
 
-                String[] originArray = thread.toStringArray();
+                Object[] originArray = thread.toArray();
                 String[] valueArray = new String[originArray.length + 1];
                 for (int i = 0, max = originArray.length; i < max; i++) {
 
-                    valueArray[i] = originArray[i];
+                    valueArray[i] = String.valueOf(originArray[i]);
                     if (i == (max - 1)) {
 
-                        valueArray[i + 1] = uid + "";
+                        valueArray[i + 1] = String.valueOf(uid);
                         break;
                     }
 
@@ -1044,7 +1043,7 @@ public class CacheHandler {
 
                             DatabaseStructure.ForumThreads.TABLE_NAME,
                             DatabaseStructure.ForumThreads.getColumns(),
-                            stats.toStringArray()
+                            stats.toArray()
 
                             );
 
@@ -1080,7 +1079,7 @@ public class CacheHandler {
 
                         DatabaseStructure.ForumThreads.TABLE_NAME,
                         DatabaseStructure.ForumThreads.getColumns(),
-                        thread.toStringArray(),
+                        thread.toArray(),
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                         thread.getId()
 
@@ -1205,7 +1204,7 @@ public class CacheHandler {
                                     DatabaseStructure.ForumThreads.TABLE_NAME,
                                     DatabaseStructure.ForumThreads
                                             .getColumns(),
-                                    thread.toStringArray(),
+                                    thread.toArray(),
                                     DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                                     thread.getId()
 

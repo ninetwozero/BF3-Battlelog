@@ -65,7 +65,6 @@ public class AsyncFetchDataToPlatoonView extends
                 // Persona
                 error = context.getString(R.string.msg_search_noplatoon)
                         .replace("{keyword}", searchString);
-                ;
                 return false;
 
             }
@@ -75,7 +74,6 @@ public class AsyncFetchDataToPlatoonView extends
             // D'oh
             error = context.getString(R.string.msg_search_noplatoon).replace(
                     "{keyword}", searchString);
-            ;
             return false;
 
         }
@@ -111,7 +109,6 @@ public class AsyncFetchDataToPlatoonView extends
 
         }
 
-        return;
     }
 
 }

@@ -23,10 +23,6 @@ import com.ninetwozero.battlelog.http.COMClient;
 public class AsyncSessionSetActive extends
         AsyncTask<PostData, Integer, Boolean> {
 
-    // Constructor
-    public AsyncSessionSetActive() {
-    }
-
     @Override
     protected Boolean doInBackground(PostData... arg0) {
 

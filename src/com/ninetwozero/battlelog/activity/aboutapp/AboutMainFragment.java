@@ -29,15 +29,11 @@ import com.ninetwozero.battlelog.misc.DataBank;
 
 public class AboutMainFragment extends Fragment implements DefaultFragment {
 
-    // Attributes
-    private LayoutInflater layoutInflater;
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        layoutInflater = inflater;
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_main_about,
@@ -57,20 +53,19 @@ public class AboutMainFragment extends Fragment implements DefaultFragment {
         // Prevent bug
         setUserVisibleHint(true);
 
+        final OnClickListener onClickListener = new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                startActivity(DataBank.getContactIntent(v.getId()));
+
+            }
+        };
+
         for (int key : DataBank.getContactIntents().keySet()) {
 
-            view.findViewById(key).setOnClickListener(
-
-                    new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-
-                            startActivity(DataBank.getContactIntent(v.getId()));
-
-                        }
-                    }
-                    );
+            view.findViewById(key).setOnClickListener(onClickListener);
 
         }
 

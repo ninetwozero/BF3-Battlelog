@@ -18,8 +18,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,29 +35,29 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class PostOverviewFragment extends Fragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
+    private Context mContext;
 
     // Elements
-    private TextView textTitle, textInfo, textContent;
+    private TextView mTextTitle;
+    private TextView mTextInfo;
+    private TextView mTextContent;
 
     // Misc
-    private FeedItem feedItem;
-    private NewsData newsData;
-    private boolean isNews = false;
+    private FeedItem mFeedItem;
+    private NewsData mNewsData;
+    private boolean mNews = false;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        layoutInflater = inflater;
+        mContext = getActivity();
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(
 
-                isNews ? R.layout.tab_content_post_overview_news
+                mNews ? R.layout.tab_content_post_overview_news
                         : R.layout.tab_content_post_overview_feed,
 
                 container, false);
@@ -81,20 +79,20 @@ public class PostOverviewFragment extends Fragment implements DefaultFragment {
 
     public void setData(FeedItem f) {
 
-        feedItem = f;
-        isNews = false;
+        mFeedItem = f;
+        mNews = false;
     }
 
     public void setData(NewsData n) {
 
-        newsData = n;
-        isNews = true;
+        mNewsData = n;
+        mNews = true;
     }
 
     public void initFragment(View v) {
 
         // Set the values
-        if (isNews) {
+        if (mNews) {
 
             initNews(v);
 
@@ -108,47 +106,32 @@ public class PostOverviewFragment extends Fragment implements DefaultFragment {
 
     public void initNews(View v) {
 
+        mTextTitle = (TextView) v.findViewById(R.id.text_title);
+        mTextContent = (TextView) v.findViewById(R.id.text_content);
+        mTextInfo = (TextView) v.findViewById(R.id.text_author);
 
-        textTitle = (TextView) v.findViewById(R.id.text_title);
-        textContent = (TextView) v.findViewById(R.id.text_content);
-        textInfo = (TextView) v.findViewById(R.id.text_author);
-        
-        textTitle.setText(newsData.getTitle());
-        textInfo.setText(Html.fromHtml(getString(R.string.info_news_posted_by).replace(
+        mTextTitle.setText(mNewsData.getTitle());
+        mTextInfo.setText(Html.fromHtml(getString(R.string.info_news_posted_by).replace(
                 "{author}",
-                newsData.getAuthorName()).replace("{date}",
-                PublicUtils.getRelativeDate(context, newsData.getDate()))));
-        textContent.setText(Html.fromHtml(newsData.getContent()));
+                mNewsData.getAuthorName()).replace("{date}",
+                PublicUtils.getRelativeDate(mContext, mNewsData.getDate()))));
+        mTextContent.setText(Html.fromHtml(mNewsData.getContent()));
 
     }
 
     public void initOther(View v) {
 
-        textTitle = (TextView) v.findViewById(R.id.text_title);
-        textContent = (TextView) v.findViewById(R.id.text_content);
-        textInfo = (TextView) v.findViewById(R.id.text_date);
-        
-        textTitle.setText(Html.fromHtml(feedItem.getTitle()));
-        textInfo.setText(PublicUtils.getRelativeDate(context, feedItem.getDate()));
-        textContent.setText(Html.fromHtml(feedItem.getContent()));
+        mTextTitle = (TextView) v.findViewById(R.id.text_title);
+        mTextContent = (TextView) v.findViewById(R.id.text_content);
+        mTextInfo = (TextView) v.findViewById(R.id.text_date);
 
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-
-        super.onActivityCreated(savedInstanceState);
+        mTextTitle.setText(Html.fromHtml(mFeedItem.getTitle()));
+        mTextInfo.setText(PublicUtils.getRelativeDate(mContext, mFeedItem.getDate()));
+        mTextContent.setText(Html.fromHtml(mFeedItem.getContent()));
 
     }
 
     public void reload() {
-    }
-
-    public void createContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
-
-        return;
-
     }
 
     public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {

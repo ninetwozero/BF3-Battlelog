@@ -21,8 +21,8 @@ import com.ninetwozero.battlelog.misc.Constants;
 public class ForumClient extends DefaultClient {
 
     // Attributes
-    private long forumId;
-    private long threadId;
+    private long mForumId;
+    private long mThreadId;
     // URLS
     public static final String URL_LIST = Constants.URL_MAIN + "forum/";
     public static final String URL_LIST_LOCALIZED = Constants.URL_MAIN
@@ -57,16 +57,16 @@ public class ForumClient extends DefaultClient {
 
     // Set
     public void setForumId(long i) {
-        forumId = i;
+        mForumId = i;
     }
 
     public void setThreadId(long i) {
-        threadId = i;
+        mThreadId = i;
     }
 
     public ForumClient() {
 
-        requestHandler = new RequestHandler();
+        mRequestHandler = new RequestHandler();
 
     }
 
@@ -104,13 +104,13 @@ public class ForumClient extends DefaultClient {
             List<ForumThreadData> threads = new ArrayList<ForumThreadData>();
 
             // Setup a RequestHandler
-            final String httpContent = requestHandler.get(
+            final String httpContent = mRequestHandler.get(
 
                     RequestHandler.generateUrl(
 
                             URL_FORUM,
                             locale,
-                            forumId,
+                            mForumId,
                             page
 
                             ), RequestHandler.HEADER_AJAX
@@ -144,7 +144,7 @@ public class ForumClient extends DefaultClient {
                         new ForumThreadData(
 
                                 Long.parseLong(currObject.getString("id")),
-                                forumId, currObject
+                                mForumId, currObject
                                         .getLong("creationDate"), currObject
                                         .getLong("lastPostDate"), currObject
                                         .getInt("numberOfOfficialPosts"), currObject
@@ -186,7 +186,7 @@ public class ForumClient extends DefaultClient {
                         new ForumThreadData(
 
                                 Long.parseLong(currObject.getString("id")),
-                                forumId, currObject
+                                mForumId, currObject
                                         .getLong("creationDate"), currObject
                                         .getLong("lastPostDate"), currObject
                                         .getInt("numberOfOfficialPosts"), currObject
@@ -228,13 +228,13 @@ public class ForumClient extends DefaultClient {
             List<ForumPostData> posts = new ArrayList<ForumPostData>();
 
             // Setup a RequestHandler
-            final String httpContent = requestHandler.get(
+            final String httpContent = mRequestHandler.get(
 
                     RequestHandler.generateUrl(
 
                             URL_THREAD,
                             locale,
-                            threadId,
+                            mThreadId,
                             page
 
                             ),
@@ -288,7 +288,7 @@ public class ForumClient extends DefaultClient {
 
     }
 
-    public static ArrayList<ForumSearchResult> search(final Context c, final String keyword)
+    public static List<ForumSearchResult> search(final Context c, final String keyword)
             throws WebsiteHandlerException {
 
         // Init
@@ -330,7 +330,7 @@ public class ForumClient extends DefaultClient {
                                         currentItem
                                                 .getString("title"),
                                         new ProfileData.Builder(
-                                                Long.parseLong(currentItem.getString("userId")),
+                                                Long.parseLong(currentItem.getString("ownerId")),
                                                 currentItem.getString("ownerUsername")).build(),
                                         currentItem.getBoolean("isSticky"), currentItem
                                                 .getBoolean("isOfficial")
@@ -364,7 +364,7 @@ public class ForumClient extends DefaultClient {
             String title = "";
 
             // Setup a RequestHandler
-            final String httpContent = requestHandler.get(
+            final String httpContent = mRequestHandler.get(
 
                     RequestHandler.generateUrl(URL_LIST_LOCALIZED, locale),
                     RequestHandler.HEADER_AJAX
@@ -388,7 +388,24 @@ public class ForumClient extends DefaultClient {
                 JSONObject lastThread = currObject.optJSONObject("lastThread");
 
                 // Let's store them
-                if (lastThread != null) {
+                if (lastThread == null) {
+
+                    forums.add(
+
+                            new ForumData(
+
+                                    Long.parseLong(currObject.getString("id")), Long
+                                            .parseLong(currObject.getString("categoryId")), 0,
+                                    0, 0, currObject.getLong("numberOfPosts"),
+                                    currObject.getLong("numberOfThreads"), 0,
+                                    currObject.getString("title"), currObject
+                                            .getString("description"), null, null
+
+                            )
+
+                            );
+
+                } else {
 
                     JSONObject userInfo = lastThread
                             .optJSONObject("lastPoster");
@@ -418,23 +435,6 @@ public class ForumClient extends DefaultClient {
 
                     }
 
-                } else {
-
-                    forums.add(
-
-                            new ForumData(
-
-                                    Long.parseLong(currObject.getString("id")), Long
-                                            .parseLong(currObject.getString("categoryId")), 0,
-                                    0, 0, currObject.getLong("numberOfPosts"),
-                                    currObject.getLong("numberOfThreads"), 0,
-                                    currObject.getString("title"), currObject
-                                            .getString("description"), null, null
-
-                            )
-
-                            );
-
                 }
 
             }
@@ -461,7 +461,7 @@ public class ForumClient extends DefaultClient {
             List<ForumThreadData> threads = new ArrayList<ForumThreadData>();
 
             // Setup a RequestHandler
-            final String httpContent = requestHandler.get(
+            final String httpContent = mRequestHandler.get(
 
                     RequestHandler.generateUrl(
 
@@ -598,13 +598,13 @@ public class ForumClient extends DefaultClient {
             List<ForumPostData> posts = new ArrayList<ForumPostData>();
 
             // Setup a RequestHandler
-            final String httpContent = requestHandler.get(
+            final String httpContent = mRequestHandler.get(
 
                     RequestHandler.generateUrl(
 
                             URL_THREAD,
                             locale,
-                            threadId,
+                            mThreadId,
                             1
 
                             ),
@@ -698,7 +698,7 @@ public class ForumClient extends DefaultClient {
         try {
 
             // POST!
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
                     RequestHandler.generateUrl(URL_POST, threadData.getId()),
                     RequestHandler.generatePostData(FIELD_NAMES_POST, body, chksm),
@@ -707,7 +707,11 @@ public class ForumClient extends DefaultClient {
                     );
 
             // How'd it go?
-            if (!"".equals(httpContent)) {
+            if ("".equals(httpContent)) {
+
+                return false;
+
+            } else {
 
                 // Are we to cache it?
                 if (cache) {
@@ -718,10 +722,6 @@ public class ForumClient extends DefaultClient {
 
                 // Return
                 return true;
-
-            } else {
-
-                return false;
 
             }
 
@@ -739,9 +739,9 @@ public class ForumClient extends DefaultClient {
         try {
 
             // POST!
-            String httpContent = requestHandler.post(
+            String httpContent = mRequestHandler.post(
 
-                    RequestHandler.generateUrl(URL_NEW, forumId),
+                    RequestHandler.generateUrl(URL_NEW, mForumId),
                     RequestHandler.generatePostData(FIELD_NAMES_NEW, topic, body, chksm),
                     RequestHandler.HEADER_AJAX
 

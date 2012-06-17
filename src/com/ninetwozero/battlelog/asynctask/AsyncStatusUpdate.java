@@ -97,8 +97,6 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
 
         }
 
-        return;
-
     }
 
 }

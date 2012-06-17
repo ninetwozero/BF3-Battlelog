@@ -44,9 +44,9 @@ public class SocialWidgetProvider extends AppWidgetProvider {
 
     public static final String ACTION_WIDGET_RECEIVER = "SocialWidgetReciever";
     public static final String ACTION_WIDGET_OPENAPP = "Main";
-    public static int feedPageId = 0;
-    private static FriendListDataWrapper friends;
-    public static List<FeedItem> feedItems;
+    public static int mFeedPageId = 0;
+    private static FriendListDataWrapper mFriends;
+    public static List<FeedItem> mFeedItems;
 
     public static final int FEED_WRAP_IDS[] = new int[] {
             R.id.wrap_feed_0, R.id.wrap_feed_1, R.id.wrap_feed_2
@@ -63,10 +63,7 @@ public class SocialWidgetProvider extends AppWidgetProvider {
             int[] appWidgetIds) {
 
         // Get the SP
-        SharedPreferences sharedPreferences = null;
-
-        // Set the values
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Set the session if needed
         SessionKeeper.setProfileData(SessionKeeper
@@ -123,13 +120,13 @@ public class SocialWidgetProvider extends AppWidgetProvider {
 
             try {
 
-                friends = new COMClient(PreferenceManager.getDefaultSharedPreferences(context)
+                mFriends = new COMClient(PreferenceManager.getDefaultSharedPreferences(context)
                         .getString(
                                 Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriendsForCOM(context);
-                feedItems = new FeedClient(SessionKeeper.getProfileData().getId(),
+                mFeedItems = new FeedClient(SessionKeeper.getProfileData().getId(),
                         FeedItem.TYPE_GLOBAL).get(context, 0, Constants.DEFAULT_NUM_FEED);
 
-                return (feedItems != null && friends != null);
+                return (mFeedItems != null && mFriends != null);
 
             } catch (WebsiteHandlerException ex) {
 
@@ -146,7 +143,7 @@ public class SocialWidgetProvider extends AppWidgetProvider {
 
             if (context != null) {
 
-                drawLayout(context, results, appWidgetManager);
+                drawLayout(context, appWidgetManager);
 
                 if (!results) {
 
@@ -159,17 +156,17 @@ public class SocialWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    private void drawLayout(Context c, boolean r, AppWidgetManager a) {
+    private void drawLayout(Context c, AppWidgetManager a) {
 
         // Draw the GUI
         RemoteViews remoteView = new RemoteViews(c.getPackageName(), R.layout.widget_social);
         remoteView.setTextViewText(R.id.text_title, SessionKeeper.getProfileData().getUsername());
 
         // Let's see what's up!
-        if (friends != null) {
+        if (mFriends != null) {
 
-            remoteView.setTextViewText(R.id.text_online, friends.getNumTotalOnline() + "");
-            remoteView.setTextViewText(R.id.text_playing, friends.getNumPlaying() + "");
+            remoteView.setTextViewText(R.id.text_online, mFriends.getNumTotalOnline() + "");
+            remoteView.setTextViewText(R.id.text_playing, mFriends.getNumPlaying() + "");
 
         } else {
 
@@ -179,18 +176,18 @@ public class SocialWidgetProvider extends AppWidgetProvider {
         }
 
         // If the feed items are gone...
-        if (feedItems != null && feedItems.size() > 0) {
+        if (mFeedItems != null && !mFeedItems.isEmpty()) {
 
             // Let's iterate the feed items
             for (int count = 0, max = FEED_DATE_IDS.length; count < max; count++) {
 
                 remoteView.setTextViewText(FEED_CONTENT_IDS[count],
-                        Html.fromHtml(feedItems.get(feedPageId + count).getTitle()));
+                        Html.fromHtml(mFeedItems.get(mFeedPageId + count).getTitle()));
                 remoteView
                         .setTextViewText(FEED_DATE_IDS[count], PublicUtils.getRelativeDate(c,
-                                feedItems.get(feedPageId + count).getDate()));
+                                mFeedItems.get(mFeedPageId + count).getDate()));
                 remoteView.setOnClickPendingIntent(FEED_WRAP_IDS[count], PendingIntent.getActivity(
-                        c, 0, feedItems.get(feedPageId + count).getIntent(c), 0));
+                        c, 0, mFeedItems.get(mFeedPageId + count).getIntent(c), 0));
             }
 
             remoteView.setTextViewText(R.id.text_latest, "Latest updates");

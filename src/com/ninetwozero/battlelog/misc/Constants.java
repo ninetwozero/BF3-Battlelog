@@ -73,26 +73,14 @@ public final class Constants {
     public static final String PATTERN_POST_SINGLE_DATE = "<span data-timestamp=\"([0-9]+)\" class=\"base-ago\">";
     public static final String PATTERN_POST_FORUM_LINK = "<a href=\"([^\\\"]+)\" rel=\"nofollow\">([^\\<]+)<\\/a> \\[([^\\]]+)\\]";
 
-    // BBCODE
-    public static final String BBCODE_TAG_BOLD_IN = "**{text}**";
-    public static final String BBCODE_TAG_BOLD_OUT = "[b]{text}[/b]";
-    public static final String BBCODE_TAG_STRIKE_IN = "--{text}--";
-    public static final String BBCODE_TAG_STRIKE_OUT = "[s]{text}[/s]";
-    public static final String BBCODE_TAG_UNDERLINE_IN = "__{text}__";
-    public static final String BBCODE_TAG_UNDERLINE_OUT = "[u]{text}[/u]";
-    public static final String BBCODE_TAG_ITALIC_IN = "_-{text}-_";
-    public static final String BBCODE_TAG_ITALIC_OUT = "[i]{text}[/i]";
-    public static final String BBCODE_TAG_QUOTE_IN = "@q:{number}:{username}@\n";
-    public static final String BBCODE_TAG_QUOTE_OUT = "[quote {username} said:]{text}[/quote]";
-
     // Files
     public static final String FILE_SHPREF = "battlelog";
 
     // Changelog version
-    public final static int CHANGELOG_VERSION = 2;
+    public static final int CHANGELOG_VERSION = 2;
 
     // MENU IDs
-    public final static int MENU_ID_FEED = 2;
+    public static final int MENU_ID_FEED = 2;
 
     // DEBUG
     public static final String DEBUG_TAG = "com.ninetwozero.battlelog";

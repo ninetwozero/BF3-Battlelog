@@ -14,6 +14,7 @@
 
 package com.ninetwozero.battlelog.datatype;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Parcel;
@@ -44,8 +45,6 @@ public class ForumData implements Parcelable {
 
         title = fTitle;
         description = fDescription;
-        latestThreadTitle = null;
-        latestPostUsername = null;
 
         threads = aThreads;
 
@@ -73,7 +72,7 @@ public class ForumData implements Parcelable {
         latestThreadTitle = ltTitle;
         latestPostUsername = lpUser;
 
-        threads = null;
+        threads = new ArrayList();
 
     }
 

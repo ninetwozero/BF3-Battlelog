@@ -241,7 +241,6 @@ public class SQLiteManager {
                 } else {
 
                     /* Current version */
-                    return;
 
                 }
 
@@ -253,30 +252,31 @@ public class SQLiteManager {
 
     private static final String DATABASE_NAME = "app.db";
     private static final int DATABASE_VERSION = 2;
-    private Context CONTEXT;
-    private SQLiteDatabase DB;
-    private SQLiteStatement STATEMENT;
+    private Context mContext;
+    private SQLiteDatabase mDatabaseHandler;
+    private SQLiteStatement mStatement;
 
     public SQLiteManager(Context context) {
 
         // Set the context
-        CONTEXT = context;
-
-        // Initialize an "OpenHelper"
-        OpenHelper openHelper = new OpenHelper(CONTEXT);
+        mContext = context;
 
         // Set the DB as writeAble
-        DB = openHelper.getWritableDatabase();
+        mDatabaseHandler = new OpenHelper(mContext).getWritableDatabase();
 
     }
 
     public final void close() {
 
-        if (STATEMENT != null)
-            STATEMENT.close();
-        if (DB != null)
-            DB.close();
-        return;
+        if (mStatement != null) {
+            mStatement.close();
+        }
+
+        if (mDatabaseHandler != null) {
+
+            mDatabaseHandler.close();
+
+        }
 
     }
 
@@ -299,17 +299,17 @@ public class SQLiteManager {
 
             for (int i = 0; i < values.length; i++) {
 
-                if (i == 0)
+                if (i == 0) {
                     stringWhere.append(field).append(" = ?");
-                else
+                } else {
                     stringWhere.append(" AND ").append(field).append(" = ?");
-
+                }
             }
 
         }
 
         // Let's remove from the DB
-        return DB.delete(table, stringWhere.toString(), values);
+        return mDatabaseHandler.delete(table, stringWhere.toString(), values);
 
     }
 
@@ -321,11 +321,11 @@ public class SQLiteManager {
         }
 
         // Clear it
-        return DB.delete(table, "1", null);
+        return mDatabaseHandler.delete(table, "1", null);
 
     }
 
-    public long insert(String table, String[] fields, String[] values)
+    public long insert(String table, String[] fields, Object[] values)
             throws DatabaseInformationException {
 
         // Let's validate the table
@@ -340,12 +340,7 @@ public class SQLiteManager {
         StringBuilder stringValues = new StringBuilder();
 
         // Validate the number, ie 6 fields should have 6^(n rows) values
-        if (countValues % countFields != 0) {
-
-            throw new DatabaseInformationException(
-                    "Database mismatch - numFields <> numValues.");
-
-        } else {
+        if (countValues % countFields == 0) {
 
             if (countFields == 0) {
 
@@ -371,21 +366,26 @@ public class SQLiteManager {
 
             }
 
+        } else {
+
+            throw new DatabaseInformationException(
+                    "Database mismatch - numFields <> numValues.");
+
         }
 
-        STATEMENT = DB.compileStatement("INSERT INTO " + table + "( "
+        mStatement = mDatabaseHandler.compileStatement("INSERT INTO " + table + "( "
                 + stringFields + ") VALUES " + "(" + stringValues + ")");
 
         // Let's bind the parameters
         for (int j = 1; j <= countValues; j++) {
-            STATEMENT.bindString(j, values[j - 1]);
+            mStatement.bindString(j, String.valueOf(values[j - 1]));
         }
 
         // STATEMENT.bindString( 1, name );
-        return STATEMENT.executeInsert();
+        return mStatement.executeInsert();
     }
 
-    public long insert(String table, String[] fields, List<String[]> values)
+    public long insert(String table, String[] fields, List<Object[]> values)
             throws DatabaseInformationException {
 
         // Let's validate the table
@@ -401,12 +401,7 @@ public class SQLiteManager {
         StringBuilder stringValues = new StringBuilder();
 
         // Validate the number, ie 6 fields should have 6^(n rows) values
-        if (countValues % countFields != 0) {
-
-            throw new DatabaseInformationException(
-                    "Database mismatch - numFields <> numValues.");
-
-        } else {
+        if (countValues % countFields == 0) {
 
             if (countFields == 0) {
 
@@ -440,9 +435,14 @@ public class SQLiteManager {
 
             }
 
+        } else {
+
+            throw new DatabaseInformationException(
+                    "Database mismatch - numFields <> numValues.");
+
         }
 
-        STATEMENT = DB.compileStatement("INSERT INTO " + table + "( "
+        mStatement = mDatabaseHandler.compileStatement("INSERT INTO " + table + "( "
                 + stringFields + ") VALUES " + stringValues);
 
         // Let's bind the parameters
@@ -450,16 +450,16 @@ public class SQLiteManager {
 
             for (int j = 1; j <= countValues; j++) {
 
-                STATEMENT.bindString((i * j), values.get(i - 1)[j - 1]);
+                mStatement.bindString((i * j), String.valueOf(values.get(i - 1)[j - 1]));
 
             }
 
         }
         // STATEMENT.bindString( 1, name );
-        return STATEMENT.executeInsert();
+        return mStatement.executeInsert();
     }
 
-    public int update(String table, String[] fields, String[] values,
+    public int update(String table, String[] fields, Object[] values,
             String whereField, long id) throws DatabaseInformationException {
 
         // Init
@@ -488,14 +488,14 @@ public class SQLiteManager {
         // Let's bind the parameters
         for (int i = 0; i < countFields; i++) {
 
-            contentValues.put(fields[i], values[i]);
+            contentValues.put(fields[i], String.valueOf(values[i]));
 
         }
 
         // EXECUTE!!!
-        return DB.update(table, contentValues, whereField + " = ?",
+        return mDatabaseHandler.update(table, contentValues, whereField + " = ?",
                 new String[] {
-                    id + ""
+                    String.valueOf(id)
                 });
 
     }
@@ -512,7 +512,7 @@ public class SQLiteManager {
             };
 
         // Let's return the query
-        return DB.query(t, p, s, sA, g, h, o);
+        return mDatabaseHandler.query(t, p, s, sA, g, h, o);
 
     }
 
@@ -524,7 +524,7 @@ public class SQLiteManager {
             throw new DatabaseInformationException("No table selected.");
 
         // We need to select a table
-        return DB.query(table, new String[] {
+        return mDatabaseHandler.query(table, new String[] {
                 "*"
         }, null, null, null,
                 null, orderBy);

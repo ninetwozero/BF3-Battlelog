@@ -48,37 +48,36 @@ import com.ninetwozero.battlelog.misc.DataBank;
 public class BoardFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
 
     // Elements
-    private ListView listView;
-    private TextView textTitle;
+    private ListView mListView;
+    private TextView mTextTitle;
 
     // Misc
-    private String locale;
-    private List<ForumData> forums;
-    private SharedPreferences sharedPreferences;
+    private String mLocale;
+    private List<ForumData> mForums;
+    private SharedPreferences mSharedPreferences;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        layoutInflater = inflater;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.board_view,
                 container, false);
 
         // Get the unlocks
-        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
+        mLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
 
         // Let's get that data
-        forums = new ArrayList<ForumData>();
+        mForums = new ArrayList<ForumData>();
 
         // Init the views
         initFragment(view);
@@ -91,21 +90,21 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
     public void initFragment(View v) {
 
         // Setup the TextView
-        textTitle = (TextView) v.findViewById(R.id.text_board_title);
+        mTextTitle = (TextView) v.findViewById(R.id.text_board_title);
         v.findViewById(R.id.wrap_top).setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View sv) {
 
-                generateDialogLanguageList(context, DataBank.getLanguages(),
+                generateDialogLanguageList(mContext, DataBank.getLanguages(),
                         DataBank.getLocales()).show();
 
             }
         });
 
         // Setup the ListVIew
-        listView = (ListView) v.findViewById(android.R.id.list);
-        listView.setAdapter(new ForumListAdapter(context, forums, layoutInflater));
+        mListView = (ListView) v.findViewById(android.R.id.list);
+        mListView.setAdapter(new ForumListAdapter(mContext, mForums, mLayoutInflater));
 
     }
 
@@ -114,7 +113,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
 
         super.onResume();
 
-        if (forums == null || forums.size() == 0) {
+        if (mForums == null || mForums.isEmpty()) {
             reload();
         }
 
@@ -123,9 +122,9 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
     public void reload() {
 
         // Is forums null?
-        if (forums == null) {
+        if (mForums == null) {
 
-            new AsyncGetForums(context).execute();
+            new AsyncGetForums(mContext).execute();
 
         } else {
 
@@ -193,10 +192,10 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
 
             try {
 
-                Object[] result = new ForumClient().getForums(locale);
+                Object[] result = new ForumClient().getForums(mLocale);
                 title = (String) result[0];
-                forums = (List<ForumData>) result[1];
-                return (forums != null);
+                mForums = (List<ForumData>) result[1];
+                return (mForums != null);
 
             } catch (Exception ex) {
 
@@ -217,11 +216,11 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
             }
 
             // update the title
-            textTitle.setText(title);
+            mTextTitle.setText(title);
 
-            if (listView.getAdapter() != null) {
+            if (mListView.getAdapter() != null) {
 
-                ((ForumListAdapter) listView.getAdapter()).setItemArray(forums);
+                ((ForumListAdapter) mListView.getAdapter()).setItemArray(mForums);
 
             }
 
@@ -244,10 +243,10 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
 
                     public void onClick(DialogInterface dialog, int item) {
 
-                        sharedPreferences.edit()
+                        mSharedPreferences.edit()
                                 .putString(Constants.SP_BL_FORUM_LOCALE, locales[item])
                                 .commit();
-                        locale = locales[item];
+                        mLocale = locales[item];
                         reload();
                         dialog.dismiss();
 

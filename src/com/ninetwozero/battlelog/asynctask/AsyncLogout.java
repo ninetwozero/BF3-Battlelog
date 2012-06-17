@@ -30,11 +30,11 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
 
     // Attribute
-    Context context;
-    String httpContent;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor spEdit;
-    ProgressDialog progressDialog;
+    private Context context;
+    private String httpContent;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor spEdit;
+    private ProgressDialog progressDialog;
 
     // Constructor
     public AsyncLogout(Context c) {

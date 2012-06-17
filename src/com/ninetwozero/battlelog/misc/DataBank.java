@@ -29,7 +29,7 @@ import com.ninetwozero.battlelog.datatype.AppContributorData;
 import com.ninetwozero.battlelog.datatype.PlatformData;
 import com.ninetwozero.battlelog.datatype.VehicleType;
 
-public class DataBank {
+public final class DataBank {
 
     // Construct = none
     private DataBank() {
@@ -39,7 +39,7 @@ public class DataBank {
     private static PlatformData[] PLATFORMS;
     private static String[] LANGUAGES;
     private static String[] LOCALES;
-    private static HashMap<String, Integer> PERSONA_IMAGES;
+    private static Map<String, Integer> PERSONA_IMAGES;
     private static List<AppContributorData> APP_CONTRIBUTORS;
     private static Map<Integer, Intent> CONTACT_INTENTS;
     private static Map<String, String> RANKS;
@@ -1451,9 +1451,9 @@ public class DataBank {
             return 32;
         } else if (s.equalsIgnoreCase("general")) {
             return 64;
-        } else
+        } else {
             return 64;
-
+        }
     }
 
     public static String getGameModeFromId(int number) {

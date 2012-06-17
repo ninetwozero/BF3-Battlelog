@@ -12,14 +12,14 @@ public class TopStatsComparator implements Comparator<PlatoonTopStatsItem> {
         PlatoonTopStatsItem p2 = (PlatoonTopStatsItem) o2;
 
         // Return!
-        if (p1.getLabel() != "TOP") {
-
-            return p1.getLabel().compareToIgnoreCase(p2.getLabel());
-
-        } else {
+        if (p1.getLabel().equals("TOP") ) {
 
             return -1;
 
+        } else {
+            
+            return p1.getLabel().compareToIgnoreCase(p2.getLabel());
+            
         }
 
     }
