@@ -607,7 +607,7 @@
                 
 						android:layout_alignParentLeft="true"
 					    android:layout_below="@id/string_stats_lhs_0"
-				    	android:layout_alignBaseline="@id/string_center_lks
+				    	android:layout_alignBaseline="@id/string_center_lks"
 					/>
 					
 					<TextView
