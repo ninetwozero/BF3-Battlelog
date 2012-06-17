@@ -48,14 +48,14 @@ public class PostOverviewFragment extends Fragment implements DefaultFragment {
     private boolean mNews = false;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
-
+        
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(
+        View view = inflater.inflate(
 
                 mNews ? R.layout.tab_content_post_overview_news
                         : R.layout.tab_content_post_overview_feed,

@@ -91,8 +91,8 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
         // Let's try something out
         if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
 
-            selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
-            selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
+            selectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
+            selectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
 
         } else {
 
@@ -152,11 +152,11 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
                             selectedPosition = item;
 
                             // Load the new!
-                            setupList(unlocks.get(selectedPersona), viewPager.getCurrentItem());
+                            setupList(unlocks.get(selectedPersona), mViewPager.getCurrentItem());
 
                             // Save it
                             if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
-                                SharedPreferences.Editor spEdit = sharedPreferences.edit();
+                                SharedPreferences.Editor spEdit = mSharedPreferences.edit();
                                 spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
                                 spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);
                                 spEdit.commit();
@@ -180,44 +180,44 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
     public void setup() {
 
         // Do we need to setup the fragments?
-        if (listFragments == null) {
+        if (mListFragments == null) {
 
             // Add them to the list
-            listFragments = new ArrayList<Fragment>();
-            listFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
-            listFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
-            listFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
-            listFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
-            listFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
+            mListFragments = new ArrayList<Fragment>();
+            mListFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
+            mListFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
+            mListFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
+            mListFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
+            mListFragments.add(Fragment.instantiate(this, UnlockFragment.class.getName()));
 
             // Iterate over the fragments
-            for (int i = 0, max = listFragments.size(); i < max; i++) {
+            for (int i = 0, max = mListFragments.size(); i < max; i++) {
 
-                ((UnlockFragment) listFragments.get(i)).setViewPagerPosition(i);
+                ((UnlockFragment) mListFragments.get(i)).setViewPagerPosition(i);
 
             }
 
             // Get the ViewPager
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
-            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+            mViewPager = (ViewPager) findViewById(R.id.viewpager);
+            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             // Fill the PagerAdapter & set it to the viewpager
-            pagerAdapter = new SwipeyTabsPagerAdapter(
+            mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-                    fragmentManager,
+                    mFragmentManager,
                     new String[] {
                             "WEAPONS", "ATTACHMENTS", "KIT UNLOCKS", "VEHICLE ADDONS", "SKILLS"
                     },
-                    listFragments,
-                    viewPager,
-                    layoutInflater
+                    mListFragments,
+                    mViewPager,
+                    mLayoutInflater
                     );
-            viewPager.setAdapter(pagerAdapter);
-            tabs.setAdapter(pagerAdapter);
+            mViewPager.setAdapter(mPagerAdapter);
+            mTabs.setAdapter(mPagerAdapter);
 
             // Make sure the tabs follow
-            viewPager.setOnPageChangeListener(tabs);
-            viewPager.setCurrentItem(0);
+            mViewPager.setOnPageChangeListener(mTabs);
+            mViewPager.setCurrentItem(0);
 
         }
 
@@ -277,7 +277,7 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
 
                     // Get the unlocks
                     ProfileClient profileHandler = new ProfileClient(profileData);
-                    unlocks = profileHandler.getUnlocks(sharedPreferences.getInt(
+                    unlocks = profileHandler.getUnlocks(mSharedPreferences.getInt(
                             Constants.SP_BL_UNLOCKS_LIMIT_MIN, 1));
 
                 } else {
@@ -288,7 +288,7 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
 
                     // Get the unlocks
                     ProfileClient profileHandler = new ProfileClient(profileData);
-                    unlocks = profileHandler.getUnlocks(sharedPreferences.getInt(
+                    unlocks = profileHandler.getUnlocks(mSharedPreferences.getInt(
                             Constants.SP_BL_UNLOCKS_LIMIT_MIN, 1));
 
                 }
@@ -321,12 +321,12 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
             }
 
             // Do actual stuff, like sending to an adapter
-            int num = viewPager.getCurrentItem();
+            int num = mViewPager.getCurrentItem();
             setupList(unlocks.get(selectedPersona), num);
             if (num > 0) {
                 setupList(unlocks.get(selectedPersona), num - 1);
             }
-            if (num < viewPager.getChildCount()) {
+            if (num < mViewPager.getChildCount()) {
                 setupList(unlocks.get(selectedPersona), num + 1);
             }
 
@@ -352,7 +352,7 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
 
     public void setupList(UnlockDataWrapper data, int position) {
 
-        ((UnlockFragment) listFragments.get(position)).showUnlocks(getItemsForFragment(position));
+        ((UnlockFragment) mListFragments.get(position)).showUnlocks(getItemsForFragment(position));
     }
 
     @Override

@@ -106,11 +106,11 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
 
         } else {
 
-            if (viewPager.getCurrentItem() == 0) {
+            if (mViewPager.getCurrentItem() == 0) {
 
                 return fragmentStats[0].handleSelectedOption(item);
 
-            } else if (viewPager.getCurrentItem() == 2) {
+            } else if (mViewPager.getCurrentItem() == 2) {
 
                 return fragmentStats[1].handleSelectedOption(item);
 
@@ -152,17 +152,17 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
     public void setup() {
 
         // Do we need to setup the fragments?
-        if (listFragments == null) {
+        if (mListFragments == null) {
 
             // Add them to the list
-            listFragments = new ArrayList<Fragment>();
+            mListFragments = new ArrayList<Fragment>();
             fragmentStats = new ProfileStatsFragment[2];
-            listFragments.add(fragmentStats[0] = (ProfileStatsFragment) Fragment.instantiate(
+            mListFragments.add(fragmentStats[0] = (ProfileStatsFragment) Fragment.instantiate(
                     this, ProfileStatsFragment.class.getName()));
-            listFragments.add(fragmentCompare = (ProfileStatsCompareFragment) Fragment.instantiate(
+            mListFragments.add(fragmentCompare = (ProfileStatsCompareFragment) Fragment.instantiate(
                     this,
                     ProfileStatsCompareFragment.class.getName()));
-            listFragments.add(fragmentStats[1] = (ProfileStatsFragment) Fragment.instantiate(this,
+            mListFragments.add(fragmentStats[1] = (ProfileStatsFragment) Fragment.instantiate(this,
                     ProfileStatsFragment.class.getName()));
 
             // Add the profileData
@@ -174,28 +174,28 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
             fragmentStats[1].setComparing(true);
 
             // Get the ViewPager
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
-            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+            mViewPager = (ViewPager) findViewById(R.id.viewpager);
+            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             // Fill the PagerAdapter & set it to the viewpager
-            pagerAdapter = new SwipeyTabsPagerAdapter(
+            mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-                    fragmentManager,
+                    mFragmentManager,
                     new String[] {
                             profileData[0].getUsername(), "Compare",
                             profileData[1].getUsername()
                     },
-                    listFragments,
-                    viewPager,
-                    layoutInflater
+                    mListFragments,
+                    mViewPager,
+                    mLayoutInflater
                     );
-            viewPager.setAdapter(pagerAdapter);
-            tabs.setAdapter(pagerAdapter);
+            mViewPager.setAdapter(mPagerAdapter);
+            mTabs.setAdapter(mPagerAdapter);
 
             // Make sure the tabs follow
-            viewPager.setOnPageChangeListener(tabs);
-            viewPager.setCurrentItem(1);
-            viewPager.setOffscreenPageLimit(2);
+            mViewPager.setOnPageChangeListener(mTabs);
+            mViewPager.setCurrentItem(1);
+            mViewPager.setOffscreenPageLimit(2);
 
         }
 
@@ -205,9 +205,9 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK && viewPager.getCurrentItem() > 0) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && mViewPager.getCurrentItem() > 0) {
 
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
 
         }
 

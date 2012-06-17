@@ -59,7 +59,7 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
     private int mSelectedPosition;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
@@ -72,7 +72,7 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
         mSelectedLanguage = DataBank.getLanguage(mSelectedPosition);
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_dashboard_forum,
+        View view = inflater.inflate(R.layout.tab_content_dashboard_forum,
                 container, false);
 
         initFragment(view);

@@ -45,7 +45,7 @@ public class WeaponListFragment extends ListFragment implements DefaultFragment 
     private List<WeaponDataWrapper> items;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes

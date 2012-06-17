@@ -30,13 +30,13 @@ import com.ninetwozero.battlelog.misc.DataBank;
 public class AboutMainFragment extends Fragment implements DefaultFragment {
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_main_about,
+        View view = inflater.inflate(R.layout.tab_content_main_about,
                 container, false);
 
         // Let's try this

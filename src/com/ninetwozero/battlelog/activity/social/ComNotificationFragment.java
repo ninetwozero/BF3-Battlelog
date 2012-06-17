@@ -54,13 +54,14 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
     private ListView listView;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         context = getActivity();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-
+        layoutInflater = inflater;
+        
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_com_notifications,
                 container, false);

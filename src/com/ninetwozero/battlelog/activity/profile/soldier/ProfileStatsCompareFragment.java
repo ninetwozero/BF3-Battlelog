@@ -34,11 +34,11 @@ import com.ninetwozero.battlelog.datatype.PersonaStats;
 public class ProfileStatsCompareFragment extends Fragment implements DefaultFragment {
 
     // Attributes
-    private LayoutInflater layoutInflater;
-    private long[] selectedPersona;
-    private Map<Long, PersonaStats> personaStats;
-    private int[] differences;
-    private int numCalls;
+    private LayoutInflater mLayoutInflater;
+    private long[] mSelectedPersona;
+    private Map<Long, PersonaStats> mPersonaStats;
+    private int[] mDifferences;
+    private int mNumCalls;
 
     // These are the different fields
     private final int FIELD_PERSONA[] = new int[] {
@@ -186,13 +186,14 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
     private TextView tvStatsLHS[] = new TextView[2];
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
+        mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_compare,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_compare,
                 container, false);
 
         // Init
@@ -205,8 +206,8 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
 
     public void initFragment(View view) {
 
-        personaStats = new HashMap<Long, PersonaStats>();
-        selectedPersona = new long[2];
+        mPersonaStats = new HashMap<Long, PersonaStats>();
+        mSelectedPersona = new long[2];
 
         // Loop over 'em
         for (int i = 0, max = tvPersona.length; i < max; i++) {
@@ -278,7 +279,7 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
         tvPersona[pos].setText(ps.getPersonaName()
                 .replaceAll("(\\[^\\]]+)", ""));
 
-        if (differences[6] == pos) {
+        if (mDifferences[6] == pos) {
             tvRank[pos].setText(Html.fromHtml("<b>" + ps.getRankId() + "</b>"));
         }
         else {
@@ -290,126 +291,126 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
         tvProgressMax[pos].setText(String.valueOf(ps.getPointsNeededToLvlUp()));
 
         // Stats
-        if (differences[9] == pos) {
+        if (mDifferences[9] == pos) {
             tvStatsTime[pos].setText(Html.fromHtml("<b>" + ps.getTimePlayedString() + "</b>"));
         }
         else {
             tvStatsTime[pos].setText(ps.getTimePlayedString());
         }
 
-        if (differences[10] == pos) {
+        if (mDifferences[10] == pos) {
             tvStatsKills[pos].setText(Html.fromHtml("<b>" + ps.getNumKills() + "</b>"));
         }
         else {
             tvStatsKills[pos].setText(String.valueOf(ps.getNumKills()));
         }
 
-        if (differences[11] == pos) {
+        if (mDifferences[11] == pos) {
             tvStatsAssists[pos].setText(Html.fromHtml("<b>" + ps.getNumAssists() + "</b>"));
         }
         else {
             tvStatsAssists[pos].setText(String.valueOf(ps.getNumAssists()));
         }
 
-        if (differences[12] == pos) {
+        if (mDifferences[12] == pos) {
             tvStatsVKills[pos].setText(Html.fromHtml("<b>" + ps.getNumVehicles() + "</b>"));
         }
         else {
             tvStatsVKills[pos].setText(String.valueOf(ps.getNumVehicles()));
         }
 
-        if (differences[13] == pos) {
+        if (mDifferences[13] == pos) {
             tvStatsVAssists[pos].setText(Html.fromHtml("<b>" + ps.getNumVehicleAssists() + "</b>"));
         }
         else {
             tvStatsVAssists[pos].setText(String.valueOf(ps.getNumVehicleAssists()));
         }
 
-        if (differences[14] == pos) {
+        if (mDifferences[14] == pos) {
             tvStatsHeals[pos].setText(Html.fromHtml("<b>" + ps.getNumHeals() + "</b>"));
         }
         else {
             tvStatsHeals[pos].setText(String.valueOf(ps.getNumHeals()));
         }
 
-        if (differences[15] == pos) {
+        if (mDifferences[15] == pos) {
             tvStatsRevives[pos].setText(Html.fromHtml("<b>" + ps.getNumRevives() + "</b>"));
         }
         else {
             tvStatsRevives[pos].setText(String.valueOf(ps.getNumRevives()));
         }
 
-        if (differences[16] == pos) {
+        if (mDifferences[16] == pos) {
             tvStatsRepairs[pos].setText(Html.fromHtml("<b>" + ps.getNumRepairs() + "</b>"));
         }
         else {
             tvStatsRepairs[pos].setText(String.valueOf(ps.getNumRepairs()));
         }
 
-        if (differences[17] == pos) {
+        if (mDifferences[17] == pos) {
             tvStatsResupplies[pos].setText(Html.fromHtml("<b>" + ps.getNumResupplies() + "</b>"));
         }
         else {
             tvStatsResupplies[pos].setText(String.valueOf(ps.getNumResupplies()));
         }
 
-        if (differences[18] == pos) {
+        if (mDifferences[18] == pos) {
             tvStatsDeath[pos].setText(Html.fromHtml("<b>" + ps.getNumDeaths() + "</b>"));
         }
         else {
             tvStatsDeath[pos].setText(String.valueOf(ps.getNumDeaths()));
         }
 
-        if (differences[19] == pos) {
+        if (mDifferences[19] == pos) {
             tvStatsWins[pos].setText(Html.fromHtml("<b>" + ps.getNumWins() + "</b>"));
         }
         else {
             tvStatsWins[pos].setText(String.valueOf(ps.getNumWins()));
         }
 
-        if (differences[20] == pos) {
+        if (mDifferences[20] == pos) {
             tvStatsLosses[pos].setText(Html.fromHtml("<b>" + ps.getNumLosses() + "</b>"));
         }
         else {
             tvStatsLosses[pos].setText(String.valueOf(ps.getNumLosses()));
         }
 
-        if (differences[21] == pos) {
+        if (mDifferences[21] == pos) {
             tvStatsKDR[pos].setText(Html.fromHtml("<b>" + ps.getKDRatio() + "</b>"));
         }
         else {
             tvStatsKDR[pos].setText(String.valueOf(ps.getKDRatio()));
         }
 
-        if (differences[22] == pos) {
+        if (mDifferences[22] == pos) {
             tvStatsAccuracy[pos].setText(Html.fromHtml("<b>" + ps.getAccuracy() + "%</b>"));
         }
         else {
             tvStatsAccuracy[pos].setText(ps.getAccuracy() + "%");
         }
 
-        if (differences[23] == pos) {
+        if (mDifferences[23] == pos) {
             tvStatsSkill[pos].setText(Html.fromHtml("<b>" + ps.getSkill() + "</b>"));
         }
         else {
             tvStatsSkill[pos].setText(String.valueOf(ps.getSkill()));
         }
 
-        if (differences[24] == pos) {
+        if (mDifferences[24] == pos) {
             tvStatsLKS[pos].setText(Html.fromHtml("<b>" + ps.getLongestKS() + "</b>"));
         }
         else {
             tvStatsLKS[pos].setText(String.valueOf(ps.getLongestKS()));
         }
 
-        if (differences[25] == pos) {
+        if (mDifferences[25] == pos) {
             tvStatsLHS[pos].setText(Html.fromHtml("<b>" + ps.getLongestHS() + " m</b>"));
         }
         else {
             tvStatsLHS[pos].setText(ps.getLongestHS() + " m");
         }
 
-        if (differences[26] == pos) {
+        if (mDifferences[26] == pos) {
             tvStatsSPM[pos].setText(Html.fromHtml("<b>" + ps.getScorePerMinute() + "</b>"));
         }
         else {
@@ -417,63 +418,63 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
         }
 
         // Score
-        if (differences[27] == pos) {
+        if (mDifferences[27] == pos) {
             tvScoreAssault[pos].setText(Html.fromHtml("<b>" + ps.getScoreAssault() + "</b>"));
         }
         else {
             tvScoreAssault[pos].setText(String.valueOf(ps.getScoreAssault()));
         }
 
-        if (differences[28] == pos) {
+        if (mDifferences[28] == pos) {
             tvScoreEngineer[pos].setText(Html.fromHtml("<b>" + ps.getScoreEngineer() + "</b>"));
         }
         else {
             tvScoreEngineer[pos].setText(String.valueOf(ps.getScoreEngineer()));
         }
 
-        if (differences[29] == pos) {
+        if (mDifferences[29] == pos) {
             tvScoreSupport[pos].setText(Html.fromHtml("<b>" + ps.getScoreSupport() + "</b>"));
         }
         else {
             tvScoreSupport[pos].setText(String.valueOf(ps.getScoreSupport()));
         }
 
-        if (differences[30] == pos) {
+        if (mDifferences[30] == pos) {
             tvScoreRecon[pos].setText(Html.fromHtml("<b>" + ps.getScoreRecon() + "</b>"));
         }
         else {
             tvScoreRecon[pos].setText(String.valueOf(ps.getScoreRecon()));
         }
 
-        if (differences[31] == pos) {
+        if (mDifferences[31] == pos) {
             tvScoreVehicles[pos].setText(Html.fromHtml("<b>" + ps.getScoreVehicles() + "</b>"));
         }
         else {
             tvScoreVehicles[pos].setText(String.valueOf(ps.getScoreVehicles()));
         }
 
-        if (differences[32] == pos) {
+        if (mDifferences[32] == pos) {
             tvScoreCombat[pos].setText(Html.fromHtml("<b>" + ps.getScoreCombat() + "</b>"));
         }
         else {
             tvScoreCombat[pos].setText(String.valueOf(ps.getScoreCombat()));
         }
 
-        if (differences[33] == pos) {
+        if (mDifferences[33] == pos) {
             tvScoreAward[pos].setText(Html.fromHtml("<b>" + ps.getScoreAwards() + "</b>"));
         }
         else {
             tvScoreAward[pos].setText(String.valueOf(ps.getScoreAwards()));
         }
 
-        if (differences[34] == pos) {
+        if (mDifferences[34] == pos) {
             tvScoreUnlocks[pos].setText(Html.fromHtml("<b>" + ps.getScoreUnlocks() + "</b>"));
         }
         else {
             tvScoreUnlocks[pos].setText(String.valueOf(ps.getScoreUnlocks()));
         }
 
-        if (differences[35] == pos) {
+        if (mDifferences[35] == pos) {
             tvScoreTotal[pos].setText(Html.fromHtml("<b>" + ps.getScoreTotal() + "</b>"));
         }
         else {
@@ -482,7 +483,7 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
 
         /* SPECIAL CASES */
 
-        if (differences[36] == pos) {
+        if (mDifferences[36] == pos) {
             tvStatsWLR[pos].setText(Html.fromHtml("<b>" + ps.getWLRatio() + "</b>"));
         }
         else {
@@ -517,27 +518,27 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
     public void showStats(Map<Long, PersonaStats> ps, long id, int pos, boolean toggle) {
 
         // Let's overwrite
-        personaStats.putAll(ps);
+        mPersonaStats.putAll(ps);
 
         // Update the selected persona
-        selectedPersona[pos] = id;
+        mSelectedPersona[pos] = id;
 
         // Calculate differences
-        if (selectedPersona[0] > 0 && selectedPersona[1] > 0 && (numCalls == 2 || toggle)) {
+        if (mSelectedPersona[0] > 0 && mSelectedPersona[1] > 0 && (mNumCalls == 2 || toggle)) {
 
             // Detect the differences
             detectDifferences();
 
             // Here's what we're gonna do
-            populateStats(personaStats.get(selectedPersona[0]), 0);
-            populateStats(personaStats.get(selectedPersona[1]), 1);
+            populateStats(mPersonaStats.get(mSelectedPersona[0]), 0);
+            populateStats(mPersonaStats.get(mSelectedPersona[1]), 1);
 
             // Zero it
-            numCalls = 1;
+            mNumCalls = 1;
 
         } else {
 
-            numCalls = 2;
+            mNumCalls = 2;
 
         }
 
@@ -547,16 +548,16 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
 
         // Let's do it this way
         PersonaStats[] personas = new PersonaStats[] {
-                personaStats.get(selectedPersona[0]), personaStats.get(selectedPersona[1])
+                mPersonaStats.get(mSelectedPersona[0]), mPersonaStats.get(mSelectedPersona[1])
         };
         Object[] left = personas[0].toArray();
         Object[] right = personas[1].toArray();
         int numItems = left.length;
 
         // Is it empty?
-        if (differences == null) {
+        if (mDifferences == null) {
 
-            differences = new int[numItems + 1]; // +1 => WLR
+            mDifferences = new int[numItems + 1]; // +1 => WLR
 
         }
 
@@ -565,12 +566,12 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
 
             double valueLeft = Double.parseDouble(left[counter].toString());
             double valueRight = Double.parseDouble(right[counter].toString());
-            differences[counter] = valueLeft > valueRight ? 0 : 1;
+            mDifferences[counter] = valueLeft > valueRight ? 0 : 1;
 
         }
 
         // Setup the WLR part
-        differences[numItems] = personas[0].getWLRatio() > personas[1].getWLRatio() ? 0 : 1;
+        mDifferences[numItems] = personas[0].getWLRatio() > personas[1].getWLRatio() ? 0 : 1;
     }
 
 }

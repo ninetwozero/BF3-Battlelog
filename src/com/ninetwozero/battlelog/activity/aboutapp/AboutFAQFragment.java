@@ -28,11 +28,11 @@ import com.ninetwozero.battlelog.datatype.DefaultFragment;
 public class AboutFAQFragment extends Fragment implements DefaultFragment {
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_main_faq,
+        View view = inflater.inflate(R.layout.tab_content_main_faq,
                 container, false);
 
         // Let's try this

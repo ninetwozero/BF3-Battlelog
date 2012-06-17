@@ -85,7 +85,7 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
         // Set the selected persona
         if (SessionKeeper.getProfileData().getId() == profileData.getId()) {
 
-            selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID,
+            selectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID,
                     profileData.getPersona(0).getId());
 
         } else {
@@ -106,15 +106,15 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
     public void setup() {
 
         // Do we need to setup the fragments?
-        if (listFragments == null) {
+        if (mListFragments == null) {
 
             // Add them to the list
-            listFragments = new ArrayList<Fragment>();
-            listFragments.add(fragmentWeaponInfo = (WeaponInformationFragment) Fragment
+            mListFragments = new ArrayList<Fragment>();
+            mListFragments.add(fragmentWeaponInfo = (WeaponInformationFragment) Fragment
                     .instantiate(this, WeaponInformationFragment.class.getName()));
-            listFragments.add(fragmentWeaponStats = (WeaponStatisticsFragment) Fragment
+            mListFragments.add(fragmentWeaponStats = (WeaponStatisticsFragment) Fragment
                     .instantiate(this, WeaponStatisticsFragment.class.getName()));
-            listFragments.add(fragmentUnlocks = (UnlockFragment) Fragment.instantiate(this,
+            mListFragments.add(fragmentUnlocks = (UnlockFragment) Fragment.instantiate(this,
                     UnlockFragment.class.getName()));
 
             // Let's set the selectedPersona
@@ -124,27 +124,27 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
             fragmentWeaponInfo.setSelectedPersona(selectedPersona);
 
             // Get the ViewPager
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
-            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+            mViewPager = (ViewPager) findViewById(R.id.viewpager);
+            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             // Fill the PagerAdapter & set it to the viewpager
-            pagerAdapter = new SwipeyTabsPagerAdapter(
+            mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-                    fragmentManager,
+                    mFragmentManager,
                     new String[] {
                             "INFORMATION", "STATISTICS", "UNLOCKS"
                     },
-                    listFragments,
-                    viewPager,
-                    layoutInflater
+                    mListFragments,
+                    mViewPager,
+                    mLayoutInflater
                     );
-            viewPager.setAdapter(pagerAdapter);
-            tabs.setAdapter(pagerAdapter);
+            mViewPager.setAdapter(mPagerAdapter);
+            mTabs.setAdapter(mPagerAdapter);
 
             // Make sure the tabs follow
-            viewPager.setOnPageChangeListener(tabs);
-            viewPager.setOffscreenPageLimit(2);
-            viewPager.setCurrentItem(0);
+            mViewPager.setOnPageChangeListener(mTabs);
+            mViewPager.setOffscreenPageLimit(2);
+            mViewPager.setCurrentItem(0);
 
         }
 

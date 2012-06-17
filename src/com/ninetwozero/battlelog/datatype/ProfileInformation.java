@@ -133,7 +133,7 @@ public class ProfileInformation {
         return mCurrentServer;
     }
 
-    public boolean getAllowFriendRequests() {
+    public boolean isAllowingFriendRequests() {
         return mAllowFriendRequests;
     }
 

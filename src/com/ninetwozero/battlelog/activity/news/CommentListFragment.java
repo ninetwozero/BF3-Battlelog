@@ -62,15 +62,16 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
     private int mPageId = 1;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-
+        mLayoutInflater = inflater;
+        
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_comment,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_comment,
                 container, false);
 
         // Init

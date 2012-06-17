@@ -61,16 +61,16 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
     private SharedPreferences mSharedPreferences;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
-        mSharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(mContext);
-
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mLayoutInflater = inflater;
+        
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.board_view,
+        View view = mLayoutInflater.inflate(R.layout.board_view,
                 container, false);
 
         // Get the unlocks

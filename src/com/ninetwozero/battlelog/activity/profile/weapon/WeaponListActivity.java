@@ -90,40 +90,40 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
     public void setup() {
 
         // Do we need to setup the fragments?
-        if (listFragments == null) {
+        if (mListFragments == null) {
 
             // Add them to the list
-            listFragments = new ArrayList<Fragment>();
-            listFragments.add(Fragment.instantiate(this, WeaponListFragment.class.getName()));
+            mListFragments = new ArrayList<Fragment>();
+            mListFragments.add(Fragment.instantiate(this, WeaponListFragment.class.getName()));
 
             // Iterate over the fragments
-            for (int i = 0, max = listFragments.size(); i < max; i++) {
+            for (int i = 0, max = mListFragments.size(); i < max; i++) {
 
-                ((WeaponListFragment) listFragments.get(i)).setViewPagerPosition(i);
+                ((WeaponListFragment) mListFragments.get(i)).setViewPagerPosition(i);
 
             }
 
             // Get the ViewPager
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
-            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+            mViewPager = (ViewPager) findViewById(R.id.viewpager);
+            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             // Fill the PagerAdapter & set it to the viewpager
-            pagerAdapter = new SwipeyTabsPagerAdapter(
+            mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-                    fragmentManager,
+                    mFragmentManager,
                     new String[] {
                             "WEAPONS"
                     },
-                    listFragments,
-                    viewPager,
-                    layoutInflater
+                    mListFragments,
+                    mViewPager,
+                    mLayoutInflater
                     );
-            viewPager.setAdapter(pagerAdapter);
-            tabs.setAdapter(pagerAdapter);
+            mViewPager.setAdapter(mPagerAdapter);
+            mTabs.setAdapter(mPagerAdapter);
 
             // Make sure the tabs follow
-            viewPager.setOnPageChangeListener(tabs);
-            viewPager.setCurrentItem(0);
+            mViewPager.setOnPageChangeListener(mTabs);
+            mViewPager.setCurrentItem(0);
 
         }
 
@@ -172,7 +172,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
 
                 if (result) {
 
-                    ((WeaponListFragment) listFragments.get(viewPager.getCurrentItem()))
+                    ((WeaponListFragment) mListFragments.get(mViewPager.getCurrentItem()))
                             .showWeapons(items.get(selectedPersona));
 
                 } else {

@@ -53,16 +53,16 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private SharedPreferences sharedPreferences;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private SharedPreferences mSharedPreferences;
 
     // Misc
-    private FriendListDataWrapper friendListData;
-    private FriendListAdapter friendListAdapter;
+    private FriendListDataWrapper mFriendListData;
+    private FriendListAdapter mFriendListAdapter;
 
     // Elements
-    private ListView listView;
+    private ListView mListView;
 
     // Constants
     private final int MENU_POS_CHAT = 0;
@@ -74,15 +74,16 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
     private final int MENU_POS_ASSIGNMENTS = 6;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mLayoutInflater = inflater;
+        
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_com_friends,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_com_friends,
                 container, false);
 
         // Let's try this
@@ -97,16 +98,16 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
     public void initFragment(View view) {
 
         // Get the listview
-        listView = (ListView) view.findViewById(android.R.id.list);
-        listView.setAdapter(friendListAdapter = new FriendListAdapter(context, null, layoutInflater));
-        ((Activity) context).registerForContextMenu(listView);
+        mListView = (ListView) view.findViewById(android.R.id.list);
+        mListView.setAdapter(mFriendListAdapter = new FriendListAdapter(mContext, null, mLayoutInflater));
+        ((Activity) mContext).registerForContextMenu(mListView);
 
     }
 
     @Override
     public void reload() {
 
-        new AsyncRefresh().execute(sharedPreferences
+        new AsyncRefresh().execute(mSharedPreferences
                 .getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
@@ -167,7 +168,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 new Intent(
 
-                        context, ChatActivity.class
+                        mContext, ChatActivity.class
 
                 ).putExtra(
 
@@ -185,7 +186,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
                     || item.getItemId() == MENU_POS_REQUEST_N) {
 
                 new AsyncRequest(profileData.getId(), (item.getItemId() == MENU_POS_REQUEST_Y))
-                        .execute(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+                        .execute(mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
             } else if (item.getItemId() == MENU_POS_PROFILE) {
 
@@ -193,7 +194,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 new Intent(
 
-                        context, ProfileActivity.class
+                        mContext, ProfileActivity.class
 
                 ).putExtra(
 
@@ -209,7 +210,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 new Intent(
 
-                        context, UnlockActivity.class
+                        mContext, UnlockActivity.class
 
                 ).putExtra(
 
@@ -225,7 +226,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 new Intent(
 
-                        context, CompareActivity.class
+                        mContext, CompareActivity.class
 
                 ).putExtra(
 
@@ -249,7 +250,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 new Intent(
 
-                        context, AssignmentActivity.class
+                        mContext, AssignmentActivity.class
 
                 ).putExtra(
 
@@ -267,7 +268,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
         } catch (WebsiteHandlerException ex) {
 
-            Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, ex.getMessage(), Toast.LENGTH_SHORT).show();
             ex.printStackTrace();
             return false;
 
@@ -293,7 +294,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
         @Override
         protected void onPreExecute() {
 
-            ((DashboardActivity) context).setComLabel(context.getString(R.string.label_wait));
+            ((DashboardActivity) mContext).setComLabel(mContext.getString(R.string.label_wait));
 
         }
 
@@ -303,7 +304,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Let's get this!
-                friendListData = new COMClient(arg0[0]).getFriendsForCOM(context);
+                mFriendListData = new COMClient(arg0[0]).getFriendsForCOM(mContext);
                 return true;
 
             } catch (WebsiteHandlerException e) {
@@ -320,10 +321,10 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
             if (results) {
 
                 // Display the friend list
-                ((DashboardActivity) context).setComLabel(context.getString(
+                ((DashboardActivity) mContext).setComLabel(mContext.getString(
                         R.string.label_com_handle).replace("{num}",
-                        String.valueOf(friendListData.getNumTotalOnline())));
-                display(friendListData);
+                        String.valueOf(mFriendListData.getNumTotalOnline())));
+                display(mFriendListData);
 
             }
 
@@ -368,7 +369,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
         protected void onPostExecute(Boolean results) {
 
             // Let the user know and then refresh!
-            Toast.makeText(context, R.string.info_friendreq_resp_ok,
+            Toast.makeText(mContext, R.string.info_friendreq_resp_ok,
                     Toast.LENGTH_SHORT).show();
             reload();
 
@@ -382,7 +383,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
         if (items != null) {
 
             // If we don't have it defined, then we need to set it
-            friendListAdapter.setItemArray(items.getFriends());
+            mFriendListAdapter.setItemArray(items.getFriends());
 
         }
 

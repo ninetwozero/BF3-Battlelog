@@ -88,15 +88,15 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
     public void setup() {
 
         // Do we need to setup the fragments?
-        if (listFragments == null) {
+        if (mListFragments == null) {
 
             // Add them to the list
-            listFragments = new ArrayList<Fragment>();
-            listFragments.add(fragmentOverview = (ProfileOverviewFragment) Fragment.instantiate(
+            mListFragments = new ArrayList<Fragment>();
+            mListFragments.add(fragmentOverview = (ProfileOverviewFragment) Fragment.instantiate(
                     this, ProfileOverviewFragment.class.getName()));
-            listFragments.add(fragmentStats = (ProfileStatsFragment) Fragment.instantiate(this,
+            mListFragments.add(fragmentStats = (ProfileStatsFragment) Fragment.instantiate(this,
                     ProfileStatsFragment.class.getName()));
-            listFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this,
+            mListFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this,
                     FeedFragment.class.getName()));
 
             // Add the profileData
@@ -110,27 +110,27 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
             fragmentFeed.setCanWrite(false);
 
             // Get the ViewPager
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
-            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+            mViewPager = (ViewPager) findViewById(R.id.viewpager);
+            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             // Fill the PagerAdapter & set it to the viewpager
-            pagerAdapter = new SwipeyTabsPagerAdapter(
+            mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-                    fragmentManager,
+                    mFragmentManager,
                     new String[] {
                             "OVERVIEW", "STATS", "FEED"
                     },
-                    listFragments,
-                    viewPager,
-                    layoutInflater
+                    mListFragments,
+                    mViewPager,
+                    mLayoutInflater
                     );
-            viewPager.setAdapter(pagerAdapter);
-            tabs.setAdapter(pagerAdapter);
+            mViewPager.setAdapter(mPagerAdapter);
+            mTabs.setAdapter(mPagerAdapter);
 
             // Make sure the tabs follow
-            viewPager.setOnPageChangeListener(tabs);
-            viewPager.setCurrentItem(0);
-            viewPager.setOffscreenPageLimit(2);
+            mViewPager.setOnPageChangeListener(mTabs);
+            mViewPager.setCurrentItem(0);
+            mViewPager.setOffscreenPageLimit(2);
 
         }
 
@@ -161,15 +161,15 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
         } else {
 
             // Which tab is operating?
-            if (viewPager.getCurrentItem() == 0) {
+            if (mViewPager.getCurrentItem() == 0) {
 
                 return super.onPrepareOptionsMenu(fragmentOverview.prepareOptionsMenu(menu));
 
-            } else if (viewPager.getCurrentItem() == 1) {
+            } else if (mViewPager.getCurrentItem() == 1) {
 
                 return super.onPrepareOptionsMenu(fragmentStats.prepareOptionsMenu(menu));
 
-            } else if (viewPager.getCurrentItem() == 2) {
+            } else if (mViewPager.getCurrentItem() == 2) {
 
                 ((MenuItem) menu.findItem(R.id.option_friendadd))
                         .setVisible(false);
@@ -209,11 +209,11 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
 
         } else {
 
-            if (viewPager.getCurrentItem() == 0) {
+            if (mViewPager.getCurrentItem() == 0) {
 
                 return fragmentOverview.handleSelectedOption(item);
 
-            } else if (viewPager.getCurrentItem() == 1) {
+            } else if (mViewPager.getCurrentItem() == 1) {
 
                 return fragmentStats.handleSelectedOption(item);
 
@@ -240,7 +240,7 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
 
-        switch (viewPager.getCurrentItem()) {
+        switch (mViewPager.getCurrentItem()) {
 
             case 0:
                 break;
@@ -274,7 +274,7 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
 
         }
 
-        switch (viewPager.getCurrentItem()) {
+        switch (mViewPager.getCurrentItem()) {
 
             case 2:
                 return fragmentFeed.handleSelectedContextItem(info, item);
@@ -304,9 +304,9 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK && viewPager.getCurrentItem() > 0) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && mViewPager.getCurrentItem() > 0) {
 
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
             return true;
 
         }

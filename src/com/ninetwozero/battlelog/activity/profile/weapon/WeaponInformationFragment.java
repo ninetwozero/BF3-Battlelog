@@ -59,7 +59,7 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     private Map<Long, WeaponDataWrapper> weaponDataWrapper;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes

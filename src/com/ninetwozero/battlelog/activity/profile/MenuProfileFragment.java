@@ -51,31 +51,32 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class MenuProfileFragment extends Fragment implements DefaultFragment, OnCloseListDialogListener {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
     private Map<Integer, Intent> MENU_INTENTS;
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
     // Elements
-    private RelativeLayout wrapPersona;
-    private TextView textPersona;
-    private ImageView imagePersona;
+    private RelativeLayout mWrapPersona;
+    private TextView mTextPersona;
+    private ImageView mImagePersona;
 
     // Let's store the position & persona
-    private PersonaData[] persona;
-    private int selectedPosition;
+    private PersonaData[] mPersona;
+    private int mSelectedPosition;
     private final String DIALOG = "dialog";
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mLayoutInflater = inflater;
+        
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_dashboard_profile,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_dashboard_profile,
                 container, false);
 
         initFragment(view);
@@ -90,24 +91,24 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment, On
         dataFromSharedPreferences();
 
         // Set up the Persona box
-        wrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
-        wrapPersona.setOnClickListener(
+        mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
+        mWrapPersona.setOnClickListener(
 
                 new OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
                         FragmentManager manager = getFragmentManager();
-                        ListDialogFragment dialog = ListDialogFragment.newInstance(persona, getTag());
+                        ListDialogFragment dialog = ListDialogFragment.newInstance(mPersona, getTag());
                         dialog.show(manager, DIALOG);
                     }
 
                 }
 
                 );
-        imagePersona = (ImageView) wrapPersona.findViewById(R.id.image_persona);
-        textPersona = (TextView) wrapPersona.findViewById(R.id.text_persona);
-        textPersona.setSelected(true);
+        mImagePersona = (ImageView) mWrapPersona.findViewById(R.id.image_persona);
+        mTextPersona = (TextView) mWrapPersona.findViewById(R.id.text_persona);
+        mTextPersona.setSelected(true);
 
         // Setup the "persona box"
         setupActiveSoldierContent();
@@ -129,26 +130,26 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment, On
     }
 
     private void dataFromSharedPreferences() {
-        persona = SessionKeeper.getProfileData().getPersonaArray();
-        selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
+        mPersona = SessionKeeper.getProfileData().getPersonaArray();
+        mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
     }
 
     private Map<Integer, Intent> menuOptions(){
         return new HashMap<Integer, Intent>(){{
             put(R.id.button_unlocks,
-                    new Intent(context, UnlockActivity.class).putExtra("profile",
+                    new Intent(mContext, UnlockActivity.class).putExtra("profile",
                             SessionKeeper.getProfileData()));
             put(R.id.button_weapon,
-                    new Intent(context, WeaponListActivity.class).putExtra("profile",
+                    new Intent(mContext, WeaponListActivity.class).putExtra("profile",
                             SessionKeeper.getProfileData()));
             put(R.id.button_assignments,
-                    new Intent(context, AssignmentActivity.class).putExtra("profile",
+                    new Intent(mContext, AssignmentActivity.class).putExtra("profile",
                             SessionKeeper.getProfileData()));
             put(R.id.button_self,
-                    new Intent(context, ProfileActivity.class).putExtra("profile",
+                    new Intent(mContext, ProfileActivity.class).putExtra("profile",
                             SessionKeeper.getProfileData()));
             put(R.id.button_settings,
-                    new Intent(context, ProfileSettingsActivity.class));
+                    new Intent(mContext, ProfileSettingsActivity.class));
         }};
 
     }
@@ -174,11 +175,11 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment, On
     }
 
     public void setupActiveSoldierContent() {
-        textPersona.setText(getPersonaNameAndPlatform());
-        imagePersona.setImageResource(DataBank.getImageForPersona(persona[selectedPosition].getLogo()));
+        mTextPersona.setText(getPersonaNameAndPlatform());
+        mImagePersona.setImageResource(DataBank.getImageForPersona(mPersona[mSelectedPosition].getLogo()));
     }
 
     private String getPersonaNameAndPlatform() {
-        return persona[selectedPosition].getName()+persona[selectedPosition].resolvePlatformId();
+        return mPersona[mSelectedPosition].getName()+mPersona[mSelectedPosition].resolvePlatformId();
     }
 }

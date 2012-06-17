@@ -34,31 +34,32 @@ import com.ninetwozero.battlelog.datatype.UnlockData;
 public class UnlockFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private int viewPagerPosition;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private int mViewPagerPosition;
 
     // Elements
-    private ListView listView;
+    private ListView mListView;
 
     // Misc
-    private List<UnlockData> unlocks;
+    private List<UnlockData> mUnlocks;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-
+        mContext = getActivity();
+        mLayoutInflater = inflater;
+        
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_unlocks,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_unlocks,
                 container, false);
 
         // Get the unlocks
-        if (context instanceof UnlockActivity) {
+        if (mContext instanceof UnlockActivity) {
 
-            unlocks = ((UnlockActivity) context).getItemsForFragment(viewPagerPosition);
+            mUnlocks = ((UnlockActivity) mContext).getItemsForFragment(mViewPagerPosition);
 
         }
 
@@ -73,8 +74,8 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
     public void initFragment(View v) {
 
         // Setup the ListView
-        listView = (ListView) v.findViewById(android.R.id.list);
-        listView.setAdapter(new UnlockListAdapter(context, unlocks, layoutInflater));
+        mListView = (ListView) v.findViewById(android.R.id.list);
+        mListView.setAdapter(new UnlockListAdapter(mContext, mUnlocks, mLayoutInflater));
 
     }
 
@@ -87,13 +88,13 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
 
     public int getViewPagerPosition() {
 
-        return viewPagerPosition;
+        return mViewPagerPosition;
 
     }
 
     public void setViewPagerPosition(int p) {
 
-        viewPagerPosition = p;
+        mViewPagerPosition = p;
 
     }
 
@@ -107,7 +108,7 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
     public void showUnlocks(List<UnlockData> unlockData) {
 
         // Let's set the data
-        ((UnlockListAdapter) listView.getAdapter()).setDataArray(unlockData);
+        ((UnlockListAdapter) mListView.getAdapter()).setDataArray(unlockData);
 
     }
 

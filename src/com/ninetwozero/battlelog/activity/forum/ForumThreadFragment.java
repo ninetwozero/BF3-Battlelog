@@ -107,16 +107,17 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     private Intent mStoredRequest;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
         mSharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(mContext);
-
+        mLayoutInflater = inflater;
+        
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.forum_thread_view,
+        View view = mLayoutInflater.inflate(R.layout.forum_thread_view,
                 container, false);
 
         // Get the locale
@@ -434,98 +435,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         menu.add(0, 3, 0, R.string.info_forum_report);
 
     }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        // Declare...
-        AdapterView.AdapterContextMenuInfo info;
-
-        // Let's try to get some menu information via a try/catch
-        try {
-
-            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        } catch (ClassCastException e) {
-
-            e.printStackTrace();
-            return false;
-
-        }
-
-        try {
-
-            // Let's get the item
-            ForumPostData data = (ForumPostData) info.targetView.getTag();
-
-            // Divide & conquer
-            if (item.getGroupId() == 0) {
-
-                // REQUESTS
-                switch (item.getItemId()) {
-
-                    case 0:
-                        startActivity(new Intent(mContext, ProfileActivity.class).putExtra(
-                                "profile", data.getProfileData()));
-                        break;
-
-                    case 1:
-                        Toast.makeText(mContext, R.string.info_forum_quote_warning,
-                                Toast.LENGTH_SHORT).show();
-                        mTextareaContent.setText(
-
-                                mTextareaContent.getText().insert(
-
-                                        mTextareaContent.getSelectionStart(),
-                                        BBCodeUtils.TAG_QUOTE_IN.replace(
-
-                                                "{number}", String.valueOf(data.getPostId())
-
-                                                ).replace(
-
-                                                        "{username}",
-                                                        data.getProfileData().getUsername()
-
-                                                )
-
-                                        )
-
-                                );
-                        mSelectedQuotes
-                                .put(data.getPostId(),
-                                        (data.isCensored() ? getString(R.string.general_censored)
-                                                : data.getContent()));
-                        break;
-
-                    case 2:
-                        generatePopupWithLinks(data.getContent());
-                        break;
-
-                    case 3:
-                        startActivity(new Intent(mContext, ForumReportActivity.class)
-                                .putExtra("postId", data.getPostId()));
-                        break;
-
-                    default:
-                        Toast.makeText(mContext, R.string.msg_unimplemented,
-                                Toast.LENGTH_SHORT).show();
-                        break;
-
-                }
-
-            }
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();
-            return false;
-
-        }
-
-        return true;
-
-    }
-
+    
     private void generatePopupWithLinks(String string) {
 
         // Got some?

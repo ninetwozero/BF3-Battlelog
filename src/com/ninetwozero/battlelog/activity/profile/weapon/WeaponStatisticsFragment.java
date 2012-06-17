@@ -41,7 +41,7 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
     private TextView textKills, textHS, textSF, textSH, textAccuracy, textTE, textSS, textSSP;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes

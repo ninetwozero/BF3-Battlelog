@@ -76,16 +76,17 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
     private boolean mWrite;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
         mSharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(mContext);
-
+        mLayoutInflater = inflater;
+        
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_feed,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_feed,
                 container, false);
 
         // Init

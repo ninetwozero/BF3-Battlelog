@@ -81,39 +81,39 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
     public void setup() {
 
         // Do we need to setup the fragments?
-        if (listFragments == null) {
+        if (mListFragments == null) {
 
             // Add them to the list
-            listFragments = new ArrayList<Fragment>();
-            listFragments.add(Fragment.instantiate(this,
+            mListFragments = new ArrayList<Fragment>();
+            mListFragments.add(Fragment.instantiate(this,
                     BoardFragment.class.getName()));
-            listFragments.add(mFragmentForum = (ForumFragment) Fragment.instantiate(this,
+            mListFragments.add(mFragmentForum = (ForumFragment) Fragment.instantiate(this,
                     ForumFragment.class.getName()));
-            listFragments.add(mFragmentForumThread = (ForumThreadFragment) Fragment.instantiate(
+            mListFragments.add(mFragmentForumThread = (ForumThreadFragment) Fragment.instantiate(
                     this, ForumThreadFragment.class.getName()));
 
             // Get the ViewPager
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
-            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+            mViewPager = (ViewPager) findViewById(R.id.viewpager);
+            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             // Fill the PagerAdapter & set it to the viewpager
-            pagerAdapter = new SwipeyTabsPagerAdapter(
+            mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-                    fragmentManager,
+                    mFragmentManager,
                     new String[] {
                             "FORUMS", "THREADS", "POSTS"
                     },
-                    listFragments,
-                    viewPager,
-                    layoutInflater
+                    mListFragments,
+                    mViewPager,
+                    mLayoutInflater
                     );
-            viewPager.setAdapter(pagerAdapter);
-            tabs.setAdapter(pagerAdapter);
+            mViewPager.setAdapter(mPagerAdapter);
+            mTabs.setAdapter(mPagerAdapter);
 
             // Make sure the tabs follow
-            viewPager.setOnPageChangeListener(tabs);
-            viewPager.setOffscreenPageLimit(2);
-            viewPager.setCurrentItem(0);
+            mViewPager.setOnPageChangeListener(mTabs);
+            mViewPager.setOffscreenPageLimit(2);
+            mViewPager.setCurrentItem(0);
 
         }
 
@@ -137,7 +137,7 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
-        if (viewPager.getCurrentItem() == 2) {
+        if (mViewPager.getCurrentItem() == 2) {
 
             mFragmentForumThread.prepareOptionsMenu(menu);
 
@@ -172,14 +172,14 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
     public void openForum(Intent data) {
 
         mFragmentForum.openForum(data);
-        viewPager.setCurrentItem(1, true);
+        mViewPager.setCurrentItem(1, true);
 
     }
 
     public void openThread(Intent data) {
 
         mFragmentForumThread.openThread(data);
-        viewPager.setCurrentItem(2, true);
+        mViewPager.setCurrentItem(2, true);
 
     }
 
@@ -187,9 +187,9 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK && viewPager.getCurrentItem() > 0) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && mViewPager.getCurrentItem() > 0) {
 
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
             return true;
 
         }
@@ -218,7 +218,7 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
 
-        if( viewPager.getCurrentItem() == 2 ) {
+        if( mViewPager.getCurrentItem() == 2 ) {
             
             mFragmentForumThread.createContextMenu(menu, view, menuInfo);
             
@@ -244,7 +244,7 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
 
         }
 
-        if (viewPager.getCurrentItem() == 2) {
+        if (mViewPager.getCurrentItem() == 2) {
 
             return mFragmentForumThread.handleSelectedContextItem(info, item);
 
@@ -256,7 +256,7 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
 
     public void resetPostFields() {
 
-        if (viewPager.getCurrentItem() == 2) {
+        if (mViewPager.getCurrentItem() == 2) {
 
             mFragmentForumThread.resetPostFields();
 

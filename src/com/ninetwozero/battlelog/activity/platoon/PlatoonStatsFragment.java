@@ -58,7 +58,7 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
     private PlatoonInformation platoonInformation;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,972 +11,914 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
- <ScrollView 
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/the_scroll"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
->
-	<RelativeLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-		android:paddingTop="5dp"
-		android:paddingLeft="10dp"
-		android:paddingRight="10dp"
-		android:paddingBottom="10dp"
-	>
-		<RelativeLayout
-		     android:id="@+id/wrap_info_persona"
-		     style="@style/InfoHeadingCompare"
-		     android:layout_width="fill_parent"
-	    	 android:layout_height="wrap_content"
-		>
-			<TextView
-			    android:id="@+id/string_persona_0"
-		    	android:text="NINETWOZERO"
-				android:padding="5dp"
-			    android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_alignParentLeft="true"
-		    	android:textSize="18sp"
-		    	android:textColor="#FFFFFF"
-		    	android:clickable="true"
-		    />
-			<TextView
-			    android:id="@+id/string_persona_1"
-		    	android:text="chokzor"
-				android:padding="5dp"
-			    android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_alignParentRight="true"
-		    	android:textSize="18sp"
-		    	android:textColor="#FFFFFF"
-		    	android:clickable="true"
-		    />
-		</RelativeLayout>
-		<RelativeLayout
-			android:id="@+id/wrap_info_left"
-		    android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_below="@id/wrap_info_persona"
-    		android:layout_alignParentLeft="true"
-    	>
-			<TextView
-			    android:id="@+id/string_rank_literal_0"
-			    android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:text="@string/info_xml_rank"
-		    	android:layout_below="@id/string_persona_0"
-		    />
-			<TextView
-			    android:id="@+id/string_rank_short_0"
-			    android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:text="2"
-		    	android:layout_toRightOf="@id/string_rank_literal_0"
-		    />
-			<RelativeLayout
-				android:id="@+id/wrap_progress_0"
-			    android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-			    android:layout_below="@+id/string_rank_short_0" 
-		    >
-				<TextView
-				    android:id="@+id/string_progress_curr_0"
-				    android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:text="9000"
-			    />
-				<TextView
-				    android:id="@+id/string000_0"
-				    android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:text=" / "
-					android:layout_toRightOf="@id/string_progress_curr_0"
-			    />
-				<TextView
-				    android:id="@+id/string_progress_max_0"
-				    android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:text="10000"
-					android:layout_toRightOf="@id/string000_0"
-			    />
-			</RelativeLayout>
-		</RelativeLayout>
-		<RelativeLayout
-			android:id="@+id/wrap_info_right"
-		    android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_below="@id/wrap_info_persona"
-    		android:layout_alignParentRight="true"
-    	>
-			<TextView
-			    android:id="@+id/string_rank_short_1"
-			    android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:text="2"
-		    	android:layout_alignParentRight="true"
-		    />
-			<TextView
-			    android:id="@+id/string_rank_literal_1"
-			    android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:text="@string/info_xml_rank"
-		    	android:layout_toLeftOf="@id/string_rank_short_1"
-		    />
-			<RelativeLayout
-				android:id="@+id/wrap_progress_1"
-			    android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-			    android:layout_below="@+id/string_rank_short_1" 
-		    >
-				<TextView
-				    android:id="@+id/string_progress_max_1"
-				    android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:text="10000"
-					android:layout_alignParentRight="true"
-			    />
-				<TextView
-				    android:id="@+id/string000_1"
-				    android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:text=" / "
-					android:layout_toLeftOf="@id/string_progress_max_1"
-			    />
-				<TextView
-				    android:id="@+id/string_progress_curr_1"
-				    android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:text="9000"
-					android:layout_toLeftOf="@id/string000_1"
-			    />
-			</RelativeLayout>
-		</RelativeLayout>
-	
-<!-- STATS -->
-		    
-		<RelativeLayout
-			android:id="@+id/wrap_stats"
-		    android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-		    android:layout_below="@+id/wrap_info_left" 
-	    >
-			<TextView
-				android:id="@+id/string100"
-			    style="@style/InfoHeadingCompare"
-				android:text="@string/label_stats"
-				android:padding="5dp"
-			/>
-			<!--  START_STATS_LOOP -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				   		style="@style/InfoRowCompare"
-						android:id="@+id/string_center_kills"
-						android:text="@string/info_xml_kills"
-					    android:layout_below="@id/string100"
-					/>
-					<TextView
-						android:id="@+id/string_stats_kills_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-					    android:layout_below="@id/string100"
-						android:layout_alignParentLeft="true"
-				    	android:layout_alignBaseline="@id/string_center_kills"
-					/>
-					<TextView
-						android:id="@+id/string_stats_kills_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-				    	android:layout_alignBaseline="@id/string_center_kills"
-					    android:layout_below="@id/string100"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				   		style="@style/InfoRowCompare"
-						android:id="@+id/string_center_assists"
-						android:text="@string/info_xml_assists"
-					    android:layout_below="@id/string_stats_kills_0"
-				    	android:layout_alignBaseline="@id/string_center_assists"
-					/>
-					<TextView
-						android:id="@+id/string_stats_assists_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_kills_0"
-				    	android:layout_alignBaseline="@id/string_center_assists"
-					/>
-					<TextView
-						android:id="@+id/string_stats_assists_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_kills_0"
-				    	android:layout_alignBaseline="@id/string_center_assists"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				   		style="@style/InfoRowCompare"
-						android:id="@+id/string_center_vkills"
-						android:text="@string/info_xml_vehicles_destroyed"
-					    android:layout_below="@id/string_center_assists"
-					/>
-					<TextView
-						android:id="@+id/string_stats_vkills_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-					    android:layout_below="@id/string_center_assists"
-						android:layout_alignParentLeft="true"
-				    	android:layout_alignBaseline="@id/string_center_vkills"
-					/>
-					<TextView
-						android:id="@+id/string_stats_vkills_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-				    	android:layout_alignBaseline="@id/string_center_vkills"
-					    android:layout_below="@id/string_center_assists"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				   		style="@style/InfoRowCompare"
-						android:id="@+id/string_center_vassists"
-						android:text="@string/info_xml_vehicles_assisted_with"
-					    android:layout_below="@id/string_stats_vkills_0"
-				    	android:layout_alignBaseline="@id/string_center_vassists"
-					/>
-					<TextView
-						android:id="@+id/string_stats_vassists_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_vkills_0"
-				    	android:layout_alignBaseline="@id/string_center_vassists"
-					/>
-					<TextView
-						android:id="@+id/string_stats_vassists_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_vkills_0"
-				    	android:layout_alignBaseline="@id/string_center_vassists"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				    	style="@style/InfoRowCompare"
-						android:id="@+id/string_center_heals"
-						android:text="@string/info_xml_heals"
-					    android:layout_below="@id/string_stats_vassists_0"
-					/>
-					<TextView
-						android:id="@+id/string_stats_heals_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_vassists_0"
-				    	android:layout_alignBaseline="@id/string_center_heals"
-					/>
-					<TextView
-						android:id="@+id/string_stats_heals_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_vassists_0"
-				    	android:layout_alignBaseline="@id/string_center_heals"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				  		style="@style/InfoRowCompare"
-						android:id="@+id/string_center_revives"
-						android:text="@string/info_xml_revives"
-					    android:layout_below="@id/string_stats_heals_0"
-					/>
-					<TextView
-						android:id="@+id/string_stats_revives_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_heals_0"
-				    	android:layout_alignBaseline="@id/string_center_revives"
-					/>
-					<TextView
-						android:id="@+id/string_stats_revives_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_heals_0"
-				    	android:layout_alignBaseline="@id/string_center_revives"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				  		style="@style/InfoRowCompare"
-						android:id="@+id/string_center_repairs"
-						android:text="@string/info_xml_repairs"
-					    android:layout_below="@id/string_stats_revives_0"
-					/>
-					<TextView
-						android:id="@+id/string_stats_repairs_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_revives_0"
-				    	android:layout_alignBaseline="@id/string_center_repairs"
-					/>
-					<TextView
-						android:id="@+id/string_stats_repairs_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_revives_0"
-				    	android:layout_alignBaseline="@id/string_center_repairs"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				  		style="@style/InfoRowCompare"
-						android:id="@+id/string_center_resupplies"
-						android:text="@string/info_xml_resupplies"
-					    android:layout_below="@id/string_stats_repairs_0"
-					/>
-					<TextView
-						android:id="@+id/string_stats_resupplies_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_repairs_0"
-				    	android:layout_alignBaseline="@id/string_center_resupplies"
-					/>
-					<TextView
-						android:id="@+id/string_stats_resupplies_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_repairs_0"
-				    	android:layout_alignBaseline="@id/string_center_resupplies"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				    	style="@style/InfoRowCompare"
-						android:id="@+id/string_center_deaths"
-						android:text="@string/info_xml_deaths"
-					    android:layout_below="@id/string_stats_resupplies_0"
-					/>
-					<TextView
-						android:id="@+id/string_stats_deaths_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_resupplies_0"
-				    	android:layout_alignBaseline="@id/string_center_deaths"
-					/>
-					<TextView
-						android:id="@+id/string_stats_deaths_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_resupplies_0"
-				    	android:layout_alignBaseline="@id/string_center_deaths"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-					    style="@style/InfoSubHeadingCompare"
-						android:id="@+id/string_center_kdr"
-						android:text="@string/info_xml_kd_ratio"
-					    android:layout_below="@id/string_stats_deaths_0"
-					/>
-					<TextView
-						android:id="@+id/string_stats_kdr_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_deaths_0"
-				    	android:layout_alignBaseline="@id/string_center_kdr"
-					/>
-					<TextView
-						android:id="@+id/string_stats_kdr_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_deaths_0"
-				    	android:layout_alignBaseline="@id/string_center_kdr"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				    	style="@style/InfoRowCompare"
-						android:id="@+id/string_center_wins"
-						android:text="@string/info_xml_wins"
-					    android:layout_below="@id/string_center_kdr"
-					/>
-					<TextView
-						android:id="@+id/string_stats_wins_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_center_kdr"
-				    	android:layout_alignBaseline="@id/string_center_wins"
-					/>
-					<TextView
-						android:id="@+id/string_stats_wins_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_center_kdr"
-				    	android:layout_alignBaseline="@id/string_center_wins"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				   		style="@style/InfoRowCompare"
-						android:id="@+id/string_center_losses"
-						android:text="@string/info_xml_losses"
-						android:layout_below="@id/string_stats_wins_0"
-					/>
-					<TextView
-						android:id="@+id/string_stats_losses_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_wins_0"
-				    	android:layout_alignBaseline="@id/string_center_losses"
-					/>
-					<TextView
-						android:id="@+id/string_stats_losses_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_wins_0"
-				    	android:layout_alignBaseline="@id/string_center_losses"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-					    style="@style/InfoSubHeadingCompare"
-						android:id="@+id/string_center_wlr"
-						android:text="@string/info_xml_wl_ratio"
-						android:layout_below="@id/string_stats_losses_0"
-					/>
-					<TextView
-						android:id="@+id/string_stats_wlr_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_losses_0"
-				    	android:layout_alignBaseline="@id/string_center_wlr"
-					/>
-					<TextView
-						android:id="@+id/string_stats_wlr_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_losses_0"
-				    	android:layout_alignBaseline="@id/string_center_wlr"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				    	style="@style/InfoRowCompare"
-						android:id="@+id/string_center_accuracy"
-						android:text="@string/info_xml_accuracy"
-						android:layout_below="@id/string_center_wlr"
-					/>
-					<TextView
-						android:id="@+id/string_stats_accuracy_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_center_wlr"
-				    	android:layout_alignBaseline="@id/string_center_accuracy"
-					/>
-					<TextView
-						android:id="@+id/string_stats_accuracy_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_center_wlr"
-				    	android:layout_alignBaseline="@id/string_center_accuracy"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				   		style="@style/InfoRowCompare"
-						android:id="@+id/string_center_lhs"
-						android:text="@string/info_xml_longest_headshot"
-						android:layout_below="@id/string_stats_accuracy_0"
-					/>
-					<TextView
-						android:id="@+id/string_stats_lhs_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_accuracy_0"
-				    	android:layout_alignBaseline="@id/string_center_lhs"
-					/>
-					<TextView
-						android:id="@+id/string_stats_lhs_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_accuracy_0"
-				    	android:layout_alignBaseline="@id/string_center_lhs"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				    	style="@style/InfoRowCompare"
-						android:id="@+id/string_center_lks"
-						android:text="@string/info_xml_longest_killstreak"
-						android:layout_below="@id/string_stats_lhs_0"
-					/>
-					<TextView
-						android:id="@+id/string_stats_lks_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_lhs_0"
-				    	android:layout_alignBaseline="@id/string_center_lks
-					/>
-					
-					<TextView
-						android:id="@+id/string_stats_lks_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_lhs_0"
-				    	android:layout_alignBaseline="@id/string_center_lks"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				    	style="@style/InfoRowCompare"
-						android:id="@+id/string_center_skill"
-						android:text="@string/info_xml_skill_rating"
-						android:layout_below="@id/string_stats_lks_0"
-					/>
-					<TextView
-						android:id="@+id/string_stats_skill_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_lks_0"
-				    	android:layout_alignBaseline="@id/string_center_skill"
-					/>
-					<TextView
-						android:id="@+id/string_stats_skill_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_lks_0"
-				    	android:layout_alignBaseline="@id/string_center_skill"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_STATS_ITEM -->
-					<TextView
-				    	style="@style/InfoRowCompare"
-						android:id="@+id/string_center_time"
-						android:text="@string/info_xml_time_played"
-						android:layout_below="@id/string_stats_skill_0"
-					/>
-					<TextView
-						android:id="@+id/string_stats_time_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_skill_0"
-				    	android:layout_alignBaseline="@id/string_center_time"
-					/>
-					<TextView
-						android:id="@+id/string_stats_time_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_skill_0"
-				    	android:layout_alignBaseline="@id/string_center_time"
-					/>
-				<!-- END_STATS_ITEM -->
-				<!-- START_SCORE_ITEM -->
-					<TextView
-					    style="@style/InfoSubHeadingCompare"
-						android:id="@+id/string_center_spm"
-						android:text="@string/info_xml_score_minute"
-						android:layout_below="@id/string_stats_time_0"
-					/>
-					<TextView
-						android:id="@+id/string_stats_spm_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-					    android:layout_below="@id/string_stats_time_0"
-				    	android:layout_alignBaseline="@id/string_center_spm"
-					/>
-					<TextView
-						android:id="@+id/string_stats_spm_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-					    android:layout_below="@id/string_stats_time_0"
-				    	android:layout_alignBaseline="@id/string_center_spm"
-					/>
-				<!-- END_STATS_ITEM -->
-		</RelativeLayout>
-		
-<!-- SCORE -->
-		    
-		<RelativeLayout
-			android:id="@+id/wrap_score"
-		    android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-		    android:layout_below="@+id/wrap_stats" 
-	    >
-			<TextView
-				android:id="@+id/string200"
-			    style="@style/InfoHeadingCompare"
-				android:text="@string/info_xml_score"
-				android:padding="5dp"
-			/>
-			<!--  START_SCORE_LOOP -->
-				<!-- START_SCORE_ITEM -->
-					<TextView
-				    	style="@style/InfoRowCompare"
-						android:id="@+id/string_center_assault"
-						android:text="@string/info_xml_assault"
-					    android:layout_below="@id/string200"
-					/>
-					<TextView
-						android:id="@+id/string_score_assault_0"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 0"
-                
-						android:layout_alignParentLeft="true"
-				    	android:layout_below="@id/string200"
-				    	android:layout_alignBaseline="@id/string_center_assault"
-					/>
-					<TextView
-						android:id="@+id/string_score_assault_1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Player 1"
-                
-						android:layout_alignParentRight="true"
-				    	android:layout_below="@id/string200"
-				    	android:layout_alignBaseline="@id/string_center_assault"
-					/>
-				<!-- END_SCORE_ITEM -->
-				<!-- START_SCORE_ITEM -->
-				<TextView
-				    style="@style/InfoRowCompare"
-					android:id="@+id/string_center_engineer"
-					android:text="@string/info_xml_engineer"
-				    android:layout_below="@id/string_score_assault_0"
-				/>
-				<TextView
-					android:id="@+id/string_score_engineer_0"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 0"
-                
-					android:layout_alignParentLeft="true"
-			    	android:layout_below="@id/string_center_assault"
-			    	android:layout_alignBaseline="@id/string_center_engineer"
-				/>
-				<TextView
-					android:id="@+id/string_score_engineer_1"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 1"
-                
-					android:layout_alignParentRight="true"
-			    	android:layout_below="@id/string_center_assault"
-			    	android:layout_alignBaseline="@id/string_center_engineer"
-				/>
-				<!-- END_SCORE_ITEM -->
-				<!-- START_SCORE_ITEM -->
-				<TextView
-				    style="@style/InfoRowCompare"
-					android:id="@+id/string_center_support"
-					android:text="@string/info_xml_support"
-				    android:layout_below="@id/string_center_engineer"
-				/>
-				<TextView
-					android:id="@+id/string_score_support_0"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 0"
-                
-					android:layout_alignParentLeft="true"
-			    	android:layout_below="@id/string_center_engineer"
-			    	android:layout_alignBaseline="@id/string_center_support"
-				/>
-				<TextView
-					android:id="@+id/string_score_support_1"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 1"
-                
-					android:layout_alignParentRight="true"
-			    	android:layout_below="@id/string_center_engineer"
-			    	android:layout_alignBaseline="@id/string_center_support"
-				/>
-				<!-- END_SCORE_ITEM -->
-				<!-- START_SCORE_ITEM -->
-				<TextView
-				    style="@style/InfoRowCompare"
-					android:id="@+id/string_center_recon"
-					android:text="@string/info_xml_recon"
-				    android:layout_below="@id/string_score_support_0"
-				/>
-				<TextView
-					android:id="@+id/string_score_recon_0"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 0"
-                
-					android:layout_alignParentLeft="true"
-			    	android:layout_below="@id/string_center_recon"
-			    	android:layout_alignBaseline="@id/string_center_recon"
-				/>
-				<TextView
-					android:id="@+id/string_score_recon_1"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 1"
-                
-					android:layout_alignParentRight="true"
-			    	android:layout_below="@id/string_center_recon"
-			    	android:layout_alignBaseline="@id/string_center_recon"
-				/>
-				<!-- END_SCORE_ITEM -->
-				<!-- START_SCORE_ITEM -->
-				<TextView
-				    style="@style/InfoRowCompare"
-					android:id="@+id/string_center_vehicles"
-					android:text="@string/info_xml_vehicles"
-				    android:layout_below="@id/string_center_recon"
-				/>
-				<TextView
-					android:id="@+id/string_score_vehicles_0"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 0"
-                
-					android:layout_alignParentLeft="true"
-			    	android:layout_below="@id/string_center_recon"
-			    	android:layout_alignBaseline="@id/string_center_vehicles"
-				/>
-				<TextView
-					android:id="@+id/string_score_vehicles_1"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 1"
-                
-					android:layout_alignParentRight="true"
-			    	android:layout_below="@id/string_center_recon"
-			    	android:layout_alignBaseline="@id/string_center_vehicles"
-				/>
-				<!-- END_SCORE_ITEM -->
-				<!-- START_SCORE_ITEM -->
-				<TextView
-					style="@style/InfoSubHeadingCompare"
-					android:id="@+id/string_center_combat"
-					android:text="@string/info_xml_total_in_combat"
-				    android:layout_below="@id/string_score_vehicles_0"
-				/>
-				<TextView
-					android:id="@+id/string_score_combat_0"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 0"
-                
-					android:layout_alignParentLeft="true"
-			    	android:layout_below="@id/string_center_vehicles"
-			    	android:layout_alignBaseline="@id/string_center_combat"
-				/>
-				<TextView
-					android:id="@+id/string_score_combat_1"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 1"
-                
-					android:layout_alignParentRight="true"
-			    	android:layout_below="@id/string_center_vehicles"
-			    	android:layout_alignBaseline="@id/string_center_combat"
-				/>
-				<!-- END_SCORE_ITEM -->
-				<!-- START_SCORE_ITEM -->
-				<TextView
-				    style="@style/InfoRowCompare"
-					android:id="@+id/string_center_award"
-					android:text="@string/info_xml_award"
-				    android:layout_below="@id/string_center_combat"
-				/>
-				<TextView
-					android:id="@+id/string_score_award_0"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 0"
-                
-					android:layout_alignParentLeft="true"
-				    android:layout_below="@id/string_center_combat"
-			    	android:layout_alignBaseline="@id/string_center_award"
-				/>
-				<TextView
-					android:id="@+id/string_score_award_1"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 1"
-                
-					android:layout_alignParentRight="true"
-				    android:layout_below="@id/string_center_combat"
-			    	android:layout_alignBaseline="@id/string_center_award"
-				/>
-				<!-- END_SCORE_ITEM -->
-				<!-- START_SCORE_ITEM -->
-				<TextView
-				    style="@style/InfoRowCompare"
-					android:id="@+id/string_center_unlock"
-					android:text="@string/info_xml_unlocks"
-				    android:layout_below="@id/string_score_award_0"
-				/>
-				<TextView
-					android:id="@+id/string_score_unlock_0"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 0"
-                
-					android:layout_alignParentLeft="true"
-				    android:layout_below="@id/string_score_award_0"
-			    	android:layout_alignBaseline="@id/string_center_unlock"
-				/>
-				<TextView
-					android:id="@+id/string_score_unlock_1"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 1"
-                
-					android:layout_alignParentRight="true"
-				    android:layout_below="@id/string_score_award_0"
-			    	android:layout_alignBaseline="@id/string_center_unlock"
-				/>
-				<!-- END_SCORE_ITEM -->
-				<!-- START_SCORE_ITEM -->
-				<TextView
-				    style="@style/InfoSubHeadingCompare"
-					android:id="@+id/string_score_center_total"
-					android:text="@string/info_xml_total_score"
-				    android:layout_below="@id/string_center_unlock"
-				/>
-				<TextView
-					android:id="@+id/string_score_total_0"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 0"
-                
-					android:layout_alignParentLeft="true"
-				    android:layout_below="@id/string_center_unlock"
-			    	android:layout_alignBaseline="@id/string_score_center_total"
-				/>
-				<TextView
-					android:id="@+id/string_score_total_1"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Player 1"
-                
-					android:layout_alignParentRight="true"
-				    android:layout_below="@id/string_center_unlock"
-			    	android:layout_alignBaseline="@id/string_score_center_total"
-				/>
-				<!-- END_SCORE_ITEM -->
-			<!--  END_SCORE_LOOP -->
-		</RelativeLayout>
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-<!-- ? -->
-		    
-	</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp" >
+
+        <RelativeLayout
+            android:id="@+id/wrap_info_persona"
+            style="@style/InfoHeadingCompare"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/string_persona_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:clickable="true"
+                android:padding="5dp"
+                android:text="NINETWOZERO"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/string_persona_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:clickable="true"
+                android:padding="5dp"
+                android:text="chokzor"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/wrap_info_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/wrap_info_persona" >
+
+            <TextView
+                android:id="@+id/string_rank_literal_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/string_persona_0"
+                android:text="@string/info_xml_rank" />
+
+            <TextView
+                android:id="@+id/string_rank_short_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/string_rank_literal_0"
+                android:text="2" />
+
+            <RelativeLayout
+                android:id="@+id/wrap_progress_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/string_rank_short_0" >
+
+                <TextView
+                    android:id="@+id/string_progress_curr_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="9000" />
+
+                <TextView
+                    android:id="@+id/string000_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/string_progress_curr_0"
+                    android:text=" / " />
+
+                <TextView
+                    android:id="@+id/string_progress_max_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/string000_0"
+                    android:text="10000" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/wrap_info_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/wrap_info_persona" >
+
+            <TextView
+                android:id="@+id/string_rank_short_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="2" />
+
+            <TextView
+                android:id="@+id/string_rank_literal_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/string_rank_short_1"
+                android:text="@string/info_xml_rank" />
+
+            <RelativeLayout
+                android:id="@+id/wrap_progress_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/string_rank_short_1" >
+
+                <TextView
+                    android:id="@+id/string_progress_max_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="10000" />
+
+                <TextView
+                    android:id="@+id/string000_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/string_progress_max_1"
+                    android:text=" / " />
+
+                <TextView
+                    android:id="@+id/string_progress_curr_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/string000_1"
+                    android:text="9000" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <!-- STATS -->
+
+        <RelativeLayout
+            android:id="@+id/wrap_stats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/wrap_info_left" >
+
+            <TextView
+                android:id="@+id/string100"
+                style="@style/InfoHeadingCompare"
+                android:padding="5dp"
+                android:text="@string/label_stats" />
+            <!-- START_STATS_LOOP -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_kills"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string100"
+                android:text="@string/info_xml_kills" />
+
+            <TextView
+                android:id="@+id/string_stats_kills_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_kills"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string100"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_kills_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_kills"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string100"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_assists"
+                style="@style/InfoRowCompare"
+                android:layout_alignBaseline="@id/string_center_assists"
+                android:layout_below="@id/string_stats_kills_0"
+                android:text="@string/info_xml_assists" />
+
+            <TextView
+                android:id="@+id/string_stats_assists_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_assists"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_kills_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_assists_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_assists"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_kills_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_vkills"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_center_assists"
+                android:text="@string/info_xml_vehicles_destroyed" />
+
+            <TextView
+                android:id="@+id/string_stats_vkills_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_vkills"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_center_assists"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_vkills_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_vkills"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_center_assists"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_vassists"
+                style="@style/InfoRowCompare"
+                android:layout_alignBaseline="@id/string_center_vassists"
+                android:layout_below="@id/string_stats_vkills_0"
+                android:text="@string/info_xml_vehicles_assisted_with" />
+
+            <TextView
+                android:id="@+id/string_stats_vassists_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_vassists"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_vkills_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_vassists_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_vassists"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_vkills_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_heals"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_stats_vassists_0"
+                android:text="@string/info_xml_heals" />
+
+            <TextView
+                android:id="@+id/string_stats_heals_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_heals"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_vassists_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_heals_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_heals"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_vassists_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_revives"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_stats_heals_0"
+                android:text="@string/info_xml_revives" />
+
+            <TextView
+                android:id="@+id/string_stats_revives_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_revives"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_heals_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_revives_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_revives"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_heals_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_repairs"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_stats_revives_0"
+                android:text="@string/info_xml_repairs" />
+
+            <TextView
+                android:id="@+id/string_stats_repairs_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_repairs"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_revives_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_repairs_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_repairs"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_revives_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_resupplies"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_stats_repairs_0"
+                android:text="@string/info_xml_resupplies" />
+
+            <TextView
+                android:id="@+id/string_stats_resupplies_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_resupplies"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_repairs_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_resupplies_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_resupplies"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_repairs_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_deaths"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_stats_resupplies_0"
+                android:text="@string/info_xml_deaths" />
+
+            <TextView
+                android:id="@+id/string_stats_deaths_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_deaths"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_resupplies_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_deaths_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_deaths"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_resupplies_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_kdr"
+                style="@style/InfoSubHeadingCompare"
+                android:layout_below="@id/string_stats_deaths_0"
+                android:text="@string/info_xml_kd_ratio" />
+
+            <TextView
+                android:id="@+id/string_stats_kdr_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_kdr"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_deaths_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_kdr_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_kdr"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_deaths_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_wins"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_center_kdr"
+                android:text="@string/info_xml_wins" />
+
+            <TextView
+                android:id="@+id/string_stats_wins_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_wins"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_center_kdr"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_wins_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_wins"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_center_kdr"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_losses"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_stats_wins_0"
+                android:text="@string/info_xml_losses" />
+
+            <TextView
+                android:id="@+id/string_stats_losses_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_losses"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_wins_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_losses_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_losses"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_wins_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_wlr"
+                style="@style/InfoSubHeadingCompare"
+                android:layout_below="@id/string_stats_losses_0"
+                android:text="@string/info_xml_wl_ratio" />
+
+            <TextView
+                android:id="@+id/string_stats_wlr_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_wlr"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_losses_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_wlr_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_wlr"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_losses_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_accuracy"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_center_wlr"
+                android:text="@string/info_xml_accuracy" />
+
+            <TextView
+                android:id="@+id/string_stats_accuracy_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_accuracy"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_center_wlr"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_accuracy_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_accuracy"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_center_wlr"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_lhs"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_stats_accuracy_0"
+                android:text="@string/info_xml_longest_headshot" />
+
+            <TextView
+                android:id="@+id/string_stats_lhs_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_lhs"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_accuracy_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_lhs_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_lhs"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_accuracy_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_lks"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_stats_lhs_0"
+                android:text="@string/info_xml_longest_killstreak" />
+
+            <TextView
+                android:id="@+id/string_stats_lks_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_lks"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_lhs_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_lks_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_lks"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_lhs_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_skill"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_stats_lks_0"
+                android:text="@string/info_xml_skill_rating" />
+
+            <TextView
+                android:id="@+id/string_stats_skill_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_skill"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_lks_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_skill_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_skill"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_lks_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_STATS_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_time"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_stats_skill_0"
+                android:text="@string/info_xml_time_played" />
+
+            <TextView
+                android:id="@+id/string_stats_time_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_time"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_skill_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_time_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_time"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_skill_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+            <!-- START_SCORE_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_spm"
+                style="@style/InfoSubHeadingCompare"
+                android:layout_below="@id/string_stats_time_0"
+                android:text="@string/info_xml_score_minute" />
+
+            <TextView
+                android:id="@+id/string_stats_spm_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_spm"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_stats_time_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_stats_spm_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_spm"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_stats_time_0"
+                android:text="Player 1" />
+            <!-- END_STATS_ITEM -->
+        </RelativeLayout>
+
+        <!-- SCORE -->
+
+        <RelativeLayout
+            android:id="@+id/wrap_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/wrap_stats" >
+
+            <TextView
+                android:id="@+id/string200"
+                style="@style/InfoHeadingCompare"
+                android:padding="5dp"
+                android:text="@string/info_xml_score" />
+            <!-- START_SCORE_LOOP -->
+            <!-- START_SCORE_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_assault"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string200"
+                android:text="@string/info_xml_assault" />
+
+            <TextView
+                android:id="@+id/string_score_assault_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_assault"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string200"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_score_assault_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_assault"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string200"
+                android:text="Player 1" />
+
+            <!-- END_SCORE_ITEM -->
+            <!-- START_SCORE_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_engineer"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_score_assault_0"
+                android:text="@string/info_xml_engineer" />
+
+            <TextView
+                android:id="@+id/string_score_engineer_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_engineer"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_center_assault"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_score_engineer_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_engineer"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_center_assault"
+                android:text="Player 1" />
+            <!-- END_SCORE_ITEM -->
+            <!-- START_SCORE_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_support"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_center_engineer"
+                android:text="@string/info_xml_support" />
+
+            <TextView
+                android:id="@+id/string_score_support_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_support"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_center_engineer"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_score_support_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_support"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_center_engineer"
+                android:text="Player 1" />
+            <!-- END_SCORE_ITEM -->
+            <!-- START_SCORE_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_recon"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_score_support_0"
+                android:text="@string/info_xml_recon" />
+
+            <TextView
+                android:id="@+id/string_score_recon_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_recon"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_center_recon"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_score_recon_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_recon"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_center_recon"
+                android:text="Player 1" />
+            <!-- END_SCORE_ITEM -->
+            <!-- START_SCORE_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_vehicles"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_center_recon"
+                android:text="@string/info_xml_vehicles" />
+
+            <TextView
+                android:id="@+id/string_score_vehicles_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_vehicles"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_center_recon"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_score_vehicles_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_vehicles"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_center_recon"
+                android:text="Player 1" />
+            <!-- END_SCORE_ITEM -->
+            <!-- START_SCORE_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_combat"
+                style="@style/InfoSubHeadingCompare"
+                android:layout_below="@id/string_score_vehicles_0"
+                android:text="@string/info_xml_total_in_combat" />
+
+            <TextView
+                android:id="@+id/string_score_combat_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_combat"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_center_vehicles"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_score_combat_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_combat"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_center_vehicles"
+                android:text="Player 1" />
+            <!-- END_SCORE_ITEM -->
+            <!-- START_SCORE_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_award"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_center_combat"
+                android:text="@string/info_xml_award" />
+
+            <TextView
+                android:id="@+id/string_score_award_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_award"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_center_combat"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_score_award_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_award"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_center_combat"
+                android:text="Player 1" />
+            <!-- END_SCORE_ITEM -->
+            <!-- START_SCORE_ITEM -->
+
+            <TextView
+                android:id="@+id/string_center_unlock"
+                style="@style/InfoRowCompare"
+                android:layout_below="@id/string_score_award_0"
+                android:text="@string/info_xml_unlocks" />
+
+            <TextView
+                android:id="@+id/string_score_unlock_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_unlock"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_score_award_0"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_score_unlock_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_center_unlock"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_score_award_0"
+                android:text="Player 1" />
+            <!-- END_SCORE_ITEM -->
+            <!-- START_SCORE_ITEM -->
+
+            <TextView
+                android:id="@+id/string_score_center_total"
+                style="@style/InfoSubHeadingCompare"
+                android:layout_below="@id/string_center_unlock"
+                android:text="@string/info_xml_total_score" />
+
+            <TextView
+                android:id="@+id/string_score_total_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_score_center_total"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/string_center_unlock"
+                android:text="Player 0" />
+
+            <TextView
+                android:id="@+id/string_score_total_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string_score_center_total"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/string_center_unlock"
+                android:text="Player 1" />
+            <!-- END_SCORE_ITEM -->
+            <!-- END_SCORE_LOOP -->
+        </RelativeLayout>
+
+        <!-- ? -->
+
+    </RelativeLayout>
+
 </ScrollView>

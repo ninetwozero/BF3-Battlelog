@@ -327,7 +327,7 @@ public class RequestHandler {
 
         // Iterate over the fields and add the NameValuePairs
         for (PostData data : postDataArray) {
-
+            
             nameValuePairs.add(new BasicNameValuePair(data.getField(), (data
                     .isHash()) ? this.hash(data.getValue()) : data.getValue()));
 

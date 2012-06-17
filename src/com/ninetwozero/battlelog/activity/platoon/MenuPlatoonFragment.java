@@ -69,7 +69,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     private int mSelectedPosition;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
@@ -77,7 +77,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_dashboard_platoon,
+        View view = inflater.inflate(R.layout.tab_content_dashboard_platoon,
                 container, false);
 
         initFragment(view);

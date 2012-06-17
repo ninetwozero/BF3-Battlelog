@@ -65,7 +65,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
     private boolean hasPostingRights;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes

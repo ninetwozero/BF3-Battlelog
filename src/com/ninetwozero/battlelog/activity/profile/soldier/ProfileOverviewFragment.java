@@ -54,25 +54,26 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class ProfileOverviewFragment extends Fragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private SharedPreferences sharedPreferences;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private SharedPreferences mSharedPreferences;
 
     // Misc
-    private ProfileData profileData;
-    private ProfileInformation profileInformation;
-    private boolean hasPostingRights;
+    private ProfileData mProfileData;
+    private ProfileInformation mProfileInformation;
+    private boolean mPostingRights;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mLayoutInflater = inflater;
+        
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_profile_overview,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_profile_overview,
                 container, false);
 
         // Init the fragment
@@ -95,7 +96,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
         // Let's see if we're allowed to post (before we've gotten the data
         // atleast)
-        hasPostingRights = false;
+        mPostingRights = false;
 
     }
 
@@ -137,7 +138,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
         } else {
 
             ((TextView) activity.findViewById(R.id.text_online)).setText(data
-                    .getLastLogin(context));
+                    .getLastLogin(mContext));
 
         }
 
@@ -154,7 +155,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             ((TextView) activity.findViewById(R.id.text_status)).setText(data
                     .getStatusMessage());
             ((TextView) activity.findViewById(R.id.text_status_date))
-                    .setText(PublicUtils.getRelativeDate(context,
+                    .setText(PublicUtils.getRelativeDate(mContext,
                             data.getStatusMessageChanged(),
                             R.string.info_lastupdate));
         }
@@ -192,7 +193,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                     // On-click
                     startActivity(
 
-                    new Intent(context, PlatoonActivity.class).putExtra(
+                    new Intent(mContext, PlatoonActivity.class).putExtra(
 
                             "platoon", (PlatoonData) v.getTag()
 
@@ -213,7 +214,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 }
 
                 // Recycle
-                convertView = layoutInflater.inflate(
+                convertView = mLayoutInflater.inflate(
                         R.layout.list_item_platoon, platoonWrapper, false);
 
                 // Set the TextViews
@@ -230,7 +231,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 ((ImageView) convertView.findViewById(R.id.image_badge))
                         .setImageBitmap(
 
-                        BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
+                        BitmapFactory.decodeFile(PublicUtils.getCachePath(mContext)
                                 + currentPlatoon.getImage())
 
                         );
@@ -266,10 +267,10 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
         protected void onPreExecute() {
 
             // Do we?
-            this.progressDialog = new ProgressDialog(context);
-            this.progressDialog.setTitle(context
+            this.progressDialog = new ProgressDialog(mContext);
+            this.progressDialog.setTitle(mContext
                     .getString(R.string.general_wait));
-            this.progressDialog.setMessage(context
+            this.progressDialog.setMessage(mContext
                     .getString(R.string.general_downloading));
             this.progressDialog.show();
 
@@ -281,11 +282,11 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             try {
 
                 // Get...
-                profileInformation = CacheHandler.Profile.select(context,
-                        profileData.getId());
+                mProfileInformation = CacheHandler.Profile.select(mContext,
+                        mProfileData.getId());
 
                 // We got one?!
-                return (profileInformation != null);
+                return (mProfileInformation != null);
 
             } catch (Exception ex) {
 
@@ -308,18 +309,18 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 }
 
                 // Set the data for the profile
-                showProfile(profileInformation);
+                showProfile(mProfileInformation);
 
                 // Set the profileData IF we're down by atleast 1
-                if (profileData.getNumPersonas() < profileInformation.getNumPersonas()) {
+                if (mProfileData.getNumPersonas() < mProfileInformation.getNumPersonas()) {
 
                     /* Setting reference, or *fragment variable*? */
-                    profileData.setPersona(profileInformation.getAllPersonas());
+                    mProfileData.setPersona(mProfileInformation.getAllPersonas());
 
                 }
 
                 // ...and then send it to the stats
-                sendToStats(profileData);
+                sendToStats(mProfileData);
 
             } else {
 
@@ -362,24 +363,24 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             try {
 
                 // Let's try something
-                if (profileData.getNumPersonas() == 0) {
+                if (mProfileData.getNumPersonas() == 0) {
 
-                    profileData = ProfileClient.resolveFullProfileDataFromProfileData(profileData);
+                    mProfileData = ProfileClient.resolveFullProfileDataFromProfileData(mProfileData);
 
                 }
 
                 // Let's get the personas!
-                profileInformation = new ProfileClient(profileData).getInformation(
+                mProfileInformation = new ProfileClient(mProfileData).getInformation(
 
-                        context,
+                        mContext,
                         activeProfileId
 
                         );
 
                 // ...and then send it to the stats
-                sendToStats(profileData);
+                sendToStats(mProfileData);
 
-                return (profileInformation != null);
+                return (mProfileInformation != null);
 
             } catch (WebsiteHandlerException ex) {
 
@@ -396,7 +397,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             // Fail?
             if (!result) {
 
-                Toast.makeText(context, R.string.general_no_data,
+                Toast.makeText(mContext, R.string.general_no_data,
                         Toast.LENGTH_SHORT).show();
 
             }
@@ -409,8 +410,8 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             }
 
             // Set the data
-            showProfile(profileInformation);
-            setFeedPermission(profileInformation.isFriend() || hasPostingRights);
+            showProfile(mProfileInformation);
+            setFeedPermission(mProfileInformation.isFriend() || mPostingRights);
 
             // Get back here!
 
@@ -428,30 +429,30 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
     public void sendToStats(ProfileData p) {
 
-        ((ProfileActivity) context).openStats(p);
+        ((ProfileActivity) mContext).openStats(p);
 
     }
 
     public void setFeedPermission(boolean c) {
 
-        ((ProfileActivity) context).setFeedPermission(c);
+        ((ProfileActivity) mContext).setFeedPermission(c);
 
     }
 
     public void setProfileData(ProfileData p) {
 
-        profileData = p;
+        mProfileData = p;
     }
 
     public Menu prepareOptionsMenu(Menu menu) {
 
         // Is it null?
-        if (profileInformation == null) {
+        if (mProfileInformation == null) {
             return menu;
         }
-        if (profileInformation.getAllowFriendRequests()) {
+        if (mProfileInformation.isAllowingFriendRequests()) {
 
-            if (profileInformation.isFriend()) {
+            if (mProfileInformation.isFriend()) {
 
                 ((MenuItem) menu.findItem(R.id.option_friendadd))
                         .setVisible(false);
@@ -486,9 +487,9 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
         if (item.getItemId() == R.id.option_friendadd) {
 
-            new AsyncFriendRequest(context, profileData.getId()).execute(
+            new AsyncFriendRequest(mContext, mProfileData.getId()).execute(
 
-                    sharedPreferences.getString(
+                    mSharedPreferences.getString(
 
                             Constants.SP_BL_PROFILE_CHECKSUM, "")
 
@@ -496,9 +497,9 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
         } else if (item.getItemId() == R.id.option_frienddel) {
 
-            new AsyncFriendRemove(context, profileData.getId()).execute(
+            new AsyncFriendRemove(mContext, mProfileData.getId()).execute(
 
-                    sharedPreferences.getString(
+                    mSharedPreferences.getString(
 
                             Constants.SP_BL_PROFILE_CHECKSUM, "")
 

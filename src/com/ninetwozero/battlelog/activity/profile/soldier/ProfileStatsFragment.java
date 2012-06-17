@@ -14,13 +14,8 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
-
 import java.util.Map;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,9 +27,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
@@ -48,29 +52,27 @@ import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-import java.util.HashMap;
-
 public class ProfileStatsFragment extends Fragment implements DefaultFragment,
         OnCloseListDialogListener, LoaderCallbacks<CompletedTask> {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private SharedPreferences sharedPreferences;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private SharedPreferences mSharedPreferences;
 
     // Elements
-    private RelativeLayout wrapPersona;
-    private ProgressBar progressBar;
+    private RelativeLayout mWrapPersona;
+    private ProgressBar mProgressBar;
 
     // Misc
-    private ProfileData profileData;
-    private Map<Long, PersonaStats> personaStats;
-    private long selectedPersona;
-    private int selectedPosition;
-    private boolean comparing;
+    private ProfileData mProfileData;
+    private Map<Long, PersonaStats> mPersonaStats;
+    private long mSelectedPersona;
+    private int mSelectedPosition;
+    private boolean mComparing;
 
-    private String[] personaNames;
-    private long[] personaIds;
+    private String[] mPersonaNames;
+    private long[] mPersonaIds;
     private final String DIALOG = "dialog";
     private TextView personaName, rankTitle, rankId, currentLevelPoints, nextLevelPoints,
             pointsToMake,
@@ -83,15 +85,16 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
             accuracy, killStreak, longestHeadshot, skill, timePlayed, scorePerMinute;
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mLayoutInflater = inflater;
+        
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_profile_stats,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_profile_stats,
                 container, false);
 
         // Init
@@ -113,19 +116,19 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
     public void initFragment(View view) {
 
         // Progressbar
-        progressBar = (ProgressBar) view.findViewById(R.id.progress_level);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.progress_level);
 
         // Let's try something out
-        if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
+        if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
 
-            selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
-            selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
+            mSelectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
+            mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
 
         }
 
         // Click on the wrap
-        wrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
-        wrapPersona.setOnClickListener(
+        mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
+        mWrapPersona.setOnClickListener(
 
                 new OnClickListener() {
 
@@ -135,7 +138,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
                         if (personaArrayLength() > 1) {
                             FragmentManager manager = getFragmentManager();
                             ListDialogFragment dialog = ListDialogFragment.newInstance(
-                                    profileData.getPersonaArray(), getTag());
+                                    mProfileData.getPersonaArray(), getTag());
                             dialog.show(manager, DIALOG);
                         }
                     }
@@ -211,13 +214,20 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
     }
 
     private void populateStats(PersonaStats pd) {
+        
+        if( pd == null ) {
+            
+            return;
+            
+        }
+        
         personaName.setText(pd.getPersonaName() + pd.resolvePlatformId());
         rankTitle.setText(pd.getRankTitle());
         rankId.setText(String.valueOf(pd.getRankId()));
 
         // Progress
-        progressBar.setMax((int) pd.getPointsNeededToLvlUp());
-        progressBar.setProgress((int) pd.getPointsProgressLvl());
+        mProgressBar.setMax((int) pd.getPointsNeededToLvlUp());
+        mProgressBar.setProgress((int) pd.getPointsProgressLvl());
         currentLevelPoints.setText(String.valueOf(pd.getPointsProgressLvl()));
         nextLevelPoints.setText(String.valueOf(pd.getPointsNeededToLvlUp()));
         pointsToMake.setText(String.valueOf(pd.getPointsLeft()));
@@ -256,7 +266,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
     }
 
     private int personaArrayLength() {
-        return profileData.getPersonaArray().length;
+        return mProfileData.getPersonaArray().length;
     }
 
     @Override
@@ -291,18 +301,18 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
             try {
 
                 // Get...
-                if (profileData != null && profileData.getNumPersonas() > 0) {
+                if (mProfileData != null && mProfileData.getNumPersonas() > 0) {
 
-                    personaStats = CacheHandler.Persona.select(context,
-                            profileData.getPersonaArray());
+                    mPersonaStats = CacheHandler.Persona.select(mContext,
+                            mProfileData.getPersonaArray());
 
                     // Is this the user?
-                    selectedPersona = profileData.getPersona(selectedPosition).getId();
+                    mSelectedPersona = mProfileData.getPersona(mSelectedPosition).getId();
 
                 }
 
                 // ...validate!
-                return (personaStats != null && !personaStats.isEmpty());
+                return (mPersonaStats != null && !mPersonaStats.isEmpty());
 
             } catch (Exception ex) {
 
@@ -349,20 +359,20 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
 
             try {
 
-                Log.d(Constants.DEBUG_TAG, "profile => " + profileData);
+                Log.d(Constants.DEBUG_TAG, "profile => " + mProfileData);
                 // Do we have any personas?
-                if (profileData.getNumPersonas() > 0) {
+                if (mProfileData.getNumPersonas() > 0) {
 
                     // Set the selected persona?
-                    selectedPersona = (selectedPersona == 0) ? profileData.getPersona(0).getId()
-                            : selectedPersona;
+                    mSelectedPersona = (mSelectedPersona == 0) ? mProfileData.getPersona(0).getId()
+                            : mSelectedPersona;
 
                     // Grab the stats
-                    personaStats = new ProfileClient(profileData).getStats(context);
+                    mPersonaStats = new ProfileClient(mProfileData).getStats(mContext);
 
                 }
                 // ...validate!
-                return (personaStats != null && !personaStats.isEmpty());
+                return (mPersonaStats != null && !mPersonaStats.isEmpty());
 
             } catch (Exception ex) {
 
@@ -379,10 +389,10 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
             // Fail?
             if (result) {
 
-                populateStats(personaStats.get(selectedPersona));
+                populateStats(mPersonaStats.get(mSelectedPersona));
             } else {
 
-                Toast.makeText(context, R.string.general_no_data,
+                Toast.makeText(mContext, R.string.general_no_data,
                         Toast.LENGTH_SHORT).show();
 
             }
@@ -393,7 +403,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
     public void reload() {
 
         // ASYNC!!!
-        if (personaStats == null) {
+        if (mPersonaStats == null) {
 
             new AsyncCache().execute();
 
@@ -407,7 +417,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
 
     public void setProfileData(ProfileData p) {
 
-        profileData = p;
+        mProfileData = p;
 
     }
 
@@ -436,17 +446,17 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
 
         if (item.getItemId() == R.id.option_compare) {
 
-            startActivity(new Intent(context, CompareActivity.class)
+            startActivity(new Intent(mContext, CompareActivity.class)
                     .putExtra("profile1", SessionKeeper.getProfileData())
-                    .putExtra("profile2", profileData)
-                    .putExtra("selectedPosition", selectedPosition));
+                    .putExtra("profile2", mProfileData)
+                    .putExtra("selectedPosition", mSelectedPosition));
 
         } else if (item.getItemId() == R.id.option_unlocks) {
 
             int position = 0;
-            for (long key : personaStats.keySet()) {
+            for (long key : mPersonaStats.keySet()) {
 
-                if (key == selectedPersona) {
+                if (key == mSelectedPersona) {
 
                     break;
 
@@ -460,15 +470,15 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
 
             startActivity(
 
-            new Intent(context, UnlockActivity.class)
-                    .putExtra("profile", profileData)
+            new Intent(mContext, UnlockActivity.class)
+                    .putExtra("profile", mProfileData)
                     .putExtra("selectedPosition", position));
         }
         return true;
     }
 
     public void setComparing(boolean c) {
-        comparing = c;
+        mComparing = c;
     }
 
 }

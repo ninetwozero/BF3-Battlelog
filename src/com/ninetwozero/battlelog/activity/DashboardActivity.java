@@ -76,7 +76,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
         super.onCreate(icicle);
 
         // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Validate our session
         validateSession();
@@ -109,22 +109,22 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
     public void setup() {
 
         // Do we need to setup the fragments?
-        if (listFragments == null) {
+        if (mListFragments == null) {
 
             // Add them to the list
-            listFragments = new ArrayList<Fragment>();
-            listFragments.add(Fragment.instantiate(this,
+            mListFragments = new ArrayList<Fragment>();
+            mListFragments.add(Fragment.instantiate(this,
                     NewsListFragment.class.getName()));
-            listFragments.add(Fragment.instantiate(
+            mListFragments.add(Fragment.instantiate(
                     this,
                     MenuProfileFragment.class.getName()));
-            listFragments.add(fragmentMenuPlatoon = (MenuPlatoonFragment) Fragment.instantiate(
+            mListFragments.add(fragmentMenuPlatoon = (MenuPlatoonFragment) Fragment.instantiate(
                     this,
                     MenuPlatoonFragment.class.getName()));
-            listFragments.add(Fragment.instantiate(
+            mListFragments.add(Fragment.instantiate(
                     this,
                     MenuForumFragment.class.getName()));
-            listFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this,
+            mListFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this,
                     FeedFragment.class.getName()));
 
             // Setup platoon tab
@@ -136,24 +136,24 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
             // Get the ViewPager
             viewPager = (ViewPager) findViewById(R.id.viewpager);
-            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             // Fill the PagerAdapter & set it to the viewpager
-            pagerAdapter = new SwipeyTabsPagerAdapter(
+            mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-                    fragmentManager,
+                    mFragmentManager,
                     new String[] {
                             "NEWS", "PROFILE", "PLATOON", "FORUM", "FEED"
                     },
-                    listFragments,
+                    mListFragments,
                     viewPager,
-                    layoutInflater
+                    mLayoutInflater
                     );
-            viewPager.setAdapter(pagerAdapter);
-            tabs.setAdapter(pagerAdapter);
+            viewPager.setAdapter(mPagerAdapter);
+            mTabs.setAdapter(mPagerAdapter);
 
             // Make sure the tabs follow
-            viewPager.setOnPageChangeListener(tabs);
+            viewPager.setOnPageChangeListener(mTabs);
             viewPager.setOffscreenPageLimit(4);
             viewPager.setCurrentItem(1);
 
@@ -176,13 +176,13 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             // Fill the PagerAdapter & set it to the viewpager
             pagerAdapterCom = new SwipeyTabsPagerAdapter(
 
-                    fragmentManager,
+                    mFragmentManager,
                     new String[] {
                             "FRIENDS", "NOTIFICATIONS"
                     },
                     listFragmentsCom,
                     viewPagerCom,
-                    layoutInflater
+                    mLayoutInflater
                     );
             viewPagerCom.setAdapter(pagerAdapterCom);
             tabsCom.setAdapter(pagerAdapterCom);

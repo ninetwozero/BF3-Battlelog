@@ -36,15 +36,15 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class CustomFragmentActivity extends FragmentActivity {
 
     // Attributes
-    protected SharedPreferences sharedPreferences;
-    protected LayoutInflater layoutInflater;
+    protected SharedPreferences mSharedPreferences;
+    protected LayoutInflater mLayoutInflater;
 
     // Fragment related
-    protected SwipeyTabs tabs;
-    protected SwipeyTabsPagerAdapter pagerAdapter;
-    protected FragmentManager fragmentManager;
-    protected ViewPager viewPager;
-    protected List<Fragment> listFragments;
+    protected SwipeyTabs mTabs;
+    protected SwipeyTabsPagerAdapter mPagerAdapter;
+    protected FragmentManager mFragmentManager;
+    protected ViewPager mViewPager;
+    protected List<Fragment> mListFragments;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -53,18 +53,18 @@ public class CustomFragmentActivity extends FragmentActivity {
         super.onCreate(icicle);
 
         // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Should we display a title bar?
-        PublicUtils.setupFullscreen(this, sharedPreferences);
+        PublicUtils.setupFullscreen(this, mSharedPreferences);
         PublicUtils.restoreCookies(this, icicle);
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Get the layoutInflater
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fragmentManager = getSupportFragmentManager();
+        mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mFragmentManager = getSupportFragmentManager();
 
     }
 
@@ -74,10 +74,10 @@ public class CustomFragmentActivity extends FragmentActivity {
         super.onResume();
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
 
     }
 

@@ -59,37 +59,37 @@ public class AboutActivity extends CustomFragmentActivity implements DefaultFrag
     public void setup() {
 
         // Do we need to setup the fragments?
-        if (listFragments == null) {
+        if (mListFragments == null) {
 
             // Add them to the list
-            listFragments = new ArrayList<Fragment>();
-            listFragments.add(Fragment.instantiate(this, AboutMainFragment.class.getName()));
-            listFragments.add(Fragment.instantiate(this, AboutFAQFragment.class.getName()));
-            listFragments.add(Fragment.instantiate(this, AboutCreditsFragment.class.getName()));
+            mListFragments = new ArrayList<Fragment>();
+            mListFragments.add(Fragment.instantiate(this, AboutMainFragment.class.getName()));
+            mListFragments.add(Fragment.instantiate(this, AboutFAQFragment.class.getName()));
+            mListFragments.add(Fragment.instantiate(this, AboutCreditsFragment.class.getName()));
 
             // Get the ViewPager
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
-            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+            mViewPager = (ViewPager) findViewById(R.id.viewpager);
+            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             // Fill the PagerAdapter & set it to the viewpager
-            pagerAdapter = new SwipeyTabsPagerAdapter(
+            mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-                    fragmentManager,
+                    mFragmentManager,
                     new String[] {
                             getString(R.string.label_about), getString(R.string.label_faq),
                             getString(R.string.label_credits)
 
                     },
-                    listFragments,
-                    viewPager,
-                    layoutInflater
+                    mListFragments,
+                    mViewPager,
+                    mLayoutInflater
                     );
-            viewPager.setAdapter(pagerAdapter);
-            tabs.setAdapter(pagerAdapter);
+            mViewPager.setAdapter(mPagerAdapter);
+            mTabs.setAdapter(mPagerAdapter);
 
             // Make sure the tabs follow
-            viewPager.setOnPageChangeListener(tabs);
-            viewPager.setCurrentItem(0);
+            mViewPager.setOnPageChangeListener(mTabs);
+            mViewPager.setCurrentItem(0);
 
         }
 
@@ -103,9 +103,9 @@ public class AboutActivity extends CustomFragmentActivity implements DefaultFrag
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
 
         // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK && (viewPager.getCurrentItem() > 0) ) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && (mViewPager.getCurrentItem() > 0) ) {
 
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
             return true;
 
         }
