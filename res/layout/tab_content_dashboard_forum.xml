@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  
+	This file is part of BF3 Battlelog
+
+    BF3 Battlelog is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    BF3 Battlelog is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ -->
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+	android:padding="10dp"
+	android:background="@drawable/bg_bf3_main"
+>
+	<RelativeLayout
+		android:id="@+id/wrap_language"    
+    	android:layout_width="250dp"
+    	android:layout_height="wrap_content"
+    	android:layout_centerHorizontal="true"
+    	android:background="#CCFFFFFF"
+    	android:padding="5dp"
+    >
+    	<ImageView
+    	    android:id="@+id/image_language"    
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:src="@drawable/locale_us"
+  			android:layout_marginRight="5dp"
+  			android:layout_centerVertical="true"
+    	/>
+    	<LinearLayout
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+    		android:layout_toRightOf="@id/image_language"
+    		android:orientation="vertical"
+  			android:layout_centerVertical="true"
+		>
+	    	<TextView
+	    		android:id="@+id/string000"    
+	    		android:text="Selected language:"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"
+	    		android:textSize="18sp"
+	    	/>
+	    	<com.ninetwozero.battlelog.datatype.MarqueeTextView
+	    		android:id="@+id/text_language"    
+	    		android:text="English"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"
+	    		android:textStyle="bold"
+	    		android:textSize="20sp"
+	    		android:ellipsize="marquee"
+	    		android:marqueeRepeatLimit="marquee_forever"
+	    		android:scrollHorizontally="true"
+	    		android:singleLine="true"
+	    	/>
+    	</LinearLayout>
+    </RelativeLayout>
+	 <ScrollView 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+		android:padding="10dp"
+		android:layout_below="@id/wrap_language"
+	>
+    <LinearLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+			android:gravity="center"
+		>
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_view"
+			    android:text="View forums"
+			/>
+			<Button
+			    android:id="@+id/button_saved"
+			    style="@style/MenuButton"
+			    android:text="View saved" />
+			<Button
+			    style="@style/MenuButton"
+			    android:id="@+id/button_search"
+			    android:text="@string/label_search"
+			/>
+		</LinearLayout>
+	</ScrollView>
+</RelativeLayout>

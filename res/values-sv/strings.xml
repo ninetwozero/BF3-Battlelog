@@ -95,7 +95,7 @@ Rapportera alla eventuella fel du stöter på till support@ninetwozero.com och/e
 Tack för ditt stöd!</string>
 	<string name="general_invalid_email">Felaktig e-postadress.</string>
 	<string name="general_invalid_password">Vänligen mata in ditt lösenord.</string>
-	<string name="general_changelog_version">Förändringar till</string>
+	<string name="general_changelog_version">Förändringar till {version}</string>
 	<string name="general_wait">Var god vänta...</string>
 	<string name="general_downloading">Laddar ned information...</string>
 	<string name="general_no_data">Ingen information hittades.</string>

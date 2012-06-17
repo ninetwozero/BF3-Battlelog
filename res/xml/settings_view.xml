@@ -10,6 +10,13 @@
  			android:entries="@array/language_titles"
  			android:entryValues="@array/language_values"
         /> 
+        <CheckBoxPreference
+   	        android:title="@string/info_settings_fullscreen" 
+   	        android:summaryOn="@string/info_settings_fullscreen_true"
+   	        android:summaryOff="@string/info_settings_fullscreen_false"
+            android:key="fullscreen_mode"
+            android:defaultValue="false"
+        />
   	</PreferenceCategory>
    	<PreferenceCategory android:title="@string/info_settings_chat">
    	    <CheckBoxPreference
@@ -20,7 +27,7 @@
             android:defaultValue="true"
         />
         <com.kmansoft.IntegerListPreference
-            android:title="@string/info_settings_update_interval"
+            android:title="@string/info_settings_update_interval" 
             android:key="battlelog_chat_interval"
             sample:entryList="@array/chat_update_intervals_labels" 
             sample:valueList="@array/chat_update_intervals_values" 
@@ -30,7 +37,7 @@
     <PreferenceCategory android:title="@string/info_settings_service">
         
         <com.kmansoft.IntegerListPreference
-            android:title="@string/info_settings_update_interval"
+            android:title="@string/info_settings_update_interval" 
             android:key="battlelog_service_interval"
             sample:entryList="@array/service_update_intervals_labels" 
             sample:valueList="@array/service_update_intervals_values" 

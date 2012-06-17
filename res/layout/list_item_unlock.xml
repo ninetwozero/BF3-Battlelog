@@ -14,7 +14,7 @@
  -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="80dp"
+    android:layout_height="160dp"
 >
 	<View
 	    android:id="@+id/divider_left"
@@ -37,21 +37,26 @@
 			android:text="AK47-M"
 			android:textSize="18sp"
 		/>
+		<ImageView
+		    android:id="@+id/image_unlock"
+		    android:layout_width="wrap_content"
+		    android:layout_height="75dp"
+			android:layout_below="@id/text_unlock_title"
+			android:src="@drawable/w_ak74m"
+		/>
 		<TextView
-			android:id="@+id/text_unlock_type"
-			android:layout_width="wrap_content"
+		    android:id="@+id/text_unlock_desc"
+			android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
-			android:text="Weapon attachment"
-			android:layout_alignParentRight="true"
-			android:layout_alignBaseline="@id/text_unlock_title"
-			android:visibility="gone"
+		    android:text="Eat 200 (5 left) indian spices."
+		    android:layout_below="@id/image_unlock"
 		/>
 		<TextView
 		    android:id="@+id/text_unlock_percent"
 			android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:text="97%"
-			android:layout_alignParentBottom="true"
+		    android:layout_below="@id/text_unlock_desc"
 			android:layout_alignParentRight="true"
 			android:paddingLeft="10dp"
 		/>
@@ -61,15 +66,8 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="10dp"
 		    android:layout_toLeftOf="@id/text_unlock_percent" 
-			android:layout_alignParentBottom="true"
+		    android:layout_below="@id/text_unlock_desc"
+			android:layout_marginTop="4dp"
     	/>
-		<TextView
-		    android:id="@+id/text_unlock_desc"
-			android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:text="Eat 200 (5 left) indian spices."
-		    android:layout_above="@id/progress_unlock"
-		    android:layout_below="@id/text_unlock_title"
-		/>
 	</RelativeLayout>
 </RelativeLayout>

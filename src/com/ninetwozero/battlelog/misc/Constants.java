@@ -26,133 +26,22 @@ public final class Constants {
     public static final String URL_GRAVATAR = "http://www.gravatar.com/avatar/{hash}?s={size}&d=http://battlelog-cdn.battlefield.com/public/base/shared/default-avatar-{default}.png?v=7909";
 
     // URLs that REQUIRE POST-DATA
-    public static final String URL_LOGIN = URL_MAIN_SECURE + "gate/login/";
-    public static final String URL_STATUS_SEND = URL_MAIN
-            + "user/setStatusmessage/";
-    public static final String URL_PROFILE_SEARCH = URL_MAIN
-            + "search/getMatches/";
-    public static final String URL_PLATOON_SEARCH = URL_MAIN
-            + "platoon/search/";
-    public static final String URL_FRIEND_ACCEPT = URL_MAIN
+    public static final String URL_LOGIN = Constants.URL_MAIN_SECURE + "gate/login/";
+
+    public static final String URL_FRIEND_ACCEPT = Constants.URL_MAIN
             + "friend/acceptFriendship/{UID}/";
-    public static final String URL_FRIEND_DECLINE = URL_MAIN
+    public static final String URL_FRIEND_DECLINE = Constants.URL_MAIN
             + "friend/declineFriendship/{UID}/";
-    public static final String URL_NOTIFICATIONS_ALL = URL_MAIN
-            + "notification/";
-    public static final String URL_NOTIFICATIONS_TOP5 = URL_MAIN
-            + "notification/loadNotifications/";
-    public static final String URL_LOGOUT = URL_MAIN + "session/logout/";
-
-    // URLs for CHAT
-    public static final String URL_FRIENDS = URL_MAIN + "comcenter/sync/";
-    public static final String URL_CHAT_CONTENTS = URL_MAIN
-            + "comcenter/getChatId/{UID}/";
-    public static final String URL_CHAT_SEND = URL_MAIN
-            + "comcenter/sendChatMessage/";
-    public static final String URL_CHAT_CLOSE = URL_MAIN
-            + "comcenter/hideChat/{CID}/";
-    public static final String URL_CHAT_SETACTIVE = URL_MAIN
-            + "comcenter/setActive/";
-
-    // URLS for PROFILE
-    public static final String URL_FEED_SINGLE = URL_MAIN
-            + "feed/show/{POST_ID}/";
-    public static final String URL_FEED_POST = URL_MAIN + "wall/postmessage";
-    public static final String URL_PLATOON_IMAGE = URL_STATIC_CONTENT
-            + "prod/emblems/320/{BADGE_PATH}";
-    public static final String URL_PLATOON_IMAGE_THUMBS = URL_STATIC_CONTENT
-            + "prod/emblems/60/{BADGE_PATH}";
-    public static final String URL_FRIEND_REQUESTS = URL_MAIN
-            + "friend/requestFriendship/{UID}/";
-    public static final String URL_FRIEND_DELETE = URL_MAIN
-            + "friend/removeFriend/{UID}/";
-
-    // URLS for PLATOONS
-    public static final String URL_PLATOON = URL_MAIN + "platoon/{PLATOON_ID}/";
-    public static final String URL_PLATOON_FANS = URL_MAIN
-            + "platoon/{PLATOON_ID}/listfans/";
-    public static final String URL_PLATOON_MEMBERS = URL_MAIN
-            + "platoon/{PLATOON_ID}/listmembers/";
-    public static final String URL_PLATOON_STATS = URL_MAIN
-            + "platoon/platoonMemberStats/{PLATOON_ID}/2/{PLATFORM_ID}/";
-    public static final String URL_PLATOON_PROMOTE = URL_MAIN
-            + "platoon/promotemember/{PLATOON_ID}/{UID}/";
-    public static final String URL_PLATOON_DEMOTE = URL_MAIN
-            + "platoon/demotemember/{PLATOON_ID}/{UID}/";
-    public static final String URL_PLATOON_APPLY = URL_MAIN
-            + "platoon/applyformembership/";
-    public static final String URL_PLATOON_RESPOND = URL_MAIN
-            + "platoon/applyingactions/{PLATOON_ID}/";
-    public static final String URL_PLATOON_LEAVE = URL_MAIN + "platoon/leave/";
-    public static final String URL_PLATOON_KICK = URL_MAIN
-            + "platoon/kickmember/{PLATOON_ID}/{UID}/";
-    public static final String URL_PLATOON_FEED = URL_MAIN
-            + "feed/platoonevents/{PLATOON_ID}/?start={NUMSTART}";
-    public static final String URL_PLATOON_INVITE = URL_MAIN
-            + "platoon/invitemember/";
-
-    // URLS for FEED
-    public static final String URL_FEED_REPORT = URL_MAIN
-            + "viewcontent/reportFeedItemAbuse/{POST_ID}/0/"; /* TODO */
-    public static final String URL_FEED_REPORT_COMMENT = URL_MAIN
-            + "viewcontent/reportFeedItemAbuse/{POST_ID}/{CID}/"; /* TODO */
-    public static final String URL_HOOAH = URL_MAIN
-            + "like/postlike/{POST_ID}/feed-item-like/";
-    public static final String URL_UNHOOAH = URL_MAIN
-            + "like/postunlike/{POST_ID}/feed-item-like/";
-    public static final String URL_COMMENT = URL_MAIN
-            + "comment/postcomment/{POST_ID}/feed-item-comment/";
+    public static final String URL_NOTIFICATIONS_ALL = Constants.URL_MAIN
+            + "updates/";
+    public static final String URL_NOTIFICATIONS_TOP5 = Constants.URL_MAIN
+            + "updates/loadNotifications/";
+    public static final String URL_LOGOUT = Constants.URL_MAIN + "session/logout/";
 
     // URLs to JSON-files (FEED-related)
-    public static final String URL_FEED = URL_MAIN + "feed/?start={NUMSTART}";
-    public static final String URL_FRIEND_FEED = URL_MAIN
-            + "feed/homeevents/?start={NUMSTART}";
-    public static final String URL_PROFILE_FEED = URL_MAIN
-            + "feed/profileevents/{PID}/?start={NUMSTART}";
-    public static final String URL_FEED_COMMENTS = URL_MAIN
-            + "feed/getComments/{POST_ID}/";
 
-    // URL to JSON-files (PROFILE-related)
-    public static final String URL_PROFILE = URL_MAIN
-            + "user/overviewBoxStats/{UID}/";
-    public static final String URL_PROFILE_INFO = URL_MAIN + "user/{UNAME}/";
-
-    // URL to JSON-files (STATS-related)
-    public static final String URL_STATS_OVERVIEW = URL_MAIN
-            + "overviewPopulateStats/{PID}/None/{PLATFORM_ID}/";
-    public static final String URL_STATS_WEAPONS = URL_MAIN
-            + "weaponsPopulateStats/{PID}/{PLATFORM_ID}/";
-    public static final String URL_STATS_VEHICLES = URL_MAIN
-            + "vehiclesPopulateStats/{PID}/{PLATFORM_ID}/";
-    public static final String URL_STATS_AWARDS = URL_MAIN
-            + "awardsPopulateStats/{PID}/{PLATFORM_ID}/";
-    public static final String URL_STATS_UNLOCKS = URL_MAIN
-            + "upcomingUnlocksPopulateStats/{PID}/{PLATFORM_ID}/";
-    public static final String URL_STATS_DOGTAGS = URL_MAIN
-            + "soldier/dogtagsPopulateStats/{PID}/{UID}/{PLATFORM_ID}/";
-    public static final String URL_STATS_ASSIGNMENTS = URL_MAIN
-            + "soldier/missionsPopulateStats/{PNAME}/{PID}/{UID}/{PLATFORM_ID}/";
-    public static final String URL_STATS_ALL = URL_MAIN
-            + "indexstats/{PID}/{PLATFORM_NAME}/";
-
-    // URL to FORUM
-    public static final String URL_FORUM_LIST = URL_MAIN + "forum/";
-    public static final String URL_FORUM_LIST_LOCALIZED = URL_MAIN
-            + "{LOCALE}/forum/";
-    public static final String URL_FORUM_FORUM = URL_FORUM_LIST_LOCALIZED
-            + "view/{FORUM_ID}/{PAGE}/";
-    public static final String URL_FORUM_THREAD = URL_FORUM_LIST_LOCALIZED
-            + "threadview/{THREAD_ID}/{PAGE}/";
-    public static final String URL_FORUM_POST = URL_FORUM_LIST
-            + "createpost/{THREAD_ID}/";
-    public static final String URL_FORUM_SIMILAR = URL_FORUM_LIST
-            + "dofindsimilar?title={title}&body={body}";
-    public static final String URL_FORUM_NEW = URL_FORUM_LIST
-            + "createthread/{FORUM_ID}/";
-    public static final String URL_FORUM_SEARCH = URL_FORUM_LIST
-            + "dosearch/?q={SEARCH_STRING}&snippet=text&fetch=threadId%2CforumId%2Ctitle%2Ctimestamp";
-    public static final String URL_FORUM_REPORT = URL_MAIN
-            + "viewcontent/reportForumAbuse/{POST_ID}/";
+    // News
+    public static final String URL_NEWS = Constants.URL_MAIN + "news/{COUNT}/";
 
     // Fields needed for the posts fields
     public static final String[] FIELD_NAMES_LOGIN = new String[] {
@@ -164,115 +53,14 @@ public final class Constants {
             null, "", "Sign+in"
     };
 
-    public static final String[] FIELD_NAMES_STATUS = new String[] {
-            "message",
-            "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_STATUS = new String[] {
-            null,
-            null
-    };
-
-    public static final String[] FIELD_NAMES_PROFILE_SEARCH = new String[] {
-            "username", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_PROFILE_SEARCH = new String[] {
-            null, null
-    };
-
-    public static final String[] FIELD_NAMES_PLATOON_SEARCH = new String[] {
-            "searchplat", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_PLATOON_SEARCH = new String[] {
-            null, null
-    };
-
-    public static final String[] FIELD_NAMES_PLATOON_APPLY = new String[] {
-            "platoonId", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_PLATOON_APPLY = new String[] {
-            null, null
-    };
-
-    public static final String[] FIELD_NAMES_PLATOON_RESPOND = new String[] {
-            "apply-action", "userIds[]", "post-check-sum", "accept", "deny"
-    };
-    public static final String[] FIELD_VALUES_PLATOON_RESPOND = new String[] {
-            "", null, null, "accept", "deny"
-    };
-
-    public static final String[] FIELD_NAMES_PLATOON_INVITE = new String[] {
-            "platoonId", "post-check-sum", "userIds[]"
-    };
-    public static final String[] FIELD_VALUES_PLATOON_INVITE = new String[] {
-            null, null, null
-    };
-
-    public static final String[] FIELD_NAMES_PLATOON_LEAVE = new String[] {
-            "platoonId", "userId", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_PLATOON_LEAVE = new String[] {
-            null, null, null
-    };
-
-    public static final String[] FIELD_NAMES_CHAT = new String[] {
-            "message",
-            "chatId", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_CHAT = new String[] {
-            null, null,
-            null
-    };
-
-    public static final String[] FIELD_NAMES_FEED_POST = new String[] {
-            "wall-message", "post-check-sum", "wall-ownerId", "wall-platoonId"
-    };
-    public static final String[] FIELD_VALUES_FEED_POST = new String[] {
-            null,
-            null, null, null
-    };
-
-    public static final String[] FIELD_NAMES_FEED_COMMENT = new String[] {
-            "comment", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_FEED_COMMENT = new String[] {
-            null, null
-    };
-
-    public static final String[] FIELD_NAMES_FORUM_POST = new String[] {
-            "body", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_FORUM_POST = new String[] {
-            null,
-            null
-    };
-
-    public static final String[] FIELD_NAMES_FORUM_NEW = new String[] {
-            "topic", "body", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_FORUM_NEW = new String[] {
-            null,
-            null, null
-    };
-
-    public static final String[] FIELD_NAMES_FORUM_REPORT = new String[] {
-            "reason", "post-check-sum"
-    };
-    public static final String[] FIELD_VALUES_FORUM_REPORT = new String[] {
-            null, null
-    };
-
     public static final String[] FIELD_NAMES_CHECKSUM = new String[] {
             "post-check-sum"
     };
-    public static final String[] FIELD_VALUES_CHECKSUM = new String[] {
-            null
-    };
 
     // HTML-elements to grab
-    public static final String ELEMENT_UID_LINK = "<a class=\"main-loggedin-leftcolumn-active-soldier-name\" href=\"/bf3/soldier/";
+    public static final String ELEMENT_UID_LINK = "<a class=\"base-header-soldier-link\" href=\"/bf3/soldier/";
     public static final String ELEMENT_ERROR_MESSAGE = "<div class=\"gate-login-errormsg wfont\">";
-    public static final String ELEMENT_USERNAME_LINK = "<a href=\"/bf3/user/";
+    public static final String ELEMENT_USERNAME_LINK = "<div class=\"base-header-profile-username\">";
     public static final String ELEMENT_STATUS_OK = "";
     public static final String ELEMENT_STATUS_CHECKSUM = "<input type=\"hidden\" name=\"post-check-sum\" value=\"";
 
@@ -285,26 +73,14 @@ public final class Constants {
     public static final String PATTERN_POST_SINGLE_DATE = "<span data-timestamp=\"([0-9]+)\" class=\"base-ago\">";
     public static final String PATTERN_POST_FORUM_LINK = "<a href=\"([^\\\"]+)\" rel=\"nofollow\">([^\\<]+)<\\/a> \\[([^\\]]+)\\]";
 
-    // BBCODE
-    public static final String BBCODE_TAG_BOLD_IN = "**{text}**";
-    public static final String BBCODE_TAG_BOLD_OUT = "[b]{text}[/b]";
-    public static final String BBCODE_TAG_STRIKE_IN = "--{text}--";
-    public static final String BBCODE_TAG_STRIKE_OUT = "[s]{text}[/s]";
-    public static final String BBCODE_TAG_UNDERLINE_IN = "__{text}__";
-    public static final String BBCODE_TAG_UNDERLINE_OUT = "[u]{text}[/u]";
-    public static final String BBCODE_TAG_ITALIC_IN = "_-{text}-_";
-    public static final String BBCODE_TAG_ITALIC_OUT = "[i]{text}[/i]";
-    public static final String BBCODE_TAG_QUOTE_IN = "@q:{number}:{username}@\n";
-    public static final String BBCODE_TAG_QUOTE_OUT = "[quote {username} said:]{text}[/quote]";
-
     // Files
     public static final String FILE_SHPREF = "battlelog";
 
     // Changelog version
-    public final static int CHANGELOG_VERSION = 9;
+    public static final int CHANGELOG_VERSION = 2;
 
     // MENU IDs
-    public final static int MENU_ID_FEED = 2;
+    public static final int MENU_ID_FEED = 2;
 
     // DEBUG
     public static final String DEBUG_TAG = "com.ninetwozero.battlelog";
@@ -359,23 +135,37 @@ public final class Constants {
     public static final String SP_V_FILE = "file_version";
     public static final String SP_V_CHANGELOG = "latest_changelog_version";
     public static final String SP_BL_SERVICE = "allow_service";
-    public static final String SP_BL_EMAIL = "origin_email";
-    public static final String SP_BL_PASSWORD = "origin_password";
-    public static final String SP_BL_USERNAME = "battlelog_username";
-    public static final String SP_BL_PERSONA = "battlelog_persona";
+    public static final String SP_BL_PROFILE_EMAIL = "origin_email";
+    public static final String SP_BL_PROFILE_PASSWORD = "origin_password";
+    public static final String SP_BL_PROFILE_NAME = "battlelog_username";
     public static final String SP_BL_PROFILE_ID = "battlelog_profile_id";
+    public static final String SP_BL_PROFILE_CHECKSUM = "battlelog_post_checksum";
+    public static final String SP_BL_PROFILE_GRAVATAR = "battlelog_gravatar_hash";
+    public static final String SP_BL_PROFILE_REMEMBER = "remember_password";
+    public static final String SP_BL_PERSONA_NAME = "battlelog_persona";
     public static final String SP_BL_PERSONA_ID = "battlelog_persona_id";
+    public static final String SP_BL_PERSONA_CURRENT_ID = "battlelog_persona_current_id";
+    public static final String SP_BL_PERSONA_CURRENT_POS = "battlelog_persona_current_pos";
+    public static final String SP_BL_PERSONA_LOGO = "battlelog_persona_logo";
     public static final String SP_BL_PLATFORM_ID = "battlelog_platform_id";
-    public static final String SP_BL_CHECKSUM = "battlelog_post_checksum";
-    public static final String SP_BL_GRAVATAR = "battlelog_gravatar_hash";
-    public static final String SP_BL_REMEMBER = "remember_password";
     public static final String SP_BL_INTERVAL_SERVICE = "battlelog_service_interval";
     public static final String SP_BL_INTERVAL_CHAT = "battlelog_chat_interval";
     public static final String SP_BL_NUM_FEED = "battlelog_feed_count";
     public static final String SP_BL_LANG = "app_locale";
-    public static final String SP_BL_LOCALE = "battlelog_locale";
+    public static final String SP_BL_FULLSCREEN = "fullscreen_mode";
+    public static final String SP_BL_FORUM_LOCALE = "battlelog_locale";
+    public static final String SP_BL_FORUM_LOCALE_POSITION = "battlelog_locale_pos";
+    public static final String SP_BL_FORUM_CACHE = "battlelog_enable_forum_cache";
     public static final String SP_BL_COOKIE_NAME = "battlelog_cookie_name";
     public static final String SP_BL_COOKIE_VALUE = "battlelog_cookie_value";
+    public static final String SP_BL_PLATOON_ID = "battlelog_platoon_id";
+    public static final String SP_BL_PLATOON = "battlelog_platoon";
+    public static final String SP_BL_PLATOON_TAG = "battlelog_platoon_tag";
+    public static final String SP_BL_PLATOON_IMAGE = "battlelog_platoon_image";
+    public static final String SP_BL_PLATOON_PLATFORM_ID = "battlelog_platoon_platform_id";
+    public static final String SP_BL_PLATOON_CURRENT_ID = "battlelog_platoon_current_id";
+    public static final String SP_BL_PLATOON_CURRENT_POS = "battlelog_platoon_current_pos";
+    public static final String SP_BL_UNLOCKS_LIMIT_MIN = "battlelog_unlocks_progress_min";
 
     // Cookie-related
     public static final String COOKIE_DOMAIN = "battlelog.battlefield.com";

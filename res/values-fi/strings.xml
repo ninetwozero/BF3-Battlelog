@@ -94,7 +94,7 @@ Twitterissä, @karllindmark tai (https://twitter.com/karllindmark).&lt;br /&gt;&
 Kiitos avustasi!</string>
 	<string name="general_invalid_email">Viallinen sähköpostiosoite.</string>
 	<string name="general_invalid_password">Kirjoita salasanasi.</string>
-	<string name="general_changelog_version">Viimeisimmät muutokset</string>
+	<string name="general_changelog_version">Viimeisimmät muutokset {version}</string>
 	<string name="general_wait">Odota</string>
 	<string name="general_downloading">Ladataan...</string>
 	<string name="general_no_data">Tietoja ei löydetty.</string>

@@ -14,15 +14,20 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.SharedPreferences;
-import android.util.Log;
 
-import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
 
-public class SessionKeeper {
+public final class SessionKeeper {
 
     // Attributes
     private static ProfileData profileData;
+    private static List<PlatoonData> platoonData;
 
     // Construct
     private SessionKeeper() {
@@ -33,9 +38,19 @@ public class SessionKeeper {
         return SessionKeeper.profileData;
     }
 
+    public static List<PlatoonData> getPlatoonData() {
+        return SessionKeeper.platoonData;
+    }
+
     // Setters
     public static void setProfileData(ProfileData p) {
         SessionKeeper.profileData = p;
+    }
+
+    public static void setPlatoonData(List<PlatoonData> p) {
+
+        SessionKeeper.platoonData = p;
+
     }
 
     // Generate session data
@@ -45,46 +60,94 @@ public class SessionKeeper {
         // Get the different strings
         String cookie = sp.getString(Constants.SP_BL_COOKIE_VALUE, "");
         String personaIdString = sp.getString(Constants.SP_BL_PERSONA_ID, "");
-        String personaNameString = sp.getString(Constants.SP_BL_PERSONA, "");
+        String personaNameString = sp.getString(Constants.SP_BL_PERSONA_NAME, "");
         String platformIdString = sp.getString(Constants.SP_BL_PLATFORM_ID, "");
+        String personaLogoString = sp.getString(Constants.SP_BL_PERSONA_LOGO, "");
 
         // Let's split them up...
         String[] personaIdArray = personaIdString.split(":");
         String[] personaNameArray = personaNameString.split(":");
         String[] platformIdArray = platformIdString.split(":");
+        String[] personaLogoArray = personaLogoString.split(":");
 
         // How many do we have?
-        int max = ( personaIdString.equals( "" ) ) ? 0 : personaIdArray.length;
-        
+        int max = (personaIdString.equals("")) ? 0 : personaIdArray.length;
+
         // We need to init the resulting arrays
-        long[] personaId = new long[max];
-        long[] platformId = new long[max];
-        
+        PersonaData[] persona = new PersonaData[max];
+
         // ...and populate them
         for (int i = 0; i < max; i++) {
 
-            personaId[i] = Long.parseLong(personaIdArray[i]);
-            platformId[i] = Long.parseLong(platformIdArray[i]);
+            persona[i] = new PersonaData(Long.parseLong(personaIdArray[i]), personaNameArray[i],
+                    Integer.parseInt(platformIdArray[i]), personaLogoArray[i]);
 
         }
 
-        //If we even *might* have a session
-        if( !cookie.equals("") ) {
-            
-            
-            return new ProfileData(
+        // If we even *might* have a session
+        if ("".equals(cookie)) {
 
-                sp.getString(Constants.SP_BL_USERNAME, ""), personaNameArray,
-                personaId, sp.getLong(Constants.SP_BL_PROFILE_ID, 0),
-                platformId, sp.getString(Constants.SP_BL_GRAVATAR, "")
-
-            );
-            
-        } else {
-            
             return null;
             
+        } else {
+
+            return new ProfileData.Builder(
+                    sp.getLong(Constants.SP_BL_PROFILE_ID, 0),
+                    sp.getString(Constants.SP_BL_PROFILE_NAME, "")
+
+            ).persona(persona).gravatarHash(
+                    sp.getString(Constants.SP_BL_PROFILE_GRAVATAR, "")
+                    ).build();
+
         }
+
+    }
+
+    public static List<PlatoonData> generatePlatoonDataFromSharedPreferences(
+            SharedPreferences sp) {
+
+        // Get the different strings
+        String platoonIdString = sp.getString(Constants.SP_BL_PLATOON_ID, "");
+        String platoonNameString = sp.getString(Constants.SP_BL_PLATOON, "");
+        String platoonTagString = sp.getString(Constants.SP_BL_PLATOON_TAG, "");
+        String platformIdString = sp.getString(Constants.SP_BL_PLATOON_PLATFORM_ID, "");
+        String platoonImageString = sp.getString(Constants.SP_BL_PLATOON_IMAGE, "");
+
+        // Let's split them up...
+        String[] platoonIdArray = platoonIdString.split(":");
+        String[] platoonNameArray = platoonNameString.split(":");
+        String[] platoonTagArray = platoonTagString.split(":");
+        String[] platformIdArray = platformIdString.split(":");
+        String[] platoonImageArray = platoonImageString.split(":");
+
+        // How many do we have?
+        int max = (platoonIdString.equals("")) ? 0 : platoonIdArray.length;
+
+        // We need to init the resulting arrays
+        List<PlatoonData> platoon = new ArrayList<PlatoonData>();
+
+        // ...and populate them
+        for (int i = 0; i < max; i++) {
+
+            platoon.add(
+
+                    new PlatoonData(
+
+                            Long.parseLong(platoonIdArray[i]),
+                            0,
+                            0,
+                            Integer.parseInt(platformIdArray[i]),
+                            platoonNameArray[i],
+                            platoonTagArray[i],
+                            platoonImageArray[i],
+                            true
+                    )
+
+                    );
+
+        }
+
+        return (ArrayList<PlatoonData>) platoon;
 
     }
 
