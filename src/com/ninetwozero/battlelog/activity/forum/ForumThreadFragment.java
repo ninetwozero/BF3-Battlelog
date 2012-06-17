@@ -76,47 +76,51 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class ForumThreadFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private SharedPreferences sharedPreferences;
-    private ForumThreadData threadData;
-    private ForumClient forumHandler = new ForumClient();
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private SharedPreferences mSharedPreferences;
+    private ForumThreadData mThreadData;
+    private ForumClient mForumHandler = new ForumClient();
 
     // Elements
-    private ListView listView;
-    private ThreadPostListAdapter listAdapter;
-    private TextView textTitle;
-    private RelativeLayout wrapButtons, wrapLoader;
-    private Button buttonPost, buttonPrev, buttonNext, buttonJump;
-    private SlidingDrawer slidingDrawer;
-    private OnDrawerOpenListener onDrawerOpenListener;
-    private OnDrawerCloseListener onDrawerCloseListener;
-    private EditText textareaContent;
+    private ListView mListView;
+    private ThreadPostListAdapter mListAdapter;
+    private TextView mTextTitle;
+    private RelativeLayout mWrapButtons;
+    private RelativeLayout mWrapLoader;
+    private Button mButtonPost;
+    private Button mButtonPrev;
+    private Button mButtonNext;
+    private Button mButtonJump;
+    private SlidingDrawer mSlidingDrawer;
+    private OnDrawerOpenListener mOnDrawerOpenListener;
+    private OnDrawerCloseListener mOnDrawerCloseListener;
+    private EditText mTextareaContent;
 
     // Misc
-    private long threadId;
-    private String locale;
-    private int currentPage;
-    private Map<Long, String> selectedQuotes;
-    private Integer[] pageArray;
-    private boolean isCaching;
-    private Intent storedRequest;
+    private long mThreadId;
+    private String mLocale;
+    private int mCurrentPage;
+    private Map<Long, String> mSelectedQuotes;
+    private Integer[] mPageArray;
+    private boolean mCaching;
+    private Intent mStoredRequest;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.forum_thread_view,
                 container, false);
 
         // Get the locale
-        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
+        mLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
 
         // Init the Fragment
         initFragment(view);
@@ -130,107 +134,107 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     public void initFragment(View v) {
 
         // Are we to cache?
-        isCaching = sharedPreferences.getBoolean(Constants.SP_BL_FORUM_CACHE, true);
+        mCaching = mSharedPreferences.getBoolean(Constants.SP_BL_FORUM_CACHE, true);
 
         // Setup the text
-        textTitle = (TextView) v.findViewById(R.id.text_title_thread);
+        mTextTitle = (TextView) v.findViewById(R.id.text_title_thread);
 
         // Setup the ListView
-        listView = (ListView) v.findViewById(android.R.id.list);
-        listView.setAdapter(listAdapter = new ThreadPostListAdapter(context, null, layoutInflater));
-        listView.setDrawSelectorOnTop(false);
-        getActivity().registerForContextMenu(listView);
+        mListView = (ListView) v.findViewById(android.R.id.list);
+        mListView.setAdapter(mListAdapter = new ThreadPostListAdapter(mContext, null, mLayoutInflater));
+        mListView.setDrawSelectorOnTop(false);
+        getActivity().registerForContextMenu(mListView);
 
         // Let's get the button
-        buttonJump = (Button) v.findViewById(R.id.button_jump);
-        buttonPrev = (Button) v.findViewById(R.id.button_prev);
-        buttonNext = (Button) v.findViewById(R.id.button_next);
-        buttonPost = (Button) v.findViewById(R.id.button_new);
-        wrapButtons = (RelativeLayout) v.findViewById(R.id.wrap_buttons);
+        mButtonJump = (Button) v.findViewById(R.id.button_jump);
+        mButtonPrev = (Button) v.findViewById(R.id.button_prev);
+        mButtonNext = (Button) v.findViewById(R.id.button_next);
+        mButtonPost = (Button) v.findViewById(R.id.button_new);
+        mWrapButtons = (RelativeLayout) v.findViewById(R.id.wrap_buttons);
 
         // Last but not least, the loader
-        wrapLoader = (RelativeLayout) v.findViewById(R.id.wrap_loader);
+        mWrapLoader = (RelativeLayout) v.findViewById(R.id.wrap_loader);
 
         // Init the quotes and page
-        if (selectedQuotes == null) {
-            selectedQuotes = new HashMap<Long, String>();
+        if (mSelectedQuotes == null) {
+            mSelectedQuotes = new HashMap<Long, String>();
         }
 
         // Do we have one?
-        if (storedRequest != null) {
+        if (mStoredRequest != null) {
 
-            openThread(storedRequest);
+            openThread(mStoredRequest);
 
         }
 
         // Let's set the onClick events
-        buttonNext.setOnClickListener(new OnClickListener() {
+        mButtonNext.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
                 // Increment the page #
-                currentPage++;
+                mCurrentPage++;
 
                 // Let's do this
-                new AsyncLoadPage(context, threadId).execute(currentPage);
+                new AsyncLoadPage(mContext, mThreadId).execute(mCurrentPage);
 
             }
 
         });
 
         // Let's set the onClick events
-        buttonPrev.setOnClickListener(new OnClickListener() {
+        mButtonPrev.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
                 // "Decrement"?
-                currentPage--;
+                mCurrentPage--;
 
                 // Let's do this
-                new AsyncLoadPage(context, threadId).execute(currentPage);
+                new AsyncLoadPage(mContext, mThreadId).execute(mCurrentPage);
 
             }
 
         });
 
         // Let's set the onClick events
-        buttonJump.setOnClickListener(new OnClickListener() {
+        mButtonJump.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
                 // Generate a dialog
-                generateDialogPage(context).show();
+                generateDialogPage(mContext).show();
 
             }
 
         });
 
         // Let's set the onClick events
-        buttonPost.setOnClickListener(new OnClickListener() {
+        mButtonPost.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
                 // Generate a dialog
-                String content = textareaContent.getText().toString();
+                String content = mTextareaContent.getText().toString();
 
                 // Validate
                 if ("".equals(content)) {
 
-                    Toast.makeText(context, "You need to enter some content for your reply.",
+                    Toast.makeText(mContext, "You need to enter some content for your reply.",
                             Toast.LENGTH_SHORT).show();
 
                 }
 
                 // Parse for the BBCODE!
-                content = BBCodeUtils.toBBCode(content, selectedQuotes);
+                content = BBCodeUtils.toBBCode(content, mSelectedQuotes);
 
                 // Ready... set... go!
-                new AsyncPostInThread(context, threadData, false).execute(content,
-                        sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+                new AsyncPostInThread(mContext, mThreadData, false).execute(content,
+                        mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
             }
 
@@ -249,18 +253,18 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     public void reload() {
 
         // Do we have a threadId?
-        if (threadId == 0) {
+        if (mThreadId == 0) {
             getActivity().finish();
         }
 
         // Set it up
-        if (threadData == null || currentPage == 1) {
+        if (mThreadData == null || mCurrentPage == 1) {
 
-            new AsyncGetPosts(context, threadId).execute(currentPage);
+            new AsyncGetPosts(mContext, mThreadId).execute(mCurrentPage);
 
         } else {
 
-            new AsyncLoadPage(context, threadId).execute(currentPage);
+            new AsyncLoadPage(mContext, mThreadId).execute(mCurrentPage);
 
         }
 
@@ -275,15 +279,15 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
     public void openThread(Intent data) {
 
-        if (textTitle == null) {
+        if (mTextTitle == null) {
 
-            storedRequest = data;
+            mStoredRequest = data;
 
         } else {
 
-            threadId = data.getLongExtra("threadId", 0);
-            textTitle.setText(data.getStringExtra("threadTitle"));
-            currentPage = data.getIntExtra("pageId", 1);
+            mThreadId = data.getLongExtra("threadId", 0);
+            mTextTitle.setText(data.getStringExtra("threadTitle"));
+            mCurrentPage = data.getIntExtra("pageId", 1);
             reload();
 
         }
@@ -316,8 +320,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                         Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 rotateAnimation.setDuration(1600);
                 rotateAnimation.setRepeatCount(RotateAnimation.INFINITE);
-                wrapLoader.setVisibility(View.VISIBLE);
-                wrapLoader.findViewById(R.id.image_loader).setAnimation(rotateAnimation);
+                mWrapLoader.setVisibility(View.VISIBLE);
+                mWrapLoader.findViewById(R.id.image_loader).setAnimation(rotateAnimation);
                 rotateAnimation.start();
 
             }
@@ -333,16 +337,16 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 tempPageId = arg0[0];
 
                 // Get the threadData
-                forumHandler.setThreadId(tempThreadId);
-                threadData = forumHandler.getPosts(locale);
+                mForumHandler.setThreadId(tempThreadId);
+                mThreadData = mForumHandler.getPosts(mLocale);
 
                 // Do we need to get a specific page here already
                 if (arg0[0] > 1) {
 
-                    posts = forumHandler.getPosts(tempPageId, locale);
+                    posts = mForumHandler.getPosts(tempPageId, mLocale);
                 }
 
-                return (threadData != null);
+                return (mThreadData != null);
 
             } catch (Exception ex) {
 
@@ -361,39 +365,39 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 // Let's set it up
                 if (tempPageId > 1) {
 
-                    listAdapter.set(posts);
+                    mListAdapter.set(posts);
 
                 } else {
 
-                    listAdapter.set(threadData.getPosts());
+                    mListAdapter.set(mThreadData.getPosts());
 
                 }
 
                 // Update the title
-                textTitle.setText(threadData.getTitle());
+                mTextTitle.setText(mThreadData.getTitle());
 
-                if (threadData.getNumPages() > 1) {
+                if (mThreadData.getNumPages() > 1) {
 
-                    wrapButtons.setVisibility(View.VISIBLE);
-                    buttonJump.setText(R.string.info_xml_feed_button_jump);
-                    buttonPrev.setEnabled(currentPage > 1);
-                    buttonNext.setEnabled(currentPage < threadData.getNumPages());
-                    buttonJump.setEnabled(true);
+                    mWrapButtons.setVisibility(View.VISIBLE);
+                    mButtonJump.setText(R.string.info_xml_feed_button_jump);
+                    mButtonPrev.setEnabled(mCurrentPage > 1);
+                    mButtonNext.setEnabled(mCurrentPage < mThreadData.getNumPages());
+                    mButtonJump.setEnabled(true);
 
                 } else {
 
-                    wrapButtons.setVisibility(View.GONE);
-                    buttonPrev.setEnabled(false);
-                    buttonNext.setEnabled(false);
-                    buttonJump.setEnabled(false);
+                    mWrapButtons.setVisibility(View.GONE);
+                    mButtonPrev.setEnabled(false);
+                    mButtonNext.setEnabled(false);
+                    mButtonJump.setEnabled(false);
 
                 }
 
                 // Do we need to hide?
-                slidingDrawer.setVisibility(threadData.isLocked() ? View.GONE : View.VISIBLE);
+                mSlidingDrawer.setVisibility(mThreadData.isLocked() ? View.GONE : View.VISIBLE);
 
                 // Scroll to top
-                listView.post(
+                mListView.post(
 
                         new Runnable() {
 
@@ -401,10 +405,10 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                             public void run() {
 
                                 // Set the selection
-                                listView.setSelection(0);
+                                mListView.setSelection(0);
 
                                 // Hide it
-                                wrapLoader.setVisibility(View.GONE);
+                                mWrapLoader.setVisibility(View.GONE);
                                 rotateAnimation.reset();
 
                             }
@@ -461,18 +465,18 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 switch (item.getItemId()) {
 
                     case 0:
-                        startActivity(new Intent(context, ProfileActivity.class).putExtra(
+                        startActivity(new Intent(mContext, ProfileActivity.class).putExtra(
                                 "profile", data.getProfileData()));
                         break;
 
                     case 1:
-                        Toast.makeText(context, R.string.info_forum_quote_warning,
+                        Toast.makeText(mContext, R.string.info_forum_quote_warning,
                                 Toast.LENGTH_SHORT).show();
-                        textareaContent.setText(
+                        mTextareaContent.setText(
 
-                                textareaContent.getText().insert(
+                                mTextareaContent.getText().insert(
 
-                                        textareaContent.getSelectionStart(),
+                                        mTextareaContent.getSelectionStart(),
                                         BBCodeUtils.TAG_QUOTE_IN.replace(
 
                                                 "{number}", String.valueOf(data.getPostId())
@@ -487,7 +491,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                         )
 
                                 );
-                        selectedQuotes
+                        mSelectedQuotes
                                 .put(data.getPostId(),
                                         (data.isCensored() ? getString(R.string.general_censored)
                                                 : data.getContent()));
@@ -498,12 +502,12 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                         break;
 
                     case 3:
-                        startActivity(new Intent(context, ForumReportActivity.class)
+                        startActivity(new Intent(mContext, ForumReportActivity.class)
                                 .putExtra("postId", data.getPostId()));
                         break;
 
                     default:
-                        Toast.makeText(context, R.string.msg_unimplemented,
+                        Toast.makeText(mContext, R.string.msg_unimplemented,
                                 Toast.LENGTH_SHORT).show();
                         break;
 
@@ -526,7 +530,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
         // Got some?
         if (string == null) {
-            Toast.makeText(context, R.string.info_forum_links_no,
+            Toast.makeText(mContext, R.string.info_forum_links_no,
                     Toast.LENGTH_SHORT).show();
         }
 
@@ -548,12 +552,12 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
         if (linkFound) {
 
-            generateDialogLinkList(context, links).show();
+            generateDialogLinkList(mContext, links).show();
 
         } else {
 
             // No links found
-            Toast.makeText(context, R.string.info_forum_links_no,
+            Toast.makeText(mContext, R.string.info_forum_links_no,
                     Toast.LENGTH_SHORT).show();
         }
 
@@ -562,35 +566,35 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     // Define the SlidingDrawer
     public void setupBottom(View v) {
 
-        if (slidingDrawer == null) {
+        if (mSlidingDrawer == null) {
 
-            slidingDrawer = (SlidingDrawer) v.findViewById(R.id.post_slider);
+            mSlidingDrawer = (SlidingDrawer) v.findViewById(R.id.post_slider);
 
             // Set the drawer listeners
-            onDrawerCloseListener = new OnDrawerCloseListener() {
+            mOnDrawerCloseListener = new OnDrawerCloseListener() {
 
                 @Override
                 public void onDrawerClosed() {
-                    slidingDrawer.setClickable(false);
+                    mSlidingDrawer.setClickable(false);
                 }
 
             };
-            onDrawerOpenListener = new OnDrawerOpenListener() {
+            mOnDrawerOpenListener = new OnDrawerOpenListener() {
 
                 @Override
                 public void onDrawerOpened() {
-                    slidingDrawer.setClickable(true);
+                    mSlidingDrawer.setClickable(true);
                 }
 
             };
 
             // Attach the listeners
-            slidingDrawer.setOnDrawerOpenListener(onDrawerOpenListener);
-            slidingDrawer.setOnDrawerCloseListener(onDrawerCloseListener);
+            mSlidingDrawer.setOnDrawerOpenListener(mOnDrawerOpenListener);
+            mSlidingDrawer.setOnDrawerCloseListener(mOnDrawerCloseListener);
 
             // Grab the field + button for further reference!
-            textareaContent = (EditText) v.findViewById(R.id.textarea_content);
-            buttonPost = (Button) v.findViewById(R.id.button_new);
+            mTextareaContent = (EditText) v.findViewById(R.id.textarea_content);
+            mButtonPost = (Button) v.findViewById(R.id.button_new);
 
         }
 
@@ -599,23 +603,23 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     public void onPostSubmit(View v) {
 
         // Let's get the content
-        String content = textareaContent.getText().toString();
+        String content = mTextareaContent.getText().toString();
 
         // Parse for the BBCODE!
-        content = BBCodeUtils.toBBCode(content, selectedQuotes);
+        content = BBCodeUtils.toBBCode(content, mSelectedQuotes);
 
         // Ready... set... go!
-        new AsyncPostInThread(context, threadData, isCaching).execute(content,
-                sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+        new AsyncPostInThread(mContext, mThreadData, mCaching).execute(content,
+                mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 
     public void resetPostFields() {
 
         // Reset
-        textareaContent.setText("");
-        selectedQuotes.clear();
-        slidingDrawer.animateClose();
+        mTextareaContent.setText("");
+        mSelectedQuotes.clear();
+        mSlidingDrawer.animateClose();
 
     }
 
@@ -624,9 +628,9 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-            if (slidingDrawer.isOpened()) {
+            if (mSlidingDrawer.isOpened()) {
 
-                slidingDrawer.animateClose();
+                mSlidingDrawer.animateClose();
                 return true;
 
             } else {
@@ -637,7 +641,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
         } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
 
-            startActivity(new Intent(context, ForumSearchActivity.class));
+            startActivity(new Intent(mContext, ForumSearchActivity.class));
             return true;
 
         }
@@ -651,22 +655,22 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         if (v.getId() == R.id.button_next) {
 
             // Increment
-            currentPage++;
+            mCurrentPage++;
 
             // Let's do context
-            new AsyncLoadPage(context, threadId).execute(currentPage);
+            new AsyncLoadPage(mContext, mThreadId).execute(mCurrentPage);
 
         } else if (v.getId() == R.id.button_prev) {
 
             // Increment
-            currentPage--;
+            mCurrentPage--;
 
             // Do the "get more"-thing
-            new AsyncLoadPage(context, threadId).execute(currentPage);
+            new AsyncLoadPage(mContext, mThreadId).execute(mCurrentPage);
 
         } else if (v.getId() == R.id.button_jump) {
 
-            generateDialogPage(context).show();
+            generateDialogPage(mContext).show();
 
         }
 
@@ -693,10 +697,10 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
             if (context instanceof ForumActivity) {
 
-                buttonJump.setText(R.string.label_downloading);
-                buttonJump.setEnabled(false);
-                buttonPrev.setEnabled(false);
-                buttonNext.setEnabled(false);
+                mButtonJump.setText(R.string.label_downloading);
+                mButtonJump.setEnabled(false);
+                mButtonPrev.setEnabled(false);
+                mButtonNext.setEnabled(false);
 
             }
 
@@ -708,8 +712,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
             try {
 
                 page = arg0[0];
-                forumHandler.setThreadId(threadId);
-                posts = forumHandler.getPosts(page, locale);
+                mForumHandler.setThreadId(threadId);
+                posts = mForumHandler.getPosts(page, mLocale);
                 return true;
 
             } catch (Exception ex) {
@@ -728,8 +732,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                 if (results) {
 
-                    listAdapter.set(posts);
-                    buttonJump.setText(R.string.info_xml_feed_button_jump);
+                    mListAdapter.set(posts);
+                    mButtonJump.setText(R.string.info_xml_feed_button_jump);
 
                 } else {
 
@@ -739,9 +743,9 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                 }
 
-                buttonPrev.setEnabled(page != 1);                
-                buttonNext.setEnabled(page == threadData.getNumPages());
-                buttonJump.setEnabled(true);
+                mButtonPrev.setEnabled(page != 1);                
+                mButtonNext.setEnabled(page == mThreadData.getNumPages());
+                mButtonJump.setEnabled(true);
 
             }
 
@@ -796,7 +800,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                         // Get the current link
                         String currentLink = links.get(arg2);
                         new AsyncLinkHandling(context).execute(currentLink,
-                                sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
+                                mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
                                         ""));
 
                         // Dismiss the dialog
@@ -827,12 +831,12 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         builder.setView(layout);
 
         // How many pages do we have?
-        if (pageArray == null || (pageArray.length != threadData.getNumPages())) {
+        if (mPageArray == null || (mPageArray.length != mThreadData.getNumPages())) {
 
-            pageArray = new Integer[threadData.getNumPages()];
-            for (int i = 0, max = pageArray.length; i < max; i++) {
+            mPageArray = new Integer[mThreadData.getNumPages()];
+            for (int i = 0, max = mPageArray.length; i < max; i++) {
 
-                pageArray[i] = i;
+                mPageArray[i] = i;
 
             }
 
@@ -847,7 +851,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         // Set the text
         textView.setText(getString(R.string.info_xml_enternumber).replace(
                 "{min}", "1")
-                .replace("{max}", String.valueOf(threadData.getNumPages())));
+                .replace("{max}", String.valueOf(mThreadData.getNumPages())));
 
         // Dialog options
         builder.setPositiveButton(
@@ -860,11 +864,11 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                         if (!"".equals(pageString)) {
 
                             int page = Integer.parseInt(pageString);
-                            if (0 < page && page <= threadData.getNumPages()) {
+                            if (0 < page && page <= mThreadData.getNumPages()) {
 
-                                currentPage = page;
-                                new AsyncLoadPage(context, threadId)
-                                        .execute(currentPage);
+                                mCurrentPage = page;
+                                new AsyncLoadPage(context, mThreadId)
+                                        .execute(mCurrentPage);
 
                             } else {
 
@@ -1065,7 +1069,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         if (item.getItemId() == R.id.option_save) {
 
             // Do we want to cache? Yes we want to do!
-            new AsyncDoCache(context).execute();
+            new AsyncDoCache(mContext).execute();
             return true;
         }
         return false;
@@ -1085,7 +1089,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         @Override
         protected Boolean doInBackground(Void... arg0) {
 
-            return (CacheHandler.Forum.insert(context, threadData, SessionKeeper.getProfileData()
+            return (CacheHandler.Forum.insert(context, mThreadData, SessionKeeper.getProfileData()
                     .getId()) > -1);
         }
 
@@ -1136,18 +1140,18 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 switch (item.getItemId()) {
 
                     case 0:
-                        startActivity(new Intent(context, ProfileActivity.class).putExtra(
+                        startActivity(new Intent(mContext, ProfileActivity.class).putExtra(
                                 "profile", data.getProfileData()));
                         break;
 
                     case 1:
-                        Toast.makeText(context, R.string.info_forum_quote_warning,
+                        Toast.makeText(mContext, R.string.info_forum_quote_warning,
                                 Toast.LENGTH_SHORT).show();
-                        textareaContent.setText(
+                        mTextareaContent.setText(
 
-                                textareaContent.getText().insert(
+                                mTextareaContent.getText().insert(
 
-                                        textareaContent.getSelectionStart(),
+                                        mTextareaContent.getSelectionStart(),
                                         BBCodeUtils.TAG_QUOTE_IN.replace(
 
                                                 "{number}", String.valueOf(data.getPostId())
@@ -1162,7 +1166,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                         )
 
                                 );
-                        selectedQuotes
+                        mSelectedQuotes
                                 .put(data.getPostId(),
                                         (data.isCensored() ? getString(R.string.general_censored)
                                                 : data.getContent()));
@@ -1173,12 +1177,12 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                         break;
 
                     case 3:
-                        startActivity(new Intent(context, ForumReportActivity.class)
+                        startActivity(new Intent(mContext, ForumReportActivity.class)
                                 .putExtra("postId", data.getPostId()));
                         break;
 
                     default:
-                        Toast.makeText(context, R.string.msg_unimplemented,
+                        Toast.makeText(mContext, R.string.msg_unimplemented,
                                 Toast.LENGTH_SHORT).show();
                         break;
 

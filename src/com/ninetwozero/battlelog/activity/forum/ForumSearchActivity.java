@@ -47,16 +47,16 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class ForumSearchActivity extends ListActivity {
 
     // Attributes
-    private LayoutInflater layoutInflater;
-    private SharedPreferences sharedPreferences;
+    private LayoutInflater mLayoutInflater;
+    private SharedPreferences mSharedPreferences;
 
     // Elements
-    private ListView listView;
-    private EditText fieldSearch;
-    private Button buttonSearch;
+    private ListView mListView;
+    private EditText mFieldSearch;
+    private Button mButtonSearch;
 
     // Misc
-    private List<ForumSearchResult> threads;
+    private List<ForumSearchResult> mThreads;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -65,48 +65,48 @@ public class ForumSearchActivity extends ListActivity {
         super.onCreate(icicle);
 
         // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         PublicUtils.restoreCookies(this, icicle);
 
         // Setup the important stuff
-        PublicUtils.setupFullscreen(this, sharedPreferences);
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupFullscreen(this, mSharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
         setContentView(R.layout.forum_search_view);
 
         // Prepare to tango
-        this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Get the elements
-        buttonSearch = (Button) findViewById(R.id.button_search);
-        fieldSearch = (EditText) findViewById(R.id.field_search);
+        mButtonSearch = (Button) findViewById(R.id.button_search);
+        mFieldSearch = (EditText) findViewById(R.id.field_search);
 
         // Threads!
-        threads = new ArrayList<ForumSearchResult>();
-        setupList(threads);
+        mThreads = new ArrayList<ForumSearchResult>();
+        setupList(mThreads);
     }
 
     public void setupList(List<ForumSearchResult> results) {
 
         // Do we have it?
-        if (listView == null) {
+        if (mListView == null) {
 
             // Get the ListView
-            listView = getListView();
-            listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+            mListView = getListView();
+            mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
 
         }
 
         // Does it have an adapter?
-        if (listView.getAdapter() == null) {
+        if (mListView.getAdapter() == null) {
 
-            listView.setAdapter(new ForumSearchAdapter(this, results,
-                    layoutInflater));
+            mListView.setAdapter(new ForumSearchAdapter(this, results,
+                    mLayoutInflater));
 
         } else {
 
-            ((ForumSearchAdapter) listView.getAdapter()).setItemArray(results);
+            ((ForumSearchAdapter) mListView.getAdapter()).setItemArray(results);
 
         }
     }
@@ -132,7 +132,7 @@ public class ForumSearchActivity extends ListActivity {
 
             // Send it!
             new AsyncForumSearch(this)
-                    .execute(fieldSearch.getText().toString());
+                    .execute(mFieldSearch.getText().toString());
 
         }
 
@@ -188,7 +188,7 @@ public class ForumSearchActivity extends ListActivity {
 
             try {
 
-                threads = ForumClient.search(context, arg0[0]);
+                mThreads = ForumClient.search(context, arg0[0]);
                 return true;
 
             } catch (Exception ex) {
@@ -208,7 +208,7 @@ public class ForumSearchActivity extends ListActivity {
 
                 if (context instanceof ForumSearchActivity) {
 
-                    ((ForumSearchActivity) context).setupList(threads);
+                    ((ForumSearchActivity) context).setupList(mThreads);
                     ((ForumSearchActivity) context).toggleSearchButton();
 
                 }
@@ -231,13 +231,13 @@ public class ForumSearchActivity extends ListActivity {
 
     public void toggleSearchButton() {
 
-        buttonSearch.setEnabled(!buttonSearch.isEnabled());
+        mButtonSearch.setEnabled(!mButtonSearch.isEnabled());
 
         // Update the text
-        if (buttonSearch.isEnabled()) {
-            buttonSearch.setText(R.string.label_search);
+        if (mButtonSearch.isEnabled()) {
+            mButtonSearch.setText(R.string.label_search);
         } else {
-            buttonSearch.setText("...");
+            mButtonSearch.setText("...");
         }
 
     }
@@ -267,10 +267,10 @@ public class ForumSearchActivity extends ListActivity {
         super.onResume();
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
 
     }
 

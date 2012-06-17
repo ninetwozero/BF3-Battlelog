@@ -44,32 +44,32 @@ import com.ninetwozero.battlelog.misc.DataBank;
 public class MenuForumFragment extends Fragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
+    private Context mContext;
     private Map<Integer, Intent> MENU_INTENTS;
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
     // Elements
-    private RelativeLayout wrapLanguage;
-    private TextView textLanguage;
-    private ImageView imageLanguage;
+    private RelativeLayout mWrapLanguage;
+    private TextView mTextLanguage;
+    private ImageView mImageLanguage;
 
     // Let's store the position & persona
-    private String selectedLocale;
-    private String selectedLanguage;
-    private int selectedPosition;
+    private String mSelectedLocale;
+    private String mSelectedLanguage;
+    private int mSelectedPosition;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         // Get the unlocks
-        selectedLocale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
-        selectedPosition = sharedPreferences.getInt(Constants.SP_BL_FORUM_LOCALE_POSITION, 0);
-        selectedLanguage = DataBank.getLanguage(selectedPosition);
+        mSelectedLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
+        mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_FORUM_LOCALE_POSITION, 0);
+        mSelectedLanguage = DataBank.getLanguage(mSelectedPosition);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_dashboard_forum,
@@ -84,15 +84,15 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
     public void initFragment(View view) {
 
         // Set up the Persona box
-        wrapLanguage = (RelativeLayout) view.findViewById(R.id.wrap_language);
-        wrapLanguage.setOnClickListener(
+        mWrapLanguage = (RelativeLayout) view.findViewById(R.id.wrap_language);
+        mWrapLanguage.setOnClickListener(
 
                 new OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
 
-                        generateDialogLanguageList(context, DataBank.getLanguages(),
+                        generateDialogLanguageList(mContext, DataBank.getLanguages(),
                                 DataBank.getLocales()).show();
 
                     }
@@ -100,18 +100,18 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
                 }
 
                 );
-        imageLanguage = (ImageView) wrapLanguage.findViewById(R.id.image_language);
-        textLanguage = (TextView) wrapLanguage.findViewById(R.id.text_language);
-        textLanguage.setSelected(true);
+        mImageLanguage = (ImageView) mWrapLanguage.findViewById(R.id.image_language);
+        mTextLanguage = (TextView) mWrapLanguage.findViewById(R.id.text_language);
+        mTextLanguage.setSelected(true);
 
         // Setup the "persona box"
         setupLanguageBox();
 
         // Set up the intents
         MENU_INTENTS = new HashMap<Integer, Intent>();
-        MENU_INTENTS.put(R.id.button_view, new Intent(context, ForumActivity.class));
-        MENU_INTENTS.put(R.id.button_search, new Intent(context, ForumSearchActivity.class));
-        MENU_INTENTS.put(R.id.button_saved, new Intent(context, ForumSavedActivity.class));
+        MENU_INTENTS.put(R.id.button_view, new Intent(mContext, ForumActivity.class));
+        MENU_INTENTS.put(R.id.button_search, new Intent(mContext, ForumSearchActivity.class));
+        MENU_INTENTS.put(R.id.button_saved, new Intent(mContext, ForumSavedActivity.class));
 
         // Add the OnClickListeners
         final OnClickListener onClickListener = new OnClickListener() {
@@ -161,13 +161,13 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
 
                     public void onClick(DialogInterface dialog, int item) {
 
-                        selectedPosition = item;
-                        selectedLocale = locales[selectedPosition];
-                        selectedLanguage = languages[selectedPosition];
+                        mSelectedPosition = item;
+                        mSelectedLocale = locales[mSelectedPosition];
+                        mSelectedLanguage = languages[mSelectedPosition];
 
-                        SharedPreferences.Editor spEdit = sharedPreferences.edit();
-                        spEdit.putString(Constants.SP_BL_FORUM_LOCALE, selectedLocale);
-                        spEdit.putInt(Constants.SP_BL_FORUM_LOCALE_POSITION, selectedPosition);
+                        SharedPreferences.Editor spEdit = mSharedPreferences.edit();
+                        spEdit.putString(Constants.SP_BL_FORUM_LOCALE, mSelectedLocale);
+                        spEdit.putInt(Constants.SP_BL_FORUM_LOCALE_POSITION, mSelectedPosition);
                         spEdit.commit();
 
                         setupLanguageBox();
@@ -188,8 +188,8 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
     public void setupLanguageBox() {
 
         // Let's see...
-        textLanguage.setText(selectedLanguage);
-        imageLanguage.setImageResource(R.drawable.locale_us);
+        mTextLanguage.setText(mSelectedLanguage);
+        mImageLanguage.setImageResource(R.drawable.locale_us);
 
     }
 

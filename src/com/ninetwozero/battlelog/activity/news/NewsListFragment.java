@@ -39,23 +39,23 @@ import com.ninetwozero.battlelog.http.WebsiteClient;
 public class NewsListFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
 
     // Elements
-    private ListView listView;
-    private NewsListAdapter newsListAdapter;
+    private ListView mListView;
+    private NewsListAdapter mNewsListAdapter;
 
     // Misc
-    private List<NewsData> newsItems;
-    private int start;
+    private List<NewsData> mNewsItems;
+    private int mStart;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
+        mContext = getActivity();
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_dashboard_news,
@@ -79,12 +79,12 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
     public void initFragment(View v) {
 
         // Get the elements
-        listView = (ListView) v.findViewById(android.R.id.list);
+        mListView = (ListView) v.findViewById(android.R.id.list);
 
         // Setup the listAdapter
-        newsListAdapter = new NewsListAdapter(context, newsItems,
-                layoutInflater);
-        listView.setAdapter(newsListAdapter);
+        mNewsListAdapter = new NewsListAdapter(mContext, mNewsItems,
+                mLayoutInflater);
+        mListView.setAdapter(mNewsListAdapter);
 
     }
 
@@ -98,16 +98,16 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
     public void reload() {
 
         // Feed refresh!
-        new AsyncFeedRefresh(context).execute();
+        new AsyncFeedRefresh(mContext).execute();
 
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
 
-        context.startActivity(
+        mContext.startActivity(
 
-                new Intent(context, SinglePostActivity.class).putExtra(
+                new Intent(mContext, SinglePostActivity.class).putExtra(
 
                         "news", (NewsData) v.getTag()
 
@@ -138,10 +138,10 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Get...
-                newsItems = new WebsiteClient().getNewsForPage(start);
+                mNewsItems = new WebsiteClient().getNewsForPage(mStart);
 
                 // ...validate!
-                return (newsItems != null);
+                return (mNewsItems != null);
 
             } catch (WebsiteHandlerException ex) {
 
@@ -164,7 +164,7 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
             }
 
             // Update
-            newsListAdapter.setItemArray(newsItems);
+            mNewsListAdapter.setItemArray(mNewsItems);
 
         }
 
@@ -172,7 +172,7 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
 
     public void setStart(int s) {
 
-        start = s;
+        mStart = s;
 
     }
 

@@ -51,15 +51,15 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class ForumSavedActivity extends ListActivity {
 
     // Attributes
-    private SharedPreferences sharedPreferences;
-    private LayoutInflater layoutInflater;
+    private SharedPreferences mSharedPreferences;
+    private LayoutInflater mLayoutInflater;
 
     // Elements
-    private ListView listView;
+    private ListView mListView;
 
     // Misc
-    private List<SavedForumThreadData> threads;
-    private String locale;
+    private List<SavedForumThreadData> mThreads;
+    private String mLocale;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -68,18 +68,18 @@ public class ForumSavedActivity extends ListActivity {
         super.onCreate(icicle);
 
         // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Restore the cookies
-        PublicUtils.setupFullscreen(this, sharedPreferences);
+        PublicUtils.setupFullscreen(this, mSharedPreferences);
         PublicUtils.restoreCookies(this, icicle);
 
         // Prepare to tango
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Setup the trinity
-        PublicUtils.setupLocale(this, sharedPreferences);
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
 
         // Set the content view
         setContentView(R.layout.forum_saved_view);
@@ -92,11 +92,11 @@ public class ForumSavedActivity extends ListActivity {
     public void initActivity() {
 
         // Get the ListView
-        listView = getListView();
-        registerForContextMenu(listView);
+        mListView = getListView();
+        registerForContextMenu(mListView);
 
         // Get the locale
-        locale = sharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
+        mLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
     }
 
     @Override
@@ -105,10 +105,10 @@ public class ForumSavedActivity extends ListActivity {
         super.onResume();
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
 
         // Reload
         reload();
@@ -184,7 +184,7 @@ public class ForumSavedActivity extends ListActivity {
 
             try {
 
-                threads = CacheHandler.Forum.selectAll(context, SessionKeeper.getProfileData()
+                mThreads = CacheHandler.Forum.selectAll(context, SessionKeeper.getProfileData()
                         .getId());
                 return true;
 
@@ -203,7 +203,7 @@ public class ForumSavedActivity extends ListActivity {
             if (result) {
 
                 // Set the adapter
-                listView.setAdapter(new SavedThreadListAdapter(context, threads, layoutInflater));
+                mListView.setAdapter(new SavedThreadListAdapter(context, mThreads, mLayoutInflater));
 
             }
 
@@ -240,7 +240,7 @@ public class ForumSavedActivity extends ListActivity {
                 // Get the thread
                 ForumClient forumHandler = new ForumClient();
                 forumHandler.setThreadId(t[0].getId());
-                forumThread = forumHandler.getPosts(locale);
+                forumThread = forumHandler.getPosts(mLocale);
                 boolean status = (forumThread.getNumPosts() > t[0].getNumPosts());
 
                 // Update the saved forum thread
@@ -277,7 +277,7 @@ public class ForumSavedActivity extends ListActivity {
             }
 
             // Update the ListView
-            ((SavedThreadListAdapter) listView.getAdapter()).notifyDataSetChanged();
+            ((SavedThreadListAdapter) mListView.getAdapter()).notifyDataSetChanged();
 
         }
 

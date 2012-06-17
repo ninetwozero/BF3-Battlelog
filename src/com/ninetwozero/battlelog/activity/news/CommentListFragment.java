@@ -45,29 +45,29 @@ import com.ninetwozero.battlelog.misc.Constants;
 public class CommentListFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private SharedPreferences sharedPreferences;
-    private long id;
-    private int type;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private SharedPreferences mSharedPreferences;
+    private long mId;
+    private int mType;
 
     // Elements
-    private ListView listView;
-    private Button button;
-    private CommentListAdapter listAdapter;
-    private EditText fieldMessage;
+    private ListView mListView;
+    private Button mButton;
+    private CommentListAdapter mListAdapter;
+    private EditText mFieldMessage;
 
     // Misc
-    private List<CommentData> comments;
-    private int pageId = 1;
+    private List<CommentData> mComments;
+    private int mPageId = 1;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_comment,
@@ -91,28 +91,28 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
     public void initFragment(View v) {
 
         // Get the elements
-        listView = (ListView) v.findViewById(android.R.id.list);
-        button = (Button) v.findViewById(R.id.button_send);
-        fieldMessage = (EditText) v.findViewById(R.id.field_message);
+        mListView = (ListView) v.findViewById(android.R.id.list);
+        mButton = (Button) v.findViewById(R.id.button_send);
+        mFieldMessage = (EditText) v.findViewById(R.id.field_message);
 
         // Set the click listener
-        button.setOnClickListener(
+        mButton.setOnClickListener(
 
                 new OnClickListener() {
 
                     @Override
                     public void onClick(View view) {
 
-                        new AsyncCommentSend(context, id, type,
-                                button).execute(
+                        new AsyncCommentSend(mContext, mId, mType,
+                                mButton).execute(
 
-                                sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
-                                fieldMessage.getText().toString()
+                                mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
+                                mFieldMessage.getText().toString()
 
                                 );
 
                         // Clear the field
-                        fieldMessage.setText("");
+                        mFieldMessage.setText("");
 
                     }
 
@@ -121,21 +121,21 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
                 );
 
         // Setup the listAdapter
-        listAdapter = new CommentListAdapter(context, comments,
-                layoutInflater);
-        listView.setAdapter(listAdapter);
+        mListAdapter = new CommentListAdapter(mContext, mComments,
+                mLayoutInflater);
+        mListView.setAdapter(mListAdapter);
 
     }
 
     public void setId(long i) {
 
-        id = i;
+        mId = i;
 
     }
 
     public void setType(int t) {
 
-        type = t;
+        mType = t;
     }
 
     @Override
@@ -148,14 +148,14 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
     public void reload() {
 
         // Feed refresh!
-        new AsyncRefresh(context).execute();
+        new AsyncRefresh(mContext).execute();
 
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
 
-        Toast.makeText(context, "CLICK!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "CLICK!", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -180,10 +180,10 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
             try {
 
                 // Get...
-                comments = new CommentClient(id, type).get(pageId);
+                mComments = new CommentClient(mId, mType).get(mPageId);
 
                 // ...validate!
-                return (comments != null);
+                return (mComments != null);
 
             } catch (WebsiteHandlerException ex) {
 
@@ -206,7 +206,7 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
             }
 
             // Update
-            listAdapter.setItemArray(comments);
+            mListAdapter.setItemArray(mComments);
 
         }
 
@@ -214,7 +214,7 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
 
     public void setPageId(int s) {
 
-        pageId = s;
+        mPageId = s;
 
     }
 

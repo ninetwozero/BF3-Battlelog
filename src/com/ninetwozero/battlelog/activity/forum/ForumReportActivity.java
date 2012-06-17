@@ -38,14 +38,14 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class ForumReportActivity extends Activity {
 
     // Attributes
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
     // Elements
-    private EditText fieldReport;
-    private Button buttonReport;
+    private EditText mFieldReport;
+    private Button mButtonReport;
 
     // Misc
-    private long postId;
+    private long mPostId;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -54,7 +54,7 @@ public class ForumReportActivity extends Activity {
         super.onCreate(icicle);
 
         // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         PublicUtils.restoreCookies(this, icicle);
 
         // Do we have a postId?
@@ -63,17 +63,17 @@ public class ForumReportActivity extends Activity {
             finish();
             
         }
-        postId = getIntent().getLongExtra("postId", 0);
+        mPostId = getIntent().getLongExtra("postId", 0);
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
         setContentView(R.layout.forum_report_view);
 
         // Get the elements
-        buttonReport = (Button) findViewById(R.id.button_report);
-        fieldReport = (EditText) findViewById(R.id.field_reason);
+        mButtonReport = (Button) findViewById(R.id.button_report);
+        mFieldReport = (EditText) findViewById(R.id.field_reason);
 
     }
 
@@ -97,7 +97,7 @@ public class ForumReportActivity extends Activity {
         if (v.getId() == R.id.button_report) {
 
             // Get & validate
-            String reason = fieldReport.getText().toString();
+            String reason = mFieldReport.getText().toString();
             if ("".equals(reason)) {
 
                 Toast.makeText(this, R.string.info_forum_report_error,
@@ -105,7 +105,7 @@ public class ForumReportActivity extends Activity {
 
             } else {
 
-                new AsyncReportPost(this, postId).execute(reason);
+                new AsyncReportPost(this, mPostId).execute(reason);
 
             }
         }
@@ -155,8 +155,8 @@ public class ForumReportActivity extends Activity {
 
             if (context instanceof ForumReportActivity) {
 
-                buttonReport.setText(R.string.info_report_active);
-                buttonReport.setEnabled(false);
+                mButtonReport.setText(R.string.info_report_active);
+                mButtonReport.setEnabled(false);
 
             }
 
@@ -193,8 +193,8 @@ public class ForumReportActivity extends Activity {
 
                     Toast.makeText(context, R.string.info_forum_report_false,
                             Toast.LENGTH_SHORT).show();
-                    buttonReport.setText(R.string.label_report);
-                    buttonReport.setEnabled(true);
+                    mButtonReport.setText(R.string.label_report);
+                    mButtonReport.setEnabled(true);
                 }
 
             }
@@ -209,10 +209,10 @@ public class ForumReportActivity extends Activity {
         super.onResume();
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
 
     }
 

@@ -48,8 +48,8 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class SinglePostActivity extends FragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
-    private SharedPreferences sharedPreferences;
-    private LayoutInflater layoutInflater;
+    private SharedPreferences mSharedPreferences;
+    private LayoutInflater mLayoutInflater;
 
     // Fragment related
     private SwipeyTabs tabs;
@@ -72,14 +72,14 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
         super.onCreate(icicle);
 
         // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Restore the cookies
-        PublicUtils.setupFullscreen(this, sharedPreferences);
+        PublicUtils.setupFullscreen(this, mSharedPreferences);
         PublicUtils.restoreCookies(this, icicle);
 
         // Prepare to tango
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         fragmentManager = getSupportFragmentManager();
 
         // Get the intent
@@ -100,8 +100,8 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
         }
 
         // Setup the trinity
-        PublicUtils.setupLocale(this, sharedPreferences);
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
@@ -167,7 +167,7 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
                     },
                     listFragments,
                     viewPager,
-                    layoutInflater
+                    mLayoutInflater
                     );
             viewPager.setAdapter(pagerAdapter);
             tabs.setAdapter(pagerAdapter);
@@ -222,10 +222,10 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
         super.onResume();
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
 
         // We need to initialize
         init();
