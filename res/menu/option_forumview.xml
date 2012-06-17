@@ -12,6 +12,13 @@
 		android:alphabeticShortcut="S"
 	/>
 	<item 
+		android:id="@+id/option_save" 
+		android:icon="@android:drawable/ic_menu_add" 
+		android:title="@string/info_xml_forum_save" 
+		android:alphabeticShortcut="A"
+		android:visible="false"
+	/>
+	<item 
 		android:id="@+id/option_back" 
 		android:icon="@android:drawable/ic_menu_revert" 
 		android:title="@string/info_xml_back" 

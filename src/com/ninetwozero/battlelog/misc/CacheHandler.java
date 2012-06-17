@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.misc;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -24,16 +25,22 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.text.TextUtils;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
-import com.ninetwozero.battlelog.datatypes.PersonaStats;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
-import com.ninetwozero.battlelog.datatypes.ProfileInformation;
+import com.ninetwozero.battlelog.datatype.ForumThreadData;
+import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.PersonaStats;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.PlatoonInformation;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.ProfileInformation;
+import com.ninetwozero.battlelog.datatype.SavedForumThreadData;
 
 /* 
  * Methods of this class should be loaded in AsyncTasks, as they would probably lock up the GUI
  */
 
 public class CacheHandler {
+    
+    private CacheHandler() {}
 
     public static class Persona {
 
@@ -48,7 +55,7 @@ public class CacheHandler {
 
                         DatabaseStructure.PersonaStatistics.TABLE_NAME,
                         DatabaseStructure.PersonaStatistics.getColumns(),
-                        stats.toStringArray()
+                        stats.toArray()
 
                         );
 
@@ -84,7 +91,7 @@ public class CacheHandler {
 
                             DatabaseStructure.PersonaStatistics.TABLE_NAME,
                             DatabaseStructure.PersonaStatistics.getColumns(),
-                            stats.toStringArray()
+                            stats.toArray()
 
                             );
 
@@ -120,7 +127,7 @@ public class CacheHandler {
 
                         DatabaseStructure.PersonaStatistics.TABLE_NAME,
                         DatabaseStructure.PersonaStatistics.getColumns(),
-                        stats.toStringArray(),
+                        stats.toArray(),
                         DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA,
                         stats.getPersonaId()
 
@@ -161,7 +168,7 @@ public class CacheHandler {
                                     DatabaseStructure.PersonaStatistics.TABLE_NAME,
                                     DatabaseStructure.PersonaStatistics
                                             .getColumns(),
-                                    stats.toStringArray(),
+                                    stats.toArray(),
                                     DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA,
                                     stats.getPersonaId()
 
@@ -186,26 +193,27 @@ public class CacheHandler {
         }
 
         public static HashMap<Long, PersonaStats> select(final Context context,
-                final long[] personaId) {
+                final PersonaData[] persona) {
 
             SQLiteManager manager = new SQLiteManager(context);
 
             try {
 
                 // Init
-                String strQuestionMarks = "?";
-                String[] personaIdArray = new String[personaId.length];
+                StringBuilder strQuestionMarks = new StringBuilder("(?");
+                String[] personaIdArray = new String[persona.length];
                 HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
 
                 // Loop to string the array
-                for (int i = 0, max = personaId.length; i < max; i++) {
+                for (int i = 0, max = persona.length; i < max; i++) {
 
                     if (i > 0) {
-                        strQuestionMarks += ",?";
+                        strQuestionMarks.append(", ?");
                     }
-                    personaIdArray[i] = String.valueOf(personaId[i]);
+                    personaIdArray[i] = String.valueOf(persona[i].getId());
 
                 }
+                strQuestionMarks.append(")");
 
                 // Use the SQLiteManager to get a cursor
                 Cursor results = manager
@@ -214,7 +222,7 @@ public class CacheHandler {
                                 DatabaseStructure.PersonaStatistics.TABLE_NAME,
                                 null,
                                 DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA
-                                        + " IN (" + strQuestionMarks + ")",
+                                        + " IN " + strQuestionMarks,
                                 personaIdArray,
                                 null,
                                 null,
@@ -380,7 +388,7 @@ public class CacheHandler {
 
                         DatabaseStructure.UserProfile.TABLE_NAME,
                         DatabaseStructure.UserProfile.getColumns(),
-                        stats.toStringArray()
+                        stats.toArray()
 
                         );
 
@@ -416,7 +424,7 @@ public class CacheHandler {
 
                         DatabaseStructure.UserProfile.TABLE_NAME,
                         DatabaseStructure.UserProfile.getColumns(),
-                        stats.toStringArray(),
+                        stats.toArray(),
                         DatabaseStructure.UserProfile.COLUMN_NAME_NUM_UID,
                         stats.getUserId()
 
@@ -458,7 +466,7 @@ public class CacheHandler {
                 if (results.moveToFirst()) {
 
                     // Any platoons?
-                    ArrayList<PlatoonData> platoons = new ArrayList<PlatoonData>();
+                    List<PlatoonData> platoons = new ArrayList<PlatoonData>();
 
                     // Get the strings
                     String personaIdString = results.getString(results
@@ -481,31 +489,32 @@ public class CacheHandler {
                             platoonIdString, ":");
 
                     // How many do we have? -1 due to last occurence being empty
-                    int numPersonas = personaStringArray.length - 1;
-                    int numPlatoons = platoonStringArray.length - 1;
+                    int numPersonas = personaStringArray.length;
+                    int numPlatoons = platoonStringArray.length;
+                    numPersonas = numPersonas == 0 ? 0 : numPersonas - 1;
+                    numPlatoons = numPlatoons == 0 ? 0 : numPlatoons - 1;
 
                     // Create two new arrays for this
-                    String[] personaNameArray = new String[numPersonas];
-                    long[] personaIdArray = new long[numPersonas];
-                    long[] platformIdArray = new long[numPersonas];
+                    PersonaData[] personaArray = new PersonaData[numPersonas];
                     long[] platoonIdArray = new long[numPlatoons];
 
                     // Loop for the personas
                     for (int i = 0; i < numPersonas; i++) {
 
-                        personaIdArray[i] = Long
-                                .parseLong(personaStringArray[i]);
-                        platformIdArray[i] = Long
-                                .parseLong(platformStringArray[i]);
-                        personaNameArray[i] = personaNameStringArray[i];
+                        personaArray[i] = new PersonaData(
+
+                                Long.parseLong(personaStringArray[i]),
+                                personaNameStringArray[i],
+                                Integer.parseInt(platformStringArray[i]),
+                                null
+                                );
 
                     }
 
                     // loop the platoons
                     for (int i = 0; i < numPlatoons; i++) {
 
-                        platoonIdArray[i] = Long
-                                .parseLong(platoonStringArray[i]);
+                        platoonIdArray[i] = Long.parseLong(platoonStringArray[i]);
 
                     }
 
@@ -529,7 +538,7 @@ public class CacheHandler {
                                     .getColumnIndex("last_login")),
                             results.getLong(results
                                     .getColumnIndex("status_changed")),
-                            personaIdArray, platformIdArray, platoonIdArray,
+                            personaArray,
                             results.getString(results.getColumnIndex("name")),
                             results.getString(results
                                     .getColumnIndex("username")),
@@ -541,19 +550,15 @@ public class CacheHandler {
                                     .getColumnIndex("status_message")),
                             results.getString(results
                                     .getColumnIndex("current_server")),
-                            personaNameArray,
-                            (results.getString(results
-                                    .getColumnIndex("allow_friendrequests"))
-                                    .equalsIgnoreCase("true")),
-                            (results.getString(results
-                                    .getColumnIndex("is_online"))
-                                    .equalsIgnoreCase("true")),
-                            (results.getString(results
-                                    .getColumnIndex("is_playing"))
-                                    .equalsIgnoreCase("true")),
-                            (results.getString(results
-                                    .getColumnIndex("is_friend"))
-                                    .equalsIgnoreCase("true")), null, platoons
+                            results.getString(results.getColumnIndex("allow_friendrequests"))
+                                    .equalsIgnoreCase("true"),
+                            results.getString(results.getColumnIndex("is_online"))
+                                    .equalsIgnoreCase("true"),
+                            results.getString(results.getColumnIndex("is_playing"))
+                                    .equalsIgnoreCase("true"),
+                            results.getString(results.getColumnIndex("is_friend"))
+                                    .equalsIgnoreCase("true"),
+                            platoons
 
                             );
 
@@ -632,7 +637,7 @@ public class CacheHandler {
 
                         DatabaseStructure.PlatoonProfile.TABLE_NAME,
                         DatabaseStructure.PlatoonProfile.getColumns(),
-                        stats.toStringArray()
+                        stats.toArray()
 
                         );
 
@@ -675,7 +680,7 @@ public class CacheHandler {
 
                             DatabaseStructure.PlatoonProfile.TABLE_NAME,
                             DatabaseStructure.PlatoonProfile.getColumns(),
-                            stats.toStringArray()
+                            stats.toArray()
 
                             );
 
@@ -711,7 +716,7 @@ public class CacheHandler {
 
                         DatabaseStructure.PlatoonProfile.TABLE_NAME,
                         DatabaseStructure.PlatoonProfile.getColumns(),
-                        stats.toStringArray(),
+                        stats.toArray(),
                         DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID,
                         stats.getId()
 
@@ -752,7 +757,7 @@ public class CacheHandler {
                                     DatabaseStructure.PlatoonProfile.TABLE_NAME,
                                     DatabaseStructure.PlatoonProfile
                                             .getColumns(),
-                                    stats.toStringArray(),
+                                    stats.toArray(),
                                     DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID,
                                     stats.getId()
 
@@ -858,26 +863,27 @@ public class CacheHandler {
             try {
 
                 // Init
-                String strQuestionMarks = "?";
+                StringBuilder strQuestionMarks = new StringBuilder("(?");
                 String[] PlatoonIdArray = new String[platoonId.length];
-                ArrayList<PlatoonData> stats = new ArrayList<PlatoonData>();
+                List<PlatoonData> stats = new ArrayList<PlatoonData>();
 
                 // Loop to string the array
                 for (int i = 0, max = platoonId.length; i < max; i++) {
 
                     if (i > 0) {
-                        strQuestionMarks += ",?";
+                        strQuestionMarks.append(", ?");
                     }
                     PlatoonIdArray[i] = String.valueOf(platoonId[i]);
 
                 }
+                strQuestionMarks.append(")");
 
                 // Use the SQLiteManager to get a cursor
                 Cursor results = manager.query(
 
                         DatabaseStructure.PlatoonProfile.TABLE_NAME, null,
                         DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID
-                                + " IN (" + strQuestionMarks + ")",
+                                + " IN " + strQuestionMarks,
                         PlatoonIdArray, null, null,
                         DatabaseStructure.PlatoonProfile.DEFAULT_SORT_ORDER
 
@@ -919,7 +925,7 @@ public class CacheHandler {
                 // Platoon Platoon BABY
                 results.close();
                 manager.close();
-                return stats;
+                return (ArrayList<PlatoonData>) stats;
 
             } catch (Exception ex) {
 
@@ -950,6 +956,450 @@ public class CacheHandler {
                         DatabaseStructure.PlatoonProfile.TABLE_NAME,
                         DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID,
                         platoonIdArray
+
+                        );
+
+                manager.close();
+                return (results > 0);
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+                manager.close();
+                return false;
+
+            }
+
+        }
+    }
+
+    public static class Forum {
+
+        public static long insert(Context context, ForumThreadData thread, long uid) {
+
+            // Use the SQLiteManager to get a cursor
+            SQLiteManager manager = new SQLiteManager(context);
+
+            try {
+
+                Object[] originArray = thread.toArray();
+                String[] valueArray = new String[originArray.length + 1];
+                for (int i = 0, max = originArray.length; i < max; i++) {
+
+                    valueArray[i] = String.valueOf(originArray[i]);
+                    if (i == (max - 1)) {
+
+                        valueArray[i + 1] = String.valueOf(uid);
+                        break;
+                    }
+
+                }
+
+                // Get them!!
+                long results = manager.insert(
+
+                        DatabaseStructure.ForumThreads.TABLE_NAME,
+                        DatabaseStructure.ForumThreads.getColumns(),
+                        valueArray
+
+                        );
+
+                manager.close();
+                return results;
+
+            } catch (SQLiteConstraintException ex) {
+                // Duplicate input, no worries!
+
+                manager.close();
+                return 0;
+
+            } catch (Exception ex) {
+
+                manager.close();
+                ex.printStackTrace();
+                return -1;
+
+            }
+
+        }
+
+        public static long insert(Context context,
+                HashMap<Long, ForumThreadData> threadArray) {
+
+            // Use the SQLiteManager to get a cursor
+            SQLiteManager manager = new SQLiteManager(context);
+            long results = 0;
+
+            try {
+
+                // Loop loop
+                for (long key : threadArray.keySet()) {
+
+                    // Get the object
+                    ForumThreadData stats = threadArray.get(key);
+
+                    // Get them!!
+                    results += manager.insert(
+
+                            DatabaseStructure.ForumThreads.TABLE_NAME,
+                            DatabaseStructure.ForumThreads.getColumns(),
+                            stats.toArray()
+
+                            );
+
+                }
+
+                manager.close();
+                return results;
+
+            } catch (SQLiteConstraintException ex) { // Duplicate input, no
+                // worries!
+
+                manager.close();
+                return 0;
+
+            } catch (Exception ex) {
+
+                manager.close();
+                ex.printStackTrace();
+                return -1;
+
+            }
+
+        }
+
+        public static boolean update(Context context, SavedForumThreadData thread) {
+
+            // Use the SQLiteManager to get a cursor
+            SQLiteManager manager = new SQLiteManager(context);
+
+            try {
+                // UPDATE them!!
+                manager.update(
+
+                        DatabaseStructure.ForumThreads.TABLE_NAME,
+                        DatabaseStructure.ForumThreads.getColumns(),
+                        thread.toArray(),
+                        DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
+                        thread.getId()
+
+                        );
+
+                manager.close();
+                return true;
+
+            } catch (Exception ex) {
+
+                manager.close();
+                ex.printStackTrace();
+                return false;
+
+            }
+
+        }
+
+        public static boolean updateAfterRefresh(Context context, SavedForumThreadData thread) {
+
+            // Use the SQLiteManager to get a cursor
+            SQLiteManager manager = new SQLiteManager(context);
+
+            try {
+                // UPDATE them!!
+                manager.update(
+
+                        DatabaseStructure.ForumThreads.TABLE_NAME,
+                        new String[] {
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_AUTHOR_ID,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED,
+
+                        },
+                        new String[] {
+
+                                thread.hasUnread() ? "1" : "0",
+                                thread.getDateLastPost() + "",
+                                thread.getLastPoster().getUsername(),
+                                thread.getLastPoster().getId() + "",
+                                thread.getDateLastChecked() + ""
+                        },
+                        DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
+                        thread.getId()
+
+                        );
+
+                manager.close();
+                return true;
+
+            } catch (Exception ex) {
+
+                manager.close();
+                ex.printStackTrace();
+                return false;
+
+            }
+
+        }
+
+        public static boolean updateAfterView(Context context, SavedForumThreadData thread) {
+
+            // Use the SQLiteManager to get a cursor
+            SQLiteManager manager = new SQLiteManager(context);
+
+            try {
+                // UPDATE them!!
+                manager.update(
+
+                        DatabaseStructure.ForumThreads.TABLE_NAME,
+                        new String[] {
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_READ,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED,
+
+                        },
+                        new String[] {
+
+                                "0",
+                                thread.getDateLastRead() + "",
+                                thread.getDateLastChecked() + ""
+                        },
+                        DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
+                        thread.getId()
+
+                        );
+
+                manager.close();
+                return true;
+
+            } catch (Exception ex) {
+
+                manager.close();
+                ex.printStackTrace();
+                return false;
+
+            }
+
+        }
+
+        public static boolean update(Context context,
+                HashMap<Long, SavedForumThreadData> threadArray) {
+
+            // Use the SQLiteManager to get a cursor
+            SQLiteManager manager = new SQLiteManager(context);
+            int results = 0;
+
+            try {
+
+                // Loop over the keys
+                for (long key : threadArray.keySet()) {
+
+                    // Get the object
+                    SavedForumThreadData thread = threadArray.get(key);
+
+                    // UPDATE them!!
+                    results += manager
+                            .update(
+
+                                    DatabaseStructure.ForumThreads.TABLE_NAME,
+                                    DatabaseStructure.ForumThreads
+                                            .getColumns(),
+                                    thread.toArray(),
+                                    DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
+                                    thread.getId()
+
+                            );
+
+                }
+
+                // Close the manager
+                manager.close();
+
+                // Check the results
+                return (results > 0);
+
+            } catch (Exception ex) {
+
+                manager.close();
+                ex.printStackTrace();
+                return false;
+
+            }
+
+        }
+
+        public static SavedForumThreadData select(final Context context,
+                final long threadId) {
+
+            SQLiteManager manager = new SQLiteManager(context);
+            SavedForumThreadData tempSavedForumThread = null;
+
+            try {
+
+                // Use the SQLiteManager to get a cursor
+                Cursor results = manager.query(
+
+                        DatabaseStructure.ForumThreads.TABLE_NAME, null,
+                        DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID
+                                + " = ?", new String[] {
+                            threadId + ""
+                        },
+                        null, null,
+                        DatabaseStructure.ForumThreads.DEFAULT_SORT_ORDER
+
+                        );
+
+                // Loop over the results
+                if (results.moveToFirst()) {
+
+                    do {
+                        tempSavedForumThread = new SavedForumThreadData(
+
+                                results.getLong(results
+                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID)),
+                                results.getString(results
+                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_TITLE)),
+                                results.getLong(results
+                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_FORUM_ID)),
+                                results.getLong(results
+                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST)),
+                                new ProfileData.Builder(
+                                        results.getLong(results
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID)),
+                                        results.getString(results
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR))
+                                ).build(),
+                                results.getLong(results
+                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED)),
+                                results.getLong(results
+                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_READ)),
+                                results.getInt(results
+                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_PAGE_ID)),
+                                results.getInt(results
+                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS)),
+                                results.getInt(results
+                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD)) == 1,
+                                results.getLong(results
+                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_PROFILE_ID))
+                                );
+
+                    } while (results.moveToNext());
+
+                }
+
+                // SavedForumThread SavedForumThread BABY
+                results.close();
+                manager.close();
+                return tempSavedForumThread;
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+                manager.close();
+                return null;
+
+            }
+
+        }
+
+        public static List<SavedForumThreadData> selectAll(final Context context,
+                final long uid) {
+
+            SQLiteManager manager = new SQLiteManager(context);
+            List<SavedForumThreadData> tempSavedForumThread = new ArrayList<SavedForumThreadData>();
+
+            try {
+
+                // Use the SQLiteManager to get a cursor
+                Cursor results = manager.query(
+
+                        DatabaseStructure.ForumThreads.TABLE_NAME, null,
+                        DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_PROFILE_ID
+                                + " = ?", new String[] {
+                            uid + ""
+                        },
+                        null, null,
+                        DatabaseStructure.ForumThreads.DEFAULT_SORT_ORDER
+
+                        );
+
+                // Loop over the results
+                if (results.moveToFirst()) {
+
+                    do {
+
+                        tempSavedForumThread
+                                .add(new SavedForumThreadData(
+
+                                        results.getLong(results
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID)),
+                                        results.getString(results
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_TITLE)),
+                                        results.getLong(results
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_FORUM_ID)),
+                                        results.getLong(results
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST)),
+                                        new ProfileData.Builder(
+                                                results.getLong(results
+                                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID)),
+                                                results.getString(results
+                                                        .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR))
+                                        ).build(),
+                                        results.getLong(results
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED)),
+                                        results.getLong(results
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_READ)),
+                                        results.getInt(results
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_PAGE_ID)),
+                                        results.getInt(results
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS)),
+                                        results.getInt(results
+                                                .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD)) == 1,
+
+                                        uid
+                                )
+                                );
+
+                    } while (results.moveToNext());
+
+                }
+
+                // Close the shop
+                results.close();
+                manager.close();
+
+                // Return
+                return (ArrayList<SavedForumThreadData>) tempSavedForumThread;
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+                manager.close();
+                return null;
+
+            }
+
+        }
+
+        public static boolean delete(final Context context,
+                final long[] threadId) {
+
+            SQLiteManager manager = new SQLiteManager(context);
+
+            try {
+
+                // Loop to string the array
+                String[] threadIdArray = new String[threadId.length];
+                for (int i = 0, max = threadId.length; i < max; i++) {
+                    threadIdArray[i] = String.valueOf(threadId[i]);
+                }
+
+                // Use the SQLiteManager to get a cursor
+                int results = manager.delete(
+
+                        DatabaseStructure.ForumThreads.TABLE_NAME,
+                        DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
+                        threadIdArray
 
                         );
 

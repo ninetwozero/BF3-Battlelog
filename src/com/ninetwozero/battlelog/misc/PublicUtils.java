@@ -19,26 +19,31 @@ package com.ninetwozero.battlelog.misc;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.view.Window;
+import android.widget.Toast;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
+import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.asynctask.AsyncSessionSetActive;
+import com.ninetwozero.battlelog.asynctask.AsyncSessionValidate;
+import com.ninetwozero.battlelog.datatype.ShareableCookie;
+import com.ninetwozero.battlelog.http.RequestHandler;
 
 public class PublicUtils {
-
-    /**
-     * <p>
-     * Get the Date-string (YYYY-MM-DD
-     * </p>
-     * 
-     * @param date the Date to be formatted in the {X} {unit}
-     * @return String
-     */
 
     public static String getDate(final Long d) {
 
@@ -61,15 +66,6 @@ public class PublicUtils {
         return s + " " + getDate(d);
 
     }
-
-    /**
-     * <p>
-     * Get the "relative" Date-string
-     * </p>
-     * 
-     * @param date the Date to be formatted in the {X} {unit}
-     * @return String
-     */
 
     public static String getRelativeDate(final Context c, final Long d) {
 
@@ -213,10 +209,10 @@ public class PublicUtils {
      * @return link the normalized link
      */
 
-    public final static String normalizeUrl(final String s) {
+    public static final String normalizeUrl(final String s) {
 
         // Check if we have a valid prefix
-        if (s.equals("")) {
+        if ("".equals(s)) {
 
             return "";
 
@@ -257,10 +253,11 @@ public class PublicUtils {
         int n = s.length();
         int m = t.length();
 
-        if (n == 0)
+        if (n == 0) {
             return m;
-        else if (m == 0)
+        } else if (m == 0) {
             return n;
+        }
 
         if (n > m) {
 
@@ -310,13 +307,13 @@ public class PublicUtils {
     public static String timeToLiteral(long s) {
 
         // Let's see what we can do
-        if ((s / 60) < 1)
+        if ((s / 60) < 1) {
             return s + "S";
-        else if ((s / 3600) < 1)
+        } else if ((s / 3600) < 1) {
             return (s / 60) + "M " + (s % 60) + "S";
-        else
+        } else {
             return (s / 3600) + "H " + ((s % 3600) / 60) + "M";
-
+        }
     }
 
     /*
@@ -334,7 +331,7 @@ public class PublicUtils {
         for (RunningServiceInfo service : manager
                 .getRunningServices(Integer.MAX_VALUE)) {
 
-            if ("com.ninetwozero.battlelog.services.BattlelogService"
+            if ("com.ninetwozero.battlelog.service.BattlelogService"
                     .equals(service.service.getClassName())) {
                 return true;
             }
@@ -397,6 +394,126 @@ public class PublicUtils {
 
         // Return it
         return path;
+
+    }
+
+    /*
+     * Author: Karl Lindmark
+     * @param Context The context to be called from
+     * @param Bundle The bundle from onCreate()
+     * @return Nothing
+     */
+
+    public static void restoreCookies(Context context, Bundle icicle) {
+
+        // Did it get passed on?
+        if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
+
+            List<ShareableCookie> shareableCookies = icicle
+                    .getParcelableArrayList(Constants.SUPER_COOKIES);
+
+            if (shareableCookies == null) {
+
+                ((Activity) context).finish();
+
+            } else {
+
+                RequestHandler.setCookies(shareableCookies);
+
+            }
+
+        }
+
+    }
+
+    /*
+     * Author: Karl Lindmark
+     * @param Context The context to be called from
+     * @param SharedPreferences The SharedPreferences for the app
+     * @return Nothing
+     */
+
+    public static void setupLocale(Context context, SharedPreferences sharedPreferences) {
+
+        if (!sharedPreferences.getString(Constants.SP_BL_LANG, "").equals("")) {
+
+            Locale locale = new Locale(sharedPreferences.getString(
+                    Constants.SP_BL_LANG, "en"));
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            context.getResources().updateConfiguration(config,
+                    context.getResources().getDisplayMetrics());
+
+        }
+
+    }
+
+    public static void setupSession(Context context, SharedPreferences sharedPreferences) {
+
+        // Let's just check if it's MainActivity, to prevent loops
+        if (context instanceof MainActivity) {
+
+            return;
+            
+        }
+
+        // Let's set "active" against the website
+        new AsyncSessionSetActive().execute();
+
+        // If we don't have a profile...
+        if (SessionKeeper.getProfileData() == null) {
+
+            // ...but we do indeed have a cookie...
+            String cookieValue = sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "");
+            if ("".equals(cookieValue)) {
+
+                // ...we set the SessionKeeper, but also reload the cookies!
+                // Easy peasy!
+                SessionKeeper
+                        .setProfileData(SessionKeeper
+                                .generateProfileDataFromSharedPreferences(sharedPreferences));
+                RequestHandler.setCookies(
+
+                        new ShareableCookie(
+
+                                sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
+                                cookieValue,
+                                Constants.COOKIE_DOMAIN
+
+                        )
+
+                        );
+
+                SessionKeeper.setPlatoonData(SessionKeeper
+                        .generatePlatoonDataFromSharedPreferences(sharedPreferences));
+
+                // ...but just to be sure, we try to verify our session
+                // "behind the scenes"
+                new AsyncSessionValidate(context, sharedPreferences).execute();
+
+            } else {
+
+                // Aw man, that backfired.
+                Toast.makeText(context, R.string.info_txt_session_lost,
+                        Toast.LENGTH_SHORT).show();
+                ((Activity) context).startActivity(new Intent(context, MainActivity.class));
+                ((Activity) context).finish();
+
+            }
+
+        }
+
+    }
+
+    public static void setupFullscreen(Context context, SharedPreferences sharedPreferences) {
+
+        // Is fullscreen enableD?
+        if (sharedPreferences.getBoolean(Constants.SP_BL_FULLSCREEN, true)) {
+
+            ((Activity) context).requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        }
 
     }
 

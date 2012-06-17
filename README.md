@@ -16,24 +16,25 @@ Contributors
 
 ### Code
  * Lukas "The Widget" Larson <lukaslarson@gmail.com>
+ * Peter Miklosko
 
 ### Graphics
  * Markus 'Markus96-1337' Olszewski
  * Stephen 'Dbagjones' Beaudet
 
 ### Translations
- * Darko "DarkoKukovec" (Croatian)
- * capalex65 <@Lord_Gabriel> (Danish)
- * zAo82 "The Dutch PS3-player" (Dutch)
- * basr (Dutch)
- * Coval "coval" Delanight (French)
- * federico73 (Italian)
- * jimhardcore (German)
  * bagione (Serbian)
+ * basr (Dutch)
+ * capalex65 <@Lord_Gabriel> (Danish)
+ * Coval "coval" Delanight (French)
+ * cyrq (Polish)
+ * Darko "DarkoKukovec" (Croatian)
+ * federico73 (Italian)
+ * fysme (Swedish)
+ * jimhardcore (German)
  * Karl "ninetwozero" Lindmark (Spanish, Swedish)
  * kosmiq (Swedish)
- * fysme (Swedish)
- * cyrq (Polish)
-
+ * zAo82 "The Dutch PS3-player" (Dutch)
+ 
 ### Special thanks
 To all the people that have helped out by testing, providing feedback and/or anything else helpful. Much appreciated. :-)

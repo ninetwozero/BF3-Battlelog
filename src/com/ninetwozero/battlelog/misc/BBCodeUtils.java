@@ -14,12 +14,30 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class BBCodeUtils {
+public final class BBCodeUtils {
 
+    // Constants
+    public static final String TAG_BOLD_IN = "**{text}**";
+    public static final String TAG_BOLD_OUT = "[b]{text}[/b]";
+    public static final String TAG_BB_STRIKE_IN = "--{text}--";
+    public static final String TAG_STRIKE_OUT = "[s]{text}[/s]";
+    public static final String TAG_UNDERLINE_IN = "__{text}__";
+    public static final String TAG_UNDERLINE_OUT = "[u]{text}[/u]";
+    public static final String TAG_ITALIC_IN = "_-{text}-_";
+    public static final String TAG_ITALIC_OUT = "[i]{text}[/i]";
+    public static final String TAG_QUOTE_IN = "@q:{number}:{username}@\n";
+    public static final String TAG_QUOTE_OUT = "[quote {username} said:]{text}[/quote]";
+
+    public static final String PATTERN_QUOTE = "@q:([0-9]+):([^@]+)@";
+    public static final String PATTERN_BOLD = "\\*\\*([^\\*]+)\\*\\*";
+    public static final String PATTERN_UNDERLINE = "__([^\\_]+)__";
+    public static final String PATTERN_STRIKE = "--([^\\-]+)--";
+    public static final String PATTERN_ITALIC = "_-([^\\\"_\\-\\\"]+)-_";
+    
     /*
      * Author: Karl Lindmark
      * @param String The content to be bbcoded
@@ -27,13 +45,14 @@ public class BBCodeUtils {
      */
 
     public static String toBBCode(final String originalContent,
-            final HashMap<Long, String> quotes) {
+            final Map<Long, String> quotes) {
 
         // Let's start off
         String convertedContent = originalContent;
 
         // ArrayList
-        String stringMatchesPre = null, stringMatchesPost = null;
+        String stringMatchesPre;
+        String stringMatchesPost;
 
         // Build compile the patterns
         Pattern patternLink = Pattern
@@ -41,18 +60,18 @@ public class BBCodeUtils {
         // Pattern patternLink = Pattern.compile(
         // "<a href=\"([^\\\"]+)\" rel=\"nofollow\">([^\\<]+)<\\/a> \\[([^\\]]+)\\]"
         // );
-        Pattern patternQuote = Pattern.compile("@q:([0-9]+):([^@]+)@");
-        Pattern patternBold = Pattern.compile("\\*\\*([^\\*]+)\\*\\*");
-        Pattern patternUnderline = Pattern.compile("__([^\\_]+)__");
-        Pattern patternStrike = Pattern.compile("--([^\\-]+)--");
-        Pattern patternItalic = Pattern.compile("_-([^\\\"_\\-\\\"]+)-_");
+        Pattern patternQuote = Pattern.compile(PATTERN_QUOTE);
+        Pattern patternBold = Pattern.compile(PATTERN_BOLD);
+        Pattern patternUnderline = Pattern.compile(PATTERN_UNDERLINE);
+        Pattern patternStrike = Pattern.compile(PATTERN_STRIKE);
+        Pattern patternItalic = Pattern.compile(PATTERN_ITALIC);
 
         // Iterate over the findings
         Matcher matcherQuote = patternQuote.matcher(convertedContent);
         while (matcherQuote.find()) {
 
             stringMatchesPre = matcherQuote.group();
-            stringMatchesPost = Constants.BBCODE_TAG_QUOTE_OUT.replace(
+            stringMatchesPost = TAG_QUOTE_OUT.replace(
 
                     "{username}", matcherQuote.group(2)
 
@@ -81,7 +100,7 @@ public class BBCodeUtils {
         while (matcherItalic.find()) {
 
             stringMatchesPre = matcherItalic.group();
-            stringMatchesPost = Constants.BBCODE_TAG_ITALIC_OUT.replace(
+            stringMatchesPost = TAG_ITALIC_OUT.replace(
                     "{text}", matcherItalic.group(1));
             convertedContent = convertedContent.replace(stringMatchesPre,
                     stringMatchesPost);
@@ -92,7 +111,7 @@ public class BBCodeUtils {
         while (matcherBold.find()) {
 
             stringMatchesPre = matcherBold.group();
-            stringMatchesPost = Constants.BBCODE_TAG_BOLD_OUT.replace("{text}",
+            stringMatchesPost = TAG_BOLD_OUT.replace("{text}",
                     matcherBold.group(1));
             convertedContent = convertedContent.replace(stringMatchesPre,
                     stringMatchesPost);
@@ -103,7 +122,7 @@ public class BBCodeUtils {
         while (matcherStrike.find()) {
 
             stringMatchesPre = matcherStrike.group();
-            stringMatchesPost = Constants.BBCODE_TAG_STRIKE_OUT.replace(
+            stringMatchesPost = TAG_STRIKE_OUT.replace(
                     "{text}", matcherStrike.group(1));
             convertedContent = convertedContent.replace(stringMatchesPre,
                     stringMatchesPost);
@@ -114,7 +133,7 @@ public class BBCodeUtils {
         while (matcherUnderline.find()) {
 
             stringMatchesPre = matcherUnderline.group();
-            stringMatchesPost = Constants.BBCODE_TAG_UNDERLINE_OUT.replace(
+            stringMatchesPost = TAG_UNDERLINE_OUT.replace(
                     "{text}", matcherUnderline.group(1));
             convertedContent = convertedContent.replace(stringMatchesPre,
                     stringMatchesPost);

@@ -227,7 +227,7 @@ public class IntegerListPreference extends DialogPreference {
         if (state == null || !state.getClass().equals(SavedState.class)) {
             // Didn't save state for us in onSaveInstanceState
             super.onRestoreInstanceState(state);
-            return;
+
         }
 
         SavedState myState = (SavedState) state;

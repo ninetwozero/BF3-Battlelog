@@ -24,24 +24,25 @@
 	
 	<TextView 
 	    style="@style/InfoHeading"
-	    android:id="@+id/feed_username"
+	    android:id="@+id/text_title"
 	    android:text="NINETWOZERO"
 		android:padding="5dp"
 	/>
 	<RelativeLayout
-	    android:id="@+id/feed_update"
+	    android:id="@+id/wrap_input"
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:paddingBottom="10dp"
-	    android:layout_below="@id/feed_username"
+	    android:layout_below="@id/text_title"
 	    android:visibility="gone"
 	>  
 		<Button
 		    style="@style/RegularButton"
 		    android:id="@+id/button_send"
-		    android:text="Post"
+		    android:text="@string/label_post"
 		    android:layout_alignParentRight="true"
 		    android:layout_centerVertical="true"
+		    android:onClick=""
 		/>
 		<EditText
 		  	android:id="@+id/field_message"
@@ -52,28 +53,22 @@
 		    android:layout_marginRight="6dp"
 		    android:layout_centerVertical="true"
 		    android:singleLine="true"
-		    android:maxLength="90"
+		    android:maxLength="1000"
 		 />
 	</RelativeLayout>
    	<ListView
-	    android:id="@+id/list_feed"
+	    android:id="@android:id/list"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-		android:layout_below="@id/feed_update"
+		android:layout_below="@id/wrap_input"
 		android:paddingBottom="5dp"
 		android:fastScrollEnabled="true"
 	/>
-	<RelativeLayout
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-	>
-		<TextView
-		  	android:id="@+id/status_feed"
+	<TextView
+	    android:id="@android:id/empty"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 		    android:text="@string/info_xml_no_feed"	
 		    android:layout_centerInParent="true"
-		    android:visibility="gone"
 		/>
-	</RelativeLayout>
 </RelativeLayout>
