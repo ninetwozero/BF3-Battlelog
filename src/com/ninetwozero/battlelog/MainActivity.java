@@ -51,6 +51,7 @@ import com.ninetwozero.battlelog.activity.aboutapp.AboutFAQFragment;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutMainFragment;
 import com.ninetwozero.battlelog.asynctask.AsyncLogin;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.PostData;
 import com.ninetwozero.battlelog.datatype.ShareableCookie;
 import com.ninetwozero.battlelog.http.RequestHandler;
@@ -220,8 +221,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
                                     .generateProfileDataFromSharedPreferences(sharedPreferences)
                     ).putExtra(
                             "myPlatoon",
-                            SessionKeeper
-                                    .generatePlatoonDataFromSharedPreferences(sharedPreferences))
+                            (ArrayList<PlatoonData>)SessionKeeper.generatePlatoonDataFromSharedPreferences(sharedPreferences))
 
             );
             finish();

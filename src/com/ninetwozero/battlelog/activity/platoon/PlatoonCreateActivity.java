@@ -35,11 +35,12 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class PlatoonCreateActivity extends Activity {
 
     // SharedPreferences for shizzles
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
     // Elements
-    private EditText textName, textTag;
-    private CheckedTextView checkboxActive;
+    private EditText mTextName;
+    private EditText mTextTag;
+    private CheckedTextView mCheckboxActive;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -49,10 +50,10 @@ public class PlatoonCreateActivity extends Activity {
         PublicUtils.restoreCookies(this, icicle);
 
         // Set sharedPreferences & LayoutInflater
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
         setContentView(R.layout.platoon_create_view);
@@ -64,10 +65,10 @@ public class PlatoonCreateActivity extends Activity {
 
     public void initActivity() {
 
-        textName = (EditText) findViewById(R.id.text_name);
-        textTag = (EditText) findViewById(R.id.text_tag);
-        checkboxActive = (CheckedTextView) findViewById(R.id.checkbox_active);
-        checkboxActive.setOnClickListener(new OnClickListener() {
+        mTextName = (EditText) findViewById(R.id.text_name);
+        mTextTag = (EditText) findViewById(R.id.text_tag);
+        mCheckboxActive = (CheckedTextView) findViewById(R.id.checkbox_active);
+        mCheckboxActive.setOnClickListener(new OnClickListener() {
             public void onClick(View v)
             {
                 ((CheckedTextView) v).toggle();
@@ -82,10 +83,10 @@ public class PlatoonCreateActivity extends Activity {
         super.onResume();
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
 
     }
 
@@ -94,9 +95,9 @@ public class PlatoonCreateActivity extends Activity {
         if (v.getId() == R.id.button_create) {
 
             // Let's get the values
-            String stringName = textName.getText().toString();
-            String stringTag = textTag.getText().toString();
-            String stringActive = checkboxActive.isChecked() ? "1" : "0";
+            String stringName = mTextName.getText().toString();
+            String stringTag = mTextTag.getText().toString();
+            String stringActive = mCheckboxActive.isChecked() ? "1" : "0";
 
             // Validate
             if ("".equals(stringName)) {
@@ -113,7 +114,7 @@ public class PlatoonCreateActivity extends Activity {
 
             // Actually fire off the AsyncTask to create the platoon
             new AsyncCreate(this).execute(stringName, stringTag, stringActive,
-                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+                    mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
         }
 

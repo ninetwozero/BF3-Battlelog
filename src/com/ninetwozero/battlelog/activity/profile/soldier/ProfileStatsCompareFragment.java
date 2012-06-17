@@ -549,8 +549,8 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
         PersonaStats[] personas = new PersonaStats[] {
                 personaStats.get(selectedPersona[0]), personaStats.get(selectedPersona[1])
         };
-        String[] left = personas[0].toArray();
-        String[] right = personas[1].toArray();
+        Object[] left = personas[0].toArray();
+        Object[] right = personas[1].toArray();
         int numItems = left.length;
 
         // Is it empty?
@@ -563,12 +563,9 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
         // Iterate (from index #5 to skip the names)
         for (int counter = 5, max = left.length; counter < max; counter++) {
 
-            // Log.d(Constants.DEBUG_TAG, "#" + counter + ": " +
-            // Double.valueOf(left[counter]) + " > " + Double.valueOf(
-            // right[counter] ) + " == " + (Double.valueOf(left[counter]) >
-            // Double.valueOf( right[counter] )) );
-            differences[counter] = Double.valueOf(left[counter]) > Double.valueOf(right[counter]) ? 0
-                    : 1;
+            double valueLeft = Double.parseDouble(left[counter].toString());
+            double valueRight = Double.parseDouble(right[counter].toString());
+            differences[counter] = valueLeft > valueRight ? 0 : 1;
 
         }
 

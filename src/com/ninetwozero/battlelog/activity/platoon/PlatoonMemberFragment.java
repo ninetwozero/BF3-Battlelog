@@ -48,27 +48,27 @@ import com.ninetwozero.battlelog.misc.Constants;
 public class PlatoonMemberFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private SharedPreferences sharedPreferences;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private SharedPreferences mSharedPreferences;
 
     // Elements
-    private TextView textTitle;
-    private ListView listView;
-    private PlatoonUserListAdapter platoonUserListAdapter;
+    private TextView mTextTitle;
+    private ListView mListView;
+    private PlatoonUserListAdapter mPlatoonUserListAdapter;
 
     // Misc
-    private PlatoonData platoonData;
-    private PlatoonInformation platoonInformation;
-    private boolean isViewingMembers;
+    private PlatoonData mPlatoonData;
+    private PlatoonInformation mPlatoonInformation;
+    private boolean mViewingMembers;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_platoon_users,
@@ -100,15 +100,15 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
     public void initFragment(View v) {
 
         // Setup the listView
-        listView = (ListView) v.findViewById(android.R.id.list);
-        platoonUserListAdapter = new PlatoonUserListAdapter(null, layoutInflater);
-        listView.setAdapter(platoonUserListAdapter);
+        mListView = (ListView) v.findViewById(android.R.id.list);
+        mPlatoonUserListAdapter = new PlatoonUserListAdapter(null, mLayoutInflater);
+        mListView.setAdapter(mPlatoonUserListAdapter);
 
         // Default
-        isViewingMembers = true;
+        mViewingMembers = true;
 
         // Get the TextView
-        textTitle = (TextView) v.findViewById(R.id.text_title_users);
+        mTextTitle = (TextView) v.findViewById(R.id.text_title_users);
 
     }
 
@@ -126,20 +126,20 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
         }
 
         // Store the PlatoonInformation
-        if (!platoonInformation.equals(data)) {
-            platoonInformation = data;
+        if (!mPlatoonInformation.equals(data)) {
+            mPlatoonInformation = data;
         }
 
         // Get the appropriate data for the listview
-        if (isViewingMembers) {
+        if (mViewingMembers) {
 
-            textTitle.setText(R.string.label_own_soldiermbers);
-            platoonUserListAdapter.setProfileArray(platoonInformation.getMembers());
+            mTextTitle.setText(R.string.label_own_soldiermbers);
+            mPlatoonUserListAdapter.setProfileArray(mPlatoonInformation.getMembers());
 
         } else {
 
-            textTitle.setText(R.string.label_fans);
-            platoonUserListAdapter.setProfileArray(platoonInformation.getFans());
+            mTextTitle.setText(R.string.label_fans);
+            mPlatoonUserListAdapter.setProfileArray(mPlatoonInformation.getFans());
 
         }
 
@@ -151,13 +151,13 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
     public void setPlatoonData(PlatoonData p) {
 
-        platoonData = p;
+        mPlatoonData = p;
     }
 
     public Menu prepareOptionsMenu(Menu menu) {
 
         // Is it null?
-        if (isViewingMembers) {
+        if (mViewingMembers) {
 
             ((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
             ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
@@ -185,8 +185,8 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
         if (item.getItemId() == R.id.option_members
                 || item.getItemId() == R.id.option_fans) {
 
-            isViewingMembers = !isViewingMembers;
-            showMembers(platoonInformation);
+            mViewingMembers = !mViewingMembers;
+            showMembers(mPlatoonInformation);
 
         } else if (item.getItemId() == R.id.option_invite) {
 
@@ -194,15 +194,15 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
             new Intent(
 
-                    context, PlatoonInviteActivity.class
+                    mContext, PlatoonInviteActivity.class
 
             ).putExtra(
 
-                    "platoon", platoonData
+                    "platoon", mPlatoonData
 
                     ).putExtra(
 
-                            "friends", platoonInformation.getInvitableFriends()
+                            "friends", mPlatoonInformation.getInvitableFriends()
 
                     )
 
@@ -241,7 +241,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
         if (data.getMembershipLevel() >= 4) { // ^Other actual member
 
             // Are we on an admin level and able to modify?
-            if (platoonInformation.isAdmin() && isViewingMembers) {
+            if (mPlatoonInformation.isAdmin() && mViewingMembers) {
 
                 // 128 == Admin, which renders our action to demote
                 if (data.getMembershipLevel() == 128) {
@@ -284,7 +284,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
                     startActivity(
 
-                    new Intent(context, ProfileActivity.class).putExtra(
+                    new Intent(mContext, ProfileActivity.class).putExtra(
 
                             "profile", data
 
@@ -296,46 +296,46 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
                     if (data.isAdmin()) {
 
-                        Toast.makeText(context,
+                        Toast.makeText(mContext,
                                 R.string.info_platoon_member_demoting,
                                 Toast.LENGTH_SHORT).show();
                     } else {
 
-                        Toast.makeText(context,
+                        Toast.makeText(mContext,
                                 R.string.info_platoon_member_promoting,
                                 Toast.LENGTH_SHORT).show();
 
                     }
-                    new AsyncPlatoonMemberManagement(context, data.getId(), platoonData)
+                    new AsyncPlatoonMemberManagement(mContext, data.getId(), mPlatoonData)
                             .execute(!data.isAdmin());
 
                 } else if (item.getItemId() == 2) {
 
-                    Toast.makeText(context, R.string.info_platoon_member_kicking,
+                    Toast.makeText(mContext, R.string.info_platoon_member_kicking,
                             Toast.LENGTH_SHORT).show();
-                    new AsyncPlatoonMemberManagement(context, data.getId(), platoonData).execute();
+                    new AsyncPlatoonMemberManagement(mContext, data.getId(), mPlatoonData).execute();
 
                 } else if (item.getItemId() == 3) {
 
-                    Toast.makeText(context, R.string.info_platoon_member_new_ok,
+                    Toast.makeText(mContext, R.string.info_platoon_member_new_ok,
                             Toast.LENGTH_SHORT).show();
                     new AsyncPlatoonRespond(
 
-                            context, platoonData, data.getId(), true
+                            mContext, mPlatoonData, data.getId(), true
 
-                    ).execute(sharedPreferences.getString(
+                    ).execute(mSharedPreferences.getString(
                             Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
                 } else if (item.getItemId() == 4) {
 
-                    Toast.makeText(context,
+                    Toast.makeText(mContext,
                             R.string.info_platoon_member_new_false,
                             Toast.LENGTH_SHORT).show();
                     new AsyncPlatoonRespond(
 
-                            context, platoonData, data.getId(), false
+                            mContext, mPlatoonData, data.getId(), false
 
-                    ).execute(sharedPreferences.getString(
+                    ).execute(mSharedPreferences.getString(
                             Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
                 }

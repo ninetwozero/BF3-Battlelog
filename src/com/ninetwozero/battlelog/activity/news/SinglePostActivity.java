@@ -52,18 +52,18 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
     private LayoutInflater mLayoutInflater;
 
     // Fragment related
-    private SwipeyTabs tabs;
-    private SwipeyTabsPagerAdapter pagerAdapter;
-    private List<Fragment> listFragments;
-    private FragmentManager fragmentManager;
-    private PostOverviewFragment fragmentOverview;
-    private CommentListFragment fragmentComment;
-    private ViewPager viewPager;
+    private SwipeyTabs mTabs;
+    private SwipeyTabsPagerAdapter mPagerAdapter;
+    private List<Fragment> mListFragments;
+    private FragmentManager mFragmentManager;
+    private PostOverviewFragment mFragmentOverview;
+    private CommentListFragment mFragmentComment;
+    private ViewPager mViewPager;
 
     // Misc
-    private FeedItem feedData;
-    private NewsData newsData;
-    private boolean isNews = false;
+    private FeedItem mFeedData;
+    private NewsData mNewsData;
+    private boolean mNews = false;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -80,18 +80,18 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
 
         // Prepare to tango
         mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        fragmentManager = getSupportFragmentManager();
+        mFragmentManager = getSupportFragmentManager();
 
         // Get the intent
         if (getIntent().hasExtra("feed")) {
 
-            feedData = getIntent().getParcelableExtra("feed");
-            isNews = false;
+            mFeedData = getIntent().getParcelableExtra("feed");
+            mNews = false;
 
         } else if (getIntent().hasExtra("news")) {
 
-            newsData = getIntent().getParcelableExtra("news");
-            isNews = true;
+            mNewsData = getIntent().getParcelableExtra("news");
+            mNews = true;
 
         } else {
 
@@ -121,61 +121,61 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
     public void reload() {
 
         // ASYNC!!
-        fragmentOverview.reload();
-        fragmentComment.reload();
+        mFragmentOverview.reload();
+        mFragmentComment.reload();
 
     }
 
     public void setup() {
 
         // Do we need to setup the fragments?
-        if (listFragments == null) {
+        if (mListFragments == null) {
 
             // Add them to the list
-            listFragments = new ArrayList<Fragment>();
-            listFragments.add(fragmentOverview = (PostOverviewFragment) Fragment.instantiate(
+            mListFragments = new ArrayList<Fragment>();
+            mListFragments.add(mFragmentOverview = (PostOverviewFragment) Fragment.instantiate(
                     this, PostOverviewFragment.class.getName()));
-            listFragments.add(fragmentComment = (CommentListFragment) Fragment.instantiate(
+            mListFragments.add(mFragmentComment = (CommentListFragment) Fragment.instantiate(
                     this,
                     CommentListFragment.class.getName()));
 
             // Add the profileData
-            if (isNews) {
+            if (mNews) {
 
-                fragmentOverview.setData(newsData);
-                fragmentComment.setId(newsData.getId());
-                fragmentComment.setType(CommentData.TYPE_NEWS);
+                mFragmentOverview.setData(mNewsData);
+                mFragmentComment.setId(mNewsData.getId());
+                mFragmentComment.setType(CommentData.TYPE_NEWS);
 
             } else {
 
-                fragmentOverview.setData(feedData);
-                fragmentComment.setId(feedData.getId());
-                fragmentComment.setType(CommentData.TYPE_FEED);
+                mFragmentOverview.setData(mFeedData);
+                mFragmentComment.setId(mFeedData.getId());
+                mFragmentComment.setType(CommentData.TYPE_FEED);
 
             }
 
             // Get the ViewPager
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
-            tabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+            mViewPager = (ViewPager) findViewById(R.id.viewpager);
+            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             // Fill the PagerAdapter & set it to the viewpager
-            pagerAdapter = new SwipeyTabsPagerAdapter(
+            mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-                    fragmentManager,
+                    mFragmentManager,
                     new String[] {
                             "OVERVIEW", "COMMENTS"
                     },
-                    listFragments,
-                    viewPager,
+                    mListFragments,
+                    mViewPager,
                     mLayoutInflater
                     );
-            viewPager.setAdapter(pagerAdapter);
-            tabs.setAdapter(pagerAdapter);
+            mViewPager.setAdapter(mPagerAdapter);
+            mTabs.setAdapter(mPagerAdapter);
 
             // Make sure the tabs follow
-            viewPager.setOnPageChangeListener(tabs);
-            viewPager.setCurrentItem(0);
-            viewPager.setOffscreenPageLimit(1);
+            mViewPager.setOnPageChangeListener(mTabs);
+            mViewPager.setCurrentItem(0);
+            mViewPager.setOffscreenPageLimit(1);
 
         }
 
@@ -250,9 +250,9 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK && viewPager.getCurrentItem() > 0) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && mViewPager.getCurrentItem() > 0) {
 
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
             return true;
 
         }

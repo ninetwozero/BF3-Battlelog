@@ -52,29 +52,29 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
+    private Context mContext;
     private Map<Integer, Intent> MENU_INTENTS;
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
     // Elements
-    private RelativeLayout wrapPlatoon;
-    private TextView textPlatoon;
-    private ImageView imagePlatoon;
+    private RelativeLayout mWrapPlatoon;
+    private TextView mTextPlatoon;
+    private ImageView mImagePlatoon;
 
     // Let's store the position & platoon
-    private List<PlatoonData> platoonData;
-    private long[] platoonId;
-    private String[] platoonName;
-    private long selectedPlatoon;
-    private int selectedPosition;
+    private List<PlatoonData> mPlatoonData;
+    private long[] mPlatoonId;
+    private String[] mPlatoonName;
+    private long mSelectedPlatoon;
+    private int mSelectedPosition;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_dashboard_platoon,
@@ -89,12 +89,12 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     public void initFragment(View view) {
 
         // Let's set the vars
-        selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PLATOON_CURRENT_POS, 0);
-        selectedPlatoon = sharedPreferences.getLong(Constants.SP_BL_PLATOON_CURRENT_ID, 0);
+        mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PLATOON_CURRENT_POS, 0);
+        mSelectedPlatoon = mSharedPreferences.getLong(Constants.SP_BL_PLATOON_CURRENT_ID, 0);
 
         // Set up the Platoon box
-        wrapPlatoon = (RelativeLayout) view.findViewById(R.id.wrap_platoon);
-        wrapPlatoon.setOnClickListener(
+        mWrapPlatoon = (RelativeLayout) view.findViewById(R.id.wrap_platoon);
+        mWrapPlatoon.setOnClickListener(
 
                 new OnClickListener() {
 
@@ -108,28 +108,28 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
                 }
 
                 );
-        imagePlatoon = (ImageView) wrapPlatoon.findViewById(R.id.image_platoon);
-        textPlatoon = (TextView) wrapPlatoon.findViewById(R.id.text_platoon);
-        textPlatoon.setSelected(true);
+        mImagePlatoon = (ImageView) mWrapPlatoon.findViewById(R.id.image_platoon);
+        mTextPlatoon = (TextView) mWrapPlatoon.findViewById(R.id.text_platoon);
+        mTextPlatoon.setSelected(true);
 
         // Setup the "platoon box"
         setupPlatoonBox();
 
         // Set up the intents
         MENU_INTENTS = new HashMap<Integer, Intent>();
-        MENU_INTENTS.put(R.id.button_new, new Intent(context, PlatoonCreateActivity.class));
-        MENU_INTENTS.put(R.id.button_invites, new Intent(context, ProfileSettingsActivity.class));
+        MENU_INTENTS.put(R.id.button_new, new Intent(mContext, PlatoonCreateActivity.class));
+        MENU_INTENTS.put(R.id.button_invites, new Intent(mContext, ProfileSettingsActivity.class));
 
-        if (platoonData != null && !platoonData.isEmpty()) {
+        if (mPlatoonData != null && !mPlatoonData.isEmpty()) {
 
             MENU_INTENTS.put(
                     R.id.button_self,
-                    new Intent(context, PlatoonActivity.class).putExtra("platoon",
-                            platoonData.get(selectedPosition)));
+                    new Intent(mContext, PlatoonActivity.class).putExtra("platoon",
+                            mPlatoonData.get(mSelectedPosition)));
             MENU_INTENTS.put(
                     R.id.button_settings,
-                    new Intent(context, ProfileSettingsActivity.class).putExtra("platoon",
-                            platoonData.get(selectedPosition)));
+                    new Intent(mContext, ProfileSettingsActivity.class).putExtra("platoon",
+                            mPlatoonData.get(mSelectedPosition)));
         }
 
         // Add the OnClickListeners
@@ -174,23 +174,23 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     public Dialog generateDialogPlatoonList() {
 
         // Attributes
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
         // Set the title and the view
         builder.setTitle(R.string.info_xml_platoon_select);
 
         // Do we have items to show?
-        if (platoonId == null) {
+        if (mPlatoonId == null) {
 
             // Init
-            platoonId = new long[platoonData.size()];
-            platoonName = new String[platoonData.size()];
+            mPlatoonId = new long[mPlatoonData.size()];
+            mPlatoonName = new String[mPlatoonData.size()];
 
             // Iterate
-            for (int count = 0, max = platoonData.size(); count < max; count++) {
+            for (int count = 0, max = mPlatoonData.size(); count < max; count++) {
 
-                platoonId[count] = platoonData.get(count).getId();
-                platoonName[count] = platoonData.get(count).getName();
+                mPlatoonId[count] = mPlatoonData.get(count).getId();
+                mPlatoonName[count] = mPlatoonData.get(count).getName();
 
             }
 
@@ -199,37 +199,37 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         // Set it up
         builder.setSingleChoiceItems(
 
-                platoonName, -1, new DialogInterface.OnClickListener() {
+                mPlatoonName, -1, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int item) {
 
-                        if (platoonId[item] != selectedPlatoon) {
+                        if (mPlatoonId[item] != mSelectedPlatoon) {
 
                             // Update it
-                            selectedPlatoon = platoonId[item];
+                            mSelectedPlatoon = mPlatoonId[item];
 
                             // Store selectedPlatoonPos
-                            selectedPosition = item;
+                            mSelectedPosition = item;
 
                             // Load the new!
                             setupPlatoonBox();
 
                             // Save it
-                            SharedPreferences.Editor spEdit = sharedPreferences.edit();
-                            spEdit.putLong(Constants.SP_BL_PLATOON_CURRENT_ID, selectedPlatoon);
-                            spEdit.putInt(Constants.SP_BL_PLATOON_CURRENT_POS, selectedPosition);
+                            SharedPreferences.Editor spEdit = mSharedPreferences.edit();
+                            spEdit.putLong(Constants.SP_BL_PLATOON_CURRENT_ID, mSelectedPlatoon);
+                            spEdit.putInt(Constants.SP_BL_PLATOON_CURRENT_POS, mSelectedPosition);
                             spEdit.commit();
 
                             // Reset these
                             MENU_INTENTS.put(
                                     R.id.button_self,
-                                    new Intent(context, PlatoonActivity.class).putExtra("platoon",
-                                            platoonData.get(selectedPosition)));
+                                    new Intent(mContext, PlatoonActivity.class).putExtra("platoon",
+                                            mPlatoonData.get(mSelectedPosition)));
                             MENU_INTENTS.put(
                                     R.id.button_settings,
-                                    new Intent(context, ProfileSettingsActivity.class).putExtra(
+                                    new Intent(mContext, ProfileSettingsActivity.class).putExtra(
                                             "platoon",
-                                            platoonData.get(selectedPosition)));
+                                            mPlatoonData.get(mSelectedPosition)));
 
                         }
 
@@ -249,32 +249,32 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     public void setupPlatoonBox() {
 
         // Let's see...
-        if (platoonData != null && !platoonData.isEmpty() && textPlatoon != null) {
+        if (mPlatoonData != null && !mPlatoonData.isEmpty() && mTextPlatoon != null) {
 
             // Let's validate our digits
-            if ((platoonData.size() - 1) < selectedPosition) {
+            if ((mPlatoonData.size() - 1) < mSelectedPosition) {
 
-                selectedPosition = platoonData.size() - 1;
-                selectedPlatoon = platoonData.get(selectedPosition).getId();
+                mSelectedPosition = mPlatoonData.size() - 1;
+                mSelectedPlatoon = mPlatoonData.get(mSelectedPosition).getId();
 
                 // Reset these
                 MENU_INTENTS.put(
                         R.id.button_self,
-                        new Intent(context, PlatoonActivity.class).putExtra("platoon",
-                                platoonData.get(selectedPosition)));
+                        new Intent(mContext, PlatoonActivity.class).putExtra("platoon",
+                                mPlatoonData.get(mSelectedPosition)));
                 MENU_INTENTS.put(
                         R.id.button_settings,
-                        new Intent(context, ProfileSettingsActivity.class).putExtra(
+                        new Intent(mContext, ProfileSettingsActivity.class).putExtra(
                                 "platoon",
-                                platoonData.get(selectedPosition)));
+                                mPlatoonData.get(mSelectedPosition)));
 
             }
 
             // Set the text
-            textPlatoon.setText(platoonData.get(selectedPosition).getName() + "["
-                    + platoonData.get(selectedPosition).getTag() + "]");
-            imagePlatoon.setImageBitmap(BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
-                    + platoonData.get(selectedPosition).getImage()));
+            mTextPlatoon.setText(mPlatoonData.get(mSelectedPosition).getName() + "["
+                    + mPlatoonData.get(mSelectedPosition).getTag() + "]");
+            mImagePlatoon.setImageBitmap(BitmapFactory.decodeFile(PublicUtils.getCachePath(mContext)
+                    + mPlatoonData.get(mSelectedPosition).getImage()));
 
         }
 
@@ -282,7 +282,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
     public void setPlatoonData(List<PlatoonData> p) {
 
-        platoonData = p;
+        mPlatoonData = p;
         setupPlatoonBox();
 
     }
@@ -291,8 +291,8 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         @Override
         protected Boolean doInBackground(ProfileData... arg0) {
             try {
-                platoonData = new ProfileClient(arg0[0]).getPlatoons(context);
-                return (platoonData != null);
+                mPlatoonData = new ProfileClient(arg0[0]).getPlatoons(mContext);
+                return (mPlatoonData != null);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return false;

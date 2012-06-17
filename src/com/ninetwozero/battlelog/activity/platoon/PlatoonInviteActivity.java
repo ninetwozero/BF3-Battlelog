@@ -37,14 +37,14 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class PlatoonInviteActivity extends ListActivity {
 
     // Attributes
-    private SharedPreferences sharedPreferences;
-    private LayoutInflater layoutInflater;
-    private PlatoonData platoonData;
-    private List<ProfileData> friends;
-    private Object[] selectedIds;
+    private SharedPreferences mSharedPreferences;
+    private LayoutInflater mLayoutInflater;
+    private PlatoonData mPlatoonData;
+    private List<ProfileData> mFriends;
+    private Object[] mSelectedIds;
 
     // Elements
-    private ListView listView;
+    private ListView mListView;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -53,31 +53,31 @@ public class PlatoonInviteActivity extends ListActivity {
         super.onCreate(icicle);
 
         // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         PublicUtils.restoreCookies(this, icicle);
 
         // Prepare to tango
-        this.layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Get the intent
         if (getIntent().hasExtra("platoon")) {
-            platoonData = getIntent().getParcelableExtra("platoon");
+            mPlatoonData = getIntent().getParcelableExtra("platoon");
         }
         if (getIntent().hasExtra("friends")) {
-            friends = getIntent().getParcelableArrayListExtra("friends");
+            mFriends = getIntent().getParcelableArrayListExtra("friends");
         }
 
         // Is the profileData null?!
-        if (platoonData == null || platoonData.getId() == 0) {
+        if (mPlatoonData == null || mPlatoonData.getId() == 0) {
             finish();
 
         }
 
         // Fix it
-        selectedIds = new Object[friends.size()];
+        mSelectedIds = new Object[mFriends.size()];
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
         setContentView(R.layout.platoon_invite_view);
@@ -89,10 +89,10 @@ public class PlatoonInviteActivity extends ListActivity {
 
     public void initLayout() {
 
-        if (listView == null) {
+        if (mListView == null) {
 
-            listView = getListView();
-            listView.setAdapter(new PlatoonInviteListAdapter(friends, layoutInflater));
+            mListView = getListView();
+            mListView.setAdapter(new PlatoonInviteListAdapter(mFriends, mLayoutInflater));
 
         }
 
@@ -100,14 +100,14 @@ public class PlatoonInviteActivity extends ListActivity {
 
     public void onListItemClick(ListView lv, View v, int pos, long id) {
 
-        if (selectedIds[pos].equals(0)) {
+        if (mSelectedIds[pos].equals(0)) {
 
-            selectedIds[pos] = id;
+            mSelectedIds[pos] = id;
             ((CheckBox) v.findViewById(R.id.checkbox)).setChecked(true);
 
         } else {
 
-            selectedIds[pos] = 0;
+            mSelectedIds[pos] = 0;
             ((CheckBox) v.findViewById(R.id.checkbox)).setChecked(false);
 
         }
@@ -118,7 +118,7 @@ public class PlatoonInviteActivity extends ListActivity {
 
         if (v.getId() == R.id.button_ok) {
 
-            new AsyncPlatoonMemberInvite(this, selectedIds, platoonData).execute(sharedPreferences
+            new AsyncPlatoonMemberInvite(this, mSelectedIds, mPlatoonData).execute(mSharedPreferences
                     .getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
         } else if (v.getId() == R.id.button_cancel) {
@@ -135,10 +135,10 @@ public class PlatoonInviteActivity extends ListActivity {
         super.onResume();
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
     }
 
 }

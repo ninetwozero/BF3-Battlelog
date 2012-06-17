@@ -46,13 +46,13 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class PlatoonActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Fragment related
-    private PlatoonOverviewFragment fragmentOverview;
-    private PlatoonStatsFragment fragmentStats;
-    private PlatoonMemberFragment fragmentMember;
-    private FeedFragment fragmentFeed;
+    private PlatoonOverviewFragment mFragmentOverview;
+    private PlatoonStatsFragment mFragmentStats;
+    private PlatoonMemberFragment mFragmentMember;
+    private FeedFragment mFragmentFeed;
 
     // Misc
-    private PlatoonData platoonData;
+    private PlatoonData mPlatoonData;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -66,7 +66,7 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
         }
 
         // Get the platoon data
-        platoonData = (PlatoonData) getIntent().getParcelableExtra("platoon");
+        mPlatoonData = (PlatoonData) getIntent().getParcelableExtra("platoon");
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
@@ -86,7 +86,7 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
     public void reload() {
 
         // ASYNC!!
-        fragmentOverview.reload();
+        mFragmentOverview.reload();
 
     }
 
@@ -106,15 +106,15 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
         // Our own profile, no need to show the "extra" buttons
         if (viewPager.getCurrentItem() == 0) {
 
-            return super.onPrepareOptionsMenu(fragmentOverview.prepareOptionsMenu(menu));
+            return super.onPrepareOptionsMenu(mFragmentOverview.prepareOptionsMenu(menu));
 
         } else if (viewPager.getCurrentItem() == 1) {
 
-            return super.onPrepareOptionsMenu(fragmentStats.prepareOptionsMenu(menu));
+            return super.onPrepareOptionsMenu(mFragmentStats.prepareOptionsMenu(menu));
 
         } else if (viewPager.getCurrentItem() == 2) {
 
-            return super.onPrepareOptionsMenu(fragmentMember.prepareOptionsMenu(menu));
+            return super.onPrepareOptionsMenu(mFragmentMember.prepareOptionsMenu(menu));
 
         } else {
 
@@ -145,15 +145,15 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
 
             if (viewPager.getCurrentItem() == 0) {
 
-                return fragmentOverview.handleSelectedOption(item);
+                return mFragmentOverview.handleSelectedOption(item);
 
             } else if (viewPager.getCurrentItem() == 1) {
 
-                return fragmentStats.handleSelectedOption(item);
+                return mFragmentStats.handleSelectedOption(item);
 
             } else if (viewPager.getCurrentItem() == 2) {
 
-                return fragmentMember.handleSelectedOption(item);
+                return mFragmentMember.handleSelectedOption(item);
 
             }
 
@@ -207,11 +207,11 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
                 break;
 
             case 2:
-                fragmentMember.createContextMenu(menu, view, menuInfo);
+                mFragmentMember.createContextMenu(menu, view, menuInfo);
                 break;
 
             case 3:
-                fragmentFeed.createContextMenu(menu, view, menuInfo);
+                mFragmentFeed.createContextMenu(menu, view, menuInfo);
                 break;
 
             default:
@@ -241,10 +241,10 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
         switch (viewPager.getCurrentItem()) {
 
             case 2:
-                return fragmentMember.handleSelectedContextItem(info, item);
+                return mFragmentMember.handleSelectedContextItem(info, item);
 
             case 3:
-                return fragmentFeed.handleSelectedContextItem(info, item);
+                return mFragmentFeed.handleSelectedContextItem(info, item);
 
             default:
                 break;
@@ -261,24 +261,24 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
 
             // Add them to the list
             listFragments = new ArrayList<Fragment>();
-            listFragments.add(fragmentOverview = (PlatoonOverviewFragment) Fragment.instantiate(
+            listFragments.add(mFragmentOverview = (PlatoonOverviewFragment) Fragment.instantiate(
                     this, PlatoonOverviewFragment.class.getName()));
-            listFragments.add(fragmentStats = (PlatoonStatsFragment) Fragment.instantiate(this,
+            listFragments.add(mFragmentStats = (PlatoonStatsFragment) Fragment.instantiate(this,
                     PlatoonStatsFragment.class.getName()));
-            listFragments.add(fragmentMember = (PlatoonMemberFragment) Fragment.instantiate(this,
+            listFragments.add(mFragmentMember = (PlatoonMemberFragment) Fragment.instantiate(this,
                     PlatoonMemberFragment.class.getName()));
-            listFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this,
+            listFragments.add(mFragmentFeed = (FeedFragment) Fragment.instantiate(this,
                     FeedFragment.class.getName()));
 
             // Add the profileData
-            fragmentOverview.setPlatoonData(platoonData);
-            fragmentMember.setPlatoonData(platoonData);
+            mFragmentOverview.setPlatoonData(mPlatoonData);
+            mFragmentMember.setPlatoonData(mPlatoonData);
 
             // We need to set the type
-            fragmentFeed.setTitle(platoonData.getName());
-            fragmentFeed.setType(FeedItem.TYPE_PLATOON);
-            fragmentFeed.setId(platoonData.getId());
-            fragmentFeed.setCanWrite(false);
+            mFragmentFeed.setTitle(mPlatoonData.getName());
+            mFragmentFeed.setType(FeedItem.TYPE_PLATOON);
+            mFragmentFeed.setId(mPlatoonData.getId());
+            mFragmentFeed.setCanWrite(false);
 
             // Get the ViewPager
             viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -309,20 +309,20 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
 
     public void openStats(PlatoonInformation p) {
 
-        fragmentStats.setPlatoonInformation(p);
-        fragmentStats.reload();
+        mFragmentStats.setPlatoonInformation(p);
+        mFragmentStats.reload();
 
     }
 
     public void openMembers(PlatoonInformation p) {
 
-        fragmentMember.showMembers(p);
+        mFragmentMember.showMembers(p);
 
     }
 
     public void setFeedPermission(boolean c) {
 
-        fragmentFeed.setCanWrite(c);
+        mFragmentFeed.setCanWrite(c);
 
     }
 
@@ -332,10 +332,8 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
         // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK && viewPager.getCurrentItem() > 0) {
 
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
-                return true;
-
-            }
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+            return true;
 
         }
         return super.onKeyDown(keyCode, event);
