@@ -93,6 +93,27 @@ public class PersonaData implements Parcelable {
 
     };
 
+    public String resolvePlatformId() {
+
+        switch (platformId) {
+
+            case 0:
+            case 1:
+                return "[PC]";
+
+            case 2:
+                return "[360]";
+
+            case 4:
+                return "[PS3]";
+
+            default:
+                return "[N/A]";
+
+        }
+
+    }
+
     // toString
     @Override
     public String toString() {

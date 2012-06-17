@@ -308,6 +308,20 @@ public class PersonaStats implements Parcelable {
         return scoreTotal;
     }
 
+    public String resolvePlatformId() {
+        switch ((int)platformId) {
+            case 0:
+            case 1:
+                return "[PC]";
+            case 2:
+                return "[360]";
+            case 4:
+                return "[PS3]";
+            default:
+                return "[N/A]";
+        }
+    }
+
     @Override
     public int describeContents() {
         return 0;
