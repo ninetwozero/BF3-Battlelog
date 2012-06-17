@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
@@ -34,13 +36,14 @@ import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
 import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
 import com.ninetwozero.battlelog.http.ProfileClient;
+import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 import java.util.HashMap;
 
-public class ProfileStatsFragment extends Fragment implements DefaultFragment, OnCloseListDialogListener {
+public class ProfileStatsFragment extends Fragment implements DefaultFragment, OnCloseListDialogListener, LoaderCallbacks<CompletedTask> {
 
     // Attributes
     private Context context;
@@ -82,7 +85,6 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment, O
         // Init
         initFragment(view);
         findViews();
-        new AsyncCache().execute();
         // Return
         return view;
 
@@ -92,7 +94,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment, O
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //TODO create loader
-        //getLoaderManager().initLoader()
+        getLoaderManager().initLoader(0, null, this);
     }
 
     public void initFragment(View view) {
@@ -253,6 +255,19 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment, O
 
     private int personaArrayLength() {
         return profileData.getPersonaArray().length;
+    }
+
+    @Override
+    public Loader<CompletedTask> onCreateLoader(int i, Bundle bundle) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<CompletedTask> completedTaskLoader, CompletedTask completedTask) {
+    }
+
+    @Override
+    public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
     }
 
     public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
@@ -449,9 +464,9 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment, O
 
             startActivity(
 
-            new Intent(context, UnlockActivity.class)
-                    .putExtra("profile", profileData)
-                    .putExtra("selectedPosition", position)
+                    new Intent(context, UnlockActivity.class)
+                            .putExtra("profile", profileData)
+                            .putExtra("selectedPosition", position)
             );
         }
         return true;
