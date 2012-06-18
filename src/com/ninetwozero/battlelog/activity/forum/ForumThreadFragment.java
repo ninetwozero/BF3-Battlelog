@@ -255,7 +255,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
         // Do we have a threadId?
         if (mThreadId == 0) {
-            getActivity().finish();
+            return;
         }
 
         // Set it up

@@ -42,31 +42,38 @@ import com.ninetwozero.battlelog.misc.StringResourceList;
 public class WeaponInformationFragment extends Fragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private int viewPagerPosition;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private int mViewPagerPosition;
 
     // Elements
-    private ImageView imageItem;
-    private TextView textTitle, textDesc, textAuto, textBurst, textSingle, textAmmo, textRange,
-            textRateOfFire;
+    private ImageView mImageItem;
+    private TextView mTextTitle;
+    private TextView mTextDesc;
+    private TextView mTextAuto;
+    private TextView mTextBurst;
+    private TextView mTextSingle;
+    private TextView mTextAmmo;
+    private TextView mTextRange;
+    private TextView mTextRateOfFire;
 
     // Misc
-    private ProfileData profileData;
-    private WeaponInfo weaponInfo;
-    private WeaponStats weaponStats;
-    private long selectedPersona;
-    private Map<Long, WeaponDataWrapper> weaponDataWrapper;
+    private ProfileData mProfileData;
+    private WeaponInfo mWeaponInfo;
+    private WeaponStats mWeaponStats;
+    private long mSelectedPersona;
+    private Map<Long, WeaponDataWrapper> mWeaponDataWrapper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
+        mContext = getActivity();
+        mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_weapon_info,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_weapon_info,
                 container, false);
 
         // Init views
@@ -80,19 +87,19 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     public void initFragment(View v) {
 
         // Let's setup the fields
-        imageItem = (ImageView) v.findViewById(R.id.image_item);
-        textTitle = (TextView) v.findViewById(R.id.text_title);
-        textDesc = (TextView) v.findViewById(R.id.text_desc);
-        textAuto = (TextView) v.findViewById(R.id.text_rate_full);
-        textBurst = (TextView) v.findViewById(R.id.text_rate_burst);
-        textSingle = (TextView) v.findViewById(R.id.text_rate_single);
-        textAmmo = (TextView) v.findViewById(R.id.text_ammo);
-        textRange = (TextView) v.findViewById(R.id.text_range);
-        textRateOfFire = (TextView) v.findViewById(R.id.text_rate_num);
+        mImageItem = (ImageView) v.findViewById(R.id.image_item);
+        mTextTitle = (TextView) v.findViewById(R.id.text_title);
+        mTextDesc = (TextView) v.findViewById(R.id.text_desc);
+        mTextAuto = (TextView) v.findViewById(R.id.text_rate_full);
+        mTextBurst = (TextView) v.findViewById(R.id.text_rate_burst);
+        mTextSingle = (TextView) v.findViewById(R.id.text_rate_single);
+        mTextAmmo = (TextView) v.findViewById(R.id.text_ammo);
+        mTextRange = (TextView) v.findViewById(R.id.text_range);
+        mTextRateOfFire = (TextView) v.findViewById(R.id.text_rate_num);
 
         // Let's see
-        selectedPersona = (selectedPersona == 0) ? profileData.getPersona(0).getId()
-                : selectedPersona;
+        mSelectedPersona = (mSelectedPersona == 0) ? mProfileData.getPersona(0).getId()
+                : mSelectedPersona;
 
     }
 
@@ -100,7 +107,7 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
     public void onResume() {
 
         super.onResume();
-        if (profileData != null) {
+        if (mProfileData != null) {
 
             reload();
 
@@ -110,30 +117,30 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
 
     public int getViewPagerPosition() {
 
-        return viewPagerPosition;
+        return mViewPagerPosition;
 
     }
 
     public void setSelectedPersona(long p) {
 
-        selectedPersona = p;
+        mSelectedPersona = p;
     }
 
     public void setProfileData(ProfileData p) {
 
-        profileData = p;
+        mProfileData = p;
 
     }
 
     public void setWeaponInfo(WeaponInfo w) {
 
-        weaponInfo = w;
+        mWeaponInfo = w;
 
     }
 
     public void setWeaponStats(WeaponStats w) {
 
-        weaponStats = w;
+        mWeaponStats = w;
     }
 
     @Override
@@ -160,8 +167,8 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
 
             try {
 
-                weaponDataWrapper = new ProfileClient(profileData).getWeapon(weaponInfo,
-                        weaponStats);
+                mWeaponDataWrapper = new ProfileClient(mProfileData).getWeapon(mWeaponInfo,
+                        mWeaponStats);
                 return true;
 
             } catch (Exception ex) {
@@ -174,15 +181,15 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         @Override
         protected void onPostExecute(Boolean result) {
 
-            if (context != null) {
+            if (mContext != null) {
 
                 if (result) {
 
-                    show(weaponDataWrapper.get(selectedPersona));
+                    show(mWeaponDataWrapper.get(mSelectedPersona));
 
                 } else {
 
-                    Toast.makeText(context, R.string.general_no_data, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.general_no_data, Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -198,20 +205,20 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
             return;
         }
 
-        imageItem.setImageResource(DrawableResourceList.getWeapon(w.getData().getIdentifier()));
-        textTitle.setText(w.getData().getName());
-        textDesc.setText(StringResourceList.getWeaponDescription(w.getData().getIdentifier()));
+        mImageItem.setImageResource(DrawableResourceList.getWeapon(w.getData().getIdentifier()));
+        mTextTitle.setText(w.getData().getName());
+        mTextDesc.setText(StringResourceList.getWeaponDescription(w.getData().getIdentifier()));
 
         // Add fields for the text, and set the data
-        textAuto.setText(w.getData().isAuto() ? R.string.general_yes : R.string.general_no);
-        textBurst.setText(w.getData().isBurst() ? R.string.general_yes : R.string.general_no);
-        textSingle.setText(w.getData().isSingle() ? R.string.general_yes : R.string.general_no);
-        textAmmo.setText(w.getData().getAmmo());
-        textRange.setText(w.getData().getRangeTitle());
-        textRateOfFire.setText(String.valueOf(w.getData().getRateOfFire()));
+        mTextAuto.setText(w.getData().isAuto() ? R.string.general_yes : R.string.general_no);
+        mTextBurst.setText(w.getData().isBurst() ? R.string.general_yes : R.string.general_no);
+        mTextSingle.setText(w.getData().isSingle() ? R.string.general_yes : R.string.general_no);
+        mTextAmmo.setText(w.getData().getAmmo());
+        mTextRange.setText(w.getData().getRangeTitle());
+        mTextRateOfFire.setText(String.valueOf(w.getData().getRateOfFire()));
 
         // Update the previous
-        ((SingleWeaponActivity) context).showData(w);
+        ((SingleWeaponActivity) mContext).showData(w);
     }
 
 }

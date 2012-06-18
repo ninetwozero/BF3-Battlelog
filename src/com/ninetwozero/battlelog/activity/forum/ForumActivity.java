@@ -122,7 +122,9 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
     public void reload() {
 
         // ASYNC!!!
-
+        mFragmentForum.reload();
+        mFragmentForumThread.reload();
+        
     }
 
     @Override

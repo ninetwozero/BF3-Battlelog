@@ -1,6 +1,7 @@
 /*
     This file is part of BF3 Battlelog
 
+
     BF3 Battlelog is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -33,22 +34,23 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class WeaponStatisticsFragment extends Fragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private int viewPagerPosition;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private int mViewPagerPosition;
 
     // Elements
-    private TextView textKills, textHS, textSF, textSH, textAccuracy, textTE, textSS, textSSP;
+    private TextView mTextKills, mTextHS, mTextSF, mTextSH, mTextAccuracy, mTextTE, mTextSS, mTextSSP;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
+        mContext = getActivity();
+        mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_weapon_stats,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_weapon_stats,
                 container, false);
 
         // Init views
@@ -62,14 +64,14 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
     public void initFragment(View v) {
 
         // Let's setup the fields
-        textKills = (TextView) v.findViewById(R.id.text_kills);
-        textHS = (TextView) v.findViewById(R.id.text_hs);
-        textSF = (TextView) v.findViewById(R.id.text_sf);
-        textSH = (TextView) v.findViewById(R.id.text_sh);
-        textAccuracy = (TextView) v.findViewById(R.id.text_accuracy);
-        textTE = (TextView) v.findViewById(R.id.text_time);
-        textSS = (TextView) v.findViewById(R.id.text_sstars);
-        textSSP = (TextView) v.findViewById(R.id.text_sstars_progress);
+        mTextKills = (TextView) v.findViewById(R.id.text_kills);
+        mTextHS = (TextView) v.findViewById(R.id.text_hs);
+        mTextSF = (TextView) v.findViewById(R.id.text_sf);
+        mTextSH = (TextView) v.findViewById(R.id.text_sh);
+        mTextAccuracy = (TextView) v.findViewById(R.id.text_accuracy);
+        mTextTE = (TextView) v.findViewById(R.id.text_time);
+        mTextSS = (TextView) v.findViewById(R.id.text_sstars);
+        mTextSSP = (TextView) v.findViewById(R.id.text_sstars_progress);
 
     }
 
@@ -82,14 +84,14 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
 
     public int getViewPagerPosition() {
 
-        return viewPagerPosition;
+        return mViewPagerPosition;
 
     }
 
     @Override
     public void reload() {
 
-        ((DefaultFragmentActivity) context).reload();
+        ((DefaultFragmentActivity) mContext).reload();
 
     }
 
@@ -105,14 +107,14 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
 
     public void show(WeaponStats w) {
 
-        textKills.setText(String.valueOf(w.getKills() ));
-        textHS.setText(String.valueOf(w.getHeadshots() ));
-        textSF.setText(String.valueOf(w.getShotsFired() ));
-        textSH.setText(String.valueOf(w.getShotsHit() ));
-        textAccuracy.setText((Math.round(w.getAccuracy() * 1000) / 10.0) + "%");
-        textTE.setText(PublicUtils.timeToLiteral(w.getTimeEquipped()));
-        textSS.setText(String.valueOf(w.getServiceStars() ));
-        textSSP.setText(String.valueOf(w.getServiceStarProgress()));
+        mTextKills.setText(String.valueOf(w.getKills() ));
+        mTextHS.setText(String.valueOf(w.getHeadshots() ));
+        mTextSF.setText(String.valueOf(w.getShotsFired() ));
+        mTextSH.setText(String.valueOf(w.getShotsHit() ));
+        mTextAccuracy.setText((Math.round(w.getAccuracy() * 1000) / 10.0) + "%");
+        mTextTE.setText(PublicUtils.timeToLiteral(w.getTimeEquipped()));
+        mTextSS.setText(String.valueOf(w.getServiceStars() ));
+        mTextSSP.setText(String.valueOf(w.getServiceStarProgress()));
 
     }
 

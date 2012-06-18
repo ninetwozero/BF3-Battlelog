@@ -51,29 +51,30 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class PlatoonOverviewFragment extends Fragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private SharedPreferences sharedPreferences;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private SharedPreferences mSharedPreferences;
 
     // Elements
-    private ImageView imageViewBadge;
-    private RelativeLayout wrapWeb;
+    private ImageView mImageViewBadge;
+    private RelativeLayout mWrapWeb;
 
     // Misc
-    private PlatoonData platoonData;
-    private PlatoonInformation platoonInformation;
-    private boolean hasPostingRights;
+    private PlatoonData mPlatoonData;
+    private PlatoonInformation mPlatoonInformation;
+    private boolean mPostingRights;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mLayoutInflater = inflater;
+        
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_platoon_overview,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_platoon_overview,
                 container, false);
 
         // Init the fragment
@@ -95,11 +96,11 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
     public void initFragment(View v) {
 
         // Let's see if we're allowed to post (before we've gotten the data)
-        hasPostingRights = false;
+        mPostingRights = false;
 
         // Add a click listener
-        wrapWeb = (RelativeLayout) v.findViewById(R.id.wrap_web);
-        wrapWeb.setOnClickListener(new OnClickListener() {
+        mWrapWeb = (RelativeLayout) v.findViewById(R.id.wrap_web);
+        mWrapWeb.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -135,8 +136,8 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         }
 
         // Let's start by getting an ImageView
-        if (imageViewBadge == null) {
-            imageViewBadge = (ImageView) activity.findViewById(R.id.image_badge);
+        if (mImageViewBadge == null) {
+            mImageViewBadge = (ImageView) activity.findViewById(R.id.image_badge);
         }
 
         // Set some TextViews
@@ -151,7 +152,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
                         ).replace(
 
                                 "{RELATIVE DATE}",
-                                PublicUtils.getRelativeDate(context, data.getDate())
+                                PublicUtils.getRelativeDate(mContext, data.getDate())
 
                         ));
 
@@ -181,11 +182,11 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         }
 
         // Set the properties
-        imageViewBadge.setImageBitmap(
+        mImageViewBadge.setImageBitmap(
 
                 BitmapFactory.decodeFile(
 
-                        PublicUtils.getCachePath(context) + data.getId() + ".jpeg"
+                        PublicUtils.getCachePath(mContext) + data.getId() + ".jpeg"
 
                         )
 
@@ -227,10 +228,10 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         protected void onPreExecute() {
 
             // Do we?
-            this.progressDialog = new ProgressDialog(context);
-            this.progressDialog.setTitle(context
+            this.progressDialog = new ProgressDialog(mContext);
+            this.progressDialog.setTitle(mContext
                     .getString(R.string.general_wait));
-            this.progressDialog.setMessage(context
+            this.progressDialog.setMessage(mContext
                     .getString(R.string.general_downloading));
             this.progressDialog.show();
 
@@ -242,10 +243,10 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             try {
 
                 // Get...
-                platoonInformation = CacheHandler.Platoon.select(context, platoonData.getId());
+                mPlatoonInformation = CacheHandler.Platoon.select(mContext, mPlatoonData.getId());
 
                 // We got one?!
-                return (platoonInformation != null);
+                return (mPlatoonInformation != null);
 
             } catch (Exception ex) {
 
@@ -261,20 +262,20 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             if (result) {
 
                 // Siiiiiiiiilent refresh
-                new AsyncRefresh(context, platoonData, SessionKeeper
+                new AsyncRefresh(mContext, mPlatoonData, SessionKeeper
                         .getProfileData().getId()).execute();
                 if (this.progressDialog != null) {
                     this.progressDialog.dismiss();
                 }
 
                 // Set the data
-                showProfile(platoonInformation);
-                sendToStats(platoonInformation);
+                showProfile(mPlatoonInformation);
+                sendToStats(mPlatoonInformation);
 
             } else {
 
-                new AsyncRefresh(context, platoonData, SessionKeeper
-                        .getProfileData().getId()).execute();
+                new AsyncRefresh(mContext, mPlatoonData, SessionKeeper
+                        .getProfileData().getId(), progressDialog).execute();
 
             }
 
@@ -318,16 +319,16 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             try {
 
                 // Get...
-                platoonInformation = new PlatoonClient(this.platoonData).getInformation(
+                mPlatoonInformation = new PlatoonClient(this.platoonData).getInformation(
 
-                        context, sharedPreferences.getInt(
+                        context, mSharedPreferences.getInt(
                                 Constants.SP_BL_NUM_FEED,
                                 Constants.DEFAULT_NUM_FEED),
                         this.activeProfileId
 
                         );
 
-                return (platoonInformation != null);
+                return (mPlatoonInformation != null);
 
             } catch (WebsiteHandlerException ex) {
 
@@ -357,10 +358,10 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             }
 
             // Set the data
-            showProfile(platoonInformation);
-            sendToStats(platoonInformation);
-            sendToUsers(platoonInformation);
-            setFeedPermission(platoonInformation.isMember() || hasPostingRights);
+            showProfile(mPlatoonInformation);
+            sendToStats(mPlatoonInformation);
+            sendToUsers(mPlatoonInformation);
+            setFeedPermission(mPlatoonInformation.isMember() || mPostingRights);
 
         }
 
@@ -369,43 +370,43 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
     public void reload() {
 
         // ASYNC!!!
-        new AsyncRefresh(context, platoonData, SessionKeeper
+        new AsyncRefresh(mContext, mPlatoonData, SessionKeeper
                 .getProfileData().getId()).execute();
 
     }
 
     public void sendToStats(PlatoonInformation p) {
 
-        ((PlatoonActivity) context).openStats(p);
+        ((PlatoonActivity) mContext).openStats(p);
 
     }
 
     public void sendToUsers(PlatoonInformation p) {
 
-        ((PlatoonActivity) context).openMembers(p);
+        ((PlatoonActivity) mContext).openMembers(p);
 
     }
 
     public void setFeedPermission(boolean c) {
 
-        ((PlatoonActivity) context).setFeedPermission(c);
+        ((PlatoonActivity) mContext).setFeedPermission(c);
 
     }
 
     public void setPlatoonData(PlatoonData p) {
 
-        platoonData = p;
+        mPlatoonData = p;
     }
 
     public Menu prepareOptionsMenu(Menu menu) {
 
         // Is it null?
-        if (platoonInformation == null) {
+        if (mPlatoonInformation == null) {
             return menu;
         }
-        if (platoonInformation.isOpenForNewMembers()) {
+        if (mPlatoonInformation.isOpenForNewMembers()) {
 
-            if (platoonInformation.isMember()) {
+            if (mPlatoonInformation.isMember()) {
 
                 ((MenuItem) menu.findItem(R.id.option_join))
                         .setVisible(false);
@@ -418,7 +419,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
                 ((MenuItem) menu.findItem(R.id.option_members))
                         .setVisible(false);
 
-            } else if (platoonInformation.isOpenForNewMembers()) {
+            } else if (mPlatoonInformation.isOpenForNewMembers()) {
 
                 ((MenuItem) menu.findItem(R.id.option_join))
                         .setVisible(true);
@@ -466,8 +467,8 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
             new AsyncPlatoonRequest(
 
-                    context, platoonData, SessionKeeper.getProfileData().getId(),
-                    sharedPreferences.getString(
+                    mContext, mPlatoonData, SessionKeeper.getProfileData().getId(),
+                    mSharedPreferences.getString(
                             Constants.SP_BL_PROFILE_CHECKSUM, "")
 
             ).execute(true);
@@ -476,8 +477,8 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
             new AsyncPlatoonRequest(
 
-                    context, platoonData, SessionKeeper.getProfileData()
-                            .getId(), sharedPreferences.getString(
+                    mContext, mPlatoonData, SessionKeeper.getProfileData()
+                            .getId(), mSharedPreferences.getString(
                             Constants.SP_BL_PROFILE_CHECKSUM, "")
 
             ).execute(false);

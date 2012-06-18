@@ -34,29 +34,30 @@ import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
 public class WeaponListFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private int viewPagerPosition;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private int mViewPagerPosition;
 
     // Elements
-    private ListView listView;
+    private ListView mListView;
 
     // Misc
-    private List<WeaponDataWrapper> items;
+    private List<WeaponDataWrapper> mItems;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
+        mContext = getActivity();
+        mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_items,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_items,
                 container, false);
 
         // Get the unlocks
-        items = ((WeaponListActivity) context).getItemsForFragment(viewPagerPosition);
+        mItems = ((WeaponListActivity) mContext).getItemsForFragment(mViewPagerPosition);
 
         // Init views
         initFragment(view);
@@ -69,8 +70,8 @@ public class WeaponListFragment extends ListFragment implements DefaultFragment 
     public void initFragment(View v) {
 
         // Setup the ListView
-        listView = (ListView) v.findViewById(android.R.id.list);
-        listView.setAdapter(new WeaponListAdapter(items, layoutInflater));
+        mListView = (ListView) v.findViewById(android.R.id.list);
+        mListView.setAdapter(new WeaponListAdapter(mItems, mLayoutInflater));
 
     }
 
@@ -83,27 +84,27 @@ public class WeaponListFragment extends ListFragment implements DefaultFragment 
 
     public int getViewPagerPosition() {
 
-        return viewPagerPosition;
+        return mViewPagerPosition;
 
     }
 
     public void setViewPagerPosition(int p) {
 
-        viewPagerPosition = p;
+        mViewPagerPosition = p;
 
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
 
-        ((WeaponListActivity) context).open((WeaponDataWrapper) v.getTag());
+        ((WeaponListActivity) mContext).open((WeaponDataWrapper) v.getTag());
 
     }
 
     public void showWeapons(List<WeaponDataWrapper> data) {
 
         // Let's set the data
-        ((WeaponListAdapter) listView.getAdapter()).setDataArray(data);
+        ((WeaponListAdapter) mListView.getAdapter()).setDataArray(data);
 
     }
 

@@ -301,7 +301,7 @@ public class COMClient extends DefaultClient {
                                 .getString("userId")), tempObj.getString("username"))
                                 .gravatarHash(tempObj.optString("gravatarMd5", ""))
                                 .isOnline(presenceObj.getBoolean("isOnline"))
-                                .isPlaying(presenceObj.getBoolean("isPlaying")).build();
+                                .isPlaying(presenceObj.getBoolean("isPlaying")).isFriend(true).build();
 
                         if (tempProfile.isPlaying()) {
 
