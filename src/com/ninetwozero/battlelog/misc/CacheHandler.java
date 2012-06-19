@@ -25,20 +25,23 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.text.TextUtils;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
-import com.ninetwozero.battlelog.datatypes.ForumThreadData;
-import com.ninetwozero.battlelog.datatypes.PersonaData;
-import com.ninetwozero.battlelog.datatypes.PersonaStats;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.PlatoonInformation;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
-import com.ninetwozero.battlelog.datatypes.ProfileInformation;
-import com.ninetwozero.battlelog.datatypes.SavedForumThreadData;
+import com.ninetwozero.battlelog.datatype.ForumThreadData;
+import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.PersonaStats;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.PlatoonInformation;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.ProfileInformation;
+import com.ninetwozero.battlelog.datatype.SavedForumThreadData;
 
 /* 
  * Methods of this class should be loaded in AsyncTasks, as they would probably lock up the GUI
  */
 
 public class CacheHandler {
+
+    private CacheHandler() {
+    }
 
     public static class Persona {
 
@@ -53,7 +56,7 @@ public class CacheHandler {
 
                         DatabaseStructure.PersonaStatistics.TABLE_NAME,
                         DatabaseStructure.PersonaStatistics.getColumns(),
-                        stats.toStringArray()
+                        stats.toArray()
 
                         );
 
@@ -89,7 +92,7 @@ public class CacheHandler {
 
                             DatabaseStructure.PersonaStatistics.TABLE_NAME,
                             DatabaseStructure.PersonaStatistics.getColumns(),
-                            stats.toStringArray()
+                            stats.toArray()
 
                             );
 
@@ -125,7 +128,7 @@ public class CacheHandler {
 
                         DatabaseStructure.PersonaStatistics.TABLE_NAME,
                         DatabaseStructure.PersonaStatistics.getColumns(),
-                        stats.toStringArray(),
+                        stats.toArray(),
                         DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA,
                         stats.getPersonaId()
 
@@ -166,7 +169,7 @@ public class CacheHandler {
                                     DatabaseStructure.PersonaStatistics.TABLE_NAME,
                                     DatabaseStructure.PersonaStatistics
                                             .getColumns(),
-                                    stats.toStringArray(),
+                                    stats.toArray(),
                                     DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA,
                                     stats.getPersonaId()
 
@@ -198,7 +201,7 @@ public class CacheHandler {
             try {
 
                 // Init
-                String strQuestionMarks = "?";
+                StringBuilder strQuestionMarks = new StringBuilder("(?");
                 String[] personaIdArray = new String[persona.length];
                 HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
 
@@ -206,11 +209,12 @@ public class CacheHandler {
                 for (int i = 0, max = persona.length; i < max; i++) {
 
                     if (i > 0) {
-                        strQuestionMarks += ",?";
+                        strQuestionMarks.append(", ?");
                     }
                     personaIdArray[i] = String.valueOf(persona[i].getId());
 
                 }
+                strQuestionMarks.append(")");
 
                 // Use the SQLiteManager to get a cursor
                 Cursor results = manager
@@ -219,7 +223,7 @@ public class CacheHandler {
                                 DatabaseStructure.PersonaStatistics.TABLE_NAME,
                                 null,
                                 DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA
-                                        + " IN (" + strQuestionMarks + ")",
+                                        + " IN " + strQuestionMarks,
                                 personaIdArray,
                                 null,
                                 null,
@@ -385,7 +389,7 @@ public class CacheHandler {
 
                         DatabaseStructure.UserProfile.TABLE_NAME,
                         DatabaseStructure.UserProfile.getColumns(),
-                        stats.toStringArray()
+                        stats.toArray()
 
                         );
 
@@ -421,7 +425,7 @@ public class CacheHandler {
 
                         DatabaseStructure.UserProfile.TABLE_NAME,
                         DatabaseStructure.UserProfile.getColumns(),
-                        stats.toStringArray(),
+                        stats.toArray(),
                         DatabaseStructure.UserProfile.COLUMN_NAME_NUM_UID,
                         stats.getUserId()
 
@@ -486,8 +490,10 @@ public class CacheHandler {
                             platoonIdString, ":");
 
                     // How many do we have? -1 due to last occurence being empty
-                    int numPersonas = personaStringArray.length - 1;
-                    int numPlatoons = platoonStringArray.length - 1;
+                    int numPersonas = personaStringArray.length;
+                    int numPlatoons = platoonStringArray.length;
+                    numPersonas = numPersonas == 0 ? 0 : numPersonas - 1;
+                    numPlatoons = numPlatoons == 0 ? 0 : numPlatoons - 1;
 
                     // Create two new arrays for this
                     PersonaData[] personaArray = new PersonaData[numPersonas];
@@ -509,8 +515,7 @@ public class CacheHandler {
                     // loop the platoons
                     for (int i = 0; i < numPlatoons; i++) {
 
-                        platoonIdArray[i] = Long
-                                .parseLong(platoonStringArray[i]);
+                        platoonIdArray[i] = Long.parseLong(platoonStringArray[i]);
 
                     }
 
@@ -546,18 +551,15 @@ public class CacheHandler {
                                     .getColumnIndex("status_message")),
                             results.getString(results
                                     .getColumnIndex("current_server")),
-                            (results.getString(results
-                                    .getColumnIndex("allow_friendrequests"))
-                                    .equalsIgnoreCase("true")),
-                            (results.getString(results
-                                    .getColumnIndex("is_online"))
-                                    .equalsIgnoreCase("true")),
-                            (results.getString(results
-                                    .getColumnIndex("is_playing"))
-                                    .equalsIgnoreCase("true")),
-                            (results.getString(results
-                                    .getColumnIndex("is_friend"))
-                                    .equalsIgnoreCase("true")), platoons
+                            results.getString(results.getColumnIndex("allow_friendrequests"))
+                                    .equalsIgnoreCase("true"),
+                            results.getString(results.getColumnIndex("is_online"))
+                                    .equalsIgnoreCase("true"),
+                            results.getString(results.getColumnIndex("is_playing"))
+                                    .equalsIgnoreCase("true"),
+                            results.getString(results.getColumnIndex("is_friend"))
+                                    .equalsIgnoreCase("true"),
+                            platoons
 
                             );
 
@@ -636,7 +638,7 @@ public class CacheHandler {
 
                         DatabaseStructure.PlatoonProfile.TABLE_NAME,
                         DatabaseStructure.PlatoonProfile.getColumns(),
-                        stats.toStringArray()
+                        stats.toArray()
 
                         );
 
@@ -679,7 +681,7 @@ public class CacheHandler {
 
                             DatabaseStructure.PlatoonProfile.TABLE_NAME,
                             DatabaseStructure.PlatoonProfile.getColumns(),
-                            stats.toStringArray()
+                            stats.toArray()
 
                             );
 
@@ -715,7 +717,7 @@ public class CacheHandler {
 
                         DatabaseStructure.PlatoonProfile.TABLE_NAME,
                         DatabaseStructure.PlatoonProfile.getColumns(),
-                        stats.toStringArray(),
+                        stats.toArray(),
                         DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID,
                         stats.getId()
 
@@ -756,7 +758,7 @@ public class CacheHandler {
                                     DatabaseStructure.PlatoonProfile.TABLE_NAME,
                                     DatabaseStructure.PlatoonProfile
                                             .getColumns(),
-                                    stats.toStringArray(),
+                                    stats.toArray(),
                                     DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID,
                                     stats.getId()
 
@@ -862,7 +864,7 @@ public class CacheHandler {
             try {
 
                 // Init
-                String strQuestionMarks = "?";
+                StringBuilder strQuestionMarks = new StringBuilder("(?");
                 String[] PlatoonIdArray = new String[platoonId.length];
                 List<PlatoonData> stats = new ArrayList<PlatoonData>();
 
@@ -870,18 +872,19 @@ public class CacheHandler {
                 for (int i = 0, max = platoonId.length; i < max; i++) {
 
                     if (i > 0) {
-                        strQuestionMarks += ",?";
+                        strQuestionMarks.append(", ?");
                     }
                     PlatoonIdArray[i] = String.valueOf(platoonId[i]);
 
                 }
+                strQuestionMarks.append(")");
 
                 // Use the SQLiteManager to get a cursor
                 Cursor results = manager.query(
 
                         DatabaseStructure.PlatoonProfile.TABLE_NAME, null,
                         DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID
-                                + " IN (" + strQuestionMarks + ")",
+                                + " IN " + strQuestionMarks,
                         PlatoonIdArray, null, null,
                         DatabaseStructure.PlatoonProfile.DEFAULT_SORT_ORDER
 
@@ -980,14 +983,14 @@ public class CacheHandler {
 
             try {
 
-                String[] originArray = thread.toStringArray();
+                Object[] originArray = thread.toArray();
                 String[] valueArray = new String[originArray.length + 1];
                 for (int i = 0, max = originArray.length; i < max; i++) {
 
-                    valueArray[i] = originArray[i];
+                    valueArray[i] = String.valueOf(originArray[i]);
                     if (i == (max - 1)) {
 
-                        valueArray[i + 1] = uid + "";
+                        valueArray[i + 1] = String.valueOf(uid);
                         break;
                     }
 
@@ -1041,7 +1044,7 @@ public class CacheHandler {
 
                             DatabaseStructure.ForumThreads.TABLE_NAME,
                             DatabaseStructure.ForumThreads.getColumns(),
-                            stats.toStringArray()
+                            stats.toArray()
 
                             );
 
@@ -1077,7 +1080,7 @@ public class CacheHandler {
 
                         DatabaseStructure.ForumThreads.TABLE_NAME,
                         DatabaseStructure.ForumThreads.getColumns(),
-                        thread.toStringArray(),
+                        thread.toArray(),
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                         thread.getId()
 
@@ -1202,7 +1205,7 @@ public class CacheHandler {
                                     DatabaseStructure.ForumThreads.TABLE_NAME,
                                     DatabaseStructure.ForumThreads
                                             .getColumns(),
-                                    thread.toStringArray(),
+                                    thread.toArray(),
                                     DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                                     thread.getId()
 
@@ -1261,12 +1264,12 @@ public class CacheHandler {
                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_FORUM_ID)),
                                 results.getLong(results
                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST)),
-                                new ProfileData(
+                                new ProfileData.Builder(
                                         results.getLong(results
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID)),
                                         results.getString(results
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR))
-                                ),
+                                ).build(),
                                 results.getLong(results
                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED)),
                                 results.getLong(results
@@ -1337,12 +1340,12 @@ public class CacheHandler {
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_FORUM_ID)),
                                         results.getLong(results
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST)),
-                                        new ProfileData(
+                                        new ProfileData.Builder(
                                                 results.getLong(results
                                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID)),
                                                 results.getString(results
                                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR))
-                                        ),
+                                        ).build(),
                                         results.getLong(results
                                                 .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED)),
                                         results.getLong(results

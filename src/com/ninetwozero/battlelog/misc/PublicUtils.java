@@ -38,20 +38,12 @@ import android.widget.Toast;
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.asynctasks.AsyncSessionSetActive;
-import com.ninetwozero.battlelog.asynctasks.AsyncSessionValidate;
-import com.ninetwozero.battlelog.datatypes.ShareableCookie;
+import com.ninetwozero.battlelog.asynctask.AsyncSessionSetActive;
+import com.ninetwozero.battlelog.asynctask.AsyncSessionValidate;
+import com.ninetwozero.battlelog.datatype.ShareableCookie;
+import com.ninetwozero.battlelog.http.RequestHandler;
 
 public class PublicUtils {
-
-    /**
-     * <p>
-     * Get the Date-string (YYYY-MM-DD
-     * </p>
-     * 
-     * @param date the Date to be formatted in the {X} {unit}
-     * @return String
-     */
 
     public static String getDate(final Long d) {
 
@@ -74,15 +66,6 @@ public class PublicUtils {
         return s + " " + getDate(d);
 
     }
-
-    /**
-     * <p>
-     * Get the "relative" Date-string
-     * </p>
-     * 
-     * @param date the Date to be formatted in the {X} {unit}
-     * @return String
-     */
 
     public static String getRelativeDate(final Context c, final Long d) {
 
@@ -226,10 +209,10 @@ public class PublicUtils {
      * @return link the normalized link
      */
 
-    public final static String normalizeUrl(final String s) {
+    public static final String normalizeUrl(final String s) {
 
         // Check if we have a valid prefix
-        if (s.equals("")) {
+        if ("".equals(s)) {
 
             return "";
 
@@ -270,10 +253,11 @@ public class PublicUtils {
         int n = s.length();
         int m = t.length();
 
-        if (n == 0)
+        if (n == 0) {
             return m;
-        else if (m == 0)
+        } else if (m == 0) {
             return n;
+        }
 
         if (n > m) {
 
@@ -323,13 +307,13 @@ public class PublicUtils {
     public static String timeToLiteral(long s) {
 
         // Let's see what we can do
-        if ((s / 60) < 1)
+        if ((s / 60) < 1) {
             return s + "S";
-        else if ((s / 3600) < 1)
+        } else if ((s / 3600) < 1) {
             return (s / 60) + "M " + (s % 60) + "S";
-        else
+        } else {
             return (s / 3600) + "H " + ((s % 3600) / 60) + "M";
-
+        }
     }
 
     /*
@@ -347,7 +331,7 @@ public class PublicUtils {
         for (RunningServiceInfo service : manager
                 .getRunningServices(Integer.MAX_VALUE)) {
 
-            if ("com.ninetwozero.battlelog.services.BattlelogService"
+            if ("com.ninetwozero.battlelog.service.BattlelogService"
                     .equals(service.service.getClassName())) {
                 return true;
             }
@@ -428,13 +412,13 @@ public class PublicUtils {
             List<ShareableCookie> shareableCookies = icicle
                     .getParcelableArrayList(Constants.SUPER_COOKIES);
 
-            if (shareableCookies != null) {
+            if (shareableCookies == null) {
 
-                RequestHandler.setCookies(shareableCookies);
+                ((Activity) context).finish();
 
             } else {
 
-                ((Activity) context).finish();
+                RequestHandler.setCookies(shareableCookies);
 
             }
 
@@ -467,6 +451,13 @@ public class PublicUtils {
 
     public static void setupSession(Context context, SharedPreferences sharedPreferences) {
 
+        // Let's just check if it's MainActivity, to prevent loops
+        if (context instanceof MainActivity) {
+
+            return;
+
+        }
+
         // Let's set "active" against the website
         new AsyncSessionSetActive().execute();
 
@@ -474,8 +465,8 @@ public class PublicUtils {
         if (SessionKeeper.getProfileData() == null) {
 
             // ...but we do indeed have a cookie...
-            if (!sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "")
-                    .equals("")) {
+            String cookieValue = sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "");
+            if ("".equals(cookieValue)) {
 
                 // ...we set the SessionKeeper, but also reload the cookies!
                 // Easy peasy!
@@ -487,8 +478,7 @@ public class PublicUtils {
                         new ShareableCookie(
 
                                 sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
-                                sharedPreferences.getString(
-                                        Constants.SP_BL_COOKIE_VALUE, ""),
+                                cookieValue,
                                 Constants.COOKIE_DOMAIN
 
                         )

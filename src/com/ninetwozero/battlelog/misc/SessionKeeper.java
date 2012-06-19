@@ -19,11 +19,11 @@ import java.util.List;
 
 import android.content.SharedPreferences;
 
-import com.ninetwozero.battlelog.datatypes.PersonaData;
-import com.ninetwozero.battlelog.datatypes.PlatoonData;
-import com.ninetwozero.battlelog.datatypes.ProfileData;
+import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
 
-public class SessionKeeper {
+public final class SessionKeeper {
 
     // Attributes
     private static ProfileData profileData;
@@ -85,27 +85,25 @@ public class SessionKeeper {
         }
 
         // If we even *might* have a session
-        if (!cookie.equals("")) {
+        if ("".equals(cookie)) {
 
-            ProfileData p = new ProfileData(
-                    sp.getLong(Constants.SP_BL_PROFILE_ID, 0),
-                    sp.getString(Constants.SP_BL_PROFILE_NAME, ""),
-                    persona,
-                    sp.getString(Constants.SP_BL_PROFILE_GRAVATAR, "")
-
-                    );
-
-            return p;
+            return null;
 
         } else {
 
-            return null;
+            return new ProfileData.Builder(
+                    sp.getLong(Constants.SP_BL_PROFILE_ID, 0),
+                    sp.getString(Constants.SP_BL_PROFILE_NAME, "")
+
+            ).persona(persona).gravatarHash(
+                    sp.getString(Constants.SP_BL_PROFILE_GRAVATAR, "")
+                    ).build();
 
         }
 
     }
 
-    public static ArrayList<PlatoonData> generatePlatoonDataFromSharedPreferences(
+    public static List<PlatoonData> generatePlatoonDataFromSharedPreferences(
             SharedPreferences sp) {
 
         // Get the different strings

@@ -149,7 +149,7 @@ public class SwipeyTabs extends ViewGroup implements OnPageChangeListener {
      */
     private void updateTabPositions(boolean forceLayout) {
         if (mAdapter == null) {
-            return;
+
         }
 
         calculateTabPosition(mCurrentPos, mFrontedTabPos);
@@ -174,7 +174,7 @@ public class SwipeyTabs extends ViewGroup implements OnPageChangeListener {
      */
     private void calculateTabPosition(int position, int[] tabPositions) {
         if (mAdapter == null) {
-            return;
+
         }
 
         final int count = mAdapter.getCount();
@@ -219,7 +219,7 @@ public class SwipeyTabs extends ViewGroup implements OnPageChangeListener {
      */
     private void updateEllipsize() {
         if (mAdapter == null) {
-            return;
+
         }
 
         final int count = mAdapter.getCount();
@@ -272,7 +272,7 @@ public class SwipeyTabs extends ViewGroup implements OnPageChangeListener {
      */
     private void measureTabs(int widthMeasureSpec, int heightMeasureSpec) {
         if (mAdapter == null) {
-            return;
+
         }
 
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -294,7 +294,7 @@ public class SwipeyTabs extends ViewGroup implements OnPageChangeListener {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         if (mAdapter == null) {
-            return;
+
         }
 
         final int count = mAdapter.getCount();
@@ -378,7 +378,7 @@ public class SwipeyTabs extends ViewGroup implements OnPageChangeListener {
     public void onPageScrolled(int position, float positionOffset,
             int positionOffsetPixels) {
         if (mAdapter == null) {
-            return;
+
         }
 
         final int count = mAdapter.getCount();

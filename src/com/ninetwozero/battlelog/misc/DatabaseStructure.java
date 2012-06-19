@@ -52,7 +52,7 @@ public final class DatabaseStructure {
         public static final String DEFAULT_SORT_ORDER = "`_id` DESC";
 
         // Getter
-        public static final String[] getColumns() {
+        public static String[] getColumns() {
 
             return new String[] {
 
@@ -111,7 +111,7 @@ public final class DatabaseStructure {
         public static final String DEFAULT_SORT_ORDER = "`_id` DESC";
 
         // Getter
-        public static final String[] getColumns() {
+        public static String[] getColumns() {
 
             return new String[] {
 
@@ -156,7 +156,7 @@ public final class DatabaseStructure {
         public static final String DEFAULT_SORT_ORDER = "`_id` DESC";
 
         // Getter
-        public static final String[] getColumns() {
+        public static String[] getColumns() {
 
             return new String[] {
 
@@ -197,7 +197,7 @@ public final class DatabaseStructure {
         public static final String DEFAULT_SORT_ORDER = "`_id` DESC";
 
         // Getter
-        public static final String[] getColumns() {
+        public static String[] getColumns() {
 
             return new String[] {
 
