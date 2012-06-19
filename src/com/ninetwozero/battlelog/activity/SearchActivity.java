@@ -49,16 +49,16 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class SearchActivity extends ListActivity {
 
     // Attributes
-    private LayoutInflater layoutInflater;
-    private SharedPreferences sharedPreferences;
+    private LayoutInflater mLayoutInflater;
+    private SharedPreferences mSharedPreferences;
 
     // Elements
-    private ListView listView;
-    private EditText fieldSearch;
-    private Button buttonSearch;
+    private ListView mListView;
+    private EditText mFieldSearch;
+    private Button mButtonSearch;
 
     // Misc
-    private List<GeneralSearchResult> searchResults;
+    private List<GeneralSearchResult> mSearchResults;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -67,47 +67,47 @@ public class SearchActivity extends ListActivity {
         super.onCreate(icicle);
 
         // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         PublicUtils.restoreCookies(this, icicle);
 
         // Setup the important stuff
-        PublicUtils.setupFullscreen(this, sharedPreferences);
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupFullscreen(this, mSharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
         setContentView(R.layout.search_view);
 
         // Prepare to tango
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Get the elements
-        buttonSearch = (Button) findViewById(R.id.button_search);
-        fieldSearch = (EditText) findViewById(R.id.field_search);
+        mButtonSearch = (Button) findViewById(R.id.button_search);
+        mFieldSearch = (EditText) findViewById(R.id.field_search);
 
         // Threads!
-        searchResults = new ArrayList<GeneralSearchResult>();
-        setupList(searchResults);
+        mSearchResults = new ArrayList<GeneralSearchResult>();
+        setupList(mSearchResults);
     }
 
     public void setupList(List<GeneralSearchResult> results) {
 
         // Do we have it?
-        if (listView == null) {
+        if (mListView == null) {
 
             // Get the ListView
-            listView = getListView();
-            listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+            mListView = getListView();
+            mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
 
         }
 
         // Does it have an adapter?
-        if (listView.getAdapter() == null) {
+        if (mListView.getAdapter() == null) {
 
-            listView.setAdapter(new SearchDataAdapter(results, layoutInflater));
+            mListView.setAdapter(new SearchDataAdapter(results, mLayoutInflater));
 
         } else {
 
-            ((SearchDataAdapter) listView.getAdapter()).setItemArray(results);
+            ((SearchDataAdapter) mListView.getAdapter()).setItemArray(results);
 
         }
 
@@ -134,8 +134,8 @@ public class SearchActivity extends ListActivity {
 
             // Send it!
             new AsyncForumSearch(this).execute(
-                    fieldSearch.getText().toString(),
-                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+                    mFieldSearch.getText().toString(),
+                    mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
         }
 
@@ -191,7 +191,7 @@ public class SearchActivity extends ListActivity {
 
             try {
 
-                searchResults = WebsiteClient.search(context, arg0[0], arg0[1]);
+                mSearchResults = WebsiteClient.search(context, arg0[0], arg0[1]);
                 return true;
 
             } catch (Exception ex) {
@@ -211,7 +211,7 @@ public class SearchActivity extends ListActivity {
 
                 if (context instanceof SearchActivity) {
 
-                    ((SearchActivity) context).setupList(searchResults);
+                    ((SearchActivity) context).setupList(mSearchResults);
                     ((SearchActivity) context).toggleSearchButton();
 
                 }
@@ -234,13 +234,13 @@ public class SearchActivity extends ListActivity {
 
     public void toggleSearchButton() {
 
-        buttonSearch.setEnabled(!buttonSearch.isEnabled());
+        mButtonSearch.setEnabled(!mButtonSearch.isEnabled());
 
         // Update the text
-        if (buttonSearch.isEnabled()) {
-            buttonSearch.setText(R.string.label_search);
+        if (mButtonSearch.isEnabled()) {
+            mButtonSearch.setText(R.string.label_search);
         } else {
-            buttonSearch.setText(R.string.label_search_ongoing);
+            mButtonSearch.setText(R.string.label_search_ongoing);
         }
 
     }
@@ -275,10 +275,10 @@ public class SearchActivity extends ListActivity {
         super.onResume();
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
 
     }
 

@@ -321,7 +321,7 @@ public class FeedClient extends DefaultClient {
 
                             } else if (key.startsWith("ID_P_VUNAME_")) {
 
-                                tempTitle.append(DataBank.getVehicleTitle(guid));
+                                tempTitle.append(DataBank.getVehicleUpgradeTitle(key));
 
                             } else if (key.startsWith("ID_P_SNAME")) {
 

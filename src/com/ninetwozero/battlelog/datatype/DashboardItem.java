@@ -4,24 +4,24 @@ package com.ninetwozero.battlelog.datatype;
 public class DashboardItem {
 
     // Attributes
-    private long id;
-    private String title;
+    private long mId;
+    private String mTitle;
 
     // Construct
     public DashboardItem(long i, String t) {
 
-        this.id = i;
-        this.title = t;
+        mId = i;
+        mTitle = t;
 
     }
 
     // Getters
     public long getId() {
-        return this.id;
+        return mId;
     }
 
     public String getTitle() {
-        return this.title;
+        return mTitle;
     }
 
 }

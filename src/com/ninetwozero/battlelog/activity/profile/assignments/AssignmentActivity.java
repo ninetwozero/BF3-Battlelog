@@ -55,18 +55,18 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class AssignmentActivity extends Activity {
 
     // SharedPreferences for shizzle
-    private SharedPreferences sharedPreferences;
-    private LayoutInflater layoutInflater;
-    private ProfileData profileData;
-    private Map<Long, List<AssignmentData>> assignments;
-    private long selectedPersona;
-    private int selectedPosition;
-    private long[] personaId;
-    private String[] personaName;
+    private SharedPreferences mSharedPreferences;
+    private LayoutInflater mLayoutInflater;
+    private ProfileData mProfileData;
+    private Map<Long, List<AssignmentData>> mAssignments;
+    private long mSelectedPersona;
+    private int mSelectedPosition;
+    private long[] mPersonaId;
+    private String[] mPersonaName;
 
     // Elements
-    private TableLayout tableAssignments;
-    private TextView textEmpty;
+    private TableLayout mTableAssignments;
+    private TextView mTextEmpty;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -75,13 +75,13 @@ public class AssignmentActivity extends Activity {
         super.onCreate(icicle);
 
         // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Setup the locale
-        PublicUtils.setupFullscreen(this, sharedPreferences);
-        PublicUtils.setupSession(this, sharedPreferences);
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupFullscreen(this, mSharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
         setContentView(R.layout.assignment_view);
@@ -89,7 +89,7 @@ public class AssignmentActivity extends Activity {
         // Get the intent
         if (getIntent().hasExtra("profile")) {
 
-            profileData = (ProfileData) getIntent().getParcelableExtra(
+            mProfileData = (ProfileData) getIntent().getParcelableExtra(
                     "profile");
 
         } else {
@@ -108,17 +108,17 @@ public class AssignmentActivity extends Activity {
     public void initActivity() {
 
         // Prepare to tango
-        textEmpty = (TextView) findViewById(R.id.text_empty);
+        mTextEmpty = (TextView) findViewById(R.id.text_empty);
 
         // Let's try something out
-        if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
+        if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
 
-            selectedPersona = sharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
-            selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
+            mSelectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
+            mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
 
         } else {
 
-            selectedPersona = profileData.getPersona(0).getId();
+            mSelectedPersona = mProfileData.getPersona(0).getId();
 
         }
 
@@ -130,10 +130,10 @@ public class AssignmentActivity extends Activity {
         super.onResume();
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
 
         // Reload the layout
         reload();
@@ -143,32 +143,32 @@ public class AssignmentActivity extends Activity {
     public void setupList(List<AssignmentData> data) {
 
         // Do we have the TableLayout?
-        if (tableAssignments == null) {
+        if (mTableAssignments == null) {
 
-            tableAssignments = (TableLayout) findViewById(R.id.table_assignments);
+            mTableAssignments = (TableLayout) findViewById(R.id.table_assignments);
 
         }
 
         // Is it empty?
         if (data == null || data.isEmpty()) {
 
-            textEmpty.setVisibility(View.VISIBLE);
-            tableAssignments.removeAllViews();
+            mTextEmpty.setVisibility(View.VISIBLE);
+            mTableAssignments.removeAllViews();
 
         } else {
 
-            textEmpty.setVisibility(View.GONE);
+            mTextEmpty.setVisibility(View.GONE);
 
         }
 
         // Let's clear the table
-        tableAssignments.removeAllViews();
+        mTableAssignments.removeAllViews();
 
         // Loop & create
         for (int i = 0, max = data.size(); i < max; i += 2) {
 
             // Init the elements
-            TableRow tableRow = (TableRow) layoutInflater.inflate(
+            TableRow tableRow = (TableRow) mLayoutInflater.inflate(
                     R.layout.list_item_assignment, null);
             ProgressBar progressLeft = (ProgressBar) tableRow
                     .findViewById(R.id.progress_left);
@@ -180,7 +180,7 @@ public class AssignmentActivity extends Activity {
                     .findViewById(R.id.image_rightassignment);
 
             // Add the table row
-            tableAssignments.addView(tableRow);
+            mTableAssignments.addView(tableRow);
 
             // Get the values
             AssignmentData ass1 = data.get(i);
@@ -219,7 +219,7 @@ public class AssignmentActivity extends Activity {
     public void reload() {
 
         // ASYNC!!!
-        new AsyncReload(this).execute(profileData);
+        new AsyncReload(this).execute(mProfileData);
 
     }
 
@@ -243,7 +243,7 @@ public class AssignmentActivity extends Activity {
         protected void onPreExecute() {
 
             // Let's see if we got data already
-            if (assignments == null) {
+            if (mAssignments == null) {
 
                 progressDialog = new ProgressDialog(context);
                 progressDialog.setTitle(context
@@ -262,8 +262,8 @@ public class AssignmentActivity extends Activity {
             try {
 
                 ProfileClient profileHandler = new ProfileClient(arg0[0]);
-                assignments = profileHandler.getAssignments(context);
-                return (assignments != null);
+                mAssignments = profileHandler.getAssignments(context);
+                return (mAssignments != null);
 
             } catch (WebsiteHandlerException ex) {
 
@@ -290,7 +290,7 @@ public class AssignmentActivity extends Activity {
             }
 
             // Do actual stuff
-            setupList(assignments.get(selectedPersona));
+            setupList(mAssignments.get(mSelectedPersona));
 
             // Go go go
             if (progressDialog != null) {
@@ -352,9 +352,9 @@ public class AssignmentActivity extends Activity {
 
         // Init
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        AssignmentData assignment = assignments.get(selectedPersona).get(id);
+        AssignmentData assignment = mAssignments.get(mSelectedPersona).get(id);
 
-        View dialog = layoutInflater.inflate(R.layout.popup_dialog_view, null);
+        View dialog = mLayoutInflater.inflate(R.layout.popup_dialog_view, null);
         LinearLayout wrapObjectives = (LinearLayout) dialog
                 .findViewById(R.id.wrap_objectives);
 
@@ -393,7 +393,7 @@ public class AssignmentActivity extends Activity {
         for (AssignmentData.Objective objective : assignment.getObjectives()) {
 
             // Inflate a layout...
-            View v = layoutInflater.inflate(
+            View v = mLayoutInflater.inflate(
                     R.layout.list_item_assignment_popup, null);
 
             // ...and set the fields
@@ -435,17 +435,17 @@ public class AssignmentActivity extends Activity {
         builder.setTitle(R.string.info_dialog_soldierselect);
 
         // Do we have items to show?
-        if (personaId == null) {
+        if (mPersonaId == null) {
 
             // Init
-            personaId = new long[profileData.getNumPersonas()];
-            personaName = new String[profileData.getNumPersonas()];
+            mPersonaId = new long[mProfileData.getNumPersonas()];
+            mPersonaName = new String[mProfileData.getNumPersonas()];
 
             // Iterate
-            for (int count = 0, max = personaId.length; count < max; count++) {
+            for (int count = 0, max = mPersonaId.length; count < max; count++) {
 
-                personaId[count] = profileData.getPersona(count).getId();
-                personaName[count] = profileData.getPersona(count).getName();
+                mPersonaId[count] = mProfileData.getPersona(count).getId();
+                mPersonaName[count] = mProfileData.getPersona(count).getName();
 
             }
 
@@ -454,26 +454,27 @@ public class AssignmentActivity extends Activity {
         // Set it up
         builder.setSingleChoiceItems(
 
-                personaName, -1, new DialogInterface.OnClickListener() {
+                mPersonaName, -1, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int item) {
 
-                        if (personaId[item] != selectedPersona) {
+                        if (mPersonaId[item] != mSelectedPersona) {
 
                             // Update it
-                            selectedPersona = personaId[item];
+                            mSelectedPersona = mPersonaId[item];
 
                             // Store selectedPersonaPos
-                            selectedPosition = item;
+                            mSelectedPosition = item;
 
                             // Update the layout
-                            setupList(assignments.get(selectedPersona));
+                            setupList(mAssignments.get(mSelectedPersona));
 
                             // Save it
-                            if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
-                                SharedPreferences.Editor spEdit = sharedPreferences.edit();
-                                spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
-                                spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);
+                            if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
+                                SharedPreferences.Editor spEdit = mSharedPreferences.edit();
+                                spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, mSelectedPersona);
+                                spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS,
+                                        mSelectedPosition);
                                 spEdit.commit();
                             }
 

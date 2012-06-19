@@ -16,7 +16,7 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class ProfileSettingsActivity extends PreferenceActivity {
 
     // Attributes
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -26,11 +26,11 @@ public class ProfileSettingsActivity extends PreferenceActivity {
         // TODO query battlelog for current set of settings
 
         // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         PublicUtils.restoreCookies(this, icicle);
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Let's put 'em there
         addPreferencesFromResource(R.xml.profile_settings_view);
@@ -73,10 +73,10 @@ public class ProfileSettingsActivity extends PreferenceActivity {
         super.onResume();
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
 
     }
 

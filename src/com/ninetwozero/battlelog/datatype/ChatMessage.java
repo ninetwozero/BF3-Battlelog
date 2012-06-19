@@ -17,34 +17,36 @@ package com.ninetwozero.battlelog.datatype;
 public class ChatMessage {
 
     // Attributes
-    private long chatId, timestamp;
-    private String sender, message;
+    private long mChatId;
+    private long mTimestamp;
+    private String mSender;
+    private String mMessage;
 
     // Construct
     public ChatMessage(long c, long t, String s, String m) {
 
-        this.chatId = c;
-        this.timestamp = t;
-        this.sender = s;
-        this.message = m;
+        mChatId = c;
+        mTimestamp = t;
+        mSender = s;
+        mMessage = m;
 
     }
 
     // Getters
     public long getChatId() {
-        return this.chatId;
+        return mChatId;
     }
 
     public long getTimestamp() {
-        return this.timestamp;
+        return mTimestamp;
     }
 
     public String getSender() {
-        return this.sender;
+        return mSender;
     }
 
     public String getMessage() {
-        return this.message;
+        return mMessage;
     }
 
 }

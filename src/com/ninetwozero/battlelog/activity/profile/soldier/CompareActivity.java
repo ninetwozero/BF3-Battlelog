@@ -40,11 +40,11 @@ import com.ninetwozero.battlelog.datatype.ProfileData;
 public class CompareActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Fragment related
-    private ProfileStatsFragment[] fragmentStats;
-    private ProfileStatsCompareFragment fragmentCompare;
+    private ProfileStatsFragment[] mFragmentStats;
+    private ProfileStatsCompareFragment mFragmentCompare;
 
     // Misc
-    private ProfileData[] profileData;
+    private ProfileData[] mProfileData;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -53,7 +53,7 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
         super.onCreate(icicle);
 
         // Let's set them straight
-        profileData = new ProfileData[] {
+        mProfileData = new ProfileData[] {
 
                 (ProfileData) getIntent().getParcelableExtra("profile1"),
                 (ProfileData) getIntent().getParcelableExtra("profile2")
@@ -77,8 +77,8 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
 
     public void reload() {
 
-        fragmentStats[0].reload();
-        fragmentStats[1].reload();
+        mFragmentStats[0].reload();
+        mFragmentStats[1].reload();
 
     }
 
@@ -108,11 +108,11 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
 
             if (mViewPager.getCurrentItem() == 0) {
 
-                return fragmentStats[0].handleSelectedOption(item);
+                return mFragmentStats[0].handleSelectedOption(item);
 
             } else if (mViewPager.getCurrentItem() == 2) {
 
-                return fragmentStats[1].handleSelectedOption(item);
+                return mFragmentStats[1].handleSelectedOption(item);
 
             }
 
@@ -156,23 +156,24 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
 
             // Add them to the list
             mListFragments = new ArrayList<Fragment>();
-            fragmentStats = new ProfileStatsFragment[2];
-            mListFragments.add(fragmentStats[0] = (ProfileStatsFragment) Fragment.instantiate(
+            mFragmentStats = new ProfileStatsFragment[2];
+            mListFragments.add(mFragmentStats[0] = (ProfileStatsFragment) Fragment.instantiate(
                     this, ProfileStatsFragment.class.getName()));
-            mListFragments.add(fragmentCompare = (ProfileStatsCompareFragment) Fragment
+            mListFragments.add(mFragmentCompare = (ProfileStatsCompareFragment) Fragment
                     .instantiate(
                             this,
                             ProfileStatsCompareFragment.class.getName()));
-            mListFragments.add(fragmentStats[1] = (ProfileStatsFragment) Fragment.instantiate(this,
+            mListFragments.add(mFragmentStats[1] = (ProfileStatsFragment) Fragment.instantiate(
+                    this,
                     ProfileStatsFragment.class.getName()));
 
             // Add the profileData
-            fragmentStats[0].setProfileData(profileData[0]);
-            fragmentStats[1].setProfileData(profileData[1]);
+            mFragmentStats[0].setProfileData(mProfileData[0]);
+            mFragmentStats[1].setProfileData(mProfileData[1]);
 
             // Make them know they're about to compare
-            fragmentStats[0].setComparing(true);
-            fragmentStats[1].setComparing(true);
+            mFragmentStats[0].setComparing(true);
+            mFragmentStats[1].setComparing(true);
 
             // Get the ViewPager
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -183,8 +184,8 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
 
                     mFragmentManager,
                     new String[] {
-                            profileData[0].getUsername(), "Compare",
-                            profileData[1].getUsername()
+                            mProfileData[0].getUsername(), "Compare",
+                            mProfileData[1].getUsername()
                     },
                     mListFragments,
                     mViewPager,
@@ -217,11 +218,11 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
 
     public void sendToCompare(ProfileData p, Map<Long, PersonaStats> ps, long id, boolean toggle) {
 
-        fragmentCompare.showStats(
+        mFragmentCompare.showStats(
 
                 ps,
                 id,
-                p.getId() == profileData[0].getId() ? 0 : 1,
+                p.getId() == mProfileData[0].getId() ? 0 : 1,
                 toggle
 
                 );

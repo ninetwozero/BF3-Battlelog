@@ -55,18 +55,19 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class DashboardActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // COM-related
-    private SlidingDrawer slidingDrawer;
-    private TextView slidingDrawerHandle;
+    private SlidingDrawer mSlidingDrawer;
+    private TextView mSlidingDrawerHandle;
 
     // Fragment related
-    private SwipeyTabs tabsCom;
-    private SwipeyTabsPagerAdapter pagerAdapterCom;
-    private List<Fragment> listFragmentsCom;
-    private MenuPlatoonFragment fragmentMenuPlatoon;
-    private FeedFragment fragmentFeed;
-    private ComFriendFragment fragmentComFriends;
-    private ComNotificationFragment fragmentComNotifications;
-    private ViewPager viewPager, viewPagerCom;
+    private SwipeyTabs mTabsCom;
+    private SwipeyTabsPagerAdapter mPagerAdapterCom;
+    private List<Fragment> mListFragmentsCom;
+    private MenuPlatoonFragment mFragmentMenuPlatoon;
+    private FeedFragment mFragmentFeed;
+    private ComFriendFragment mFragmentComFriends;
+    private ComNotificationFragment mFragmentComNotifications;
+    private ViewPager mViewPager;
+    private ViewPager mViewPagerCom;
     private final int VIEWPAGER_POSITION_FEED = 4;
 
     @Override
@@ -94,8 +95,8 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
     public final void init() {
 
-        slidingDrawer = (SlidingDrawer) findViewById(R.id.com_slider);
-        slidingDrawerHandle = (TextView) findViewById(R.id.com_slide_handle_text);
+        mSlidingDrawer = (SlidingDrawer) findViewById(R.id.com_slider);
+        mSlidingDrawerHandle = (TextView) findViewById(R.id.com_slide_handle_text);
 
     }
 
@@ -118,24 +119,24 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             mListFragments.add(Fragment.instantiate(
                     this,
                     MenuProfileFragment.class.getName()));
-            mListFragments.add(fragmentMenuPlatoon = (MenuPlatoonFragment) Fragment.instantiate(
+            mListFragments.add(mFragmentMenuPlatoon = (MenuPlatoonFragment) Fragment.instantiate(
                     this,
                     MenuPlatoonFragment.class.getName()));
             mListFragments.add(Fragment.instantiate(
                     this,
                     MenuForumFragment.class.getName()));
-            mListFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this,
+            mListFragments.add(mFragmentFeed = (FeedFragment) Fragment.instantiate(this,
                     FeedFragment.class.getName()));
 
             // Setup platoon tab
-            fragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
+            mFragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
 
             // Setup the feed
-            fragmentFeed.setType(FeedItem.TYPE_GLOBAL);
-            fragmentFeed.setCanWrite(true);
+            mFragmentFeed.setType(FeedItem.TYPE_GLOBAL);
+            mFragmentFeed.setCanWrite(true);
 
             // Get the ViewPager
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
+            mViewPager = (ViewPager) findViewById(R.id.viewpager);
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             // Fill the PagerAdapter & set it to the viewpager
@@ -146,51 +147,51 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
                             "NEWS", "PROFILE", "PLATOON", "FORUM", "FEED"
                     },
                     mListFragments,
-                    viewPager,
+                    mViewPager,
                     mLayoutInflater
                     );
-            viewPager.setAdapter(mPagerAdapter);
+            mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 
             // Make sure the tabs follow
-            viewPager.setOnPageChangeListener(mTabs);
-            viewPager.setOffscreenPageLimit(4);
-            viewPager.setCurrentItem(1);
+            mViewPager.setOnPageChangeListener(mTabs);
+            mViewPager.setOffscreenPageLimit(4);
+            mViewPager.setCurrentItem(1);
 
         }
 
-        if (listFragmentsCom == null) {
+        if (mListFragmentsCom == null) {
 
             // Add them to the list
-            listFragmentsCom = new ArrayList<Fragment>();
-            listFragmentsCom.add(fragmentComFriends = (ComFriendFragment) Fragment.instantiate(
+            mListFragmentsCom = new ArrayList<Fragment>();
+            mListFragmentsCom.add(mFragmentComFriends = (ComFriendFragment) Fragment.instantiate(
                     this,
                     ComFriendFragment.class.getName()));
-            listFragmentsCom.add(fragmentComNotifications = (ComNotificationFragment) Fragment
+            mListFragmentsCom.add(mFragmentComNotifications = (ComNotificationFragment) Fragment
                     .instantiate(this, ComNotificationFragment.class.getName()));
 
             // Get the ViewPager
-            viewPagerCom = (ViewPager) findViewById(R.id.viewpager_sub);
-            tabsCom = (SwipeyTabs) findViewById(R.id.swipeytabs_sub);
+            mViewPagerCom = (ViewPager) findViewById(R.id.viewpager_sub);
+            mTabsCom = (SwipeyTabs) findViewById(R.id.swipeytabs_sub);
 
             // Fill the PagerAdapter & set it to the viewpager
-            pagerAdapterCom = new SwipeyTabsPagerAdapter(
+            mPagerAdapterCom = new SwipeyTabsPagerAdapter(
 
                     mFragmentManager,
                     new String[] {
                             "FRIENDS", "NOTIFICATIONS"
                     },
-                    listFragmentsCom,
-                    viewPagerCom,
+                    mListFragmentsCom,
+                    mViewPagerCom,
                     mLayoutInflater
                     );
-            viewPagerCom.setAdapter(pagerAdapterCom);
-            tabsCom.setAdapter(pagerAdapterCom);
+            mViewPagerCom.setAdapter(mPagerAdapterCom);
+            mTabsCom.setAdapter(mPagerAdapterCom);
 
             // Make sure the tabs follow
-            viewPagerCom.setOnPageChangeListener(tabsCom);
-            viewPagerCom.setOffscreenPageLimit(1);
-            viewPagerCom.setCurrentItem(0);
+            mViewPagerCom.setOnPageChangeListener(mTabsCom);
+            mViewPagerCom.setOffscreenPageLimit(1);
+            mViewPagerCom.setCurrentItem(0);
 
         }
 
@@ -226,8 +227,8 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
     public void reload() {
 
         // Update the COM
-        fragmentComFriends.reload();
-        fragmentComNotifications.reload();
+        mFragmentComFriends.reload();
+        mFragmentComNotifications.reload();
 
     }
 
@@ -235,12 +236,12 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
 
-        if (slidingDrawer.isOpened()) {
+        if (mSlidingDrawer.isOpened()) {
 
-            switch (viewPagerCom.getCurrentItem()) {
+            switch (mViewPagerCom.getCurrentItem()) {
 
                 case 0:
-                    fragmentComFriends.createContextMenu(menu, view, menuInfo);
+                    mFragmentComFriends.createContextMenu(menu, view, menuInfo);
                     break;
 
                 default:
@@ -250,10 +251,10 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
         } else {
 
-            switch (viewPager.getCurrentItem()) {
+            switch (mViewPager.getCurrentItem()) {
 
                 case VIEWPAGER_POSITION_FEED:
-                    fragmentFeed.createContextMenu(menu, view, menuInfo);
+                    mFragmentFeed.createContextMenu(menu, view, menuInfo);
                     break;
 
                 default:
@@ -283,12 +284,12 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
         }
 
-        if (slidingDrawer.isOpened()) {
+        if (mSlidingDrawer.isOpened()) {
 
-            switch (viewPagerCom.getCurrentItem()) {
+            switch (mViewPagerCom.getCurrentItem()) {
 
                 case 0:
-                    fragmentComFriends.handleSelectedContextItem(info, item);
+                    mFragmentComFriends.handleSelectedContextItem(info, item);
                     break;
 
                 default:
@@ -298,10 +299,10 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
         } else {
 
-            switch (viewPager.getCurrentItem()) {
+            switch (mViewPager.getCurrentItem()) {
 
                 case VIEWPAGER_POSITION_FEED:
-                    return fragmentFeed.handleSelectedContextItem(info, item);
+                    return mFragmentFeed.handleSelectedContextItem(info, item);
 
                 default:
                     break;
@@ -352,7 +353,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
     public void setComLabel(String str) {
 
-        slidingDrawerHandle.setText(str);
+        mSlidingDrawerHandle.setText(str);
 
     }
 
@@ -362,14 +363,14 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
         // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-            if (slidingDrawer.isOpened()) {
+            if (mSlidingDrawer.isOpened()) {
 
-                slidingDrawer.animateClose();
+                mSlidingDrawer.animateClose();
                 return true;
 
-            } else if (viewPager.getCurrentItem() > 1) {
+            } else if (mViewPager.getCurrentItem() > 1) {
 
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+                mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
                 return true;
 
             }

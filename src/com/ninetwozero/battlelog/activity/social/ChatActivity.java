@@ -53,22 +53,22 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 public class ChatActivity extends ListActivity {
 
     // Attributes
-    private long chatId;
-    private ProfileData activeUser;
-    private ProfileData otherUser;
-    private SharedPreferences sharedPreferences;
-    private LayoutInflater layoutInflater;
+    private long mChatId;
+    private ProfileData mActiveUser;
+    private ProfileData mOtherUser;
+    private SharedPreferences mSharedPreferences;
+    private LayoutInflater mLayoutInflater;
 
     // Elements
-    private ListView listView;
-    private EditText fieldMessage;
-    private Button buttonSend;
+    private ListView mListView;
+    private EditText mFieldMessage;
+    private Button mButtonSend;
 
     // Current "last" message
-    private long latestChatResponseTimestamp;
+    private long mLatestChatResponseTimestamp;
 
     // Misc
-    private Timer timerReload;
+    private Timer mTimerReload;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -77,7 +77,7 @@ public class ChatActivity extends ListActivity {
         super.onCreate(icicle);
 
         // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         PublicUtils.restoreCookies(this, icicle);
 
         // Did we get someone to chat with?
@@ -86,34 +86,34 @@ public class ChatActivity extends ListActivity {
         }
 
         // Setup important stuff
-        PublicUtils.setupFullscreen(this, sharedPreferences);
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupFullscreen(this, mSharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
         setContentView(R.layout.chat_view);
 
         // Prepare to tango
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Let's get the other chat participant
-        activeUser = (ProfileData) getIntent().getParcelableExtra("activeUser");
-        otherUser = (ProfileData) getIntent().getParcelableExtra("otherUser");
+        mActiveUser = (ProfileData) getIntent().getParcelableExtra("activeUser");
+        mOtherUser = (ProfileData) getIntent().getParcelableExtra("otherUser");
 
         // Get the ListView
-        listView = getListView();
-        listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-        listView.setAdapter(new ChatListAdapter(this, null, activeUser.getUsername(),
-                layoutInflater));
+        mListView = getListView();
+        mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+        mListView.setAdapter(new ChatListAdapter(this, null, mActiveUser.getUsername(),
+                mLayoutInflater));
 
         // Setup the title
-        setTitle(getTitle().toString().replace("...", otherUser.getUsername()));
+        setTitle(getTitle().toString().replace("...", mOtherUser.getUsername()));
 
         // Get the elements
-        buttonSend = (Button) findViewById(R.id.button_send);
-        fieldMessage = (EditText) findViewById(R.id.field_message);
+        mButtonSend = (Button) findViewById(R.id.button_send);
+        mFieldMessage = (EditText) findViewById(R.id.field_message);
 
         // Try to get the chatid
-        new AsyncGetChatId(activeUser.getId()).execute(sharedPreferences.getString(
+        new AsyncGetChatId(mActiveUser.getId()).execute(mSharedPreferences.getString(
                 Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
@@ -124,10 +124,10 @@ public class ChatActivity extends ListActivity {
         super.onResume();
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
 
         // We need to setup the timer
         setupTimer();
@@ -169,7 +169,7 @@ public class ChatActivity extends ListActivity {
             if (results) {
 
                 setChatId(chatId);
-                buttonSend.setEnabled(true);
+                mButtonSend.setEnabled(true);
 
             }
 
@@ -195,8 +195,8 @@ public class ChatActivity extends ListActivity {
     public void onPause() {
 
         super.onPause();
-        if (timerReload != null) {
-            timerReload.cancel();
+        if (mTimerReload != null) {
+            mTimerReload.cancel();
         }
 
     }
@@ -205,13 +205,13 @@ public class ChatActivity extends ListActivity {
     public void onDestroy() {
 
         super.onDestroy();
-        new AsyncChatClose(chatId).execute();
+        new AsyncChatClose(mChatId).execute();
 
     }
 
     public void reload() {
 
-        new AsyncChatRefresh(this, listView).execute(otherUser.getId());
+        new AsyncChatRefresh(this, mListView).execute(mOtherUser.getId());
 
     }
 
@@ -223,18 +223,18 @@ public class ChatActivity extends ListActivity {
             // Send it!
             new AsyncChatSend(
 
-                    this, activeUser.getId(), chatId, buttonSend, false,
-                    new AsyncChatRefresh(this, listView)
+                    this, mActiveUser.getId(), mChatId, mButtonSend, false,
+                    new AsyncChatRefresh(this, mListView)
 
             ).execute(
 
-                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
-                    fieldMessage.getText().toString()
+                    mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
+                    mFieldMessage.getText().toString()
 
                     );
 
             // Clear the field
-            fieldMessage.setText("");
+            mFieldMessage.setText("");
 
         }
 
@@ -269,7 +269,7 @@ public class ChatActivity extends ListActivity {
     }
 
     public void setChatId(long cId) {
-        this.chatId = cId;
+        this.mChatId = cId;
     }
 
     public void notifyNewPost(List<ChatMessage> cm) {
@@ -277,19 +277,19 @@ public class ChatActivity extends ListActivity {
         // Init!
         boolean hasNewResponse = false;
         boolean isFirstRun = true;
-        boolean playSound = sharedPreferences.getBoolean("battlelog_chat_sound", true);
+        boolean playSound = mSharedPreferences.getBoolean("battlelog_chat_sound", true);
 
         // Iterate
         for (int curr = cm.size() - 1, min = ((curr > 5) ? curr - 5 : 0); curr > min; curr--) {
 
             // Let's see what happens.
             ChatMessage m = cm.get(curr);
-            if (m.getSender().equals(activeUser.getUsername())
-                    && m.getTimestamp() > latestChatResponseTimestamp) {
+            if (m.getSender().equals(mActiveUser.getUsername())
+                    && m.getTimestamp() > mLatestChatResponseTimestamp) {
 
                 hasNewResponse = true;
-                isFirstRun = (latestChatResponseTimestamp == 0);
-                latestChatResponseTimestamp = m.getTimestamp();
+                isFirstRun = (mLatestChatResponseTimestamp == 0);
+                mLatestChatResponseTimestamp = m.getTimestamp();
                 break;
 
             }
@@ -317,13 +317,13 @@ public class ChatActivity extends ListActivity {
         } else if (isFirstRun) {
 
             // Scroll down to the bottom
-            listView.post(
+            mListView.post(
 
                     new Runnable() {
 
                         @Override
                         public void run() {
-                            listView.setSelection(listView.getAdapter().getCount() - 1);
+                            mListView.setSelection(mListView.getAdapter().getCount() - 1);
 
                         }
 
@@ -338,11 +338,11 @@ public class ChatActivity extends ListActivity {
     public void setupTimer() {
 
         // Do we have a connection?
-        if (PublicUtils.isNetworkAvailable(this) && timerReload == null) {
+        if (PublicUtils.isNetworkAvailable(this) && mTimerReload == null) {
 
             // Let's reload the chat will we?
-            timerReload = new Timer();
-            timerReload
+            mTimerReload = new Timer();
+            mTimerReload
                     .schedule(
 
                             new TimerTask() {
@@ -353,7 +353,7 @@ public class ChatActivity extends ListActivity {
                                     reload();
 
                                 }
-                            }, 0, sharedPreferences.getInt(Constants.SP_BL_INTERVAL_CHAT,
+                            }, 0, mSharedPreferences.getInt(Constants.SP_BL_INTERVAL_CHAT,
                                     25) * 1000
 
                     );
