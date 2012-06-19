@@ -140,8 +140,10 @@ public class AssignmentActivity extends Activity {
 
     }
 
-    public void setupList(List<AssignmentData> data) {
+    public void showAssignments(List<AssignmentData> data) {
 
+        /* TODO: TableLayout is OK for LinearAssignments, but Premium need other layout + divider inbetween sections*/
+        
         // Do we have the TableLayout?
         if (mTableAssignments == null) {
 
@@ -290,7 +292,7 @@ public class AssignmentActivity extends Activity {
             }
 
             // Do actual stuff
-            setupList(mAssignments.get(mSelectedPersona));
+            showAssignments(mAssignments.get(mSelectedPersona));
 
             // Go go go
             if (progressDialog != null) {
@@ -467,7 +469,7 @@ public class AssignmentActivity extends Activity {
                             mSelectedPosition = item;
 
                             // Update the layout
-                            setupList(mAssignments.get(mSelectedPersona));
+                            showAssignments(mAssignments.get(mSelectedPersona));
 
                             // Save it
                             if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {

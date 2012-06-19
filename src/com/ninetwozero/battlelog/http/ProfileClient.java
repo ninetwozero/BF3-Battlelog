@@ -1121,6 +1121,8 @@ public class ProfileClient extends DefaultClient {
     public HashMap<Long, List<AssignmentData>> getAssignments(Context c)
             throws WebsiteHandlerException {
 
+        /* TODO: AssignmentDataWrapper like UnlockDataWrapper */
+        
         try {
 
             // Attributes
