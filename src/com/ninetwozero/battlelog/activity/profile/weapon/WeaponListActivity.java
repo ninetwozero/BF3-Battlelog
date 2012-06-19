@@ -141,13 +141,26 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
     private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
         // Attributes
-        private Context context;
-
+        private Context mContext;
+	private ProgressDialog mProgressDialog;
+        
         // Construct
         public AsyncRefresh(Context c) {
 
-            context = c;
+            mContext = c;
 
+        }
+        
+        @Override
+        protected void onPreExecute() {
+        	
+		if(items == null ) {
+			mProgressDialog = new ProgressDialog(mContext);
+			mProgressDialog.setTitle(mContext.getString(R.string.general_wait));
+	            	mProgressDialog.setMessage(mContext.getString(R.string.general_downloading));
+	            	mProgressDialog.show();
+        	}
+        	
         }
 
         @Override
@@ -168,7 +181,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         @Override
         protected void onPostExecute(Boolean result) {
 
-            if (context != null) {
+            if (mContext != null) {
 
                 if (result) {
 
@@ -177,10 +190,14 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
 
                 } else {
 
-                    Toast.makeText(context, R.string.general_no_data, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.general_no_data, Toast.LENGTH_SHORT).show();
 
                 }
-
+                
+                if( mProgressDialog != null ) {
+                	mProgressDialog.dismiss();
+		}
+		
             }
         }
 
