@@ -71,7 +71,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
-        
+
         // Let's inflate & return the view
         View view = mLayoutInflater.inflate(R.layout.tab_content_profile_overview,
                 container, false);
@@ -365,7 +365,8 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 // Let's try something
                 if (mProfileData.getNumPersonas() == 0) {
 
-                    mProfileData = ProfileClient.resolveFullProfileDataFromProfileData(mProfileData);
+                    mProfileData = ProfileClient
+                            .resolveFullProfileDataFromProfileData(mProfileData);
 
                 }
 

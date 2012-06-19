@@ -455,7 +455,7 @@ public class PublicUtils {
         if (context instanceof MainActivity) {
 
             return;
-            
+
         }
 
         // Let's set "active" against the website

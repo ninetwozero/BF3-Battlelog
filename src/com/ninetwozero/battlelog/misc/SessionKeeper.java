@@ -88,7 +88,7 @@ public final class SessionKeeper {
         if ("".equals(cookie)) {
 
             return null;
-            
+
         } else {
 
             return new ProfileData.Builder(

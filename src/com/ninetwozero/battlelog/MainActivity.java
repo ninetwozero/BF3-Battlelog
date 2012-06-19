@@ -344,9 +344,9 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
                 }
 
             } else {
-                
+
                 return;
-                
+
             }
 
             // Clear the pwd-field

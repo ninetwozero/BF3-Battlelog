@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.datatype.ForumData;
 import com.ninetwozero.battlelog.datatype.ForumPostData;
@@ -612,7 +611,7 @@ public class ForumClient extends DefaultClient {
                     RequestHandler.HEADER_AJAX
 
                     );
-            
+
             // Let's parse it!
             JSONObject contextObject = new JSONObject(httpContent).getJSONObject("context");
             JSONArray postArray = contextObject.getJSONArray("posts");

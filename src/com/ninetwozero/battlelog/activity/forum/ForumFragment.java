@@ -85,7 +85,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
         mSharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
-        
+
         // Let's inflate & return the view
         View view = mLayoutInflater.inflate(R.layout.forum_view,
                 container, false);

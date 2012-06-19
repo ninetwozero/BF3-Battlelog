@@ -48,7 +48,7 @@ public class AboutActivity extends CustomFragmentActivity implements DefaultFrag
 
     public final void init() {
     }
-    
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
 
@@ -103,13 +103,13 @@ public class AboutActivity extends CustomFragmentActivity implements DefaultFrag
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
 
         // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK && (mViewPager.getCurrentItem() > 0) ) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && (mViewPager.getCurrentItem() > 0)) {
 
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
             return true;
 
         }
-        
+
         return super.onKeyDown(keyCode, event);
 
     }

@@ -1,3 +1,4 @@
+
 package com.ninetwozero.battlelog.loader;
 
 public class CompletedTask {

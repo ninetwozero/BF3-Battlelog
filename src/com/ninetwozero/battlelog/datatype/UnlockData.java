@@ -98,12 +98,12 @@ public class UnlockData implements Parcelable {
 
             return DataBank.getVehicleTitle(mParentIdentifier);
 
-        } else { 
-        
+        } else {
+
             return "";
-            
+
         }
-        
+
     }
 
     public String getTitle(Context c) {

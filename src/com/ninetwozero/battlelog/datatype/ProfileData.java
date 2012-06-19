@@ -167,7 +167,7 @@ public class ProfileData implements Parcelable {
         // Required params
         private final long mId;
         private final String mUsername;
-        
+
         // Optional params
         private String mGravatarHash;
         private PersonaData[] mPersona;

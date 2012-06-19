@@ -159,9 +159,10 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
             fragmentStats = new ProfileStatsFragment[2];
             mListFragments.add(fragmentStats[0] = (ProfileStatsFragment) Fragment.instantiate(
                     this, ProfileStatsFragment.class.getName()));
-            mListFragments.add(fragmentCompare = (ProfileStatsCompareFragment) Fragment.instantiate(
-                    this,
-                    ProfileStatsCompareFragment.class.getName()));
+            mListFragments.add(fragmentCompare = (ProfileStatsCompareFragment) Fragment
+                    .instantiate(
+                            this,
+                            ProfileStatsCompareFragment.class.getName()));
             mListFragments.add(fragmentStats[1] = (ProfileStatsFragment) Fragment.instantiate(this,
                     ProfileStatsFragment.class.getName()));
 

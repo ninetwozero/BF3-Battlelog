@@ -37,7 +37,7 @@ public final class BBCodeUtils {
     public static final String PATTERN_UNDERLINE = "__([^\\_]+)__";
     public static final String PATTERN_STRIKE = "--([^\\-]+)--";
     public static final String PATTERN_ITALIC = "_-([^\\\"_\\-\\\"]+)-_";
-    
+
     /*
      * Author: Karl Lindmark
      * @param String The content to be bbcoded

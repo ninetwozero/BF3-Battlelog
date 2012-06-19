@@ -48,7 +48,7 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
         // Set our attributes
         mContext = getActivity();
         mLayoutInflater = inflater;
-        
+
         // Let's inflate & return the view
         final View view = mLayoutInflater.inflate(R.layout.tab_content_main_credits,
                 container, false);

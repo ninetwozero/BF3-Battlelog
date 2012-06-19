@@ -309,7 +309,7 @@ public class PersonaStats implements Parcelable {
     }
 
     public String resolvePlatformId() {
-        switch ((int)platformId) {
+        switch ((int) platformId) {
             case 0:
             case 1:
                 return "[PC]";
@@ -385,22 +385,22 @@ public class PersonaStats implements Parcelable {
 
         return new Object[] {
 
-                accountName , personaName , rankTitle ,
-                personaId , userId , platformId ,
-                rankId , pointsThisLvl ,
-                pointsNextLvl , timePlayed ,
-                numKills , numAssists ,
-                numVehicles , numVehicleAssists ,
-                numHeals , numRevives , numRepairs ,
-                numResupplies , numDeaths ,
-                numWins , numLosses , kdRatio ,
-                accuracy , longestHS , longestKS ,
-                skill , scorePerMinute ,
-                scoreAssault , scoreEngineer ,
-                scoreSupport , scoreRecon ,
-                scoreVehicle , scoreCombat ,
-                scoreAwards , scoreUnlocks ,
-                scoreTotal 
+                accountName, personaName, rankTitle,
+                personaId, userId, platformId,
+                rankId, pointsThisLvl,
+                pointsNextLvl, timePlayed,
+                numKills, numAssists,
+                numVehicles, numVehicleAssists,
+                numHeals, numRevives, numRepairs,
+                numResupplies, numDeaths,
+                numWins, numLosses, kdRatio,
+                accuracy, longestHS, longestKS,
+                skill, scorePerMinute,
+                scoreAssault, scoreEngineer,
+                scoreSupport, scoreRecon,
+                scoreVehicle, scoreCombat,
+                scoreAwards, scoreUnlocks,
+                scoreTotal
 
         };
 

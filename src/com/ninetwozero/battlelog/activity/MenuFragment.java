@@ -101,7 +101,7 @@ public class MenuFragment extends Fragment implements DefaultFragment {
 
             }
         };
-        
+
         for (int key : MENU_INTENTS.keySet()) {
 
             view.findViewById(key).setOnClickListener(onClickListener);

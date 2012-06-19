@@ -102,11 +102,11 @@ public class CountryPreference extends DialogPreference {
 
     private String countryValue() {
         if (validOrEmpty()) {
-         
+
             return keyToValue();
-            
+
         } else {
-            
+
             Toast toast = Toast.makeText(getContext(), toastMessage(), Toast.LENGTH_LONG);
             toast.show();
             return mCountryPreference;

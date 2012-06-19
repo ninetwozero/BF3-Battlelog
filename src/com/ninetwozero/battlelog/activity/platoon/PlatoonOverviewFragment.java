@@ -72,7 +72,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
-        
+
         // Let's inflate & return the view
         View view = mLayoutInflater.inflate(R.layout.tab_content_platoon_overview,
                 container, false);

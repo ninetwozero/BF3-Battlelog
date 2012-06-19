@@ -17,7 +17,6 @@ package com.ninetwozero.battlelog.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.misc.Constants;
 
 public class FriendListAdapter extends BaseAdapter {
 
@@ -104,7 +102,7 @@ public class FriendListAdapter extends BaseAdapter {
 
         // Get the current item
         ProfileData currentProfile = getItem(position);
-        
+
         // Let's see what we found
         if (getItemViewType(position) == 2) {
 

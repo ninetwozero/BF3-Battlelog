@@ -273,7 +273,8 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
             // Set the text
             mTextPlatoon.setText(mPlatoonData.get(mSelectedPosition).getName() + "["
                     + mPlatoonData.get(mSelectedPosition).getTag() + "]");
-            mImagePlatoon.setImageBitmap(BitmapFactory.decodeFile(PublicUtils.getCachePath(mContext)
+            mImagePlatoon.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
+                    .getCachePath(mContext)
                     + mPlatoonData.get(mSelectedPosition).getImage()));
 
         }

@@ -137,7 +137,7 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
             mTableTopList.removeAllViews();
 
         }
-        
+
         // Create a table row
         TableRow cacheTableRow = null;
 

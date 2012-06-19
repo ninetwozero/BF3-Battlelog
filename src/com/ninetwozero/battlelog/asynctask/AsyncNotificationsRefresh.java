@@ -70,7 +70,7 @@ public class AsyncNotificationsRefresh extends
         // Fill the listviews!!
         if (listNotifications != null) {
 
-            if (notifications.isEmpty() ) {
+            if (notifications.isEmpty()) {
 
                 // Do wee need to think about the listview?
                 if (status.getVisibility() == View.GONE) {
@@ -81,7 +81,7 @@ public class AsyncNotificationsRefresh extends
                 }
 
             } else {
-                
+
                 // Set the adapter
                 if (status.getVisibility() != View.GONE) {
                     status.setVisibility(View.GONE);

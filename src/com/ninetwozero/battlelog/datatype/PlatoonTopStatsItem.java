@@ -51,11 +51,11 @@ public class PlatoonTopStatsItem implements Parcelable {
     }
 
     public boolean hasProfile() {
-        
+
         return getProfile() != null;
-        
+
     }
-    
+
     public ProfileData getProfile() {
         return this.profile;
     }

@@ -69,4 +69,3 @@ public class VehicleType implements Parcelable {
     }
 
 }
-

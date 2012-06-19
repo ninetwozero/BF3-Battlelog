@@ -61,7 +61,7 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
         context = getActivity();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         layoutInflater = inflater;
-        
+
         // Let's inflate & return the view
         View view = layoutInflater.inflate(R.layout.tab_content_com_notifications,
                 container, false);

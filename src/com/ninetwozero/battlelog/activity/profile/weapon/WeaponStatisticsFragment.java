@@ -39,7 +39,8 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
     private int mViewPagerPosition;
 
     // Elements
-    private TextView mTextKills, mTextHS, mTextSF, mTextSH, mTextAccuracy, mTextTE, mTextSS, mTextSSP;
+    private TextView mTextKills, mTextHS, mTextSF, mTextSH, mTextAccuracy, mTextTE, mTextSS,
+            mTextSSP;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,13 +108,13 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
 
     public void show(WeaponStats w) {
 
-        mTextKills.setText(String.valueOf(w.getKills() ));
-        mTextHS.setText(String.valueOf(w.getHeadshots() ));
-        mTextSF.setText(String.valueOf(w.getShotsFired() ));
-        mTextSH.setText(String.valueOf(w.getShotsHit() ));
+        mTextKills.setText(String.valueOf(w.getKills()));
+        mTextHS.setText(String.valueOf(w.getHeadshots()));
+        mTextSF.setText(String.valueOf(w.getShotsFired()));
+        mTextSH.setText(String.valueOf(w.getShotsHit()));
         mTextAccuracy.setText((Math.round(w.getAccuracy() * 1000) / 10.0) + "%");
         mTextTE.setText(PublicUtils.timeToLiteral(w.getTimeEquipped()));
-        mTextSS.setText(String.valueOf(w.getServiceStars() ));
+        mTextSS.setText(String.valueOf(w.getServiceStars()));
         mTextSSP.setText(String.valueOf(w.getServiceStarProgress()));
 
     }

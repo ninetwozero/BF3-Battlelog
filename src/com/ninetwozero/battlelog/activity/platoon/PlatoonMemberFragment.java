@@ -314,7 +314,8 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
                     Toast.makeText(mContext, R.string.info_platoon_member_kicking,
                             Toast.LENGTH_SHORT).show();
-                    new AsyncPlatoonMemberManagement(mContext, data.getId(), mPlatoonData).execute();
+                    new AsyncPlatoonMemberManagement(mContext, data.getId(), mPlatoonData)
+                            .execute();
 
                 } else if (item.getItemId() == 3) {
 

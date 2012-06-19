@@ -118,8 +118,9 @@ public class PlatoonInviteActivity extends ListActivity {
 
         if (v.getId() == R.id.button_ok) {
 
-            new AsyncPlatoonMemberInvite(this, mSelectedIds, mPlatoonData).execute(mSharedPreferences
-                    .getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+            new AsyncPlatoonMemberInvite(this, mSelectedIds, mPlatoonData)
+                    .execute(mSharedPreferences
+                            .getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
         } else if (v.getId() == R.id.button_cancel) {
 

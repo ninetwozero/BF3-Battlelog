@@ -124,7 +124,7 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
         // ASYNC!!!
         mFragmentForum.reload();
         mFragmentForumThread.reload();
-        
+
     }
 
     @Override
@@ -220,10 +220,10 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
 
-        if( mViewPager.getCurrentItem() == 2 ) {
-            
+        if (mViewPager.getCurrentItem() == 2) {
+
             mFragmentForumThread.createContextMenu(menu, view, menuInfo);
-            
+
         }
 
     }
