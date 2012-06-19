@@ -1,10 +1,10 @@
 
 package com.ninetwozero.battlelog.preference;
 
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.DATE_FORMAT_VALUES;
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.DATE_PATTERNS;
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.TIME_FORMATS;
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.TIME_FORMAT_VALUES;
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.DATE_FORMAT_VALUES;
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.DATE_PATTERNS;
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.TIME_FORMATS;
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.TIME_FORMAT_VALUES;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

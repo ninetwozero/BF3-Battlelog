@@ -16,3 +16,6 @@ target
 .settings
 .classpath
 .project
+
+# PMD #
+reports

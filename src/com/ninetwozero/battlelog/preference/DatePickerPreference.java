@@ -1,7 +1,7 @@
 
 package com.ninetwozero.battlelog.preference;
 
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.PROFILE_INFO_BIRTHDAY;
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.PROFILE_INFO_BIRTHDAY;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,9 +20,9 @@ import android.widget.DatePicker;
 
 public class DatePickerPreference extends DialogPreference implements
         DatePicker.OnDateChangedListener {
-    private DatePicker datePicker;
-    private Date pickedDate;
-    private Date today;
+    private DatePicker mDatePicker;
+    private Date mPickedDate;
+    private Date mToday;
 
     public DatePickerPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -41,34 +41,35 @@ public class DatePickerPreference extends DialogPreference implements
 
     @Override
     protected View onCreateDialogView() {
-        this.datePicker = new DatePicker(getContext());
+        this.mDatePicker = new DatePicker(getContext());
         Calendar calendar = Calendar.getInstance();
-        datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+        mDatePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH), this);
         setToday();
-        return datePicker;
+        return mDatePicker;
     }
 
     @Override
     public void onDateChanged(DatePicker datePicker, int year, int month, int day) {
         Calendar selected = new GregorianCalendar(year, month, day);
-        pickedDate = new Date(selected.getTimeInMillis());
+        mPickedDate = new Date(selected.getTimeInMillis());
     }
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
         super.onClick(dialog, which);
-        datePicker.clearFocus();
-        onDateChanged(datePicker, datePicker.getYear(), datePicker.getMonth(),
-                datePicker.getDayOfMonth());
+        mDatePicker.clearFocus();
+        onDateChanged(mDatePicker, mDatePicker.getYear(), mDatePicker.getMonth(),
+                mDatePicker.getDayOfMonth());
         onDialogClosed(which == DialogInterface.BUTTON1);
     }
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
-        if (!positiveResult)
-            return;
-        sharedPreferences();
+        if (!positiveResult) {
+            sharedPreferences();
+        }
+
         super.onDialogClosed(positiveResult);
     }
 
@@ -78,7 +79,7 @@ public class DatePickerPreference extends DialogPreference implements
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
-        today = new Date(c.getTimeInMillis());
+        mToday = new Date(c.getTimeInMillis());
     }
 
     private SimpleDateFormat formatter() {
@@ -95,10 +96,10 @@ public class DatePickerPreference extends DialogPreference implements
     private String getDate() {
         // return dash "-" as this is default value of the YEAR, MONTH, DAY drop
         // downs on the website
-        return dateInPast() ? formatter().format(pickedDate) : "-";
+        return dateInPast() ? formatter().format(mPickedDate) : "-";
     }
 
     private boolean dateInPast() {
-        return pickedDate.getTime() < today.getTime();
+        return mPickedDate.getTime() < mToday.getTime();
     }
 }

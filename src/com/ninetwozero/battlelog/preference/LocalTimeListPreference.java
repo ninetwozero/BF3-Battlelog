@@ -1,7 +1,7 @@
 
 package com.ninetwozero.battlelog.preference;
 
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.LOCAL_TIME_VALUES;
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.LOCAL_TIME_VALUES;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,17 +71,17 @@ public class LocalTimeListPreference extends ListPreference {
     }
 
     private int initializeIndex() {
-        return timeSharedPreference() != -1 ? timeSharedPreference() : indexFromTimeZone();
+        return timeSharedPreference() == -1 ? indexFromTimeZone() : timeSharedPreference();
     }
 
     private int indexFromTimeZone() {
         TimeZone zone = TimeZone.getDefault();
-        return indexOf("" + zone.getRawOffset() / MILLISECONDS_TO_MINUTE);
+        return indexOf(String.valueOf(zone.getRawOffset() / MILLISECONDS_TO_MINUTE));
     }
 
     private int indexOf(CharSequence value) {
         List<CharSequence> valuesList = Arrays.asList(LOCAL_TIME_VALUES);
-        return valuesList.indexOf(value) != -1 ? valuesList.indexOf(value) : 0;
+        return valuesList.indexOf(value) == -1 ? 0 : valuesList.indexOf(value);
     }
 
     private int timeSharedPreference() {

@@ -1,8 +1,8 @@
 
 package com.ninetwozero.battlelog.preference;
 
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.COUNTRY;
-import static com.ninetwozero.battlelog.datatypes.ProfileSettings.PROFILE_INFO_COUNTRY;
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.COUNTRY;
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.PROFILE_INFO_COUNTRY;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,9 +24,9 @@ import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 
 public class CountryPreference extends DialogPreference {
-    private AutoCompleteTextView textView;
-    private String countryPreference;
-    private CountryValidator validator;
+    private AutoCompleteTextView mTextView;
+    private String mCountryPreference;
+    private CountryValidator mValidator;
 
     public CountryPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -45,21 +45,21 @@ public class CountryPreference extends DialogPreference {
 
     @Override
     protected View onCreateDialogView() {
-        countryPreference = countryPreference();
+        mCountryPreference = countryPreference();
         textView();
-        return textView;
+        return mTextView;
     }
 
     private void textView() {
-        textView = new AutoCompleteTextView(getContext());
-        if (countryPreference.length() == 0) {
-            textView.setHint(getContext().getString(R.string.country_hint));
+        mTextView = new AutoCompleteTextView(getContext());
+        if (mCountryPreference.length() == 0) {
+            mTextView.setHint(getContext().getString(R.string.country_hint));
         } else {
-            textView.setText(valueToKey(countryPreference));
+            mTextView.setText(valueToKey(mCountryPreference));
         }
-        textView.setAdapter(countryAdapter());
-        validator = new CountryValidator();
-        textView.setValidator(validator);
+        mTextView.setAdapter(countryAdapter());
+        mValidator = new CountryValidator();
+        mTextView.setValidator(mValidator);
     }
 
     @Override
@@ -101,18 +101,21 @@ public class CountryPreference extends DialogPreference {
     }
 
     private String countryValue() {
-        if (!validOrEmpty()) {
+        if (validOrEmpty()) {
+
+            return keyToValue();
+
+        } else {
+
             Toast toast = Toast.makeText(getContext(), toastMessage(), Toast.LENGTH_LONG);
             toast.show();
-            return countryPreference;
-        } else {
-            return keyToValue();
+            return mCountryPreference;
         }
     }
 
     private boolean validOrEmpty() {
-        return validator.isValid(textView.getText().toString())
-                || textView.getText().toString().length() == 0;
+        return mValidator.isValid(mTextView.getText().toString())
+                || mTextView.getText().toString().length() == 0;
     }
 
     private String keyToValue() {
@@ -120,7 +123,7 @@ public class CountryPreference extends DialogPreference {
     }
 
     private String stringToKey() {
-        String entry = textView.getText().toString();
+        String entry = mTextView.getText().toString();
         for (String country : countriesList()) {
             if (country.equalsIgnoreCase(entry)) {
                 return country;
