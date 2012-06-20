@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.AssignmentData;
+import com.ninetwozero.battlelog.datatype.AssignmentDataWrapper;
 import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
 import com.ninetwozero.battlelog.datatype.PersonaData;
 import com.ninetwozero.battlelog.datatype.PersonaStats;
@@ -1117,11 +1118,212 @@ public class ProfileClient extends DefaultClient {
         }
 
     }
-
-    public HashMap<Long, List<AssignmentData>> getAssignments(Context c)
+    
+    public HashMap<Long, AssignmentDataWrapper> getAssignmentsDataWrapper(Context c)
             throws WebsiteHandlerException {
 
         /* TODO: AssignmentDataWrapper like UnlockDataWrapper */
+        
+        try {
+
+            // Attributes
+            HashMap<Long, AssignmentDataWrapper> assignmentMap = new HashMap<Long, AssignmentDataWrapper>();
+            List<AssignmentData> items;
+
+            for (int count = 0, maxCount = mProfileData.getNumPersonas(); count < maxCount; count++) {
+
+                // Init
+                items = new ArrayList<AssignmentData>();
+
+                // Get the JSON!
+                String httpContent = mRequestHandler.get(
+
+                        RequestHandler.generateUrl(
+
+                                URL_ASSIGNMENTS,
+                                mProfileData.getPersona(count).getName(),
+                                mProfileData.getPersona(count).getId(),
+                                mProfileData.getId(),
+                                mProfileData.getPersona(count).getPlatformId()
+
+                                ),
+                        RequestHandler.HEADER_AJAX
+
+                        );
+
+                // Parse the JSON!
+                JSONObject topLevel = new JSONObject(httpContent).getJSONObject("data");
+                if (topLevel.isNull("missionTrees")) {
+
+                    assignmentMap.put(mProfileData.getPersona(count).getId(), new AssignmentDataWrapper());
+                    continue;
+
+                }
+
+                JSONObject missionTrees = topLevel.getJSONObject("missionTrees");
+                JSONArray missionNames = missionTrees.names();
+                String[] missionIds = new String[missionNames.length()];
+
+                for (int i = 0, max = missionIds.length; i < max; i++) {
+
+                    missionIds[i] = String.valueOf(missionNames.get(i));
+
+                }
+
+                for (String missionId : missionIds) {
+
+                    JSONArray missionLines = missionTrees.getJSONObject(missionId)
+                            .getJSONArray("missionLines");
+                    int numCurrentAssignment = 0;
+                    for (int i = 0, max = missionLines.length(); i < max; i++) {
+
+                        // Let's see if we need to tell the dev
+                        if (max > Constants.ASSIGNMENT_RESOURCES_SCHEMATICS.length) {
+
+                            Toast.makeText(
+
+                                    c, c.getString(R.string.info_assignments_new_unknown),
+                                    Toast.LENGTH_SHORT
+
+                                    ).show();
+
+                            break;
+                        }
+
+                        // Get the JSONObject per loop
+                        JSONArray missions = missionLines.getJSONObject(i)
+                                .getJSONArray("missions");
+                        for (int missionCounter = 0, missionCount = missions
+                                .length(); missionCounter < missionCount; missionCounter++) {
+
+                            JSONObject assignment = missions
+                                    .getJSONObject(missionCounter);
+                            JSONArray criteriasJSON = assignment
+                                    .getJSONArray("criterias");
+                            JSONArray dependenciesJSON = assignment
+                                    .getJSONArray("dependencies");
+                            JSONArray unlocksJSON = assignment
+                                    .getJSONArray("unlocks");
+
+                            // Init
+                            List<AssignmentData.Objective> criterias = new ArrayList<AssignmentData.Objective>();
+                            List<AssignmentData.Dependency> dependencies = new ArrayList<AssignmentData.Dependency>();
+                            List<AssignmentData.Unlock> unlocks = new ArrayList<AssignmentData.Unlock>();
+
+                            // Alright, let's do this
+                            for (int assignmentCounter = 0, assignmentCount = criteriasJSON
+                                    .length(); assignmentCounter < assignmentCount; assignmentCounter++) {
+
+                                // Get the current item
+                                JSONObject currentItem = criteriasJSON
+                                        .getJSONObject(assignmentCounter);
+
+                                // New object!
+                                criterias.add(
+
+                                        new AssignmentData.Objective(
+
+                                                currentItem.getDouble("actualValue"), currentItem
+                                                        .getDouble("completionValue"), currentItem
+                                                        .getString("statCode"), currentItem
+                                                        .getString("paramX"), currentItem
+                                                        .getString("paramY"), currentItem
+                                                        .getString("descriptionID"), currentItem
+                                                        .getString("unit")
+
+                                        )
+
+                                        );
+
+                            }
+
+                            // Alright, let's do this
+                            for (int counter = 0, maxCounter = dependenciesJSON
+                                    .length(); counter < maxCounter; counter++) {
+
+                                // Get the current item
+                                JSONObject currentItem = dependenciesJSON
+                                        .getJSONObject(counter);
+
+                                // New object!
+                                dependencies.add(
+
+                                        new AssignmentData.Dependency(
+
+                                                currentItem.getInt("count"), currentItem
+                                                        .getString("code")
+
+                                        )
+
+                                        );
+
+                            }
+
+                            // Alright, let's do this
+                            for (int counter = 0, maxCounter = unlocksJSON.length(); counter < maxCounter; counter++) {
+
+                                // Get the current item
+                                JSONObject currentItem = unlocksJSON
+                                        .getJSONObject(counter);
+
+                                // New object!
+                                unlocks.add(
+
+                                        new AssignmentData.Unlock(
+
+                                                currentItem.getString("unlockId"), currentItem
+                                                        .getString("unlockType"), currentItem
+                                                        .getBoolean("visible")
+
+                                        )
+
+                                        );
+
+                            }
+
+                            // Add the assignment
+                            items.add(
+
+                                    new AssignmentData(
+
+                                            Constants.ASSIGNMENT_RESOURCES_SCHEMATICS[numCurrentAssignment],
+                                            Constants.ASSIGNMENT_RESOURCES_UNLOCKS[numCurrentAssignment],
+                                            assignment.getString("stringID"), assignment
+                                                    .getString("descriptionID"), assignment
+                                                    .getString("license"), criterias,
+                                            dependencies, unlocks
+
+                                    )
+
+                                    );
+
+                            // Update the digit
+                            numCurrentAssignment++;
+
+                        }
+
+                        // Add the items
+                        assignmentMap.put(mProfileData.getPersona(count).getId(), new AssignmentDataWrapper(/* TODO: ADD LISTS */));
+
+                    }
+
+                }
+
+            }
+
+            return assignmentMap;
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            throw new WebsiteHandlerException(ex.getMessage());
+
+        }
+
+    }
+
+    public HashMap<Long, List<AssignmentData>> getAssignments(Context c)
+            throws WebsiteHandlerException {
         
         try {
 
