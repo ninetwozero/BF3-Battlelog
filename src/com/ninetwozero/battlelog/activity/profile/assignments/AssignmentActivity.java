@@ -12,6 +12,11 @@
     GNU General Public License for more details.
  */
 
+/* TODO: Divide & conquer:
+ *  # Create a Fragment per "branch" in the missionTree
+ *      # Store types: LAYOUT_PAIR ; LAYOUT_TOPDOWN ; LAYOUT_TOPDOWN_LAST 
+ */
+
 package com.ninetwozero.battlelog.activity.profile.assignments;
 
 import java.util.List;
@@ -28,6 +33,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,6 +49,7 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.AssignmentData;
+import com.ninetwozero.battlelog.datatype.AssignmentDataWrapper;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.ProfileClient;
@@ -58,49 +65,40 @@ public class AssignmentActivity extends Activity {
     private SharedPreferences mSharedPreferences;
     private LayoutInflater mLayoutInflater;
     private ProfileData mProfileData;
-    private Map<Long, List<AssignmentData>> mAssignments;
+    private Map<Long, AssignmentDataWrapper> mAssignments;
     private long mSelectedPersona;
     private int mSelectedPosition;
     private long[] mPersonaId;
     private String[] mPersonaName;
+    private AssignmentData mCurrentPopupData;
 
     // Elements
     private TableLayout mTableAssignments;
-    private TextView mTextEmpty;
 
     @Override
     public void onCreate(final Bundle icicle) {
 
-        // onCreate - save the instance state
         super.onCreate(icicle);
 
         // Set sharedPreferences
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        // Setup the locale
         PublicUtils.setupFullscreen(this, mSharedPreferences);
         PublicUtils.setupSession(this, mSharedPreferences);
         PublicUtils.setupLocale(this, mSharedPreferences);
 
-        // Set the content view
         setContentView(R.layout.assignment_view);
 
-        // Get the intent
-        if (getIntent().hasExtra("profile")) {
-
-            mProfileData = (ProfileData) getIntent().getParcelableExtra(
-                    "profile");
-
-        } else {
+        if (!getIntent().hasExtra("profile")) {
 
             Toast.makeText(this, R.string.info_general_noprofile,
                     Toast.LENGTH_SHORT).show();
             finish();
 
         }
+        mProfileData = (ProfileData) getIntent().getParcelableExtra("profile");
 
-        // Let's call initActivity()
         initActivity();
 
     }
@@ -108,7 +106,7 @@ public class AssignmentActivity extends Activity {
     public void initActivity() {
 
         // Prepare to tango
-        mTextEmpty = (TextView) findViewById(R.id.text_empty);
+        mTableAssignments = (TableLayout) findViewById(R.id.table_assignments);
 
         // Let's try something out
         if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
@@ -140,34 +138,27 @@ public class AssignmentActivity extends Activity {
 
     }
 
-    public void showAssignments(List<AssignmentData> data) {
+    public void showAssignments(AssignmentDataWrapper data) {
 
-        /* TODO: TableLayout is OK for LinearAssignments, but Premium need other layout + divider inbetween sections*/
-        
-        // Do we have the TableLayout?
-        if (mTableAssignments == null) {
-
-            mTableAssignments = (TableLayout) findViewById(R.id.table_assignments);
-
-        }
-
-        // Is it empty?
-        if (data == null || data.isEmpty()) {
-
-            mTextEmpty.setVisibility(View.VISIBLE);
-            mTableAssignments.removeAllViews();
-
-        } else {
-
-            mTextEmpty.setVisibility(View.GONE);
-
-        }
+        // Init to win it
+        List<AssignmentData> b2kAssignments = data.getB2KAssignments();
+        List<AssignmentData> premiumAssignments = data.getPremiumAssignments();
+        List<AssignmentData> cqAssignments = data.getCQAssignments();
 
         // Let's clear the table
         mTableAssignments.removeAllViews();
 
-        // Loop & create
-        for (int i = 0, max = data.size(); i < max; i += 2) {
+        // Display B2K
+        displayPairsInTable(mTableAssignments, b2kAssignments);
+        displayStackedInTable(mTableAssignments, premiumAssignments);
+        displayPairsInTable(mTableAssignments, cqAssignments);
+
+    }
+
+    // Loop & create
+    public void displayPairsInTable(TableLayout table, List<AssignmentData> assignments) {
+
+        for (int i = 0, max = assignments.size(); i < max; i += 2) {
 
             // Init the elements
             TableRow tableRow = (TableRow) mLayoutInflater.inflate(
@@ -185,8 +176,8 @@ public class AssignmentActivity extends Activity {
             mTableAssignments.addView(tableRow);
 
             // Get the values
-            AssignmentData ass1 = data.get(i);
-            AssignmentData ass2 = data.get(i + 1);
+            AssignmentData ass1 = assignments.get(i);
+            AssignmentData ass2 = assignments.get(i + 1);
 
             // Set the images
             imageLeft.setImageResource(ass1.getResourceId());
@@ -201,8 +192,8 @@ public class AssignmentActivity extends Activity {
             }
 
             // Set the tags
-            imageLeft.setTag(i);
-            imageRight.setTag(i + 1);
+            imageLeft.setTag(ass1); // i
+            imageRight.setTag(ass2); // i+1
 
             // Get the progress...
             int progressValueLeft = ass1.getProgress();
@@ -213,6 +204,39 @@ public class AssignmentActivity extends Activity {
             progressLeft.setMax(100);
             progressRight.setProgress(progressValueRight);
             progressRight.setMax(100);
+
+        }
+
+    }
+
+    public void displayStackedInTable(TableLayout table, List<AssignmentData> assignments) {
+
+        for (int i = 0, max = assignments.size(); i < max; i++) {
+
+            // Get the data
+            AssignmentData assignment = assignments.get(i);
+            int progressValue = assignment.getProgress();
+
+            // Init the elements
+            TableRow tableRow = (TableRow) mLayoutInflater.inflate(
+                    R.layout.list_item_assignment_stacked, null);
+            ProgressBar progress = (ProgressBar) tableRow.findViewById(R.id.progress);
+            ImageView image = (ImageView) tableRow.findViewById(R.id.image_assignment);
+
+            // Act
+            image.setImageResource(assignment.isCompleted()
+                    ? assignment.getResourceId()
+                    : R.drawable.assignment_locked);
+
+            // ...and set the progress bars
+            progress.setProgress(progressValue);
+            progress.setMax(100);
+
+            // Set the tags
+            image.setTag(assignment);
+
+            // Add the table row
+            mTableAssignments.addView(tableRow);
 
         }
 
@@ -354,11 +378,8 @@ public class AssignmentActivity extends Activity {
 
         // Init
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        AssignmentData assignment = mAssignments.get(mSelectedPersona).get(id);
-
         View dialog = mLayoutInflater.inflate(R.layout.popup_dialog_view, null);
-        LinearLayout wrapObjectives = (LinearLayout) dialog
-                .findViewById(R.id.wrap_objectives);
+        LinearLayout wrapObjectives = (LinearLayout) dialog.findViewById(R.id.wrap_objectives);
 
         // Set the title
         builder.setCancelable(false).setPositiveButton("OK",
@@ -378,12 +399,11 @@ public class AssignmentActivity extends Activity {
         builder.setCancelable(true);
 
         // Grab the data
-        String[] assignmentTitleData = DataBank.getAssignmentTitle(assignment
-                .getId());
+        String[] assignmentTitleData = DataBank.getAssignmentTitle(mCurrentPopupData.getId());
 
         // Set the actual fields too
         ImageView imageAssignment = ((ImageView) dialog.findViewById(R.id.image_assignment));
-        imageAssignment.setImageResource(assignment.getResourceId());
+        imageAssignment.setImageResource(mCurrentPopupData.getResourceId());
 
         // turn off clickable in assignment dialog (image_assignment needs it in
         // the assignment list window)
@@ -392,7 +412,7 @@ public class AssignmentActivity extends Activity {
                 .setText(assignmentTitleData[0]);
 
         // Loop over the criterias
-        for (AssignmentData.Objective objective : assignment.getObjectives()) {
+        for (AssignmentData.Objective objective : mCurrentPopupData.getObjectives()) {
 
             // Inflate a layout...
             View v = mLayoutInflater.inflate(
@@ -412,7 +432,7 @@ public class AssignmentActivity extends Activity {
         }
 
         ((ImageView) dialog.findViewById(R.id.image_reward))
-                .setImageResource(assignment.getUnlockResourceId());
+                .setImageResource(mCurrentPopupData.getUnlockResourceId());
         ((TextView) dialog.findViewById(R.id.text_rew_name))
                 .setText(assignmentTitleData[1]);
 
@@ -424,7 +444,8 @@ public class AssignmentActivity extends Activity {
 
     public void onPopupClick(View v) {
 
-        showDialog(Integer.parseInt(v.getTag().toString()));
+        mCurrentPopupData = (AssignmentData) v.getTag();
+        showDialog(0);
 
     }
 

@@ -37,53 +37,22 @@
 				android:layout_weight="1"	
 			>   
 				<ImageView
-					android:id="@+id/image_leftassignment"
+					android:id="@+id/image_assignment"
 					android:layout_width="fill_parent"
 					android:layout_height="50dp"
 					android:src="@drawable/assignment_xp1_01"
 					android:onClick="onPopupClick"
 				/>
 				<ProgressBar
-					android:id="@+id/progress_left"
+					android:id="@+id/progress"
 					style="?android:attr/progressBarStyleHorizontal"
 					android:layout_width="fill_parent"
 					android:layout_height="10dp"
-					android:layout_below="@id/image_leftassignment"
+					android:layout_below="@id/image_assignment"
 					android:background="#ffffff"
 				/>
 				
 		   </RelativeLayout>
-			<ImageView
-				android:id="@+id/image_arrow"
-				android:layout_width="10dp"
-				android:layout_height="6dp"
-				android:src="@drawable/assignment_arrow_unlocked"
-				android:layout_marginRight="5dp"
-				android:layout_gravity="center"
-				android:scaleType="fitXY"
-			/>
-			<RelativeLayout
-			   android:layout_width="0dp"
-			   android:layout_height="wrap_content"
-			   android:layout_weight="1"	
-			>   
-			   
-				<ImageView
-					android:id="@+id/image_rightassignment"
-					android:layout_width="fill_parent"
-					android:layout_height="50dp"
-					android:src="@drawable/assignment_locked"
-					android:onClick="onPopupClick"
-				/>
-				<ProgressBar
-					android:id="@+id/progress_right"
-					style="?android:attr/progressBarStyleHorizontal"
-					android:layout_width="fill_parent"
-					android:layout_height="10dp"
-					android:layout_below="@id/image_rightassignment"
-				/>
-				
-			</RelativeLayout>
 			
 		</LinearLayout>
 	
