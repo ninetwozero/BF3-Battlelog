@@ -32,7 +32,9 @@ public class URIFactory {
         }
     }
 
-    private static URI personaOverview(String path){
-        return URI.create(path);
+    public static URI personaOverview(long personaId, int platformId){
+        String path = new StringBuilder("/overviewPopulateStats/").
+                append(personaId).append("/None/").append(platformId).toString();
+        return createUri(path);
     }
 }
