@@ -4,10 +4,6 @@ package com.ninetwozero.battlelog.datatype;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
-import com.ninetwozero.battlelog.misc.Constants;
-
 public class SessionKeeperPackage {
 
     // Attributes

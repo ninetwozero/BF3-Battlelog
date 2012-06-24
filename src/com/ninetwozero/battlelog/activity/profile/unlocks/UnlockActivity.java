@@ -51,12 +51,12 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class UnlockActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
-    private ProfileData profileData;
-    private Map<Long, UnlockDataWrapper> unlocks;
-    private long selectedPersona;
-    private int selectedPosition;
-    private long[] personaId;
-    private String[] personaName;
+    private ProfileData mProfileData;
+    private Map<Long, UnlockDataWrapper> mUnlocks;
+    private long mSelectedPersona;
+    private int mSelectedPosition;
+    private long[] mPersonaId;
+    private String[] mPersonaName;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -70,7 +70,7 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
         }
 
         // Get the profile
-        profileData = getIntent().getParcelableExtra("profile");
+        mProfileData = getIntent().getParcelableExtra("profile");
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
@@ -86,17 +86,17 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
     public void init() {
 
         // Init to winit
-        unlocks = new HashMap<Long, UnlockDataWrapper>();
+        mUnlocks = new HashMap<Long, UnlockDataWrapper>();
 
         // Let's try something out
-        if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
+        if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
 
-            selectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
-            selectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
+            mSelectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
+            mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
 
         } else {
 
-            selectedPersona = profileData.getPersona(0).getId();
+            mSelectedPersona = mProfileData.getPersona(0).getId();
 
         }
     }
@@ -120,17 +120,17 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
         builder.setTitle(R.string.info_dialog_soldierselect);
 
         // Do we have items to show?
-        if (personaId == null) {
+        if (mPersonaId == null) {
 
             // Init
-            personaId = new long[profileData.getNumPersonas()];
-            personaName = new String[profileData.getNumPersonas()];
+            mPersonaId = new long[mProfileData.getNumPersonas()];
+            mPersonaName = new String[mProfileData.getNumPersonas()];
 
             // Iterate
-            for (int count = 0, max = personaId.length; count < max; count++) {
+            for (int count = 0, max = mPersonaId.length; count < max; count++) {
 
-                personaId[count] = profileData.getPersona(count).getId();
-                personaName[count] = profileData.getPersona(count).getName();
+                mPersonaId[count] = mProfileData.getPersona(count).getId();
+                mPersonaName[count] = mProfileData.getPersona(count).getName();
 
             }
 
@@ -139,26 +139,27 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
         // Set it up
         builder.setSingleChoiceItems(
 
-                personaName, -1, new DialogInterface.OnClickListener() {
+                mPersonaName, -1, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int item) {
 
-                        if (personaId[item] != selectedPersona) {
+                        if (mPersonaId[item] != mSelectedPersona) {
 
                             // Update it
-                            selectedPersona = personaId[item];
+                            mSelectedPersona = mPersonaId[item];
 
                             // Store selectedPersonaPos
-                            selectedPosition = item;
+                            mSelectedPosition = item;
 
                             // Load the new!
-                            setupList(unlocks.get(selectedPersona), mViewPager.getCurrentItem());
+                            setupList(mUnlocks.get(mSelectedPersona), mViewPager.getCurrentItem());
 
                             // Save it
-                            if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
+                            if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
                                 SharedPreferences.Editor spEdit = mSharedPreferences.edit();
-                                spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, selectedPersona);
-                                spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS, selectedPosition);
+                                spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, mSelectedPersona);
+                                spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS,
+                                        mSelectedPosition);
                                 spEdit.commit();
                             }
 
@@ -226,7 +227,7 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
     public void reload() {
 
         // ASYNC!!!
-        new AsyncGetDataSelf(this).execute(profileData);
+        new AsyncGetDataSelf(this).execute(mProfileData);
 
     }
 
@@ -237,12 +238,12 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
             AsyncTask<ProfileData, Void, Boolean> {
 
         // Attributes
-        private Context context;
-        private ProgressDialog progressDialog;
+        private Context mContext;
+        private ProgressDialog mProgressDialog;
 
         public AsyncGetDataSelf(Context c) {
 
-            context = c;
+            mContext = c;
 
         }
 
@@ -250,14 +251,14 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
         protected void onPreExecute() {
 
             // Let's see
-            if (unlocks == null) {
+            if (mUnlocks.isEmpty()) {
 
-                progressDialog = new ProgressDialog(context);
-                progressDialog.setTitle(context
+                mProgressDialog = new ProgressDialog(mContext);
+                mProgressDialog.setTitle(mContext
                         .getString(R.string.general_wait));
-                progressDialog
+                mProgressDialog
                         .setMessage(getString(R.string.general_downloading));
-                progressDialog.show();
+                mProgressDialog.show();
 
             }
 
@@ -270,30 +271,31 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
 
                 if (arg0[0].getNumPersonas() == 0) {
 
-                    profileData = ProfileClient.resolveFullProfileDataFromProfileData(profileData);
-                    if (selectedPersona == 0) {
-                        selectedPersona = profileData.getPersona(0).getId();
+                    mProfileData = ProfileClient
+                            .resolveFullProfileDataFromProfileData(mProfileData);
+                    if (mSelectedPersona == 0) {
+                        mSelectedPersona = mProfileData.getPersona(0).getId();
                     }
 
                     // Get the unlocks
-                    ProfileClient profileHandler = new ProfileClient(profileData);
-                    unlocks = profileHandler.getUnlocks(mSharedPreferences.getInt(
+                    ProfileClient profileHandler = new ProfileClient(mProfileData);
+                    mUnlocks = profileHandler.getUnlocks(mSharedPreferences.getInt(
                             Constants.SP_BL_UNLOCKS_LIMIT_MIN, 1));
 
                 } else {
 
-                    if (selectedPersona == 0) {
-                        selectedPersona = arg0[0].getPersona(0).getId();
+                    if (mSelectedPersona == 0) {
+                        mSelectedPersona = arg0[0].getPersona(0).getId();
                     }
 
                     // Get the unlocks
-                    ProfileClient profileHandler = new ProfileClient(profileData);
-                    unlocks = profileHandler.getUnlocks(mSharedPreferences.getInt(
+                    ProfileClient profileHandler = new ProfileClient(mProfileData);
+                    mUnlocks = profileHandler.getUnlocks(mSharedPreferences.getInt(
                             Constants.SP_BL_UNLOCKS_LIMIT_MIN, 1));
 
                 }
 
-                return (unlocks != null);
+                return (mUnlocks != null);
 
             } catch (WebsiteHandlerException ex) {
 
@@ -310,30 +312,30 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
             // Fail?
             if (!result) {
 
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
+                if (mProgressDialog != null) {
+                    mProgressDialog.dismiss();
 
                 }
-                Toast.makeText(context, R.string.general_no_data,
+                Toast.makeText(mContext, R.string.general_no_data,
                         Toast.LENGTH_SHORT).show();
-                ((Activity) context).finish();
+                ((Activity) mContext).finish();
 
             }
 
             // Do actual stuff, like sending to an adapter
             int num = mViewPager.getCurrentItem();
-            setupList(unlocks.get(selectedPersona), num);
+            setupList(mUnlocks.get(mSelectedPersona), num);
             if (num > 0) {
-                setupList(unlocks.get(selectedPersona), num - 1);
+                setupList(mUnlocks.get(mSelectedPersona), num - 1);
             }
             if (num < mViewPager.getChildCount()) {
-                setupList(unlocks.get(selectedPersona), num + 1);
+                setupList(mUnlocks.get(mSelectedPersona), num + 1);
             }
 
             // Go go go
-            if (progressDialog != null) {
+            if (mProgressDialog != null) {
 
-                progressDialog.dismiss();
+                mProgressDialog.dismiss();
 
             }
 
@@ -381,14 +383,14 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
     public List<UnlockData> getItemsForFragment(int p) {
 
         // Let's see if we got anything
-        if (unlocks == null) {
+        if (mUnlocks == null) {
 
             return new ArrayList<UnlockData>();
 
         } else {
 
             // Get the UnlockDataWrapper
-            UnlockDataWrapper unlockDataWrapper = unlocks.get(selectedPersona);
+            UnlockDataWrapper unlockDataWrapper = mUnlocks.get(mSelectedPersona);
 
             // Is the UnlockDataWrapper null?
             if (unlockDataWrapper == null) {

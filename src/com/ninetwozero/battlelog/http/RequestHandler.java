@@ -52,12 +52,10 @@ import org.apache.http.util.EntityUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.datatype.PostData;
 import com.ninetwozero.battlelog.datatype.RequestHandlerException;
 import com.ninetwozero.battlelog.datatype.ShareableCookie;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.HttpHeaders;
 
 public class RequestHandler {
@@ -81,9 +79,9 @@ public class RequestHandler {
         // Check defaults
         if ("".equals(link)) {
             throw new RequestHandlerException("No link found.");
-            
+
         }
-        
+
         try {
 
             // Init the HTTP-related attributes
@@ -203,7 +201,7 @@ public class RequestHandler {
         if ("".equals(link)) {
             throw new RequestHandlerException("No link found.");
         }
-    
+
         // Default
         byte[] httpContent = null;
         FileOutputStream fileStream = null;
@@ -213,9 +211,9 @@ public class RequestHandler {
         if ("".equals(filename)) {
 
             path = directory + System.currentTimeMillis();
-            
+
         } else {
-            
+
             path = directory + filename;
 
         }
@@ -327,7 +325,7 @@ public class RequestHandler {
 
         // Iterate over the fields and add the NameValuePairs
         for (PostData data : postDataArray) {
-            
+
             nameValuePairs.add(new BasicNameValuePair(data.getField(), (data
                     .isHash()) ? this.hash(data.getValue()) : data.getValue()));
 
@@ -346,9 +344,9 @@ public class RequestHandler {
 
                 // Get the content!
                 return EntityUtils.toString(httpEntity);
-            
+
             }
-            
+
         } catch (UnknownHostException ex) {
 
             throw new RequestHandlerException(

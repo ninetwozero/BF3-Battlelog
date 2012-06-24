@@ -39,8 +39,9 @@ import com.ninetwozero.battlelog.datatype.SavedForumThreadData;
  */
 
 public class CacheHandler {
-    
-    private CacheHandler() {}
+
+    private CacheHandler() {
+    }
 
     public static class Persona {
 

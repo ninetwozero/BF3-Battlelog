@@ -24,11 +24,11 @@ public final class StringResourceList {
     // Attributes
     private static Map<String, Integer> mDescriptionWeapons; // <GUID, resId>
     private static Map<String, Integer> mDescriptionAttachments; // <GUID,
-                                                                    // resId>
-    private static Map<String, Integer> mDescriptionVehicles; // <GUID,
                                                                  // resId>
+    private static Map<String, Integer> mDescriptionVehicles; // <GUID,
+                                                              // resId>
     private static Map<String, Integer> mDescriptionVehicleUpgrades; // <GUID,
-                                                                        // resId>
+                                                                     // resId>
     private static Map<String, Integer> mDescriptionKits; // <GUID, resId>
     private static Map<String, Integer> mDescriptionAwards; // <GUID, resId>
     private static Map<String, Integer> mDescriptionSkills; // <GUID, resId>

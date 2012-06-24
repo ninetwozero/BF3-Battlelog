@@ -58,10 +58,10 @@ public class ForumReportActivity extends Activity {
         PublicUtils.restoreCookies(this, icicle);
 
         // Do we have a postId?
-        if( !getIntent().hasExtra("postId") ) {
-            
+        if (!getIntent().hasExtra("postId")) {
+
             finish();
-            
+
         }
         mPostId = getIntent().getLongExtra("postId", 0);
 

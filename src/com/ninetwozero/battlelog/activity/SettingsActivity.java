@@ -22,8 +22,8 @@ import com.ninetwozero.battlelog.service.BattlelogService;
 public class SettingsActivity extends PreferenceActivity {
 
     // Attributes
-    private int originalInterval;
-    private SharedPreferences sharedPreferences;
+    private int mOriginalInterval;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -32,17 +32,17 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(icicle);
 
         // Set sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         PublicUtils.restoreCookies(this, icicle);
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Let's put 'em there
         addPreferencesFromResource(R.xml.settings_view);
 
         // Set the originalInterval
-        originalInterval = sharedPreferences.getInt(
+        mOriginalInterval = mSharedPreferences.getInt(
                 Constants.SP_BL_INTERVAL_SERVICE, 0);
 
     }
@@ -55,11 +55,11 @@ public class SettingsActivity extends PreferenceActivity {
 
             // If the new interval != the old interval, we got to restart the
             // "alarm"
-            if (originalInterval != sharedPreferences.getInt(
+            if (mOriginalInterval != mSharedPreferences.getInt(
                     Constants.SP_BL_INTERVAL_SERVICE, 0)) {
 
                 // Get the interval
-                int serviceInterval = sharedPreferences.getInt(
+                int serviceInterval = mSharedPreferences.getInt(
                         Constants.SP_BL_INTERVAL_SERVICE,
                         (Constants.HOUR_IN_SECONDS / 2)) * 1000;
 
@@ -111,10 +111,10 @@ public class SettingsActivity extends PreferenceActivity {
         super.onResume();
 
         // Setup the locale
-        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Setup the session
-        PublicUtils.setupSession(this, sharedPreferences);
+        PublicUtils.setupSession(this, mSharedPreferences);
 
     }
 

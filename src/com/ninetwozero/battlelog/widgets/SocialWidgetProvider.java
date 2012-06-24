@@ -63,7 +63,8 @@ public class SocialWidgetProvider extends AppWidgetProvider {
             int[] appWidgetIds) {
 
         // Get the SP
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
 
         // Set the session if needed
         SessionKeeper.setProfileData(SessionKeeper

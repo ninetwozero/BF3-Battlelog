@@ -92,7 +92,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
-        
+
         // Let's inflate & return the view
         View view = mLayoutInflater.inflate(R.layout.tab_content_profile_stats,
                 container, false);
@@ -214,13 +214,13 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
     }
 
     private void populateStats(PersonaStats pd) {
-        
-        if( pd == null ) {
-            
+
+        if (pd == null) {
+
             return;
-            
+
         }
-        
+
         personaName.setText(pd.getPersonaName() + pd.resolvePlatformId());
         rankTitle.setText(pd.getRankTitle());
         rankId.setText(String.valueOf(pd.getRankId()));

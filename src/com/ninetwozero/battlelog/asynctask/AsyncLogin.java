@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.asynctask;
 
 import java.util.List;
 
-import com.ninetwozero.battlelog.http.ProfileClient;
 import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -32,8 +31,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ninetwozero.battlelog.activity.DashboardActivity;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.DashboardActivity;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.PostData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
@@ -41,8 +40,9 @@ import com.ninetwozero.battlelog.datatype.RequestHandlerException;
 import com.ninetwozero.battlelog.datatype.SessionKeeperPackage;
 import com.ninetwozero.battlelog.datatype.ShareableCookie;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.http.RequestHandler;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.service.BattlelogService;
 
 public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
@@ -201,7 +201,8 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         String postCheckSum = substringFrom(httpContent, Constants.ELEMENT_STATUS_CHECKSUM, "\" />");
 
         // Let's work on getting the "username", not persona name --> profileId
-        String soldierName = "Eddy_J1";//substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>").trim();
+        String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>")
+                .trim();
         ProfileData profile = ProfileClient.getProfileIdFromName(soldierName, postCheckSum);
         profile = ProfileClient.resolveFullProfileDataFromProfileData(profile);
         List<PlatoonData> platoons = new ProfileClient(profile).getPlatoons(context);

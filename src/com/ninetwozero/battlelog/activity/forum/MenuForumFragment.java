@@ -123,7 +123,7 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
 
             }
         };
-        
+
         for (int key : MENU_INTENTS.keySet()) {
 
             view.findViewById(key).setOnClickListener(onClickListener);

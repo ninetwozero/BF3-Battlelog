@@ -15,11 +15,13 @@
 package com.ninetwozero.battlelog.activity.profile.weapon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -38,11 +40,11 @@ import com.ninetwozero.battlelog.http.ProfileClient;
 public class WeaponListActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
-    private ProfileData profileData;
-    private Map<Long, List<WeaponDataWrapper>> items;
-    private long selectedPersona;
+    private ProfileData mProfileData;
+    private Map<Long, List<WeaponDataWrapper>> mItems;
+    private long mSelectedPersona;
 
-    // private int selectedPosition;
+    // private int mSelectedPosition;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -56,7 +58,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         }
 
         // Get the profile
-        profileData = getIntent().getParcelableExtra("profile");
+        mProfileData = getIntent().getParcelableExtra("profile");
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
@@ -71,9 +73,10 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
 
     public void init() {
 
-        // Are we there yet?
+        mItems = new HashMap<Long, List<WeaponDataWrapper>>();
+
         // Set the selected persona
-        selectedPersona = profileData.getPersona(0).getId();
+        mSelectedPersona = mProfileData.getPersona(0).getId();
 
     }
 
@@ -141,12 +144,25 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
     private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
         // Attributes
-        private Context context;
+        private Context mContext;
+        private ProgressDialog mProgressDialog;
 
         // Construct
         public AsyncRefresh(Context c) {
 
-            context = c;
+            mContext = c;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+            if (mItems.isEmpty()) {
+                mProgressDialog = new ProgressDialog(mContext);
+                mProgressDialog.setTitle(mContext.getString(R.string.general_wait));
+                mProgressDialog.setMessage(mContext.getString(R.string.general_downloading));
+                mProgressDialog.show();
+            }
 
         }
 
@@ -155,7 +171,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
 
             try {
 
-                items = new ProfileClient(profileData).getWeapons();
+                mItems = new ProfileClient(mProfileData).getWeapons();
                 return true;
 
             } catch (Exception ex) {
@@ -168,17 +184,21 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         @Override
         protected void onPostExecute(Boolean result) {
 
-            if (context != null) {
+            if (mContext != null) {
 
                 if (result) {
 
                     ((WeaponListFragment) mListFragments.get(mViewPager.getCurrentItem()))
-                            .showWeapons(items.get(selectedPersona));
+                            .showWeapons(mItems.get(mSelectedPersona));
 
                 } else {
 
-                    Toast.makeText(context, R.string.general_no_data, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.general_no_data, Toast.LENGTH_SHORT).show();
 
+                }
+
+                if (mProgressDialog != null) {
+                    mProgressDialog.dismiss();
                 }
 
             }
@@ -189,25 +209,14 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
     public List<WeaponDataWrapper> getItemsForFragment(int p) {
 
         // Let's see if we got anything
-        if (items == null || items.get(selectedPersona) == null) {
+        if (mItems == null || mItems.get(mSelectedPersona) == null) {
 
             return new ArrayList<WeaponDataWrapper>();
 
         } else {
 
             // Get the UnlockDataWrapper
-            return items.get(selectedPersona);
-
-            /*
-             * UnlockDataunlockDataWrapper = unlocks.get(selectedPersona); // Is
-             * the UnlockDataWrapper null? if (unlockDataWrapper == null) {
-             * return new ArrayList<UnlockData>(); } // Switch over the position
-             * switch (p) { case 0: return unlockDataWrapper.getWeapons(); case
-             * 1: return unlockDataWrapper.getAttachments(); case 2: return
-             * unlockDataWrapper.getKitUnlocks(); case 3: return
-             * unlockDataWrapper.getVehicleUpgrades(); case 4: return
-             * unlockDataWrapper.getSkills(); default: return null; }
-             */
+            return mItems.get(mSelectedPersona);
 
         }
 
@@ -215,7 +224,8 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
 
     public void open(WeaponDataWrapper w) {
 
-        startActivity(new Intent(this, SingleWeaponActivity.class).putExtra("profile", profileData)
+        startActivity(new Intent(this, SingleWeaponActivity.class)
+                .putExtra("profile", mProfileData)
                 .putExtra("weapon", w));
 
     }

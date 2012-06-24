@@ -68,7 +68,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
-        
+
         // Let's inflate & return the view
         View view = mLayoutInflater.inflate(R.layout.board_view,
                 container, false);

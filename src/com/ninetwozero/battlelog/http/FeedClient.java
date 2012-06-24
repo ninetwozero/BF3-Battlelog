@@ -84,11 +84,10 @@ public class FeedClient extends DefaultClient {
                 throw new WebsiteHandlerException("Post could not be saved.");
 
             } else {
-                
+
                 // Check the JSON
                 String status = new JSONObject(httpContent).optString("message", "");
                 return (status.matches("_POST_CREATED"));
-
 
             }
 
@@ -322,7 +321,7 @@ public class FeedClient extends DefaultClient {
 
                             } else if (key.startsWith("ID_P_VUNAME_")) {
 
-                                tempTitle.append(DataBank.getVehicleTitle(guid));
+                                tempTitle.append(DataBank.getVehicleUpgradeTitle(key));
 
                             } else if (key.startsWith("ID_P_SNAME")) {
 

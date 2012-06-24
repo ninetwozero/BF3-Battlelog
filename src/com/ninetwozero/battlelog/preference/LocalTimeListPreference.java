@@ -76,7 +76,7 @@ public class LocalTimeListPreference extends ListPreference {
 
     private int indexFromTimeZone() {
         TimeZone zone = TimeZone.getDefault();
-        return indexOf( String.valueOf(zone.getRawOffset() / MILLISECONDS_TO_MINUTE));
+        return indexOf(String.valueOf(zone.getRawOffset() / MILLISECONDS_TO_MINUTE));
     }
 
     private int indexOf(CharSequence value) {

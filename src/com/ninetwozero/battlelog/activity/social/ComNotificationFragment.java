@@ -42,28 +42,28 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class ComNotificationFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private SharedPreferences sharedPreferences;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private SharedPreferences mSharedPreferences;
 
     // Misc
-    private List<NotificationData> notifications;
-    private NotificationListAdapter notificationListAdapter;
+    private List<NotificationData> mNotifications;
+    private NotificationListAdapter mNotificationListAdapter;
 
     // Elements
-    private ListView listView;
+    private ListView mListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         // Set our attributes
-        context = getActivity();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        layoutInflater = inflater;
-        
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mLayoutInflater = inflater;
+
         // Let's inflate & return the view
-        View view = layoutInflater.inflate(R.layout.tab_content_com_notifications,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_com_notifications,
                 container, false);
 
         // Let's try this
@@ -78,17 +78,17 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
     public void initFragment(View view) {
 
         // Get the listview
-        listView = (ListView) view.findViewById(android.R.id.list);
-        listView.setAdapter(notificationListAdapter = new NotificationListAdapter(context, null,
-                layoutInflater, SessionKeeper.getProfileData().getId()));
-        registerForContextMenu(listView);
+        mListView = (ListView) view.findViewById(android.R.id.list);
+        mListView.setAdapter(mNotificationListAdapter = new NotificationListAdapter(mContext, null,
+                mLayoutInflater, SessionKeeper.getProfileData().getId()));
+        registerForContextMenu(mListView);
 
     }
 
     @Override
     public void reload() {
 
-        new AsyncRefresh().execute(sharedPreferences
+        new AsyncRefresh().execute(mSharedPreferences
                 .getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
@@ -106,7 +106,7 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
     @Override
     public void onListItemClick(ListView lv, View v, int position, long id) {
 
-        Toast.makeText(context, R.string.msg_unimplemented, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, R.string.msg_unimplemented, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -123,7 +123,7 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
             try {
 
                 // Let's get this!
-                notifications = new NotificationClient().get(arg0[0]);
+                mNotifications = new NotificationClient().get(arg0[0]);
                 return true;
 
             } catch (WebsiteHandlerException e) {
@@ -140,7 +140,7 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
             if (results) {
 
                 // Display the friend list
-                display(notifications);
+                display(mNotifications);
 
             }
 
@@ -153,7 +153,7 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
     public void display(List<NotificationData> items) {
 
         // Do we have it already? If no, we init
-        notificationListAdapter.setItemArray(items);
+        mNotificationListAdapter.setItemArray(items);
 
     }
 

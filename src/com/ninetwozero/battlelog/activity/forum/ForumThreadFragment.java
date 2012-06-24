@@ -115,7 +115,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         mSharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
-        
+
         // Let's inflate & return the view
         View view = mLayoutInflater.inflate(R.layout.forum_thread_view,
                 container, false);
@@ -142,7 +142,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
         // Setup the ListView
         mListView = (ListView) v.findViewById(android.R.id.list);
-        mListView.setAdapter(mListAdapter = new ThreadPostListAdapter(mContext, null, mLayoutInflater));
+        mListView.setAdapter(mListAdapter = new ThreadPostListAdapter(mContext, null,
+                mLayoutInflater));
         mListView.setDrawSelectorOnTop(false);
         getActivity().registerForContextMenu(mListView);
 
@@ -255,7 +256,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
         // Do we have a threadId?
         if (mThreadId == 0) {
-            getActivity().finish();
+            return;
         }
 
         // Set it up
@@ -435,7 +436,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
         menu.add(0, 3, 0, R.string.info_forum_report);
 
     }
-    
+
     private void generatePopupWithLinks(String string) {
 
         // Got some?
@@ -653,7 +654,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                 }
 
-                mButtonPrev.setEnabled(page != 1);                
+                mButtonPrev.setEnabled(page != 1);
                 mButtonNext.setEnabled(page == mThreadData.getNumPages());
                 mButtonJump.setEnabled(true);
 

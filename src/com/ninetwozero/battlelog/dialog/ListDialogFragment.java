@@ -1,4 +1,11 @@
+
 package com.ninetwozero.battlelog.dialog;
+
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,14 +14,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.PersonaData;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 
 public class ListDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
@@ -89,7 +91,8 @@ public class ListDialogFragment extends DialogFragment implements DialogInterfac
         @Override
         public void onClick(DialogInterface dialog, int item) {
             updateSharedPreference(item);
-            OnCloseListDialogListener act = (OnCloseListDialogListener) getFragmentManager().findFragmentByTag(TAG);
+            OnCloseListDialogListener act = (OnCloseListDialogListener) getFragmentManager()
+                    .findFragmentByTag(TAG);
             act.onDialogListSelection();
             dismiss();
         }

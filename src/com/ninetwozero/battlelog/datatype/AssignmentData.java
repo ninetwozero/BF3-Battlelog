@@ -22,11 +22,14 @@ import android.os.Parcelable;
 public class AssignmentData implements Parcelable {
 
     // Attributes
-    private int resourceId, unlockResourceId;
-    private String id, description, set;
-    private List<AssignmentData.Objective> objectives;
-    private List<AssignmentData.Dependency> dependencies;
-    private List<AssignmentData.Unlock> unlocks;
+    private int mResourceId;
+    private int mUnlockResourceId;
+    private String mId;
+    private String mDescription;
+    private String mSet;
+    private List<AssignmentData.Objective> mObjectives;
+    private List<AssignmentData.Dependency> mDependencies;
+    private List<AssignmentData.Unlock> mUnlocks;
 
     // Constructs
     public AssignmentData(
@@ -38,28 +41,28 @@ public class AssignmentData implements Parcelable {
 
     ) {
 
-        resourceId = rId;
-        unlockResourceId = uId;
-        id = i;
-        description = d;
-        set = s;
-        objectives = c;
-        dependencies = dp;
-        unlocks = u;
+        mResourceId = rId;
+        mUnlockResourceId = uId;
+        mId = i;
+        mDescription = d;
+        mSet = s;
+        mObjectives = c;
+        mDependencies = dp;
+        mUnlocks = u;
 
     }
 
     public AssignmentData(Parcel in) {
 
-        resourceId = in.readInt();
-        unlockResourceId = in.readInt();
-        id = in.readString();
-        description = in.readString();
-        set = in.readString();
+        mResourceId = in.readInt();
+        mUnlockResourceId = in.readInt();
+        mId = in.readString();
+        mDescription = in.readString();
+        mSet = in.readString();
 
-        objectives = in.createTypedArrayList(AssignmentData.Objective.CREATOR);
-        dependencies = in.createTypedArrayList(AssignmentData.Dependency.CREATOR);
-        unlocks = in.createTypedArrayList(AssignmentData.Unlock.CREATOR);
+        mObjectives = in.createTypedArrayList(AssignmentData.Objective.CREATOR);
+        mDependencies = in.createTypedArrayList(AssignmentData.Dependency.CREATOR);
+        mUnlocks = in.createTypedArrayList(AssignmentData.Unlock.CREATOR);
 
     }
 
@@ -71,14 +74,14 @@ public class AssignmentData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
-        dest.writeInt(resourceId);
-        dest.writeInt(unlockResourceId);
-        dest.writeString(id);
-        dest.writeString(description);
-        dest.writeString(set);
-        dest.writeList(objectives);
-        dest.writeList(dependencies);
-        dest.writeList(unlocks);
+        dest.writeInt(mResourceId);
+        dest.writeInt(mUnlockResourceId);
+        dest.writeString(mId);
+        dest.writeString(mDescription);
+        dest.writeString(mSet);
+        dest.writeList(mObjectives);
+        dest.writeList(mDependencies);
+        dest.writeList(mUnlocks);
 
     }
 
@@ -96,45 +99,45 @@ public class AssignmentData implements Parcelable {
 
     // Getters
     public int getResourceId() {
-        return resourceId;
+        return mResourceId;
     }
 
     public int getUnlockResourceId() {
-        return unlockResourceId;
+        return mUnlockResourceId;
     }
 
     public String getId() {
-        return id;
+        return mId;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
     public String getSet() {
-        return set;
+        return mSet;
     }
 
     public List<AssignmentData.Objective> getObjectives() {
-        return objectives;
+        return mObjectives;
     }
 
     public List<AssignmentData.Dependency> getDependencies() {
-        return dependencies;
+        return mDependencies;
     }
 
     public List<AssignmentData.Unlock> getUnlocks() {
-        return unlocks;
+        return mUnlocks;
     }
 
     public int getProgress() {
 
         // How many?
-        final int numObjectives = objectives.size();
+        final int numObjectives = mObjectives.size();
         double count = 0;
 
         // Iterate
-        for (AssignmentData.Objective obj : objectives) {
+        for (AssignmentData.Objective obj : mObjectives) {
 
             count += (obj.getCurrentValue() / obj.getGoalValue()); // 0 <= x <=
             // 1
@@ -146,7 +149,7 @@ public class AssignmentData implements Parcelable {
 
     public boolean isCompleted() {
 
-        for (AssignmentData.Objective obj : objectives) {
+        for (AssignmentData.Objective obj : mObjectives) {
 
             if (obj.getCurrentValue() < obj.getGoalValue()) {
 
@@ -163,8 +166,8 @@ public class AssignmentData implements Parcelable {
     // toString()
     @Override
     public String toString() {
-        return "#:" + objectives.size() + ":" + dependencies.size() + ":"
-                + unlocks.size();
+        return "#:" + mObjectives.size() + ":" + mDependencies.size() + ":"
+                + mUnlocks.size();
     }
 
     // Subclass

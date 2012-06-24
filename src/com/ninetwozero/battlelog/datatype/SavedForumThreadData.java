@@ -16,9 +16,6 @@ package com.ninetwozero.battlelog.datatype;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
-
-import com.ninetwozero.battlelog.misc.Constants;
 
 public class SavedForumThreadData implements Parcelable {
 
@@ -164,18 +161,18 @@ public class SavedForumThreadData implements Parcelable {
 
         return new Object[] {
 
-                mId ,
-                mForumId ,
+                mId,
+                mForumId,
                 mTitle,
-                mDateLastPost ,
+                mDateLastPost,
                 mLastPoster.getUsername(),
-                mLastPoster.getId() ,
-                mNumPageLastRead ,
-                mNumPosts ,
+                mLastPoster.getId(),
+                mNumPageLastRead,
+                mNumPosts,
                 mUnread ? "1" : "0",
-                mDateLastRead ,
-                mDateLastChecked ,
-                mProfileId ,
+                mDateLastRead,
+                mDateLastChecked,
+                mProfileId,
 
         };
 

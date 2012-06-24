@@ -203,7 +203,8 @@ public class ForumSavedActivity extends ListActivity {
             if (result) {
 
                 // Set the adapter
-                mListView.setAdapter(new SavedThreadListAdapter(context, mThreads, mLayoutInflater));
+                mListView
+                        .setAdapter(new SavedThreadListAdapter(context, mThreads, mLayoutInflater));
 
             }
 

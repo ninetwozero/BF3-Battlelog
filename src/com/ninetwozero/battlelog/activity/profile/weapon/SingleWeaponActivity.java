@@ -36,17 +36,17 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class SingleWeaponActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // Attributes
-    private ProfileData profileData;
-    private long selectedPersona;
-    // private int selectedPosition;
-    private WeaponDataWrapper weaponDataWrapper;
-    private WeaponInfo weaponInfo;
-    private WeaponStats weaponStats;
+    private ProfileData mProfileData;
+    private long mSelectedPersona;
+    // private int mSelectedPosition;
+    private WeaponDataWrapper mWeaponDataWrapper;
+    private WeaponInfo mWeaponInfo;
+    private WeaponStats mWeaponStats;
 
     // Fragment related
-    private WeaponInformationFragment fragmentWeaponInfo;
-    private WeaponStatisticsFragment fragmentWeaponStats;
-    private UnlockFragment fragmentUnlocks;
+    private WeaponInformationFragment mFragmentWeaponInfo;
+    private WeaponStatisticsFragment mFragmentWeaponStats;
+    private UnlockFragment mFragmentUnlocks;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -62,12 +62,12 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
         }
 
         // Get the profile
-        profileData = getIntent().getParcelableExtra("profile");
+        mProfileData = getIntent().getParcelableExtra("profile");
 
         // Get the weapon information
-        weaponDataWrapper = getIntent().getParcelableExtra("weapon");
-        weaponInfo = weaponDataWrapper.getData();
-        weaponStats = weaponDataWrapper.getStats();
+        mWeaponDataWrapper = getIntent().getParcelableExtra("weapon");
+        mWeaponInfo = mWeaponDataWrapper.getData();
+        mWeaponStats = mWeaponDataWrapper.getStats();
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
@@ -83,14 +83,14 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
     public void init() {
 
         // Set the selected persona
-        if (SessionKeeper.getProfileData().getId() == profileData.getId()) {
+        if (SessionKeeper.getProfileData().getId() == mProfileData.getId()) {
 
-            selectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID,
-                    profileData.getPersona(0).getId());
+            mSelectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID,
+                    mProfileData.getPersona(0).getId());
 
         } else {
 
-            selectedPersona = profileData.getPersona(0).getId();
+            mSelectedPersona = mProfileData.getPersona(0).getId();
 
         }
 
@@ -110,18 +110,18 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
 
             // Add them to the list
             mListFragments = new ArrayList<Fragment>();
-            mListFragments.add(fragmentWeaponInfo = (WeaponInformationFragment) Fragment
+            mListFragments.add(mFragmentWeaponInfo = (WeaponInformationFragment) Fragment
                     .instantiate(this, WeaponInformationFragment.class.getName()));
-            mListFragments.add(fragmentWeaponStats = (WeaponStatisticsFragment) Fragment
+            mListFragments.add(mFragmentWeaponStats = (WeaponStatisticsFragment) Fragment
                     .instantiate(this, WeaponStatisticsFragment.class.getName()));
-            mListFragments.add(fragmentUnlocks = (UnlockFragment) Fragment.instantiate(this,
+            mListFragments.add(mFragmentUnlocks = (UnlockFragment) Fragment.instantiate(this,
                     UnlockFragment.class.getName()));
 
             // Let's set the selectedPersona
-            fragmentWeaponInfo.setProfileData(profileData);
-            fragmentWeaponInfo.setWeaponInfo(weaponInfo);
-            fragmentWeaponInfo.setWeaponStats(weaponStats);
-            fragmentWeaponInfo.setSelectedPersona(selectedPersona);
+            mFragmentWeaponInfo.setProfileData(mProfileData);
+            mFragmentWeaponInfo.setWeaponInfo(mWeaponInfo);
+            mFragmentWeaponInfo.setWeaponStats(mWeaponStats);
+            mFragmentWeaponInfo.setSelectedPersona(mSelectedPersona);
 
             // Get the ViewPager
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -152,14 +152,14 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
 
     public void reload() {
 
-        fragmentWeaponInfo.reload();
+        mFragmentWeaponInfo.reload();
 
     }
 
     public void showData(WeaponDataWrapper w) {
 
-        fragmentWeaponStats.show(w.getStats());
-        fragmentUnlocks.showUnlocks(w.getUnlocks());
+        mFragmentWeaponStats.show(w.getStats());
+        mFragmentUnlocks.showUnlocks(w.getUnlocks());
 
     }
 }

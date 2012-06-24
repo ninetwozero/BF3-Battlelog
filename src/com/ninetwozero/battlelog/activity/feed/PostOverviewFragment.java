@@ -53,7 +53,7 @@ public class PostOverviewFragment extends Fragment implements DefaultFragment {
 
         // Set our attributes
         mContext = getActivity();
-        
+
         // Let's inflate & return the view
         View view = inflater.inflate(
 

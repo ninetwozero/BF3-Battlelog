@@ -69,9 +69,10 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
         // Set our attributes
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = inflater.inflate(R.layout.tab_content_platoon_users,
+        View view = mLayoutInflater.inflate(R.layout.tab_content_platoon_users,
                 container, false);
 
         // Init the fragment
@@ -126,7 +127,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
         }
 
         // Store the PlatoonInformation
-        if (!mPlatoonInformation.equals(data)) {
+        if (!data.equals(mPlatoonInformation)) {
             mPlatoonInformation = data;
         }
 
@@ -313,7 +314,8 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
                     Toast.makeText(mContext, R.string.info_platoon_member_kicking,
                             Toast.LENGTH_SHORT).show();
-                    new AsyncPlatoonMemberManagement(mContext, data.getId(), mPlatoonData).execute();
+                    new AsyncPlatoonMemberManagement(mContext, data.getId(), mPlatoonData)
+                            .execute();
 
                 } else if (item.getItemId() == 3) {
 

@@ -20,9 +20,11 @@ import android.os.Parcelable;
 public class CommentData implements Parcelable {
 
     // Attributes
-    private long id, itemId, timestamp;
-    private String content;
-    private ProfileData author;
+    private long mId;
+    private long mItemId;
+    private long mTimestamp;
+    private String mContent;
+    private ProfileData mAuthor;
 
     // Constants
     public static final int TYPE_NONE = 0;
@@ -32,43 +34,43 @@ public class CommentData implements Parcelable {
     // Constructs
     public CommentData(long i, long iId, long cDate, String c, ProfileData a) {
 
-        id = i;
-        itemId = iId;
-        timestamp = cDate;
-        content = c;
-        author = a;
+        mId = i;
+        mItemId = iId;
+        mTimestamp = cDate;
+        mContent = c;
+        mAuthor = a;
 
     }
 
     public CommentData(Parcel in) {
 
-        id = in.readLong();
-        itemId = in.readLong();
-        timestamp = in.readLong();
-        content = in.readString();
-        author = in.readParcelable(ProfileData.class.getClassLoader());
+        mId = in.readLong();
+        mItemId = in.readLong();
+        mTimestamp = in.readLong();
+        mContent = in.readString();
+        mAuthor = in.readParcelable(ProfileData.class.getClassLoader());
 
     }
 
     // Getters
     public long getId() {
-        return id;
+        return mId;
     }
 
     public long getItemId() {
-        return itemId;
+        return mItemId;
     }
 
     public long getTimestamp() {
-        return timestamp;
+        return mTimestamp;
     }
 
     public String getContent() {
-        return content;
+        return mContent;
     }
 
     public ProfileData getAuthor() {
-        return author;
+        return mAuthor;
     }
 
     @Override
@@ -84,11 +86,11 @@ public class CommentData implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int arg1) {
 
-        out.writeLong(id);
-        out.writeLong(itemId);
-        out.writeLong(timestamp);
-        out.writeString(content);
-        out.writeParcelable(author, arg1);
+        out.writeLong(mId);
+        out.writeLong(mItemId);
+        out.writeLong(mTimestamp);
+        out.writeString(mContent);
+        out.writeParcelable(mAuthor, arg1);
 
     }
 

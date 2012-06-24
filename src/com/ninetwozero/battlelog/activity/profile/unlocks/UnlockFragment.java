@@ -51,7 +51,7 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
         // Set our attributes
         mContext = getActivity();
         mLayoutInflater = inflater;
-        
+
         // Let's inflate & return the view
         View view = mLayoutInflater.inflate(R.layout.tab_content_unlocks,
                 container, false);

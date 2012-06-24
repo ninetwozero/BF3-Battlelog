@@ -613,8 +613,7 @@ public class ForumClient extends DefaultClient {
                     );
 
             // Let's parse it!
-            JSONObject contextObject = new JSONObject(httpContent)
-                    .getJSONObject("context");
+            JSONObject contextObject = new JSONObject(httpContent).getJSONObject("context");
             JSONArray postArray = contextObject.getJSONArray("posts");
             JSONObject threadObject = contextObject.getJSONObject("thread");
             JSONObject lastPosterObject = threadObject

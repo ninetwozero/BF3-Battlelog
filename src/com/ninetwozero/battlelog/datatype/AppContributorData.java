@@ -20,8 +20,9 @@ import android.os.Parcelable;
 public class AppContributorData implements Parcelable {
 
     // Attributes
-    private int stringId;
-    private String name, url;
+    private int mStringId;
+    private String mName;
+    private String mUrl;
 
     // Constructs
     public AppContributorData(Parcel in) {
@@ -30,34 +31,34 @@ public class AppContributorData implements Parcelable {
 
     public AppContributorData(String n, String u) {
 
-        stringId = 0;
-        name = n;
-        url = u;
+        mStringId = 0;
+        mName = n;
+        mUrl = u;
     }
 
     public AppContributorData(int s) {
 
-        stringId = s;
-        name = "";
-        url = "";
+        mStringId = s;
+        mName = "";
+        mUrl = "";
 
     }
 
     public int getStringId() {
 
-        return stringId;
+        return mStringId;
 
     }
 
     public String getName() {
 
-        return name;
+        return mName;
 
     }
 
     public String getUrl() {
 
-        return url;
+        return mUrl;
 
     }
 
@@ -70,18 +71,18 @@ public class AppContributorData implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
 
         // Special cases
-        dest.writeInt(stringId);
-        dest.writeString(name);
-        dest.writeString(url);
+        dest.writeInt(mStringId);
+        dest.writeString(mName);
+        dest.writeString(mUrl);
 
     }
 
     private void readFromParcel(Parcel in) {
 
         // Let's retrieve them, same order as above
-        stringId = in.readInt();
-        name = in.readString();
-        url = in.readString();
+        mStringId = in.readInt();
+        mName = in.readString();
+        mUrl = in.readString();
 
     }
 

@@ -42,13 +42,14 @@ import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.battlelog.activity.profile.weapon.WeaponListActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PersonaData;
-import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
+import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class MenuProfileFragment extends Fragment implements DefaultFragment, OnCloseListDialogListener {
+public class MenuProfileFragment extends Fragment implements DefaultFragment,
+        OnCloseListDialogListener {
 
     // Attributes
     private Context mContext;
@@ -74,7 +75,7 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment, On
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
-        
+
         // Let's inflate & return the view
         View view = mLayoutInflater.inflate(R.layout.tab_content_dashboard_profile,
                 container, false);
@@ -99,7 +100,8 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment, On
                     @Override
                     public void onClick(View v) {
                         FragmentManager manager = getFragmentManager();
-                        ListDialogFragment dialog = ListDialogFragment.newInstance(mPersona, getTag());
+                        ListDialogFragment dialog = ListDialogFragment.newInstance(mPersona,
+                                getTag());
                         dialog.show(manager, DIALOG);
                     }
 
@@ -134,23 +136,25 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment, On
         mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
     }
 
-    private Map<Integer, Intent> menuOptions(){
-        return new HashMap<Integer, Intent>(){{
-            put(R.id.button_unlocks,
-                    new Intent(mContext, UnlockActivity.class).putExtra("profile",
-                            SessionKeeper.getProfileData()));
-            put(R.id.button_weapon,
-                    new Intent(mContext, WeaponListActivity.class).putExtra("profile",
-                            SessionKeeper.getProfileData()));
-            put(R.id.button_assignments,
-                    new Intent(mContext, AssignmentActivity.class).putExtra("profile",
-                            SessionKeeper.getProfileData()));
-            put(R.id.button_self,
-                    new Intent(mContext, ProfileActivity.class).putExtra("profile",
-                            SessionKeeper.getProfileData()));
-            put(R.id.button_settings,
-                    new Intent(mContext, ProfileSettingsActivity.class));
-        }};
+    private Map<Integer, Intent> menuOptions() {
+        return new HashMap<Integer, Intent>() {
+            {
+                put(R.id.button_unlocks,
+                        new Intent(mContext, UnlockActivity.class).putExtra("profile",
+                                SessionKeeper.getProfileData()));
+                put(R.id.button_weapon,
+                        new Intent(mContext, WeaponListActivity.class).putExtra("profile",
+                                SessionKeeper.getProfileData()));
+                put(R.id.button_assignments,
+                        new Intent(mContext, AssignmentActivity.class).putExtra("profile",
+                                SessionKeeper.getProfileData()));
+                put(R.id.button_self,
+                        new Intent(mContext, ProfileActivity.class).putExtra("profile",
+                                SessionKeeper.getProfileData()));
+                put(R.id.button_settings,
+                        new Intent(mContext, ProfileSettingsActivity.class));
+            }
+        };
 
     }
 
@@ -176,10 +180,12 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment, On
 
     public void setupActiveSoldierContent() {
         mTextPersona.setText(getPersonaNameAndPlatform());
-        mImagePersona.setImageResource(DataBank.getImageForPersona(mPersona[mSelectedPosition].getLogo()));
+        mImagePersona.setImageResource(DataBank.getImageForPersona(mPersona[mSelectedPosition]
+                .getLogo()));
     }
 
     private String getPersonaNameAndPlatform() {
-        return mPersona[mSelectedPosition].getName()+mPersona[mSelectedPosition].resolvePlatformId();
+        return mPersona[mSelectedPosition].getName()
+                + mPersona[mSelectedPosition].resolvePlatformId();
     }
 }

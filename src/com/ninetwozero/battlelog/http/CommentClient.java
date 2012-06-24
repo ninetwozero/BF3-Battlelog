@@ -7,8 +7,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
@@ -48,7 +46,8 @@ public class CommentClient extends DefaultClient {
 
             // Let's post!
             boolean isFeed = (mType == CommentData.TYPE_FEED);
-            String url = RequestHandler.generateUrl(isFeed ? URL_COMMENT : URL_NEWS_COMMENT, mId, 1);
+            String url = RequestHandler
+                    .generateUrl(isFeed ? URL_COMMENT : URL_NEWS_COMMENT, mId, 1);
 
             // Get the httpContent
             String httpContent = mRequestHandler.post(
@@ -127,10 +126,10 @@ public class CommentClient extends DefaultClient {
                     dataObject = new JSONObject(httpContent).getJSONObject("data");
 
                 } else {
-                    
+
                     dataObject = new JSONObject(httpContent).getJSONObject("context")
                             .getJSONObject("blogPost");
-                    
+
                 }
 
                 // Get the comment array

@@ -53,10 +53,10 @@ public class AsyncPlatoonMemberManagement extends
                         PlatoonClient.FILTER_PROMOTE);
 
             } else {
-                
+
                 return new PlatoonClient(platoonData).editMember(userId,
                         PlatoonClient.FILTER_DEMOTE);
-                
+
             }
 
         } catch (Exception ex) {

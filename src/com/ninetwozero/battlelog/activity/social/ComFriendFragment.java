@@ -81,7 +81,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
-        
+
         // Let's inflate & return the view
         View view = mLayoutInflater.inflate(R.layout.tab_content_com_friends,
                 container, false);
@@ -99,7 +99,8 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
         // Get the listview
         mListView = (ListView) view.findViewById(android.R.id.list);
-        mListView.setAdapter(mFriendListAdapter = new FriendListAdapter(mContext, null, mLayoutInflater));
+        mListView.setAdapter(mFriendListAdapter = new FriendListAdapter(mContext, null,
+                mLayoutInflater));
         ((Activity) mContext).registerForContextMenu(mListView);
 
     }
