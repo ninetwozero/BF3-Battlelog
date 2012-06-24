@@ -14,46 +14,41 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
-import java.util.Map;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import com.google.gson.Gson;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PersonaStats;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
 import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
-import com.ninetwozero.battlelog.http.ProfileClient;
+import com.ninetwozero.battlelog.factory.URIFactory;
+import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
+import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
-import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class ProfileStatsFragment extends Fragment implements DefaultFragment,
-        OnCloseListDialogListener, LoaderCallbacks<CompletedTask> {
+import java.net.URI;
+import java.util.Map;
+
+public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment,
+        OnCloseListDialogListener{
 
     // Attributes
     private Context mContext;
@@ -69,20 +64,18 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
     private Map<Long, PersonaStats> mPersonaStats;
     private long mSelectedPersona;
     private int mSelectedPosition;
+    private int mSelectedPlatformId;
+    private String mSelectedPersonaName;
     private boolean mComparing;
 
-    private String[] mPersonaNames;
-    private long[] mPersonaIds;
+    private URI callURI;
     private final String DIALOG = "dialog";
     private TextView personaName, rankTitle, rankId, currentLevelPoints, nextLevelPoints,
-            pointsToMake,
-            assaultScore, engineerScore, supportScore, reconScore, vehiclesScore, combatScore,
-            awardsScore,
-            unlocksScore, totalScore, numberOfKills, numberOfAssists, vehiclesDestroyed,
-            vehiclesDestroyedAssists,
+            pointsToMake, assaultScore, engineerScore, supportScore, reconScore,
+            vehiclesScore, combatScore, awardsScore, unlocksScore, totalScore, numberOfKills,
+            numberOfAssists, vehiclesDestroyed, vehiclesDestroyedAssists,
             heals, revives, repairs, resupplies, deaths, kdRatio, numberOfWins, numberOfLosses,
-            wnRatio,
-            accuracy, killStreak, longestHeadshot, skill, timePlayed, scorePerMinute;
+            wnRatio, accuracy, killStreak, longestHeadshot, skill, timePlayed, scorePerMinute;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,14 +85,13 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
-
+        
         // Let's inflate & return the view
         View view = mLayoutInflater.inflate(R.layout.tab_content_profile_stats,
                 container, false);
 
         // Init
         initFragment(view);
-        findViews();
 
         // Return
         return view;
@@ -110,7 +102,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // TODO create loader
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(0, savedInstanceState, this);
     }
 
     public void initFragment(View view) {
@@ -120,10 +112,11 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
 
         // Let's try something out
         if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
-
-            mSelectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
             mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
-
+            mSelectedPersona = getSelectedPersonaId(mSelectedPosition);
+            mSelectedPlatformId = getPlatformIdFor(mSelectedPosition);
+            mSelectedPersonaName = getSelectedPersonaName(mSelectedPosition);
+            callURI = URIFactory.personaOverview(mSelectedPersona, mSelectedPlatformId);
         }
 
         // Click on the wrap
@@ -143,6 +136,24 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
                         }
                     }
                 });
+    }
+
+    private long getSelectedPersonaId(int position) {
+        String idsString = mSharedPreferences.getString(Constants.SP_BL_PERSONA_ID, "");
+        String[] ids = idsString.split(":");
+        return Long.parseLong(ids[position]);
+    }
+
+    private int getPlatformIdFor(int position){
+        String idsString = mSharedPreferences.getString(Constants.SP_BL_PLATFORM_ID, "");
+        String[] ids = idsString.split(":");
+        return Integer.parseInt(ids[position]);
+    }
+
+    private String getSelectedPersonaName(int position){
+        String names = mSharedPreferences.getString(Constants.SP_BL_PERSONA_NAME, "");
+        String[] namesArray = names.split(":");
+        return namesArray[position];
     }
 
     @Override
@@ -214,15 +225,13 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
     }
 
     private void populateStats(PersonaStats pd) {
-
-        if (pd == null) {
-
+        
+        if( pd == null ) {
             return;
-
         }
-
-        personaName.setText(pd.getPersonaName() + pd.resolvePlatformId());
-        rankTitle.setText(pd.getRankTitle());
+        
+        personaName.setText(mSelectedPersonaName + " " + pd.resolvePlatformId());
+        rankTitle.setText(fromResource((int)pd.getRankId()));
         rankId.setText(String.valueOf(pd.getRankId()));
 
         // Progress
@@ -270,20 +279,33 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
     }
 
     @Override
-    public Loader<CompletedTask> onCreateLoader(int i, Bundle bundle) {
-        return null;
+    protected Loader<CompletedTask> createLoader(int id, Bundle bundle) {
+        return new Bf3Loader(getContext(), callURI);
+    }
+
+    private Context getContext(){
+        return getActivity().getApplicationContext();
     }
 
     @Override
-    public void onLoadFinished(Loader<CompletedTask> completedTaskLoader,
-            CompletedTask completedTask) {
+    public void loadFinished(Loader<CompletedTask> loader, CompletedTask task){
+        if(task.result.equals(CompletedTask.Result.SUCCESS)){
+            findViews();
+            populateStats(personaStatsFrom(task));
+        }
     }
 
-    @Override
-    public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
+    private PersonaStats personaStatsFrom(CompletedTask task) {
+        Gson gson = new Gson();
+        PersonaInfo data = gson.fromJson(task.jsonObject, PersonaInfo.class);
+        return new PersonaStats(data);
     }
 
-    public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
+    private String fromResource(int rank){
+        return getResources().getStringArray(R.array.rank)[rank];
+    }
+
+    /*public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
 
         // Attributes
 
@@ -340,9 +362,9 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
 
         }
 
-    }
+    }*/
 
-    public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
+    /*public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
         public AsyncRefresh() {
 
@@ -351,7 +373,7 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
         @Override
         protected void onPreExecute() {
 
-            /* LOADER LIKE IN FORUMS? */
+            *//* LOADER LIKE IN FORUMS? *//*
         }
 
         @Override
@@ -398,11 +420,11 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
             }
         }
 
-    }
+    }*/
 
     public void reload() {
 
-        // ASYNC!!!
+        /*// ASYNC!!!
         if (mPersonaStats == null) {
 
             new AsyncCache().execute();
@@ -411,21 +433,17 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
 
             new AsyncRefresh().execute();
 
-        }
+        }*/
 
     }
 
     public void setProfileData(ProfileData p) {
-
         mProfileData = p;
-
     }
 
     @Override
     public void onResume() {
-
         super.onResume();
-
     }
 
     public Menu prepareOptionsMenu(Menu menu) {
@@ -457,15 +475,10 @@ public class ProfileStatsFragment extends Fragment implements DefaultFragment,
             for (long key : mPersonaStats.keySet()) {
 
                 if (key == mSelectedPersona) {
-
                     break;
-
                 } else {
-
                     position++;
-
                 }
-
             }
 
             startActivity(

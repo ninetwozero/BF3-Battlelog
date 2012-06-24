@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.datatype;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.ninetwozero.battlelog.jsonmodel.*;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
@@ -100,6 +101,52 @@ public class PersonaStats implements Parcelable {
         scoreUnlocks = scrUnlocks;
         scoreTotal = scrTotal;
 
+    }
+
+    public PersonaStats(PersonaInfo pd){
+        PersonaStatsOverview statsOverview = pd.getStatsOverview();
+        Rank currentRank = pd.getCurrentRank();
+        Rank nextRank = pd.getNextRank();
+        KitScores kitScores = statsOverview.getKitScores();
+        VehicleScores vehicleScores = statsOverview.getVehicleScores();  //TODO add to the view
+        User user = pd.getUser();
+
+        accountName = user.getUserName();
+        //personaName = pName; NEED TO GET IT FROM FORWARDED DATA
+        //rankTitle = rTitle; should be just conversion from array position before setting it as text
+        rankId = currentRank.getLevel();
+        personaId = pd.getPersonaId();
+        userId = user.getId();
+        platformId = pd.getPlatform();
+        timePlayed = statsOverview.getTimePlayed();
+        pointsThisLvl = currentRank.getRankPoints(); //TODO it should be renamed to current
+        pointsNextLvl = nextRank.getRankPoints();
+        numKills = (int)statsOverview.getKills(); //TODO should be long
+        numAssists = (int) statsOverview.getKillAssists();
+        numVehicles = (int) statsOverview.getVehiclesDestroyed();
+        numVehicleAssists = (int) statsOverview.getVehiclesDestroyedAssists();
+        numHeals = (int) statsOverview.getHeals();
+        numRevives = (int) statsOverview.getRevives();
+        numRepairs = (int) statsOverview.getRepairs();
+        numResupplies = (int) statsOverview.getResupplies();
+        numDeaths = (int) statsOverview.getDeaths();
+        numWins = (int) statsOverview.getGameWon();
+        numLosses = (int) statsOverview.getGameLost();
+        skill = statsOverview.getSkill();
+        kdRatio = statsOverview.getKdRatio();
+        accuracy = statsOverview.getAverageWeaponAccuracy();
+        longestHS = statsOverview.getLongestHeadshot();
+        longestKS = statsOverview.getKillStreakBonus();
+        scorePerMinute = statsOverview.getScoreMin();
+        scoreAssault = kitScores.getAssaultScore();
+        scoreEngineer = kitScores.getEngineerScore();
+        scoreSupport = kitScores.getSupportScore();
+        scoreRecon = kitScores.getReconScore();
+        scoreVehicle = statsOverview.getVehicleScore();
+        scoreCombat = statsOverview.getCombatScore();
+        scoreAwards = statsOverview.getAwardScore();
+        scoreUnlocks = statsOverview.getUnlockScore();
+        scoreTotal = statsOverview.getTotalScore();
     }
 
     public PersonaStats(Parcel in) {

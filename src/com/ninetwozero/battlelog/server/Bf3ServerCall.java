@@ -1,5 +1,12 @@
-
 package com.ninetwozero.battlelog.server;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.ninetwozero.battlelog.server.SimpleHttpCaller.SimpleHttpCallerCallback;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,16 +14,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-
-import com.ninetwozero.battlelog.server.SimpleHttpCaller.SimpleHttpCallerCallback;
-
 public class Bf3ServerCall implements SimpleHttpCallerCallback {
 
     public interface Bf3ServerCallCallback {
-        void onBf3CallSuccess(/* JsonNode node */);
+        void onBf3CallSuccess(JsonObject jsonObject);
 
         void onBf3CallFailure();
 
@@ -30,7 +31,7 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
     public Bf3ServerCall(URI call, Bf3ServerCallCallback callback) {
         this.callback = callback;
         this.call = call;
-        this.httpClient = Bf3HttpClient.newInstance();
+        this.httpClient = new DefaultHttpClient();
     }
 
     public void execute() {
@@ -48,26 +49,30 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
 
     @Override
     public void onSimpleHttpCallSuccess(HttpResponse response) {
-        // To change body of implemented methods use File | Settings | File
-        // Templates.
+        Reader reader = getJSONReader(response);
+        JsonParser parser = new JsonParser();
+        JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+        callback.onBf3CallSuccess(overviewStatsObject(jsonObject));
     }
 
     @Override
     public void onSimpleHttpCallFailure(HttpResponse response) throws _403Exception {
-        // To change body of implemented methods use File | Settings | File
-        // Templates.
+        callback.onBf3CallFailure();
     }
 
     private Reader getJSONReader(HttpResponse response) {
-        InputStream data = null;
         Reader reader = null;
         try {
-            data = response.getEntity().getContent();
+            InputStream data = response.getEntity().getContent();
             reader = new InputStreamReader(data);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return reader;
+    }
+
+    private JsonObject overviewStatsObject(JsonObject jsonObject) {
+        return jsonObject.getAsJsonObject("data");
     }
 
     @SuppressWarnings("serial")
