@@ -6,17 +6,20 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.ninetwozero.battlelog.server.SimpleHttpCaller.SimpleHttpCallerCallback;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 public class Bf3ServerCall implements SimpleHttpCallerCallback {
 
 
     public interface Bf3ServerCallCallback {
-        void onBf3CallSuccess(/*JsonNode node*/);
+        void onBf3CallSuccess(JsonObject jsonObject);
 
         void onBf3CallFailure();
 
@@ -27,40 +30,42 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
     protected final URI call;
     private final HttpClient httpClient;
 
-    public Bf3ServerCall(URI call, Bf3ServerCallCallback callback){
+    public Bf3ServerCall(URI call, Bf3ServerCallCallback callback) {
         this.callback = callback;
         this.call = call;
-        this.httpClient = Bf3HttpClient.newInstance();
+        this.httpClient = new DefaultHttpClient();
     }
 
-    public void execute(){
-        try{
+    public void execute() {
+        try {
             buildHttpCaller().execute();
-        } catch (final Exception e){
+        } catch (final Exception e) {
             callback.onBf3CallError();
         }
     }
 
-    protected SimpleHttpCaller buildHttpCaller() throws Exception{
+    protected SimpleHttpCaller buildHttpCaller() throws Exception {
         HttpGet request = new HttpGet(call);
         return new SimpleHttpCaller(httpClient, request, this);
     }
 
     @Override
     public void onSimpleHttpCallSuccess(HttpResponse response) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        Reader reader = getJSONReader(response);
+        JsonParser parser = new JsonParser();
+        JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+        callback.onBf3CallSuccess(overviewStatsObject(jsonObject));
     }
 
     @Override
     public void onSimpleHttpCallFailure(HttpResponse response) throws _403Exception {
-        //To change body of implemented methods use File | Settings | File Templates.
+        callback.onBf3CallFailure();
     }
 
-    private Reader getJSONReader(HttpResponse response){
-        InputStream data = null;
+    private Reader getJSONReader(HttpResponse response) {
         Reader reader = null;
         try {
-            data=  response.getEntity().getContent();
+            InputStream data = response.getEntity().getContent();
             reader = new InputStreamReader(data);
         } catch (IOException e) {
             e.printStackTrace();
@@ -68,6 +73,11 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
         return reader;
     }
 
+    private JsonObject overviewStatsObject(JsonObject jsonObject) {
+        return jsonObject.getAsJsonObject("data");
+    }
+
     @SuppressWarnings("serial")
-    public static class _403Exception extends IOException{}
+    public static class _403Exception extends IOException {
+    }
 }

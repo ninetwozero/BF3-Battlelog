@@ -27,7 +27,10 @@ public class Bf3Fragment extends Fragment implements /*DefaultFragment,*/ Loader
         if(resultIsError(data)){
             showErrorDialog(data.result);
         }
+        loadFinished(loader, data);
     }
+
+    public void loadFinished(Loader<CompletedTask> loader, CompletedTask data){}
 
     private boolean resultIsError(CompletedTask data){
         return data != null && data.result != SUCCESS && data.result != FAILURE;
