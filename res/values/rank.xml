@@ -1,0 +1,150 @@
+<resources>
+  <string-array name="rank">
+    <item>Recruit</item>
+    <item>Private First Class</item>
+    <item>Private First Class 1 Star</item>
+    <item>Private First Class 2 Star</item>
+    <item>Private First Class 3 Star</item>
+    <item>Lance Corporal</item>
+    <item>Lance Corporal 1 Star</item>
+    <item>Lance Corporal 2 Star</item>
+    <item>Lance Corporal 3 Star</item>
+    <item>Corporal</item>
+    <item>Corporal 1 Star</item>
+    <item>Corporal 2 Star</item>
+    <item>Corporal 3 Star</item>
+    <item>Sergeant</item>
+    <item>Sergeant 1 Star</item>
+    <item>Sergeant 2 Star</item>
+    <item>Sergeant 3 Star</item>
+    <item>Staff Sergeant</item>
+    <item>Staff Sergeant 1 Star</item>
+    <item>Staff Sergeant 2 Star</item>
+    <item>Gunnery Sergeant</item>
+    <item>Gunnery Sergeant 1 Star</item>
+    <item>Gunnery Sergeant 2 Star</item>
+    <item>Master Sergeant</item>
+    <item>Master Sergeant 1 Star</item>
+    <item>Master Sergeant 2 Star</item>
+    <item>First Sergeant</item>
+    <item>First Sergeant 1 Star</item>
+    <item>First Sergeant 2 Star</item>
+    <item>Master Gunnery Sergeant</item>
+    <item>Master Gunnery Sergeant 1 Star</item>
+    <item>Master Gunnery Sergeant 2 Star</item>
+    <item>Sergeant Major</item>
+    <item>Sergeant Major 1 Star</item>
+    <item>Sergeant Major 2 Star</item>
+    <item>Warrant Officer 1 Star</item>
+    <item>Chief Warrant Officer Two</item>
+    <item>Chief Warrant Officer THREE</item>
+    <item>Chief Warrant Officer FOUR</item>
+    <item>Chief Warrant Officer FIVE</item>
+    <item>Second Lieutenant</item>
+    <item>First Lieutenant</item>
+    <item>Captain</item>
+    <item>Major</item>
+    <item>Lieutenant Colonel</item>
+    <item>Colonel</item>
+    <item>Colonel Service Star 1</item>
+    <item>Colonel Service Star 2</item>
+    <item>Colonel Service Star 3</item>
+    <item>Colonel Service Star 4</item>
+    <item>Colonel Service Star 5</item>
+    <item>Colonel Service Star 6</item>
+    <item>Colonel Service Star 7</item>
+    <item>Colonel Service Star 8</item>
+    <item>Colonel Service Star 9</item>
+    <item>Colonel Service Star 10</item>
+    <item>Colonel Service Star 11</item>
+    <item>Colonel Service Star 12</item>
+    <item>Colonel Service Star 13</item>
+    <item>Colonel Service Star 14</item>
+    <item>Colonel Service Star 15</item>
+    <item>Colonel Service Star 16</item>
+    <item>Colonel Service Star 17</item>
+    <item>Colonel Service Star 18</item>
+    <item>Colonel Service Star 19</item>
+    <item>Colonel Service Star 20</item>
+    <item>Colonel Service Star 21</item>
+    <item>Colonel Service Star 22</item>
+    <item>Colonel Service Star 23</item>
+    <item>Colonel Service Star 24</item>
+    <item>Colonel Service Star 25</item>
+    <item>Colonel Service Star 26</item>
+    <item>Colonel Service Star 27</item>
+    <item>Colonel Service Star 28</item>
+    <item>Colonel Service Star 29</item>
+    <item>Colonel Service Star 30</item>
+    <item>Colonel Service Star 31</item>
+    <item>Colonel Service Star 32</item>
+    <item>Colonel Service Star 33</item>
+    <item>Colonel Service Star 34</item>
+    <item>Colonel Service Star 35</item>
+    <item>Colonel Service Star 36</item>
+    <item>Colonel Service Star 37</item>
+    <item>Colonel Service Star 38</item>
+    <item>Colonel Service Star 39</item>
+    <item>Colonel Service Star 40</item>
+    <item>Colonel Service Star 41</item>
+    <item>Colonel Service Star 42</item>
+    <item>Colonel Service Star 43</item>
+    <item>Colonel Service Star 44</item>
+    <item>Colonel Service Star 45</item>
+    <item>Colonel Service Star 46</item>
+    <item>Colonel Service Star 47</item>
+    <item>Colonel Service Star 48</item>
+    <item>Colonel Service Star 49</item>
+    <item>Colonel Service Star 50</item>
+    <item>Colonel Service Star 51</item>
+    <item>Colonel Service Star 52</item>
+    <item>Colonel Service Star 53</item>
+    <item>Colonel Service Star 54</item>
+    <item>Colonel Service Star 55</item>
+    <item>Colonel Service Star 56</item>
+    <item>Colonel Service Star 57</item>
+    <item>Colonel Service Star 58</item>
+    <item>Colonel Service Star 59</item>
+    <item>Colonel Service Star 60</item>
+    <item>Colonel Service Star 61</item>
+    <item>Colonel Service Star 62</item>
+    <item>Colonel Service Star 63</item>
+    <item>Colonel Service Star 64</item>
+    <item>Colonel Service Star 65</item>
+    <item>Colonel Service Star 66</item>
+    <item>Colonel Service Star 67</item>
+    <item>Colonel Service Star 68</item>
+    <item>Colonel Service Star 69</item>
+    <item>Colonel Service Star 70</item>
+    <item>Colonel Service Star 71</item>
+    <item>Colonel Service Star 72</item>
+    <item>Colonel Service Star 73</item>
+    <item>Colonel Service Star 74</item>
+    <item>Colonel Service Star 75</item>
+    <item>Colonel Service Star 76</item>
+    <item>Colonel Service Star 77</item>
+    <item>Colonel Service Star 78</item>
+    <item>Colonel Service Star 79</item>
+    <item>Colonel Service Star 80</item>
+    <item>Colonel Service Star 81</item>
+    <item>Colonel Service Star 82</item>
+    <item>Colonel Service Star 83</item>
+    <item>Colonel Service Star 84</item>
+    <item>Colonel Service Star 85</item>
+    <item>Colonel Service Star 86</item>
+    <item>Colonel Service Star 87</item>
+    <item>Colonel Service Star 88</item>
+    <item>Colonel Service Star 89</item>
+    <item>Colonel Service Star 90</item>
+    <item>Colonel Service Star 91</item>
+    <item>Colonel Service Star 92</item>
+    <item>Colonel Service Star 93</item>
+    <item>Colonel Service Star 94</item>
+    <item>Colonel Service Star 95</item>
+    <item>Colonel Service Star 96</item>
+    <item>Colonel Service Star 97</item>
+    <item>Colonel Service Star 98</item>
+    <item>Colonel Service Star 99</item>
+    <item>Colonel Service Star 100</item>
+  </string-array>
+</resources>
