@@ -32,7 +32,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -92,7 +91,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
         // Let's try something out
         if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
 
-            mSelectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, 0);
+            mSelectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, mProfileData.getPersona(0).getId());
             mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
 
         } else {
@@ -264,7 +263,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
             }
 
         }
-
+        
         @Override
         protected Boolean doInBackground(ProfileData... arg0) {
 
