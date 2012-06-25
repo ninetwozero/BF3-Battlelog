@@ -1236,11 +1236,11 @@ public final class DataBank {
         ASSIGNMENT_RESOURCES.put("xpma09", new int[] {R.drawable.assignment_xp1_09, R.drawable.w_xp1_pp19});
         ASSIGNMENT_RESOURCES.put("xpma10", new int[] {R.drawable.assignment_xp1_10, R.drawable.w_xp1_jackhammer});
         
-        ASSIGNMENT_RESOURCES.put("xp2prema01", new int[] {R.drawable.assignment_xp2p_01, R.drawable.w_xp1_famas});
-        ASSIGNMENT_RESOURCES.put("xp2prema02", new int[] {R.drawable.assignment_xp2p_02, R.drawable.w_xp1_l85a2});
-        ASSIGNMENT_RESOURCES.put("xp2prema03", new int[] {R.drawable.assignment_xp2p_03, R.drawable.w_xp1_hk53});
-        ASSIGNMENT_RESOURCES.put("xp2prema04", new int[] {R.drawable.assignment_xp2p_04, R.drawable.w_xp1_qbz95b});
-        ASSIGNMENT_RESOURCES.put("xp2prema05", new int[] {R.drawable.assignment_xp2p_05, R.drawable.w_xp1_qbb95}); 
+        ASSIGNMENT_RESOURCES.put("xp2prema01", new int[] {R.drawable.assignment_xp2p_01, R.drawable.d_xp2p1_assault});
+        ASSIGNMENT_RESOURCES.put("xp2prema02", new int[] {R.drawable.assignment_xp2p_02, R.drawable.d_xp2p1_support});
+        ASSIGNMENT_RESOURCES.put("xp2prema03", new int[] {R.drawable.assignment_xp2p_03, R.drawable.d_xp2p1_recon});
+        ASSIGNMENT_RESOURCES.put("xp2prema04", new int[] {R.drawable.assignment_xp2p_04, R.drawable.d_xp2p1_engineer});
+        ASSIGNMENT_RESOURCES.put("xp2prema05", new int[] {R.drawable.assignment_xp2p_05, R.drawable.d_xp2p1_common}); 
         
         ASSIGNMENT_RESOURCES.put("xp2ma01", new int[] {R.drawable.assignment_xp2_01, R.drawable.w_xp2_steyraug});
         ASSIGNMENT_RESOURCES.put("xp2ma02", new int[] {R.drawable.assignment_xp2_02, R.drawable.w_xp2_scarl});

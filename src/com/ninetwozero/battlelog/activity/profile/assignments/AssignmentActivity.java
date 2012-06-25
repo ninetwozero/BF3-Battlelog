@@ -371,9 +371,6 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
 
             // Is the AssignmentDataWrapper null?
             if (assignmentDataWrapper == null) {
-                Log.d(Constants.DEBUG_TAG, "mAssignments.size() => " + mAssignments.size());
-                Log.d(Constants.DEBUG_TAG, "selectedPersona => " + mSelectedPersona);
-                Log.d(Constants.DEBUG_TAG, "assignmentDataWrapper => " + assignmentDataWrapper);
                 return new ArrayList<AssignmentData>();
             }
 

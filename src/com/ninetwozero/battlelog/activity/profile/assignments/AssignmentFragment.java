@@ -16,23 +16,31 @@ package com.ninetwozero.battlelog.activity.profile.assignments;
 
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.AssignmentData;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.DataBank;
 
 public class AssignmentFragment extends Fragment implements DefaultFragment {
 
@@ -65,13 +73,13 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
 
         // Get the unlocks
         if (mContext instanceof AssignmentActivity) {
-
             mAssignments = ((AssignmentActivity) mContext).getItemsForFragment(mViewPagerPosition);
 
         }
 
         // Init views
         initFragment(view);
+        show(mAssignments);
 
         // Return the view
         return view;
@@ -103,7 +111,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         mViewPagerPosition = p;
 
     }
-    
+
     // Loop & create
     public void displayPairsInTable(TableLayout table, List<AssignmentData> assignments) {
 
@@ -144,6 +152,31 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
             imageLeft.setTag(ass1); // i
             imageRight.setTag(ass2); // i+1
 
+            imageLeft.setOnClickListener(
+
+                    new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            AssignmentData data = (AssignmentData) v.getTag();
+                            createDialog(data);
+                        }
+
+                    }
+                    );
+            imageRight.setOnClickListener(
+
+                    new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            AssignmentData data = (AssignmentData) v.getTag();
+                            createDialog(data);
+                        }
+
+                    }
+                    );
+
             // Get the progress...
             int progressValueLeft = ass1.getProgress();
             int progressValueRight = ass2.getProgress();
@@ -160,6 +193,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
 
     public void displayStackedInTable(TableLayout table, List<AssignmentData> assignments) {
 
+        boolean completedAll = false;
         for (int i = 0, max = assignments.size(); i < max; i++) {
 
             // Get the data
@@ -173,10 +207,27 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
             ImageView image = (ImageView) tableRow.findViewById(R.id.image_assignment);
 
             // Act
-            image.setImageResource(assignment.isCompleted()
-                    ? assignment.getResourceId()
-                    : R.drawable.assignment_locked);
+            if (i == (max - 1)) {
+                image.setImageResource(completedAll
+                        ? assignment.getResourceId()
+                        : R.drawable.assignment_locked);
+            } else {
+                completedAll = assignment.isCompleted();
+                image.setImageResource(assignment.getResourceId());
+            }
+            image.setOnClickListener(
 
+                    new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            AssignmentData data = (AssignmentData) v.getTag();
+                            createDialog(data);
+                        }
+
+                    }
+                    );
+            
             // ...and set the progress bars
             progress.setProgress(progressValue);
             progress.setMax(100);
@@ -202,13 +253,80 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         } else if (mType == TYPE_STACK) {
 
             displayStackedInTable(mTableAssignments, data);
-        
+
         }
     }
 
     @Override
     public void reload() {
 
+    }
+
+    private void createDialog(AssignmentData mCurrentPopupData) {
+
+        // Init
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        View dialog = mLayoutInflater.inflate(R.layout.popup_dialog_view, null);
+        LinearLayout wrapObjectives = (LinearLayout) dialog.findViewById(R.id.wrap_objectives);
+
+        // Set the title
+        builder.setCancelable(false).setPositiveButton("OK",
+
+                new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.dismiss();
+
+                    }
+
+                });
+
+        // Create the dialog and set the contentView
+        builder.setView(dialog);
+        builder.setCancelable(true);
+
+        // Grab the data
+        String[] assignmentTitleData = DataBank.getAssignmentTitle(mCurrentPopupData.getId());
+
+        // Set the actual fields too
+        ImageView imageAssignment = ((ImageView) dialog.findViewById(R.id.image_assignment));
+        imageAssignment.setImageResource(mCurrentPopupData.getResourceId());
+
+        // turn off clickable in assignment dialog (image_assignment needs it in
+        // the assignment list window)
+        imageAssignment.setClickable(false);
+        ((TextView) dialog.findViewById(R.id.text_title))
+                .setText(assignmentTitleData[0]);
+
+        // Loop over the criterias
+        for (AssignmentData.Objective objective : mCurrentPopupData.getObjectives()) {
+
+            // Inflate a layout...
+            View v = mLayoutInflater.inflate(
+                    R.layout.list_item_assignment_popup, null);
+
+            // ...and set the fields
+            ((TextView) v.findViewById(R.id.text_obj_title)).setText(DataBank
+                    .getAssignmentCriteria(objective.getDescription()));
+            ((TextView) v.findViewById(R.id.text_obj_values)).setText(
+
+                    objective.getCurrentValue() + "/" + objective.getGoalValue()
+
+                    );
+
+            wrapObjectives.addView(v);
+
+        }
+
+        ((ImageView) dialog.findViewById(R.id.image_reward))
+                .setImageResource(mCurrentPopupData.getUnlockResourceId());
+        ((TextView) dialog.findViewById(R.id.text_rew_name))
+                .setText(assignmentTitleData[1]);
+
+        AlertDialog theDialog = builder.create();
+        theDialog.setView(dialog, 0, 0, 0, 0);
+        theDialog.show();
     }
 
     @Override

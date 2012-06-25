@@ -17,7 +17,8 @@
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content" 
 	android:gravity="center"
-	android:paddingBottom="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
 >
     <LinearLayout
 		android:layout_width="wrap_content"    
@@ -41,7 +42,6 @@
 					android:layout_width="fill_parent"
 					android:layout_height="50dp"
 					android:src="@drawable/assignment_xp1_01"
-					android:onClick="onPopupClick"
 				/>
 				<ProgressBar
 					android:id="@+id/progress_left"
@@ -73,7 +73,6 @@
 					android:layout_width="fill_parent"
 					android:layout_height="50dp"
 					android:src="@drawable/assignment_locked"
-					android:onClick="onPopupClick"
 				/>
 				<ProgressBar
 					android:id="@+id/progress_right"
