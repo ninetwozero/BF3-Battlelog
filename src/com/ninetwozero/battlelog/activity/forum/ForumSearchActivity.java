@@ -249,11 +249,7 @@ public class ForumSearchActivity extends ListActivity {
 
         new Intent(this, ForumActivity.class).putExtra(
 
-                "threadId", id
-
-                ).putExtra(
-
-                        "threadTitle", ((ForumSearchResult) v.getTag()).getTitle()
+                "searchedThread", (ForumSearchResult) v.getTag()
 
                 )
 

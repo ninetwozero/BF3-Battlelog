@@ -35,6 +35,7 @@ import android.widget.AdapterView;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatype.ForumSearchResult;
 import com.ninetwozero.battlelog.datatype.SavedForumThreadData;
 
 public class ForumActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
@@ -69,12 +70,12 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
     public void onResume() {
 
         super.onResume();
-
-        // Reload
-        reload();
-
+        
         // Let's try this
         openFromIntent(getIntent());
+        
+        // Reload
+        reload();
 
     }
 
@@ -92,6 +93,11 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
             mListFragments.add(mFragmentForumThread = (ForumThreadFragment) Fragment.instantiate(
                     this, ForumThreadFragment.class.getName()));
 
+            // Set the cache-mode
+            if( getIntent().hasExtra("savedThread") ) {
+                mFragmentForumThread.setCaching(true);
+            }
+            
             // Get the ViewPager
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
@@ -211,6 +217,12 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
             openThread(new Intent().putExtra("threadTitle", mSavedThread.getTitle()).putExtra(
                     "threadId", mSavedThread.getId())
                     .putExtra("pageId", mSavedThread.getNumPageLastRead()));
+
+        } else if (intent.hasExtra("searchedThread")) {
+
+            ForumSearchResult thread = intent.getParcelableExtra("searchedThread");
+            openThread(new Intent().putExtra("threadTitle", thread.getTitle())
+                    .putExtra("threadId", thread.getId()).putExtra("pageId", 1));
 
         }
 

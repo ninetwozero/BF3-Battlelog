@@ -25,14 +25,14 @@ import com.ninetwozero.battlelog.http.ForumClient;
 public class AsyncCreateNewThread extends AsyncTask<String, Void, Boolean> {
 
     // Attributes
-    private Context context;
-    private long forumId;
+    private Context mContext;
+    private long mForumId;
 
     // Construct
     public AsyncCreateNewThread(Context c, long fId) {
 
-        this.context = c;
-        this.forumId = fId;
+        mContext = c;
+        mForumId = fId;
 
     }
 
@@ -43,12 +43,16 @@ public class AsyncCreateNewThread extends AsyncTask<String, Void, Boolean> {
 
             // How'd it go?
             ForumClient forumHandler = new ForumClient();
-            forumHandler.setForumId(forumId);
-            return forumHandler.create(
+            forumHandler.setForumId(mForumId);
+            boolean created = forumHandler.create(
 
-                    this.context, arg0[0], arg0[1], arg0[2]
+                   mContext, arg0[0], arg0[1], arg0[2]
 
                     );
+            
+            // If we managed, we need to fetch the new information
+            if( created ) {}
+            return created;
 
         } catch (Exception ex) {
 
@@ -65,17 +69,17 @@ public class AsyncCreateNewThread extends AsyncTask<String, Void, Boolean> {
         // Well, how'd it go?
         if (results) {
 
-            Toast.makeText(this.context, R.string.info_forum_newthread_true,
+            Toast.makeText(this.mContext, R.string.info_forum_newthread_true,
                     Toast.LENGTH_SHORT).show();
-            if (context instanceof ForumActivity) {
+            if (mContext instanceof ForumActivity) {
 
-                ((ForumActivity) this.context).reload();
-                ((ForumActivity) this.context).resetPostFields();
+                ((ForumActivity) this.mContext).reload();
+                ((ForumActivity) this.mContext).resetPostFields();
             }
 
         } else {
 
-            Toast.makeText(this.context, R.string.info_forum_newthread_false,
+            Toast.makeText(this.mContext, R.string.info_forum_newthread_false,
                     Toast.LENGTH_SHORT).show();
 
         }

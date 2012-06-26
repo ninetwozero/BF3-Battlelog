@@ -1114,16 +1114,16 @@ public class CacheHandler {
                                 DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST,
                                 DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR,
                                 DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_AUTHOR_ID,
-                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED
 
                         },
-                        new String[] {
+                        new Object[] {
 
-                                thread.hasUnread() ? "1" : "0",
-                                thread.getDateLastPost() + "",
+                                thread.hasUnread() ? 1 : 0,
+                                thread.getDateLastPost(),
                                 thread.getLastPoster().getUsername(),
-                                thread.getLastPoster().getId() + "",
-                                thread.getDateLastChecked() + ""
+                                thread.getLastPoster().getId(),
+                                thread.getDateLastChecked()
                         },
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                         thread.getId()
@@ -1143,7 +1143,7 @@ public class CacheHandler {
 
         }
 
-        public static boolean updateAfterView(Context context, SavedForumThreadData thread) {
+        public static boolean updateBeforeView(Context context, SavedForumThreadData thread) {
 
             // Use the SQLiteManager to get a cursor
             SQLiteManager manager = new SQLiteManager(context);
@@ -1156,17 +1156,52 @@ public class CacheHandler {
                         new String[] {
                                 DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD,
                                 DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_READ,
-                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED,
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED
 
                         },
-                        new String[] {
+                        new Object[] {
 
-                                "0",
-                                thread.getDateLastRead() + "",
-                                thread.getDateLastChecked() + ""
+                                0,
+                                thread.getDateLastRead(),
+                                thread.getDateLastChecked()
                         },
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                         thread.getId()
+
+                        );
+
+                manager.close();
+                return true;
+
+            } catch (Exception ex) {
+
+                manager.close();
+                ex.printStackTrace();
+                return false;
+
+            }
+
+        }
+
+        public static boolean updateAfterView(Context context, long threadId, int numPosts) {
+
+            // Use the SQLiteManager to get a cursor
+            SQLiteManager manager = new SQLiteManager(context);
+
+            try {
+                // UPDATE them!!
+                manager.update(
+
+                        DatabaseStructure.ForumThreads.TABLE_NAME,
+                        new String[] {
+                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS
+
+                        },
+                        new Object[] {
+                            numPosts
+                        },
+                        DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
+                        threadId
 
                         );
 

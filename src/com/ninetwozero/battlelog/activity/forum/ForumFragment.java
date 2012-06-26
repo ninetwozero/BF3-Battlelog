@@ -213,10 +213,6 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
                     new AsyncGetThreads(null, mListView).execute(mForumId);
 
-                } else {
-
-                    Log.d(Constants.DEBUG_TAG, "It's still fresh enough if you ask me!");
-
                 }
 
             }
@@ -452,7 +448,6 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
     @Override
     public boolean handleSelectedOption(MenuItem item) {
-        // TODO Auto-generated method stub
         return false;
     }
 

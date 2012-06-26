@@ -75,6 +75,9 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class ForumThreadFragment extends ListFragment implements DefaultFragment {
 
+    // Constants
+    public final static int POSTS_PER_PAGE = 30;
+
     // Attributes
     private Context mContext;
     private LayoutInflater mLayoutInflater;
@@ -133,9 +136,6 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     }
 
     public void initFragment(View v) {
-
-        // Are we to cache?
-        mCaching = mSharedPreferences.getBoolean(Constants.SP_BL_FORUM_CACHE, true);
 
         // Setup the text
         mTextTitle = (TextView) v.findViewById(R.id.text_title_thread);
@@ -344,8 +344,16 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                 // Do we need to get a specific page here already
                 if (arg0[0] > 1) {
-
                     posts = mForumHandler.getPosts(tempPageId, mLocale);
+                
+                } else {
+                    posts = mThreadData.getPosts();
+                    
+                }
+                
+                if( mCaching ) {
+                    int numReadPosts = ((1 * POSTS_PER_PAGE) - (posts.size() % POSTS_PER_PAGE ));  
+                    CacheHandler.Forum.updateAfterView(context, tempThreadId, numReadPosts);
                 }
 
                 return (mThreadData != null);
@@ -625,6 +633,11 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 page = arg0[0];
                 mForumHandler.setThreadId(threadId);
                 posts = mForumHandler.getPosts(page, mLocale);
+
+                if (mCaching) {
+                    int numReadPosts = ((page * POSTS_PER_PAGE) - (posts.size() % POSTS_PER_PAGE));
+                    CacheHandler.Forum.updateAfterView(context, threadId, numReadPosts);
+                }
                 return true;
 
             } catch (Exception ex) {
@@ -1110,5 +1123,9 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
         }
 
+    }
+
+    public void setCaching(boolean c) {
+        mCaching = c;
     }
 }
