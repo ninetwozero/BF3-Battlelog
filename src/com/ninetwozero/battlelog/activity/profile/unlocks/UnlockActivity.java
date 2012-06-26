@@ -152,7 +152,7 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
                             mSelectedPosition = item;
 
                             // Load the new!
-                            setupList(mUnlocks.get(mSelectedPersona), mViewPager.getCurrentItem());
+                            showInFragment(mUnlocks.get(mSelectedPersona), mViewPager.getCurrentItem());
 
                             // Save it
                             if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
@@ -324,12 +324,12 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
 
             // Do actual stuff, like sending to an adapter
             int num = mViewPager.getCurrentItem();
-            setupList(mUnlocks.get(mSelectedPersona), num);
+            showInFragment(mUnlocks.get(mSelectedPersona), num);
             if (num > 0) {
-                setupList(mUnlocks.get(mSelectedPersona), num - 1);
+                showInFragment(mUnlocks.get(mSelectedPersona), num - 1);
             }
             if (num < mViewPager.getChildCount()) {
-                setupList(mUnlocks.get(mSelectedPersona), num + 1);
+                showInFragment(mUnlocks.get(mSelectedPersona), num + 1);
             }
 
             // Go go go
@@ -352,7 +352,7 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
 
     }
 
-    public void setupList(UnlockDataWrapper data, int position) {
+    public void showInFragment(UnlockDataWrapper data, int position) {
 
         ((UnlockFragment) mListFragments.get(position)).showUnlocks(getItemsForFragment(position));
     }

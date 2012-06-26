@@ -17,26 +17,10 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
 >
-	<RelativeLayout 
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:padding="10dp"
-	>
-		<TextView
-		    style="@style/InfoHeading"
-		    android:id="@+id/string000"
-		    android:text="Assignments overview"
-			android:padding="5dp"
-			android:layout_marginTop="0dp"
-			android:layout_marginBottom="5dp"
-		/>
-		<TableLayout
-			android:id="@+id/table_assignments"
-		   	android:layout_width="fill_parent"
-		   	android:layout_height="wrap_content"  
-		   	android:layout_below="@id/string000"
-		>	    
-		</TableLayout>
-		
-	</RelativeLayout>
+	<TableLayout
+		android:id="@+id/table_assignments"
+	   	android:layout_width="fill_parent"
+	   	android:layout_height="wrap_content"  
+	>	    
+	</TableLayout>
 </ScrollView>

@@ -17,7 +17,8 @@
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content" 
 	android:gravity="center"
-	android:paddingBottom="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
 >
     <LinearLayout
 		android:layout_width="wrap_content"    
@@ -40,14 +41,14 @@
 					android:id="@+id/image_leftassignment"
 					android:layout_width="fill_parent"
 					android:layout_height="50dp"
-					android:src="@drawable/assignment_01"
-					android:onClick="onPopupClick"
+					android:src="@drawable/assignment_xp1_01"
 				/>
 				<ProgressBar
 					android:id="@+id/progress_left"
 					style="?android:attr/progressBarStyleHorizontal"
 					android:layout_width="fill_parent"
 					android:layout_height="10dp"
+          android:layout_marginTop="5px"
 					android:layout_below="@id/image_leftassignment"
 					android:background="#ffffff"
 				/>
@@ -73,13 +74,13 @@
 					android:layout_width="fill_parent"
 					android:layout_height="50dp"
 					android:src="@drawable/assignment_locked"
-					android:onClick="onPopupClick"
 				/>
 				<ProgressBar
 					android:id="@+id/progress_right"
 					style="?android:attr/progressBarStyleHorizontal"
 					android:layout_width="fill_parent"
 					android:layout_height="10dp"
+          android:layout_marginTop="5px"
 					android:layout_below="@id/image_rightassignment"
 				/>
 				
