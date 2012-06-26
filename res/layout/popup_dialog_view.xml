@@ -30,7 +30,7 @@
 		    android:id="@+id/image_assignment"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-			android:src="@drawable/assignment_01_m"
+			android:src="@drawable/assignment_xp1_01"
 			android:layout_centerHorizontal="true"
 			android:clickable="true"
 			android:onClick="onClick"
@@ -81,7 +81,7 @@
 			    android:id="@+id/image_reward"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-				android:src="@drawable/assignment_01"
+				android:src="@drawable/w_xp1_famas"
 				android:layout_centerHorizontal="true"
 			/>
 			    
