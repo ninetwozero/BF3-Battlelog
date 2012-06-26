@@ -48,6 +48,7 @@
 					style="?android:attr/progressBarStyleHorizontal"
 					android:layout_width="fill_parent"
 					android:layout_height="10dp"
+          android:layout_marginTop="5px"
 					android:layout_below="@id/image_leftassignment"
 					android:background="#ffffff"
 				/>
@@ -79,6 +80,7 @@
 					style="?android:attr/progressBarStyleHorizontal"
 					android:layout_width="fill_parent"
 					android:layout_height="10dp"
+          android:layout_marginTop="5px"
 					android:layout_below="@id/image_rightassignment"
 				/>
 				
