@@ -311,7 +311,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
                     .getAssignmentCriteria(objective.getDescription()));
             ((TextView) v.findViewById(R.id.text_obj_values)).setText(
 
-                    objective.getCurrentValue() + "/" + objective.getGoalValue()
+                    (int)objective.getCurrentValue() + "/" + (int)objective.getGoalValue()
 
                     );
 
