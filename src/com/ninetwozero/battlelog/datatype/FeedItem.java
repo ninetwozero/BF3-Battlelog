@@ -30,14 +30,32 @@ import com.ninetwozero.battlelog.http.ProfileClient;
 public class FeedItem implements Parcelable {
 
     // Constants
-    public static final int TYPE_GLOBAL = 0;
-    public static final int TYPE_PROFILE = 1;
-    public static final int TYPE_PLATOON = 2;
+    public final static String LABEL_NEW_STATUS = "statusmessage";
+    public final static int TYPE_NEW_STATUS = 0;
+    public final static int TYPE_NEW_FRIEND = 1;
+    public final static int TYPE_NEW_THREAD = 2;
+    public final static int TYPE_NEW_POST = 3;
+    public final static int TYPE_GOT_POST = 4;
+    public final static int TYPE_GOT_PLATOON_POST = 5;
+    public final static int TYPE_NEW_FAVSERVER = 6;
+    public final static int TYPE_NEW_RANK = 7;
+    public final static int TYPE_COMPLETED_LEVEL = 8;
+    public final static int TYPE_NEW_PLATOON = 9;
+    public final static int TYPE_NEW_EMBLEM = 10;
+    public final static int TYPE_JOINED_PLATOON = 11;
+    public final static int TYPE_KICKED_PLATOON = 12;
+    public final static int TYPE_LEFT_PLATOON = 13;
+    public final static int TYPE_COMPLETED_GAME = 14;
+    public final static int TYPE_GOT_AWARD = 15;
+    public final static int TYPE_COMPLETED_ASSIGNMENT = 16;
+    public final static int TYPE_NEW_COMMENT_GAME = 17;
+    public final static int TYPE_NEW_COMMENT_BLOG = 18;
+    public final static int TYPE_NEW_EXPANSION = 19;
 
     // Attributes
     private long id, itemId, date;
-    private int numLikes, numComments;
-    private String title, content, type;
+    private int numLikes, numComments, type;
+    private String title, content;
     private ProfileData[] profileData;
     private boolean liked, censored;
     private String gravatarHash;
@@ -45,8 +63,8 @@ public class FeedItem implements Parcelable {
     // Construct
     public FeedItem(
 
-            long i, long iid, long nDate, int num, int numC, String t, String c,
-            String tp, ProfileData[] pd, boolean il, boolean cs, String im
+            long i, long iid, long nDate, int num, int numC, int tp,
+            String t, String c, ProfileData[] pd, boolean il, boolean cs, String im
 
     ) {
 
@@ -55,9 +73,9 @@ public class FeedItem implements Parcelable {
         date = nDate;
         numLikes = num;
         numComments = numC;
+        type = tp;
         title = t;
         content = c;
-        type = tp;
         profileData = pd.clone();
         liked = il;
         censored = cs;
@@ -72,9 +90,9 @@ public class FeedItem implements Parcelable {
         date = in.readLong();
         numLikes = in.readInt();
         numComments = in.readInt();
+        type = in.readInt();
         title = in.readString();
         content = in.readString();
-        type = in.readString();
         liked = (in.readInt() == 1);
         censored = (in.readInt() == 1);
         gravatarHash = in.readString();
@@ -106,6 +124,10 @@ public class FeedItem implements Parcelable {
     public String getTitle() {
 
         // Get the correct format depending on the type
+        switch( type ) {
+            
+            
+        }
         if ("becamefriends".equals(type)) {
 
             return title.replace(
@@ -247,7 +269,7 @@ public class FeedItem implements Parcelable {
         return content;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
@@ -408,9 +430,9 @@ public class FeedItem implements Parcelable {
         dest.writeLong(date);
         dest.writeInt(numLikes);
         dest.writeInt(numComments);
+        dest.writeInt(type);
         dest.writeString(title);
         dest.writeString(content);
-        dest.writeString(type);
         dest.writeInt(liked ? 1 : 0);
         dest.writeInt(censored ? 1 : 0);
         dest.writeString(gravatarHash);

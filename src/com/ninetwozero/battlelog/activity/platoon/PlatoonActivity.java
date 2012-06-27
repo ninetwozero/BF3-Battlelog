@@ -36,9 +36,9 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.PlatoonInformation;
+import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -276,7 +276,7 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
 
             // We need to set the type
             mFragmentFeed.setTitle(mPlatoonData.getName());
-            mFragmentFeed.setType(FeedItem.TYPE_PLATOON);
+            mFragmentFeed.setType(FeedClient.TYPE_PLATOON);
             mFragmentFeed.setId(mPlatoonData.getId());
             mFragmentFeed.setCanWrite(false);
 

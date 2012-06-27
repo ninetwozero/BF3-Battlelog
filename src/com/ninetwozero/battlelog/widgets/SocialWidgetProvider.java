@@ -125,7 +125,7 @@ public class SocialWidgetProvider extends AppWidgetProvider {
                         .getString(
                                 Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriendsForCOM(context);
                 mFeedItems = new FeedClient(SessionKeeper.getProfileData().getId(),
-                        FeedItem.TYPE_GLOBAL).get(context, 0, Constants.DEFAULT_NUM_FEED);
+                        FeedClient.TYPE_GLOBAL).get(context, 0, Constants.DEFAULT_NUM_FEED);
 
                 return (mFeedItems != null && mFriends != null);
 

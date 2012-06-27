@@ -119,19 +119,19 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
         mListView.setAdapter(mListAdapter);
 
         // Handle the *type*-specific events here
-        if (mType == FeedItem.TYPE_GLOBAL) {
+        if (mType == FeedClient.TYPE_GLOBAL) {
 
             mTextTitle.setText(R.string.info_feed_title_global);
             mFieldMessage.setHint(R.string.info_xml_hint_status);
             mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
 
-        } else if (mType == FeedItem.TYPE_PROFILE) {
+        } else if (mType == FeedClient.TYPE_PROFILE) {
 
             mTextTitle.setText(mTitle);
             mFieldMessage.setHint(R.string.info_xml_hint_feed);
             mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
 
-        } else if (mType == FeedItem.TYPE_PLATOON) {
+        } else if (mType == FeedClient.TYPE_PLATOON) {
 
             mTextTitle.setText(mTitle);
             mFieldMessage.setHint(R.string.info_xml_hint_feed);
@@ -157,13 +157,13 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
                         }
 
                         // Let's do it accordingly
-                        if (mType == FeedItem.TYPE_GLOBAL) {
+                        if (mType == FeedClient.TYPE_GLOBAL) {
 
                             new AsyncStatusUpdate(mContext, FeedFragment.this).execute(message,
                                     mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
                                             ""));
 
-                        } else if (mType == FeedItem.TYPE_PROFILE) {
+                        } else if (mType == FeedClient.TYPE_PROFILE) {
 
                             new AsyncPostToWall(
 
@@ -177,7 +177,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                                     );
 
-                        } else if (mType == FeedItem.TYPE_PLATOON) {
+                        } else if (mType == FeedClient.TYPE_PLATOON) {
 
                             new AsyncPostToWall(
 
@@ -241,7 +241,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
         menu.add(Constants.MENU_ID_FEED, 1, 0, R.string.label_single_post_view);
 
         // Platoon feeds only have posts that would open a new platoon activity
-        if (mType != FeedItem.TYPE_PLATOON) {
+        if (mType != FeedClient.TYPE_PLATOON) {
             menu.add(Constants.MENU_ID_FEED, 2, 0, R.string.label_goto_item);
         }
 
