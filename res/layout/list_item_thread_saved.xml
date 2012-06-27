@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,47 +11,51 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="75dp"
->
-	<View 
-	    android:layout_width="10dp"
-	    android:layout_height="fill_parent"
-	    android:id="@+id/bar_status" 
-	    android:background="@color/lightgrey"
-	    android:layout_alignParentLeft="true"
-	/>
-	<RelativeLayout
-	    android:id="@+id/wrap_top"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-	    android:padding="5dp"
-		android:layout_toRightOf="@id/bar_status"
-		android:layout_centerVertical="true"
-    >
-		<TextView 
-		    android:id="@+id/text_title"
-			android:text="Battlefield 3 (PS3, XBOX 360)"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textColor="@color/blue"
-			android:textStyle="bold"
-		/>
-		<TextView 
-		    android:id="@+id/text_thread_last_post"
-			android:text="@string/info_xml_threadreplydate"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/text_title"
-		/>
-		<TextView 
-		    android:id="@+id/text_post_last_checked"
-			android:text="@string/info_forum_adapter_last_checked"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/text_thread_last_post"
-		/>
-	</RelativeLayout>
+    android:layout_height="75dp" >
+
+    <View
+        android:id="@+id/bar_status"
+        android:layout_width="10dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:background="@color/lightgrey" />
+
+    <RelativeLayout
+        android:id="@+id/wrap_top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/bar_status"
+        android:padding="5dp" >
+
+        <com.ninetwozero.battlelog.datatype.MarqueeTextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="Battlefield 3 (PS3, XBOX 360)"
+            android:textColor="@color/blue"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_thread_last_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_title"
+            android:text="@string/info_xml_threadreplydate" />
+
+        <TextView
+            android:id="@+id/text_post_last_checked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_thread_last_post"
+            android:text="@string/info_forum_adapter_last_checked" />
+    </RelativeLayout>
+
 </RelativeLayout>
