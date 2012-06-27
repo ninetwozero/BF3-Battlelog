@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,8 +11,13 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <stroke android:width="1dp" android:color="#000000" />
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <stroke
+        android:width="1dp"
+        android:color="#000000" />
+
     <solid android:color="#FFFFFF" />
-</shape> 
+
+</shape>

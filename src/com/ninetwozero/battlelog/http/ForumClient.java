@@ -17,12 +17,14 @@ import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class ForumClient extends DefaultClient {
 
     // Attributes
     private long mForumId;
     private long mThreadId;
+
     // URLS
     public static final String URL_LIST = Constants.URL_MAIN + "forum/";
     public static final String URL_LIST_LOCALIZED = Constants.URL_MAIN
@@ -739,15 +741,32 @@ public class ForumClient extends DefaultClient {
 
             // POST!
             String httpContent = mRequestHandler.post(
-
                     RequestHandler.generateUrl(URL_NEW, mForumId),
                     RequestHandler.generatePostData(FIELD_NAMES_NEW, topic, body, chksm),
                     RequestHandler.HEADER_AJAX
 
                     );
+            JSONObject response = new JSONObject(httpContent);
+            if (response.has("location")) {
 
-            // Let's do it
-            return (!"".equals(httpContent));
+                // Get the thread id
+                String[] urlBits = response.getString("location").split("/");
+                boolean hasLocale = urlBits.length == 6;
+
+                // /bf3/{locale/}forum/threadview/2832654625098756572/
+                String locale = hasLocale ? urlBits[2] : "en";
+                String url = hasLocale ? urlBits[5] : urlBits[4];
+
+                // Convert to a long & get a new thread
+                mThreadId = Long.parseLong(url);
+                ForumThreadData threadData = getPosts(locale);
+
+                // Cache it
+                return CacheHandler.Forum.insert(c, threadData, SessionKeeper.getProfileData()
+                        .getId()) > 0;
+
+            }
+            return false;
 
         } catch (Exception ex) {
 

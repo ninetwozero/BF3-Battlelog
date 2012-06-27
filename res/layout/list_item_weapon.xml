@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,84 +11,83 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="10dp"
-	android:paddingBottom="5dp"
->
-	<LinearLayout
-	    android:id="@+id/wrap_sstars"
-	    android:layout_width="70dp"
-	    android:layout_height="70dp"
-	    android:padding="5dp"
-	    android:gravity="center"
-	    android:orientation="vertical"
-	    android:background="@drawable/bg_rounded_corners"
-	    android:layout_marginRight="5dp"
-	   	>	
-	   	<TextView
-		    android:id="@+id/text_sstars"
-		    android:layout_width="60dp"
-		    android:layout_height="wrap_content"
-		    android:text="555"
-	    	android:gravity="center"
-		    android:textSize="32sp"
-		    android:textColor="#FFFFFF"
-		/>
+    android:paddingBottom="5dp" >
 
-	   	<ImageView
-	   	    android:id="@+id/image_sstars"
-	   	    android:layout_width="20dp"
-	   	    android:layout_height="20dp"
-	   	    android:src="@drawable/servicestar31" />
+    <LinearLayout
+        android:id="@+id/wrap_sstars"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/bg_rounded_corners"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="5dp" >
 
-   	</LinearLayout>
-	<TextView
-	    android:id="@+id/text_title"
-	    android:text="FAMAS"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@id/wrap_sstars"
-	    android:layout_marginTop="5dp"
-	    android:layout_marginBottom="5dp"
-	    android:layout_alignParentLeft="true"
-	/>
-	<TextView
-	    android:id="@+id/text_status"
-	    android:text="@string/info_unlocks_done"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@id/wrap_sstars"
-	    android:layout_marginTop="5dp"
-	    android:layout_marginBottom="5dp"
-	    android:layout_alignParentRight="true"
-	/>
-	<TextView
-	    android:id="@+id/text_progress"
-	    android:text="100%"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-		android:layout_below="@+id/text_title"
-	    android:layout_marginLeft="5dp"
-	    android:layout_alignParentRight="true"
-	/>
-	<ProgressBar 
-	    android:id="@+id/progress_unlocks"
-	    style="@android:style/Widget.ProgressBar.Horizontal"
-	    android:layout_width="fill_parent"
-	    android:layout_height="15dp"
-		android:layout_below="@+id/text_title"
-	    android:layout_alignParentLeft="true"
-		android:layout_toLeftOf="@id/text_progress"
-	/> 
-	<ImageView 
-	    android:id="@+id/image_item"
-	    android:src="@drawable/w_xp1_famas"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_toRightOf="@id/wrap_sstars"
-   		android:layout_above="@id/text_title"
-   	/>
+        <TextView
+            android:id="@+id/text_sstars"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="555"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp" />
+
+        <ImageView
+            android:id="@+id/image_sstars"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/servicestar31" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/wrap_sstars"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:text="FAMAS" />
+
+    <TextView
+        android:id="@+id/text_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/wrap_sstars"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/info_unlocks_done" />
+
+    <TextView
+        android:id="@+id/text_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/text_title"
+        android:layout_marginLeft="5dp"
+        android:text="100%" />
+
+    <ProgressBar
+        android:id="@+id/progress_unlocks"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="15dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/text_title"
+        android:layout_toLeftOf="@id/text_progress" />
+
+    <ImageView
+        android:id="@+id/image_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/text_title"
+        android:layout_toRightOf="@id/wrap_sstars"
+        android:src="@drawable/w_xp1_famas" />
+
 </RelativeLayout>

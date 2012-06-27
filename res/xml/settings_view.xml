@@ -1,80 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-	xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sample="http://schemas.android.com/apk/res/com.ninetwozero.battlelog"
->
-  	<PreferenceCategory android:title="@string/info_settings_general">
-  		<ListPreference
-  		    android:title="@string/info_settings_title_language" 
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sample="http://schemas.android.com/apk/res/com.ninetwozero.battlelog" >
+
+    <PreferenceCategory android:title="@string/info_settings_general" >
+        <ListPreference
+            android:entries="@array/language_titles"
+            android:entryValues="@array/language_values"
             android:key="app_locale"
- 			android:entries="@array/language_titles"
- 			android:entryValues="@array/language_values"
-        /> 
+            android:title="@string/info_settings_title_language" />
+
         <CheckBoxPreference
-   	        android:title="@string/info_settings_fullscreen" 
-   	        android:summaryOn="@string/info_settings_fullscreen_true"
-   	        android:summaryOff="@string/info_settings_fullscreen_false"
-            android:key="fullscreen_mode"
             android:defaultValue="false"
-        />
-  	</PreferenceCategory>
-   	<PreferenceCategory android:title="@string/info_settings_chat">
-   	    <CheckBoxPreference
-   	        android:title="@string/info_settings_chat_title" 
-   	        android:summaryOn="@string/info_settings_chat_desc_beep_true"
-   	        android:summaryOff="@string/info_settings_chat_desc_beep_false"
-            android:key="battlelog_chat_sound"
-            android:defaultValue="true"
-        />
-        <com.kmansoft.IntegerListPreference
-            android:title="@string/info_settings_update_interval" 
-            android:key="battlelog_chat_interval"
-            sample:entryList="@array/chat_update_intervals_labels" 
-            sample:valueList="@array/chat_update_intervals_values" 
-            android:defaultValue="1800"
-        />
+            android:key="fullscreen_mode"
+            android:summaryOff="@string/info_settings_fullscreen_false"
+            android:summaryOn="@string/info_settings_fullscreen_true"
+            android:title="@string/info_settings_fullscreen" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/info_settings_service">
-        
+    <PreferenceCategory android:title="@string/info_settings_chat" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="battlelog_chat_sound"
+            android:summaryOff="@string/info_settings_chat_desc_beep_false"
+            android:summaryOn="@string/info_settings_chat_desc_beep_true"
+            android:title="@string/info_settings_chat_title" />
+
         <com.kmansoft.IntegerListPreference
-            android:title="@string/info_settings_update_interval" 
-            android:key="battlelog_service_interval"
-            sample:entryList="@array/service_update_intervals_labels" 
-            sample:valueList="@array/service_update_intervals_values" 
             android:defaultValue="1800"
-        />
-   	</PreferenceCategory>
-    <PreferenceCategory android:title="@string/info_settings_notifications">
-		
-   	    <CheckBoxPreference
-   	        android:title="@string/info_settings_notification_title_light" 
-   	        android:summaryOn="@string/info_settings_notification_desc_light_true"
-   	        android:summaryOff="@string/info_settings_notification_desc_light_false"
+            android:key="battlelog_chat_interval"
+            android:title="@string/info_settings_update_interval"
+            sample:entryList="@array/chat_update_intervals_labels"
+            sample:valueList="@array/chat_update_intervals_values" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/info_settings_service" >
+        <com.kmansoft.IntegerListPreference
+            android:defaultValue="1800"
+            android:key="battlelog_service_interval"
+            android:title="@string/info_settings_update_interval"
+            sample:entryList="@array/service_update_intervals_labels"
+            sample:valueList="@array/service_update_intervals_values" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/info_settings_notifications" >
+        <CheckBoxPreference
+            android:defaultValue="true"
             android:key="notification_light"
+            android:summaryOff="@string/info_settings_notification_desc_light_false"
+            android:summaryOn="@string/info_settings_notification_desc_light_true"
+            android:title="@string/info_settings_notification_title_light" />
+        <CheckBoxPreference
             android:defaultValue="true"
-        />
-   	    <CheckBoxPreference
-   	        android:title="@string/info_settings_notification_title_sounds" 
-   	        android:summaryOn="@string/info_settings_notification_desc_beep_true"
-   	        android:summaryOff="@string/info_settings_notification_desc_beep_false"
             android:key="notification_sound"
+            android:summaryOff="@string/info_settings_notification_desc_beep_false"
+            android:summaryOn="@string/info_settings_notification_desc_beep_true"
+            android:title="@string/info_settings_notification_title_sounds" />
+        <CheckBoxPreference
             android:defaultValue="true"
-        />
-   	    <CheckBoxPreference
-   	        android:title="@string/info_settings_notification_title_sounds_spec" 
-   	        android:summaryOn="@string/info_settings_notification_desc_beep_spec_true"
-   	        android:summaryOff="@string/info_settings_notification_desc_beep_spec_false"
+            android:dependency="notification_sound"
             android:key="notification_sound_special"
+            android:summaryOff="@string/info_settings_notification_desc_beep_spec_false"
+            android:summaryOn="@string/info_settings_notification_desc_beep_spec_true"
+            android:title="@string/info_settings_notification_title_sounds_spec" />
+        <CheckBoxPreference
             android:defaultValue="true"
-        	android:dependency="notification_sound"
-        />
-   	    <CheckBoxPreference
-   	        android:title="@string/info_settings_notification_title_vibration" 
-   	        android:summaryOn="@string/info_settings_notification_desc_vibrate_true"
-   	        android:summaryOff="@string/info_settings_notification_desc_vibrate_false"
+            android:dependency="notification_sound"
             android:key="notification_vibrate"
-            android:defaultValue="true"
-        	android:dependency="notification_sound"
-        />
-   	</PreferenceCategory>
+            android:summaryOff="@string/info_settings_notification_desc_vibrate_false"
+            android:summaryOn="@string/info_settings_notification_desc_vibrate_true"
+            android:title="@string/info_settings_notification_title_vibration" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

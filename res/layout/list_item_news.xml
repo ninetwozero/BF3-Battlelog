@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,33 +11,33 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
->
-	<TextView 
-	    android:id="@+id/text_title"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-		android:text="Re-download Back to Karkand on PS3 today to fix weapon animation bug"
-		android:textSize="20sp"
-		android:textColor="@color/blue"
-	/>
-	<TextView 
-	    android:id="@+id/text_author"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-		android:text="@string/info_news_posted_by"
-		android:layout_below="@id/text_title"
-	/>
-	<TextView
-	    android:id="@+id/text_comment"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="5 comments" 
-	    android:textColor="#BBBBBB"
-		android:layout_below="@id/text_author"
-	/>
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Re-download Back to Karkand on PS3 today to fix weapon animation bug"
+        android:textColor="@color/blue"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/text_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_title"
+        android:text="@string/info_news_posted_by" />
+
+    <TextView
+        android:id="@+id/text_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_author"
+        android:text="5 comments"
+        android:textColor="#BBBBBB" />
+
 </RelativeLayout>

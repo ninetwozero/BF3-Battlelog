@@ -152,7 +152,8 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
                             mSelectedPosition = item;
 
                             // Load the new!
-                            showInFragment(mUnlocks.get(mSelectedPersona), mViewPager.getCurrentItem());
+                            showInFragment(mUnlocks.get(mSelectedPersona),
+                                    mViewPager.getCurrentItem());
 
                             // Save it
                             if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {

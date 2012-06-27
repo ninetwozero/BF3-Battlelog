@@ -18,9 +18,9 @@
         android:bottom="4dp"
         android:drawable="@drawable/bg_bf3_main"
         android:left="4dp"
+        android:radius="20dp"
         android:right="4dp"
-        android:top="4dp"
-        android:radius="20dp"/>
+        android:top="4dp"/>
     <item android:drawable="@drawable/widget_social_bg_stroke"/>
 
 </layer-list>

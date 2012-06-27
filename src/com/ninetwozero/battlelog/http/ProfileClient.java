@@ -1235,7 +1235,7 @@ public class ProfileClient extends DefaultClient {
                 stringArrayKeys.add(String.valueOf(jsonArrayKeys.get(i)));
 
             }
-           
+
             // Iterate over the label from above
             int assignmentCounter = 0;
             for (String key : stringArrayKeys) {
@@ -1346,7 +1346,7 @@ public class ProfileClient extends DefaultClient {
                 assignmentCounter++;
 
             }
-            
+
         } catch (JSONException ex) {
 
             ex.printStackTrace();

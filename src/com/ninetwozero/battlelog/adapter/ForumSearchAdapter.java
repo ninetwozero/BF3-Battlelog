@@ -62,7 +62,7 @@ public class ForumSearchAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
 
-        return this.itemArray.get(position).getThreadId();
+        return this.itemArray.get(position).getId();
 
     }
 

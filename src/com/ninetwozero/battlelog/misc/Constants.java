@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import com.ninetwozero.battlelog.R;
 
 public final class Constants {
 
