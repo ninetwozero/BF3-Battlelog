@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,67 +11,65 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
-	android:paddingTop="5dp"
-	android:paddingLeft="10dp"
-	android:paddingRight="10dp"
->		
-	
-	<TextView 
-	    style="@style/InfoHeading"
-	    android:id="@+id/text_name_platoon_tab4"
-	    android:text="Platoon feed"
-		android:padding="5dp"
-	/>
-	<RelativeLayout
-	    android:id="@+id/feed_update"
-		android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:paddingBottom="10dp"
-	    android:layout_below="@id/text_name_platoon_tab4"
-	>  
-		<Button
-		    style="@style/RegularButton"
-		    android:id="@+id/button_send"
-		    android:text="@string/label_post"
-		    android:layout_alignParentRight="true"
-		    android:layout_centerVertical="true"
-		/>
-		<EditText
-		  	android:id="@+id/field_message"
-		  	android:layout_width="fill_parent"
-		  	android:layout_height="wrap_content"
-		  	android:hint="@string/info_xml_hint_feed"
-		  	android:layout_toLeftOf="@id/button_send"
-		    android:layout_marginRight="6dp"
-		    android:layout_centerVertical="true"
-		    android:singleLine="true"
-		 />
-	</RelativeLayout>
-   	<ListView
-	    android:id="@+id/list_feed"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-		android:layout_below="@id/feed_update"
-		android:paddingBottom="5dp"
-		android:fastScrollEnabled="true"
-	/>
-	<RelativeLayout
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-	>
-		<TextView
-		  	android:id="@+id/status_feed"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-		    android:text="@string/info_xml_no_feed"	
-		    android:layout_centerInParent="true"
-		    android:visibility="gone"
-		/>
-	</RelativeLayout>
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp" >
+
+    <TextView
+        android:id="@+id/text_name_platoon_tab4"
+        style="@style/InfoHeading"
+        android:padding="5dp"
+        android:text="Platoon feed" />
+
+    <RelativeLayout
+        android:id="@+id/feed_update"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_name_platoon_tab4"
+        android:paddingBottom="10dp" >
+
+        <Button
+            android:id="@+id/button_send"
+            style="@style/RegularButton"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/label_post" />
+
+        <EditText
+            android:id="@+id/field_message"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:layout_toLeftOf="@id/button_send"
+            android:hint="@string/info_xml_hint_feed"
+            android:singleLine="true" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/list_feed"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/feed_update"
+        android:fastScrollEnabled="true"
+        android:paddingBottom="5dp" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <TextView
+            android:id="@+id/status_feed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/info_xml_no_feed"
+            android:visibility="gone" />
+    </RelativeLayout>
+
 </RelativeLayout>

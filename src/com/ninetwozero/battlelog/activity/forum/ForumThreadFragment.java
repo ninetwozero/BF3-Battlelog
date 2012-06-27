@@ -345,14 +345,14 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                 // Do we need to get a specific page here already
                 if (arg0[0] > 1) {
                     posts = mForumHandler.getPosts(tempPageId, mLocale);
-                
+
                 } else {
                     posts = mThreadData.getPosts();
-                    
+
                 }
-                
-                if( mCaching ) {
-                    int numReadPosts = ((1 * POSTS_PER_PAGE) - (posts.size() % POSTS_PER_PAGE ));  
+
+                if (mCaching) {
+                    int numReadPosts = ((1 * POSTS_PER_PAGE) - (posts.size() % POSTS_PER_PAGE));
                     CacheHandler.Forum.updateAfterView(context, tempThreadId, numReadPosts);
                 }
 

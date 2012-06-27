@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,92 +11,92 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="0dp"
-	android:layout_height="wrap_content"
-	android:layout_weight="1"
->		
-	<TextView 
-	    android:id="@+id/text_label"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"   
-	    android:text="@string/info_xml_assault"
-	    android:gravity="center"
-	    android:background="#CCCCCC"
-	    android:textColor="#000000"
-	    android:textStyle="bold"
-    />			
-	<TextView 
-	    android:id="@+id/string001"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"   
-	    android:text="@string/info_xml_average"
-	    android:layout_below="@id/text_label"
-	    android:layout_centerHorizontal="true"
-	    android:textStyle="bold"
-    />			
-	<TextView 
-	    android:id="@+id/text_average"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"   
-	    android:text="200"
-	    android:layout_below="@id/string001"
-	    android:layout_centerHorizontal="true"
-		android:textSize="20sp"
-    />			
-	<TextView 
-	    android:id="@+id/string002"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"   
-	    android:text="@string/info_xml_best"
-	    android:layout_below="@id/text_average"
-	    android:layout_centerHorizontal="true"
-	    android:textStyle="bold"
-    />			
-	<TextView 
-	    android:id="@+id/text_max"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"   
-	    android:text="300"
-	    android:layout_below="@id/string002"
-	    android:layout_centerHorizontal="true"
-	    android:textSize="20sp"
-    />
-	<TextView 
-	    android:id="@+id/string003"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"   
-	    android:text="@string/info_xml_median"
-	    android:layout_below="@id/text_max"
-	    android:layout_centerHorizontal="true"
-	    android:textStyle="bold"
-    />			
-	<TextView 
-	    android:id="@+id/text_mid"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"   
-	    android:text="50"
-	    android:layout_below="@id/string003"
-	    android:layout_centerHorizontal="true"
-	    android:textSize="20sp"
-    />
-	<TextView 
-	    android:id="@+id/string004"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"   
-	    android:text="@string/info_xml_min"
-	    android:layout_below="@id/text_mid"
-	    android:layout_centerHorizontal="true"
-	    android:textStyle="bold"
-    />			
-	<TextView 
-	    android:id="@+id/text_min"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"   
-	    android:text="0"
-	    android:layout_below="@id/string004"
-	    android:layout_centerHorizontal="true"
-	    android:textSize="20sp"
-    />
-</RelativeLayout>			
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1" >
+
+    <TextView
+        android:id="@+id/text_label"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#CCCCCC"
+        android:gravity="center"
+        android:text="@string/info_xml_assault"
+        android:textColor="#000000"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/string001"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_label"
+        android:layout_centerHorizontal="true"
+        android:text="@string/info_xml_average"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text_average"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/string001"
+        android:layout_centerHorizontal="true"
+        android:text="200"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/string002"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_average"
+        android:layout_centerHorizontal="true"
+        android:text="@string/info_xml_best"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text_max"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/string002"
+        android:layout_centerHorizontal="true"
+        android:text="300"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/string003"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_max"
+        android:layout_centerHorizontal="true"
+        android:text="@string/info_xml_median"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text_mid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/string003"
+        android:layout_centerHorizontal="true"
+        android:text="50"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/string004"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_mid"
+        android:layout_centerHorizontal="true"
+        android:text="@string/info_xml_min"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text_min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/string004"
+        android:layout_centerHorizontal="true"
+        android:text="0"
+        android:textSize="20sp" />
+
+</RelativeLayout>

@@ -78,7 +78,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 
         // onCreate - save the instance state
         super.onCreate(savedInstanceState);
-        
+
         // Set the content view
         setContentView(R.layout.main);
 

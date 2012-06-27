@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,37 +11,35 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
-	android:paddingTop="5dp"
-	android:paddingLeft="10dp"
-	android:paddingRight="10dp"
-	android:paddingBottom="10dp"
->		
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp" >
 
-	<TextView 
-	    style="@style/InfoHeading"
-	    android:id="@+id/text_title_users"
-	    android:text="@string/label_own_soldiermbers"
-		android:padding="5dp"
-    	android:layout_marginBottom="0dp"
-	/>	
-	<ListView
-	    android:id="@android:id/list"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:layout_below="@+id/text_title_users"
-	    android:fastScrollEnabled="true"
-	/>
-	<TextView
-	  	android:id="@android:id/empty"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-	    android:text="@string/info_xml_no_users"	
-	    android:layout_centerInParent="true"
-	/>
+    <TextView
+        android:id="@+id/text_title_users"
+        style="@style/InfoHeading"
+        android:layout_marginBottom="0dp"
+        android:padding="5dp"
+        android:text="@string/label_own_soldiermbers" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/text_title_users"
+        android:fastScrollEnabled="true" />
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/info_xml_no_users" />
+
 </RelativeLayout>

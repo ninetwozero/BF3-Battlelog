@@ -17,7 +17,12 @@ package com.ninetwozero.battlelog.datatype;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.ninetwozero.battlelog.jsonmodel.*;
+import com.ninetwozero.battlelog.jsonmodel.KitScores;
+import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
+import com.ninetwozero.battlelog.jsonmodel.PersonaStatsOverview;
+import com.ninetwozero.battlelog.jsonmodel.Rank;
+import com.ninetwozero.battlelog.jsonmodel.User;
+import com.ninetwozero.battlelog.jsonmodel.VehicleScores;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
@@ -103,25 +108,31 @@ public class PersonaStats implements Parcelable {
 
     }
 
-    public PersonaStats(PersonaInfo pd){
+    public PersonaStats(PersonaInfo pd) {
         PersonaStatsOverview statsOverview = pd.getStatsOverview();
         Rank currentRank = pd.getCurrentRank();
         Rank nextRank = pd.getNextRank();
         KitScores kitScores = statsOverview.getKitScores();
-        VehicleScores vehicleScores = statsOverview.getVehicleScores();  //TODO add to the view
+        VehicleScores vehicleScores = statsOverview.getVehicleScores(); // TODO
+                                                                        // add
+                                                                        // to
+                                                                        // the
+                                                                        // view
         User user = pd.getUser();
 
         accountName = user.getUserName();
-        //personaName = pName; NEED TO GET IT FROM FORWARDED DATA
-        //rankTitle = rTitle; should be just conversion from array position before setting it as text
+        // personaName = pName; NEED TO GET IT FROM FORWARDED DATA
+        // rankTitle = rTitle; should be just conversion from array position
+        // before setting it as text
         rankId = currentRank.getLevel();
         personaId = pd.getPersonaId();
         userId = user.getId();
         platformId = pd.getPlatform();
         timePlayed = statsOverview.getTimePlayed();
-        pointsThisLvl = currentRank.getRankPoints(); //TODO it should be renamed to current
+        pointsThisLvl = currentRank.getRankPoints(); // TODO it should be
+                                                     // renamed to current
         pointsNextLvl = nextRank.getRankPoints();
-        numKills = (int)statsOverview.getKills(); //TODO should be long
+        numKills = (int) statsOverview.getKills(); // TODO should be long
         numAssists = (int) statsOverview.getKillAssists();
         numVehicles = (int) statsOverview.getVehiclesDestroyed();
         numVehicleAssists = (int) statsOverview.getVehiclesDestroyedAssists();

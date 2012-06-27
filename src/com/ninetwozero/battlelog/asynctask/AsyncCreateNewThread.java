@@ -46,12 +46,13 @@ public class AsyncCreateNewThread extends AsyncTask<String, Void, Boolean> {
             forumHandler.setForumId(mForumId);
             boolean created = forumHandler.create(
 
-                   mContext, arg0[0], arg0[1], arg0[2]
+                    mContext, arg0[0], arg0[1], arg0[2]
 
                     );
-            
+
             // If we managed, we need to fetch the new information
-            if( created ) {}
+            if (created) {
+            }
             return created;
 
         } catch (Exception ex) {

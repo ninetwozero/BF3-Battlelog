@@ -1,3 +1,4 @@
+
 package com.ninetwozero.battlelog.loader;
 
 import com.google.gson.JsonObject;

@@ -14,6 +14,9 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
+import java.net.URI;
+import java.util.Map;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,12 +25,17 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.Bf3Fragment;
@@ -44,11 +52,8 @@ import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-import java.net.URI;
-import java.util.Map;
-
 public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment,
-        OnCloseListDialogListener{
+        OnCloseListDialogListener {
 
     // Attributes
     private Context mContext;
@@ -85,7 +90,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
-        
+
         // Let's inflate & return the view
         View view = mLayoutInflater.inflate(R.layout.tab_content_profile_stats,
                 container, false);
@@ -144,13 +149,13 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         return Long.parseLong(ids[position]);
     }
 
-    private int getPlatformIdFor(int position){
+    private int getPlatformIdFor(int position) {
         String idsString = mSharedPreferences.getString(Constants.SP_BL_PLATFORM_ID, "");
         String[] ids = idsString.split(":");
         return Integer.parseInt(ids[position]);
     }
 
-    private String getSelectedPersonaName(int position){
+    private String getSelectedPersonaName(int position) {
         String names = mSharedPreferences.getString(Constants.SP_BL_PERSONA_NAME, "");
         String[] namesArray = names.split(":");
         return namesArray[position];
@@ -225,13 +230,13 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     }
 
     private void populateStats(PersonaStats pd) {
-        
-        if( pd == null ) {
+
+        if (pd == null) {
             return;
         }
-        
+
         personaName.setText(mSelectedPersonaName + " " + pd.resolvePlatformId());
-        rankTitle.setText(fromResource((int)pd.getRankId()));
+        rankTitle.setText(fromResource((int) pd.getRankId()));
         rankId.setText(String.valueOf(pd.getRankId()));
 
         // Progress
@@ -283,13 +288,13 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         return new Bf3Loader(getContext(), callURI);
     }
 
-    private Context getContext(){
+    private Context getContext() {
         return getActivity().getApplicationContext();
     }
 
     @Override
-    public void loadFinished(Loader<CompletedTask> loader, CompletedTask task){
-        if(task.result.equals(CompletedTask.Result.SUCCESS)){
+    public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {
+        if (task.result.equals(CompletedTask.Result.SUCCESS)) {
             findViews();
             populateStats(personaStatsFrom(task));
         }
@@ -301,139 +306,65 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         return new PersonaStats(data);
     }
 
-    private String fromResource(int rank){
+    private String fromResource(int rank) {
         return getResources().getStringArray(R.array.rank)[rank];
     }
 
-    /*public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
+    /*
+     * public class AsyncCache extends AsyncTask<Void, Void, Boolean> { //
+     * Attributes public AsyncCache() { }
+     * @Override protected void onPreExecute() { }
+     * @Override protected Boolean doInBackground(Void... arg0) { try { //
+     * Get... if (mProfileData != null && mProfileData.getNumPersonas() > 0) {
+     * mPersonaStats = CacheHandler.Persona.select(mContext,
+     * mProfileData.getPersonaArray()); // Is this the user? mSelectedPersona =
+     * mProfileData.getPersona(mSelectedPosition).getId(); } // ...validate!
+     * return (mPersonaStats != null && !mPersonaStats.isEmpty()); } catch
+     * (Exception ex) { ex.printStackTrace(); return false; } }
+     * @Override protected void onPostExecute(Boolean result) { if (result) { //
+     * Siiiiiiiiilent refresh //
+     * populateStats(personaStats.get(selectedPersona)); new
+     * AsyncRefresh().execute(); } else { new AsyncRefresh().execute(); } } }
+     */
 
-        // Attributes
-
-        public AsyncCache() {
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... arg0) {
-
-            try {
-
-                // Get...
-                if (mProfileData != null && mProfileData.getNumPersonas() > 0) {
-
-                    mPersonaStats = CacheHandler.Persona.select(mContext,
-                            mProfileData.getPersonaArray());
-
-                    // Is this the user?
-                    mSelectedPersona = mProfileData.getPersona(mSelectedPosition).getId();
-
-                }
-
-                // ...validate!
-                return (mPersonaStats != null && !mPersonaStats.isEmpty());
-
-            } catch (Exception ex) {
-
-                ex.printStackTrace();
-                return false;
-
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-
-            if (result) {
-
-                // Siiiiiiiiilent refresh
-                // populateStats(personaStats.get(selectedPersona));
-                new AsyncRefresh().execute();
-
-            } else {
-
-                new AsyncRefresh().execute();
-
-            }
-
-        }
-
-    }*/
-
-    /*public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
-
-        public AsyncRefresh() {
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-
-            *//* LOADER LIKE IN FORUMS? *//*
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... arg0) {
-
-            try {
-
-                Log.d(Constants.DEBUG_TAG, "profile => " + mProfileData);
-                // Do we have any personas?
-                if (mProfileData.getNumPersonas() > 0) {
-
-                    // Set the selected persona?
-                    mSelectedPersona = (mSelectedPersona == 0) ? mProfileData.getPersona(0).getId()
-                            : mSelectedPersona;
-
-                    // Grab the stats
-                    mPersonaStats = new ProfileClient(mProfileData).getStats(mContext);
-
-                }
-                // ...validate!
-                return (mPersonaStats != null && !mPersonaStats.isEmpty());
-
-            } catch (Exception ex) {
-
-                ex.printStackTrace();
-                return false;
-
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-
-            // Fail?
-            if (result) {
-
-                populateStats(mPersonaStats.get(mSelectedPersona));
-            } else {
-
-                Toast.makeText(mContext, R.string.general_no_data,
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        }
-
-    }*/
+    /*
+     * public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> { public
+     * AsyncRefresh() { }
+     * @Override protected void onPreExecute() {
+     *//* LOADER LIKE IN FORUMS? *//*
+                                    * }
+                                    * @Override protected Boolean
+                                    * doInBackground(Void... arg0) { try {
+                                    * Log.d(Constants.DEBUG_TAG, "profile => " +
+                                    * mProfileData); // Do we have any personas?
+                                    * if (mProfileData.getNumPersonas() > 0) {
+                                    * // Set the selected persona?
+                                    * mSelectedPersona = (mSelectedPersona == 0)
+                                    * ? mProfileData.getPersona(0).getId() :
+                                    * mSelectedPersona; // Grab the stats
+                                    * mPersonaStats = new
+                                    * ProfileClient(mProfileData
+                                    * ).getStats(mContext); } // ...validate!
+                                    * return (mPersonaStats != null &&
+                                    * !mPersonaStats.isEmpty()); } catch
+                                    * (Exception ex) { ex.printStackTrace();
+                                    * return false; } }
+                                    * @Override protected void
+                                    * onPostExecute(Boolean result) { // Fail?
+                                    * if (result) {
+                                    * populateStats(mPersonaStats.get
+                                    * (mSelectedPersona)); } else {
+                                    * Toast.makeText(mContext,
+                                    * R.string.general_no_data,
+                                    * Toast.LENGTH_SHORT).show(); } } }
+                                    */
 
     public void reload() {
 
-        /*// ASYNC!!!
-        if (mPersonaStats == null) {
-
-            new AsyncCache().execute();
-
-        } else {
-
-            new AsyncRefresh().execute();
-
-        }*/
+        /*
+         * // ASYNC!!! if (mPersonaStats == null) { new AsyncCache().execute();
+         * } else { new AsyncRefresh().execute(); }
+         */
 
     }
 

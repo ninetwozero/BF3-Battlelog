@@ -22,7 +22,6 @@ import com.ninetwozero.battlelog.activity.forum.ForumSavedActivity;
 import com.ninetwozero.battlelog.datatype.SavedForumThreadData;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 
-
 public class AsyncSavedThreadDelete extends AsyncTask<SavedForumThreadData, Void, Boolean> {
 
     // Attributes

@@ -1,11 +1,14 @@
+
 package com.ninetwozero.battlelog.jsonmodel;
 
 import com.google.gson.annotations.SerializedName;
 
 public class Rank {
 
-    @SerializedName("level") private int level;
-    @SerializedName("pointsNeeded") private long rankPoints;
+    @SerializedName("level")
+    private int level;
+    @SerializedName("pointsNeeded")
+    private long rankPoints;
 
     public Rank(int level, long rankPoints) {
         this.level = level;

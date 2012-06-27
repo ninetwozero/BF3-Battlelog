@@ -1,13 +1,18 @@
+
 package com.ninetwozero.battlelog.jsonmodel;
 
 import com.google.gson.annotations.SerializedName;
 
 public class User {
 
-    @SerializedName("createdAt") private long createdAt;
-    @SerializedName("gravatarMd5") private String md5;
-    @SerializedName("userId") private long id;
-    @SerializedName("username") private String userName;
+    @SerializedName("createdAt")
+    private long createdAt;
+    @SerializedName("gravatarMd5")
+    private String md5;
+    @SerializedName("userId")
+    private long id;
+    @SerializedName("username")
+    private String userName;
 
     public User(long createdAt, String md5, long id, String userName) {
         this.createdAt = createdAt;

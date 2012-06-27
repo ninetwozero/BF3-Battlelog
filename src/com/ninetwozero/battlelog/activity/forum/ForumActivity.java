@@ -70,10 +70,10 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
     public void onResume() {
 
         super.onResume();
-        
+
         // Let's try this
         openFromIntent(getIntent());
-        
+
         // Reload
         reload();
 
@@ -94,10 +94,10 @@ public class ForumActivity extends CustomFragmentActivity implements DefaultFrag
                     this, ForumThreadFragment.class.getName()));
 
             // Set the cache-mode
-            if( getIntent().hasExtra("savedThread") ) {
+            if (getIntent().hasExtra("savedThread")) {
                 mFragmentForumThread.setCaching(true);
             }
-            
+
             // Get the ViewPager
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);

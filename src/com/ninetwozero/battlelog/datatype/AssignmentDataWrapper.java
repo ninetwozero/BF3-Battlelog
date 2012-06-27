@@ -26,13 +26,15 @@ public class AssignmentDataWrapper {
 
     // Construct
     public AssignmentDataWrapper() {
-        
+
         mB2KAssignments = new ArrayList<AssignmentData>();
         mPremiumAssignments = new ArrayList<AssignmentData>();
         mCQAssignments = new ArrayList<AssignmentData>();
-        
+
     }
-    public AssignmentDataWrapper(List<AssignmentData> b, List<AssignmentData> p, List<AssignmentData> c) {
+
+    public AssignmentDataWrapper(List<AssignmentData> b, List<AssignmentData> p,
+            List<AssignmentData> c) {
 
         mB2KAssignments = b;
         mCQAssignments = c;

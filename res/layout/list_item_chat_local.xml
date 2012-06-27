@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,40 +11,39 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
->
-	<TextView 
-	    android:id="@+id/text_username"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-		android:text="ninetwozero"
-		android:textSize="16sp"
-		android:textStyle="bold"
-		android:textColor="@color/blue"
-	/>
-   	<TextView 
-	    android:id="@+id/text_message"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-		android:text="This is a message"
-		android:textSize="16sp"
-		android:layout_below="@id/text_username"
-		android:linksClickable="true"
-		android:autoLink="all"
-	/>
+    android:padding="10dp" >
 
-   	<TextView 
-	    android:id="@+id/text_timestamp"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-		android:text="3 hours ago"
-		android:textSize="14sp"
-		android:textColor="#BBBBBB"
-		android:layout_alignParentRight="true"
-		android:layout_alignBaseline="@id/text_username"
-	/>
+    <TextView
+        android:id="@+id/text_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ninetwozero"
+        android:textColor="@color/blue"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_username"
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:text="This is a message"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/text_timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/text_username"
+        android:layout_alignParentRight="true"
+        android:text="3 hours ago"
+        android:textColor="#BBBBBB"
+        android:textSize="14sp" />
+
 </RelativeLayout>

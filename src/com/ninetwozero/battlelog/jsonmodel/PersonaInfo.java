@@ -1,18 +1,26 @@
+
 package com.ninetwozero.battlelog.jsonmodel;
 
 import com.google.gson.annotations.SerializedName;
 
 public class PersonaInfo {
 
-    @SerializedName("overviewStats") private PersonaStatsOverview statsOverview;
-    @SerializedName("currentRankNeeded") private Rank currentRank;
-    @SerializedName("rankNeeded") private Rank nextRank;
-    @SerializedName("personaId") private long personaId;
-    @SerializedName("user") private User user;
-    @SerializedName("platformInt") private long platform;
+    @SerializedName("overviewStats")
+    private PersonaStatsOverview statsOverview;
+    @SerializedName("currentRankNeeded")
+    private Rank currentRank;
+    @SerializedName("rankNeeded")
+    private Rank nextRank;
+    @SerializedName("personaId")
+    private long personaId;
+    @SerializedName("user")
+    private User user;
+    @SerializedName("platformInt")
+    private long platform;
 
-    public PersonaInfo(PersonaStatsOverview statsOverview, Rank currentRank, Rank nextRank, long personaId, User user,
-                       long platform) {
+    public PersonaInfo(PersonaStatsOverview statsOverview, Rank currentRank, Rank nextRank,
+            long personaId, User user,
+            long platform) {
         this.statsOverview = statsOverview;
         this.currentRank = currentRank;
         this.nextRank = nextRank;

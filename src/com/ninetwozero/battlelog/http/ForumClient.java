@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.datatype.ForumData;
 import com.ninetwozero.battlelog.datatype.ForumPostData;
@@ -25,7 +24,7 @@ public class ForumClient extends DefaultClient {
     // Attributes
     private long mForumId;
     private long mThreadId;
-    
+
     // URLS
     public static final String URL_LIST = Constants.URL_MAIN + "forum/";
     public static final String URL_LIST_LOCALIZED = Constants.URL_MAIN
@@ -753,21 +752,22 @@ public class ForumClient extends DefaultClient {
                 // Get the thread id
                 String[] urlBits = response.getString("location").split("/");
                 boolean hasLocale = urlBits.length == 6;
-                
+
                 // /bf3/{locale/}forum/threadview/2832654625098756572/
                 String locale = hasLocale ? urlBits[2] : "en";
                 String url = hasLocale ? urlBits[5] : urlBits[4];
-                
+
                 // Convert to a long & get a new thread
                 mThreadId = Long.parseLong(url);
                 ForumThreadData threadData = getPosts(locale);
-                
+
                 // Cache it
-                return CacheHandler.Forum.insert(c, threadData, SessionKeeper.getProfileData().getId()) > 0;
-                
+                return CacheHandler.Forum.insert(c, threadData, SessionKeeper.getProfileData()
+                        .getId()) > 0;
+
             }
             return false;
-            
+
         } catch (Exception ex) {
 
             ex.printStackTrace();

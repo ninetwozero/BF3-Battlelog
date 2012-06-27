@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,39 +11,38 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
-<ScrollView 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/wrap_top"
-	android:layout_width="fill_parent"
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wrap_top"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:fillViewport="true"
->
-	<RelativeLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:padding="5dp"
-	>	
-		<com.ninetwozero.battlelog.datatype.MarqueeTextView
-		    style="@style/InfoHeading"
-		    android:id="@+id/text_title"
-			android:padding="5dp"
-    		android:ellipsize="marquee"
-    		android:marqueeRepeatLimit="marquee_forever"
-    		android:scrollHorizontally="true"
-    		android:singleLine="true"
-		/>
-		<TextView 
-		    android:id="@+id/text_author"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-			android:layout_below="@id/text_title"
-		/>
-		<TextView
-		    android:id="@+id/text_content"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-			android:layout_below="@id/text_author"    
-     	/>
-	</RelativeLayout>
+    android:fillViewport="true" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp" >
+
+        <com.ninetwozero.battlelog.datatype.MarqueeTextView
+            android:id="@+id/text_title"
+            style="@style/InfoHeading"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:padding="5dp"
+            android:scrollHorizontally="true"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/text_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_title" />
+
+        <TextView
+            android:id="@+id/text_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_author" />
+    </RelativeLayout>
+
 </ScrollView>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,41 +11,40 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
->
-	<RelativeLayout
-	   	android:id="@+id/wrap_text"
-		android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	>	
-		<TextView
-		    android:id="@+id/text_message"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_marginTop="0dp"
-		    android:text="NINETWOZERO posted on your Battle Feed"
-		    android:textSize="14sp" 
-		/>
-	
-	</RelativeLayout>
-	<RelativeLayout
-		android:id="@+id/wrap_info"
-		android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@id/wrap_text"
-	    android:layout_marginTop="5dp"
-	>
-		<TextView
-		    android:id="@+id/text_date"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="23 minutes ago" 
-		    android:layout_alignParentLeft="true"
-		    android:textColor="#BBBBBB"
-		/>
-	</RelativeLayout>
+    android:padding="5dp" >
+
+    <RelativeLayout
+        android:id="@+id/wrap_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/text_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:text="NINETWOZERO posted on your Battle Feed"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/wrap_info"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_text"
+        android:layout_marginTop="5dp" >
+
+        <TextView
+            android:id="@+id/text_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="23 minutes ago"
+            android:textColor="#BBBBBB" />
+    </RelativeLayout>
+
 </RelativeLayout>

@@ -17,12 +17,10 @@ package com.ninetwozero.battlelog.activity.profile.assignments;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,7 +37,6 @@ import android.widget.TextView;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.AssignmentData;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 
 public class AssignmentFragment extends Fragment implements DefaultFragment {
@@ -227,7 +224,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
 
                     }
                     );
-            
+
             // ...and set the progress bars
             progress.setProgress(progressValue);
             progress.setMax(100);
@@ -311,7 +308,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
                     .getAssignmentCriteria(objective.getDescription()));
             ((TextView) v.findViewById(R.id.text_obj_values)).setText(
 
-                    (int)objective.getCurrentValue() + "/" + (int)objective.getGoalValue()
+                    (int) objective.getCurrentValue() + "/" + (int) objective.getGoalValue()
 
                     );
 
