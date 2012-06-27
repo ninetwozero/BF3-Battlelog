@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,16 +11,15 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
-<ScrollView 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
->
-	<TableLayout
-		android:id="@+id/table_assignments"
-	   	android:layout_width="fill_parent"
-	   	android:layout_height="wrap_content"  
-	>	    
-	</TableLayout>
+    android:layout_height="fill_parent" >
+
+    <TableLayout
+        android:id="@+id/table_assignments"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </TableLayout>
+
 </ScrollView>

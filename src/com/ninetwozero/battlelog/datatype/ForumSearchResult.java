@@ -63,7 +63,7 @@ public class ForumSearchResult implements Parcelable {
     }
 
     // Getters
-    public long getThreadId() {
+    public long getId() {
         return threadId;
     }
 

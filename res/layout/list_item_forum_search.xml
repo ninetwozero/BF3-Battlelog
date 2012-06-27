@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,42 +11,41 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="60dp"
->  
-	<View 
-	    android:layout_width="10dp"
-	    android:layout_height="fill_parent" 
-	    android:id="@+id/bar_official" 
-	    android:background="@color/lightgrey"
-	    android:layout_alignParentLeft="true"
-	    
-	/>
-	<RelativeLayout
-	    android:id="@+id/wrap_top"
-	    android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_toRightOf="@id/bar_official"
-  		android:padding="5dp"
-  		android:layout_centerVertical="true"
-	>
-		<TextView 
-		    android:id="@+id/string_title"
-			android:text="Battlefield 3 (PS3, XBOX 360)"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textColor="@color/blue"
-			android:textStyle="bold"
-			android:ellipsize="marquee"
-		/>
-		<TextView 
-		    android:id="@+id/string_owner"
-			android:text="@string/info_xml_threaddate"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/string_title"
-		/>
-	</RelativeLayout>
+    android:layout_height="60dp" >
+
+    <View
+        android:id="@+id/bar_official"
+        android:layout_width="10dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:background="@color/lightgrey" />
+
+    <RelativeLayout
+        android:id="@+id/wrap_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/bar_official"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/string_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:text="Battlefield 3 (PS3, XBOX 360)"
+            android:textColor="@color/blue"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/string_owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/string_title"
+            android:text="@string/info_xml_threaddate" />
+    </RelativeLayout>
+
 </RelativeLayout>

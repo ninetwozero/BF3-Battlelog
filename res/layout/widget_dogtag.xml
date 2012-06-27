@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -10,14 +10,14 @@
     BF3 Battlelog is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
- -->
+    GNU General Public License for more details.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/full_widget"
     android:layout_width="match_parent"
     android:layout_height="210dp"
     android:gravity="center" >
-
+
     <RelativeLayout
         android:id="@+id/relativeLayout3"
         android:layout_width="258dip"
@@ -35,55 +35,57 @@
             android:layout_width="124dip"
             android:layout_height="90dip"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="60dip" 
-        >
-			<TextView
-	            android:id="@+id/label"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="Error"
-	            android:textColor="@android:color/black"
-	            android:textSize="12sp" android:padding="3dip"
-	        />
-	        <TextView
-	            android:id="@+id/title"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/general_no_data"
-	            android:textColor="@android:color/black"
-	            android:textSize="11sp" android:padding="3dip"
-	        	android:layout_below="@id/label"
-	        />
-	        <TextView
-	            android:id="@+id/stats"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/info_connect_bl"
-	            android:textColor="@android:color/black"
-	            android:textSize="11sp" android:padding="3dip"
-	        	android:layout_below="@id/title"
-	       	/>
-	        <TextView
-	            android:id="@+id/string001"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/info_widget_friends_online"
-	            android:textColor="@android:color/black"
-	            android:textSize="13sp" 
-	            android:padding="3dip"
-	        	android:layout_below="@id/stats"    
-	        />
-	        <TextView
-	            android:id="@+id/friends"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="0"
-	            android:textColor="#ff0000"
-	            android:textSize="15sp"
-	        	android:layout_below="@id/stats"
-	        	android:layout_alignBaseline="@id/string001"
-	        	android:layout_toRightOf="@id/string001"
-	        />
+            android:layout_marginLeft="60dip" >
+
+            <TextView
+                android:id="@+id/label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dip"
+                android:text="Error"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label"
+                android:padding="3dip"
+                android:text="@string/general_no_data"
+                android:textColor="@android:color/black"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title"
+                android:padding="3dip"
+                android:text="@string/info_connect_bl"
+                android:textColor="@android:color/black"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/string001"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/stats"
+                android:padding="3dip"
+                android:text="@string/info_widget_friends_online"
+                android:textColor="@android:color/black"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/friends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/string001"
+                android:layout_below="@id/stats"
+                android:layout_toRightOf="@id/string001"
+                android:text="0"
+                android:textColor="#ff0000"
+                android:textSize="15sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -92,9 +94,7 @@
             android:layout_height="80dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="40dp" 
-           	
-            >
+            android:layout_marginRight="40dp" >
 
             <Button
                 android:id="@+id/widget_button"
@@ -110,14 +110,11 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:background="@drawable/bg_bf3_main"
-                android:textSize="9sp"
                 android:text="BF3"
-                android:textStyle="bold"
                 android:textColor="#ffffff"
-            />
-
+                android:textSize="9sp"
+                android:textStyle="bold" />
         </RelativeLayout>
-
     </RelativeLayout>
 
 </RelativeLayout>

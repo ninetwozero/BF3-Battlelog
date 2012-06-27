@@ -1,56 +1,84 @@
+
 package com.ninetwozero.battlelog.jsonmodel;
 
 import com.google.gson.annotations.SerializedName;
 
 public class PersonaStatsOverview {
 
-    @SerializedName("rank") private int rank;
+    @SerializedName("rank")
+    private int rank;
     /**
      * Multiplayer score
      */
-    @SerializedName("kitScores") private KitScores kitScores;
-    @SerializedName("vehicleScores") private VehicleScores vehicleScores;
-    @SerializedName("sc_vehicle") private long vehicleScore;
-    @SerializedName("totalScore") private long totalScore;
-    @SerializedName("timePlayed") private long timePlayed;
-    @SerializedName("numWins") private long gameWon;
-    @SerializedName("numLosses") private long gameLost;
-    @SerializedName("sc_award") private long awardScore;
-    @SerializedName("sc_unlock") private long unlockScore;
-    @SerializedName("combatScore") private long combatScore;
-
+    @SerializedName("kitScores")
+    private KitScores kitScores;
+    @SerializedName("vehicleScores")
+    private VehicleScores vehicleScores;
+    @SerializedName("sc_vehicle")
+    private long vehicleScore;
+    @SerializedName("totalScore")
+    private long totalScore;
+    @SerializedName("timePlayed")
+    private long timePlayed;
+    @SerializedName("numWins")
+    private long gameWon;
+    @SerializedName("numLosses")
+    private long gameLost;
+    @SerializedName("sc_award")
+    private long awardScore;
+    @SerializedName("sc_unlock")
+    private long unlockScore;
+    @SerializedName("combatScore")
+    private long combatScore;
 
     /**
      * All time statistics
      */
-    @SerializedName("kills") private long kills;
-    @SerializedName("deaths") private long deaths;
-    @SerializedName("kdRatio") private double kdRatio;
-    @SerializedName("killAssists") private long killAssists;
-    @SerializedName("scorePerMinute") private double scoreMin;
-    @SerializedName("quitPercentage") private double quitPercentage;
+    @SerializedName("kills")
+    private long kills;
+    @SerializedName("deaths")
+    private long deaths;
+    @SerializedName("kdRatio")
+    private double kdRatio;
+    @SerializedName("killAssists")
+    private long killAssists;
+    @SerializedName("scorePerMinute")
+    private double scoreMin;
+    @SerializedName("quitPercentage")
+    private double quitPercentage;
 
-    @SerializedName("vehiclesDestroyed") private long vehiclesDestroyed;
-    @SerializedName("vehiclesDestroyedAssists") private long vehiclesDestroyedAssists;
-    @SerializedName("accuracy") private double averageWeaponAccuracy;
-    @SerializedName("longestHeadshot") private double longestHeadshot;
-    @SerializedName("killStreakBonus") private double killStreakBonus;
-    @SerializedName("elo") private double skill;
+    @SerializedName("vehiclesDestroyed")
+    private long vehiclesDestroyed;
+    @SerializedName("vehiclesDestroyedAssists")
+    private long vehiclesDestroyedAssists;
+    @SerializedName("accuracy")
+    private double averageWeaponAccuracy;
+    @SerializedName("longestHeadshot")
+    private double longestHeadshot;
+    @SerializedName("killStreakBonus")
+    private double killStreakBonus;
+    @SerializedName("elo")
+    private double skill;
 
-    @SerializedName("sc_squad") private long squadScoreBonus;
-    @SerializedName("repairs") private long repairs;
-    @SerializedName("revives") private long revives;
-    @SerializedName("heals") private long heals;
-    @SerializedName("resupplies") private long resupplies;
+    @SerializedName("sc_squad")
+    private long squadScoreBonus;
+    @SerializedName("repairs")
+    private long repairs;
+    @SerializedName("revives")
+    private long revives;
+    @SerializedName("heals")
+    private long heals;
+    @SerializedName("resupplies")
+    private long resupplies;
 
     public PersonaStatsOverview(int rank, KitScores kitScores, VehicleScores vehicleScores,
-                                long vehicleScore, long totalScore, long timePlayed, long gameWon,
-                                long gameLost, long awardScore, long unlockScore, long kills,
-                                long deaths, double kdRatio, long killAssists, long scoreMin,
-                                double quitPercentage, long vehiclesDestroyed, long vehiclesDestroyedAssists,
-                                double averageWeaponAccuracy, double longestHeadshot, double killStreakBonus,
-                                double skill, long squadScoreBonus, long repairs, long revives,
-                                long heals, long resupplies, long combatScore) {
+            long vehicleScore, long totalScore, long timePlayed, long gameWon,
+            long gameLost, long awardScore, long unlockScore, long kills,
+            long deaths, double kdRatio, long killAssists, long scoreMin,
+            double quitPercentage, long vehiclesDestroyed, long vehiclesDestroyedAssists,
+            double averageWeaponAccuracy, double longestHeadshot, double killStreakBonus,
+            double skill, long squadScoreBonus, long repairs, long revives,
+            long heals, long resupplies, long combatScore) {
         this.rank = rank;
         this.kitScores = kitScores;
         this.vehicleScores = vehicleScores;

@@ -169,7 +169,7 @@ public class SavedForumThreadData implements Parcelable {
                 mLastPoster.getId(),
                 mNumPageLastRead,
                 mNumPosts,
-                mUnread ? "1" : "0",
+                mUnread ? 1 : 0,
                 mDateLastRead,
                 mDateLastChecked,
                 mProfileId,

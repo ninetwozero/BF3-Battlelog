@@ -1,17 +1,25 @@
+
 package com.ninetwozero.battlelog.jsonmodel;
 
 import com.google.gson.annotations.SerializedName;
 
 public class VehicleScores {
 
-    @SerializedName("1") private long jetScore;
-    @SerializedName("2") private long tankScore;
-    @SerializedName("4") private long ifvScore;
-    @SerializedName("8") private long antiAirScore;
-    @SerializedName("16") private long attackHeliScore;
-    @SerializedName("32") private long scoutHeliScore;
+    @SerializedName("1")
+    private long jetScore;
+    @SerializedName("2")
+    private long tankScore;
+    @SerializedName("4")
+    private long ifvScore;
+    @SerializedName("8")
+    private long antiAirScore;
+    @SerializedName("16")
+    private long attackHeliScore;
+    @SerializedName("32")
+    private long scoutHeliScore;
 
-    public VehicleScores(long jetScore, long tankScore, long ifvScore, long antiAirScore, long attackHeliScore, long scoutHeliScore) {
+    public VehicleScores(long jetScore, long tankScore, long ifvScore, long antiAirScore,
+            long attackHeliScore, long scoutHeliScore) {
         this.jetScore = jetScore;
         this.tankScore = tankScore;
         this.ifvScore = ifvScore;

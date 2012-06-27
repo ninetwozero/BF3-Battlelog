@@ -1,513 +1,517 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">BF3 Battlelog</string>
-	<string name="widget_name">Battlelog - Statistik+Vänner</string>
+    <string name="widget_name">Battlelog - Statistik+Vänner</string>
+
     <integer-array name="service_update_intervals_values">
-        <item >300</item>
-        <item >600</item>
-        <item >1800</item>
-        <item >3600</item>
-        <item >7200</item>
-        <item >21600</item>
-        <item >43200</item>
-        <item >64800</item>
-        <item >86400</item>
+        <item>300</item>
+        <item>600</item>
+        <item>1800</item>
+        <item>3600</item>
+        <item>7200</item>
+        <item>21600</item>
+        <item>43200</item>
+        <item>64800</item>
+        <item>86400</item>
     </integer-array>
-    <integer-array name="chat_update_intervals_values">    
-        <item >5</item>
-        <item >10</item>
-        <item >15</item>
-        <item >20</item>
-        <item >25</item>
-        <item >30</item>
-        <item >60</item>
-        <item >90</item>
-        <item >120</item>
+    <integer-array name="chat_update_intervals_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
     </integer-array>
+
     <string-array name="service_update_intervals_labels">
-        <item >@string/label_update_interval_minutes_5</item>
-        <item >@string/label_update_interval_minutes_10</item>
-        <item >@string/label_update_interval_minutes_30</item>
-        <item >@string/label_update_interval_hours_1</item>
-        <item >@string/label_update_interval_hours_2</item>
-        <item >@string/label_update_interval_hours_6</item>
-        <item >@string/label_update_interval_hours_12</item>
-        <item >@string/label_update_interval_hours_18</item>
-        <item >@string/label_update_interval_days_1</item>
+        <item>@string/label_update_interval_minutes_5</item>
+        <item>@string/label_update_interval_minutes_10</item>
+        <item>@string/label_update_interval_minutes_30</item>
+        <item>@string/label_update_interval_hours_1</item>
+        <item>@string/label_update_interval_hours_2</item>
+        <item>@string/label_update_interval_hours_6</item>
+        <item>@string/label_update_interval_hours_12</item>
+        <item>@string/label_update_interval_hours_18</item>
+        <item>@string/label_update_interval_days_1</item>
     </string-array>
-     <string-array name="chat_update_intervals_labels">
-        <item >@string/label_update_interval_seconds_5</item>
-        <item >@string/label_update_interval_seconds_10</item>
-        <item >@string/label_update_interval_seconds_15</item>
-        <item >@string/label_update_interval_seconds_20</item>
-        <item >@string/label_update_interval_seconds_25</item>
-        <item >@string/label_update_interval_seconds_30</item>
-        <item >@string/label_update_interval_minutes_1</item>
-        <item >@string/label_update_interval_seconds_90</item>
-        <item >@string/label_update_interval_minutes_2</item>
+    <string-array name="chat_update_intervals_labels">
+        <item>@string/label_update_interval_seconds_5</item>
+        <item>@string/label_update_interval_seconds_10</item>
+        <item>@string/label_update_interval_seconds_15</item>
+        <item>@string/label_update_interval_seconds_20</item>
+        <item>@string/label_update_interval_seconds_25</item>
+        <item>@string/label_update_interval_seconds_30</item>
+        <item>@string/label_update_interval_minutes_1</item>
+        <item>@string/label_update_interval_seconds_90</item>
+        <item>@string/label_update_interval_minutes_2</item>
     </string-array>
     <string-array name="language_titles">
-        <item >Cрпски</item>
-        <item >Dansk</item>
-        <item >Deutsch</item>
-        <item >English</item>
-        <item >Español</item>
-        <item >Francais</item>
-        <item >Hrvatski</item>
-        <item >Italiano</item>
-        <item >Nederlands</item>
-        <item >Polski</item>
-        <item >Português</item>
-        <item >Român</item>
-        <item >Suomi</item>
-        <item >Svenska</item>
+        <item>Cрпски</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>English</item>
+        <item>Español</item>
+        <item>Francais</item>
+        <item>Hrvatski</item>
+        <item>Italiano</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Român</item>
+        <item>Suomi</item>
+        <item>Svenska</item>
     </string-array>
-     <string-array name="language_values">
-        <item >sr</item>
-        <item >da</item>
-        <item >de</item>
-        <item >en</item>
-        <item >es</item>
-        <item >fr</item>
-        <item >hr</item>
-        <item >it</item>
-        <item >nl</item>
-        <item >pl</item>
-        <item >pt</item>
-        <item >ro</item>
-        <item >fi</item>
-        <item >sv</item>
+    <string-array name="language_values">
+        <item>sr</item>
+        <item>da</item>
+        <item>de</item>
+        <item>en</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>hr</item>
+        <item>it</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>fi</item>
+        <item>sv</item>
     </string-array>
-   <!--  translation starts here -->
-   <string name="changelog">* Åtgärdat forumet (oops!) &lt;br /&gt;
-* Åtgärdat krascher i den underliggande tjänsten (äntligen?!) &lt;br /&gt;
-* Val av språk kan numera göras i inställningarna &lt;br /&gt;
-* Uppdaterat språkstödet med fler språk (kontakta mig om du kan hjälpa till med översättning!!) &lt;br /&gt;
-* Lagt till hörbara händelsenotifieringar &lt;br /&gt;
-* Lagt till chattljud &lt;br /&gt;
-* Lagt till inställningar för ovanstående &lt;br /&gt;
-&lt;br /&gt;
-* DONERA-alternativ valbart i Om-information (nedan) &lt;br /&gt;
-* Ett forum för appen finns nu via  http://bit.ly/bf3blforum &lt;br /&gt;
-&lt;br /&gt;
+    <!-- translation starts here -->
+    <string name="changelog">* Åtgärdat forumet (oops!) &lt;br />
+* Åtgärdat krascher i den underliggande tjänsten (äntligen?!) &lt;br />
+* Val av språk kan numera göras i inställningarna &lt;br />
+* Uppdaterat språkstödet med fler språk (kontakta mig om du kan hjälpa till med översättning!!) &lt;br />
+* Lagt till hörbara händelsenotifieringar &lt;br />
+* Lagt till chattljud &lt;br />
+* Lagt till inställningar för ovanstående &lt;br />
+&lt;br />
+* DONERA-alternativ valbart i Om-information (nedan) &lt;br />
+* Ett forum för appen finns nu via  http://bit.ly/bf3blforum &lt;br />
+&lt;br />
 Rapportera alla eventuella fel du stöter på till support@ninetwozero.com och/eller 
-@karllindmark på Twitter (https://twitter.com/karllindmark).&lt;br /&gt;&lt;br /&gt;
+@karllindmark på Twitter (https://twitter.com/karllindmark).&lt;br />&lt;br />
 Tack för ditt stöd!</string>
-	<string name="general_invalid_email">Felaktig e-postadress.</string>
-	<string name="general_invalid_password">Vänligen mata in ditt lösenord.</string>
-	<string name="general_changelog_version">Förändringar till {version}</string>
-	<string name="general_wait">Var god vänta...</string>
-	<string name="general_downloading">Laddar ned information...</string>
-	<string name="general_no_data">Ingen information hittades.</string>
-	<string name="label_own_soldiernu">Meny</string>
-	<string name="label_feed">Flöde</string>
-	<string name="label_friends">Vänner</string>
-	<string name="label_notifications">Meddelanden</string>
-	<string name="label_own_soldier">Min soldat</string>
-	<string name="label_unlocks">Mina upplåsningar</string>
-	<string name="label_find_soldier">Hitta soldat</string>
-	<string name="label_find_platoon">Hitta pluton</string>
-	<string name="label_compare_bs">Jämför krigsärr</string>
-	<string name="label_settings">Inställningar</string>
-	<string name="status_empty_input">Vänligen mata in ett statusmeddelande.</string>
-	<string name="status_error_unknown">Ett fel har uppstått - vänligen logga in igen.</string>
-	<string name="general_empty_user">Du måste ange ett användarnamn.</string>
-	<string name="info_profile_soldier">Visa profilen för soldaten...</string>
-	<string name="info_profile_platoon">Visa profilen för plutonen... </string>
-	<string name="general_empty_name">Du måste mata in ett namn.</string>
-	<string name="label_chat_open">Öppna chat</string>
-	<string name="label_soldier_view">Visa soldat</string>
-	<string name="label_hooah">Hooah!</string>
-	<string name="label_unhooah">Ångra hooah!</string>
-	<string name="label_comment_view">Visa kommentarer</string>
-	<string name="msg_unimplemented">Icke-implementerad funktionalitet.</string>
-	<string name="info_feed_empty">Inga flödesobjekt hittades.</string>
-	<string name="label_wait">Var god vänta...</string>
-	<string name="label_com_handle">COM CENTER ({num} INLOGGADE)</string>
-	<string name="lable_refresh">Uppdatera nu</string>
-	<string name="label_home">Hem</string>
-	<string name="label_stats">Stats</string>
-	<string name="label_users">Användare</string>
-	<string name="info_platoon_created">Skapades den {DATE} ({RELATIVE DATE})</string>
-	<string name="label_own_soldiermbers">MEDLEMMAR</string>
-	<string name="label_fans">FANS</string>
-	<string name="info_platoon_compare">Du kan inte jämföra plutoner... (än?)</string>
-	<string name="info_empty_msg">Det är inte tillåtet att skriva tomma inlägg.</string>
-	<string name="info_profile_online">Inloggad men spelar inte</string>
-	<string name="info_profile_playing">Spelar på {server name}</string>
-	<string name="info_profile_empty_pres">Ingen presentation hittades.</string>
-	<string name="info_hooah_s">{num} hooah</string>
-	<string name="info_hooah_p">{num} hooah</string>
-	<string name="info_comment_s">{num} kommentar</string>
-	<string name="info_comment_p">{num} kommentarer</string>
-	<string name="label_playing">Spelar</string>
-	<string name="label_online">Inloggad</string>
-	<string name="label_offline">Utloggad</string>
-	<string name="msg_chat_norefresh">Chatten kunde inte uppdateras.</string>
-	<string name="label_sending">Skickar...</string>
-	<string name="label_send">Skicka</string>
-	<string name="msg_chat_ok">Meddelande skickat!</string>
-	<string name="msg_chat_fail">Meddelandet kunde inte skickas.</string>
-	<string name="msg_comment_ok">Kommentaren sparades!</string>
-	<string name="msg_comment_fail">Kommentaren kunde inte sparas.</string>
-	<string name="msg_comment_norefresh">Kommentarerna kunde inte laddas om.</string>
-	<string name="msg_com_ok">COM CENTRET är uppdaterat.</string>
-	<string name="msg_com_fail">COM CENTRET kunde inte uppdateras.</string>
-	<string name="msg_hooah_fail">Hooah misslyckades!</string>
-	<string name="msg_search_nouser">Det finns ingen användare som matchar följande sökord: {keyword}</string>
-	<string name="msg_search_noplatoon">Det finns ingen pluton som matchar följande sökord: {keyword}</string>
-	<string name="msg_frequest_ok">En vänförfrågan har skickats!</string>
-	<string name="msg_frequest_fail">En vänförfrågan kunde ej skickas.</string>
-	<string name="msg_logging_in">Loggar in...</string>
-	<string name="msg_login_fail">Inloggingen misslyckades.</string>
-	<string name="msg_logout">Loggar ut...</string>
-	<string name="msg_error">Ett fel har uppstått.</string>
-	<string name="msg_prequest_ok">Du ansökte till plutonen.</string>
-	<string name="msg_prequest_fail_pres">Du kunde inte ansöka på grund av plattformsbegränsningar.</string>
-	<string name="msg_prequest_fail_full">Du kunde inte ansöka på grund av att plutonen är full.</string>
-	<string name="msg_prequest_fail_error">Ett fel uppstod under ansökan.</string>
-	<string name="msg_platoon_left">Du lämnade plutonen.</string>
-	<string name="msg_platoon_left_fail">Ett fel uppstod när du försökte lämna plutonen.</string>
-	<string name="msg_feed_ok">Inlägget skickades!</string>
-	<string name="msg_feed_fail">Inlägget kunde inte skrivas (kanske har du nått upp till din kvot?).</string>
-	<string name="msg_notification">Någon har interagerat med dig på Battlelog!</string>
-	<string name="msg_status">Uppdaterar status...</string>
-	<string name="msg_status_ok">Din status har uppdaterats.</string>
-	<string name="msg_status_fail">Din status kunde inte uppdateras.</string>
-	<string name="info_feed_comment_own">&lt;b>{username}&lt;/b> kommenterade på din/ditt &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_comment_other">&lt;b>{username}&lt;/b> kommenterade på &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_comment_other_v2">&lt;b>{username}&lt;/b> kommenterade på &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_comment_own_2">&lt;b>{username}&lt;/b> kommenterade också på din/ditt &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_comment_other_2">&lt;b>{username}&lt;/b> kommenterade också på &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_comment_other_v2_2">&lt;b>{username}&lt;/b> kommenterade också på &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_post_own">&lt;b>{username}&lt;/b> skrev i ditt &lt;b>krigsflöde&lt;/b>.</string>
-	<string name="info_feed_hooah_own">&lt;b>{username}&lt;/b> gillade din/ditt &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_hooah_other">&lt;b>{username}&lt;/b> gillade &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_hooah_other_2">&lt;b>{username}&lt;/b> gillade &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
-	<string name="info_platoon_join_ok">&lt;b>{username}&lt;/b> accepterade din inbjudan till &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_join_no">&lt;b>{username}&lt;/b> nekade din inbjudan till &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_join_request">&lt;b>{username}&lt;/b> vill gå med i din pluton &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_join_request_ok">&lt;b>{username}&lt;/b> gick med i din pluton &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_left">&lt;b>{username}&lt;/b> lämnade din pluton &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_unknown_notification">Okänd händelsetyp.</string>
-	<string name="info_friendship">vänskap</string>
-	<string name="info_forum_post">foruminlägg</string>
-	<string name="info_game_report">spelrapport</string>
-	<string name="info_wallpost">inlägg</string>
-	<string name="info_status_message">status</string>
-	<string name="info_award">utmärkelse</string>
-	<string name="info_battle_report">krigsrapport</string>
-	<string name="info_platoon_wall_post">plutoninlägg</string>
-	<string name="info_lastlogin">Senast inloggad den {date}</string>
-	<string name="info_time_second">{seconds} sekund sedan</string>
-	<string name="info_time_second_p">{seconds} sekunder sedan</string>
-	<string name="info_time_min">{minutes} minut sedan</string>
-	<string name="info_time_min_p">{minutes} minuter sedan</string>
-	<string name="info_time_hour">{hours} timme sedan</string>
-	<string name="info_time_hour_p">{hours} timmar sedan</string>
-	<string name="info_time_day">{days} dag sedan</string>
-	<string name="info_time_day_p">{days} dagar sedan</string>
-	<string name="info_time_week">{weeks} vecka sedan</string>
-	<string name="info_time_week_p">{weeks} veckor sedan</string>
-	<string name="info_time_year">{years} år sedan</string>
-	<string name="info_time_year_p">{years} år sedan</string>
-	<string name="info_connect_bl">Koppla upp dig mot Battlelog</string>
-	<string name="info_widget_friends_online">Vänner inloggade:</string>
-	<string name="msg_widget_auth_fail">Inloggningen misslyckades - har du sparat informationen?</string>
-	<string name="info_xml_chat_empty">Inga meddelanden hittades.</string>
-	<string name="label_com_handle_default">COM CENTER (0 ONLINE)</string>
-	<string name="info_hint_comment_msg">Skriv ett meddelande</string>
-	<string name="info_xml_comment_empty">Inga kommentarer hittades.</string>
-	<string name="info_xml_rank">Rank</string>
-	<string name="info_xml_kills">Mord</string>
-	<string name="info_xml_assists">Assists</string>
-	<string name="info_xml_vehicles_destroyed">Förstörda fordon</string>
-	<string name="info_xml_vehicles_assisted_with">Skadade fordon</string>
-	<string name="info_xml_heals">Läkningar</string>
-	<string name="info_xml_revives">Återupplivningar</string>
-	<string name="info_xml_repairs">Reparationer</string>
-	<string name="info_xml_resupplies">Påfyllningar</string>
-	<string name="info_xml_deaths">Dödsfall</string>
-	<string name="info_xml_kd_ratio">KD-ratio</string>
-	<string name="info_xml_wins">Vinster</string>
-	<string name="info_xml_losses">Förluster</string>
-	<string name="info_xml_wl_ratio">Vinster/Förluster</string>
-	<string name="info_xml_accuracy">Träffsäkerhet</string>
-	<string name="info_xml_longest_headshot">Längsta huvudträff</string>
-	<string name="info_xml_longest_killstreak">Högst antal dödade i rad</string>
-	<string name="info_xml_skill_rating">Skicklighet</string>
-	<string name="info_xml_time_played">Spelad tid</string>
-	<string name="info_xml_score_minute">Poäng/minut</string>
-	<string name="info_xml_assault">Assault</string>
-	<string name="info_xml_engineer">Engineer</string>
-	<string name="info_xml_support">Support</string>
-	<string name="info_xml_recon">Recon</string>
-	<string name="info_xml_vehicles">Fordon</string>
-	<string name="info_xml_total_in_combat">Totalt i strid</string>
-	<string name="info_xml_award">Belöning</string>
-	<string name="info_xml_unlocks">Upplåsningar</string>
-	<string name="info_xml_total_score">Totalpoäng</string>
-	<string name="info_hint_username">Mata in ett användarnamn</string>
-	<string name="info_hint_platoon">Mata in ett plutonnamn</string>
-	<string name="info_xml_average">Medel</string>
-	<string name="info_xml_best">Bäst</string>
-	<string name="info_xml_median">Median</string>
-	<string name="info_xml_min">Minst</string>
-	<string name="info_xml_friend_requests">Vänförfrågningar</string>
-	<string name="info_xml_no_friends">Inga vänner hittades. :-(</string>
-	<string name="info_xml_no_notifications">Inga händelser hittades. :-(</string>
-	<string name="info_xml_hint_status">Uppdatera din status</string>
-	<string name="info_xml_no_feed">Inga objekt hittades i flödet</string>
-	<string name="info_xml_hint_feed">Skriv i flödet</string>
-	<string name="info_xml_website">Hemsida</string>
-	<string name="info_xml_presentation">Presentation</string>
-	<string name="info_xml_badge">Banner</string>
-	<string name="info_xml_general">Allmänt</string>
-	<string name="info_xml_score_min">Poäng / Minut</string>
-	<string name="info_xml_top_soldiers">Toppsoldater</string>
-	<string name="info_xml_time">Tid</string>
-	<string name="info_xml_score">Poäng</string>
-	<string name="info_xml_no_users">Inga användare hittades.</string>
-	<string name="info_xml_latest_statusmsg">Senaste statusuppdatering</string>
-	<string name="info_xml_platoons">Plutoner</string>
-	<string name="info_xml_no_platoons">Inga anslutna plutoner.</string>
-	<string name="info_xml_rank2">till nästa rang</string>
-	<string name="info_xml_no_unlocks">Inga upplåsningar hittades.</string>
-	<string name="info_xml_back">Tillbaka</string>
-	<string name="info_xml_reload">Ladda om</string>
-	<string name="info_xml_logout">Logga ut</string>
-	<string name="info_xml_apply">Ansök om medlemskap</string>
-	<string name="info_xml_fan">Bli ett fan</string>
-	<string name="info_xml_leave_platoon">Lämna pluton</string>
-	<string name="info_xml_members">Medlemmar</string>
-	<string name="info_xml_un_fan">Sluta vara ett fan</string>
-	<string name="info_xml_fans">Fans</string>
-	<string name="info_xml_compare">Jämför</string>
-	<string name="info_xml_compare_bs">Jämför ärr</string>
-	<string name="info_xml_add_friend">Skicka vänförfrågan</string>
-	<string name="info_xml_remove_friend">Ta bort vän</string>
-	<string name="info_xml_enable_bgsrv">Aktivera bakgrundstjänst</string>
-	<string name="info_xml_enable_bgsrv_t">När den är aktiverad uppdaterar tjänsten händelser och håller widget uppkopplad.</string>
-	<string name="info_lastupdate">Senast uppdaterad {date}</string>
-	<string name="info_hint_email">E-post för Origin™</string>
-	<string name="info_hint_password">Lösenord</string>
-	<string name="label_login">Logga in</string>
-	<string name="label_save">Spara lösenord</string>
-	<string name="info_p_friendship">&lt;b>{username1}&lt;/b> och &lt;b>{username2}&lt;/b> är numera vänner.</string>
-	<string name="info_p_forumthread">&lt;b>{username}&lt;/b> skapade forumtråden &lt;b>\"{thread}\"&lt;/b>.</string>
-	<string name="info_p_forumpost">&lt;b>{username}&lt;/b> skrev ett inlägg i forumtråden &lt;b>\"{thread}\"&lt;/b>.</string>
-	<string name="info_p_newunlock">&lt;b>{username}&lt;/b> låste upp ett nytt föremål: {item}.</string>
-	<string name="info_p_favserver">&lt;b>{username}&lt;/b> bokmärkte en server: &lt;b>{server}&lt;/b>.</string>
-	<string name="info_p_promotion">&lt;b>{username}&lt;/b> blev befodrad till &lt;b>{rank title}&lt;/b> (rank{rank}).</string>
-	<string name="info_p_greport_comment">&lt;b>{username}&lt;/b> kommenterade på en krigsrapport &lt;b>{server name} {map} {game mode}&lt;/b>.</string>
-	<string name="info_p_blog_comment">&lt;b>{username}&lt;/b> kommenterade på ett blogginlägg &lt;b>{post name}&lt;/b>.</string>
-	<string name="info_p_platoon_join">&lt;b>{username}&lt;/b> gick med i plutonen &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_p_platoon_kick">&lt;b>{username}&lt;/b> blev sparkad ur plutonen &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_p_platoon_create">&lt;b>{username}&lt;/b> skapade plutonen &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_p_platoon_badge">&lt;b>{username}&lt;/b> uppdaterade emblemet för plutonen &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_p_platoon_left">&lt;b>{username}&lt;/b> lämnade plutonen &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> skrev på väggen för &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> och &lt;b>{username2}&lt;/b> klarade &lt;b>\"{level}\"&lt;/b> på &lt;b>{difficulty}&lt;/b>.</string>
-	<string name="info_p_award">&lt;b>{username}&lt;/b> fick en ny belöning: &lt;b>{award}&lt;/b>.</string>
-	<string name="info_new_rank">nya rank</string>
-	<string name="title_main_menu">BF3 Battlelog - Huvudmenyn</string>
-	<string name="title_profile">BF3 Battlelog - Profil</string>
-	<string name="title_platoon">BF3 Battlelog - Plutonprofil</string>
-	<string name="title_performance">BF3 Battlelog - Din prestation</string>
-	<string name="title_chat">BF3 Battlelog - Chattar med ...</string>
-	<string name="title_comments">BF3 Battlelog - Kommentarer</string>
-	<string name="title_comparing_battle_scars">BF3 Battlelog - Jämför krigsärr</string>
-	<string name="title_unlocks">BF3 Battlelog - Dina kommande upplåsningar</string>
-	<string name="title_settings">BF3 Battlelog - Inställningar</string>
-	<string name="title_forum">BF3 Battlelog - Forum</string>
-	<string name="label_forum">Forum</string>
-	<string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> klarade ett uppdrag - &lt;b>\"{assignment}\"&lt;/b> (ger &lt;b>{unlock}&lt;/b>).</string>
-	<string name="info_assignments_new_unknown">Nya uppdrag har lagts till - vänligen tipsa utvecklaren!</string>
-	<string name="title_assignments">BF3 Battlelog - Kollar på tillgänliga uppdrag</string>
-	<string name="info_xml_platoons_my">Mina plutoner</string>
-	<string name="info_xml_assignments_my">Mina uppdrag</string>
-	<string name="msg_no_cookies">Sessionskakorna är försvunna - vänligen logga in igen.</string>
-	<string name="label_soldier_unlocks">Upplåsningar</string>
-	<string name="info_p_newunlocks">&lt;b>{username}&lt;/b> låste upp nya föremål: {item}.</string>
-	<string name="info_txt_friends_offline">Utloggade vänner</string>
-	<string name="info_txt_friends_online">Inloggade vänner</string>
-	<string name="info_txt_session_lost">Session avbruten. Logga in igen!</string>
-	<string name="info_xml_forums_none">Inga forum funna.</string>
-	<string name="info_xml_forums">Forum</string>
-	<string name="info_p_activated_expansion">aktiverade spel/eller expansionspaket</string>
-	<string name="info_xml_forum_postsinthreads">&lt;b>{num_posts}&lt;/b> inlägg i &lt;b>{num_threads}&lt;/b> trådar.</string>
-	<string name="info_xml_threadinfo">&lt;b>{num_posts}&lt;/b> inlägg (varav &lt;b>{num_official}&lt;/b> officiella)</string>
-	<string name="info_xml_threaddate">Skrivet &lt;b>{date}&lt;/b> av &lt;b>{user}&lt;/b></string>      
-	<string name="info_xml_threadreplydate">Senaste inlägg &lt;b>{date}&lt;/b> av &lt;b>{user}&lt;/b></string> 
-	<string name="info_xml_thread_new">Ny tråd...</string>
-	<string name="info_xml_post_new">Nytt inlägg...</string>
-	<string name="info_forum_newthread_true">Tråden har skapats.</string>
-	<string name="info_forum_newthread_false">Det gick inte att skapa tråden...</string>
-	<string name="info_xml_enter_content">Skriv innehållet här</string>
-	<string name="info_dialog_soldierselect">Välj en soldat att visa...</string>
-	<string name="info_dialog_threadpost">Skriv ett svar</string>
-	<string name="info_forum_newpost_true">Svaret är publicerat.</string>
-	<string name="info_forum_newpost_false">Svaret kunde inte publiceras.</string>
-	<string name="info_txt_notification_new">1 ny händelse!</string>
-	<string name="info_txt_notification_new_p">{num} nya händelser!</string>
-	<string name="info_tap_notification">Klicka här för att komma till dina händelser.</string>
-	<string name="info_xml_posts_none">Inga inlägg funna.</string>
-	<string name="info_xml_threads_none">Inga trådar funna.</string>
-	<string name="info_xml_results_none">Inga resultat funna.</string>
-	<string name="title_forum_view">Visar forum...</string>
-	<string name="title_thread_view">Visar tråd...</string>
-	<string name="title_forum_search">Söker i forum</string>
-	<string name="title_search">Söker användare och plutoner</string>
-	<string name="info_xml_search">Sök...</string>
-	<string name="info_xml_generic_error">Ett fel har uppstått.</string>
-	<string name="label_search">Sök</string>
-	<string name="label_search_ongoing">Söker...</string>
-	<string name="info_p_awards">&lt;b>{username}&lt;/b> fick nya utmärkelser: {award}.</string>
-	<string name="label_own_platoon">Mina plutoner</string>
-	<string name="label_assignments">Mina uppdrag</string>
-	<string name="info_xml_invite">Bjud in...</string>
-	<string name="title_platoon_invite">Bjuder in vänner till plutonen</string>
-	<string name="info_xml_platoon_select">Välj en pluton...</string>
-	<string name="info_spost_heading">{username}s inlägg</string>
-	<string name="info_spost_heading_s">{username} inlägg</string>
-	<string name="info_txt_friend_delete_true">Användaren har tagits bort från din lista.</string>
-	<string name="info_txt_friend_delete_false">Användaren kunde ej tas bort från din lista.</string>
-	<string name="info_xml_feed_button_pagination">Ladda fler saker</string>
-	<string name="label_downloading">Laddar ned...</string>
-	<string name="info_xml_threads_more_false">Inga fler trådar.</string>
-	<string name="info_xml_posts_more_false">Inga fler inlägg.</string>
-	<string name="label_jump">Hoppa till sida...</string>
-	<string name="info_txt_pageselect">Välj en sida...</string>
-	<string name="info_xml_enternumber">Ange ett nummer mellan {min} - {max} nedan.</string>
-	<string name="info_xml_feed_button_jump">Hoppa till sida...</string>
-	<string name="info_feed_friend_accept">&lt;b>{username}&lt;/b> accepterade din &lt;b>vänförfrågan&lt;/b>.</string>
-	<string name="label_single_post_view">Visa inlägg</string>
-	<string name="info_xml_main_slider">Information om appen</string>
-	<string name="label_option_about">Om...</string>
-	<string name="title_about">Om appen</string>
-	<string name="info_option_unlocks">Visa upplåsningar</string>
-	<string name="info_txt_email_send">Skicka ett e-postmeddelande</string>
-	<string name="label_about">Om</string>
-	<string name="label_faq">FAQ</string>
-	<string name="label_credits">Erkännanden</string>
-	<string name="info_assignment_completed">slutförda uppdrag</string>
-	<string name="info_platoon_invite">&lt;b>{username}&lt;/b> har bjudit in dig till &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_promote">Du har befordrats inom &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_demote">Du har degraderats inom &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_kick">&lt;b>{username}&lt;/b> sparkade dig från plutonen &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_activity">plutonaktivitet</string>
-	<string name="info_platoon_member_new_ok">Godkänner den nya medlemmen...</string>
-	<string name="info_platoon_member_new_false">Avslår den nya medlemmen.</string>
-	<string name="info_platoon_member_demoting">Degraderar medlemmen...</string>
-	<string name="info_platoon_member_promoting">Befordrar medlemmen...</string>
-	<string name="info_platoon_member_kicking">Sparkar medlemmen...</string>
-	<string name="info_platoon_member_new_accept">Godkänn ansökan</string>
-	<string name="info_platoon_member_new_deny">Avslå ansökan</string>
-	<string name="info_platoon_member_demote">Degradera</string>
-	<string name="info_platoon_member_promote">Befordra</string>
-	<string name="info_platoon_member_kick">Sparka ut</string>
-	<string name="info_profile_view">Visa profil</string>
-	<string name="info_stats_not_found">Ingen statistik hittades.</string>
-	<string name="info_forum_page_invalid">Ogiltigt sidnummer.</string>
-	<string name="info_forum_quote_warning">Citatet har lagts till i fältet, ta inte bort eller redigera den.</string>
-	<string name="info_forum_links_no">Inga länkar hittades i inlägget.</string>
-	<string name="info_forum_quote">Citera inlägg</string>
-	<string name="info_forum_report">Rapportera missbruk</string>
-	<string name="info_forum_links">Visa länkar...</string>
-	<string name="info_forum_link_title">Välj en länk att visa...</string>
-	<string name="info_forum_posts_downloading">Laddar ned inläggen...</string>
-	<string name="info_platoon_member_founder">Grundare</string>
-	<string name="info_platoon_member_nonmember">Inte en medlem</string>
-	<string name="info_platoon_member_evaluate">Inväntar beslut</string>
-	<string name="info_platoon_member_invited">Inbjuden</string>
-	<string name="info_platoon_member_member">Medlem</string>
-	<string name="info_platoon_member_admin">Administratör</string>
-	<string name="info_platoon_member_founder_p">Grundare</string>
-	<string name="info_platoon_member_admin_p">Administratörer</string>
-	<string name="info_platoon_member_regular">Vanlig medlem</string>
-	<string name="info_platoon_member_regular_p">Vanliga medlemmar</string>
-	<string name="info_platoon_member_invited_label">Inbjuden att gå med</string>
-	<string name="info_platoon_member_requested_label">Ansökt om medlemskap</string>
-	<string name="info_platoon_stats_overall">Generellt</string>
-	<string name="label_assignments_view">Visa uppdrag</string>
-	<string name="label_goto_section">Gå till {section}</string>
-	<string name="label_goto_assignments">uppdrag</string>
-	<string name="label_goto_forum_thread">forumtråd</string>
-	<string name="label_goto_platoon">pluton</string>
-	<string name="label_goto_profile">profil</string>
-	<string name="label_goto_unlocks">upplåsningar</string>
-	<string name="info_about_donating">Om du tycker om arbetet jag utfört och känner för att donera en valfri summa till min utvecklinsfond, klicka då på denna text för att skickas vidare till Paypal för vidare information.</string>
-	<string name="general_censored">Detta inlägg har censurerats av Battlelog-staben.</string>
-	<string name="info_forum_report_true">Inlägget har rapporterats.</string>
-	<string name="info_forum_report_false">Inlägget kunde inte rapporteras.</string>
-	<string name="info_forum_search_label">Forumsök</string>
-	<string name="info_forum_search_hint">Sök efter...</string>
-	<string name="info_forum_report_reason">Varför vill du rapportera detta inlägg?</string>
-	<string name="info_forum_report_label">Rapportera ett inlägg</string>
-	<string name="label_report">Rapportera för missbruk</string>
-	<string name="info_forum_report_empty">Du måste ange en anledning till varför du rapporterar  detta inlägg.</string>
-	<string name="info_report_active">Rapporterar...</string>
-	<string name="title_forum_report">BF3 Battlelog - Rapporterar ett foruminlägg</string>
-	<string name="info_forum_lang">Välj ett språk för forum...</string>
-	<string name="info_general_nocache">Sökvägen för cache finns inte. Kontakta utvecklaren!</string>
-	<string name="info_unlock_change">Ändra soldat...</string>
-	<string name="info_general_noprofile">Ingen profil vald.</string>
-	<string name="info_assignments_empty">Inga uppdrag funna för soldaten.</string>
-	<string name="info_unlocks_empty">Inga upplåsningar i den här vyn.</string>
-	<string name="info_login_lostcookie">Inloggningen lyckades, men inga cookies hittades. :-(</string>
-	<string name="info_conn_hostunreach">Måldatorn gick inte att nå - starta om din 3G-anslutning och försök igen.</string>
-	<string name="info_session_expired">Sessionen har löpt ut. Förnyar sessionen mot server.</string>
-	<string name="info_session_renew_ok">Session förnyad!</string>
-	<string name="info_session_renew_fail">Sessionen kunde inte förnyas.</string>
-	<string name="info_friendreq_resp_ok">Besvarat vänförfrågan.</string>
-	<string name="info_platoon_invite_ok">Inbjudningar har skickats!</string>
-	<string name="info_platoon_invite_fail">Inbjudningar kunde inte skickas!</string>
-	<string name="info_platoon_invite_passed">En del inbjudningar har skickats, andra inte!</string>
-	<string name="info_platoon_req_ok">Inbjudan besvarad.</string>
-	<string name="info_forum_report_error">Du måste ange en anledning till varför du rapporterar  detta inlägg.</string>
-	<string name="general_nonetwork">Ingen nätverksanslutning tillgänglig!</string>
-	<string name="info_comment_report">Rapporterar kommentar nummer</string>
-	<string name="info_settings_general">Allmänna inställningar</string>
-	<string name="info_settings_chat">Chattinställningar</string>
-	<string name="info_settings_service">Inställningar för tjänsten</string>
-	<string name="info_settings_notifications">Händelseinställningar</string>
-	<string name="info_settings_chat_desc_beep_true">Din aktiva chatt kommer pipa med kärlek.</string>
-	<string name="info_settings_chat_desc_beep_false">Din aktiva chatt kommer inte ens att försöka pipa.</string>
-	<string name="info_settings_notification_desc_vibrate_false">Tiga är guld.</string>
-	<string name="info_settings_notification_desc_vibrate_true">Bzzt bzzt.</string>
-	<string name="info_settings_notification_desc_beep_true">Dina händelser kommer att höras.</string>
-	<string name="info_settings_notification_desc_beep_false">Du kommer inte att höra något.</string>
-	<string name="info_settings_notification_desc_beep_spec_true">PIP!</string>
-	<string name="info_settings_notification_desc_light_true">Blinka lilla stjärna.</string>
-	<string name="info_settings_notification_desc_light_false">LED kommer inte att blinka.</string>
-	<string name="info_settings_notification_desc_beep_spec_false">Använder ditt vanliga händelseljud.</string>
-	<string name="info_credits_contributors">Lista över de som bidragit</string>
-	<string name="info_credits_info">Först och främst vill jag tacka alla för ert stöd och framför allt ett stort &amp;quot;tack&amp;quot; till alla betatestare.\n\nMed det sagt så är alla som har bidragit listade nedan och med vad de har hjälpt till med, jag har förhoppningsvis inte glömt någon!</string>
-	<string name="info_credits_code">Kod</string>
-	<string name="info_credits_translations">Översättningar</string>
-	<string name="label_update_interval_seconds_5">En gång varje femte sekund</string>
-	<string name="label_update_interval_seconds_10">En gång var tionde sekund</string>
-	<string name="label_update_interval_seconds_15">En gång var femtonde sekund</string>
-	<string name="label_update_interval_seconds_20">En gång var tjugonde sekund</string>
-	<string name="label_update_interval_seconds_25">En gång var tjugofemte sekund</string>
-	<string name="label_update_interval_seconds_30">En gång var trettionde sekund</string>
-	<string name="label_update_interval_seconds_90">En gång var nittionde sekund</string>
-	<string name="label_update_interval_minutes_1">En gång i minuten</string>
-	<string name="label_update_interval_minutes_2">En gång varannan minut</string>
-	<string name="label_update_interval_minutes_5">En gång var femte minut</string>
-	<string name="label_update_interval_minutes_10">En gång var tionde minut</string>
-	<string name="label_update_interval_minutes_30">En gång var trettionde minut</string>
-	<string name="label_update_interval_hours_1">En gång i timmen</string>
-	<string name="label_update_interval_hours_2">En gång varannan timme</string>
-	<string name="label_update_interval_hours_6">En gång var sjätte timme</string>
-	<string name="label_update_interval_hours_12">En gång var tolfte timme</string>
-	<string name="label_update_interval_hours_18">En gång var artonde timme</string>
-	<string name="label_update_interval_days_1">En gång om dagen</string>
-	<string name="info_settings_title_language">Språk</string>
-	<string name="info_settings_title_sound_chat">Aktivera chattljud</string>
-	<string name="info_settings_chat_title">Inaktivera chattljud</string>
-	<string name="info_settings_notification_title_light">Aktivera LED</string>
-	<string name="info_settings_notification_title_sounds">Aktivera ljud</string>
-	<string name="info_settings_notification_title_sounds_spec">Använd Battlelog pip</string>
-	<string name="info_settings_notification_title_vibration">Aktivera vibration</string>
+    <string name="general_invalid_email">Felaktig e-postadress.</string>
+    <string name="general_invalid_password">Vänligen mata in ditt lösenord.</string>
+    <string name="general_changelog_version">Förändringar till {version}</string>
+    <string name="general_wait">Var god vänta...</string>
+    <string name="general_downloading">Laddar ned information...</string>
+    <string name="general_no_data">Ingen information hittades.</string>
+    <string name="label_own_soldiernu">Meny</string>
+    <string name="label_feed">Flöde</string>
+    <string name="label_friends">Vänner</string>
+    <string name="label_notifications">Meddelanden</string>
+    <string name="label_own_soldier">Min soldat</string>
+    <string name="label_unlocks">Mina upplåsningar</string>
+    <string name="label_find_soldier">Hitta soldat</string>
+    <string name="label_find_platoon">Hitta pluton</string>
+    <string name="label_compare_bs">Jämför krigsärr</string>
+    <string name="label_settings">Inställningar</string>
+    <string name="status_empty_input">Vänligen mata in ett statusmeddelande.</string>
+    <string name="status_error_unknown">Ett fel har uppstått - vänligen logga in igen.</string>
+    <string name="general_empty_user">Du måste ange ett användarnamn.</string>
+    <string name="info_profile_soldier">Visa profilen för soldaten...</string>
+    <string name="info_profile_platoon">Visa profilen för plutonen... </string>
+    <string name="general_empty_name">Du måste mata in ett namn.</string>
+    <string name="label_chat_open">Öppna chat</string>
+    <string name="label_soldier_view">Visa soldat</string>
+    <string name="label_hooah">Hooah!</string>
+    <string name="label_unhooah">Ångra hooah!</string>
+    <string name="label_comment_view">Visa kommentarer</string>
+    <string name="msg_unimplemented">Icke-implementerad funktionalitet.</string>
+    <string name="info_feed_empty">Inga flödesobjekt hittades.</string>
+    <string name="label_wait">Var god vänta...</string>
+    <string name="label_com_handle">COM CENTER ({num} INLOGGADE)</string>
+    <string name="lable_refresh">Uppdatera nu</string>
+    <string name="label_home">Hem</string>
+    <string name="label_stats">Stats</string>
+    <string name="label_users">Användare</string>
+    <string name="info_platoon_created">Skapades den {DATE} ({RELATIVE DATE})</string>
+    <string name="label_own_soldiermbers">MEDLEMMAR</string>
+    <string name="label_fans">FANS</string>
+    <string name="info_platoon_compare">Du kan inte jämföra plutoner... (än?)</string>
+    <string name="info_empty_msg">Det är inte tillåtet att skriva tomma inlägg.</string>
+    <string name="info_profile_online">Inloggad men spelar inte</string>
+    <string name="info_profile_playing">Spelar på {server name}</string>
+    <string name="info_profile_empty_pres">Ingen presentation hittades.</string>
+    <string name="info_hooah_s">{num} hooah</string>
+    <string name="info_hooah_p">{num} hooah</string>
+    <string name="info_comment_s">{num} kommentar</string>
+    <string name="info_comment_p">{num} kommentarer</string>
+    <string name="label_playing">Spelar</string>
+    <string name="label_online">Inloggad</string>
+    <string name="label_offline">Utloggad</string>
+    <string name="msg_chat_norefresh">Chatten kunde inte uppdateras.</string>
+    <string name="label_sending">Skickar...</string>
+    <string name="label_send">Skicka</string>
+    <string name="msg_chat_ok">Meddelande skickat!</string>
+    <string name="msg_chat_fail">Meddelandet kunde inte skickas.</string>
+    <string name="msg_comment_ok">Kommentaren sparades!</string>
+    <string name="msg_comment_fail">Kommentaren kunde inte sparas.</string>
+    <string name="msg_comment_norefresh">Kommentarerna kunde inte laddas om.</string>
+    <string name="msg_com_ok">COM CENTRET är uppdaterat.</string>
+    <string name="msg_com_fail">COM CENTRET kunde inte uppdateras.</string>
+    <string name="msg_hooah_fail">Hooah misslyckades!</string>
+    <string name="msg_search_nouser">Det finns ingen användare som matchar följande sökord: {keyword}</string>
+    <string name="msg_search_noplatoon">Det finns ingen pluton som matchar följande sökord: {keyword}</string>
+    <string name="msg_frequest_ok">En vänförfrågan har skickats!</string>
+    <string name="msg_frequest_fail">En vänförfrågan kunde ej skickas.</string>
+    <string name="msg_logging_in">Loggar in...</string>
+    <string name="msg_login_fail">Inloggingen misslyckades.</string>
+    <string name="msg_logout">Loggar ut...</string>
+    <string name="msg_error">Ett fel har uppstått.</string>
+    <string name="msg_prequest_ok">Du ansökte till plutonen.</string>
+    <string name="msg_prequest_fail_pres">Du kunde inte ansöka på grund av plattformsbegränsningar.</string>
+    <string name="msg_prequest_fail_full">Du kunde inte ansöka på grund av att plutonen är full.</string>
+    <string name="msg_prequest_fail_error">Ett fel uppstod under ansökan.</string>
+    <string name="msg_platoon_left">Du lämnade plutonen.</string>
+    <string name="msg_platoon_left_fail">Ett fel uppstod när du försökte lämna plutonen.</string>
+    <string name="msg_feed_ok">Inlägget skickades!</string>
+    <string name="msg_feed_fail">Inlägget kunde inte skrivas (kanske har du nått upp till din kvot?).</string>
+    <string name="msg_notification">Någon har interagerat med dig på Battlelog!</string>
+    <string name="msg_status">Uppdaterar status...</string>
+    <string name="msg_status_ok">Din status har uppdaterats.</string>
+    <string name="msg_status_fail">Din status kunde inte uppdateras.</string>
+    <string name="info_feed_comment_own">&lt;b>{username}&lt;/b> kommenterade på din/ditt &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_comment_other">&lt;b>{username}&lt;/b> kommenterade på &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_comment_other_v2">&lt;b>{username}&lt;/b> kommenterade på &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_comment_own_2">&lt;b>{username}&lt;/b> kommenterade också på din/ditt &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_comment_other_2">&lt;b>{username}&lt;/b> kommenterade också på &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_comment_other_v2_2">&lt;b>{username}&lt;/b> kommenterade också på &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_post_own">&lt;b>{username}&lt;/b> skrev i ditt &lt;b>krigsflöde&lt;/b>.</string>
+    <string name="info_feed_hooah_own">&lt;b>{username}&lt;/b> gillade din/ditt &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_hooah_other">&lt;b>{username}&lt;/b> gillade &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_hooah_other_2">&lt;b>{username}&lt;/b> gillade &lt;b>{owner}&lt;/b>s &lt;b>{action}&lt;/b>.</string>
+    <string name="info_platoon_join_ok">&lt;b>{username}&lt;/b> accepterade din inbjudan till &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_join_no">&lt;b>{username}&lt;/b> nekade din inbjudan till &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_join_request">&lt;b>{username}&lt;/b> vill gå med i din pluton &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_join_request_ok">&lt;b>{username}&lt;/b> gick med i din pluton &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_left">&lt;b>{username}&lt;/b> lämnade din pluton &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_unknown_notification">Okänd händelsetyp.</string>
+    <string name="info_friendship">vänskap</string>
+    <string name="info_forum_post">foruminlägg</string>
+    <string name="info_game_report">spelrapport</string>
+    <string name="info_wallpost">inlägg</string>
+    <string name="info_status_message">status</string>
+    <string name="info_award">utmärkelse</string>
+    <string name="info_battle_report">krigsrapport</string>
+    <string name="info_platoon_wall_post">plutoninlägg</string>
+    <string name="info_lastlogin">Senast inloggad den {date}</string>
+    <string name="info_time_second">{seconds} sekund sedan</string>
+    <string name="info_time_second_p">{seconds} sekunder sedan</string>
+    <string name="info_time_min">{minutes} minut sedan</string>
+    <string name="info_time_min_p">{minutes} minuter sedan</string>
+    <string name="info_time_hour">{hours} timme sedan</string>
+    <string name="info_time_hour_p">{hours} timmar sedan</string>
+    <string name="info_time_day">{days} dag sedan</string>
+    <string name="info_time_day_p">{days} dagar sedan</string>
+    <string name="info_time_week">{weeks} vecka sedan</string>
+    <string name="info_time_week_p">{weeks} veckor sedan</string>
+    <string name="info_time_year">{years} år sedan</string>
+    <string name="info_time_year_p">{years} år sedan</string>
+    <string name="info_connect_bl">Koppla upp dig mot Battlelog</string>
+    <string name="info_widget_friends_online">Vänner inloggade:</string>
+    <string name="msg_widget_auth_fail">Inloggningen misslyckades - har du sparat informationen?</string>
+    <string name="info_xml_chat_empty">Inga meddelanden hittades.</string>
+    <string name="label_com_handle_default">COM CENTER (0 ONLINE)</string>
+    <string name="info_hint_comment_msg">Skriv ett meddelande</string>
+    <string name="info_xml_comment_empty">Inga kommentarer hittades.</string>
+    <string name="info_xml_rank">Rank</string>
+    <string name="info_xml_kills">Mord</string>
+    <string name="info_xml_assists">Assists</string>
+    <string name="info_xml_vehicles_destroyed">Förstörda fordon</string>
+    <string name="info_xml_vehicles_assisted_with">Skadade fordon</string>
+    <string name="info_xml_heals">Läkningar</string>
+    <string name="info_xml_revives">Återupplivningar</string>
+    <string name="info_xml_repairs">Reparationer</string>
+    <string name="info_xml_resupplies">Påfyllningar</string>
+    <string name="info_xml_deaths">Dödsfall</string>
+    <string name="info_xml_kd_ratio">KD-ratio</string>
+    <string name="info_xml_wins">Vinster</string>
+    <string name="info_xml_losses">Förluster</string>
+    <string name="info_xml_wl_ratio">Vinster/Förluster</string>
+    <string name="info_xml_accuracy">Träffsäkerhet</string>
+    <string name="info_xml_longest_headshot">Längsta huvudträff</string>
+    <string name="info_xml_longest_killstreak">Högst antal dödade i rad</string>
+    <string name="info_xml_skill_rating">Skicklighet</string>
+    <string name="info_xml_time_played">Spelad tid</string>
+    <string name="info_xml_score_minute">Poäng/minut</string>
+    <string name="info_xml_assault">Assault</string>
+    <string name="info_xml_engineer">Engineer</string>
+    <string name="info_xml_support">Support</string>
+    <string name="info_xml_recon">Recon</string>
+    <string name="info_xml_vehicles">Fordon</string>
+    <string name="info_xml_total_in_combat">Totalt i strid</string>
+    <string name="info_xml_award">Belöning</string>
+    <string name="info_xml_unlocks">Upplåsningar</string>
+    <string name="info_xml_total_score">Totalpoäng</string>
+    <string name="info_hint_username">Mata in ett användarnamn</string>
+    <string name="info_hint_platoon">Mata in ett plutonnamn</string>
+    <string name="info_xml_average">Medel</string>
+    <string name="info_xml_best">Bäst</string>
+    <string name="info_xml_median">Median</string>
+    <string name="info_xml_min">Minst</string>
+    <string name="info_xml_friend_requests">Vänförfrågningar</string>
+    <string name="info_xml_no_friends">Inga vänner hittades. :-(</string>
+    <string name="info_xml_no_notifications">Inga händelser hittades. :-(</string>
+    <string name="info_xml_hint_status">Uppdatera din status</string>
+    <string name="info_xml_no_feed">Inga objekt hittades i flödet</string>
+    <string name="info_xml_hint_feed">Skriv i flödet</string>
+    <string name="info_xml_website">Hemsida</string>
+    <string name="info_xml_presentation">Presentation</string>
+    <string name="info_xml_badge">Banner</string>
+    <string name="info_xml_general">Allmänt</string>
+    <string name="info_xml_score_min">Poäng / Minut</string>
+    <string name="info_xml_top_soldiers">Toppsoldater</string>
+    <string name="info_xml_time">Tid</string>
+    <string name="info_xml_score">Poäng</string>
+    <string name="info_xml_no_users">Inga användare hittades.</string>
+    <string name="info_xml_latest_statusmsg">Senaste statusuppdatering</string>
+    <string name="info_xml_platoons">Plutoner</string>
+    <string name="info_xml_no_platoons">Inga anslutna plutoner.</string>
+    <string name="info_xml_rank2">till nästa rang</string>
+    <string name="info_xml_no_unlocks">Inga upplåsningar hittades.</string>
+    <string name="info_xml_back">Tillbaka</string>
+    <string name="info_xml_reload">Ladda om</string>
+    <string name="info_xml_logout">Logga ut</string>
+    <string name="info_xml_apply">Ansök om medlemskap</string>
+    <string name="info_xml_fan">Bli ett fan</string>
+    <string name="info_xml_leave_platoon">Lämna pluton</string>
+    <string name="info_xml_members">Medlemmar</string>
+    <string name="info_xml_un_fan">Sluta vara ett fan</string>
+    <string name="info_xml_fans">Fans</string>
+    <string name="info_xml_compare">Jämför</string>
+    <string name="info_xml_compare_bs">Jämför ärr</string>
+    <string name="info_xml_add_friend">Skicka vänförfrågan</string>
+    <string name="info_xml_remove_friend">Ta bort vän</string>
+    <string name="info_xml_enable_bgsrv">Aktivera bakgrundstjänst</string>
+    <string name="info_xml_enable_bgsrv_t">När den är aktiverad uppdaterar tjänsten händelser och håller widget uppkopplad.</string>
+    <string name="info_lastupdate">Senast uppdaterad {date}</string>
+    <string name="info_hint_email">E-post för Origin™</string>
+    <string name="info_hint_password">Lösenord</string>
+    <string name="label_login">Logga in</string>
+    <string name="label_save">Spara lösenord</string>
+    <string name="info_p_friendship">&lt;b>{username1}&lt;/b> och &lt;b>{username2}&lt;/b> är numera vänner.</string>
+    <string name="info_p_forumthread">&lt;b>{username}&lt;/b> skapade forumtråden &lt;b>\"{thread}\"&lt;/b>.</string>
+    <string name="info_p_forumpost">&lt;b>{username}&lt;/b> skrev ett inlägg i forumtråden &lt;b>\"{thread}\"&lt;/b>.</string>
+    <string name="info_p_newunlock">&lt;b>{username}&lt;/b> låste upp ett nytt föremål: {item}.</string>
+    <string name="info_p_favserver">&lt;b>{username}&lt;/b> bokmärkte en server: &lt;b>{server}&lt;/b>.</string>
+    <string name="info_p_promotion">&lt;b>{username}&lt;/b> blev befodrad till &lt;b>{rank title}&lt;/b> (rank{rank}).</string>
+    <string name="info_p_greport_comment">&lt;b>{username}&lt;/b> kommenterade på en krigsrapport &lt;b>{server name} {map} {game mode}&lt;/b>.</string>
+    <string name="info_p_blog_comment">&lt;b>{username}&lt;/b> kommenterade på ett blogginlägg &lt;b>{post name}&lt;/b>.</string>
+    <string name="info_p_platoon_join">&lt;b>{username}&lt;/b> gick med i plutonen &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_p_platoon_kick">&lt;b>{username}&lt;/b> blev sparkad ur plutonen &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_p_platoon_create">&lt;b>{username}&lt;/b> skapade plutonen &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_p_platoon_badge">&lt;b>{username}&lt;/b> uppdaterade emblemet för plutonen &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_p_platoon_left">&lt;b>{username}&lt;/b> lämnade plutonen &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> skrev på väggen för &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> och &lt;b>{username2}&lt;/b> klarade &lt;b>\"{level}\"&lt;/b> på &lt;b>{difficulty}&lt;/b>.</string>
+    <string name="info_p_award">&lt;b>{username}&lt;/b> fick en ny belöning: &lt;b>{award}&lt;/b>.</string>
+    <string name="info_new_rank">nya rank</string>
+    <string name="title_main_menu">BF3 Battlelog - Huvudmenyn</string>
+    <string name="title_profile">BF3 Battlelog - Profil</string>
+    <string name="title_platoon">BF3 Battlelog - Plutonprofil</string>
+    <string name="title_performance">BF3 Battlelog - Din prestation</string>
+    <string name="title_chat">BF3 Battlelog - Chattar med ...</string>
+    <string name="title_comments">BF3 Battlelog - Kommentarer</string>
+    <string name="title_comparing_battle_scars">BF3 Battlelog - Jämför krigsärr</string>
+    <string name="title_unlocks">BF3 Battlelog - Dina kommande upplåsningar</string>
+    <string name="title_settings">BF3 Battlelog - Inställningar</string>
+    <string name="title_forum">BF3 Battlelog - Forum</string>
+    <string name="label_forum">Forum</string>
+    <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> klarade ett uppdrag - &lt;b>\"{assignment}\"&lt;/b> (ger &lt;b>{unlock}&lt;/b>).</string>
+    <string name="info_assignments_new_unknown">Nya uppdrag har lagts till - vänligen tipsa utvecklaren!</string>
+    <string name="title_assignments">BF3 Battlelog - Kollar på tillgänliga uppdrag</string>
+    <string name="info_xml_platoons_my">Mina plutoner</string>
+    <string name="info_xml_assignments_my">Mina uppdrag</string>
+    <string name="msg_no_cookies">Sessionskakorna är försvunna - vänligen logga in igen.</string>
+    <string name="label_soldier_unlocks">Upplåsningar</string>
+    <string name="info_p_newunlocks">&lt;b>{username}&lt;/b> låste upp nya föremål: {item}.</string>
+    <string name="info_txt_friends_offline">Utloggade vänner</string>
+    <string name="info_txt_friends_online">Inloggade vänner</string>
+    <string name="info_txt_session_lost">Session avbruten. Logga in igen!</string>
+    <string name="info_xml_forums_none">Inga forum funna.</string>
+    <string name="info_xml_forums">Forum</string>
+    <string name="info_p_activated_expansion">aktiverade spel/eller expansionspaket</string>
+    <string name="info_xml_forum_postsinthreads">&lt;b>{num_posts}&lt;/b> inlägg i &lt;b>{num_threads}&lt;/b> trådar.</string>
+    <string name="info_xml_threadinfo">&lt;b>{num_posts}&lt;/b> inlägg (varav &lt;b>{num_official}&lt;/b> officiella)</string>
+    <string name="info_xml_threaddate">Skrivet &lt;b>{date}&lt;/b> av &lt;b>{user}&lt;/b></string>
+    <string name="info_xml_threadreplydate">Senaste inlägg &lt;b>{date}&lt;/b> av &lt;b>{user}&lt;/b></string>
+    <string name="info_xml_thread_new">Ny tråd...</string>
+    <string name="info_xml_post_new">Nytt inlägg...</string>
+    <string name="info_forum_newthread_true">Tråden har skapats.</string>
+    <string name="info_forum_newthread_false">Det gick inte att skapa tråden...</string>
+    <string name="info_xml_enter_content">Skriv innehållet här</string>
+    <string name="info_dialog_soldierselect">Välj en soldat att visa...</string>
+    <string name="info_dialog_threadpost">Skriv ett svar</string>
+    <string name="info_forum_newpost_true">Svaret är publicerat.</string>
+    <string name="info_forum_newpost_false">Svaret kunde inte publiceras.</string>
+    <string name="info_txt_notification_new">1 ny händelse!</string>
+    <string name="info_txt_notification_new_p">{num} nya händelser!</string>
+    <string name="info_tap_notification">Klicka här för att komma till dina händelser.</string>
+    <string name="info_xml_posts_none">Inga inlägg funna.</string>
+    <string name="info_xml_threads_none">Inga trådar funna.</string>
+    <string name="info_xml_results_none">Inga resultat funna.</string>
+    <string name="title_forum_view">Visar forum...</string>
+    <string name="title_thread_view">Visar tråd...</string>
+    <string name="title_forum_search">Söker i forum</string>
+    <string name="title_search">Söker användare och plutoner</string>
+    <string name="info_xml_search">Sök...</string>
+    <string name="info_xml_generic_error">Ett fel har uppstått.</string>
+    <string name="label_search">Sök</string>
+    <string name="label_search_ongoing">Söker...</string>
+    <string name="info_p_awards">&lt;b>{username}&lt;/b> fick nya utmärkelser: {award}.</string>
+    <string name="label_own_platoon">Mina plutoner</string>
+    <string name="label_assignments">Mina uppdrag</string>
+    <string name="info_xml_invite">Bjud in...</string>
+    <string name="title_platoon_invite">Bjuder in vänner till plutonen</string>
+    <string name="info_xml_platoon_select">Välj en pluton...</string>
+    <string name="info_spost_heading">{username}s inlägg</string>
+    <string name="info_spost_heading_s">{username} inlägg</string>
+    <string name="info_txt_friend_delete_true">Användaren har tagits bort från din lista.</string>
+    <string name="info_txt_friend_delete_false">Användaren kunde ej tas bort från din lista.</string>
+    <string name="info_xml_feed_button_pagination">Ladda fler saker</string>
+    <string name="label_downloading">Laddar ned...</string>
+    <string name="info_xml_threads_more_false">Inga fler trådar.</string>
+    <string name="info_xml_posts_more_false">Inga fler inlägg.</string>
+    <string name="label_jump">Hoppa till sida...</string>
+    <string name="info_txt_pageselect">Välj en sida...</string>
+    <string name="info_xml_enternumber">Ange ett nummer mellan {min} - {max} nedan.</string>
+    <string name="info_xml_feed_button_jump">Hoppa till sida...</string>
+    <string name="info_feed_friend_accept">&lt;b>{username}&lt;/b> accepterade din &lt;b>vänförfrågan&lt;/b>.</string>
+    <string name="label_single_post_view">Visa inlägg</string>
+    <string name="info_xml_main_slider">Information om appen</string>
+    <string name="label_option_about">Om...</string>
+    <string name="title_about">Om appen</string>
+    <string name="info_option_unlocks">Visa upplåsningar</string>
+    <string name="info_txt_email_send">Skicka ett e-postmeddelande</string>
+    <string name="label_about">Om</string>
+    <string name="label_faq">FAQ</string>
+    <string name="label_credits">Erkännanden</string>
+    <string name="info_assignment_completed">slutförda uppdrag</string>
+    <string name="info_platoon_invite">&lt;b>{username}&lt;/b> har bjudit in dig till &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_promote">Du har befordrats inom &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_demote">Du har degraderats inom &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_kick">&lt;b>{username}&lt;/b> sparkade dig från plutonen &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_activity">plutonaktivitet</string>
+    <string name="info_platoon_member_new_ok">Godkänner den nya medlemmen...</string>
+    <string name="info_platoon_member_new_false">Avslår den nya medlemmen.</string>
+    <string name="info_platoon_member_demoting">Degraderar medlemmen...</string>
+    <string name="info_platoon_member_promoting">Befordrar medlemmen...</string>
+    <string name="info_platoon_member_kicking">Sparkar medlemmen...</string>
+    <string name="info_platoon_member_new_accept">Godkänn ansökan</string>
+    <string name="info_platoon_member_new_deny">Avslå ansökan</string>
+    <string name="info_platoon_member_demote">Degradera</string>
+    <string name="info_platoon_member_promote">Befordra</string>
+    <string name="info_platoon_member_kick">Sparka ut</string>
+    <string name="info_profile_view">Visa profil</string>
+    <string name="info_stats_not_found">Ingen statistik hittades.</string>
+    <string name="info_forum_page_invalid">Ogiltigt sidnummer.</string>
+    <string name="info_forum_quote_warning">Citatet har lagts till i fältet, ta inte bort eller redigera den.</string>
+    <string name="info_forum_links_no">Inga länkar hittades i inlägget.</string>
+    <string name="info_forum_quote">Citera inlägg</string>
+    <string name="info_forum_report">Rapportera missbruk</string>
+    <string name="info_forum_links">Visa länkar...</string>
+    <string name="info_forum_link_title">Välj en länk att visa...</string>
+    <string name="info_forum_posts_downloading">Laddar ned inläggen...</string>
+    <string name="info_platoon_member_founder">Grundare</string>
+    <string name="info_platoon_member_nonmember">Inte en medlem</string>
+    <string name="info_platoon_member_evaluate">Inväntar beslut</string>
+    <string name="info_platoon_member_invited">Inbjuden</string>
+    <string name="info_platoon_member_member">Medlem</string>
+    <string name="info_platoon_member_admin">Administratör</string>
+    <string name="info_platoon_member_founder_p">Grundare</string>
+    <string name="info_platoon_member_admin_p">Administratörer</string>
+    <string name="info_platoon_member_regular">Vanlig medlem</string>
+    <string name="info_platoon_member_regular_p">Vanliga medlemmar</string>
+    <string name="info_platoon_member_invited_label">Inbjuden att gå med</string>
+    <string name="info_platoon_member_requested_label">Ansökt om medlemskap</string>
+    <string name="info_platoon_stats_overall">Generellt</string>
+    <string name="label_assignments_view">Visa uppdrag</string>
+    <string name="label_goto_section">Gå till {section}</string>
+    <string name="label_goto_assignments">uppdrag</string>
+    <string name="label_goto_forum_thread">forumtråd</string>
+    <string name="label_goto_platoon">pluton</string>
+    <string name="label_goto_profile">profil</string>
+    <string name="label_goto_unlocks">upplåsningar</string>
+    <string name="info_about_donating">Om du tycker om arbetet jag utfört och känner för att donera en valfri summa till min utvecklinsfond, klicka då på denna text för att skickas vidare till Paypal för vidare information.</string>
+    <string name="general_censored">Detta inlägg har censurerats av Battlelog-staben.</string>
+    <string name="info_forum_report_true">Inlägget har rapporterats.</string>
+    <string name="info_forum_report_false">Inlägget kunde inte rapporteras.</string>
+    <string name="info_forum_search_label">Forumsök</string>
+    <string name="info_forum_search_hint">Sök efter...</string>
+    <string name="info_forum_report_reason">Varför vill du rapportera detta inlägg?</string>
+    <string name="info_forum_report_label">Rapportera ett inlägg</string>
+    <string name="label_report">Rapportera för missbruk</string>
+    <string name="info_forum_report_empty">Du måste ange en anledning till varför du rapporterar  detta inlägg.</string>
+    <string name="info_report_active">Rapporterar...</string>
+    <string name="title_forum_report">BF3 Battlelog - Rapporterar ett foruminlägg</string>
+    <string name="info_forum_lang">Välj ett språk för forum...</string>
+    <string name="info_general_nocache">Sökvägen för cache finns inte. Kontakta utvecklaren!</string>
+    <string name="info_unlock_change">Ändra soldat...</string>
+    <string name="info_general_noprofile">Ingen profil vald.</string>
+    <string name="info_assignments_empty">Inga uppdrag funna för soldaten.</string>
+    <string name="info_unlocks_empty">Inga upplåsningar i den här vyn.</string>
+    <string name="info_login_lostcookie">Inloggningen lyckades, men inga cookies hittades. :-(</string>
+    <string name="info_conn_hostunreach">Måldatorn gick inte att nå - starta om din 3G-anslutning och försök igen.</string>
+    <string name="info_session_expired">Sessionen har löpt ut. Förnyar sessionen mot server.</string>
+    <string name="info_session_renew_ok">Session förnyad!</string>
+    <string name="info_session_renew_fail">Sessionen kunde inte förnyas.</string>
+    <string name="info_friendreq_resp_ok">Besvarat vänförfrågan.</string>
+    <string name="info_platoon_invite_ok">Inbjudningar har skickats!</string>
+    <string name="info_platoon_invite_fail">Inbjudningar kunde inte skickas!</string>
+    <string name="info_platoon_invite_passed">En del inbjudningar har skickats, andra inte!</string>
+    <string name="info_platoon_req_ok">Inbjudan besvarad.</string>
+    <string name="info_forum_report_error">Du måste ange en anledning till varför du rapporterar  detta inlägg.</string>
+    <string name="general_nonetwork">Ingen nätverksanslutning tillgänglig!</string>
+    <string name="info_comment_report">Rapporterar kommentar nummer</string>
+    <string name="info_settings_general">Allmänna inställningar</string>
+    <string name="info_settings_chat">Chattinställningar</string>
+    <string name="info_settings_service">Inställningar för tjänsten</string>
+    <string name="info_settings_notifications">Händelseinställningar</string>
+    <string name="info_settings_chat_desc_beep_true">Din aktiva chatt kommer pipa med kärlek.</string>
+    <string name="info_settings_chat_desc_beep_false">Din aktiva chatt kommer inte ens att försöka pipa.</string>
+    <string name="info_settings_notification_desc_vibrate_false">Tiga är guld.</string>
+    <string name="info_settings_notification_desc_vibrate_true">Bzzt bzzt.</string>
+    <string name="info_settings_notification_desc_beep_true">Dina händelser kommer att höras.</string>
+    <string name="info_settings_notification_desc_beep_false">Du kommer inte att höra något.</string>
+    <string name="info_settings_notification_desc_beep_spec_true">PIP!</string>
+    <string name="info_settings_notification_desc_light_true">Blinka lilla stjärna.</string>
+    <string name="info_settings_notification_desc_light_false">LED kommer inte att blinka.</string>
+    <string name="info_settings_notification_desc_beep_spec_false">Använder ditt vanliga händelseljud.</string>
+    <string name="info_credits_contributors">Lista över de som bidragit</string>
+    <string name="info_credits_info">Först och främst vill jag tacka alla för ert stöd och framför allt ett stort &amp;quot;tack&amp;quot; till alla betatestare.\n\nMed det sagt så är alla som har bidragit listade nedan och med vad de har hjälpt till med, jag har förhoppningsvis inte glömt någon!</string>
+    <string name="info_credits_code">Kod</string>
+    <string name="info_credits_translations">Översättningar</string>
+    <string name="label_update_interval_seconds_5">En gång varje femte sekund</string>
+    <string name="label_update_interval_seconds_10">En gång var tionde sekund</string>
+    <string name="label_update_interval_seconds_15">En gång var femtonde sekund</string>
+    <string name="label_update_interval_seconds_20">En gång var tjugonde sekund</string>
+    <string name="label_update_interval_seconds_25">En gång var tjugofemte sekund</string>
+    <string name="label_update_interval_seconds_30">En gång var trettionde sekund</string>
+    <string name="label_update_interval_seconds_90">En gång var nittionde sekund</string>
+    <string name="label_update_interval_minutes_1">En gång i minuten</string>
+    <string name="label_update_interval_minutes_2">En gång varannan minut</string>
+    <string name="label_update_interval_minutes_5">En gång var femte minut</string>
+    <string name="label_update_interval_minutes_10">En gång var tionde minut</string>
+    <string name="label_update_interval_minutes_30">En gång var trettionde minut</string>
+    <string name="label_update_interval_hours_1">En gång i timmen</string>
+    <string name="label_update_interval_hours_2">En gång varannan timme</string>
+    <string name="label_update_interval_hours_6">En gång var sjätte timme</string>
+    <string name="label_update_interval_hours_12">En gång var tolfte timme</string>
+    <string name="label_update_interval_hours_18">En gång var artonde timme</string>
+    <string name="label_update_interval_days_1">En gång om dagen</string>
+    <string name="info_settings_title_language">Språk</string>
+    <string name="info_settings_title_sound_chat">Aktivera chattljud</string>
+    <string name="info_settings_chat_title">Inaktivera chattljud</string>
+    <string name="info_settings_notification_title_light">Aktivera LED</string>
+    <string name="info_settings_notification_title_sounds">Aktivera ljud</string>
+    <string name="info_settings_notification_title_sounds_spec">Använd Battlelog pip</string>
+    <string name="info_settings_notification_title_vibration">Aktivera vibration</string>
+
 </resources>

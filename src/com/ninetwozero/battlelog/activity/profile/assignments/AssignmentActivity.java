@@ -91,7 +91,8 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
         // Let's try something out
         if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
 
-            mSelectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID, mProfileData.getPersona(0).getId());
+            mSelectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID,
+                    mProfileData.getPersona(0).getId());
             mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
 
         } else {
@@ -194,7 +195,8 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
             for (int i = 0, max = mListFragments.size(); i < max; i++) {
                 AssignmentFragment fragment = (AssignmentFragment) mListFragments.get(i);
                 fragment.setViewPagerPosition(i);
-                fragment.setType(i == 1 ? AssignmentFragment.TYPE_STACK: AssignmentFragment.TYPE_PAIRS);
+                fragment.setType(i == 1 ? AssignmentFragment.TYPE_STACK
+                        : AssignmentFragment.TYPE_PAIRS);
 
             }
 
@@ -263,7 +265,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
             }
 
         }
-        
+
         @Override
         protected Boolean doInBackground(ProfileData... arg0) {
 

@@ -1,26 +1,24 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item 
-		android:id="@+id/option_reload" 
-		android:icon="@android:drawable/ic_menu_rotate"
-		android:title="@string/info_xml_reload" 
-		android:alphabeticShortcut="R"
-	/>
-	<item 
-		android:id="@+id/option_search" 
-		android:icon="@android:drawable/ic_menu_search" 
-		android:title="@string/info_xml_search" 
-		android:alphabeticShortcut="S"
-	/>
-	<item 
-		android:id="@+id/option_page" 
-		android:icon="@android:drawable/ic_menu_more" 
-		android:title="@string/label_jump" 
-		android:alphabeticShortcut="P"
-	/>
-	<item 
-		android:id="@+id/option_back" 
-		android:icon="@android:drawable/ic_menu_revert" 
-		android:title="@string/info_xml_back" 
-		android:alphabeticShortcut="B"
-	/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/option_reload"
+        android:alphabeticShortcut="R"
+        android:icon="@android:drawable/ic_menu_rotate"
+        android:title="@string/info_xml_reload"/>
+    <item
+        android:id="@+id/option_search"
+        android:alphabeticShortcut="S"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/info_xml_search"/>
+    <item
+        android:id="@+id/option_page"
+        android:alphabeticShortcut="P"
+        android:icon="@android:drawable/ic_menu_more"
+        android:title="@string/label_jump"/>
+    <item
+        android:id="@+id/option_back"
+        android:alphabeticShortcut="B"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="@string/info_xml_back"/>
+
 </menu>

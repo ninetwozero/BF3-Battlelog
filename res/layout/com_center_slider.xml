@@ -1,4 +1,4 @@
-<!-- 
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -10,50 +10,50 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
-<SlidingDrawer 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/com_slider"
+-->
+<SlidingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/com_slider"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:topOffset="0dp" 
-    android:handle="@+id/com_slide_handle"
+    android:layout_alignParentBottom="true"
     android:content="@+id/com_slide_content"
-	android:layout_alignParentBottom="true"
->
-  	<LinearLayout
-	   android:layout_width="fill_parent"
-	   android:layout_height="40dp"
-       android:id="@+id/com_slide_handle"
-       android:orientation="vertical"
-	>
-	    <View
-	        android:layout_width="fill_parent"
-	    	android:layout_height="2dp"  
-	    	android:background="#5c5c5c"
-	    />
-	    <View
-	        android:id="@+id/temp000"
-	        android:layout_width="fill_parent"
-	    	android:layout_height="1dp"  
-	    	android:background="#20201f"
-	    />
-	    <TextView
-	        android:id="@+id/com_slide_handle_text"
-	        android:layout_width="fill_parent"
-	        android:layout_height="37dp"
-	        android:background="@drawable/gradient_greytodarkgrey"
-	    	android:text="@string/label_com_handle_default"
-	    	android:textColor="#FFFFFF"
-	    	android:gravity="center"
-	    />
-	</LinearLayout>
-	<RelativeLayout 
-		android:id="@+id/com_slide_content"  
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:background="#FDFDFD"
-	>	
-		<include layout="@layout/viewpager_com" />
-	</RelativeLayout>
+    android:handle="@+id/com_slide_handle"
+    android:topOffset="0dp" >
+
+    <LinearLayout
+        android:id="@+id/com_slide_handle"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#5c5c5c" />
+
+        <View
+            android:id="@+id/temp000"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#20201f" />
+
+        <TextView
+            android:id="@+id/com_slide_handle_text"
+            android:layout_width="fill_parent"
+            android:layout_height="37dp"
+            android:background="@drawable/gradient_greytodarkgrey"
+            android:gravity="center"
+            android:text="@string/label_com_handle_default"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/com_slide_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FDFDFD" >
+
+        <include layout="@layout/viewpager_com" />
+    </RelativeLayout>
+
 </SlidingDrawer>

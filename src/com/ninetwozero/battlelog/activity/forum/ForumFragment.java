@@ -23,7 +23,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -212,10 +211,6 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
                 if ((mLatestRefresh + 300) < now) {
 
                     new AsyncGetThreads(null, mListView).execute(mForumId);
-
-                } else {
-
-                    Log.d(Constants.DEBUG_TAG, "It's still fresh enough if you ask me!");
 
                 }
 
@@ -452,7 +447,6 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
     @Override
     public boolean handleSelectedOption(MenuItem item) {
-        // TODO Auto-generated method stub
         return false;
     }
 

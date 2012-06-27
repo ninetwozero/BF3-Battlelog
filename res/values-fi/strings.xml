@@ -1,512 +1,516 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">BF3 Battlefield</string>
-	<string name="widget_name">Battlefield - Tilastot+Kaverit</string>
+    <string name="widget_name">Battlefield - Tilastot+Kaverit</string>
+
     <integer-array name="service_update_intervals_values">
-        <item >300</item>
-        <item >600</item>
-        <item >1800</item>
-        <item >3600</item>
-        <item >7200</item>
-        <item >21600</item>
-        <item >43200</item>
-        <item >64800</item>
-        <item >86400</item>
+        <item>300</item>
+        <item>600</item>
+        <item>1800</item>
+        <item>3600</item>
+        <item>7200</item>
+        <item>21600</item>
+        <item>43200</item>
+        <item>64800</item>
+        <item>86400</item>
     </integer-array>
-    <integer-array name="chat_update_intervals_values">    
-        <item >5</item>
-        <item >10</item>
-        <item >15</item>
-        <item >20</item>
-        <item >25</item>
-        <item >30</item>
-        <item >60</item>
-        <item >90</item>
-        <item >120</item>
+    <integer-array name="chat_update_intervals_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
     </integer-array>
+
     <string-array name="service_update_intervals_labels">
-        <item >@string/label_update_interval_minutes_5</item>
-        <item >@string/label_update_interval_minutes_10</item>
-        <item >@string/label_update_interval_minutes_30</item>
-        <item >@string/label_update_interval_hours_1</item>
-        <item >@string/label_update_interval_hours_2</item>
-        <item >@string/label_update_interval_hours_6</item>
-        <item >@string/label_update_interval_hours_12</item>
-        <item >@string/label_update_interval_hours_18</item>
-        <item >@string/label_update_interval_days_1</item>
+        <item>@string/label_update_interval_minutes_5</item>
+        <item>@string/label_update_interval_minutes_10</item>
+        <item>@string/label_update_interval_minutes_30</item>
+        <item>@string/label_update_interval_hours_1</item>
+        <item>@string/label_update_interval_hours_2</item>
+        <item>@string/label_update_interval_hours_6</item>
+        <item>@string/label_update_interval_hours_12</item>
+        <item>@string/label_update_interval_hours_18</item>
+        <item>@string/label_update_interval_days_1</item>
     </string-array>
-     <string-array name="chat_update_intervals_labels">
-        <item >@string/label_update_interval_seconds_5</item>
-        <item >@string/label_update_interval_seconds_10</item>
-        <item >@string/label_update_interval_seconds_15</item>
-        <item >@string/label_update_interval_seconds_20</item>
-        <item >@string/label_update_interval_seconds_25</item>
-        <item >@string/label_update_interval_seconds_30</item>
-        <item >@string/label_update_interval_minutes_1</item>
-        <item >@string/label_update_interval_seconds_90</item>
-        <item >@string/label_update_interval_minutes_2</item>
+    <string-array name="chat_update_intervals_labels">
+        <item>@string/label_update_interval_seconds_5</item>
+        <item>@string/label_update_interval_seconds_10</item>
+        <item>@string/label_update_interval_seconds_15</item>
+        <item>@string/label_update_interval_seconds_20</item>
+        <item>@string/label_update_interval_seconds_25</item>
+        <item>@string/label_update_interval_seconds_30</item>
+        <item>@string/label_update_interval_minutes_1</item>
+        <item>@string/label_update_interval_seconds_90</item>
+        <item>@string/label_update_interval_minutes_2</item>
     </string-array>
     <string-array name="language_titles">
-        <item >Cрпски</item>
-        <item >Dansk</item>
-        <item >Deutsch</item>
-        <item >English</item>
-        <item >Español</item>
-        <item >Francais</item>
-        <item >Hrvatski</item>
-        <item >Italiano</item>
-        <item >Nederlands</item>
-        <item >Polski</item>
-        <item >Português</item>
-        <item >Român</item>
-        <item >Suomi</item>
-        <item >Svenska</item>
+        <item>Cрпски</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>English</item>
+        <item>Español</item>
+        <item>Francais</item>
+        <item>Hrvatski</item>
+        <item>Italiano</item>
+        <item>Nederlands</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Român</item>
+        <item>Suomi</item>
+        <item>Svenska</item>
     </string-array>
-     <string-array name="language_values">
-        <item >sr</item>
-        <item >da</item>
-        <item >de</item>
-        <item >en</item>
-        <item >es</item>
-        <item >fr</item>
-        <item >hr</item>
-        <item >it</item>
-        <item >nl</item>
-        <item >pl</item>
-        <item >pt</item>
-        <item >ro</item>
-        <item >fi</item>
-        <item >sv</item>
+    <string-array name="language_values">
+        <item>sr</item>
+        <item>da</item>
+        <item>de</item>
+        <item>en</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>hr</item>
+        <item>it</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>fi</item>
+        <item>sv</item>
     </string-array>
-   <!--  translation starts here -->
-   <string name="changelog">* Foorumi korjattu (anteeksi!) &lt;br /&gt;
-* Taustapalvelun kaatuilu korjattu (viimeinkin?!) &lt;br /&gt;
-* Uusia käännöksiä lisätty (ota yhteyttä jos voit auttaa kääntämisessä!) &lt;br /&gt;
-* Merkkiäänet ilmoituksille&lt;br /&gt;
-* Merkkiäänet chatille&lt;br /&gt;
-* Lisätty asetukset merkkiäänille&lt;br /&gt;
-&lt;br /&gt;
-* Lahjoitusnappula lisätty (alhaalla) &lt;br /&gt;
-* Sovelluksen foorumit: http://bit.ly/bf3blforum &lt;br /&gt;
-&lt;br /&gt;
+    <!-- translation starts here -->
+    <string name="changelog">* Foorumi korjattu (anteeksi!) &lt;br />
+* Taustapalvelun kaatuilu korjattu (viimeinkin?!) &lt;br />
+* Uusia käännöksiä lisätty (ota yhteyttä jos voit auttaa kääntämisessä!) &lt;br />
+* Merkkiäänet ilmoituksille&lt;br />
+* Merkkiäänet chatille&lt;br />
+* Lisätty asetukset merkkiäänille&lt;br />
+&lt;br />
+* Lahjoitusnappula lisätty (alhaalla) &lt;br />
+* Sovelluksen foorumit: http://bit.ly/bf3blforum &lt;br />
+&lt;br />
 Jos huomaat virheitä/bugeja, kerrothan niistä osoitteeseen support@ninetwozero.com ja/tai
-Twitterissä, @karllindmark tai (https://twitter.com/karllindmark).&lt;br /&gt;&lt;br /&gt;
+Twitterissä, @karllindmark tai (https://twitter.com/karllindmark).&lt;br />&lt;br />
 Kiitos avustasi!</string>
-	<string name="general_invalid_email">Viallinen sähköpostiosoite.</string>
-	<string name="general_invalid_password">Kirjoita salasanasi.</string>
-	<string name="general_changelog_version">Viimeisimmät muutokset {version}</string>
-	<string name="general_wait">Odota</string>
-	<string name="general_downloading">Ladataan...</string>
-	<string name="general_no_data">Tietoja ei löydetty.</string>
-	<string name="label_own_soldiernu">Valikko</string>
-	<string name="label_feed">Syöte</string>
-	<string name="label_friends">Kaverit</string>
-	<string name="label_notifications">Ilmoitukset</string>
-	<string name="label_own_soldier">Oma sotilas</string>
-	<string name="label_unlocks">Minun avaukset</string>
-	<string name="label_find_soldier">Etsi sotilas</string>
-	<string name="label_find_platoon">Etsi platoon</string>
-	<string name="label_compare_bs">Vertaa tilastoja</string>
-	<string name="label_settings">Asetukset</string>
-	<string name="status_empty_input">Kirjoita tilaviesti jatkaaksesi.</string>
-	<string name="status_error_unknown">Tapahtui virhe. Kirjaudu uudestaan.</string>
-	<string name="general_empty_user">Sinun pitää syöttää käyttäjänimi.</string>
-	<string name="info_profile_soldier">Näytä sotilasprofiili...</string>
-	<string name="info_profile_platoon">Näytä joukkueen profiili</string>
-	<string name="general_empty_name">Sinun pitää syöttää nimi.</string>
-	<string name="label_chat_open">Avaa chatti</string>
-	<string name="label_soldier_view">Näytä sotilas</string>
-	<string name="label_hooah">Hooah!</string>
-	<string name="label_unhooah">Poista hooah!</string>
-	<string name="label_comment_view">Näytä kommentit</string>
-	<string name="msg_unimplemented">Toteuttamaton toiminto.</string>
-	<string name="info_feed_empty">Syötetapahtumia ei löytynyt.</string>
-	<string name="label_wait">Odota...</string>
-	<string name="label_com_handle">COM CENTER ({num} PAIKALLA)</string>
-	<string name="lable_refresh">Päivitä</string>
-	<string name="label_home">Koti</string>
-	<string name="label_stats">Tilastot</string>
-	<string name="label_users">Käyttäjät</string>
-	<string name="info_platoon_created">Luotu: {DATE} ({RELATIVE DATE})</string>
-	<string name="label_own_soldiermbers">JÄSENET</string>
-	<string name="label_fans">FANIT</string>
-	<string name="info_platoon_compare">Et voi vertailla joukkueita.. (vielä?)</string>
-	<string name="info_empty_msg">Et voi kirjoittaa tyhjää viestiä.</string>
-	<string name="info_profile_online">Paikalla mutta ei pelaamassa</string>
-	<string name="info_profile_playing">Pelaamassa {server name}</string>
-	<string name="info_profile_empty_pres">Esitystä ei löydy.</string>
-	<string name="info_hooah_s">{num} hooah</string>
-	<string name="info_hooah_p">{num} hooah:ta</string>
-	<string name="info_comment_s">{num} kommenttia</string>
-	<string name="info_comment_p">{num} kommenttia</string>
-	<string name="label_playing">Pelaamassa</string>
-	<string name="label_online">Paikalla</string>
-	<string name="label_offline">Poissa</string>
-	<string name="msg_chat_norefresh">Keskustelua ei voitu päivittää.</string>
-	<string name="label_sending">Lähettämässä..</string>
-	<string name="label_send">Lähetä</string>
-	<string name="msg_chat_ok">Viesti lähetetty!</string>
-	<string name="msg_chat_fail">Viestiä ei voitu lähettää!</string>
-	<string name="msg_comment_ok">Kommentti julkaistu!</string>
-	<string name="msg_comment_fail">Kommenttia ei voitu julkaista!</string>
-	<string name="msg_comment_norefresh">Kommentteja ei voitu päivittää.</string>
-	<string name="msg_com_ok">COM CENTER päivitetty.</string>
-	<string name="msg_com_fail">COM CENTERiä ei voinut päivittää.</string>
-	<string name="msg_hooah_fail">Hooah epäonnistui!</string>
-	<string name="msg_search_nouser">Käyttäjää ei löydetty hakusanalla: {keyword}</string>
-	<string name="msg_search_noplatoon">Joukkuetta ei löydetty hakusanalla: {keyword}</string>
-	<string name="msg_frequest_ok">Ystäväpyyntö lähetetty!</string>
-	<string name="msg_frequest_fail">Ystäväpyyntöä ei voitu lähettää.</string>
-	<string name="msg_logging_in">Kirjautumassa sisään..</string>
-	<string name="msg_login_fail">Kirjautuminen epäonnistui.</string>
-	<string name="msg_logout">Kirjautumassa ulos..</string>
-	<string name="msg_error">Tapahtui virhe.</string>
-	<string name="msg_prequest_ok">Sinut hyväksyttiin joukkueeseen.</string>
-	<string name="msg_prequest_fail_pres">Sinua ei voida hyväksyä alustasta johtuen.</string>
-	<string name="msg_prequest_fail_full">Sinua ei voida hyväksyä, koska joukkue on täynnä.</string>
-	<string name="msg_prequest_fail_error">Tapahtui virhe liityttäessä joukkueeseen.</string>
-	<string name="msg_platoon_left">Jätit joukkueen.</string>
-	<string name="msg_platoon_left_fail">Tapahtui virhe jättäessä joukkuetta.</string>
-	<string name="msg_feed_ok">Viesti lähetetty!</string>
-	<string name="msg_feed_fail">Viestiä ei voitu lähettää.</string>
-	<string name="msg_notification">Joku on ottanut sinuun yhteyttä Battlelogissa!</string>
-	<string name="msg_status">Päivittämässä statusta..</string>
-	<string name="msg_status_ok">Status päivitetty.</string>
-	<string name="msg_status_fail">Statusta ei voitu päivittää.</string>
-	<string name="info_feed_comment_own">&lt;b>{username}&lt;/b> kommentoi sinun &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_comment_other">&lt;b>{username}&lt;/b> kommentoi &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_comment_other_v2">&lt;b>{username}&lt;/b> kommentoi &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_comment_own_2">&lt;b>{username}&lt;/b> kommentoi myös sinun &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_comment_other_2">&lt;b>{username}&lt;/b> kommentoi myös &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_comment_other_v2_2">&lt;b>{username}&lt;/b> kommentoi myös &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_post_own">&lt;b>{username}&lt;/b> kirjoitti sinun &lt;b>syötteeseen&lt;/b>.</string>
-	<string name="info_feed_hooah_own">&lt;b>{username}&lt;/b> hooahs sinun &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_hooah_other">&lt;b>{username}&lt;/b> hooahs käyttäjän &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
-	<string name="info_feed_hooah_other_2">&lt;b>{username}&lt;/b> hooahs käyttäjän &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
-	<string name="info_platoon_join_ok">&lt;b>{username}&lt;/b> hyväksyi pyyntösi liittyä joukkueeseen &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_join_no">&lt;b>{username}&lt;/b> hylkäsi pyyntösi liittyä joukkueeseen &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_join_request">&lt;b>{username}&lt;/b> haluaa liittyä joukkueeseen &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_join_request_ok">&lt;b>{username}&lt;/b> liittyi sinun joukkueeseen &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_left">&lt;b>{username}&lt;/b> jätti joukkueen &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_unknown_notification">Tuntematon ilmoitustyyppi.</string>
-	<string name="info_friendship">ystävyys</string>
-	<string name="info_forum_post">foorumviesti</string>
-	<string name="info_game_report">peliraportti</string>
-	<string name="info_wallpost">seinäkirjoitus</string>
-	<string name="info_status_message">statusviesti</string>
-	<string name="info_award">palkinto</string>
-	<string name="info_battle_report">Taisteluraportti</string>
-	<string name="info_platoon_wall_post">joukkueen seinäposti</string>
-	<string name="info_lastlogin">Viimeksi kirjautunut {date}</string>
-	<string name="info_time_second">{seconds} sekunti sitten</string>
-	<string name="info_time_second_p">{seconds} sekuntia sitten</string>
-	<string name="info_time_min">{minutes} minuutti sitten</string>
-	<string name="info_time_min_p">{minutes} minuuttia sitten</string>
-	<string name="info_time_hour">{hours} tunti sitten</string>
-	<string name="info_time_hour_p">{hours} tuntia sitten</string>
-	<string name="info_time_day">{days} päivä sitten</string>
-	<string name="info_time_day_p">{days} päivää sitten</string>
-	<string name="info_time_week">{weeks} viikko sitten</string>
-	<string name="info_time_week_p">{weeks} viikkoa sitten</string>
-	<string name="info_time_year">{years} vuosi sitten</string>
-	<string name="info_time_year_p">{years} vuotta sitten</string>
-	<string name="info_connect_bl">Yhdistä Battlelogiin</string>
-	<string name="info_widget_friends_online">Kavereita paikalla:</string>
-	<string name="msg_widget_auth_fail">Tunnistus epäonnistui - onko salasanasi tallennettu?</string>
-	<string name="info_xml_chat_empty">Ei viestejä</string>
-	<string name="label_com_handle_default">COM CENTER (0 PAIKALLA)</string>
-	<string name="info_hint_comment_msg">Kirjoita viesti</string>
-	<string name="info_xml_comment_empty">Ei kommentteja</string>
-	<string name="info_xml_rank">Taso</string>
-	<string name="info_xml_kills">Tappoja</string>
-	<string name="info_xml_assists">Avustusta</string>
-	<string name="info_xml_vehicles_destroyed">Ajoneuvoja tuhottu</string>
-	<string name="info_xml_vehicles_assisted_with">Ajoneuvojen tuhoamisessa avustanut</string>
-	<string name="info_xml_heals">Parantumista</string>
-	<string name="info_xml_revives">Elvytystä</string>
-	<string name="info_xml_repairs">Korjausta</string>
-	<string name="info_xml_resupplies">Ammuslaatikot</string>
-	<string name="info_xml_deaths">Kuolemaa</string>
-	<string name="info_xml_kd_ratio">T/K-suhde</string>
-	<string name="info_xml_wins">Voittoa</string>
-	<string name="info_xml_losses">Tappiota</string>
-	<string name="info_xml_wl_ratio">V/T-suhde</string>
-	<string name="info_xml_accuracy">Tarkkuus</string>
-	<string name="info_xml_longest_headshot">Pisin headshot</string>
-	<string name="info_xml_longest_killstreak">Pisin tappoputki</string>
-	<string name="info_xml_skill_rating">Taitotaso</string>
-	<string name="info_xml_time_played">Peli-aika</string>
-	<string name="info_xml_score_minute">Pisteet/minuutti</string>
-	<string name="info_xml_assault">Assault</string>
-	<string name="info_xml_engineer">Engineer</string>
-	<string name="info_xml_support">Support</string>
-	<string name="info_xml_recon">Recon</string>
-	<string name="info_xml_vehicles">Ajoneuvot</string>
-	<string name="info_xml_total_in_combat">Yhteensä taistelussa</string>
-	<string name="info_xml_award">Palkinto</string>
-	<string name="info_xml_unlocks">Avaukset</string>
-	<string name="info_xml_total_score">Yhteispisteet</string>
-	<string name="info_hint_username">Kirjoita käyttäjänimi tähän</string>
-	<string name="info_hint_platoon">Kirjoita joukkueen nimi tähän</string>
-	<string name="info_xml_average">Keskimäärä</string>
-	<string name="info_xml_best">Paras</string>
-	<string name="info_xml_median">Mediaani</string>
-	<string name="info_xml_min">Minimi</string>
-	<string name="info_xml_friend_requests">Ystäväpyynnöt</string>
-	<string name="info_xml_no_friends">Ei ystäviä :O</string>
-	<string name="info_xml_no_notifications">Ei ilmoituksia :|</string>
-	<string name="info_xml_hint_status">Päivitä tilasi</string>
-	<string name="info_xml_no_feed">Syötetapahtumia ei löytynyt.</string>
-	<string name="info_xml_hint_feed">Kirjoita syötteeseen</string>
-	<string name="info_xml_website">Nettisivu</string>
-	<string name="info_xml_presentation">Esittely</string>
-	<string name="info_xml_badge">Merkki</string>
-	<string name="info_xml_general">Yleinen</string>
-	<string name="info_xml_score_min">Pisteet / minuutti</string>
-	<string name="info_xml_top_soldiers">Parhaat sotilaat</string>
-	<string name="info_xml_time">Aika</string>
-	<string name="info_xml_score">Pisteet</string>
-	<string name="info_xml_no_users">Yhtään käyttäjää ei löytynyt.</string>
-	<string name="info_xml_latest_statusmsg">Viimeisin statusviesti</string>
-	<string name="info_xml_platoons">Joukkueet</string>
-	<string name="info_xml_no_platoons">Ei joukkueita.</string>
-	<string name="info_xml_rank2">jäljellä seuraavaan arvoon</string>
-	<string name="info_xml_no_unlocks">Ei avauksia</string>
-	<string name="info_xml_back">Takaisin</string>
-	<string name="info_xml_reload">Lataa uudelleen</string>
-	<string name="info_xml_logout">Kirjaudu ulos</string>
-	<string name="info_xml_apply">Hae paikkaa</string>
-	<string name="info_xml_fan">Fanita</string>
-	<string name="info_xml_leave_platoon">Jätä joukkue</string>
-	<string name="info_xml_members">Jäsenet</string>
-	<string name="info_xml_un_fan">Poista fanitus</string>
-	<string name="info_xml_fans">Fanit</string>
-	<string name="info_xml_compare">Vertaa</string>
-	<string name="info_xml_compare_bs">Vertaa tilastoja</string>
-	<string name="info_xml_add_friend">Lisää kaveri</string>
-	<string name="info_xml_remove_friend">Poista kaveri</string>
-	<string name="info_xml_enable_bgsrv">Hyväksy taustapalvelu</string>
-	<string name="info_xml_enable_bgsrv_t">Kun hyväksytty, taustapalvelu seuraa ilmoituksia ja varmistaa, että wigdet pysyy aktiivisena.</string>
-	<string name="info_lastupdate">Päivitetty viimeksi {date}</string>
-	<string name="info_hint_email">Origin™-tilin s-posti</string>
-	<string name="info_hint_password">Salasana</string>
-	<string name="label_login">Kirjautuminen</string>
-	<string name="label_save">Tallenna salasana</string>
-	<string name="info_p_friendship">&lt;b>{username1}&lt;/b> ja &lt;b>{username2}&lt;/b> ovat nyt kavereita</string>
-	<string name="info_p_forumthread">&lt;b>{username}&lt;/b> loi keskustelualueella aiheen &lt;b>\"{thread}\"&lt;/b>.</string>
-	<string name="info_p_forumpost">&lt;b>{username}&lt;/b> kirjoitti viestin aiheeseen &lt;b>\"{thread}\"&lt;/b>.</string>
-	<string name="info_p_newunlock">&lt;b>{username}&lt;/b> avasi uuden esineen: {item}.</string>
-	<string name="info_p_favserver">&lt;b>{username}&lt;/b> lisäsi palvelimen suosikkeihinsa: &lt;b>{server}&lt;/b>.</string>
-	<string name="info_p_promotion">&lt;b>{username}&lt;/b> ylennettiin arvoon: &lt;b>{rank title}&lt;/b> ({rank}).</string>
-	<string name="info_p_greport_comment">&lt;b>{username}&lt;/b> kommentoi Battle Reporttiin: &lt;b>{server name} {map} {game mode}&lt;/b>.</string>
-	<string name="info_p_blog_comment">&lt;b>{username}&lt;/b> kommentoi blogipäivitykseen: &lt;b>{post name}&lt;/b>.</string>
-	<string name="info_p_platoon_join">&lt;b>{username}&lt;/b> liittyi joukkueeseen: &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_p_platoon_kick">&lt;b>{username}&lt;/b> poistetiin joukkueesta: &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_p_platoon_create">&lt;b>{username}&lt;/b> teki joukkueen nimeltä: &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_p_platoon_badge">&lt;b>{username}&lt;/b> vaihtoi joukkueen &lt;b>{platoon}&lt;/b> tunnuskuvaa.</string>
-	<string name="info_p_platoon_left">&lt;b>{username}&lt;/b> jätti joukkueen &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> kirjoitti joukkueen &lt;b>{platoon}&lt;/b> seinälle.</string>
-	<string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> and &lt;b>{username2}&lt;/b> suoritti &lt;b>\"{level}\"&lt;/b> vaikeustasolla &lt;b>{difficulty}&lt;/b>.</string>
-	<string name="info_p_award">&lt;b>{username}&lt;/b> sai uuden palkinnon: &lt;b>{award}&lt;/b>.</string>
-	<string name="info_new_rank">uusi taso</string>
-	<string name="title_main_menu">BF3 Battlelog - Päävalikko</string>
-	<string name="title_profile">BF3 Battlelog - Profiili</string>
-	<string name="title_platoon">BF3 Battlelog - Joukkue</string>
-	<string name="title_performance">BF3 Battlelog - Omat suoritukset</string>
-	<string name="title_chat">BF3 Battlelog - Keskustelu</string>
-	<string name="title_comments">BF3 Battlelog - Kommentit</string>
-	<string name="title_comparing_battle_scars">BF3 Battlelog - Tilastojen vertailu</string>
-	<string name="title_unlocks">BF3 Battlelog - Tulevat avaukset</string>
-	<string name="title_settings">BF3 Battlelog - Asetukset</string>
-	<string name="title_forum">BF3 Battlelog - Foorumi</string>
-	<string name="label_forum">Foorumi</string>
-	<string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> suoritti assingmentin - &lt;b>\"{assignment}\"&lt;/b> (unlocks &lt;b>{unlock}&lt;/b>).</string>
-	<string name="info_assignments_new_unknown">Uusia assingmenttejä lisätty - ilmoita kehittäjälle!</string>
-	<string name="title_assignments">BF3 Battlelog - Näytetään assingmenttisi</string>
-	<string name="info_xml_platoons_my">Omat joukkueet</string>
-	<string name="info_xml_assignments_my">Omat tehtävät</string>
-	<string name="msg_no_cookies">Evästeitä ei löydetty - kokeile kirjautua uudestaan</string>
-	<string name="label_soldier_unlocks">Näytä avaukset</string>
-	<string name="info_p_newunlocks">&lt;b>{username}&lt;/b> avasi uusia esineitä: {item}.</string>
-	<string name="info_txt_friends_offline">Poissaolevat kaverit</string>
-	<string name="info_txt_friends_online">Paikallaolevat kaverit</string>
-	<string name="info_txt_session_lost">Istunto katosi. Kirjaudu uudestaan!</string>
-	<string name="info_xml_forums_none">Ei keskustelualueita.</string>
-	<string name="info_xml_forums">Keskustelualueet</string>
-	<string name="info_p_activated_expansion">aktivoi pelin/ tai laajennuspaketin</string>
-	<string name="info_xml_forum_postsinthreads">&lt;b>{num_posts}&lt;/b> viestiä &lt;b>{num_threads}&lt;/b> alueella.</string>
-	<string name="info_xml_threadinfo">&lt;b>{num_posts}&lt;/b> viestiä (joista &lt;b>{num_official}&lt;/b> virallisia)</string>
-	<string name="info_xml_threaddate">Lähettetty &lt;b>{date}&lt;/b> käyttäjältä &lt;b>{user}&lt;/b></string>      
-	<string name="info_xml_threadreplydate">Viimeisin viesti: &lt;b>{date}&lt;/b> käyttäjältä &lt;b>{user}&lt;/b></string> 
-	<string name="info_xml_thread_new">Uusi lanka..</string>
-	<string name="info_xml_post_new">Uusi viesti..</string>
-	<string name="info_forum_newthread_true">Aihe on luotu.</string>
-	<string name="info_forum_newthread_false">Aihetta ei voinut luoda.</string>
-	<string name="info_xml_enter_content">Syötä sisältö tähän</string>
-	<string name="info_dialog_soldierselect">Valitse sotilas, jota haluat katsoa...</string>
-	<string name="info_dialog_threadpost">Kirjoita vastaus</string>
-	<string name="info_forum_newpost_true">Vastaus lähetetty.</string>
-	<string name="info_forum_newpost_false">Vastausta ei voinut lähettää.</string>
-	<string name="info_txt_notification_new">1 uusi ilmoitus!</string>
-	<string name="info_txt_notification_new_p">{num} uutta ilmoitusta!</string>
-	<string name="info_tap_notification">Paina tätä kohtaa avataksesi sovelluksen.</string>
-	<string name="info_xml_posts_none">Ei viestejä.</string>
-	<string name="info_xml_threads_none">Ei aiheita.</string>
-	<string name="info_xml_results_none">Ei tuloksia.</string>
-	<string name="title_forum_view">Näytetään keskustelualuetta...</string>
-	<string name="title_thread_view">Näytetään aihetta...</string>
-	<string name="title_forum_search">Etsitään foorumeista...</string>
-	<string name="title_search">Etsitään käyttäjistä ja joukkueista</string>
-	<string name="info_xml_search">Haku..</string>
-	<string name="info_xml_generic_error">Tapahtui virhe.</string>
-	<string name="label_search">Haku..</string>
-	<string name="label_search_ongoing">Haku on käynnissä..</string>
-	<string name="info_p_awards">&lt;b>{username}&lt;/b> sai uusia palkintoja: {award}.</string>
-	<string name="label_own_platoon">Omat joukkueet</string>
-	<string name="label_assignments">Omat tehtävät</string>
-	<string name="info_xml_invite">Kutsu...</string>
-	<string name="title_platoon_invite">Kutsutaan kavereita joukkueeseen</string>
-	<string name="info_xml_platoon_select">Valitse joukkue</string>
-	<string name="info_spost_heading">Käyttäjän {username} kirjoitus</string>
-	<string name="info_spost_heading_s">Käyttäjän {username} kirjoitus</string>
-	<string name="info_txt_friend_delete_true">Tämä käyttäjä on poistettu listaltasi.</string>
-	<string name="info_txt_friend_delete_false">Käyttäjää ei voitu poistaa listaltasi.</string>
-	<string name="info_xml_feed_button_pagination">Lataa lisää kohtia</string>
-	<string name="label_downloading">Ladataan...</string>
-	<string name="info_xml_threads_more_false">Ei enempää aiheita.</string>
-	<string name="info_xml_posts_more_false">Ei enempää viestejä.</string>
-	<string name="label_jump">Hyppää sivulle...</string>
-	<string name="info_txt_pageselect">Valitse sivu...</string>
-	<string name="info_xml_enternumber">Kirjoita numero {min} - {max} väliltä.</string>
-	<string name="info_xml_feed_button_jump">Hyppää sivulle...</string>
-	<string name="info_feed_friend_accept">&lt;b>{username}&lt;/b> hyväksyi sinun &lt;b>kaveripyynnön&lt;/b>.</string>
-	<string name="label_single_post_view">Näytä kirjoitus</string>
-	<string name="info_xml_main_slider">Tietoa sovelluksesta</string>
-	<string name="label_option_about">Tietoa..</string>
-	<string name="title_about">Tietoa ohjelmasta</string>
-	<string name="info_option_unlocks">Näytä avaukset</string>
-	<string name="info_txt_email_send">Lähetä sähköposti</string>
-	<string name="label_about">Tietoa</string>
-	<string name="label_faq">UKK</string>
-	<string name="label_credits">Kiitokset</string>
-	<string name="info_assignment_completed">Assingment valmistunut</string>
-	<string name="info_platoon_invite">&lt;b>{username}&lt;/b> on kutsunut sinut liittymään joukkueeseen &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_promote">Sinut ylennettiin joukkueessa &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_demote">Sinut alennettiin joukkueessa &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_kick">&lt;b>{username}&lt;/b> poisti sinut joukkueesta &lt;b>{platoon}&lt;/b>.</string>
-	<string name="info_platoon_activity">joukkueen toiminta</string>
-	<string name="info_platoon_member_new_ok">Hyväksytään uutta jäsentä...</string>
-	<string name="info_platoon_member_new_false">Hylätään uutta käyttäjää...</string>
-	<string name="info_platoon_member_demoting">Alennetaan jäsentä...</string>
-	<string name="info_platoon_member_promoting">Ylennetään jäsentä...</string>
-	<string name="info_platoon_member_kicking">Poistetaan jäsentä...</string>
-	<string name="info_platoon_member_new_accept">Hyväksy jäsenyys</string>
-	<string name="info_platoon_member_new_deny">Hylkää jäsenyys</string>
-	<string name="info_platoon_member_demote">Alenna</string>
-	<string name="info_platoon_member_promote">Ylennä</string>
-	<string name="info_platoon_member_kick">Potkaise</string>
-	<string name="info_profile_view">Näytä profiili</string>
-	<string name="info_stats_not_found">Tilastoja ei löydetty.</string>
-	<string name="info_forum_page_invalid">Viallinen sivunumero.</string>
-	<string name="info_forum_quote_warning">Lainaus lisätty tekstialueelle, älä muokkaa tai poista tagia.</string>
-	<string name="info_forum_links_no">Ei linkkejä kirjoituksessa.</string>
-	<string name="info_forum_quote">Lainaa kirjoitusta</string>
-	<string name="info_forum_report">Ilmoita kirjoituksesta</string>
-	<string name="info_forum_links">Näytä linkit...</string>
-	<string name="info_forum_link_title">Valitse näytettävä linkki...</string>
-	<string name="info_forum_posts_downloading">Ladataan viestejä...</string>
-	<string name="info_platoon_member_founder">Perustaja</string>
-	<string name="info_platoon_member_nonmember">Ei jäsen</string>
-	<string name="info_platoon_member_evaluate">Odotetaan arviointia</string>
-	<string name="info_platoon_member_invited">Kutsuttu</string>
-	<string name="info_platoon_member_member">Jäsen</string>
-	<string name="info_platoon_member_admin">Admin</string>
-	<string name="info_platoon_member_founder_p">Perustajat</string>
-	<string name="info_platoon_member_admin_p">Adminit</string>
-	<string name="info_platoon_member_regular">Vakituinen jäsen</string>
-	<string name="info_platoon_member_regular_p">Vakituiset jäsenet</string>
-	<string name="info_platoon_member_invited_label">Kutsuttu liittymään</string>
-	<string name="info_platoon_member_requested_label">Pyydetty liittymään</string>
-	<string name="info_platoon_stats_overall">Keskiarvo</string>
-	<string name="label_assignments_view">Näytä assignmentit</string>
-	<string name="label_goto_section">Mene {section}</string>
-	<string name="label_goto_assignments">assingmentit</string>
-	<string name="label_goto_forum_thread">foorumin aihe</string>
-	<string name="label_goto_platoon">joukkue</string>
-	<string name="label_goto_profile">profiili</string>
-	<string name="label_goto_unlocks">avaukset</string>
-	<string name="info_about_donating">Jos tykkäät työstä mitä olen tehnyt ja haluaisit lahjoittaa haluamasi summan minulle kehitystä varten, paina tästä mennäksesi PayPaliin lisäohjeita varten.</string>
-	<string name="general_censored">Battlelogin ylläpitäjät ovat sensuroineet tämän roskan</string>
-	<string name="info_forum_report_true">Huomautettu ylläpitäjille.</string>
-	<string name="info_forum_report_false">Viestiä ei voinut reportoida.</string>
-	<string name="info_forum_search_label">Foorumin haku</string>
-	<string name="info_forum_search_hint">Etsi...</string>
-	<string name="info_forum_report_reason">Miksi haluat ilmoittaa tästä viestistä?</string>
-	<string name="info_forum_report_label">Ilmoita viestistä..</string>
-	<string name="label_report">Ilmoita</string>
-	<string name="info_forum_report_empty">Sinun pitää kirjoittaa syy, miksi haluat ilmoittaa tästä viestistä.</string>
-	<string name="info_report_active">Ilmoitetaan...</string>
-	<string name="title_forum_report">BF3 Battlelog - Ilmoitetaan foorumin viestistä..</string>
-	<string name="info_forum_lang">Valitse kieli foorumeille...</string>
-	<string name="info_general_nocache">Välimuistin kansiota ei ole olemassa, ota yhteyttä kehittäjään!</string>
-	<string name="info_unlock_change">Vaihda sotilasta...</string>
-	<string name="info_general_noprofile">Ei profiilia valittuna.</string>
-	<string name="info_assignments_empty">Assingmentsejä ei löydetty tälle sotilaalle.</string>
-	<string name="info_unlocks_empty">Ei avauksia tässä näkymässä.</string>
-	<string name="info_login_lostcookie">Kirjautuminen onnistui, mutta emme löytäneet yhtään evästeitä.</string>
-	<string name="info_conn_hostunreach">Palvelimeen ei saada yhteyttä - käynnistä 3G-yhteytesi uudelleen ja kokeile uudestaan.</string>
-	<string name="info_session_expired">Istunto vanhentunut. Uusitaan istuntoa...</string>
-	<string name="info_session_renew_ok">Istunto uusittu!</string>
-	<string name="info_session_renew_fail">Istuntoa ei voinut uusia.</string>
-	<string name="info_friendreq_resp_ok">Ystäväpyyntöön on vastattu.</string>
-	<string name="info_platoon_invite_ok">Kutsut lähettetty!</string>
-	<string name="info_platoon_invite_fail">Kutsuja ei voinut lähettää!</string>
-	<string name="info_platoon_invite_passed">Joitain kutsuja lähetettiin, joitain ei!</string>
-	<string name="info_platoon_req_ok">Kutsu on vastaanotettu.</string>
-	<string name="info_forum_report_error">Sinun pitää kirjoittaa syy, miksi haluat ilmoittaa tästä postauksesta.</string>
-	<string name="general_nonetwork">Ei internetyhteyttä saatavilla!</string>
-	<string name="info_comment_report">Ilmoitetaan kommenttinumeroa</string>
-	<string name="info_settings_general">Yleiset asetukset</string>
-	<string name="info_settings_chat">Keskustelun asetukset</string>
-	<string name="info_settings_service">Palvelun asetukset</string>
-	<string name="info_settings_notifications">Ilmoitusasetukset</string>
-	<string name="info_settings_chat_desc_beep_true">Sinun aktiivinen keskustelusi tulee piippaamaan rakkaudella.</string>
-	<string name="info_settings_chat_desc_beep_false">Sinun aktiivinen keskustelusi pitää suunsa kiinni.</string>
-	<string name="info_settings_notification_desc_vibrate_false">Hiljaisuus on kultaista.</string>
-	<string name="info_settings_notification_desc_vibrate_true">Bzzt bzzt.</string>
-	<string name="info_settings_notification_desc_beep_true">Sinun keskustelusi tulee kuulumaan.</string>
-	<string name="info_settings_notification_desc_beep_false">Et kuule pihahdustakaan.</string>
-	<string name="info_settings_notification_desc_beep_spec_true">PIIP!</string>
-	<string name="info_settings_notification_desc_light_true">Tuiki tuiki tähtönen.</string>
-	<string name="info_settings_notification_desc_light_false">Led-valo ei vilku.</string>
-	<string name="info_settings_notification_desc_beep_spec_false">Käytetään oletusmerkkiääntä.</string>
-	<string name="info_credits_contributors">Lista avustajista</string>
-	<string name="info_credits_info">Ensinnäkin, haluaisin kiittää kaikkia avustajia ja antaa erityiset &amp;quot;kiitokset&amp;quot; kaikille betatestaajille.\n\n Tämän takia, Olen tehnyt listan avustajista, ja miten he ovat auttaneet. Toivottavasti en unohtanut ketään...</string>
-	<string name="info_credits_code">Koodi</string>
-	<string name="info_credits_translations">Käännökset</string>
-	<string name="label_update_interval_seconds_5">Kerran viidessä sekunnissa</string>
-	<string name="label_update_interval_seconds_10">Kerran 10 sekunnissa</string>
-	<string name="label_update_interval_seconds_15">Kerran 15 sekunnissa</string>
-	<string name="label_update_interval_seconds_20">Kerran 20 sekunnissa</string>
-	<string name="label_update_interval_seconds_25">Kerran 25 sekunnissa</string>
-	<string name="label_update_interval_seconds_30">Kerran 30 sekunnissa</string>
-	<string name="label_update_interval_seconds_90">Kerran 90 sekunnissa</string>
-	<string name="label_update_interval_minutes_1">Kerran minuutissa</string>
-	<string name="label_update_interval_minutes_2">Kerran 2 minuutissa</string>
-	<string name="label_update_interval_minutes_5">Kerran 5 minuutissa</string>
-	<string name="label_update_interval_minutes_10">Kerran 10 minuutissa</string>
-	<string name="label_update_interval_minutes_30">Kerran 30 minuutissa</string>
-	<string name="label_update_interval_hours_1">Kerran tunnissa</string>
-	<string name="label_update_interval_hours_2">Kerran 2 tunnissa</string>
-	<string name="label_update_interval_hours_6">Kerran 6 tunnissa</string>
-	<string name="label_update_interval_hours_12">Kerran 12 tunnissa</string>
-	<string name="label_update_interval_hours_18">Kerran 18 tunnissa</string>
-	<string name="label_update_interval_days_1">Kerran päivässä</string>
-	<string name="info_settings_title_language">Kieli</string>
-	<string name="info_settings_title_sound_chat">Keskustelun merkkiäänet</string>
-	<string name="info_settings_chat_title">Keskustelun merkkiäänet</string>
-	<string name="info_settings_notification_title_light">LED-ilmoitukset</string>
-	<string name="info_settings_notification_title_sounds">Äänet</string>
-	<string name="info_settings_notification_title_sounds_spec">Käytä Battlelog-merkkiääntä</string>
-	<string name="info_settings_notification_title_vibration">Käytä värinähälytystä</string>
+    <string name="general_invalid_email">Viallinen sähköpostiosoite.</string>
+    <string name="general_invalid_password">Kirjoita salasanasi.</string>
+    <string name="general_changelog_version">Viimeisimmät muutokset {version}</string>
+    <string name="general_wait">Odota</string>
+    <string name="general_downloading">Ladataan...</string>
+    <string name="general_no_data">Tietoja ei löydetty.</string>
+    <string name="label_own_soldiernu">Valikko</string>
+    <string name="label_feed">Syöte</string>
+    <string name="label_friends">Kaverit</string>
+    <string name="label_notifications">Ilmoitukset</string>
+    <string name="label_own_soldier">Oma sotilas</string>
+    <string name="label_unlocks">Minun avaukset</string>
+    <string name="label_find_soldier">Etsi sotilas</string>
+    <string name="label_find_platoon">Etsi platoon</string>
+    <string name="label_compare_bs">Vertaa tilastoja</string>
+    <string name="label_settings">Asetukset</string>
+    <string name="status_empty_input">Kirjoita tilaviesti jatkaaksesi.</string>
+    <string name="status_error_unknown">Tapahtui virhe. Kirjaudu uudestaan.</string>
+    <string name="general_empty_user">Sinun pitää syöttää käyttäjänimi.</string>
+    <string name="info_profile_soldier">Näytä sotilasprofiili...</string>
+    <string name="info_profile_platoon">Näytä joukkueen profiili</string>
+    <string name="general_empty_name">Sinun pitää syöttää nimi.</string>
+    <string name="label_chat_open">Avaa chatti</string>
+    <string name="label_soldier_view">Näytä sotilas</string>
+    <string name="label_hooah">Hooah!</string>
+    <string name="label_unhooah">Poista hooah!</string>
+    <string name="label_comment_view">Näytä kommentit</string>
+    <string name="msg_unimplemented">Toteuttamaton toiminto.</string>
+    <string name="info_feed_empty">Syötetapahtumia ei löytynyt.</string>
+    <string name="label_wait">Odota...</string>
+    <string name="label_com_handle">COM CENTER ({num} PAIKALLA)</string>
+    <string name="lable_refresh">Päivitä</string>
+    <string name="label_home">Koti</string>
+    <string name="label_stats">Tilastot</string>
+    <string name="label_users">Käyttäjät</string>
+    <string name="info_platoon_created">Luotu: {DATE} ({RELATIVE DATE})</string>
+    <string name="label_own_soldiermbers">JÄSENET</string>
+    <string name="label_fans">FANIT</string>
+    <string name="info_platoon_compare">Et voi vertailla joukkueita.. (vielä?)</string>
+    <string name="info_empty_msg">Et voi kirjoittaa tyhjää viestiä.</string>
+    <string name="info_profile_online">Paikalla mutta ei pelaamassa</string>
+    <string name="info_profile_playing">Pelaamassa {server name}</string>
+    <string name="info_profile_empty_pres">Esitystä ei löydy.</string>
+    <string name="info_hooah_s">{num} hooah</string>
+    <string name="info_hooah_p">{num} hooah:ta</string>
+    <string name="info_comment_s">{num} kommenttia</string>
+    <string name="info_comment_p">{num} kommenttia</string>
+    <string name="label_playing">Pelaamassa</string>
+    <string name="label_online">Paikalla</string>
+    <string name="label_offline">Poissa</string>
+    <string name="msg_chat_norefresh">Keskustelua ei voitu päivittää.</string>
+    <string name="label_sending">Lähettämässä..</string>
+    <string name="label_send">Lähetä</string>
+    <string name="msg_chat_ok">Viesti lähetetty!</string>
+    <string name="msg_chat_fail">Viestiä ei voitu lähettää!</string>
+    <string name="msg_comment_ok">Kommentti julkaistu!</string>
+    <string name="msg_comment_fail">Kommenttia ei voitu julkaista!</string>
+    <string name="msg_comment_norefresh">Kommentteja ei voitu päivittää.</string>
+    <string name="msg_com_ok">COM CENTER päivitetty.</string>
+    <string name="msg_com_fail">COM CENTERiä ei voinut päivittää.</string>
+    <string name="msg_hooah_fail">Hooah epäonnistui!</string>
+    <string name="msg_search_nouser">Käyttäjää ei löydetty hakusanalla: {keyword}</string>
+    <string name="msg_search_noplatoon">Joukkuetta ei löydetty hakusanalla: {keyword}</string>
+    <string name="msg_frequest_ok">Ystäväpyyntö lähetetty!</string>
+    <string name="msg_frequest_fail">Ystäväpyyntöä ei voitu lähettää.</string>
+    <string name="msg_logging_in">Kirjautumassa sisään..</string>
+    <string name="msg_login_fail">Kirjautuminen epäonnistui.</string>
+    <string name="msg_logout">Kirjautumassa ulos..</string>
+    <string name="msg_error">Tapahtui virhe.</string>
+    <string name="msg_prequest_ok">Sinut hyväksyttiin joukkueeseen.</string>
+    <string name="msg_prequest_fail_pres">Sinua ei voida hyväksyä alustasta johtuen.</string>
+    <string name="msg_prequest_fail_full">Sinua ei voida hyväksyä, koska joukkue on täynnä.</string>
+    <string name="msg_prequest_fail_error">Tapahtui virhe liityttäessä joukkueeseen.</string>
+    <string name="msg_platoon_left">Jätit joukkueen.</string>
+    <string name="msg_platoon_left_fail">Tapahtui virhe jättäessä joukkuetta.</string>
+    <string name="msg_feed_ok">Viesti lähetetty!</string>
+    <string name="msg_feed_fail">Viestiä ei voitu lähettää.</string>
+    <string name="msg_notification">Joku on ottanut sinuun yhteyttä Battlelogissa!</string>
+    <string name="msg_status">Päivittämässä statusta..</string>
+    <string name="msg_status_ok">Status päivitetty.</string>
+    <string name="msg_status_fail">Statusta ei voitu päivittää.</string>
+    <string name="info_feed_comment_own">&lt;b>{username}&lt;/b> kommentoi sinun &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_comment_other">&lt;b>{username}&lt;/b> kommentoi &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_comment_other_v2">&lt;b>{username}&lt;/b> kommentoi &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_comment_own_2">&lt;b>{username}&lt;/b> kommentoi myös sinun &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_comment_other_2">&lt;b>{username}&lt;/b> kommentoi myös &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_comment_other_v2_2">&lt;b>{username}&lt;/b> kommentoi myös &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_post_own">&lt;b>{username}&lt;/b> kirjoitti sinun &lt;b>syötteeseen&lt;/b>.</string>
+    <string name="info_feed_hooah_own">&lt;b>{username}&lt;/b> hooahs sinun &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_hooah_other">&lt;b>{username}&lt;/b> hooahs käyttäjän &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
+    <string name="info_feed_hooah_other_2">&lt;b>{username}&lt;/b> hooahs käyttäjän &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
+    <string name="info_platoon_join_ok">&lt;b>{username}&lt;/b> hyväksyi pyyntösi liittyä joukkueeseen &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_join_no">&lt;b>{username}&lt;/b> hylkäsi pyyntösi liittyä joukkueeseen &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_join_request">&lt;b>{username}&lt;/b> haluaa liittyä joukkueeseen &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_join_request_ok">&lt;b>{username}&lt;/b> liittyi sinun joukkueeseen &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_left">&lt;b>{username}&lt;/b> jätti joukkueen &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_unknown_notification">Tuntematon ilmoitustyyppi.</string>
+    <string name="info_friendship">ystävyys</string>
+    <string name="info_forum_post">foorumviesti</string>
+    <string name="info_game_report">peliraportti</string>
+    <string name="info_wallpost">seinäkirjoitus</string>
+    <string name="info_status_message">statusviesti</string>
+    <string name="info_award">palkinto</string>
+    <string name="info_battle_report">Taisteluraportti</string>
+    <string name="info_platoon_wall_post">joukkueen seinäposti</string>
+    <string name="info_lastlogin">Viimeksi kirjautunut {date}</string>
+    <string name="info_time_second">{seconds} sekunti sitten</string>
+    <string name="info_time_second_p">{seconds} sekuntia sitten</string>
+    <string name="info_time_min">{minutes} minuutti sitten</string>
+    <string name="info_time_min_p">{minutes} minuuttia sitten</string>
+    <string name="info_time_hour">{hours} tunti sitten</string>
+    <string name="info_time_hour_p">{hours} tuntia sitten</string>
+    <string name="info_time_day">{days} päivä sitten</string>
+    <string name="info_time_day_p">{days} päivää sitten</string>
+    <string name="info_time_week">{weeks} viikko sitten</string>
+    <string name="info_time_week_p">{weeks} viikkoa sitten</string>
+    <string name="info_time_year">{years} vuosi sitten</string>
+    <string name="info_time_year_p">{years} vuotta sitten</string>
+    <string name="info_connect_bl">Yhdistä Battlelogiin</string>
+    <string name="info_widget_friends_online">Kavereita paikalla:</string>
+    <string name="msg_widget_auth_fail">Tunnistus epäonnistui - onko salasanasi tallennettu?</string>
+    <string name="info_xml_chat_empty">Ei viestejä</string>
+    <string name="label_com_handle_default">COM CENTER (0 PAIKALLA)</string>
+    <string name="info_hint_comment_msg">Kirjoita viesti</string>
+    <string name="info_xml_comment_empty">Ei kommentteja</string>
+    <string name="info_xml_rank">Taso</string>
+    <string name="info_xml_kills">Tappoja</string>
+    <string name="info_xml_assists">Avustusta</string>
+    <string name="info_xml_vehicles_destroyed">Ajoneuvoja tuhottu</string>
+    <string name="info_xml_vehicles_assisted_with">Ajoneuvojen tuhoamisessa avustanut</string>
+    <string name="info_xml_heals">Parantumista</string>
+    <string name="info_xml_revives">Elvytystä</string>
+    <string name="info_xml_repairs">Korjausta</string>
+    <string name="info_xml_resupplies">Ammuslaatikot</string>
+    <string name="info_xml_deaths">Kuolemaa</string>
+    <string name="info_xml_kd_ratio">T/K-suhde</string>
+    <string name="info_xml_wins">Voittoa</string>
+    <string name="info_xml_losses">Tappiota</string>
+    <string name="info_xml_wl_ratio">V/T-suhde</string>
+    <string name="info_xml_accuracy">Tarkkuus</string>
+    <string name="info_xml_longest_headshot">Pisin headshot</string>
+    <string name="info_xml_longest_killstreak">Pisin tappoputki</string>
+    <string name="info_xml_skill_rating">Taitotaso</string>
+    <string name="info_xml_time_played">Peli-aika</string>
+    <string name="info_xml_score_minute">Pisteet/minuutti</string>
+    <string name="info_xml_assault">Assault</string>
+    <string name="info_xml_engineer">Engineer</string>
+    <string name="info_xml_support">Support</string>
+    <string name="info_xml_recon">Recon</string>
+    <string name="info_xml_vehicles">Ajoneuvot</string>
+    <string name="info_xml_total_in_combat">Yhteensä taistelussa</string>
+    <string name="info_xml_award">Palkinto</string>
+    <string name="info_xml_unlocks">Avaukset</string>
+    <string name="info_xml_total_score">Yhteispisteet</string>
+    <string name="info_hint_username">Kirjoita käyttäjänimi tähän</string>
+    <string name="info_hint_platoon">Kirjoita joukkueen nimi tähän</string>
+    <string name="info_xml_average">Keskimäärä</string>
+    <string name="info_xml_best">Paras</string>
+    <string name="info_xml_median">Mediaani</string>
+    <string name="info_xml_min">Minimi</string>
+    <string name="info_xml_friend_requests">Ystäväpyynnöt</string>
+    <string name="info_xml_no_friends">Ei ystäviä :O</string>
+    <string name="info_xml_no_notifications">Ei ilmoituksia :|</string>
+    <string name="info_xml_hint_status">Päivitä tilasi</string>
+    <string name="info_xml_no_feed">Syötetapahtumia ei löytynyt.</string>
+    <string name="info_xml_hint_feed">Kirjoita syötteeseen</string>
+    <string name="info_xml_website">Nettisivu</string>
+    <string name="info_xml_presentation">Esittely</string>
+    <string name="info_xml_badge">Merkki</string>
+    <string name="info_xml_general">Yleinen</string>
+    <string name="info_xml_score_min">Pisteet / minuutti</string>
+    <string name="info_xml_top_soldiers">Parhaat sotilaat</string>
+    <string name="info_xml_time">Aika</string>
+    <string name="info_xml_score">Pisteet</string>
+    <string name="info_xml_no_users">Yhtään käyttäjää ei löytynyt.</string>
+    <string name="info_xml_latest_statusmsg">Viimeisin statusviesti</string>
+    <string name="info_xml_platoons">Joukkueet</string>
+    <string name="info_xml_no_platoons">Ei joukkueita.</string>
+    <string name="info_xml_rank2">jäljellä seuraavaan arvoon</string>
+    <string name="info_xml_no_unlocks">Ei avauksia</string>
+    <string name="info_xml_back">Takaisin</string>
+    <string name="info_xml_reload">Lataa uudelleen</string>
+    <string name="info_xml_logout">Kirjaudu ulos</string>
+    <string name="info_xml_apply">Hae paikkaa</string>
+    <string name="info_xml_fan">Fanita</string>
+    <string name="info_xml_leave_platoon">Jätä joukkue</string>
+    <string name="info_xml_members">Jäsenet</string>
+    <string name="info_xml_un_fan">Poista fanitus</string>
+    <string name="info_xml_fans">Fanit</string>
+    <string name="info_xml_compare">Vertaa</string>
+    <string name="info_xml_compare_bs">Vertaa tilastoja</string>
+    <string name="info_xml_add_friend">Lisää kaveri</string>
+    <string name="info_xml_remove_friend">Poista kaveri</string>
+    <string name="info_xml_enable_bgsrv">Hyväksy taustapalvelu</string>
+    <string name="info_xml_enable_bgsrv_t">Kun hyväksytty, taustapalvelu seuraa ilmoituksia ja varmistaa, että wigdet pysyy aktiivisena.</string>
+    <string name="info_lastupdate">Päivitetty viimeksi {date}</string>
+    <string name="info_hint_email">Origin™-tilin s-posti</string>
+    <string name="info_hint_password">Salasana</string>
+    <string name="label_login">Kirjautuminen</string>
+    <string name="label_save">Tallenna salasana</string>
+    <string name="info_p_friendship">&lt;b>{username1}&lt;/b> ja &lt;b>{username2}&lt;/b> ovat nyt kavereita</string>
+    <string name="info_p_forumthread">&lt;b>{username}&lt;/b> loi keskustelualueella aiheen &lt;b>\"{thread}\"&lt;/b>.</string>
+    <string name="info_p_forumpost">&lt;b>{username}&lt;/b> kirjoitti viestin aiheeseen &lt;b>\"{thread}\"&lt;/b>.</string>
+    <string name="info_p_newunlock">&lt;b>{username}&lt;/b> avasi uuden esineen: {item}.</string>
+    <string name="info_p_favserver">&lt;b>{username}&lt;/b> lisäsi palvelimen suosikkeihinsa: &lt;b>{server}&lt;/b>.</string>
+    <string name="info_p_promotion">&lt;b>{username}&lt;/b> ylennettiin arvoon: &lt;b>{rank title}&lt;/b> ({rank}).</string>
+    <string name="info_p_greport_comment">&lt;b>{username}&lt;/b> kommentoi Battle Reporttiin: &lt;b>{server name} {map} {game mode}&lt;/b>.</string>
+    <string name="info_p_blog_comment">&lt;b>{username}&lt;/b> kommentoi blogipäivitykseen: &lt;b>{post name}&lt;/b>.</string>
+    <string name="info_p_platoon_join">&lt;b>{username}&lt;/b> liittyi joukkueeseen: &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_p_platoon_kick">&lt;b>{username}&lt;/b> poistetiin joukkueesta: &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_p_platoon_create">&lt;b>{username}&lt;/b> teki joukkueen nimeltä: &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_p_platoon_badge">&lt;b>{username}&lt;/b> vaihtoi joukkueen &lt;b>{platoon}&lt;/b> tunnuskuvaa.</string>
+    <string name="info_p_platoon_left">&lt;b>{username}&lt;/b> jätti joukkueen &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> kirjoitti joukkueen &lt;b>{platoon}&lt;/b> seinälle.</string>
+    <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> and &lt;b>{username2}&lt;/b> suoritti &lt;b>\"{level}\"&lt;/b> vaikeustasolla &lt;b>{difficulty}&lt;/b>.</string>
+    <string name="info_p_award">&lt;b>{username}&lt;/b> sai uuden palkinnon: &lt;b>{award}&lt;/b>.</string>
+    <string name="info_new_rank">uusi taso</string>
+    <string name="title_main_menu">BF3 Battlelog - Päävalikko</string>
+    <string name="title_profile">BF3 Battlelog - Profiili</string>
+    <string name="title_platoon">BF3 Battlelog - Joukkue</string>
+    <string name="title_performance">BF3 Battlelog - Omat suoritukset</string>
+    <string name="title_chat">BF3 Battlelog - Keskustelu</string>
+    <string name="title_comments">BF3 Battlelog - Kommentit</string>
+    <string name="title_comparing_battle_scars">BF3 Battlelog - Tilastojen vertailu</string>
+    <string name="title_unlocks">BF3 Battlelog - Tulevat avaukset</string>
+    <string name="title_settings">BF3 Battlelog - Asetukset</string>
+    <string name="title_forum">BF3 Battlelog - Foorumi</string>
+    <string name="label_forum">Foorumi</string>
+    <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> suoritti assingmentin - &lt;b>\"{assignment}\"&lt;/b> (unlocks &lt;b>{unlock}&lt;/b>).</string>
+    <string name="info_assignments_new_unknown">Uusia assingmenttejä lisätty - ilmoita kehittäjälle!</string>
+    <string name="title_assignments">BF3 Battlelog - Näytetään assingmenttisi</string>
+    <string name="info_xml_platoons_my">Omat joukkueet</string>
+    <string name="info_xml_assignments_my">Omat tehtävät</string>
+    <string name="msg_no_cookies">Evästeitä ei löydetty - kokeile kirjautua uudestaan</string>
+    <string name="label_soldier_unlocks">Näytä avaukset</string>
+    <string name="info_p_newunlocks">&lt;b>{username}&lt;/b> avasi uusia esineitä: {item}.</string>
+    <string name="info_txt_friends_offline">Poissaolevat kaverit</string>
+    <string name="info_txt_friends_online">Paikallaolevat kaverit</string>
+    <string name="info_txt_session_lost">Istunto katosi. Kirjaudu uudestaan!</string>
+    <string name="info_xml_forums_none">Ei keskustelualueita.</string>
+    <string name="info_xml_forums">Keskustelualueet</string>
+    <string name="info_p_activated_expansion">aktivoi pelin/ tai laajennuspaketin</string>
+    <string name="info_xml_forum_postsinthreads">&lt;b>{num_posts}&lt;/b> viestiä &lt;b>{num_threads}&lt;/b> alueella.</string>
+    <string name="info_xml_threadinfo">&lt;b>{num_posts}&lt;/b> viestiä (joista &lt;b>{num_official}&lt;/b> virallisia)</string>
+    <string name="info_xml_threaddate">Lähettetty &lt;b>{date}&lt;/b> käyttäjältä &lt;b>{user}&lt;/b></string>
+    <string name="info_xml_threadreplydate">Viimeisin viesti: &lt;b>{date}&lt;/b> käyttäjältä &lt;b>{user}&lt;/b></string>
+    <string name="info_xml_thread_new">Uusi lanka..</string>
+    <string name="info_xml_post_new">Uusi viesti..</string>
+    <string name="info_forum_newthread_true">Aihe on luotu.</string>
+    <string name="info_forum_newthread_false">Aihetta ei voinut luoda.</string>
+    <string name="info_xml_enter_content">Syötä sisältö tähän</string>
+    <string name="info_dialog_soldierselect">Valitse sotilas, jota haluat katsoa...</string>
+    <string name="info_dialog_threadpost">Kirjoita vastaus</string>
+    <string name="info_forum_newpost_true">Vastaus lähetetty.</string>
+    <string name="info_forum_newpost_false">Vastausta ei voinut lähettää.</string>
+    <string name="info_txt_notification_new">1 uusi ilmoitus!</string>
+    <string name="info_txt_notification_new_p">{num} uutta ilmoitusta!</string>
+    <string name="info_tap_notification">Paina tätä kohtaa avataksesi sovelluksen.</string>
+    <string name="info_xml_posts_none">Ei viestejä.</string>
+    <string name="info_xml_threads_none">Ei aiheita.</string>
+    <string name="info_xml_results_none">Ei tuloksia.</string>
+    <string name="title_forum_view">Näytetään keskustelualuetta...</string>
+    <string name="title_thread_view">Näytetään aihetta...</string>
+    <string name="title_forum_search">Etsitään foorumeista...</string>
+    <string name="title_search">Etsitään käyttäjistä ja joukkueista</string>
+    <string name="info_xml_search">Haku..</string>
+    <string name="info_xml_generic_error">Tapahtui virhe.</string>
+    <string name="label_search">Haku..</string>
+    <string name="label_search_ongoing">Haku on käynnissä..</string>
+    <string name="info_p_awards">&lt;b>{username}&lt;/b> sai uusia palkintoja: {award}.</string>
+    <string name="label_own_platoon">Omat joukkueet</string>
+    <string name="label_assignments">Omat tehtävät</string>
+    <string name="info_xml_invite">Kutsu...</string>
+    <string name="title_platoon_invite">Kutsutaan kavereita joukkueeseen</string>
+    <string name="info_xml_platoon_select">Valitse joukkue</string>
+    <string name="info_spost_heading">Käyttäjän {username} kirjoitus</string>
+    <string name="info_spost_heading_s">Käyttäjän {username} kirjoitus</string>
+    <string name="info_txt_friend_delete_true">Tämä käyttäjä on poistettu listaltasi.</string>
+    <string name="info_txt_friend_delete_false">Käyttäjää ei voitu poistaa listaltasi.</string>
+    <string name="info_xml_feed_button_pagination">Lataa lisää kohtia</string>
+    <string name="label_downloading">Ladataan...</string>
+    <string name="info_xml_threads_more_false">Ei enempää aiheita.</string>
+    <string name="info_xml_posts_more_false">Ei enempää viestejä.</string>
+    <string name="label_jump">Hyppää sivulle...</string>
+    <string name="info_txt_pageselect">Valitse sivu...</string>
+    <string name="info_xml_enternumber">Kirjoita numero {min} - {max} väliltä.</string>
+    <string name="info_xml_feed_button_jump">Hyppää sivulle...</string>
+    <string name="info_feed_friend_accept">&lt;b>{username}&lt;/b> hyväksyi sinun &lt;b>kaveripyynnön&lt;/b>.</string>
+    <string name="label_single_post_view">Näytä kirjoitus</string>
+    <string name="info_xml_main_slider">Tietoa sovelluksesta</string>
+    <string name="label_option_about">Tietoa..</string>
+    <string name="title_about">Tietoa ohjelmasta</string>
+    <string name="info_option_unlocks">Näytä avaukset</string>
+    <string name="info_txt_email_send">Lähetä sähköposti</string>
+    <string name="label_about">Tietoa</string>
+    <string name="label_faq">UKK</string>
+    <string name="label_credits">Kiitokset</string>
+    <string name="info_assignment_completed">Assingment valmistunut</string>
+    <string name="info_platoon_invite">&lt;b>{username}&lt;/b> on kutsunut sinut liittymään joukkueeseen &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_promote">Sinut ylennettiin joukkueessa &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_demote">Sinut alennettiin joukkueessa &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_kick">&lt;b>{username}&lt;/b> poisti sinut joukkueesta &lt;b>{platoon}&lt;/b>.</string>
+    <string name="info_platoon_activity">joukkueen toiminta</string>
+    <string name="info_platoon_member_new_ok">Hyväksytään uutta jäsentä...</string>
+    <string name="info_platoon_member_new_false">Hylätään uutta käyttäjää...</string>
+    <string name="info_platoon_member_demoting">Alennetaan jäsentä...</string>
+    <string name="info_platoon_member_promoting">Ylennetään jäsentä...</string>
+    <string name="info_platoon_member_kicking">Poistetaan jäsentä...</string>
+    <string name="info_platoon_member_new_accept">Hyväksy jäsenyys</string>
+    <string name="info_platoon_member_new_deny">Hylkää jäsenyys</string>
+    <string name="info_platoon_member_demote">Alenna</string>
+    <string name="info_platoon_member_promote">Ylennä</string>
+    <string name="info_platoon_member_kick">Potkaise</string>
+    <string name="info_profile_view">Näytä profiili</string>
+    <string name="info_stats_not_found">Tilastoja ei löydetty.</string>
+    <string name="info_forum_page_invalid">Viallinen sivunumero.</string>
+    <string name="info_forum_quote_warning">Lainaus lisätty tekstialueelle, älä muokkaa tai poista tagia.</string>
+    <string name="info_forum_links_no">Ei linkkejä kirjoituksessa.</string>
+    <string name="info_forum_quote">Lainaa kirjoitusta</string>
+    <string name="info_forum_report">Ilmoita kirjoituksesta</string>
+    <string name="info_forum_links">Näytä linkit...</string>
+    <string name="info_forum_link_title">Valitse näytettävä linkki...</string>
+    <string name="info_forum_posts_downloading">Ladataan viestejä...</string>
+    <string name="info_platoon_member_founder">Perustaja</string>
+    <string name="info_platoon_member_nonmember">Ei jäsen</string>
+    <string name="info_platoon_member_evaluate">Odotetaan arviointia</string>
+    <string name="info_platoon_member_invited">Kutsuttu</string>
+    <string name="info_platoon_member_member">Jäsen</string>
+    <string name="info_platoon_member_admin">Admin</string>
+    <string name="info_platoon_member_founder_p">Perustajat</string>
+    <string name="info_platoon_member_admin_p">Adminit</string>
+    <string name="info_platoon_member_regular">Vakituinen jäsen</string>
+    <string name="info_platoon_member_regular_p">Vakituiset jäsenet</string>
+    <string name="info_platoon_member_invited_label">Kutsuttu liittymään</string>
+    <string name="info_platoon_member_requested_label">Pyydetty liittymään</string>
+    <string name="info_platoon_stats_overall">Keskiarvo</string>
+    <string name="label_assignments_view">Näytä assignmentit</string>
+    <string name="label_goto_section">Mene {section}</string>
+    <string name="label_goto_assignments">assingmentit</string>
+    <string name="label_goto_forum_thread">foorumin aihe</string>
+    <string name="label_goto_platoon">joukkue</string>
+    <string name="label_goto_profile">profiili</string>
+    <string name="label_goto_unlocks">avaukset</string>
+    <string name="info_about_donating">Jos tykkäät työstä mitä olen tehnyt ja haluaisit lahjoittaa haluamasi summan minulle kehitystä varten, paina tästä mennäksesi PayPaliin lisäohjeita varten.</string>
+    <string name="general_censored">Battlelogin ylläpitäjät ovat sensuroineet tämän roskan</string>
+    <string name="info_forum_report_true">Huomautettu ylläpitäjille.</string>
+    <string name="info_forum_report_false">Viestiä ei voinut reportoida.</string>
+    <string name="info_forum_search_label">Foorumin haku</string>
+    <string name="info_forum_search_hint">Etsi...</string>
+    <string name="info_forum_report_reason">Miksi haluat ilmoittaa tästä viestistä?</string>
+    <string name="info_forum_report_label">Ilmoita viestistä..</string>
+    <string name="label_report">Ilmoita</string>
+    <string name="info_forum_report_empty">Sinun pitää kirjoittaa syy, miksi haluat ilmoittaa tästä viestistä.</string>
+    <string name="info_report_active">Ilmoitetaan...</string>
+    <string name="title_forum_report">BF3 Battlelog - Ilmoitetaan foorumin viestistä..</string>
+    <string name="info_forum_lang">Valitse kieli foorumeille...</string>
+    <string name="info_general_nocache">Välimuistin kansiota ei ole olemassa, ota yhteyttä kehittäjään!</string>
+    <string name="info_unlock_change">Vaihda sotilasta...</string>
+    <string name="info_general_noprofile">Ei profiilia valittuna.</string>
+    <string name="info_assignments_empty">Assingmentsejä ei löydetty tälle sotilaalle.</string>
+    <string name="info_unlocks_empty">Ei avauksia tässä näkymässä.</string>
+    <string name="info_login_lostcookie">Kirjautuminen onnistui, mutta emme löytäneet yhtään evästeitä.</string>
+    <string name="info_conn_hostunreach">Palvelimeen ei saada yhteyttä - käynnistä 3G-yhteytesi uudelleen ja kokeile uudestaan.</string>
+    <string name="info_session_expired">Istunto vanhentunut. Uusitaan istuntoa...</string>
+    <string name="info_session_renew_ok">Istunto uusittu!</string>
+    <string name="info_session_renew_fail">Istuntoa ei voinut uusia.</string>
+    <string name="info_friendreq_resp_ok">Ystäväpyyntöön on vastattu.</string>
+    <string name="info_platoon_invite_ok">Kutsut lähettetty!</string>
+    <string name="info_platoon_invite_fail">Kutsuja ei voinut lähettää!</string>
+    <string name="info_platoon_invite_passed">Joitain kutsuja lähetettiin, joitain ei!</string>
+    <string name="info_platoon_req_ok">Kutsu on vastaanotettu.</string>
+    <string name="info_forum_report_error">Sinun pitää kirjoittaa syy, miksi haluat ilmoittaa tästä postauksesta.</string>
+    <string name="general_nonetwork">Ei internetyhteyttä saatavilla!</string>
+    <string name="info_comment_report">Ilmoitetaan kommenttinumeroa</string>
+    <string name="info_settings_general">Yleiset asetukset</string>
+    <string name="info_settings_chat">Keskustelun asetukset</string>
+    <string name="info_settings_service">Palvelun asetukset</string>
+    <string name="info_settings_notifications">Ilmoitusasetukset</string>
+    <string name="info_settings_chat_desc_beep_true">Sinun aktiivinen keskustelusi tulee piippaamaan rakkaudella.</string>
+    <string name="info_settings_chat_desc_beep_false">Sinun aktiivinen keskustelusi pitää suunsa kiinni.</string>
+    <string name="info_settings_notification_desc_vibrate_false">Hiljaisuus on kultaista.</string>
+    <string name="info_settings_notification_desc_vibrate_true">Bzzt bzzt.</string>
+    <string name="info_settings_notification_desc_beep_true">Sinun keskustelusi tulee kuulumaan.</string>
+    <string name="info_settings_notification_desc_beep_false">Et kuule pihahdustakaan.</string>
+    <string name="info_settings_notification_desc_beep_spec_true">PIIP!</string>
+    <string name="info_settings_notification_desc_light_true">Tuiki tuiki tähtönen.</string>
+    <string name="info_settings_notification_desc_light_false">Led-valo ei vilku.</string>
+    <string name="info_settings_notification_desc_beep_spec_false">Käytetään oletusmerkkiääntä.</string>
+    <string name="info_credits_contributors">Lista avustajista</string>
+    <string name="info_credits_info">Ensinnäkin, haluaisin kiittää kaikkia avustajia ja antaa erityiset &amp;quot;kiitokset&amp;quot; kaikille betatestaajille.\n\n Tämän takia, Olen tehnyt listan avustajista, ja miten he ovat auttaneet. Toivottavasti en unohtanut ketään...</string>
+    <string name="info_credits_code">Koodi</string>
+    <string name="info_credits_translations">Käännökset</string>
+    <string name="label_update_interval_seconds_5">Kerran viidessä sekunnissa</string>
+    <string name="label_update_interval_seconds_10">Kerran 10 sekunnissa</string>
+    <string name="label_update_interval_seconds_15">Kerran 15 sekunnissa</string>
+    <string name="label_update_interval_seconds_20">Kerran 20 sekunnissa</string>
+    <string name="label_update_interval_seconds_25">Kerran 25 sekunnissa</string>
+    <string name="label_update_interval_seconds_30">Kerran 30 sekunnissa</string>
+    <string name="label_update_interval_seconds_90">Kerran 90 sekunnissa</string>
+    <string name="label_update_interval_minutes_1">Kerran minuutissa</string>
+    <string name="label_update_interval_minutes_2">Kerran 2 minuutissa</string>
+    <string name="label_update_interval_minutes_5">Kerran 5 minuutissa</string>
+    <string name="label_update_interval_minutes_10">Kerran 10 minuutissa</string>
+    <string name="label_update_interval_minutes_30">Kerran 30 minuutissa</string>
+    <string name="label_update_interval_hours_1">Kerran tunnissa</string>
+    <string name="label_update_interval_hours_2">Kerran 2 tunnissa</string>
+    <string name="label_update_interval_hours_6">Kerran 6 tunnissa</string>
+    <string name="label_update_interval_hours_12">Kerran 12 tunnissa</string>
+    <string name="label_update_interval_hours_18">Kerran 18 tunnissa</string>
+    <string name="label_update_interval_days_1">Kerran päivässä</string>
+    <string name="info_settings_title_language">Kieli</string>
+    <string name="info_settings_title_sound_chat">Keskustelun merkkiäänet</string>
+    <string name="info_settings_chat_title">Keskustelun merkkiäänet</string>
+    <string name="info_settings_notification_title_light">LED-ilmoitukset</string>
+    <string name="info_settings_notification_title_sounds">Äänet</string>
+    <string name="info_settings_notification_title_sounds_spec">Käytä Battlelog-merkkiääntä</string>
+    <string name="info_settings_notification_title_vibration">Käytä värinähälytystä</string>
+
 </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
+<!--
 	This file is part of BF3 Battlelog
 
     BF3 Battlelog is free software: you can redistribute it and/or modify
@@ -11,20 +11,20 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- -->
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="wrap_content"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/button_orange_bg"
-   	android:padding="5dp"
->
-	<TextView 
-	    android:id="@+id/text_title"
-	    android:layout_width="100dp"
-	    android:layout_height="80dp"
-	    android:gravity="center"
-	    android:text="@string/label_compare_bs"
-	    android:textSize="16sp"
-	    android:layout_centerInParent="true"
-	/>	
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="@string/label_compare_bs"
+        android:textSize="16sp" />
+
 </RelativeLayout>

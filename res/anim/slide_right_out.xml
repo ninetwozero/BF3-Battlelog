@@ -14,8 +14,8 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<translate xmlns:android="http://schemas.android.com/apk/res/android" 
-    android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="@integer/fling_animation_duration"
     android:fromXDelta="0%p"
-    android:toXDelta="-100%p"
-    android:duration="@integer/fling_animation_duration" />
+    android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+    android:toXDelta="-100%p" />
