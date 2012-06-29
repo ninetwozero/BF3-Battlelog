@@ -213,11 +213,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
     public void reload() {
 
         // Feed refresh!
-        new AsyncRefresh(
-
-                mContext, SessionKeeper.getProfileData().getId()
-
-        ).execute();
+        new AsyncRefresh(mContext, SessionKeeper.getProfileData().getId()).execute();
 
     }
 
@@ -236,8 +232,8 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
         // Show the menu
         FeedItem feedItem = (FeedItem) info.targetView.getTag();
-        menu.add(Constants.MENU_ID_FEED, 0, 0,
-                feedItem.isLiked() ? R.string.label_hooah : R.string.label_unhooah);
+        menu.add(Constants.MENU_ID_FEED, 0, 0, feedItem.isLiked() ? R.string.label_unhooah
+                : R.string.label_hooah);
         menu.add(Constants.MENU_ID_FEED, 1, 0, R.string.label_single_post_view);
 
         // Platoon feeds only have posts that would open a new platoon activity

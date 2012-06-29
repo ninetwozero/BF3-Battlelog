@@ -97,7 +97,11 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
 
         } else {
 
-            mSelectedPersona = mProfileData.getPersona(0).getId();
+            if (mProfileData.getNumPersonas() > 0) {
+
+                mSelectedPersona = mProfileData.getPersona(0).getId();
+
+            }
 
         }
     }
@@ -271,8 +275,16 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
 
             try {
 
-                ProfileClient profileHandler = new ProfileClient(arg0[0]);
-                mAssignments = profileHandler.getAssignments(mContext);
+                ProfileData profile = arg0[0];
+
+                if (profile.getNumPersonas() == 0) {
+
+                    profile = ProfileClient.resolveFullProfileDataFromProfileData(profile);
+                    mSelectedPersona = profile.getPersona(0).getId();
+
+                }
+
+                mAssignments = new ProfileClient(profile).getAssignments(mContext);
                 return !mAssignments.isEmpty();
 
             } catch (WebsiteHandlerException ex) {

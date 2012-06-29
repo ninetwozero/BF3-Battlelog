@@ -517,4 +517,31 @@ public class PublicUtils {
 
     }
 
+    public static String insertToString(String base, Object... data) {
+
+        // Iterate and fix
+        for (Object d : data) {
+
+            base = base.replaceFirst("\\{[^\\}]+\\}", String.valueOf(d));
+
+        }
+        return base;
+
+    }
+
+    public static String createStringWithData(Context c, int resource, Object... data) {
+
+        // Get the base
+        String base = c.getString(resource);
+
+        // Iterate and fix
+        for (Object d : data) {
+
+            base = base.replaceFirst("\\{[^\\}]+\\}", String.valueOf(d));
+
+        }
+        return base;
+
+    }
+
 }

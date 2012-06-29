@@ -1,6 +1,7 @@
 
 package com.ninetwozero.battlelog.datatype;
 
+
 public class PlatformData {
 
     // Attributes

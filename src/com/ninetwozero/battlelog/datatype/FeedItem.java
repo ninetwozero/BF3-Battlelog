@@ -25,7 +25,6 @@ import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.activity.profile.assignments.AssignmentActivity;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
-import com.ninetwozero.battlelog.http.ProfileClient;
 
 public class FeedItem implements Parcelable {
 
@@ -33,9 +32,9 @@ public class FeedItem implements Parcelable {
     public final static String LABEL_NEW_STATUS = "statusmessage";
     public final static int TYPE_NEW_STATUS = 0;
     public final static int TYPE_NEW_FRIEND = 1;
-    public final static int TYPE_NEW_THREAD = 2;
-    public final static int TYPE_NEW_POST = 3;
-    public final static int TYPE_GOT_POST = 4;
+    public final static int TYPE_NEW_FORUM_THREAD = 2;
+    public final static int TYPE_NEW_FORUM_POST = 3;
+    public final static int TYPE_GOT_WALL_POST = 4;
     public final static int TYPE_GOT_PLATOON_POST = 5;
     public final static int TYPE_NEW_FAVSERVER = 6;
     public final static int TYPE_NEW_RANK = 7;
@@ -122,146 +121,7 @@ public class FeedItem implements Parcelable {
     }
 
     public String getTitle() {
-
-        // Get the correct format depending on the type
-        switch( type ) {
-            
-            
-        }
-        if ("becamefriends".equals(type)) {
-
-            return title.replace(
-
-                    "{username1}", profileData[0].getUsername()
-
-                    ).replace(
-
-                            "{username2}", profileData[1].getUsername()
-
-                    );
-
-        } else if ("assignmentcomplete".equals(type)) {
-
-            return title.replace(
-
-                    "{username}", profileData[0].getUsername()
-
-                    );
-
-        } else if ("createdforumthread".equals(type)
-                || "wroteforumpost".equals(type)) {
-
-            return title.replace(
-
-                    "{username}", profileData[0].getUsername()
-
-                    );
-
-        } else if ("gamereport".equals(type)) {
-
-            return title.replace(
-
-                    "{username}", profileData[0].getUsername()
-
-                    );
-
-        } else if ("statusmessage".equals(type)) {
-
-            return title.replace(
-
-                    "{username}", profileData[0].getUsername()
-
-                    );
-
-        } else if ("addedfavserver".equals(type)) {
-
-            return title.replace(
-
-                    "{username}", profileData[0].getUsername()
-
-                    );
-
-        } else if ("rankedup".equals(type)) {
-
-            return title.replace(
-
-                    "{username}", profileData[0].getUsername()
-
-                    );
-
-        } else if ("levelcomplete".equals(type)) {
-
-            return title.replace(
-
-                    "{username1}", profileData[0].getUsername()
-
-                    ).replace(
-
-                            "{username2}", profileData[1].getUsername()
-
-                    );
-
-        } else if ("kickedplatoon".equals(type) || "joinedplatoon".equals(type)
-                || "leftplatoon".equals(type)) {
-
-            return title.replace(
-
-                    "{username}", profileData[0].getUsername()
-
-                    );
-
-        } else if ("createdplatoon".equals(type)
-                || "platoonbadgesaved".equals(type)
-                || "receivedplatoonwallpost".equals(type)) {
-
-            return title.replace(
-
-                    "{username}", profileData[0].getUsername()
-
-                    );
-
-        } else if ("receivedaward".equals(type)) {
-
-            return title.replace(
-
-                    "{username}", profileData[0].getUsername()
-
-                    );
-
-        } else if ("receivedwallpost".equals(type)) {
-
-            return title.replace(
-
-                    "{username1}", profileData[0].getUsername()
-
-                    ).replace(
-
-                            "{username2}", profileData[1].getUsername()
-
-                    );
-
-        } else if ("commentedgamereport".equals(type)
-                || "commentedblog".equals(type)) {
-
-            return title.replace(
-
-                    "{username}", profileData[0].getUsername()
-
-                    );
-
-        } else if ("gameaccess".equals(type)) {
-
-            return title.replace(
-
-                    "{username}", profileData[0].getUsername()
-
-                    );
-
-        } else {
-
-            return title;
-
-        }
+        return title;
 
     }
 
@@ -295,121 +155,98 @@ public class FeedItem implements Parcelable {
 
     public Intent getIntent(Context c) {
 
-        if ("assignmentcomplete".equals(type)) {
+        // Get the correct format depending on the type
+        switch (type) {
+            case FeedItem.TYPE_NEW_FORUM_THREAD:
+            case FeedItem.TYPE_NEW_FORUM_POST:
 
-            try {
+                return new Intent(c, ForumActivity.class).putExtra(
 
-                return new Intent(c, AssignmentActivity.class).putExtra(
+                        "threadId", itemId
 
-                        "profile",
-                        ProfileClient.resolveFullProfileDataFromProfileId(profileData[0].getId())
+                        ).putExtra(
+
+                                "threadTitle", "N/A"
+
+                        ).putExtra("forumId", 0).putExtra("forumTitle", "N/A");
+
+            case FeedItem.TYPE_NEW_PLATOON:
+            case FeedItem.TYPE_NEW_EMBLEM:
+            case FeedItem.TYPE_JOINED_PLATOON:
+            case FeedItem.TYPE_KICKED_PLATOON:
+            case FeedItem.TYPE_GOT_PLATOON_POST:
+            case FeedItem.TYPE_LEFT_PLATOON:
+                return new Intent(c, PlatoonActivity.class).putExtra("platoon",
+                        new PlatoonData(itemId));
+
+            case FeedItem.TYPE_COMPLETED_GAME:
+                return new Intent(c, UnlockActivity.class).putExtra("profile",
+                        profileData[0]);
+
+            case FeedItem.TYPE_NEW_RANK:
+            case FeedItem.TYPE_NEW_FRIEND:
+            case FeedItem.TYPE_GOT_WALL_POST:
+            case FeedItem.TYPE_COMPLETED_LEVEL:
+            case FeedItem.TYPE_NEW_STATUS:
+            case FeedItem.TYPE_NEW_FAVSERVER:
+            case FeedItem.TYPE_NEW_COMMENT_GAME:
+            case FeedItem.TYPE_NEW_COMMENT_BLOG:
+            case FeedItem.TYPE_NEW_EXPANSION:
+            case FeedItem.TYPE_GOT_AWARD:
+                return new Intent(c, ProfileActivity.class).putExtra(
+
+                        "profile", profileData[0]
 
                         );
 
-            } catch (Exception ex) {
+            case FeedItem.TYPE_COMPLETED_ASSIGNMENT:
+                return new Intent(c, AssignmentActivity.class).putExtra(
+                        "profile",
+                        profileData[0]
+                        );
 
-                ex.printStackTrace();
-                return null;
-
-            }
-
-        } else if ("createdforumthread".equals(type)
-                || "wroteforumpost".equals(type)) {
-
-            return new Intent(c, ForumActivity.class).putExtra(
-
-                    "threadId", itemId
-
-                    ).putExtra(
-
-                            "threadTitle", "N/A"
-
-                    ).putExtra("forumId", 0).putExtra("forumTitle", "N/A");
-
-        } else if (
-
-        "kickedplatoon".equals(type) || "joinedplatoon".equals(type)
-                || "leftplatoon".equals(type) || "createdplatoon".equals(type)
-                || "platoonbadgesaved".equals(type)
-                || "receivedplatoonwallpost".equals(type)
-
-        ) {
-
-            return new Intent(c, PlatoonActivity.class).putExtra("platoon",
-                    new PlatoonData(itemId));
-
-        } else if ("gamereport".equals(type)) {
-
-            return new Intent(c, UnlockActivity.class).putExtra("profile",
-                    profileData[0]);
-
-        } else if (
-
-        "becamefriends".equals(type) || "receivedaward".equals(type)
-                || "receivedwallpost".equals(type)
-                || "commentedgamereport".equals(type)
-                || "commentedblog".equals(type) || "statusmessage".equals(type)
-                || "addedfavserver".equals(type) || "rankedup".equals(type)
-                || "levelcomplete".equals(type) || "gameaccess".equals(type)
-
-        ) {
-
-            return new Intent(c, ProfileActivity.class).putExtra(
-
-                    "profile", profileData[0]
-
-                    );
-
-        } else {
-
-            return new Intent();
-
+            default:
+                return new Intent();
         }
 
     }
 
     public String getOptionTitle(Context c) {
 
-        if ("assignmentcomplete".equals(type)) {
+        // Get the correct format depending on the type
+        switch (type) {
+            case FeedItem.TYPE_NEW_FORUM_THREAD:
+            case FeedItem.TYPE_NEW_FORUM_POST:
+                return c.getString(R.string.label_goto_forum_thread);
 
-            return c.getString(R.string.label_goto_assignments);
+            case FeedItem.TYPE_NEW_PLATOON:
+            case FeedItem.TYPE_NEW_EMBLEM:
+            case FeedItem.TYPE_JOINED_PLATOON:
+            case FeedItem.TYPE_KICKED_PLATOON:
+            case FeedItem.TYPE_GOT_PLATOON_POST:
+            case FeedItem.TYPE_LEFT_PLATOON:
+                return c.getString(R.string.label_goto_platoon);
 
-        } else if ("createdforumthread".equals(type)
-                || "wroteforumpost".equals(type)) {
+            case FeedItem.TYPE_COMPLETED_GAME:
+                return c.getString(R.string.label_goto_unlocks);
 
-            return c.getString(R.string.label_goto_forum_thread);
+            case FeedItem.TYPE_NEW_RANK:
+            case FeedItem.TYPE_NEW_FRIEND:
+            case FeedItem.TYPE_GOT_WALL_POST:
+            case FeedItem.TYPE_COMPLETED_LEVEL:
+            case FeedItem.TYPE_NEW_STATUS:
+            case FeedItem.TYPE_NEW_FAVSERVER:
+            case FeedItem.TYPE_NEW_COMMENT_GAME:
+            case FeedItem.TYPE_NEW_COMMENT_BLOG:
+            case FeedItem.TYPE_NEW_EXPANSION:
+            case FeedItem.TYPE_GOT_AWARD:
+                return c.getString(R.string.label_goto_profile);
 
-        } else if (
+            case FeedItem.TYPE_COMPLETED_ASSIGNMENT:
+                return c.getString(R.string.label_goto_assignments);
 
-        "kickedplatoon".equals(type) || "joinedplatoon".equals(type)
-                || "leftplatoon".equals(type) || "createdplatoon".equals(type)
-                || "platoonbadgesaved".equals(type)
-                || "receivedplatoonwallpost".equals(type)
-
-        ) {
-
-            return c.getString(R.string.label_goto_platoon);
-
-        } else if ("gamereport".equals(type)) {
-
-            return c.getString(R.string.label_goto_unlocks);
-
-        } else if (
-
-        "becamefriends".equals(type) || "receivedaward".equals(type)
-                || "receivedwallpost".equals(type)
-                || "commentedgamereport".equals(type)
-                || "commentedblog".equals(type) || "statusmessage".equals(type)
-                || "addedfavserver".equals(type) || "rankedup".equals(type)
-                || "levelcomplete".equals(type) || "gameaccess".equals(type)
-
-        ) {
-
-            return c.getString(R.string.label_goto_profile);
-
-        } else {
-
-            return "N/A";
+            default:
+                return "N/A";
 
         }
 
