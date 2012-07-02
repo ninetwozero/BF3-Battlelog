@@ -87,7 +87,7 @@ public class WeaponListAdapter extends BaseAdapter {
         // Populate fields
         ((TextView) convertView.findViewById(R.id.text_title)).setText(data.getName());
         ((TextView) convertView.findViewById(R.id.text_sstars))
-                .setText(data.getServiceStars() + "");
+                .setText((int)data.getServiceStars() + "");
 
         // Setup the progress
         ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progress_unlocks);

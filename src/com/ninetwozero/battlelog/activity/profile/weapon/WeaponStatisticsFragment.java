@@ -39,8 +39,8 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
     private int mViewPagerPosition;
 
     // Elements
-    private TextView mTextKills, mTextHS, mTextSF, mTextSH, mTextAccuracy, mTextTE, mTextSS,
-            mTextSSP;
+    private TextView mKills, mHeadShots, mShotFired, mShotHit, mAccuracy, mTimeEquipped, mServiceStars,
+            mServiceStarProgress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,14 +65,14 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
     public void initFragment(View v) {
 
         // Let's setup the fields
-        mTextKills = (TextView) v.findViewById(R.id.text_kills);
-        mTextHS = (TextView) v.findViewById(R.id.text_hs);
-        mTextSF = (TextView) v.findViewById(R.id.text_sf);
-        mTextSH = (TextView) v.findViewById(R.id.text_sh);
-        mTextAccuracy = (TextView) v.findViewById(R.id.text_accuracy);
-        mTextTE = (TextView) v.findViewById(R.id.text_time);
-        mTextSS = (TextView) v.findViewById(R.id.text_sstars);
-        mTextSSP = (TextView) v.findViewById(R.id.text_sstars_progress);
+        mKills = (TextView) v.findViewById(R.id.text_kills);
+        mHeadShots = (TextView) v.findViewById(R.id.text_hs);
+        mShotFired = (TextView) v.findViewById(R.id.text_sf);
+        mShotHit = (TextView) v.findViewById(R.id.text_sh);
+        mAccuracy = (TextView) v.findViewById(R.id.text_accuracy);
+        mTimeEquipped = (TextView) v.findViewById(R.id.text_time);
+        mServiceStars = (TextView) v.findViewById(R.id.text_sstars);
+        mServiceStarProgress = (TextView) v.findViewById(R.id.text_sstars_progress);
 
     }
 
@@ -108,14 +108,14 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
 
     public void show(WeaponStats w) {
 
-        mTextKills.setText(String.valueOf(w.getKills()));
-        mTextHS.setText(String.valueOf(w.getHeadshots()));
-        mTextSF.setText(String.valueOf(w.getShotsFired()));
-        mTextSH.setText(String.valueOf(w.getShotsHit()));
-        mTextAccuracy.setText((Math.round(w.getAccuracy() * 1000) / 10.0) + "%");
-        mTextTE.setText(PublicUtils.timeToLiteral(w.getTimeEquipped()));
-        mTextSS.setText(String.valueOf(w.getServiceStars()));
-        mTextSSP.setText(String.valueOf(w.getServiceStarProgress()));
+        mKills.setText(String.valueOf(w.getKills()));
+        mHeadShots.setText(String.valueOf(w.getHeadshots()));
+        mShotFired.setText(String.valueOf(w.getShotsFired()));
+        mShotHit.setText(String.valueOf(w.getShotsHit()));
+        mAccuracy.setText(String.format("%.1f", (w.getAccuracy() * 100)) + "%");
+        mTimeEquipped.setText(PublicUtils.timeToLiteral(w.getTimeEquipped()));
+        mServiceStars.setText(String.valueOf((int) w.getServiceStars()));
+        mServiceStarProgress.setText(String.valueOf((int) w.getServiceStarProgress()));
 
     }
 
