@@ -135,6 +135,17 @@ public final class StringResourceList {
         mDescriptionWeapons.put("B145A444-BC4D-48BF-806A-0CEFA0EC231B", R.string.desc_w_m9);
         mDescriptionWeapons.put("B1575807-C480-7286-719C-EE2520292A79", R.string.desc_w_m4a1);
         mDescriptionWeapons.put("BFAC29DB-5193-4E69-96D9-37D4124C44C2", R.string.desc_w_smaw);
+        /* CLOSE QUARTERS EXPANSION */
+        mDescriptionWeapons.put("94FADBCE-8D16-4736-85E8-D42FADCD174F", R.string.desc_w_scarl);
+        mDescriptionWeapons.put("DFBF6EA5-39C5-4ABA-B2C6-CAA6AD6C3786", R.string.desc_w_m5k);
+        mDescriptionWeapons.put("95AA1865-4324-4B23-BCC4-84F8F4D91922", R.string.desc_w_acwr);
+        mDescriptionWeapons.put("B8CA6D09-62C2-4208-A094-B8E50F716E47", R.string.desc_w_jng90);
+        mDescriptionWeapons.put("60F775C4-7D70-4898-BD00-03AA60C8CE91", R.string.desc_w_auga3);
+        mDescriptionWeapons.put("BA0AF247-2E5B-4574-8F89-515DFA1C767D", R.string.desc_w_l86a2);
+        mDescriptionWeapons.put("C48BC95B-1271-4F19-9D6C-A91C836F5432", R.string.desc_w_m417);
+        mDescriptionWeapons.put("6D99F118-04BD-449A-BA0E-1978DDF5894D", R.string.desc_w_spas12);
+        mDescriptionWeapons.put("0A54B1A8-0368-4939-9558-D31E40FE488F", R.string.desc_w_mtar21);
+        mDescriptionWeapons.put("BF6E6CB2-D5AA-4425-A0C8-0FB8D89A1372", R.string.desc_w_lsat);
 
         // Set up the vehicles
         mDescriptionVehicles.put("89BEA1D6-2FF4-11DE-8C23-DAB1D69416DE", R.string.desc_v_mi28);
