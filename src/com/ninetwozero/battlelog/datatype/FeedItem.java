@@ -50,6 +50,7 @@ public class FeedItem implements Parcelable {
     public final static int TYPE_NEW_COMMENT_GAME = 17;
     public final static int TYPE_NEW_COMMENT_BLOG = 18;
     public final static int TYPE_NEW_EXPANSION = 19;
+    public final static int TYPE_NEW_SHARED_GAMEEVENT = 20;
 
     // Attributes
     private long id, itemId, date;

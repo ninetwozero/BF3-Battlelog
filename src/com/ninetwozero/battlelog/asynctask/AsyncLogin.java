@@ -196,7 +196,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     }
 
     private SessionKeeperPackage processHttpContent(String httpContent) throws Exception {
-
+    	
         // Get the checksum
         String postCheckSum = substringFrom(httpContent, Constants.ELEMENT_STATUS_CHECKSUM, "\" />");
 
@@ -342,11 +342,11 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
         } else {
 
-            String errorMsg = httpContent.substring(startPosition)
+        	int endPosition = httpContent.indexOf("</div>");
+            String errorMsg = httpContent.substring(startPosition, endPosition)
                     .replace("</div>", "")
                     .replace("\n", "")
                     .replace(Constants.ELEMENT_ERROR_MESSAGE, "");
-            errorMsg = errorMsg.substring(0, errorMsg.indexOf("<div"));
 
             throw new WebsiteHandlerException(errorMsg);
 

@@ -60,7 +60,8 @@ public class FeedClient extends DefaultClient {
             "assignmentcomplete",
             "commentedgamereport",
             "commentedblog",
-            "gameaccess"
+            "gameaccess",
+            "sharedgameevent"
     };
 
     public static final int TYPE_GLOBAL = 0;
