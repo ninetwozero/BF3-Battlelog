@@ -152,11 +152,12 @@ public class FeedItemDataFactory {
 	}
 
 	private static ParsedFeedItemData generateFromSharedGameEvent(
-			Context context, JSONObject jsonObject, ProfileData profile) throws JSONException {
+			Context context, JSONObject jsonObject, ProfileData profile)
+			throws JSONException {
 
-		
 		// Init
-		JSONArray stats = jsonObject.getJSONObject("BF3AWARDS").optJSONArray(STAT_ITEMS);
+		JSONArray stats = jsonObject.getJSONObject("BF3AWARDS").optJSONArray(
+				STAT_ITEMS);
 		StringBuilder title = new StringBuilder();
 
 		/* TODO: EXPORT TO SMALLER METHODS */
@@ -188,7 +189,7 @@ public class FeedItemDataFactory {
 
 			// Let's see
 			String key = tempSubItem.getString(NAME_SID);
-			title.append( DataBank.getAwardTitle(key) );
+			title.append(DataBank.getAwardTitle(key));
 
 		}
 
@@ -207,12 +208,9 @@ public class FeedItemDataFactory {
 					title.append("</b>"));
 
 		}
-		
-		return new ParsedFeedItemData(
-				generatedTitle,
-				"",
-				new ProfileData[] { profile, null }
-		);
+
+		return new ParsedFeedItemData(generatedTitle, "", new ProfileData[] {
+				profile, null });
 	}
 
 	private static ParsedFeedItemData generateFromNewForumPost(Context context,
@@ -700,7 +698,7 @@ public class FeedItemDataFactory {
 			JSONObject currItem, ProfileData profile) throws JSONException {
 		return new ParsedFeedItemData(
 
-		"<b>{username}</b> " + currItem.getString("statusMessage"), "",
+		"<b>" + profile.getUsername() + "</b> " + currItem.getString("statusMessage"), "",
 				new ProfileData[] {
 
 				profile, null

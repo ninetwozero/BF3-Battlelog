@@ -1,4 +1,3 @@
-
 package net.sf.andhsli.hotspotlogin;
 
 import java.security.SecureRandom;
