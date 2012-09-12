@@ -30,20 +30,23 @@ public class RankProgressContentProvider  extends ContentProvider {
     @Override
     public boolean onCreate() {
         getDatabase();
-        return false;
+        return true;
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        /*SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         checkColumns(projection);
         queryBuilder.setTables(RANK_PROGRESS);
-        int uriType = uriMatcher.match(uri);
+        /*int uriType = uriMatcher.match(uri);
         switch (uriType){
             case PERSONAS_RANK_PROGRESS:
                 queryBuilder.appendWhere("personaId = ");
         }*/
-        return null;
+        SQLiteDatabase db = getDatabase();
+        Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return cursor;
     }
 
     @Override
@@ -55,14 +58,7 @@ public class RankProgressContentProvider  extends ContentProvider {
     public Uri insert(Uri uri, ContentValues contentValues) {
         int uriType = uriMatcher.match(uri);
         int rowsDeleted = 0;
-        long id = 0;
-        switch(uriType){
-            case PERSONAS_RANK_PROGRESS:
-                id = database.insert(RANK_PROGRESS, null, contentValues);
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown URI: " + uri);
-        }
+        long id = database.insert(RANK_PROGRESS, null, contentValues);
         getContext().getContentResolver().notifyChange(uri, null);
         return Uri.parse(RANK_PROGRESS + "/" +id);
     }

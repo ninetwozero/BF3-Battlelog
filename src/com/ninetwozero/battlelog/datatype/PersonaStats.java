@@ -44,7 +44,7 @@ public class PersonaStats implements Parcelable {
 
     // SCORE-section
     private long scoreAssault, scoreEngineer, scoreSupport, scoreRecon,
-            scoreVehicle, scoreCombat, scoreAwards, scoreUnlocks, scoreTotal;
+            scoreVehicle, scoreCombat, scoreAwards, scoreUnlocks, scoreTotal, score;
 
     // Construct
     public PersonaStats(String uName, long uId, String pName, long pId, long plId) {
@@ -158,6 +158,7 @@ public class PersonaStats implements Parcelable {
         scoreAwards = statsOverview.getAwardScore();
         scoreUnlocks = statsOverview.getUnlockScore();
         scoreTotal = statsOverview.getTotalScore();
+        score = statsOverview.getScore();
     }
 
     public PersonaStats(Parcel in) {
@@ -247,7 +248,12 @@ public class PersonaStats implements Parcelable {
     }
 
     public final long getPointsProgressLvl() {
-        return scoreTotal - pointsThisLvl;
+        //same issue as getPointsLeft
+        if(score != 0){
+            return score - pointsThisLvl;
+        }else{
+            return scoreTotal - pointsThisLvl;
+        }
     }
 
     public final long getPointsNeededToLvlUp() {
@@ -255,7 +261,12 @@ public class PersonaStats implements Parcelable {
     }
 
     public final long getPointsLeft() {
-        return getPointsNeededToLvlUp() - getPointsProgressLvl();
+        //TODO temporary fix model will need some renaming, however totalScore is not real player's result, use "score"
+        if(score != 0) {
+            return getPointsNextLvl() - score;
+        } else {
+            return getPointsNeededToLvlUp() - getPointsProgressLvl();
+        }
     }
 
     public final int getNumKills() {

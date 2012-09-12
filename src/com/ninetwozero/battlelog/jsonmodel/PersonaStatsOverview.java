@@ -18,6 +18,8 @@ public class PersonaStatsOverview {
     private long vehicleScore;
     @SerializedName("totalScore")
     private long totalScore;
+    @SerializedName("score")
+    private long score;
     @SerializedName("timePlayed")
     private long timePlayed;
     @SerializedName("numWins")
@@ -72,7 +74,7 @@ public class PersonaStatsOverview {
     private long resupplies;
 
     public PersonaStatsOverview(int rank, KitScores kitScores, VehicleScores vehicleScores,
-            long vehicleScore, long totalScore, long timePlayed, long gameWon,
+            long vehicleScore, long totalScore, long score, long timePlayed, long gameWon,
             long gameLost, long awardScore, long unlockScore, long kills,
             long deaths, double kdRatio, long killAssists, long scoreMin,
             double quitPercentage, long vehiclesDestroyed, long vehiclesDestroyedAssists,
@@ -84,6 +86,7 @@ public class PersonaStatsOverview {
         this.vehicleScores = vehicleScores;
         this.vehicleScore = vehicleScore;
         this.totalScore = totalScore;
+        this.score = score;
         this.timePlayed = timePlayed;
         this.gameWon = gameWon;
         this.gameLost = gameLost;
@@ -147,6 +150,14 @@ public class PersonaStatsOverview {
 
     public void setTotalScore(long totalScore) {
         this.totalScore = totalScore;
+    }
+
+    public long getScore() {
+        return score;
+    }
+
+    public void setScore(long score) {
+        this.score = score;
     }
 
     public long getTimePlayed() {

@@ -17,9 +17,11 @@ package com.ninetwozero.battlelog.activity.profile.soldier;
 import java.net.URI;
 import java.util.Map;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
@@ -51,6 +53,7 @@ import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.provider.table.RankProgress;
 
 public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment,
         OnCloseListDialogListener {
@@ -107,6 +110,15 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // TODO create loader
+        Cursor cursor = getContext().getContentResolver().query(RankProgress.URI, RankProgress.RANK_PROGRESS_PROJECTION, null, null, null);
+        if(cursor.getCount()> 0){
+            cursor.moveToFirst();
+            Log.e("TEST", cursor.getString(cursor.getColumnIndexOrThrow(RankProgress.Columns.PERSONA_ID)));
+            Log.e("TEST", cursor.getString(cursor.getColumnIndexOrThrow(RankProgress.Columns.RANK_TITLE)));
+            Log.e("TEST", cursor.getString(cursor.getColumnIndexOrThrow(RankProgress.Columns.CURRENT_RANK_SCORE)));
+            Log.e("TEST", cursor.getString(cursor.getColumnIndexOrThrow(RankProgress.Columns.NEXT_RANK_SCORE)));
+            Log.e("TEST", cursor.getString(cursor.getColumnIndexOrThrow(RankProgress.Columns.SCORE)));
+        }
         getLoaderManager().initLoader(0, savedInstanceState, this);
     }
 
@@ -296,7 +308,9 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {
         if (task.result.equals(CompletedTask.Result.SUCCESS)) {
             findViews();
-            populateStats(personaStatsFrom(task));
+            PersonaStats ps = personaStatsFrom(task);
+            updateDatabase(ps);
+            populateStats(ps);
         }
     }
 
@@ -308,6 +322,17 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
 
     private String fromResource(int rank) {
         return getResources().getStringArray(R.array.rank)[rank];
+    }
+
+    private void updateDatabase(PersonaStats ps){
+        ContentValues values = new ContentValues();
+        values.put(RankProgress.Columns.PERSONA_ID, mSelectedPersona);
+        values.put(RankProgress.Columns.RANK_TITLE, fromResource((int) ps.getRankId()));
+        values.put(RankProgress.Columns.CURRENT_RANK_SCORE, ps.getPointsProgressLvl());
+        values.put(RankProgress.Columns.NEXT_RANK_SCORE, ps.getPointsNeededToLvlUp());
+        values.put(RankProgress.Columns.SCORE, ps.getPointsLeft());
+
+        getContext().getContentResolver().insert(RankProgress.URI, values);
     }
 
     /*
