@@ -72,7 +72,7 @@ public class ForumData implements Parcelable {
         latestThreadTitle = ltTitle;
         latestPostUsername = lpUser;
 
-        threads = new ArrayList();
+        threads = (List<ForumThreadData>)new ArrayList<ForumThreadData>();
 
     }
 

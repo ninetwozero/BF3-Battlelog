@@ -164,7 +164,6 @@ public class FeedItemDataFactory {
 		for (int counter = 0, maxCounter = stats.length(); counter < maxCounter; counter++) {
 
 			// Let's get the item
-			String tempKey;
 			JSONObject tempSubItem = stats.optJSONObject(counter);
 
 			// Append
@@ -648,7 +647,7 @@ public class FeedItemDataFactory {
 		return new ParsedFeedItemData(
 
 		PublicUtils.createStringWithData(context, R.string.info_p_got_wallpost,
-				profile2.getUsername(), profile2.getUsername(),
+				profile1.getUsername(), profile2.getUsername(),
 				currItem.getString(WALL_BODY)), "", new ProfileData[] {
 
 		profile1, profile2 });
