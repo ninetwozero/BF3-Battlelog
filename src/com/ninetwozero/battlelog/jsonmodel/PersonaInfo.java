@@ -16,11 +16,11 @@ public class PersonaInfo {
     @SerializedName("user")
     private User user;
     @SerializedName("platformInt")
-    private long platform;
+    private int platform;
 
     public PersonaInfo(PersonaStatsOverview statsOverview, Rank currentRank, Rank nextRank,
             long personaId, User user,
-            long platform) {
+            int platform) {
         this.statsOverview = statsOverview;
         this.currentRank = currentRank;
         this.nextRank = nextRank;
@@ -69,11 +69,11 @@ public class PersonaInfo {
         this.user = user;
     }
 
-    public long getPlatform() {
+    public int getPlatform() {
         return platform;
     }
 
-    public void setPlatform(long platform) {
+    public void setPlatform(int platform) {
         this.platform = platform;
     }
 }

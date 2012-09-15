@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.activity.profile.soldier;
 import java.net.URI;
 import java.util.Map;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -55,6 +56,10 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.provider.table.RankProgress;
 
+import static com.ninetwozero.battlelog.dao.RankProgressDAO.fromCursor;
+import static com.ninetwozero.battlelog.dao.RankProgressDAO.fromJSON;
+import static com.ninetwozero.battlelog.dao.RankProgressDAO.rankProgressForDB;
+
 public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment,
         OnCloseListDialogListener {
 
@@ -85,6 +90,12 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
             heals, revives, repairs, resupplies, deaths, kdRatio, numberOfWins, numberOfLosses,
             wnRatio, accuracy, killStreak, longestHeadshot, skill, timePlayed, scorePerMinute;
 
+    private PersonaStats ps;
+    private Bundle bundle;
+    private ProgressDialog progressDialog;
+    private boolean hasDBData = false;
+    private RankProgress rankProgress;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -100,7 +111,17 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
 
         // Init
         initFragment(view);
-
+        // TODO create loader
+        Cursor cursor = getContext().getContentResolver()
+                .query(RankProgress.URI, RankProgress.RANK_PROGRESS_PROJECTION,
+                        RankProgress.Columns.PERSONA_ID + "=?", new String[]{String.valueOf(mSelectedPersona)}, null);
+        if(cursor.getCount()> 0){
+            cursor.moveToFirst();
+            rankProgress = fromCursor(cursor);
+            hasDBData = true;
+        } else{
+            getLoaderManager().initLoader(0, bundle, this);
+        }
         // Return
         return view;
 
@@ -109,17 +130,15 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // TODO create loader
-        Cursor cursor = getContext().getContentResolver().query(RankProgress.URI, RankProgress.RANK_PROGRESS_PROJECTION, null, null, null);
-        if(cursor.getCount()> 0){
-            cursor.moveToFirst();
-            Log.e("TEST", cursor.getString(cursor.getColumnIndexOrThrow(RankProgress.Columns.PERSONA_ID)));
-            Log.e("TEST", cursor.getString(cursor.getColumnIndexOrThrow(RankProgress.Columns.RANK_TITLE)));
-            Log.e("TEST", cursor.getString(cursor.getColumnIndexOrThrow(RankProgress.Columns.CURRENT_RANK_SCORE)));
-            Log.e("TEST", cursor.getString(cursor.getColumnIndexOrThrow(RankProgress.Columns.NEXT_RANK_SCORE)));
-            Log.e("TEST", cursor.getString(cursor.getColumnIndexOrThrow(RankProgress.Columns.SCORE)));
+        this.bundle = savedInstanceState;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(hasDBData){
+            populateStats();
         }
-        getLoaderManager().initLoader(0, savedInstanceState, this);
     }
 
     public void initFragment(View view) {
@@ -241,54 +260,65 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
          */
     }
 
-    private void populateStats(PersonaStats pd) {
+    private void populateStats() {
 
-        if (pd == null) {
+        if (rankProgress == null) {
             return;
         }
 
-        personaName.setText(mSelectedPersonaName + " " + pd.resolvePlatformId());
-        rankTitle.setText(fromResource((int) pd.getRankId()));
-        rankId.setText(String.valueOf(pd.getRankId()));
+        personaName.setText(rankProgress.getPersonaName() + " " + rankProgress.getPlatform());
+        rankTitle.setText(fromResource(rankProgress.getRank()));
+        rankId.setText(String.valueOf(rankProgress.getRank()));
 
         // Progress
-        mProgressBar.setMax((int) pd.getPointsNeededToLvlUp());
-        mProgressBar.setProgress((int) pd.getPointsProgressLvl());
-        currentLevelPoints.setText(String.valueOf(pd.getPointsProgressLvl()));
-        nextLevelPoints.setText(String.valueOf(pd.getPointsNeededToLvlUp()));
-        pointsToMake.setText(String.valueOf(pd.getPointsLeft()));
+        mProgressBar.setMax((int)(rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
+        mProgressBar.setProgress((int) (rankProgress.getScore() - rankProgress.getCurrentRankScore()));
+        currentLevelPoints.setText(String.valueOf(rankProgress.getScore() - rankProgress.getCurrentRankScore()));
+        nextLevelPoints.setText(String.valueOf(rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
+        pointsToMake.setText(String.valueOf(rankProgress.getNextRankScore() - rankProgress.getScore()));
 
-        // Score
-        assaultScore.setText(String.valueOf(pd.getScoreAssault()));
-        engineerScore.setText(String.valueOf(pd.getScoreEngineer()));
-        supportScore.setText(String.valueOf(pd.getScoreSupport()));
-        reconScore.setText(String.valueOf(pd.getScoreRecon()));
-        vehiclesScore.setText(String.valueOf(pd.getScoreVehicles()));
-        combatScore.setText(String.valueOf(pd.getScoreCombat()));
-        awardsScore.setText(String.valueOf(pd.getScoreAwards()));
-        unlocksScore.setText(String.valueOf(pd.getScoreUnlocks()));
-        totalScore.setText(String.valueOf(pd.getScoreTotal()));
+        /*personaName.setText(mSelectedPersonaName + " " + ps.resolvePlatformId());
+        rankTitle.setText(fromResource((int) ps.getRankId()));
+        rankId.setText(String.valueOf(ps.getRankId()));
+
+        // Progress
+        mProgressBar.setMax((int) ps.getPointsNeededToLvlUp());
+        mProgressBar.setProgress((int) ps.getPointsProgressLvl());
+        currentLevelPoints.setText(String.valueOf(ps.getPointsProgressLvl()));
+        nextLevelPoints.setText(String.valueOf(ps.getPointsNeededToLvlUp()));
+        pointsToMake.setText(String.valueOf(ps.getPointsLeft()));*/
+
+        /*// Score
+        assaultScore.setText(String.valueOf(ps.getScoreAssault()));
+        engineerScore.setText(String.valueOf(ps.getScoreEngineer()));
+        supportScore.setText(String.valueOf(ps.getScoreSupport()));
+        reconScore.setText(String.valueOf(ps.getScoreRecon()));
+        vehiclesScore.setText(String.valueOf(ps.getScoreVehicles()));
+        combatScore.setText(String.valueOf(ps.getScoreCombat()));
+        awardsScore.setText(String.valueOf(ps.getScoreAwards()));
+        unlocksScore.setText(String.valueOf(ps.getScoreUnlocks()));
+        totalScore.setText(String.valueOf(ps.getScoreTotal()));
 
         // Stats
-        numberOfKills.setText(String.valueOf(pd.getNumKills()));
-        numberOfAssists.setText(String.valueOf(pd.getNumAssists()));
-        vehiclesDestroyed.setText(String.valueOf(pd.getNumVehicles()));
-        vehiclesDestroyedAssists.setText(String.valueOf(pd.getNumVehicleAssists()));
-        heals.setText(String.valueOf(pd.getNumHeals()));
-        revives.setText(String.valueOf(pd.getNumRevives()));
-        repairs.setText(String.valueOf(pd.getNumRepairs()));
-        resupplies.setText(String.valueOf(pd.getNumResupplies()));
-        deaths.setText(String.valueOf(pd.getNumDeaths()));
-        kdRatio.setText(String.valueOf(pd.getKDRatio()));
-        numberOfWins.setText(String.valueOf(pd.getNumWins()));
-        numberOfLosses.setText(String.valueOf(pd.getNumLosses()));
-        wnRatio.setText(String.valueOf(pd.getWLRatio()));
-        accuracy.setText(pd.getAccuracy() + "%");
-        killStreak.setText(String.valueOf(pd.getLongestKS()));
-        longestHeadshot.setText(pd.getLongestHS() + " m");
-        skill.setText(String.valueOf(pd.getSkill()));
-        timePlayed.setText(String.valueOf(pd.getTimePlayedString()));
-        scorePerMinute.setText(String.valueOf(pd.getScorePerMinute()));
+        numberOfKills.setText(String.valueOf(ps.getNumKills()));
+        numberOfAssists.setText(String.valueOf(ps.getNumAssists()));
+        vehiclesDestroyed.setText(String.valueOf(ps.getNumVehicles()));
+        vehiclesDestroyedAssists.setText(String.valueOf(ps.getNumVehicleAssists()));
+        heals.setText(String.valueOf(ps.getNumHeals()));
+        revives.setText(String.valueOf(ps.getNumRevives()));
+        repairs.setText(String.valueOf(ps.getNumRepairs()));
+        resupplies.setText(String.valueOf(ps.getNumResupplies()));
+        deaths.setText(String.valueOf(ps.getNumDeaths()));
+        kdRatio.setText(String.valueOf(ps.getKDRatio()));
+        numberOfWins.setText(String.valueOf(ps.getNumWins()));
+        numberOfLosses.setText(String.valueOf(ps.getNumLosses()));
+        wnRatio.setText(String.valueOf(ps.getWLRatio()));
+        accuracy.setText(ps.getAccuracy() + "%");
+        killStreak.setText(String.valueOf(ps.getLongestKS()));
+        longestHeadshot.setText(ps.getLongestHS() + " m");
+        skill.setText(String.valueOf(ps.getSkill()));
+        timePlayed.setText(String.valueOf(ps.getTimePlayedString()));
+        scorePerMinute.setText(String.valueOf(ps.getScorePerMinute()));*/
     }
 
     private int personaArrayLength() {
@@ -297,6 +327,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
 
     @Override
     protected Loader<CompletedTask> createLoader(int id, Bundle bundle) {
+        startLoadingDialog();
         return new Bf3Loader(getContext(), callURI);
     }
 
@@ -308,89 +339,28 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {
         if (task.result.equals(CompletedTask.Result.SUCCESS)) {
             findViews();
-            PersonaStats ps = personaStatsFrom(task);
-            updateDatabase(ps);
-            populateStats(ps);
+            PersonaInfo pi = personaStatsFrom(task);
+            updateDatabase(pi);
+            rankProgress = fromJSON(pi);
+            if(progressDialog != null){
+                progressDialog.dismiss();
+            }
+            populateStats();
         }
     }
 
-    private PersonaStats personaStatsFrom(CompletedTask task) {
+    private PersonaInfo personaStatsFrom(CompletedTask task) {
         Gson gson = new Gson();
         PersonaInfo data = gson.fromJson(task.jsonObject, PersonaInfo.class);
-        return new PersonaStats(data);
+        return data;
     }
 
     private String fromResource(int rank) {
         return getResources().getStringArray(R.array.rank)[rank];
     }
 
-    private void updateDatabase(PersonaStats ps){
-        ContentValues values = new ContentValues();
-        values.put(RankProgress.Columns.PERSONA_ID, mSelectedPersona);
-        values.put(RankProgress.Columns.RANK_TITLE, fromResource((int) ps.getRankId()));
-        values.put(RankProgress.Columns.CURRENT_RANK_SCORE, ps.getPointsProgressLvl());
-        values.put(RankProgress.Columns.NEXT_RANK_SCORE, ps.getPointsNeededToLvlUp());
-        values.put(RankProgress.Columns.SCORE, ps.getPointsLeft());
-
-        getContext().getContentResolver().insert(RankProgress.URI, values);
-    }
-
-    /*
-     * public class AsyncCache extends AsyncTask<Void, Void, Boolean> { //
-     * Attributes public AsyncCache() { }
-     * @Override protected void onPreExecute() { }
-     * @Override protected Boolean doInBackground(Void... arg0) { try { //
-     * Get... if (mProfileData != null && mProfileData.getNumPersonas() > 0) {
-     * mPersonaStats = CacheHandler.Persona.select(mContext,
-     * mProfileData.getPersonaArray()); // Is this the user? mSelectedPersona =
-     * mProfileData.getPersona(mSelectedPosition).getId(); } // ...validate!
-     * return (mPersonaStats != null && !mPersonaStats.isEmpty()); } catch
-     * (Exception ex) { ex.printStackTrace(); return false; } }
-     * @Override protected void onPostExecute(Boolean result) { if (result) { //
-     * Siiiiiiiiilent refresh //
-     * populateStats(personaStats.get(selectedPersona)); new
-     * AsyncRefresh().execute(); } else { new AsyncRefresh().execute(); } } }
-     */
-
-    /*
-     * public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> { public
-     * AsyncRefresh() { }
-     * @Override protected void onPreExecute() {
-     *//* LOADER LIKE IN FORUMS? *//*
-                                    * }
-                                    * @Override protected Boolean
-                                    * doInBackground(Void... arg0) { try {
-                                    * Log.d(Constants.DEBUG_TAG, "profile => " +
-                                    * mProfileData); // Do we have any personas?
-                                    * if (mProfileData.getNumPersonas() > 0) {
-                                    * // Set the selected persona?
-                                    * mSelectedPersona = (mSelectedPersona == 0)
-                                    * ? mProfileData.getPersona(0).getId() :
-                                    * mSelectedPersona; // Grab the stats
-                                    * mPersonaStats = new
-                                    * ProfileClient(mProfileData
-                                    * ).getStats(mContext); } // ...validate!
-                                    * return (mPersonaStats != null &&
-                                    * !mPersonaStats.isEmpty()); } catch
-                                    * (Exception ex) { ex.printStackTrace();
-                                    * return false; } }
-                                    * @Override protected void
-                                    * onPostExecute(Boolean result) { // Fail?
-                                    * if (result) {
-                                    * populateStats(mPersonaStats.get
-                                    * (mSelectedPersona)); } else {
-                                    * Toast.makeText(mContext,
-                                    * R.string.general_no_data,
-                                    * Toast.LENGTH_SHORT).show(); } } }
-                                    */
-
-    public void reload() {
-
-        /*
-         * // ASYNC!!! if (mPersonaStats == null) { new AsyncCache().execute();
-         * } else { new AsyncRefresh().execute(); }
-         */
-
+    private void updateDatabase(PersonaInfo pi){
+        getContext().getContentResolver().insert(RankProgress.URI, rankProgressForDB(pi, mSelectedPersona));
     }
 
     public void setProfileData(ProfileData p) {
@@ -450,4 +420,15 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         mComparing = c;
     }
 
+    @Override
+    public void reload() {}
+
+    private void startLoadingDialog(){   //TODO extract multiple duplicates of same code
+        this.progressDialog = new ProgressDialog(mContext);
+        this.progressDialog.setTitle(mContext
+                .getString(R.string.general_wait));
+        this.progressDialog.setMessage(mContext
+                .getString(R.string.general_downloading));
+        this.progressDialog.show();
+    }
 }
