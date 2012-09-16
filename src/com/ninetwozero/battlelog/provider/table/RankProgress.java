@@ -6,7 +6,7 @@ import com.ninetwozero.battlelog.Battlelog;
 
 public class RankProgress {
 
-    public static final Uri URI = Uri.parse("content://" + Battlelog.AUTHORITY + "/rankProgress");
+    public static final Uri URI = Uri.parse("content://" + Battlelog.AUTHORITY + "/rankProgress/");
 
     public interface Columns extends BaseColumns {
         public static final String ID = "_id";

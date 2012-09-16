@@ -128,17 +128,22 @@
 
         <RelativeLayout
             android:id="@+id/wrap_stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Wrap"
             android:layout_below="@+id/wrap_progress" >
 
             <TextView
-                android:id="@+id/string100"
+                android:id="@+id/stats_header"
                 style="@style/InfoHeading"
                 android:padding="5dp"
                 android:text="@string/label_stats" />
-            <!-- START_STATS_LOOP -->
-            <!-- START_STATS_ITEM -->
+            <ListView
+              android:id="@+id/persona_statistics"
+              style="@style/MatchWidth"
+              android:layout_below="@id/stats_header"
+              />
+
+            <!--&lt;!&ndash; START_STATS_LOOP &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:id="@+id/string_left_kills"
@@ -155,8 +160,8 @@
                 android:layout_below="@id/string100"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="100" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -171,8 +176,8 @@
                 android:layout_below="@id/string_stats_kills"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="10" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:id="@+id/string_left_vehicles"
@@ -189,8 +194,8 @@
                 android:layout_below="@id/string_stats_assists"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="100" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -205,8 +210,8 @@
                 android:layout_below="@id/string_stats_vkills"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="10" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -221,8 +226,8 @@
                 android:layout_below="@id/string_stats_vassists"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="10" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -237,8 +242,8 @@
                 android:layout_below="@id/string_stats_heals"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="10" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -253,8 +258,8 @@
                 android:layout_below="@id/string_stats_revives"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="10" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -269,8 +274,8 @@
                 android:layout_below="@id/string_stats_repairs"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="10" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -285,8 +290,8 @@
                 android:layout_below="@id/string_stats_resupplies"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="10" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:id="@+id/string_left_kdr"
@@ -305,8 +310,8 @@
                 android:layout_below="@id/string_stats_deaths"
                 android:layout_toRightOf="@id/string_left_kdr"
                 android:text="10" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -321,8 +326,8 @@
                 android:layout_below="@id/string_stats_kdr"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="100" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -337,8 +342,8 @@
                 android:layout_below="@id/string_stats_wins"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="10" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:id="@+id/string106"
@@ -354,8 +359,8 @@
                 android:layout_below="@id/string_stats_losses"
                 android:layout_toRightOf="@id/string106"
                 android:text="10" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -370,8 +375,8 @@
                 android:layout_below="@id/string_stats_wlr"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="1.3%" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -386,8 +391,8 @@
                 android:layout_below="@id/string_stats_accuracy"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="100.50 metres" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -402,8 +407,8 @@
                 android:layout_below="@id/string_stats_lhs"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="70" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -418,8 +423,8 @@
                 android:layout_below="@id/string_stats_lks"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="1000" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_STATS_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_STATS_ITEM &ndash;&gt;
 
             <TextView
                 android:layout_width="wrap_content"
@@ -434,8 +439,8 @@
                 android:layout_below="@id/string_stats_skill"
                 android:layout_toRightOf="@id/string_left_kills"
                 android:text="1H 59M 28S" />
-            <!-- END_STATS_ITEM -->
-            <!-- START_SCORE_ITEM -->
+            &lt;!&ndash; END_STATS_ITEM &ndash;&gt;
+            &lt;!&ndash; START_SCORE_ITEM &ndash;&gt;
 
             <TextView
                 android:id="@+id/string1110"
@@ -450,7 +455,7 @@
                 android:layout_width="fill_parent"
                 android:layout_below="@id/string_stats_time"
                 android:layout_toRightOf="@id/string_left_kills"
-                android:text="122222" />
+                android:text="122222" />-->
             <!-- END_STATS_ITEM -->
         </RelativeLayout>
 

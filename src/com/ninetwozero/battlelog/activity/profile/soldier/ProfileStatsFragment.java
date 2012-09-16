@@ -15,10 +15,10 @@
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,31 +34,30 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 
 import com.google.gson.Gson;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
+import com.ninetwozero.battlelog.dao.PersonaStatisticsDAO;
+import com.ninetwozero.battlelog.dao.RankProgressDAO;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PersonaStats;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
 import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
-import com.ninetwozero.battlelog.factory.URIFactory;
+import com.ninetwozero.battlelog.factory.UriFactory;
 import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
 import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.provider.table.PersonaStatistics;
 import com.ninetwozero.battlelog.provider.table.RankProgress;
 
-import static com.ninetwozero.battlelog.dao.RankProgressDAO.fromCursor;
-import static com.ninetwozero.battlelog.dao.RankProgressDAO.fromJSON;
-import static com.ninetwozero.battlelog.dao.RankProgressDAO.rankProgressForDB;
+import static com.ninetwozero.battlelog.dao.RankProgressDAO.*;
+import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.*;
 
 public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment,
         OnCloseListDialogListener {
@@ -95,6 +94,8 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     private ProgressDialog progressDialog;
     private boolean hasDBData = false;
     private RankProgress rankProgress;
+    private ListView personaStatisticsListView;
+    private List<PersonaStatistics> listPersonaStatistics;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -117,7 +118,8 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
                         RankProgress.Columns.PERSONA_ID + "=?", new String[]{String.valueOf(mSelectedPersona)}, null);
         if(cursor.getCount()> 0){
             cursor.moveToFirst();
-            rankProgress = fromCursor(cursor);
+            rankProgress = RankProgressDAO.fromCursor(cursor);
+            findViews();
             hasDBData = true;
         } else{
             getLoaderManager().initLoader(0, bundle, this);
@@ -131,12 +133,8 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.bundle = savedInstanceState;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         if(hasDBData){
+            findViews();
             populateStats();
         }
     }
@@ -152,7 +150,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
             mSelectedPersona = getSelectedPersonaId(mSelectedPosition);
             mSelectedPlatformId = getPlatformIdFor(mSelectedPosition);
             mSelectedPersonaName = getSelectedPersonaName(mSelectedPosition);
-            callURI = URIFactory.personaOverview(mSelectedPersona, mSelectedPlatformId);
+            callURI = UriFactory.personaOverview(mSelectedPersona, mSelectedPlatformId);
         }
 
         // Click on the wrap
@@ -202,7 +200,6 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         // Let's find it
         View view = getView();
         if (view == null) {
-
             return;
         }
 
@@ -220,7 +217,8 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         nextLevelPoints = (TextView) view.findViewById(R.id.string_progress_max);
         pointsToMake = (TextView) view.findViewById(R.id.string_progress_left);
 
-        // Score
+        personaStatisticsListView = (ListView) view.findViewById(R.id.persona_statistics);
+        /*// Score
         assaultScore = (TextView) view.findViewById(R.id.string_score_assault);
         engineerScore = (TextView) view.findViewById(R.id.string_score_engineer);
         supportScore = (TextView) view.findViewById(R.id.string_score_support);
@@ -250,7 +248,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         longestHeadshot = (TextView) view.findViewById(R.id.string_stats_lhs);
         skill = (TextView) view.findViewById(R.id.string_stats_skill);
         timePlayed = (TextView) view.findViewById(R.id.string_stats_time);
-        scorePerMinute = (TextView) view.findViewById(R.id.string_stats_spm);
+        scorePerMinute = (TextView) view.findViewById(R.id.string_stats_spm);*/
 
         // Are we going to compare?
         /*
@@ -265,7 +263,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         if (rankProgress == null) {
             return;
         }
-
+        Log.e("STATS", "Populating view");
         personaName.setText(rankProgress.getPersonaName() + " " + rankProgress.getPlatform());
         rankTitle.setText(fromResource(rankProgress.getRank()));
         rankId.setText(String.valueOf(rankProgress.getRank()));
@@ -276,7 +274,8 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         currentLevelPoints.setText(String.valueOf(rankProgress.getScore() - rankProgress.getCurrentRankScore()));
         nextLevelPoints.setText(String.valueOf(rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
         pointsToMake.setText(String.valueOf(rankProgress.getNextRankScore() - rankProgress.getScore()));
-
+        PersonaStatisticsAdapter psa = new PersonaStatisticsAdapter(getContext(), R.layout.list_item_persona_statistics, listPersonaStatistics);
+        personaStatisticsListView.setAdapter(psa);
         /*personaName.setText(mSelectedPersonaName + " " + ps.resolvePlatformId());
         rankTitle.setText(fromResource((int) ps.getRankId()));
         rankId.setText(String.valueOf(ps.getRankId()));
@@ -337,11 +336,10 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
 
     @Override
     public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {
-        if (task.result.equals(CompletedTask.Result.SUCCESS)) {
+        if (task.result.equals(CompletedTask.Result.SUCCESS)) {  Log.e("STATS", "Load finished");
             findViews();
             PersonaInfo pi = personaStatsFrom(task);
             updateDatabase(pi);
-            rankProgress = fromJSON(pi);
             if(progressDialog != null){
                 progressDialog.dismiss();
             }
@@ -360,7 +358,18 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     }
 
     private void updateDatabase(PersonaInfo pi){
+        updateRankProgressDB(pi);
+        updatePersonaStats(pi);
+    }
+
+    private void updateRankProgressDB(PersonaInfo pi){
+        rankProgress = rankProgressFromJSON(pi);     Log.e("STATS", "Populated rankProgress");
         getContext().getContentResolver().insert(RankProgress.URI, rankProgressForDB(pi, mSelectedPersona));
+    }
+
+    private void updatePersonaStats(PersonaInfo pi){
+        listPersonaStatistics = PersonaStatisticsDAO.personaStatisticsFromJSON(pi);      Log.e("STATS", "Populated personaStatistics");
+        getContext().getContentResolver().insert(PersonaStatistics.URI, personaStatisticsForDB(pi, mSelectedPersona));
     }
 
     public void setProfileData(ProfileData p) {
@@ -430,5 +439,39 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         this.progressDialog.setMessage(mContext
                 .getString(R.string.general_downloading));
         this.progressDialog.show();
+    }
+
+    public class PersonaStatisticsAdapter extends ArrayAdapter<PersonaStatistics>{
+        private final Context context;
+        private final List<PersonaStatistics> statistics;
+
+        public PersonaStatisticsAdapter(Context context, int textViewResourceId, List<PersonaStatistics> statistics) {
+            super(context, textViewResourceId, statistics);
+            this.context = context;
+            this.statistics = statistics;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if(convertView == null){
+                convertView = LayoutInflater.from(context).inflate(R.layout.list_item_persona_statistics, null);
+                holder = new ViewHolder();
+                holder.title = (TextView) convertView.findViewById(R.id.persona_statistics_title);
+                holder.value = (TextView) convertView.findViewById(R.id.persona_statistics_value);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            holder.title.setText(context.getResources().getString(statistics.get(position).getTitle()));
+            holder.value.setText(statistics.get(position).getValue());
+            return convertView;
+        }
+
+        private class ViewHolder{
+            TextView title;
+            TextView value;
+        }
     }
 }

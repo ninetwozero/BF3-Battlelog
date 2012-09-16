@@ -1,3 +1,3 @@
 CREATE TABLE IF NOT EXISTS "rankProgress" ("_id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "personaId" INTEGER NOT NULL, "personaName" TEXT NOT NULL ,"platform" TEXT, "rank" INTEGER, "currentRankScore" INTEGER, "nextRankScore" INTEGER, "score" INTEGER);
-CREATE TABLE IF NOT EXISTS "personaStats" ("_id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "personaID" INTEGER NOT NULL, "key" TEXT, "value" TEXT, "style" TEXT);
+CREATE TABLE IF NOT EXISTS "personaStatistics" ("_id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "personaID" INTEGER NOT NULL, "kills" TEXT, "killAssists" TEXT, "vehicleDestroyed" TEXT, "vehicleAssists" TEXT, "heals" TEXT, "revives" TEXT, "repairs" TEXT, "resupplies" TEXT, "deaths" TEXT, "kdRatio" TEXT, "wins" TEXT, "losses" TEXT, "wlRatio" TEXT, "accuracy" TEXT, "longestHeadshot" TEXT, "longestKillstreak" TEXT, "skillrating" TEXT, "timePlayed" TEXT, "scorePerMinute" TEXT);
 

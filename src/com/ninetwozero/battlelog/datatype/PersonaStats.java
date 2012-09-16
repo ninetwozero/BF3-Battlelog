@@ -145,9 +145,9 @@ public class PersonaStats implements Parcelable {
         numLosses = (int) statsOverview.getGameLost();
         skill = statsOverview.getSkill();
         kdRatio = statsOverview.getKdRatio();
-        accuracy = statsOverview.getAverageWeaponAccuracy();
+        accuracy = statsOverview.getAccuracy();
         longestHS = statsOverview.getLongestHeadshot();
-        longestKS = statsOverview.getKillStreakBonus();
+        longestKS = statsOverview.getLongestKillStreak();
         scorePerMinute = statsOverview.getScoreMin();
         scoreAssault = kitScores.getAssaultScore();
         scoreEngineer = kitScores.getEngineerScore();

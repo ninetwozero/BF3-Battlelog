@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/persona_statistics_container"
+              style="@style/Wrap">
+  <TextView
+      android:id="@+id/persona_statistics_title"
+      style="@style/Wrap"
+      android:text="@string/title_profile"
+      />
+  <TextView
+      android:id="@+id/persona_statistics_value"
+      style="@style/Wrap"
+      android:text="@string/title_profile"
+      android:layout_toRightOf="@id/persona_statistics_title"
+      />
+</RelativeLayout>

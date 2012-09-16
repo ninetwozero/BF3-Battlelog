@@ -21,7 +21,7 @@ public class RankProgressDAO {
         return rp;
     }
 
-    public static RankProgress fromJSON(PersonaInfo pi){
+    public static RankProgress rankProgressFromJSON(PersonaInfo pi){
         RankProgress rp = new RankProgress();
         rp.setPersonaId(pi.getPersonaId());
         rp.setPersonaName(pi.getUser().getUserName());
@@ -36,6 +36,8 @@ public class RankProgressDAO {
     public static ContentValues rankProgressForDB(PersonaInfo pi, long personaId){
         ContentValues values = new ContentValues();
         values.put(RankProgress.Columns.PERSONA_ID, personaId);
+        values.put(RankProgress.Columns.PERSONA_NAME, pi.getUser().getUserName());
+        values.put(RankProgress.Columns.PLATFORM, platformName(pi.getPlatform()));
         values.put(RankProgress.Columns.RANK, pi.getCurrentRank().getLevel());
         values.put(RankProgress.Columns.CURRENT_RANK_SCORE, pi.getCurrentRank().getRankPoints());
         values.put(RankProgress.Columns.NEXT_RANK_SCORE, pi.getNextRank().getRankPoints());

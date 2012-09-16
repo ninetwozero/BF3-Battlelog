@@ -2,22 +2,20 @@ package com.ninetwozero.battlelog.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
-import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import com.ninetwozero.battlelog.Battlelog;
+import com.ninetwozero.battlelog.factory.UriFactory;
 
-import static com.ninetwozero.battlelog.provider.BattlelogUriMatcher.*;
+import static com.ninetwozero.battlelog.factory.UriFactory.URI_PATH;
+import static com.ninetwozero.battlelog.factory.UriFactory.URI_CODES;
 
 public class RankProgressContentProvider  extends ContentProvider {
 
     private DatabaseManager databaseManager;
 
     private SQLiteDatabase database;
-
-    private BattlelogUriMatcher uriMatcher = new BattlelogUriMatcher(UriMatcher.NO_MATCH);
 
     public synchronized SQLiteDatabase getDatabase(){
         if(database == null){
@@ -36,13 +34,7 @@ public class RankProgressContentProvider  extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        checkColumns(projection);
-        queryBuilder.setTables(RANK_PROGRESS);
-        /*int uriType = uriMatcher.match(uri);
-        switch (uriType){
-            case PERSONAS_RANK_PROGRESS:
-                queryBuilder.appendWhere("personaId = ");
-        }*/
+        queryBuilder.setTables(getType(uri));
         SQLiteDatabase db = getDatabase();
         Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
@@ -51,16 +43,21 @@ public class RankProgressContentProvider  extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        return null;
+        switch(UriFactory.URI_MATCHER.match(uri)){
+            case URI_CODES.RANK_PROGRESS:
+                return URI_PATH.RANK_PROGRESS;
+            case URI_CODES.PERSONA_STATISTICS:
+                return URI_PATH.PERSONA_STATISTICS;
+            default:
+                return "";
+        }
     }
 
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        int uriType = uriMatcher.match(uri);
-        int rowsDeleted = 0;
-        long id = database.insert(RANK_PROGRESS, null, contentValues);
+        long id = database.insert(getType(uri), null, contentValues);
         getContext().getContentResolver().notifyChange(uri, null);
-        return Uri.parse(RANK_PROGRESS + "/" +id);
+        return Uri.parse(getType(uri) + "/" +id);
     }
 
     @Override
@@ -71,9 +68,5 @@ public class RankProgressContentProvider  extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    private void checkColumns(String[] projections){
-
     }
 }
