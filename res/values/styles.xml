@@ -98,19 +98,4 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
     </style>
-
-    <!-- Colors -->
-    <color name="kit_recon">#bf4949</color>
-    <color name="kit_assault">#308DBF</color>
-    <color name="kit_engineer">#efff40</color>
-    <color name="kit_support">#86ae31</color>
-    <color name="kit_general">#8d8d8d</color>
-    <color name="green">#309030</color>
-    <color name="blue">#308DBF</color>
-    <color name="grey">#3A3A3A</color>
-    <color name="lightgrey">#EEEEEE</color>
-    <color name="orange">#e7ab0a</color>
-    <color name="officialblue">#E6F3FF</color>
-    <color name="black">#000000</color>
-
 </resources>
