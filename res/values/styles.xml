@@ -111,5 +111,6 @@
     <color name="lightgrey">#EEEEEE</color>
     <color name="orange">#e7ab0a</color>
     <color name="officialblue">#E6F3FF</color>
+    <color name="black">#000000</color>
 
 </resources>

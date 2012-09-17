@@ -136,11 +136,24 @@
                 style="@style/InfoHeading"
                 android:padding="5dp"
                 android:text="@string/label_stats" />
-            <ListView
+            <TableLayout
               android:id="@+id/persona_statistics"
               style="@style/MatchWidth"
-              android:layout_below="@id/stats_header"
-              />
+              android:layout_below="@id/stats_header">
+
+              <TableRow
+                  style="@style/Wrap"
+                  android:visibility="gone">
+                <TextView
+                    style="@style/Wrap"
+                    android:text="@string/title_profile"
+                    />
+                <TextView
+                    style="@style/Wrap"
+                    android:text="@string/title_profile"
+                    />
+              </TableRow>
+              </TableLayout>
 
             <!--&lt;!&ndash; START_STATS_LOOP &ndash;&gt;
             &lt;!&ndash; START_STATS_ITEM &ndash;&gt;

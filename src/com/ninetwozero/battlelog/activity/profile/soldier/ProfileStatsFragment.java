@@ -84,22 +84,19 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     private final String DIALOG = "dialog";
     private TextView personaName, rankTitle, rankId, currentLevelPoints, nextLevelPoints,
             pointsToMake, assaultScore, engineerScore, supportScore, reconScore,
-            vehiclesScore, combatScore, awardsScore, unlocksScore, totalScore, numberOfKills,
-            numberOfAssists, vehiclesDestroyed, vehiclesDestroyedAssists,
-            heals, revives, repairs, resupplies, deaths, kdRatio, numberOfWins, numberOfLosses,
-            wnRatio, accuracy, killStreak, longestHeadshot, skill, timePlayed, scorePerMinute;
+            vehiclesScore, combatScore, awardsScore, unlocksScore, totalScore;
 
     private PersonaStats ps;
     private Bundle bundle;
     private ProgressDialog progressDialog;
     private boolean hasDBData = false;
     private RankProgress rankProgress;
-    private ListView personaStatisticsListView;
+    private TableLayout personaStatisticsTable;
     private List<PersonaStatistics> listPersonaStatistics;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
@@ -116,12 +113,12 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         Cursor cursor = getContext().getContentResolver()
                 .query(RankProgress.URI, RankProgress.RANK_PROGRESS_PROJECTION,
                         RankProgress.Columns.PERSONA_ID + "=?", new String[]{String.valueOf(mSelectedPersona)}, null);
-        if(cursor.getCount()> 0){
+        if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             rankProgress = RankProgressDAO.fromCursor(cursor);
             findViews();
             hasDBData = true;
-        } else{
+        } else {
             getLoaderManager().initLoader(0, bundle, this);
         }
         // Return
@@ -133,7 +130,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.bundle = savedInstanceState;
-        if(hasDBData){
+        if (hasDBData) {
             findViews();
             populateStats();
         }
@@ -217,7 +214,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         nextLevelPoints = (TextView) view.findViewById(R.id.string_progress_max);
         pointsToMake = (TextView) view.findViewById(R.id.string_progress_left);
 
-        personaStatisticsListView = (ListView) view.findViewById(R.id.persona_statistics);
+        personaStatisticsTable = (TableLayout) view.findViewById(R.id.persona_statistics);
         /*// Score
         assaultScore = (TextView) view.findViewById(R.id.string_score_assault);
         engineerScore = (TextView) view.findViewById(R.id.string_score_engineer);
@@ -227,28 +224,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         combatScore = (TextView) view.findViewById(R.id.string_score_combat);
         awardsScore = (TextView) view.findViewById(R.id.string_score_award);
         unlocksScore = (TextView) view.findViewById(R.id.string_score_unlock);
-        totalScore = (TextView) view.findViewById(R.id.string_score_total);
-
-        // Stats
-        numberOfKills = (TextView) view.findViewById(R.id.string_stats_kills);
-        numberOfAssists = (TextView) view.findViewById(R.id.string_stats_assists);
-        vehiclesDestroyed = (TextView) view.findViewById(R.id.string_stats_vkills);
-        vehiclesDestroyedAssists = (TextView) view.findViewById(R.id.string_stats_vassists);
-        heals = (TextView) view.findViewById(R.id.string_stats_heals);
-        revives = (TextView) view.findViewById(R.id.string_stats_revives);
-        repairs = (TextView) view.findViewById(R.id.string_stats_repairs);
-        resupplies = (TextView) view.findViewById(R.id.string_stats_resupplies);
-        deaths = (TextView) view.findViewById(R.id.string_stats_deaths);
-        kdRatio = (TextView) view.findViewById(R.id.string_stats_kdr);
-        numberOfWins = (TextView) view.findViewById(R.id.string_stats_wins);
-        numberOfLosses = (TextView) view.findViewById(R.id.string_stats_losses);
-        wnRatio = (TextView) view.findViewById(R.id.string_stats_wlr);
-        accuracy = (TextView) view.findViewById(R.id.string_stats_accuracy);
-        killStreak = (TextView) view.findViewById(R.id.string_stats_lks);
-        longestHeadshot = (TextView) view.findViewById(R.id.string_stats_lhs);
-        skill = (TextView) view.findViewById(R.id.string_stats_skill);
-        timePlayed = (TextView) view.findViewById(R.id.string_stats_time);
-        scorePerMinute = (TextView) view.findViewById(R.id.string_stats_spm);*/
+        totalScore = (TextView) view.findViewById(R.id.string_score_total);*/
 
         // Are we going to compare?
         /*
@@ -269,13 +245,31 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         rankId.setText(String.valueOf(rankProgress.getRank()));
 
         // Progress
-        mProgressBar.setMax((int)(rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
+        mProgressBar.setMax((int) (rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
         mProgressBar.setProgress((int) (rankProgress.getScore() - rankProgress.getCurrentRankScore()));
         currentLevelPoints.setText(String.valueOf(rankProgress.getScore() - rankProgress.getCurrentRankScore()));
         nextLevelPoints.setText(String.valueOf(rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
         pointsToMake.setText(String.valueOf(rankProgress.getNextRankScore() - rankProgress.getScore()));
-        PersonaStatisticsAdapter psa = new PersonaStatisticsAdapter(getContext(), R.layout.list_item_persona_statistics, listPersonaStatistics);
-        personaStatisticsListView.setAdapter(psa);
+
+        for (PersonaStatistics ps : listPersonaStatistics) {
+            TableRow tr = new TableRow(getContext());
+            tr.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            if (ps.getStyle() == R.style.InfoHeading) {
+                tr.setBackgroundColor(R.color.grey);
+            }
+
+            TextView title = new TextView(getContext());
+            title.setText(ps.getTitle());
+            title.setTextColor(R.color.black);
+            tr.addView(title);
+
+            TextView value = new TextView(getContext());
+            value.setText(ps.getValue());
+            value.setTextColor(R.color.black);
+            tr.addView(value);
+
+            personaStatisticsTable.addView(tr);
+        }
         /*personaName.setText(mSelectedPersonaName + " " + ps.resolvePlatformId());
         rankTitle.setText(fromResource((int) ps.getRankId()));
         rankId.setText(String.valueOf(ps.getRankId()));
@@ -296,28 +290,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         combatScore.setText(String.valueOf(ps.getScoreCombat()));
         awardsScore.setText(String.valueOf(ps.getScoreAwards()));
         unlocksScore.setText(String.valueOf(ps.getScoreUnlocks()));
-        totalScore.setText(String.valueOf(ps.getScoreTotal()));
-
-        // Stats
-        numberOfKills.setText(String.valueOf(ps.getNumKills()));
-        numberOfAssists.setText(String.valueOf(ps.getNumAssists()));
-        vehiclesDestroyed.setText(String.valueOf(ps.getNumVehicles()));
-        vehiclesDestroyedAssists.setText(String.valueOf(ps.getNumVehicleAssists()));
-        heals.setText(String.valueOf(ps.getNumHeals()));
-        revives.setText(String.valueOf(ps.getNumRevives()));
-        repairs.setText(String.valueOf(ps.getNumRepairs()));
-        resupplies.setText(String.valueOf(ps.getNumResupplies()));
-        deaths.setText(String.valueOf(ps.getNumDeaths()));
-        kdRatio.setText(String.valueOf(ps.getKDRatio()));
-        numberOfWins.setText(String.valueOf(ps.getNumWins()));
-        numberOfLosses.setText(String.valueOf(ps.getNumLosses()));
-        wnRatio.setText(String.valueOf(ps.getWLRatio()));
-        accuracy.setText(ps.getAccuracy() + "%");
-        killStreak.setText(String.valueOf(ps.getLongestKS()));
-        longestHeadshot.setText(ps.getLongestHS() + " m");
-        skill.setText(String.valueOf(ps.getSkill()));
-        timePlayed.setText(String.valueOf(ps.getTimePlayedString()));
-        scorePerMinute.setText(String.valueOf(ps.getScorePerMinute()));*/
+        totalScore.setText(String.valueOf(ps.getScoreTotal()));*/
     }
 
     private int personaArrayLength() {
@@ -336,11 +309,12 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
 
     @Override
     public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {
-        if (task.result.equals(CompletedTask.Result.SUCCESS)) {  Log.e("STATS", "Load finished");
+        if (task.result.equals(CompletedTask.Result.SUCCESS)) {
+            Log.e("STATS", "Load finished");
             findViews();
             PersonaInfo pi = personaStatsFrom(task);
             updateDatabase(pi);
-            if(progressDialog != null){
+            if (progressDialog != null) {
                 progressDialog.dismiss();
             }
             populateStats();
@@ -357,18 +331,18 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         return getResources().getStringArray(R.array.rank)[rank];
     }
 
-    private void updateDatabase(PersonaInfo pi){
+    private void updateDatabase(PersonaInfo pi) {
         updateRankProgressDB(pi);
         updatePersonaStats(pi);
     }
 
-    private void updateRankProgressDB(PersonaInfo pi){
-        rankProgress = rankProgressFromJSON(pi);     Log.e("STATS", "Populated rankProgress");
+    private void updateRankProgressDB(PersonaInfo pi) {
+        rankProgress = rankProgressFromJSON(pi);
         getContext().getContentResolver().insert(RankProgress.URI, rankProgressForDB(pi, mSelectedPersona));
     }
 
-    private void updatePersonaStats(PersonaInfo pi){
-        listPersonaStatistics = PersonaStatisticsDAO.personaStatisticsFromJSON(pi);      Log.e("STATS", "Populated personaStatistics");
+    private void updatePersonaStats(PersonaInfo pi) {
+        listPersonaStatistics = PersonaStatisticsDAO.personaStatisticsFromJSON(pi);
         getContext().getContentResolver().insert(PersonaStatistics.URI, personaStatisticsForDB(pi, mSelectedPersona));
     }
 
@@ -418,9 +392,9 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
 
             startActivity(
 
-            new Intent(mContext, UnlockActivity.class)
-                    .putExtra("profile", mProfileData)
-                    .putExtra("selectedPosition", position));
+                    new Intent(mContext, UnlockActivity.class)
+                            .putExtra("profile", mProfileData)
+                            .putExtra("selectedPosition", position));
         }
         return true;
     }
@@ -430,48 +404,15 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     }
 
     @Override
-    public void reload() {}
+    public void reload() {
+    }
 
-    private void startLoadingDialog(){   //TODO extract multiple duplicates of same code
+    private void startLoadingDialog() {   //TODO extract multiple duplicates of same code
         this.progressDialog = new ProgressDialog(mContext);
         this.progressDialog.setTitle(mContext
                 .getString(R.string.general_wait));
         this.progressDialog.setMessage(mContext
                 .getString(R.string.general_downloading));
         this.progressDialog.show();
-    }
-
-    public class PersonaStatisticsAdapter extends ArrayAdapter<PersonaStatistics>{
-        private final Context context;
-        private final List<PersonaStatistics> statistics;
-
-        public PersonaStatisticsAdapter(Context context, int textViewResourceId, List<PersonaStatistics> statistics) {
-            super(context, textViewResourceId, statistics);
-            this.context = context;
-            this.statistics = statistics;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if(convertView == null){
-                convertView = LayoutInflater.from(context).inflate(R.layout.list_item_persona_statistics, null);
-                holder = new ViewHolder();
-                holder.title = (TextView) convertView.findViewById(R.id.persona_statistics_title);
-                holder.value = (TextView) convertView.findViewById(R.id.persona_statistics_value);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            holder.title.setText(context.getResources().getString(statistics.get(position).getTitle()));
-            holder.value.setText(statistics.get(position).getValue());
-            return convertView;
-        }
-
-        private class ViewHolder{
-            TextView title;
-            TextView value;
-        }
     }
 }
