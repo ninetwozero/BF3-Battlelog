@@ -21,11 +21,13 @@ public class UriFactory {
     public interface URI_CODES{
         public static final int RANK_PROGRESS = 10;
         public static final int PERSONA_STATISTICS = 20;
+        public static final int SCORE_STATISTICS = 30;
     }
 
     public interface URI_PATH{
         public static final String RANK_PROGRESS = "rankProgress";
         public static final String PERSONA_STATISTICS = "personaStatistics";
+        public static final String SCORE_STATISTICS = "scoreStatistics";
     }
 
     public static final UriMatcher URI_MATCHER;
@@ -33,6 +35,7 @@ public class UriFactory {
         URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
         URI_MATCHER.addURI(Battlelog.AUTHORITY, URI_PATH.RANK_PROGRESS+"/", UriFactory.URI_CODES.RANK_PROGRESS);
         URI_MATCHER.addURI(Battlelog.AUTHORITY, URI_PATH.PERSONA_STATISTICS+"/", URI_CODES.PERSONA_STATISTICS);
+        URI_MATCHER.addURI(Battlelog.AUTHORITY, URI_PATH.SCORE_STATISTICS+"/", URI_CODES.SCORE_STATISTICS);
     }
 
     private static URI createUri(String path) {

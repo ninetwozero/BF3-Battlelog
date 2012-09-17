@@ -248,6 +248,14 @@
     <string name="info_xml_engineer">Engineer</string>
     <string name="info_xml_support">Support</string>
     <string name="info_xml_recon">Recon</string>
+    <string name="info_xml_jet">Jet Fighter</string>
+    <string name="info_xml_tank">Main Battle Tanks</string>
+    <string name="info_xml_ifv">Infantry Fighting Vehicle</string>
+    <string name="info_xml_anti_air">Anti Air</string>
+    <string name="info_xml_scout_heli">Scout Helicopter</string>
+    <string name="info_xml_attack_heli">Attack Helicopter</string>
+    <string name="info_xml_destroyers">Tank Destroyers</string>
+    <string name="info_xml_mobile_arty">Mobile Artillery</string>
     <string name="info_xml_vehicles">Vehicles</string>
     <string name="info_xml_total_in_combat">Total in combat</string>
     <string name="info_xml_award">Award</string>

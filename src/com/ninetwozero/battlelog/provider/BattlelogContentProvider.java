@@ -11,7 +11,7 @@ import com.ninetwozero.battlelog.factory.UriFactory;
 import static com.ninetwozero.battlelog.factory.UriFactory.URI_PATH;
 import static com.ninetwozero.battlelog.factory.UriFactory.URI_CODES;
 
-public class RankProgressContentProvider  extends ContentProvider {
+public class BattlelogContentProvider extends ContentProvider {
 
     private DatabaseManager databaseManager;
 
@@ -48,6 +48,8 @@ public class RankProgressContentProvider  extends ContentProvider {
                 return URI_PATH.RANK_PROGRESS;
             case URI_CODES.PERSONA_STATISTICS:
                 return URI_PATH.PERSONA_STATISTICS;
+            case URI_CODES.SCORE_STATISTICS:
+                return URI_PATH.SCORE_STATISTICS;
             default:
                 return "";
         }

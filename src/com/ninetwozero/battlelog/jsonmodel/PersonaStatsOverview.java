@@ -60,7 +60,7 @@ public class PersonaStatsOverview {
     @SerializedName("longestHeadshot")
     private double longestHeadshot;
     @SerializedName("killStreakBonus")
-    private double longestKillStreak;
+    private int longestKillStreak;
     @SerializedName("elo")
     private double skill;
 
@@ -80,7 +80,7 @@ public class PersonaStatsOverview {
             long gameLost, double wnRatio, long awardScore, long unlockScore, long kills,
             long deaths, double kdRatio, long killAssists, long scoreMin,
             double quitPercentage, long vehiclesDestroyed, long vehiclesDestroyedAssists,
-            double accuracy, double longestHeadshot, double longestKillStreak,
+            double accuracy, double longestHeadshot, int longestKillStreak,
             double skill, long squadScoreBonus, long repairs, long revives,
             long heals, long resupplies, long combatScore) {
         this.rank = rank;
@@ -291,11 +291,11 @@ public class PersonaStatsOverview {
         this.longestHeadshot = longestHeadshot;
     }
 
-    public double getLongestKillStreak() {
+    public int getLongestKillStreak() {
         return longestKillStreak;
     }
 
-    public void setLongestKillStreak(double longestKillStreak) {
+    public void setLongestKillStreak(int longestKillStreak) {
         this.longestKillStreak = longestKillStreak;
     }
 

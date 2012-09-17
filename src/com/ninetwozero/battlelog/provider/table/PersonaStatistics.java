@@ -3,8 +3,9 @@ package com.ninetwozero.battlelog.provider.table;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import com.ninetwozero.battlelog.Battlelog;
+import com.ninetwozero.battlelog.datatype.Statistics;
 
-public class PersonaStatistics {
+public class PersonaStatistics extends Statistics{
 
     public static final Uri URI = Uri.parse("content://" + Battlelog.AUTHORITY + "/personaStatistics");
 
@@ -38,39 +39,4 @@ public class PersonaStatistics {
             Columns.WL_RATIO, Columns.ACCURACY, Columns.LONGEST_HEADSHOT, Columns.LONGEST_KILLSTREAK,
             Columns.SKILLRATING, Columns.TIME_PLAYED, Columns.SCORE_PER_MINUTE
     };
-
-
-    private int title;
-    private String value;
-    private int style;
-
-    public PersonaStatistics(int title, String value, int style){
-        this.title = title;
-        this.value = value;
-        this.style = style;
-    }
-
-    public int getTitle() {
-        return title;
-    }
-
-    public void setTitle(int title) {
-        this.title = title;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public int getStyle() {
-        return style;
-    }
-
-    public void setStyle(int style) {
-        this.style = style;
-    }
 }

@@ -129,7 +129,7 @@
 
     <provider
         android:authorities="com.ninetwozero.battlelog.provider"
-        android:name=".provider.RankProgressContentProvider"
+        android:name=".provider.BattlelogContentProvider"
         />
 
     <!--

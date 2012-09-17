@@ -9,7 +9,7 @@ import static com.ninetwozero.battlelog.misc.ResolvePlatform.platformName;
 
 public class RankProgressDAO {
 
-    public static RankProgress fromCursor(Cursor cursor){
+    public static RankProgress rankProgressFromCursor(Cursor cursor){
         RankProgress rp = new RankProgress();
         rp.setPersonaId(cursor.getLong(cursor.getColumnIndexOrThrow(RankProgress.Columns.PERSONA_ID)));
         rp.setPersonaName(cursor.getString(cursor.getColumnIndexOrThrow(RankProgress.Columns.PERSONA_NAME)));
