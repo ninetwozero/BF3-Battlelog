@@ -5,12 +5,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.ParsedFeedItemData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
@@ -21,6 +23,7 @@ public class FeedItemDataFactory {
 	public static final String NAME_SID = "nameSID";
 	public static final String THREAD_TITLE = "threadTitle";
 	public static final String THREAD_BODY = "threadBody";
+	public static final String POST_BODY = "postBody";
 	public static final String EXPANSION = "expansion";
 	public static final String BLOG_TITLE = "blogTitle";
 	public static final String BLOG_COMMENT_BODY = "blogCommentBody";
@@ -151,13 +154,20 @@ public class FeedItemDataFactory {
 		return feedItemData;
 	}
 
+	/* FIXME: Needs to be able to handle three types; awards, br's and assignments */
 	private static ParsedFeedItemData generateFromSharedGameEvent(
 			Context context, JSONObject jsonObject, ProfileData profile)
 			throws JSONException {
 
 		// Init
-		JSONArray stats = jsonObject.getJSONObject("BF3AWARDS").optJSONArray(
-				STAT_ITEMS);
+		String type = "BF3AWARDS";
+		if( jsonObject.isNull("BF3AWARDS") ) {
+			
+			if( jsonObject.isNull("BF3GAMEREPORT") ) type = "BF3AWARDS";
+			else type = "BF3GAMEREPORT";
+			
+		}
+		JSONArray stats = jsonObject.getJSONObject(type).optJSONArray(STAT_ITEMS);
 		StringBuilder title = new StringBuilder();
 
 		/* TODO: EXPORT TO SMALLER METHODS */
@@ -215,11 +225,11 @@ public class FeedItemDataFactory {
 	private static ParsedFeedItemData generateFromNewForumPost(Context context,
 			JSONObject currItem, ProfileData profile) throws JSONException {
 
+		Log.d(Constants.DEBUG_TAG, "currItem => " + currItem);
 		return new ParsedFeedItemData(
-
 		PublicUtils.createStringWithData(context, R.string.info_p_forumthread,
 				profile.getUsername(), currItem.getString(THREAD_TITLE)),
-				currItem.getString(THREAD_BODY), new ProfileData[] {
+				currItem.getString(POST_BODY), new ProfileData[] {
 
 				profile, null
 
