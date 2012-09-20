@@ -47,9 +47,9 @@ import com.ninetwozero.battlelog.activity.social.ComFriendFragment;
 import com.ninetwozero.battlelog.activity.social.ComNotificationFragment;
 import com.ninetwozero.battlelog.asynctask.AsyncLogout;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class DashboardActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
@@ -132,7 +132,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             mFragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
 
             // Setup the feed
-            mFragmentFeed.setType(FeedItem.TYPE_GLOBAL);
+            mFragmentFeed.setType(FeedClient.TYPE_GLOBAL);
             mFragmentFeed.setCanWrite(true);
 
             // Get the ViewPager

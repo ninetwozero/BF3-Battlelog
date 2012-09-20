@@ -248,6 +248,14 @@
     <string name="info_xml_engineer">Engineer</string>
     <string name="info_xml_support">Support</string>
     <string name="info_xml_recon">Recon</string>
+    <string name="info_xml_jet">Jet Fighter</string>
+    <string name="info_xml_tank">Main Battle Tanks</string>
+    <string name="info_xml_ifv">Infantry Fighting Vehicle</string>
+    <string name="info_xml_anti_air">Anti Air</string>
+    <string name="info_xml_scout_heli">Scout Helicopter</string>
+    <string name="info_xml_attack_heli">Attack Helicopter</string>
+    <string name="info_xml_destroyers">Tank Destroyers</string>
+    <string name="info_xml_mobile_arty">Mobile Artillery</string>
     <string name="info_xml_vehicles">Vehicles</string>
     <string name="info_xml_total_in_combat">Total in combat</string>
     <string name="info_xml_award">Award</string>
@@ -315,6 +323,8 @@
     <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> wrote on the wall for &lt;b>{platoon}&lt;/b>.</string>
     <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> and &lt;b>{username2}&lt;/b> completed &lt;b>\"{level}\"&lt;/b> on &lt;b>{difficulty}&lt;/b>.</string>
     <string name="info_p_award">&lt;b>{username}&lt;/b> received a new award: &lt;b>{award}&lt;/b>.</string>
+    <string name="info_p_shared_award">&lt;b>{username}&lt;/b> shared a received award: &lt;b>{award}&lt;/b>.</string>
+    <string name="info_p_shared_awards">&lt;b>{username}&lt;/b> shared some received awards: &lt;b>{award}&lt;/b>.</string>
     <string name="info_new_rank">new rank</string>
     <string name="title_main_menu">BF3 Battlelog - Main menu</string>
     <string name="title_profile">BF3 Battlelog - Profile</string>
@@ -668,6 +678,16 @@
     <string name="desc_w_m26mass">The M26 Lightweight Shotgun System was developed to replace older, more cumbersome breaching shotguns.  Available as a standalone shotgun, or capable of being mounted on some Assault Rifles with Underslung Rails, the M26 is able to fire Shot, Flechette, Frag, and Slug rounds.</string>
     <string name="desc_w_m26mass_slug">The M26 Lightweight Shotgun System was developed to replace older, more cumbersome breaching shotguns.  Available as a standalone shotgun, or capable of being mounted on some Assault Rifles with Underslung Rails, the M26 is able to fire Shot, Flechette, Frag, and Slug rounds.</string>
     <string name="desc_w_mp443">Designed to replace the dated PMM pistol, the MP443 Grach pistol was developed in 1993 and fires high powered armor-piercing 9mm Russian rounds. The pistol is a combined construction of polymers and steel and has been adopted by select Special Forces units in the Russian military.</string>
+    <string name="desc_w_auga3">This 5.56 bullpup design was developed in the 1970s and features high modularity while being fully ambidextrous. Since its adoption as the standard rifle of the Austrian army in 1977, it has seen great success as an export, with a high number of global users praising its ruggedness and excellent handling.</string>
+    <string name="desc_w_l86a2">Designed to provide fire support to smaller groups of infantry, this British SA80 family rifle comes equipped with an extended barrel giving great effective range. While originally intended to act as a light machine gun, it has seen a shift towards marksman duties due to its great performance at longer distances. While it has limited sustained fire capabilities due to not being belt fed, the reliable accuracy makes it a great force multiplier for any squad.</string>
+    <string name="desc_w_acwr">This adaptive combat rifle features a number of recent rifle designs and acts as a lightweight, feature heavy, rifle platform. Using the modern, recoil-reducing “Grendel” round, as well as being built to endure rough weather conditions and capable of utilizing standard STANAG magazines, this rifle is equipped to fill many of the roles required by both military and law enforcement uses.</string>
+    <string name="desc_w_m417">This bigger brother of M416 features a heavier 16 inch barrel as well as an enlarged receiver capable of handling the heavy 7.62 round. The high precision and stopping power of this rifle makes it ideal as a DMR, and it sees service in many armed forces worldwide.</string>
+    <string name="desc_w_spas12">This Italian made iconic shotgun has seen great success since its introduction on the market during the 1980s. It’s become popular world wide thanks to its capacity to handle a great variety of shell types. Its unique magazine design further simplifies the use of varied ammunition, allowing the SPAS-12 to remain in high regard with police and military units worldwide.</string>
+    <string name="desc_w_scarl">The SCAR rifle system’s modularity allows for many different configurations. The Mk. 16 “SCAR-L” features a 14 inch barrel as well as a full 30 round magazine. Compared to its 20 round carbine counterpart, the heavier Mk. 17, the SCAR-L provides greater target acquisition at longer ranges due to the extended barrel length as well as more controlled fire due to manageable recoil.</string>
+    <string name="desc_w_lsat">This US JSSAP prototype is intended to significantly reduce the weight associated with small arms and their ammunition. Using a High Ignition Temperature Propellant, this prototype light machine gun features belt fed caseless ammunition. Should the program be successful, this weapon system could become a great improvement over the heavier and more cumbersome squad automatic weapons currently in use.</string>
+    <string name="desc_w_mtar21">This bullpup carbine is the ultra-compact version of the Israeli army standard TAR-21 rifle. It features supreme ergonomics and handling due to its 590 mm (23.2 in) length and is intended for use in tighter environments where standard length rifles become cumbersome. As of 2009, it is destined to become the standard rifle of the IDF, and is also seeing success internationally as part of security and police forces.</string>
+    <string name="desc_w_jng90">Easily identified by its massive muzzle break, the JNG-90 serves as the standard sniper rifle of the Turkish army. This modern rifle has integral rail systems and many other accessory options, making it adaptable to shifting situations. It provides the shooter great stopping power, as well as sub MOA accuracy.</string>
+    <string name="desc_w_m5k">A tactical machine pistol based on one of the world’s most successful submachine gun designs. With the shoulder stock completely removed and the shortened receiver, this ultra compact personal defense weapon is capable of very high rates of fire, as well as great stopping power at close range.</string>
     <string name="desc_v_lavad">The LAV-AD includes the Avenger anti-air system on a LAV-25 chassis.</string>
     <string name="desc_v_lav25">The LAV-25 is an eight-wheeled amphibious infantry fighting vehicle (IFV) used by the United States Marine Corps.</string>
     <string name="desc_v_centurion">Land-based version of the Phalanx CIWS, deployed in Iraq to protect against missile and airborne attacks.</string>
@@ -946,5 +966,7 @@
     <string name="name_weapon_pdr">PDW-R</string>
     <string name="name_weapon_knife_razor">ACB-90</string>
     <string name="name_weapon_qbb95">QBB-95</string>
+    <string name="info_p_got_wallpost">&lt;b>{username1} » {username2}:&lt;/b> {message}</string>
+    <string name="info_p_gameaccess">&lt;b>{username} now has access to &lt;b>{title}&lt;/b> for &lt;b>Battlefield 3&lt;/b>.</string>
 
 </resources>

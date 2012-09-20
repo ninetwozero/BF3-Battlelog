@@ -76,7 +76,11 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         mItems = new HashMap<Long, List<WeaponDataWrapper>>();
 
         // Set the selected persona
-        mSelectedPersona = mProfileData.getPersona(0).getId();
+        if (mProfileData.getNumPersonas() > 0) {
+
+            mSelectedPersona = mProfileData.getPersona(0).getId();
+
+        }
 
     }
 
@@ -170,6 +174,14 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         protected Boolean doInBackground(Void... arg) {
 
             try {
+
+                if (mProfileData.getNumPersonas() == 0) {
+
+                    mProfileData = ProfileClient
+                            .resolveFullProfileDataFromProfileData(mProfileData);
+                    mSelectedPersona = mProfileData.getPersona(0).getId();
+
+                }
 
                 mItems = new ProfileClient(mProfileData).getWeapons();
                 return true;

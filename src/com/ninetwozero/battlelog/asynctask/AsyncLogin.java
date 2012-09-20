@@ -196,13 +196,14 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     }
 
     private SessionKeeperPackage processHttpContent(String httpContent) throws Exception {
-
+    	
         // Get the checksum
         String postCheckSum = substringFrom(httpContent, Constants.ELEMENT_STATUS_CHECKSUM, "\" />");
 
         // Let's work on getting the "username", not persona name --> profileId
         String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>")
                 .trim();
+        /*String soldierName = "Eddy_J1";*/
         ProfileData profile = ProfileClient.getProfileIdFromName(soldierName, postCheckSum);
         profile = ProfileClient.resolveFullProfileDataFromProfileData(profile);
         List<PlatoonData> platoons = new ProfileClient(profile).getPlatoons(context);
@@ -342,11 +343,11 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
         } else {
 
-            String errorMsg = httpContent.substring(startPosition)
+        	int endPosition = httpContent.indexOf("</div>");
+            String errorMsg = httpContent.substring(startPosition, endPosition)
                     .replace("</div>", "")
                     .replace("\n", "")
                     .replace(Constants.ELEMENT_ERROR_MESSAGE, "");
-            errorMsg = errorMsg.substring(0, errorMsg.indexOf("<div"));
 
             throw new WebsiteHandlerException(errorMsg);
 

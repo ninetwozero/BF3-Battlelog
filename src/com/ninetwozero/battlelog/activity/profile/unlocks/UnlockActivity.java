@@ -96,8 +96,11 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
 
         } else {
 
-            mSelectedPersona = mProfileData.getPersona(0).getId();
+            if (mProfileData.getNumPersonas() > 0) {
 
+                mSelectedPersona = mProfileData.getPersona(0).getId();
+
+            }
         }
     }
 
