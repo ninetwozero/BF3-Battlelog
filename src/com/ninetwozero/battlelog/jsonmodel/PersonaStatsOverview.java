@@ -18,12 +18,16 @@ public class PersonaStatsOverview {
     private long vehicleScore;
     @SerializedName("totalScore")
     private long totalScore;
+    @SerializedName("score")
+    private long score;
     @SerializedName("timePlayed")
     private long timePlayed;
     @SerializedName("numWins")
     private long gameWon;
     @SerializedName("numLosses")
     private long gameLost;
+    @SerializedName("wlRatio")
+    private double wlRatio;
     @SerializedName("sc_award")
     private long awardScore;
     @SerializedName("sc_unlock")
@@ -52,11 +56,11 @@ public class PersonaStatsOverview {
     @SerializedName("vehiclesDestroyedAssists")
     private long vehiclesDestroyedAssists;
     @SerializedName("accuracy")
-    private double averageWeaponAccuracy;
+    private double accuracy;
     @SerializedName("longestHeadshot")
     private double longestHeadshot;
     @SerializedName("killStreakBonus")
-    private double killStreakBonus;
+    private int longestKillStreak;
     @SerializedName("elo")
     private double skill;
 
@@ -72,11 +76,11 @@ public class PersonaStatsOverview {
     private long resupplies;
 
     public PersonaStatsOverview(int rank, KitScores kitScores, VehicleScores vehicleScores,
-            long vehicleScore, long totalScore, long timePlayed, long gameWon,
-            long gameLost, long awardScore, long unlockScore, long kills,
+            long vehicleScore, long totalScore, long score, long timePlayed, long gameWon,
+            long gameLost, double wnRatio, long awardScore, long unlockScore, long kills,
             long deaths, double kdRatio, long killAssists, long scoreMin,
             double quitPercentage, long vehiclesDestroyed, long vehiclesDestroyedAssists,
-            double averageWeaponAccuracy, double longestHeadshot, double killStreakBonus,
+            double accuracy, double longestHeadshot, int longestKillStreak,
             double skill, long squadScoreBonus, long repairs, long revives,
             long heals, long resupplies, long combatScore) {
         this.rank = rank;
@@ -84,9 +88,11 @@ public class PersonaStatsOverview {
         this.vehicleScores = vehicleScores;
         this.vehicleScore = vehicleScore;
         this.totalScore = totalScore;
+        this.score = score;
         this.timePlayed = timePlayed;
         this.gameWon = gameWon;
         this.gameLost = gameLost;
+        this.wlRatio = wlRatio;
         this.awardScore = awardScore;
         this.unlockScore = unlockScore;
         this.kills = kills;
@@ -97,9 +103,9 @@ public class PersonaStatsOverview {
         this.quitPercentage = quitPercentage;
         this.vehiclesDestroyed = vehiclesDestroyed;
         this.vehiclesDestroyedAssists = vehiclesDestroyedAssists;
-        this.averageWeaponAccuracy = averageWeaponAccuracy;
+        this.accuracy = accuracy;
         this.longestHeadshot = longestHeadshot;
-        this.killStreakBonus = killStreakBonus;
+        this.longestKillStreak = longestKillStreak;
         this.skill = skill;
         this.squadScoreBonus = squadScoreBonus;
         this.repairs = repairs;
@@ -149,6 +155,14 @@ public class PersonaStatsOverview {
         this.totalScore = totalScore;
     }
 
+    public long getScore() {
+        return score;
+    }
+
+    public void setScore(long score) {
+        this.score = score;
+    }
+
     public long getTimePlayed() {
         return timePlayed;
     }
@@ -171,6 +185,14 @@ public class PersonaStatsOverview {
 
     public void setGameLost(long gameLost) {
         this.gameLost = gameLost;
+    }
+
+    public double getWlRatio() {
+        return wlRatio;
+    }
+
+    public void setWlRatio(double wlRatio) {
+        this.wlRatio = wlRatio;
     }
 
     public long getAwardScore() {
@@ -253,12 +275,12 @@ public class PersonaStatsOverview {
         this.vehiclesDestroyedAssists = vehiclesDestroyedAssists;
     }
 
-    public double getAverageWeaponAccuracy() {
-        return averageWeaponAccuracy;
+    public double getAccuracy() {
+        return accuracy;
     }
 
-    public void setAverageWeaponAccuracy(double averageWeaponAccuracy) {
-        this.averageWeaponAccuracy = averageWeaponAccuracy;
+    public void setAccuracy(double accuracy) {
+        this.accuracy = accuracy;
     }
 
     public double getLongestHeadshot() {
@@ -269,12 +291,12 @@ public class PersonaStatsOverview {
         this.longestHeadshot = longestHeadshot;
     }
 
-    public double getKillStreakBonus() {
-        return killStreakBonus;
+    public int getLongestKillStreak() {
+        return longestKillStreak;
     }
 
-    public void setKillStreakBonus(double killStreakBonus) {
-        this.killStreakBonus = killStreakBonus;
+    public void setLongestKillStreak(int longestKillStreak) {
+        this.longestKillStreak = longestKillStreak;
     }
 
     public double getSkill() {

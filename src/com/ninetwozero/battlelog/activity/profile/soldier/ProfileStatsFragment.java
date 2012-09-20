@@ -14,28 +14,20 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
-import java.net.URI;
-import java.util.Map;
-
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.google.gson.Gson;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.Bf3Fragment;
@@ -43,14 +35,26 @@ import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PersonaStats;
 import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.Statistics;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
 import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
-import com.ninetwozero.battlelog.factory.URIFactory;
+import com.ninetwozero.battlelog.factory.UriFactory;
 import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
 import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.provider.table.PersonaStatistics;
+import com.ninetwozero.battlelog.provider.table.RankProgress;
+import com.ninetwozero.battlelog.provider.table.ScoreStatistics;
+
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+
+import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.*;
+import static com.ninetwozero.battlelog.dao.RankProgressDAO.*;
+import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.*;
 
 public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment,
         OnCloseListDialogListener {
@@ -76,29 +80,32 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     private URI callURI;
     private final String DIALOG = "dialog";
     private TextView personaName, rankTitle, rankId, currentLevelPoints, nextLevelPoints,
-            pointsToMake, assaultScore, engineerScore, supportScore, reconScore,
-            vehiclesScore, combatScore, awardsScore, unlocksScore, totalScore, numberOfKills,
-            numberOfAssists, vehiclesDestroyed, vehiclesDestroyedAssists,
-            heals, revives, repairs, resupplies, deaths, kdRatio, numberOfWins, numberOfLosses,
-            wnRatio, accuracy, killStreak, longestHeadshot, skill, timePlayed, scorePerMinute;
+            pointsToMake;
+
+    private PersonaStats ps;
+    private Bundle bundle;
+    private ProgressDialog progressDialog;
+    private boolean hasDBData = false;
+    private RankProgress rankProgress;
+    private TableLayout personaStatisticsTable;
+    private TableLayout scoreStatisticsTable;
+    private List<Statistics> listPersonaStatistics;
+    private List<Statistics> listScoreStatistics;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
 
-        // Let's inflate & return the view
         View view = mLayoutInflater.inflate(R.layout.tab_content_profile_stats,
                 container, false);
 
-        // Init
         initFragment(view);
-
-        // Return
+        getData();
         return view;
 
     }
@@ -106,8 +113,11 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // TODO create loader
-        getLoaderManager().initLoader(0, savedInstanceState, this);
+        this.bundle = savedInstanceState;
+        if (hasDBData) {
+            findViews();
+            populateView();
+        }
     }
 
     public void initFragment(View view) {
@@ -121,7 +131,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
             mSelectedPersona = getSelectedPersonaId(mSelectedPosition);
             mSelectedPlatformId = getPlatformIdFor(mSelectedPosition);
             mSelectedPersonaName = getSelectedPersonaName(mSelectedPosition);
-            callURI = URIFactory.personaOverview(mSelectedPersona, mSelectedPlatformId);
+            callURI = UriFactory.personaOverview(mSelectedPersona, mSelectedPlatformId);
         }
 
         // Click on the wrap
@@ -166,12 +176,63 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         Log.e("ProfileStatsFragment", "I AM BACK ! ! !");
     }
 
+    private void getData() {
+        if(dbHasData()){
+            findViews();
+            hasDBData = true;
+        }else {
+            getLoaderManager().initLoader(0, bundle, this);
+        }
+    }
+
+    private boolean dbHasData(){
+        return hasRankData() && hasPersonaStatistics() && hasScoreStatistics();
+    }
+
+    private boolean hasRankData(){
+        Cursor cursor = getContext().getContentResolver()
+                .query(RankProgress.URI, RankProgress.RANK_PROGRESS_PROJECTION,
+                        RankProgress.Columns.PERSONA_ID + "=?", new String[]{String.valueOf(mSelectedPersona)}, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            rankProgress = rankProgressFromCursor(cursor);
+            cursor.close();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean  hasPersonaStatistics(){
+        Cursor cursor = getContext().getContentResolver()
+                .query(PersonaStatistics.URI, PersonaStatistics.PERSONA_STATS_PROJECTION,
+                        PersonaStatistics.Columns.PERSONA_ID + "=?", new String[]{String.valueOf(mSelectedPersona)}, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            listPersonaStatistics = personaStaticsFromCursor(cursor);
+            cursor.close();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean  hasScoreStatistics(){
+        Cursor cursor = getContext().getContentResolver()
+                .query(ScoreStatistics.URI, ScoreStatistics.SCORE_STATISTICS_PROJECTION,
+                        ScoreStatistics.Columns.PERSONA_ID + "=?", new String[]{String.valueOf(mSelectedPersona)}, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            listScoreStatistics = scoreStatisticsFromCursor(cursor);
+            cursor.close();
+            return true;
+        }
+        return false;
+    }
+
     public void findViews() {
 
         // Let's find it
         View view = getView();
         if (view == null) {
-
             return;
         }
 
@@ -189,37 +250,8 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         nextLevelPoints = (TextView) view.findViewById(R.id.string_progress_max);
         pointsToMake = (TextView) view.findViewById(R.id.string_progress_left);
 
-        // Score
-        assaultScore = (TextView) view.findViewById(R.id.string_score_assault);
-        engineerScore = (TextView) view.findViewById(R.id.string_score_engineer);
-        supportScore = (TextView) view.findViewById(R.id.string_score_support);
-        reconScore = (TextView) view.findViewById(R.id.string_score_recon);
-        vehiclesScore = (TextView) view.findViewById(R.id.string_score_vehicles);
-        combatScore = (TextView) view.findViewById(R.id.string_score_combat);
-        awardsScore = (TextView) view.findViewById(R.id.string_score_award);
-        unlocksScore = (TextView) view.findViewById(R.id.string_score_unlock);
-        totalScore = (TextView) view.findViewById(R.id.string_score_total);
-
-        // Stats
-        numberOfKills = (TextView) view.findViewById(R.id.string_stats_kills);
-        numberOfAssists = (TextView) view.findViewById(R.id.string_stats_assists);
-        vehiclesDestroyed = (TextView) view.findViewById(R.id.string_stats_vkills);
-        vehiclesDestroyedAssists = (TextView) view.findViewById(R.id.string_stats_vassists);
-        heals = (TextView) view.findViewById(R.id.string_stats_heals);
-        revives = (TextView) view.findViewById(R.id.string_stats_revives);
-        repairs = (TextView) view.findViewById(R.id.string_stats_repairs);
-        resupplies = (TextView) view.findViewById(R.id.string_stats_resupplies);
-        deaths = (TextView) view.findViewById(R.id.string_stats_deaths);
-        kdRatio = (TextView) view.findViewById(R.id.string_stats_kdr);
-        numberOfWins = (TextView) view.findViewById(R.id.string_stats_wins);
-        numberOfLosses = (TextView) view.findViewById(R.id.string_stats_losses);
-        wnRatio = (TextView) view.findViewById(R.id.string_stats_wlr);
-        accuracy = (TextView) view.findViewById(R.id.string_stats_accuracy);
-        killStreak = (TextView) view.findViewById(R.id.string_stats_lks);
-        longestHeadshot = (TextView) view.findViewById(R.id.string_stats_lhs);
-        skill = (TextView) view.findViewById(R.id.string_stats_skill);
-        timePlayed = (TextView) view.findViewById(R.id.string_stats_time);
-        scorePerMinute = (TextView) view.findViewById(R.id.string_stats_spm);
+        personaStatisticsTable = (TableLayout) view.findViewById(R.id.persona_statistics);
+        scoreStatisticsTable = (TableLayout) view.findViewById(R.id.score_statistics);
 
         // Are we going to compare?
         /*
@@ -229,54 +261,52 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
          */
     }
 
-    private void populateStats(PersonaStats pd) {
+    private void populateView(){
+        populateRankProgress();
+        populateStatistics(listPersonaStatistics, personaStatisticsTable);
+        populateStatistics(listScoreStatistics, scoreStatisticsTable);
+    }
 
-        if (pd == null) {
+    private void populateRankProgress() {
+
+        if (rankProgress == null) {
             return;
         }
-
-        personaName.setText(mSelectedPersonaName + " " + pd.resolvePlatformId());
-        rankTitle.setText(fromResource((int) pd.getRankId()));
-        rankId.setText(String.valueOf(pd.getRankId()));
+        Log.e("STATS", "Populating view");
+        personaName.setText(rankProgress.getPersonaName() + " " + rankProgress.getPlatform());
+        rankTitle.setText(fromResource(rankProgress.getRank()));
+        rankId.setText(String.valueOf(rankProgress.getRank()));
 
         // Progress
-        mProgressBar.setMax((int) pd.getPointsNeededToLvlUp());
-        mProgressBar.setProgress((int) pd.getPointsProgressLvl());
-        currentLevelPoints.setText(String.valueOf(pd.getPointsProgressLvl()));
-        nextLevelPoints.setText(String.valueOf(pd.getPointsNeededToLvlUp()));
-        pointsToMake.setText(String.valueOf(pd.getPointsLeft()));
+        mProgressBar.setMax((int) (rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
+        mProgressBar.setProgress((int) (rankProgress.getScore() - rankProgress.getCurrentRankScore()));
+        currentLevelPoints.setText(String.valueOf(rankProgress.getScore() - rankProgress.getCurrentRankScore()));
+        nextLevelPoints.setText(String.valueOf(rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
+        pointsToMake.setText(String.valueOf(rankProgress.getNextRankScore() - rankProgress.getScore()));
+    }
 
-        // Score
-        assaultScore.setText(String.valueOf(pd.getScoreAssault()));
-        engineerScore.setText(String.valueOf(pd.getScoreEngineer()));
-        supportScore.setText(String.valueOf(pd.getScoreSupport()));
-        reconScore.setText(String.valueOf(pd.getScoreRecon()));
-        vehiclesScore.setText(String.valueOf(pd.getScoreVehicles()));
-        combatScore.setText(String.valueOf(pd.getScoreCombat()));
-        awardsScore.setText(String.valueOf(pd.getScoreAwards()));
-        unlocksScore.setText(String.valueOf(pd.getScoreUnlocks()));
-        totalScore.setText(String.valueOf(pd.getScoreTotal()));
+    private void populateStatistics(List<Statistics> statistics, TableLayout layout){
+        for (Statistics ps : statistics) {
+            TableRow tr = new TableRow(getContext());
+            tr.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            if (ps.getStyle() == R.style.InfoSubHeading) {
+                tr.setBackgroundColor(Color.parseColor("#EEEEEE"));
+            }
 
-        // Stats
-        numberOfKills.setText(String.valueOf(pd.getNumKills()));
-        numberOfAssists.setText(String.valueOf(pd.getNumAssists()));
-        vehiclesDestroyed.setText(String.valueOf(pd.getNumVehicles()));
-        vehiclesDestroyedAssists.setText(String.valueOf(pd.getNumVehicleAssists()));
-        heals.setText(String.valueOf(pd.getNumHeals()));
-        revives.setText(String.valueOf(pd.getNumRevives()));
-        repairs.setText(String.valueOf(pd.getNumRepairs()));
-        resupplies.setText(String.valueOf(pd.getNumResupplies()));
-        deaths.setText(String.valueOf(pd.getNumDeaths()));
-        kdRatio.setText(String.valueOf(pd.getKDRatio()));
-        numberOfWins.setText(String.valueOf(pd.getNumWins()));
-        numberOfLosses.setText(String.valueOf(pd.getNumLosses()));
-        wnRatio.setText(String.valueOf(pd.getWLRatio()));
-        accuracy.setText(pd.getAccuracy() + "%");
-        killStreak.setText(String.valueOf(pd.getLongestKS()));
-        longestHeadshot.setText(pd.getLongestHS() + " m");
-        skill.setText(String.valueOf(pd.getSkill()));
-        timePlayed.setText(String.valueOf(pd.getTimePlayedString()));
-        scorePerMinute.setText(String.valueOf(pd.getScorePerMinute()));
+            TextView title = new TextView(getContext());
+            title.setText(ps.getTitle());
+            title.setTextColor(Color.parseColor("#000000"));
+            title.setPadding(5, 5, 5, 5);
+            tr.addView(title);
+
+            TextView value = new TextView(getContext());
+            value.setText(ps.getValue());
+            value.setTextColor(Color.parseColor("#000000"));
+            value.setPadding(5, 5, 5, 5);
+            tr.addView(value);
+
+            layout.addView(tr);
+        }
     }
 
     private int personaArrayLength() {
@@ -285,6 +315,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
 
     @Override
     protected Loader<CompletedTask> createLoader(int id, Bundle bundle) {
+        startLoadingDialog();
         return new Bf3Loader(getContext(), callURI);
     }
 
@@ -295,77 +326,46 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     @Override
     public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {
         if (task.result.equals(CompletedTask.Result.SUCCESS)) {
+            Log.e("STATS", "Load finished");
             findViews();
-            populateStats(personaStatsFrom(task));
+            PersonaInfo pi = personaStatsFrom(task);
+            updateDatabase(pi);
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+            populateView();
         }
     }
 
-    private PersonaStats personaStatsFrom(CompletedTask task) {
+    private PersonaInfo personaStatsFrom(CompletedTask task) {
         Gson gson = new Gson();
         PersonaInfo data = gson.fromJson(task.jsonObject, PersonaInfo.class);
-        return new PersonaStats(data);
+        return data;
     }
 
     private String fromResource(int rank) {
         return getResources().getStringArray(R.array.rank)[rank];
     }
 
-    /*
-     * public class AsyncCache extends AsyncTask<Void, Void, Boolean> { //
-     * Attributes public AsyncCache() { }
-     * @Override protected void onPreExecute() { }
-     * @Override protected Boolean doInBackground(Void... arg0) { try { //
-     * Get... if (mProfileData != null && mProfileData.getNumPersonas() > 0) {
-     * mPersonaStats = CacheHandler.Persona.select(mContext,
-     * mProfileData.getPersonaArray()); // Is this the user? mSelectedPersona =
-     * mProfileData.getPersona(mSelectedPosition).getId(); } // ...validate!
-     * return (mPersonaStats != null && !mPersonaStats.isEmpty()); } catch
-     * (Exception ex) { ex.printStackTrace(); return false; } }
-     * @Override protected void onPostExecute(Boolean result) { if (result) { //
-     * Siiiiiiiiilent refresh //
-     * populateStats(personaStats.get(selectedPersona)); new
-     * AsyncRefresh().execute(); } else { new AsyncRefresh().execute(); } } }
-     */
+    private void updateDatabase(PersonaInfo pi) {
+        updateRankProgressDB(pi);
+        updatePersonaStats(pi);
+        updateScoreStatistics(pi);
+    }
 
-    /*
-     * public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> { public
-     * AsyncRefresh() { }
-     * @Override protected void onPreExecute() {
-     *//* LOADER LIKE IN FORUMS? *//*
-                                    * }
-                                    * @Override protected Boolean
-                                    * doInBackground(Void... arg0) { try {
-                                    * Log.d(Constants.DEBUG_TAG, "profile => " +
-                                    * mProfileData); // Do we have any personas?
-                                    * if (mProfileData.getNumPersonas() > 0) {
-                                    * // Set the selected persona?
-                                    * mSelectedPersona = (mSelectedPersona == 0)
-                                    * ? mProfileData.getPersona(0).getId() :
-                                    * mSelectedPersona; // Grab the stats
-                                    * mPersonaStats = new
-                                    * ProfileClient(mProfileData
-                                    * ).getStats(mContext); } // ...validate!
-                                    * return (mPersonaStats != null &&
-                                    * !mPersonaStats.isEmpty()); } catch
-                                    * (Exception ex) { ex.printStackTrace();
-                                    * return false; } }
-                                    * @Override protected void
-                                    * onPostExecute(Boolean result) { // Fail?
-                                    * if (result) {
-                                    * populateStats(mPersonaStats.get
-                                    * (mSelectedPersona)); } else {
-                                    * Toast.makeText(mContext,
-                                    * R.string.general_no_data,
-                                    * Toast.LENGTH_SHORT).show(); } } }
-                                    */
+    private void updateRankProgressDB(PersonaInfo pi) {
+        rankProgress = rankProgressFromJSON(pi);
+        getContext().getContentResolver().insert(RankProgress.URI, rankProgressForDB(pi, mSelectedPersona));
+    }
 
-    public void reload() {
+    private void updatePersonaStats(PersonaInfo pi) {
+        listPersonaStatistics = personaStatisticsFromJSON(pi);
+        getContext().getContentResolver().insert(PersonaStatistics.URI, personaStatisticsForDB(pi, mSelectedPersona));
+    }
 
-        /*
-         * // ASYNC!!! if (mPersonaStats == null) { new AsyncCache().execute();
-         * } else { new AsyncRefresh().execute(); }
-         */
-
+    private void updateScoreStatistics(PersonaInfo pi){
+        listScoreStatistics = scoreStatisticsFromJSON(pi);
+        getContext().getContentResolver().insert(ScoreStatistics.URI, scoreStatisticsForDB(pi, mSelectedPersona));
     }
 
     public void setProfileData(ProfileData p) {
@@ -414,9 +414,9 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
 
             startActivity(
 
-            new Intent(mContext, UnlockActivity.class)
-                    .putExtra("profile", mProfileData)
-                    .putExtra("selectedPosition", position));
+                    new Intent(mContext, UnlockActivity.class)
+                            .putExtra("profile", mProfileData)
+                            .putExtra("selectedPosition", position));
         }
         return true;
     }
@@ -425,4 +425,16 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         mComparing = c;
     }
 
+    @Override
+    public void reload() {
+    }
+
+    private void startLoadingDialog() {   //TODO extract multiple duplicates of same code
+        this.progressDialog = new ProgressDialog(mContext);
+        this.progressDialog.setTitle(mContext
+                .getString(R.string.general_wait));
+        this.progressDialog.setMessage(mContext
+                .getString(R.string.general_downloading));
+        this.progressDialog.show();
+    }
 }
