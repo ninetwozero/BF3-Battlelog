@@ -6,10 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import com.ninetwozero.battlelog.factory.UriFactory;
-
-import static com.ninetwozero.battlelog.factory.UriFactory.URI_PATH;
-import static com.ninetwozero.battlelog.factory.UriFactory.URI_CODES;
 
 public class BattlelogContentProvider extends ContentProvider {
 
@@ -44,12 +40,12 @@ public class BattlelogContentProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         switch(UriFactory.URI_MATCHER.match(uri)){
-            case URI_CODES.RANK_PROGRESS:
-                return URI_PATH.RANK_PROGRESS;
-            case URI_CODES.PERSONA_STATISTICS:
-                return URI_PATH.PERSONA_STATISTICS;
-            case URI_CODES.SCORE_STATISTICS:
-                return URI_PATH.SCORE_STATISTICS;
+            case UriFactory.URI_CODES.RANK_PROGRESS:
+                return UriFactory.URI_PATH.RANK_PROGRESS;
+            case UriFactory.URI_CODES.PERSONA_STATISTICS:
+                return UriFactory.URI_PATH.PERSONA_STATISTICS;
+            case UriFactory.URI_CODES.SCORE_STATISTICS:
+                return UriFactory.URI_PATH.SCORE_STATISTICS;
             default:
                 return "";
         }

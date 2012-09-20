@@ -38,12 +38,12 @@ import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.Statistics;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
 import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
-import com.ninetwozero.battlelog.factory.UriFactory;
 import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
 import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.provider.UriFactory;
 import com.ninetwozero.battlelog.provider.table.PersonaStatistics;
 import com.ninetwozero.battlelog.provider.table.RankProgress;
 import com.ninetwozero.battlelog.provider.table.ScoreStatistics;
@@ -237,7 +237,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         }
 
         if (personaArrayLength() == 1) {
-            ((ImageView) view.findViewById(R.id.img_persona_list)).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.img_persona_list).setVisibility(View.INVISIBLE);
         }
 
         // Persona & rank
