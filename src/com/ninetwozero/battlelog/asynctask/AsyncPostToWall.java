@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
-import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.http.FeedClient;
 
 public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
@@ -52,8 +51,8 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
         try {
 
-            return new FeedClient(profileId, isPlatoon ? FeedItem.TYPE_PLATOON
-                    : FeedItem.TYPE_PROFILE).post(arg0[0], arg0[1]);
+            return new FeedClient(profileId, isPlatoon ? FeedClient.TYPE_PLATOON
+                    : FeedClient.TYPE_PROFILE).post(arg0[0], arg0[1]);
 
         } catch (Exception ex) {
 

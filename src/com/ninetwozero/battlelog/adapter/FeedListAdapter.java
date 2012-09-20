@@ -70,7 +70,7 @@ public class FeedListAdapter extends BaseAdapter {
     public void setItemArray(List<FeedItem> ia) {
 
         this.itemArray = ia;
-        this.notifyDataSetInvalidated();
+        this.notifyDataSetChanged();
 
     }
 

@@ -35,8 +35,8 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class ProfileActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
@@ -105,7 +105,7 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
 
             // We need to set the type
             fragmentFeed.setTitle(profileData.getUsername());
-            fragmentFeed.setType(FeedItem.TYPE_PROFILE);
+            fragmentFeed.setType(FeedClient.TYPE_PROFILE);
             fragmentFeed.setId(profileData.getId());
             fragmentFeed.setCanWrite(false);
 

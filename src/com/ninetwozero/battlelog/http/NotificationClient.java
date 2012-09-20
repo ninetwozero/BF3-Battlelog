@@ -228,8 +228,7 @@ public class NotificationClient extends DefaultClient {
                 return new FeedItem(
 
                         id, id, date, 0,
-                        0,
-                        title, content, "n/a",
+                        0, 0, title, content,
                         new ProfileData[] {
 
                                 new ProfileData.Builder(uid, username[0]).gravatarHash(gravatar)

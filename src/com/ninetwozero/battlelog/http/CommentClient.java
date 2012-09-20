@@ -7,6 +7,8 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
@@ -131,7 +133,7 @@ public class CommentClient extends DefaultClient {
                             .getJSONObject("blogPost");
 
                 }
-
+                
                 // Get the comment array
                 JSONArray commentArray = dataObject.getJSONArray("comments");
 
@@ -139,7 +141,7 @@ public class CommentClient extends DefaultClient {
                 for (int i = 0, max = commentArray.length(); i < max; i++) {
 
                     tempObject = commentArray.optJSONObject(i);
-                    JSONObject tempOwnerItem = tempObject.getJSONObject("user");
+                    JSONObject tempOwnerItem = tempObject.getJSONObject("owner");
                     comments.add(
 
                             new CommentData(

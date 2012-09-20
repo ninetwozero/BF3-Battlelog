@@ -14,6 +14,7 @@
 
 package com.ninetwozero.battlelog.datatype;
 
+
 public class RequestHandlerException extends Exception {
 
     private static final long serialVersionUID = -4284315651483396603L;

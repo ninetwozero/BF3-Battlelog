@@ -135,6 +135,17 @@ public final class DrawableResourceList {
         weapons.put("D20984F3-364E-4C06-9879-09280EDF6DF3", R.drawable.w_xp1_qbz95b);
         weapons.put("95E00B23-BAD4-4F3B-A85E-990204EFF26B", R.drawable.w_xp1_mg36);
         weapons.put("BFAC29DB-5193-4E69-96D9-37D4124C44C2", R.drawable.w_smaw);
+        /* CLOSE QUARTERS EXPANSION */
+        weapons.put("94FADBCE-8D16-4736-85E8-D42FADCD174F", R.drawable.w_xp2_scarl);
+        weapons.put("DFBF6EA5-39C5-4ABA-B2C6-CAA6AD6C3786", R.drawable.w_xp2_mp5k);
+        weapons.put("95AA1865-4324-4B23-BCC4-84F8F4D91922", R.drawable.w_xp2_acr);
+        weapons.put("B8CA6D09-62C2-4208-A094-B8E50F716E47", R.drawable.w_xp2_jng90);
+        weapons.put("60F775C4-7D70-4898-BD00-03AA60C8CE91", R.drawable.w_xp2_steyraug);
+        weapons.put("BA0AF247-2E5B-4574-8F89-515DFA1C767D", R.drawable.w_xp2_l86);
+        weapons.put("C48BC95B-1271-4F19-9D6C-A91C836F5432", R.drawable.w_xp2_hk417);
+        weapons.put("6D99F118-04BD-449A-BA0E-1978DDF5894D", R.drawable.w_xp2_spas12);
+        weapons.put("0A54B1A8-0368-4939-9558-D31E40FE488F", R.drawable.w_xp2_mtar);
+        weapons.put("BF6E6CB2-D5AA-4425-A0C8-0FB8D89A1372", R.drawable.w_xp2_lsat);
 
         // Set up the vehicles
         vehicles.put("F998F5E4-220D-463A-A437-1C18D5C3A19E", R.drawable.v_btr90);

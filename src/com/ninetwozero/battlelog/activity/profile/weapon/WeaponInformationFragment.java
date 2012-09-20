@@ -98,9 +98,11 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         mTextRateOfFire = (TextView) v.findViewById(R.id.text_rate_num);
 
         // Let's see
-        mSelectedPersona = (mSelectedPersona == 0) ? mProfileData.getPersona(0).getId()
-                : mSelectedPersona;
+        if (mSelectedPersona == 0 && mProfileData.getNumPersonas() > 0) {
 
+            mSelectedPersona = mProfileData.getPersona(0).getId();
+
+        }
     }
 
     @Override
@@ -166,6 +168,14 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         protected Boolean doInBackground(Void... arg) {
 
             try {
+
+                if (mProfileData.getNumPersonas() == 0) {
+
+                    mProfileData = ProfileClient
+                            .resolveFullProfileDataFromProfileData(mProfileData);
+                    mSelectedPersona = mProfileData.getPersona(0).getId();
+
+                }
 
                 mWeaponDataWrapper = new ProfileClient(mProfileData).getWeapon(mWeaponInfo,
                         mWeaponStats);
