@@ -899,7 +899,7 @@ public class ProfileClient extends DefaultClient {
 
                     // Woo, we got results
                     JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
-                    JSONObject weaponInfoObject = baseObject.getJSONObject("bf3GadgetsLocale")
+                    JSONObject weaponInfoObject = baseObject.getJSONObject("gadgetsLocale")
                             .getJSONObject("weapons");
                     JSONArray weaponStats = baseObject.getJSONArray("mainWeaponStats");
                     JSONObject unlockMap = baseObject.getJSONObject("unlocksAdded");
