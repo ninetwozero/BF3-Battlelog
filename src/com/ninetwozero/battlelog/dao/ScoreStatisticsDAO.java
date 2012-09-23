@@ -63,7 +63,7 @@ public class ScoreStatisticsDAO {
         KitScores ks = pi.getStatsOverview().getKitScores();
         VehicleScores vs = pi.getStatsOverview().getVehicleScores();
         ContentValues values = new ContentValues();
-        
+        values.put(Columns.PERSONA_ID, personaId);
         values.put(Columns.ASSAULT, ks.getAssaultScore());
         values.put(Columns.ENGINEER, ks.getEngineerScore());
         values.put(Columns.SUPPORT,ks.getSupportScore());
