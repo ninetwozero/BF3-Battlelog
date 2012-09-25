@@ -201,9 +201,9 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         String postCheckSum = substringFrom(httpContent, Constants.ELEMENT_STATUS_CHECKSUM, "\" />");
 
         // Let's work on getting the "username", not persona name --> profileId
-        String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>")
-                .trim();
-        /*String soldierName = "Eddy_J1";*/
+        /*String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>")
+                .trim();*/
+        String soldierName = "Eddy_J1";
         ProfileData profile = ProfileClient.getProfileIdFromName(soldierName, postCheckSum);
         profile = ProfileClient.resolveFullProfileDataFromProfileData(profile);
         List<PlatoonData> platoons = new ProfileClient(profile).getPlatoons(context);

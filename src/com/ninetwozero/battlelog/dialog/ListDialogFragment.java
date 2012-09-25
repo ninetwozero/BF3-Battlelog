@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.dialog;
 
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
@@ -6,6 +5,7 @@ import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -18,22 +18,22 @@ import android.support.v4.app.DialogFragment;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.PersonaData;
 
-public class ListDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
+public class ListDialogFragment extends DialogFragment{
 
-    private PersonaData[] mPersonaData;
-    private long[] mPersonaId;
-    private String[] mPersonaName;
+    private Map<Long, String> data;
+    private Long[] personaId;
+    private String[] personaName;
     private final String TAG;
 
-    public static ListDialogFragment newInstance(PersonaData[] personaData, String tag) {
-        ListDialogFragment dialog = new ListDialogFragment(personaData, tag);
+    public static ListDialogFragment newInstance(Map<Long, String> data, String tag) {
+        ListDialogFragment dialog = new ListDialogFragment(data, tag);
         Bundle bundle = new Bundle();
         dialog.setArguments(bundle);
         return dialog;
     }
 
-    private ListDialogFragment(PersonaData[] personaData, String tag) {
-        this.mPersonaData = personaData.clone();
+    private ListDialogFragment(Map<Long, String> data, String tag) {
+        this.data = data;
         this.TAG = tag;
     }
 
@@ -49,51 +49,37 @@ public class ListDialogFragment extends DialogFragment implements DialogInterfac
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.info_dialog_soldierselect);
-        mPersonaId = personaId().clone();
-        mPersonaName = personaName().clone();
-        builder.setNegativeButton("Cancel", this);
-        builder.setSingleChoiceItems(mPersonaName, -1, new SingleChoiceListener());
+        personaId = personaId().clone();
+        personaName = personaName().clone();
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //do nothing
+            }
+        });
+        builder.setSingleChoiceItems(personaName, -1, new SingleChoiceListener());
         return builder.create();
 
     }
 
-    private long[] personaId() {
-        long[] id = new long[mPersonaData.length];
-        for (int i = 0; i < mPersonaData.length; i++) {
-            id[i] = mPersonaData[i].getId();
-        }
-        return id;
+    private Long[] personaId() {
+        return data.keySet().toArray(new Long[data.size()]);
     }
 
     private String[] personaName() {
         List<String> name = new ArrayList<String>();
-        for (int i = 0; i < mPersonaData.length; i++) {
-            name.add(mPersonaData[i].getName());
+        for (Long id : data.keySet()) {
+            name.add(data.get(id));
         }
-        return name.toArray(new String[mPersonaData.length]);
-    }
-
-    private void updateSharedPreference(int item) {
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity()
-                .getApplicationContext());
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong(SP_BL_PERSONA_CURRENT_ID, mPersonaId[item]);
-        editor.putInt(SP_BL_PERSONA_CURRENT_POS, item);
-        editor.commit();
-    }
-
-    @Override
-    public void onClick(DialogInterface dialogInterface, int i) {
+        return name.toArray(new String[data.size()]);
     }
 
     private class SingleChoiceListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int item) {
-            updateSharedPreference(item);
             OnCloseListDialogListener act = (OnCloseListDialogListener) getFragmentManager()
                     .findFragmentByTag(TAG);
-            act.onDialogListSelection();
+            act.onDialogListSelection(item);
             dismiss();
         }
     }

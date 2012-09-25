@@ -32,10 +32,7 @@ import com.google.gson.Gson;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
-import com.ninetwozero.battlelog.datatype.DefaultFragment;
-import com.ninetwozero.battlelog.datatype.PersonaStats;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.Statistics;
+import com.ninetwozero.battlelog.datatype.*;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
 import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
 import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
@@ -49,12 +46,15 @@ import com.ninetwozero.battlelog.provider.table.RankProgress;
 import com.ninetwozero.battlelog.provider.table.ScoreStatistics;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.*;
 import static com.ninetwozero.battlelog.dao.RankProgressDAO.*;
 import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.*;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 
 public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment,
         OnCloseListDialogListener {
@@ -68,6 +68,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     private RelativeLayout mWrapPersona;
     private ProgressBar mProgressBar;
 
+    private PersonaData[] personaData;
     // Misc
     private ProfileData mProfileData;
     private Map<Long, PersonaStats> mPersonaStats;
@@ -82,10 +83,9 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     private TextView personaName, rankTitle, rankId, currentLevelPoints, nextLevelPoints,
             pointsToMake;
 
-    private PersonaStats ps;
+    //private PersonaStats ps;
     private Bundle bundle;
     private ProgressDialog progressDialog;
-    private boolean hasDBData = false;
     private RankProgress rankProgress;
     private TableLayout personaStatisticsTable;
     private TableLayout scoreStatisticsTable;
@@ -105,7 +105,6 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
                 container, false);
 
         initFragment(view);
-        getData();
         return view;
 
     }
@@ -114,11 +113,10 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.bundle = savedInstanceState;
-        if (hasDBData) {
-            findViews();
-            populateView();
-        }
+        getData();
     }
+
+
 
     public void initFragment(View view) {
 
@@ -127,11 +125,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
 
         // Let's try something out
         if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
-            mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
-            mSelectedPersona = getSelectedPersonaId(mSelectedPosition);
-            mSelectedPlatformId = getPlatformIdFor(mSelectedPosition);
-            mSelectedPersonaName = getSelectedPersonaName(mSelectedPosition);
-            callURI = UriFactory.personaOverview(mSelectedPersona, mSelectedPlatformId);
+            setSelectedPersonaVariables();
         }
 
         // Click on the wrap
@@ -146,11 +140,19 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
                         if (personaArrayLength() > 1) {
                             FragmentManager manager = getFragmentManager();
                             ListDialogFragment dialog = ListDialogFragment.newInstance(
-                                    mProfileData.getPersonaArray(), getTag());
+                                    personasToMap(), getTag());
                             dialog.show(manager, DIALOG);
                         }
                     }
                 });
+    }
+
+    private void setSelectedPersonaVariables() {
+        mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
+        mSelectedPersona = getSelectedPersonaId(mSelectedPosition);
+        mSelectedPlatformId = getPlatformIdFor(mSelectedPosition);
+        mSelectedPersonaName = getSelectedPersonaName(mSelectedPosition);
+        callURI = UriFactory.personaOverview(mSelectedPersona, mSelectedPlatformId);
     }
 
     private long getSelectedPersonaId(int position) {
@@ -172,16 +174,18 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     }
 
     @Override
-    public void onDialogListSelection() {
-        Log.e("ProfileStatsFragment", "I AM BACK ! ! !");
+    public void onDialogListSelection(int index) {
+        updateSharedPreference(index);
+        setSelectedPersonaVariables();
+        getData();
     }
 
     private void getData() {
         if(dbHasData()){
             findViews();
-            hasDBData = true;
+            populateView();
         }else {
-            getLoaderManager().initLoader(0, bundle, this);
+            getLoaderManager().restartLoader(0, bundle, this);
         }
     }
 
@@ -372,6 +376,24 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         mProfileData = p;
     }
 
+    private Map<Long, String> personasToMap(){
+        personaData = SessionKeeper.getProfileData().getPersonaArray();
+        Map<Long, String> map = new HashMap<Long, String>();
+        for(PersonaData pd : personaData){
+            map.put(pd.getId(), pd.getName() + " " + pd.resolvePlatformId());
+        }
+        return map;
+    }
+
+    private void updateSharedPreference(int index) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity()
+                .getApplicationContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong(SP_BL_PERSONA_CURRENT_ID, personaData[index].getId());
+        editor.putInt(SP_BL_PERSONA_CURRENT_POS, index);
+        editor.commit();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -427,6 +449,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
 
     @Override
     public void reload() {
+        getLoaderManager().restartLoader(0, bundle, this);
     }
 
     private void startLoadingDialog() {   //TODO extract multiple duplicates of same code
