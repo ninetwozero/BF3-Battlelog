@@ -154,68 +154,107 @@ public class FeedItemDataFactory {
 		return feedItemData;
 	}
 
-	/* FIXME: Needs to be able to handle three types; awards, br's and assignments */
+	/*
+	 * FIXME: Needs to be able to handle three types; awards, br's and
+	 * assignments
+	 */
 	private static ParsedFeedItemData generateFromSharedGameEvent(
 			Context context, JSONObject jsonObject, ProfileData profile)
 			throws JSONException {
 
 		// Init
-		String type = "BF3AWARDS";
-		if( jsonObject.isNull("BF3AWARDS") ) {
-			
-			if( jsonObject.isNull("BF3GAMEREPORT") ) type = "BF3AWARDS";
-			else type = "BF3GAMEREPORT";
-			
-		}
-		JSONArray stats = jsonObject.getJSONObject(type).optJSONArray(STAT_ITEMS);
+		String generatedTitle;
+		String shareType = jsonObject.getString("eventName");
+		JSONObject eventData = jsonObject.getJSONObject(shareType);
+		JSONArray stats = eventData.optJSONArray(STAT_ITEMS);
 		StringBuilder title = new StringBuilder();
 
 		/* TODO: EXPORT TO SMALLER METHODS */
-		for (int counter = 0, maxCounter = stats.length(); counter < maxCounter; counter++) {
+		if (stats == null) {
+			generatedTitle = PublicUtils.createStringWithData(context,
+					R.string.info_p_shared_rank, profile.getUsername(),
+					DataBank.getRankTitle(eventData.getString("nameSID")),
+					eventData.getString("rank"));
 
-			// Let's get the item
-			JSONObject tempSubItem = stats.optJSONObject(counter);
+		} else {
 
-			// Append
-			if (title.length() == 0) {
-				title.append("<b>");
-			}
+			for (int counter = 0, maxCounter = stats.length(); counter < maxCounter; counter++) {
 
-			// Do we need to append anything?
-			if (counter > 0) {
+				// Let's get the item
+				JSONObject tempSubItem = stats.optJSONObject(counter);
 
-				if (counter == (maxCounter - 1)) {
+				// Append
+				if (title.length() == 0) {
+					title.append("<b>");
+				}
 
-					title.append(" </b>and<b> ");
+				// Do we need to append anything?
+				if (counter > 0) {
+					if (counter == (maxCounter - 1)) {
+						title.append(" </b>and<b> ");
 
+					} else {
+						title.append(", ");
+
+					}
+
+				}
+
+				// Let's see
+				String key = tempSubItem.getString(NAME_SID);
+				if (shareType.equals("BF3AWARDS")) {
+
+					/*
+					 * BF3AWARDS: {,…} statItems: [{nameSID:ID_P_AWARD_R19_NAME,
+					 * image:null, descriptionSID:ID_P_AWARD_R19_DESC,
+					 * imageName:r19,…},…] 0: {nameSID:ID_P_AWARD_R19_NAME,
+					 * image:null, descriptionSID:ID_P_AWARD_R19_DESC,
+					 * imageName:r19,…} descriptionSID: "ID_P_AWARD_R19_DESC"
+					 * image: null imageName: "r19" nameSID:
+					 * "ID_P_AWARD_R19_NAME" type: 2048 unlockId: "r19"
+					 */
+
+					title.append(DataBank.getAwardTitle(key));
+				} else if (shareType.equals("BF3GAMEREPORT")) {
+					/*
+					 * BF3GAMEREPORT: {statItems:[,…]} statItems: [,…] 0:
+					 * {nameSID:ID_P_VWNAME_ARTTOW, image:vehicle_tow,
+					 * guid:B291A248-5037-4B1C-AD1B-AA1050E1FDBA, slug:tow,…}
+					 * codeNeeded: "xp3ma01_00" descriptionSID: "None" guid:
+					 * "B291A248-5037-4B1C-AD1B-AA1050E1FDBA" image:
+					 * "vehicle_tow" nameSID: "ID_P_VWNAME_ARTTOW" parentImage:
+					 * null parentNameSID: "ID_P_VNAME_2S25_SPRUTSD" slug: "tow"
+					 * type: 64 unlockId: "" valueNeeded: "1.0"
+					 */
+					title.append(DataBank.getWeaponTitle(context, key));
 				} else {
-
-					title.append(", ");
-
+					/*
+					 * BF3ASSIGNMENTS: {statItems:[{nameSID:ID_XP3_ASSIGNMENT_1,
+					 * image:xp3a01, unlockId:xp3ma01}]} statItems:
+					 * [{nameSID:ID_XP3_ASSIGNMENT_1, image:xp3a01,
+					 * unlockId:xp3ma01}] 0: {nameSID:ID_XP3_ASSIGNMENT_1,
+					 * image:xp3a01, unlockId:xp3ma01} image: "xp3a01" nameSID:
+					 * "ID_XP3_ASSIGNMENT_1" unlockId: "xp3ma01"
+					 */
+					title.append(DataBank.getAwardTitle(key));
 				}
 
 			}
 
-			// Let's see
-			String key = tempSubItem.getString(NAME_SID);
-			title.append(DataBank.getAwardTitle(key));
+			// Set the things straight
+			if (stats.length() > 1) {
 
-		}
+				generatedTitle = PublicUtils.createStringWithData(context,
+						R.string.info_p_shared_awards, profile.getUsername(),
+						title.append("</b>"));
 
-		// Set the things straight
-		String generatedTitle;
-		if (stats.length() > 1) {
+			} else {
 
-			generatedTitle = PublicUtils.createStringWithData(context,
-					R.string.info_p_shared_awards, profile.getUsername(),
-					title.append("</b>"));
+				generatedTitle = PublicUtils.createStringWithData(context,
+						R.string.info_p_shared_award, profile.getUsername(),
+						title.append("</b>"));
 
-		} else {
-
-			generatedTitle = PublicUtils.createStringWithData(context,
-					R.string.info_p_shared_award, profile.getUsername(),
-					title.append("</b>"));
-
+			}
 		}
 
 		return new ParsedFeedItemData(generatedTitle, "", new ProfileData[] {
@@ -225,10 +264,9 @@ public class FeedItemDataFactory {
 	private static ParsedFeedItemData generateFromNewForumPost(Context context,
 			JSONObject currItem, ProfileData profile) throws JSONException {
 
-		Log.d(Constants.DEBUG_TAG, "currItem => " + currItem);
-		return new ParsedFeedItemData(
-		PublicUtils.createStringWithData(context, R.string.info_p_forumthread,
-				profile.getUsername(), currItem.getString(THREAD_TITLE)),
+		return new ParsedFeedItemData(PublicUtils.createStringWithData(context,
+				R.string.info_p_forumthread, profile.getUsername(),
+				currItem.getString(THREAD_TITLE)),
 				currItem.getString(POST_BODY), new ProfileData[] {
 
 				profile, null
@@ -707,12 +745,12 @@ public class FeedItemDataFactory {
 			JSONObject currItem, ProfileData profile) throws JSONException {
 		return new ParsedFeedItemData(
 
-		"<b>" + profile.getUsername() + "</b> " + currItem.getString("statusMessage"), "",
-				new ProfileData[] {
+		"<b>" + profile.getUsername() + "</b> "
+				+ currItem.getString("statusMessage"), "", new ProfileData[] {
 
-				profile, null
+		profile, null
 
-				});
+		});
 
 	}
 

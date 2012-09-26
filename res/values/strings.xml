@@ -325,6 +325,7 @@
     <string name="info_p_award">&lt;b>{username}&lt;/b> received a new award: &lt;b>{award}&lt;/b>.</string>
     <string name="info_p_shared_award">&lt;b>{username}&lt;/b> shared a received award: &lt;b>{award}&lt;/b>.</string>
     <string name="info_p_shared_awards">&lt;b>{username}&lt;/b> shared some received awards: &lt;b>{award}&lt;/b>.</string>
+    <string name="info_p_shared_rank">&lt;b>{username}&lt;/b> shared a received promotion: &lt;b>{title} ({rank})&lt;/b>.</string>
     <string name="info_new_rank">new rank</string>
     <string name="title_main_menu">BF3 Battlelog - Main menu</string>
     <string name="title_profile">BF3 Battlelog - Profile</string>
