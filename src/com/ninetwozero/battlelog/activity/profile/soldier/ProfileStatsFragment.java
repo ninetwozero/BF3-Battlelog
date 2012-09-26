@@ -449,7 +449,12 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
 
     @Override
     public void reload() {
-        getLoaderManager().restartLoader(0, bundle, this);
+        /*TODO
+        * can't use this method implementation because for some reason it been called before actual content
+        * showed. Very weird. I would recommend to delete DB record of currently selected persona
+        * and then call getData() method
+        * */
+    //getLoaderManager().restartLoader(0, bundle, this);
     }
 
     private void startLoadingDialog() {   //TODO extract multiple duplicates of same code
