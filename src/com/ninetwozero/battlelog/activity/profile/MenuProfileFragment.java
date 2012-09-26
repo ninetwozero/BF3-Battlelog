@@ -48,6 +48,9 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
+
 public class MenuProfileFragment extends Fragment implements DefaultFragment,
         OnCloseListDialogListener {
 
@@ -100,7 +103,7 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
                     @Override
                     public void onClick(View v) {
                         FragmentManager manager = getFragmentManager();
-                        ListDialogFragment dialog = ListDialogFragment.newInstance(mPersona,
+                        ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(),
                                 getTag());
                         dialog.show(manager, DIALOG);
                     }
@@ -158,8 +161,17 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
 
     }
 
+    private Map<Long, String> personasToMap(){
+        Map<Long, String> map = new HashMap<Long, String>();
+        for(PersonaData pd : mPersona){
+            map.put(pd.getId(), pd.getName() + " " + pd.resolvePlatformId());
+        }
+        return map;
+    }
+
     @Override
-    public void onDialogListSelection() {
+    public void onDialogListSelection(int index) {
+        updateSharedPreference(index);
         dataFromSharedPreferences();
         setupActiveSoldierContent();
     }
@@ -187,5 +199,16 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
     private String getPersonaNameAndPlatform() {
         return mPersona[mSelectedPosition].getName()
                 + mPersona[mSelectedPosition].resolvePlatformId();
+    }
+
+
+
+    private void updateSharedPreference(int index) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity()
+                .getApplicationContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong(SP_BL_PERSONA_CURRENT_ID, mPersona[index].getId());
+        editor.putInt(SP_BL_PERSONA_CURRENT_POS, index);
+        editor.commit();
     }
 }
