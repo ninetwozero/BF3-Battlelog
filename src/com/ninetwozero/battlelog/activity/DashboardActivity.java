@@ -52,335 +52,331 @@ import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class DashboardActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
-
-    // COM-related
-    private SlidingDrawer mSlidingDrawer;
-    private TextView mSlidingDrawerHandle;
-
-    // Fragment related
-    private SwipeyTabs mTabsCom;
-    private SwipeyTabsPagerAdapter mPagerAdapterCom;
-    private List<Fragment> mListFragmentsCom;
-    private MenuPlatoonFragment mFragmentMenuPlatoon;
-    private FeedFragment mFragmentFeed;
-    private ComFriendFragment mFragmentComFriends;
-    private ComNotificationFragment mFragmentComNotifications;
-    private ViewPager mViewPager;
-    private ViewPager mViewPagerCom;
-    private final int VIEWPAGER_POSITION_FEED = 4;
-
-    @Override
-    public void onCreate(final Bundle icicle) {
-
-        // onCreate - save the instance state
-        super.onCreate(icicle);
-
-        // Set sharedPreferences
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Validate our session
-        validateSession();
-
-        // Set the content view
-        setContentView(R.layout.viewpager_dashboard);
-
-        // Setup the fragments
-        setup();
-
-        // Setup COM & feed
-        init();
-
-    }
-
-    public final void init() {
-
-        mSlidingDrawer = (SlidingDrawer) findViewById(R.id.com_slider);
-        mSlidingDrawerHandle = (TextView) findViewById(R.id.com_slide_handle_text);
-
-    }
-
-    @Override
-    public void onResume() {
-
-        super.onResume();
+public class DashboardActivity extends CustomFragmentActivity implements
+		DefaultFragmentActivity {
 
-    }
-
-    public void setup() {
-
-        // Do we need to setup the fragments?
-        if (mListFragments == null) {
-
-            // Add them to the list
-            mListFragments = new ArrayList<Fragment>();
-            mListFragments.add(Fragment.instantiate(this,
-                    NewsListFragment.class.getName()));
-            mListFragments.add(Fragment.instantiate(
-                    this,
-                    MenuProfileFragment.class.getName()));
-            mListFragments.add(mFragmentMenuPlatoon = (MenuPlatoonFragment) Fragment.instantiate(
-                    this,
-                    MenuPlatoonFragment.class.getName()));
-            mListFragments.add(Fragment.instantiate(
-                    this,
-                    MenuForumFragment.class.getName()));
-            mListFragments.add(mFragmentFeed = (FeedFragment) Fragment.instantiate(this,
-                    FeedFragment.class.getName()));
+	// COM-related
+	private SlidingDrawer mSlidingDrawer;
+	private TextView mSlidingDrawerHandle;
 
-            // Setup platoon tab
-            mFragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
+	// Fragment related
+	private SwipeyTabs mTabsCom;
+	private SwipeyTabsPagerAdapter mPagerAdapterCom;
+	private List<Fragment> mListFragmentsCom;
+	private MenuPlatoonFragment mFragmentMenuPlatoon;
+	private FeedFragment mFragmentFeed;
+	private ComFriendFragment mFragmentComFriends;
+	private ComNotificationFragment mFragmentComNotifications;
+	private ViewPager mViewPager;
+	private ViewPager mViewPagerCom;
+	private final int VIEWPAGER_POSITION_FEED = 4;
+
+	@Override
+	public void onCreate(final Bundle icicle) {
+
+		// onCreate - save the instance state
+		super.onCreate(icicle);
 
-            // Setup the feed
-            mFragmentFeed.setType(FeedClient.TYPE_GLOBAL);
-            mFragmentFeed.setCanWrite(true);
+		// Set sharedPreferences
+		mSharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+
+		// Validate our session
+		validateSession();
+
+		// Set the content view
+		setContentView(R.layout.viewpager_dashboard);
+
+		// Setup the fragments
+		setup();
+
+		// Setup COM & feed
+		init();
 
-            // Get the ViewPager
-            mViewPager = (ViewPager) findViewById(R.id.viewpager);
-            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+	}
 
-            // Fill the PagerAdapter & set it to the viewpager
-            mPagerAdapter = new SwipeyTabsPagerAdapter(
+	public final void init() {
 
-                    mFragmentManager,
-                    new String[] {
-                            "NEWS", "PROFILE", "PLATOON", "FORUM", "FEED"
-                    },
-                    mListFragments,
-                    mViewPager,
-                    mLayoutInflater
-                    );
-            mViewPager.setAdapter(mPagerAdapter);
-            mTabs.setAdapter(mPagerAdapter);
+		mSlidingDrawer = (SlidingDrawer) findViewById(R.id.com_slider);
+		mSlidingDrawerHandle = (TextView) findViewById(R.id.com_slide_handle_text);
 
-            // Make sure the tabs follow
-            mViewPager.setOnPageChangeListener(mTabs);
-            mViewPager.setOffscreenPageLimit(4);
-            mViewPager.setCurrentItem(1);
+	}
 
-        }
+	@Override
+	public void onResume() {
 
-        if (mListFragmentsCom == null) {
+		super.onResume();
 
-            // Add them to the list
-            mListFragmentsCom = new ArrayList<Fragment>();
-            mListFragmentsCom.add(mFragmentComFriends = (ComFriendFragment) Fragment.instantiate(
-                    this,
-                    ComFriendFragment.class.getName()));
-            mListFragmentsCom.add(mFragmentComNotifications = (ComNotificationFragment) Fragment
-                    .instantiate(this, ComNotificationFragment.class.getName()));
+	}
 
-            // Get the ViewPager
-            mViewPagerCom = (ViewPager) findViewById(R.id.viewpager_sub);
-            mTabsCom = (SwipeyTabs) findViewById(R.id.swipeytabs_sub);
+	public void setup() {
 
-            // Fill the PagerAdapter & set it to the viewpager
-            mPagerAdapterCom = new SwipeyTabsPagerAdapter(
+		// Do we need to setup the fragments?
+		if (mListFragments == null) {
 
-                    mFragmentManager,
-                    new String[] {
-                            "FRIENDS", "NOTIFICATIONS"
-                    },
-                    mListFragmentsCom,
-                    mViewPagerCom,
-                    mLayoutInflater
-                    );
-            mViewPagerCom.setAdapter(mPagerAdapterCom);
-            mTabsCom.setAdapter(mPagerAdapterCom);
+			// Add them to the list
+			mListFragments = new ArrayList<Fragment>();
+			mListFragments.add(Fragment.instantiate(this,
+					NewsListFragment.class.getName()));
+			mListFragments.add(Fragment.instantiate(this,
+					MenuProfileFragment.class.getName()));
+			mListFragments
+					.add(mFragmentMenuPlatoon = (MenuPlatoonFragment) Fragment
+							.instantiate(this,
+									MenuPlatoonFragment.class.getName()));
+			mListFragments.add(Fragment.instantiate(this,
+					MenuForumFragment.class.getName()));
+			mListFragments.add(mFragmentFeed = (FeedFragment) Fragment
+					.instantiate(this, FeedFragment.class.getName()));
 
-            // Make sure the tabs follow
-            mViewPagerCom.setOnPageChangeListener(mTabsCom);
-            mViewPagerCom.setOffscreenPageLimit(1);
-            mViewPagerCom.setCurrentItem(0);
+			// Setup platoon tab
+			mFragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
 
-        }
+			// Setup the feed
+			mFragmentFeed.setType(FeedClient.TYPE_GLOBAL);
+			mFragmentFeed.setCanWrite(true);
 
-    }
+			// Get the ViewPager
+			mViewPager = (ViewPager) findViewById(R.id.viewpager);
+			mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
-    public void validateSession() {
+			// Fill the PagerAdapter & set it to the viewpager
+			mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-        // We should've gotten a profile
-        if (SessionKeeper.getProfileData() == null) {
+			mFragmentManager, new String[] { "NEWS", "PROFILE", "PLATOON",
+					"FORUM", "FEED" }, mListFragments, mViewPager,
+					mLayoutInflater);
+			mViewPager.setAdapter(mPagerAdapter);
+			mTabs.setAdapter(mPagerAdapter);
 
-            if (getIntent().hasExtra("myProfile")) {
+			// Make sure the tabs follow
+			mViewPager.setOnPageChangeListener(mTabs);
+			mViewPager.setOffscreenPageLimit(4);
+			mViewPager.setCurrentItem(1);
 
-                // Get 'em
-                ProfileData profileData = getIntent().getParcelableExtra("myProfile");
-                List<PlatoonData> platoonArray = getIntent().getParcelableArrayListExtra(
-                        "myPlatoon");
+		}
 
-                // Set 'em
-                SessionKeeper.setProfileData(profileData);
-                SessionKeeper.setPlatoonData(platoonArray);
+		if (mListFragmentsCom == null) {
 
-            } else {
+			// Add them to the list
+			mListFragmentsCom = new ArrayList<Fragment>();
+			mListFragmentsCom
+					.add(mFragmentComFriends = (ComFriendFragment) Fragment
+							.instantiate(this,
+									ComFriendFragment.class.getName()));
+			mListFragmentsCom
+					.add(mFragmentComNotifications = (ComNotificationFragment) Fragment
+							.instantiate(this,
+									ComNotificationFragment.class.getName()));
 
-                Toast.makeText(this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
+			// Get the ViewPager
+			mViewPagerCom = (ViewPager) findViewById(R.id.viewpager_sub);
+			mTabsCom = (SwipeyTabs) findViewById(R.id.swipeytabs_sub);
 
-            }
+			// Fill the PagerAdapter & set it to the viewpager
+			mPagerAdapterCom = new SwipeyTabsPagerAdapter(
 
-        }
+			mFragmentManager, new String[] { "FRIENDS", "NOTIFICATIONS" },
+					mListFragmentsCom, mViewPagerCom, mLayoutInflater);
+			mViewPagerCom.setAdapter(mPagerAdapterCom);
+			mTabsCom.setAdapter(mPagerAdapterCom);
 
-    }
+			// Make sure the tabs follow
+			mViewPagerCom.setOnPageChangeListener(mTabsCom);
+			mViewPagerCom.setOffscreenPageLimit(1);
+			mViewPagerCom.setCurrentItem(0);
 
-    @Override
-    public void reload() {
+		}
 
-        // Update the COM
-        mFragmentComFriends.reload();
-        mFragmentComNotifications.reload();
+	}
 
-    }
+	public void validateSession() {
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
+		// We should've gotten a profile
+		if (SessionKeeper.getProfileData() == null) {
 
-        if (mSlidingDrawer.isOpened()) {
+			if (getIntent().hasExtra("myProfile")) {
 
-            switch (mViewPagerCom.getCurrentItem()) {
+				// Get 'em
+				ProfileData profileData = getIntent().getParcelableExtra(
+						"myProfile");
+				List<PlatoonData> platoonArray = getIntent()
+						.getParcelableArrayListExtra("myPlatoon");
 
-                case 0:
-                    mFragmentComFriends.createContextMenu(menu, view, menuInfo);
-                    break;
+				// Set 'em
+				SessionKeeper.setProfileData(profileData);
+				SessionKeeper.setPlatoonData(platoonArray);
 
-                default:
-                    break;
+			} else {
 
-            }
+				Toast.makeText(this, R.string.info_txt_session_lost,
+						Toast.LENGTH_SHORT).show();
 
-        } else {
+			}
 
-            switch (mViewPager.getCurrentItem()) {
+		}
 
-                case VIEWPAGER_POSITION_FEED:
-                    mFragmentFeed.createContextMenu(menu, view, menuInfo);
-                    break;
+	}
 
-                default:
-                    break;
+	@Override
+	public void reload() {
 
-            }
+		// Update the COM
+		mFragmentComFriends.reload();
+		mFragmentComNotifications.reload();
 
-        }
+	}
 
-    }
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View view,
+			ContextMenuInfo menuInfo) {
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
+		if (mSlidingDrawer.isOpened()) {
 
-        // Declare...
-        AdapterView.AdapterContextMenuInfo info;
+			switch (mViewPagerCom.getCurrentItem()) {
 
-        // Let's try to get some menu information via a try/catch
-        try {
+			case 0:
+				mFragmentComFriends.createContextMenu(menu, view, menuInfo);
+				break;
 
-            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+			default:
+				break;
 
-        } catch (ClassCastException e) {
+			}
 
-            e.printStackTrace();
-            return false;
+		} else {
 
-        }
+			switch (mViewPager.getCurrentItem()) {
 
-        if (mSlidingDrawer.isOpened()) {
+			case VIEWPAGER_POSITION_FEED:
+				mFragmentFeed.createContextMenu(menu, view, menuInfo);
+				break;
 
-            switch (mViewPagerCom.getCurrentItem()) {
+			default:
+				break;
 
-                case 0:
-                    mFragmentComFriends.handleSelectedContextItem(info, item);
-                    break;
+			}
 
-                default:
-                    break;
+		}
 
-            }
+	}
 
-        } else {
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
 
-            switch (mViewPager.getCurrentItem()) {
+		// Declare...
+		AdapterView.AdapterContextMenuInfo info;
 
-                case VIEWPAGER_POSITION_FEED:
-                    return mFragmentFeed.handleSelectedContextItem(info, item);
+		// Let's try to get some menu information via a try/catch
+		try {
 
-                default:
-                    break;
+			info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-            }
+		} catch (ClassCastException e) {
 
-        }
+			e.printStackTrace();
+			return false;
 
-        return true;
-    }
+		}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+		if (mSlidingDrawer.isOpened()) {
 
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_dashboard, menu);
-        return super.onCreateOptionsMenu(menu);
+			switch (mViewPagerCom.getCurrentItem()) {
 
-    }
+			case 0:
+				mFragmentComFriends.handleSelectedContextItem(info, item);
+				break;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+			default:
+				break;
 
-        // Let's act!
-        if (item.getItemId() == R.id.option_refresh) {
+			}
 
-            reload();
+		} else {
 
-        } else if (item.getItemId() == R.id.option_settings) {
+			switch (mViewPager.getCurrentItem()) {
 
-            startActivity(new Intent(this, SettingsActivity.class));
-            finish();
+			case VIEWPAGER_POSITION_FEED:
+				return mFragmentFeed.handleSelectedContextItem(info, item);
 
-        } else if (item.getItemId() == R.id.option_logout) {
+			default:
+				break;
 
-            new AsyncLogout(this).execute();
+			}
 
-        } else if (item.getItemId() == R.id.option_about) {
+		}
 
-            startActivity(new Intent(this, AboutActivity.class));
+		return true;
+	}
 
-        }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 
-        // Return true yo
-        return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.option_dashboard, menu);
+		return super.onCreateOptionsMenu(menu);
 
-    }
+	}
 
-    public void setComLabel(String str) {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
 
-        mSlidingDrawerHandle.setText(str);
+		// Let's act!
+		if (item.getItemId() == R.id.option_refresh) {
 
-    }
+			reload();
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+		} else if (item.getItemId() == R.id.option_settings) {
 
-        // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+			startActivity(new Intent(this, SettingsActivity.class));
+			finish();
 
-            if (mSlidingDrawer.isOpened()) {
+		} else if (item.getItemId() == R.id.option_logout) {
 
-                mSlidingDrawer.animateClose();
-                return true;
+			new AsyncLogout(this).execute();
 
-            } else if (mViewPager.getCurrentItem() > 1) {
+		} else if (item.getItemId() == R.id.option_about) {
 
-                mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
-                return true;
+			startActivity(new Intent(this, AboutActivity.class));
 
-            }
+		}
 
-        } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
+		// Return true yo
+		return true;
 
-            startActivity(new Intent(this, SearchActivity.class));
+	}
 
-        }
-        return super.onKeyDown(keyCode, event);
+	public void setComLabel(String str) {
 
-    }
+		mSlidingDrawerHandle.setText(str);
+
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		// Hotkeys
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+			if (mSlidingDrawer.isOpened()) {
+
+				mSlidingDrawer.animateClose();
+				return true;
+
+			} else if (mViewPager.getCurrentItem() > 1) {
+
+				mViewPager
+						.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+				return true;
+
+			}
+
+		} else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
+
+			startActivity(new Intent(this, SearchActivity.class));
+
+		}
+		return super.onKeyDown(keyCode, event);
+
+	}
 }

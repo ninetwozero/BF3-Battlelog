@@ -24,67 +24,67 @@ import com.ninetwozero.battlelog.http.FeedClient;
 
 public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
 
-    // Attribute
-    private Context context;
-    private long postId;
-    private boolean fromWidget, liked;
-    private FeedFragment feedFragment;
+	// Attribute
+	private Context context;
+	private long postId;
+	private boolean fromWidget, liked;
+	private FeedFragment feedFragment;
 
-    // Constructor
-    public AsyncFeedHooah(Context c, long pId, boolean w, boolean l,
-            FeedFragment f) {
+	// Constructor
+	public AsyncFeedHooah(Context c, long pId, boolean w, boolean l,
+			FeedFragment f) {
 
-        context = c;
-        postId = pId;
-        fromWidget = w;
-        liked = l;
-        feedFragment = f;
+		context = c;
+		postId = pId;
+		fromWidget = w;
+		liked = l;
+		feedFragment = f;
 
-    }
+	}
 
-    @Override
-    protected void onPreExecute() {
-    }
+	@Override
+	protected void onPreExecute() {
+	}
 
-    @Override
-    protected Boolean doInBackground(String... arg0) {
+	@Override
+	protected Boolean doInBackground(String... arg0) {
 
-        try {
+		try {
 
-            // Did we manage?
-            if (liked) {
+			// Did we manage?
+			if (liked) {
 
-                return FeedClient.unhooah(postId, arg0[0]);
+				return FeedClient.unhooah(postId, arg0[0]);
 
-            } else {
+			} else {
 
-                return FeedClient.hooah(postId, arg0[0]);
+				return FeedClient.hooah(postId, arg0[0]);
 
-            }
+			}
 
-        } catch (Exception ex) {
+		} catch (Exception ex) {
 
-            ex.printStackTrace();
-            return false;
+			ex.printStackTrace();
+			return false;
 
-        }
+		}
 
-    }
+	}
 
-    @Override
-    protected void onPostExecute(Boolean results) {
+	@Override
+	protected void onPostExecute(Boolean results) {
 
-        if (!fromWidget) {
+		if (!fromWidget) {
 
-            if (!results) {
-                Toast.makeText(context, R.string.msg_hooah_fail,
-                        Toast.LENGTH_SHORT).show();
-            }
+			if (!results) {
+				Toast.makeText(context, R.string.msg_hooah_fail,
+						Toast.LENGTH_SHORT).show();
+			}
 
-            feedFragment.reload();
+			feedFragment.reload();
 
-        }
+		}
 
-    }
+	}
 
 }

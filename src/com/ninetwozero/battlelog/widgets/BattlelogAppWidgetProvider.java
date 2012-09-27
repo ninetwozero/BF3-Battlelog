@@ -41,160 +41,164 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
-    public static final String DEBUG_TAG = "WidgetProvider";
-    public static final String ACTION_WIDGET_RECEIVER = "ActionReceiverWidget";
-    public static final String ACTION_WIDGET_OPENAPP = "Main";
-    private SharedPreferences mSharedPreferences;
+	public static final String DEBUG_TAG = "WidgetProvider";
+	public static final String ACTION_WIDGET_RECEIVER = "ActionReceiverWidget";
+	public static final String ACTION_WIDGET_OPENAPP = "Main";
+	private SharedPreferences mSharedPreferences;
 
-    @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-            int[] appWidgetIds) {
+	@Override
+	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+			int[] appWidgetIds) {
 
-        // Set the values
-        mSharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+		// Set the values
+		mSharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
 
-        // Set the session if needed
-        SessionKeeper.setProfileData(SessionKeeper
-                .generateProfileDataFromSharedPreferences(mSharedPreferences));
+		// Set the session if needed
+		SessionKeeper.setProfileData(SessionKeeper
+				.generateProfileDataFromSharedPreferences(mSharedPreferences));
 
-        // if service == active
-        PublicUtils.setupSession(context, mSharedPreferences);
+		// if service == active
+		PublicUtils.setupSession(context, mSharedPreferences);
 
-        // Let's call the AsyncTask
-        new AsyncRefresh(context, appWidgetManager).execute();
+		// Let's call the AsyncTask
+		new AsyncRefresh(context, appWidgetManager).execute();
 
-    }
+	}
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
+	@Override
+	public void onReceive(Context context, Intent intent) {
 
-        super.onReceive(context, intent);
+		super.onReceive(context, intent);
 
-        AppWidgetManager appWidgetManager = AppWidgetManager
-                .getInstance(context);
-        ComponentName thisAppWidget = new ComponentName(context,
-                BattlelogAppWidgetProvider.class);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
+		AppWidgetManager appWidgetManager = AppWidgetManager
+				.getInstance(context);
+		ComponentName thisAppWidget = new ComponentName(context,
+				BattlelogAppWidgetProvider.class);
+		int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
 
-        // UPDATE IT !!!!
-        onUpdate(context, appWidgetManager, appWidgetIds);
+		// UPDATE IT !!!!
+		onUpdate(context, appWidgetManager, appWidgetIds);
 
-    }
+	}
 
-    private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
+	private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
-        // Attributes
-        private Context mContext;
-        private AppWidgetManager mAppWidgetManager;
-        private int mNumFriendsOnline;
-        private PersonaStats mPlayerData;
-        private FriendListDataWrapper mFriends;
+		// Attributes
+		private Context mContext;
+		private AppWidgetManager mAppWidgetManager;
+		private int mNumFriendsOnline;
+		private PersonaStats mPlayerData;
+		private FriendListDataWrapper mFriends;
 
-        public AsyncRefresh(Context c, AppWidgetManager a) {
+		public AsyncRefresh(Context c, AppWidgetManager a) {
 
-            mContext = c;
-            mAppWidgetManager = a;
+			mContext = c;
+			mAppWidgetManager = a;
 
-        }
+		}
 
-        @Override
-        protected Boolean doInBackground(Void... arg) {
+		@Override
+		protected Boolean doInBackground(Void... arg) {
 
-            try {
+			try {
 
-                PersonaData firstPersona = SessionKeeper.getProfileData().getPersona(0);
-                mPlayerData = new ProfileClient(SessionKeeper.getProfileData()).getStats(
+				PersonaData firstPersona = SessionKeeper.getProfileData()
+						.getPersona(0);
+				mPlayerData = new ProfileClient(SessionKeeper.getProfileData())
+						.getStats(
 
-                        firstPersona.getName(),
-                        firstPersona.getId(),
-                        firstPersona.getPlatformId()
+						firstPersona.getName(), firstPersona.getId(),
+								firstPersona.getPlatformId()
 
-                        );
+						);
 
-                mFriends = new COMClient(mSharedPreferences.getString(
-                        Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriendsForCOM(mContext);
-                mNumFriendsOnline = mFriends.getNumTotalOnline();
-                return true;
+				mFriends = new COMClient(mSharedPreferences.getString(
+						Constants.SP_BL_PROFILE_CHECKSUM, ""))
+						.getFriendsForCOM(mContext);
+				mNumFriendsOnline = mFriends.getNumTotalOnline();
+				return true;
 
-            } catch (WebsiteHandlerException ex) {
+			} catch (WebsiteHandlerException ex) {
 
-                ex.printStackTrace();
-                return false;
+				ex.printStackTrace();
+				return false;
 
-            }
+			}
 
-        }
+		}
 
-        @Override
-        protected void onPostExecute(Boolean results) {
+		@Override
+		protected void onPostExecute(Boolean results) {
 
-            if (mContext != null) {
+			if (mContext != null) {
 
-                // Let's init a RemoteViews
-                RemoteViews remoteView = new RemoteViews(mContext.getPackageName(),
-                        R.layout.widget_dogtag);
+				// Let's init a RemoteViews
+				RemoteViews remoteView = new RemoteViews(
+						mContext.getPackageName(), R.layout.widget_dogtag);
 
-                // Set the views
-                if (results) {
+				// Set the views
+				if (results) {
 
-                    remoteView.setTextViewText(
+					remoteView.setTextViewText(
 
-                            R.id.label, mPlayerData.getPersonaName()
+					R.id.label, mPlayerData.getPersonaName()
 
-                            );
-                    remoteView.setTextViewText(
+					);
+					remoteView.setTextViewText(
 
-                            R.id.title,
-                            mContext.getString(R.string.info_xml_rank)
-                                    + mPlayerData.getRankId());
-                    remoteView
-                            .setTextViewText(
+					R.id.title, mContext.getString(R.string.info_xml_rank)
+							+ mPlayerData.getRankId());
+					remoteView
+							.setTextViewText(
 
-                                    R.id.stats,
-                                    ("W/L: " + Math.floor(mPlayerData.getWLRatio() * 100) / 100
-                                            + "  K/D: " + Math.floor(mPlayerData.getKDRatio() * 100) / 100));
+									R.id.stats,
+									("W/L: "
+											+ Math.floor(mPlayerData
+													.getWLRatio() * 100) / 100
+											+ "  K/D: " + Math
+											.floor(mPlayerData.getKDRatio() * 100) / 100));
 
-                    if (mNumFriendsOnline > 0) {
+					if (mNumFriendsOnline > 0) {
 
-                        remoteView.setTextColor(R.id.friends, Color.BLACK);
-                        remoteView.setTextViewText(R.id.friends, String.valueOf(mNumFriendsOnline));
+						remoteView.setTextColor(R.id.friends, Color.BLACK);
+						remoteView.setTextViewText(R.id.friends,
+								String.valueOf(mNumFriendsOnline));
 
-                    } else {
+					} else {
 
-                        remoteView.setTextColor(R.id.friends, Color.RED);
-                        remoteView.setTextViewText(R.id.friends, "0");
+						remoteView.setTextColor(R.id.friends, Color.RED);
+						remoteView.setTextViewText(R.id.friends, "0");
 
-                    }
+					}
 
-                } else {
+				} else {
 
-                    remoteView.setTextViewText(R.id.label,
-                            Html.fromHtml("<b>Error</b>"));
-                    remoteView.setTextViewText(R.id.title,
-                            mContext.getString(R.string.general_no_data));
-                    remoteView.setTextViewText(R.id.stats,
-                            mContext.getString(R.string.info_connect_bl));
-                    remoteView.setTextColor(R.id.friends, Color.RED);
-                    remoteView.setTextViewText(R.id.friends, "0");
+					remoteView.setTextViewText(R.id.label,
+							Html.fromHtml("<b>Error</b>"));
+					remoteView.setTextViewText(R.id.title,
+							mContext.getString(R.string.general_no_data));
+					remoteView.setTextViewText(R.id.stats,
+							mContext.getString(R.string.info_connect_bl));
+					remoteView.setTextColor(R.id.friends, Color.RED);
+					remoteView.setTextViewText(R.id.friends, "0");
 
-                }
+				}
 
-                remoteView.setOnClickPendingIntent(R.id.widget_button,
-                        PendingIntent.getBroadcast(mContext,
-                                0, new Intent(mContext, BattlelogAppWidgetProvider.class)
-                                        .setAction(ACTION_WIDGET_RECEIVER), 0));
-                remoteView.setOnClickPendingIntent(
-                        R.id.widget_button2,
-                        PendingIntent.getActivity(
-                                mContext, 0, new Intent(mContext, MainActivity.class).setAction(
-                                        ACTION_WIDGET_OPENAPP), 0));
-                mAppWidgetManager.updateAppWidget(new ComponentName(mContext,
-                        BattlelogAppWidgetProvider.class), remoteView);
+				remoteView.setOnClickPendingIntent(R.id.widget_button,
+						PendingIntent.getBroadcast(mContext, 0, new Intent(
+								mContext, BattlelogAppWidgetProvider.class)
+								.setAction(ACTION_WIDGET_RECEIVER), 0));
+				remoteView.setOnClickPendingIntent(R.id.widget_button2,
+						PendingIntent.getActivity(mContext, 0, new Intent(
+								mContext, MainActivity.class)
+								.setAction(ACTION_WIDGET_OPENAPP), 0));
+				mAppWidgetManager.updateAppWidget(new ComponentName(mContext,
+						BattlelogAppWidgetProvider.class), remoteView);
 
-            }
+			}
 
-        }
-    }
+		}
+	}
 
 }

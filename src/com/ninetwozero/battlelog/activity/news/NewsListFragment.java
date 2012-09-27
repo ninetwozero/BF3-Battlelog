@@ -38,152 +38,152 @@ import com.ninetwozero.battlelog.http.WebsiteClient;
 
 public class NewsListFragment extends ListFragment implements DefaultFragment {
 
-    // Attributes
-    private Context mContext;
-    private LayoutInflater mLayoutInflater;
+	// Attributes
+	private Context mContext;
+	private LayoutInflater mLayoutInflater;
 
-    // Elements
-    private ListView mListView;
-    private NewsListAdapter mNewsListAdapter;
+	// Elements
+	private ListView mListView;
+	private NewsListAdapter mNewsListAdapter;
 
-    // Misc
-    private List<NewsData> mNewsItems;
-    private int mStart;
+	// Misc
+	private List<NewsData> mNewsItems;
+	private int mStart;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-        // Set our attributes
-        mContext = getActivity();
-        mLayoutInflater = inflater;
+		// Set our attributes
+		mContext = getActivity();
+		mLayoutInflater = inflater;
 
-        // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.tab_content_dashboard_news,
-                container, false);
+		// Let's inflate & return the view
+		View view = mLayoutInflater.inflate(
+				R.layout.tab_content_dashboard_news, container, false);
 
-        // Init
-        initFragment(view);
+		// Init
+		initFragment(view);
 
-        // Return
-        return view;
+		// Return
+		return view;
 
-    }
+	}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        reload();
+	@Override
+	public void onResume() {
+		super.onResume();
+		reload();
 
-    }
+	}
 
-    public void initFragment(View v) {
+	public void initFragment(View v) {
 
-        // Get the elements
-        mListView = (ListView) v.findViewById(android.R.id.list);
+		// Get the elements
+		mListView = (ListView) v.findViewById(android.R.id.list);
 
-        // Setup the listAdapter
-        mNewsListAdapter = new NewsListAdapter(mContext, mNewsItems,
-                mLayoutInflater);
-        mListView.setAdapter(mNewsListAdapter);
+		// Setup the listAdapter
+		mNewsListAdapter = new NewsListAdapter(mContext, mNewsItems,
+				mLayoutInflater);
+		mListView.setAdapter(mNewsListAdapter);
 
-    }
+	}
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
 
-        super.onActivityCreated(savedInstanceState);
+		super.onActivityCreated(savedInstanceState);
 
-    }
+	}
 
-    public void reload() {
+	public void reload() {
 
-        // Feed refresh!
-        new AsyncFeedRefresh(mContext).execute();
+		// Feed refresh!
+		new AsyncFeedRefresh(mContext).execute();
 
-    }
+	}
 
-    @Override
-    public void onListItemClick(ListView l, View v, int pos, long id) {
+	@Override
+	public void onListItemClick(ListView l, View v, int pos, long id) {
 
-        mContext.startActivity(
+		mContext.startActivity(
 
-                new Intent(mContext, SinglePostActivity.class).putExtra(
+		new Intent(mContext, SinglePostActivity.class).putExtra(
 
-                        "news", (NewsData) v.getTag()
+		"news", (NewsData) v.getTag()
 
-                        )
+		)
 
-                );
+		);
 
-    }
+	}
 
-    public class AsyncFeedRefresh extends AsyncTask<Void, Void, Boolean> {
+	public class AsyncFeedRefresh extends AsyncTask<Void, Void, Boolean> {
 
-        // Attributes
-        private Context context;
+		// Attributes
+		private Context context;
 
-        public AsyncFeedRefresh(Context c) {
+		public AsyncFeedRefresh(Context c) {
 
-            this.context = c;
+			this.context = c;
 
-        }
+		}
 
-        @Override
-        protected void onPreExecute() {
-        }
+		@Override
+		protected void onPreExecute() {
+		}
 
-        @Override
-        protected Boolean doInBackground(Void... arg0) {
+		@Override
+		protected Boolean doInBackground(Void... arg0) {
 
-            try {
+			try {
 
-                // Get...
-                mNewsItems = new WebsiteClient().getNewsForPage(mStart);
+				// Get...
+				mNewsItems = new WebsiteClient().getNewsForPage(mStart);
 
-                // ...validate!
-                return (mNewsItems != null);
+				// ...validate!
+				return (mNewsItems != null);
 
-            } catch (WebsiteHandlerException ex) {
+			} catch (WebsiteHandlerException ex) {
 
-                ex.printStackTrace();
-                return false;
+				ex.printStackTrace();
+				return false;
 
-            }
+			}
 
-        }
+		}
 
-        @Override
-        protected void onPostExecute(Boolean result) {
+		@Override
+		protected void onPostExecute(Boolean result) {
 
-            // Fail?
-            if (!result) {
+			// Fail?
+			if (!result) {
 
-                Toast.makeText(this.context, R.string.info_news_empty,
-                        Toast.LENGTH_SHORT).show();
+				Toast.makeText(this.context, R.string.info_news_empty,
+						Toast.LENGTH_SHORT).show();
 
-            }
+			}
 
-            // Update
-            mNewsListAdapter.setItemArray(mNewsItems);
+			// Update
+			mNewsListAdapter.setItemArray(mNewsItems);
 
-        }
+		}
 
-    }
+	}
 
-    public void setStart(int s) {
+	public void setStart(int s) {
 
-        mStart = s;
+		mStart = s;
 
-    }
+	}
 
-    @Override
-    public Menu prepareOptionsMenu(Menu menu) {
-        return menu;
-    }
+	@Override
+	public Menu prepareOptionsMenu(Menu menu) {
+		return menu;
+	}
 
-    @Override
-    public boolean handleSelectedOption(MenuItem item) {
-        return false;
-    }
+	@Override
+	public boolean handleSelectedOption(MenuItem item) {
+		return false;
+	}
 }

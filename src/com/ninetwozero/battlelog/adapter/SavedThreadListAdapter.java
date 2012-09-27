@@ -30,135 +30,136 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class SavedThreadListAdapter extends BaseAdapter {
 
-    // Attributes
-    private Context context;
-    private List<SavedForumThreadData> itemArray;
-    private LayoutInflater layoutInflater;
+	// Attributes
+	private Context context;
+	private List<SavedForumThreadData> itemArray;
+	private LayoutInflater layoutInflater;
 
-    // Construct
-    public SavedThreadListAdapter(Context c, List<SavedForumThreadData> m,
-            LayoutInflater l) {
+	// Construct
+	public SavedThreadListAdapter(Context c, List<SavedForumThreadData> m,
+			LayoutInflater l) {
 
-        context = c;
-        itemArray = m;
-        layoutInflater = l;
+		context = c;
+		itemArray = m;
+		layoutInflater = l;
 
-    }
+	}
 
-    @Override
-    public int getCount() {
+	@Override
+	public int getCount() {
 
-        return (itemArray != null) ? itemArray.size() : 0;
+		return (itemArray != null) ? itemArray.size() : 0;
 
-    }
+	}
 
-    @Override
-    public SavedForumThreadData getItem(int position) {
+	@Override
+	public SavedForumThreadData getItem(int position) {
 
-        return itemArray.get(position);
+		return itemArray.get(position);
 
-    }
+	}
 
-    @Override
-    public long getItemId(int position) {
+	@Override
+	public long getItemId(int position) {
 
-        return itemArray.get(position).getId();
+		return itemArray.get(position).getId();
 
-    }
+	}
 
-    @Override
-    public int getItemViewType(int position) {
+	@Override
+	public int getItemViewType(int position) {
 
-        return 0;
+		return 0;
 
-    }
+	}
 
-    @Override
-    public int getViewTypeCount() {
+	@Override
+	public int getViewTypeCount() {
 
-        return 1;
+		return 1;
 
-    }
+	}
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
 
-        // Get the current item
-        SavedForumThreadData currentItem = getItem(position);
+		// Get the current item
+		SavedForumThreadData currentItem = getItem(position);
 
-        // Recycle
-        if (convertView == null) {
+		// Recycle
+		if (convertView == null) {
 
-            convertView = layoutInflater.inflate(R.layout.list_item_thread_saved,
-                    parent, false);
+			convertView = layoutInflater.inflate(
+					R.layout.list_item_thread_saved, parent, false);
 
-        }
+		}
 
-        ((TextView) convertView.findViewById(R.id.text_title)).setText(currentItem.getTitle());
-        ((TextView) convertView.findViewById(R.id.text_thread_last_post)).setText(
+		((TextView) convertView.findViewById(R.id.text_title))
+				.setText(currentItem.getTitle());
+		((TextView) convertView.findViewById(R.id.text_thread_last_post))
+				.setText(
 
-                Html.fromHtml(
+				Html.fromHtml(
 
-                        context.getString(R.string.info_xml_threadreplydate)
-                                .replace(
+				context.getString(R.string.info_xml_threadreplydate)
+						.replace(
 
-                                        "{date}",
-                                        PublicUtils.getRelativeDate(context,
-                                                currentItem.getDateLastPost())
+								"{date}",
+								PublicUtils.getRelativeDate(context,
+										currentItem.getDateLastPost())
 
-                                )
-                                .replace(
+						).replace(
 
-                                        "{user}",
-                                        currentItem.getLastPoster()
-                                                .getUsername()
+						"{user}", currentItem.getLastPoster().getUsername()
 
-                                )
+						)
 
-                        )
+				)
 
-                );
-        ((TextView) convertView.findViewById(R.id.text_post_last_checked)).setText(
+				);
+		((TextView) convertView.findViewById(R.id.text_post_last_checked))
+				.setText(
 
-                Html.fromHtml(
+				Html.fromHtml(
 
-                        context.getString(R.string.info_forum_adapter_last_checked)
-                                .replace(
+				context.getString(R.string.info_forum_adapter_last_checked)
+						.replace(
 
-                                        "{date}",
-                                        PublicUtils.getRelativeDate(context,
-                                                currentItem.getDateLastChecked())
+								"{date}",
+								PublicUtils.getRelativeDate(context,
+										currentItem.getDateLastChecked())
 
-                                )
+						)
 
-                        )
+				)
 
-                );
+				);
 
-        convertView.findViewById(R.id.bar_status).setBackgroundColor(
-                context.getResources().getColor(
-                        currentItem.hasUnread() ? R.color.green : R.color.lightgrey));
+		convertView.findViewById(R.id.bar_status).setBackgroundColor(
+				context.getResources().getColor(
+						currentItem.hasUnread() ? R.color.green
+								: R.color.lightgrey));
 
-        // Store the object
-        convertView.setTag(currentItem);
+		// Store the object
+		convertView.setTag(currentItem);
 
-        // R-TURN
-        return convertView;
+		// R-TURN
+		return convertView;
 
-    }
+	}
 
-    public void set(List<SavedForumThreadData> array) {
+	public void set(List<SavedForumThreadData> array) {
 
-        itemArray = array;
-        notifyDataSetInvalidated();
+		itemArray = array;
+		notifyDataSetInvalidated();
 
-    }
+	}
 
-    public void add(List<SavedForumThreadData> array) {
+	public void add(List<SavedForumThreadData> array) {
 
-        itemArray.addAll(array); /* TODO FIX THIS */
-        notifyDataSetChanged();
+		itemArray.addAll(array); /* TODO FIX THIS */
+		notifyDataSetChanged();
 
-    }
+	}
 
 }
