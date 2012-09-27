@@ -55,6 +55,7 @@ import static com.ninetwozero.battlelog.dao.RankProgressDAO.*;
 import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.*;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
+import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
 
 public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment,
         OnCloseListDialogListener {
@@ -279,14 +280,14 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         Log.e("STATS", "Populating view");
         personaName.setText(rankProgress.getPersonaName() + " " + rankProgress.getPlatform());
         rankTitle.setText(fromResource(rankProgress.getRank()));
-        rankId.setText(String.valueOf(rankProgress.getRank()));
+        rankId.setText(format(rankProgress.getRank()));
 
         // Progress
         mProgressBar.setMax((int) (rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
         mProgressBar.setProgress((int) (rankProgress.getScore() - rankProgress.getCurrentRankScore()));
-        currentLevelPoints.setText(String.valueOf(rankProgress.getScore() - rankProgress.getCurrentRankScore()));
-        nextLevelPoints.setText(String.valueOf(rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
-        pointsToMake.setText(String.valueOf(rankProgress.getNextRankScore() - rankProgress.getScore()));
+        currentLevelPoints.setText(format(rankProgress.getScore() - rankProgress.getCurrentRankScore()));
+        nextLevelPoints.setText(format(rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
+        pointsToMake.setText(format(rankProgress.getNextRankScore() - rankProgress.getScore()));
     }
 
     private void populateStatistics(List<Statistics> statistics, TableLayout layout){
