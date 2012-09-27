@@ -24,7 +24,7 @@
         android:id="@+id/text_title"
         style="@style/InfoHeading"
         android:padding="5dp"
-        android:text="NINETWOZERO" />
+        android:text="@string/info_feed_title_global" />
 
     <RelativeLayout
         android:id="@+id/wrap_input"
