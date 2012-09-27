@@ -12,6 +12,7 @@ import com.ninetwozero.battlelog.provider.table.PersonaStatistics.Columns;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
 import static com.ninetwozero.battlelog.misc.PublicUtils.timeToLiteral;
 
 public class PersonaStatisticsDAO {
@@ -43,25 +44,25 @@ public class PersonaStatisticsDAO {
     public static List<Statistics> personaStatisticsFromJSON(PersonaInfo pi){
         PersonaStatsOverview pso = pi.getStatsOverview();
         List<Statistics> list = new ArrayList<Statistics>();
-        list.add(new Statistics(R.string.info_xml_kills, String.valueOf(pso.getKills()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_assists, String.valueOf(pso.getKillAssists()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_vehicles_destroyed, String.valueOf(pso.getVehiclesDestroyed()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_vehicles_assisted_with, String.valueOf(pso.getVehiclesDestroyedAssists()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_heals, String.valueOf(pso.getHeals()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_revives, String.valueOf(pso.getRevives()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_repairs, String.valueOf(pso.getRepairs()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_resupplies, String.valueOf(pso.getResupplies()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_deaths, String.valueOf(pso.getDeaths()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_kd_ratio, String.valueOf(pso.getKdRatio()) + "%", R.style.InfoSubHeading));
-        list.add(new Statistics(R.string.info_xml_wins, String.valueOf(pso.getGameWon()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_losses, String.valueOf(pso.getGameLost()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_wl_ratio, String.valueOf(pso.getWlRatio()) + "%", R.style.InfoSubHeading));
-        list.add(new Statistics(R.string.info_xml_accuracy, String.valueOf(pso.getAccuracy()) + "%", R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_longest_headshot, String.valueOf(pso.getLongestHeadshot()) + "m", R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_longest_killstreak, String.valueOf(pso.getLongestKillStreak()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_skill_rating, String.valueOf(pso.getSkill()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_time_played, String.valueOf(timeToLiteral(pso.getTimePlayed())), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_score_minute, String.valueOf(pso.getScoreMin()), R.style.InfoSubHeading));
+        list.add(new Statistics(R.string.info_xml_kills, format(pso.getKills()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_assists, format(pso.getKillAssists()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_vehicles_destroyed, format(pso.getVehiclesDestroyed()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_vehicles_assisted_with, format(pso.getVehiclesDestroyedAssists()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_heals, format(pso.getHeals()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_revives, format(pso.getRevives()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_repairs, format(pso.getRepairs()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_resupplies, format(pso.getResupplies()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_deaths, format(pso.getDeaths()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_kd_ratio, format(pso.getKdRatio()) + "%", R.style.InfoSubHeading));
+        list.add(new Statistics(R.string.info_xml_wins, format(pso.getGameWon()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_losses, format(pso.getGameLost()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_wl_ratio, format(pso.getWlRatio()) + "%", R.style.InfoSubHeading));
+        list.add(new Statistics(R.string.info_xml_accuracy, format(pso.getAccuracy()) + "%", R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_longest_headshot, format(pso.getLongestHeadshot()) + "m", R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_longest_killstreak, format(pso.getLongestKillStreak()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_skill_rating, format(pso.getSkill()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_time_played, timeToLiteral(pso.getTimePlayed()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_score_minute, format(pso.getScoreMin()), R.style.InfoSubHeading));
         return list;
     }
 
@@ -69,25 +70,25 @@ public class PersonaStatisticsDAO {
         PersonaStatsOverview pso = pi.getStatsOverview();
         ContentValues values = new ContentValues();
         values.put(PersonaStatistics.Columns.PERSONA_ID, personaId);
-        values.put(PersonaStatistics.Columns.KILLS, String.valueOf(pso.getKills()));
-        values.put(PersonaStatistics.Columns.KILL_ASSISTS,String.valueOf(pso.getKillAssists()));
-        values.put(PersonaStatistics.Columns.VEHICLE_DESTROYED,String.valueOf(pso.getVehiclesDestroyed()));
-        values.put(PersonaStatistics.Columns.VEHICLE_ASSISTS,String.valueOf(pso.getVehiclesDestroyedAssists()));
-        values.put(PersonaStatistics.Columns.HEALS, String.valueOf(pso.getHeals()));
-        values.put(PersonaStatistics.Columns.REVIVES,String.valueOf(pso.getRevives()));
-        values.put(PersonaStatistics.Columns.REPAIRS, String.valueOf(pso.getRepairs()));
-        values.put(PersonaStatistics.Columns.RESUPPLIES, String.valueOf(pso.getResupplies()));
-        values.put(PersonaStatistics.Columns.DEATHS, String.valueOf(pso.getDeaths()));
-        values.put(PersonaStatistics.Columns.KD_RATIO, String.valueOf(pso.getKdRatio())+"%");
-        values.put(PersonaStatistics.Columns.WINS, String.valueOf(pso.getGameWon()));
-        values.put(PersonaStatistics.Columns.LOSSES,String.valueOf(pso.getGameLost()));
-        values.put(PersonaStatistics.Columns.WL_RATIO, String.valueOf(pso.getWlRatio()) + "%");
-        values.put(PersonaStatistics.Columns.ACCURACY, String.valueOf(pso.getAccuracy()) + "%");
-        values.put(PersonaStatistics.Columns.LONGEST_HEADSHOT, String.valueOf(pso.getLongestHeadshot()) + "m");
-        values.put(PersonaStatistics.Columns.LONGEST_KILLSTREAK,String.valueOf(pso.getLongestKillStreak()));
-        values.put(PersonaStatistics.Columns.SKILLRATING, String.valueOf(pso.getSkill()));
+        values.put(PersonaStatistics.Columns.KILLS, format(pso.getKills()));
+        values.put(PersonaStatistics.Columns.KILL_ASSISTS,format(pso.getKillAssists()));
+        values.put(PersonaStatistics.Columns.VEHICLE_DESTROYED,format(pso.getVehiclesDestroyed()));
+        values.put(PersonaStatistics.Columns.VEHICLE_ASSISTS,format(pso.getVehiclesDestroyedAssists()));
+        values.put(PersonaStatistics.Columns.HEALS, format(pso.getHeals()));
+        values.put(PersonaStatistics.Columns.REVIVES,format(pso.getRevives()));
+        values.put(PersonaStatistics.Columns.REPAIRS, format(pso.getRepairs()));
+        values.put(PersonaStatistics.Columns.RESUPPLIES, format(pso.getResupplies()));
+        values.put(PersonaStatistics.Columns.DEATHS, format(pso.getDeaths()));
+        values.put(PersonaStatistics.Columns.KD_RATIO, format(pso.getKdRatio())+"%");
+        values.put(PersonaStatistics.Columns.WINS, format(pso.getGameWon()));
+        values.put(PersonaStatistics.Columns.LOSSES,format(pso.getGameLost()));
+        values.put(PersonaStatistics.Columns.WL_RATIO, format(pso.getWlRatio()) + "%");
+        values.put(PersonaStatistics.Columns.ACCURACY, format(pso.getAccuracy()) + "%");
+        values.put(PersonaStatistics.Columns.LONGEST_HEADSHOT, format(pso.getLongestHeadshot()) + "m");
+        values.put(PersonaStatistics.Columns.LONGEST_KILLSTREAK,format(pso.getLongestKillStreak()));
+        values.put(PersonaStatistics.Columns.SKILLRATING, format(pso.getSkill()));
         values.put(PersonaStatistics.Columns.TIME_PLAYED, String.valueOf(timeToLiteral(pso.getTimePlayed())));
-        values.put(PersonaStatistics.Columns.SCORE_PER_MINUTE, String.valueOf(pso.getScoreMin()));
+        values.put(PersonaStatistics.Columns.SCORE_PER_MINUTE, format(pso.getScoreMin()));
         return values;
     }
 

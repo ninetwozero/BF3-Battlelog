@@ -8,11 +8,11 @@ import com.ninetwozero.battlelog.jsonmodel.KitScores;
 import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
 import com.ninetwozero.battlelog.jsonmodel.PersonaStatsOverview;
 import com.ninetwozero.battlelog.jsonmodel.VehicleScores;
-import com.ninetwozero.battlelog.provider.table.ScoreStatistics;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
 import static com.ninetwozero.battlelog.provider.table.ScoreStatistics.Columns;
 
 public class ScoreStatisticsDAO {
@@ -41,20 +41,20 @@ public class ScoreStatisticsDAO {
         KitScores ks = pi.getStatsOverview().getKitScores();
         VehicleScores vs = pi.getStatsOverview().getVehicleScores();
         List<Statistics> list = new ArrayList<Statistics>();
-        list.add(new Statistics(R.string.info_xml_assault, String.valueOf(ks.getAssaultScore()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_engineer, String.valueOf(ks.getEngineerScore()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_support, String.valueOf(ks.getSupportScore()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_recon, String.valueOf(ks.getReconScore()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_jet, String.valueOf(vs.getJetScore()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_tank, String.valueOf(vs.getTankScore()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_ifv, String.valueOf(vs.getIfvScore()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_anti_air, String.valueOf(vs.getAntiAirScore()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_attack_heli, String.valueOf(vs.getAttackHeliScore()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_scout_heli, String.valueOf(vs.getScoutHeliScore()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_total_in_combat, String.valueOf(pso.getCombatScore()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_award, String.valueOf(pso.getAwardScore()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_unlocks, String.valueOf(pso.getUnlockScore()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_total_score, String.valueOf(pso.getTotalScore()), R.style.InfoSubHeading));
+        list.add(new Statistics(R.string.info_xml_assault, format(ks.getAssaultScore()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_engineer, format(ks.getEngineerScore()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_support, format(ks.getSupportScore()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_recon, format(ks.getReconScore()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_jet, format(vs.getJetScore()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_tank, format(vs.getTankScore()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_ifv, format(vs.getIfvScore()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_anti_air, format(vs.getAntiAirScore()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_attack_heli, format(vs.getAttackHeliScore()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_scout_heli, format(vs.getScoutHeliScore()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_total_in_combat, format(pso.getCombatScore()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_award, format(pso.getAwardScore()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_unlocks, format(pso.getUnlockScore()), R.style.Wrap));
+        list.add(new Statistics(R.string.info_xml_total_score, format(pso.getTotalScore()), R.style.InfoSubHeading));
         return list;
     }
 
@@ -82,6 +82,6 @@ public class ScoreStatisticsDAO {
     }
 
     private static String valueFromCursor(Cursor cursor, String name){
-        return cursor.getString(cursor.getColumnIndexOrThrow(name));
+        return format(cursor.getLong(cursor.getColumnIndexOrThrow(name)));
     }
 }
