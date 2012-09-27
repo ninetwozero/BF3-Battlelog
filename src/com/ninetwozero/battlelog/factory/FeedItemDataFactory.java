@@ -203,58 +203,39 @@ public class FeedItemDataFactory {
 				// Let's see
 				String key = tempSubItem.getString(NAME_SID);
 				if (shareType.equals("BF3AWARDS")) {
-
-					/*
-					 * BF3AWARDS: {,…} statItems: [{nameSID:ID_P_AWARD_R19_NAME,
-					 * image:null, descriptionSID:ID_P_AWARD_R19_DESC,
-					 * imageName:r19,…},…] 0: {nameSID:ID_P_AWARD_R19_NAME,
-					 * image:null, descriptionSID:ID_P_AWARD_R19_DESC,
-					 * imageName:r19,…} descriptionSID: "ID_P_AWARD_R19_DESC"
-					 * image: null imageName: "r19" nameSID:
-					 * "ID_P_AWARD_R19_NAME" type: 2048 unlockId: "r19"
-					 */
-
 					title.append(DataBank.getAwardTitle(key));
 				} else if (shareType.equals("BF3GAMEREPORT")) {
-					/*
-					 * BF3GAMEREPORT: {statItems:[,…]} statItems: [,…] 0:
-					 * {nameSID:ID_P_VWNAME_ARTTOW, image:vehicle_tow,
-					 * guid:B291A248-5037-4B1C-AD1B-AA1050E1FDBA, slug:tow,…}
-					 * codeNeeded: "xp3ma01_00" descriptionSID: "None" guid:
-					 * "B291A248-5037-4B1C-AD1B-AA1050E1FDBA" image:
-					 * "vehicle_tow" nameSID: "ID_P_VWNAME_ARTTOW" parentImage:
-					 * null parentNameSID: "ID_P_VNAME_2S25_SPRUTSD" slug: "tow"
-					 * type: 64 unlockId: "" valueNeeded: "1.0"
-					 */
-					title.append(DataBank.getWeaponTitle(context, key));
+					title.append(getTitleFromUnlock(context, tempSubItem));
 				} else {
-					/*
-					 * BF3ASSIGNMENTS: {statItems:[{nameSID:ID_XP3_ASSIGNMENT_1,
-					 * image:xp3a01, unlockId:xp3ma01}]} statItems:
-					 * [{nameSID:ID_XP3_ASSIGNMENT_1, image:xp3a01,
-					 * unlockId:xp3ma01}] 0: {nameSID:ID_XP3_ASSIGNMENT_1,
-					 * image:xp3a01, unlockId:xp3ma01} image: "xp3a01" nameSID:
-					 * "ID_XP3_ASSIGNMENT_1" unlockId: "xp3ma01"
-					 */
-					title.append(DataBank.getAwardTitle(key));
+					title.append(DataBank.getAttachmentTitle(key));
 				}
 
 			}
 
 			// Set the things straight
-			if (stats.length() > 1) {
-
-				generatedTitle = PublicUtils.createStringWithData(context,
-						R.string.info_p_shared_awards, profile.getUsername(),
-						title.append("</b>"));
-
+			int stringResource = R.string.info_p_shared_awards;
+			boolean isSingleUnlock = (stats.length() == 1);
+			if (isSingleUnlock) {
+				if (shareType.equals("BF3AWARDS")) {
+					stringResource = R.string.info_p_shared_award;
+				} else if (shareType.equals("BF3GAMEREPORT")) {
+					stringResource = R.string.info_p_shared_unlock;
+				} else {
+					stringResource = R.string.info_p_shared_assignment;
+				}
 			} else {
-
-				generatedTitle = PublicUtils.createStringWithData(context,
-						R.string.info_p_shared_award, profile.getUsername(),
-						title.append("</b>"));
-
+				if (shareType.equals("BF3AWARDS")) {
+					stringResource = R.string.info_p_shared_awards;
+				} else if (shareType.equals("BF3GAMEREPORT")) {
+					stringResource = R.string.info_p_shared_unlocks;
+				} else {
+					stringResource = R.string.info_p_shared_assignments;
+				}
 			}
+
+			generatedTitle = PublicUtils
+					.createStringWithData(context, stringResource,
+							profile.getUsername(), title.append("</b>"));
 		}
 
 		return new ParsedFeedItemData(generatedTitle, "", new ProfileData[] {
@@ -437,72 +418,7 @@ public class FeedItemDataFactory {
 
 			}
 
-			// Weapon? Attachment?
-			if (!tempSubItem.isNull(PARENT_NAME_SID)) {
-
-				// Let's see
-				String parentKey = tempSubItem.getString(PARENT_NAME_SID);
-				tempKey = DataBank.getWeaponTitle(context, parentKey);
-
-				// Is it empty?
-				if (!parentKey.equals(tempKey)) {
-
-					title.append(tempKey)
-							.append(" ")
-							.append(DataBank.getAttachmentTitle(tempSubItem
-									.getString(NAME_SID)));
-
-				} else {
-
-					// Grab a vehicle title then
-					tempKey = DataBank.getVehicleTitle(parentKey);
-
-					// Validate
-					if (!parentKey.equals(tempKey)) {
-
-						title.append(tempKey)
-								.append(" ")
-								.append(DataBank
-										.getVehicleUpgradeTitle(tempSubItem
-												.getString(NAME_SID)));
-
-					} else {
-
-						title.append(tempKey);
-
-					}
-
-				}
-
-			} else {
-
-				// Let's see
-				String key = tempSubItem.getString(NAME_SID);
-				String guid = tempSubItem.getString("guid");
-
-				if (key.startsWith("ID_P_ANAME_")) {
-
-					title.append(DataBank.getAttachmentTitle(key));
-
-				} else if (key.startsWith("ID_P_WNAME_")) {
-
-					title.append(DataBank.getWeaponTitle(context, guid));
-
-				} else if (key.startsWith("ID_P_VUNAME_")) {
-
-					title.append(DataBank.getVehicleUpgradeTitle(key));
-
-				} else if (key.startsWith("ID_P_SNAME")) {
-
-					title.append(DataBank.getSkillTitle(key));
-
-				} else {
-
-					title.append(DataBank.getKitTitle(key));
-
-				}
-
-			}
+			title.append(getTitleFromUnlock(context, tempSubItem));
 
 		}
 
@@ -529,6 +445,79 @@ public class FeedItemDataFactory {
 
 		});
 
+	}
+
+	private static String getTitleFromUnlock(Context context, JSONObject unlock)
+			throws JSONException {
+
+		StringBuffer title = new StringBuffer();
+
+		// Weapon? Attachment?
+		if (!unlock.isNull(PARENT_NAME_SID)) {
+
+			// Let's see
+			String parentKey = unlock.getString(PARENT_NAME_SID);
+			String tempKey = DataBank.getWeaponTitle(context, parentKey);
+
+			// Is it empty?
+			if (!parentKey.equals(tempKey)) {
+
+				title.append(tempKey)
+						.append(" ")
+						.append(DataBank.getAttachmentTitle(unlock
+								.getString(NAME_SID)));
+
+			} else {
+
+				// Grab a vehicle title then
+				tempKey = DataBank.getVehicleTitle(parentKey);
+
+				// Validate
+				if (!parentKey.equals(tempKey)) {
+
+					title.append(tempKey)
+							.append(" ")
+							.append(DataBank.getVehicleUpgradeTitle(unlock
+									.getString(NAME_SID)));
+
+				} else {
+
+					title.append(tempKey);
+
+				}
+
+			}
+
+		} else {
+
+			// Let's see
+			String key = unlock.getString(NAME_SID);
+			String guid = unlock.getString("guid");
+
+			if (key.startsWith("ID_P_ANAME_")) {
+
+				title.append(DataBank.getAttachmentTitle(key));
+
+			} else if (key.startsWith("ID_P_WNAME_")) {
+
+				title.append(DataBank.getWeaponTitle(context, guid));
+
+			} else if (key.startsWith("ID_P_VUNAME_")) {
+
+				title.append(DataBank.getVehicleUpgradeTitle(key));
+
+			} else if (key.startsWith("ID_P_SNAME")) {
+
+				title.append(DataBank.getSkillTitle(key));
+
+			} else {
+
+				title.append(DataBank.getKitTitle(key));
+
+			}
+
+		}
+		return title.toString();
 	}
 
 	private static ParsedFeedItemData generateFromLeavingPlatoon(

@@ -20,31 +20,31 @@ import com.ninetwozero.battlelog.http.COMClient;
 
 public class AsyncChatClose extends AsyncTask<Void, Integer, Boolean> {
 
-    // Attribute
-    private long chatId;
+	// Attribute
+	private long chatId;
 
-    // Constructor
-    public AsyncChatClose(long cId) {
+	// Constructor
+	public AsyncChatClose(long cId) {
 
-        chatId = cId;
+		chatId = cId;
 
-    }
+	}
 
-    @Override
-    protected Boolean doInBackground(Void... arg0) {
+	@Override
+	protected Boolean doInBackground(Void... arg0) {
 
-        try {
+		try {
 
-            // Did we manage?
-            return COMClient.closeChat(chatId);
+			// Did we manage?
+			return COMClient.closeChat(chatId);
 
-        } catch (Exception ex) {
+		} catch (Exception ex) {
 
-            ex.printStackTrace();
-            return false;
+			ex.printStackTrace();
+			return false;
 
-        }
+		}
 
-    }
+	}
 
 }
