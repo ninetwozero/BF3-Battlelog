@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.datatype;
 
 import android.app.Dialog;
@@ -9,18 +8,18 @@ import com.ninetwozero.battlelog.R;
 
 public class PopupDialog extends Dialog {
 
-    public PopupDialog(Context context, int theme) {
+	public PopupDialog(Context context, int theme) {
 
-        super(context, theme);
+		super(context, theme);
 
-    }
+	}
 
-    @Override
-    public void onCreate(final Bundle icicle) {
+	@Override
+	public void onCreate(final Bundle icicle) {
 
-        super.onCreate(icicle);
-        setContentView(R.layout.popup_dialog_view);
+		super.onCreate(icicle);
+		setContentView(R.layout.popup_dialog_view);
 
-    }
+	}
 
 }

@@ -26,77 +26,78 @@ import com.ninetwozero.battlelog.http.COMClient;
 
 public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
 
-    // Attribute
-    private Context context;
-    private FeedFragment fragmentFeed;
-    private Button buttonSend;
+	// Attribute
+	private Context context;
+	private FeedFragment fragmentFeed;
+	private Button buttonSend;
 
-    // Constructor
-    public AsyncStatusUpdate(Context c, FeedFragment f) {
+	// Constructor
+	public AsyncStatusUpdate(Context c, FeedFragment f) {
 
-        context = c;
-        fragmentFeed = f;
+		context = c;
+		fragmentFeed = f;
 
-    }
+	}
 
-    @Override
-    protected void onPreExecute() {
+	@Override
+	protected void onPreExecute() {
 
-        if (context != null) {
+		if (context != null) {
 
-            Toast.makeText(context, R.string.msg_status, Toast.LENGTH_SHORT)
-                    .show();
+			Toast.makeText(context, R.string.msg_status, Toast.LENGTH_SHORT)
+					.show();
 
-            buttonSend = (Button) fragmentFeed.getView().findViewById(R.id.button_send);
-            buttonSend.setEnabled(false);
+			buttonSend = (Button) fragmentFeed.getView().findViewById(
+					R.id.button_send);
+			buttonSend.setEnabled(false);
 
-        }
+		}
 
-    }
+	}
 
-    @Override
-    protected Boolean doInBackground(String... arg0) {
+	@Override
+	protected Boolean doInBackground(String... arg0) {
 
-        try {
+		try {
 
-            // Let's login everybody!
-            return new COMClient(arg0[1]).updateStatus(arg0[0]);
+			// Let's login everybody!
+			return new COMClient(arg0[1]).updateStatus(arg0[0]);
 
-        } catch (Exception ex) {
+		} catch (Exception ex) {
 
-            ex.printStackTrace();
-            return false;
+			ex.printStackTrace();
+			return false;
 
-        }
+		}
 
-    }
+	}
 
-    @Override
-    protected void onPostExecute(Boolean results) {
+	@Override
+	protected void onPostExecute(Boolean results) {
 
-        if (context != null) {
+		if (context != null) {
 
-            if (results) {
+			if (results) {
 
-                // Yay
-                Toast.makeText(context, R.string.msg_status_ok,
-                        Toast.LENGTH_SHORT).show();
-                ((EditText) fragmentFeed.getView().findViewById(R.id.field_message))
-                        .setText("");
-                buttonSend.setEnabled(true);
+				// Yay
+				Toast.makeText(context, R.string.msg_status_ok,
+						Toast.LENGTH_SHORT).show();
+				((EditText) fragmentFeed.getView().findViewById(
+						R.id.field_message)).setText("");
+				buttonSend.setEnabled(true);
 
-            } else {
+			} else {
 
-                Toast.makeText(context, R.string.msg_status_fail,
-                        Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, R.string.msg_status_fail,
+						Toast.LENGTH_SHORT).show();
 
-            }
+			}
 
-            // Reload
-            fragmentFeed.reload();
+			// Reload
+			fragmentFeed.reload();
 
-        }
+		}
 
-    }
+	}
 
 }

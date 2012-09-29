@@ -52,163 +52,165 @@ import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 
 public class MenuProfileFragment extends Fragment implements DefaultFragment,
-        OnCloseListDialogListener {
+		OnCloseListDialogListener {
 
-    // Attributes
-    private Context mContext;
-    private LayoutInflater mLayoutInflater;
-    private Map<Integer, Intent> MENU_INTENTS;
-    private SharedPreferences mSharedPreferences;
+	// Attributes
+	private Context mContext;
+	private LayoutInflater mLayoutInflater;
+	private Map<Integer, Intent> MENU_INTENTS;
+	private SharedPreferences mSharedPreferences;
 
-    // Elements
-    private RelativeLayout mWrapPersona;
-    private TextView mTextPersona;
-    private ImageView mImagePersona;
+	// Elements
+	private RelativeLayout mWrapPersona;
+	private TextView mTextPersona;
+	private ImageView mImagePersona;
 
-    // Let's store the position & persona
-    private PersonaData[] mPersona;
-    private int mSelectedPosition;
-    private final String DIALOG = "dialog";
+	// Let's store the position & persona
+	private PersonaData[] mPersona;
+	private int mSelectedPosition;
+	private final String DIALOG = "dialog";
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-        // Set our attributes
-        mContext = getActivity();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        mLayoutInflater = inflater;
+		// Set our attributes
+		mContext = getActivity();
+		mSharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(mContext);
+		mLayoutInflater = inflater;
 
-        // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.tab_content_dashboard_profile,
-                container, false);
+		// Let's inflate & return the view
+		View view = mLayoutInflater.inflate(
+				R.layout.tab_content_dashboard_profile, container, false);
 
-        initFragment(view);
+		initFragment(view);
 
-        return view;
+		return view;
 
-    }
+	}
 
-    public void initFragment(View view) {
+	public void initFragment(View view) {
 
-        // Let's set the vars
-        dataFromSharedPreferences();
+		// Let's set the vars
+		dataFromSharedPreferences();
 
-        // Set up the Persona box
-        mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
-        mWrapPersona.setOnClickListener(
+		// Set up the Persona box
+		mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
+		mWrapPersona.setOnClickListener(
 
-                new OnClickListener() {
+		new OnClickListener() {
 
-                    @Override
-                    public void onClick(View v) {
-                        FragmentManager manager = getFragmentManager();
-                        ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(),
-                                getTag());
-                        dialog.show(manager, DIALOG);
-                    }
+			@Override
+			public void onClick(View v) {
+				FragmentManager manager = getFragmentManager();
+				ListDialogFragment dialog = ListDialogFragment.newInstance(
+						personasToMap(), getTag());
+				dialog.show(manager, DIALOG);
+			}
 
-                }
+		}
 
-                );
-        mImagePersona = (ImageView) mWrapPersona.findViewById(R.id.image_persona);
-        mTextPersona = (TextView) mWrapPersona.findViewById(R.id.text_persona);
-        mTextPersona.setSelected(true);
+		);
+		mImagePersona = (ImageView) mWrapPersona
+				.findViewById(R.id.image_persona);
+		mTextPersona = (TextView) mWrapPersona.findViewById(R.id.text_persona);
+		mTextPersona.setSelected(true);
 
-        // Setup the "persona box"
-        setupActiveSoldierContent();
+		// Setup the "persona box"
+		setupActiveSoldierContent();
 
-        // Set up the intents
-        MENU_INTENTS = menuOptions();
+		// Set up the intents
+		MENU_INTENTS = menuOptions();
 
-        // Add the OnClickListeners
-        for (int key : MENU_INTENTS.keySet()) {
-            view.findViewById(key).setOnClickListener(new OnClickListener() {
+		// Add the OnClickListeners
+		for (int key : MENU_INTENTS.keySet()) {
+			view.findViewById(key).setOnClickListener(new OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    startActivity(MENU_INTENTS.get(v.getId()));
+				@Override
+				public void onClick(View v) {
+					startActivity(MENU_INTENTS.get(v.getId()));
 
-                }
-            });
-        }
-    }
+				}
+			});
+		}
+	}
 
-    private void dataFromSharedPreferences() {
-        mPersona = SessionKeeper.getProfileData().getPersonaArray();
-        mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
-    }
+	private void dataFromSharedPreferences() {
+		mPersona = SessionKeeper.getProfileData().getPersonaArray();
+		mSelectedPosition = mSharedPreferences.getInt(
+				Constants.SP_BL_PERSONA_CURRENT_POS, 0);
+	}
 
-    private Map<Integer, Intent> menuOptions() {
-        return new HashMap<Integer, Intent>() {
-            {
-                put(R.id.button_unlocks,
-                        new Intent(mContext, UnlockActivity.class).putExtra("profile",
-                                SessionKeeper.getProfileData()));
-                put(R.id.button_weapon,
-                        new Intent(mContext, WeaponListActivity.class).putExtra("profile",
-                                SessionKeeper.getProfileData()));
-                put(R.id.button_assignments,
-                        new Intent(mContext, AssignmentActivity.class).putExtra("profile",
-                                SessionKeeper.getProfileData()));
-                put(R.id.button_self,
-                        new Intent(mContext, ProfileActivity.class).putExtra("profile",
-                                SessionKeeper.getProfileData()));
-                put(R.id.button_settings,
-                        new Intent(mContext, ProfileSettingsActivity.class));
-            }
-        };
+	private Map<Integer, Intent> menuOptions() {
+		return new HashMap<Integer, Intent>() {
+			{
+				put(R.id.button_unlocks, new Intent(mContext,
+						UnlockActivity.class).putExtra("profile",
+						SessionKeeper.getProfileData()));
+				put(R.id.button_weapon, new Intent(mContext,
+						WeaponListActivity.class).putExtra("profile",
+						SessionKeeper.getProfileData()));
+				put(R.id.button_assignments, new Intent(mContext,
+						AssignmentActivity.class).putExtra("profile",
+						SessionKeeper.getProfileData()));
+				put(R.id.button_self, new Intent(mContext,
+						ProfileActivity.class).putExtra("profile",
+						SessionKeeper.getProfileData()));
+				put(R.id.button_settings, new Intent(mContext,
+						ProfileSettingsActivity.class));
+			}
+		};
 
-    }
+	}
 
-    private Map<Long, String> personasToMap(){
-        Map<Long, String> map = new HashMap<Long, String>();
-        for(PersonaData pd : mPersona){
-            map.put(pd.getId(), pd.getName() + " " + pd.resolvePlatformId());
-        }
-        return map;
-    }
+	private Map<Long, String> personasToMap() {
+		Map<Long, String> map = new HashMap<Long, String>();
+		for (PersonaData pd : mPersona) {
+			map.put(pd.getId(), pd.getName() + " " + pd.resolvePlatformId());
+		}
+		return map;
+	}
 
-    @Override
-    public void onDialogListSelection(int index) {
-        updateSharedPreference(index);
-        dataFromSharedPreferences();
-        setupActiveSoldierContent();
-    }
+	@Override
+	public void onDialogListSelection(int index) {
+		updateSharedPreference(index);
+		dataFromSharedPreferences();
+		setupActiveSoldierContent();
+	}
 
-    @Override
-    public void reload() {
-    }
+	@Override
+	public void reload() {
+	}
 
-    @Override
-    public Menu prepareOptionsMenu(Menu menu) {
-        return menu;
-    }
+	@Override
+	public Menu prepareOptionsMenu(Menu menu) {
+		return menu;
+	}
 
-    @Override
-    public boolean handleSelectedOption(MenuItem item) {
-        return false;
-    }
+	@Override
+	public boolean handleSelectedOption(MenuItem item) {
+		return false;
+	}
 
-    public void setupActiveSoldierContent() {
-        mTextPersona.setText(getPersonaNameAndPlatform());
-        mImagePersona.setImageResource(DataBank.getImageForPersona(mPersona[mSelectedPosition]
-                .getLogo()));
-    }
+	public void setupActiveSoldierContent() {
+		mTextPersona.setText(getPersonaNameAndPlatform());
+		mImagePersona.setImageResource(DataBank
+				.getImageForPersona(mPersona[mSelectedPosition].getLogo()));
+	}
 
-    private String getPersonaNameAndPlatform() {
-        return mPersona[mSelectedPosition].getName()
-                + mPersona[mSelectedPosition].resolvePlatformId();
-    }
+	private String getPersonaNameAndPlatform() {
+		return mPersona[mSelectedPosition].getName()
+				+ mPersona[mSelectedPosition].resolvePlatformId();
+	}
 
-
-
-    private void updateSharedPreference(int index) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity()
-                .getApplicationContext());
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong(SP_BL_PERSONA_CURRENT_ID, mPersona[index].getId());
-        editor.putInt(SP_BL_PERSONA_CURRENT_POS, index);
-        editor.commit();
-    }
+	private void updateSharedPreference(int index) {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(getActivity()
+						.getApplicationContext());
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putLong(SP_BL_PERSONA_CURRENT_ID, mPersona[index].getId());
+		editor.putInt(SP_BL_PERSONA_CURRENT_POS, index);
+		editor.commit();
+	}
 }

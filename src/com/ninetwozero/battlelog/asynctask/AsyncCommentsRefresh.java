@@ -31,65 +31,66 @@ import com.ninetwozero.battlelog.http.CommentClient;
 
 public class AsyncCommentsRefresh extends AsyncTask<Integer, Integer, Boolean> {
 
-    // Attribute
-    private Context context;
-    private long postId;
-    private List<CommentData> comments = new ArrayList<CommentData>();
-    private ListView listView;
-    private LayoutInflater layoutInflater;
+	// Attribute
+	private Context context;
+	private long postId;
+	private List<CommentData> comments = new ArrayList<CommentData>();
+	private ListView listView;
+	private LayoutInflater layoutInflater;
 
-    // Constructor
-    public AsyncCommentsRefresh(Context c, long i, ListView lv, LayoutInflater l) {
+	// Constructor
+	public AsyncCommentsRefresh(Context c, long i, ListView lv, LayoutInflater l) {
 
-        context = c;
-        postId = i;
-        listView = lv;
-        layoutInflater = l;
+		context = c;
+		postId = i;
+		listView = lv;
+		layoutInflater = l;
 
-    }
+	}
 
-    @Override
-    protected void onPreExecute() {
-    }
+	@Override
+	protected void onPreExecute() {
+	}
 
-    @Override
-    protected Boolean doInBackground(Integer... page) {
+	@Override
+	protected Boolean doInBackground(Integer... page) {
 
-        try {
+		try {
 
-            // Let's get this!!
-            /* TODO: SOLUTION */
-            comments = new CommentClient(postId, CommentData.TYPE_FEED).get(page[0]);
-            return true;
-        } catch (WebsiteHandlerException ex) {
+			// Let's get this!!
+			/* TODO: SOLUTION */
+			comments = new CommentClient(postId, CommentData.TYPE_FEED)
+					.get(page[0]);
+			return true;
+		} catch (WebsiteHandlerException ex) {
 
-            ex.printStackTrace();
-            return false;
+			ex.printStackTrace();
+			return false;
 
-        }
+		}
 
-    }
+	}
 
-    @Override
-    protected void onPostExecute(Boolean results) {
+	@Override
+	protected void onPostExecute(Boolean results) {
 
-        // How did go?
-        if (results) {
+		// How did go?
+		if (results) {
 
-            // Set the almighty adapter
-            listView.setAdapter(
+			// Set the almighty adapter
+			listView.setAdapter(
 
-                    new CommentListAdapter(context, comments, layoutInflater)
+			new CommentListAdapter(context, comments, layoutInflater)
 
-                    );
+			);
 
-        } else {
+		} else {
 
-            Toast.makeText(context, R.string.msg_comment_norefresh,
-                    Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, R.string.msg_comment_norefresh,
+					Toast.LENGTH_SHORT).show();
 
-        }
+		}
 
-    }
+	}
 
 }

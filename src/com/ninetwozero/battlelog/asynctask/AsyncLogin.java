@@ -196,7 +196,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     }
 
     private SessionKeeperPackage processHttpContent(String httpContent) throws Exception {
-    	
+
         // Get the checksum
         String postCheckSum = substringFrom(httpContent, Constants.ELEMENT_STATUS_CHECKSUM, "\" />");
 
