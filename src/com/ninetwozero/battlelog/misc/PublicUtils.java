@@ -55,7 +55,7 @@ public class PublicUtils {
      * <p>
      * Get the "relative" date
      * </p>
-     * 
+     *
      * @param d the first String, must not be null
      * @param s the second String, must not be null
      * @return String the relative date
@@ -190,7 +190,7 @@ public class PublicUtils {
      * <p>
      * Get the "relative" date
      * </p>
-     * 
+     *
      * @param d the first String, must not be null
      * @param s the second String, must not be null
      * @return String the relative date
@@ -204,7 +204,7 @@ public class PublicUtils {
     /**
      * <p>
      * Normalize the given url (adding the http-prefix if none given)
-     * 
+     *
      * @param s the link to be normalized
      * @return link the normalized link
      */
@@ -237,7 +237,7 @@ public class PublicUtils {
      * href="http://www.merriampark.com/ldjava.htm">http://www.merriampark
      * .com/ldjava.htm</a>
      * </p>
-     * 
+     *
      * @param s the first String, must not be null
      * @param t the second String, must not be null
      * @return result distance
