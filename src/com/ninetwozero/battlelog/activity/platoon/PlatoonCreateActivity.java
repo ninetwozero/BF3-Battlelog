@@ -26,7 +26,6 @@ import android.view.View.OnClickListener;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.http.PlatoonClient;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -69,8 +68,7 @@ public class PlatoonCreateActivity extends Activity {
         mTextTag = (EditText) findViewById(R.id.text_tag);
         mCheckboxActive = (CheckedTextView) findViewById(R.id.checkbox_active);
         mCheckboxActive.setOnClickListener(new OnClickListener() {
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 ((CheckedTextView) v).toggle();
             }
         });

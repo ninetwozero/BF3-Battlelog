@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.datatype;
 
 import java.util.ArrayList;

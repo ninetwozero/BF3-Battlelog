@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.datatype;
 
 /*
@@ -241,7 +240,7 @@ public class ProfileData implements Parcelable {
 
         return (
 
-        mId + ":" + mUsername + ":pX" + getNumPersonas()
+                mId + ":" + mUsername + ":pX" + getNumPersonas()
 
         );
     }

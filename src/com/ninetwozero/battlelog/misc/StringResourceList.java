@@ -14,21 +14,21 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import com.ninetwozero.battlelog.R;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import com.ninetwozero.battlelog.R;
 
 public final class StringResourceList {
 
     // Attributes
     private static Map<String, Integer> mDescriptionWeapons; // <GUID, resId>
     private static Map<String, Integer> mDescriptionAttachments; // <GUID,
-                                                                 // resId>
+    // resId>
     private static Map<String, Integer> mDescriptionVehicles; // <GUID,
-                                                              // resId>
+    // resId>
     private static Map<String, Integer> mDescriptionVehicleUpgrades; // <GUID,
-                                                                     // resId>
+    // resId>
     private static Map<String, Integer> mDescriptionKits; // <GUID, resId>
     private static Map<String, Integer> mDescriptionAwards; // <GUID, resId>
     private static Map<String, Integer> mDescriptionSkills; // <GUID, resId>

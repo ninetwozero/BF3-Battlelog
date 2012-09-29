@@ -1,9 +1,9 @@
-
 package com.ninetwozero.battlelog.datatype;
 
 import java.util.Comparator;
 
-public class WeaponDataWrapperComparator implements Comparator<WeaponDataWrapper> {
+public class WeaponDataWrapperComparator implements
+        Comparator<WeaponDataWrapper> {
 
     public int compare(WeaponDataWrapper o1, WeaponDataWrapper o2) {
 

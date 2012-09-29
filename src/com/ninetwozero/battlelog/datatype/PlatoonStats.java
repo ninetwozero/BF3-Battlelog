@@ -14,10 +14,10 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-import java.util.List;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.List;
 
 public class PlatoonStats implements Parcelable {
 
@@ -31,8 +31,8 @@ public class PlatoonStats implements Parcelable {
 
     // Construct
     public PlatoonStats(String sName, long lId, List<PlatoonStatsItem> gS,
-            List<PlatoonTopStatsItem> tP, List<PlatoonStatsItem> kS,
-            List<PlatoonStatsItem> kSPM, List<PlatoonStatsItem> kT) {
+                        List<PlatoonTopStatsItem> tP, List<PlatoonStatsItem> kS,
+                        List<PlatoonStatsItem> kSPM, List<PlatoonStatsItem> kT) {
 
         // Basic attributes
         name = sName;

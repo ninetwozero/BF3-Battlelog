@@ -13,53 +13,53 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="10dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="10dp">
 
-    <TextView
-        android:id="@+id/text_title"
-        style="@style/InfoHeading"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="0dp"
-        android:padding="5dp"
-        android:text="Search" />
+  <TextView
+      android:id="@+id/text_title"
+      style="@style/InfoHeading"
+      android:layout_alignParentTop="true"
+      android:layout_marginBottom="0dp"
+      android:layout_marginTop="0dp"
+      android:padding="5dp"
+      android:text="Search"/>
 
-    <Button
-        android:id="@+id/button_search"
-        style="@style/RegularButton"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/text_title"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="12dp"
-        android:onClick="onClick"
-        android:text="@string/label_search" />
+  <Button
+      android:id="@+id/button_search"
+      style="@style/RegularButton"
+      android:layout_alignParentRight="true"
+      android:layout_below="@id/text_title"
+      android:layout_marginBottom="5dp"
+      android:layout_marginTop="12dp"
+      android:onClick="onClick"
+      android:text="@string/label_search"/>
 
-    <EditText
-        android:id="@+id/field_search"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_title"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toLeftOf="@id/button_search"
-        android:hint="@string/info_forum_search_hint" />
+  <EditText
+      android:id="@+id/field_search"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/text_title"
+      android:layout_marginBottom="5dp"
+      android:layout_marginRight="10dp"
+      android:layout_marginTop="10dp"
+      android:layout_toLeftOf="@id/button_search"
+      android:hint="@string/info_forum_search_hint"/>
 
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/field_search"
-        android:fastScrollEnabled="true" />
+  <ListView
+      android:id="@android:id/list"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/field_search"
+      android:fastScrollEnabled="true"/>
 
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="30dp"
-        android:text="@string/info_xml_results_none" />
+  <TextView
+      android:id="@android:id/empty"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:layout_marginTop="30dp"
+      android:text="@string/info_xml_results_none"/>
 
 </RelativeLayout>

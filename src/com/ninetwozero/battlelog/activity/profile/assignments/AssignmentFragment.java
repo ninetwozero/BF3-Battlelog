@@ -14,30 +14,20 @@
 
 package com.ninetwozero.battlelog.activity.profile.assignments;
 
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.AssignmentData;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.misc.DataBank;
+
+import java.util.List;
 
 public class AssignmentFragment extends Fragment implements DefaultFragment {
 
@@ -59,7 +49,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
@@ -160,7 +150,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
                         }
 
                     }
-                    );
+            );
             imageRight.setOnClickListener(
 
                     new OnClickListener() {
@@ -172,7 +162,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
                         }
 
                     }
-                    );
+            );
 
             // Get the progress...
             int progressValueLeft = ass1.getProgress();
@@ -223,7 +213,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
                         }
 
                     }
-                    );
+            );
 
             // ...and set the progress bars
             progress.setProgress(progressValue);
@@ -310,7 +300,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
 
                     (int) objective.getCurrentValue() + "/" + (int) objective.getGoalValue()
 
-                    );
+            );
 
             wrapObjectives.addView(v);
 

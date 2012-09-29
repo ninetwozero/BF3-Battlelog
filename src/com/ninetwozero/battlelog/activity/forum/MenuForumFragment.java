@@ -14,9 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.forum;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -26,20 +23,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MenuForumFragment extends Fragment implements DefaultFragment {
 
@@ -60,7 +55,7 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
@@ -99,7 +94,7 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
 
                 }
 
-                );
+        );
         mImageLanguage = (ImageView) mWrapLanguage.findViewById(R.id.image_language);
         mTextLanguage = (TextView) mWrapLanguage.findViewById(R.id.text_language);
         mTextLanguage.setSelected(true);
@@ -147,7 +142,7 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
     }
 
     public Dialog generateDialogLanguageList(final Context context,
-            final String[] languages, final String[] locales) {
+                                             final String[] languages, final String[] locales) {
 
         // Attributes
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -159,26 +154,26 @@ public class MenuForumFragment extends Fragment implements DefaultFragment {
 
                 languages, -1, new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int item) {
+            public void onClick(DialogInterface dialog, int item) {
 
-                        mSelectedPosition = item;
-                        mSelectedLocale = locales[mSelectedPosition];
-                        mSelectedLanguage = languages[mSelectedPosition];
+                mSelectedPosition = item;
+                mSelectedLocale = locales[mSelectedPosition];
+                mSelectedLanguage = languages[mSelectedPosition];
 
-                        SharedPreferences.Editor spEdit = mSharedPreferences.edit();
-                        spEdit.putString(Constants.SP_BL_FORUM_LOCALE, mSelectedLocale);
-                        spEdit.putInt(Constants.SP_BL_FORUM_LOCALE_POSITION, mSelectedPosition);
-                        spEdit.commit();
+                SharedPreferences.Editor spEdit = mSharedPreferences.edit();
+                spEdit.putString(Constants.SP_BL_FORUM_LOCALE, mSelectedLocale);
+                spEdit.putInt(Constants.SP_BL_FORUM_LOCALE_POSITION, mSelectedPosition);
+                spEdit.commit();
 
-                        setupLanguageBox();
+                setupLanguageBox();
 
-                        dialog.dismiss();
+                dialog.dismiss();
 
-                    }
+            }
 
-                }
+        }
 
-                );
+        );
 
         // CREATE
         return builder.create();

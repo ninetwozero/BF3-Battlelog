@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-
 public class ChatMessage {
 
     // Attributes

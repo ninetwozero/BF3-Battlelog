@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.datatype;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.ninetwozero.battlelog.R;
 
 public class WeaponInfo implements Parcelable {
@@ -53,8 +52,8 @@ public class WeaponInfo implements Parcelable {
 
     }
 
-    public WeaponInfo(String i, String n, String l, int rof, int r,
-            String a, boolean ra, boolean rb, boolean rs) {
+    public WeaponInfo(String i, String n, String l, int rof, int r, String a,
+                      boolean ra, boolean rb, boolean rs) {
 
         mIdentifier = i;
         mName = n;

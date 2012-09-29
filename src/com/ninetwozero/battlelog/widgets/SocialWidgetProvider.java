@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.widgets;
 
-import java.util.List;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -29,7 +27,6 @@ import android.text.Html;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.FriendListDataWrapper;
@@ -40,6 +37,8 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
+import java.util.List;
+
 public class SocialWidgetProvider extends AppWidgetProvider {
 
     public static final String ACTION_WIDGET_RECEIVER = "SocialWidgetReciever";
@@ -48,19 +47,19 @@ public class SocialWidgetProvider extends AppWidgetProvider {
     private static FriendListDataWrapper mFriends;
     public static List<FeedItem> mFeedItems;
 
-    public static final int FEED_WRAP_IDS[] = new int[] {
+    public static final int FEED_WRAP_IDS[] = new int[]{
             R.id.wrap_feed_0, R.id.wrap_feed_1, R.id.wrap_feed_2
     };
-    public static final int FEED_CONTENT_IDS[] = new int[] {
+    public static final int FEED_CONTENT_IDS[] = new int[]{
             R.id.text_content_0, R.id.text_content_1, R.id.text_content_2
     };
-    public static final int FEED_DATE_IDS[] = new int[] {
+    public static final int FEED_DATE_IDS[] = new int[]{
             R.id.text_date_0, R.id.text_date_1, R.id.text_date_2
     };
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-            int[] appWidgetIds) {
+                         int[] appWidgetIds) {
 
         // Get the SP
         SharedPreferences sharedPreferences = PreferenceManager

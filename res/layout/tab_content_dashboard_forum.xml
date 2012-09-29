@@ -13,82 +13,82 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/bg_bf3_main"
-    android:padding="10dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/bg_bf3_main"
+                android:padding="10dp">
 
-    <RelativeLayout
-        android:id="@+id/wrap_language"
-        android:layout_width="250dp"
+  <RelativeLayout
+      android:id="@+id/wrap_language"
+      android:layout_width="250dp"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:background="#CCFFFFFF"
+      android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/image_language"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:background="#CCFFFFFF"
-        android:padding="5dp" >
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/locale_us"/>
 
-        <ImageView
-            android:id="@+id/image_language"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/locale_us" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/image_language"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/string000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Selected language:"
-                android:textSize="18sp" />
-
-            <com.ninetwozero.battlelog.datatype.MarqueeTextView
-                android:id="@+id/text_language"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="marquee"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:text="English"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </RelativeLayout>
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/wrap_language"
-        android:padding="10dp" >
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/image_language"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical" >
+      <TextView
+          android:id="@+id/string000"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Selected language:"
+          android:textSize="18sp"/>
 
-            <Button
-                android:id="@+id/button_view"
-                style="@style/MenuButton"
-                android:text="View forums" />
+      <com.ninetwozero.battlelog.datatype.MarqueeTextView
+          android:id="@+id/text_language"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:ellipsize="marquee"
+          android:marqueeRepeatLimit="marquee_forever"
+          android:scrollHorizontally="true"
+          android:singleLine="true"
+          android:text="English"
+          android:textSize="20sp"
+          android:textStyle="bold"/>
+    </LinearLayout>
+  </RelativeLayout>
 
-            <Button
-                android:id="@+id/button_saved"
-                style="@style/MenuButton"
-                android:text="View saved" />
+  <ScrollView
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_below="@id/wrap_language"
+      android:padding="10dp">
 
-            <Button
-                android:id="@+id/button_search"
-                style="@style/MenuButton"
-                android:text="@string/label_search" />
-        </LinearLayout>
-    </ScrollView>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+      <Button
+          android:id="@+id/button_view"
+          style="@style/MenuButton"
+          android:text="View forums"/>
+
+      <Button
+          android:id="@+id/button_saved"
+          style="@style/MenuButton"
+          android:text="View saved"/>
+
+      <Button
+          android:id="@+id/button_search"
+          style="@style/MenuButton"
+          android:text="@string/label_search"/>
+    </LinearLayout>
+  </ScrollView>
 
 </RelativeLayout>

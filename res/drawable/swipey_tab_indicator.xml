@@ -17,11 +17,15 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/color_overlay" android:state_pressed="true" android:state_selected="true"/>
-    <item android:drawable="@drawable/color_overlay" android:state_focused="true" android:state_pressed="false" android:state_selected="true"/>
-    <item android:drawable="@drawable/transparent_overlay" android:state_focused="false" android:state_pressed="false" android:state_selected="true"/>
-    <item android:drawable="@drawable/color_overlay" android:state_pressed="true" android:state_selected="false"/>
-    <item android:drawable="@drawable/color_overlay" android:state_focused="true" android:state_pressed="false" android:state_selected="false"/>
-    <item android:drawable="@drawable/transparent_overlay" android:state_focused="false" android:state_pressed="false" android:state_selected="false"/>
+  <item android:drawable="@drawable/color_overlay" android:state_pressed="true" android:state_selected="true"/>
+  <item android:drawable="@drawable/color_overlay" android:state_focused="true" android:state_pressed="false"
+        android:state_selected="true"/>
+  <item android:drawable="@drawable/transparent_overlay" android:state_focused="false" android:state_pressed="false"
+        android:state_selected="true"/>
+  <item android:drawable="@drawable/color_overlay" android:state_pressed="true" android:state_selected="false"/>
+  <item android:drawable="@drawable/color_overlay" android:state_focused="true" android:state_pressed="false"
+        android:state_selected="false"/>
+  <item android:drawable="@drawable/transparent_overlay" android:state_focused="false" android:state_pressed="false"
+        android:state_selected="false"/>
 
 </selector>

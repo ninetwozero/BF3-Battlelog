@@ -14,18 +14,17 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
+
+import java.util.List;
 
 public class SearchDataAdapter extends BaseAdapter {
 
@@ -34,8 +33,7 @@ public class SearchDataAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
 
     // Construct
-    public SearchDataAdapter(List<GeneralSearchResult> m,
-            LayoutInflater l) {
+    public SearchDataAdapter(List<GeneralSearchResult> m, LayoutInflater l) {
 
         itemArray = m;
         layoutInflater = l;
@@ -60,8 +58,8 @@ public class SearchDataAdapter extends BaseAdapter {
     public long getItemId(int position) {
 
         GeneralSearchResult temp = this.itemArray.get(position);
-        return (temp.hasProfileData() ? temp.getProfileData().getId()
-                : temp.getPlatoonData().getId());
+        return (temp.hasProfileData() ? temp.getProfileData().getId() : temp
+                .getPlatoonData().getId());
 
     }
 
@@ -110,11 +108,11 @@ public class SearchDataAdapter extends BaseAdapter {
             ((TextView) convertView.findViewById(R.id.string_name))
                     .setText(profileData.getUsername());
             /*
-             * ((ImageView) convertView.findViewById( R.id.image_avatar
-             * )).setImageBitmap( BitmapFactory.decodeFile(
-             * PublicUtils.getCachePath( context ) +
-             * profileData.getGravatarHash() + ".png" ) );
-             */
+                * ((ImageView) convertView.findViewById( R.id.image_avatar
+                * )).setImageBitmap( BitmapFactory.decodeFile(
+                * PublicUtils.getCachePath( context ) +
+                * profileData.getGravatarHash() + ".png" ) );
+                */
 
         } else {
 
@@ -132,11 +130,11 @@ public class SearchDataAdapter extends BaseAdapter {
             ((TextView) convertView.findViewById(R.id.string_name)).setText("["
                     + platoonData.getTag() + "] " + platoonData.getName());
             /*
-             * ((ImageView) convertView.findViewById( R.id.image_avatar
-             * )).setImageBitmap( BitmapFactory.decodeFile(
-             * PublicUtils.getCachePath( context ) + platoonData.getImage() +
-             * ".jpeg" ) );
-             */
+                * ((ImageView) convertView.findViewById( R.id.image_avatar
+                * )).setImageBitmap( BitmapFactory.decodeFile(
+                * PublicUtils.getCachePath( context ) + platoonData.getImage() +
+                * ".jpeg" ) );
+                */
 
         }
 

@@ -13,26 +13,26 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:swipeytabs="http://schemas.android.com/apk/res/com.ninetwozero.battlelog"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+                xmlns:swipeytabs="http://schemas.android.com/apk/res/com.ninetwozero.battlelog"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-    <!-- #FFFFC600 -->
+  <!-- #FFFFC600 -->
 
-    <net.peterkuterna.android.apps.swipeytabs.SwipeyTabs
-        android:id="@+id/swipeytabs_sub"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/gradient_darkgreytoblack"
-        swipeytabs:bottomBarColor="#ff30b2e2"
-        swipeytabs:bottomBarHeight="1.5dip"
-        swipeytabs:tabIndicatorHeight="4.5dip" />
+  <net.peterkuterna.android.apps.swipeytabs.SwipeyTabs
+      android:id="@+id/swipeytabs_sub"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:background="@drawable/gradient_darkgreytoblack"
+      swipeytabs:bottomBarColor="#ff30b2e2"
+      swipeytabs:bottomBarHeight="1.5dip"
+      swipeytabs:tabIndicatorHeight="4.5dip"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager_sub"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/swipeytabs_sub" />
-    <!-- COM HERE -->
+  <android.support.v4.view.ViewPager
+      android:id="@+id/viewpager_sub"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_below="@id/swipeytabs_sub"/>
+  <!-- COM HERE -->
 
 </RelativeLayout>

@@ -13,61 +13,61 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="160dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="160dp">
 
-    <View
-        android:id="@+id/divider_left"
-        android:layout_width="10dp"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:background="#FF0000" />
+  <View
+      android:id="@+id/divider_left"
+      android:layout_width="10dp"
+      android:layout_height="fill_parent"
+      android:layout_alignParentLeft="true"
+      android:background="#FF0000"/>
 
-    <RelativeLayout
+  <RelativeLayout
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_toRightOf="@id/divider_left"
+      android:padding="10dp">
+
+    <TextView
+        android:id="@+id/text_unlock_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AK47-M"
+        android:textSize="18sp"/>
+
+    <ImageView
+        android:id="@+id/image_unlock"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_below="@id/text_unlock_title"
+        android:src="@drawable/w_ak74m"/>
+
+    <TextView
+        android:id="@+id/text_unlock_desc"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/divider_left"
-        android:padding="10dp" >
+        android:layout_below="@id/image_unlock"
+        android:text="Eat 200 (5 left) indian spices."/>
 
-        <TextView
-            android:id="@+id/text_unlock_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="AK47-M"
-            android:textSize="18sp" />
+    <TextView
+        android:id="@+id/text_unlock_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/text_unlock_desc"
+        android:paddingLeft="10dp"
+        android:text="97%"/>
 
-        <ImageView
-            android:id="@+id/image_unlock"
-            android:layout_width="wrap_content"
-            android:layout_height="75dp"
-            android:layout_below="@id/text_unlock_title"
-            android:src="@drawable/w_ak74m" />
-
-        <TextView
-            android:id="@+id/text_unlock_desc"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/image_unlock"
-            android:text="Eat 200 (5 left) indian spices." />
-
-        <TextView
-            android:id="@+id/text_unlock_percent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/text_unlock_desc"
-            android:paddingLeft="10dp"
-            android:text="97%" />
-
-        <ProgressBar
-            android:id="@+id/progress_unlock"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="10dp"
-            android:layout_below="@id/text_unlock_desc"
-            android:layout_marginTop="4dp"
-            android:layout_toLeftOf="@id/text_unlock_percent" />
-    </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/progress_unlock"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:layout_below="@id/text_unlock_desc"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@id/text_unlock_percent"/>
+  </RelativeLayout>
 
 </RelativeLayout>

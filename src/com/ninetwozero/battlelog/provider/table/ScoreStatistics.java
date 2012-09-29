@@ -5,7 +5,7 @@ import android.provider.BaseColumns;
 import com.ninetwozero.battlelog.Battlelog;
 import com.ninetwozero.battlelog.datatype.Statistics;
 
-public class ScoreStatistics extends Statistics{
+public class ScoreStatistics extends Statistics {
 
     public static final Uri URI = Uri.parse("content://" + Battlelog.AUTHORITY + "/scoreStatistics");
 

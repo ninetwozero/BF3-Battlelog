@@ -13,122 +13,122 @@
     GNU General Public License for more details.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/wrap_top"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:fillViewport="true" >
+            android:id="@+id/wrap_top"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+
+  <RelativeLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:paddingBottom="10dp"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      android:paddingTop="5dp">
+
+    <TextView
+        android:id="@+id/text_username"
+        style="@style/InfoHeading"
+        android:padding="5dp"
+        android:text="N/A"/>
+
+    <TextView
+        android:id="@+id/text_online"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_username"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="Last seen online N/A"
+        android:textSize="14sp"/>
 
     <RelativeLayout
+        android:id="@+id/wrap_status"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp" >
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_online">
 
-        <TextView
-            android:id="@+id/text_username"
-            style="@style/InfoHeading"
-            android:padding="5dp"
-            android:text="N/A" />
+      <TextView
+          android:id="@+id/text_header_status"
+          style="@style/FriendHeadingRow"
+          android:text="@string/info_xml_latest_statusmsg"/>
 
-        <TextView
-            android:id="@+id/text_online"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_username"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="Last seen online N/A"
-            android:textSize="14sp" />
+      <TextView
+          android:id="@+id/text_status"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/text_header_status"
+          android:padding="5dp"
+          android:text="N/A"
+          android:textSize="14sp"/>
 
-        <RelativeLayout
-            android:id="@+id/wrap_status"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_online" >
-
-            <TextView
-                android:id="@+id/text_header_status"
-                style="@style/FriendHeadingRow"
-                android:text="@string/info_xml_latest_statusmsg" />
-
-            <TextView
-                android:id="@+id/text_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_header_status"
-                android:padding="5dp"
-                android:text="N/A"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/text_status_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_status"
-                android:paddingBottom="5dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="Last updated N/A"
-                android:textColor="#c3c3c3"
-                android:textSize="12sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/wrap_presentation"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/wrap_status" >
-
-            <TextView
-                android:id="@+id/text_header_presentation"
-                style="@style/FriendHeadingRow"
-                android:text="@string/info_xml_presentation" />
-
-            <TextView
-                android:id="@+id/text_presentation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_header_presentation"
-                android:autoLink="all"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="N/A"
-                android:textSize="14sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/wrap_platoon"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/wrap_presentation" >
-
-            <TextView
-                android:id="@+id/text_header_platoon"
-                style="@style/FriendHeadingRow"
-                android:text="@string/info_xml_platoons" />
-
-            <LinearLayout
-                android:id="@+id/list_platoons"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_below="@id/text_header_platoon"
-                android:orientation="vertical"
-                android:padding="5dp" />
-
-            <TextView
-                android:id="@+id/text_platoon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_header_platoon"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/info_xml_no_platoons"
-                android:textSize="14sp"
-                android:visibility="gone" />
-        </RelativeLayout>
+      <TextView
+          android:id="@+id/text_status_date"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/text_status"
+          android:paddingBottom="5dp"
+          android:paddingLeft="5dp"
+          android:paddingRight="5dp"
+          android:text="Last updated N/A"
+          android:textColor="#c3c3c3"
+          android:textSize="12sp"/>
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/wrap_presentation"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_status">
+
+      <TextView
+          android:id="@+id/text_header_presentation"
+          style="@style/FriendHeadingRow"
+          android:text="@string/info_xml_presentation"/>
+
+      <TextView
+          android:id="@+id/text_presentation"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/text_header_presentation"
+          android:autoLink="all"
+          android:gravity="center"
+          android:padding="5dp"
+          android:text="N/A"
+          android:textSize="14sp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/wrap_platoon"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_presentation">
+
+      <TextView
+          android:id="@+id/text_header_platoon"
+          style="@style/FriendHeadingRow"
+          android:text="@string/info_xml_platoons"/>
+
+      <LinearLayout
+          android:id="@+id/list_platoons"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          android:layout_below="@id/text_header_platoon"
+          android:orientation="vertical"
+          android:padding="5dp"/>
+
+      <TextView
+          android:id="@+id/text_platoon"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/text_header_platoon"
+          android:gravity="center"
+          android:padding="5dp"
+          android:text="@string/info_xml_no_platoons"
+          android:textSize="14sp"
+          android:visibility="gone"/>
+    </RelativeLayout>
+  </RelativeLayout>
 
 </ScrollView>

@@ -14,9 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.profile;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,16 +21,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.assignments.AssignmentActivity;
 import com.ninetwozero.battlelog.activity.profile.settings.ProfileSettingsActivity;
@@ -47,6 +39,9 @@ import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
@@ -72,16 +67,17 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.tab_content_dashboard_profile,
-                container, false);
+        View view = mLayoutInflater.inflate(
+                R.layout.tab_content_dashboard_profile, container, false);
 
         initFragment(view);
 
@@ -103,15 +99,16 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
                     @Override
                     public void onClick(View v) {
                         FragmentManager manager = getFragmentManager();
-                        ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(),
-                                getTag());
+                        ListDialogFragment dialog = ListDialogFragment.newInstance(
+                                personasToMap(), getTag());
                         dialog.show(manager, DIALOG);
                     }
 
                 }
 
-                );
-        mImagePersona = (ImageView) mWrapPersona.findViewById(R.id.image_persona);
+        );
+        mImagePersona = (ImageView) mWrapPersona
+                .findViewById(R.id.image_persona);
         mTextPersona = (TextView) mWrapPersona.findViewById(R.id.text_persona);
         mTextPersona.setSelected(true);
 
@@ -136,34 +133,35 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
 
     private void dataFromSharedPreferences() {
         mPersona = SessionKeeper.getProfileData().getPersonaArray();
-        mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
+        mSelectedPosition = mSharedPreferences.getInt(
+                Constants.SP_BL_PERSONA_CURRENT_POS, 0);
     }
 
     private Map<Integer, Intent> menuOptions() {
         return new HashMap<Integer, Intent>() {
             {
-                put(R.id.button_unlocks,
-                        new Intent(mContext, UnlockActivity.class).putExtra("profile",
-                                SessionKeeper.getProfileData()));
-                put(R.id.button_weapon,
-                        new Intent(mContext, WeaponListActivity.class).putExtra("profile",
-                                SessionKeeper.getProfileData()));
-                put(R.id.button_assignments,
-                        new Intent(mContext, AssignmentActivity.class).putExtra("profile",
-                                SessionKeeper.getProfileData()));
-                put(R.id.button_self,
-                        new Intent(mContext, ProfileActivity.class).putExtra("profile",
-                                SessionKeeper.getProfileData()));
-                put(R.id.button_settings,
-                        new Intent(mContext, ProfileSettingsActivity.class));
+                put(R.id.button_unlocks, new Intent(mContext,
+                        UnlockActivity.class).putExtra("profile",
+                        SessionKeeper.getProfileData()));
+                put(R.id.button_weapon, new Intent(mContext,
+                        WeaponListActivity.class).putExtra("profile",
+                        SessionKeeper.getProfileData()));
+                put(R.id.button_assignments, new Intent(mContext,
+                        AssignmentActivity.class).putExtra("profile",
+                        SessionKeeper.getProfileData()));
+                put(R.id.button_self, new Intent(mContext,
+                        ProfileActivity.class).putExtra("profile",
+                        SessionKeeper.getProfileData()));
+                put(R.id.button_settings, new Intent(mContext,
+                        ProfileSettingsActivity.class));
             }
         };
 
     }
 
-    private Map<Long, String> personasToMap(){
+    private Map<Long, String> personasToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
-        for(PersonaData pd : mPersona){
+        for (PersonaData pd : mPersona) {
             map.put(pd.getId(), pd.getName() + " " + pd.resolvePlatformId());
         }
         return map;
@@ -192,8 +190,8 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
 
     public void setupActiveSoldierContent() {
         mTextPersona.setText(getPersonaNameAndPlatform());
-        mImagePersona.setImageResource(DataBank.getImageForPersona(mPersona[mSelectedPosition]
-                .getLogo()));
+        mImagePersona.setImageResource(DataBank
+                .getImageForPersona(mPersona[mSelectedPosition].getLogo()));
     }
 
     private String getPersonaNameAndPlatform() {
@@ -201,11 +199,10 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
                 + mPersona[mSelectedPosition].resolvePlatformId();
     }
 
-
-
     private void updateSharedPreference(int index) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity()
-                .getApplicationContext());
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(getActivity()
+                        .getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putLong(SP_BL_PERSONA_CURRENT_ID, mPersona[index].getId());
         editor.putInt(SP_BL_PERSONA_CURRENT_POS, index);

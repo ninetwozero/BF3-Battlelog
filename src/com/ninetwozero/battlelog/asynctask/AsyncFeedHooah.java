@@ -17,7 +17,6 @@ package com.ninetwozero.battlelog.asynctask;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
 import com.ninetwozero.battlelog.http.FeedClient;
@@ -32,7 +31,7 @@ public class AsyncFeedHooah extends AsyncTask<String, Integer, Boolean> {
 
     // Constructor
     public AsyncFeedHooah(Context c, long pId, boolean w, boolean l,
-            FeedFragment f) {
+                          FeedFragment f) {
 
         context = c;
         postId = pId;

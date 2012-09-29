@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -23,10 +21,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.ForumSearchResult;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.List;
 
 public class ForumSearchAdapter extends BaseAdapter {
 
@@ -37,7 +36,7 @@ public class ForumSearchAdapter extends BaseAdapter {
 
     // Construct
     public ForumSearchAdapter(Context c, List<ForumSearchResult> m,
-            LayoutInflater l) {
+                              LayoutInflater l) {
 
         context = c;
         itemArray = m;
@@ -124,13 +123,13 @@ public class ForumSearchAdapter extends BaseAdapter {
 
                                 ).replace(
 
-                                        "{user}", currentItem.getOwner().getUsername()
-
-                                )
+                                "{user}", currentItem.getOwner().getUsername()
 
                         )
 
-                );
+                )
+
+        );
 
         // Store the object
         convertView.setTag(currentItem);

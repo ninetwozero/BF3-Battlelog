@@ -13,33 +13,33 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="5dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp">
 
-    <TextView
-        android:id="@+id/text_title_users"
-        style="@style/InfoHeading"
-        android:layout_marginBottom="0dp"
-        android:padding="5dp"
-        android:text="@string/label_own_soldiermbers" />
+  <TextView
+      android:id="@+id/text_title_users"
+      style="@style/InfoHeading"
+      android:layout_marginBottom="0dp"
+      android:padding="5dp"
+      android:text="@string/label_own_soldiermbers"/>
 
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/text_title_users"
-        android:fastScrollEnabled="true" />
+  <ListView
+      android:id="@android:id/list"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_below="@+id/text_title_users"
+      android:fastScrollEnabled="true"/>
 
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/info_xml_no_users" />
+  <TextView
+      android:id="@android:id/empty"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:text="@string/info_xml_no_users"/>
 
 </RelativeLayout>

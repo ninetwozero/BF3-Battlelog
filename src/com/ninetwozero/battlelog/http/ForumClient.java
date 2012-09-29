@@ -1,23 +1,15 @@
-
 package com.ninetwozero.battlelog.http;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.content.Context;
-
-import com.ninetwozero.battlelog.datatype.ForumData;
-import com.ninetwozero.battlelog.datatype.ForumPostData;
-import com.ninetwozero.battlelog.datatype.ForumSearchResult;
-import com.ninetwozero.battlelog.datatype.ForumThreadData;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.datatype.*;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ForumClient extends DefaultClient {
 
@@ -45,15 +37,15 @@ public class ForumClient extends DefaultClient {
             + "viewcontent/reportForumAbuse/{POST_ID}/";
 
     // Attributes
-    public static final String[] FIELD_NAMES_POST = new String[] {
+    public static final String[] FIELD_NAMES_POST = new String[]{
             "body", "post-check-sum"
     };
 
-    public static final String[] FIELD_NAMES_NEW = new String[] {
+    public static final String[] FIELD_NAMES_NEW = new String[]{
             "topic", "body", "post-check-sum"
     };
 
-    public static final String[] FIELD_NAMES_REPORT = new String[] {
+    public static final String[] FIELD_NAMES_REPORT = new String[]{
             "reason", "post-check-sum"
     };
 
@@ -83,7 +75,7 @@ public class ForumClient extends DefaultClient {
                     RequestHandler.generatePostData(FIELD_NAMES_REPORT, r, ""),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Let's parse it!
             return (new JSONObject(httpContent).getJSONObject("data")
@@ -115,9 +107,9 @@ public class ForumClient extends DefaultClient {
                             mForumId,
                             page
 
-                            ), RequestHandler.HEADER_AJAX
+                    ), RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Let's parse it!
             JSONObject contextObject = new JSONObject(httpContent)
@@ -147,10 +139,10 @@ public class ForumClient extends DefaultClient {
 
                                 Long.parseLong(currObject.getString("id")),
                                 mForumId, currObject
-                                        .getLong("creationDate"), currObject
-                                        .getLong("lastPostDate"), currObject
-                                        .getInt("numberOfOfficialPosts"), currObject
-                                        .getInt("numberOfPosts"),
+                                .getLong("creationDate"), currObject
+                                .getLong("lastPostDate"), currObject
+                                .getInt("numberOfOfficialPosts"), currObject
+                                .getInt("numberOfPosts"),
                                 currObject.getString("title"),
                                 new ProfileData.Builder(
                                         Long.parseLong(ownerObject.getString("userId")),
@@ -165,7 +157,7 @@ public class ForumClient extends DefaultClient {
 
                         )
 
-                        );
+                );
 
             }
 
@@ -189,10 +181,10 @@ public class ForumClient extends DefaultClient {
 
                                 Long.parseLong(currObject.getString("id")),
                                 mForumId, currObject
-                                        .getLong("creationDate"), currObject
-                                        .getLong("lastPostDate"), currObject
-                                        .getInt("numberOfOfficialPosts"), currObject
-                                        .getInt("numberOfPosts"),
+                                .getLong("creationDate"), currObject
+                                .getLong("lastPostDate"), currObject
+                                .getInt("numberOfOfficialPosts"), currObject
+                                .getInt("numberOfPosts"),
                                 currObject.getString("title"),
                                 new ProfileData.Builder(
                                         Long.parseLong(ownerObject.getString("userId")),
@@ -207,7 +199,7 @@ public class ForumClient extends DefaultClient {
 
                         )
 
-                        );
+                );
 
             }
 
@@ -239,10 +231,10 @@ public class ForumClient extends DefaultClient {
                             mThreadId,
                             page
 
-                            ),
+                    ),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Let's parse it!
             JSONArray postArray = new JSONObject(httpContent).getJSONObject(
@@ -261,8 +253,8 @@ public class ForumClient extends DefaultClient {
                         new ForumPostData(
 
                                 Long.parseLong(currObject.getString("id")), Long
-                                        .parseLong(currObject.getString("creationDate")), Long
-                                        .parseLong(currObject.getString("threadId")),
+                                .parseLong(currObject.getString("creationDate")), Long
+                                .parseLong(currObject.getString("threadId")),
 
                                 new ProfileData.Builder(
                                         Long.parseLong(ownerObject.getString("userId")),
@@ -275,7 +267,7 @@ public class ForumClient extends DefaultClient {
 
                         )
 
-                        );
+                );
 
             }
 
@@ -304,7 +296,7 @@ public class ForumClient extends DefaultClient {
                     RequestHandler.generateUrl(URL_SEARCH, keyword),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
             if (!"".equals(httpContent)) {
 
                 // Let's parse it as JSON
@@ -335,11 +327,11 @@ public class ForumClient extends DefaultClient {
                                                 Long.parseLong(currentItem.getString("ownerId")),
                                                 currentItem.getString("ownerUsername")).build(),
                                         currentItem.getBoolean("isSticky"), currentItem
-                                                .getBoolean("isOfficial")
+                                        .getBoolean("isOfficial")
 
                                 )
 
-                                );
+                        );
 
                     }
 
@@ -371,7 +363,7 @@ public class ForumClient extends DefaultClient {
                     RequestHandler.generateUrl(URL_LIST_LOCALIZED, locale),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Let's parse it!
             JSONArray categoryArray = new JSONObject(httpContent)
@@ -397,15 +389,15 @@ public class ForumClient extends DefaultClient {
                             new ForumData(
 
                                     Long.parseLong(currObject.getString("id")), Long
-                                            .parseLong(currObject.getString("categoryId")), 0,
+                                    .parseLong(currObject.getString("categoryId")), 0,
                                     0, 0, currObject.getLong("numberOfPosts"),
                                     currObject.getLong("numberOfThreads"), 0,
                                     currObject.getString("title"), currObject
-                                            .getString("description"), null, null
+                                    .getString("description"), null, null
 
                             )
 
-                            );
+                    );
 
                 } else {
 
@@ -419,21 +411,21 @@ public class ForumClient extends DefaultClient {
                                 new ForumData(
 
                                         Long.parseLong(currObject.getString("id")), Long
-                                                .parseLong(currObject.getString("categoryId")),
+                                        .parseLong(currObject.getString("categoryId")),
                                         lastThread.getLong("lastPostDate"), Long
-                                                .parseLong(lastThread.getString("id")),
+                                        .parseLong(lastThread.getString("id")),
                                         Long.parseLong(lastThread
                                                 .getString("lastPostId")), currObject
-                                                .getLong("numberOfPosts"), currObject
-                                                .getLong("numberOfThreads"), 0,
+                                        .getLong("numberOfPosts"), currObject
+                                        .getLong("numberOfThreads"), 0,
                                         currObject.getString("title"), currObject
-                                                .getString("description"), lastThread
-                                                .getString("title"), userInfo
-                                                .getString("username")
+                                        .getString("description"), lastThread
+                                        .getString("title"), userInfo
+                                        .getString("username")
 
                                 )
 
-                                );
+                        );
 
                     }
 
@@ -442,7 +434,7 @@ public class ForumClient extends DefaultClient {
             }
 
             // Return
-            return new Object[] {
+            return new Object[]{
                     title, forums
             };
 
@@ -472,10 +464,10 @@ public class ForumClient extends DefaultClient {
                             forumId,
                             1
 
-                            ),
+                    ),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Let's parse it!
             JSONObject contextObject = new JSONObject(httpContent)
@@ -508,9 +500,9 @@ public class ForumClient extends DefaultClient {
                                 forumId,
                                 currObject
                                         .getLong("creationDate"), currObject
-                                        .getLong("lastPostDate"), currObject
-                                        .getInt("numberOfOfficialPosts"), currObject
-                                        .getInt("numberOfPosts"),
+                                .getLong("lastPostDate"), currObject
+                                .getInt("numberOfOfficialPosts"), currObject
+                                .getInt("numberOfPosts"),
                                 currObject.getString("title"),
 
                                 new ProfileData.Builder(
@@ -526,7 +518,7 @@ public class ForumClient extends DefaultClient {
 
                         )
 
-                        );
+                );
 
             }
 
@@ -550,10 +542,10 @@ public class ForumClient extends DefaultClient {
 
                                 Long.parseLong(currObject.getString("id")),
                                 forumId, currObject
-                                        .getLong("creationDate"), currObject
-                                        .getLong("lastPostDate"), currObject
-                                        .getInt("numberOfOfficialPosts"), currObject
-                                        .getInt("numberOfPosts"),
+                                .getLong("creationDate"), currObject
+                                .getLong("lastPostDate"), currObject
+                                .getInt("numberOfOfficialPosts"), currObject
+                                .getInt("numberOfPosts"),
                                 currObject.getString("title"),
 
                                 new ProfileData.Builder(
@@ -569,7 +561,7 @@ public class ForumClient extends DefaultClient {
 
                         )
 
-                        );
+                );
 
             }
 
@@ -609,10 +601,10 @@ public class ForumClient extends DefaultClient {
                             mThreadId,
                             1
 
-                            ),
+                    ),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Let's parse it!
             JSONObject contextObject = new JSONObject(httpContent).getJSONObject("context");
@@ -635,8 +627,8 @@ public class ForumClient extends DefaultClient {
                         new ForumPostData(
 
                                 Long.parseLong(currObject.getString("id")), Long
-                                        .parseLong(currObject.getString("creationDate")), Long
-                                        .parseLong(currObject.getString("threadId")),
+                                .parseLong(currObject.getString("creationDate")), Long
+                                .parseLong(currObject.getString("threadId")),
                                 new ProfileData.Builder(
                                         Long.parseLong(ownerObject.getString("userId")),
                                         ownerObject.getString("username")
@@ -648,7 +640,7 @@ public class ForumClient extends DefaultClient {
 
                         )
 
-                        );
+                );
 
             }
 
@@ -693,8 +685,8 @@ public class ForumClient extends DefaultClient {
     }
 
     public boolean reply(final Context c, final String body,
-            final String chksm, final ForumThreadData threadData, final boolean cache,
-            final long uid) {
+                         final String chksm, final ForumThreadData threadData, final boolean cache,
+                         final long uid) {
 
         try {
 
@@ -705,7 +697,7 @@ public class ForumClient extends DefaultClient {
                     RequestHandler.generatePostData(FIELD_NAMES_POST, body, chksm),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // How'd it go?
             if ("".equals(httpContent)) {
@@ -745,7 +737,7 @@ public class ForumClient extends DefaultClient {
                     RequestHandler.generatePostData(FIELD_NAMES_NEW, topic, body, chksm),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
             JSONObject response = new JSONObject(httpContent);
             if (response.has("location")) {
 

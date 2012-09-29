@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -23,10 +21,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.SavedForumThreadData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.List;
 
 public class SavedThreadListAdapter extends BaseAdapter {
 
@@ -37,7 +36,7 @@ public class SavedThreadListAdapter extends BaseAdapter {
 
     // Construct
     public SavedThreadListAdapter(Context c, List<SavedForumThreadData> m,
-            LayoutInflater l) {
+                                  LayoutInflater l) {
 
         context = c;
         itemArray = m;
@@ -89,47 +88,47 @@ public class SavedThreadListAdapter extends BaseAdapter {
         // Recycle
         if (convertView == null) {
 
-            convertView = layoutInflater.inflate(R.layout.list_item_thread_saved,
-                    parent, false);
+            convertView = layoutInflater.inflate(
+                    R.layout.list_item_thread_saved, parent, false);
 
         }
 
-        ((TextView) convertView.findViewById(R.id.text_title)).setText(currentItem.getTitle());
-        ((TextView) convertView.findViewById(R.id.text_thread_last_post)).setText(
+        ((TextView) convertView.findViewById(R.id.text_title))
+                .setText(currentItem.getTitle());
+        ((TextView) convertView.findViewById(R.id.text_thread_last_post))
+                .setText(
 
-                Html.fromHtml(
+                        Html.fromHtml(
 
-                        context.getString(R.string.info_xml_threadreplydate)
-                                .replace(
+                                context.getString(R.string.info_xml_threadreplydate)
+                                        .replace(
 
-                                        "{date}",
-                                        PublicUtils.getRelativeDate(context,
-                                                currentItem.getDateLastPost())
+                                                "{date}",
+                                                PublicUtils.getRelativeDate(context,
+                                                        currentItem.getDateLastPost())
 
-                                )
-                                .replace(
+                                        ).replace(
 
-                                        "{user}",
-                                        currentItem.getLastPoster()
-                                                .getUsername()
+                                        "{user}", currentItem.getLastPoster().getUsername()
 
                                 )
 
                         )
 
                 );
-        ((TextView) convertView.findViewById(R.id.text_post_last_checked)).setText(
+        ((TextView) convertView.findViewById(R.id.text_post_last_checked))
+                .setText(
 
-                Html.fromHtml(
+                        Html.fromHtml(
 
-                        context.getString(R.string.info_forum_adapter_last_checked)
-                                .replace(
+                                context.getString(R.string.info_forum_adapter_last_checked)
+                                        .replace(
 
-                                        "{date}",
-                                        PublicUtils.getRelativeDate(context,
-                                                currentItem.getDateLastChecked())
+                                                "{date}",
+                                                PublicUtils.getRelativeDate(context,
+                                                        currentItem.getDateLastChecked())
 
-                                )
+                                        )
 
                         )
 
@@ -137,7 +136,8 @@ public class SavedThreadListAdapter extends BaseAdapter {
 
         convertView.findViewById(R.id.bar_status).setBackgroundColor(
                 context.getResources().getColor(
-                        currentItem.hasUnread() ? R.color.green : R.color.lightgrey));
+                        currentItem.hasUnread() ? R.color.green
+                                : R.color.lightgrey));
 
         // Store the object
         convertView.setTag(currentItem);

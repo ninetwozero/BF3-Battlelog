@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.jsonmodel;
 
 import com.google.gson.annotations.SerializedName;
@@ -14,7 +13,8 @@ public class KitScores {
     @SerializedName("32")
     private long reconScore;
 
-    private KitScores(long assaultScore, long engineerScore, long supportScore, long reconScore) {
+    private KitScores(long assaultScore, long engineerScore, long supportScore,
+                      long reconScore) {
         this.assaultScore = assaultScore;
         this.engineerScore = engineerScore;
         this.supportScore = supportScore;
@@ -55,11 +55,8 @@ public class KitScores {
 
     @Override
     public String toString() {
-        return "KitScores{" +
-                "assaultScore=" + assaultScore +
-                ", engineerScore=" + engineerScore +
-                ", supportScore=" + supportScore +
-                ", reconScore=" + reconScore +
-                '}';
+        return "KitScores{" + "assaultScore=" + assaultScore
+                + ", engineerScore=" + engineerScore + ", supportScore="
+                + supportScore + ", reconScore=" + reconScore + '}';
     }
 }

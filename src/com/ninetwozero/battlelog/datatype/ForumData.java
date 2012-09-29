@@ -14,11 +14,11 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ForumData implements Parcelable {
 
@@ -32,7 +32,7 @@ public class ForumData implements Parcelable {
 
     // Constructs
     public ForumData(String fTitle, String fDescription, long nPosts,
-            long nThreads, long nPages, List<ForumThreadData> aThreads) {
+                     long nThreads, long nPages, List<ForumThreadData> aThreads) {
 
         forumId = 0;
         categoryId = 0;
@@ -72,7 +72,7 @@ public class ForumData implements Parcelable {
         latestThreadTitle = ltTitle;
         latestPostUsername = lpUser;
 
-        threads = (List<ForumThreadData>)new ArrayList<ForumThreadData>();
+        threads = (List<ForumThreadData>) new ArrayList<ForumThreadData>();
 
     }
 

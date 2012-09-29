@@ -14,22 +14,15 @@
 
 package com.ninetwozero.battlelog.activity.social;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.NotificationListAdapter;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
@@ -39,7 +32,10 @@ import com.ninetwozero.battlelog.http.NotificationClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class ComNotificationFragment extends ListFragment implements DefaultFragment {
+import java.util.List;
+
+public class ComNotificationFragment extends ListFragment implements
+        DefaultFragment {
 
     // Attributes
     private Context mContext;
@@ -55,16 +51,17 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.tab_content_com_notifications,
-                container, false);
+        View view = mLayoutInflater.inflate(
+                R.layout.tab_content_com_notifications, container, false);
 
         // Let's try this
         initFragment(view);
@@ -79,8 +76,10 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
 
         // Get the listview
         mListView = (ListView) view.findViewById(android.R.id.list);
-        mListView.setAdapter(mNotificationListAdapter = new NotificationListAdapter(mContext, null,
-                mLayoutInflater, SessionKeeper.getProfileData().getId()));
+        mListView
+                .setAdapter(mNotificationListAdapter = new NotificationListAdapter(
+                        mContext, null, mLayoutInflater, SessionKeeper
+                        .getProfileData().getId()));
         registerForContextMenu(mListView);
 
     }
@@ -88,8 +87,8 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
     @Override
     public void reload() {
 
-        new AsyncRefresh().execute(mSharedPreferences
-                .getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+        new AsyncRefresh().execute(mSharedPreferences.getString(
+                Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
     }
 
@@ -106,7 +105,8 @@ public class ComNotificationFragment extends ListFragment implements DefaultFrag
     @Override
     public void onListItemClick(ListView lv, View v, int position, long id) {
 
-        Toast.makeText(mContext, R.string.msg_unimplemented, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, R.string.msg_unimplemented, Toast.LENGTH_SHORT)
+                .show();
 
     }
 

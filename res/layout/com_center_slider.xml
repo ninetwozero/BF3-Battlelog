@@ -12,48 +12,48 @@
     GNU General Public License for more details.
 -->
 <SlidingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/com_slider"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_alignParentBottom="true"
-    android:content="@+id/com_slide_content"
-    android:handle="@+id/com_slide_handle"
-    android:topOffset="0dp" >
+               android:id="@+id/com_slider"
+               android:layout_width="fill_parent"
+               android:layout_height="fill_parent"
+               android:layout_alignParentBottom="true"
+               android:content="@+id/com_slide_content"
+               android:handle="@+id/com_slide_handle"
+               android:topOffset="0dp">
 
-    <LinearLayout
-        android:id="@+id/com_slide_handle"
+  <LinearLayout
+      android:id="@+id/com_slide_handle"
+      android:layout_width="fill_parent"
+      android:layout_height="40dp"
+      android:orientation="vertical">
+
+    <View
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:orientation="vertical" >
+        android:layout_height="2dp"
+        android:background="#5c5c5c"/>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="#5c5c5c" />
-
-        <View
-            android:id="@+id/temp000"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#20201f" />
-
-        <TextView
-            android:id="@+id/com_slide_handle_text"
-            android:layout_width="fill_parent"
-            android:layout_height="37dp"
-            android:background="@drawable/gradient_greytodarkgrey"
-            android:gravity="center"
-            android:text="@string/label_com_handle_default"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/com_slide_content"
+    <View
+        android:id="@+id/temp000"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="#FDFDFD" >
+        android:layout_height="1dp"
+        android:background="#20201f"/>
 
-        <include layout="@layout/viewpager_com" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/com_slide_handle_text"
+        android:layout_width="fill_parent"
+        android:layout_height="37dp"
+        android:background="@drawable/gradient_greytodarkgrey"
+        android:gravity="center"
+        android:text="@string/label_com_handle_default"
+        android:textColor="#FFFFFF"/>
+  </LinearLayout>
+
+  <RelativeLayout
+      android:id="@+id/com_slide_content"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:background="#FDFDFD">
+
+    <include layout="@layout/viewpager_com"/>
+  </RelativeLayout>
 
 </SlidingDrawer>

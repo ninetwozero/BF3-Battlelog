@@ -9,7 +9,7 @@ public class Statistics {
     public Statistics() {
     }
 
-    public Statistics(int title, String value, int style){
+    public Statistics(int title, String value, int style) {
         this.title = title;
         this.value = value;
         this.style = style;

@@ -45,7 +45,7 @@ public final class BBCodeUtils {
      */
 
     public static String toBBCode(final String originalContent,
-            final Map<Long, String> quotes) {
+                                  final Map<Long, String> quotes) {
 
         // Let's start off
         String convertedContent = originalContent;
@@ -75,11 +75,11 @@ public final class BBCodeUtils {
 
                     "{username}", matcherQuote.group(2)
 
-                    ).replace(
+            ).replace(
 
-                            "{text}", quotes.get(Long.parseLong(matcherQuote.group(1)))
+                    "{text}", quotes.get(Long.parseLong(matcherQuote.group(1)))
 
-                    );
+            );
 
             // Do the actual replacement
             convertedContent = convertedContent.replace(stringMatchesPre,

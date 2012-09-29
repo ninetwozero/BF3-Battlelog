@@ -13,28 +13,28 @@
     GNU General Public License for more details.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="10dp" >
-
-        <TextView
-            android:id="@+id/string000"
-            style="@style/InfoHeading"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="0dp"
-            android:padding="5dp"
-            android:text="Assignments overview" />
-
-        <TableLayout
-            android:id="@+id/table_assignments"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/string000" >
-        </TableLayout>
-    </RelativeLayout>
+            android:layout_height="fill_parent">
+
+  <RelativeLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:padding="10dp">
+
+    <TextView
+        android:id="@+id/string000"
+        style="@style/InfoHeading"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="0dp"
+        android:padding="5dp"
+        android:text="Assignments overview"/>
+
+    <TableLayout
+        android:id="@+id/table_assignments"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/string000">
+    </TableLayout>
+  </RelativeLayout>
 
 </ScrollView>

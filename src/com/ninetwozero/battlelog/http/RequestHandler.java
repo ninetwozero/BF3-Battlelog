@@ -14,24 +14,13 @@
 
 package com.ninetwozero.battlelog.http;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.UnknownHostException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.GZIPInputStream;
-
-import org.apache.http.Header;
-import org.apache.http.HeaderElement;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpRequestInterceptor;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpResponseInterceptor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import com.ninetwozero.battlelog.datatype.PostData;
+import com.ninetwozero.battlelog.datatype.RequestHandlerException;
+import com.ninetwozero.battlelog.datatype.ShareableCookie;
+import com.ninetwozero.battlelog.misc.HttpHeaders;
+import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -50,13 +39,16 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.ByteArrayBuffer;
 import org.apache.http.util.EntityUtils;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
-import com.ninetwozero.battlelog.datatype.PostData;
-import com.ninetwozero.battlelog.datatype.RequestHandlerException;
-import com.ninetwozero.battlelog.datatype.ShareableCookie;
-import com.ninetwozero.battlelog.misc.HttpHeaders;
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 public class RequestHandler {
 
@@ -195,7 +187,7 @@ public class RequestHandler {
     }
 
     public boolean saveFileFromURI(String link, String directory,
-            String filename) throws RequestHandlerException {
+                                   String filename) throws RequestHandlerException {
 
         // Check defaults
         if ("".equals(link)) {
@@ -233,11 +225,11 @@ public class RequestHandler {
                 // Grab the response
                 if (
 
-                httpResponse.containsHeader("Encoding-Type")
-                        && httpResponse.getFirstHeader("Encoding-Type")
+                        httpResponse.containsHeader("Encoding-Type")
+                                && httpResponse.getFirstHeader("Encoding-Type")
                                 .getValue().equalsIgnoreCase("gzip")
 
-                ) {
+                        ) {
 
                     // *Fix* the entity
                     httpEntity = new InflatingEntity(httpEntity);
@@ -362,7 +354,9 @@ public class RequestHandler {
 
     }
 
-    /** @author http://androidgenuine.com/?p=402 */
+    /**
+     * @author http://androidgenuine.com/?p=402
+     */
     public String hash(String str) {
 
         try {
@@ -452,7 +446,7 @@ public class RequestHandler {
 
                 params
 
-                );
+        );
 
         return client;
 
@@ -539,7 +533,7 @@ public class RequestHandler {
 
                 }
 
-                );
+        );
 
         httpClient.addResponseInterceptor(
 
@@ -572,7 +566,7 @@ public class RequestHandler {
 
                 }
 
-                );
+        );
 
     }
 

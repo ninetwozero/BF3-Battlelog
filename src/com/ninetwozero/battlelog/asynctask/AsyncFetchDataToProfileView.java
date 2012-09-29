@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.asynctask;
 
 import android.content.Context;
@@ -7,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.datatype.ProfileData;
@@ -57,7 +55,7 @@ public class AsyncFetchDataToProfileView extends
                     searchString,
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 
-                    );
+            );
 
             // Did we get an actual user?
             if (userData == null || userData.getNumPersonas() == 0) {
@@ -99,9 +97,9 @@ public class AsyncFetchDataToProfileView extends
 
                             "profile", userData
 
-                            )
+                    )
 
-                    );
+            );
 
         } else {
 

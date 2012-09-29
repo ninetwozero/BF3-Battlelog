@@ -13,38 +13,38 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="5dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
 
-    <RelativeLayout
-        android:id="@+id/wrap_text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+  <RelativeLayout
+      android:id="@+id/wrap_text"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/text_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:text="NINETWOZERO posted on your Battle Feed"
-            android:textSize="14sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/wrap_info"
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/text_message"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/wrap_text"
-        android:layout_marginTop="5dp" >
+        android:layout_marginTop="0dp"
+        android:text="NINETWOZERO posted on your Battle Feed"
+        android:textSize="14sp"/>
+  </RelativeLayout>
 
-        <TextView
-            android:id="@+id/text_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="23 minutes ago"
-            android:textColor="#BBBBBB" />
-    </RelativeLayout>
+  <RelativeLayout
+      android:id="@+id/wrap_info"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/wrap_text"
+      android:layout_marginTop="5dp">
+
+    <TextView
+        android:id="@+id/text_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="23 minutes ago"
+        android:textColor="#BBBBBB"/>
+  </RelativeLayout>
 
 </RelativeLayout>

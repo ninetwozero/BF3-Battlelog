@@ -13,17 +13,17 @@
     GNU General Public License for more details.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tabsLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/gradient_greytodarkgrey"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="10dip" >
+              android:id="@+id/tabsLayout"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="@drawable/gradient_greytodarkgrey"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="10dip">
 
-    <ImageView
-        android:id="@+id/image_tab"
-        android:layout_width="36dp"
-        android:layout_height="36dp" />
+  <ImageView
+      android:id="@+id/image_tab"
+      android:layout_width="36dp"
+      android:layout_height="36dp"/>
 
 </LinearLayout>

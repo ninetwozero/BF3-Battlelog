@@ -19,20 +19,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.CreditListAdapter;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.misc.DataBank;
 
-public class AboutCreditsFragment extends ListFragment implements DefaultFragment {
+public class AboutCreditsFragment extends ListFragment implements
+        DefaultFragment {
 
     // Attributes
     private Context mContext;
@@ -42,16 +38,16 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
     private ListView mListView;
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-            final Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater,
+                             final ViewGroup container, final Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
         mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        final View view = mLayoutInflater.inflate(R.layout.tab_content_main_credits,
-                container, false);
+        final View view = mLayoutInflater.inflate(
+                R.layout.tab_content_main_credits, container, false);
 
         // Let's try this
         initFragment(view);
@@ -66,7 +62,8 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
 
         // Get the listview
         mListView = (ListView) view.findViewById(android.R.id.list);
-        mListView.setAdapter(new CreditListAdapter(DataBank.getContributors(), mLayoutInflater));
+        mListView.setAdapter(new CreditListAdapter(DataBank.getContributors(),
+                mLayoutInflater));
 
     }
 
@@ -76,18 +73,21 @@ public class AboutCreditsFragment extends ListFragment implements DefaultFragmen
     }
 
     @Override
-    public void onListItemClick(final ListView lv, final View v, final int position, final long id) {
+    public void onListItemClick(final ListView lv, final View v,
+                                final int position, final long id) {
 
         // Get the url
         final String url = String.valueOf(v.getTag());
 
         // Is it empty?
         if ("".equals(url)) {
-            Toast.makeText(mContext, R.string.info_credits_nolink, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.info_credits_nolink,
+                    Toast.LENGTH_SHORT).show();
 
         } else {
             // Let's send it somewhere
-            startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)));
+            startActivity(new Intent(Intent.ACTION_VIEW)
+                    .setData(Uri.parse(url)));
 
         }
 

@@ -34,7 +34,7 @@ public class SavedForumThreadData implements Parcelable {
 
     // Construct
     public SavedForumThreadData(long i, String t, long fId, long dlp, ProfileData p, long dlc,
-            long dlr, int nplr, int np, boolean u, long pId) {
+                                long dlr, int nplr, int np, boolean u, long pId) {
 
         mId = i;
         mTitle = t;
@@ -159,7 +159,7 @@ public class SavedForumThreadData implements Parcelable {
 
     public Object[] toArray() {
 
-        return new Object[] {
+        return new Object[]{
 
                 mId,
                 mForumId,

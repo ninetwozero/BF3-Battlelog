@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.asynctask;
 
 import android.content.Context;
@@ -6,7 +5,6 @@ import android.os.AsyncTask;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
 import com.ninetwozero.battlelog.http.FeedClient;
@@ -38,7 +36,8 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
         if (context != null) {
 
-            buttonSend = (Button) fragmentFeed.getView().findViewById(R.id.button_send);
+            buttonSend = (Button) fragmentFeed.getView().findViewById(
+                    R.id.button_send);
             buttonSend.setText(R.string.label_sending);
             buttonSend.setEnabled(false);
 
@@ -51,8 +50,9 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
         try {
 
-            return new FeedClient(profileId, isPlatoon ? FeedClient.TYPE_PLATOON
-                    : FeedClient.TYPE_PROFILE).post(arg0[0], arg0[1]);
+            return new FeedClient(profileId,
+                    isPlatoon ? FeedClient.TYPE_PLATOON
+                            : FeedClient.TYPE_PROFILE).post(arg0[0], arg0[1]);
 
         } catch (Exception ex) {
 
@@ -75,7 +75,8 @@ public class AsyncPostToWall extends AsyncTask<String, Void, Boolean> {
 
             buttonSend.setText(R.string.label_send);
             buttonSend.setEnabled(true);
-            ((EditText) fragmentFeed.getView().findViewById(R.id.field_message)).setText("");
+            ((EditText) fragmentFeed.getView().findViewById(R.id.field_message))
+                    .setText("");
 
             Toast.makeText(context, R.string.msg_feed_ok, Toast.LENGTH_SHORT)
                     .show();

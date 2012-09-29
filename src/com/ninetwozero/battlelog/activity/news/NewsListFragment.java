@@ -14,27 +14,22 @@
 
 package com.ninetwozero.battlelog.activity.news;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.NewsListAdapter;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.NewsData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.WebsiteClient;
+
+import java.util.List;
 
 public class NewsListFragment extends ListFragment implements DefaultFragment {
 
@@ -52,15 +47,15 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
         mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.tab_content_dashboard_news,
-                container, false);
+        View view = mLayoutInflater.inflate(
+                R.layout.tab_content_dashboard_news, container, false);
 
         // Init
         initFragment(view);
@@ -112,9 +107,9 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
 
                         "news", (NewsData) v.getTag()
 
-                        )
+                )
 
-                );
+        );
 
     }
 

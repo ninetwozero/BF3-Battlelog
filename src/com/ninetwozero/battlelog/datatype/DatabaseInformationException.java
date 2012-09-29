@@ -1,6 +1,4 @@
-
 package com.ninetwozero.battlelog.datatype;
-
 
 public class DatabaseInformationException extends Exception {
 

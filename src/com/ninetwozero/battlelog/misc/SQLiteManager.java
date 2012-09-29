@@ -1,7 +1,4 @@
-
 package com.ninetwozero.battlelog.misc;
-
-import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,8 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
-
 import com.ninetwozero.battlelog.datatype.DatabaseInformationException;
+
+import java.util.List;
 
 public class SQLiteManager {
 
@@ -179,7 +177,7 @@ public class SQLiteManager {
                             + DatabaseStructure.PlatoonProfile.COLUMN_NAME_BOOL_VISIBLE
                             + " )"
 
-                    );
+            );
 
             db.execSQL(
 
@@ -214,7 +212,7 @@ public class SQLiteManager {
                             + " INTEGER "
                             + " )"
 
-                    );
+            );
 
         }
 
@@ -460,7 +458,7 @@ public class SQLiteManager {
     }
 
     public int update(String table, String[] fields, Object[] values,
-            String whereField, long id) throws DatabaseInformationException {
+                      String whereField, long id) throws DatabaseInformationException {
 
         // Init
         ContentValues contentValues = new ContentValues();
@@ -494,20 +492,20 @@ public class SQLiteManager {
 
         // EXECUTE!!!
         return mDatabaseHandler.update(table, contentValues, whereField + " = ?",
-                new String[] {
-                    String.valueOf(id)
+                new String[]{
+                        String.valueOf(id)
                 });
 
     }
 
     public final Cursor query(String t, String[] p, String s, String[] sA,
-            String g, String h, String o) throws DatabaseInformationException {
+                              String g, String h, String o) throws DatabaseInformationException {
 
         // Let's validate the table
         if (t == null || t.equals(""))
             throw new DatabaseInformationException("No table selected.");
         if (p == null || p.length == 0)
-            p = new String[] {
+            p = new String[]{
                     "*"
             };
 
@@ -524,7 +522,7 @@ public class SQLiteManager {
             throw new DatabaseInformationException("No table selected.");
 
         // We need to select a table
-        return mDatabaseHandler.query(table, new String[] {
+        return mDatabaseHandler.query(table, new String[]{
                 "*"
         }, null, null, null,
                 null, orderBy);

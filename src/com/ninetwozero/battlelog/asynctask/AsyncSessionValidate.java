@@ -14,16 +14,15 @@
 
 package com.ninetwozero.battlelog.asynctask;
 
-import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.datatype.PostData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.misc.Constants;
+import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
 public class AsyncSessionValidate extends AsyncTask<PostData, Integer, Boolean> {
 
@@ -75,14 +74,14 @@ public class AsyncSessionValidate extends AsyncTask<PostData, Integer, Boolean> 
                         new PostData(
 
                                 Constants.FIELD_NAMES_LOGIN[1], SimpleCrypto.decrypt(
-                                        email, sharedPreferences.getString(
-                                                Constants.SP_BL_PROFILE_PASSWORD, ""))
+                                email, sharedPreferences.getString(
+                                Constants.SP_BL_PROFILE_PASSWORD, ""))
 
                         ), new PostData(Constants.FIELD_NAMES_LOGIN[2], ""),
                         new PostData(Constants.FIELD_NAMES_LOGIN[3],
                                 Constants.FIELD_VALUES_LOGIN[3])
 
-                        );
+                );
 
             } catch (Exception ex) {
 

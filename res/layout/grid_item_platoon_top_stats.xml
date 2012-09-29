@@ -13,59 +13,59 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:padding="5dp" >
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="5dp">
+
+  <TextView
+      android:id="@+id/text_label"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:background="#CCCCCC"
+      android:gravity="center"
+      android:text="N/A"
+      android:textColor="#000000"
+      android:textStyle="bold"/>
+
+  <RelativeLayout
+      android:id="@+id/wrap_top"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/text_label"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="5dp"
+      android:paddingBottom="5dp"
+      android:paddingTop="5dp">
+
+    <ImageView
+        android:id="@+id/image_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/default_avatar"/>
 
     <TextView
-        android:id="@+id/text_label"
+        android:id="@+id/text_spm"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#CCCCCC"
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@id/image_avatar"
         android:gravity="center"
         android:text="N/A"
-        android:textColor="#000000"
-        android:textStyle="bold" />
+        android:textSize="48sp"/>
+  </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/wrap_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_label"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp" >
-
-        <ImageView
-            android:id="@+id/image_avatar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/default_avatar" />
-
-        <TextView
-            android:id="@+id/text_spm"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_toLeftOf="@id/image_avatar"
-            android:gravity="center"
-            android:text="N/A"
-            android:textSize="48sp" />
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/text_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/wrap_top"
-        android:gravity="right"
-        android:text="N/A"
-        android:textStyle="bold" />
+  <TextView
+      android:id="@+id/text_name"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/wrap_top"
+      android:gravity="right"
+      android:text="N/A"
+      android:textStyle="bold"/>
 
 </RelativeLayout>

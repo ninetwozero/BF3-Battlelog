@@ -1,4 +1,3 @@
-
 package com.coveragemapper.android.Map;
 
 /*
@@ -7,11 +6,11 @@ package com.coveragemapper.android.Map;
  *  Additional information: He's a canadian cow on IRC.
  */
 
-import java.io.File;
-
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
+
+import java.io.File;
 
 public abstract class ExternalCacheDirectory {
     protected final Context mContext;
@@ -31,7 +30,7 @@ public abstract class ExternalCacheDirectory {
 
     /**
      * Get a File pointing to the external cache directory.
-     * 
+     *
      * @return a File reference to the external cache directory
      */
     public abstract File getExternalCacheDirectory();

@@ -13,57 +13,57 @@
     GNU General Public License for more details.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/bg_bf3_main"
-    android:padding="10dp" >
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/bg_bf3_main"
+            android:padding="10dp">
+
+  <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:gravity="center">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center" >
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical" >
+      <Button
+          android:id="@+id/button_self"
+          style="@style/MenuButton"
+          android:text="@string/label_own_soldier"/>
 
-            <Button
-                android:id="@+id/button_self"
-                style="@style/MenuButton"
-                android:text="@string/label_own_soldier" />
+      <Button
+          android:id="@+id/button_platoons"
+          style="@style/MenuButton"
+          android:text="@string/label_own_platoon"/>
 
-            <Button
-                android:id="@+id/button_platoons"
-                style="@style/MenuButton"
-                android:text="@string/label_own_platoon" />
+      <Button
+          android:id="@+id/button_assignments"
+          style="@style/MenuButton"
+          android:text="@string/label_assignments"/>
 
-            <Button
-                android:id="@+id/button_assignments"
-                style="@style/MenuButton"
-                android:text="@string/label_assignments" />
+      <Button
+          android:id="@+id/button_unlocks"
+          style="@style/MenuButton"
+          android:text="@string/label_unlocks"/>
 
-            <Button
-                android:id="@+id/button_unlocks"
-                style="@style/MenuButton"
-                android:text="@string/label_unlocks" />
+      <Button
+          android:id="@+id/button_compare"
+          style="@style/MenuButton"
+          android:text="@string/label_compare_bs"/>
 
-            <Button
-                android:id="@+id/button_compare"
-                style="@style/MenuButton"
-                android:text="@string/label_compare_bs" />
+      <Button
+          android:id="@+id/button_search"
+          style="@style/MenuButton"
+          android:text="@string/label_search"/>
 
-            <Button
-                android:id="@+id/button_search"
-                style="@style/MenuButton"
-                android:text="@string/label_search" />
-
-            <Button
-                android:id="@+id/button_forum"
-                style="@style/MenuButton"
-                android:text="@string/label_forum" />
-        </LinearLayout>
+      <Button
+          android:id="@+id/button_forum"
+          style="@style/MenuButton"
+          android:text="@string/label_forum"/>
     </LinearLayout>
+  </LinearLayout>
 
 </ScrollView>

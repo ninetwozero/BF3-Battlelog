@@ -26,7 +26,8 @@ public class NewsData implements Parcelable {
     private ProfileData author;
 
     // Constructs
-    public NewsData(long id, long cDate, int n, String t, String c, ProfileData a) {
+    public NewsData(long id, long cDate, int n, String t, String c,
+                    ProfileData a) {
 
         this.id = id;
         this.date = cDate;

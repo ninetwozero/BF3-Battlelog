@@ -14,19 +14,18 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.AppContributorData;
 import com.ninetwozero.battlelog.datatype.PlatformData;
 import com.ninetwozero.battlelog.datatype.VehicleType;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class DataBank {
 
@@ -83,11 +82,11 @@ public final class DataBank {
         ASSIGNMENT_RESOURCES = new HashMap<String, int[]>();
 
         // LANG & LOCALE
-        LANGUAGES = new String[] {
+        LANGUAGES = new String[]{
                 "English", "Deutsch", "Français", "Español",
                 "Italiano", "Polski", "Pусский", "日本語", "한국어", "中文", "Česky"
         };
-        LOCALES = new String[] {
+        LOCALES = new String[]{
                 "en", "de", "fr", "es", "it", "pl", "ru",
                 "jp", "kr", "zh", "cz"
         };
@@ -1042,101 +1041,101 @@ public final class DataBank {
         COOP_DATA.put("COOP_BEHINDENEMYLINES", "Behind Enemy Lines");
         COOP_DATA.put("COOP_SUBWAY", "The Eleventh Hour");
 
-        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_2", new String[] {
+        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_2", new String[]{
                 "Professional Russian", "L85A2"
         });
-        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_3", new String[] {
+        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_3", new String[]{
                 "Fixing it",
                 "HK53"
         });
-        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_1", new String[] {
+        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_1", new String[]{
                 "Best Friend Forever", "FAMAS"
         });
-        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_6", new String[] {
+        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_6", new String[]{
                 "Keep your head down", "MG36"
         });
-        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_7", new String[] {
+        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_7", new String[]{
                 "Specops",
                 "QBU-88"
         });
-        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_4", new String[] {
+        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_4", new String[]{
                 "It goes Boom",
                 "QBZ-95B"
         });
-        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_5", new String[] {
+        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_5", new String[]{
                 "Let it rain",
                 "QBB-95"
         });
-        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_9", new String[] {
+        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_9", new String[]{
                 "Familiar Territory", "PP-19"
         });
-        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_8", new String[] {
+        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_8", new String[]{
                 "Creeping Death",
                 "L96"
         });
-        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_10", new String[] {
+        ASSIGNMENTS.put("ID_XP1_ASSIGNMENT_10", new String[]{
                 "Scarred Veteran", "MK3A1"
         });
 
-        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_1", new String[] {
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_1", new String[]{
                 "Life Saver", "Life Saver Dogtag"
         });
-        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_2", new String[] {
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_2", new String[]{
                 "Bullet Provider", "Bullet Provider Dogtag"
         });
-        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_3", new String[] {
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_3", new String[]{
                 "Location Scout", "Location Scout Dogtag"
         });
-        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_4", new String[] {
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_4", new String[]{
                 "Wrench Wielder", "Wrench Wielder Dogtag"
         });
-        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_5", new String[] {
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_5", new String[]{
                 "Jack of all trades", "Jack of all trades Dogtag"
         });
-        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_6", new String[] {
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_6", new String[]{
                 "F2000 Specialist", "F2000 Woodland Oak Camo"
         });
-        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_7", new String[] {
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_7", new String[]{
                 "Pecheneg Specialist", "Pecheneg Tactical Camo"
         });
-        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_8", new String[] {
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_8", new String[]{
                 "L96 Specialist", "L96 Digital Woodland Camo"
         });
-        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_9", new String[] {
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_9", new String[]{
                 "SCAR-H Specialist", "SCAR-H Desert Stripe Camo"
         });
-        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_10", new String[] {
+        ASSIGNMENTS.put("ID_PRE1_ASSIGNMENT_10", new String[]{
                 "Only for the Dedicated", "Secret item"
         });
 
-        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_1", new String[] {
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_1", new String[]{
                 "Shepard", "AUG A3"
         });
-        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_2", new String[] {
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_2", new String[]{
                 "Set us up the bomb", "SCAR-L"
         });
-        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_3", new String[] {
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_3", new String[]{
                 "No shortage", "L86A2"
         });
-        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_4", new String[] {
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_4", new String[]{
                 "Point Blank", "LSAT"
         });
-        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_5", new String[] {
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_5", new String[]{
                 "Done Fixing", "ACW-R"
         });
-        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_6", new String[] {
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_6", new String[]{
                 "My Own Terminator", "MTAR-21"
         });
-        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_7", new String[] {
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_7", new String[]{
                 "Team Player", "M417"
         });
-        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_8", new String[] {
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_8", new String[]{
                 "Bullet Point", "JNG-90"
         });
-        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_9", new String[] {
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_9", new String[]{
                 "These hurt too", "SPAS-12"
         });
-        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_10", new String[] {
+        ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_10", new String[]{
                 "Hold the trigger", "M5K"
         });
 
@@ -1225,81 +1224,81 @@ public final class DataBank {
         CRITERIAS.put("ID_XP2_ASSIGNMENT_10_CRITERIA_1", "Finish top5 in Gun Master");
         CRITERIAS.put("ID_XP2_ASSIGNMENT_10_CRITERIA_2", "100 kills with SMGs");
 
-        ASSIGNMENT_RESOURCES.put("xpma01", new int[] {
+        ASSIGNMENT_RESOURCES.put("xpma01", new int[]{
                 R.drawable.assignment_xp1_01, R.drawable.w_xp1_famas
         });
-        ASSIGNMENT_RESOURCES.put("xpma02", new int[] {
+        ASSIGNMENT_RESOURCES.put("xpma02", new int[]{
                 R.drawable.assignment_xp1_02, R.drawable.w_xp1_l85a2
         });
-        ASSIGNMENT_RESOURCES.put("xpma03", new int[] {
+        ASSIGNMENT_RESOURCES.put("xpma03", new int[]{
                 R.drawable.assignment_xp1_03, R.drawable.w_xp1_hk53
         });
-        ASSIGNMENT_RESOURCES.put("xpma04", new int[] {
+        ASSIGNMENT_RESOURCES.put("xpma04", new int[]{
                 R.drawable.assignment_xp1_04, R.drawable.w_xp1_qbz95b
         });
-        ASSIGNMENT_RESOURCES.put("xpma05", new int[] {
+        ASSIGNMENT_RESOURCES.put("xpma05", new int[]{
                 R.drawable.assignment_xp1_05, R.drawable.w_xp1_qbb95
         });
-        ASSIGNMENT_RESOURCES.put("xpma06", new int[] {
+        ASSIGNMENT_RESOURCES.put("xpma06", new int[]{
                 R.drawable.assignment_xp1_06, R.drawable.w_xp1_mg36
         });
-        ASSIGNMENT_RESOURCES.put("xpma07", new int[] {
+        ASSIGNMENT_RESOURCES.put("xpma07", new int[]{
                 R.drawable.assignment_xp1_07, R.drawable.w_xp1_qbu88
         });
-        ASSIGNMENT_RESOURCES.put("xpma08", new int[] {
+        ASSIGNMENT_RESOURCES.put("xpma08", new int[]{
                 R.drawable.assignment_xp1_08, R.drawable.w_xp1_l96
         });
-        ASSIGNMENT_RESOURCES.put("xpma09", new int[] {
+        ASSIGNMENT_RESOURCES.put("xpma09", new int[]{
                 R.drawable.assignment_xp1_09, R.drawable.w_xp1_pp19
         });
-        ASSIGNMENT_RESOURCES.put("xpma10", new int[] {
+        ASSIGNMENT_RESOURCES.put("xpma10", new int[]{
                 R.drawable.assignment_xp1_10, R.drawable.w_xp1_jackhammer
         });
 
-        ASSIGNMENT_RESOURCES.put("xp2prema01", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2prema01", new int[]{
                 R.drawable.assignment_xp2p_01, R.drawable.d_xp2p1_assault
         });
-        ASSIGNMENT_RESOURCES.put("xp2prema02", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2prema02", new int[]{
                 R.drawable.assignment_xp2p_02, R.drawable.d_xp2p1_support
         });
-        ASSIGNMENT_RESOURCES.put("xp2prema03", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2prema03", new int[]{
                 R.drawable.assignment_xp2p_03, R.drawable.d_xp2p1_recon
         });
-        ASSIGNMENT_RESOURCES.put("xp2prema04", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2prema04", new int[]{
                 R.drawable.assignment_xp2p_04, R.drawable.d_xp2p1_engineer
         });
-        ASSIGNMENT_RESOURCES.put("xp2prema05", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2prema05", new int[]{
                 R.drawable.assignment_xp2p_05, R.drawable.d_xp2p1_common
         });
 
-        ASSIGNMENT_RESOURCES.put("xp2ma01", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2ma01", new int[]{
                 R.drawable.assignment_xp2_01, R.drawable.w_xp2_steyraug
         });
-        ASSIGNMENT_RESOURCES.put("xp2ma02", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2ma02", new int[]{
                 R.drawable.assignment_xp2_02, R.drawable.w_xp2_scarl
         });
-        ASSIGNMENT_RESOURCES.put("xp2ma03", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2ma03", new int[]{
                 R.drawable.assignment_xp2_03, R.drawable.w_xp2_l86
         });
-        ASSIGNMENT_RESOURCES.put("xp2ma04", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2ma04", new int[]{
                 R.drawable.assignment_xp2_04, R.drawable.w_xp2_lsat
         });
-        ASSIGNMENT_RESOURCES.put("xp2ma05", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2ma05", new int[]{
                 R.drawable.assignment_xp2_05, R.drawable.w_xp2_acr
         });
-        ASSIGNMENT_RESOURCES.put("xp2ma06", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2ma06", new int[]{
                 R.drawable.assignment_xp2_06, R.drawable.w_xp2_mtar
         });
-        ASSIGNMENT_RESOURCES.put("xp2ma07", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2ma07", new int[]{
                 R.drawable.assignment_xp2_07, R.drawable.w_xp2_hk417
         });
-        ASSIGNMENT_RESOURCES.put("xp2ma08", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2ma08", new int[]{
                 R.drawable.assignment_xp2_08, R.drawable.w_xp2_jng90
         });
-        ASSIGNMENT_RESOURCES.put("xp2ma09", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2ma09", new int[]{
                 R.drawable.assignment_xp2_09, R.drawable.w_xp2_spas12
         });
-        ASSIGNMENT_RESOURCES.put("xp2ma10", new int[] {
+        ASSIGNMENT_RESOURCES.put("xp2ma10", new int[]{
                 R.drawable.assignment_xp2_10, R.drawable.w_xp2_mp5k
         });
 
@@ -1366,9 +1365,9 @@ public final class DataBank {
 
     public static String[] getAssignmentTitle(String key) {
         return ASSIGNMENTS.containsKey(key) ? ASSIGNMENTS.get(key)
-                : new String[] {
-                        key, key
-                };
+                : new String[]{
+                key, key
+        };
     }
 
     public static String getAssignmentCriteria(String key) {

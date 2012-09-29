@@ -13,39 +13,39 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="60dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="60dp">
 
-    <View
-        android:id="@+id/bar_official"
-        android:layout_width="10dp"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:background="@color/lightgrey" />
+  <View
+      android:id="@+id/bar_official"
+      android:layout_width="10dp"
+      android:layout_height="fill_parent"
+      android:layout_alignParentLeft="true"
+      android:background="@color/lightgrey"/>
 
-    <RelativeLayout
-        android:id="@+id/wrap_top"
+  <RelativeLayout
+      android:id="@+id/wrap_top"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_toRightOf="@id/bar_official"
+      android:padding="5dp">
+
+    <TextView
+        android:id="@+id/string_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/bar_official"
-        android:padding="5dp" >
+        android:ellipsize="marquee"
+        android:text="Battlefield 3 (PS3, XBOX 360)"
+        android:textColor="@color/blue"
+        android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/string_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:text="Battlefield 3 (PS3, XBOX 360)"
-            android:textColor="@color/blue"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/string_owner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/string_title"
-            android:text="@string/info_xml_threaddate" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/string_owner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/string_title"
+        android:text="@string/info_xml_threaddate"/>
+  </RelativeLayout>
 
 </RelativeLayout>

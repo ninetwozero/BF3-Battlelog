@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sample="http://schemas.android.com/apk/res/com.ninetwozero.battlelog" >
+                  xmlns:sample="http://schemas.android.com/apk/res/com.ninetwozero.battlelog">
 
-    <PreferenceCategory android:title="General settings" >
-        <EditTextPreference
-            android:dialogMessage="What&apos;s the name of the platoon?"
-            android:hint="Seven Nation Llama"
-            android:key="platoon_general_name"
-            android:title="Name" />
-        <EditTextPreference
-            android:dialogMessage="What&apos;s the clan tag for the platoon?"
-            android:hint="SNL"
-            android:key="platoon_general_tag"
-            android:title="Tag" />
-        <EditTextPreference
-            android:dialogMessage="What&apos;s the website for the platoon?"
-            android:hint="John Doe"
-            android:key="platoon_general_web"
-            android:title="Website" />
-        <EditTextPreference
-            android:dialogMessage="Here&apos;s where you can let the other users know a thing or two about yourself."
-            android:hint="Hello world!"
-            android:key="platoon_general_presentation"
-            android:title="Presentation" />
+  <PreferenceCategory android:title="General settings">
+    <EditTextPreference
+        android:dialogMessage="What&apos;s the name of the platoon?"
+        android:hint="Seven Nation Llama"
+        android:key="platoon_general_name"
+        android:title="Name"/>
+    <EditTextPreference
+        android:dialogMessage="What&apos;s the clan tag for the platoon?"
+        android:hint="SNL"
+        android:key="platoon_general_tag"
+        android:title="Tag"/>
+    <EditTextPreference
+        android:dialogMessage="What&apos;s the website for the platoon?"
+        android:hint="John Doe"
+        android:key="platoon_general_web"
+        android:title="Website"/>
+    <EditTextPreference
+        android:dialogMessage="Here&apos;s where you can let the other users know a thing or two about yourself."
+        android:hint="Hello world!"
+        android:key="platoon_general_presentation"
+        android:title="Presentation"/>
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="platoon_privacy_info"
-            android:summaryOff="Users won&apos;t be able to apply to join."
-            android:summaryOn="Users will be able to apply to join."
-            android:title="Allow new members" />
-    </PreferenceCategory>
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="platoon_privacy_info"
+        android:summaryOff="Users won&apos;t be able to apply to join."
+        android:summaryOn="Users will be able to apply to join."
+        android:title="Allow new members"/>
+  </PreferenceCategory>
 
 </PreferenceScreen>

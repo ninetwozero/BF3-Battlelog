@@ -14,10 +14,6 @@
 
 package com.ninetwozero.battlelog.activity;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -25,18 +21,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.forum.ForumActivity;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
@@ -49,6 +40,10 @@ import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class MenuFragment extends Fragment implements DefaultFragment {
 
     // Attributes
@@ -59,7 +54,7 @@ public class MenuFragment extends Fragment implements DefaultFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
@@ -161,32 +156,32 @@ public class MenuFragment extends Fragment implements DefaultFragment {
 
                 }
 
-                );
+        );
 
         builder.setPositiveButton(
 
                 android.R.string.ok, new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which) {
 
-                        String username = fieldUsername.getText().toString();
-                        if ("".equals(username)) {
+                String username = fieldUsername.getText().toString();
+                if ("".equals(username)) {
 
-                            Toast.makeText(context, R.string.general_empty_user,
-                                    Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.general_empty_user,
+                            Toast.LENGTH_SHORT).show();
 
-                        } else {
+                } else {
 
-                            new AsyncFetchDataToCompare(context, SessionKeeper
-                                    .getProfileData()).execute(username);
-
-                        }
-
-                    }
+                    new AsyncFetchDataToCompare(context, SessionKeeper
+                            .getProfileData()).execute(username);
 
                 }
 
-                );
+            }
+
+        }
+
+        );
 
         // Padding fix
         AlertDialog theDialog = builder.create();
@@ -196,7 +191,7 @@ public class MenuFragment extends Fragment implements DefaultFragment {
     }
 
     public Dialog generatePopupPlatoonList(final Context context,
-            final View view) {
+                                           final View view) {
 
         // Attributes
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -218,7 +213,7 @@ public class MenuFragment extends Fragment implements DefaultFragment {
 
                     @Override
                     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                            long arg3) {
+                                            long arg3) {
 
                         startActivity(new Intent(context, PlatoonActivity.class).putExtra(
                                 "platoon", ((PlatoonData) arg1.getTag())));
@@ -227,22 +222,22 @@ public class MenuFragment extends Fragment implements DefaultFragment {
 
                 }
 
-                );
+        );
 
         // Dialog options
         builder.setPositiveButton(
 
                 android.R.string.ok, new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which) {
 
-                        dialog.dismiss();
+                dialog.dismiss();
 
-                    }
+            }
 
-                }
+        }
 
-                );
+        );
 
         // Padding fix
         AlertDialog theDialog = builder.create();

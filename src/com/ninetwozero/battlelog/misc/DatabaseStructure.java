@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.misc;
 
 
@@ -55,7 +54,7 @@ public final class DatabaseStructure {
         // Getter
         public static String[] getColumns() {
 
-            return new String[] {
+            return new String[]{
 
                     COLUMN_NAME_ACCOUNT_NAME, COLUMN_NAME_PERSONA_NAME,
                     COLUMN_NAME_RANK, COLUMN_NAME_ID_PERSONA,
@@ -114,7 +113,7 @@ public final class DatabaseStructure {
         // Getter
         public static String[] getColumns() {
 
-            return new String[] {
+            return new String[]{
 
                     COLUMN_NAME_NUM_AGE, COLUMN_NAME_NUM_UID, COLUMN_NAME_DATE_BIRTH,
                     COLUMN_NAME_DATE_LOGIN, COLUMN_NAME_DATE_STATUS,
@@ -159,7 +158,7 @@ public final class DatabaseStructure {
         // Getter
         public static String[] getColumns() {
 
-            return new String[] {
+            return new String[]{
 
                     COLUMN_NAME_NUM_ID, COLUMN_NAME_NUM_PLATFORM_ID,
                     COLUMN_NAME_NUM_GAME_ID, COLUMN_NAME_NUM_FANS,
@@ -200,7 +199,7 @@ public final class DatabaseStructure {
         // Getter
         public static String[] getColumns() {
 
-            return new String[] {
+            return new String[]{
 
                     COLUMN_NAME_NUM_ID,
                     COLUMN_NAME_NUM_FORUM_ID,
