@@ -323,8 +323,13 @@
     <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> wrote on the wall for &lt;b>{platoon}&lt;/b>.</string>
     <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> and &lt;b>{username2}&lt;/b> completed &lt;b>\"{level}\"&lt;/b> on &lt;b>{difficulty}&lt;/b>.</string>
     <string name="info_p_award">&lt;b>{username}&lt;/b> received a new award: &lt;b>{award}&lt;/b>.</string>
-    <string name="info_p_shared_award">&lt;b>{username}&lt;/b> shared a received award: &lt;b>{award}&lt;/b>.</string>
-    <string name="info_p_shared_awards">&lt;b>{username}&lt;/b> shared some received awards: &lt;b>{award}&lt;/b>.</string>
+    <string name="info_p_shared_award">&lt;b>{username}&lt;/b> shared an award: &lt;b>{award}&lt;/b>.</string>
+    <string name="info_p_shared_awards">&lt;b>{username}&lt;/b> shared some awards: &lt;b>{award}&lt;/b>.</string>
+    <string name="info_p_shared_assignment">&lt;b>{username}&lt;/b> shared a completed assignment: &lt;b>{assignment}&lt;/b>.</string>
+    <string name="info_p_shared_assignments">&lt;b>{username}&lt;/b> shared some completed assignments: &lt;b>{assignment}&lt;/b>.</string>
+    <string name="info_p_shared_unlock">&lt;b>{username}&lt;/b> shared an unlock: &lt;b>{unlock}&lt;/b>.</string>
+    <string name="info_p_shared_unlocks">&lt;b>{username}&lt;/b> shared some unlocks: &lt;b>{unlock}&lt;/b>.</string>
+    <string name="info_p_shared_rank">&lt;b>{username}&lt;/b> shared a received promotion: &lt;b>{title} ({rank})&lt;/b>.</string>
     <string name="info_new_rank">new rank</string>
     <string name="title_main_menu">BF3 Battlelog - Main menu</string>
     <string name="title_profile">BF3 Battlelog - Profile</string>

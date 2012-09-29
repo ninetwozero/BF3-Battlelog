@@ -154,68 +154,88 @@ public class FeedItemDataFactory {
 		return feedItemData;
 	}
 
-	/* FIXME: Needs to be able to handle three types; awards, br's and assignments */
+	/*
+	 * FIXME: Needs to be able to handle three types; awards, br's and
+	 * assignments
+	 */
 	private static ParsedFeedItemData generateFromSharedGameEvent(
 			Context context, JSONObject jsonObject, ProfileData profile)
 			throws JSONException {
 
 		// Init
-		String type = "BF3AWARDS";
-		if( jsonObject.isNull("BF3AWARDS") ) {
-			
-			if( jsonObject.isNull("BF3GAMEREPORT") ) type = "BF3AWARDS";
-			else type = "BF3GAMEREPORT";
-			
-		}
-		JSONArray stats = jsonObject.getJSONObject(type).optJSONArray(STAT_ITEMS);
+		String generatedTitle;
+		String shareType = jsonObject.getString("eventName");
+		JSONObject eventData = jsonObject.getJSONObject(shareType);
+		JSONArray stats = eventData.optJSONArray(STAT_ITEMS);
 		StringBuilder title = new StringBuilder();
 
 		/* TODO: EXPORT TO SMALLER METHODS */
-		for (int counter = 0, maxCounter = stats.length(); counter < maxCounter; counter++) {
+		if (stats == null) {
+			generatedTitle = PublicUtils.createStringWithData(context,
+					R.string.info_p_shared_rank, profile.getUsername(),
+					DataBank.getRankTitle(eventData.getString("nameSID")),
+					eventData.getString("rank"));
 
-			// Let's get the item
-			JSONObject tempSubItem = stats.optJSONObject(counter);
+		} else {
 
-			// Append
-			if (title.length() == 0) {
-				title.append("<b>");
-			}
+			for (int counter = 0, maxCounter = stats.length(); counter < maxCounter; counter++) {
 
-			// Do we need to append anything?
-			if (counter > 0) {
+				// Let's get the item
+				JSONObject tempSubItem = stats.optJSONObject(counter);
 
-				if (counter == (maxCounter - 1)) {
+				// Append
+				if (title.length() == 0) {
+					title.append("<b>");
+				}
 
-					title.append(" </b>and<b> ");
+				// Do we need to append anything?
+				if (counter > 0) {
+					if (counter == (maxCounter - 1)) {
+						title.append(" </b>and<b> ");
 
+					} else {
+						title.append(", ");
+
+					}
+
+				}
+
+				// Let's see
+				String key = tempSubItem.getString(NAME_SID);
+				if (shareType.equals("BF3AWARDS")) {
+					title.append(DataBank.getAwardTitle(key));
+				} else if (shareType.equals("BF3GAMEREPORT")) {
+					title.append(getTitleFromUnlock(context, tempSubItem));
 				} else {
-
-					title.append(", ");
-
+					title.append(DataBank.getAttachmentTitle(key));
 				}
 
 			}
 
-			// Let's see
-			String key = tempSubItem.getString(NAME_SID);
-			title.append(DataBank.getAwardTitle(key));
+			// Set the things straight
+			int stringResource = R.string.info_p_shared_awards;
+			boolean isSingleUnlock = (stats.length() == 1);
+			if (isSingleUnlock) {
+				if (shareType.equals("BF3AWARDS")) {
+					stringResource = R.string.info_p_shared_award;
+				} else if (shareType.equals("BF3GAMEREPORT")) {
+					stringResource = R.string.info_p_shared_unlock;
+				} else {
+					stringResource = R.string.info_p_shared_assignment;
+				}
+			} else {
+				if (shareType.equals("BF3AWARDS")) {
+					stringResource = R.string.info_p_shared_awards;
+				} else if (shareType.equals("BF3GAMEREPORT")) {
+					stringResource = R.string.info_p_shared_unlocks;
+				} else {
+					stringResource = R.string.info_p_shared_assignments;
+				}
+			}
 
-		}
-
-		// Set the things straight
-		String generatedTitle;
-		if (stats.length() > 1) {
-
-			generatedTitle = PublicUtils.createStringWithData(context,
-					R.string.info_p_shared_awards, profile.getUsername(),
-					title.append("</b>"));
-
-		} else {
-
-			generatedTitle = PublicUtils.createStringWithData(context,
-					R.string.info_p_shared_award, profile.getUsername(),
-					title.append("</b>"));
-
+			generatedTitle = PublicUtils
+					.createStringWithData(context, stringResource,
+							profile.getUsername(), title.append("</b>"));
 		}
 
 		return new ParsedFeedItemData(generatedTitle, "", new ProfileData[] {
@@ -225,10 +245,9 @@ public class FeedItemDataFactory {
 	private static ParsedFeedItemData generateFromNewForumPost(Context context,
 			JSONObject currItem, ProfileData profile) throws JSONException {
 
-		Log.d(Constants.DEBUG_TAG, "currItem => " + currItem);
-		return new ParsedFeedItemData(
-		PublicUtils.createStringWithData(context, R.string.info_p_forumthread,
-				profile.getUsername(), currItem.getString(THREAD_TITLE)),
+		return new ParsedFeedItemData(PublicUtils.createStringWithData(context,
+				R.string.info_p_forumthread, profile.getUsername(),
+				currItem.getString(THREAD_TITLE)),
 				currItem.getString(POST_BODY), new ProfileData[] {
 
 				profile, null
@@ -399,72 +418,7 @@ public class FeedItemDataFactory {
 
 			}
 
-			// Weapon? Attachment?
-			if (!tempSubItem.isNull(PARENT_NAME_SID)) {
-
-				// Let's see
-				String parentKey = tempSubItem.getString(PARENT_NAME_SID);
-				tempKey = DataBank.getWeaponTitle(context, parentKey);
-
-				// Is it empty?
-				if (!parentKey.equals(tempKey)) {
-
-					title.append(tempKey)
-							.append(" ")
-							.append(DataBank.getAttachmentTitle(tempSubItem
-									.getString(NAME_SID)));
-
-				} else {
-
-					// Grab a vehicle title then
-					tempKey = DataBank.getVehicleTitle(parentKey);
-
-					// Validate
-					if (!parentKey.equals(tempKey)) {
-
-						title.append(tempKey)
-								.append(" ")
-								.append(DataBank
-										.getVehicleUpgradeTitle(tempSubItem
-												.getString(NAME_SID)));
-
-					} else {
-
-						title.append(tempKey);
-
-					}
-
-				}
-
-			} else {
-
-				// Let's see
-				String key = tempSubItem.getString(NAME_SID);
-				String guid = tempSubItem.getString("guid");
-
-				if (key.startsWith("ID_P_ANAME_")) {
-
-					title.append(DataBank.getAttachmentTitle(key));
-
-				} else if (key.startsWith("ID_P_WNAME_")) {
-
-					title.append(DataBank.getWeaponTitle(context, guid));
-
-				} else if (key.startsWith("ID_P_VUNAME_")) {
-
-					title.append(DataBank.getVehicleUpgradeTitle(key));
-
-				} else if (key.startsWith("ID_P_SNAME")) {
-
-					title.append(DataBank.getSkillTitle(key));
-
-				} else {
-
-					title.append(DataBank.getKitTitle(key));
-
-				}
-
-			}
+			title.append(getTitleFromUnlock(context, tempSubItem));
 
 		}
 
@@ -491,6 +445,79 @@ public class FeedItemDataFactory {
 
 		});
 
+	}
+
+	private static String getTitleFromUnlock(Context context, JSONObject unlock)
+			throws JSONException {
+
+		StringBuffer title = new StringBuffer();
+
+		// Weapon? Attachment?
+		if (!unlock.isNull(PARENT_NAME_SID)) {
+
+			// Let's see
+			String parentKey = unlock.getString(PARENT_NAME_SID);
+			String tempKey = DataBank.getWeaponTitle(context, parentKey);
+
+			// Is it empty?
+			if (!parentKey.equals(tempKey)) {
+
+				title.append(tempKey)
+						.append(" ")
+						.append(DataBank.getAttachmentTitle(unlock
+								.getString(NAME_SID)));
+
+			} else {
+
+				// Grab a vehicle title then
+				tempKey = DataBank.getVehicleTitle(parentKey);
+
+				// Validate
+				if (!parentKey.equals(tempKey)) {
+
+					title.append(tempKey)
+							.append(" ")
+							.append(DataBank.getVehicleUpgradeTitle(unlock
+									.getString(NAME_SID)));
+
+				} else {
+
+					title.append(tempKey);
+
+				}
+
+			}
+
+		} else {
+
+			// Let's see
+			String key = unlock.getString(NAME_SID);
+			String guid = unlock.getString("guid");
+
+			if (key.startsWith("ID_P_ANAME_")) {
+
+				title.append(DataBank.getAttachmentTitle(key));
+
+			} else if (key.startsWith("ID_P_WNAME_")) {
+
+				title.append(DataBank.getWeaponTitle(context, guid));
+
+			} else if (key.startsWith("ID_P_VUNAME_")) {
+
+				title.append(DataBank.getVehicleUpgradeTitle(key));
+
+			} else if (key.startsWith("ID_P_SNAME")) {
+
+				title.append(DataBank.getSkillTitle(key));
+
+			} else {
+
+				title.append(DataBank.getKitTitle(key));
+
+			}
+
+		}
+		return title.toString();
 	}
 
 	private static ParsedFeedItemData generateFromLeavingPlatoon(
@@ -707,12 +734,12 @@ public class FeedItemDataFactory {
 			JSONObject currItem, ProfileData profile) throws JSONException {
 		return new ParsedFeedItemData(
 
-		"<b>" + profile.getUsername() + "</b> " + currItem.getString("statusMessage"), "",
-				new ProfileData[] {
+		"<b>" + profile.getUsername() + "</b> "
+				+ currItem.getString("statusMessage"), "", new ProfileData[] {
 
-				profile, null
+		profile, null
 
-				});
+		});
 
 	}
 

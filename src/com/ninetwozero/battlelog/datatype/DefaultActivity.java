@@ -14,11 +14,10 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-
 public interface DefaultActivity {
 
-    void init();
+	void init();
 
-    void reload();
+	void reload();
 
 }

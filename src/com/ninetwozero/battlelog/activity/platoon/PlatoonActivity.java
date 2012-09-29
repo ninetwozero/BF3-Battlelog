@@ -43,300 +43,302 @@ import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
-public class PlatoonActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
+public class PlatoonActivity extends CustomFragmentActivity implements
+		DefaultFragmentActivity {
 
-    // Fragment related
-    private PlatoonOverviewFragment mFragmentOverview;
-    private PlatoonStatsFragment mFragmentStats;
-    private PlatoonMemberFragment mFragmentMember;
-    private FeedFragment mFragmentFeed;
+	// Fragment related
+	private PlatoonOverviewFragment mFragmentOverview;
+	private PlatoonStatsFragment mFragmentStats;
+	private PlatoonMemberFragment mFragmentMember;
+	private FeedFragment mFragmentFeed;
 
-    // Misc
-    private PlatoonData mPlatoonData;
+	// Misc
+	private PlatoonData mPlatoonData;
 
-    @Override
-    public void onCreate(final Bundle icicle) {
+	@Override
+	public void onCreate(final Bundle icicle) {
 
-        // onCreate - save the instance state
-        super.onCreate(icicle);
+		// onCreate - save the instance state
+		super.onCreate(icicle);
 
-        // Get the intent
-        if (!getIntent().hasExtra("platoon")) {
-            finish();
-        }
+		// Get the intent
+		if (!getIntent().hasExtra("platoon")) {
+			finish();
+		}
 
-        // Get the platoon data
-        mPlatoonData = (PlatoonData) getIntent().getParcelableExtra("platoon");
+		// Get the platoon data
+		mPlatoonData = (PlatoonData) getIntent().getParcelableExtra("platoon");
 
-        // Set the content view
-        setContentView(R.layout.viewpager_default);
+		// Set the content view
+		setContentView(R.layout.viewpager_default);
 
-        // Let's setup the fragments too
-        setup();
+		// Let's setup the fragments too
+		setup();
 
-        // Init
-        init();
+		// Init
+		init();
 
-    }
+	}
 
-    public void init() {
+	public void init() {
 
-    }
+	}
 
-    public void reload() {
+	public void reload() {
 
-        // ASYNC!!
-        mFragmentOverview.reload();
+		// ASYNC!!
+		mFragmentOverview.reload();
 
-    }
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 
-        // Inflate!!
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_platoonview, menu);
-        return super.onCreateOptionsMenu(menu);
+		// Inflate!!
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.option_platoonview, menu);
+		return super.onCreateOptionsMenu(menu);
 
-    }
+	}
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
 
-        // Our own profile, no need to show the "extra" buttons
-        if (mViewPager.getCurrentItem() == 0) {
+		// Our own profile, no need to show the "extra" buttons
+		if (mViewPager.getCurrentItem() == 0) {
 
-            return super.onPrepareOptionsMenu(mFragmentOverview.prepareOptionsMenu(menu));
+			return super.onPrepareOptionsMenu(mFragmentOverview
+					.prepareOptionsMenu(menu));
 
-        } else if (mViewPager.getCurrentItem() == 1) {
+		} else if (mViewPager.getCurrentItem() == 1) {
 
-            return super.onPrepareOptionsMenu(mFragmentStats.prepareOptionsMenu(menu));
+			return super.onPrepareOptionsMenu(mFragmentStats
+					.prepareOptionsMenu(menu));
 
-        } else if (mViewPager.getCurrentItem() == 2) {
+		} else if (mViewPager.getCurrentItem() == 2) {
 
-            return super.onPrepareOptionsMenu(mFragmentMember.prepareOptionsMenu(menu));
+			return super.onPrepareOptionsMenu(mFragmentMember
+					.prepareOptionsMenu(menu));
 
-        } else {
+		} else {
 
-            menu.removeItem(R.id.option_friendadd);
-            menu.removeItem(R.id.option_frienddel);
-            menu.removeItem(R.id.option_compare);
-            menu.removeItem(R.id.option_unlocks);
+			menu.removeItem(R.id.option_friendadd);
+			menu.removeItem(R.id.option_frienddel);
+			menu.removeItem(R.id.option_compare);
+			menu.removeItem(R.id.option_unlocks);
 
-        }
+		}
 
-        return super.onPrepareOptionsMenu(menu);
+		return super.onPrepareOptionsMenu(menu);
 
-    }
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
 
-        // Let's act!
-        if (item.getItemId() == R.id.option_reload) {
+		// Let's act!
+		if (item.getItemId() == R.id.option_reload) {
 
-            this.reload();
+			this.reload();
 
-        } else if (item.getItemId() == R.id.option_back) {
+		} else if (item.getItemId() == R.id.option_back) {
 
-            ((Activity) this).finish();
+			((Activity) this).finish();
 
-        } else {
+		} else {
 
-            if (mViewPager.getCurrentItem() == 0) {
+			if (mViewPager.getCurrentItem() == 0) {
 
-                return mFragmentOverview.handleSelectedOption(item);
+				return mFragmentOverview.handleSelectedOption(item);
 
-            } else if (mViewPager.getCurrentItem() == 1) {
+			} else if (mViewPager.getCurrentItem() == 1) {
 
-                return mFragmentStats.handleSelectedOption(item);
+				return mFragmentStats.handleSelectedOption(item);
 
-            } else if (mViewPager.getCurrentItem() == 2) {
+			} else if (mViewPager.getCurrentItem() == 2) {
 
-                return mFragmentMember.handleSelectedOption(item);
+				return mFragmentMember.handleSelectedOption(item);
 
-            }
+			}
 
-        }
+		}
 
-        // Return true yo
-        return true;
+		// Return true yo
+		return true;
 
-    }
+	}
 
-    @Override
-    public void onResume() {
+	@Override
+	public void onResume() {
 
-        super.onResume();
+		super.onResume();
 
-        // Setup the locale
-        PublicUtils.setupLocale(this, mSharedPreferences);
+		// Setup the locale
+		PublicUtils.setupLocale(this, mSharedPreferences);
 
-        // Setup the session
-        PublicUtils.setupSession(this, mSharedPreferences);
+		// Setup the session
+		PublicUtils.setupSession(this, mSharedPreferences);
 
-        // We need to initialize
-        init();
+		// We need to initialize
+		init();
 
-    }
+	}
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
 
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-                RequestHandler.getCookies());
+		super.onSaveInstanceState(outState);
+		outState.putParcelableArrayList(Constants.SUPER_COOKIES,
+				RequestHandler.getCookies());
 
-    }
+	}
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View view,
+			ContextMenuInfo menuInfo) {
 
-        switch (mViewPager.getCurrentItem()) {
+		switch (mViewPager.getCurrentItem()) {
 
-            case 0:
-                break;
+		case 0:
+			break;
 
-            case 1:
-                break;
+		case 1:
+			break;
 
-            case 2:
-                mFragmentMember.createContextMenu(menu, view, menuInfo);
-                break;
+		case 2:
+			mFragmentMember.createContextMenu(menu, view, menuInfo);
+			break;
 
-            case 3:
-                mFragmentFeed.createContextMenu(menu, view, menuInfo);
-                break;
+		case 3:
+			mFragmentFeed.createContextMenu(menu, view, menuInfo);
+			break;
 
-            default:
-                break;
-        }
+		default:
+			break;
+		}
 
-    }
+	}
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
 
-        // Declare...
-        AdapterView.AdapterContextMenuInfo info;
+		// Declare...
+		AdapterView.AdapterContextMenuInfo info;
 
-        // Let's try to get some menu information via a try/catch
-        try {
+		// Let's try to get some menu information via a try/catch
+		try {
 
-            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+			info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-        } catch (ClassCastException e) {
+		} catch (ClassCastException e) {
 
-            e.printStackTrace();
-            return false;
+			e.printStackTrace();
+			return false;
 
-        }
+		}
 
-        switch (mViewPager.getCurrentItem()) {
+		switch (mViewPager.getCurrentItem()) {
 
-            case 2:
-                return mFragmentMember.handleSelectedContextItem(info, item);
+		case 2:
+			return mFragmentMember.handleSelectedContextItem(info, item);
 
-            case 3:
-                return mFragmentFeed.handleSelectedContextItem(info, item);
+		case 3:
+			return mFragmentFeed.handleSelectedContextItem(info, item);
 
-            default:
-                break;
+		default:
+			break;
 
-        }
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    public void setup() {
+	public void setup() {
 
-        // Do we need to setup the fragments?
-        if (mListFragments == null) {
+		// Do we need to setup the fragments?
+		if (mListFragments == null) {
 
-            // Add them to the list
-            mListFragments = new ArrayList<Fragment>();
-            mListFragments.add(mFragmentOverview = (PlatoonOverviewFragment) Fragment.instantiate(
-                    this, PlatoonOverviewFragment.class.getName()));
-            mListFragments.add(mFragmentStats = (PlatoonStatsFragment) Fragment.instantiate(this,
-                    PlatoonStatsFragment.class.getName()));
-            mListFragments.add(mFragmentMember = (PlatoonMemberFragment) Fragment.instantiate(this,
-                    PlatoonMemberFragment.class.getName()));
-            mListFragments.add(mFragmentFeed = (FeedFragment) Fragment.instantiate(this,
-                    FeedFragment.class.getName()));
+			// Add them to the list
+			mListFragments = new ArrayList<Fragment>();
+			mListFragments
+					.add(mFragmentOverview = (PlatoonOverviewFragment) Fragment
+							.instantiate(this,
+									PlatoonOverviewFragment.class.getName()));
+			mListFragments.add(mFragmentStats = (PlatoonStatsFragment) Fragment
+					.instantiate(this, PlatoonStatsFragment.class.getName()));
+			mListFragments
+					.add(mFragmentMember = (PlatoonMemberFragment) Fragment
+							.instantiate(this,
+									PlatoonMemberFragment.class.getName()));
+			mListFragments.add(mFragmentFeed = (FeedFragment) Fragment
+					.instantiate(this, FeedFragment.class.getName()));
 
-            // Add the profileData
-            mFragmentOverview.setPlatoonData(mPlatoonData);
-            mFragmentMember.setPlatoonData(mPlatoonData);
+			// Add the profileData
+			mFragmentOverview.setPlatoonData(mPlatoonData);
+			mFragmentMember.setPlatoonData(mPlatoonData);
 
-            // We need to set the type
-            mFragmentFeed.setTitle(mPlatoonData.getName());
-            mFragmentFeed.setType(FeedClient.TYPE_PLATOON);
-            mFragmentFeed.setId(mPlatoonData.getId());
-            mFragmentFeed.setCanWrite(false);
+			// We need to set the type
+			mFragmentFeed.setTitle(mPlatoonData.getName());
+			mFragmentFeed.setType(FeedClient.TYPE_PLATOON);
+			mFragmentFeed.setId(mPlatoonData.getId());
+			mFragmentFeed.setCanWrite(false);
 
-            // Get the ViewPager
-            mViewPager = (ViewPager) findViewById(R.id.viewpager);
-            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+			// Get the ViewPager
+			mViewPager = (ViewPager) findViewById(R.id.viewpager);
+			mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
-            // Fill the PagerAdapter & set it to the viewpager
-            mPagerAdapter = new SwipeyTabsPagerAdapter(
+			// Fill the PagerAdapter & set it to the viewpager
+			mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-                    mFragmentManager,
-                    new String[] {
-                            "OVERVIEW", "STATS", "USERS", "FEED"
-                    },
-                    mListFragments,
-                    mViewPager,
-                    mLayoutInflater
-                    );
-            mViewPager.setAdapter(mPagerAdapter);
-            mTabs.setAdapter(mPagerAdapter);
+			mFragmentManager, new String[] { "OVERVIEW", "STATS", "USERS",
+					"FEED" }, mListFragments, mViewPager, mLayoutInflater);
+			mViewPager.setAdapter(mPagerAdapter);
+			mTabs.setAdapter(mPagerAdapter);
 
-            // Make sure the tabs follow
-            mViewPager.setOnPageChangeListener(mTabs);
-            mViewPager.setCurrentItem(0);
-            mViewPager.setOffscreenPageLimit(3);
+			// Make sure the tabs follow
+			mViewPager.setOnPageChangeListener(mTabs);
+			mViewPager.setCurrentItem(0);
+			mViewPager.setOffscreenPageLimit(3);
 
-        }
+		}
 
-    }
+	}
 
-    public void openStats(PlatoonInformation p) {
+	public void openStats(PlatoonInformation p) {
 
-        mFragmentStats.setPlatoonInformation(p);
-        mFragmentStats.reload();
+		mFragmentStats.setPlatoonInformation(p);
+		mFragmentStats.reload();
 
-    }
+	}
 
-    public void openMembers(PlatoonInformation p) {
+	public void openMembers(PlatoonInformation p) {
 
-        mFragmentMember.showMembers(p);
+		mFragmentMember.showMembers(p);
 
-    }
+	}
 
-    public void setFeedPermission(boolean c) {
+	public void setFeedPermission(boolean c) {
 
-        mFragmentFeed.setCanWrite(c);
+		mFragmentFeed.setCanWrite(c);
 
-    }
+	}
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK && mViewPager.getCurrentItem() > 0) {
+		// Hotkeys
+		if (keyCode == KeyEvent.KEYCODE_BACK && mViewPager.getCurrentItem() > 0) {
 
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
-            return true;
+			mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+			return true;
 
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
 }

@@ -34,64 +34,67 @@ import com.ninetwozero.battlelog.misc.Constants;
 
 public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
 
-    // Attribute
-    private Context context;
-    private SharedPreferences sharedPreferences;
-    private List<ChatMessage> messageArray = new ArrayList<ChatMessage>();
-    private ListView listView;
+	// Attribute
+	private Context context;
+	private SharedPreferences sharedPreferences;
+	private List<ChatMessage> messageArray = new ArrayList<ChatMessage>();
+	private ListView listView;
 
-    // Constructor
-    public AsyncChatRefresh(Context c, ListView lv) {
+	// Constructor
+	public AsyncChatRefresh(Context c, ListView lv) {
 
-        context = c;
-        listView = lv;
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		context = c;
+		listView = lv;
+		sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
 
-    }
+	}
 
-    @Override
-    protected void onPreExecute() {
-    }
+	@Override
+	protected void onPreExecute() {
+	}
 
-    @Override
-    protected Boolean doInBackground(Long... profileId) {
+	@Override
+	protected Boolean doInBackground(Long... profileId) {
 
-        try {
+		try {
 
-            // Let's get this!!
-            messageArray = new COMClient(sharedPreferences.getString(
-                    Constants.SP_BL_PROFILE_CHECKSUM, "")).getMessages(profileId[0]);
-            return true;
+			// Let's get this!!
+			messageArray = new COMClient(sharedPreferences.getString(
+					Constants.SP_BL_PROFILE_CHECKSUM, ""))
+					.getMessages(profileId[0]);
+			return true;
 
-        } catch (WebsiteHandlerException e) {
+		} catch (WebsiteHandlerException e) {
 
-            return false;
+			return false;
 
-        }
+		}
 
-    }
+	}
 
-    @Override
-    protected void onPostExecute(Boolean results) {
+	@Override
+	protected void onPostExecute(Boolean results) {
 
-        // How did go?
-        if (results) {
+		// How did go?
+		if (results) {
 
-            // Set the almighty adapter
-            ((ChatListAdapter) listView.getAdapter()).setMessageArray(messageArray);
+			// Set the almighty adapter
+			((ChatListAdapter) listView.getAdapter())
+					.setMessageArray(messageArray);
 
-            // Do we need to ploop?
-            if (context instanceof ChatActivity) {
-                ((ChatActivity) context).notifyNewPost(messageArray);
-            }
+			// Do we need to ploop?
+			if (context instanceof ChatActivity) {
+				((ChatActivity) context).notifyNewPost(messageArray);
+			}
 
-        } else {
+		} else {
 
-            Toast.makeText(context, R.string.msg_chat_norefresh,
-                    Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, R.string.msg_chat_norefresh,
+					Toast.LENGTH_SHORT).show();
 
-        }
+		}
 
-    }
+	}
 
 }

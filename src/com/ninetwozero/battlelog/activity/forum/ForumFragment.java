@@ -50,404 +50,411 @@ import com.ninetwozero.battlelog.misc.Constants;
 
 public class ForumFragment extends ListFragment implements DefaultFragment {
 
-    // Attributes
-    private Context mContext;
-    private LayoutInflater mLayoutInflater;
-    private SharedPreferences mSharedPreferences;
-    private ForumData mForumData;
-    private ForumClient mForumHandler;
+	// Attributes
+	private Context mContext;
+	private LayoutInflater mLayoutInflater;
+	private SharedPreferences mSharedPreferences;
+	private ForumData mForumData;
+	private ForumClient mForumHandler;
+
+	// Elements
+	private ListView mListView;
+	private ThreadListAdapter mListAdapter;
+	private TextView mTextTitle;
+	private RelativeLayout mWrapLoader;
+	private Button mButtonMore;
+	private Button mButtonPost;
+	private EditText mTextareaTitle;
+	private EditText mTextareaContent;
 
-    // Elements
-    private ListView mListView;
-    private ThreadListAdapter mListAdapter;
-    private TextView mTextTitle;
-    private RelativeLayout mWrapLoader;
-    private Button mButtonMore;
-    private Button mButtonPost;
-    private EditText mTextareaTitle;
-    private EditText mTextareaContent;
+	// Misc
+	private long mForumId;
+	private long mLatestRefresh;
+	private int mCurrentPage;
+	private boolean mLoadFresh;
+	private String mLocale;
+	private Intent mStoredRequest;
 
-    // Misc
-    private long mForumId;
-    private long mLatestRefresh;
-    private int mCurrentPage;
-    private boolean mLoadFresh;
-    private String mLocale;
-    private Intent mStoredRequest;
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+		// Set our attributes
+		mContext = getActivity();
+		mSharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(mContext);
+		mLayoutInflater = inflater;
 
-        // Set our attributes
-        mContext = getActivity();
-        mSharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(mContext);
-        mLayoutInflater = inflater;
+		// Let's inflate & return the view
+		View view = mLayoutInflater.inflate(R.layout.forum_view, container,
+				false);
 
-        // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.forum_view,
-                container, false);
+		// Get the unlocks
+		mLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE,
+				"en");
+		mForumHandler = new ForumClient();
 
-        // Get the unlocks
-        mLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
-        mForumHandler = new ForumClient();
+		// Init the views
+		initFragment(view);
 
-        // Init the views
-        initFragment(view);
+		// Return the view
+		return view;
 
-        // Return the view
-        return view;
+	}
 
-    }
+	public void initFragment(View v) {
 
-    public void initFragment(View v) {
+		// Setup the ListView
+		mTextTitle = (TextView) v.findViewById(R.id.text_title);
+		mListView = (ListView) v.findViewById(android.R.id.list);
+		mListView.setAdapter(mListAdapter = new ThreadListAdapter(mContext,
+				null, mLayoutInflater));
+		getActivity().registerForContextMenu(mListView);
+		mButtonPost = (Button) v.findViewById(R.id.button_new);
+		mButtonMore = (Button) v.findViewById(R.id.button_more);
+		mTextareaTitle = (EditText) v.findViewById(R.id.textarea_title);
+		mTextareaContent = (EditText) v.findViewById(R.id.textarea_content);
 
-        // Setup the ListView
-        mTextTitle = (TextView) v.findViewById(R.id.text_title);
-        mListView = (ListView) v.findViewById(android.R.id.list);
-        mListView.setAdapter(mListAdapter = new ThreadListAdapter(mContext, null, mLayoutInflater));
-        getActivity().registerForContextMenu(mListView);
-        mButtonPost = (Button) v.findViewById(R.id.button_new);
-        mButtonMore = (Button) v.findViewById(R.id.button_more);
-        mTextareaTitle = (EditText) v.findViewById(R.id.textarea_title);
-        mTextareaContent = (EditText) v.findViewById(R.id.textarea_content);
+		// Set the click listeners
+		mButtonMore.setOnClickListener(
 
-        // Set the click listeners
-        mButtonMore.setOnClickListener(
+		new OnClickListener() {
 
-                new OnClickListener() {
+			@Override
+			public void onClick(View sv) {
 
-                    @Override
-                    public void onClick(View sv) {
+				// Validate
+				if ((mCurrentPage - 1) == mForumData.getNumPages()) {
 
-                        // Validate
-                        if ((mCurrentPage - 1) == mForumData.getNumPages()) {
+					sv.setVisibility(View.GONE);
 
-                            sv.setVisibility(View.GONE);
+				}
 
-                        }
+				// Do the "get more"-thing
+				new AsyncLoadMore(mContext, mForumId).execute(++mCurrentPage);
 
-                        // Do the "get more"-thing
-                        new AsyncLoadMore(mContext, mForumId).execute(++mCurrentPage);
+			}
+		}
 
-                    }
-                }
+		);
 
-                );
+		// Let's set the onClick events
+		mButtonPost.setOnClickListener(new OnClickListener() {
 
-        // Let's set the onClick events
-        mButtonPost.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
 
-            @Override
-            public void onClick(View v) {
+				// Let's get the content
+				String title = mTextareaTitle.getText().toString();
+				String content = mTextareaContent.getText().toString();
 
-                // Let's get the content
-                String title = mTextareaTitle.getText().toString();
-                String content = mTextareaContent.getText().toString();
+				// Let's see
+				if ("".equals(title)) {
 
-                // Let's see
-                if ("".equals(title)) {
+					Toast.makeText(mContext,
+							"You need to enter a title for your thread.",
+							Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(mContext, "You need to enter a title for your thread.",
-                            Toast.LENGTH_SHORT).show();
+				} else if ("".equals(content)) {
 
-                } else if ("".equals(content)) {
+					Toast.makeText(mContext,
+							"You need to enter some content for your thread.",
+							Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(mContext, "You need to enter some content for your thread.",
-                            Toast.LENGTH_SHORT).show();
+				}
 
-                }
+				// Parse for the BBCODE!
+				content = BBCodeUtils.toBBCode(content, null);
 
-                // Parse for the BBCODE!
-                content = BBCodeUtils.toBBCode(content, null);
+				// Ready... set... go!
+				new AsyncCreateNewThread(mContext, mForumId).execute(title,
+						content, mSharedPreferences.getString(
+								Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
-                // Ready... set... go!
-                new AsyncCreateNewThread(mContext, mForumId).execute(title, content,
-                        mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+			}
 
-            }
+		});
 
-        });
+		// Last but not least, the loader
+		mWrapLoader = (RelativeLayout) v.findViewById(R.id.wrap_loader);
 
-        // Last but not least, the loader
-        mWrapLoader = (RelativeLayout) v.findViewById(R.id.wrap_loader);
+		mCurrentPage = 1;
+		mLoadFresh = false;
 
-        mCurrentPage = 1;
-        mLoadFresh = false;
+		// Do we have one?
+		if (mStoredRequest != null) {
 
-        // Do we have one?
-        if (mStoredRequest != null) {
+			openForum(mStoredRequest);
 
-            openForum(mStoredRequest);
+		}
 
-        }
+	}
 
-    }
+	@Override
+	public void onResume() {
 
-    @Override
-    public void onResume() {
+		super.onResume();
+		reload();
 
-        super.onResume();
-        reload();
+	}
 
-    }
+	public void reload() {
 
-    public void reload() {
+		// Do we have a forumId?
+		if (mForumId > 0) {
 
-        // Do we have a forumId?
-        if (mForumId > 0) {
+			// Set it up
+			long now = System.currentTimeMillis() / 1000;
 
-            // Set it up
-            long now = System.currentTimeMillis() / 1000;
+			if (mForumData == null || mLoadFresh) {
 
-            if (mForumData == null || mLoadFresh) {
+				new AsyncGetThreads(mContext, mListView).execute(mForumId);
+				mLoadFresh = false;
 
-                new AsyncGetThreads(mContext, mListView).execute(mForumId);
-                mLoadFresh = false;
+			} else {
 
-            } else {
+				if ((mLatestRefresh + 300) < now) {
 
-                if ((mLatestRefresh + 300) < now) {
+					new AsyncGetThreads(null, mListView).execute(mForumId);
 
-                    new AsyncGetThreads(null, mListView).execute(mForumId);
+				}
 
-                }
+			}
 
-            }
+			// Save the latest refresh
+			mLatestRefresh = now;
 
-            // Save the latest refresh
-            mLatestRefresh = now;
+		}
 
-        }
+	}
 
-    }
+	public void manualReload() {
 
-    public void manualReload() {
+		// Set it up
+		mLatestRefresh = 0;
+		reload();
 
-        // Set it up
-        mLatestRefresh = 0;
-        reload();
+	}
 
-    }
+	@Override
+	public void onListItemClick(ListView l, View v, int pos, long id) {
 
-    @Override
-    public void onListItemClick(ListView l, View v, int pos, long id) {
+		// Always called from context one
+		ForumActivity parent = (ForumActivity) getActivity();
 
-        // Always called from context one
-        ForumActivity parent = (ForumActivity) getActivity();
+		// Let's open the forum
+		parent.openThread(
 
-        // Let's open the forum
-        parent.openThread(
+		new Intent().putExtra(
 
-                new Intent().putExtra(
+		"threadId", id
 
-                        "threadId", id
+		).putExtra(
 
-                        ).putExtra(
+		"threadTitle", ((ForumThreadData) v.getTag()).getTitle()
 
-                                "threadTitle", ((ForumThreadData) v.getTag()).getTitle()
+		)
 
-                        )
+		);
 
-                );
+	}
 
-    }
+	private class AsyncGetThreads extends AsyncTask<Long, Void, Boolean> {
 
-    private class AsyncGetThreads extends AsyncTask<Long, Void, Boolean> {
+		// Attributes
+		private Context context;
+		private ListView list;
+		private RotateAnimation rotateAnimation;
 
-        // Attributes
-        private Context context;
-        private ListView list;
-        private RotateAnimation rotateAnimation;
+		// Construct
+		public AsyncGetThreads(Context c, ListView l) {
 
-        // Construct
-        public AsyncGetThreads(Context c, ListView l) {
+			context = c;
+			list = l;
 
-            context = c;
-            list = l;
+		}
 
-        }
+		@Override
+		protected void onPreExecute() {
 
-        @Override
-        protected void onPreExecute() {
+			if (context != null) {
 
-            if (context != null) {
+				rotateAnimation = new RotateAnimation(0, 359,
+						Animation.RELATIVE_TO_SELF, 0.5f,
+						Animation.RELATIVE_TO_SELF, 0.5f);
+				rotateAnimation.setDuration(1600);
+				rotateAnimation.setRepeatCount(RotateAnimation.INFINITE);
+				mWrapLoader.setVisibility(View.VISIBLE);
+				mWrapLoader.findViewById(R.id.image_loader).setAnimation(
+						rotateAnimation);
+				rotateAnimation.start();
 
-                rotateAnimation = new RotateAnimation(0, 359,
-                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                rotateAnimation.setDuration(1600);
-                rotateAnimation.setRepeatCount(RotateAnimation.INFINITE);
-                mWrapLoader.setVisibility(View.VISIBLE);
-                mWrapLoader.findViewById(R.id.image_loader).setAnimation(rotateAnimation);
-                rotateAnimation.start();
+			}
 
-            }
+		}
 
-        }
+		@Override
+		protected Boolean doInBackground(Long... arg0) {
 
-        @Override
-        protected Boolean doInBackground(Long... arg0) {
+			try {
 
-            try {
+				mForumData = new ForumClient().getThreads(mLocale, arg0[0]);
+				return (mForumData != null);
 
-                mForumData = new ForumClient().getThreads(mLocale,
-                        arg0[0]);
-                return (mForumData != null);
+			} catch (Exception ex) {
 
-            } catch (Exception ex) {
+				ex.printStackTrace();
+				return false;
 
-                ex.printStackTrace();
-                return false;
+			}
 
-            }
+		}
 
-        }
+		@Override
+		protected void onPostExecute(Boolean results) {
 
-        @Override
-        protected void onPostExecute(Boolean results) {
+			if (context != null) {
 
-            if (context != null) {
+				if (mForumData.getNumPages() > 1) {
 
-                if (mForumData.getNumPages() > 1) {
+					mButtonMore.setVisibility(View.VISIBLE);
+					mButtonMore
+							.setText(R.string.info_xml_feed_button_pagination);
 
-                    mButtonMore.setVisibility(View.VISIBLE);
-                    mButtonMore
-                            .setText(R.string.info_xml_feed_button_pagination);
+				} else {
 
-                } else {
+					mButtonMore.setVisibility(View.GONE);
 
-                    mButtonMore.setVisibility(View.GONE);
+				}
 
-                }
+				if (results) {
 
-                if (results) {
+					mTextTitle.setText(mForumData.getTitle());
+					((ThreadListAdapter) list.getAdapter()).set(mForumData
+							.getThreads());
 
-                    mTextTitle.setText(mForumData.getTitle());
-                    ((ThreadListAdapter) list.getAdapter()).set(mForumData
-                            .getThreads());
+					mListView.post(
 
-                    mListView.post(
+					new Runnable() {
 
-                            new Runnable() {
+						@Override
+						public void run() {
 
-                                @Override
-                                public void run() {
+							// Set the selection
+							mListView.setSelection(0);
 
-                                    // Set the selection
-                                    mListView.setSelection(0);
+							// Hide it
+							mWrapLoader.setVisibility(View.GONE);
+							rotateAnimation.reset();
 
-                                    // Hide it
-                                    mWrapLoader.setVisibility(View.GONE);
-                                    rotateAnimation.reset();
+						}
 
-                                }
+					}
 
-                            }
+					);
 
-                            );
+				}
 
-                }
+			}
 
-            }
+		}
 
-        }
+	}
 
-    }
+	private class AsyncLoadMore extends AsyncTask<Integer, Void, Boolean> {
 
-    private class AsyncLoadMore extends AsyncTask<Integer, Void, Boolean> {
+		// Attributes
+		private Context context;
+		private long forumId;
+		private int page;
+		private List<ForumThreadData> threads;
 
-        // Attributes
-        private Context context;
-        private long forumId;
-        private int page;
-        private List<ForumThreadData> threads;
+		// Constructs
+		public AsyncLoadMore(Context c, long f) {
 
-        // Constructs
-        public AsyncLoadMore(Context c, long f) {
+			this.context = c;
+			this.forumId = f;
 
-            this.context = c;
-            this.forumId = f;
+		}
 
-        }
+		@Override
+		protected void onPreExecute() {
 
-        @Override
-        protected void onPreExecute() {
+			mButtonMore.setText(R.string.label_downloading);
+			mButtonMore.setEnabled(false);
+		}
 
-            mButtonMore.setText(R.string.label_downloading);
-            mButtonMore.setEnabled(false);
-        }
+		@Override
+		protected Boolean doInBackground(Integer... arg0) {
 
-        @Override
-        protected Boolean doInBackground(Integer... arg0) {
+			try {
 
-            try {
+				page = arg0[0];
+				mForumHandler.setForumId(forumId);
+				threads = mForumHandler.getThreads(mLocale, page);
+				return true;
 
-                page = arg0[0];
-                mForumHandler.setForumId(forumId);
-                threads = mForumHandler.getThreads(mLocale, page);
-                return true;
+			} catch (Exception ex) {
 
-            } catch (Exception ex) {
+				ex.printStackTrace();
+				return false;
 
-                ex.printStackTrace();
-                return false;
+			}
 
-            }
+		}
 
-        }
+		@Override
+		protected void onPostExecute(Boolean results) {
 
-        @Override
-        protected void onPostExecute(Boolean results) {
+			if (context instanceof ForumActivity) {
 
-            if (context instanceof ForumActivity) {
+				if (results) {
 
-                if (results) {
+					mListAdapter.add(threads);
+					mButtonMore
+							.setText(R.string.info_xml_feed_button_pagination);
 
-                    mListAdapter.add(threads);
-                    mButtonMore.setText(R.string.info_xml_feed_button_pagination);
+				} else {
 
-                } else {
+					Toast.makeText(context,
+							R.string.info_xml_threads_more_false,
+							Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(context,
-                            R.string.info_xml_threads_more_false,
-                            Toast.LENGTH_SHORT).show();
+				}
 
-                }
+				mButtonMore.setEnabled(true);
 
-                mButtonMore.setEnabled(true);
+			}
 
-            }
+		}
 
-        }
+	}
 
-    }
+	public void openForum(Intent data) {
 
-    public void openForum(Intent data) {
+		if (mTextTitle == null) {
 
-        if (mTextTitle == null) {
+			mStoredRequest = data;
 
-            mStoredRequest = data;
+		} else {
 
-        } else {
+			mForumId = data.getLongExtra("forumId", 0);
+			mTextTitle.setText(data.getStringExtra("forumTitle"));
+			mLoadFresh = true;
+			reload();
 
-            mForumId = data.getLongExtra("forumId", 0);
-            mTextTitle.setText(data.getStringExtra("forumTitle"));
-            mLoadFresh = true;
-            reload();
+		}
 
-        }
+	}
 
-    }
+	@Override
+	public Menu prepareOptionsMenu(Menu menu) {
+		return menu;
+	}
 
-    @Override
-    public Menu prepareOptionsMenu(Menu menu) {
-        return menu;
-    }
-
-    @Override
-    public boolean handleSelectedOption(MenuItem item) {
-        return false;
-    }
+	@Override
+	public boolean handleSelectedOption(MenuItem item) {
+		return false;
+	}
 
 }

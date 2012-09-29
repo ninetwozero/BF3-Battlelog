@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.preference;
 
 import static com.ninetwozero.battlelog.datatype.ProfileSettings.DATE_FORMAT_VALUES;
@@ -25,59 +24,60 @@ import com.ninetwozero.battlelog.R;
 
 public class DateTimePreference extends ListPreference {
 
-    public DateTimePreference(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+	public DateTimePreference(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
 
-    public DateTimePreference(Context context) {
-        super(context);
-    }
+	public DateTimePreference(Context context) {
+		super(context);
+	}
 
-    @Override
-    protected View onCreateDialogView() {
-        ListView view = new ListView(getContext());
-        view.setAdapter(adapter());
-        setEntries(entries());
-        setEntryValues(entryValues());
-        return view;
-    }
+	@Override
+	protected View onCreateDialogView() {
+		ListView view = new ListView(getContext());
+		view.setAdapter(adapter());
+		setEntries(entries());
+		setEntryValues(entryValues());
+		return view;
+	}
 
-    @Override
-    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
-        builder.setTitle(getTitle());
-        super.onPrepareDialogBuilder(builder);
-    }
+	@Override
+	protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+		builder.setTitle(getTitle());
+		super.onPrepareDialogBuilder(builder);
+	}
 
-    private ListAdapter adapter() {
-        return new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_singlechoice);
-    }
+	private ListAdapter adapter() {
+		return new ArrayAdapter<String>(getContext(),
+				android.R.layout.select_dialog_singlechoice);
+	}
 
-    private CharSequence[] entries() {
-        return isDateFormat() ? listOfDates() : TIME_FORMATS;
-    }
+	private CharSequence[] entries() {
+		return isDateFormat() ? listOfDates() : TIME_FORMATS;
+	}
 
-    private CharSequence[] entryValues() {
-        return isDateFormat() ? DATE_FORMAT_VALUES : TIME_FORMAT_VALUES;
-    }
+	private CharSequence[] entryValues() {
+		return isDateFormat() ? DATE_FORMAT_VALUES : TIME_FORMAT_VALUES;
+	}
 
-    private CharSequence[] listOfDates() {
-        List<String> list = new ArrayList<String>();
-        Date today = new Date(Calendar.getInstance().getTimeInMillis());
-        for (String pattern : DATE_PATTERNS) {
-            list.add(formatter(pattern).format(today));
-        }
-        return list.toArray(new CharSequence[list.size()]);
-    }
+	private CharSequence[] listOfDates() {
+		List<String> list = new ArrayList<String>();
+		Date today = new Date(Calendar.getInstance().getTimeInMillis());
+		for (String pattern : DATE_PATTERNS) {
+			list.add(formatter(pattern).format(today));
+		}
+		return list.toArray(new CharSequence[list.size()]);
+	}
 
-    private boolean isDateFormat() {
-        return getTitle().equals(dateTitle());
-    }
+	private boolean isDateFormat() {
+		return getTitle().equals(dateTitle());
+	}
 
-    private SimpleDateFormat formatter(String pattern) {
-        return new SimpleDateFormat(pattern);
-    }
+	private SimpleDateFormat formatter(String pattern) {
+		return new SimpleDateFormat(pattern);
+	}
 
-    private String dateTitle() {
-        return getContext().getString(R.string.date_format);
-    }
+	private String dateTitle() {
+		return getContext().getString(R.string.date_format);
+	}
 }

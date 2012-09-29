@@ -14,85 +14,84 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-
 public class PostData {
 
-    // Attributes
-    private String field, value;
-    private boolean hash;
+	// Attributes
+	private String field, value;
+	private boolean hash;
 
-    // Constructs
-    public PostData() {
+	// Constructs
+	public PostData() {
 
-        this.field = "";
-        this.value = "";
-        this.hash = false;
-    }
+		this.field = "";
+		this.value = "";
+		this.hash = false;
+	}
 
-    public PostData(String f, Object v) {
+	public PostData(String f, Object v) {
 
-        this.field = f;
-        this.value = String.valueOf(v);
-        this.hash = false;
-    }
+		this.field = f;
+		this.value = String.valueOf(v);
+		this.hash = false;
+	}
 
-    public PostData(String f, Object v, boolean h) {
+	public PostData(String f, Object v, boolean h) {
 
-        this.field = f;
-        this.value = String.valueOf(v);
-        this.hash = h;
-    }
+		this.field = f;
+		this.value = String.valueOf(v);
+		this.hash = h;
+	}
 
-    // Other
-    public void clear() {
+	// Other
+	public void clear() {
 
-        this.field = "";
-        this.value = "";
-        this.hash = false;
-    }
+		this.field = "";
+		this.value = "";
+		this.hash = false;
+	}
 
-    // Getters
-    public String getField() {
+	// Getters
+	public String getField() {
 
-        return field;
-    }
+		return field;
+	}
 
-    public String getValue() {
+	public String getValue() {
 
-        return value;
-    }
+		return value;
+	}
 
-    public boolean isHash() {
+	public boolean isHash() {
 
-        return hash;
-    }
+		return hash;
+	}
 
-    public void setAll(String f, Object v, boolean h) {
+	public void setAll(String f, Object v, boolean h) {
 
-        this.field = f;
-        this.value = String.valueOf(v);
-        this.hash = h;
-    }
+		this.field = f;
+		this.value = String.valueOf(v);
+		this.hash = h;
+	}
 
-    // Setters
-    public void setField(String field) {
+	// Setters
+	public void setField(String field) {
 
-        this.field = field;
-    }
+		this.field = field;
+	}
 
-    public void setHash(boolean hash) {
+	public void setHash(boolean hash) {
 
-        this.hash = hash;
-    }
+		this.hash = hash;
+	}
 
-    public void setValue(String value) {
+	public void setValue(String value) {
 
-        this.value = value;
-    }
+		this.value = value;
+	}
 
-    public String toString() {
+	public String toString() {
 
-        return ((this.isHash()) ? "[HASH] " : "[PLAIN] ") + this.field + " => "
-                + this.value;
-    }
+		return ((this.isHash()) ? "[HASH] " : "[PLAIN] ") + this.field + " => "
+				+ this.value;
+	}
 }
