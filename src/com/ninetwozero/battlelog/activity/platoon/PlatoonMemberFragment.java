@@ -21,19 +21,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.adapter.PlatoonUserListAdapter;
@@ -64,7 +58,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
@@ -193,13 +187,13 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
             startActivity(
 
-            new Intent(
+                    new Intent(
 
-                    mContext, PlatoonInviteActivity.class
+                            mContext, PlatoonInviteActivity.class
 
-            ).putExtra(
+                    ).putExtra(
 
-                    "platoon", mPlatoonData
+                            "platoon", mPlatoonData
 
                     ).putExtra(
 
@@ -223,7 +217,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
     }
 
     public void createContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
+                                  ContextMenuInfo menuInfo) {
 
         // Get the actual menu item and tag
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
@@ -285,9 +279,9 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
 
                     startActivity(
 
-                    new Intent(mContext, ProfileActivity.class).putExtra(
+                            new Intent(mContext, ProfileActivity.class).putExtra(
 
-                            "profile", data
+                                    "profile", data
 
                             )
 

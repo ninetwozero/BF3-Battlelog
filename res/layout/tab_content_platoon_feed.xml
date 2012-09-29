@@ -13,63 +13,63 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="5dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp">
 
-    <TextView
-        android:id="@+id/text_name_platoon_tab4"
-        style="@style/InfoHeading"
-        android:padding="5dp"
-        android:text="Platoon feed" />
+  <TextView
+      android:id="@+id/text_name_platoon_tab4"
+      style="@style/InfoHeading"
+      android:padding="5dp"
+      android:text="Platoon feed"/>
 
-    <RelativeLayout
-        android:id="@+id/feed_update"
+  <RelativeLayout
+      android:id="@+id/feed_update"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/text_name_platoon_tab4"
+      android:paddingBottom="10dp">
+
+    <Button
+        android:id="@+id/button_send"
+        style="@style/RegularButton"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="@string/label_post"/>
+
+    <EditText
+        android:id="@+id/field_message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text_name_platoon_tab4"
-        android:paddingBottom="10dp" >
+        android:layout_centerVertical="true"
+        android:layout_marginRight="6dp"
+        android:layout_toLeftOf="@id/button_send"
+        android:hint="@string/info_xml_hint_feed"
+        android:singleLine="true"/>
+  </RelativeLayout>
 
-        <Button
-            android:id="@+id/button_send"
-            style="@style/RegularButton"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="@string/label_post" />
+  <ListView
+      android:id="@+id/list_feed"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_below="@id/feed_update"
+      android:fastScrollEnabled="true"
+      android:paddingBottom="5dp"/>
 
-        <EditText
-            android:id="@+id/field_message"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="6dp"
-            android:layout_toLeftOf="@id/button_send"
-            android:hint="@string/info_xml_hint_feed"
-            android:singleLine="true" />
-    </RelativeLayout>
+  <RelativeLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent">
 
-    <ListView
-        android:id="@+id/list_feed"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/feed_update"
-        android:fastScrollEnabled="true"
-        android:paddingBottom="5dp" />
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-
-        <TextView
-            android:id="@+id/status_feed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/info_xml_no_feed"
-            android:visibility="gone" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/status_feed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/info_xml_no_feed"
+        android:visibility="gone"/>
+  </RelativeLayout>
 
 </RelativeLayout>

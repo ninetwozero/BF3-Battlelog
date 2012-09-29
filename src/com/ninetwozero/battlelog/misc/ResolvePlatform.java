@@ -2,7 +2,7 @@ package com.ninetwozero.battlelog.misc;
 
 public class ResolvePlatform {
 
-    public static String platformName(int id){
+    public static String platformName(int id) {
         switch (id) {
             case 0:
             case 1:

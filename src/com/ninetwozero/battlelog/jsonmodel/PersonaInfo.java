@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.jsonmodel;
 
 import com.google.gson.annotations.SerializedName;
@@ -19,8 +18,8 @@ public class PersonaInfo {
     private int platform;
 
     public PersonaInfo(PersonaStatsOverview statsOverview, Rank currentRank, Rank nextRank,
-            long personaId, User user,
-            int platform) {
+                       long personaId, User user,
+                       int platform) {
         this.statsOverview = statsOverview;
         this.currentRank = currentRank;
         this.nextRank = nextRank;

@@ -13,86 +13,86 @@
     GNU General Public License for more details.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#FFFFFF" >
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFFFFF">
+
+  <RelativeLayout
+      style="@style/StandardPopup"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:minHeight="200dp"
+      android:minWidth="200dp"
+      android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/image_assignment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:onClick="onClick"
+        android:src="@drawable/assignment_xp1_01"/>
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_assignment"
+        android:text="BEST FRIEND FOREVER"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@id/string000"
+        style="@style/InfoSubHeading"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/text_title"
+        android:padding="5dp"
+        android:text="Objectives"/>
+
+    <LinearLayout
+        android:id="@+id/wrap_objectives"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/string000"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <TextView
+        android:id="@id/string100"
+        style="@style/InfoSubHeading"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/wrap_objectives"
+        android:padding="5dp"
+        android:text="REWARDS"
+        android:textColor="#000000"/>
 
     <RelativeLayout
-        style="@style/StandardPopup"
+        android:id="@+id/wrap_rewards"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:minHeight="200dp"
-        android:minWidth="200dp"
-        android:padding="10dp" >
+        android:layout_height="wrap_content"
+        android:layout_below="@id/string100"
+        android:layout_marginTop="5dp">
 
-        <ImageView
-            android:id="@+id/image_assignment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:clickable="true"
-            android:onClick="onClick"
-            android:src="@drawable/assignment_xp1_01" />
+      <ImageView
+          android:id="@+id/image_reward"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:src="@drawable/w_xp1_famas"/>
 
-        <TextView
-            android:id="@+id/text_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/image_assignment"
-            android:text="BEST FRIEND FOREVER"
-            android:textColor="#000000"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@id/string000"
-            style="@style/InfoSubHeading"
-            android:layout_width="fill_parent"
-            android:layout_below="@id/text_title"
-            android:padding="5dp"
-            android:text="Objectives" />
-
-        <LinearLayout
-            android:id="@+id/wrap_objectives"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/string000"
-            android:orientation="vertical" >
-        </LinearLayout>
-
-        <TextView
-            android:id="@id/string100"
-            style="@style/InfoSubHeading"
-            android:layout_width="fill_parent"
-            android:layout_below="@id/wrap_objectives"
-            android:padding="5dp"
-            android:text="REWARDS"
-            android:textColor="#000000" />
-
-        <RelativeLayout
-            android:id="@+id/wrap_rewards"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/string100"
-            android:layout_marginTop="5dp" >
-
-            <ImageView
-                android:id="@+id/image_reward"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/w_xp1_famas" />
-
-            <TextView
-                android:id="@+id/text_rew_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/image_reward"
-                android:layout_centerHorizontal="true"
-                android:padding="5dp"
-                android:text="FAMAS"
-                android:textColor="#000000" />
-        </RelativeLayout>
+      <TextView
+          android:id="@+id/text_rew_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/image_reward"
+          android:layout_centerHorizontal="true"
+          android:padding="5dp"
+          android:text="FAMAS"
+          android:textColor="#000000"/>
     </RelativeLayout>
+  </RelativeLayout>
 
 </ScrollView>

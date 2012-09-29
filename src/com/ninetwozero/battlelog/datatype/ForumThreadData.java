@@ -14,11 +14,11 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-import java.util.Calendar;
-import java.util.List;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.Calendar;
+import java.util.List;
 
 public class ForumThreadData implements Parcelable {
 
@@ -307,7 +307,7 @@ public class ForumThreadData implements Parcelable {
         String time = String.valueOf(Calendar.getInstance().getTimeInMillis() / 1000);
 
         // Return a new String[]
-        return new Object[] {
+        return new Object[]{
 
                 id,
                 forumId,

@@ -13,175 +13,175 @@
     GNU General Public License for more details.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp" >
+  <RelativeLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:paddingBottom="10dp"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      android:paddingTop="5dp">
 
-        <TextView
-            android:id="@+id/string_kills"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="Kills" />
+    <TextView
+        android:id="@+id/string_kills"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="Kills"/>
 
-        <TextView
-            android:id="@+id/text_kills"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="133338" />
+    <TextView
+        android:id="@+id/text_kills"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="133338"/>
 
-        <TextView
-            android:id="@+id/string_hs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/string_kills"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="Headshots" />
+    <TextView
+        android:id="@+id/string_hs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/string_kills"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="Headshots"/>
 
-        <TextView
-            android:id="@+id/text_hs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/string_kills"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="1234" />
+    <TextView
+        android:id="@+id/text_hs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/string_kills"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="1234"/>
 
-        <TextView
-            android:id="@+id/string_sf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/string_hs"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="Shots fired" />
+    <TextView
+        android:id="@+id/string_sf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/string_hs"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="Shots fired"/>
 
-        <TextView
-            android:id="@+id/text_sf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/string_hs"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="20003" />
+    <TextView
+        android:id="@+id/text_sf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/string_hs"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="20003"/>
 
-        <TextView
-            android:id="@+id/string_sh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/string_sf"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="Shots hit" />
+    <TextView
+        android:id="@+id/string_sh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/string_sf"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="Shots hit"/>
 
-        <TextView
-            android:id="@+id/text_sh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/string_sf"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="16001" />
+    <TextView
+        android:id="@+id/text_sh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/string_sf"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="16001"/>
 
-        <TextView
-            android:id="@+id/string_accuracy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/string_sh"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="Accuracy" />
+    <TextView
+        android:id="@+id/string_accuracy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/string_sh"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="Accuracy"/>
 
-        <TextView
-            android:id="@+id/text_accuracy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/string_sh"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="80%" />
+    <TextView
+        android:id="@+id/text_accuracy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/string_sh"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="80%"/>
 
-        <TextView
-            android:id="@+id/string_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/string_accuracy"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="Time played" />
+    <TextView
+        android:id="@+id/string_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/string_accuracy"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="Time played"/>
 
-        <TextView
-            android:id="@+id/text_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/string_accuracy"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="3D 23H 59M" />
+    <TextView
+        android:id="@+id/text_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/string_accuracy"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="3D 23H 59M"/>
 
-        <TextView
-            android:id="@+id/string_sstars"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/string_time"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="Service stars" />
+    <TextView
+        android:id="@+id/string_sstars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/string_time"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="Service stars"/>
 
-        <TextView
-            android:id="@+id/text_sstars"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/string_time"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="30" />
+    <TextView
+        android:id="@+id/text_sstars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/string_time"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="30"/>
 
-        <TextView
-            android:id="@+id/string_sstars_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/string_sstars"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="Service star progress" />
+    <TextView
+        android:id="@+id/string_sstars_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/string_sstars"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="Service star progress"/>
 
-        <TextView
-            android:id="@+id/text_sstars_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/string_sstars"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="33%" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/text_sstars_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/string_sstars"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="33%"/>
+  </RelativeLayout>
 
 </ScrollView>

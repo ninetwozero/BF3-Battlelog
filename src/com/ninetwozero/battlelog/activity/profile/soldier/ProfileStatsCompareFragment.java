@@ -14,22 +14,17 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PersonaStats;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProfileStatsCompareFragment extends Fragment implements DefaultFragment {
 
@@ -41,110 +36,110 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
     private int mNumCalls;
 
     // These are the different fields
-    private final int FIELD_PERSONA[] = new int[] {
+    private final int FIELD_PERSONA[] = new int[]{
             R.id.string_persona_0,
             R.id.string_persona_1
     };
-    private final int FIELD_RANK[] = new int[] {
+    private final int FIELD_RANK[] = new int[]{
             R.id.string_rank_short_0,
             R.id.string_rank_short_1
     };
-    private final int FIELD_PROGRESS_CURR[] = new int[] {
+    private final int FIELD_PROGRESS_CURR[] = new int[]{
             R.id.string_progress_curr_0, R.id.string_progress_curr_1
     };
-    private final int FIELD_PROGRESS_MAX[] = new int[] {
+    private final int FIELD_PROGRESS_MAX[] = new int[]{
             R.id.string_progress_max_0, R.id.string_progress_max_1
     };
 
-    private final int FIELD_SCORE_ASSAULT[] = new int[] {
+    private final int FIELD_SCORE_ASSAULT[] = new int[]{
             R.id.string_score_assault_0, R.id.string_score_assault_1
     };
-    private final int FIELD_SCORE_ENGINEER[] = new int[] {
+    private final int FIELD_SCORE_ENGINEER[] = new int[]{
             R.id.string_score_engineer_0, R.id.string_score_engineer_1
     };
-    private final int FIELD_SCORE_SUPPORT[] = new int[] {
+    private final int FIELD_SCORE_SUPPORT[] = new int[]{
             R.id.string_score_support_0, R.id.string_score_support_1
     };
-    private final int FIELD_SCORE_RECON[] = new int[] {
+    private final int FIELD_SCORE_RECON[] = new int[]{
             R.id.string_score_recon_0, R.id.string_score_recon_1
     };
-    private final int FIELD_SCORE_VEHICLES[] = new int[] {
+    private final int FIELD_SCORE_VEHICLES[] = new int[]{
             R.id.string_score_vehicles_0, R.id.string_score_vehicles_1
     };
-    private final int FIELD_SCORE_COMBAT[] = new int[] {
+    private final int FIELD_SCORE_COMBAT[] = new int[]{
             R.id.string_score_combat_0, R.id.string_score_combat_1
     };
-    private final int FIELD_SCORE_AWARD[] = new int[] {
+    private final int FIELD_SCORE_AWARD[] = new int[]{
             R.id.string_score_award_0, R.id.string_score_award_1
     };
-    private final int FIELD_SCORE_UNLOCKS[] = new int[] {
+    private final int FIELD_SCORE_UNLOCKS[] = new int[]{
             R.id.string_score_unlock_0, R.id.string_score_unlock_1
     };
-    private final int FIELD_SCORE_TOTAL[] = new int[] {
+    private final int FIELD_SCORE_TOTAL[] = new int[]{
             R.id.string_score_total_0, R.id.string_score_total_1
     };
 
-    private final int FIELD_STATS_KILLS[] = new int[] {
+    private final int FIELD_STATS_KILLS[] = new int[]{
             R.id.string_stats_kills_0, R.id.string_stats_kills_1
     };
-    private final int FIELD_STATS_ASSISTS[] = new int[] {
+    private final int FIELD_STATS_ASSISTS[] = new int[]{
             R.id.string_stats_assists_0, R.id.string_stats_assists_1
     };
-    private final int FIELD_STATS_VKILLS[] = new int[] {
+    private final int FIELD_STATS_VKILLS[] = new int[]{
             R.id.string_stats_vkills_0, R.id.string_stats_vkills_1
     };
-    private final int FIELD_STATS_VASSISTS[] = new int[] {
+    private final int FIELD_STATS_VASSISTS[] = new int[]{
             R.id.string_stats_vassists_0, R.id.string_stats_vassists_1
     };
-    private final int FIELD_STATS_HEALS[] = new int[] {
+    private final int FIELD_STATS_HEALS[] = new int[]{
             R.id.string_stats_heals_0, R.id.string_stats_heals_1
     };
-    private final int FIELD_STATS_REVIVES[] = new int[] {
+    private final int FIELD_STATS_REVIVES[] = new int[]{
             R.id.string_stats_revives_0, R.id.string_stats_revives_1
     };
-    private final int FIELD_STATS_REPAIRS[] = new int[] {
+    private final int FIELD_STATS_REPAIRS[] = new int[]{
             R.id.string_stats_repairs_0, R.id.string_stats_repairs_1
     };
-    private final int FIELD_STATS_RESUPPLIES[] = new int[] {
+    private final int FIELD_STATS_RESUPPLIES[] = new int[]{
             R.id.string_stats_resupplies_0, R.id.string_stats_resupplies_1
     };
-    private final int FIELD_STATS_DEATHS[] = new int[] {
+    private final int FIELD_STATS_DEATHS[] = new int[]{
             R.id.string_stats_deaths_0, R.id.string_stats_deaths_1
     };
-    private final int FIELD_STATS_KDR[] = new int[] {
+    private final int FIELD_STATS_KDR[] = new int[]{
             R.id.string_stats_kdr_0,
             R.id.string_stats_kdr_1
     };
-    private final int FIELD_STATS_WINS[] = new int[] {
+    private final int FIELD_STATS_WINS[] = new int[]{
             R.id.string_stats_wins_0,
             R.id.string_stats_wins_1
     };
-    private final int FIELD_STATS_LOSSES[] = new int[] {
+    private final int FIELD_STATS_LOSSES[] = new int[]{
             R.id.string_stats_losses_0, R.id.string_stats_losses_1
     };
-    private final int FIELD_STATS_WLR[] = new int[] {
+    private final int FIELD_STATS_WLR[] = new int[]{
             R.id.string_stats_wlr_0,
             R.id.string_stats_wlr_1
     };
-    private final int FIELD_STATS_ACCURACY[] = new int[] {
+    private final int FIELD_STATS_ACCURACY[] = new int[]{
             R.id.string_stats_accuracy_0, R.id.string_stats_accuracy_1
     };
-    private final int FIELD_STATS_TIME[] = new int[] {
+    private final int FIELD_STATS_TIME[] = new int[]{
             R.id.string_stats_time_0,
             R.id.string_stats_time_1
     };
-    private final int FIELD_STATS_SKILLS[] = new int[] {
+    private final int FIELD_STATS_SKILLS[] = new int[]{
             R.id.string_stats_skill_0, R.id.string_stats_skill_1
     };
-    private final int FIELD_STATS_SPM[] = new int[] {
+    private final int FIELD_STATS_SPM[] = new int[]{
             R.id.string_stats_spm_0,
             R.id.string_stats_spm_1
     };
-    private final int FIELD_STATS_LKS[] = new int[] {
+    private final int FIELD_STATS_LKS[] = new int[]{
             R.id.string_stats_lks_0,
             R.id.string_stats_lks_1
     };
-    private final int FIELD_STATS_LHS[] = new int[] {
+    private final int FIELD_STATS_LHS[] = new int[]{
             R.id.string_stats_lhs_0,
             R.id.string_stats_lhs_1
     };
@@ -187,7 +182,7 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mLayoutInflater = inflater;
@@ -281,8 +276,7 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
 
         if (mDifferences[6] == pos) {
             tvRank[pos].setText(Html.fromHtml("<b>" + ps.getRankId() + "</b>"));
-        }
-        else {
+        } else {
             tvRank[pos].setText(String.valueOf(ps.getRankId()));
         }
 
@@ -293,191 +287,164 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
         // Stats
         if (mDifferences[9] == pos) {
             tvStatsTime[pos].setText(Html.fromHtml("<b>" + ps.getTimePlayedString() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsTime[pos].setText(ps.getTimePlayedString());
         }
 
         if (mDifferences[10] == pos) {
             tvStatsKills[pos].setText(Html.fromHtml("<b>" + ps.getNumKills() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsKills[pos].setText(String.valueOf(ps.getNumKills()));
         }
 
         if (mDifferences[11] == pos) {
             tvStatsAssists[pos].setText(Html.fromHtml("<b>" + ps.getNumAssists() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsAssists[pos].setText(String.valueOf(ps.getNumAssists()));
         }
 
         if (mDifferences[12] == pos) {
             tvStatsVKills[pos].setText(Html.fromHtml("<b>" + ps.getNumVehicles() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsVKills[pos].setText(String.valueOf(ps.getNumVehicles()));
         }
 
         if (mDifferences[13] == pos) {
             tvStatsVAssists[pos].setText(Html.fromHtml("<b>" + ps.getNumVehicleAssists() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsVAssists[pos].setText(String.valueOf(ps.getNumVehicleAssists()));
         }
 
         if (mDifferences[14] == pos) {
             tvStatsHeals[pos].setText(Html.fromHtml("<b>" + ps.getNumHeals() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsHeals[pos].setText(String.valueOf(ps.getNumHeals()));
         }
 
         if (mDifferences[15] == pos) {
             tvStatsRevives[pos].setText(Html.fromHtml("<b>" + ps.getNumRevives() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsRevives[pos].setText(String.valueOf(ps.getNumRevives()));
         }
 
         if (mDifferences[16] == pos) {
             tvStatsRepairs[pos].setText(Html.fromHtml("<b>" + ps.getNumRepairs() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsRepairs[pos].setText(String.valueOf(ps.getNumRepairs()));
         }
 
         if (mDifferences[17] == pos) {
             tvStatsResupplies[pos].setText(Html.fromHtml("<b>" + ps.getNumResupplies() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsResupplies[pos].setText(String.valueOf(ps.getNumResupplies()));
         }
 
         if (mDifferences[18] == pos) {
             tvStatsDeath[pos].setText(Html.fromHtml("<b>" + ps.getNumDeaths() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsDeath[pos].setText(String.valueOf(ps.getNumDeaths()));
         }
 
         if (mDifferences[19] == pos) {
             tvStatsWins[pos].setText(Html.fromHtml("<b>" + ps.getNumWins() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsWins[pos].setText(String.valueOf(ps.getNumWins()));
         }
 
         if (mDifferences[20] == pos) {
             tvStatsLosses[pos].setText(Html.fromHtml("<b>" + ps.getNumLosses() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsLosses[pos].setText(String.valueOf(ps.getNumLosses()));
         }
 
         if (mDifferences[21] == pos) {
             tvStatsKDR[pos].setText(Html.fromHtml("<b>" + ps.getKDRatio() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsKDR[pos].setText(String.valueOf(ps.getKDRatio()));
         }
 
         if (mDifferences[22] == pos) {
             tvStatsAccuracy[pos].setText(Html.fromHtml("<b>" + ps.getAccuracy() + "%</b>"));
-        }
-        else {
+        } else {
             tvStatsAccuracy[pos].setText(ps.getAccuracy() + "%");
         }
 
         if (mDifferences[23] == pos) {
             tvStatsSkill[pos].setText(Html.fromHtml("<b>" + ps.getSkill() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsSkill[pos].setText(String.valueOf(ps.getSkill()));
         }
 
         if (mDifferences[24] == pos) {
             tvStatsLKS[pos].setText(Html.fromHtml("<b>" + ps.getLongestKS() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsLKS[pos].setText(String.valueOf(ps.getLongestKS()));
         }
 
         if (mDifferences[25] == pos) {
             tvStatsLHS[pos].setText(Html.fromHtml("<b>" + ps.getLongestHS() + " m</b>"));
-        }
-        else {
+        } else {
             tvStatsLHS[pos].setText(ps.getLongestHS() + " m");
         }
 
         if (mDifferences[26] == pos) {
             tvStatsSPM[pos].setText(Html.fromHtml("<b>" + ps.getScorePerMinute() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsSPM[pos].setText(String.valueOf(ps.getScorePerMinute()));
         }
 
         // Score
         if (mDifferences[27] == pos) {
             tvScoreAssault[pos].setText(Html.fromHtml("<b>" + ps.getScoreAssault() + "</b>"));
-        }
-        else {
+        } else {
             tvScoreAssault[pos].setText(String.valueOf(ps.getScoreAssault()));
         }
 
         if (mDifferences[28] == pos) {
             tvScoreEngineer[pos].setText(Html.fromHtml("<b>" + ps.getScoreEngineer() + "</b>"));
-        }
-        else {
+        } else {
             tvScoreEngineer[pos].setText(String.valueOf(ps.getScoreEngineer()));
         }
 
         if (mDifferences[29] == pos) {
             tvScoreSupport[pos].setText(Html.fromHtml("<b>" + ps.getScoreSupport() + "</b>"));
-        }
-        else {
+        } else {
             tvScoreSupport[pos].setText(String.valueOf(ps.getScoreSupport()));
         }
 
         if (mDifferences[30] == pos) {
             tvScoreRecon[pos].setText(Html.fromHtml("<b>" + ps.getScoreRecon() + "</b>"));
-        }
-        else {
+        } else {
             tvScoreRecon[pos].setText(String.valueOf(ps.getScoreRecon()));
         }
 
         if (mDifferences[31] == pos) {
             tvScoreVehicles[pos].setText(Html.fromHtml("<b>" + ps.getScoreVehicles() + "</b>"));
-        }
-        else {
+        } else {
             tvScoreVehicles[pos].setText(String.valueOf(ps.getScoreVehicles()));
         }
 
         if (mDifferences[32] == pos) {
             tvScoreCombat[pos].setText(Html.fromHtml("<b>" + ps.getScoreCombat() + "</b>"));
-        }
-        else {
+        } else {
             tvScoreCombat[pos].setText(String.valueOf(ps.getScoreCombat()));
         }
 
         if (mDifferences[33] == pos) {
             tvScoreAward[pos].setText(Html.fromHtml("<b>" + ps.getScoreAwards() + "</b>"));
-        }
-        else {
+        } else {
             tvScoreAward[pos].setText(String.valueOf(ps.getScoreAwards()));
         }
 
         if (mDifferences[34] == pos) {
             tvScoreUnlocks[pos].setText(Html.fromHtml("<b>" + ps.getScoreUnlocks() + "</b>"));
-        }
-        else {
+        } else {
             tvScoreUnlocks[pos].setText(String.valueOf(ps.getScoreUnlocks()));
         }
 
         if (mDifferences[35] == pos) {
             tvScoreTotal[pos].setText(Html.fromHtml("<b>" + ps.getScoreTotal() + "</b>"));
-        }
-        else {
+        } else {
             tvScoreTotal[pos].setText(String.valueOf(ps.getScoreTotal()));
         }
 
@@ -485,8 +452,7 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
 
         if (mDifferences[36] == pos) {
             tvStatsWLR[pos].setText(Html.fromHtml("<b>" + ps.getWLRatio() + "</b>"));
-        }
-        else {
+        } else {
             tvStatsWLR[pos].setText(String.valueOf(ps.getWLRatio()));
         }
 
@@ -547,7 +513,7 @@ public class ProfileStatsCompareFragment extends Fragment implements DefaultFrag
     public void detectDifferences() {
 
         // Let's do it this way
-        PersonaStats[] personas = new PersonaStats[] {
+        PersonaStats[] personas = new PersonaStats[]{
                 mPersonaStats.get(mSelectedPersona[0]), mPersonaStats.get(mSelectedPersona[1])
         };
         Object[] left = personas[0].toArray();

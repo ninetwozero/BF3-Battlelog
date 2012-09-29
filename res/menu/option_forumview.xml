@@ -1,25 +1,25 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/option_reload"
-        android:alphabeticShortcut="R"
-        android:icon="@android:drawable/ic_menu_rotate"
-        android:title="@string/info_xml_reload"/>
-    <item
-        android:id="@+id/option_search"
-        android:alphabeticShortcut="S"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="@string/info_xml_search"/>
-    <item
-        android:id="@+id/option_save"
-        android:alphabeticShortcut="A"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="@string/info_xml_forum_save"
-        android:visible="false"/>
-    <item
-        android:id="@+id/option_back"
-        android:alphabeticShortcut="B"
-        android:icon="@android:drawable/ic_menu_revert"
-        android:title="@string/info_xml_back"/>
+  <item
+      android:id="@+id/option_reload"
+      android:alphabeticShortcut="R"
+      android:icon="@android:drawable/ic_menu_rotate"
+      android:title="@string/info_xml_reload"/>
+  <item
+      android:id="@+id/option_search"
+      android:alphabeticShortcut="S"
+      android:icon="@android:drawable/ic_menu_search"
+      android:title="@string/info_xml_search"/>
+  <item
+      android:id="@+id/option_save"
+      android:alphabeticShortcut="A"
+      android:icon="@android:drawable/ic_menu_add"
+      android:title="@string/info_xml_forum_save"
+      android:visible="false"/>
+  <item
+      android:id="@+id/option_back"
+      android:alphabeticShortcut="B"
+      android:icon="@android:drawable/ic_menu_revert"
+      android:title="@string/info_xml_back"/>
 
 </menu>

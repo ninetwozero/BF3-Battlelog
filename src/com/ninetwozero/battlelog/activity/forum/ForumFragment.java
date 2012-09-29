@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.forum;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,21 +21,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.ThreadListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncCreateNewThread;
@@ -47,6 +35,8 @@ import com.ninetwozero.battlelog.datatype.ForumThreadData;
 import com.ninetwozero.battlelog.http.ForumClient;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
+
+import java.util.List;
 
 public class ForumFragment extends ListFragment implements DefaultFragment {
 
@@ -77,7 +67,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
@@ -86,11 +76,12 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
         mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.forum_view,
-                container, false);
+        View view = mLayoutInflater.inflate(R.layout.forum_view, container,
+                false);
 
         // Get the unlocks
-        mLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
+        mLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE,
+                "en");
         mForumHandler = new ForumClient();
 
         // Init the views
@@ -106,7 +97,8 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
         // Setup the ListView
         mTextTitle = (TextView) v.findViewById(R.id.text_title);
         mListView = (ListView) v.findViewById(android.R.id.list);
-        mListView.setAdapter(mListAdapter = new ThreadListAdapter(mContext, null, mLayoutInflater));
+        mListView.setAdapter(mListAdapter = new ThreadListAdapter(mContext,
+                null, mLayoutInflater));
         getActivity().registerForContextMenu(mListView);
         mButtonPost = (Button) v.findViewById(R.id.button_new);
         mButtonMore = (Button) v.findViewById(R.id.button_more);
@@ -134,7 +126,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
                     }
                 }
 
-                );
+        );
 
         // Let's set the onClick events
         mButtonPost.setOnClickListener(new OnClickListener() {
@@ -149,12 +141,14 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
                 // Let's see
                 if ("".equals(title)) {
 
-                    Toast.makeText(mContext, "You need to enter a title for your thread.",
+                    Toast.makeText(mContext,
+                            "You need to enter a title for your thread.",
                             Toast.LENGTH_SHORT).show();
 
                 } else if ("".equals(content)) {
 
-                    Toast.makeText(mContext, "You need to enter some content for your thread.",
+                    Toast.makeText(mContext,
+                            "You need to enter some content for your thread.",
                             Toast.LENGTH_SHORT).show();
 
                 }
@@ -163,8 +157,9 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
                 content = BBCodeUtils.toBBCode(content, null);
 
                 // Ready... set... go!
-                new AsyncCreateNewThread(mContext, mForumId).execute(title, content,
-                        mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+                new AsyncCreateNewThread(mContext, mForumId).execute(title,
+                        content, mSharedPreferences.getString(
+                        Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
             }
 
@@ -244,13 +239,13 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
                         "threadId", id
 
-                        ).putExtra(
+                ).putExtra(
 
-                                "threadTitle", ((ForumThreadData) v.getTag()).getTitle()
+                        "threadTitle", ((ForumThreadData) v.getTag()).getTitle()
 
-                        )
+                )
 
-                );
+        );
 
     }
 
@@ -275,11 +270,13 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
             if (context != null) {
 
                 rotateAnimation = new RotateAnimation(0, 359,
-                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                        Animation.RELATIVE_TO_SELF, 0.5f,
+                        Animation.RELATIVE_TO_SELF, 0.5f);
                 rotateAnimation.setDuration(1600);
                 rotateAnimation.setRepeatCount(RotateAnimation.INFINITE);
                 mWrapLoader.setVisibility(View.VISIBLE);
-                mWrapLoader.findViewById(R.id.image_loader).setAnimation(rotateAnimation);
+                mWrapLoader.findViewById(R.id.image_loader).setAnimation(
+                        rotateAnimation);
                 rotateAnimation.start();
 
             }
@@ -291,8 +288,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
             try {
 
-                mForumData = new ForumClient().getThreads(mLocale,
-                        arg0[0]);
+                mForumData = new ForumClient().getThreads(mLocale, arg0[0]);
                 return (mForumData != null);
 
             } catch (Exception ex) {
@@ -345,7 +341,7 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
 
                             }
 
-                            );
+                    );
 
                 }
 
@@ -405,7 +401,8 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
                 if (results) {
 
                     mListAdapter.add(threads);
-                    mButtonMore.setText(R.string.info_xml_feed_button_pagination);
+                    mButtonMore
+                            .setText(R.string.info_xml_feed_button_pagination);
 
                 } else {
 

@@ -13,61 +13,61 @@
     GNU General Public License for more details.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-    <LinearLayout
+  <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:gravity="center"
+      android:orientation="vertical"
+      android:padding="10dp">
+
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:text="Platoon name"/>
+
+    <EditText
+        android:id="@+id/text_name"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:hint="John Does"
+        android:maxLength="22"
+        android:singleLine="true"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="Tag"/>
+
+    <EditText
+        android:id="@+id/text_tag"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:hint="ABCD"
+        android:maxLength="4"
+        android:singleLine="true"/>
+
+    <CheckedTextView
+        android:id="@+id/checkbox_active"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="true"
         android:gravity="center"
-        android:orientation="vertical"
-        android:padding="10dp" >
+        android:text="Make this platoon your primary?"/>
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Platoon name" />
-
-        <EditText
-            android:id="@+id/text_name"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:hint="John Does"
-            android:maxLength="22"
-            android:singleLine="true" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Tag" />
-
-        <EditText
-            android:id="@+id/text_tag"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:hint="ABCD"
-            android:maxLength="4"
-            android:singleLine="true" />
-
-        <CheckedTextView
-            android:id="@+id/checkbox_active"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:checked="true"
-            android:gravity="center"
-            android:text="Make this platoon your primary?" />
-
-        <Button
-            android:id="@+id/button_create"
-            style="@style/MenuButton"
-            android:layout_marginTop="5dp"
-            android:onClick="onClick"
-            android:text="Create platoon" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/button_create"
+        style="@style/MenuButton"
+        android:layout_marginTop="5dp"
+        android:onClick="onClick"
+        android:text="Create platoon"/>
+  </LinearLayout>
 
 </ScrollView>

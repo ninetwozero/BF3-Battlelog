@@ -17,7 +17,6 @@ package com.ninetwozero.battlelog.asynctask;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.forum.ForumActivity;
 import com.ninetwozero.battlelog.datatype.ForumThreadData;
@@ -50,9 +49,9 @@ public class AsyncPostInThread extends AsyncTask<String, Void, Boolean> {
             return new ForumClient().reply(
 
                     context, arg0[0], arg0[1], threadData, cache, SessionKeeper
-                            .getProfileData().getId()
+                    .getProfileData().getId()
 
-                    );
+            );
 
         } catch (Exception ex) {
 

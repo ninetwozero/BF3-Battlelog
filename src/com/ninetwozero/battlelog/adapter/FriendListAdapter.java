@@ -14,17 +14,16 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.ProfileData;
+
+import java.util.List;
 
 public class FriendListAdapter extends BaseAdapter {
 
@@ -35,8 +34,7 @@ public class FriendListAdapter extends BaseAdapter {
     private TextView textUser, textStatus;
 
     // Construct
-    public FriendListAdapter(Context c, List<ProfileData> p,
-            LayoutInflater l) {
+    public FriendListAdapter(Context c, List<ProfileData> p, LayoutInflater l) {
 
         context = c;
         profileArray = p;
@@ -125,14 +123,14 @@ public class FriendListAdapter extends BaseAdapter {
             // Recycle
             if (convertView == null) {
 
-                convertView = layoutInflater.inflate(R.layout.list_item_request,
-                        parent, false);
+                convertView = layoutInflater.inflate(
+                        R.layout.list_item_request, parent, false);
 
             }
 
             // Set the TextView
-            ((TextView) convertView.findViewById(R.id.text_user)).setText(currentProfile
-                    .getUsername());
+            ((TextView) convertView.findViewById(R.id.text_user))
+                    .setText(currentProfile.getUsername());
 
         } else {
 

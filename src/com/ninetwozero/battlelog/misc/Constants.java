@@ -43,16 +43,16 @@ public final class Constants {
     public static final String URL_NEWS = Constants.URL_MAIN + "news/{COUNT}/";
 
     // Fields needed for the posts fields
-    public static final String[] FIELD_NAMES_LOGIN = new String[] {
+    public static final String[] FIELD_NAMES_LOGIN = new String[]{
             "email",
             "password", "redirect", "submit"
     };
-    public static final String[] FIELD_VALUES_LOGIN = new String[] {
+    public static final String[] FIELD_VALUES_LOGIN = new String[]{
             null,
             null, "", "Sign+in"
     };
 
-    public static final String[] FIELD_NAMES_CHECKSUM = new String[] {
+    public static final String[] FIELD_NAMES_CHECKSUM = new String[]{
             "post-check-sum"
     };
 

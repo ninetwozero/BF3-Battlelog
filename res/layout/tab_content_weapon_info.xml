@@ -13,152 +13,152 @@
     GNU General Public License for more details.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="10dp" >
-
-        <ImageView
-            android:id="@+id/image_item"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/w_xp1_famas" />
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/text_title"
-            style="@style/InfoHeading"
-            android:layout_below="@id/image_item"
-            android:padding="5dp"
-            android:text="FAMAS" />
+  <RelativeLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:padding="10dp">
 
-        <TextView
-            android:id="@+id/text_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_title"
-            android:padding="5dp"
-            android:text="M40A3 is a neat gun. I can&apos;t quite remember if it&apos;s actually in BF3, but atleast I&apos;ve seen it in Call of Duty: Modern Warfare." />
+    <ImageView
+        android:id="@+id/image_item"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/w_xp1_famas"/>
 
-        <TextView
-            android:id="@+id/string_specs"
-            style="@style/InfoHeading"
-            android:layout_below="@id/text_desc"
-            android:padding="5dp"
-            android:text="Specifications" />
+    <TextView
+        android:id="@+id/text_title"
+        style="@style/InfoHeading"
+        android:layout_below="@id/image_item"
+        android:padding="5dp"
+        android:text="FAMAS"/>
 
-        <TextView
-            android:id="@+id/string_rate_full"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/string_specs"
-            android:padding="5dp"
-            android:text="@string/info_weapon_rate_full" />
+    <TextView
+        android:id="@+id/text_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_title"
+        android:padding="5dp"
+        android:text="M40A3 is a neat gun. I can&apos;t quite remember if it&apos;s actually in BF3, but atleast I&apos;ve seen it in Call of Duty: Modern Warfare."/>
 
-        <TextView
-            android:id="@+id/text_rate_full"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/string_specs"
-            android:padding="5dp"
-            android:text="@string/general_no" />
+    <TextView
+        android:id="@+id/string_specs"
+        style="@style/InfoHeading"
+        android:layout_below="@id/text_desc"
+        android:padding="5dp"
+        android:text="Specifications"/>
 
-        <TextView
-            android:id="@+id/string_rate_single"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/string_rate_full"
-            android:padding="5dp"
-            android:text="@string/info_weapon_rate_single" />
+    <TextView
+        android:id="@+id/string_rate_full"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/string_specs"
+        android:padding="5dp"
+        android:text="@string/info_weapon_rate_full"/>
 
-        <TextView
-            android:id="@+id/text_rate_single"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/string_rate_full"
-            android:padding="5dp"
-            android:text="@string/general_yes" />
+    <TextView
+        android:id="@+id/text_rate_full"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/string_specs"
+        android:padding="5dp"
+        android:text="@string/general_no"/>
 
-        <TextView
-            android:id="@+id/string_rate_burst"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/text_rate_single"
-            android:padding="5dp"
-            android:text="@string/info_weapon_rate_burst" />
+    <TextView
+        android:id="@+id/string_rate_single"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/string_rate_full"
+        android:padding="5dp"
+        android:text="@string/info_weapon_rate_single"/>
 
-        <TextView
-            android:id="@+id/text_rate_burst"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/text_rate_single"
-            android:padding="5dp"
-            android:text="@string/general_yes" />
+    <TextView
+        android:id="@+id/text_rate_single"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/string_rate_full"
+        android:padding="5dp"
+        android:text="@string/general_yes"/>
 
-        <TextView
-            android:id="@+id/string_rate_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/text_rate_burst"
-            android:padding="5dp"
-            android:text="@string/info_weapon_rate_num" />
+    <TextView
+        android:id="@+id/string_rate_burst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/text_rate_single"
+        android:padding="5dp"
+        android:text="@string/info_weapon_rate_burst"/>
 
-        <TextView
-            android:id="@+id/text_rate_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/text_rate_burst"
-            android:padding="5dp"
-            android:text="200" />
+    <TextView
+        android:id="@+id/text_rate_burst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/text_rate_single"
+        android:padding="5dp"
+        android:text="@string/general_yes"/>
 
-        <TextView
-            android:id="@+id/string_ammo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/text_rate_num"
-            android:padding="5dp"
-            android:text="Ammunition" />
+    <TextView
+        android:id="@+id/string_rate_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/text_rate_burst"
+        android:padding="5dp"
+        android:text="@string/info_weapon_rate_num"/>
 
-        <TextView
-            android:id="@+id/text_ammo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/text_rate_num"
-            android:padding="5dp"
-            android:text="20 [7.62x51mm NATO]" />
+    <TextView
+        android:id="@+id/text_rate_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/text_rate_burst"
+        android:padding="5dp"
+        android:text="200"/>
 
-        <TextView
-            android:id="@+id/string_range"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/text_ammo"
-            android:padding="5dp"
-            android:text="Range" />
+    <TextView
+        android:id="@+id/string_ammo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/text_rate_num"
+        android:padding="5dp"
+        android:text="Ammunition"/>
 
-        <TextView
-            android:id="@+id/text_range"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/text_ammo"
-            android:padding="5dp"
-            android:text="@string/info_weapon_range_short" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/text_ammo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/text_rate_num"
+        android:padding="5dp"
+        android:text="20 [7.62x51mm NATO]"/>
+
+    <TextView
+        android:id="@+id/string_range"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/text_ammo"
+        android:padding="5dp"
+        android:text="Range"/>
+
+    <TextView
+        android:id="@+id/text_range"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/text_ammo"
+        android:padding="5dp"
+        android:text="@string/info_weapon_range_short"/>
+  </RelativeLayout>
 
 </ScrollView>

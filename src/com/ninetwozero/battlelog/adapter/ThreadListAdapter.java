@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -23,10 +21,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.ForumThreadData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.List;
 
 public class ThreadListAdapter extends BaseAdapter {
 
@@ -37,7 +36,7 @@ public class ThreadListAdapter extends BaseAdapter {
 
     // Construct
     public ThreadListAdapter(Context c, List<ForumThreadData> m,
-            LayoutInflater l) {
+                             LayoutInflater l) {
 
         context = c;
         itemArray = m;
@@ -157,34 +156,34 @@ public class ThreadListAdapter extends BaseAdapter {
 
                                     ).replace(
 
-                                            "{user}", currentItem.getOwner().getUsername()
-
-                                    )
+                                    "{user}", currentItem.getOwner().getUsername()
 
                             )
 
-                    );
+                    )
+
+            );
 
             ((TextView) convertView.findViewById(R.id.string_post_last))
                     .setText(
 
-                    Html.fromHtml(
+                            Html.fromHtml(
 
-                            context.getString(R.string.info_xml_threadreplydate)
-                                    .replace(
+                                    context.getString(R.string.info_xml_threadreplydate)
+                                            .replace(
 
-                                            "{date}",
-                                            PublicUtils.getRelativeDate(context,
-                                                    currentItem.getLastPostDate())
+                                                    "{date}",
+                                                    PublicUtils.getRelativeDate(context,
+                                                            currentItem.getLastPostDate())
 
-                                    )
-                                    .replace(
+                                            )
+                                            .replace(
 
-                                            "{user}",
-                                            currentItem.getLastPoster()
-                                                    .getUsername()
+                                                    "{user}",
+                                                    currentItem.getLastPoster()
+                                                            .getUsername()
 
-                                    )
+                                            )
 
                             )
 
@@ -207,9 +206,9 @@ public class ThreadListAdapter extends BaseAdapter {
 
                                     )
 
-                            )
+                    )
 
-                    );
+            );
 
         }
 

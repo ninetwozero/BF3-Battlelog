@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import com.ninetwozero.battlelog.misc.DebugLogConfig;
 
-public class Battlelog extends Application{
+public class Battlelog extends Application {
 
     public static final String NAME = "battlelog.db";
     private static boolean isInDebugMode;
@@ -20,7 +20,7 @@ public class Battlelog extends Application{
         setDebugMode();
     }
 
-    public static Context getContext(){
+    public static Context getContext() {
         return instance;
     }
 

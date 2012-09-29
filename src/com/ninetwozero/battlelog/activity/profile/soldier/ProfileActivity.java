@@ -14,23 +14,13 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
-import java.util.ArrayList;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.AdapterView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
@@ -38,6 +28,10 @@ import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+
+import java.util.ArrayList;
 
 public class ProfileActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
@@ -117,13 +111,13 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
             mPagerAdapter = new SwipeyTabsPagerAdapter(
 
                     mFragmentManager,
-                    new String[] {
+                    new String[]{
                             "OVERVIEW", "STATS", "FEED"
                     },
                     mListFragments,
                     mViewPager,
                     mLayoutInflater
-                    );
+            );
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 
@@ -238,7 +232,7 @@ public class ProfileActivity extends CustomFragmentActivity implements DefaultFr
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
+                                    ContextMenuInfo menuInfo) {
 
         switch (mViewPager.getCurrentItem()) {
 

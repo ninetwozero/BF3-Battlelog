@@ -13,32 +13,32 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:paddingBottom="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="5dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp">
 
-    <TextView
-        android:id="@+id/text_title"
-        style="@style/InfoHeading"
-        android:layout_marginBottom="0dp"
-        android:padding="5dp"
-        android:text="@string/info_forum_saved_heading" />
+  <TextView
+      android:id="@+id/text_title"
+      style="@style/InfoHeading"
+      android:layout_marginBottom="0dp"
+      android:padding="5dp"
+      android:text="@string/info_forum_saved_heading"/>
 
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/text_title" />
+  <ListView
+      android:id="@android:id/list"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_below="@id/text_title"/>
 
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@android:id/list"
-        android:gravity="center"
-        android:text="@string/info_forum_empty_saved" />
+  <TextView
+      android:id="@android:id/empty"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_below="@android:id/list"
+      android:gravity="center"
+      android:text="@string/info_forum_empty_saved"/>
 
 </RelativeLayout>

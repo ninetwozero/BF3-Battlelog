@@ -14,13 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.forum;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -33,30 +26,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
@@ -72,6 +50,13 @@ import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ForumThreadFragment extends ListFragment implements DefaultFragment {
 
@@ -111,7 +96,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
@@ -425,7 +410,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                         }
 
-                        );
+                );
 
             }
 
@@ -435,7 +420,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
+                                    ContextMenuInfo menuInfo) {
 
         // Show the menu
         menu.add(0, 0, 0, R.string.info_profile_view);
@@ -678,7 +663,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     }
 
     public Dialog generateDialogLinkList(final Context context,
-            final List<String> links) {
+                                         final List<String> links) {
 
         // Attributes
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -695,15 +680,15 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                 android.R.string.cancel, new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which) {
 
-                        dialog.dismiss();
+                dialog.dismiss();
 
-                    }
+            }
 
-                }
+        }
 
-                );
+        );
 
         // Padding fix
         final AlertDialog theDialog = builder.create();
@@ -719,7 +704,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                     @Override
                     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                            long arg3) {
+                                            long arg3) {
 
                         // Get the current link
                         String currentLink = links.get(arg2);
@@ -734,7 +719,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                 }
 
-                );
+        );
 
         return theDialog;
 
@@ -782,33 +767,33 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                 android.R.string.ok, new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which) {
 
-                        String pageString = textPage.getText().toString();
-                        if (!"".equals(pageString)) {
+                String pageString = textPage.getText().toString();
+                if (!"".equals(pageString)) {
 
-                            int page = Integer.parseInt(pageString);
-                            if (0 < page && page <= mThreadData.getNumPages()) {
+                    int page = Integer.parseInt(pageString);
+                    if (0 < page && page <= mThreadData.getNumPages()) {
 
-                                mCurrentPage = page;
-                                new AsyncLoadPage(context, mThreadId)
-                                        .execute(mCurrentPage);
+                        mCurrentPage = page;
+                        new AsyncLoadPage(context, mThreadId)
+                                .execute(mCurrentPage);
 
-                            } else {
+                    } else {
 
-                                Toast.makeText(context,
-                                        R.string.info_forum_page_invalid,
-                                        Toast.LENGTH_SHORT).show();
-
-                            }
-
-                        }
+                        Toast.makeText(context,
+                                R.string.info_forum_page_invalid,
+                                Toast.LENGTH_SHORT).show();
 
                     }
 
                 }
 
-                );
+            }
+
+        }
+
+        );
 
         // Padding fix
         AlertDialog theDialog = builder.create();
@@ -868,7 +853,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                     .putExtra(
 
                                             "platoon", new PlatoonData(platoonId, 0, 0,
-                                                    0, null, null, null, true)
+                                            0, null, null, null, true)
 
                                     );
 
@@ -903,11 +888,11 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                                             "threadId", threadId
 
-                                            ).putExtra(
+                                    ).putExtra(
 
-                                                    "threadTitle", "N/A"
+                                            "threadTitle", "N/A"
 
-                                            );
+                                    );
                                     openThread(intent);
 
                                 } else {
@@ -921,13 +906,13 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                                                         .substring(index + 11,
                                                                 linkEndPos))
 
-                                                ).putExtra(
+                                        ).putExtra(
 
-                                                        "forumTitle", "N/A"
+                                                "forumTitle", "N/A"
 
-                                                )
+                                        )
 
-                                                );
+                                        );
 
                                     } else {
 
@@ -1040,7 +1025,7 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     }
 
     public void createContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
+                                  ContextMenuInfo menuInfo) {
 
         // Show the menu
         menu.add(0, 0, 0, R.string.info_profile_view);
@@ -1080,16 +1065,16 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
 
                                                 "{number}", String.valueOf(data.getPostId())
 
-                                                ).replace(
+                                        ).replace(
 
-                                                        "{username}",
-                                                        data.getProfileData().getUsername()
-
-                                                )
+                                                "{username}",
+                                                data.getProfileData().getUsername()
 
                                         )
 
-                                );
+                                )
+
+                        );
                         mSelectedQuotes
                                 .put(data.getPostId(),
                                         (data.isCensored() ? getString(R.string.general_censored)

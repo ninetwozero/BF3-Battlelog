@@ -14,16 +14,12 @@
 
 package com.ninetwozero.battlelog.asynctask;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.social.ChatActivity;
 import com.ninetwozero.battlelog.adapter.ChatListAdapter;
@@ -31,6 +27,9 @@ import com.ninetwozero.battlelog.datatype.ChatMessage;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.misc.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
 
@@ -45,7 +44,8 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
 
         context = c;
         listView = lv;
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
 
     }
 
@@ -60,7 +60,8 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
 
             // Let's get this!!
             messageArray = new COMClient(sharedPreferences.getString(
-                    Constants.SP_BL_PROFILE_CHECKSUM, "")).getMessages(profileId[0]);
+                    Constants.SP_BL_PROFILE_CHECKSUM, ""))
+                    .getMessages(profileId[0]);
             return true;
 
         } catch (WebsiteHandlerException e) {
@@ -78,7 +79,8 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
         if (results) {
 
             // Set the almighty adapter
-            ((ChatListAdapter) listView.getAdapter()).setMessageArray(messageArray);
+            ((ChatListAdapter) listView.getAdapter())
+                    .setMessageArray(messageArray);
 
             // Do we need to ploop?
             if (context instanceof ChatActivity) {

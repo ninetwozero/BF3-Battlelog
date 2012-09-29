@@ -1,24 +1,16 @@
-
 package com.ninetwozero.battlelog.http;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import android.content.Context;
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatype.*;
+import com.ninetwozero.battlelog.misc.Constants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatype.ChatMessage;
-import com.ninetwozero.battlelog.datatype.FriendListDataWrapper;
-import com.ninetwozero.battlelog.datatype.ProfileComparator;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.RequestHandlerException;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.Constants;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class COMClient extends DefaultClient {
 
@@ -42,12 +34,12 @@ public class COMClient extends DefaultClient {
             + "comcenter/setActive/";
 
     // Constants
-    public static final String[] FIELD_NAMES_CHAT = new String[] {
+    public static final String[] FIELD_NAMES_CHAT = new String[]{
             "message",
             "chatId", "post-check-sum"
     };
 
-    public static final String[] FIELD_NAMES_STATUS = new String[] {
+    public static final String[] FIELD_NAMES_STATUS = new String[]{
             "message",
             "post-check-sum",
             "urls[]"
@@ -71,7 +63,7 @@ public class COMClient extends DefaultClient {
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
                     RequestHandler.HEADER_NORMAL
 
-                    );
+            );
 
             // Did we manage?
             if ("".equals(httpContent)) {
@@ -105,7 +97,7 @@ public class COMClient extends DefaultClient {
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
                     RequestHandler.HEADER_NORMAL
 
-                    );
+            );
 
             // Did we manage?
             if ("".equals(httpContent)) {
@@ -130,12 +122,12 @@ public class COMClient extends DefaultClient {
                             new ChatMessage(
 
                                     profileId, tempObject.getLong("timestamp"), tempObject
-                                            .getString("fromUsername"), tempObject
-                                            .getString("message")
+                                    .getString("fromUsername"), tempObject
+                                    .getString("message")
 
                             )
 
-                            );
+                    );
 
                 }
                 return (ArrayList<ChatMessage>) messageArray;
@@ -164,10 +156,10 @@ public class COMClient extends DefaultClient {
                             message,
                             chatId,
                             mChecksum
-                            ),
+                    ),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Did we manage?
             return (!"".equals(httpContent));
@@ -189,7 +181,7 @@ public class COMClient extends DefaultClient {
             new RequestHandler().get(
                     RequestHandler.generateUrl(URL_CLOSE, chatId),
                     RequestHandler.HEADER_AJAX
-                    );
+            );
 
             // Did we manage?
             return true;
@@ -214,7 +206,7 @@ public class COMClient extends DefaultClient {
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
                     RequestHandler.HEADER_NORMAL
 
-                    );
+            );
 
             // Did we manage?
             if ("".equals(httpContent)) {
@@ -266,13 +258,13 @@ public class COMClient extends DefaultClient {
                                         Long.parseLong(tempObj.getString("userId")),
                                         tempObj.getString("username")
 
-                                        ).gravatarHash(
+                                ).gravatarHash(
 
-                                                tempObj.optString("gravatarMd5", "")
+                                        tempObj.optString("gravatarMd5", "")
 
-                                                ).build()
+                                ).build()
 
-                                );
+                        );
 
                         tempProfileData.setFriend(false);
 
@@ -367,7 +359,7 @@ public class COMClient extends DefaultClient {
     }
 
     public final List<ProfileData> getFriends(long profileId,
-            boolean noOffline) throws WebsiteHandlerException {
+                                              boolean noOffline) throws WebsiteHandlerException {
 
         try {
 
@@ -379,7 +371,7 @@ public class COMClient extends DefaultClient {
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
                     RequestHandler.HEADER_NORMAL
 
-                    );
+            );
 
             // Did we manage?
             if ("".equals(httpContent)) {
@@ -403,7 +395,7 @@ public class COMClient extends DefaultClient {
                     // Only online friends?
                     if (noOffline
                             && !tempObj.getJSONObject("presence").getBoolean(
-                                    "isOnline")) {
+                            "isOnline")) {
                         continue;
                     }
 
@@ -413,11 +405,11 @@ public class COMClient extends DefaultClient {
                             new ProfileData.Builder(
 
                                     Long.parseLong(tempObj.getString("userId")), tempObj
-                                            .getString("username")
+                                    .getString("username")
 
                             ).gravatarHash(tempObj.optString("gravatarMd5", "")).build()
 
-                            );
+                    );
                 }
 
                 return profileArray;
@@ -449,7 +441,7 @@ public class COMClient extends DefaultClient {
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
                     RequestHandler.HEADER_NORMAL
 
-                    );
+            );
 
             // Did we manage?
             return !"".equals(httpContent);
@@ -474,7 +466,7 @@ public class COMClient extends DefaultClient {
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Did we manage?
             return (httpContent != null);
@@ -499,7 +491,7 @@ public class COMClient extends DefaultClient {
                     RequestHandler.generateUrl(URL_FRIEND_DELETE, profileId),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Did we manage?
             return (httpContent != null);
@@ -527,10 +519,10 @@ public class COMClient extends DefaultClient {
                             mChecksum,
                             ""
 
-                            ),
+                    ),
                     RequestHandler.HEADER_NORMAL
 
-                    );
+            );
 
             // Did we manage?
             if (httpContent != null && !httpContent.equals("")) {

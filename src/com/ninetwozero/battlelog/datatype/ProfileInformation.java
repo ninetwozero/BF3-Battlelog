@@ -14,12 +14,11 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-import java.util.List;
-
 import android.content.Context;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.List;
 
 public class ProfileInformation {
 
@@ -51,10 +50,9 @@ public class ProfileInformation {
     // Construct(s)
     public ProfileInformation(
 
-            int a, long uid, long dob, long l, long sc, PersonaData[] pe, String n, String u,
-            String p, String loc, String s,
-            String c, boolean af, boolean o, boolean pl,
-            boolean fs, List<PlatoonData> pd
+            int a, long uid, long dob, long l, long sc, PersonaData[] pe, String n,
+            String u, String p, String loc, String s, String c, boolean af,
+            boolean o, boolean pl, boolean fs, List<PlatoonData> pd
 
     ) {
 
@@ -101,8 +99,7 @@ public class ProfileInformation {
     }
 
     public PersonaData getPersona(int position) {
-        return ((mPersona.length < position) ? mPersona[position]
-                : mPersona[0]);
+        return ((mPersona.length < position) ? mPersona[position] : mPersona[0]);
     }
 
     public PersonaData[] getAllPersonas() {
@@ -209,26 +206,17 @@ public class ProfileInformation {
         }
 
         // Return it!
-        return new Object[] {
+        return new Object[]{
 
-                mAge,
-                mUserId,
-                mDateOfBirth,
-                mLastlogin,
-                mStatusMessageChanged,
-                mName,
-                mUsername,
-                (mPresentation == null) ? "" : mPresentation,
+                mAge, mUserId, mDateOfBirth, mLastlogin, mStatusMessageChanged, mName,
+                mUsername, (mPresentation == null) ? "" : mPresentation,
                 (mLocation == null) ? "" : mLocation,
                 (mStatusMessage == null) ? "" : mStatusMessage,
                 (mCurrentServer == null) ? "" : mCurrentServer,
-                mPersonaIdString.toString(),
-                mPersonaString.toString(),
+                mPersonaIdString.toString(), mPersonaString.toString(),
                 mPersonaPlatformString.toString(),
-                mAllowFriendRequests ? "1" : "0",
-                mOnline ? "1" : "0",
-                mPlaying ? "1" : "0",
-                mFriendStatus ? "1" : "0",
+                mAllowFriendRequests ? "1" : "0", mOnline ? "1" : "0",
+                mPlaying ? "1" : "0", mFriendStatus ? "1" : "0",
                 mPlatoonIdString.toString()
 
         };

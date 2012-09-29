@@ -1,11 +1,9 @@
-
 package com.ninetwozero.battlelog.datatype;
 
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.Constants;
 
@@ -100,7 +98,7 @@ public class NotificationData implements Parcelable {
 
                         "{action}", resolveActionFromId(c, typeId)
 
-                        );
+                );
 
             } else {
 
@@ -174,7 +172,7 @@ public class NotificationData implements Parcelable {
 
                         "{action}", resolveActionFromId(c, typeId)
 
-                        );
+                );
 
             } else {
 
@@ -206,7 +204,7 @@ public class NotificationData implements Parcelable {
 
                     "{platoon}", extra
 
-                    );
+            );
 
         } else if ("platoonjoinrequestdeclined".equals(type)) {
 
@@ -214,7 +212,7 @@ public class NotificationData implements Parcelable {
 
                     "{platoon}", extra
 
-                    );
+            );
 
         } else if ("platooninviterequest".equals(type)) {
 
@@ -222,7 +220,7 @@ public class NotificationData implements Parcelable {
 
                     "{platoon}", extra
 
-                    );
+            );
 
         } else if ("platoonpromoted".equals(type)) {
 
@@ -230,7 +228,7 @@ public class NotificationData implements Parcelable {
 
                     "{platoon}", extra
 
-                    );
+            );
 
         } else if ("platoonkicked".equals(type)) {
 
@@ -238,14 +236,14 @@ public class NotificationData implements Parcelable {
 
                     "{platoon}", extra
 
-                    );
+            );
         } else if ("platoondemoted".equals(type)) {
 
             message = c.getString(R.string.info_platoon_demote).replace(
 
                     "{platoon}", extra
 
-                    );
+            );
 
         } else if ("platoonjoinrequest".equals(type)) {
 
@@ -253,7 +251,7 @@ public class NotificationData implements Parcelable {
 
                     "{platoon}", extra
 
-                    );
+            );
 
         } else if ("platoonmemberjoined".equals(type)) {
 
@@ -270,7 +268,7 @@ public class NotificationData implements Parcelable {
 
                     "{platoon}", extra
 
-                    );
+            );
 
         } else if ("friendrequestaccepted".equals(type)) {
 
@@ -347,8 +345,8 @@ public class NotificationData implements Parcelable {
 
         return (
 
-        "(" + itemId + ")" + " " + commenter + "(" + commenterId
-                + ") <" + type + "> " + owner + "(" + ownerId + ")"
+                "(" + itemId + ")" + " " + commenter + "(" + commenterId
+                        + ") <" + type + "> " + owner + "(" + ownerId + ")"
 
         );
     }

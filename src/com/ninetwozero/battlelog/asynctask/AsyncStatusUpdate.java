@@ -19,7 +19,6 @@ import android.os.AsyncTask;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
 import com.ninetwozero.battlelog.http.COMClient;
@@ -47,7 +46,8 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
             Toast.makeText(context, R.string.msg_status, Toast.LENGTH_SHORT)
                     .show();
 
-            buttonSend = (Button) fragmentFeed.getView().findViewById(R.id.button_send);
+            buttonSend = (Button) fragmentFeed.getView().findViewById(
+                    R.id.button_send);
             buttonSend.setEnabled(false);
 
         }
@@ -81,8 +81,8 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
                 // Yay
                 Toast.makeText(context, R.string.msg_status_ok,
                         Toast.LENGTH_SHORT).show();
-                ((EditText) fragmentFeed.getView().findViewById(R.id.field_message))
-                        .setText("");
+                ((EditText) fragmentFeed.getView().findViewById(
+                        R.id.field_message)).setText("");
                 buttonSend.setEnabled(true);
 
             } else {

@@ -14,25 +14,17 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.text.TextUtils;
-
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
-import com.ninetwozero.battlelog.datatype.ForumThreadData;
-import com.ninetwozero.battlelog.datatype.PersonaData;
-import com.ninetwozero.battlelog.datatype.PersonaStats;
-import com.ninetwozero.battlelog.datatype.PlatoonData;
-import com.ninetwozero.battlelog.datatype.PlatoonInformation;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.ProfileInformation;
-import com.ninetwozero.battlelog.datatype.SavedForumThreadData;
+import com.ninetwozero.battlelog.datatype.*;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /* 
  * Methods of this class should be loaded in AsyncTasks, as they would probably lock up the GUI
@@ -58,7 +50,7 @@ public class CacheHandler {
                         DatabaseStructure.PersonaStatistics.getColumns(),
                         stats.toArray()
 
-                        );
+                );
 
                 manager.close();
                 return results;
@@ -73,7 +65,7 @@ public class CacheHandler {
         }
 
         public static long insert(Context context,
-                HashMap<Long, PersonaStats> statsArray) {
+                                  HashMap<Long, PersonaStats> statsArray) {
 
             // Use the SQLiteManager to get a cursor
             SQLiteManager manager = new SQLiteManager(context);
@@ -94,7 +86,7 @@ public class CacheHandler {
                             DatabaseStructure.PersonaStatistics.getColumns(),
                             stats.toArray()
 
-                            );
+                    );
 
                 }
 
@@ -132,7 +124,7 @@ public class CacheHandler {
                         DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA,
                         stats.getPersonaId()
 
-                        );
+                );
 
                 manager.close();
                 return true;
@@ -148,7 +140,7 @@ public class CacheHandler {
         }
 
         public static boolean update(Context context,
-                HashMap<Long, PersonaStats> statsArray) {
+                                     HashMap<Long, PersonaStats> statsArray) {
 
             // Use the SQLiteManager to get a cursor
             SQLiteManager manager = new SQLiteManager(context);
@@ -194,7 +186,7 @@ public class CacheHandler {
         }
 
         public static HashMap<Long, PersonaStats> select(final Context context,
-                final PersonaData[] persona) {
+                                                         final PersonaData[] persona) {
 
             SQLiteManager manager = new SQLiteManager(context);
 
@@ -317,7 +309,7 @@ public class CacheHandler {
 
                                 )
 
-                                );
+                        );
 
                     } while (results.moveToNext());
 
@@ -339,7 +331,7 @@ public class CacheHandler {
         }
 
         public static boolean delete(final Context context,
-                final long[] personaId) {
+                                     final long[] personaId) {
 
             SQLiteManager manager = new SQLiteManager(context);
 
@@ -391,7 +383,7 @@ public class CacheHandler {
                         DatabaseStructure.UserProfile.getColumns(),
                         stats.toArray()
 
-                        );
+                );
 
                 manager.close();
                 return results;
@@ -429,7 +421,7 @@ public class CacheHandler {
                         DatabaseStructure.UserProfile.COLUMN_NAME_NUM_UID,
                         stats.getUserId()
 
-                        );
+                );
 
                 manager.close();
                 return (results > 0);
@@ -445,7 +437,7 @@ public class CacheHandler {
         }
 
         public static ProfileInformation select(final Context context,
-                final long userId) {
+                                                final long userId) {
 
             // Use the SQLiteManager to get a cursor
             SQLiteManager manager = new SQLiteManager(context);
@@ -456,12 +448,12 @@ public class CacheHandler {
 
                         DatabaseStructure.UserProfile.TABLE_NAME, null,
                         DatabaseStructure.UserProfile.COLUMN_NAME_NUM_UID
-                                + " = ?", new String[] {
-                            userId + ""
-                        }, null,
+                                + " = ?", new String[]{
+                        userId + ""
+                }, null,
                         null, DatabaseStructure.UserProfile.DEFAULT_SORT_ORDER
 
-                        );
+                );
 
                 // Loop over the results
                 if (results.moveToFirst()) {
@@ -508,7 +500,7 @@ public class CacheHandler {
                                 personaNameStringArray[i],
                                 Integer.parseInt(platformStringArray[i]),
                                 null
-                                );
+                        );
 
                     }
 
@@ -561,7 +553,7 @@ public class CacheHandler {
                                     .equalsIgnoreCase("true"),
                             platoons
 
-                            );
+                    );
 
                     // PERSONA PERSONA BABY
                     results.close();
@@ -607,7 +599,7 @@ public class CacheHandler {
                         DatabaseStructure.UserProfile.COLUMN_NAME_NUM_UID,
                         userIdArray
 
-                        );
+                );
 
                 // Close it
                 manager.close();
@@ -640,7 +632,7 @@ public class CacheHandler {
                         DatabaseStructure.PlatoonProfile.getColumns(),
                         stats.toArray()
 
-                        );
+                );
 
                 manager.close();
                 return results;
@@ -662,7 +654,7 @@ public class CacheHandler {
         }
 
         public static long insert(Context context,
-                HashMap<Long, PlatoonInformation> statsArray) {
+                                  HashMap<Long, PlatoonInformation> statsArray) {
 
             // Use the SQLiteManager to get a cursor
             SQLiteManager manager = new SQLiteManager(context);
@@ -683,7 +675,7 @@ public class CacheHandler {
                             DatabaseStructure.PlatoonProfile.getColumns(),
                             stats.toArray()
 
-                            );
+                    );
 
                 }
 
@@ -721,7 +713,7 @@ public class CacheHandler {
                         DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID,
                         stats.getId()
 
-                        );
+                );
 
                 manager.close();
                 return true;
@@ -737,7 +729,7 @@ public class CacheHandler {
         }
 
         public static boolean update(Context context,
-                HashMap<Long, PlatoonInformation> statsArray) {
+                                     HashMap<Long, PlatoonInformation> statsArray) {
 
             // Use the SQLiteManager to get a cursor
             SQLiteManager manager = new SQLiteManager(context);
@@ -783,7 +775,7 @@ public class CacheHandler {
         }
 
         public static PlatoonInformation select(final Context context,
-                final long platoonId) {
+                                                final long platoonId) {
 
             SQLiteManager manager = new SQLiteManager(context);
             PlatoonInformation tempPlatoon = null;
@@ -795,13 +787,13 @@ public class CacheHandler {
 
                         DatabaseStructure.PlatoonProfile.TABLE_NAME, null,
                         DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID
-                                + " = ?", new String[] {
-                            platoonId + ""
-                        },
+                                + " = ?", new String[]{
+                        platoonId + ""
+                },
                         null, null,
                         DatabaseStructure.PlatoonProfile.DEFAULT_SORT_ORDER
 
-                        );
+                );
 
                 // Loop over the results
                 if (results.moveToFirst()) {
@@ -835,7 +827,7 @@ public class CacheHandler {
                                 results.getInt(results
                                         .getColumnIndex(DatabaseStructure.PlatoonProfile.COLUMN_NAME_BOOL_VISIBLE))
 
-                                );
+                        );
 
                     } while (results.moveToNext());
 
@@ -888,7 +880,7 @@ public class CacheHandler {
                         PlatoonIdArray, null, null,
                         DatabaseStructure.PlatoonProfile.DEFAULT_SORT_ORDER
 
-                        );
+                );
 
                 // Loop over the results
                 if (results.moveToFirst()) {
@@ -917,7 +909,7 @@ public class CacheHandler {
 
                                 )
 
-                                );
+                        );
 
                     } while (results.moveToNext());
 
@@ -939,7 +931,7 @@ public class CacheHandler {
         }
 
         public static boolean delete(final Context context,
-                final long[] PlatoonId) {
+                                     final long[] PlatoonId) {
 
             SQLiteManager manager = new SQLiteManager(context);
 
@@ -958,7 +950,7 @@ public class CacheHandler {
                         DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID,
                         platoonIdArray
 
-                        );
+                );
 
                 manager.close();
                 return (results > 0);
@@ -1003,7 +995,7 @@ public class CacheHandler {
                         DatabaseStructure.ForumThreads.getColumns(),
                         valueArray
 
-                        );
+                );
 
                 manager.close();
                 return results;
@@ -1025,7 +1017,7 @@ public class CacheHandler {
         }
 
         public static long insert(Context context,
-                HashMap<Long, ForumThreadData> threadArray) {
+                                  HashMap<Long, ForumThreadData> threadArray) {
 
             // Use the SQLiteManager to get a cursor
             SQLiteManager manager = new SQLiteManager(context);
@@ -1046,7 +1038,7 @@ public class CacheHandler {
                             DatabaseStructure.ForumThreads.getColumns(),
                             stats.toArray()
 
-                            );
+                    );
 
                 }
 
@@ -1084,7 +1076,7 @@ public class CacheHandler {
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                         thread.getId()
 
-                        );
+                );
 
                 manager.close();
                 return true;
@@ -1109,7 +1101,7 @@ public class CacheHandler {
                 manager.update(
 
                         DatabaseStructure.ForumThreads.TABLE_NAME,
-                        new String[] {
+                        new String[]{
                                 DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD,
                                 DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST,
                                 DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR,
@@ -1117,7 +1109,7 @@ public class CacheHandler {
                                 DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED
 
                         },
-                        new Object[] {
+                        new Object[]{
 
                                 thread.hasUnread() ? 1 : 0,
                                 thread.getDateLastPost(),
@@ -1128,7 +1120,7 @@ public class CacheHandler {
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                         thread.getId()
 
-                        );
+                );
 
                 manager.close();
                 return true;
@@ -1153,13 +1145,13 @@ public class CacheHandler {
                 manager.update(
 
                         DatabaseStructure.ForumThreads.TABLE_NAME,
-                        new String[] {
+                        new String[]{
                                 DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD,
                                 DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_READ,
                                 DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED
 
                         },
-                        new Object[] {
+                        new Object[]{
 
                                 0,
                                 thread.getDateLastRead(),
@@ -1168,7 +1160,7 @@ public class CacheHandler {
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                         thread.getId()
 
-                        );
+                );
 
                 manager.close();
                 return true;
@@ -1193,17 +1185,17 @@ public class CacheHandler {
                 manager.update(
 
                         DatabaseStructure.ForumThreads.TABLE_NAME,
-                        new String[] {
-                            DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS
+                        new String[]{
+                                DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS
 
                         },
-                        new Object[] {
-                            numPosts
+                        new Object[]{
+                                numPosts
                         },
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                         threadId
 
-                        );
+                );
 
                 manager.close();
                 return true;
@@ -1219,7 +1211,7 @@ public class CacheHandler {
         }
 
         public static boolean update(Context context,
-                HashMap<Long, SavedForumThreadData> threadArray) {
+                                     HashMap<Long, SavedForumThreadData> threadArray) {
 
             // Use the SQLiteManager to get a cursor
             SQLiteManager manager = new SQLiteManager(context);
@@ -1265,7 +1257,7 @@ public class CacheHandler {
         }
 
         public static SavedForumThreadData select(final Context context,
-                final long threadId) {
+                                                  final long threadId) {
 
             SQLiteManager manager = new SQLiteManager(context);
             SavedForumThreadData tempSavedForumThread = null;
@@ -1277,13 +1269,13 @@ public class CacheHandler {
 
                         DatabaseStructure.ForumThreads.TABLE_NAME, null,
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID
-                                + " = ?", new String[] {
-                            threadId + ""
-                        },
+                                + " = ?", new String[]{
+                        threadId + ""
+                },
                         null, null,
                         DatabaseStructure.ForumThreads.DEFAULT_SORT_ORDER
 
-                        );
+                );
 
                 // Loop over the results
                 if (results.moveToFirst()) {
@@ -1317,7 +1309,7 @@ public class CacheHandler {
                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD)) == 1,
                                 results.getLong(results
                                         .getColumnIndex(DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_PROFILE_ID))
-                                );
+                        );
 
                     } while (results.moveToNext());
 
@@ -1339,7 +1331,7 @@ public class CacheHandler {
         }
 
         public static List<SavedForumThreadData> selectAll(final Context context,
-                final long uid) {
+                                                           final long uid) {
 
             SQLiteManager manager = new SQLiteManager(context);
             List<SavedForumThreadData> tempSavedForumThread = new ArrayList<SavedForumThreadData>();
@@ -1351,13 +1343,13 @@ public class CacheHandler {
 
                         DatabaseStructure.ForumThreads.TABLE_NAME, null,
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_PROFILE_ID
-                                + " = ?", new String[] {
-                            uid + ""
-                        },
+                                + " = ?", new String[]{
+                        uid + ""
+                },
                         null, null,
                         DatabaseStructure.ForumThreads.DEFAULT_SORT_ORDER
 
-                        );
+                );
 
                 // Loop over the results
                 if (results.moveToFirst()) {
@@ -1418,7 +1410,7 @@ public class CacheHandler {
         }
 
         public static boolean delete(final Context context,
-                final long[] threadId) {
+                                     final long[] threadId) {
 
             SQLiteManager manager = new SQLiteManager(context);
 
@@ -1437,7 +1429,7 @@ public class CacheHandler {
                         DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID,
                         threadIdArray
 
-                        );
+                );
 
                 manager.close();
                 return (results > 0);

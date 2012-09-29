@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.jsonmodel;
 
 import com.google.gson.annotations.SerializedName;
@@ -19,7 +18,7 @@ public class VehicleScores {
     private long scoutHeliScore;
 
     public VehicleScores(long jetScore, long tankScore, long ifvScore, long antiAirScore,
-            long attackHeliScore, long scoutHeliScore) {
+                         long attackHeliScore, long scoutHeliScore) {
         this.jetScore = jetScore;
         this.tankScore = tankScore;
         this.ifvScore = ifvScore;

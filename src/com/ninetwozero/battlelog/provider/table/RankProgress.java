@@ -6,7 +6,8 @@ import com.ninetwozero.battlelog.Battlelog;
 
 public class RankProgress {
 
-    public static final Uri URI = Uri.parse("content://" + Battlelog.AUTHORITY + "/rankProgress/");
+    public static final Uri URI = Uri.parse("content://" + Battlelog.AUTHORITY
+            + "/rankProgress/");
 
     public interface Columns extends BaseColumns {
         public static final String ID = "_id";
@@ -19,9 +20,10 @@ public class RankProgress {
         public static final String SCORE = "score";
     }
 
-    public static final String[] RANK_PROGRESS_PROJECTION = new String[]{Columns.ID, Columns.PERSONA_ID, Columns.PERSONA_NAME,
-            Columns.PLATFORM, Columns.RANK, Columns.CURRENT_RANK_SCORE, Columns.NEXT_RANK_SCORE, Columns.SCORE
-    };
+    public static final String[] RANK_PROGRESS_PROJECTION = new String[]{
+            Columns.ID, Columns.PERSONA_ID, Columns.PERSONA_NAME,
+            Columns.PLATFORM, Columns.RANK, Columns.CURRENT_RANK_SCORE,
+            Columns.NEXT_RANK_SCORE, Columns.SCORE};
 
     private long personaId;
     private String personaName;

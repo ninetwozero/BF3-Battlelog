@@ -1,24 +1,24 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/option_about"
-        android:alphabeticShortcut="A"
-        android:icon="@android:drawable/ic_menu_help"
-        android:title="@string/label_option_about"/>
-    <item
-        android:id="@+id/option_refresh"
-        android:alphabeticShortcut="R"
-        android:icon="@android:drawable/ic_menu_rotate"
-        android:title="@string/info_xml_reload"/>
-    <item
-        android:id="@+id/option_settings"
-        android:alphabeticShortcut="S"
-        android:icon="@android:drawable/ic_menu_preferences"
-        android:title="@string/label_app_settings"/>
-    <item
-        android:id="@+id/option_logout"
-        android:alphabeticShortcut="L"
-        android:icon="@android:drawable/ic_lock_power_off"
-        android:title="@string/info_xml_logout"/>
+  <item
+      android:id="@+id/option_about"
+      android:alphabeticShortcut="A"
+      android:icon="@android:drawable/ic_menu_help"
+      android:title="@string/label_option_about"/>
+  <item
+      android:id="@+id/option_refresh"
+      android:alphabeticShortcut="R"
+      android:icon="@android:drawable/ic_menu_rotate"
+      android:title="@string/info_xml_reload"/>
+  <item
+      android:id="@+id/option_settings"
+      android:alphabeticShortcut="S"
+      android:icon="@android:drawable/ic_menu_preferences"
+      android:title="@string/label_app_settings"/>
+  <item
+      android:id="@+id/option_logout"
+      android:alphabeticShortcut="L"
+      android:icon="@android:drawable/ic_lock_power_off"
+      android:title="@string/info_xml_logout"/>
 
 </menu>

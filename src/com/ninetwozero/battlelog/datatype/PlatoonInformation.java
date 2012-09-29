@@ -162,7 +162,7 @@ public class PlatoonInformation {
 
     public Object[] toArray() {
 
-        return new Object[] {
+        return new Object[]{
 
                 id, platformId, gameId,
                 numFans, numMembers, blazeClubId,

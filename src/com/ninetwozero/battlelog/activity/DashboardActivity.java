@@ -14,28 +14,17 @@
 
 package com.ninetwozero.battlelog.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutActivity;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
@@ -51,8 +40,14 @@ import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
-public class DashboardActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class DashboardActivity extends CustomFragmentActivity implements
+        DefaultFragmentActivity {
 
     // COM-related
     private SlidingDrawer mSlidingDrawer;
@@ -77,7 +72,8 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
         super.onCreate(icicle);
 
         // Set sharedPreferences
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
 
         // Validate our session
         validateSession();
@@ -116,17 +112,16 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             mListFragments = new ArrayList<Fragment>();
             mListFragments.add(Fragment.instantiate(this,
                     NewsListFragment.class.getName()));
-            mListFragments.add(Fragment.instantiate(
-                    this,
+            mListFragments.add(Fragment.instantiate(this,
                     MenuProfileFragment.class.getName()));
-            mListFragments.add(mFragmentMenuPlatoon = (MenuPlatoonFragment) Fragment.instantiate(
-                    this,
-                    MenuPlatoonFragment.class.getName()));
-            mListFragments.add(Fragment.instantiate(
-                    this,
+            mListFragments
+                    .add(mFragmentMenuPlatoon = (MenuPlatoonFragment) Fragment
+                            .instantiate(this,
+                                    MenuPlatoonFragment.class.getName()));
+            mListFragments.add(Fragment.instantiate(this,
                     MenuForumFragment.class.getName()));
-            mListFragments.add(mFragmentFeed = (FeedFragment) Fragment.instantiate(this,
-                    FeedFragment.class.getName()));
+            mListFragments.add(mFragmentFeed = (FeedFragment) Fragment
+                    .instantiate(this, FeedFragment.class.getName()));
 
             // Setup platoon tab
             mFragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
@@ -142,14 +137,9 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             // Fill the PagerAdapter & set it to the viewpager
             mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-                    mFragmentManager,
-                    new String[] {
-                            "NEWS", "PROFILE", "PLATOON", "FORUM", "FEED"
-                    },
-                    mListFragments,
-                    mViewPager,
-                    mLayoutInflater
-                    );
+                    mFragmentManager, new String[]{"NEWS", "PROFILE", "PLATOON",
+                    "FORUM", "FEED"}, mListFragments, mViewPager,
+                    mLayoutInflater);
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 
@@ -164,11 +154,14 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
             // Add them to the list
             mListFragmentsCom = new ArrayList<Fragment>();
-            mListFragmentsCom.add(mFragmentComFriends = (ComFriendFragment) Fragment.instantiate(
-                    this,
-                    ComFriendFragment.class.getName()));
-            mListFragmentsCom.add(mFragmentComNotifications = (ComNotificationFragment) Fragment
-                    .instantiate(this, ComNotificationFragment.class.getName()));
+            mListFragmentsCom
+                    .add(mFragmentComFriends = (ComFriendFragment) Fragment
+                            .instantiate(this,
+                                    ComFriendFragment.class.getName()));
+            mListFragmentsCom
+                    .add(mFragmentComNotifications = (ComNotificationFragment) Fragment
+                            .instantiate(this,
+                                    ComNotificationFragment.class.getName()));
 
             // Get the ViewPager
             mViewPagerCom = (ViewPager) findViewById(R.id.viewpager_sub);
@@ -177,14 +170,8 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             // Fill the PagerAdapter & set it to the viewpager
             mPagerAdapterCom = new SwipeyTabsPagerAdapter(
 
-                    mFragmentManager,
-                    new String[] {
-                            "FRIENDS", "NOTIFICATIONS"
-                    },
-                    mListFragmentsCom,
-                    mViewPagerCom,
-                    mLayoutInflater
-                    );
+                    mFragmentManager, new String[]{"FRIENDS", "NOTIFICATIONS"},
+                    mListFragmentsCom, mViewPagerCom, mLayoutInflater);
             mViewPagerCom.setAdapter(mPagerAdapterCom);
             mTabsCom.setAdapter(mPagerAdapterCom);
 
@@ -205,9 +192,10 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             if (getIntent().hasExtra("myProfile")) {
 
                 // Get 'em
-                ProfileData profileData = getIntent().getParcelableExtra("myProfile");
-                List<PlatoonData> platoonArray = getIntent().getParcelableArrayListExtra(
-                        "myPlatoon");
+                ProfileData profileData = getIntent().getParcelableExtra(
+                        "myProfile");
+                List<PlatoonData> platoonArray = getIntent()
+                        .getParcelableArrayListExtra("myPlatoon");
 
                 // Set 'em
                 SessionKeeper.setProfileData(profileData);
@@ -215,7 +203,8 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
             } else {
 
-                Toast.makeText(this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.info_txt_session_lost,
+                        Toast.LENGTH_SHORT).show();
 
             }
 
@@ -234,7 +223,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
+                                    ContextMenuInfo menuInfo) {
 
         if (mSlidingDrawer.isOpened()) {
 
@@ -370,7 +359,8 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
             } else if (mViewPager.getCurrentItem() > 1) {
 
-                mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+                mViewPager
+                        .setCurrentItem(mViewPager.getCurrentItem() - 1, true);
                 return true;
 
             }

@@ -1,18 +1,14 @@
-
 package com.ninetwozero.battlelog.http;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.util.Log;
 
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommentClient extends DefaultClient {
 
@@ -30,9 +26,8 @@ public class CommentClient extends DefaultClient {
     public static final String URL_NEWS_COMMENT = Constants.URL_MAIN
             + "news/view/{ARTICLE_ID}/{PAGE}/True";
     // Attributes
-    public static final String[] FIELD_NAMES_COMMENT = new String[] {
-            "comment", "post-check-sum"
-    };
+    public static final String[] FIELD_NAMES_COMMENT = new String[]{
+            "comment", "post-check-sum"};
 
     public CommentClient(long i, int t) {
 
@@ -42,29 +37,26 @@ public class CommentClient extends DefaultClient {
 
     }
 
-    public boolean post(String checksum, String comment) throws WebsiteHandlerException {
+    public boolean post(String checksum, String comment)
+            throws WebsiteHandlerException {
 
         try {
 
             // Let's post!
             boolean isFeed = (mType == CommentData.TYPE_FEED);
-            String url = RequestHandler
-                    .generateUrl(isFeed ? URL_COMMENT : URL_NEWS_COMMENT, mId, 1);
+            String url = RequestHandler.generateUrl(isFeed ? URL_COMMENT
+                    : URL_NEWS_COMMENT, mId, 1);
 
             // Get the httpContent
             String httpContent = mRequestHandler.post(
 
-                    url,
-                    RequestHandler.generatePostData(
+                    url, RequestHandler.generatePostData(
 
-                            FIELD_NAMES_COMMENT,
-                            comment,
-                            checksum
+                    FIELD_NAMES_COMMENT, comment, checksum
 
-                            ),
-                    RequestHandler.HEADER_JSON
+            ), RequestHandler.HEADER_JSON
 
-                    );
+            );
 
             // Did we manage?
             if (httpContent.length() > 0) {
@@ -93,8 +85,7 @@ public class CommentClient extends DefaultClient {
 
     }
 
-    public List<CommentData> get(int pId)
-            throws WebsiteHandlerException {
+    public List<CommentData> get(int pId) throws WebsiteHandlerException {
 
         try {
 
@@ -107,13 +98,10 @@ public class CommentClient extends DefaultClient {
 
                     RequestHandler.generateUrl(
 
-                            isFeed ? URL_LIST : URL_NEWS_LIST,
-                            mId,
-                            pId
-                            ),
+                            isFeed ? URL_LIST : URL_NEWS_LIST, mId, pId),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Did we manage?
             if (httpContent.length() > 0) {
@@ -125,15 +113,16 @@ public class CommentClient extends DefaultClient {
                 // Is it a feed?
                 if (isFeed) {
 
-                    dataObject = new JSONObject(httpContent).getJSONObject("data");
+                    dataObject = new JSONObject(httpContent)
+                            .getJSONObject("data");
 
                 } else {
 
-                    dataObject = new JSONObject(httpContent).getJSONObject("context")
-                            .getJSONObject("blogPost");
+                    dataObject = new JSONObject(httpContent).getJSONObject(
+                            "context").getJSONObject("blogPost");
 
                 }
-                
+
                 // Get the comment array
                 JSONArray commentArray = dataObject.getJSONArray("comments");
 
@@ -141,24 +130,27 @@ public class CommentClient extends DefaultClient {
                 for (int i = 0, max = commentArray.length(); i < max; i++) {
 
                     tempObject = commentArray.optJSONObject(i);
-                    JSONObject tempOwnerItem = tempObject.getJSONObject("owner");
+                    JSONObject tempOwnerItem = tempObject
+                            .getJSONObject("owner");
                     comments.add(
 
                             new CommentData(
 
-                                    mId,
-                                    Long.parseLong(tempObject.getString("itemId")),
-                                    Long.parseLong(tempObject.getString("creationDate")),
+                                    mId, Long.parseLong(tempObject.getString("itemId")), Long
+                                    .parseLong(tempObject.getString("creationDate")),
                                     tempObject.getString("body"),
                                     new ProfileData.Builder(
 
                                             Long.parseLong(tempOwnerItem.getString("userId")),
-                                            tempOwnerItem.getString("username")
-                                    ).gravatarHash(tempOwnerItem.getString("gravatarMd5")).build()
+                                            tempOwnerItem.getString("username"))
+                                            .gravatarHash(
+                                                    tempOwnerItem
+                                                            .getString("gravatarMd5"))
+                                            .build()
 
                             )
 
-                            );
+                    );
 
                 }
 

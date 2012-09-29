@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -23,10 +21,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.NewsData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.List;
 
 public class NewsListAdapter extends BaseAdapter {
 
@@ -95,7 +94,7 @@ public class NewsListAdapter extends BaseAdapter {
         String commentText = ((currentItem.getNumComments() == 1) ? context
                 .getString(R.string.info_comment_s) : context
                 .getString(R.string.info_comment_p)
-                ).replace("{num}", currentItem.getNumComments() + "");
+        ).replace("{num}", currentItem.getNumComments() + "");
 
         // Set the views
         ((TextView) convertView.findViewById(R.id.text_title)).setText(currentItem.getTitle());

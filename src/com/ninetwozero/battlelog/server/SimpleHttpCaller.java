@@ -1,20 +1,19 @@
-
 package com.ninetwozero.battlelog.server;
 
-import java.io.IOException;
-
+import com.ninetwozero.battlelog.server.Bf3ServerCall._403Exception;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.ninetwozero.battlelog.server.Bf3ServerCall._403Exception;
+import java.io.IOException;
 
 public class SimpleHttpCaller {
 
     public interface SimpleHttpCallerCallback {
         void onSimpleHttpCallSuccess(HttpResponse response);
 
-        void onSimpleHttpCallFailure(HttpResponse response) throws _403Exception;
+        void onSimpleHttpCallFailure(HttpResponse response)
+                throws _403Exception;
     }
 
     private final SimpleHttpCallerCallback callback;
@@ -22,7 +21,7 @@ public class SimpleHttpCaller {
     private final HttpUriRequest request;
 
     public SimpleHttpCaller(HttpClient httpClient, HttpUriRequest request,
-            SimpleHttpCallerCallback callback) {
+                            SimpleHttpCallerCallback callback) {
         this.callback = callback;
         this.request = request;
         this.httpClient = httpClient;

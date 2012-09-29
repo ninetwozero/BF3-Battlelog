@@ -13,37 +13,37 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
-    <TextView
-        android:id="@+id/text_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ninetwozero"
-        android:textColor="@color/orange"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+  <TextView
+      android:id="@+id/text_username"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="ninetwozero"
+      android:textColor="@color/orange"
+      android:textSize="16sp"
+      android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/text_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_username"
-        android:autoLink="all"
-        android:linksClickable="true"
-        android:text="This is a message"
-        android:textSize="16sp" />
+  <TextView
+      android:id="@+id/text_message"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/text_username"
+      android:autoLink="all"
+      android:linksClickable="true"
+      android:text="This is a message"
+      android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/text_timestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/text_username"
-        android:layout_alignParentRight="true"
-        android:text="3 hours ago"
-        android:textColor="#BBBBBB"
-        android:textSize="14sp" />
+  <TextView
+      android:id="@+id/text_timestamp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBaseline="@id/text_username"
+      android:layout_alignParentRight="true"
+      android:text="3 hours ago"
+      android:textColor="#BBBBBB"
+      android:textSize="14sp"/>
 
 </RelativeLayout>

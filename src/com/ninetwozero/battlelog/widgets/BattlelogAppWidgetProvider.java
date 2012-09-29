@@ -26,7 +26,6 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.widget.RemoteViews;
-
 import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FriendListDataWrapper;
@@ -48,7 +47,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-            int[] appWidgetIds) {
+                         int[] appWidgetIds) {
 
         // Set the values
         mSharedPreferences = PreferenceManager
@@ -103,17 +102,19 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
             try {
 
-                PersonaData firstPersona = SessionKeeper.getProfileData().getPersona(0);
-                mPlayerData = new ProfileClient(SessionKeeper.getProfileData()).getStats(
+                PersonaData firstPersona = SessionKeeper.getProfileData()
+                        .getPersona(0);
+                mPlayerData = new ProfileClient(SessionKeeper.getProfileData())
+                        .getStats(
 
-                        firstPersona.getName(),
-                        firstPersona.getId(),
-                        firstPersona.getPlatformId()
+                                firstPersona.getName(), firstPersona.getId(),
+                                firstPersona.getPlatformId()
 
                         );
 
                 mFriends = new COMClient(mSharedPreferences.getString(
-                        Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriendsForCOM(mContext);
+                        Constants.SP_BL_PROFILE_CHECKSUM, ""))
+                        .getFriendsForCOM(mContext);
                 mNumFriendsOnline = mFriends.getNumTotalOnline();
                 return true;
 
@@ -132,8 +133,8 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
             if (mContext != null) {
 
                 // Let's init a RemoteViews
-                RemoteViews remoteView = new RemoteViews(mContext.getPackageName(),
-                        R.layout.widget_dogtag);
+                RemoteViews remoteView = new RemoteViews(
+                        mContext.getPackageName(), R.layout.widget_dogtag);
 
                 // Set the views
                 if (results) {
@@ -142,23 +143,26 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
                             R.id.label, mPlayerData.getPersonaName()
 
-                            );
+                    );
                     remoteView.setTextViewText(
 
-                            R.id.title,
-                            mContext.getString(R.string.info_xml_rank)
-                                    + mPlayerData.getRankId());
+                            R.id.title, mContext.getString(R.string.info_xml_rank)
+                            + mPlayerData.getRankId());
                     remoteView
                             .setTextViewText(
 
                                     R.id.stats,
-                                    ("W/L: " + Math.floor(mPlayerData.getWLRatio() * 100) / 100
-                                            + "  K/D: " + Math.floor(mPlayerData.getKDRatio() * 100) / 100));
+                                    ("W/L: "
+                                            + Math.floor(mPlayerData
+                                            .getWLRatio() * 100) / 100
+                                            + "  K/D: " + Math
+                                            .floor(mPlayerData.getKDRatio() * 100) / 100));
 
                     if (mNumFriendsOnline > 0) {
 
                         remoteView.setTextColor(R.id.friends, Color.BLACK);
-                        remoteView.setTextViewText(R.id.friends, String.valueOf(mNumFriendsOnline));
+                        remoteView.setTextViewText(R.id.friends,
+                                String.valueOf(mNumFriendsOnline));
 
                     } else {
 
@@ -181,14 +185,13 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
                 }
 
                 remoteView.setOnClickPendingIntent(R.id.widget_button,
-                        PendingIntent.getBroadcast(mContext,
-                                0, new Intent(mContext, BattlelogAppWidgetProvider.class)
-                                        .setAction(ACTION_WIDGET_RECEIVER), 0));
-                remoteView.setOnClickPendingIntent(
-                        R.id.widget_button2,
-                        PendingIntent.getActivity(
-                                mContext, 0, new Intent(mContext, MainActivity.class).setAction(
-                                        ACTION_WIDGET_OPENAPP), 0));
+                        PendingIntent.getBroadcast(mContext, 0, new Intent(
+                                mContext, BattlelogAppWidgetProvider.class)
+                                .setAction(ACTION_WIDGET_RECEIVER), 0));
+                remoteView.setOnClickPendingIntent(R.id.widget_button2,
+                        PendingIntent.getActivity(mContext, 0, new Intent(
+                                mContext, MainActivity.class)
+                                .setAction(ACTION_WIDGET_OPENAPP), 0));
                 mAppWidgetManager.updateAppWidget(new ComponentName(mContext,
                         BattlelogAppWidgetProvider.class), remoteView);
 

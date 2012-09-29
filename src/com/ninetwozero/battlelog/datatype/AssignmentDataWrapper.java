@@ -34,7 +34,7 @@ public class AssignmentDataWrapper {
     }
 
     public AssignmentDataWrapper(List<AssignmentData> b, List<AssignmentData> p,
-            List<AssignmentData> c) {
+                                 List<AssignmentData> c) {
 
         mB2KAssignments = b;
         mCQAssignments = c;

@@ -13,92 +13,92 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/bg_bf3_main"
-    android:padding="10dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/bg_bf3_main"
+                android:padding="10dp">
 
-    <RelativeLayout
-        android:id="@+id/wrap_persona"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:background="#CCFFFFFF"
-        android:padding="5dp" >
+  <RelativeLayout
+      android:id="@+id/wrap_persona"
+      android:layout_width="250dp"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:background="#CCFFFFFF"
+      android:padding="5dp">
 
-        <ImageView
-            android:id="@+id/image_persona"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/bf3_us_recon" />
+    <ImageView
+        android:id="@+id/image_persona"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/bf3_us_recon"/>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/image_persona"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/string000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Active soldier:"
-                android:textSize="18sp" />
-
-            <com.ninetwozero.battlelog.datatype.MarqueeTextView
-                android:id="@+id/text_persona"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="marquee"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:text="NINETWOZERO"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </RelativeLayout>
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/wrap_persona"
-        android:padding="10dp" >
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/image_persona"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical" >
+      <TextView
+          android:id="@+id/string000"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Active soldier:"
+          android:textSize="18sp"/>
 
-            <Button
-                android:id="@+id/button_self"
-                style="@style/MenuButton"
-                android:text="@string/label_own_soldier" />
+      <com.ninetwozero.battlelog.datatype.MarqueeTextView
+          android:id="@+id/text_persona"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:ellipsize="marquee"
+          android:marqueeRepeatLimit="marquee_forever"
+          android:scrollHorizontally="true"
+          android:singleLine="true"
+          android:text="NINETWOZERO"
+          android:textSize="20sp"
+          android:textStyle="bold"/>
+    </LinearLayout>
+  </RelativeLayout>
 
-            <Button
-                android:id="@+id/button_weapon"
-                style="@style/MenuButton"
-                android:text="@string/label_menu_weapons" />
+  <ScrollView
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_below="@id/wrap_persona"
+      android:padding="10dp">
 
-            <Button
-                android:id="@+id/button_unlocks"
-                style="@style/MenuButton"
-                android:text="@string/label_unlocks" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
 
-            <Button
-                android:id="@+id/button_assignments"
-                style="@style/MenuButton"
-                android:text="@string/label_assignments" />
+      <Button
+          android:id="@+id/button_self"
+          style="@style/MenuButton"
+          android:text="@string/label_own_soldier"/>
 
-            <Button
-                android:id="@+id/button_settings"
-                style="@style/MenuButton"
-                android:text="@string/label_settings" />
-        </LinearLayout>
-    </ScrollView>
+      <Button
+          android:id="@+id/button_weapon"
+          style="@style/MenuButton"
+          android:text="@string/label_menu_weapons"/>
+
+      <Button
+          android:id="@+id/button_unlocks"
+          style="@style/MenuButton"
+          android:text="@string/label_unlocks"/>
+
+      <Button
+          android:id="@+id/button_assignments"
+          style="@style/MenuButton"
+          android:text="@string/label_assignments"/>
+
+      <Button
+          android:id="@+id/button_settings"
+          style="@style/MenuButton"
+          android:text="@string/label_settings"/>
+    </LinearLayout>
+  </ScrollView>
 
 </RelativeLayout>

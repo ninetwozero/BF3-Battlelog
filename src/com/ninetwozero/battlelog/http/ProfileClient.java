@@ -14,48 +14,23 @@
 
 package com.ninetwozero.battlelog.http;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import android.content.Context;
+import android.util.Log;
+import com.ninetwozero.battlelog.datatype.*;
+import com.ninetwozero.battlelog.misc.CacheHandler;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.DataBank;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 import org.apache.http.HttpEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatype.AssignmentComparator;
-import com.ninetwozero.battlelog.datatype.AssignmentData;
-import com.ninetwozero.battlelog.datatype.AssignmentDataWrapper;
-import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
-import com.ninetwozero.battlelog.datatype.PersonaData;
-import com.ninetwozero.battlelog.datatype.PersonaStats;
-import com.ninetwozero.battlelog.datatype.PlatoonData;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.ProfileInformation;
-import com.ninetwozero.battlelog.datatype.RequestHandlerException;
-import com.ninetwozero.battlelog.datatype.UnlockComparator;
-import com.ninetwozero.battlelog.datatype.UnlockData;
-import com.ninetwozero.battlelog.datatype.UnlockDataWrapper;
-import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
-import com.ninetwozero.battlelog.datatype.WeaponDataWrapperComparator;
-import com.ninetwozero.battlelog.datatype.WeaponInfo;
-import com.ninetwozero.battlelog.datatype.WeaponStats;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.CacheHandler;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.DataBank;
-import com.ninetwozero.battlelog.misc.PublicUtils;
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 public class ProfileClient extends DefaultClient {
 
@@ -64,8 +39,10 @@ public class ProfileClient extends DefaultClient {
 
     // URLS
     public static final String URL_INFO = Constants.URL_MAIN + "user/{UNAME}/";
-    public static final String URL_SETTINGS = Constants.URL_MAIN + "profile/edit/";
-    public static final String URL_SETTINGS_EDIT = Constants.URL_MAIN + "profile/update/";
+    public static final String URL_SETTINGS = Constants.URL_MAIN
+            + "profile/edit/";
+    public static final String URL_SETTINGS_EDIT = Constants.URL_MAIN
+            + "profile/update/";
     public static final String URL_OVERVIEW = Constants.URL_MAIN
             + "overviewPopulateStats/{PID}/None/{PLATFORM_ID}/";
     public static final String URL_WEAPONS = Constants.URL_MAIN
@@ -90,20 +67,22 @@ public class ProfileClient extends DefaultClient {
             + "user/overviewBoxStats/{UID}/";
 
     // Constants
-    public static final String[] FIELD_NAMES_SETTINGS = new String[] {
+    public static final String[] FIELD_NAMES_SETTINGS = new String[]{
 
-            "profile-edit-gravatar", "profile-edit-personaId[]", "profile-edit-picture[]",
-            "profile-edit-clantag[]", "profile-edit-clantag-games[]", "profile-edit-name",
-            "profile-edit-presentation", "profile-edit-birthyear", "profile-edit-birthmonth",
-            "profile-edit-birthday", "profile-edit-location", "profile-edit-dateformat",
-            "profile-edit-ampm", "profile-edit-utcoffset", "profile-edit-hidedetails",
-            "profile-edit-inactivatefeed", "profile-edit-allowfriendrequests", "post-check-sum"
+            "profile-edit-gravatar", "profile-edit-personaId[]",
+            "profile-edit-picture[]", "profile-edit-clantag[]",
+            "profile-edit-clantag-games[]", "profile-edit-name",
+            "profile-edit-presentation", "profile-edit-birthyear",
+            "profile-edit-birthmonth", "profile-edit-birthday",
+            "profile-edit-location", "profile-edit-dateformat",
+            "profile-edit-ampm", "profile-edit-utcoffset",
+            "profile-edit-hidedetails", "profile-edit-inactivatefeed",
+            "profile-edit-allowfriendrequests", "post-check-sum"
 
     };
 
-    public static final String[] FIELD_NAMES_SEARCH = new String[] {
-            "username", "post-check-sum"
-    };
+    public static final String[] FIELD_NAMES_SEARCH = new String[]{
+            "username", "post-check-sum"};
 
     public ProfileClient(ProfileData pd) {
 
@@ -112,8 +91,8 @@ public class ProfileClient extends DefaultClient {
 
     }
 
-    public static ProfileData getProfileIdFromName(final String keyword, final String checksum)
-            throws WebsiteHandlerException {
+    public static ProfileData getProfileIdFromName(final String keyword,
+                                                   final String checksum) throws WebsiteHandlerException {
 
         try {
 
@@ -121,17 +100,13 @@ public class ProfileClient extends DefaultClient {
             ProfileData profile = null;
             String httpContent = new RequestHandler().post(
 
-                    URL_SEARCH,
-                    RequestHandler.generatePostData(
+                    URL_SEARCH, RequestHandler.generatePostData(
 
-                            FIELD_NAMES_SEARCH,
-                            keyword,
-                            checksum
+                    FIELD_NAMES_SEARCH, keyword, checksum
 
-                            ),
-                    RequestHandler.HEADER_NORMAL
+            ), RequestHandler.HEADER_NORMAL
 
-                    );
+            );
 
             // Did we manage?
             if ("".equals(httpContent)) {
@@ -162,8 +137,10 @@ public class ProfileClient extends DefaultClient {
 
                             profile = new ProfileData.Builder(
                                     Long.parseLong(tempObj.getString("userId")),
-                                    tempObj.getString("username")
-                                    ).gravatarHash(tempObj.optString("gravatarMd5", "")).build();
+                                    tempObj.getString("username"))
+                                    .gravatarHash(
+                                            tempObj.optString("gravatarMd5", ""))
+                                    .build();
 
                             break;
 
@@ -178,8 +155,10 @@ public class ProfileClient extends DefaultClient {
 
                             profile = new ProfileData.Builder(
                                     Long.parseLong(tempObj.getString("userId")),
-                                    tempObj.getString("username")
-                                    ).gravatarHash(tempObj.optString("gravatarMd5", "")).build();
+                                    tempObj.getString("username"))
+                                    .gravatarHash(
+                                            tempObj.optString("gravatarMd5", ""))
+                                    .build();
 
                         }
 
@@ -208,8 +187,8 @@ public class ProfileClient extends DefaultClient {
 
     }
 
-    public static ProfileData resolveFullProfileFromPersonaId(final long personaId)
-            throws WebsiteHandlerException {
+    public static ProfileData resolveFullProfileFromPersonaId(
+            final long personaId) throws WebsiteHandlerException {
 
         try {
 
@@ -230,9 +209,9 @@ public class ProfileClient extends DefaultClient {
                 JSONObject user = new JSONObject(httpContent).getJSONObject(
                         "data").getJSONObject("user");
 
-                return new ProfileData.Builder(
-                        Long.parseLong(user.getString("userId")),
-                        user.getString("username")).gravatarHash(user.optString("gravatarMd5", ""))
+                return new ProfileData.Builder(Long.parseLong(user
+                        .getString("userId")), user.getString("username"))
+                        .gravatarHash(user.optString("gravatarMd5", ""))
                         .build();
 
             }
@@ -245,8 +224,8 @@ public class ProfileClient extends DefaultClient {
 
     }
 
-    public static ProfileData resolveFullProfileDataFromProfileId(final long profileId)
-            throws WebsiteHandlerException {
+    public static ProfileData resolveFullProfileDataFromProfileId(
+            final long profileId) throws WebsiteHandlerException {
 
         try {
 
@@ -256,12 +235,13 @@ public class ProfileClient extends DefaultClient {
                     RequestHandler.generateUrl(URL_PROFILE, profileId),
                     RequestHandler.HEADER_NORMAL
 
-                    );
+            );
 
             // Did we manage?
             if ("".equals(httpContent)) {
 
-                throw new WebsiteHandlerException("Could not retrieve the PersonaID.");
+                throw new WebsiteHandlerException(
+                        "Could not retrieve the PersonaID.");
 
             } else {
 
@@ -287,13 +267,14 @@ public class ProfileClient extends DefaultClient {
 
                             personaObject.getLong("personaId"),
                             personaObject.getString("personaName"),
-                            DataBank.getPlatformIdFromName(personaObject.getString("namespace")),
-                            personaObject.getString("picture")
-                            );
+                            DataBank.getPlatformIdFromName(personaObject
+                                    .getString("namespace")),
+                            personaObject.getString("picture"));
                 }
 
-                return new ProfileData.Builder(profileId, personaArray[0].getName()).persona(
-                        personaArray).build();
+                return new ProfileData.Builder(profileId,
+                        personaArray[0].getName()).persona(personaArray)
+                        .build();
 
             }
 
@@ -305,8 +286,8 @@ public class ProfileClient extends DefaultClient {
 
     }
 
-    public static ProfileData resolveFullProfileDataFromProfileData(final ProfileData p)
-            throws WebsiteHandlerException {
+    public static ProfileData resolveFullProfileDataFromProfileData(
+            final ProfileData p) throws WebsiteHandlerException {
 
         try {
 
@@ -315,7 +296,7 @@ public class ProfileClient extends DefaultClient {
 
                     profile.getPersonaArray()
 
-                    ).gravatarHash(profile.getGravatarHash()).build();
+            ).gravatarHash(profile.getGravatarHash()).build();
 
         } catch (Exception ex) {
 
@@ -325,31 +306,29 @@ public class ProfileClient extends DefaultClient {
         }
     }
 
-    public PersonaStats getStats(String personaName, long personaId, int platformId)
-            throws WebsiteHandlerException {
+    public PersonaStats getStats(String personaName, long personaId,
+                                 int platformId) throws WebsiteHandlerException {
 
         try {
 
             // Get the data
             String content = mRequestHandler.get(
 
-                    RequestHandler.generateUrl(
-                            URL_OVERVIEW,
-                            personaId,
-                            platformId
-                            ),
+                    RequestHandler.generateUrl(URL_OVERVIEW, personaId, platformId),
                     RequestHandler.HEADER_NORMAL
 
-                    );
+            );
 
             // JSON Objects
-            JSONObject dataObject = new JSONObject(content).getJSONObject("data");
+            JSONObject dataObject = new JSONObject(content)
+                    .getJSONObject("data");
 
             // Is overviewStats NULL? If so, no data.
             if (dataObject.isNull("overviewStats")) {
 
-                return new PersonaStats(mProfileData.getUsername(), mProfileData.getId(),
-                        personaName, personaId, platformId);
+                return new PersonaStats(mProfileData.getUsername(),
+                        mProfileData.getId(), personaName, personaId,
+                        platformId);
 
             }
 
@@ -366,8 +345,9 @@ public class ProfileClient extends DefaultClient {
 
                     mProfileData.getUsername(), mProfileData.getPersona(0).getName(),
                     currRankInfo.getString("name"),
-                    statsOverview.getLong("rank"), mProfileData.getPersona(0).getId(),
-                    mProfileData.getId(), mProfileData.getPersona(0).getPlatformId(),
+                    statsOverview.getLong("rank"), mProfileData.getPersona(0)
+                    .getId(), mProfileData.getId(), mProfileData
+                    .getPersona(0).getPlatformId(),
                     statsOverview.getLong("timePlayed"),
                     currRankInfo.getLong("pointsNeeded"),
                     nextRankInfo.getLong("pointsNeeded"),
@@ -417,7 +397,8 @@ public class ProfileClient extends DefaultClient {
             // Do we have a personaId?
             if (mProfileData.getNumPersonas() == 0) {
 
-                mProfileData = resolveFullProfileDataFromProfileId(mProfileData.getId());
+                mProfileData = resolveFullProfileDataFromProfileId(mProfileData
+                        .getId());
 
             }
 
@@ -425,8 +406,10 @@ public class ProfileClient extends DefaultClient {
             for (int i = 0, max = mProfileData.getNumPersonas(); i < max; i++) {
 
                 PersonaData current = mProfileData.getPersona(i);
-                stats.put(current.getId(),
-                        getStats(current.getName(), current.getId(), current.getPlatformId()));
+                stats.put(
+                        current.getId(),
+                        getStats(current.getName(), current.getId(),
+                                current.getPlatformId()));
 
             }
 
@@ -474,14 +457,12 @@ public class ProfileClient extends DefaultClient {
                 // Get the data
                 String content = mRequestHandler.get(
 
-                        RequestHandler.generateUrl(
-                                URL_UNLOCKS,
-                                mProfileData.getPersona(count).getId(),
-                                mProfileData.getPersona(count).getPlatformId()
-                                ),
+                        RequestHandler.generateUrl(URL_UNLOCKS, mProfileData
+                                .getPersona(count).getId(),
+                                mProfileData.getPersona(count).getPlatformId()),
                         RequestHandler.HEADER_NORMAL
 
-                        );
+                );
 
                 // JSON Objects
                 JSONObject dataObject = new JSONObject(content)
@@ -502,7 +483,8 @@ public class ProfileClient extends DefaultClient {
 
                     // Get the temporary object
                     JSONObject unlockRow = unlockResults.optJSONObject(i);
-                    UnlockData unlockData = getUnlockDataFromJSON(unlockRow, minCompletion);
+                    UnlockData unlockData = getUnlockDataFromJSON(unlockRow,
+                            minCompletion);
 
                     if (unlockData == null) {
                         continue;
@@ -514,19 +496,23 @@ public class ProfileClient extends DefaultClient {
 
                         weaponArray.add(unlockData);
 
-                    } else if (unlockData.getType().equals(UnlockData.CATEGORY_ATTACHMENT)) {
+                    } else if (unlockData.getType().equals(
+                            UnlockData.CATEGORY_ATTACHMENT)) {
 
                         attachmentArray.add(unlockData);
 
-                    } else if (unlockData.getType().equals(UnlockData.CATEGORY_KIT)) {
+                    } else if (unlockData.getType().equals(
+                            UnlockData.CATEGORY_KIT)) {
 
                         kitUnlockArray.add(unlockData);
 
-                    } else if (unlockData.getType().equals(UnlockData.CATEGORY_VEHICLE)) {
+                    } else if (unlockData.getType().equals(
+                            UnlockData.CATEGORY_VEHICLE)) {
 
                         vehicleUpgradeArray.add(unlockData);
 
-                    } else if (unlockData.getType().equals(UnlockData.CATEGORY_SKILL)) {
+                    } else if (unlockData.getType().equals(
+                            UnlockData.CATEGORY_SKILL)) {
 
                         skillArray.add(unlockData);
 
@@ -573,13 +559,10 @@ public class ProfileClient extends DefaultClient {
         try {
 
             // Attributes
-            final String[] unlockCategories = {
-                    UnlockData.CATEGORY_WEAPON,
+            final String[] unlockCategories = {UnlockData.CATEGORY_WEAPON,
                     UnlockData.CATEGORY_ATTACHMENT,
-                    UnlockData.CATEGORY_VEHICLE,
-                    UnlockData.CATEGORY_KIT,
-                    UnlockData.CATEGORY_SKILL
-            };
+                    UnlockData.CATEGORY_VEHICLE, UnlockData.CATEGORY_KIT,
+                    UnlockData.CATEGORY_SKILL};
 
             for (String category : unlockCategories) {
 
@@ -601,8 +584,7 @@ public class ProfileClient extends DefaultClient {
                 // Add them to the array
                 return new UnlockData(
 
-                        row.optInt("kit", 0),
-                        unlockDetails.getDouble("completion"),
+                        row.optInt("kit", 0), unlockDetails.getDouble("completion"),
                         unlockDetails.optLong("valueNeeded", 0),
                         unlockDetails.optLong("actualValue", 0),
                         row.getString("parentId"),
@@ -623,25 +605,22 @@ public class ProfileClient extends DefaultClient {
 
     }
 
-    public ProfileInformation getInformation(Context context, long activeProfileId)
-            throws WebsiteHandlerException {
+    public ProfileInformation getInformation(Context context,
+                                             long activeProfileId) throws WebsiteHandlerException {
 
         try {
 
             // Let's go!
 
             List<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
-            Log.d(Constants.DEBUG_TAG, "Information from => " + RequestHandler.generateUrl(
-                    URL_INFO,
-                    mProfileData.getUsername()
-                    ));
+            Log.d(Constants.DEBUG_TAG,
+                    "Information from => "
+                            + RequestHandler.generateUrl(URL_INFO,
+                            mProfileData.getUsername()));
             String httpContent = mRequestHandler.get(
-                    RequestHandler.generateUrl(
-                            URL_INFO,
-                            mProfileData.getUsername()
-                            ),
-                    RequestHandler.HEADER_AJAX
-                    );
+                    RequestHandler.generateUrl(URL_INFO,
+                            mProfileData.getUsername()),
+                    RequestHandler.HEADER_AJAX);
 
             // Did we manage?
             if ("".equals(httpContent)) {
@@ -710,15 +689,11 @@ public class ProfileClient extends DefaultClient {
 
                     // Store them
                     personaArray[i] = new PersonaData(
-                            Long.parseLong(personaObject
-                                    .getString("personaId")),
+                            Long.parseLong(personaObject.getString("personaId")),
                             (personaObject.isNull("personaName") ? username
                                     : personaObject.getString("personaName")),
-                            DataBank
-                                    .getPlatformIdFromName(personaObject
-                                            .getString("namespace")),
-                            null
-                            );
+                            DataBank.getPlatformIdFromName(personaObject
+                                    .getString("namespace")), null);
 
                 }
 
@@ -739,7 +714,7 @@ public class ProfileClient extends DefaultClient {
                                 context, currItem.getString("badgePath"), title,
                                 Constants.DEFAULT_BADGE_SIZE
 
-                                );
+                        );
 
                     }
 
@@ -749,15 +724,15 @@ public class ProfileClient extends DefaultClient {
                             new PlatoonData(
 
                                     Long.parseLong(currItem.getString("id")), currItem
-                                            .getInt("fanCounter"), currItem
-                                            .getInt("memberCounter"), currItem
-                                            .getInt("platform"), currItem.getString("name"),
+                                    .getInt("fanCounter"), currItem
+                                    .getInt("memberCounter"), currItem
+                                    .getInt("platform"), currItem.getString("name"),
                                     currItem.getString("tag"), title, !currItem
-                                            .getBoolean("hidden")
+                                    .getBoolean("hidden")
 
                             )
 
-                            );
+                    );
 
                 }
 
@@ -765,14 +740,14 @@ public class ProfileClient extends DefaultClient {
 
                         userInfo.optInt("age", 0), mProfileData.getId(),
                         userInfo.optLong("birthdate", 0), userInfo.optLong(
-                                "lastLogin", 0), statusMessage.optLong(
-                                "statusMessageChanged", 0), personaArray, userInfo.optString(
-                                "name", "N/A"), username,
+                        "lastLogin", 0), statusMessage.optLong(
+                        "statusMessageChanged", 0), personaArray,
+                        userInfo.optString("name", "N/A"), username,
                         userInfo.isNull("presentation") ? "" : userInfo
                                 .getString("presentation"), userInfo.optString(
-                                "location", "us"), statusMessage.optString(
-                                "statusMessage", ""), playingOn, userInfo.optBoolean(
-                                "allowFriendRequests", true),
+                        "location", "us"), statusMessage.optString(
+                        "statusMessage", ""), playingOn,
+                        userInfo.optBoolean("allowFriendRequests", true),
                         presenceObject.getBoolean("isOnline"),
                         presenceObject.getBoolean("isPlaying"),
                         profileCommonObject.getString("friendStatus").equals(
@@ -800,9 +775,8 @@ public class ProfileClient extends DefaultClient {
     }
 
     //
-    public static List<GeneralSearchResult> search(Context context, String keyword,
-            String checksum)
-            throws WebsiteHandlerException {
+    public static List<GeneralSearchResult> search(Context context,
+                                                   String keyword, String checksum) throws WebsiteHandlerException {
 
         // Init
         List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
@@ -812,17 +786,13 @@ public class ProfileClient extends DefaultClient {
             // Get the content
             String httpContent = new RequestHandler().post(
 
-                    URL_SEARCH,
-                    RequestHandler.generatePostData(
+                    URL_SEARCH, RequestHandler.generatePostData(
 
-                            FIELD_NAMES_SEARCH,
-                            keyword,
-                            checksum
+                    FIELD_NAMES_SEARCH, keyword, checksum
 
-                            ),
-                    RequestHandler.HEADER_NORMAL
+            ), RequestHandler.HEADER_NORMAL
 
-                    );
+            );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -838,7 +808,8 @@ public class ProfileClient extends DefaultClient {
                     for (int i = 0, max = searchResultsProfile.length(); i < max; i++) {
 
                         // Get the JSONObject
-                        JSONObject tempObj = searchResultsProfile.optJSONObject(i);
+                        JSONObject tempObj = searchResultsProfile
+                                .optJSONObject(i);
 
                         // Save it into an array
                         results.add(
@@ -852,7 +823,7 @@ public class ProfileClient extends DefaultClient {
 
                                 )
 
-                                );
+                        );
                     }
 
                 }
@@ -886,23 +857,24 @@ public class ProfileClient extends DefaultClient {
 
                         RequestHandler.generateUrl(
 
-                                URL_WEAPONS,
-                                mProfileData.getPersona(i).getId(),
-                                mProfileData.getPersona(i).getPlatformId()
-                                ),
+                                URL_WEAPONS, mProfileData.getPersona(i).getId(), mProfileData
+                                .getPersona(i).getPlatformId()),
                         RequestHandler.HEADER_NORMAL
 
-                        );
+                );
 
                 // So... how'd it go?
                 if (httpContent != null && !httpContent.equals("")) {
 
                     // Woo, we got results
-                    JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
-                    JSONObject weaponInfoObject = baseObject.getJSONObject("gadgetsLocale")
-                            .getJSONObject("weapons");
-                    JSONArray weaponStats = baseObject.getJSONArray("mainWeaponStats");
-                    JSONObject unlockMap = baseObject.getJSONObject("unlocksAdded");
+                    JSONObject baseObject = new JSONObject(httpContent)
+                            .getJSONObject("data");
+                    JSONObject weaponInfoObject = baseObject.getJSONObject(
+                            "gadgetsLocale").getJSONObject("weapons");
+                    JSONArray weaponStats = baseObject
+                            .getJSONArray("mainWeaponStats");
+                    JSONObject unlockMap = baseObject
+                            .getJSONObject("unlocksAdded");
 
                     // Let's iterate over the JSONArray
                     for (int count = 0, maxCount = weaponStats.length(); count < maxCount; count++) {
@@ -910,24 +882,27 @@ public class ProfileClient extends DefaultClient {
                         // Get the current item
                         int numUnlocked = 0;
                         List<UnlockData> unlocks = new ArrayList<UnlockData>();
-                        JSONObject currentItem = weaponStats.getJSONObject(count);
+                        JSONObject currentItem = weaponStats
+                                .getJSONObject(count);
 
                         // Determine the GUID
-                        String guid = currentItem.isNull("duplicateOf") ? "guid" : "duplicateOf";
+                        String guid = currentItem.isNull("duplicateOf") ? "guid"
+                                : "duplicateOf";
 
                         // Get the "current weapon information"
-                        JSONObject currentWeapon = weaponInfoObject.getJSONObject(currentItem
-                                .getString("guid"));
+                        JSONObject currentWeapon = weaponInfoObject
+                                .getJSONObject(currentItem.getString("guid"));
 
                         // Do we have unlocks for this item?
                         if (!unlockMap.isNull(currentItem.getString(guid))) {
 
                             // Unlocks
-                            JSONArray currentUnlocks = unlockMap.getJSONArray(currentItem
-                                    .getString(guid));
+                            JSONArray currentUnlocks = unlockMap
+                                    .getJSONArray(currentItem.getString(guid));
 
                             // Iterate over the unlocks
-                            for (int uCount = 0, maxUCount = currentUnlocks.length(); uCount < maxUCount; uCount++) {
+                            for (int uCount = 0, maxUCount = currentUnlocks
+                                    .length(); uCount < maxUCount; uCount++) {
 
                                 // Grab the unlocks
                                 UnlockData unlockData = getUnlockDataFromJSON(
@@ -937,7 +912,8 @@ public class ProfileClient extends DefaultClient {
                                 }
 
                                 // Increment
-                                if (unlockData.getScoreCurrent() >= unlockData.getScoreNeeded()) {
+                                if (unlockData.getScoreCurrent() >= unlockData
+                                        .getScoreNeeded()) {
 
                                     numUnlocked++;
 
@@ -954,47 +930,45 @@ public class ProfileClient extends DefaultClient {
 
                                 new WeaponDataWrapper(
 
-                                        numUnlocked,
-                                        new WeaponInfo(
-                                                currentItem.getString("guid"),
-                                                currentItem.getString("name"),
-                                                currentItem.getString("slug"),
-                                                currentWeapon.optInt("rateOfFire", 1),
-                                                WeaponInfo.RANGE_VLONG,
-                                                "Marshmallows",
-                                                currentWeapon.getBoolean("fireModeAuto"),
-                                                currentWeapon.getBoolean("fireModeBurst"),
-                                                currentWeapon.getBoolean("fireModeSingle")
+                                        numUnlocked, new WeaponInfo(currentItem
+                                        .getString("guid"), currentItem
+                                        .getString("name"), currentItem
+                                        .getString("slug"), currentWeapon.optInt(
+                                        "rateOfFire", 1), WeaponInfo.RANGE_VLONG,
+                                        "Marshmallows", currentWeapon
+                                        .getBoolean("fireModeAuto"),
+                                        currentWeapon.getBoolean("fireModeBurst"),
+                                        currentWeapon.getBoolean("fireModeSingle")
 
-                                        ),
-                                        new WeaponStats(
+                                ), new WeaponStats(
 
-                                                currentItem.getString("name"),
-                                                currentItem.getString("guid"),
-                                                currentItem.getString("slug"),
-                                                currentItem.getInt("kills"),
-                                                currentItem.getInt("headshots"),
-                                                currentItem.optInt("kitId", 999),
-                                                currentItem.getLong("shotsFired"),
-                                                currentItem.getLong("shotsHit"),
-                                                currentItem.getLong("timeEquipped"),
-                                                currentItem.getDouble("accuracy"),
-                                                currentItem.getDouble("serviceStars"),
-                                                currentItem.optDouble("serviceStarProgress", 0.0)
+                                        currentItem.getString("name"), currentItem
+                                        .getString("guid"), currentItem
+                                        .getString("slug"),
+                                        currentItem.getInt("kills"), currentItem
+                                        .getInt("headshots"), currentItem
+                                        .optInt("kitId", 999), currentItem
+                                        .getLong("shotsFired"), currentItem
+                                        .getLong("shotsHit"), currentItem
+                                        .getLong("timeEquipped"), currentItem
+                                        .getDouble("accuracy"), currentItem
+                                        .getDouble("serviceStars"), currentItem
+                                        .optDouble("serviceStarProgress", 0.0)
 
-                                        ),
-                                        unlocks
+                                ), unlocks
 
                                 )
 
-                                );
+                        );
 
                     }
 
                 }
 
-                Collections.sort(weaponDataArray, new WeaponDataWrapperComparator());
-                weaponDataMap.put(mProfileData.getPersona(i).getId(), weaponDataArray);
+                Collections.sort(weaponDataArray,
+                        new WeaponDataWrapperComparator());
+                weaponDataMap.put(mProfileData.getPersona(i).getId(),
+                        weaponDataArray);
 
             }
 
@@ -1015,7 +989,8 @@ public class ProfileClient extends DefaultClient {
 
     }
 
-    public HashMap<Long, WeaponDataWrapper> getWeapon(WeaponInfo weaponInfo, WeaponStats weaponStats) {
+    public HashMap<Long, WeaponDataWrapper> getWeapon(WeaponInfo weaponInfo,
+                                                      WeaponStats weaponStats) {
 
         try {
 
@@ -1032,16 +1007,14 @@ public class ProfileClient extends DefaultClient {
 
                         RequestHandler.generateUrl(
 
-                                URL_WEAPONS_INFO,
-                                mProfileData.getPersona(i).getName(),
-                                mProfileData.getPersona(i).getId(),
-                                weaponStats.getSlug(),
-                                mProfileData.getPersona(i).getPlatformId()
+                                URL_WEAPONS_INFO, mProfileData.getPersona(i).getName(),
+                                mProfileData.getPersona(i).getId(), weaponStats
+                                .getSlug(), mProfileData.getPersona(i)
+                                .getPlatformId()
 
-                                ),
-                        RequestHandler.HEADER_NORMAL
+                        ), RequestHandler.HEADER_NORMAL
 
-                        );
+                );
 
                 // So... how'd it go?
                 if (httpContent != null && !httpContent.equals("")) {
@@ -1050,8 +1023,10 @@ public class ProfileClient extends DefaultClient {
                     unlockArray = new ArrayList<UnlockData>();
 
                     // Woo, we got results
-                    JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
-                    JSONArray unlockObjectArray = baseObject.getJSONObject("statsItem")
+                    JSONObject baseObject = new JSONObject(httpContent)
+                            .getJSONObject("data");
+                    JSONArray unlockObjectArray = baseObject
+                            .getJSONObject("statsItem")
                             .getJSONObject("itemWeapon")
                             .getJSONArray("unlocks");
 
@@ -1059,26 +1034,27 @@ public class ProfileClient extends DefaultClient {
                     for (int count = 0, maxCount = unlockObjectArray.length(); count < maxCount; count++) {
 
                         // Get the current item
-                        JSONObject unlockObject = unlockObjectArray.getJSONObject(count);
-                        JSONObject unlockObjectBy = unlockObject.getJSONObject("unlockedBy");
+                        JSONObject unlockObject = unlockObjectArray
+                                .getJSONObject(count);
+                        JSONObject unlockObjectBy = unlockObject
+                                .getJSONObject("unlockedBy");
 
                         // Populate the array
                         unlockArray.add(
 
                                 new UnlockData(
 
-                                        weaponStats.getKitId(),
-                                        unlockObjectBy.optDouble("completion", 0),
-                                        unlockObjectBy.optLong("valueNeeded", 0),
-                                        unlockObjectBy.optLong("actualValue", 0),
-                                        weaponStats.getName(),
+                                        weaponStats.getKitId(), unlockObjectBy.optDouble(
+                                        "completion", 0), unlockObjectBy.optLong(
+                                        "valueNeeded", 0), unlockObjectBy.optLong(
+                                        "actualValue", 0), weaponStats.getName(),
                                         unlockObject.getString("unlockId"),
                                         unlockObjectBy.getString("codeNeeded"),
                                         UnlockData.CATEGORY_ATTACHMENT
 
                                 )
 
-                                );
+                        );
 
                     }
 
@@ -1088,17 +1064,13 @@ public class ProfileClient extends DefaultClient {
                     // Add the data array to the WeaponDataWrapper
                     weaponDataArray.put(
 
-                            mProfileData.getPersona(i).getId(),
-                            new WeaponDataWrapper(
+                            mProfileData.getPersona(i).getId(), new WeaponDataWrapper(
 
-                                    0,
-                                    weaponInfo,
-                                    weaponStats,
-                                    unlockArray
+                            0, weaponInfo, weaponStats, unlockArray
 
-                            )
+                    )
 
-                            );
+                    );
                 }
 
             }
@@ -1144,19 +1116,18 @@ public class ProfileClient extends DefaultClient {
 
                         RequestHandler.generateUrl(
 
-                                URL_ASSIGNMENTS,
-                                mProfileData.getPersona(count).getName(),
-                                mProfileData.getPersona(count).getId(),
-                                mProfileData.getId(),
-                                mProfileData.getPersona(count).getPlatformId()
+                                URL_ASSIGNMENTS, mProfileData.getPersona(count).getName(),
+                                mProfileData.getPersona(count).getId(), mProfileData
+                                .getId(), mProfileData.getPersona(count)
+                                .getPlatformId()
 
-                                ),
-                        RequestHandler.HEADER_AJAX
+                        ), RequestHandler.HEADER_AJAX
 
-                        );
+                );
 
                 // Parse the JSON!
-                JSONObject topLevel = new JSONObject(httpContent).getJSONObject("data");
+                JSONObject topLevel = new JSONObject(httpContent)
+                        .getJSONObject("data");
                 if (topLevel.isNull("missionTrees")) {
 
                     assignmentMap.put(mProfileData.getPersona(count).getId(),
@@ -1166,13 +1137,17 @@ public class ProfileClient extends DefaultClient {
                 }
 
                 // Create the missions
-                JSONObject missionTrees = topLevel.getJSONObject("missionTrees");
+                JSONObject missionTrees = topLevel
+                        .getJSONObject("missionTrees");
                 JSONArray missionNames = missionTrees.names();
 
-                for (int missionTreeCount = 0, maxMissionTrees = missionNames.length(); missionTreeCount < maxMissionTrees; missionTreeCount++) {
+                for (int missionTreeCount = 0, maxMissionTrees = missionNames
+                        .length(); missionTreeCount < maxMissionTrees; missionTreeCount++) {
 
-                    int mId = Integer.parseInt(String.valueOf(missionNames.get(missionTreeCount)));
-                    JSONObject missionTop = missionTrees.getJSONObject(String.valueOf(mId));
+                    int mId = Integer.parseInt(String.valueOf(missionNames
+                            .get(missionTreeCount)));
+                    JSONObject missionTop = missionTrees.getJSONObject(String
+                            .valueOf(mId));
                     JSONObject missions = missionTop.getJSONObject("missions");
                     List<AssignmentData> currentList = getAssignmentsFromJSON(missions);
 
@@ -1192,8 +1167,8 @@ public class ProfileClient extends DefaultClient {
                             break;
 
                         default:
-                            Toast.makeText(c, R.string.info_assignments_new_unknown,
-                                    Toast.LENGTH_SHORT).show();
+                            Log.d(Constants.DEBUG_TAG,
+                                    "New assignments available!!!");
                             break;
 
                     }
@@ -1202,13 +1177,14 @@ public class ProfileClient extends DefaultClient {
 
                 // Add the items
                 assignmentMap.put(mProfileData.getPersona(count).getId(),
-                        new AssignmentDataWrapper(b2kAssignments, premiumAssignments,
-                                cqAssignments));
+                        new AssignmentDataWrapper(b2kAssignments,
+                                premiumAssignments, cqAssignments));
 
             }
 
             Log.d(Constants.DEBUG_TAG, "numB2K => " + b2kAssignments.size());
-            Log.d(Constants.DEBUG_TAG, "numPremium => " + premiumAssignments.size());
+            Log.d(Constants.DEBUG_TAG,
+                    "numPremium => " + premiumAssignments.size());
             Log.d(Constants.DEBUG_TAG, "numCQ => " + cqAssignments.size());
             return assignmentMap;
 
@@ -1241,12 +1217,10 @@ public class ProfileClient extends DefaultClient {
             for (String key : stringArrayKeys) {
 
                 JSONObject assignment = missions.getJSONObject(key);
-                JSONArray criteriasJSON = assignment
-                        .getJSONArray("criterias");
+                JSONArray criteriasJSON = assignment.getJSONArray("criterias");
                 JSONArray dependenciesJSON = assignment
                         .getJSONArray("dependencies");
-                JSONArray unlocksJSON = assignment
-                        .getJSONArray("unlocks");
+                JSONArray unlocksJSON = assignment.getJSONArray("unlocks");
 
                 // Init
                 List<AssignmentData.Objective> criterias = new ArrayList<AssignmentData.Objective>();
@@ -1267,22 +1241,21 @@ public class ProfileClient extends DefaultClient {
                             new AssignmentData.Objective(
 
                                     currentItem.getDouble("actualValue"), currentItem
-                                            .getDouble("completionValue"), currentItem
-                                            .getString("statCode"), currentItem
-                                            .getString("paramX"), currentItem
-                                            .getString("paramY"), currentItem
-                                            .getString("descriptionID"), currentItem
-                                            .getString("unit")
+                                    .getDouble("completionValue"), currentItem
+                                    .getString("statCode"), currentItem
+                                    .getString("paramX"), currentItem
+                                    .getString("paramY"), currentItem
+                                    .getString("descriptionID"), currentItem
+                                    .getString("unit")
 
                             )
 
-                            );
+                    );
 
                 }
 
                 // Alright, let's do this
-                for (int counter = 0, maxCounter = dependenciesJSON
-                        .length(); counter < maxCounter; counter++) {
+                for (int counter = 0, maxCounter = dependenciesJSON.length(); counter < maxCounter; counter++) {
 
                     // Get the current item
                     JSONObject currentItem = dependenciesJSON
@@ -1293,12 +1266,11 @@ public class ProfileClient extends DefaultClient {
 
                             new AssignmentData.Dependency(
 
-                                    currentItem.getInt("count"), currentItem
-                                            .getString("code")
+                                    currentItem.getInt("count"), currentItem.getString("code")
 
                             )
 
-                            );
+                    );
 
                 }
 
@@ -1306,8 +1278,7 @@ public class ProfileClient extends DefaultClient {
                 for (int counter = 0, maxCounter = unlocksJSON.length(); counter < maxCounter; counter++) {
 
                     // Get the current item
-                    JSONObject currentItem = unlocksJSON
-                            .getJSONObject(counter);
+                    JSONObject currentItem = unlocksJSON.getJSONObject(counter);
 
                     // New object!
                     unlocks.add(
@@ -1315,35 +1286,28 @@ public class ProfileClient extends DefaultClient {
                             new AssignmentData.Unlock(
 
                                     currentItem.getString("unlockId"), currentItem
-                                            .getString("unlockType"), currentItem
-                                            .getBoolean("visible")
+                                    .getString("unlockType"), currentItem
+                                    .getBoolean("visible")
 
                             )
 
-                            );
+                    );
 
                 }
 
                 // Add the assignment
+                Log.d(Constants.DEBUG_TAG, "key => " + key);
                 int[] resources = DataBank.getResourcesForAssignment(key);
-                assignments.add(
+                if (resources != null) {
 
-                        new AssignmentData(
+                    assignments.add(new AssignmentData(resources[0],
+                            resources[1], assignment.getString("stringID"),
+                            assignment.getString("descriptionID"), assignment
+                            .getString("license"), criterias,
+                            dependencies, unlocks));
 
-                                resources[0],
-                                resources[1],
-                                assignment.getString("stringID"),
-                                assignment.getString("descriptionID"),
-                                assignment.getString("license"),
-                                criterias,
-                                dependencies,
-                                unlocks
-
-                        )
-
-                        );
-
-                assignmentCounter++;
+                    assignmentCounter++;
+                }
 
             }
 
@@ -1368,10 +1332,10 @@ public class ProfileClient extends DefaultClient {
             // Get the content
             String httpContent = mRequestHandler.get(
 
-                    RequestHandler.generateUrl(ProfileClient.URL_INFO, mProfileData.getUsername()),
-                    RequestHandler.HEADER_AJAX
+                    RequestHandler.generateUrl(ProfileClient.URL_INFO,
+                            mProfileData.getUsername()), RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Is it ok?
             if ("".equals(httpContent)) {
@@ -1406,7 +1370,7 @@ public class ProfileClient extends DefaultClient {
                                     context, currItem.getString("badgePath"), title,
                                     Constants.DEFAULT_BADGE_SIZE
 
-                                    );
+                            );
 
                         }
 
@@ -1416,16 +1380,16 @@ public class ProfileClient extends DefaultClient {
                                 new PlatoonData(
 
                                         Long.parseLong(currItem.getString("id")), currItem
-                                                .getInt("fanCounter"), currItem
-                                                .getInt("memberCounter"), currItem
-                                                .getInt("platform"),
+                                        .getInt("fanCounter"), currItem
+                                        .getInt("memberCounter"), currItem
+                                        .getInt("platform"),
                                         currItem.getString("name"), currItem
-                                                .getString("tag"), title, !currItem
-                                                .getBoolean("hidden")
+                                        .getString("tag"), title, !currItem
+                                        .getBoolean("hidden")
 
                                 )
 
-                                );
+                        );
                     }
 
                 }
@@ -1460,7 +1424,7 @@ public class ProfileClient extends DefaultClient {
 
                     RequestHandler.generateUrl(Constants.URL_GRAVATAR, h, s, s), false
 
-                    );
+            );
 
             // Init
             int bytesRead = 0;

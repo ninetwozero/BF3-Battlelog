@@ -13,59 +13,59 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="5dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp">
 
-    <TextView
-        android:id="@+id/text_title"
-        style="@style/InfoHeading"
-        android:padding="5dp"
-        android:text="NINETWOZERO" />
+  <TextView
+      android:id="@+id/text_title"
+      style="@style/InfoHeading"
+      android:padding="5dp"
+      android:text="@string/info_feed_title_global"/>
 
-    <RelativeLayout
-        android:id="@+id/wrap_input"
+  <RelativeLayout
+      android:id="@+id/wrap_input"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/text_title"
+      android:paddingBottom="10dp"
+      android:visibility="gone">
+
+    <Button
+        android:id="@+id/button_send"
+        style="@style/RegularButton"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="@string/label_post"/>
+
+    <EditText
+        android:id="@+id/field_message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text_title"
-        android:paddingBottom="10dp"
-        android:visibility="gone" >
+        android:layout_centerVertical="true"
+        android:layout_marginRight="6dp"
+        android:layout_toLeftOf="@id/button_send"
+        android:hint="@string/info_xml_hint_feed"
+        android:maxLength="1000"
+        android:singleLine="true"/>
+  </RelativeLayout>
 
-        <Button
-            android:id="@+id/button_send"
-            style="@style/RegularButton"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="@string/label_post" />
+  <ListView
+      android:id="@android:id/list"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_below="@id/wrap_input"
+      android:fastScrollEnabled="true"
+      android:paddingBottom="5dp"/>
 
-        <EditText
-            android:id="@+id/field_message"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="6dp"
-            android:layout_toLeftOf="@id/button_send"
-            android:hint="@string/info_xml_hint_feed"
-            android:maxLength="1000"
-            android:singleLine="true" />
-    </RelativeLayout>
-
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/wrap_input"
-        android:fastScrollEnabled="true"
-        android:paddingBottom="5dp" />
-
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/info_xml_no_feed" />
+  <TextView
+      android:id="@android:id/empty"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:text="@string/info_xml_no_feed"/>
 
 </RelativeLayout>

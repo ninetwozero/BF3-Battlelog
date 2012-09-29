@@ -13,281 +13,281 @@
     GNU General Public License for more details.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+  <RelativeLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent">
+
+    <TextView
+        android:id="@+id/string000"
+        style="@style/FriendHeadingRow"
+        android:text="Who am I?"/>
 
     <RelativeLayout
+        android:id="@+id/wrap_who"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="wrap_content"
+        android:layout_below="@id/string000"
+        android:padding="10dp">
+
+      <ImageView
+          android:id="@+id/image_gravatar"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="10dp"
+          android:src="@drawable/ninetwozero_eye"/>
+
+      <RelativeLayout
+          android:id="@+id/wrap_who_left"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/string000"
+          android:layout_centerVertical="true"
+          android:layout_toRightOf="@id/image_gravatar">
 
         <TextView
-            android:id="@+id/string000"
-            style="@style/FriendHeadingRow"
-            android:text="Who am I?" />
-
-        <RelativeLayout
-            android:id="@+id/wrap_who"
+            android:id="@+id/text_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/string000"
-            android:padding="10dp" >
-
-            <ImageView
-                android:id="@+id/image_gravatar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/ninetwozero_eye" />
-
-            <RelativeLayout
-                android:id="@+id/wrap_who_left"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/string000"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/image_gravatar" >
-
-                <TextView
-                    android:id="@+id/text_name"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Karl Lindmark"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:id="@+id/text_role"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/text_name"
-                    android:text="Student / freelancing developer" />
-
-                <TextView
-                    android:id="@+id/text_lives"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/text_role"
-                    android:text="Living in Umeå, Sweden" />
-            </RelativeLayout>
-        </RelativeLayout>
+            android:text="Karl Lindmark"
+            android:textSize="24sp"/>
 
         <TextView
-            android:id="@+id/string001"
-            style="@style/FriendHeadingRow"
-            android:layout_below="@id/wrap_who"
-            android:text="Contact information" />
-
-        <RelativeLayout
-            android:id="@+id/wrap_contact"
+            android:id="@+id/text_role"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/string001"
-            android:padding="10dp" >
-
-            <RelativeLayout
-                android:id="@+id/wrap_web"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/image_web"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/ninetwozero_avatar" />
-
-                <TextView
-                    android:id="@+id/string0011"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/image_web"
-                    android:text="Website" />
-
-                <TextView
-                    android:id="@+id/text_web"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/string0011"
-                    android:layout_toRightOf="@id/image_web"
-                    android:text="http://ninetwozero.com" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/wrap_twitter"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/wrap_web"
-                android:layout_marginTop="10dp"
-                android:onClick="onContactClick" >
-
-                <ImageView
-                    android:id="@+id/image_twitter"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/ninetwozero_twitter" />
-
-                <TextView
-                    android:id="@+id/string0012"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/image_twitter"
-                    android:text="Twitter" />
-
-                <TextView
-                    android:id="@+id/text_twitter"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/string0012"
-                    android:layout_toRightOf="@id/image_twitter"
-                    android:text=" @karllindmark" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/wrap_email"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/wrap_twitter"
-                android:layout_marginTop="10dp"
-                android:onClick="onContactClick" >
-
-                <ImageView
-                    android:id="@+id/image_email"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/ninetwozero_avatar" />
-
-                <TextView
-                    android:id="@+id/string0013"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/image_email"
-                    android:text="E-mail" />
-
-                <TextView
-                    android:id="@+id/text_email"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/string0013"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/image_email"
-                    android:text="support@ninetwozero.com" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/wrap_forum"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/wrap_email"
-                android:layout_marginTop="10dp"
-                android:onClick="onContactClick" >
-
-                <ImageView
-                    android:id="@+id/image_forum"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/ninetwozero_avatar" />
-
-                <TextView
-                    android:id="@+id/string0014"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/image_forum"
-                    android:text="@string/label_forum" />
-
-                <TextView
-                    android:id="@+id/string00141"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/string0014"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/string0014"
-                    android:text="(also supports the Tapatalk-app)"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:id="@+id/text_forum"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/string0014"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/image_forum"
-                    android:text="http://ninetwozero.com/forum" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/wrap_xbox"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/wrap_forum"
-                android:layout_marginTop="10dp"
-                android:onClick="onContactClick" >
-
-                <ImageView
-                    android:id="@+id/image_xbox"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/ninetwozero_xboxlive" />
-
-                <TextView
-                    android:id="@+id/string0015"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/image_xbox"
-                    android:text="Xbox Live Gamertag" />
-
-                <TextView
-                    android:id="@+id/text_xbox"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/string0015"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/image_xbox"
-                    android:text="NINETWOZERO" />
-            </RelativeLayout>
-        </RelativeLayout>
+            android:layout_below="@id/text_name"
+            android:text="Student / freelancing developer"/>
 
         <TextView
-            android:id="@+id/string003"
-            style="@style/FriendHeadingRow"
-            android:layout_below="@id/wrap_contact"
-            android:text="Donations" />
-
-        <RelativeLayout
-            android:id="@+id/wrap_paypal"
+            android:id="@+id/text_lives"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/string003"
-            android:padding="10dp" >
-
-            <ImageView
-                android:id="@+id/image_paypal"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/paypal_logo" />
-
-            <TextView
-                android:id="@+id/string0015"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@id/image_paypal"
-                android:gravity="center"
-                android:text="@string/info_about_donating" />
-        </RelativeLayout>
+            android:layout_below="@id/text_role"
+            android:text="Living in Umeå, Sweden"/>
+      </RelativeLayout>
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/string001"
+        style="@style/FriendHeadingRow"
+        android:layout_below="@id/wrap_who"
+        android:text="Contact information"/>
+
+    <RelativeLayout
+        android:id="@+id/wrap_contact"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/string001"
+        android:padding="10dp">
+
+      <RelativeLayout
+          android:id="@+id/wrap_web"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_web"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ninetwozero_avatar"/>
+
+        <TextView
+            android:id="@+id/string0011"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/image_web"
+            android:text="Website"/>
+
+        <TextView
+            android:id="@+id/text_web"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/string0011"
+            android:layout_toRightOf="@id/image_web"
+            android:text="http://ninetwozero.com"/>
+      </RelativeLayout>
+
+      <RelativeLayout
+          android:id="@+id/wrap_twitter"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/wrap_web"
+          android:layout_marginTop="10dp"
+          android:onClick="onContactClick">
+
+        <ImageView
+            android:id="@+id/image_twitter"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ninetwozero_twitter"/>
+
+        <TextView
+            android:id="@+id/string0012"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/image_twitter"
+            android:text="Twitter"/>
+
+        <TextView
+            android:id="@+id/text_twitter"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/string0012"
+            android:layout_toRightOf="@id/image_twitter"
+            android:text=" @karllindmark"/>
+      </RelativeLayout>
+
+      <RelativeLayout
+          android:id="@+id/wrap_email"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/wrap_twitter"
+          android:layout_marginTop="10dp"
+          android:onClick="onContactClick">
+
+        <ImageView
+            android:id="@+id/image_email"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ninetwozero_avatar"/>
+
+        <TextView
+            android:id="@+id/string0013"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/image_email"
+            android:text="E-mail"/>
+
+        <TextView
+            android:id="@+id/text_email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/string0013"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/image_email"
+            android:text="support@ninetwozero.com"/>
+      </RelativeLayout>
+
+      <RelativeLayout
+          android:id="@+id/wrap_forum"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/wrap_email"
+          android:layout_marginTop="10dp"
+          android:onClick="onContactClick">
+
+        <ImageView
+            android:id="@+id/image_forum"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ninetwozero_avatar"/>
+
+        <TextView
+            android:id="@+id/string0014"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/image_forum"
+            android:text="@string/label_forum"/>
+
+        <TextView
+            android:id="@+id/string00141"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/string0014"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/string0014"
+            android:text="(also supports the Tapatalk-app)"
+            android:textSize="10sp"/>
+
+        <TextView
+            android:id="@+id/text_forum"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/string0014"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/image_forum"
+            android:text="http://ninetwozero.com/forum"/>
+      </RelativeLayout>
+
+      <RelativeLayout
+          android:id="@+id/wrap_xbox"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/wrap_forum"
+          android:layout_marginTop="10dp"
+          android:onClick="onContactClick">
+
+        <ImageView
+            android:id="@+id/image_xbox"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ninetwozero_xboxlive"/>
+
+        <TextView
+            android:id="@+id/string0015"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/image_xbox"
+            android:text="Xbox Live Gamertag"/>
+
+        <TextView
+            android:id="@+id/text_xbox"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/string0015"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/image_xbox"
+            android:text="NINETWOZERO"/>
+      </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/string003"
+        style="@style/FriendHeadingRow"
+        android:layout_below="@id/wrap_contact"
+        android:text="Donations"/>
+
+    <RelativeLayout
+        android:id="@+id/wrap_paypal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/string003"
+        android:padding="10dp">
+
+      <ImageView
+          android:id="@+id/image_paypal"
+          android:layout_width="36dp"
+          android:layout_height="36dp"
+          android:layout_centerVertical="true"
+          android:layout_marginRight="5dp"
+          android:src="@drawable/paypal_logo"/>
+
+      <TextView
+          android:id="@+id/string0015"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="5dp"
+          android:layout_toRightOf="@id/image_paypal"
+          android:gravity="center"
+          android:text="@string/info_about_donating"/>
+    </RelativeLayout>
+  </RelativeLayout>
 
 </ScrollView>

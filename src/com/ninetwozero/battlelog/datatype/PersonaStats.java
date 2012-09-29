@@ -16,13 +16,7 @@ package com.ninetwozero.battlelog.datatype;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.ninetwozero.battlelog.jsonmodel.KitScores;
-import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
-import com.ninetwozero.battlelog.jsonmodel.PersonaStatsOverview;
-import com.ninetwozero.battlelog.jsonmodel.Rank;
-import com.ninetwozero.battlelog.jsonmodel.User;
-import com.ninetwozero.battlelog.jsonmodel.VehicleScores;
+import com.ninetwozero.battlelog.jsonmodel.*;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
@@ -60,14 +54,14 @@ public class PersonaStats implements Parcelable {
     }
 
     public PersonaStats(String aName, String pName, String rTitle, long rId,
-            long prsId, long plyrId, long pltfId, long tPlayed,
-            long ptsThisLvl, long ptsNxtLvl, int nKills, int nAssists,
-            int nVDestroyed, int nVDestroyedAssists, int nHeals, int nRevives,
-            int nRepairs, int nResup, int nDeaths, int nWins, int nLosses,
-            double kDRatio, double nAccuracy, double lHS, double lKS,
-            double nSkill, double spm, long scrAssault, long scrEngineer,
-            long scrSupport, long scrRecon, long scrVehicle, long scrCombat,
-            long scrAwards, long scrUnlocks, long scrTotal) {
+                        long prsId, long plyrId, long pltfId, long tPlayed,
+                        long ptsThisLvl, long ptsNxtLvl, int nKills, int nAssists,
+                        int nVDestroyed, int nVDestroyedAssists, int nHeals, int nRevives,
+                        int nRepairs, int nResup, int nDeaths, int nWins, int nLosses,
+                        double kDRatio, double nAccuracy, double lHS, double lKS,
+                        double nSkill, double spm, long scrAssault, long scrEngineer,
+                        long scrSupport, long scrRecon, long scrVehicle, long scrCombat,
+                        long scrAwards, long scrUnlocks, long scrTotal) {
 
         accountName = aName;
         personaName = pName;
@@ -114,10 +108,10 @@ public class PersonaStats implements Parcelable {
         Rank nextRank = pd.getNextRank();
         KitScores kitScores = statsOverview.getKitScores();
         VehicleScores vehicleScores = statsOverview.getVehicleScores(); // TODO
-                                                                        // add
-                                                                        // to
-                                                                        // the
-                                                                        // view
+        // add
+        // to
+        // the
+        // view
         User user = pd.getUser();
 
         accountName = user.getUserName();
@@ -130,7 +124,7 @@ public class PersonaStats implements Parcelable {
         platformId = pd.getPlatform();
         timePlayed = statsOverview.getTimePlayed();
         pointsThisLvl = currentRank.getRankPoints(); // TODO it should be
-                                                     // renamed to current
+        // renamed to current
         pointsNextLvl = nextRank.getRankPoints();
         numKills = (int) statsOverview.getKills(); // TODO should be long
         numAssists = (int) statsOverview.getKillAssists();
@@ -249,9 +243,9 @@ public class PersonaStats implements Parcelable {
 
     public final long getPointsProgressLvl() {
         //same issue as getPointsLeft
-        if(score != 0){
+        if (score != 0) {
             return score - pointsThisLvl;
-        }else{
+        } else {
             return scoreTotal - pointsThisLvl;
         }
     }
@@ -262,7 +256,7 @@ public class PersonaStats implements Parcelable {
 
     public final long getPointsLeft() {
         //TODO temporary fix model will need some renaming, however totalScore is not real player's result, use "score"
-        if(score != 0) {
+        if (score != 0) {
             return getPointsNextLvl() - score;
         } else {
             return getPointsNeededToLvlUp() - getPointsProgressLvl();
@@ -452,7 +446,7 @@ public class PersonaStats implements Parcelable {
 
     public final Object[] toArray() {
 
-        return new Object[] {
+        return new Object[]{
 
                 accountName, personaName, rankTitle,
                 personaId, userId, platformId,

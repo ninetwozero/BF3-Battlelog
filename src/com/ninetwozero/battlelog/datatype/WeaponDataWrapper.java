@@ -14,10 +14,10 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-import java.util.List;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.List;
 
 public class WeaponDataWrapper implements Parcelable {
 
@@ -27,7 +27,8 @@ public class WeaponDataWrapper implements Parcelable {
     private WeaponStats mStats;
     private List<UnlockData> mUnlocks;
 
-    public WeaponDataWrapper(int nu, WeaponInfo d, WeaponStats w, List<UnlockData> u) {
+    public WeaponDataWrapper(int nu, WeaponInfo d, WeaponStats w,
+                             List<UnlockData> u) {
 
         mNumUnlocked = nu;
         mData = d;

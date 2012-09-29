@@ -36,11 +36,11 @@ public class FeedClient extends DefaultClient {
             + "like/postunlike/{POST_ID}/feed-item-like/";
 
     // Constants
-    public static final String[] FIELD_NAMES_POST = new String[] {
+    public static final String[] FIELD_NAMES_POST = new String[]{
             "wall-message", "post-check-sum", "wall-ownerId", "wall-platoonId"
     };
 
-    public final static String[] EVENT_LABELS = new String[] {
+    public final static String[] EVENT_LABELS = new String[]{
             "statusmessage",
             "becamefriends",
             "createdforumthread",
@@ -76,7 +76,7 @@ public class FeedClient extends DefaultClient {
     }
 
     public boolean post(String checksum,
-            String content) throws WebsiteHandlerException {
+                        String content) throws WebsiteHandlerException {
 
         try {
 
@@ -93,10 +93,10 @@ public class FeedClient extends DefaultClient {
                             type == TYPE_PLATOON ? null : id,
                             type == TYPE_PLATOON ? id : null
 
-                            ),
+                    ),
                     RequestHandler.HEADER_JSON
 
-                    );
+            );
 
             // Did we manage?
             if ("".equals(httpContent)) {
@@ -121,7 +121,7 @@ public class FeedClient extends DefaultClient {
     }
 
     public ArrayList<FeedItem> get(Context context, int num,
-            long profileId) throws WebsiteHandlerException {
+                                   long profileId) throws WebsiteHandlerException {
 
         try {
 
@@ -160,9 +160,9 @@ public class FeedClient extends DefaultClient {
                         url.replace(
                                 "{NUMSTART}",
                                 String.valueOf(i * 10)
-                                ),
+                        ),
                         RequestHandler.HEADER_AJAX
-                        );
+                );
 
                 // Convert the JSON
                 jsonArray = new JSONObject(httpContent).getJSONObject("data")
@@ -187,7 +187,7 @@ public class FeedClient extends DefaultClient {
 
     /* TODO: */
     private ArrayList<FeedItem> getFeedItemsFromJSON(Context context,
-            JSONArray jsonArray, long activeProfileId) {
+                                                     JSONArray jsonArray, long activeProfileId) {
 
         // Variables needed
         List<FeedItem> feedItemArray = new ArrayList<FeedItem>();
@@ -211,7 +211,7 @@ public class FeedClient extends DefaultClient {
     }
 
     private FeedItem getFeedItemFromJSON(Context context,
-            JSONObject currItem, long activeProfileId)
+                                         JSONObject currItem, long activeProfileId)
             throws WebsiteHandlerException {
 
         try {
@@ -240,7 +240,7 @@ public class FeedClient extends DefaultClient {
             ProfileData mainProfile = new ProfileData.Builder(
                     Long.parseLong(currItem.getString("ownerId")),
                     ownerObject.getString("username")
-                    ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
+            ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
 
             int feedItemTypeId = getTypeIdFromEvent(event);
             ParsedFeedItemData feedItemData = FeedItemDataFactory.feedItemDataFrom(context, feedItemTypeId, mainProfile, currItem);
@@ -290,7 +290,6 @@ public class FeedClient extends DefaultClient {
     }
 
 
-
     public static boolean hooah(long postId, String checksum)
             throws WebsiteHandlerException {
 
@@ -302,7 +301,7 @@ public class FeedClient extends DefaultClient {
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Did we manage?
             return (!"".equals(httpContent));
@@ -324,7 +323,7 @@ public class FeedClient extends DefaultClient {
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Did we manage?
             return (!"".equals(httpContent));

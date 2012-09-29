@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.jsonmodel;
 
 import com.google.gson.annotations.SerializedName;
@@ -75,14 +74,16 @@ public class PersonaStatsOverview {
     @SerializedName("resupplies")
     private long resupplies;
 
-    public PersonaStatsOverview(int rank, KitScores kitScores, VehicleScores vehicleScores,
-            long vehicleScore, long totalScore, long score, long timePlayed, long gameWon,
-            long gameLost, double wnRatio, long awardScore, long unlockScore, long kills,
-            long deaths, double kdRatio, long killAssists, long scoreMin,
-            double quitPercentage, long vehiclesDestroyed, long vehiclesDestroyedAssists,
-            double accuracy, double longestHeadshot, int longestKillStreak,
-            double skill, long squadScoreBonus, long repairs, long revives,
-            long heals, long resupplies, long combatScore) {
+    public PersonaStatsOverview(int rank, KitScores kitScores,
+                                VehicleScores vehicleScores, long vehicleScore, long totalScore,
+                                long score, long timePlayed, long gameWon, long gameLost,
+                                double wnRatio, long awardScore, long unlockScore, long kills,
+                                long deaths, double kdRatio, long killAssists, long scoreMin,
+                                double quitPercentage, long vehiclesDestroyed,
+                                long vehiclesDestroyedAssists, double accuracy,
+                                double longestHeadshot, int longestKillStreak, double skill,
+                                long squadScoreBonus, long repairs, long revives, long heals,
+                                long resupplies, long combatScore) {
         this.rank = rank;
         this.kitScores = kitScores;
         this.vehicleScores = vehicleScores;
