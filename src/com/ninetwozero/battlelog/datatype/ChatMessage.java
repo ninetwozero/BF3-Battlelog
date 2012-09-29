@@ -16,37 +16,37 @@ package com.ninetwozero.battlelog.datatype;
 
 public class ChatMessage {
 
-	// Attributes
-	private long mChatId;
-	private long mTimestamp;
-	private String mSender;
-	private String mMessage;
+    // Attributes
+    private long mChatId;
+    private long mTimestamp;
+    private String mSender;
+    private String mMessage;
 
-	// Construct
-	public ChatMessage(long c, long t, String s, String m) {
+    // Construct
+    public ChatMessage(long c, long t, String s, String m) {
 
-		mChatId = c;
-		mTimestamp = t;
-		mSender = s;
-		mMessage = m;
+        mChatId = c;
+        mTimestamp = t;
+        mSender = s;
+        mMessage = m;
 
-	}
+    }
 
-	// Getters
-	public long getChatId() {
-		return mChatId;
-	}
+    // Getters
+    public long getChatId() {
+        return mChatId;
+    }
 
-	public long getTimestamp() {
-		return mTimestamp;
-	}
+    public long getTimestamp() {
+        return mTimestamp;
+    }
 
-	public String getSender() {
-		return mSender;
-	}
+    public String getSender() {
+        return mSender;
+    }
 
-	public String getMessage() {
-		return mMessage;
-	}
+    public String getMessage() {
+        return mMessage;
+    }
 
 }

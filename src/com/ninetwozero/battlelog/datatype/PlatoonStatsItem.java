@@ -57,7 +57,7 @@ public class PlatoonStatsItem implements Parcelable {
     }
 
     public PlatoonStatsItem(String l, double a, double b, double c, double d,
-            ProfileData p) {
+                            ProfileData p) {
 
         this.label = l;
         this.min = 0;

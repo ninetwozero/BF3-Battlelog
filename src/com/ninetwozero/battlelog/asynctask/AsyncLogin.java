@@ -14,9 +14,6 @@
 
 package com.ninetwozero.battlelog.asynctask;
 
-import java.util.List;
-
-import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -30,20 +27,16 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.DashboardActivity;
-import com.ninetwozero.battlelog.datatype.PlatoonData;
-import com.ninetwozero.battlelog.datatype.PostData;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.RequestHandlerException;
-import com.ninetwozero.battlelog.datatype.SessionKeeperPackage;
-import com.ninetwozero.battlelog.datatype.ShareableCookie;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.datatype.*;
 import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.service.BattlelogService;
+import net.sf.andhsli.hotspotlogin.SimpleCrypto;
+
+import java.util.List;
 
 public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
@@ -93,7 +86,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
                     }
                 }
 
-                );
+        );
         progressDialog.show();
 
     }
@@ -138,13 +131,13 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
                             "myProfile", sessionKeeperPackage.getProfileData()
 
-                            ).putExtra(
+                    ).putExtra(
 
-                                    "myLocale", locale
+                            "myLocale", locale
 
-                            ).putExtra("myPlatoon", sessionKeeperPackage.getPlatoons())
+                    ).putExtra("myPlatoon", sessionKeeperPackage.getPlatoons())
 
-                    );
+            );
 
             // Kill the main
             ((Activity) context).finish();
@@ -223,7 +216,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     }
 
     private SharedPreferences addToSharedPreferences(ProfileData profile,
-            List<PlatoonData> platoons, String postCheckSum, String soldierName) throws Exception {
+                                                     List<PlatoonData> platoons, String postCheckSum, String soldierName) throws Exception {
         // Init
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
@@ -327,7 +320,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
                 PendingIntent.getService(context, 0, new Intent(
                         context, BattlelogService.class), 0)
 
-                );
+        );
     }
 
     private SessionKeeperPackage elementUidLinkError(String httpContent)
@@ -343,7 +336,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
         } else {
 
-        	int endPosition = httpContent.indexOf("</div>");
+            int endPosition = httpContent.indexOf("</div>");
             String errorMsg = httpContent.substring(startPosition, endPosition)
                     .replace("</div>", "")
                     .replace("\n", "")

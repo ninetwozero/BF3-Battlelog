@@ -22,18 +22,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.DashboardActivity;
 import com.ninetwozero.battlelog.activity.profile.assignments.AssignmentActivity;
@@ -75,7 +69,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
@@ -124,7 +118,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
     }
 
     public void createContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
+                                  ContextMenuInfo menuInfo) {
 
         // Get the actual menu item and tag
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
@@ -167,13 +161,13 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 startActivity(
 
-                new Intent(
+                        new Intent(
 
-                        mContext, ChatActivity.class
+                                mContext, ChatActivity.class
 
-                ).putExtra(
+                        ).putExtra(
 
-                        "activeUser", SessionKeeper.getProfileData()
+                                "activeUser", SessionKeeper.getProfileData()
 
                         ).putExtra(
 
@@ -193,13 +187,13 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 startActivity(
 
-                new Intent(
+                        new Intent(
 
-                        mContext, ProfileActivity.class
+                                mContext, ProfileActivity.class
 
-                ).putExtra(
+                        ).putExtra(
 
-                        "profile", profileData
+                                "profile", profileData
 
                         )
 
@@ -209,13 +203,13 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 startActivity(
 
-                new Intent(
+                        new Intent(
 
-                        mContext, UnlockActivity.class
+                                mContext, UnlockActivity.class
 
-                ).putExtra(
+                        ).putExtra(
 
-                        "profile", (ProfileData) info.targetView.getTag()
+                                "profile", (ProfileData) info.targetView.getTag()
 
                         )
 
@@ -225,21 +219,21 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 startActivity(
 
-                new Intent(
+                        new Intent(
 
-                        mContext, CompareActivity.class
+                                mContext, CompareActivity.class
 
-                ).putExtra(
+                        ).putExtra(
 
-                        "profile1", SessionKeeper.getProfileData()
+                                "profile1", SessionKeeper.getProfileData()
 
                         ).putExtra(
 
                                 "profile2", ProfileClient.resolveFullProfileDataFromProfileId(
 
-                                        profileData.getId()
+                                profileData.getId()
 
-                                        )
+                        )
 
                         )
 
@@ -249,17 +243,17 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
                 startActivity(
 
-                new Intent(
+                        new Intent(
 
-                        mContext, AssignmentActivity.class
+                                mContext, AssignmentActivity.class
 
-                ).putExtra(
+                        ).putExtra(
 
-                        "profile", ProfileClient.resolveFullProfileDataFromProfileId(
+                                "profile", ProfileClient.resolveFullProfileDataFromProfileId(
 
                                 profileData.getId()
 
-                                )
+                        )
 
                         )
 

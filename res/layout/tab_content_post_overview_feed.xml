@@ -13,67 +13,67 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:paddingBottom="5dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="5dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp">
+
+  <RelativeLayout
+      android:id="@+id/wrap_top"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:maxHeight="220dp">
+
+    <TextView
+        android:id="@+id/text_heading"
+        style="@style/InfoHeading"
+        android:layout_alignParentTop="true"
+        android:padding="5dp"
+        android:text="Single-view"/>
+
+    <ImageView
+        android:id="@+id/image_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/text_heading"
+        android:paddingRight="5dp"
+        android:src="@drawable/default_avatar"/>
 
     <RelativeLayout
-        android:id="@+id/wrap_top"
+        android:id="@+id/wrap_top_right"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="220dp" >
+        android:layout_below="@id/text_heading"
+        android:layout_toRightOf="@id/image_avatar">
 
-        <TextView
-            android:id="@+id/text_heading"
-            style="@style/InfoHeading"
-            android:layout_alignParentTop="true"
-            android:padding="5dp"
-            android:text="Single-view" />
+      <TextView
+          android:id="@+id/text_title"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/text_heading"
+          android:autoLink="all"
+          android:text="ninetwozero wrote a post a in the thread ABCDEFGH!"/>
 
-        <ImageView
-            android:id="@+id/image_avatar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/text_heading"
-            android:paddingRight="5dp"
-            android:src="@drawable/default_avatar" />
+      <TextView
+          android:id="@+id/text_content"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/text_title"
+          android:layout_marginBottom="10dp"
+          android:layout_marginTop="10dp"
+          android:text="CONTENT CONTENT"
+          android:visibility="gone"/>
 
-        <RelativeLayout
-            android:id="@+id/wrap_top_right"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_heading"
-            android:layout_toRightOf="@id/image_avatar" >
-
-            <TextView
-                android:id="@+id/text_title"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_heading"
-                android:autoLink="all"
-                android:text="ninetwozero wrote a post a in the thread ABCDEFGH!" />
-
-            <TextView
-                android:id="@+id/text_content"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_title"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:text="CONTENT CONTENT"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/text_date"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_content"
-                android:text="1337 days ago"
-                android:textColor="#BBBBBB" />
-        </RelativeLayout>
+      <TextView
+          android:id="@+id/text_date"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/text_content"
+          android:text="1337 days ago"
+          android:textColor="#BBBBBB"/>
     </RelativeLayout>
+  </RelativeLayout>
 
 </RelativeLayout>

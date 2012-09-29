@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.broadcastreceiver;
 
 import android.app.AlarmManager;
@@ -9,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
-
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.service.BattlelogService;
 
@@ -45,7 +43,7 @@ public class NetworkReceiver extends BroadcastReceiver {
                         PendingIntent.getService(context, 0, new Intent(context,
                                 BattlelogService.class), 0)
 
-                        );
+                );
 
             }
 

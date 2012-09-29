@@ -14,9 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.forum;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -26,16 +23,11 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.ForumSearchAdapter;
 import com.ninetwozero.battlelog.datatype.ForumSearchResult;
@@ -43,6 +35,9 @@ import com.ninetwozero.battlelog.http.ForumClient;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ForumSearchActivity extends ListActivity {
 
@@ -247,9 +242,9 @@ public class ForumSearchActivity extends ListActivity {
 
         startActivity(
 
-        new Intent(this, ForumActivity.class).putExtra(
+                new Intent(this, ForumActivity.class).putExtra(
 
-                "searchedThread", (ForumSearchResult) v.getTag()
+                        "searchedThread", (ForumSearchResult) v.getTag()
 
                 )
 

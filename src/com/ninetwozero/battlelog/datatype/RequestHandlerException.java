@@ -16,14 +16,14 @@ package com.ninetwozero.battlelog.datatype;
 
 public class RequestHandlerException extends Exception {
 
-	private static final long serialVersionUID = -4284315651483396603L;
+    private static final long serialVersionUID = -4284315651483396603L;
 
-	public RequestHandlerException() {
-		super("WebsiteHandlerException");
-	}
+    public RequestHandlerException() {
+        super("WebsiteHandlerException");
+    }
 
-	public RequestHandlerException(String detailMessage) {
-		super(detailMessage);
-	}
+    public RequestHandlerException(String detailMessage) {
+        super(detailMessage);
+    }
 
 }

@@ -13,52 +13,52 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-    <RelativeLayout
-        android:id="@+id/bar_form"
+  <RelativeLayout
+      android:id="@+id/bar_form"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:padding="5dp">
+
+    <Button
+        android:id="@+id/button_send"
+        style="@style/RegularButton"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:enabled="false"
+        android:onClick="onClick"
+        android:text="@string/label_send"/>
+
+    <EditText
+        android:id="@+id/field_message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:padding="5dp" >
+        android:layout_centerVertical="true"
+        android:layout_marginRight="6dp"
+        android:layout_toLeftOf="@id/button_send"
+        android:hint="@string/info_hint_comment_msg"
+        android:singleLine="true"/>
+  </RelativeLayout>
 
-        <Button
-            android:id="@+id/button_send"
-            style="@style/RegularButton"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:enabled="false"
-            android:onClick="onClick"
-            android:text="@string/label_send" />
+  <ListView
+      android:id="@android:id/list"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_above="@id/bar_form"
+      android:divider="#FFFFFF"
+      android:dividerHeight="0dp"
+      android:fastScrollEnabled="true"
+      android:transcriptMode="alwaysScroll"/>
 
-        <EditText
-            android:id="@+id/field_message"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="6dp"
-            android:layout_toLeftOf="@id/button_send"
-            android:hint="@string/info_hint_comment_msg"
-            android:singleLine="true" />
-    </RelativeLayout>
-
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@id/bar_form"
-        android:divider="#FFFFFF"
-        android:dividerHeight="0dp"
-        android:fastScrollEnabled="true"
-        android:transcriptMode="alwaysScroll" />
-
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:paddingBottom="20dp"
-        android:text="@string/info_xml_chat_empty" />
+  <TextView
+      android:id="@android:id/empty"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:paddingBottom="20dp"
+      android:text="@string/info_xml_chat_empty"/>
 
 </RelativeLayout>

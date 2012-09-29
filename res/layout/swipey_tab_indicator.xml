@@ -16,14 +16,14 @@
 -->
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipey_tab"
-    android:layout_width="wrap_content"
-    android:layout_height="40dip"
-    android:background="@drawable/swipey_tab_indicator"
-    android:focusable="true"
-    android:paddingLeft="15dip"
-    android:paddingRight="15dip"
-    android:singleLine="true"
-    android:textColor="#FFFFFF"
-    android:textSize="14sp"
-    android:textStyle="bold" />
+          android:id="@+id/swipey_tab"
+          android:layout_width="wrap_content"
+          android:layout_height="40dip"
+          android:background="@drawable/swipey_tab_indicator"
+          android:focusable="true"
+          android:paddingLeft="15dip"
+          android:paddingRight="15dip"
+          android:singleLine="true"
+          android:textColor="#FFFFFF"
+          android:textSize="14sp"
+          android:textStyle="bold"/>

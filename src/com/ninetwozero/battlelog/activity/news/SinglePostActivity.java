@@ -14,11 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.news;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -29,12 +24,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-
+import android.view.*;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.feed.PostOverviewFragment;
 import com.ninetwozero.battlelog.datatype.CommentData;
@@ -44,6 +34,11 @@ import com.ninetwozero.battlelog.datatype.NewsData;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SinglePostActivity extends FragmentActivity implements DefaultFragmentActivity {
 
@@ -162,13 +157,13 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
             mPagerAdapter = new SwipeyTabsPagerAdapter(
 
                     mFragmentManager,
-                    new String[] {
+                    new String[]{
                             "OVERVIEW", "COMMENTS"
                     },
                     mListFragments,
                     mViewPager,
                     mLayoutInflater
-                    );
+            );
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 

@@ -19,109 +19,109 @@ import android.os.Parcelable;
 
 public class ForumSearchResult implements Parcelable {
 
-	// Attributes
-	private long threadId, date;
-	private String title;
-	private ProfileData owner;
-	private boolean sticky, official;
+    // Attributes
+    private long threadId, date;
+    private String title;
+    private ProfileData owner;
+    private boolean sticky, official;
 
-	// Construct
-	public ForumSearchResult(String t) {
-		title = t;
-	}
+    // Construct
+    public ForumSearchResult(String t) {
+        title = t;
+    }
 
-	public ForumSearchResult(Parcel in) {
+    public ForumSearchResult(Parcel in) {
 
-		threadId = in.readLong();
-		date = in.readLong();
+        threadId = in.readLong();
+        date = in.readLong();
 
-		title = in.readString();
+        title = in.readString();
 
-		owner = in.readParcelable(ProfileData.class.getClassLoader());
+        owner = in.readParcelable(ProfileData.class.getClassLoader());
 
-		sticky = (in.readInt() == 1);
-		official = (in.readInt() == 1);
+        sticky = (in.readInt() == 1);
+        official = (in.readInt() == 1);
 
-	}
+    }
 
-	public ForumSearchResult(
+    public ForumSearchResult(
 
-	long tId, long tDate, String t, ProfileData o, boolean st, boolean of
+            long tId, long tDate, String t, ProfileData o, boolean st, boolean of
 
-	) {
+    ) {
 
-		threadId = tId;
-		date = tDate;
+        threadId = tId;
+        date = tDate;
 
-		title = t;
+        title = t;
 
-		owner = o;
+        owner = o;
 
-		sticky = st;
-		official = of;
+        sticky = st;
+        official = of;
 
-	}
+    }
 
-	// Getters
-	public long getId() {
-		return threadId;
-	}
+    // Getters
+    public long getId() {
+        return threadId;
+    }
 
-	public long getDate() {
-		return date;
-	}
+    public long getDate() {
+        return date;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public ProfileData getOwner() {
-		return owner;
-	}
+    public ProfileData getOwner() {
+        return owner;
+    }
 
-	public boolean isSticky() {
-		return sticky;
-	}
+    public boolean isSticky() {
+        return sticky;
+    }
 
-	public boolean isOfficial() {
-		return official;
-	}
+    public boolean isOfficial() {
+        return official;
+    }
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
 
-		dest.writeLong(threadId);
-		dest.writeLong(date);
+        dest.writeLong(threadId);
+        dest.writeLong(date);
 
-		dest.writeString(title);
+        dest.writeString(title);
 
-		dest.writeParcelable(owner, flags);
+        dest.writeParcelable(owner, flags);
 
-		dest.writeInt(sticky ? 1 : 0);
-		dest.writeInt(official ? 1 : 0);
+        dest.writeInt(sticky ? 1 : 0);
+        dest.writeInt(official ? 1 : 0);
 
-	}
+    }
 
-	public static final Parcelable.Creator<ForumSearchResult> CREATOR = new Parcelable.Creator<ForumSearchResult>() {
+    public static final Parcelable.Creator<ForumSearchResult> CREATOR = new Parcelable.Creator<ForumSearchResult>() {
 
-		public ForumSearchResult createFromParcel(Parcel in) {
-			return new ForumSearchResult(in);
-		}
+        public ForumSearchResult createFromParcel(Parcel in) {
+            return new ForumSearchResult(in);
+        }
 
-		public ForumSearchResult[] newArray(int size) {
-			return new ForumSearchResult[size];
-		}
+        public ForumSearchResult[] newArray(int size) {
+            return new ForumSearchResult[size];
+        }
 
-	};
+    };
 
-	@Override
-	public String toString() {
-		return owner + ":" + title;
-	}
+    @Override
+    public String toString() {
+        return owner + ":" + title;
+    }
 
 }

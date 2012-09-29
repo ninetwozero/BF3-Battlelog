@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -23,9 +21,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.ForumData;
+
+import java.util.List;
 
 public class ForumListAdapter extends BaseAdapter {
 
@@ -36,7 +35,7 @@ public class ForumListAdapter extends BaseAdapter {
 
     // Construct
     public ForumListAdapter(Context c, List<ForumData> m,
-            LayoutInflater l) {
+                            LayoutInflater l) {
 
         context = c;
         itemArray = m;
@@ -106,15 +105,15 @@ public class ForumListAdapter extends BaseAdapter {
 
                                 "{num_posts}", currentItem.getNumPosts() + ""
 
-                                ).replace(
+                        ).replace(
 
-                                        "{num_threads}", currentItem.getNumThreads() + ""
-
-                                )
+                                "{num_threads}", currentItem.getNumThreads() + ""
 
                         )
 
-                );
+                )
+
+        );
 
         // Store the object
         convertView.setTag(currentItem);

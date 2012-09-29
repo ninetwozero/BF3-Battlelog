@@ -13,19 +13,19 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialog_root"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#FFFFFF"
-    android:padding="10dp" >
+                android:id="@+id/dialog_root"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#FFFFFF"
+                android:padding="10dp">
 
-    <EditText
-        android:id="@+id/field_username"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/info_hint_username"
-        android:singleLine="true" >
-    </EditText>
+  <EditText
+      android:id="@+id/field_username"
+      android:layout_width="250dp"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:hint="@string/info_hint_username"
+      android:singleLine="true">
+  </EditText>
 
 </RelativeLayout>

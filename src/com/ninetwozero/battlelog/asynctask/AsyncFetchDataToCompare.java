@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.asynctask;
 
 import android.content.Context;
@@ -7,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.soldier.CompareActivity;
 import com.ninetwozero.battlelog.datatype.ProfileData;
@@ -55,7 +53,7 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
                     searchString,
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 
-                    );
+            );
 
             // Did we get an actual user?
             if (playerTwo == null || playerTwo.getNumPersonas() == 0) {
@@ -97,13 +95,13 @@ public class AsyncFetchDataToCompare extends AsyncTask<String, Void, Boolean> {
 
                             "profile1", playerOne
 
-                            ).putExtra(
+                    ).putExtra(
 
-                                    "profile2", playerTwo
+                            "profile2", playerTwo
 
-                            )
+                    )
 
-                    );
+            );
 
         } else {
 

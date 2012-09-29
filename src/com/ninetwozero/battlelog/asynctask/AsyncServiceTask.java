@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog.asynctask;
 
-import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -26,7 +25,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.DashboardActivity;
 import com.ninetwozero.battlelog.datatype.PostData;
@@ -35,6 +33,7 @@ import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.http.NotificationClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
 public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 
@@ -67,7 +66,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 
                         sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 
-                        );
+                );
                 return numNotifications;
 
             } else {
@@ -104,7 +103,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
     }
 
     private PostData[] postData(String email, String password) {
-        return new PostData[] {
+        return new PostData[]{
 
                 new PostData(Constants.FIELD_NAMES_LOGIN[0], email),
                 new PostData(Constants.FIELD_NAMES_LOGIN[1], password),
@@ -171,7 +170,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
                         context.getString(R.string.info_tap_notification),
                         contentIntent
 
-                        );
+                );
                 battlelogNotification.flags |= Notification.FLAG_AUTO_CANCEL;
 
                 // Setup LED, sound & vibration
@@ -199,7 +198,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 
                 if (sharedPreferences.getBoolean("notification_vibrate", true)) {
 
-                    battlelogNotification.vibrate = new long[] {
+                    battlelogNotification.vibrate = new long[]{
                             100, 100
                     };
 

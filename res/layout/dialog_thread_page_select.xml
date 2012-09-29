@@ -13,24 +13,24 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialog_root"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#FFFFFF"
-    android:padding="10dp" >
+                android:id="@+id/dialog_root"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#FFFFFF"
+                android:padding="10dp">
 
-    <TextView
-        android:id="@+id/text_desc"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/info_xml_enternumber" />
+  <TextView
+      android:id="@+id/text_desc"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/info_xml_enternumber"/>
 
-    <EditText
-        android:id="@+id/text_page"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_desc"
-        android:inputType="numberSigned"
-        android:singleLine="true" />
+  <EditText
+      android:id="@+id/text_page"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/text_desc"
+      android:inputType="numberSigned"
+      android:singleLine="true"/>
 
 </RelativeLayout>

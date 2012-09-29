@@ -3,29 +3,29 @@ package com.ninetwozero.battlelog.datatype;
 import java.util.Comparator;
 
 public class WeaponDataWrapperComparator implements
-		Comparator<WeaponDataWrapper> {
+        Comparator<WeaponDataWrapper> {
 
-	public int compare(WeaponDataWrapper o1, WeaponDataWrapper o2) {
+    public int compare(WeaponDataWrapper o1, WeaponDataWrapper o2) {
 
-		// Grab the data
-		WeaponStats p1 = ((WeaponStats) o1.getStats());
-		WeaponStats p2 = ((WeaponStats) o2.getStats());
+        // Grab the data
+        WeaponStats p1 = ((WeaponStats) o1.getStats());
+        WeaponStats p2 = ((WeaponStats) o2.getStats());
 
-		// Return!
-		if (p1.getKills() < p2.getKills()) {
+        // Return!
+        if (p1.getKills() < p2.getKills()) {
 
-			return 1;
+            return 1;
 
-		} else if (p1.getKills() > p2.getKills()) {
+        } else if (p1.getKills() > p2.getKills()) {
 
-			return -1;
+            return -1;
 
-		} else {
+        } else {
 
-			return 0;
+            return 0;
 
-		}
+        }
 
-	}
+    }
 
 }

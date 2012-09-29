@@ -14,22 +14,15 @@
 
 package com.ninetwozero.battlelog.activity.social;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.NotificationListAdapter;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
@@ -39,134 +32,136 @@ import com.ninetwozero.battlelog.http.NotificationClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
+import java.util.List;
+
 public class ComNotificationFragment extends ListFragment implements
-		DefaultFragment {
+        DefaultFragment {
 
-	// Attributes
-	private Context mContext;
-	private LayoutInflater mLayoutInflater;
-	private SharedPreferences mSharedPreferences;
+    // Attributes
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private SharedPreferences mSharedPreferences;
 
-	// Misc
-	private List<NotificationData> mNotifications;
-	private NotificationListAdapter mNotificationListAdapter;
+    // Misc
+    private List<NotificationData> mNotifications;
+    private NotificationListAdapter mNotificationListAdapter;
 
-	// Elements
-	private ListView mListView;
+    // Elements
+    private ListView mListView;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-		// Set our attributes
-		mContext = getActivity();
-		mSharedPreferences = PreferenceManager
-				.getDefaultSharedPreferences(mContext);
-		mLayoutInflater = inflater;
+        // Set our attributes
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
+        mLayoutInflater = inflater;
 
-		// Let's inflate & return the view
-		View view = mLayoutInflater.inflate(
-				R.layout.tab_content_com_notifications, container, false);
+        // Let's inflate & return the view
+        View view = mLayoutInflater.inflate(
+                R.layout.tab_content_com_notifications, container, false);
 
-		// Let's try this
-		initFragment(view);
+        // Let's try this
+        initFragment(view);
 
-		// Return
-		return view;
+        // Return
+        return view;
 
-	}
+    }
 
-	@Override
-	public void initFragment(View view) {
+    @Override
+    public void initFragment(View view) {
 
-		// Get the listview
-		mListView = (ListView) view.findViewById(android.R.id.list);
-		mListView
-				.setAdapter(mNotificationListAdapter = new NotificationListAdapter(
-						mContext, null, mLayoutInflater, SessionKeeper
-								.getProfileData().getId()));
-		registerForContextMenu(mListView);
+        // Get the listview
+        mListView = (ListView) view.findViewById(android.R.id.list);
+        mListView
+                .setAdapter(mNotificationListAdapter = new NotificationListAdapter(
+                        mContext, null, mLayoutInflater, SessionKeeper
+                        .getProfileData().getId()));
+        registerForContextMenu(mListView);
 
-	}
+    }
 
-	@Override
-	public void reload() {
+    @Override
+    public void reload() {
 
-		new AsyncRefresh().execute(mSharedPreferences.getString(
-				Constants.SP_BL_PROFILE_CHECKSUM, ""));
+        new AsyncRefresh().execute(mSharedPreferences.getString(
+                Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
-	}
+    }
 
-	@Override
-	public Menu prepareOptionsMenu(Menu menu) {
-		return menu;
-	}
+    @Override
+    public Menu prepareOptionsMenu(Menu menu) {
+        return menu;
+    }
 
-	@Override
-	public boolean handleSelectedOption(MenuItem item) {
-		return false;
-	}
+    @Override
+    public boolean handleSelectedOption(MenuItem item) {
+        return false;
+    }
 
-	@Override
-	public void onListItemClick(ListView lv, View v, int position, long id) {
+    @Override
+    public void onListItemClick(ListView lv, View v, int position, long id) {
 
-		Toast.makeText(mContext, R.string.msg_unimplemented, Toast.LENGTH_SHORT)
-				.show();
+        Toast.makeText(mContext, R.string.msg_unimplemented, Toast.LENGTH_SHORT)
+                .show();
 
-	}
+    }
 
-	private class AsyncRefresh extends AsyncTask<String, Integer, Boolean> {
+    private class AsyncRefresh extends AsyncTask<String, Integer, Boolean> {
 
-		@Override
-		protected void onPreExecute() {
+        @Override
+        protected void onPreExecute() {
 
-		}
+        }
 
-		@Override
-		protected Boolean doInBackground(String... arg0) {
+        @Override
+        protected Boolean doInBackground(String... arg0) {
 
-			try {
+            try {
 
-				// Let's get this!
-				mNotifications = new NotificationClient().get(arg0[0]);
-				return true;
+                // Let's get this!
+                mNotifications = new NotificationClient().get(arg0[0]);
+                return true;
 
-			} catch (WebsiteHandlerException e) {
+            } catch (WebsiteHandlerException e) {
 
-				return false;
+                return false;
 
-			}
+            }
 
-		}
+        }
 
-		@Override
-		protected void onPostExecute(Boolean results) {
+        @Override
+        protected void onPostExecute(Boolean results) {
 
-			if (results) {
+            if (results) {
 
-				// Display the friend list
-				display(mNotifications);
+                // Display the friend list
+                display(mNotifications);
 
-			}
+            }
 
-			// R-turn
+            // R-turn
 
-		}
+        }
 
-	}
+    }
 
-	public void display(List<NotificationData> items) {
+    public void display(List<NotificationData> items) {
 
-		// Do we have it already? If no, we init
-		mNotificationListAdapter.setItemArray(items);
+        // Do we have it already? If no, we init
+        mNotificationListAdapter.setItemArray(items);
 
-	}
+    }
 
-	@Override
-	public void onResume() {
+    @Override
+    public void onResume() {
 
-		super.onResume();
-		reload();
-	}
+        super.onResume();
+        reload();
+    }
 
 }

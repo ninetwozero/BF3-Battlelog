@@ -25,17 +25,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctask.AsyncPlatoonRequest;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
@@ -49,441 +44,441 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class PlatoonOverviewFragment extends Fragment implements
-		DefaultFragment {
+        DefaultFragment {
 
-	// Attributes
-	private Context mContext;
-	private LayoutInflater mLayoutInflater;
-	private SharedPreferences mSharedPreferences;
+    // Attributes
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private SharedPreferences mSharedPreferences;
 
-	// Elements
-	private ImageView mImageViewBadge;
-	private RelativeLayout mWrapWeb;
+    // Elements
+    private ImageView mImageViewBadge;
+    private RelativeLayout mWrapWeb;
 
-	// Misc
-	private PlatoonData mPlatoonData;
-	private PlatoonInformation mPlatoonInformation;
-	private boolean mPostingRights;
+    // Misc
+    private PlatoonData mPlatoonData;
+    private PlatoonInformation mPlatoonInformation;
+    private boolean mPostingRights;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-		// Set our attributes
-		mContext = getActivity();
-		mSharedPreferences = PreferenceManager
-				.getDefaultSharedPreferences(mContext);
-		mLayoutInflater = inflater;
+        // Set our attributes
+        mContext = getActivity();
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
+        mLayoutInflater = inflater;
 
-		// Let's inflate & return the view
-		View view = mLayoutInflater.inflate(
-				R.layout.tab_content_platoon_overview, container, false);
+        // Let's inflate & return the view
+        View view = mLayoutInflater.inflate(
+                R.layout.tab_content_platoon_overview, container, false);
 
-		// Init the fragment
-		initFragment(view);
+        // Init the fragment
+        initFragment(view);
 
-		// Let's return the view
-		return view;
+        // Let's return the view
+        return view;
 
-	}
+    }
 
-	@Override
-	public void onResume() {
+    @Override
+    public void onResume() {
 
-		super.onResume();
-		new AsyncCache().execute();
+        super.onResume();
+        new AsyncCache().execute();
 
-	}
+    }
 
-	public void initFragment(View v) {
+    public void initFragment(View v) {
 
-		// Let's see if we're allowed to post (before we've gotten the data)
-		mPostingRights = false;
+        // Let's see if we're allowed to post (before we've gotten the data)
+        mPostingRights = false;
 
-		// Add a click listener
-		mWrapWeb = (RelativeLayout) v.findViewById(R.id.wrap_web);
-		mWrapWeb.setOnClickListener(new OnClickListener() {
+        // Add a click listener
+        mWrapWeb = (RelativeLayout) v.findViewById(R.id.wrap_web);
+        mWrapWeb.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				startActivity(
+            @Override
+            public void onClick(View v) {
+                startActivity(
 
-				new Intent(Intent.ACTION_VIEW).setData(
+                        new Intent(Intent.ACTION_VIEW).setData(
 
-				Uri.parse(
+                                Uri.parse(
 
-				String.valueOf(v.getTag())
+                                        String.valueOf(v.getTag())
 
-				)
+                                )
 
-				)
+                        )
 
-				);
-			}
-		});
+                );
+            }
+        });
 
-	}
+    }
 
-	public final void showProfile(PlatoonInformation data) {
+    public final void showProfile(PlatoonInformation data) {
 
-		// Do we have valid data?
-		if (data == null) {
-			return;
-		}
+        // Do we have valid data?
+        if (data == null) {
+            return;
+        }
 
-		// Get the activity
-		Activity activity = getActivity();
-		if (activity == null) {
-			return;
-		}
+        // Get the activity
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
 
-		// Let's start by getting an ImageView
-		if (mImageViewBadge == null) {
-			mImageViewBadge = (ImageView) activity
-					.findViewById(R.id.image_badge);
-		}
+        // Let's start by getting an ImageView
+        if (mImageViewBadge == null) {
+            mImageViewBadge = (ImageView) activity
+                    .findViewById(R.id.image_badge);
+        }
 
-		// Set some TextViews
-		((TextView) activity.findViewById(R.id.text_name_platoon)).setText(data
-				.getName() + " [" + data.getTag() + "]");
-		((TextView) activity.findViewById(R.id.text_date)).setText(
+        // Set some TextViews
+        ((TextView) activity.findViewById(R.id.text_name_platoon)).setText(data
+                .getName() + " [" + data.getTag() + "]");
+        ((TextView) activity.findViewById(R.id.text_date)).setText(
 
-		getString(R.string.info_platoon_created).replace(
+                getString(R.string.info_platoon_created).replace(
 
-		"{DATE}", PublicUtils.getDate(data.getDate())
+                        "{DATE}", PublicUtils.getDate(data.getDate())
 
-		).replace(
+                ).replace(
 
-		"{RELATIVE DATE}",
-				PublicUtils.getRelativeDate(mContext, data.getDate())
+                        "{RELATIVE DATE}",
+                        PublicUtils.getRelativeDate(mContext, data.getDate())
 
-		));
+                ));
 
-		// Platform!!
-		switch (data.getPlatformId()) {
+        // Platform!!
+        switch (data.getPlatformId()) {
 
-		case 1:
-			((ImageView) activity.findViewById(R.id.image_platform))
-					.setImageResource(R.drawable.logo_pc);
-			break;
+            case 1:
+                ((ImageView) activity.findViewById(R.id.image_platform))
+                        .setImageResource(R.drawable.logo_pc);
+                break;
 
-		case 2:
-			((ImageView) activity.findViewById(R.id.image_platform))
-					.setImageResource(R.drawable.logo_xbox);
-			break;
+            case 2:
+                ((ImageView) activity.findViewById(R.id.image_platform))
+                        .setImageResource(R.drawable.logo_xbox);
+                break;
 
-		case 4:
-			((ImageView) activity.findViewById(R.id.image_platform))
-					.setImageResource(R.drawable.logo_ps3);
-			break;
+            case 4:
+                ((ImageView) activity.findViewById(R.id.image_platform))
+                        .setImageResource(R.drawable.logo_ps3);
+                break;
 
-		default:
-			((ImageView) activity.findViewById(R.id.image_platform))
-					.setImageResource(R.drawable.logo_pc);
-			break;
+            default:
+                ((ImageView) activity.findViewById(R.id.image_platform))
+                        .setImageResource(R.drawable.logo_pc);
+                break;
 
-		}
+        }
 
-		// Set the properties
-		mImageViewBadge.setImageBitmap(
+        // Set the properties
+        mImageViewBadge.setImageBitmap(
 
-		BitmapFactory.decodeFile(
+                BitmapFactory.decodeFile(
 
-		PublicUtils.getCachePath(mContext) + data.getId() + ".jpeg"
+                        PublicUtils.getCachePath(mContext) + data.getId() + ".jpeg"
 
-		)
+                )
 
-		);
+        );
 
-		// Do we have a link?!
-		if ("".equals(data.getWebsite())) {
+        // Do we have a link?!
+        if ("".equals(data.getWebsite())) {
 
-			((View) activity.findViewById(R.id.wrap_web))
-					.setVisibility(View.GONE);
+            ((View) activity.findViewById(R.id.wrap_web))
+                    .setVisibility(View.GONE);
 
-		} else {
+        } else {
 
-			((TextView) activity.findViewById(R.id.text_web)).setText(data
-					.getWebsite());
-			((View) activity.findViewById(R.id.wrap_web)).setTag(data
-					.getWebsite());
+            ((TextView) activity.findViewById(R.id.text_web)).setText(data
+                    .getWebsite());
+            ((View) activity.findViewById(R.id.wrap_web)).setTag(data
+                    .getWebsite());
 
-		}
+        }
 
-		// Do we have a presentation?
-		if (data.getPresentation().equals("")) {
+        // Do we have a presentation?
+        if (data.getPresentation().equals("")) {
 
-			((TextView) activity.findViewById(R.id.text_presentation))
-					.setText(R.string.info_profile_empty_pres);
+            ((TextView) activity.findViewById(R.id.text_presentation))
+                    .setText(R.string.info_profile_empty_pres);
 
-		} else {
+        } else {
 
-			((TextView) activity.findViewById(R.id.text_presentation))
-					.setText(data.getPresentation());
+            ((TextView) activity.findViewById(R.id.text_presentation))
+                    .setText(data.getPresentation());
 
-		}
+        }
 
-	}
+    }
 
-	public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
+    public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
 
-		// Attributes
-		private ProgressDialog progressDialog;
+        // Attributes
+        private ProgressDialog progressDialog;
 
-		@Override
-		protected void onPreExecute() {
+        @Override
+        protected void onPreExecute() {
 
-			// Do we?
-			this.progressDialog = new ProgressDialog(mContext);
-			this.progressDialog.setTitle(mContext
-					.getString(R.string.general_wait));
-			this.progressDialog.setMessage(mContext
-					.getString(R.string.general_downloading));
-			this.progressDialog.show();
+            // Do we?
+            this.progressDialog = new ProgressDialog(mContext);
+            this.progressDialog.setTitle(mContext
+                    .getString(R.string.general_wait));
+            this.progressDialog.setMessage(mContext
+                    .getString(R.string.general_downloading));
+            this.progressDialog.show();
 
-		}
+        }
 
-		@Override
-		protected Boolean doInBackground(Void... arg0) {
+        @Override
+        protected Boolean doInBackground(Void... arg0) {
 
-			try {
+            try {
 
-				// Get...
-				mPlatoonInformation = CacheHandler.Platoon.select(mContext,
-						mPlatoonData.getId());
+                // Get...
+                mPlatoonInformation = CacheHandler.Platoon.select(mContext,
+                        mPlatoonData.getId());
 
-				// We got one?!
-				return (mPlatoonInformation != null);
+                // We got one?!
+                return (mPlatoonInformation != null);
 
-			} catch (Exception ex) {
+            } catch (Exception ex) {
 
-				ex.printStackTrace();
-				return false;
+                ex.printStackTrace();
+                return false;
 
-			}
+            }
 
-		}
+        }
 
-		@Override
-		protected void onPostExecute(Boolean result) {
-			if (result) {
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
 
-				// Siiiiiiiiilent refresh
-				new AsyncRefresh(mContext, mPlatoonData, SessionKeeper
-						.getProfileData().getId()).execute();
-				if (this.progressDialog != null) {
-					this.progressDialog.dismiss();
-				}
+                // Siiiiiiiiilent refresh
+                new AsyncRefresh(mContext, mPlatoonData, SessionKeeper
+                        .getProfileData().getId()).execute();
+                if (this.progressDialog != null) {
+                    this.progressDialog.dismiss();
+                }
 
-				// Set the data
-				showProfile(mPlatoonInformation);
-				sendToStats(mPlatoonInformation);
+                // Set the data
+                showProfile(mPlatoonInformation);
+                sendToStats(mPlatoonInformation);
 
-			} else {
+            } else {
 
-				new AsyncRefresh(mContext, mPlatoonData, SessionKeeper
-						.getProfileData().getId(), progressDialog).execute();
+                new AsyncRefresh(mContext, mPlatoonData, SessionKeeper
+                        .getProfileData().getId(), progressDialog).execute();
 
-			}
+            }
 
-		}
+        }
 
-	}
+    }
 
-	public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
+    public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
-		// Attributes
-		private Context context;
-		private ProgressDialog progressDialog;
-		private PlatoonData platoonData;
-		private long activeProfileId;
+        // Attributes
+        private Context context;
+        private ProgressDialog progressDialog;
+        private PlatoonData platoonData;
+        private long activeProfileId;
 
-		public AsyncRefresh(Context c, PlatoonData pd, long pId) {
+        public AsyncRefresh(Context c, PlatoonData pd, long pId) {
 
-			this.context = c;
-			this.platoonData = pd;
-			this.activeProfileId = pId;
+            this.context = c;
+            this.platoonData = pd;
+            this.activeProfileId = pId;
 
-		}
+        }
 
-		public AsyncRefresh(Context c, PlatoonData pd, long pId,
-				ProgressDialog p) {
+        public AsyncRefresh(Context c, PlatoonData pd, long pId,
+                            ProgressDialog p) {
 
-			this.context = c;
-			this.platoonData = pd;
-			this.activeProfileId = pId;
-			this.progressDialog = p;
+            this.context = c;
+            this.platoonData = pd;
+            this.activeProfileId = pId;
+            this.progressDialog = p;
 
-		}
+        }
 
-		@Override
-		protected void onPreExecute() {
-		}
+        @Override
+        protected void onPreExecute() {
+        }
 
-		@Override
-		protected Boolean doInBackground(Void... arg0) {
+        @Override
+        protected Boolean doInBackground(Void... arg0) {
 
-			try {
+            try {
 
-				// Get...
-				mPlatoonInformation = new PlatoonClient(this.platoonData)
-						.getInformation(
+                // Get...
+                mPlatoonInformation = new PlatoonClient(this.platoonData)
+                        .getInformation(
 
-						context, mSharedPreferences.getInt(
-								Constants.SP_BL_NUM_FEED,
-								Constants.DEFAULT_NUM_FEED),
-								this.activeProfileId
+                                context, mSharedPreferences.getInt(
+                                Constants.SP_BL_NUM_FEED,
+                                Constants.DEFAULT_NUM_FEED),
+                                this.activeProfileId
 
-						);
+                        );
 
-				return (mPlatoonInformation != null);
+                return (mPlatoonInformation != null);
 
-			} catch (WebsiteHandlerException ex) {
+            } catch (WebsiteHandlerException ex) {
 
-				ex.printStackTrace();
-				return false;
+                ex.printStackTrace();
+                return false;
 
-			}
+            }
 
-		}
+        }
 
-		@Override
-		protected void onPostExecute(Boolean result) {
+        @Override
+        protected void onPostExecute(Boolean result) {
 
-			// Fail?
-			if (!result) {
+            // Fail?
+            if (!result) {
 
-				Toast.makeText(context, R.string.general_no_data,
-						Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.general_no_data,
+                        Toast.LENGTH_SHORT).show();
 
-			}
+            }
 
-			// Do we have a dialog?
-			if (progressDialog != null && progressDialog.isShowing()) {
+            // Do we have a dialog?
+            if (progressDialog != null && progressDialog.isShowing()) {
 
-				progressDialog.dismiss();
+                progressDialog.dismiss();
 
-			}
+            }
 
-			// Set the data
-			showProfile(mPlatoonInformation);
-			sendToStats(mPlatoonInformation);
-			sendToUsers(mPlatoonInformation);
-			setFeedPermission(mPlatoonInformation.isMember() || mPostingRights);
+            // Set the data
+            showProfile(mPlatoonInformation);
+            sendToStats(mPlatoonInformation);
+            sendToUsers(mPlatoonInformation);
+            setFeedPermission(mPlatoonInformation.isMember() || mPostingRights);
 
-		}
+        }
 
-	}
+    }
 
-	public void reload() {
+    public void reload() {
 
-		// ASYNC!!!
-		new AsyncRefresh(mContext, mPlatoonData, SessionKeeper.getProfileData()
-				.getId()).execute();
+        // ASYNC!!!
+        new AsyncRefresh(mContext, mPlatoonData, SessionKeeper.getProfileData()
+                .getId()).execute();
 
-	}
+    }
 
-	public void sendToStats(PlatoonInformation p) {
+    public void sendToStats(PlatoonInformation p) {
 
-		((PlatoonActivity) mContext).openStats(p);
+        ((PlatoonActivity) mContext).openStats(p);
 
-	}
+    }
 
-	public void sendToUsers(PlatoonInformation p) {
+    public void sendToUsers(PlatoonInformation p) {
 
-		((PlatoonActivity) mContext).openMembers(p);
+        ((PlatoonActivity) mContext).openMembers(p);
 
-	}
+    }
 
-	public void setFeedPermission(boolean c) {
+    public void setFeedPermission(boolean c) {
 
-		((PlatoonActivity) mContext).setFeedPermission(c);
+        ((PlatoonActivity) mContext).setFeedPermission(c);
 
-	}
+    }
 
-	public void setPlatoonData(PlatoonData p) {
+    public void setPlatoonData(PlatoonData p) {
 
-		mPlatoonData = p;
-	}
+        mPlatoonData = p;
+    }
 
-	public Menu prepareOptionsMenu(Menu menu) {
+    public Menu prepareOptionsMenu(Menu menu) {
 
-		// Is it null?
-		if (mPlatoonInformation == null) {
-			return menu;
-		}
-		if (mPlatoonInformation.isOpenForNewMembers()) {
+        // Is it null?
+        if (mPlatoonInformation == null) {
+            return menu;
+        }
+        if (mPlatoonInformation.isOpenForNewMembers()) {
 
-			if (mPlatoonInformation.isMember()) {
+            if (mPlatoonInformation.isMember()) {
 
-				((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_leave)).setVisible(true);
-				((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_invite))
-						.setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_members))
-						.setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(true);
+                ((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_invite))
+                        .setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_members))
+                        .setVisible(false);
 
-			} else if (mPlatoonInformation.isOpenForNewMembers()) {
+            } else if (mPlatoonInformation.isOpenForNewMembers()) {
 
-				((MenuItem) menu.findItem(R.id.option_join)).setVisible(true);
-				((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_invite))
-						.setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_members))
-						.setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_join)).setVisible(true);
+                ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_invite))
+                        .setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_members))
+                        .setVisible(false);
 
-			} else {
+            } else {
 
-				((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_invite))
-						.setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_members))
-						.setVisible(false);
-			}
+                ((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_invite))
+                        .setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_members))
+                        .setVisible(false);
+            }
 
-		} else {
+        } else {
 
-			((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
-			((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
-			((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
-			((MenuItem) menu.findItem(R.id.option_invite)).setVisible(false);
-			((MenuItem) menu.findItem(R.id.option_members)).setVisible(false);
+            ((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
+            ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
+            ((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
+            ((MenuItem) menu.findItem(R.id.option_invite)).setVisible(false);
+            ((MenuItem) menu.findItem(R.id.option_members)).setVisible(false);
 
-		}
-		return menu;
+        }
+        return menu;
 
-	}
+    }
 
-	public boolean handleSelectedOption(MenuItem item) {
+    public boolean handleSelectedOption(MenuItem item) {
 
-		if (item.getItemId() == R.id.option_join) {
+        if (item.getItemId() == R.id.option_join) {
 
-			new AsyncPlatoonRequest(
+            new AsyncPlatoonRequest(
 
-			mContext, mPlatoonData, SessionKeeper.getProfileData().getId(),
-					mSharedPreferences.getString(
-							Constants.SP_BL_PROFILE_CHECKSUM, "")
+                    mContext, mPlatoonData, SessionKeeper.getProfileData().getId(),
+                    mSharedPreferences.getString(
+                            Constants.SP_BL_PROFILE_CHECKSUM, "")
 
-			).execute(true);
+            ).execute(true);
 
-		} else if (item.getItemId() == R.id.option_leave) {
+        } else if (item.getItemId() == R.id.option_leave) {
 
-			new AsyncPlatoonRequest(
+            new AsyncPlatoonRequest(
 
-			mContext, mPlatoonData, SessionKeeper.getProfileData().getId(),
-					mSharedPreferences.getString(
-							Constants.SP_BL_PROFILE_CHECKSUM, "")
+                    mContext, mPlatoonData, SessionKeeper.getProfileData().getId(),
+                    mSharedPreferences.getString(
+                            Constants.SP_BL_PROFILE_CHECKSUM, "")
 
-			).execute(false);
+            ).execute(false);
 
-		}
+        }
 
-		return true;
+        return true;
 
-	}
+    }
 
 }

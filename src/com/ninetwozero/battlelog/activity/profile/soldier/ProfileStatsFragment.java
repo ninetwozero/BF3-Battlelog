@@ -118,7 +118,6 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     }
 
 
-
     public void initFragment(View view) {
 
         // Progressbar
@@ -182,19 +181,19 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     }
 
     private void getData() {
-        if(dbHasData()){
+        if (dbHasData()) {
             findViews();
             populateView();
-        }else {
+        } else {
             getLoaderManager().restartLoader(0, bundle, this);
         }
     }
 
-    private boolean dbHasData(){
+    private boolean dbHasData() {
         return hasRankData() && hasPersonaStatistics() && hasScoreStatistics();
     }
 
-    private boolean hasRankData(){
+    private boolean hasRankData() {
         Cursor cursor = getContext().getContentResolver()
                 .query(RankProgress.URI, RankProgress.RANK_PROGRESS_PROJECTION,
                         RankProgress.Columns.PERSONA_ID + "=?", new String[]{String.valueOf(mSelectedPersona)}, null);
@@ -207,7 +206,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         return false;
     }
 
-    private boolean  hasPersonaStatistics(){
+    private boolean hasPersonaStatistics() {
         Cursor cursor = getContext().getContentResolver()
                 .query(PersonaStatistics.URI, PersonaStatistics.PERSONA_STATS_PROJECTION,
                         PersonaStatistics.Columns.PERSONA_ID + "=?", new String[]{String.valueOf(mSelectedPersona)}, null);
@@ -220,7 +219,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         return false;
     }
 
-    private boolean  hasScoreStatistics(){
+    private boolean hasScoreStatistics() {
         Cursor cursor = getContext().getContentResolver()
                 .query(ScoreStatistics.URI, ScoreStatistics.SCORE_STATISTICS_PROJECTION,
                         ScoreStatistics.Columns.PERSONA_ID + "=?", new String[]{String.valueOf(mSelectedPersona)}, null);
@@ -266,7 +265,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
          */
     }
 
-    private void populateView(){
+    private void populateView() {
         populateRankProgress();
         populateStatistics(listPersonaStatistics, personaStatisticsTable);
         populateStatistics(listScoreStatistics, scoreStatisticsTable);
@@ -290,7 +289,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         pointsToMake.setText(format(rankProgress.getNextRankScore() - rankProgress.getScore()));
     }
 
-    private void populateStatistics(List<Statistics> statistics, TableLayout layout){
+    private void populateStatistics(List<Statistics> statistics, TableLayout layout) {
         for (Statistics ps : statistics) {
             TableRow tr = new TableRow(getContext());
             tr.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -368,7 +367,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         getContext().getContentResolver().insert(PersonaStatistics.URI, personaStatisticsForDB(pi, mSelectedPersona));
     }
 
-    private void updateScoreStatistics(PersonaInfo pi){
+    private void updateScoreStatistics(PersonaInfo pi) {
         listScoreStatistics = scoreStatisticsFromJSON(pi);
         getContext().getContentResolver().insert(ScoreStatistics.URI, scoreStatisticsForDB(pi, mSelectedPersona));
     }
@@ -377,10 +376,10 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         mProfileData = p;
     }
 
-    private Map<Long, String> personasToMap(){
+    private Map<Long, String> personasToMap() {
         personaData = SessionKeeper.getProfileData().getPersonaArray();
         Map<Long, String> map = new HashMap<Long, String>();
-        for(PersonaData pd : personaData){
+        for (PersonaData pd : personaData) {
             map.put(pd.getId(), pd.getName() + " " + pd.resolvePlatformId());
         }
         return map;
@@ -455,7 +454,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         * showed. Very weird. I would recommend to delete DB record of currently selected persona
         * and then call getData() method
         * */
-    //getLoaderManager().restartLoader(0, bundle, this);
+        //getLoaderManager().restartLoader(0, bundle, this);
     }
 
     private void startLoadingDialog() {   //TODO extract multiple duplicates of same code

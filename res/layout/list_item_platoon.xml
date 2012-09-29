@@ -13,73 +13,73 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
 
-    <ImageView
-        android:id="@+id/image_badge"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_alignParentLeft="true"
-        android:paddingTop="4dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/testimg_platoon" />
+  <ImageView
+      android:id="@+id/image_badge"
+      android:layout_width="64dp"
+      android:layout_height="64dp"
+      android:layout_alignParentLeft="true"
+      android:paddingTop="4dp"
+      android:scaleType="fitXY"
+      android:src="@drawable/testimg_platoon"/>
 
-    <RelativeLayout
+  <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_marginLeft="5dp"
+      android:layout_toRightOf="@id/image_badge">
+
+    <TextView
+        android:id="@+id/text_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/image_badge" >
+        android:text="Non-Turbined Zebras"
+        android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/text_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Non-Turbined Zebras"
-            android:textSize="16sp" />
+    <TextView
+        android:id="@+id/text_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/text_name"
+        android:layout_toRightOf="@id/text_name"
+        android:text="[NTZ]"
+        android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/text_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/text_name"
-            android:layout_toRightOf="@id/text_name"
-            android:text="[NTZ]"
-            android:textSize="16sp" />
+    <TextView
+        android:id="@+id/string000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_name"
+        android:text="Number of members: "/>
 
-        <TextView
-            android:id="@+id/string000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_name"
-            android:text="Number of members: " />
+    <TextView
+        android:id="@+id/text_members"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_name"
+        android:layout_toRightOf="@id/string000"
+        android:text="10"/>
 
-        <TextView
-            android:id="@+id/text_members"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_name"
-            android:layout_toRightOf="@id/string000"
-            android:text="10" />
+    <TextView
+        android:id="@+id/string100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/string000"
+        android:text="Number of fans: "/>
 
-        <TextView
-            android:id="@+id/string100"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/string000"
-            android:text="Number of fans: " />
-
-        <TextView
-            android:id="@+id/text_fans"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/string000"
-            android:layout_toRightOf="@id/string100"
-            android:text="100" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/text_fans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/string000"
+        android:layout_toRightOf="@id/string100"
+        android:text="100"/>
+  </RelativeLayout>
 
 </RelativeLayout>

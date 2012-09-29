@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.activity;
 
 import android.app.AlarmManager;
@@ -12,7 +11,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -73,7 +71,7 @@ public class SettingsActivity extends PreferenceActivity {
                         AlarmManager.ELAPSED_REALTIME, 0, serviceInterval,
                         pendingIntent
 
-                        );
+                );
 
                 Log.d(Constants.DEBUG_TAG,
                         "Setting the service to update every "

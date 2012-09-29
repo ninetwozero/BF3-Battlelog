@@ -19,109 +19,109 @@ import android.os.Parcelable;
 
 public class PersonaData implements Parcelable {
 
-	// Attributes
-	protected long id;
-	protected String name, logo;
-	protected int platformId;
+    // Attributes
+    protected long id;
+    protected String name, logo;
+    protected int platformId;
 
-	// Constructs
-	public PersonaData(Parcel in) {
+    // Constructs
+    public PersonaData(Parcel in) {
 
-		id = in.readLong();
-		name = in.readString();
-		platformId = in.readInt();
-		logo = in.readString(); // TODO: This needs to be incorporated into SP
+        id = in.readLong();
+        name = in.readString();
+        platformId = in.readInt();
+        logo = in.readString(); // TODO: This needs to be incorporated into SP
 
-	}
+    }
 
-	public PersonaData(String n) {
+    public PersonaData(String n) {
 
-		this(0, n, 0, null);
+        this(0, n, 0, null);
 
-	}
+    }
 
-	public PersonaData(long i, String n, int pId, String l) {
+    public PersonaData(long i, String n, int pId, String l) {
 
-		id = i;
-		name = n;
-		platformId = pId;
-		logo = l;
+        id = i;
+        name = n;
+        platformId = pId;
+        logo = l;
 
-	}
+    }
 
-	// Getters
-	public long getId() {
-		return id;
-	}
+    // Getters
+    public long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getLogo() {
-		return logo;
-	}
+    public String getLogo() {
+        return logo;
+    }
 
-	public int getPlatformId() {
-		return platformId;
-	}
+    public int getPlatformId() {
+        return platformId;
+    }
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
 
-		dest.writeLong(id);
-		dest.writeString(name);
-		dest.writeInt(platformId);
-		dest.writeString(logo);
+        dest.writeLong(id);
+        dest.writeString(name);
+        dest.writeInt(platformId);
+        dest.writeString(logo);
 
-	}
+    }
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	public static final Parcelable.Creator<PersonaData> CREATOR = new Parcelable.Creator<PersonaData>() {
+    public static final Parcelable.Creator<PersonaData> CREATOR = new Parcelable.Creator<PersonaData>() {
 
-		public PersonaData createFromParcel(Parcel in) {
-			return new PersonaData(in);
-		}
+        public PersonaData createFromParcel(Parcel in) {
+            return new PersonaData(in);
+        }
 
-		public PersonaData[] newArray(int size) {
-			return new PersonaData[size];
-		}
+        public PersonaData[] newArray(int size) {
+            return new PersonaData[size];
+        }
 
-	};
+    };
 
-	public String resolvePlatformId() {
+    public String resolvePlatformId() {
 
-		switch (platformId) {
+        switch (platformId) {
 
-		case 0:
-		case 1:
-			return "[PC]";
+            case 0:
+            case 1:
+                return "[PC]";
 
-		case 2:
-			return "[360]";
+            case 2:
+                return "[360]";
 
-		case 4:
-			return "[PS3]";
+            case 4:
+                return "[PS3]";
 
-		default:
-			return "[N/A]";
+            default:
+                return "[N/A]";
 
-		}
+        }
 
-	}
+    }
 
-	// toString
-	@Override
-	public String toString() {
+    // toString
+    @Override
+    public String toString() {
 
-		return (
+        return (
 
-		id + ":" + name + ":" + logo + ":" + platformId
+                id + ":" + name + ":" + logo + ":" + platformId
 
-		);
-	}
+        );
+    }
 }

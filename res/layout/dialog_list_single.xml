@@ -13,15 +13,15 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialog_root"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="10dp" >
+                android:id="@+id/dialog_root"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="10dp">
 
-    <ListView
-        android:id="@+id/list_persona"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#FFFFFF" />
+  <ListView
+      android:id="@+id/list_persona"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:textColor="#FFFFFF"/>
 
 </RelativeLayout>

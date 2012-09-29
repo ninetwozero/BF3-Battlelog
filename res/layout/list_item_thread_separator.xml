@@ -13,6 +13,6 @@
     GNU General Public License for more details.
 -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/text_title"
-    style="@style/FriendHeadingRow"
-    android:text="" />
+          android:id="@+id/text_title"
+          style="@style/FriendHeadingRow"
+          android:text=""/>

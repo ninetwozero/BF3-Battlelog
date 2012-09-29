@@ -13,30 +13,30 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
-    <TextView
-        android:id="@+id/string000"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:text="Platoon"
-        android:textColor="#BABABA"
-        android:textStyle="bold" />
+  <TextView
+      android:id="@+id/string000"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_centerVertical="true"
+      android:text="Platoon"
+      android:textColor="#BABABA"
+      android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/string_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/string000"
-        android:ellipsize="marquee"
-        android:text="Non-Turbined Zebras [NTZ]"
-        android:textColor="@color/blue"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+  <TextView
+      android:id="@+id/string_name"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_toLeftOf="@id/string000"
+      android:ellipsize="marquee"
+      android:text="Non-Turbined Zebras [NTZ]"
+      android:textColor="@color/blue"
+      android:textSize="18sp"
+      android:textStyle="bold"/>
 
 </RelativeLayout>

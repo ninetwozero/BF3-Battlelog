@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -23,10 +21,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.ForumPostData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.List;
 
 public class ThreadPostListAdapter extends BaseAdapter {
 
@@ -37,7 +36,7 @@ public class ThreadPostListAdapter extends BaseAdapter {
 
     // Construct
     public ThreadPostListAdapter(Context c, List<ForumPostData> m,
-            LayoutInflater l) {
+                                 LayoutInflater l) {
 
         context = c;
         items = m;
@@ -120,7 +119,7 @@ public class ThreadPostListAdapter extends BaseAdapter {
                 !currentItem.isCensored() ? Html.fromHtml(currentItem.getContent())
                         : context.getString(R.string.general_censored)
 
-                );
+        );
 
         textPostedBy.setText(
 
@@ -134,13 +133,13 @@ public class ThreadPostListAdapter extends BaseAdapter {
 
                                 ).replace(
 
-                                        "{user}", currentItem.getProfileData().getUsername()
-
-                                )
+                                "{user}", currentItem.getProfileData().getUsername()
 
                         )
 
-                );
+                )
+
+        );
 
         // Lazy-keep
         convertView.setTag(currentItem);

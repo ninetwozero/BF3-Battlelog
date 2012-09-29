@@ -12,20 +12,20 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <stroke
-        android:width="4dp"
-        android:color="#FF00FF00" />
+  <stroke
+      android:width="4dp"
+      android:color="#FF00FF00"/>
 
-    <solid android:color="#ffffff" />
+  <solid android:color="#ffffff"/>
 
-    <padding
-        android:bottom="7dp"
-        android:left="7dp"
-        android:right="7dp"
-        android:top="7dp" />
+  <padding
+      android:bottom="7dp"
+      android:left="7dp"
+      android:right="7dp"
+      android:top="7dp"/>
 
-    <corners android:radius="4dp" />
+  <corners android:radius="4dp"/>
 
 </shape>

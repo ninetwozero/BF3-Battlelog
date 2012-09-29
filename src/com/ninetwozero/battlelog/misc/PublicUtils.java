@@ -17,11 +17,6 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
@@ -34,7 +29,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.Toast;
-
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
@@ -42,6 +36,11 @@ import com.ninetwozero.battlelog.asynctask.AsyncSessionSetActive;
 import com.ninetwozero.battlelog.asynctask.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatype.ShareableCookie;
 import com.ninetwozero.battlelog.http.RequestHandler;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class PublicUtils {
 
@@ -202,7 +201,7 @@ public class PublicUtils {
     }
 
     /**
-     * <p>
+     * <p/>
      * Normalize the given url (adding the http-prefix if none given)
      *
      * @param s the link to be normalized
@@ -483,7 +482,7 @@ public class PublicUtils {
 
                         )
 
-                        );
+                );
 
                 SessionKeeper.setPlatoonData(SessionKeeper
                         .generatePlatoonDataFromSharedPreferences(sharedPreferences));

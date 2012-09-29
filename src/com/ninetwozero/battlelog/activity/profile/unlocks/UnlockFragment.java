@@ -14,118 +14,113 @@
 
 package com.ninetwozero.battlelog.activity.profile.unlocks;
 
-import java.util.List;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ListView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.UnlockListAdapter;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.UnlockData;
 
+import java.util.List;
+
 public class UnlockFragment extends ListFragment implements DefaultFragment {
 
-	// Attributes
-	private Context mContext;
-	private LayoutInflater mLayoutInflater;
-	private int mViewPagerPosition;
+    // Attributes
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private int mViewPagerPosition;
 
-	// Elements
-	private ListView mListView;
+    // Elements
+    private ListView mListView;
 
-	// Misc
-	private List<UnlockData> mUnlocks;
+    // Misc
+    private List<UnlockData> mUnlocks;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-		// Set our attributes
-		mContext = getActivity();
-		mLayoutInflater = inflater;
+        // Set our attributes
+        mContext = getActivity();
+        mLayoutInflater = inflater;
 
-		// Let's inflate & return the view
-		View view = mLayoutInflater.inflate(R.layout.tab_content_unlocks,
-				container, false);
+        // Let's inflate & return the view
+        View view = mLayoutInflater.inflate(R.layout.tab_content_unlocks,
+                container, false);
 
-		// Get the unlocks
-		if (mContext instanceof UnlockActivity) {
+        // Get the unlocks
+        if (mContext instanceof UnlockActivity) {
 
-			mUnlocks = ((UnlockActivity) mContext)
-					.getItemsForFragment(mViewPagerPosition);
+            mUnlocks = ((UnlockActivity) mContext)
+                    .getItemsForFragment(mViewPagerPosition);
 
-		}
+        }
 
-		// Init views
-		initFragment(view);
+        // Init views
+        initFragment(view);
 
-		// Return the view
-		return view;
+        // Return the view
+        return view;
 
-	}
+    }
 
-	public void initFragment(View v) {
+    public void initFragment(View v) {
 
-		// Setup the ListView
-		mListView = (ListView) v.findViewById(android.R.id.list);
-		mListView.setAdapter(new UnlockListAdapter(mContext, mUnlocks,
-				mLayoutInflater));
+        // Setup the ListView
+        mListView = (ListView) v.findViewById(android.R.id.list);
+        mListView.setAdapter(new UnlockListAdapter(mContext, mUnlocks,
+                mLayoutInflater));
 
-	}
+    }
 
-	@Override
-	public void onResume() {
+    @Override
+    public void onResume() {
 
-		super.onResume();
+        super.onResume();
 
-	}
+    }
 
-	public int getViewPagerPosition() {
+    public int getViewPagerPosition() {
 
-		return mViewPagerPosition;
+        return mViewPagerPosition;
 
-	}
+    }
 
-	public void setViewPagerPosition(int p) {
+    public void setViewPagerPosition(int p) {
 
-		mViewPagerPosition = p;
+        mViewPagerPosition = p;
 
-	}
+    }
 
-	@Override
-	public void onListItemClick(ListView l, View v, int pos, long id) {
+    @Override
+    public void onListItemClick(ListView l, View v, int pos, long id) {
 
-		// TODO: OPEN WEAPON STATISTICS
+        // TODO: OPEN WEAPON STATISTICS
 
-	}
+    }
 
-	public void showUnlocks(List<UnlockData> unlockData) {
+    public void showUnlocks(List<UnlockData> unlockData) {
 
-		// Let's set the data
-		((UnlockListAdapter) mListView.getAdapter()).setDataArray(unlockData);
+        // Let's set the data
+        ((UnlockListAdapter) mListView.getAdapter()).setDataArray(unlockData);
 
-	}
+    }
 
-	@Override
-	public void reload() {
+    @Override
+    public void reload() {
 
-	}
+    }
 
-	@Override
-	public Menu prepareOptionsMenu(Menu menu) {
-		return null;
-	}
+    @Override
+    public Menu prepareOptionsMenu(Menu menu) {
+        return null;
+    }
 
-	@Override
-	public boolean handleSelectedOption(MenuItem item) {
-		return false;
-	}
+    @Override
+    public boolean handleSelectedOption(MenuItem item) {
+        return false;
+    }
 }

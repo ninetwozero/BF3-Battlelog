@@ -14,23 +14,16 @@
 
 package com.ninetwozero.battlelog.http;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import android.content.Context;
+import android.graphics.Bitmap;
+import com.ninetwozero.battlelog.datatype.*;
+import com.ninetwozero.battlelog.misc.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-
-import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
-import com.ninetwozero.battlelog.datatype.NewsData;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.RequestHandlerException;
-import com.ninetwozero.battlelog.datatype.SearchComparator;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.Constants;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /* 
  * Methods of this class should be loaded in AsyncTasks, as they would probably lock up the GUI
@@ -58,10 +51,10 @@ public class WebsiteClient extends DefaultClient {
                             ((size > 0) ? size : Constants.DEFAULT_AVATAR_SIZE),
                             Constants.DEFAULT_AVATAR_SIZE
 
-                            ),
+                    ),
                     true
 
-                    );
+            );
 
         } catch (Exception ex) {
 
@@ -116,7 +109,7 @@ public class WebsiteClient extends DefaultClient {
                         RequestHandler.generateUrl(Constants.URL_NEWS, num),
                         RequestHandler.HEADER_AJAX
 
-                        );
+                );
 
                 // Did we get something?
                 if (httpContent != null && !httpContent.equals("")) {
@@ -151,11 +144,11 @@ public class WebsiteClient extends DefaultClient {
 
                                                 user.getString("gravatarMd5")
 
-                                                ).build()
+                                        ).build()
 
                                 )
 
-                                );
+                        );
 
                     }
 

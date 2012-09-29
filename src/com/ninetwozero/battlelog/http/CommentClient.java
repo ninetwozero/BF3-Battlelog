@@ -1,175 +1,172 @@
 package com.ninetwozero.battlelog.http;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.util.Log;
-
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommentClient extends DefaultClient {
 
-	// Attributes
-	private long mId;
-	private int mType;
+    // Attributes
+    private long mId;
+    private int mType;
 
-	// URLS
-	public static final String URL_LIST = Constants.URL_MAIN
-			+ "feed/getComments/{POST_ID}/";
-	public static final String URL_COMMENT = Constants.URL_MAIN
-			+ "comment/postcomment/{POST_ID}/feed-item-comment/";
-	public static final String URL_NEWS_LIST = Constants.URL_MAIN
-			+ "news/view/{ARTICLE_ID}/{PAGE}/";
-	public static final String URL_NEWS_COMMENT = Constants.URL_MAIN
-			+ "news/view/{ARTICLE_ID}/{PAGE}/True";
-	// Attributes
-	public static final String[] FIELD_NAMES_COMMENT = new String[] {
-			"comment", "post-check-sum" };
+    // URLS
+    public static final String URL_LIST = Constants.URL_MAIN
+            + "feed/getComments/{POST_ID}/";
+    public static final String URL_COMMENT = Constants.URL_MAIN
+            + "comment/postcomment/{POST_ID}/feed-item-comment/";
+    public static final String URL_NEWS_LIST = Constants.URL_MAIN
+            + "news/view/{ARTICLE_ID}/{PAGE}/";
+    public static final String URL_NEWS_COMMENT = Constants.URL_MAIN
+            + "news/view/{ARTICLE_ID}/{PAGE}/True";
+    // Attributes
+    public static final String[] FIELD_NAMES_COMMENT = new String[]{
+            "comment", "post-check-sum"};
 
-	public CommentClient(long i, int t) {
+    public CommentClient(long i, int t) {
 
-		mRequestHandler = new RequestHandler();
-		mId = i;
-		mType = t;
+        mRequestHandler = new RequestHandler();
+        mId = i;
+        mType = t;
 
-	}
+    }
 
-	public boolean post(String checksum, String comment)
-			throws WebsiteHandlerException {
+    public boolean post(String checksum, String comment)
+            throws WebsiteHandlerException {
 
-		try {
+        try {
 
-			// Let's post!
-			boolean isFeed = (mType == CommentData.TYPE_FEED);
-			String url = RequestHandler.generateUrl(isFeed ? URL_COMMENT
-					: URL_NEWS_COMMENT, mId, 1);
+            // Let's post!
+            boolean isFeed = (mType == CommentData.TYPE_FEED);
+            String url = RequestHandler.generateUrl(isFeed ? URL_COMMENT
+                    : URL_NEWS_COMMENT, mId, 1);
 
-			// Get the httpContent
-			String httpContent = mRequestHandler.post(
+            // Get the httpContent
+            String httpContent = mRequestHandler.post(
 
-			url, RequestHandler.generatePostData(
+                    url, RequestHandler.generatePostData(
 
-			FIELD_NAMES_COMMENT, comment, checksum
+                    FIELD_NAMES_COMMENT, comment, checksum
 
-			), RequestHandler.HEADER_JSON
+            ), RequestHandler.HEADER_JSON
 
-			);
+            );
 
-			// Did we manage?
-			if (httpContent.length() > 0) {
+            // Did we manage?
+            if (httpContent.length() > 0) {
 
-				// Hopefully this goes as planned
-				return (!httpContent.equals("Internal server error"));
+                // Hopefully this goes as planned
+                return (!httpContent.equals("Internal server error"));
 
-			} else {
+            } else {
 
-				throw new WebsiteHandlerException("Could not post the comment.");
+                throw new WebsiteHandlerException("Could not post the comment.");
 
-			}
+            }
 
-		} catch (Exception ex) {
+        } catch (Exception ex) {
 
-			ex.printStackTrace();
-			throw new WebsiteHandlerException(ex.getMessage());
+            ex.printStackTrace();
+            throw new WebsiteHandlerException(ex.getMessage());
 
-		}
+        }
 
-	}
+    }
 
-	public List<CommentData> get() throws WebsiteHandlerException {
+    public List<CommentData> get() throws WebsiteHandlerException {
 
-		return get(1);
+        return get(1);
 
-	}
+    }
 
-	public List<CommentData> get(int pId) throws WebsiteHandlerException {
+    public List<CommentData> get(int pId) throws WebsiteHandlerException {
 
-		try {
+        try {
 
-			// Let's do this!
-			List<CommentData> comments = new ArrayList<CommentData>();
-			boolean isFeed = (mType == CommentData.TYPE_FEED);
+            // Let's do this!
+            List<CommentData> comments = new ArrayList<CommentData>();
+            boolean isFeed = (mType == CommentData.TYPE_FEED);
 
-			// Get the content depending on the pagee
-			String httpContent = mRequestHandler.get(
+            // Get the content depending on the pagee
+            String httpContent = mRequestHandler.get(
 
-			RequestHandler.generateUrl(
+                    RequestHandler.generateUrl(
 
-			isFeed ? URL_LIST : URL_NEWS_LIST, mId, pId),
-					RequestHandler.HEADER_AJAX
+                            isFeed ? URL_LIST : URL_NEWS_LIST, mId, pId),
+                    RequestHandler.HEADER_AJAX
 
-			);
+            );
 
-			// Did we manage?
-			if (httpContent.length() > 0) {
+            // Did we manage?
+            if (httpContent.length() > 0) {
 
-				// Init
-				JSONObject dataObject = null;
-				JSONObject tempObject = null;
+                // Init
+                JSONObject dataObject = null;
+                JSONObject tempObject = null;
 
-				// Is it a feed?
-				if (isFeed) {
+                // Is it a feed?
+                if (isFeed) {
 
-					dataObject = new JSONObject(httpContent)
-							.getJSONObject("data");
+                    dataObject = new JSONObject(httpContent)
+                            .getJSONObject("data");
 
-				} else {
+                } else {
 
-					dataObject = new JSONObject(httpContent).getJSONObject(
-							"context").getJSONObject("blogPost");
+                    dataObject = new JSONObject(httpContent).getJSONObject(
+                            "context").getJSONObject("blogPost");
 
-				}
+                }
 
-				// Get the comment array
-				JSONArray commentArray = dataObject.getJSONArray("comments");
+                // Get the comment array
+                JSONArray commentArray = dataObject.getJSONArray("comments");
 
-				// Iterate
-				for (int i = 0, max = commentArray.length(); i < max; i++) {
+                // Iterate
+                for (int i = 0, max = commentArray.length(); i < max; i++) {
 
-					tempObject = commentArray.optJSONObject(i);
-					JSONObject tempOwnerItem = tempObject
-							.getJSONObject("owner");
-					comments.add(
+                    tempObject = commentArray.optJSONObject(i);
+                    JSONObject tempOwnerItem = tempObject
+                            .getJSONObject("owner");
+                    comments.add(
 
-					new CommentData(
+                            new CommentData(
 
-					mId, Long.parseLong(tempObject.getString("itemId")), Long
-							.parseLong(tempObject.getString("creationDate")),
-							tempObject.getString("body"),
-							new ProfileData.Builder(
+                                    mId, Long.parseLong(tempObject.getString("itemId")), Long
+                                    .parseLong(tempObject.getString("creationDate")),
+                                    tempObject.getString("body"),
+                                    new ProfileData.Builder(
 
-							Long.parseLong(tempOwnerItem.getString("userId")),
-									tempOwnerItem.getString("username"))
-									.gravatarHash(
-											tempOwnerItem
-													.getString("gravatarMd5"))
-									.build()
+                                            Long.parseLong(tempOwnerItem.getString("userId")),
+                                            tempOwnerItem.getString("username"))
+                                            .gravatarHash(
+                                                    tempOwnerItem
+                                                            .getString("gravatarMd5"))
+                                            .build()
 
-					)
+                            )
 
-					);
+                    );
 
-				}
+                }
 
-				return (ArrayList<CommentData>) comments;
+                return (ArrayList<CommentData>) comments;
 
-			} else {
+            } else {
 
-				throw new WebsiteHandlerException("Could not get the comments.");
+                throw new WebsiteHandlerException("Could not get the comments.");
 
-			}
+            }
 
-		} catch (Exception ex) {
+        } catch (Exception ex) {
 
-			throw new WebsiteHandlerException(ex.getMessage());
+            throw new WebsiteHandlerException(ex.getMessage());
 
-		}
-	}
+        }
+    }
 
 }

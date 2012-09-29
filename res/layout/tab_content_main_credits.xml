@@ -13,33 +13,33 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-    <TextView
-        android:id="@+id/text_heading"
-        style="@style/FriendHeadingRow"
-        android:text="@string/info_credits_contributors" />
+  <TextView
+      android:id="@+id/text_heading"
+      style="@style/FriendHeadingRow"
+      android:text="@string/info_credits_contributors"/>
 
-    <TextView
-        android:id="@+id/text_info"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_heading"
-        android:padding="10dp"
-        android:text="@string/info_credits_info" />
+  <TextView
+      android:id="@+id/text_info"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/text_heading"
+      android:padding="10dp"
+      android:text="@string/info_credits_info"/>
 
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/text_info" />
+  <ListView
+      android:id="@android:id/list"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_below="@id/text_info"/>
 
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/text_info"
-        android:gravity="center" />
+  <TextView
+      android:id="@android:id/empty"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_below="@id/text_info"
+      android:gravity="center"/>
 
 </RelativeLayout>

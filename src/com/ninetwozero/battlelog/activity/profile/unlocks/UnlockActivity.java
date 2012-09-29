@@ -14,13 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.profile.unlocks;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -36,17 +29,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
-import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.UnlockData;
-import com.ninetwozero.battlelog.datatype.UnlockDataWrapper;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.datatype.*;
 import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UnlockActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
@@ -144,38 +139,38 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
 
                 mPersonaName, -1, new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int item) {
+            public void onClick(DialogInterface dialog, int item) {
 
-                        if (mPersonaId[item] != mSelectedPersona) {
+                if (mPersonaId[item] != mSelectedPersona) {
 
-                            // Update it
-                            mSelectedPersona = mPersonaId[item];
+                    // Update it
+                    mSelectedPersona = mPersonaId[item];
 
-                            // Store selectedPersonaPos
-                            mSelectedPosition = item;
+                    // Store selectedPersonaPos
+                    mSelectedPosition = item;
 
-                            // Load the new!
-                            showInFragment(mUnlocks.get(mSelectedPersona),
-                                    mViewPager.getCurrentItem());
+                    // Load the new!
+                    showInFragment(mUnlocks.get(mSelectedPersona),
+                            mViewPager.getCurrentItem());
 
-                            // Save it
-                            if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
-                                SharedPreferences.Editor spEdit = mSharedPreferences.edit();
-                                spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, mSelectedPersona);
-                                spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS,
-                                        mSelectedPosition);
-                                spEdit.commit();
-                            }
-
-                        }
-
-                        dialog.dismiss();
-
+                    // Save it
+                    if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
+                        SharedPreferences.Editor spEdit = mSharedPreferences.edit();
+                        spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, mSelectedPersona);
+                        spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS,
+                                mSelectedPosition);
+                        spEdit.commit();
                     }
 
                 }
 
-                );
+                dialog.dismiss();
+
+            }
+
+        }
+
+        );
 
         // CREATE
         return builder.create();
@@ -210,13 +205,13 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
             mPagerAdapter = new SwipeyTabsPagerAdapter(
 
                     mFragmentManager,
-                    new String[] {
+                    new String[]{
                             "WEAPONS", "ATTACHMENTS", "KIT UNLOCKS", "VEHICLE ADDONS", "SKILLS"
                     },
                     mListFragments,
                     mViewPager,
                     mLayoutInflater
-                    );
+            );
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 

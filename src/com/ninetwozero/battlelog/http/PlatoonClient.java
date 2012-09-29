@@ -14,6 +14,18 @@
 
 package com.ninetwozero.battlelog.http;
 
+import android.content.Context;
+import android.preference.PreferenceManager;
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatype.*;
+import com.ninetwozero.battlelog.misc.CacheHandler;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.PublicUtils;
+import org.apache.http.HttpEntity;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,31 +33,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.http.HttpEntity;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.content.Context;
-import android.preference.PreferenceManager;
-
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
-import com.ninetwozero.battlelog.datatype.PersonaData;
-import com.ninetwozero.battlelog.datatype.PlatoonData;
-import com.ninetwozero.battlelog.datatype.PlatoonInformation;
-import com.ninetwozero.battlelog.datatype.PlatoonStats;
-import com.ninetwozero.battlelog.datatype.PlatoonStatsItem;
-import com.ninetwozero.battlelog.datatype.PlatoonTopStatsItem;
-import com.ninetwozero.battlelog.datatype.ProfileComparator;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.RequestHandlerException;
-import com.ninetwozero.battlelog.datatype.TopStatsComparator;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.CacheHandler;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class PlatoonClient extends DefaultClient {
 
@@ -82,36 +69,36 @@ public class PlatoonClient extends DefaultClient {
             + "prod/emblems/60/{BADGE_PATH}";
 
     // Constants
-    public static final String[] FIELD_NAMES_SETTINGS = new String[] {
+    public static final String[] FIELD_NAMES_SETTINGS = new String[]{
 
             "name", "tag", "presentation", "website", "allow_members_apply", "post-check-sum"
 
     };
 
-    public static final String[] FIELD_NAMES_SEARCH = new String[] {
+    public static final String[] FIELD_NAMES_SEARCH = new String[]{
             "searchplat", "post-check-sum"
     };
 
-    public static final String[] FIELD_NAMES_APPLY = new String[] {
+    public static final String[] FIELD_NAMES_APPLY = new String[]{
             "platoonId", "post-check-sum"
     };
 
-    public static final String[] FIELD_NAMES_RESPOND = new String[] {
+    public static final String[] FIELD_NAMES_RESPOND = new String[]{
             "apply-action", "userIds[]", "post-check-sum", "accept", "deny"
     };
-    public static final String[] FIELD_VALUES_RESPOND = new String[] {
+    public static final String[] FIELD_VALUES_RESPOND = new String[]{
             "", null, null, "accept", "deny"
     };
 
-    public static final String[] FIELD_NAMES_INVITE = new String[] {
+    public static final String[] FIELD_NAMES_INVITE = new String[]{
             "platoonId", "post-check-sum", "userIds[]"
     };
 
-    public static final String[] FIELD_NAMES_LEAVE = new String[] {
+    public static final String[] FIELD_NAMES_LEAVE = new String[]{
             "platoonId", "userId", "post-check-sum"
     };
 
-    public static final String[] FIELD_NAMES_NEW = new String[] {
+    public static final String[] FIELD_NAMES_NEW = new String[]{
             "name", "tag", "active", "post-check-sum"
     };
 
@@ -149,10 +136,10 @@ public class PlatoonClient extends DefaultClient {
                             accepting ? FIELD_VALUES_RESPOND[3] : null,
                             !accepting ? FIELD_VALUES_RESPOND[4] : null
 
-                            ),
+                    ),
                     RequestHandler.HEADER_NORMAL
 
-                    );
+            );
 
             // Did we manage?
             return (!"".equals(httpContent));
@@ -178,10 +165,10 @@ public class PlatoonClient extends DefaultClient {
                             mPlatoonData.getId(),
                             checksum
 
-                            ),
+                    ),
                     RequestHandler.HEADER_GZIP
 
-                    );
+            );
 
             // What up?
             if (httpContent == null || httpContent.equals("")) {
@@ -235,10 +222,10 @@ public class PlatoonClient extends DefaultClient {
                             userId,
                             checksum
 
-                            ),
+                    ),
                     RequestHandler.HEADER_GZIP
 
-                    );
+            );
 
             // What up?
             return !"".equals(httpContent);
@@ -253,7 +240,7 @@ public class PlatoonClient extends DefaultClient {
     }
 
     public static PlatoonData getPlatoonId(final String keyword,
-            final String checksum) throws WebsiteHandlerException {
+                                           final String checksum) throws WebsiteHandlerException {
 
         try {
 
@@ -268,10 +255,10 @@ public class PlatoonClient extends DefaultClient {
                             keyword,
                             checksum
 
-                            ),
+                    ),
                     RequestHandler.HEADER_GZIP
 
-                    );
+            );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -327,7 +314,7 @@ public class PlatoonClient extends DefaultClient {
                                     tempObj.getString("name"),
                                     tempObj.getString("tag"), null, true
 
-                                    );
+                            );
 
                         }
 
@@ -370,10 +357,10 @@ public class PlatoonClient extends DefaultClient {
                             FIELD_NAMES_NEW,
                             params
 
-                            ),
+                    ),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Is the httpContent !null?
             if (httpContent != null && !httpContent.equals("")) {
@@ -412,7 +399,7 @@ public class PlatoonClient extends DefaultClient {
                     RequestHandler.generateUrl(URL_IMAGE, h),
                     true
 
-                    );
+            );
 
             // Init
             int bytesRead = 0;
@@ -481,9 +468,9 @@ public class PlatoonClient extends DefaultClient {
                             checksum,
                             userId
 
-                            ),
+                    ),
                     RequestHandler.HEADER_JSON
-                    );
+            );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -540,7 +527,7 @@ public class PlatoonClient extends DefaultClient {
                         userId,
                         mPlatoonData.getId()
 
-                        );
+                );
 
             } else if (filter == PlatoonClient.FILTER_DEMOTE) {
 
@@ -550,7 +537,7 @@ public class PlatoonClient extends DefaultClient {
                         userId,
                         mPlatoonData.getId()
 
-                        );
+                );
 
             } else if (filter == PlatoonClient.FILTER_KICK) {
 
@@ -560,7 +547,7 @@ public class PlatoonClient extends DefaultClient {
                         userId,
                         mPlatoonData.getId()
 
-                        );
+                );
 
             }
 
@@ -605,10 +592,10 @@ public class PlatoonClient extends DefaultClient {
                             mPlatoonData.getId(),
                             mPlatoonData.getPlatformId()
 
-                            ),
+                    ),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Did we manage?
             if (!"".equals(httpContent)) {
@@ -629,7 +616,7 @@ public class PlatoonClient extends DefaultClient {
                                 RequestHandler.generateUrl(URL_INFO, mPlatoonData.getId()),
                                 RequestHandler.HEADER_AJAX
 
-                                );
+                        );
 
                         // Build an object
                         JSONObject tempPlatoonData = new JSONObject(
@@ -640,15 +627,15 @@ public class PlatoonClient extends DefaultClient {
                         mPlatoonData = new PlatoonData(
 
                                 mPlatoonData.getId(), tempPlatoonData
-                                        .getInt("fanCounter"), tempPlatoonData
-                                        .getInt("memberCounter"),
+                                .getInt("fanCounter"), tempPlatoonData
+                                .getInt("memberCounter"),
                                 tempPlatoonData.getInt("platform"),
                                 tempPlatoonData.getString("name"),
                                 tempPlatoonData.getString("tag"),
                                 mPlatoonData.getId() + ".jpeg",
                                 tempPlatoonData.getBoolean("hidden")
 
-                                );
+                        );
                         return getStats(context);
 
                     } else {
@@ -714,12 +701,12 @@ public class PlatoonClient extends DefaultClient {
 
                                         currObjNames.getString(i), currObj.getDouble("min"),
                                         currObj.getDouble("median"), currObj
-                                                .getDouble("best"), currObj
-                                                .getDouble("average"), null
+                                        .getDouble("best"), currObj
+                                        .getDouble("average"), null
 
                                 )
 
-                                );
+                        );
 
                     } else {
 
@@ -730,12 +717,12 @@ public class PlatoonClient extends DefaultClient {
 
                                         currObjNames.getString(i), currObj.getInt("min"),
                                         currObj.getInt("median"), currObj
-                                                .getInt("best"), currObj
-                                                .getInt("average"), null
+                                        .getInt("best"), currObj
+                                        .getInt("average"), null
 
                                 )
 
-                                );
+                        );
 
                     }
 
@@ -772,8 +759,8 @@ public class PlatoonClient extends DefaultClient {
                             new PlatoonStatsItem(
 
                                     currObjNames.getString(i), currObj.getInt("min"), currObj
-                                            .getInt("median"), currObj.getInt("best"), currObj
-                                            .getInt("average"),
+                                    .getInt("median"), currObj.getInt("best"), currObj
+                                    .getInt("average"),
                                     new ProfileData.Builder(
                                             Long.parseLong(currUser.optString("userId", "0")),
                                             currUser.optString("username", "")
@@ -782,14 +769,14 @@ public class PlatoonClient extends DefaultClient {
                                                     Long.parseLong(currObj
                                                             .optString(
                                                                     "bestPersonaId", "")), currUser
-                                                            .optString(
-                                                                    "username", ""), mPlatoonData
-                                                            .getPlatformId(), null)
-                                            ).gravatarHash(tempGravatarHash).build()
+                                                    .optString(
+                                                            "username", ""), mPlatoonData
+                                                    .getPlatformId(), null)
+                                    ).gravatarHash(tempGravatarHash).build()
 
                             )
 
-                            );
+                    );
 
                     // Is it ! the first?
                     if (i > 0) {
@@ -836,8 +823,8 @@ public class PlatoonClient extends DefaultClient {
                             new PlatoonStatsItem(
 
                                     currObjNames.getString(i), currObj.getInt("min"), currObj
-                                            .getInt("median"), currObj.getInt("best"), currObj
-                                            .getInt("average"),
+                                    .getInt("median"), currObj.getInt("best"), currObj
+                                    .getInt("average"),
                                     new ProfileData.Builder(
                                             Long.parseLong(currUser.optString("userId", "0")),
                                             currUser.optString("username", "")
@@ -846,14 +833,14 @@ public class PlatoonClient extends DefaultClient {
                                                     Long.parseLong(currObj
                                                             .optString(
                                                                     "bestPersonaId", "")), currUser
-                                                            .optString(
-                                                                    "username", ""), mPlatoonData
-                                                            .getPlatformId(), null)
-                                            ).gravatarHash(tempGravatarHash).build()
+                                                    .optString(
+                                                            "username", ""), mPlatoonData
+                                                    .getPlatformId(), null)
+                                    ).gravatarHash(tempGravatarHash).build()
 
                             )
 
-                            );
+                    );
 
                     // Is it ! the first?
                     if (i > 0) {
@@ -900,8 +887,8 @@ public class PlatoonClient extends DefaultClient {
                             new PlatoonStatsItem(
 
                                     currObjNames.getString(i), currObj.getInt("min"), currObj
-                                            .getInt("median"), currObj.getInt("best"), currObj
-                                            .getInt("average"),
+                                    .getInt("median"), currObj.getInt("best"), currObj
+                                    .getInt("average"),
                                     new ProfileData.Builder(
                                             Long.parseLong(currUser.optString("userId", "0")),
                                             currUser.optString("username", "")
@@ -910,14 +897,14 @@ public class PlatoonClient extends DefaultClient {
                                                     Long.parseLong(currObj
                                                             .optString(
                                                                     "bestPersonaId", "")), currUser
-                                                            .optString(
-                                                                    "username", ""), mPlatoonData
-                                                            .getPlatformId(), null)
-                                            ).gravatarHash(tempGravatarHash).build()
+                                                    .optString(
+                                                            "username", ""), mPlatoonData
+                                                    .getPlatformId(), null)
+                                    ).gravatarHash(tempGravatarHash).build()
 
                             )
 
-                            );
+                    );
 
                     // Is it ! the first?
                     if (i > 0) {
@@ -963,7 +950,7 @@ public class PlatoonClient extends DefaultClient {
 
                                 )
 
-                                );
+                        );
 
                         // Continue
                         continue;
@@ -995,7 +982,7 @@ public class PlatoonClient extends DefaultClient {
 
                             )
 
-                            );
+                    );
 
                     // Store it if it's the highest
                     if (highestSPM == null
@@ -1016,7 +1003,7 @@ public class PlatoonClient extends DefaultClient {
 
                         )
 
-                        );
+                );
                 Collections.sort(arrayTop, new TopStatsComparator());
 
                 // Return it now!!
@@ -1061,7 +1048,7 @@ public class PlatoonClient extends DefaultClient {
                     RequestHandler.generateUrl(URL_FANS, mPlatoonData.getId()),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Let's start with the JSON shall we?
             JSONObject fanArray = new JSONObject(httpContent).getJSONObject(
@@ -1085,7 +1072,7 @@ public class PlatoonClient extends DefaultClient {
                                     Long.parseLong(tempObject.optString("userId", "0")),
                                     tempObject.optString("username", "")
                             ).gravatarHash(tempObject.optString("gravatarMd5")).build()
-                            );
+                    );
 
                 }
 
@@ -1116,7 +1103,7 @@ public class PlatoonClient extends DefaultClient {
 
             final Context c, final int num, final long aPId
 
-            ) throws WebsiteHandlerException {
+    ) throws WebsiteHandlerException {
 
         try {
 
@@ -1139,7 +1126,7 @@ public class PlatoonClient extends DefaultClient {
                     RequestHandler.generateUrl(URL_INFO, mPlatoonData.getId()),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
             boolean isAdmin = false;
             boolean isMember = false;
 
@@ -1170,7 +1157,7 @@ public class PlatoonClient extends DefaultClient {
                         aPId,
                         false
 
-                        );
+                );
 
                 // Let's iterate over the members
                 JSONArray idArray = memberArray.names();
@@ -1199,30 +1186,30 @@ public class PlatoonClient extends DefaultClient {
 
                                 Long.parseLong(currItem.getString("userId")),
                                 currItem.getJSONObject("user").getString("username")
-                                ).persona(
-                                        new PersonaData(
-                                                Long.parseLong(currItem
-                                                        .getString("personaId")),
-                                                currItem
-                                                        .getJSONObject("persona").getString(
-                                                                "personaName"),
-                                                profileCommonObject.getInt("platform"),
-                                                null
+                        ).persona(
+                                new PersonaData(
+                                        Long.parseLong(currItem
+                                                .getString("personaId")),
+                                        currItem
+                                                .getJSONObject("persona").getString(
+                                                "personaName"),
+                                        profileCommonObject.getInt("platform"),
+                                        null
 
-                                        )
-                                        )
-                                        .gravatarHash(currItem.optString("gravatarMd5", ""))
-                                        .isOnline(
-                                                currItem.getJSONObject("user")
-                                                        .getJSONObject("presence")
-                                                        .getBoolean("isOnline")
-                                        )
-                                        .isPlaying(
-                                                currItem.getJSONObject("user")
-                                                        .getJSONObject("presence")
-                                                        .getBoolean("isPlaying")
-                                        ).membershipLevel(currItem.getInt("membershipLevel"))
-                                        .build();
+                                )
+                        )
+                                .gravatarHash(currItem.optString("gravatarMd5", ""))
+                                .isOnline(
+                                        currItem.getJSONObject("user")
+                                                .getJSONObject("presence")
+                                                .getBoolean("isOnline")
+                                )
+                                .isPlaying(
+                                        currItem.getJSONObject("user")
+                                                .getJSONObject("presence")
+                                                .getBoolean("isPlaying")
+                                ).membershipLevel(currItem.getInt("membershipLevel"))
+                                .build();
 
                     } else {
 
@@ -1390,7 +1377,7 @@ public class PlatoonClient extends DefaultClient {
                         profileCommonObject.getBoolean("allowNewMembers"), members, fans, friends,
                         stats
 
-                        );
+                );
 
                 // Let's log it
                 if (CacheHandler.Platoon.insert(c, platoonInformation) == 0) {
@@ -1421,7 +1408,7 @@ public class PlatoonClient extends DefaultClient {
 
             Context context, String keyword, String checksum
 
-            ) throws WebsiteHandlerException {
+    ) throws WebsiteHandlerException {
 
         // Init
         List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
@@ -1438,10 +1425,10 @@ public class PlatoonClient extends DefaultClient {
                             keyword,
                             checksum
 
-                            ),
+                    ),
                     RequestHandler.HEADER_NORMAL
 
-                    );
+            );
             // Did we manage?
             if (!"".equals(httpContent)) {
 
@@ -1468,17 +1455,17 @@ public class PlatoonClient extends DefaultClient {
                                         new PlatoonData(
 
                                                 Long.parseLong(tempObj.getString("id")), tempObj
-                                                        .getInt("fanCounter"), tempObj
-                                                        .getInt("memberCounter"), tempObj
-                                                        .getInt("platform"), tempObj
-                                                        .getString("name"),
+                                                .getInt("fanCounter"), tempObj
+                                                .getInt("memberCounter"), tempObj
+                                                .getInt("platform"), tempObj
+                                                .getString("name"),
                                                 tempObj.getString("tag"), filename, true
 
                                         )
 
                                 )
 
-                                );
+                        );
 
                     }
 

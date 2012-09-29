@@ -14,12 +14,6 @@
 
 package com.ninetwozero.battlelog;
 
-import java.io.File;
-import java.util.ArrayList;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
-import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -35,14 +29,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.SlidingDrawer;
+import android.widget.*;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.activity.DashboardActivity;
@@ -58,6 +47,12 @@ import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+import net.sf.andhsli.hotspotlogin.SimpleCrypto;
+
+import java.io.File;
+import java.util.ArrayList;
 
 public class MainActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
@@ -172,7 +167,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
                 mFieldPassword.setText(SimpleCrypto.decrypt(
                         mSharedPreferences.getString(Constants.SP_BL_PROFILE_EMAIL,
                                 ""), mSharedPreferences.getString(
-                                Constants.SP_BL_PROFILE_PASSWORD, "")));
+                        Constants.SP_BL_PROFILE_PASSWORD, "")));
 
             } catch (Exception e) {
 
@@ -210,16 +205,16 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 
                     )
 
-                    );
+            );
             startActivity(
 
-            new Intent(this, DashboardActivity.class)
-                    .putExtra(
+                    new Intent(this, DashboardActivity.class)
+                            .putExtra(
 
-                            "myProfile",
-                            SessionKeeper
-                                    .generateProfileDataFromSharedPreferences(mSharedPreferences)
-                    ).putExtra(
+                                    "myProfile",
+                                    SessionKeeper
+                                            .generateProfileDataFromSharedPreferences(mSharedPreferences)
+                            ).putExtra(
                             "myPlatoon",
                             (ArrayList<PlatoonData>) SessionKeeper
                                     .generatePlatoonDataFromSharedPreferences(mSharedPreferences))
@@ -413,18 +408,18 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 
                 android.R.string.ok, new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which) {
 
-                        mSharedPreferences
-                                .edit()
-                                .putInt(Constants.SP_V_CHANGELOG,
-                                        Constants.CHANGELOG_VERSION).commit();
+                mSharedPreferences
+                        .edit()
+                        .putInt(Constants.SP_V_CHANGELOG,
+                                Constants.CHANGELOG_VERSION).commit();
 
-                    }
+            }
 
-                }
+        }
 
-                );
+        );
 
         // CREATE
         AlertDialog theDialog = builder.create();
@@ -470,14 +465,14 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
             mPagerAdapter = new SwipeyTabsPagerAdapter(
 
                     mFragmentManager,
-                    new String[] {
+                    new String[]{
                             getString(R.string.label_about), getString(R.string.label_faq),
                             getString(R.string.label_credits)
                     },
                     mListFragments,
                     mViewPager,
                     mLayoutInflater
-                    );
+            );
             Log.d(Constants.DEBUG_TAG, "pagerAdapter => " + mPagerAdapter);
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);

@@ -14,13 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.profile.weapon;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -29,217 +22,223 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
 import com.ninetwozero.battlelog.http.ProfileClient;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class WeaponListActivity extends CustomFragmentActivity implements
-		DefaultFragmentActivity {
+        DefaultFragmentActivity {
 
-	// Attributes
-	private ProfileData mProfileData;
-	private Map<Long, List<WeaponDataWrapper>> mItems;
-	private long mSelectedPersona;
+    // Attributes
+    private ProfileData mProfileData;
+    private Map<Long, List<WeaponDataWrapper>> mItems;
+    private long mSelectedPersona;
 
-	// private int mSelectedPosition;
+    // private int mSelectedPosition;
 
-	@Override
-	public void onCreate(final Bundle icicle) {
+    @Override
+    public void onCreate(final Bundle icicle) {
 
-		// onCreate - save the instance state
-		super.onCreate(icicle);
+        // onCreate - save the instance state
+        super.onCreate(icicle);
 
-		// Get the intent
-		if (!getIntent().hasExtra("profile")) {
-			finish();
-		}
+        // Get the intent
+        if (!getIntent().hasExtra("profile")) {
+            finish();
+        }
 
-		// Get the profile
-		mProfileData = getIntent().getParcelableExtra("profile");
+        // Get the profile
+        mProfileData = getIntent().getParcelableExtra("profile");
 
-		// Set the content view
-		setContentView(R.layout.viewpager_default);
+        // Set the content view
+        setContentView(R.layout.viewpager_default);
 
-		// Let's setup the fragments too
-		setup();
+        // Let's setup the fragments too
+        setup();
 
-		// Last but not least - init
-		init();
+        // Last but not least - init
+        init();
 
-	}
+    }
 
-	public void init() {
+    public void init() {
 
-		mItems = new HashMap<Long, List<WeaponDataWrapper>>();
+        mItems = new HashMap<Long, List<WeaponDataWrapper>>();
 
-		// Set the selected persona
-		if (mProfileData.getNumPersonas() > 0) {
+        // Set the selected persona
+        if (mProfileData.getNumPersonas() > 0) {
 
-			mSelectedPersona = mProfileData.getPersona(0).getId();
+            mSelectedPersona = mProfileData.getPersona(0).getId();
 
-		}
+        }
 
-	}
+    }
 
-	@Override
-	public void onResume() {
+    @Override
+    public void onResume() {
 
-		super.onResume();
+        super.onResume();
 
-		// Reload
-		reload();
+        // Reload
+        reload();
 
-	}
+    }
 
-	public void setup() {
+    public void setup() {
 
-		// Do we need to setup the fragments?
-		if (mListFragments == null) {
+        // Do we need to setup the fragments?
+        if (mListFragments == null) {
 
-			// Add them to the list
-			mListFragments = new ArrayList<Fragment>();
-			mListFragments.add(Fragment.instantiate(this,
-					WeaponListFragment.class.getName()));
+            // Add them to the list
+            mListFragments = new ArrayList<Fragment>();
+            mListFragments.add(Fragment.instantiate(this,
+                    WeaponListFragment.class.getName()));
 
-			// Iterate over the fragments
-			for (int i = 0, max = mListFragments.size(); i < max; i++) {
+            // Iterate over the fragments
+            for (int i = 0, max = mListFragments.size(); i < max; i++) {
 
-				((WeaponListFragment) mListFragments.get(i))
-						.setViewPagerPosition(i);
+                ((WeaponListFragment) mListFragments.get(i))
+                        .setViewPagerPosition(i);
 
-			}
+            }
 
-			// Get the ViewPager
-			mViewPager = (ViewPager) findViewById(R.id.viewpager);
-			mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+            // Get the ViewPager
+            mViewPager = (ViewPager) findViewById(R.id.viewpager);
+            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
-			// Fill the PagerAdapter & set it to the viewpager
-			mPagerAdapter = new SwipeyTabsPagerAdapter(
+            // Fill the PagerAdapter & set it to the viewpager
+            mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-			mFragmentManager, new String[] { "WEAPONS" }, mListFragments,
-					mViewPager, mLayoutInflater);
-			mViewPager.setAdapter(mPagerAdapter);
-			mTabs.setAdapter(mPagerAdapter);
+                    mFragmentManager, new String[]{"WEAPONS"}, mListFragments,
+                    mViewPager, mLayoutInflater);
+            mViewPager.setAdapter(mPagerAdapter);
+            mTabs.setAdapter(mPagerAdapter);
 
-			// Make sure the tabs follow
-			mViewPager.setOnPageChangeListener(mTabs);
-			mViewPager.setCurrentItem(0);
+            // Make sure the tabs follow
+            mViewPager.setOnPageChangeListener(mTabs);
+            mViewPager.setCurrentItem(0);
 
-		}
+        }
 
-	}
+    }
 
-	public void reload() {
+    public void reload() {
 
-		new AsyncRefresh(this).execute();
+        new AsyncRefresh(this).execute();
 
-	}
+    }
 
-	public void doFinish() {
-	}
+    public void doFinish() {
+    }
 
-	private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
+    private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
-		// Attributes
-		private Context mContext;
-		private ProgressDialog mProgressDialog;
+        // Attributes
+        private Context mContext;
+        private ProgressDialog mProgressDialog;
 
-		// Construct
-		public AsyncRefresh(Context c) {
+        // Construct
+        public AsyncRefresh(Context c) {
 
-			mContext = c;
+            mContext = c;
 
-		}
+        }
 
-		@Override
-		protected void onPreExecute() {
+        @Override
+        protected void onPreExecute() {
 
-			if (mItems.isEmpty()) {
-				mProgressDialog = new ProgressDialog(mContext);
-				mProgressDialog.setTitle(mContext
-						.getString(R.string.general_wait));
-				mProgressDialog.setMessage(mContext
-						.getString(R.string.general_downloading));
-				mProgressDialog.show();
-			}
+            if (mItems.isEmpty()) {
+                mProgressDialog = new ProgressDialog(mContext);
+                mProgressDialog.setTitle(mContext
+                        .getString(R.string.general_wait));
+                mProgressDialog.setMessage(mContext
+                        .getString(R.string.general_downloading));
+                mProgressDialog.show();
+            }
 
-		}
+        }
 
-		@Override
-		protected Boolean doInBackground(Void... arg) {
+        @Override
+        protected Boolean doInBackground(Void... arg) {
 
-			try {
+            try {
 
-				if (mProfileData.getNumPersonas() == 0) {
+                if (mProfileData.getNumPersonas() == 0) {
 
-					mProfileData = ProfileClient
-							.resolveFullProfileDataFromProfileData(mProfileData);
-					mSelectedPersona = mProfileData.getPersona(0).getId();
+                    mProfileData = ProfileClient
+                            .resolveFullProfileDataFromProfileData(mProfileData);
+                    mSelectedPersona = mProfileData.getPersona(0).getId();
 
-				}
+                }
 
-				mItems = new ProfileClient(mProfileData).getWeapons();
-				return true;
+                mItems = new ProfileClient(mProfileData).getWeapons();
+                return true;
 
-			} catch (Exception ex) {
+            } catch (Exception ex) {
 
-				ex.printStackTrace();
-				return false;
-			}
-		}
+                ex.printStackTrace();
+                return false;
+            }
+        }
 
-		@Override
-		protected void onPostExecute(Boolean result) {
+        @Override
+        protected void onPostExecute(Boolean result) {
 
-			if (mContext != null) {
+            if (mContext != null) {
 
-				if (result) {
+                if (result) {
 
-					((WeaponListFragment) mListFragments.get(mViewPager
-							.getCurrentItem())).showWeapons(mItems
-							.get(mSelectedPersona));
+                    ((WeaponListFragment) mListFragments.get(mViewPager
+                            .getCurrentItem())).showWeapons(mItems
+                            .get(mSelectedPersona));
 
-				} else {
+                } else {
 
-					Toast.makeText(mContext, R.string.general_no_data,
-							Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.general_no_data,
+                            Toast.LENGTH_SHORT).show();
 
-				}
+                }
 
-				if (mProgressDialog != null) {
-					mProgressDialog.dismiss();
-				}
+                if (mProgressDialog != null) {
+                    mProgressDialog.dismiss();
+                }
 
-			}
-		}
+            }
+        }
 
-	}
+    }
 
-	public List<WeaponDataWrapper> getItemsForFragment(int p) {
+    public List<WeaponDataWrapper> getItemsForFragment(int p) {
 
-		// Let's see if we got anything
-		if (mItems == null || mItems.get(mSelectedPersona) == null) {
+        // Let's see if we got anything
+        if (mItems == null || mItems.get(mSelectedPersona) == null) {
 
-			return new ArrayList<WeaponDataWrapper>();
+            return new ArrayList<WeaponDataWrapper>();
 
-		} else {
+        } else {
 
-			// Get the UnlockDataWrapper
-			return mItems.get(mSelectedPersona);
+            // Get the UnlockDataWrapper
+            return mItems.get(mSelectedPersona);
 
-		}
+        }
 
-	}
+    }
 
-	public void open(WeaponDataWrapper w) {
+    public void open(WeaponDataWrapper w) {
 
-		startActivity(new Intent(this, SingleWeaponActivity.class).putExtra(
-				"profile", mProfileData).putExtra("weapon", w));
+        startActivity(new Intent(this, SingleWeaponActivity.class).putExtra(
+                "profile", mProfileData).putExtra("weapon", w));
 
-	}
+    }
 
 }

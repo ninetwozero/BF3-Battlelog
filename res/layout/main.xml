@@ -13,99 +13,99 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/bg_bf3_main" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/bg_bf3_main">
 
-    <RelativeLayout
+  <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:layout_marginBottom="40dp">
+
+    <EditText
+        android:id="@+id/field_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="40dp" >
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:hint="@string/info_hint_email"
+        android:inputType="textEmailAddress"
+        android:minWidth="250dp"/>
 
-        <EditText
-            android:id="@+id/field_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"
-            android:hint="@string/info_hint_email"
-            android:inputType="textEmailAddress"
-            android:minWidth="250dp" />
+    <EditText
+        android:id="@+id/field_password"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/field_email"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:hint="@string/info_hint_password"
+        android:inputType="textPassword"
+        android:minWidth="250dp"/>
 
-        <EditText
-            android:id="@+id/field_password"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/field_email"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"
-            android:hint="@string/info_hint_password"
-            android:inputType="textPassword"
-            android:minWidth="250dp" />
+    <CheckBox
+        android:id="@+id/checkbox_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/field_password"
+        android:layout_centerHorizontal="true"
+        android:text="@string/label_save"
+        android:textColor="#FFFFFF"/>
 
-        <CheckBox
-            android:id="@+id/checkbox_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/field_password"
-            android:layout_centerHorizontal="true"
-            android:text="@string/label_save"
-            android:textColor="#FFFFFF" />
+    <Button
+        android:id="@+id/button_login"
+        style="@style/RegularButton"
+        android:layout_width="125dp"
+        android:layout_below="@id/checkbox_save"
+        android:layout_centerHorizontal="true"
+        android:text="@string/label_login"/>
+  </RelativeLayout>
 
-        <Button
-            android:id="@+id/button_login"
-            style="@style/RegularButton"
-            android:layout_width="125dp"
-            android:layout_below="@id/checkbox_save"
-            android:layout_centerHorizontal="true"
-            android:text="@string/label_login" />
-    </RelativeLayout>
+  <SlidingDrawer
+      android:id="@+id/about_slider"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_alignParentBottom="true"
+      android:content="@+id/about_slide_content"
+      android:handle="@+id/about_slide_handle"
+      android:topOffset="0dp">
 
-    <SlidingDrawer
-        android:id="@+id/about_slider"
+    <LinearLayout
+        android:id="@+id/about_slide_handle"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:orientation="vertical">
+
+      <View
+          android:layout_width="fill_parent"
+          android:layout_height="2dp"
+          android:background="#5c5c5c"/>
+
+      <View
+          android:id="@+id/temp000"
+          android:layout_width="fill_parent"
+          android:layout_height="1dp"
+          android:background="#20201f"/>
+
+      <TextView
+          android:id="@+id/about_slide_handle_text"
+          android:layout_width="fill_parent"
+          android:layout_height="37dp"
+          android:background="@drawable/gradient_greytodarkgrey"
+          android:gravity="center"
+          android:text="@string/info_xml_main_slider"
+          android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/about_slide_content"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:content="@+id/about_slide_content"
-        android:handle="@+id/about_slide_handle"
-        android:topOffset="0dp" >
+        android:background="#FDFDFD">
 
-        <LinearLayout
-            android:id="@+id/about_slide_handle"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:orientation="vertical" >
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:background="#5c5c5c" />
-
-            <View
-                android:id="@+id/temp000"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="#20201f" />
-
-            <TextView
-                android:id="@+id/about_slide_handle_text"
-                android:layout_width="fill_parent"
-                android:layout_height="37dp"
-                android:background="@drawable/gradient_greytodarkgrey"
-                android:gravity="center"
-                android:text="@string/info_xml_main_slider"
-                android:textColor="#FFFFFF" />
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/about_slide_content"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="#FDFDFD" >
-
-            <include layout="@layout/viewpager_com" />
-        </RelativeLayout>
-    </SlidingDrawer>
+      <include layout="@layout/viewpager_com"/>
+    </RelativeLayout>
+  </SlidingDrawer>
 
 </RelativeLayout>

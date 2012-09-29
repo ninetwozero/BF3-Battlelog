@@ -1,20 +1,18 @@
-
 package com.ninetwozero.battlelog.http;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.NotificationData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class NotificationClient extends DefaultClient {
 
@@ -39,7 +37,7 @@ public class NotificationClient extends DefaultClient {
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
                     RequestHandler.HEADER_GZIP
 
-                    );
+            );
 
             // Got httpContent
             if ("".equals(httpContent)) {
@@ -103,13 +101,13 @@ public class NotificationClient extends DefaultClient {
 
                                     "["
                                             + platoonObject.getJSONObject(
-                                                    currItem.getString("platoonId"))
-                                                    .getString("tag") + "] " + platoonObject
+                                            currItem.getString("platoonId"))
+                                            .getString("tag") + "] " + platoonObject
                                             .getJSONObject(
                                                     currItem.getString("platoonId"))
                                             .getString("name")
 
-                                    );
+                            );
 
                         } catch (JSONException ex) {
 
@@ -125,17 +123,17 @@ public class NotificationClient extends DefaultClient {
                             new NotificationData(
 
                                     Long.parseLong(currItem.optString("feedItemId", "0")), Long
-                                            .parseLong(currItem.optString("itemOwnerId", "0")),
+                                    .parseLong(currItem.optString("itemOwnerId", "0")),
                                     Long.parseLong(currItem.getString("userId")),
                                     Long.parseLong(currItem.getString("timestamp")),
                                     currItem.optInt("feedItemType", 0), currItem
-                                            .optString("itemOwnerUsername", ""),
+                                    .optString("itemOwnerUsername", ""),
                                     currItem.getString("username"), currItem
-                                            .getString("type"), extra
+                                    .getString("type"), extra
 
                             )
 
-                            );
+                    );
 
                 }
 
@@ -163,7 +161,7 @@ public class NotificationClient extends DefaultClient {
                     RequestHandler.generateUrl(URL_SINGLE, n.getItemId()),
                     RequestHandler.HEADER_AJAX
 
-                    );
+            );
 
             // Did we actually get it?
             if (!"".equals(httpContent)) {
@@ -229,7 +227,7 @@ public class NotificationClient extends DefaultClient {
 
                         id, id, date, 0,
                         0, 0, title, content,
-                        new ProfileData[] {
+                        new ProfileData[]{
 
                                 new ProfileData.Builder(uid, username[0]).gravatarHash(gravatar)
                                         .build(),

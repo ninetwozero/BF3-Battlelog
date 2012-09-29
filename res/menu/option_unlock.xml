@@ -1,19 +1,19 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/option_reload"
-        android:alphabeticShortcut="R"
-        android:icon="@android:drawable/ic_menu_rotate"
-        android:title="@string/info_xml_reload"/>
-    <item
-        android:id="@+id/option_change"
-        android:alphabeticShortcut="C"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="@string/info_unlock_change"/>
-    <item
-        android:id="@+id/option_back"
-        android:alphabeticShortcut="B"
-        android:icon="@android:drawable/ic_menu_revert"
-        android:title="@string/info_xml_back"/>
+  <item
+      android:id="@+id/option_reload"
+      android:alphabeticShortcut="R"
+      android:icon="@android:drawable/ic_menu_rotate"
+      android:title="@string/info_xml_reload"/>
+  <item
+      android:id="@+id/option_change"
+      android:alphabeticShortcut="C"
+      android:icon="@android:drawable/ic_menu_add"
+      android:title="@string/info_unlock_change"/>
+  <item
+      android:id="@+id/option_back"
+      android:alphabeticShortcut="B"
+      android:icon="@android:drawable/ic_menu_revert"
+      android:title="@string/info_xml_back"/>
 
 </menu>

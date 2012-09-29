@@ -19,89 +19,89 @@ import android.os.Parcelable;
 
 public class NewsData implements Parcelable {
 
-	// Attributes
-	private long id, date;
-	private int numComments;
-	private String title, content;
-	private ProfileData author;
+    // Attributes
+    private long id, date;
+    private int numComments;
+    private String title, content;
+    private ProfileData author;
 
-	// Constructs
-	public NewsData(long id, long cDate, int n, String t, String c,
-			ProfileData a) {
+    // Constructs
+    public NewsData(long id, long cDate, int n, String t, String c,
+                    ProfileData a) {
 
-		this.id = id;
-		this.date = cDate;
-		this.numComments = n;
-		this.title = t;
-		this.content = c;
-		this.author = a;
+        this.id = id;
+        this.date = cDate;
+        this.numComments = n;
+        this.title = t;
+        this.content = c;
+        this.author = a;
 
-	}
+    }
 
-	public NewsData(Parcel in) {
+    public NewsData(Parcel in) {
 
-		this.id = in.readLong();
-		this.date = in.readLong();
-		this.numComments = in.readInt();
-		this.title = in.readString();
-		this.content = in.readString();
-		this.author = in.readParcelable(ProfileData.class.getClassLoader());
+        this.id = in.readLong();
+        this.date = in.readLong();
+        this.numComments = in.readInt();
+        this.title = in.readString();
+        this.content = in.readString();
+        this.author = in.readParcelable(ProfileData.class.getClassLoader());
 
-	}
+    }
 
-	// Getters
-	public long getId() {
-		return this.id;
-	}
+    // Getters
+    public long getId() {
+        return this.id;
+    }
 
-	public long getDate() {
-		return this.date;
-	}
+    public long getDate() {
+        return this.date;
+    }
 
-	public int getNumComments() {
+    public int getNumComments() {
 
-		return numComments;
+        return numComments;
 
-	}
+    }
 
-	public String getTitle() {
-		return this.title;
-	}
+    public String getTitle() {
+        return this.title;
+    }
 
-	public String getContent() {
-		return this.content;
-	}
+    public String getContent() {
+        return this.content;
+    }
 
-	public String getAuthorName() {
-		return this.author.getUsername();
-	}
+    public String getAuthorName() {
+        return this.author.getUsername();
+    }
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	@Override
-	public void writeToParcel(Parcel out, int arg1) {
+    @Override
+    public void writeToParcel(Parcel out, int arg1) {
 
-		out.writeLong(this.id);
-		out.writeLong(this.date);
-		out.writeInt(this.numComments);
-		out.writeString(this.title);
-		out.writeString(this.content);
-		out.writeParcelable(this.author, arg1);
+        out.writeLong(this.id);
+        out.writeLong(this.date);
+        out.writeInt(this.numComments);
+        out.writeString(this.title);
+        out.writeString(this.content);
+        out.writeParcelable(this.author, arg1);
 
-	}
+    }
 
-	public static final Parcelable.Creator<NewsData> CREATOR = new Parcelable.Creator<NewsData>() {
+    public static final Parcelable.Creator<NewsData> CREATOR = new Parcelable.Creator<NewsData>() {
 
-		public NewsData createFromParcel(Parcel in) {
-			return new NewsData(in);
-		}
+        public NewsData createFromParcel(Parcel in) {
+            return new NewsData(in);
+        }
 
-		public NewsData[] newArray(int size) {
-			return new NewsData[size];
-		}
+        public NewsData[] newArray(int size) {
+            return new NewsData[size];
+        }
 
-	};
+    };
 }

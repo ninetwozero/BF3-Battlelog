@@ -14,10 +14,6 @@
 
 package com.ninetwozero.battlelog.activity;
 
-import java.util.List;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -28,72 +24,75 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+
+import java.util.List;
 
 public class CustomFragmentActivity extends FragmentActivity {
 
-	// Attributes
-	protected SharedPreferences mSharedPreferences;
-	protected LayoutInflater mLayoutInflater;
+    // Attributes
+    protected SharedPreferences mSharedPreferences;
+    protected LayoutInflater mLayoutInflater;
 
-	// Fragment related
-	protected SwipeyTabs mTabs;
-	protected SwipeyTabsPagerAdapter mPagerAdapter;
-	protected FragmentManager mFragmentManager;
-	protected ViewPager mViewPager;
-	protected List<Fragment> mListFragments;
+    // Fragment related
+    protected SwipeyTabs mTabs;
+    protected SwipeyTabsPagerAdapter mPagerAdapter;
+    protected FragmentManager mFragmentManager;
+    protected ViewPager mViewPager;
+    protected List<Fragment> mListFragments;
 
-	@Override
-	public void onCreate(final Bundle icicle) {
+    @Override
+    public void onCreate(final Bundle icicle) {
 
-		// onCreate - save the instance state
-		super.onCreate(icicle);
+        // onCreate - save the instance state
+        super.onCreate(icicle);
 
-		// Set sharedPreferences
-		mSharedPreferences = PreferenceManager
-				.getDefaultSharedPreferences(this);
+        // Set sharedPreferences
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
 
-		// Should we display a title bar?
-		PublicUtils.setupFullscreen(this, mSharedPreferences);
-		PublicUtils.restoreCookies(this, icicle);
+        // Should we display a title bar?
+        PublicUtils.setupFullscreen(this, mSharedPreferences);
+        PublicUtils.restoreCookies(this, icicle);
 
-		// Setup the locale
-		PublicUtils.setupLocale(this, mSharedPreferences);
+        // Setup the locale
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
-		// Get the layoutInflater
-		mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mFragmentManager = getSupportFragmentManager();
+        // Get the layoutInflater
+        mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mFragmentManager = getSupportFragmentManager();
 
-	}
+    }
 
-	@Override
-	public void onResume() {
+    @Override
+    public void onResume() {
 
-		super.onResume();
+        super.onResume();
 
-		// Setup the locale
-		PublicUtils.setupLocale(this, mSharedPreferences);
+        // Setup the locale
+        PublicUtils.setupLocale(this, mSharedPreferences);
 
-		// Setup the session
-		PublicUtils.setupSession(this, mSharedPreferences);
+        // Setup the session
+        PublicUtils.setupSession(this, mSharedPreferences);
 
-	}
+    }
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
 
-		super.onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(newConfig);
 
-	}
+    }
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
 
-		super.onSaveInstanceState(outState);
-		outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-				RequestHandler.getCookies());
-	}
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
+                RequestHandler.getCookies());
+    }
 }

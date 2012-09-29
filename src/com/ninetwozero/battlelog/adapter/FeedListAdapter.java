@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.text.Html;
@@ -25,109 +23,110 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
+import java.util.List;
+
 public class FeedListAdapter extends BaseAdapter {
 
-	// Attributes
-	private Context context;
-	private List<FeedItem> itemArray;
-	private LayoutInflater layoutInflater;
+    // Attributes
+    private Context context;
+    private List<FeedItem> itemArray;
+    private LayoutInflater layoutInflater;
 
-	// Construct
-	public FeedListAdapter(Context c, List<FeedItem> fi, LayoutInflater l) {
+    // Construct
+    public FeedListAdapter(Context c, List<FeedItem> fi, LayoutInflater l) {
 
-		context = c;
-		itemArray = fi;
-		layoutInflater = l;
+        context = c;
+        itemArray = fi;
+        layoutInflater = l;
 
-	}
+    }
 
-	@Override
-	public int getCount() {
+    @Override
+    public int getCount() {
 
-		return (itemArray != null) ? itemArray.size() : 0;
+        return (itemArray != null) ? itemArray.size() : 0;
 
-	}
+    }
 
-	@Override
-	public FeedItem getItem(int position) {
+    @Override
+    public FeedItem getItem(int position) {
 
-		return this.itemArray.get(position);
+        return this.itemArray.get(position);
 
-	}
+    }
 
-	@Override
-	public long getItemId(int position) {
+    @Override
+    public long getItemId(int position) {
 
-		return this.itemArray.get(position).getId();
+        return this.itemArray.get(position).getId();
 
-	}
+    }
 
-	public void setItemArray(List<FeedItem> ia) {
+    public void setItemArray(List<FeedItem> ia) {
 
-		this.itemArray = ia;
-		this.notifyDataSetChanged();
+        this.itemArray = ia;
+        this.notifyDataSetChanged();
 
-	}
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-		// Get the current item
-		FeedItem currentItem = getItem(position);
+        // Get the current item
+        FeedItem currentItem = getItem(position);
 
-		// Recycle
-		if (convertView == null) {
+        // Recycle
+        if (convertView == null) {
 
-			convertView = layoutInflater.inflate(R.layout.list_item_feed,
-					parent, false);
+            convertView = layoutInflater.inflate(R.layout.list_item_feed,
+                    parent, false);
 
-		}
+        }
 
-		// Set the views
-		((TextView) convertView.findViewById(R.id.text_title)).setText(
+        // Set the views
+        ((TextView) convertView.findViewById(R.id.text_title)).setText(
 
-		!currentItem.isCensored() ? Html.fromHtml(currentItem.getTitle())
-				: context.getString(R.string.general_censored)
+                !currentItem.isCensored() ? Html.fromHtml(currentItem.getTitle())
+                        : context.getString(R.string.general_censored)
 
-		);
+        );
 
-		// How many likes/comments?
-		String textHooah = (currentItem.getNumLikes() == 1) ? context
-				.getString(R.string.info_hooah_s) : context
-				.getString(R.string.info_hooah_p);
-		String textComments = (currentItem.getNumComments() == 1) ? context
-				.getString(R.string.info_comment_s) : context
-				.getString(R.string.info_comment_p);
-		String content = textComments.replace("{num}",
-				currentItem.getNumComments() + "");
+        // How many likes/comments?
+        String textHooah = (currentItem.getNumLikes() == 1) ? context
+                .getString(R.string.info_hooah_s) : context
+                .getString(R.string.info_hooah_p);
+        String textComments = (currentItem.getNumComments() == 1) ? context
+                .getString(R.string.info_comment_s) : context
+                .getString(R.string.info_comment_p);
+        String content = textComments.replace("{num}",
+                currentItem.getNumComments() + "");
 
-		// Set the fields
-		((ImageView) convertView.findViewById(R.id.image_avatar))
-				.setImageBitmap(
+        // Set the fields
+        ((ImageView) convertView.findViewById(R.id.image_avatar))
+                .setImageBitmap(
 
-				BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
-						.toString() + currentItem.getAvatarForPost() + ".png")
+                        BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
+                                .toString() + currentItem.getAvatarForPost() + ".png")
 
-				);
-		((TextView) convertView.findViewById(R.id.text_date))
-				.setText(PublicUtils.getRelativeDate(context,
-						currentItem.getDate()));
-		((TextView) convertView.findViewById(R.id.text_hooah))
-				.setText(textHooah.replace("{num}", currentItem.getNumLikes()
-						+ ""));
-		((TextView) convertView.findViewById(R.id.text_comment))
-				.setText(content);
+                );
+        ((TextView) convertView.findViewById(R.id.text_date))
+                .setText(PublicUtils.getRelativeDate(context,
+                        currentItem.getDate()));
+        ((TextView) convertView.findViewById(R.id.text_hooah))
+                .setText(textHooah.replace("{num}", currentItem.getNumLikes()
+                        + ""));
+        ((TextView) convertView.findViewById(R.id.text_comment))
+                .setText(content);
 
-		// Hook it up on the tag
-		convertView.setTag(currentItem);
+        // Hook it up on the tag
+        convertView.setTag(currentItem);
 
-		// Send it back
-		return convertView;
-	}
+        // Send it back
+        return convertView;
+    }
 
 }

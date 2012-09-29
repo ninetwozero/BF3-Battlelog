@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -24,85 +22,86 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
+import java.util.List;
+
 public class PlatoonListAdapter extends BaseAdapter {
 
-	// Attributes
-	private Context context;
-	private List<PlatoonData> platoonArray;
-	private LayoutInflater layoutInflater;
+    // Attributes
+    private Context context;
+    private List<PlatoonData> platoonArray;
+    private LayoutInflater layoutInflater;
 
-	// Construct
-	public PlatoonListAdapter(Context c, List<PlatoonData> p, LayoutInflater l) {
+    // Construct
+    public PlatoonListAdapter(Context c, List<PlatoonData> p, LayoutInflater l) {
 
-		context = c;
-		platoonArray = p;
-		layoutInflater = l;
+        context = c;
+        platoonArray = p;
+        layoutInflater = l;
 
-	}
+    }
 
-	@Override
-	public int getCount() {
+    @Override
+    public int getCount() {
 
-		return (platoonArray != null) ? platoonArray.size() : 0;
+        return (platoonArray != null) ? platoonArray.size() : 0;
 
-	}
+    }
 
-	@Override
-	public PlatoonData getItem(int position) {
+    @Override
+    public PlatoonData getItem(int position) {
 
-		return this.platoonArray.get(position);
+        return this.platoonArray.get(position);
 
-	}
+    }
 
-	@Override
-	public long getItemId(int position) {
+    @Override
+    public long getItemId(int position) {
 
-		return this.platoonArray.get(position).getId();
+        return this.platoonArray.get(position).getId();
 
-	}
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-		// Get the current item
-		PlatoonData currentPlatoon = getItem(position);
+        // Get the current item
+        PlatoonData currentPlatoon = getItem(position);
 
-		// Recycle
-		if (convertView == null) {
+        // Recycle
+        if (convertView == null) {
 
-			convertView = layoutInflater.inflate(R.layout.list_item_platoon,
-					parent, false);
+            convertView = layoutInflater.inflate(R.layout.list_item_platoon,
+                    parent, false);
 
-		}
+        }
 
-		// Set the TextViews
-		((TextView) convertView.findViewById(R.id.text_name))
-				.setText(currentPlatoon.getName());
-		((TextView) convertView.findViewById(R.id.text_tag))
-				.setText(currentPlatoon.getTag());
-		((TextView) convertView.findViewById(R.id.text_members))
-				.setText(currentPlatoon.getCountMembers() + "");
-		((TextView) convertView.findViewById(R.id.text_fans))
-				.setText(currentPlatoon.getCountFans() + "");
+        // Set the TextViews
+        ((TextView) convertView.findViewById(R.id.text_name))
+                .setText(currentPlatoon.getName());
+        ((TextView) convertView.findViewById(R.id.text_tag))
+                .setText(currentPlatoon.getTag());
+        ((TextView) convertView.findViewById(R.id.text_members))
+                .setText(currentPlatoon.getCountMembers() + "");
+        ((TextView) convertView.findViewById(R.id.text_fans))
+                .setText(currentPlatoon.getCountFans() + "");
 
-		// Almost forgot - we got a Bitmap too!
-		((ImageView) convertView.findViewById(R.id.image_badge))
-				.setImageBitmap(
+        // Almost forgot - we got a Bitmap too!
+        ((ImageView) convertView.findViewById(R.id.image_badge))
+                .setImageBitmap(
 
-				BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
-						+ currentPlatoon.getId() + ".jpeg")
+                        BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
+                                + currentPlatoon.getId() + ".jpeg")
 
-				);
+                );
 
-		// Store it in the tag
-		convertView.setTag(currentPlatoon);
+        // Store it in the tag
+        convertView.setTag(currentPlatoon);
 
-		return convertView;
-	}
+        return convertView;
+    }
 
 }

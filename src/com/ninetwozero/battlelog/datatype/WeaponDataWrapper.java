@@ -14,106 +14,106 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-import java.util.List;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 public class WeaponDataWrapper implements Parcelable {
 
-	// Attributes
-	private int mNumUnlocked;
-	private WeaponInfo mData;
-	private WeaponStats mStats;
-	private List<UnlockData> mUnlocks;
+    // Attributes
+    private int mNumUnlocked;
+    private WeaponInfo mData;
+    private WeaponStats mStats;
+    private List<UnlockData> mUnlocks;
 
-	public WeaponDataWrapper(int nu, WeaponInfo d, WeaponStats w,
-			List<UnlockData> u) {
+    public WeaponDataWrapper(int nu, WeaponInfo d, WeaponStats w,
+                             List<UnlockData> u) {
 
-		mNumUnlocked = nu;
-		mData = d;
-		mStats = w;
-		mUnlocks = u;
+        mNumUnlocked = nu;
+        mData = d;
+        mStats = w;
+        mUnlocks = u;
 
-	}
+    }
 
-	public WeaponDataWrapper(Parcel in) {
+    public WeaponDataWrapper(Parcel in) {
 
-		mNumUnlocked = in.readInt();
-		mData = in.readParcelable(WeaponInfo.class.getClassLoader());
-		mStats = in.readParcelable(WeaponStats.class.getClassLoader());
-		mUnlocks = in.createTypedArrayList(UnlockData.CREATOR);
+        mNumUnlocked = in.readInt();
+        mData = in.readParcelable(WeaponInfo.class.getClassLoader());
+        mStats = in.readParcelable(WeaponStats.class.getClassLoader());
+        mUnlocks = in.createTypedArrayList(UnlockData.CREATOR);
 
-	}
+    }
 
-	// Getters
-	public int getNumUnlocked() {
+    // Getters
+    public int getNumUnlocked() {
 
-		return mNumUnlocked;
-	}
+        return mNumUnlocked;
+    }
 
-	public int getNumUnlocks() {
+    public int getNumUnlocks() {
 
-		return mUnlocks.size();
-	}
+        return mUnlocks.size();
+    }
 
-	public WeaponInfo getData() {
+    public WeaponInfo getData() {
 
-		return mData;
-	}
+        return mData;
+    }
 
-	public WeaponStats getStats() {
+    public WeaponStats getStats() {
 
-		return mStats;
-	}
+        return mStats;
+    }
 
-	public List<UnlockData> getUnlocks() {
+    public List<UnlockData> getUnlocks() {
 
-		return mUnlocks;
-	}
+        return mUnlocks;
+    }
 
-	// Setters
-	public void setData(WeaponInfo d) {
+    // Setters
+    public void setData(WeaponInfo d) {
 
-		mData = d;
+        mData = d;
 
-	}
+    }
 
-	public void setStats(WeaponStats w) {
+    public void setStats(WeaponStats w) {
 
-		mStats = w;
-	}
+        mStats = w;
+    }
 
-	public void setUnlocks(List<UnlockData> u) {
+    public void setUnlocks(List<UnlockData> u) {
 
-		mUnlocks = u;
-	}
+        mUnlocks = u;
+    }
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	@Override
-	public void writeToParcel(Parcel out, int arg1) {
+    @Override
+    public void writeToParcel(Parcel out, int arg1) {
 
-		out.writeInt(mNumUnlocked);
-		out.writeParcelable(mData, arg1);
-		out.writeParcelable(mStats, arg1);
-		out.writeTypedList(mUnlocks);
+        out.writeInt(mNumUnlocked);
+        out.writeParcelable(mData, arg1);
+        out.writeParcelable(mStats, arg1);
+        out.writeTypedList(mUnlocks);
 
-	}
+    }
 
-	public static final Parcelable.Creator<WeaponDataWrapper> CREATOR = new Parcelable.Creator<WeaponDataWrapper>() {
+    public static final Parcelable.Creator<WeaponDataWrapper> CREATOR = new Parcelable.Creator<WeaponDataWrapper>() {
 
-		public WeaponDataWrapper createFromParcel(Parcel in) {
-			return new WeaponDataWrapper(in);
-		}
+        public WeaponDataWrapper createFromParcel(Parcel in) {
+            return new WeaponDataWrapper(in);
+        }
 
-		public WeaponDataWrapper[] newArray(int size) {
-			return new WeaponDataWrapper[size];
-		}
+        public WeaponDataWrapper[] newArray(int size) {
+            return new WeaponDataWrapper[size];
+        }
 
-	};
+    };
 
 }

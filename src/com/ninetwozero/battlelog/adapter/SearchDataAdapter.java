@@ -14,150 +14,149 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 
+import java.util.List;
+
 public class SearchDataAdapter extends BaseAdapter {
 
-	// Attributes
-	private List<GeneralSearchResult> itemArray;
-	private LayoutInflater layoutInflater;
+    // Attributes
+    private List<GeneralSearchResult> itemArray;
+    private LayoutInflater layoutInflater;
 
-	// Construct
-	public SearchDataAdapter(List<GeneralSearchResult> m, LayoutInflater l) {
+    // Construct
+    public SearchDataAdapter(List<GeneralSearchResult> m, LayoutInflater l) {
 
-		itemArray = m;
-		layoutInflater = l;
+        itemArray = m;
+        layoutInflater = l;
 
-	}
+    }
 
-	@Override
-	public int getCount() {
+    @Override
+    public int getCount() {
 
-		return (itemArray != null) ? itemArray.size() : 0;
+        return (itemArray != null) ? itemArray.size() : 0;
 
-	}
+    }
 
-	@Override
-	public GeneralSearchResult getItem(int position) {
+    @Override
+    public GeneralSearchResult getItem(int position) {
 
-		return this.itemArray.get(position);
+        return this.itemArray.get(position);
 
-	}
+    }
 
-	@Override
-	public long getItemId(int position) {
+    @Override
+    public long getItemId(int position) {
 
-		GeneralSearchResult temp = this.itemArray.get(position);
-		return (temp.hasProfileData() ? temp.getProfileData().getId() : temp
-				.getPlatoonData().getId());
+        GeneralSearchResult temp = this.itemArray.get(position);
+        return (temp.hasProfileData() ? temp.getProfileData().getId() : temp
+                .getPlatoonData().getId());
 
-	}
+    }
 
-	@Override
-	public int getItemViewType(int position) {
+    @Override
+    public int getItemViewType(int position) {
 
-		if (getItem(position).hasProfileData()) {
+        if (getItem(position).hasProfileData()) {
 
-			return 0;
+            return 0;
 
-		} else {
+        } else {
 
-			return 1;
+            return 1;
 
-		}
+        }
 
-	}
+    }
 
-	@Override
-	public int getViewTypeCount() {
+    @Override
+    public int getViewTypeCount() {
 
-		return 2;
+        return 2;
 
-	}
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-		// Get the current item
-		GeneralSearchResult currentItem = getItem(position);
+        // Get the current item
+        GeneralSearchResult currentItem = getItem(position);
 
-		// Recycle
-		if (getItemViewType(position) == 0) {
+        // Recycle
+        if (getItemViewType(position) == 0) {
 
-			if (convertView == null) {
+            if (convertView == null) {
 
-				convertView = layoutInflater.inflate(
-						R.layout.list_item_search_profile, parent, false);
+                convertView = layoutInflater.inflate(
+                        R.layout.list_item_search_profile, parent, false);
 
-			}
+            }
 
-			// Get the ProfileData
-			ProfileData profileData = currentItem.getProfileData();
+            // Get the ProfileData
+            ProfileData profileData = currentItem.getProfileData();
 
-			// Set the fields
-			((TextView) convertView.findViewById(R.id.string_name))
-					.setText(profileData.getUsername());
-			/*
-			 * ((ImageView) convertView.findViewById( R.id.image_avatar
-			 * )).setImageBitmap( BitmapFactory.decodeFile(
-			 * PublicUtils.getCachePath( context ) +
-			 * profileData.getGravatarHash() + ".png" ) );
-			 */
+            // Set the fields
+            ((TextView) convertView.findViewById(R.id.string_name))
+                    .setText(profileData.getUsername());
+            /*
+                * ((ImageView) convertView.findViewById( R.id.image_avatar
+                * )).setImageBitmap( BitmapFactory.decodeFile(
+                * PublicUtils.getCachePath( context ) +
+                * profileData.getGravatarHash() + ".png" ) );
+                */
 
-		} else {
+        } else {
 
-			if (convertView == null) {
+            if (convertView == null) {
 
-				convertView = layoutInflater.inflate(
-						R.layout.list_item_search_platoon, parent, false);
+                convertView = layoutInflater.inflate(
+                        R.layout.list_item_search_platoon, parent, false);
 
-			}
+            }
 
-			// Get the PlatoonData
-			PlatoonData platoonData = currentItem.getPlatoonData();
+            // Get the PlatoonData
+            PlatoonData platoonData = currentItem.getPlatoonData();
 
-			// Set the fields
-			((TextView) convertView.findViewById(R.id.string_name)).setText("["
-					+ platoonData.getTag() + "] " + platoonData.getName());
-			/*
-			 * ((ImageView) convertView.findViewById( R.id.image_avatar
-			 * )).setImageBitmap( BitmapFactory.decodeFile(
-			 * PublicUtils.getCachePath( context ) + platoonData.getImage() +
-			 * ".jpeg" ) );
-			 */
+            // Set the fields
+            ((TextView) convertView.findViewById(R.id.string_name)).setText("["
+                    + platoonData.getTag() + "] " + platoonData.getName());
+            /*
+                * ((ImageView) convertView.findViewById( R.id.image_avatar
+                * )).setImageBitmap( BitmapFactory.decodeFile(
+                * PublicUtils.getCachePath( context ) + platoonData.getImage() +
+                * ".jpeg" ) );
+                */
 
-		}
+        }
 
-		// Store the object
-		convertView.setTag(currentItem);
+        // Store the object
+        convertView.setTag(currentItem);
 
-		// R-TURN
-		return convertView;
+        // R-TURN
+        return convertView;
 
-	}
+    }
 
-	public void setItemArray(List<GeneralSearchResult> array) {
+    public void setItemArray(List<GeneralSearchResult> array) {
 
-		this.itemArray = array;
-		this.notifyDataSetInvalidated();
+        this.itemArray = array;
+        this.notifyDataSetInvalidated();
 
-	}
+    }
 
-	public void addItem(List<GeneralSearchResult> array) {
+    public void addItem(List<GeneralSearchResult> array) {
 
-		this.itemArray.addAll(array);
+        this.itemArray.addAll(array);
 
-	}
+    }
 
 }

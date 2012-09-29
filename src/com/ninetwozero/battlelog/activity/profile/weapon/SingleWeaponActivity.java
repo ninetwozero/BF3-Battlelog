@@ -14,24 +14,19 @@
 
 package com.ninetwozero.battlelog.activity.profile.weapon;
 
-import java.util.ArrayList;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockFragment;
-import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
-import com.ninetwozero.battlelog.datatype.WeaponInfo;
-import com.ninetwozero.battlelog.datatype.WeaponStats;
+import com.ninetwozero.battlelog.datatype.*;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+
+import java.util.ArrayList;
 
 public class SingleWeaponActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
@@ -135,13 +130,13 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
             mPagerAdapter = new SwipeyTabsPagerAdapter(
 
                     mFragmentManager,
-                    new String[] {
+                    new String[]{
                             "INFORMATION", "STATISTICS", "UNLOCKS"
                     },
                     mListFragments,
                     mViewPager,
                     mLayoutInflater
-                    );
+            );
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 

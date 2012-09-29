@@ -1,517 +1,547 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">BF3 Battlelog</string>
-    <string name="widget_name">Battlelog - Stats y Amigos</string>
+  <string name="app_name">BF3 Battlelog</string>
+  <string name="widget_name">Battlelog - Stats y Amigos</string>
 
-    <integer-array name="service_update_intervals_values">
-        <item>300</item>
-        <item>600</item>
-        <item>1800</item>
-        <item>3600</item>
-        <item>7200</item>
-        <item>21600</item>
-        <item>43200</item>
-        <item>64800</item>
-        <item>86400</item>
-    </integer-array>
-    <integer-array name="chat_update_intervals_values">
-        <item>5</item>
-        <item>10</item>
-        <item>15</item>
-        <item>20</item>
-        <item>25</item>
-        <item>30</item>
-        <item>60</item>
-        <item>90</item>
-        <item>120</item>
-    </integer-array>
+  <integer-array name="service_update_intervals_values">
+    <item>300</item>
+    <item>600</item>
+    <item>1800</item>
+    <item>3600</item>
+    <item>7200</item>
+    <item>21600</item>
+    <item>43200</item>
+    <item>64800</item>
+    <item>86400</item>
+  </integer-array>
+  <integer-array name="chat_update_intervals_values">
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
+    <item>30</item>
+    <item>60</item>
+    <item>90</item>
+    <item>120</item>
+  </integer-array>
 
-    <string-array name="service_update_intervals_labels">
-        <item>@string/label_update_interval_minutes_5</item>
-        <item>@string/label_update_interval_minutes_10</item>
-        <item>@string/label_update_interval_minutes_30</item>
-        <item>@string/label_update_interval_hours_1</item>
-        <item>@string/label_update_interval_hours_2</item>
-        <item>@string/label_update_interval_hours_6</item>
-        <item>@string/label_update_interval_hours_12</item>
-        <item>@string/label_update_interval_hours_18</item>
-        <item>@string/label_update_interval_days_1</item>
-    </string-array>
-    <string-array name="chat_update_intervals_labels">
-        <item>@string/label_update_interval_seconds_5</item>
-        <item>@string/label_update_interval_seconds_10</item>
-        <item>@string/label_update_interval_seconds_15</item>
-        <item>@string/label_update_interval_seconds_20</item>
-        <item>@string/label_update_interval_seconds_25</item>
-        <item>@string/label_update_interval_seconds_30</item>
-        <item>@string/label_update_interval_minutes_1</item>
-        <item>@string/label_update_interval_seconds_90</item>
-        <item>@string/label_update_interval_minutes_2</item>
-    </string-array>
-    <string-array name="language_titles">
-        <item>Cрпски</item>
-        <item>Dansk</item>
-        <item>Deutsch</item>
-        <item>English</item>
-        <item>Español</item>
-        <item>Francais</item>
-        <item>Hrvatski</item>
-        <item>Italiano</item>
-        <item>Nederlands</item>
-        <item>Polski</item>
-        <item>Português</item>
-        <item>Român</item>
-        <item>Suomi</item>
-        <item>Svenska</item>
-    </string-array>
-    <string-array name="language_values">
-        <item>sr</item>
-        <item>da</item>
-        <item>de</item>
-        <item>en</item>
-        <item>es</item>
-        <item>fr</item>
-        <item>hr</item>
-        <item>it</item>
-        <item>nl</item>
-        <item>pl</item>
-        <item>pt</item>
-        <item>ro</item>
-        <item>fi</item>
-        <item>sv</item>
-    </string-array>
-    <!-- translation starts here -->
-    <string name="changelog">       * Fixed the forum (sorry!) &lt;br />
-       * Fixed the underlying service from crashing (finally?!) &lt;br />
-       * Updated the localization with more translations (contact me if you can help translate!) &lt;br />
-       * You can now select languages via the Settings &lt;br />
-       * Added audible notifications &lt;br />
-       * Added chat sounds &lt;br />
-       * Added settings for the above &lt;br />
-       &lt;br />
-       * DONATE-option available via the About screen (below) &lt;br />
-       * Forum for the app is now available via http://bit.ly/bf3blforum &lt;br />
-       &lt;br />
-       Please report any errors you may encounter to support@ninetwozero.com and/or 
-       @karllindmark on Twitter (https://twitter.com/karllindmark).&lt;br />&lt;br />
-       Thank you for your support!</string>
-    <string name="general_invalid_email">Dirección de correo electrónico no válida.</string>
-    <string name="general_invalid_password">Por favor, introduzca su contraseña.</string>
-    <string name="general_changelog_version">De cambios de versión {version}</string>
-    <string name="general_wait">Por favor espere</string>
-    <string name="general_downloading">Descarga de los datos...</string>
-    <string name="general_no_data">No se encontraron datos.</string>
-    <string name="label_own_soldiernu">Menú</string>
-    <string name="label_feed">Flujo</string>
-    <string name="label_friends">Amigos</string>
-    <string name="label_notifications">Notificaciones</string>
-    <string name="label_own_soldier">Mi soldado</string>
-    <string name="label_unlocks">Mi abre</string>
-    <string name="label_find_soldier">Buscar soldado</string>
-    <string name="label_find_platoon">Buscar pelotón</string>
-    <string name="label_compare_bs">Compare las cicatrices</string>
-    <string name="label_settings">Configuración</string>
-    <string name="status_empty_input">Por favor, introduzca un texto de estado para continuar.</string>
-    <string name="status_error_unknown">Se produjo un error: por favor, iniciar la sesión y vuelva a intentarlo.</string>
-    <string name="general_empty_user">Es necesario introducir un nombre de usuario</string>
-    <string name="info_profile_soldier">Ver perfil de soldado de...</string>
-    <string name="info_profile_platoon">Ver perfil del pelotón de ...</string>
-    <string name="general_empty_name">Es necesario introducir un nombre</string>
-    <string name="label_chat_open">Chat abierto</string>
-    <string name="label_soldier_view">Ver soldado</string>
-    <string name="label_hooah">Hooah!</string>
-    <string name="label_unhooah">Un-hooah!</string>
-    <string name="label_comment_view">Ver los comentarios</string>
-    <string name="msg_unimplemented">Sin implementar la funcionalidad.</string>
-    <string name="info_feed_empty">No encontraron elementos de la fuente.</string>
-    <string name="label_wait">Por favor espere...</string>
-    <string name="label_com_handle">COM CENTRO ({num} LÍNEA)</string>
-    <string name="lable_refresh">Actualizar ahora</string>
-    <string name="label_home">Casa</string>
-    <string name="label_stats">Estadísticas</string>
-    <string name="label_users">Usuarios</string>
-    <string name="info_platoon_created">Creado el {DATE} ({RELATIVE DATE})</string>
-    <string name="label_own_soldiermbers">Miembros</string>
-    <string name="label_fans">Fans</string>
-    <string name="info_platoon_compare">No se puede comparar pelotones ... (¿todavía?)</string>
-    <string name="info_empty_msg">Usted no está autorizado a publicar un mensaje en blanco.</string>
-    <string name="info_profile_online">En línea, pero no jugando</string>
-    <string name="info_profile_playing">Jugar en{server name}</string>
-    <string name="info_profile_empty_pres">No encuentra la presentación.</string>
-    <string name="info_hooah_s">{num} hooah</string>
-    <string name="info_hooah_p">{num} hooahs</string>
-    <string name="info_comment_s">{num} comentario</string>
-    <string name="info_comment_p">{num} comentarios</string>
-    <string name="label_playing">Jugar</string>
-    <string name="label_online">Connectado</string>
-    <string name="label_offline">Desconectado</string>
-    <string name="msg_chat_norefresh">Chat en vivo no puede ser renovado.</string>
-    <string name="label_sending">El envío de...</string>
-    <string name="label_send">Envio</string>
-    <string name="msg_chat_ok">Mensaje enviado!</string>
-    <string name="msg_chat_fail">Mensaje no pudo ser enviado!</string>
-    <string name="msg_comment_ok">Comentario publicado!</string>
-    <string name="msg_comment_fail">El comentario no ha podido publicar!</string>
-    <string name="msg_comment_norefresh">Los comentarios no podría ser renovado.</string>
-    <string name="msg_com_ok">CENTRO de COM hasta la fecha.</string>
-    <string name="msg_com_fail">CENTRO COM no puede ser renovado.</string>
-    <string name="msg_hooah_fail">Hooah fracasado!</string>
-    <string name="msg_search_nouser">No hay usuarios que se ajusten a la siguiente palabra clave: {keyword}</string>
-    <string name="msg_search_noplatoon">No pelotón que se ajusten a la siguiente palabra clave: {keyword}</string>
-    <string name="msg_frequest_ok">Solicitud de amistad enviada!</string>
-    <string name="msg_frequest_fail">Solicitud de amistad no se pudo enviar.</string>
-    <string name="msg_logging_in">Inicio de sesión...</string>
-    <string name="msg_login_fail">No se pudo entrar.</string>
-    <string name="msg_logout">Cierre de sesión...</string>
-    <string name="msg_error">Se produjo un error.</string>
-    <string name="msg_prequest_ok">Ha solicitado el pelotón.</string>
-    <string name="msg_prequest_fail_pres">Usted no puede aplicarse debido a las restricciones de la plataforma.</string>
-    <string name="msg_prequest_fail_full">Usted no puede aplicarse debido a la sección que no tiene más espacio.</string>
-    <string name="msg_prequest_fail_error">Ha ocurrido un error mientras se aplica para el pelotón.</string>
-    <string name="msg_platoon_left">De salir del pelotón.</string>
-    <string name="msg_platoon_left_fail">Ocurrió un error al salir del pelotón.</string>
-    <string name="msg_feed_ok">Mensaje enviado con éxito!</string>
-    <string name="msg_feed_fail">Mensaje no pudo ser publicado (es posible que haya llegado a su límite).</string>
-    <string name="msg_notification">Alguien ha tenido contacto con usted en Battlelog!</string>
-    <string name="msg_status">La actualización de su estado...</string>
-    <string name="msg_status_ok">Estado actualizado con éxito.</string>
-    <string name="msg_status_fail">Su estado no se pudo actualizar.</string>
-    <string name="info_feed_comment_own">&lt;b>{username}&lt;/b> comentó en su &lt;b>{action}&lt;/b>.</string>
-    <string name="info_feed_comment_other">&lt;b>{username}&lt;/b> comentó en &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
-    <string name="info_feed_comment_other_v2">&lt;b>{username}&lt;/b> comentó en &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
-    <string name="info_feed_comment_own_2">&lt;b>{username}&lt;/b> también comentó sobre su &lt;b>{action}&lt;/b>.</string>
-    <string name="info_feed_comment_other_2">&lt;b>{username}&lt;/b> también comentó sobre en &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
-    <string name="info_feed_comment_other_v2_2">&lt;b>{username}&lt;/b> también comentó sobre en &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
-    <string name="info_feed_post_own">&lt;b>{username}&lt;/b> escribió en su &lt;b>flujo de batalla&lt;/b>.</string>
-    <string name="info_feed_hooah_own">&lt;b>{username}&lt;/b> hooahs su &lt;b>{action}&lt;/b>.</string>
-    <string name="info_feed_hooah_other">&lt;b>{username}&lt;/b> hooahs &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
-    <string name="info_feed_hooah_other_2">&lt;b>{username}&lt;/b> hooahs &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
-    <string name="info_platoon_join_ok">&lt;b>{username}&lt;/b> aceptado su solicitud de adhesión &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_platoon_join_no">&lt;b>{username}&lt;/b> negó su solicitud para unirse a &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_platoon_join_request">&lt;b>{username}&lt;/b> quiere unirse &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_platoon_join_request_ok">&lt;b>{username}&lt;/b> se unió a su pelotón &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_platoon_left">&lt;b>{username}&lt;/b> dejó el pelotón &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_unknown_notification">Tipo de notificación desconocido.</string>
-    <string name="info_friendship">unidad</string>
-    <string name="info_forum_post">mensaje Foro</string>
-    <string name="info_game_report">reporte de Juego</string>
-    <string name="info_wallpost">la pared posterior</string>
-    <string name="info_status_message">mensaje de estado</string>
-    <string name="info_award">premio</string>
-    <string name="info_battle_report">batalla informe</string>
-    <string name="info_platoon_wall_post">la pared posterior oara pelotón</string>
-    <string name="info_lastlogin">Última vez que ingresó {date}</string>
-    <string name="info_time_second">Hace {seconds} segundo </string>
-    <string name="info_time_second_p">Hace {seconds} secundos</string>
-    <string name="info_time_min">Hace {minutes} minuto</string>
-    <string name="info_time_min_p">Hace {minutes} minutos</string>
-    <string name="info_time_hour">Hace {hours} hora</string>
-    <string name="info_time_hour_p">Hace {hours} horas</string>
-    <string name="info_time_day">Hace {days} día</string>
-    <string name="info_time_day_p">Hace {days} días</string>
-    <string name="info_time_week">Hace {weeks} semana</string>
-    <string name="info_time_week_p">Hace {weeks} semanas</string>
-    <string name="info_time_year">Hace {years} año</string>
-    <string name="info_time_year_p">Hace {years} años</string>
-    <string name="info_connect_bl">Conectarse a Battlelog</string>
-    <string name="info_widget_friends_online">Amigos en línea:</string>
-    <string name="msg_widget_auth_fail">Error de autenticación - es la contraseña guardada?</string>
-    <string name="info_xml_chat_empty">No messages found</string>
-    <string name="label_com_handle_default">COM CENTRO (0 ONLINE)</string>
-    <string name="info_hint_comment_msg">Escriba un mensaje</string>
-    <string name="info_xml_comment_empty">No se han encontrado comentarios</string>
-    <string name="info_xml_rank">Rango</string>
-    <string name="info_xml_kills">Elimina</string>
-    <string name="info_xml_assists">Asistencias</string>
-    <string name="info_xml_vehicles_destroyed">Vehículos destruidos</string>
-    <string name="info_xml_vehicles_assisted_with">Vehículos de asistencia con</string>
-    <string name="info_xml_heals">Cura</string>
-    <string name="info_xml_revives">Resucita</string>
-    <string name="info_xml_repairs">Reparaciones</string>
-    <string name="info_xml_resupplies">Reabastece</string>
-    <string name="info_xml_deaths">Muertes</string>
-    <string name="info_xml_kd_ratio">KD-ratio</string>
-    <string name="info_xml_wins">Victorias</string>
-    <string name="info_xml_losses">Derrotas</string>
-    <string name="info_xml_wl_ratio">W/L-ratio</string>
-    <string name="info_xml_accuracy">Precisión</string>
-    <string name="info_xml_longest_headshot">Más largo headshot</string>
-    <string name="info_xml_longest_killstreak">Más largo killstreak</string>
-    <string name="info_xml_skill_rating">Aptitud para la calificación</string>
-    <string name="info_xml_time_played">Tiempo jugado</string>
-    <string name="info_xml_score_minute">Puntuación / minuto</string>
-    <string name="info_xml_assault">Asalto</string>
-    <string name="info_xml_engineer">Ingeniero</string>
-    <string name="info_xml_support">Soporte</string>
-    <string name="info_xml_recon">Recon</string>
-    <string name="info_xml_vehicles">Vehículos</string>
-    <string name="info_xml_total_in_combat">Total en el combate</string>
-    <string name="info_xml_award">Premio</string>
-    <string name="info_xml_unlocks">Desbloquea</string>
-    <string name="info_xml_total_score">Puntuación total</string>
-    <string name="info_hint_username">Escriba un nombre de usuario aquí</string>
-    <string name="info_hint_platoon">Escriba un nombre pelotón aquí</string>
-    <string name="info_xml_average">Medio</string>
-    <string name="info_xml_best">Mejor</string>
-    <string name="info_xml_median">Mediana</string>
-    <string name="info_xml_min">Menor</string>
-    <string name="info_xml_friend_requests">Solicitudes de amistad</string>
-    <string name="info_xml_no_friends">Ningún amigo encontrado. :-(</string>
-    <string name="info_xml_no_notifications">No hay notificaciones que. :-(</string>
-    <string name="info_xml_hint_status">Actualiza tu mensaje de estado</string>
-    <string name="info_xml_no_feed">No se encuentran en los alimentos</string>
-    <string name="info_xml_hint_feed">Escribir en el flujo</string>
-    <string name="info_xml_website">Sitio</string>
-    <string name="info_xml_presentation">Presentación</string>
-    <string name="info_xml_badge">Insignia</string>
-    <string name="info_xml_general">Usual</string>
-    <string name="info_xml_score_min">Puntuación / Min</string>
-    <string name="info_xml_top_soldiers">Soldados superior</string>
-    <string name="info_xml_time">Tiempo</string>
-    <string name="info_xml_score">Puntuación</string>
-    <string name="info_xml_no_users">No se encontraron usuarios.</string>
-    <string name="info_xml_latest_statusmsg">Actual mensaje de estado</string>
-    <string name="info_xml_platoons">Pelotones</string>
-    <string name="info_xml_no_platoons">No pelotones unidos.</string>
-    <string name="info_xml_rank2"> hasta el siguiente rango</string>
-    <string name="info_xml_no_unlocks">No abre encontrado.</string>
-    <string name="info_xml_back">Reverso</string>
-    <string name="info_xml_reload">Recargar</string>
-    <string name="info_xml_logout">Finalizar la sesión</string>
-    <string name="info_xml_apply">Solicitar el ingreso</string>
-    <string name="info_xml_fan">Hazte fan</string>
-    <string name="info_xml_leave_platoon">Deja pelotón</string>
-    <string name="info_xml_members">Miembros</string>
-    <string name="info_xml_un_fan">Des fan</string>
-    <string name="info_xml_fans">Los cans</string>
-    <string name="info_xml_compare">Comparar</string>
-    <string name="info_xml_compare_bs">Compare cicatrices</string>
-    <string name="info_xml_add_friend">Añadir amigo</string>
-    <string name="info_xml_remove_friend">Quitar amigo</string>
-    <string name="info_xml_enable_bgsrv">Habilitar el servicio subordinado</string>
-    <string name="info_xml_enable_bgsrv_t">Cuando está activada, un servicio de fondo sigue la pista a las notificaciones y se asegura de que el control puede estar en línea.</string>
-    <string name="info_lastupdate">Última actualización hace {date}</string>
-    <string name="info_hint_email">E-mail por Origin™</string>
-    <string name="info_hint_password">Contraseña</string>
-    <string name="label_login">Login</string>
-    <string name="label_save">Guardar contraseña</string>
-    <string name="info_p_friendship">&lt;b>{username1}&lt;/b> y &lt;b>{username2}&lt;/b> son ahora amigos.</string>
-    <string name="info_p_forumthread">&lt;b>{username}&lt;/b> creó el tema del foro &lt;b>\"{thread}\"&lt;/b>.</string>
-    <string name="info_p_forumpost">&lt;b>{username}&lt;/b> escribió un mensaje en el foro en el tema &lt;b>\"{thread}\"&lt;/b>.</string>
-    <string name="info_p_newunlock">&lt;b>{username}&lt;/b> abrió un nuevo elemento: {item}.</string>
-    <string name="info_p_favserver">&lt;b>{username}&lt;/b> favorited un servidor: &lt;b>{server}&lt;/b>.</string>
-    <string name="info_p_promotion">&lt;b>{username}&lt;/b> fue ascendido a &lt;b>{rank title}&lt;/b> (rank{rank}).</string>
-    <string name="info_p_greport_comment">&lt;b>{username}&lt;/b> comentó el informe de batalla por &lt;b>{server name} {map} {game mode}&lt;/b>.</string>
-    <string name="info_p_blog_comment">&lt;b>{username}&lt;/b> comentó en el blog &lt;b>{post name}&lt;/b>.</string>
-    <string name="info_p_platoon_join">&lt;b>{username}&lt;/b> se unió al pelotón &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_p_platoon_kick">&lt;b>{username}&lt;/b> fue expulsado del pelotón &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_p_platoon_create">&lt;b>{username}&lt;/b> creado una peletón  que se llama &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_p_platoon_badge">&lt;b>{username}&lt;/b> cambiado el emblema del peletón &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_p_platoon_left">&lt;b>{username}&lt;/b> deja el peletón &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> escribió en la pared para &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> y &lt;b>{username2}&lt;/b> completo &lt;b>\"{level}\"&lt;/b> en &lt;b>{difficulty}&lt;/b>.</string>
-    <string name="info_p_award">&lt;b>{username}&lt;/b> recibió un nuevo premio: &lt;b>{award}&lt;/b>.</string>
-    <string name="info_new_rank">nuevo rango</string>
-    <string name="title_main_menu">BF3 Battlelog - Menú principal</string>
-    <string name="title_profile">BF3 Battlelog - Perfil</string>
-    <string name="title_platoon">BF3 Battlelog - Perfil del pelotón</string>
-    <string name="title_performance">BF3 Battlelog - El rendimiento de su</string>
-    <string name="title_chat">BF3 Battlelog - Conversando con ...</string>
-    <string name="title_comments">BF3 Battlelog - Commentarios</string>
-    <string name="title_comparing_battle_scars">BF3 Battlelog - Comparando cicatrices</string>
-    <string name="title_unlocks">BF3 Battlelog - Su próximo desbloquea</string>
-    <string name="title_settings">BF3 Battlelog - Configuración</string>
-    <string name="title_forum">BF3 Battlelog - Foro</string>
-    <string name="label_forum">Foro</string>
-    <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> completed an assignment - &lt;b>\"{assignment}\"&lt;/b> (unlocks &lt;b>{unlock}&lt;/b>).</string>
-    <string name="info_assignments_new_unknown">New assignments have been added - please notify the developer!</string>
-    <string name="title_assignments">BF3 Battlelog - Viewing your assignments</string>
-    <string name="info_xml_platoons_my">My platoons</string>
-    <string name="info_xml_assignments_my">My assignments</string>
-    <string name="msg_no_cookies">No cookies found - please try to re-login.</string>
-    <string name="label_soldier_unlocks">View unlocks</string>
-    <string name="info_p_newunlocks">&lt;b>{username}&lt;/b> unlocked new items: {item}.</string>
-    <string name="info_txt_friends_offline">Amigos desconectados</string>
-    <string name="info_txt_friends_online">Amigos conectados</string>
-    <string name="info_txt_session_lost">Sesión perdida. Por favor, vuelve a conectarte.</string>
-    <string name="info_xml_forums_none">No se han encontrado los foros.</string>
-    <string name="info_xml_forums">Foros</string>
-    <string name="info_p_activated_expansion">ha activado un juego o pack expansion por juego</string>
-    <string name="info_xml_forum_postsinthreads">&lt;b>{num_posts}&lt;/b> postas en &lt;b>{num_threads}&lt;/b> discusións.</string>
-    <string name="info_xml_threadinfo">&lt;b>{num_posts}&lt;/b> postas (de lo qual &lt;b>{num_official}&lt;/b> oficiale)</string>
-    <string name="info_xml_threaddate">Publicado &lt;b>{date}&lt;/b> de &lt;b>{user}&lt;/b></string>
-    <string name="info_xml_threadreplydate">Ùltimo mensaje &lt;b>{date}&lt;/b> de &lt;b>{user}&lt;/b></string>
-    <string name="info_xml_thread_new">Nuevo discusion...</string>
-    <string name="info_xml_post_new">Nuevo posta...</string>
-    <string name="info_forum_newthread_true">La discusión se ha creado.</string>
-    <string name="info_forum_newthread_false">La discusión no puedes se ha creado.</string>
-    <string name="info_xml_enter_content">Escriba el texto aquí</string>
-    <string name="info_dialog_soldierselect">Seleccione un soldado para ver...</string>
-    <string name="info_dialog_threadpost">Publicar una respuesta</string>
-    <string name="info_forum_newpost_true">La respuesta ha sido publicado.</string>
-    <string name="info_forum_newpost_false">La respuesta no puedes ha sido publicado</string>
-    <string name="info_txt_notification_new">1 nuevo notificacion!</string>
-    <string name="info_txt_notification_new_p">{num} nuevo notificaciones!</string>
-    <string name="info_tap_notification">Toque este elemento para ver sus notificaciones</string>
-    <string name="info_xml_posts_none">No se encontraron noticias.</string>
-    <string name="info_xml_threads_none">No se encontraron discusiones.</string>
-    <string name="info_xml_results_none">No se encontraron resultados.</string>
-    <string name="title_forum_view">Viendo el foro ...</string>
-    <string name="title_thread_view">Viendo la discusion ...</string>
-    <string name="title_forum_search">Buscando a través de los foros</string>
-    <string name="title_search">Buscando a través de los usuarios y pelotones</string>
-    <string name="info_xml_search">Buscar...</string>
-    <string name="info_xml_generic_error">Se produjo un error.</string>
-    <string name="label_search">Buscar</string>
-    <string name="label_search_ongoing">Buscando...</string>
-    <string name="info_p_awards">&lt;b>{username}&lt;/b> recibió un nuevo premio: {award}.</string>
-    <string name="label_own_platoon">Mis pelotones</string>
-    <string name="label_assignments">Mis misiónes</string>
-    <string name="info_xml_invite">Invite a...</string>
-    <string name="title_platoon_invite">Invitar a amigos a un pelotón</string>
-    <string name="info_xml_platoon_select">Seleccione una peloton...</string>
-    <string name="info_spost_heading">Posta de {username}</string>
-    <string name="info_spost_heading_s">Posta de {username}</string>
-    <string name="info_txt_friend_delete_true">El usuario ha sido eliminado de tu lista.</string>
-    <string name="info_txt_friend_delete_false">No se ha podido eliminar de tu lista al usuario.</string>
-    <string name="info_xml_feed_button_pagination">Cargar más objetos</string>
-    <string name="label_downloading">Descargando...</string>
-    <string name="info_xml_threads_more_false">No hay mas discusiones.</string>
-    <string name="info_xml_posts_more_false">No hay mas postas.</string>
-    <string name="label_jump">Ir a la página...</string>
-    <string name="info_txt_pageselect">Seleccionar una página...</string>
-    <string name="info_xml_enternumber">A continuación escribe un número entre {min} y {max}.</string>
-    <string name="info_xml_feed_button_jump">Ir a la página...</string>
-    <string name="info_feed_friend_accept">&lt;b>{username}&lt;/b> ha aceptado &lt;b>tu solicitud de amistad&lt;/b>.</string>
-    <string name="label_single_post_view">Ver el mensaje</string>
-    <string name="info_xml_main_slider">Información sobre la aplicación</string>
-    <string name="label_option_about">Sobre...</string>
-    <string name="title_about">Sobre del app</string>
-    <string name="info_option_unlocks">View unlocks</string>
-    <string name="info_txt_email_send">Enviar correo electrónico</string>
-    <string name="label_about">Sobre</string>
-    <string name="label_faq">FAQ</string>
-    <string name="label_credits">Créditos</string>
-    <string name="info_assignment_completed">assignment completed</string>
-    <string name="info_platoon_invite">&lt;b>{username}&lt;/b> te ha invitado a unirte &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_platoon_promote">You got promoted in &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_platoon_demote">You got demoted in &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_platoon_kick">&lt;b>{username}&lt;/b> kicked you from the platoon &lt;b>{platoon}&lt;/b>.</string>
-    <string name="info_platoon_activity">actividad del peloton</string>
-    <string name="info_platoon_member_new_ok">Aceptando al nuevo miembro...</string>
-    <string name="info_platoon_member_new_false">Turning down the new member...</string>
-    <string name="info_platoon_member_demoting">Demoting member...</string>
-    <string name="info_platoon_member_promoting">Promoting member...</string>
-    <string name="info_platoon_member_kicking">Kicking member...</string>
-    <string name="info_platoon_member_new_accept">Accept membership</string>
-    <string name="info_platoon_member_new_deny">Deny membership</string>
-    <string name="info_platoon_member_demote">Demote</string>
-    <string name="info_platoon_member_promote">Promote</string>
-    <string name="info_platoon_member_kick">Kick</string>
-    <string name="info_profile_view">Ver el perfil</string>
-    <string name="info_stats_not_found">No stats found.</string>
-    <string name="info_forum_page_invalid">El número de página no es válido.</string>
-    <string name="info_forum_quote_warning">Quote added to the textarea, don\'t edit or remove the tag.</string>
-    <string name="info_forum_links_no">No links found in the post.</string>
-    <string name="info_forum_quote">Citar el mensaje</string>
-    <string name="info_forum_report">Denunciar este mensaje</string>
-    <string name="info_forum_links">View links...</string>
-    <string name="info_forum_link_title">Select a link to view...</string>
-    <string name="info_forum_posts_downloading">Downloading the posts...</string>
-    <string name="info_platoon_member_founder">Fundador/a</string>
-    <string name="info_platoon_member_nonmember">No es miembro</string>
-    <string name="info_platoon_member_evaluate">Waiting to be evaluated</string>
-    <string name="info_platoon_member_invited">Invitado/a</string>
-    <string name="info_platoon_member_member">Miembro</string>
-    <string name="info_platoon_member_admin">Administrador/a</string>
-    <string name="info_platoon_member_founder_p">Fundadores/as</string>
-    <string name="info_platoon_member_admin_p">Administradores/as</string>
-    <string name="info_platoon_member_regular">Regular member</string>
-    <string name="info_platoon_member_regular_p">Regular members</string>
-    <string name="info_platoon_member_invited_label">Invited to join</string>
-    <string name="info_platoon_member_requested_label">Requested to join</string>
-    <string name="info_platoon_stats_overall">Overall</string>
-    <string name="label_assignments_view">View assignments</string>
-    <string name="label_goto_section">Go to {section}</string>
-    <string name="label_goto_assignments">assignments</string>
-    <string name="label_goto_forum_thread">forum thread</string>
-    <string name="label_goto_platoon">platoon</string>
-    <string name="label_goto_profile">perfil</string>
-    <string name="label_goto_unlocks">unlocks</string>
-    <string name="info_about_donating">If you like the work I\'ve been doing and feel like donating a sum of your choice to my development fund, just tap this text to go to Paypal for further instructions.</string>
-    <string name="general_censored">This post has been censored by the Battlelog staff.</string>
-    <string name="info_forum_report_true">The post has been reported.</string>
-    <string name="info_forum_report_false">The post could not be reported.</string>
-    <string name="info_forum_search_label">Forum search</string>
-    <string name="info_forum_search_hint">Search for...</string>
-    <string name="info_forum_report_reason">Why do you want to report this post?</string>
-    <string name="info_forum_report_label">Report a post</string>
-    <string name="label_report">Report</string>
-    <string name="info_forum_report_empty">You need to enter a reason for reporting this post.</string>
-    <string name="info_report_active">Reporting...</string>
-    <string name="title_forum_report">BF3 Battlelog - Reporting a forum post</string>
-    <string name="info_forum_lang">Select a language for the forums...</string>
-    <string name="info_general_nocache">The cache directory doesn\'t exist: please contact the developer!</string>
-    <string name="info_unlock_change">Change soldier...</string>
-    <string name="info_general_noprofile">No profile selected.</string>
-    <string name="info_assignments_empty">No assignments found for this soldier.</string>
-    <string name="info_unlocks_empty">No unlocks in this view.</string>
-    <string name="info_login_lostcookie">Login was successful, however we didn\'t find any cookies. :-(</string>
-    <string name="info_conn_hostunreach">Host unreachable - please restart your 3G connection and try again.</string>
-    <string name="info_session_expired">Session expired. Renewing the session with the server.</string>
-    <string name="info_session_renew_ok">Session renewed!</string>
-    <string name="info_session_renew_fail">Session could not be renewed.</string>
-    <string name="info_friendreq_resp_ok">Friend request responded to.</string>
-    <string name="info_platoon_invite_ok">Invites have been sent!</string>
-    <string name="info_platoon_invite_fail">Invites could not be sent!</string>
-    <string name="info_platoon_invite_passed">Some invites have been sent, some not!</string>
-    <string name="info_platoon_req_ok">Join request responded to.</string>
-    <string name="info_forum_report_error">You need to enter a reason for reporting this post.</string>
-    <string name="general_nonetwork">No network connection available!</string>
-    <string name="info_comment_report">Reporting comment number</string>
-    <string name="info_settings_general">General options</string>
-    <string name="info_settings_chat">Chat options</string>
-    <string name="info_settings_service">Service options</string>
-    <string name="info_settings_notifications">Notification options</string>
-    <string name="info_settings_chat_desc_beep_true">Your active chat will beep with love.</string>
-    <string name="info_settings_chat_desc_beep_false">Your active chat won\'t even attempt to beep.</string>
-    <string name="info_settings_notification_desc_vibrate_false">Silence is golden.</string>
-    <string name="info_settings_notification_desc_vibrate_true">Bzzt bzzt.</string>
-    <string name="info_settings_notification_desc_beep_true">Your notifications will be audible.</string>
-    <string name="info_settings_notification_desc_beep_false">You won\'t hear a thing.</string>
-    <string name="info_settings_notification_desc_beep_spec_true">BEEP!</string>
-    <string name="info_settings_notification_desc_light_true">Twinkle twinkle little star.</string>
-    <string name="info_settings_notification_desc_light_false">The LED won\'t be blinking.</string>
-    <string name="info_settings_notification_desc_beep_spec_false">Using your default notification sound.</string>
-    <string name="info_credits_contributors">List of contributors</string>
-    <string name="info_credits_info">First of all, I\'d like to thank everyone for the support and hand out a special &amp;quot;thank you&amp;quot; to all the beta testers out there.\n\nWith that said, I\'ve categorized the list of contributors below after what they\'ve helped with and hopefully I haven\'t forgot anyone!</string>
-    <string name="info_credits_code">Código</string>
-    <string name="info_credits_translations">Traducciones</string>
-    <string name="label_update_interval_seconds_5">Cada 5 segundos</string>
-    <string name="label_update_interval_seconds_10">Once every 10 seconds</string>
-    <string name="label_update_interval_seconds_15">Once every 15 seconds</string>
-    <string name="label_update_interval_seconds_20">Once every 20 seconds</string>
-    <string name="label_update_interval_seconds_25">Once every 25 seconds</string>
-    <string name="label_update_interval_seconds_30">Once every 30 seconds</string>
-    <string name="label_update_interval_seconds_90">Once every 90 seconds</string>
-    <string name="label_update_interval_minutes_1">Once a minute</string>
-    <string name="label_update_interval_minutes_2">Once every 2 minutes</string>
-    <string name="label_update_interval_minutes_5">Once every 5 minutes</string>
-    <string name="label_update_interval_minutes_10">Once every 10 minutes</string>
-    <string name="label_update_interval_minutes_30">Once every 30 minutes</string>
-    <string name="label_update_interval_hours_1">Once every hour</string>
-    <string name="label_update_interval_hours_2">Once every 2 hours</string>
-    <string name="label_update_interval_hours_6">Once every 6 hours</string>
-    <string name="label_update_interval_hours_12">Once every 12 hours</string>
-    <string name="label_update_interval_hours_18">Once every 18 hours</string>
-    <string name="label_update_interval_days_1">Once a day</string>
-    <string name="info_settings_title_language">Idioma</string>
-    <string name="info_settings_title_sound_chat">Enable chat sound</string>
-    <string name="info_settings_chat_title">Enable chat sound</string>
-    <string name="info_settings_notification_title_light">Enable use of the LED</string>
-    <string name="info_settings_notification_title_sounds">Enable sounds</string>
-    <string name="info_settings_notification_title_sounds_spec">Use the Battlelog beep</string>
-    <string name="info_settings_notification_title_vibration">Activa la vibración</string>
+  <string-array name="service_update_intervals_labels">
+    <item>@string/label_update_interval_minutes_5</item>
+    <item>@string/label_update_interval_minutes_10</item>
+    <item>@string/label_update_interval_minutes_30</item>
+    <item>@string/label_update_interval_hours_1</item>
+    <item>@string/label_update_interval_hours_2</item>
+    <item>@string/label_update_interval_hours_6</item>
+    <item>@string/label_update_interval_hours_12</item>
+    <item>@string/label_update_interval_hours_18</item>
+    <item>@string/label_update_interval_days_1</item>
+  </string-array>
+  <string-array name="chat_update_intervals_labels">
+    <item>@string/label_update_interval_seconds_5</item>
+    <item>@string/label_update_interval_seconds_10</item>
+    <item>@string/label_update_interval_seconds_15</item>
+    <item>@string/label_update_interval_seconds_20</item>
+    <item>@string/label_update_interval_seconds_25</item>
+    <item>@string/label_update_interval_seconds_30</item>
+    <item>@string/label_update_interval_minutes_1</item>
+    <item>@string/label_update_interval_seconds_90</item>
+    <item>@string/label_update_interval_minutes_2</item>
+  </string-array>
+  <string-array name="language_titles">
+    <item>Cрпски</item>
+    <item>Dansk</item>
+    <item>Deutsch</item>
+    <item>English</item>
+    <item>Español</item>
+    <item>Francais</item>
+    <item>Hrvatski</item>
+    <item>Italiano</item>
+    <item>Nederlands</item>
+    <item>Polski</item>
+    <item>Português</item>
+    <item>Român</item>
+    <item>Suomi</item>
+    <item>Svenska</item>
+  </string-array>
+  <string-array name="language_values">
+    <item>sr</item>
+    <item>da</item>
+    <item>de</item>
+    <item>en</item>
+    <item>es</item>
+    <item>fr</item>
+    <item>hr</item>
+    <item>it</item>
+    <item>nl</item>
+    <item>pl</item>
+    <item>pt</item>
+    <item>ro</item>
+    <item>fi</item>
+    <item>sv</item>
+  </string-array>
+  <!-- translation starts here -->
+  <string name="changelog">* Fixed the forum (sorry!) &lt;br />
+    * Fixed the underlying service from crashing (finally?!) &lt;br />
+    * Updated the localization with more translations (contact me if you can help translate!) &lt;br />
+    * You can now select languages via the Settings &lt;br />
+    * Added audible notifications &lt;br />
+    * Added chat sounds &lt;br />
+    * Added settings for the above &lt;br />
+    &lt;br />
+    * DONATE-option available via the About screen (below) &lt;br />
+    * Forum for the app is now available via http://bit.ly/bf3blforum &lt;br />
+    &lt;br />
+    Please report any errors you may encounter to support@ninetwozero.com and/or
+    @karllindmark on Twitter (https://twitter.com/karllindmark).&lt;br />&lt;br />
+    Thank you for your support!
+  </string>
+  <string name="general_invalid_email">Dirección de correo electrónico no válida.</string>
+  <string name="general_invalid_password">Por favor, introduzca su contraseña.</string>
+  <string name="general_changelog_version">De cambios de versión {version}</string>
+  <string name="general_wait">Por favor espere</string>
+  <string name="general_downloading">Descarga de los datos...</string>
+  <string name="general_no_data">No se encontraron datos.</string>
+  <string name="label_own_soldiernu">Menú</string>
+  <string name="label_feed">Flujo</string>
+  <string name="label_friends">Amigos</string>
+  <string name="label_notifications">Notificaciones</string>
+  <string name="label_own_soldier">Mi soldado</string>
+  <string name="label_unlocks">Mi abre</string>
+  <string name="label_find_soldier">Buscar soldado</string>
+  <string name="label_find_platoon">Buscar pelotón</string>
+  <string name="label_compare_bs">Compare las cicatrices</string>
+  <string name="label_settings">Configuración</string>
+  <string name="status_empty_input">Por favor, introduzca un texto de estado para continuar.</string>
+  <string name="status_error_unknown">Se produjo un error: por favor, iniciar la sesión y vuelva a intentarlo.</string>
+  <string name="general_empty_user">Es necesario introducir un nombre de usuario</string>
+  <string name="info_profile_soldier">Ver perfil de soldado de...</string>
+  <string name="info_profile_platoon">Ver perfil del pelotón de ...</string>
+  <string name="general_empty_name">Es necesario introducir un nombre</string>
+  <string name="label_chat_open">Chat abierto</string>
+  <string name="label_soldier_view">Ver soldado</string>
+  <string name="label_hooah">Hooah!</string>
+  <string name="label_unhooah">Un-hooah!</string>
+  <string name="label_comment_view">Ver los comentarios</string>
+  <string name="msg_unimplemented">Sin implementar la funcionalidad.</string>
+  <string name="info_feed_empty">No encontraron elementos de la fuente.</string>
+  <string name="label_wait">Por favor espere...</string>
+  <string name="label_com_handle">COM CENTRO ({num} LÍNEA)</string>
+  <string name="lable_refresh">Actualizar ahora</string>
+  <string name="label_home">Casa</string>
+  <string name="label_stats">Estadísticas</string>
+  <string name="label_users">Usuarios</string>
+  <string name="info_platoon_created">Creado el {DATE} ({RELATIVE DATE})</string>
+  <string name="label_own_soldiermbers">Miembros</string>
+  <string name="label_fans">Fans</string>
+  <string name="info_platoon_compare">No se puede comparar pelotones ... (¿todavía?)</string>
+  <string name="info_empty_msg">Usted no está autorizado a publicar un mensaje en blanco.</string>
+  <string name="info_profile_online">En línea, pero no jugando</string>
+  <string name="info_profile_playing">Jugar en{server name}</string>
+  <string name="info_profile_empty_pres">No encuentra la presentación.</string>
+  <string name="info_hooah_s">{num} hooah</string>
+  <string name="info_hooah_p">{num} hooahs</string>
+  <string name="info_comment_s">{num} comentario</string>
+  <string name="info_comment_p">{num} comentarios</string>
+  <string name="label_playing">Jugar</string>
+  <string name="label_online">Connectado</string>
+  <string name="label_offline">Desconectado</string>
+  <string name="msg_chat_norefresh">Chat en vivo no puede ser renovado.</string>
+  <string name="label_sending">El envío de...</string>
+  <string name="label_send">Envio</string>
+  <string name="msg_chat_ok">Mensaje enviado!</string>
+  <string name="msg_chat_fail">Mensaje no pudo ser enviado!</string>
+  <string name="msg_comment_ok">Comentario publicado!</string>
+  <string name="msg_comment_fail">El comentario no ha podido publicar!</string>
+  <string name="msg_comment_norefresh">Los comentarios no podría ser renovado.</string>
+  <string name="msg_com_ok">CENTRO de COM hasta la fecha.</string>
+  <string name="msg_com_fail">CENTRO COM no puede ser renovado.</string>
+  <string name="msg_hooah_fail">Hooah fracasado!</string>
+  <string name="msg_search_nouser">No hay usuarios que se ajusten a la siguiente palabra clave: {keyword}</string>
+  <string name="msg_search_noplatoon">No pelotón que se ajusten a la siguiente palabra clave: {keyword}</string>
+  <string name="msg_frequest_ok">Solicitud de amistad enviada!</string>
+  <string name="msg_frequest_fail">Solicitud de amistad no se pudo enviar.</string>
+  <string name="msg_logging_in">Inicio de sesión...</string>
+  <string name="msg_login_fail">No se pudo entrar.</string>
+  <string name="msg_logout">Cierre de sesión...</string>
+  <string name="msg_error">Se produjo un error.</string>
+  <string name="msg_prequest_ok">Ha solicitado el pelotón.</string>
+  <string name="msg_prequest_fail_pres">Usted no puede aplicarse debido a las restricciones de la plataforma.</string>
+  <string name="msg_prequest_fail_full">Usted no puede aplicarse debido a la sección que no tiene más espacio.</string>
+  <string name="msg_prequest_fail_error">Ha ocurrido un error mientras se aplica para el pelotón.</string>
+  <string name="msg_platoon_left">De salir del pelotón.</string>
+  <string name="msg_platoon_left_fail">Ocurrió un error al salir del pelotón.</string>
+  <string name="msg_feed_ok">Mensaje enviado con éxito!</string>
+  <string name="msg_feed_fail">Mensaje no pudo ser publicado (es posible que haya llegado a su límite).</string>
+  <string name="msg_notification">Alguien ha tenido contacto con usted en Battlelog!</string>
+  <string name="msg_status">La actualización de su estado...</string>
+  <string name="msg_status_ok">Estado actualizado con éxito.</string>
+  <string name="msg_status_fail">Su estado no se pudo actualizar.</string>
+  <string name="info_feed_comment_own">&lt;b>{username}&lt;/b> comentó en su &lt;b>{action}&lt;/b>.</string>
+  <string name="info_feed_comment_other">&lt;b>{username}&lt;/b> comentó en &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
+  <string name="info_feed_comment_other_v2">&lt;b>{username}&lt;/b> comentó en &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.</string>
+  <string name="info_feed_comment_own_2">&lt;b>{username}&lt;/b> también comentó sobre su &lt;b>{action}&lt;/b>.
+  </string>
+  <string name="info_feed_comment_other_2">&lt;b>{username}&lt;/b> también comentó sobre en &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.</string>
+  <string name="info_feed_comment_other_v2_2">&lt;b>{username}&lt;/b> también comentó sobre en &lt;b>{owner}&lt;/b>\'s
+    &lt;b>{action}&lt;/b>.
+  </string>
+  <string name="info_feed_post_own">&lt;b>{username}&lt;/b> escribió en su &lt;b>flujo de batalla&lt;/b>.</string>
+  <string name="info_feed_hooah_own">&lt;b>{username}&lt;/b> hooahs su &lt;b>{action}&lt;/b>.</string>
+  <string name="info_feed_hooah_other">&lt;b>{username}&lt;/b> hooahs &lt;b>{owner}&lt;/b>\' &lt;b>{action}&lt;/b>.
+  </string>
+  <string name="info_feed_hooah_other_2">&lt;b>{username}&lt;/b> hooahs &lt;b>{owner}&lt;/b>\'s &lt;b>{action}&lt;/b>.
+  </string>
+  <string name="info_platoon_join_ok">&lt;b>{username}&lt;/b> aceptado su solicitud de adhesión
+    &lt;b>{platoon}&lt;/b>.
+  </string>
+  <string name="info_platoon_join_no">&lt;b>{username}&lt;/b> negó su solicitud para unirse a &lt;b>{platoon}&lt;/b>.
+  </string>
+  <string name="info_platoon_join_request">&lt;b>{username}&lt;/b> quiere unirse &lt;b>{platoon}&lt;/b>.</string>
+  <string name="info_platoon_join_request_ok">&lt;b>{username}&lt;/b> se unió a su pelotón &lt;b>{platoon}&lt;/b>.
+  </string>
+  <string name="info_platoon_left">&lt;b>{username}&lt;/b> dejó el pelotón &lt;b>{platoon}&lt;/b>.</string>
+  <string name="info_unknown_notification">Tipo de notificación desconocido.</string>
+  <string name="info_friendship">unidad</string>
+  <string name="info_forum_post">mensaje Foro</string>
+  <string name="info_game_report">reporte de Juego</string>
+  <string name="info_wallpost">la pared posterior</string>
+  <string name="info_status_message">mensaje de estado</string>
+  <string name="info_award">premio</string>
+  <string name="info_battle_report">batalla informe</string>
+  <string name="info_platoon_wall_post">la pared posterior oara pelotón</string>
+  <string name="info_lastlogin">Última vez que ingresó {date}</string>
+  <string name="info_time_second">Hace {seconds} segundo</string>
+  <string name="info_time_second_p">Hace {seconds} secundos</string>
+  <string name="info_time_min">Hace {minutes} minuto</string>
+  <string name="info_time_min_p">Hace {minutes} minutos</string>
+  <string name="info_time_hour">Hace {hours} hora</string>
+  <string name="info_time_hour_p">Hace {hours} horas</string>
+  <string name="info_time_day">Hace {days} día</string>
+  <string name="info_time_day_p">Hace {days} días</string>
+  <string name="info_time_week">Hace {weeks} semana</string>
+  <string name="info_time_week_p">Hace {weeks} semanas</string>
+  <string name="info_time_year">Hace {years} año</string>
+  <string name="info_time_year_p">Hace {years} años</string>
+  <string name="info_connect_bl">Conectarse a Battlelog</string>
+  <string name="info_widget_friends_online">Amigos en línea:</string>
+  <string name="msg_widget_auth_fail">Error de autenticación - es la contraseña guardada?</string>
+  <string name="info_xml_chat_empty">No messages found</string>
+  <string name="label_com_handle_default">COM CENTRO (0 ONLINE)</string>
+  <string name="info_hint_comment_msg">Escriba un mensaje</string>
+  <string name="info_xml_comment_empty">No se han encontrado comentarios</string>
+  <string name="info_xml_rank">Rango</string>
+  <string name="info_xml_kills">Elimina</string>
+  <string name="info_xml_assists">Asistencias</string>
+  <string name="info_xml_vehicles_destroyed">Vehículos destruidos</string>
+  <string name="info_xml_vehicles_assisted_with">Vehículos de asistencia con</string>
+  <string name="info_xml_heals">Cura</string>
+  <string name="info_xml_revives">Resucita</string>
+  <string name="info_xml_repairs">Reparaciones</string>
+  <string name="info_xml_resupplies">Reabastece</string>
+  <string name="info_xml_deaths">Muertes</string>
+  <string name="info_xml_kd_ratio">KD-ratio</string>
+  <string name="info_xml_wins">Victorias</string>
+  <string name="info_xml_losses">Derrotas</string>
+  <string name="info_xml_wl_ratio">W/L-ratio</string>
+  <string name="info_xml_accuracy">Precisión</string>
+  <string name="info_xml_longest_headshot">Más largo headshot</string>
+  <string name="info_xml_longest_killstreak">Más largo killstreak</string>
+  <string name="info_xml_skill_rating">Aptitud para la calificación</string>
+  <string name="info_xml_time_played">Tiempo jugado</string>
+  <string name="info_xml_score_minute">Puntuación / minuto</string>
+  <string name="info_xml_assault">Asalto</string>
+  <string name="info_xml_engineer">Ingeniero</string>
+  <string name="info_xml_support">Soporte</string>
+  <string name="info_xml_recon">Recon</string>
+  <string name="info_xml_vehicles">Vehículos</string>
+  <string name="info_xml_total_in_combat">Total en el combate</string>
+  <string name="info_xml_award">Premio</string>
+  <string name="info_xml_unlocks">Desbloquea</string>
+  <string name="info_xml_total_score">Puntuación total</string>
+  <string name="info_hint_username">Escriba un nombre de usuario aquí</string>
+  <string name="info_hint_platoon">Escriba un nombre pelotón aquí</string>
+  <string name="info_xml_average">Medio</string>
+  <string name="info_xml_best">Mejor</string>
+  <string name="info_xml_median">Mediana</string>
+  <string name="info_xml_min">Menor</string>
+  <string name="info_xml_friend_requests">Solicitudes de amistad</string>
+  <string name="info_xml_no_friends">Ningún amigo encontrado. :-(</string>
+  <string name="info_xml_no_notifications">No hay notificaciones que. :-(</string>
+  <string name="info_xml_hint_status">Actualiza tu mensaje de estado</string>
+  <string name="info_xml_no_feed">No se encuentran en los alimentos</string>
+  <string name="info_xml_hint_feed">Escribir en el flujo</string>
+  <string name="info_xml_website">Sitio</string>
+  <string name="info_xml_presentation">Presentación</string>
+  <string name="info_xml_badge">Insignia</string>
+  <string name="info_xml_general">Usual</string>
+  <string name="info_xml_score_min">Puntuación / Min</string>
+  <string name="info_xml_top_soldiers">Soldados superior</string>
+  <string name="info_xml_time">Tiempo</string>
+  <string name="info_xml_score">Puntuación</string>
+  <string name="info_xml_no_users">No se encontraron usuarios.</string>
+  <string name="info_xml_latest_statusmsg">Actual mensaje de estado</string>
+  <string name="info_xml_platoons">Pelotones</string>
+  <string name="info_xml_no_platoons">No pelotones unidos.</string>
+  <string name="info_xml_rank2">hasta el siguiente rango</string>
+  <string name="info_xml_no_unlocks">No abre encontrado.</string>
+  <string name="info_xml_back">Reverso</string>
+  <string name="info_xml_reload">Recargar</string>
+  <string name="info_xml_logout">Finalizar la sesión</string>
+  <string name="info_xml_apply">Solicitar el ingreso</string>
+  <string name="info_xml_fan">Hazte fan</string>
+  <string name="info_xml_leave_platoon">Deja pelotón</string>
+  <string name="info_xml_members">Miembros</string>
+  <string name="info_xml_un_fan">Des fan</string>
+  <string name="info_xml_fans">Los cans</string>
+  <string name="info_xml_compare">Comparar</string>
+  <string name="info_xml_compare_bs">Compare cicatrices</string>
+  <string name="info_xml_add_friend">Añadir amigo</string>
+  <string name="info_xml_remove_friend">Quitar amigo</string>
+  <string name="info_xml_enable_bgsrv">Habilitar el servicio subordinado</string>
+  <string name="info_xml_enable_bgsrv_t">Cuando está activada, un servicio de fondo sigue la pista a las notificaciones
+    y se asegura de que el control puede estar en línea.
+  </string>
+  <string name="info_lastupdate">Última actualización hace {date}</string>
+  <string name="info_hint_email">E-mail por Origin™</string>
+  <string name="info_hint_password">Contraseña</string>
+  <string name="label_login">Login</string>
+  <string name="label_save">Guardar contraseña</string>
+  <string name="info_p_friendship">&lt;b>{username1}&lt;/b> y &lt;b>{username2}&lt;/b> son ahora amigos.</string>
+  <string name="info_p_forumthread">&lt;b>{username}&lt;/b> creó el tema del foro &lt;b>\"{thread}\"&lt;/b>.</string>
+  <string name="info_p_forumpost">&lt;b>{username}&lt;/b> escribió un mensaje en el foro en el tema &lt;b>\"{thread}\"&lt;/b>.</string>
+  <string name="info_p_newunlock">&lt;b>{username}&lt;/b> abrió un nuevo elemento: {item}.</string>
+  <string name="info_p_favserver">&lt;b>{username}&lt;/b> favorited un servidor: &lt;b>{server}&lt;/b>.</string>
+  <string name="info_p_promotion">&lt;b>{username}&lt;/b> fue ascendido a &lt;b>{rank title}&lt;/b> (rank{rank}).
+  </string>
+  <string name="info_p_greport_comment">&lt;b>{username}&lt;/b> comentó el informe de batalla por &lt;b>{server name}
+    {map} {game mode}&lt;/b>.
+  </string>
+  <string name="info_p_blog_comment">&lt;b>{username}&lt;/b> comentó en el blog &lt;b>{post name}&lt;/b>.</string>
+  <string name="info_p_platoon_join">&lt;b>{username}&lt;/b> se unió al pelotón &lt;b>{platoon}&lt;/b>.</string>
+  <string name="info_p_platoon_kick">&lt;b>{username}&lt;/b> fue expulsado del pelotón &lt;b>{platoon}&lt;/b>.</string>
+  <string name="info_p_platoon_create">&lt;b>{username}&lt;/b> creado una peletón que se llama &lt;b>{platoon}&lt;/b>.
+  </string>
+  <string name="info_p_platoon_badge">&lt;b>{username}&lt;/b> cambiado el emblema del peletón &lt;b>{platoon}&lt;/b>.
+  </string>
+  <string name="info_p_platoon_left">&lt;b>{username}&lt;/b> deja el peletón &lt;b>{platoon}&lt;/b>.</string>
+  <string name="info_p_platoon_feed">&lt;b>{username}&lt;/b> escribió en la pared para &lt;b>{platoon}&lt;/b>.</string>
+  <string name="info_p_coop_level_comp">&lt;b>{username1}&lt;/b> y &lt;b>{username2}&lt;/b> completo &lt;b>\"{level}\"&lt;/b>
+    en &lt;b>{difficulty}&lt;/b>.
+  </string>
+  <string name="info_p_award">&lt;b>{username}&lt;/b> recibió un nuevo premio: &lt;b>{award}&lt;/b>.</string>
+  <string name="info_new_rank">nuevo rango</string>
+  <string name="title_main_menu">BF3 Battlelog - Menú principal</string>
+  <string name="title_profile">BF3 Battlelog - Perfil</string>
+  <string name="title_platoon">BF3 Battlelog - Perfil del pelotón</string>
+  <string name="title_performance">BF3 Battlelog - El rendimiento de su</string>
+  <string name="title_chat">BF3 Battlelog - Conversando con ...</string>
+  <string name="title_comments">BF3 Battlelog - Commentarios</string>
+  <string name="title_comparing_battle_scars">BF3 Battlelog - Comparando cicatrices</string>
+  <string name="title_unlocks">BF3 Battlelog - Su próximo desbloquea</string>
+  <string name="title_settings">BF3 Battlelog - Configuración</string>
+  <string name="title_forum">BF3 Battlelog - Foro</string>
+  <string name="label_forum">Foro</string>
+  <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> completed an assignment - &lt;b>\"{assignment}\"&lt;/b>
+    (unlocks &lt;b>{unlock}&lt;/b>).
+  </string>
+  <string name="info_assignments_new_unknown">New assignments have been added - please notify the developer!</string>
+  <string name="title_assignments">BF3 Battlelog - Viewing your assignments</string>
+  <string name="info_xml_platoons_my">My platoons</string>
+  <string name="info_xml_assignments_my">My assignments</string>
+  <string name="msg_no_cookies">No cookies found - please try to re-login.</string>
+  <string name="label_soldier_unlocks">View unlocks</string>
+  <string name="info_p_newunlocks">&lt;b>{username}&lt;/b> unlocked new items: {item}.</string>
+  <string name="info_txt_friends_offline">Amigos desconectados</string>
+  <string name="info_txt_friends_online">Amigos conectados</string>
+  <string name="info_txt_session_lost">Sesión perdida. Por favor, vuelve a conectarte.</string>
+  <string name="info_xml_forums_none">No se han encontrado los foros.</string>
+  <string name="info_xml_forums">Foros</string>
+  <string name="info_p_activated_expansion">ha activado un juego o pack expansion por juego</string>
+  <string name="info_xml_forum_postsinthreads">&lt;b>{num_posts}&lt;/b> postas en &lt;b>{num_threads}&lt;/b>
+    discusións.
+  </string>
+  <string name="info_xml_threadinfo">&lt;b>{num_posts}&lt;/b> postas (de lo qual &lt;b>{num_official}&lt;/b> oficiale)
+  </string>
+  <string name="info_xml_threaddate">Publicado &lt;b>{date}&lt;/b> de &lt;b>{user}&lt;/b></string>
+  <string name="info_xml_threadreplydate">Ùltimo mensaje &lt;b>{date}&lt;/b> de &lt;b>{user}&lt;/b></string>
+  <string name="info_xml_thread_new">Nuevo discusion...</string>
+  <string name="info_xml_post_new">Nuevo posta...</string>
+  <string name="info_forum_newthread_true">La discusión se ha creado.</string>
+  <string name="info_forum_newthread_false">La discusión no puedes se ha creado.</string>
+  <string name="info_xml_enter_content">Escriba el texto aquí</string>
+  <string name="info_dialog_soldierselect">Seleccione un soldado para ver...</string>
+  <string name="info_dialog_threadpost">Publicar una respuesta</string>
+  <string name="info_forum_newpost_true">La respuesta ha sido publicado.</string>
+  <string name="info_forum_newpost_false">La respuesta no puedes ha sido publicado</string>
+  <string name="info_txt_notification_new">1 nuevo notificacion!</string>
+  <string name="info_txt_notification_new_p">{num} nuevo notificaciones!</string>
+  <string name="info_tap_notification">Toque este elemento para ver sus notificaciones</string>
+  <string name="info_xml_posts_none">No se encontraron noticias.</string>
+  <string name="info_xml_threads_none">No se encontraron discusiones.</string>
+  <string name="info_xml_results_none">No se encontraron resultados.</string>
+  <string name="title_forum_view">Viendo el foro ...</string>
+  <string name="title_thread_view">Viendo la discusion ...</string>
+  <string name="title_forum_search">Buscando a través de los foros</string>
+  <string name="title_search">Buscando a través de los usuarios y pelotones</string>
+  <string name="info_xml_search">Buscar...</string>
+  <string name="info_xml_generic_error">Se produjo un error.</string>
+  <string name="label_search">Buscar</string>
+  <string name="label_search_ongoing">Buscando...</string>
+  <string name="info_p_awards">&lt;b>{username}&lt;/b> recibió un nuevo premio: {award}.</string>
+  <string name="label_own_platoon">Mis pelotones</string>
+  <string name="label_assignments">Mis misiónes</string>
+  <string name="info_xml_invite">Invite a...</string>
+  <string name="title_platoon_invite">Invitar a amigos a un pelotón</string>
+  <string name="info_xml_platoon_select">Seleccione una peloton...</string>
+  <string name="info_spost_heading">Posta de {username}</string>
+  <string name="info_spost_heading_s">Posta de {username}</string>
+  <string name="info_txt_friend_delete_true">El usuario ha sido eliminado de tu lista.</string>
+  <string name="info_txt_friend_delete_false">No se ha podido eliminar de tu lista al usuario.</string>
+  <string name="info_xml_feed_button_pagination">Cargar más objetos</string>
+  <string name="label_downloading">Descargando...</string>
+  <string name="info_xml_threads_more_false">No hay mas discusiones.</string>
+  <string name="info_xml_posts_more_false">No hay mas postas.</string>
+  <string name="label_jump">Ir a la página...</string>
+  <string name="info_txt_pageselect">Seleccionar una página...</string>
+  <string name="info_xml_enternumber">A continuación escribe un número entre {min} y {max}.</string>
+  <string name="info_xml_feed_button_jump">Ir a la página...</string>
+  <string name="info_feed_friend_accept">&lt;b>{username}&lt;/b> ha aceptado &lt;b>tu solicitud de amistad&lt;/b>.
+  </string>
+  <string name="label_single_post_view">Ver el mensaje</string>
+  <string name="info_xml_main_slider">Información sobre la aplicación</string>
+  <string name="label_option_about">Sobre...</string>
+  <string name="title_about">Sobre del app</string>
+  <string name="info_option_unlocks">View unlocks</string>
+  <string name="info_txt_email_send">Enviar correo electrónico</string>
+  <string name="label_about">Sobre</string>
+  <string name="label_faq">FAQ</string>
+  <string name="label_credits">Créditos</string>
+  <string name="info_assignment_completed">assignment completed</string>
+  <string name="info_platoon_invite">&lt;b>{username}&lt;/b> te ha invitado a unirte &lt;b>{platoon}&lt;/b>.</string>
+  <string name="info_platoon_promote">You got promoted in &lt;b>{platoon}&lt;/b>.</string>
+  <string name="info_platoon_demote">You got demoted in &lt;b>{platoon}&lt;/b>.</string>
+  <string name="info_platoon_kick">&lt;b>{username}&lt;/b> kicked you from the platoon &lt;b>{platoon}&lt;/b>.</string>
+  <string name="info_platoon_activity">actividad del peloton</string>
+  <string name="info_platoon_member_new_ok">Aceptando al nuevo miembro...</string>
+  <string name="info_platoon_member_new_false">Turning down the new member...</string>
+  <string name="info_platoon_member_demoting">Demoting member...</string>
+  <string name="info_platoon_member_promoting">Promoting member...</string>
+  <string name="info_platoon_member_kicking">Kicking member...</string>
+  <string name="info_platoon_member_new_accept">Accept membership</string>
+  <string name="info_platoon_member_new_deny">Deny membership</string>
+  <string name="info_platoon_member_demote">Demote</string>
+  <string name="info_platoon_member_promote">Promote</string>
+  <string name="info_platoon_member_kick">Kick</string>
+  <string name="info_profile_view">Ver el perfil</string>
+  <string name="info_stats_not_found">No stats found.</string>
+  <string name="info_forum_page_invalid">El número de página no es válido.</string>
+  <string name="info_forum_quote_warning">Quote added to the textarea, don\'t edit or remove the tag.</string>
+  <string name="info_forum_links_no">No links found in the post.</string>
+  <string name="info_forum_quote">Citar el mensaje</string>
+  <string name="info_forum_report">Denunciar este mensaje</string>
+  <string name="info_forum_links">View links...</string>
+  <string name="info_forum_link_title">Select a link to view...</string>
+  <string name="info_forum_posts_downloading">Downloading the posts...</string>
+  <string name="info_platoon_member_founder">Fundador/a</string>
+  <string name="info_platoon_member_nonmember">No es miembro</string>
+  <string name="info_platoon_member_evaluate">Waiting to be evaluated</string>
+  <string name="info_platoon_member_invited">Invitado/a</string>
+  <string name="info_platoon_member_member">Miembro</string>
+  <string name="info_platoon_member_admin">Administrador/a</string>
+  <string name="info_platoon_member_founder_p">Fundadores/as</string>
+  <string name="info_platoon_member_admin_p">Administradores/as</string>
+  <string name="info_platoon_member_regular">Regular member</string>
+  <string name="info_platoon_member_regular_p">Regular members</string>
+  <string name="info_platoon_member_invited_label">Invited to join</string>
+  <string name="info_platoon_member_requested_label">Requested to join</string>
+  <string name="info_platoon_stats_overall">Overall</string>
+  <string name="label_assignments_view">View assignments</string>
+  <string name="label_goto_section">Go to {section}</string>
+  <string name="label_goto_assignments">assignments</string>
+  <string name="label_goto_forum_thread">forum thread</string>
+  <string name="label_goto_platoon">platoon</string>
+  <string name="label_goto_profile">perfil</string>
+  <string name="label_goto_unlocks">unlocks</string>
+  <string name="info_about_donating">If you like the work I\'ve been doing and feel like donating a sum of your choice
+    to my development fund, just tap this text to go to Paypal for further instructions.
+  </string>
+  <string name="general_censored">This post has been censored by the Battlelog staff.</string>
+  <string name="info_forum_report_true">The post has been reported.</string>
+  <string name="info_forum_report_false">The post could not be reported.</string>
+  <string name="info_forum_search_label">Forum search</string>
+  <string name="info_forum_search_hint">Search for...</string>
+  <string name="info_forum_report_reason">Why do you want to report this post?</string>
+  <string name="info_forum_report_label">Report a post</string>
+  <string name="label_report">Report</string>
+  <string name="info_forum_report_empty">You need to enter a reason for reporting this post.</string>
+  <string name="info_report_active">Reporting...</string>
+  <string name="title_forum_report">BF3 Battlelog - Reporting a forum post</string>
+  <string name="info_forum_lang">Select a language for the forums...</string>
+  <string name="info_general_nocache">The cache directory doesn\'t exist: please contact the developer!</string>
+  <string name="info_unlock_change">Change soldier...</string>
+  <string name="info_general_noprofile">No profile selected.</string>
+  <string name="info_assignments_empty">No assignments found for this soldier.</string>
+  <string name="info_unlocks_empty">No unlocks in this view.</string>
+  <string name="info_login_lostcookie">Login was successful, however we didn\'t find any cookies. :-(</string>
+  <string name="info_conn_hostunreach">Host unreachable - please restart your 3G connection and try again.</string>
+  <string name="info_session_expired">Session expired. Renewing the session with the server.</string>
+  <string name="info_session_renew_ok">Session renewed!</string>
+  <string name="info_session_renew_fail">Session could not be renewed.</string>
+  <string name="info_friendreq_resp_ok">Friend request responded to.</string>
+  <string name="info_platoon_invite_ok">Invites have been sent!</string>
+  <string name="info_platoon_invite_fail">Invites could not be sent!</string>
+  <string name="info_platoon_invite_passed">Some invites have been sent, some not!</string>
+  <string name="info_platoon_req_ok">Join request responded to.</string>
+  <string name="info_forum_report_error">You need to enter a reason for reporting this post.</string>
+  <string name="general_nonetwork">No network connection available!</string>
+  <string name="info_comment_report">Reporting comment number</string>
+  <string name="info_settings_general">General options</string>
+  <string name="info_settings_chat">Chat options</string>
+  <string name="info_settings_service">Service options</string>
+  <string name="info_settings_notifications">Notification options</string>
+  <string name="info_settings_chat_desc_beep_true">Your active chat will beep with love.</string>
+  <string name="info_settings_chat_desc_beep_false">Your active chat won\'t even attempt to beep.</string>
+  <string name="info_settings_notification_desc_vibrate_false">Silence is golden.</string>
+  <string name="info_settings_notification_desc_vibrate_true">Bzzt bzzt.</string>
+  <string name="info_settings_notification_desc_beep_true">Your notifications will be audible.</string>
+  <string name="info_settings_notification_desc_beep_false">You won\'t hear a thing.</string>
+  <string name="info_settings_notification_desc_beep_spec_true">BEEP!</string>
+  <string name="info_settings_notification_desc_light_true">Twinkle twinkle little star.</string>
+  <string name="info_settings_notification_desc_light_false">The LED won\'t be blinking.</string>
+  <string name="info_settings_notification_desc_beep_spec_false">Using your default notification sound.</string>
+  <string name="info_credits_contributors">List of contributors</string>
+  <string name="info_credits_info">First of all, I\'d like to thank everyone for the support and hand out a special
+    &amp;quot;thank you&amp;quot; to all the beta testers out there.\n\nWith that said, I\'ve categorized the list of
+    contributors below after what they\'ve helped with and hopefully I haven\'t forgot anyone!
+  </string>
+  <string name="info_credits_code">Código</string>
+  <string name="info_credits_translations">Traducciones</string>
+  <string name="label_update_interval_seconds_5">Cada 5 segundos</string>
+  <string name="label_update_interval_seconds_10">Once every 10 seconds</string>
+  <string name="label_update_interval_seconds_15">Once every 15 seconds</string>
+  <string name="label_update_interval_seconds_20">Once every 20 seconds</string>
+  <string name="label_update_interval_seconds_25">Once every 25 seconds</string>
+  <string name="label_update_interval_seconds_30">Once every 30 seconds</string>
+  <string name="label_update_interval_seconds_90">Once every 90 seconds</string>
+  <string name="label_update_interval_minutes_1">Once a minute</string>
+  <string name="label_update_interval_minutes_2">Once every 2 minutes</string>
+  <string name="label_update_interval_minutes_5">Once every 5 minutes</string>
+  <string name="label_update_interval_minutes_10">Once every 10 minutes</string>
+  <string name="label_update_interval_minutes_30">Once every 30 minutes</string>
+  <string name="label_update_interval_hours_1">Once every hour</string>
+  <string name="label_update_interval_hours_2">Once every 2 hours</string>
+  <string name="label_update_interval_hours_6">Once every 6 hours</string>
+  <string name="label_update_interval_hours_12">Once every 12 hours</string>
+  <string name="label_update_interval_hours_18">Once every 18 hours</string>
+  <string name="label_update_interval_days_1">Once a day</string>
+  <string name="info_settings_title_language">Idioma</string>
+  <string name="info_settings_title_sound_chat">Enable chat sound</string>
+  <string name="info_settings_chat_title">Enable chat sound</string>
+  <string name="info_settings_notification_title_light">Enable use of the LED</string>
+  <string name="info_settings_notification_title_sounds">Enable sounds</string>
+  <string name="info_settings_notification_title_sounds_spec">Use the Battlelog beep</string>
+  <string name="info_settings_notification_title_vibration">Activa la vibración</string>
 
 </resources>

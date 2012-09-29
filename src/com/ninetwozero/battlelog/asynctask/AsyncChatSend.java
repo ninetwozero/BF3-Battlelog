@@ -18,7 +18,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.http.COMClient;
 
@@ -33,7 +32,7 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
 
     // Constructor
     public AsyncChatSend(Context c, long cId, Button b, boolean w,
-            AsyncChatRefresh acr) {
+                         AsyncChatRefresh acr) {
 
         context = c;
         chatId = cId;
@@ -45,7 +44,7 @@ public class AsyncChatSend extends AsyncTask<String, Integer, Boolean> {
     }
 
     public AsyncChatSend(Context c, long pId, long cId, Button b, boolean w,
-            AsyncChatRefresh acr) {
+                         AsyncChatRefresh acr) {
 
         this(c, cId, b, w, acr);
         profileId = pId;
