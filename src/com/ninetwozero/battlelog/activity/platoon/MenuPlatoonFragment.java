@@ -14,10 +14,7 @@
 
 package com.ninetwozero.battlelog.activity.platoon;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
@@ -25,6 +22,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -35,6 +33,8 @@ import com.ninetwozero.battlelog.activity.profile.settings.ProfileSettingsActivi
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.dialog.ListDialogFragment;
+import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
 import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -44,7 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
+public class MenuPlatoonFragment extends Fragment implements DefaultFragment, OnCloseListDialogListener {
 
     // Attributes
     private Context mContext;
@@ -62,6 +62,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     private String[] mPlatoonName;
     private long mSelectedPlatoon;
     private int mSelectedPosition;
+    private final String DIALOG = "dialog";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,10 +86,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     public void initFragment(View view) {
 
         // Let's set the vars
-        mSelectedPosition = mSharedPreferences.getInt(
-                Constants.SP_BL_PLATOON_CURRENT_POS, 0);
-        mSelectedPlatoon = mSharedPreferences.getLong(
-                Constants.SP_BL_PLATOON_CURRENT_ID, 0);
+        getPlatoonPreferences();
 
         // Set up the Platoon box
         mWrapPlatoon = (RelativeLayout) view.findViewById(R.id.wrap_platoon);
@@ -98,9 +96,10 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
                     @Override
                     public void onClick(View v) {
-
-                        generateDialogPlatoonList().show();
-
+                        FragmentManager manager = getFragmentManager();
+                        ListDialogFragment dialog = ListDialogFragment.newInstance(
+                                platoonsToMap(), getTag());
+                        dialog.show(manager, DIALOG);
                     }
 
                 }
@@ -133,19 +132,14 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
         // Add the OnClickListeners
         final OnClickListener onClickListener = new OnClickListener() {
-
             @Override
             public void onClick(View v) {
-
                 startActivity(MENU_INTENTS.get(v.getId()));
-
             }
         };
 
         for (int key : MENU_INTENTS.keySet()) {
-
             view.findViewById(key).setOnClickListener(onClickListener);
-
         }
 
         // Let's reload!
@@ -153,11 +147,16 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
     }
 
+    private void getPlatoonPreferences() {
+        mSelectedPosition = mSharedPreferences.getInt(
+                Constants.SP_BL_PLATOON_CURRENT_POS, 0);
+        mSelectedPlatoon = mSharedPreferences.getLong(
+                Constants.SP_BL_PLATOON_CURRENT_ID, 0);
+    }
+
     @Override
     public void reload() {
-
         new AsyncRefresh().execute(SessionKeeper.getProfileData());
-
     }
 
     @Override
@@ -170,78 +169,29 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         return false;
     }
 
-    public Dialog generateDialogPlatoonList() {
-
-        // Attributes
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-
-        // Set the title and the view
-        builder.setTitle(R.string.info_xml_platoon_select);
-
-        // Do we have items to show?
-        if (mPlatoonId == null) {
-
-            // Init
-            mPlatoonId = new long[mPlatoonData.size()];
-            mPlatoonName = new String[mPlatoonData.size()];
-
-            // Iterate
-            for (int count = 0, max = mPlatoonData.size(); count < max; count++) {
-
-                mPlatoonId[count] = mPlatoonData.get(count).getId();
-                mPlatoonName[count] = mPlatoonData.get(count).getName();
-
-            }
-
+    private Map<Long, String> platoonsToMap(){
+        Map<Long, String> map = new HashMap<Long, String>();
+        for(PlatoonData pd : mPlatoonData){
+            map.put(pd.getId(), pd.getName());
         }
+        return map;
+    }
 
-        // Set it up
-        builder.setSingleChoiceItems(
+    @Override
+    public void onDialogListSelection(int index) {
+        updateSharedPreference(index);
+        getPlatoonPreferences();
+        setupPlatoonBox();
+    }
 
-                mPlatoonName, -1, new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int item) {
-
-                if (mPlatoonId[item] != mSelectedPlatoon) {
-
-                    // Update it
-                    mSelectedPlatoon = mPlatoonId[item];
-
-                    // Store selectedPlatoonPos
-                    mSelectedPosition = item;
-
-                    // Load the new!
-                    setupPlatoonBox();
-
-                    // Save it
-                    SharedPreferences.Editor spEdit = mSharedPreferences.edit();
-                    spEdit.putLong(Constants.SP_BL_PLATOON_CURRENT_ID,
-                            mSelectedPlatoon);
-                    spEdit.putInt(Constants.SP_BL_PLATOON_CURRENT_POS,
-                            mSelectedPosition);
-                    spEdit.commit();
-
-                    // Reset these
-                    MENU_INTENTS.put(R.id.button_self, new Intent(mContext,
-                            PlatoonActivity.class).putExtra("platoon",
-                            mPlatoonData.get(mSelectedPosition)));
-                    MENU_INTENTS.put(R.id.button_settings, new Intent(mContext,
-                            ProfileSettingsActivity.class).putExtra("platoon",
-                            mPlatoonData.get(mSelectedPosition)));
-
-                }
-
-                dialog.dismiss();
-
-            }
-
-        }
-
-        );
-
-        // CREATE
-        return builder.create();
-
+    private void updateSharedPreference(int index) {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(getActivity()
+                        .getApplicationContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong(Constants.SP_BL_PLATOON_CURRENT_ID, mPlatoonData.get(index).getId());
+        editor.putInt(Constants.SP_BL_PLATOON_CURRENT_POS, index);
+        editor.commit();
     }
 
     public void setupPlatoonBox() {
@@ -272,13 +222,10 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
             mImagePlatoon.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
                     .getCachePath(mContext)
                     + mPlatoonData.get(mSelectedPosition).getImage()));
-
         }
-
     }
 
     public void setPlatoonData(List<PlatoonData> p) {
-
         mPlatoonData = p;
         setupPlatoonBox();
 
