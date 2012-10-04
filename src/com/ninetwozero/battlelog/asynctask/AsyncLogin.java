@@ -28,14 +28,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.DashboardActivity;
+import com.ninetwozero.battlelog.datatype.PersonaData;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.PostData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.ProfileInformation;
 import com.ninetwozero.battlelog.datatype.RequestHandlerException;
 import com.ninetwozero.battlelog.datatype.SessionKeeperPackage;
 import com.ninetwozero.battlelog.datatype.ShareableCookie;
@@ -197,19 +198,18 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
     private SessionKeeperPackage processHttpContent(String httpContent) throws Exception {
     	
-        // Get the checksum
+        // Get the checksum & soldier name from the HTML
         String postCheckSum = substringFrom(httpContent, Constants.ELEMENT_STATUS_CHECKSUM, "\" />");
-
-        // Let's work on getting the "username", not persona name --> profileId
-        String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>")
-                .trim();
-        /*String soldierName = "Eddy_J1";*/
-        ProfileData profile = ProfileClient.getProfileIdFromName(soldierName, postCheckSum);
-        profile = ProfileClient.resolveFullProfileDataFromProfileData(profile);
-        List<PlatoonData> platoons = new ProfileClient(profile).getPlatoons(context);
-        Log.d(Constants.DEBUG_TAG, "profile => " + profile);
-        SharedPreferences sharedPreferences = addToSharedPreferences(profile, platoons,
-                postCheckSum, soldierName);
+        String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>").trim(); 
+        
+        // Fetch some profile information
+        ProfileInformation profileInformation = new ProfileClient(new ProfileData(soldierName)).getInformation(context, 0);
+        ProfileData profileData = new ProfileData.Builder(profileInformation.getUserId(), profileInformation.getUsername())
+        .persona(profileInformation.getAllPersonas())
+        .build();
+        
+        // Store the information in SharedPreferences
+        SharedPreferences sharedPreferences = addToSharedPreferences(profileInformation, postCheckSum);
 
         // Do we want to start a service?
         int serviceInterval = sharedPreferences.getInt(
@@ -219,14 +219,12 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         startAlarmManager(serviceInterval);
 
         // Return it!!
-        return new SessionKeeperPackage(profile, platoons);
+        return new SessionKeeperPackage(profileData, profileInformation.getPlatoons());
     }
 
-    private SharedPreferences addToSharedPreferences(ProfileData profile,
-            List<PlatoonData> platoons, String postCheckSum, String soldierName) throws Exception {
+    private SharedPreferences addToSharedPreferences(ProfileInformation profileInfo, String checkSum) throws Exception {
         // Init
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor spEdit = sharedPreferences.edit();
         // Further more, we would actually like to store the userid and
         // name
@@ -235,7 +233,6 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
         // Should we remember the password?
         if (savePassword) {
-
             spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, SimpleCrypto
                     .encrypt(postData[0].getValue(),
                             postData[1].getValue()));
@@ -261,35 +258,36 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         StringBuilder platoonImages = new StringBuilder();
 
         // We need to append the different parts to the ^ strings
-        for (int i = 0, max = profile.getNumPersonas(); i < max; i++) {
+        for (int i = 0, max = profileInfo.getNumPersonas(); i < max; i++) {
 
-            personaNames.append(profile.getPersona(i).getName() + ":");
-            personaIds.append(profile.getPersona(i).getId() + ":");
-            platformIds.append(profile.getPersona(i).getPlatformId() + ":");
-            personaLogos.append(profile.getPersona(i).getLogo() + ":");
+        	PersonaData persona = profileInfo.getPersona(i);
+            personaNames.append(persona.getName() + ":");
+            personaIds.append(persona.getId() + ":");
+            platformIds.append(persona.getPlatformId() + ":");
+            personaLogos.append(persona.getLogo() + ":");
 
         }
 
         // The platoons need to be "cacheable" too
-        for (int i = 0, max = platoons.size(); i < max; i++) {
+        for (int i = 0, max = profileInfo.getNumPlatoons(); i < max; i++) {
 
-            platoonIds.append(platoons.get(i).getId() + ":");
-            platoonNames.append(platoons.get(i).getName() + ":");
-            platoonTags.append(platoons.get(i).getTag() + ":");
-            platoonPlatformIds.append(platoons.get(i).getPlatformId() + ":");
-            platoonImages.append(platoons.get(i).getImage() + ":");
+        	PlatoonData platoon = profileInfo.getPlatoon(i);
+            platoonIds.append(platoon.getId() + ":");
+            platoonNames.append(platoon.getName() + ":");
+            platoonTags.append(platoon.getTag() + ":");
+            platoonPlatformIds.append(platoon.getPlatformId() + ":");
+            platoonImages.append(platoon.getImage() + ":");
 
         }
 
         // This we keep!!!
-        spEdit.putString(Constants.SP_BL_PROFILE_NAME, soldierName);
+        spEdit.putString(Constants.SP_BL_PROFILE_NAME, profileInfo.getUsername());
         spEdit.putString(Constants.SP_BL_PERSONA_NAME, personaNames.toString());
-        spEdit.putLong(Constants.SP_BL_PROFILE_ID,
-                profile.getId());
+        spEdit.putLong(Constants.SP_BL_PROFILE_ID, profileInfo.getUserId());
         spEdit.putString(Constants.SP_BL_PERSONA_ID, personaIds.toString());
         spEdit.putString(Constants.SP_BL_PLATFORM_ID, platformIds.toString());
         spEdit.putString(Constants.SP_BL_PERSONA_LOGO, personaLogos.toString());
-        spEdit.putString(Constants.SP_BL_PROFILE_CHECKSUM, postCheckSum);
+        spEdit.putString(Constants.SP_BL_PROFILE_CHECKSUM, checkSum);
 
         // Platoons too!
         spEdit.putString(Constants.SP_BL_PLATOON_ID, platoonIds.toString());

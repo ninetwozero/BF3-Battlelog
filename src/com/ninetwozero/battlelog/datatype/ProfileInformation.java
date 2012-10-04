@@ -14,6 +14,7 @@
 
 package com.ninetwozero.battlelog.datatype;
 
+import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
@@ -234,5 +235,24 @@ public class ProfileInformation {
         };
 
     }
+    
+    @Override
+	public String toString() {
+		return "ProfileInformation [mAge=" + mAge + ", mUserId=" + mUserId
+				+ ", mDateOfBirth=" + mDateOfBirth + ", mLastlogin="
+				+ mLastlogin + ", mStatusMessageChanged="
+				+ mStatusMessageChanged + ", mPersona="
+				+ Arrays.toString(mPersona) + ", mName=" + mName
+				+ ", mUsername=" + mUsername + ", mPresentation="
+				+ mPresentation + ", mLocation=" + mLocation
+				+ ", mStatusMessage=" + mStatusMessage + ", mCurrentServer="
+				+ mCurrentServer + ", mAllowFriendRequests="
+				+ mAllowFriendRequests + ", mOnline=" + mOnline + ", mPlaying="
+				+ mPlaying + ", mFriendStatus=" + mFriendStatus
+				+ ", mPlatoons=" + mPlatoons + ", mPersonaString="
+				+ mPersonaString + ", mPersonaIdString=" + mPersonaIdString
+				+ ", mPersonaPlatformString=" + mPersonaPlatformString
+				+ ", mPlatoonIdString=" + mPlatoonIdString + "]";
+	}
 
 }

@@ -309,7 +309,7 @@ public class ProfileClient extends DefaultClient {
             throws WebsiteHandlerException {
 
         try {
-
+        	Log.d(Constants.DEBUG_TAG, "profileDAta => " + p.toString());
             ProfileData profile = resolveFullProfileDataFromProfileId(p.getId());
             return new ProfileData.Builder(p.getId(), p.getUsername()).persona(
 
