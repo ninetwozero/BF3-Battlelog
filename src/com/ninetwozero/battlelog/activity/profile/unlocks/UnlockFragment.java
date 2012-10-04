@@ -14,22 +14,17 @@
 
 package com.ninetwozero.battlelog.activity.profile.unlocks;
 
-import java.util.List;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ListView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.UnlockListAdapter;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.UnlockData;
+
+import java.util.List;
 
 public class UnlockFragment extends ListFragment implements DefaultFragment {
 
@@ -46,7 +41,7 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
@@ -59,7 +54,8 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
         // Get the unlocks
         if (mContext instanceof UnlockActivity) {
 
-            mUnlocks = ((UnlockActivity) mContext).getItemsForFragment(mViewPagerPosition);
+            mUnlocks = ((UnlockActivity) mContext)
+                    .getItemsForFragment(mViewPagerPosition);
 
         }
 
@@ -75,7 +71,8 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
 
         // Setup the ListView
         mListView = (ListView) v.findViewById(android.R.id.list);
-        mListView.setAdapter(new UnlockListAdapter(mContext, mUnlocks, mLayoutInflater));
+        mListView.setAdapter(new UnlockListAdapter(mContext, mUnlocks,
+                mLayoutInflater));
 
     }
 

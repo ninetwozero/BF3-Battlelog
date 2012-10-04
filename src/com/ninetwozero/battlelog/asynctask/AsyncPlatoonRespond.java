@@ -17,7 +17,6 @@ package com.ninetwozero.battlelog.asynctask;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
@@ -73,7 +72,7 @@ public class AsyncPlatoonRespond extends AsyncTask<String, Integer, Boolean> {
                     context,
                     results ? R.string.info_platoon_req_ok : R.string.info_platoon_req_fail,
                     Toast.LENGTH_SHORT
-                    ).show();
+            ).show();
 
             ((PlatoonActivity) context).reload();
         }

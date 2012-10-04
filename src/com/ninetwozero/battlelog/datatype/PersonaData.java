@@ -120,7 +120,7 @@ public class PersonaData implements Parcelable {
 
         return (
 
-        id + ":" + name + ":" + logo + ":" + platformId
+                id + ":" + name + ":" + logo + ":" + platformId
 
         );
     }

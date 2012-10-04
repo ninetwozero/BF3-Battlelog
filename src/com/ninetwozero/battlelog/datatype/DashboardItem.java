@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.datatype;
 
 

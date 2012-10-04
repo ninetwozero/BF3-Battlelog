@@ -14,9 +14,9 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import java.util.HashMap;
-
 import com.ninetwozero.battlelog.R;
+
+import java.util.HashMap;
 
 public final class DrawableResourceList {
 

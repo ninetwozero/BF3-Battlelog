@@ -14,14 +14,13 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.SharedPreferences;
-
 import com.ninetwozero.battlelog.datatype.PersonaData;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class SessionKeeper {
 
@@ -97,7 +96,7 @@ public final class SessionKeeper {
 
             ).persona(persona).gravatarHash(
                     sp.getString(Constants.SP_BL_PROFILE_GRAVATAR, "")
-                    ).build();
+            ).build();
 
         }
 
@@ -143,7 +142,7 @@ public final class SessionKeeper {
                             true
                     )
 
-                    );
+            );
 
         }
 

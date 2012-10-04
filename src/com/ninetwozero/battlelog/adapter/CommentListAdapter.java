@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,10 +24,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.List;
 
 public class CommentListAdapter extends BaseAdapter {
 
@@ -42,7 +41,7 @@ public class CommentListAdapter extends BaseAdapter {
 
     // Construct
     public CommentListAdapter(Context c, List<CommentData> cd,
-            LayoutInflater l) {
+                              LayoutInflater l) {
 
         context = c;
         comments = cd;
@@ -105,7 +104,7 @@ public class CommentListAdapter extends BaseAdapter {
                 PublicUtils.getCachePath(context)
                         + currentData.getAuthor().getGravatarHash() + ".png"
 
-                );
+        );
 
         if (b == null) {
 

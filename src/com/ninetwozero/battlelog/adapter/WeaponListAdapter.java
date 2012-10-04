@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +21,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatype.WeaponStats;
 import com.ninetwozero.battlelog.misc.DrawableResourceList;
+
+import java.util.List;
 
 public class WeaponListAdapter extends BaseAdapter {
 
@@ -37,7 +36,7 @@ public class WeaponListAdapter extends BaseAdapter {
 
     // Construct
     public WeaponListAdapter(List<WeaponDataWrapper> u,
-            LayoutInflater l) {
+                             LayoutInflater l) {
 
         dataArray = u;
         layoutInflater = l;
@@ -87,7 +86,7 @@ public class WeaponListAdapter extends BaseAdapter {
         // Populate fields
         ((TextView) convertView.findViewById(R.id.text_title)).setText(data.getName());
         ((TextView) convertView.findViewById(R.id.text_sstars))
-                .setText((int)data.getServiceStars() + "");
+                .setText((int) data.getServiceStars() + "");
 
         // Setup the progress
         ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progress_unlocks);

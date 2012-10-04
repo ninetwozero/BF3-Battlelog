@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-
 public class PostData {
 
     // Attributes

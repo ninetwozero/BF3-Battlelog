@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.feed;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,23 +21,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.news.SinglePostActivity;
 import com.ninetwozero.battlelog.adapter.FeedListAdapter;
@@ -52,6 +38,8 @@ import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+
+import java.util.List;
 
 public class FeedFragment extends ListFragment implements DefaultFragment {
 
@@ -77,7 +65,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
@@ -137,6 +125,12 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
             mFieldMessage.setHint(R.string.info_xml_hint_feed);
             mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
 
+        } else {
+
+            mTextTitle.setText(R.string.info_feed_title_global);
+            mFieldMessage.setHint(R.string.info_xml_hint_status);
+            mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
+
         }
 
         // Setup the button click
@@ -159,9 +153,9 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
                         // Let's do it accordingly
                         if (mType == FeedClient.TYPE_GLOBAL) {
 
-                            new AsyncStatusUpdate(mContext, FeedFragment.this).execute(message,
-                                    mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
-                                            ""));
+                            new AsyncStatusUpdate(mContext, FeedFragment.this).execute(
+                                    message, mSharedPreferences.getString(
+                                    Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
                         } else if (mType == FeedClient.TYPE_PROFILE) {
 
@@ -171,11 +165,10 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                             ).execute(
 
-                                    mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
-                                            ""),
-                                    message
+                                    mSharedPreferences.getString(
+                                            Constants.SP_BL_PROFILE_CHECKSUM, ""), message
 
-                                    );
+                            );
 
                         } else if (mType == FeedClient.TYPE_PLATOON) {
 
@@ -185,11 +178,10 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                             ).execute(
 
-                                    mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM,
-                                            ""),
-                                    message
+                                    mSharedPreferences.getString(
+                                            Constants.SP_BL_PROFILE_CHECKSUM, ""), message
 
-                                    );
+                            );
 
                         }
 
@@ -197,8 +189,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
                         mFieldMessage.setText("");
 
                     }
-                }
-                );
+                });
 
     }
 
@@ -213,7 +204,8 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
     public void reload() {
 
         // Feed refresh!
-        new AsyncRefresh(mContext, SessionKeeper.getProfileData().getId()).execute();
+        new AsyncRefresh(mContext, SessionKeeper.getProfileData().getId())
+                .execute();
 
     }
 
@@ -225,15 +217,16 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
     }
 
     public void createContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
+                                  ContextMenuInfo menuInfo) {
 
         // Get the actual menu item and tag
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 
         // Show the menu
         FeedItem feedItem = (FeedItem) info.targetView.getTag();
-        menu.add(Constants.MENU_ID_FEED, 0, 0, feedItem.isLiked() ? R.string.label_unhooah
-                : R.string.label_hooah);
+        menu.add(Constants.MENU_ID_FEED, 0, 0,
+                feedItem.isLiked() ? R.string.label_unhooah
+                        : R.string.label_hooah);
         menu.add(Constants.MENU_ID_FEED, 1, 0, R.string.label_single_post_view);
 
         // Platoon feeds only have posts that would open a new platoon activity
@@ -243,7 +236,8 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
     }
 
-    public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {
+    public boolean handleSelectedContextItem(
+            AdapterView.AdapterContextMenuInfo info, MenuItem item) {
 
         try {
 
@@ -253,22 +247,22 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
             // REQUESTS
             if (item.getItemId() == 0) {
 
-                new AsyncFeedHooah(mContext, info.id, false, feedItem.isLiked(), this)
-                        .execute(mSharedPreferences.getString(
-                                Constants.SP_BL_PROFILE_CHECKSUM, ""));
+                new AsyncFeedHooah(mContext, info.id, false,
+                        feedItem.isLiked(), this).execute(mSharedPreferences
+                        .getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
             } else if (item.getItemId() == 1) {
 
                 // Yeah
                 startActivity(
 
-                new Intent(
+                        new Intent(
 
-                        mContext, SinglePostActivity.class
+                                mContext, SinglePostActivity.class
 
-                ).putExtra(
+                        ).putExtra(
 
-                        "feed", feedItem
+                                "feed", feedItem
 
                         ).putExtra(
 
@@ -323,9 +317,9 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
                 mFeedItems = new FeedClient(mId, mType).get(
 
                         context, mSharedPreferences.getInt(Constants.SP_BL_NUM_FEED,
-                                Constants.DEFAULT_NUM_FEED), activeProfileId
+                        Constants.DEFAULT_NUM_FEED), activeProfileId
 
-                        );
+                );
 
                 // ...validate!
                 return (mFeedItems != null);

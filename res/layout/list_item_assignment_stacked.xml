@@ -13,45 +13,45 @@
     GNU General Public License for more details.
 -->
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:padding="10dp" >
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:padding="10dp">
+
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal" >
+        android:weightSum="2">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:weightSum="2" >
+      <RelativeLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="5dp"
+          android:layout_weight="1">
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1" >
+        <ImageView
+            android:id="@+id/image_assignment"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/assignment_xp1_01"/>
 
-                <ImageView
-                    android:id="@+id/image_assignment"
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="10dp"
-                    android:src="@drawable/assignment_xp1_01" />
-
-                <ProgressBar
-                    android:id="@+id/progress"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="200dp"
-                    android:layout_height="10dp"
-                    android:layout_below="@id/image_assignment"
-                    android:layout_centerHorizontal="true"
-                    android:background="#ffffff" />
-            </RelativeLayout>
-        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="200dp"
+            android:layout_height="10dp"
+            android:layout_below="@id/image_assignment"
+            android:layout_centerHorizontal="true"
+            android:background="#ffffff"/>
+      </RelativeLayout>
     </LinearLayout>
+  </LinearLayout>
 
 </TableRow>

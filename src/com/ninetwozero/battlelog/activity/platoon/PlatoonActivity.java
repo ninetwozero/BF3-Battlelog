@@ -14,24 +14,14 @@
 
 package com.ninetwozero.battlelog.activity.platoon;
 
-import java.util.ArrayList;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.AdapterView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
@@ -42,8 +32,13 @@ import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
-public class PlatoonActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
+import java.util.ArrayList;
+
+public class PlatoonActivity extends CustomFragmentActivity implements
+        DefaultFragmentActivity {
 
     // Fragment related
     private PlatoonOverviewFragment mFragmentOverview;
@@ -106,15 +101,18 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
         // Our own profile, no need to show the "extra" buttons
         if (mViewPager.getCurrentItem() == 0) {
 
-            return super.onPrepareOptionsMenu(mFragmentOverview.prepareOptionsMenu(menu));
+            return super.onPrepareOptionsMenu(mFragmentOverview
+                    .prepareOptionsMenu(menu));
 
         } else if (mViewPager.getCurrentItem() == 1) {
 
-            return super.onPrepareOptionsMenu(mFragmentStats.prepareOptionsMenu(menu));
+            return super.onPrepareOptionsMenu(mFragmentStats
+                    .prepareOptionsMenu(menu));
 
         } else if (mViewPager.getCurrentItem() == 2) {
 
-            return super.onPrepareOptionsMenu(mFragmentMember.prepareOptionsMenu(menu));
+            return super.onPrepareOptionsMenu(mFragmentMember
+                    .prepareOptionsMenu(menu));
 
         } else {
 
@@ -196,7 +194,7 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
+                                    ContextMenuInfo menuInfo) {
 
         switch (mViewPager.getCurrentItem()) {
 
@@ -261,14 +259,18 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
 
             // Add them to the list
             mListFragments = new ArrayList<Fragment>();
-            mListFragments.add(mFragmentOverview = (PlatoonOverviewFragment) Fragment.instantiate(
-                    this, PlatoonOverviewFragment.class.getName()));
-            mListFragments.add(mFragmentStats = (PlatoonStatsFragment) Fragment.instantiate(this,
-                    PlatoonStatsFragment.class.getName()));
-            mListFragments.add(mFragmentMember = (PlatoonMemberFragment) Fragment.instantiate(this,
-                    PlatoonMemberFragment.class.getName()));
-            mListFragments.add(mFragmentFeed = (FeedFragment) Fragment.instantiate(this,
-                    FeedFragment.class.getName()));
+            mListFragments
+                    .add(mFragmentOverview = (PlatoonOverviewFragment) Fragment
+                            .instantiate(this,
+                                    PlatoonOverviewFragment.class.getName()));
+            mListFragments.add(mFragmentStats = (PlatoonStatsFragment) Fragment
+                    .instantiate(this, PlatoonStatsFragment.class.getName()));
+            mListFragments
+                    .add(mFragmentMember = (PlatoonMemberFragment) Fragment
+                            .instantiate(this,
+                                    PlatoonMemberFragment.class.getName()));
+            mListFragments.add(mFragmentFeed = (FeedFragment) Fragment
+                    .instantiate(this, FeedFragment.class.getName()));
 
             // Add the profileData
             mFragmentOverview.setPlatoonData(mPlatoonData);
@@ -287,14 +289,8 @@ public class PlatoonActivity extends CustomFragmentActivity implements DefaultFr
             // Fill the PagerAdapter & set it to the viewpager
             mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-                    mFragmentManager,
-                    new String[] {
-                            "OVERVIEW", "STATS", "USERS", "FEED"
-                    },
-                    mListFragments,
-                    mViewPager,
-                    mLayoutInflater
-                    );
+                    mFragmentManager, new String[]{"OVERVIEW", "STATS", "USERS",
+                    "FEED"}, mListFragments, mViewPager, mLayoutInflater);
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 

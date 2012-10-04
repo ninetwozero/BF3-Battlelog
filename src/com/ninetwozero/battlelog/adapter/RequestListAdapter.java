@@ -14,16 +14,15 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.ProfileData;
+
+import java.util.List;
 
 public class RequestListAdapter extends BaseAdapter {
 
@@ -33,7 +32,7 @@ public class RequestListAdapter extends BaseAdapter {
 
     // Construct
     public RequestListAdapter(List<ProfileData> p,
-            LayoutInflater l) {
+                              LayoutInflater l) {
 
         profileArray = p;
         layoutInflater = l;

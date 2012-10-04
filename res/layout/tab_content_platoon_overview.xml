@@ -1,128 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/wrap_top"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:fillViewport="true" >
+            android:id="@+id/wrap_top"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+
+  <RelativeLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:paddingBottom="10dp"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      android:paddingTop="5dp">
+
+    <TextView
+        android:id="@+id/text_name_platoon"
+        style="@style/InfoHeading"
+        android:padding="5dp"
+        android:text="N/A"/>
 
     <RelativeLayout
+        android:id="@+id/wrap_date"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp" >
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_name_platoon"
+        android:layout_marginBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+      <TextView
+          android:id="@+id/text_date"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Created on 2011-01-12 (5 days ago)"
+          android:textSize="14sp"/>
+
+      <ImageView
+          android:id="@+id/image_platform"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentRight="true"
+          android:layout_centerVertical="true"
+          android:src="@drawable/logo_xbox"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/wrap_badge"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_date">
+
+      <TextView
+          android:id="@+id/text_header_badge"
+          style="@style/FriendHeadingRow"
+          android:text="@string/info_xml_badge"/>
+
+      <ImageView
+          android:id="@+id/image_badge"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/text_header_badge"
+          android:layout_centerHorizontal="true"
+          android:paddingBottom="10dp"
+          android:paddingTop="10dp"
+          android:scaleType="fitXY"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/wrap_web"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_badge"
+        android:onClick="onClick">
+
+      <RelativeLayout
+          android:id="@+id/wrap_header_row"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/text_name_platoon"
-            style="@style/InfoHeading"
-            android:padding="5dp"
-            android:text="N/A" />
+            android:id="@+id/text_header_web"
+            style="@style/FriendHeadingRow"
+            android:text="@string/info_xml_website"/>
 
-        <RelativeLayout
-            android:id="@+id/wrap_date"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_name_platoon"
-            android:layout_marginBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp" >
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:src="@android:drawable/ic_menu_set_as"/>
+      </RelativeLayout>
 
-            <TextView
-                android:id="@+id/text_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Created on 2011-01-12 (5 days ago)"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:id="@+id/image_platform"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/logo_xbox" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/wrap_badge"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/wrap_date" >
-
-            <TextView
-                android:id="@+id/text_header_badge"
-                style="@style/FriendHeadingRow"
-                android:text="@string/info_xml_badge" />
-
-            <ImageView
-                android:id="@+id/image_badge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_header_badge"
-                android:layout_centerHorizontal="true"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:scaleType="fitXY" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/wrap_web"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/wrap_badge"
-            android:onClick="onClick" >
-
-            <RelativeLayout
-                android:id="@+id/wrap_header_row"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/text_header_web"
-                    style="@style/FriendHeadingRow"
-                    android:text="@string/info_xml_website" />
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:src="@android:drawable/ic_menu_set_as" />
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/text_web"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/wrap_header_row"
-                android:autoLink="all"
-                android:padding="5dp"
-                android:text="N/A"
-                android:textSize="14sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/wrap_presentation"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/wrap_web" >
-
-            <TextView
-                android:id="@+id/text_header_presentation"
-                style="@style/FriendHeadingRow"
-                android:text="@string/info_xml_presentation" />
-
-            <TextView
-                android:id="@+id/text_presentation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_header_presentation"
-                android:autoLink="all"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="N/A"
-                android:textSize="14sp" />
-        </RelativeLayout>
+      <TextView
+          android:id="@+id/text_web"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/wrap_header_row"
+          android:autoLink="all"
+          android:padding="5dp"
+          android:text="N/A"
+          android:textSize="14sp"/>
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/wrap_presentation"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_web">
+
+      <TextView
+          android:id="@+id/text_header_presentation"
+          style="@style/FriendHeadingRow"
+          android:text="@string/info_xml_presentation"/>
+
+      <TextView
+          android:id="@+id/text_presentation"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/text_header_presentation"
+          android:autoLink="all"
+          android:gravity="center"
+          android:padding="5dp"
+          android:text="N/A"
+          android:textSize="14sp"/>
+    </RelativeLayout>
+  </RelativeLayout>
 
 </ScrollView>

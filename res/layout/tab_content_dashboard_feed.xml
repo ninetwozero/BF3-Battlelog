@@ -13,52 +13,52 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="10dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp">
 
-    <RelativeLayout
-        android:id="@+id/feed_update"
+  <RelativeLayout
+      android:id="@+id/feed_update"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_marginBottom="10dp">
+
+    <Button
+        android:id="@+id/button_status"
+        style="@style/RegularButton"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="Update"/>
+
+    <EditText
+        android:id="@+id/field_status"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="10dp" >
+        android:layout_centerVertical="true"
+        android:layout_marginRight="6dp"
+        android:layout_toLeftOf="@id/button_status"
+        android:hint="@string/info_xml_hint_status"
+        android:maxLength="90"
+        android:singleLine="true"/>
+  </RelativeLayout>
 
-        <Button
-            android:id="@+id/button_status"
-            style="@style/RegularButton"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="Update" />
+  <ListView
+      android:id="@android:id/list"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_below="@id/feed_update"
+      android:fastScrollEnabled="true"/>
 
-        <EditText
-            android:id="@+id/field_status"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="6dp"
-            android:layout_toLeftOf="@id/button_status"
-            android:hint="@string/info_xml_hint_status"
-            android:maxLength="90"
-            android:singleLine="true" />
-    </RelativeLayout>
-
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/feed_update"
-        android:fastScrollEnabled="true" />
-
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/info_xml_no_feed" />
+  <TextView
+      android:id="@android:id/empty"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:text="@string/info_xml_no_feed"/>
 
 </RelativeLayout>

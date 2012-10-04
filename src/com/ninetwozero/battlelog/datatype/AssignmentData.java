@@ -14,10 +14,10 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-import java.util.List;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.List;
 
 public class AssignmentData implements Parcelable {
 
@@ -36,8 +36,7 @@ public class AssignmentData implements Parcelable {
 
             int rId, int uId, String i, String d, String s,
             List<AssignmentData.Objective> c,
-            List<AssignmentData.Dependency> dp,
-            List<AssignmentData.Unlock> u
+            List<AssignmentData.Dependency> dp, List<AssignmentData.Unlock> u
 
     ) {
 
@@ -61,7 +60,8 @@ public class AssignmentData implements Parcelable {
         mSet = in.readString();
 
         mObjectives = in.createTypedArrayList(AssignmentData.Objective.CREATOR);
-        mDependencies = in.createTypedArrayList(AssignmentData.Dependency.CREATOR);
+        mDependencies = in
+                .createTypedArrayList(AssignmentData.Dependency.CREATOR);
         mUnlocks = in.createTypedArrayList(AssignmentData.Unlock.CREATOR);
 
     }
@@ -179,7 +179,7 @@ public class AssignmentData implements Parcelable {
 
         // Construct
         public Objective(double c, double g, String i, String w, String k,
-                String d, String u) {
+                         String d, String u) {
 
             currentValue = c;
             goalValue = g;

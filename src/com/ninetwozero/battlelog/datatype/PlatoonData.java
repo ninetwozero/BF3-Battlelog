@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.datatype;
 
 import android.os.Parcel;
@@ -29,7 +28,7 @@ public class PlatoonData implements Parcelable {
     }
 
     public PlatoonData(long i, int cF, int cM, int pId, String n, String t,
-            String img, boolean v) {
+                       String img, boolean v) {
 
         this.id = i;
         this.countFans = cF;

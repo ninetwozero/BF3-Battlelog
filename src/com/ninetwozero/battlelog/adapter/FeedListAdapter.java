@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.text.Html;
@@ -25,10 +23,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.List;
 
 public class FeedListAdapter extends BaseAdapter {
 
@@ -94,7 +93,7 @@ public class FeedListAdapter extends BaseAdapter {
                 !currentItem.isCensored() ? Html.fromHtml(currentItem.getTitle())
                         : context.getString(R.string.general_censored)
 
-                );
+        );
 
         // How many likes/comments?
         String textHooah = (currentItem.getNumLikes() == 1) ? context
@@ -110,8 +109,8 @@ public class FeedListAdapter extends BaseAdapter {
         ((ImageView) convertView.findViewById(R.id.image_avatar))
                 .setImageBitmap(
 
-                BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
-                        .toString() + currentItem.getAvatarForPost() + ".png")
+                        BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
+                                .toString() + currentItem.getAvatarForPost() + ".png")
 
                 );
         ((TextView) convertView.findViewById(R.id.text_date))

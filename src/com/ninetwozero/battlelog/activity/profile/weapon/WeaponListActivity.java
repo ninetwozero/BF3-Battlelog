@@ -14,13 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.profile.weapon;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -29,15 +22,22 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
 import com.ninetwozero.battlelog.http.ProfileClient;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
-public class WeaponListActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class WeaponListActivity extends CustomFragmentActivity implements
+        DefaultFragmentActivity {
 
     // Attributes
     private ProfileData mProfileData;
@@ -101,12 +101,14 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
 
             // Add them to the list
             mListFragments = new ArrayList<Fragment>();
-            mListFragments.add(Fragment.instantiate(this, WeaponListFragment.class.getName()));
+            mListFragments.add(Fragment.instantiate(this,
+                    WeaponListFragment.class.getName()));
 
             // Iterate over the fragments
             for (int i = 0, max = mListFragments.size(); i < max; i++) {
 
-                ((WeaponListFragment) mListFragments.get(i)).setViewPagerPosition(i);
+                ((WeaponListFragment) mListFragments.get(i))
+                        .setViewPagerPosition(i);
 
             }
 
@@ -117,14 +119,8 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
             // Fill the PagerAdapter & set it to the viewpager
             mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-                    mFragmentManager,
-                    new String[] {
-                            "WEAPONS"
-                    },
-                    mListFragments,
-                    mViewPager,
-                    mLayoutInflater
-                    );
+                    mFragmentManager, new String[]{"WEAPONS"}, mListFragments,
+                    mViewPager, mLayoutInflater);
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 
@@ -163,8 +159,10 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
 
             if (mItems.isEmpty()) {
                 mProgressDialog = new ProgressDialog(mContext);
-                mProgressDialog.setTitle(mContext.getString(R.string.general_wait));
-                mProgressDialog.setMessage(mContext.getString(R.string.general_downloading));
+                mProgressDialog.setTitle(mContext
+                        .getString(R.string.general_wait));
+                mProgressDialog.setMessage(mContext
+                        .getString(R.string.general_downloading));
                 mProgressDialog.show();
             }
 
@@ -200,12 +198,14 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
 
                 if (result) {
 
-                    ((WeaponListFragment) mListFragments.get(mViewPager.getCurrentItem()))
-                            .showWeapons(mItems.get(mSelectedPersona));
+                    ((WeaponListFragment) mListFragments.get(mViewPager
+                            .getCurrentItem())).showWeapons(mItems
+                            .get(mSelectedPersona));
 
                 } else {
 
-                    Toast.makeText(mContext, R.string.general_no_data, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.general_no_data,
+                            Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -236,9 +236,8 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
 
     public void open(WeaponDataWrapper w) {
 
-        startActivity(new Intent(this, SingleWeaponActivity.class)
-                .putExtra("profile", mProfileData)
-                .putExtra("weapon", w));
+        startActivity(new Intent(this, SingleWeaponActivity.class).putExtra(
+                "profile", mProfileData).putExtra("weapon", w));
 
     }
 

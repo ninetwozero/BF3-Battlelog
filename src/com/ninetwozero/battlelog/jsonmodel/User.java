@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.jsonmodel;
 
 import com.google.gson.annotations.SerializedName;

@@ -13,17 +13,18 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     private Context context;
 
-    public DatabaseManager(Context context){
+    public DatabaseManager(Context context) {
         super(context, Battlelog.NAME, null, 1);
         this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        try{
+        try {
             Migrations.migrate(database, context.getAssets(), "migrations");
-        } catch (IOException e){
-            Log.e(DatabaseManager.class.getSimpleName(), "Error on migration / update");
+        } catch (IOException e) {
+            Log.e(DatabaseManager.class.getSimpleName(),
+                    "Error on migration / update");
             e.printStackTrace();
         }
     }

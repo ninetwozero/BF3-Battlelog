@@ -13,18 +13,18 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/button_orange_bg"
-    android:padding="5dp" >
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_orange_bg"
+                android:padding="5dp">
 
-    <TextView
-        android:id="@+id/text_title"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="@string/label_compare_bs"
-        android:textSize="16sp" />
+  <TextView
+      android:id="@+id/text_title"
+      android:layout_width="100dp"
+      android:layout_height="80dp"
+      android:layout_centerInParent="true"
+      android:gravity="center"
+      android:text="@string/label_compare_bs"
+      android:textSize="16sp"/>
 
 </RelativeLayout>

@@ -14,28 +14,22 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
-import java.util.ArrayList;
-import java.util.Map;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.PersonaStats;
 import com.ninetwozero.battlelog.datatype.ProfileData;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class CompareActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
@@ -53,7 +47,7 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
         super.onCreate(icicle);
 
         // Let's set them straight
-        mProfileData = new ProfileData[] {
+        mProfileData = new ProfileData[]{
 
                 (ProfileData) getIntent().getParcelableExtra("profile1"),
                 (ProfileData) getIntent().getParcelableExtra("profile2")
@@ -138,7 +132,7 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
+                                    ContextMenuInfo menuInfo) {
 
     }
 
@@ -183,14 +177,14 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
             mPagerAdapter = new SwipeyTabsPagerAdapter(
 
                     mFragmentManager,
-                    new String[] {
+                    new String[]{
                             mProfileData[0].getUsername(), "Compare",
                             mProfileData[1].getUsername()
                     },
                     mListFragments,
                     mViewPager,
                     mLayoutInflater
-                    );
+            );
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 
@@ -225,7 +219,7 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
                 p.getId() == mProfileData[0].getId() ? 0 : 1,
                 toggle
 
-                );
+        );
 
     }
 

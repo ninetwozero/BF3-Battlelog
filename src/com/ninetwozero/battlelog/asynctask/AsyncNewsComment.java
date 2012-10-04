@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.asynctask;
 
 import android.content.Context;
@@ -6,7 +5,6 @@ import android.os.AsyncTask;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.news.CommentListFragment;
 import com.ninetwozero.battlelog.datatype.CommentData;
@@ -36,7 +34,8 @@ public class AsyncNewsComment extends AsyncTask<String, Void, Boolean> {
 
         if (context != null) {
 
-            buttonSend = (Button) fragmentComments.getView().findViewById(R.id.button_send);
+            buttonSend = (Button) fragmentComments.getView().findViewById(
+                    R.id.button_send);
             buttonSend.setText(R.string.label_sending);
             buttonSend.setEnabled(false);
 
@@ -71,14 +70,15 @@ public class AsyncNewsComment extends AsyncTask<String, Void, Boolean> {
 
             buttonSend.setText(R.string.label_send);
             buttonSend.setEnabled(true);
-            ((EditText) fragmentComments.getView().findViewById(R.id.field_message)).setText("");
+            ((EditText) fragmentComments.getView().findViewById(
+                    R.id.field_message)).setText("");
 
-            Toast.makeText(context, R.string.info_news_comment_true, Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(context, R.string.info_news_comment_true,
+                    Toast.LENGTH_SHORT).show();
         } else {
 
-            Toast.makeText(context, R.string.info_news_comment_false, Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(context, R.string.info_news_comment_false,
+                    Toast.LENGTH_SHORT).show();
 
         }
 

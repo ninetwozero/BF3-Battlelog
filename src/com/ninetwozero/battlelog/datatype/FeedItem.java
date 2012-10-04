@@ -18,7 +18,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.forum.ForumActivity;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
@@ -165,11 +164,11 @@ public class FeedItem implements Parcelable {
 
                         "threadId", itemId
 
-                        ).putExtra(
+                ).putExtra(
 
-                                "threadTitle", "N/A"
+                        "threadTitle", "N/A"
 
-                        ).putExtra("forumId", 0).putExtra("forumTitle", "N/A");
+                ).putExtra("forumId", 0).putExtra("forumTitle", "N/A");
 
             case FeedItem.TYPE_NEW_PLATOON:
             case FeedItem.TYPE_NEW_EMBLEM:
@@ -198,13 +197,13 @@ public class FeedItem implements Parcelable {
 
                         "profile", profileData[0]
 
-                        );
+                );
 
             case FeedItem.TYPE_COMPLETED_ASSIGNMENT:
                 return new Intent(c, AssignmentActivity.class).putExtra(
                         "profile",
                         profileData[0]
-                        );
+                );
 
             default:
                 return new Intent();

@@ -13,8 +13,8 @@ public class BattlelogContentProvider extends ContentProvider {
 
     private SQLiteDatabase database;
 
-    public synchronized SQLiteDatabase getDatabase(){
-        if(database == null){
+    public synchronized SQLiteDatabase getDatabase() {
+        if (database == null) {
             databaseManager = new DatabaseManager(getContext());
             database = databaseManager.getWritableDatabase();
         }
@@ -39,7 +39,7 @@ public class BattlelogContentProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        switch(UriFactory.URI_MATCHER.match(uri)){
+        switch (UriFactory.URI_MATCHER.match(uri)) {
             case UriFactory.URI_CODES.RANK_PROGRESS:
                 return UriFactory.URI_PATH.RANK_PROGRESS;
             case UriFactory.URI_CODES.PERSONA_STATISTICS:
@@ -55,7 +55,7 @@ public class BattlelogContentProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues contentValues) {
         long id = database.insert(getType(uri), null, contentValues);
         getContext().getContentResolver().notifyChange(uri, null);
-        return Uri.parse(getType(uri) + "/" +id);
+        return Uri.parse(getType(uri) + "/" + id);
     }
 
     @Override

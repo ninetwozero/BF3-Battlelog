@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -24,10 +22,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.List;
 
 public class PlatoonListAdapter extends BaseAdapter {
 
@@ -37,8 +36,7 @@ public class PlatoonListAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
 
     // Construct
-    public PlatoonListAdapter(Context c, List<PlatoonData> p,
-            LayoutInflater l) {
+    public PlatoonListAdapter(Context c, List<PlatoonData> p, LayoutInflater l) {
 
         context = c;
         platoonArray = p;
@@ -95,8 +93,8 @@ public class PlatoonListAdapter extends BaseAdapter {
         ((ImageView) convertView.findViewById(R.id.image_badge))
                 .setImageBitmap(
 
-                BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
-                        + currentPlatoon.getId() + ".jpeg")
+                        BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
+                                + currentPlatoon.getId() + ".jpeg")
 
                 );
 

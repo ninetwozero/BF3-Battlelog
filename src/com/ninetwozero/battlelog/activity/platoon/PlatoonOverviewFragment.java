@@ -25,17 +25,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctask.AsyncPlatoonRequest;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
@@ -48,7 +43,8 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class PlatoonOverviewFragment extends Fragment implements DefaultFragment {
+public class PlatoonOverviewFragment extends Fragment implements
+        DefaultFragment {
 
     // Attributes
     private Context mContext;
@@ -66,16 +62,17 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.tab_content_platoon_overview,
-                container, false);
+        View view = mLayoutInflater.inflate(
+                R.layout.tab_content_platoon_overview, container, false);
 
         // Init the fragment
         initFragment(view);
@@ -106,11 +103,11 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             public void onClick(View v) {
                 startActivity(
 
-                new Intent(Intent.ACTION_VIEW).setData(
+                        new Intent(Intent.ACTION_VIEW).setData(
 
-                        Uri.parse(
+                                Uri.parse(
 
-                                String.valueOf(v.getTag())
+                                        String.valueOf(v.getTag())
 
                                 )
 
@@ -137,7 +134,8 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
         // Let's start by getting an ImageView
         if (mImageViewBadge == null) {
-            mImageViewBadge = (ImageView) activity.findViewById(R.id.image_badge);
+            mImageViewBadge = (ImageView) activity
+                    .findViewById(R.id.image_badge);
         }
 
         // Set some TextViews
@@ -149,12 +147,12 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
                         "{DATE}", PublicUtils.getDate(data.getDate())
 
-                        ).replace(
+                ).replace(
 
-                                "{RELATIVE DATE}",
-                                PublicUtils.getRelativeDate(mContext, data.getDate())
+                        "{RELATIVE DATE}",
+                        PublicUtils.getRelativeDate(mContext, data.getDate())
 
-                        ));
+                ));
 
         // Platform!!
         switch (data.getPlatformId()) {
@@ -188,19 +186,22 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
                         PublicUtils.getCachePath(mContext) + data.getId() + ".jpeg"
 
-                        )
+                )
 
-                );
+        );
 
         // Do we have a link?!
         if ("".equals(data.getWebsite())) {
 
-            ((View) activity.findViewById(R.id.wrap_web)).setVisibility(View.GONE);
+            ((View) activity.findViewById(R.id.wrap_web))
+                    .setVisibility(View.GONE);
 
         } else {
 
-            ((TextView) activity.findViewById(R.id.text_web)).setText(data.getWebsite());
-            ((View) activity.findViewById(R.id.wrap_web)).setTag(data.getWebsite());
+            ((TextView) activity.findViewById(R.id.text_web)).setText(data
+                    .getWebsite());
+            ((View) activity.findViewById(R.id.wrap_web)).setTag(data
+                    .getWebsite());
 
         }
 
@@ -212,8 +213,8 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
         } else {
 
-            ((TextView) activity.findViewById(R.id.text_presentation)).setText(data
-                    .getPresentation());
+            ((TextView) activity.findViewById(R.id.text_presentation))
+                    .setText(data.getPresentation());
 
         }
 
@@ -243,7 +244,8 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             try {
 
                 // Get...
-                mPlatoonInformation = CacheHandler.Platoon.select(mContext, mPlatoonData.getId());
+                mPlatoonInformation = CacheHandler.Platoon.select(mContext,
+                        mPlatoonData.getId());
 
                 // We got one?!
                 return (mPlatoonInformation != null);
@@ -300,7 +302,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         }
 
         public AsyncRefresh(Context c, PlatoonData pd, long pId,
-                ProgressDialog p) {
+                            ProgressDialog p) {
 
             this.context = c;
             this.platoonData = pd;
@@ -319,12 +321,13 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             try {
 
                 // Get...
-                mPlatoonInformation = new PlatoonClient(this.platoonData).getInformation(
+                mPlatoonInformation = new PlatoonClient(this.platoonData)
+                        .getInformation(
 
-                        context, mSharedPreferences.getInt(
+                                context, mSharedPreferences.getInt(
                                 Constants.SP_BL_NUM_FEED,
                                 Constants.DEFAULT_NUM_FEED),
-                        this.activeProfileId
+                                this.activeProfileId
 
                         );
 
@@ -370,8 +373,8 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
     public void reload() {
 
         // ASYNC!!!
-        new AsyncRefresh(mContext, mPlatoonData, SessionKeeper
-                .getProfileData().getId()).execute();
+        new AsyncRefresh(mContext, mPlatoonData, SessionKeeper.getProfileData()
+                .getId()).execute();
 
     }
 
@@ -408,12 +411,9 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
             if (mPlatoonInformation.isMember()) {
 
-                ((MenuItem) menu.findItem(R.id.option_join))
-                        .setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_leave))
-                        .setVisible(true);
-                ((MenuItem) menu.findItem(R.id.option_fans))
-                        .setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(true);
+                ((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
                 ((MenuItem) menu.findItem(R.id.option_invite))
                         .setVisible(false);
                 ((MenuItem) menu.findItem(R.id.option_members))
@@ -421,12 +421,9 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
             } else if (mPlatoonInformation.isOpenForNewMembers()) {
 
-                ((MenuItem) menu.findItem(R.id.option_join))
-                        .setVisible(true);
-                ((MenuItem) menu.findItem(R.id.option_leave))
-                        .setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_fans))
-                        .setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_join)).setVisible(true);
+                ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
                 ((MenuItem) menu.findItem(R.id.option_invite))
                         .setVisible(false);
                 ((MenuItem) menu.findItem(R.id.option_members))
@@ -434,12 +431,9 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
             } else {
 
-                ((MenuItem) menu.findItem(R.id.option_join))
-                        .setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_leave))
-                        .setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_fans))
-                        .setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
+                ((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
                 ((MenuItem) menu.findItem(R.id.option_invite))
                         .setVisible(false);
                 ((MenuItem) menu.findItem(R.id.option_members))
@@ -451,10 +445,8 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             ((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
             ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
             ((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
-            ((MenuItem) menu.findItem(R.id.option_invite))
-                    .setVisible(false);
-            ((MenuItem) menu.findItem(R.id.option_members))
-                    .setVisible(false);
+            ((MenuItem) menu.findItem(R.id.option_invite)).setVisible(false);
+            ((MenuItem) menu.findItem(R.id.option_members)).setVisible(false);
 
         }
         return menu;
@@ -477,8 +469,8 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
             new AsyncPlatoonRequest(
 
-                    mContext, mPlatoonData, SessionKeeper.getProfileData()
-                            .getId(), mSharedPreferences.getString(
+                    mContext, mPlatoonData, SessionKeeper.getProfileData().getId(),
+                    mSharedPreferences.getString(
                             Constants.SP_BL_PROFILE_CHECKSUM, "")
 
             ).execute(false);

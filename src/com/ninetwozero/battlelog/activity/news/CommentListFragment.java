@@ -14,25 +14,18 @@
 
 package com.ninetwozero.battlelog.activity.news;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.CommentListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncCommentSend;
@@ -41,6 +34,8 @@ import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.CommentClient;
 import com.ninetwozero.battlelog.misc.Constants;
+
+import java.util.List;
 
 public class CommentListFragment extends ListFragment implements DefaultFragment {
 
@@ -63,7 +58,7 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
@@ -110,7 +105,7 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
                                 mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
                                 mFieldMessage.getText().toString()
 
-                                );
+                        );
 
                         // Clear the field
                         mFieldMessage.setText("");
@@ -119,7 +114,7 @@ public class CommentListFragment extends ListFragment implements DefaultFragment
 
                 }
 
-                );
+        );
 
         // Setup the listAdapter
         mListAdapter = new CommentListAdapter(mContext, mComments,

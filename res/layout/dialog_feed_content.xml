@@ -13,15 +13,15 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialog_root"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#FFFFFF"
-    android:padding="10dp" >
+                android:id="@+id/dialog_root"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#FFFFFF"
+                android:padding="10dp">
 
-    <TextView
-        android:id="@+id/feed_content"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+  <TextView
+      android:id="@+id/feed_content"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"/>
 
 </RelativeLayout>

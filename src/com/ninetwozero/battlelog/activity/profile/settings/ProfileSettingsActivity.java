@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.activity.profile.settings;
 
 import android.content.SharedPreferences;
@@ -7,7 +6,6 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;

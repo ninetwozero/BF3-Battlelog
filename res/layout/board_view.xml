@@ -13,46 +13,46 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="10dp" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="10dp">
 
-    <RelativeLayout
-        android:id="@+id/wrap_top"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/text_board_title"
-            style="@style/InfoHeading"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="0dp"
-            android:padding="5dp"
-            android:text="@string/info_xml_forums" />
-
-        <ImageView
-            android:id="@+id/img_persona_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="12dp"
-            android:src="@android:drawable/arrow_down_float" />
-    </RelativeLayout>
-
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/wrap_top"
-        android:fastScrollEnabled="true" />
+  <RelativeLayout
+      android:id="@+id/wrap_top"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content">
 
     <TextView
-        android:id="@android:id/empty"
+        android:id="@+id/text_board_title"
+        style="@style/InfoHeading"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:padding="5dp"
+        android:text="@string/info_xml_forums"/>
+
+    <ImageView
+        android:id="@+id/img_persona_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="30dp"
-        android:text="@string/info_xml_forums_none" />
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="12dp"
+        android:src="@android:drawable/arrow_down_float"/>
+  </RelativeLayout>
+
+  <ListView
+      android:id="@android:id/list"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/wrap_top"
+      android:fastScrollEnabled="true"/>
+
+  <TextView
+      android:id="@android:id/empty"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:layout_marginTop="30dp"
+      android:text="@string/info_xml_forums_none"/>
 
 </RelativeLayout>

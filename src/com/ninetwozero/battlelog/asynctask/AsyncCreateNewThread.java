@@ -17,7 +17,6 @@ package com.ninetwozero.battlelog.asynctask;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.forum.ForumActivity;
 import com.ninetwozero.battlelog.http.ForumClient;
@@ -48,7 +47,7 @@ public class AsyncCreateNewThread extends AsyncTask<String, Void, Boolean> {
 
                     mContext, arg0[0], arg0[1], arg0[2]
 
-                    );
+            );
 
             // If we managed, we need to fetch the new information
             if (created) {

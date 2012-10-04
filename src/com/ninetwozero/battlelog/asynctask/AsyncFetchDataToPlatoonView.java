@@ -1,4 +1,3 @@
-
 package com.ninetwozero.battlelog.asynctask;
 
 import android.content.Context;
@@ -7,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
@@ -57,7 +55,7 @@ public class AsyncFetchDataToPlatoonView extends
                     searchString,
                     sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 
-                    );
+            );
 
             // Did we get an actual user?
             if (platoon == null || platoon.getId() == 0) {
@@ -99,9 +97,9 @@ public class AsyncFetchDataToPlatoonView extends
 
                             "platoon", platoon
 
-                            )
+                    )
 
-                    );
+            );
 
         } else {
 

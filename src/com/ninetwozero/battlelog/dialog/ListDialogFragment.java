@@ -1,24 +1,17 @@
 package com.ninetwozero.battlelog.dialog;
 
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import com.ninetwozero.battlelog.R;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatype.PersonaData;
-
-public class ListDialogFragment extends DialogFragment{
+public class ListDialogFragment extends DialogFragment {
 
     private Map<Long, String> data;
     private Long[] personaId;

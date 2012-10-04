@@ -35,7 +35,7 @@ public class WeaponStats implements Parcelable {
 
     // Construct
     public WeaponStats(String n, String g, String s, int k, int h, int kId, long sF, long sH,
-            long tE, double a, double sS, double sSP) {
+                       long tE, double a, double sS, double sSP) {
 
         mName = n;
         mGuid = g;

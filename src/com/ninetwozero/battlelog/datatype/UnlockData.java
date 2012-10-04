@@ -17,7 +17,6 @@ package com.ninetwozero.battlelog.datatype;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.DrawableResourceList;
 
@@ -54,7 +53,7 @@ public class UnlockData implements Parcelable {
     }
 
     public UnlockData(int k, double u, long scn, long scc, String pi,
-            String ui, String o, String t) {
+                      String ui, String o, String t) {
 
         mKitId = k;
         mUnlockPercentage = u;
@@ -207,7 +206,7 @@ public class UnlockData implements Parcelable {
                     "{scoreCurr}/{scoreNeeded}",
                     mScoreCurrent + "/" + mScoreNeeded
 
-                    );
+            );
 
         } else if ("rank".equals(mObjective)) {
 
@@ -215,11 +214,11 @@ public class UnlockData implements Parcelable {
 
                     "{rank}", String.valueOf(getScoreNeeded())
 
-                    ).replace(
+            ).replace(
 
-                            "{rankCurr}", String.valueOf(getScoreCurrent())
+                    "{rankCurr}", String.valueOf(getScoreCurrent())
 
-                    );
+            );
 
         } else if (mObjective.startsWith("c_")) {
 
@@ -229,7 +228,7 @@ public class UnlockData implements Parcelable {
                     mScoreCurrent + "/" + mScoreNeeded + " "
                             + getParent(c)
 
-                    );
+            );
 
         } else if (mObjective.startsWith("xpm")) {
 

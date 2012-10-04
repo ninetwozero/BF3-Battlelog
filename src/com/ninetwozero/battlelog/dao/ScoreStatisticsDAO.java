@@ -17,7 +17,7 @@ import static com.ninetwozero.battlelog.provider.table.ScoreStatistics.Columns;
 
 public class ScoreStatisticsDAO {
 
-    public static List<Statistics> scoreStatisticsFromCursor(Cursor cursor){
+    public static List<Statistics> scoreStatisticsFromCursor(Cursor cursor) {
         List<Statistics> list = new ArrayList<Statistics>();
         list.add(new Statistics(R.string.info_xml_assault, valueFromCursor(cursor, Columns.ASSAULT), R.style.Wrap));
         list.add(new Statistics(R.string.info_xml_engineer, valueFromCursor(cursor, Columns.ENGINEER), R.style.Wrap));
@@ -36,7 +36,7 @@ public class ScoreStatisticsDAO {
         return list;
     }
 
-    public static List<Statistics> scoreStatisticsFromJSON(PersonaInfo pi){
+    public static List<Statistics> scoreStatisticsFromJSON(PersonaInfo pi) {
         PersonaStatsOverview pso = pi.getStatsOverview();
         KitScores ks = pi.getStatsOverview().getKitScores();
         VehicleScores vs = pi.getStatsOverview().getVehicleScores();
@@ -58,7 +58,7 @@ public class ScoreStatisticsDAO {
         return list;
     }
 
-    public static ContentValues scoreStatisticsForDB(PersonaInfo pi, long personaId){
+    public static ContentValues scoreStatisticsForDB(PersonaInfo pi, long personaId) {
         PersonaStatsOverview pso = pi.getStatsOverview();
         KitScores ks = pi.getStatsOverview().getKitScores();
         VehicleScores vs = pi.getStatsOverview().getVehicleScores();
@@ -66,7 +66,7 @@ public class ScoreStatisticsDAO {
         values.put(Columns.PERSONA_ID, personaId);
         values.put(Columns.ASSAULT, ks.getAssaultScore());
         values.put(Columns.ENGINEER, ks.getEngineerScore());
-        values.put(Columns.SUPPORT,ks.getSupportScore());
+        values.put(Columns.SUPPORT, ks.getSupportScore());
         values.put(Columns.RECON, ks.getReconScore());
         values.put(Columns.JET, vs.getJetScore());
         values.put(Columns.TANK, vs.getTankScore());
@@ -81,7 +81,7 @@ public class ScoreStatisticsDAO {
         return values;
     }
 
-    private static String valueFromCursor(Cursor cursor, String name){
+    private static String valueFromCursor(Cursor cursor, String name) {
         return format(cursor.getLong(cursor.getColumnIndexOrThrow(name)));
     }
 }

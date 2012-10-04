@@ -24,27 +24,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.asynctask.AsyncFriendRemove;
 import com.ninetwozero.battlelog.asynctask.AsyncFriendRequest;
-import com.ninetwozero.battlelog.datatype.DefaultFragment;
-import com.ninetwozero.battlelog.datatype.PlatoonData;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.ProfileInformation;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.datatype.*;
 import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -65,7 +52,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
@@ -126,9 +113,9 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                             "{server name}", data.getCurrentServer()
 
-                            )
+                    )
 
-                    );
+            );
 
         } else if (data.isOnline()) {
 
@@ -193,9 +180,9 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                     // On-click
                     startActivity(
 
-                    new Intent(mContext, PlatoonActivity.class).putExtra(
+                            new Intent(mContext, PlatoonActivity.class).putExtra(
 
-                            "platoon", (PlatoonData) v.getTag()
+                                    "platoon", (PlatoonData) v.getTag()
 
                             )
 
@@ -231,8 +218,8 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 ((ImageView) convertView.findViewById(R.id.image_badge))
                         .setImageBitmap(
 
-                        BitmapFactory.decodeFile(PublicUtils.getCachePath(mContext)
-                                + currentPlatoon.getImage())
+                                BitmapFactory.decodeFile(PublicUtils.getCachePath(mContext)
+                                        + currentPlatoon.getImage())
 
                         );
 
@@ -376,7 +363,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                         mContext,
                         activeProfileId
 
-                        );
+                );
 
                 // ...and then send it to the stats
                 sendToStats(mProfileData);
@@ -494,7 +481,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                             Constants.SP_BL_PROFILE_CHECKSUM, "")
 
-                    );
+            );
 
         } else if (item.getItemId() == R.id.option_frienddel) {
 
@@ -504,7 +491,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                             Constants.SP_BL_PROFILE_CHECKSUM, "")
 
-                    );
+            );
 
         }
 

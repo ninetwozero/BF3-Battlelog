@@ -18,20 +18,16 @@ package com.ninetwozero.battlelog.activity.profile.weapon;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.WeaponStats;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
-public class WeaponStatisticsFragment extends Fragment implements DefaultFragment {
+public class WeaponStatisticsFragment extends Fragment implements
+        DefaultFragment {
 
     // Attributes
     private Context mContext;
@@ -39,12 +35,12 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
     private int mViewPagerPosition;
 
     // Elements
-    private TextView mKills, mHeadShots, mShotFired, mShotHit, mAccuracy, mTimeEquipped, mServiceStars,
-            mServiceStarProgress;
+    private TextView mKills, mHeadShots, mShotFired, mShotHit, mAccuracy,
+            mTimeEquipped, mServiceStars, mServiceStarProgress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
@@ -72,7 +68,8 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
         mAccuracy = (TextView) v.findViewById(R.id.text_accuracy);
         mTimeEquipped = (TextView) v.findViewById(R.id.text_time);
         mServiceStars = (TextView) v.findViewById(R.id.text_sstars);
-        mServiceStarProgress = (TextView) v.findViewById(R.id.text_sstars_progress);
+        mServiceStarProgress = (TextView) v
+                .findViewById(R.id.text_sstars_progress);
 
     }
 
@@ -115,7 +112,8 @@ public class WeaponStatisticsFragment extends Fragment implements DefaultFragmen
         mAccuracy.setText(String.format("%.1f", (w.getAccuracy() * 100)) + "%");
         mTimeEquipped.setText(PublicUtils.timeToLiteral(w.getTimeEquipped()));
         mServiceStars.setText(String.valueOf((int) w.getServiceStars()));
-        mServiceStarProgress.setText(String.valueOf((int) w.getServiceStarProgress()));
+        mServiceStarProgress.setText(String.valueOf((int) w
+                .getServiceStarProgress()));
 
     }
 

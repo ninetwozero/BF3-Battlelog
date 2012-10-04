@@ -13,167 +13,167 @@
     GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+  <RelativeLayout
+      android:id="@+id/wrap_top"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_marginBottom="40dp"
+      android:padding="10dp">
 
     <RelativeLayout
-        android:id="@+id/wrap_top"
+        android:id="@+id/wrap_buttons"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginBottom="40dp"
-        android:padding="10dp" >
-
-        <RelativeLayout
-            android:id="@+id/wrap_buttons"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:paddingTop="10dp" >
-
-            <Button
-                android:id="@+id/button_prev"
-                style="@style/RegularButton"
-                android:layout_width="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:enabled="false"
-                android:text="&lt;" />
-
-            <Button
-                android:id="@+id/button_next"
-                style="@style/RegularButton"
-                android:layout_width="wrap_content"
-                android:layout_alignParentRight="true"
-                android:enabled="false"
-                android:text=">" />
-
-            <Button
-                android:id="@+id/button_jump"
-                style="@style/RegularButton"
-                android:layout_width="250dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@id/button_next"
-                android:layout_toRightOf="@id/button_prev"
-                android:enabled="false"
-                android:text="@string/info_xml_feed_button_jump" />
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/text_title_thread"
-            style="@style/InfoHeading"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="0dp"
-            android:layout_marginTop="0dp"
-            android:padding="5dp"
-            android:text="@string/info_xml_forum_posts" />
-
-        <ListView
-            android:id="@android:id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_above="@id/wrap_buttons"
-            android:layout_below="@id/text_title_thread"
-            android:fastScrollEnabled="true" />
-
-        <TextView
-            android:id="@android:id/empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="30dp"
-            android:layout_marginTop="30dp"
-            android:text="@string/info_xml_posts_none" />
-    </RelativeLayout>
-
-    <SlidingDrawer
-        android:id="@+id/post_slider"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:content="@+id/post_slide_content"
-        android:handle="@+id/post_slide_handle"
-        android:topOffset="0dp" >
+        android:paddingTop="10dp">
 
-        <LinearLayout
-            android:id="@+id/post_slide_handle"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:orientation="vertical" >
+      <Button
+          android:id="@+id/button_prev"
+          style="@style/RegularButton"
+          android:layout_width="wrap_content"
+          android:layout_alignParentLeft="true"
+          android:enabled="false"
+          android:text="&lt;"/>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:background="#5c5c5c" />
+      <Button
+          android:id="@+id/button_next"
+          style="@style/RegularButton"
+          android:layout_width="wrap_content"
+          android:layout_alignParentRight="true"
+          android:enabled="false"
+          android:text=">"/>
 
-            <View
-                android:id="@+id/temp000"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="#20201f" />
+      <Button
+          android:id="@+id/button_jump"
+          style="@style/RegularButton"
+          android:layout_width="250dp"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_toLeftOf="@id/button_next"
+          android:layout_toRightOf="@id/button_prev"
+          android:enabled="false"
+          android:text="@string/info_xml_feed_button_jump"/>
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/post_slide_handle_text"
-                android:layout_width="fill_parent"
-                android:layout_height="37dp"
-                android:background="@drawable/gradient_greytodarkgrey"
-                android:gravity="center"
-                android:text="@string/info_xml_post_new"
-                android:textColor="#FFFFFF" />
-        </LinearLayout>
+    <TextView
+        android:id="@+id/text_title_thread"
+        style="@style/InfoHeading"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0dp"
+        android:padding="5dp"
+        android:text="@string/info_xml_forum_posts"/>
 
-        <RelativeLayout
-            android:id="@+id/post_slide_content"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#FDFDFD"
-            android:padding="10dp" >
-
-            <Button
-                android:id="@+id/button_new"
-                style="@style/RegularButton"
-                android:layout_width="fill_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="5dp"
-                android:text="@string/label_post" />
-
-            <EditText
-                android:id="@+id/textarea_content"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_above="@id/button_new"
-                android:gravity="left|top"
-                android:hint="Your content here..." />
-        </RelativeLayout>
-    </SlidingDrawer>
-
-    <RelativeLayout
-        android:id="@+id/wrap_loader"
+    <ListView
+        android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#FFFFFF"
-        android:clickable="true"
-        android:visibility="gone" >
+        android:layout_above="@id/wrap_buttons"
+        android:layout_below="@id/text_title_thread"
+        android:fastScrollEnabled="true"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:orientation="vertical" >
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/info_xml_posts_none"/>
+  </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/image_loader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/spinner_black_76" />
+  <SlidingDrawer
+      android:id="@+id/post_slider"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_alignParentBottom="true"
+      android:content="@+id/post_slide_content"
+      android:handle="@+id/post_slide_handle"
+      android:topOffset="0dp">
 
-            <TextView
-                android:id="@+id/text_loader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Loading..." />
-        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/post_slide_handle"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:orientation="vertical">
+
+      <View
+          android:layout_width="fill_parent"
+          android:layout_height="2dp"
+          android:background="#5c5c5c"/>
+
+      <View
+          android:id="@+id/temp000"
+          android:layout_width="fill_parent"
+          android:layout_height="1dp"
+          android:background="#20201f"/>
+
+      <TextView
+          android:id="@+id/post_slide_handle_text"
+          android:layout_width="fill_parent"
+          android:layout_height="37dp"
+          android:background="@drawable/gradient_greytodarkgrey"
+          android:gravity="center"
+          android:text="@string/info_xml_post_new"
+          android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/post_slide_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#FDFDFD"
+        android:padding="10dp">
+
+      <Button
+          android:id="@+id/button_new"
+          style="@style/RegularButton"
+          android:layout_width="fill_parent"
+          android:layout_alignParentBottom="true"
+          android:layout_centerInParent="true"
+          android:layout_marginTop="5dp"
+          android:text="@string/label_post"/>
+
+      <EditText
+          android:id="@+id/textarea_content"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          android:layout_above="@id/button_new"
+          android:gravity="left|top"
+          android:hint="Your content here..."/>
     </RelativeLayout>
+  </SlidingDrawer>
+
+  <RelativeLayout
+      android:id="@+id/wrap_loader"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:background="#FFFFFF"
+      android:clickable="true"
+      android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+      <ImageView
+          android:id="@+id/image_loader"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:src="@drawable/spinner_black_76"/>
+
+      <TextView
+          android:id="@+id/text_loader"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Loading..."/>
+    </LinearLayout>
+  </RelativeLayout>
 
 </RelativeLayout>

@@ -14,10 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.social;
 
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -28,15 +24,10 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.ChatListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncChatClose;
@@ -49,6 +40,10 @@ import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ChatActivity extends ListActivity {
 
@@ -231,7 +226,7 @@ public class ChatActivity extends ListActivity {
                     mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
                     mFieldMessage.getText().toString()
 
-                    );
+            );
 
             // Clear the field
             mFieldMessage.setText("");
@@ -312,7 +307,7 @@ public class ChatActivity extends ListActivity {
 
                     }
 
-                    );
+            );
 
         } else if (isFirstRun) {
 
@@ -329,7 +324,7 @@ public class ChatActivity extends ListActivity {
 
                     }
 
-                    );
+            );
 
         }
 
@@ -354,7 +349,7 @@ public class ChatActivity extends ListActivity {
 
                                 }
                             }, 0, mSharedPreferences.getInt(Constants.SP_BL_INTERVAL_CHAT,
-                                    25) * 1000
+                            25) * 1000
 
                     );
 
