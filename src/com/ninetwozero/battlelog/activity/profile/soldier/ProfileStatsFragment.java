@@ -35,7 +35,7 @@ import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.battlelog.datatype.*;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
 import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
-import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
+import com.ninetwozero.battlelog.jsonmodel.soldierstats.PersonaInfo;
 import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.Constants;

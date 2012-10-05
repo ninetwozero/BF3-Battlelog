@@ -1,4 +1,4 @@
-package com.ninetwozero.battlelog.jsonmodel;
+package com.ninetwozero.battlelog.jsonmodel.soldierstats;
 
 import com.google.gson.annotations.SerializedName;
 

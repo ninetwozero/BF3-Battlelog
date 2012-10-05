@@ -4,8 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.Statistics;
-import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
-import com.ninetwozero.battlelog.jsonmodel.PersonaStatsOverview;
+import com.ninetwozero.battlelog.jsonmodel.soldierstats.PersonaInfo;
+import com.ninetwozero.battlelog.jsonmodel.soldierstats.PersonaStatsOverview;
 import com.ninetwozero.battlelog.provider.table.PersonaStatistics;
 import com.ninetwozero.battlelog.provider.table.PersonaStatistics.Columns;
 
