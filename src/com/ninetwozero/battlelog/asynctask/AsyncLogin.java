@@ -24,12 +24,22 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.DashboardActivity;
-import com.ninetwozero.battlelog.datatype.*;
+
+import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.PostData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.ProfileInformation;
+import com.ninetwozero.battlelog.datatype.RequestHandlerException;
+import com.ninetwozero.battlelog.datatype.SessionKeeperPackage;
+import com.ninetwozero.battlelog.datatype.ShareableCookie;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+
 import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -41,20 +51,21 @@ import java.util.List;
 public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
     // Attribute
-    private ProgressDialog progressDialog;
-    private Context context;
-    private AsyncLogin origin;
-    private boolean savePassword;
-    private SessionKeeperPackage sessionKeeperPackage;
-    private String locale;
-    private String errorMessage;
-    private PostData[] postData;
+    private ProgressDialog mProgressDialog;
+    private Context mContext;
+    private AsyncLogin mOrigin;
+    private boolean mSavePassword;
+    private SharedPreferences mSharedPreferences;
+    private SessionKeeperPackage mSessionKeeperPackage;
+    private String mLocale;
+    private String mErrorMessage;
+    private PostData[] mPostData;
 
     // Constructor
     public AsyncLogin(Context c) {
 
-        origin = this;
-        context = c;
+        mOrigin = this;
+        mContext = c;
 
     }
 
@@ -62,7 +73,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     public AsyncLogin(Context c, boolean s) {
 
         this(c);
-        savePassword = s;
+        mSavePassword = s;
 
     }
 
@@ -70,45 +81,65 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     protected void onPreExecute() {
 
         // Let's see
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setTitle(context.getString(R.string.general_wait));
-        progressDialog.setMessage(context.getString(R.string.msg_logging_in));
-        progressDialog.setOnCancelListener(
+    	mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mProgressDialog = new ProgressDialog(mContext);
+        mProgressDialog.setTitle(mContext.getString(R.string.general_wait));
+        mProgressDialog.setMessage(mContext.getString(R.string.msg_logging_in));
+        mProgressDialog.setOnCancelListener(
 
                 new OnCancelListener() {
 
                     @Override
                     public void onCancel(DialogInterface dialog) {
 
-                        origin.cancel(true);
+                        mOrigin.cancel(true);
                         dialog.dismiss();
 
                     }
                 }
 
         );
-        progressDialog.show();
+        mProgressDialog.show();
 
+
+    }
+    
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+    	if( values[0].equals(1) ) {
+    		mProgressDialog.setMessage("Downloading information...");
+    	}
     }
 
     @Override
     protected Boolean doInBackground(PostData... arg0) {
 
         try {
-
-            sessionKeeperPackage = doLogin(arg0);
-
+        	
+        	// 
+            ProfileInformation profileInformation = doLogin(arg0);
+            
+            // Generate the SessionKeeperPackage
+	        ProfileData profileData = new ProfileData.Builder(profileInformation.getUserId(), profileInformation.getUsername())
+	        	.persona(profileInformation.getAllPersonas())
+	        	.build();
+            mSessionKeeperPackage = new SessionKeeperPackage(profileData, profileInformation.getPlatoons());
+            
+            // Preloading...
+            publishProgress(1);
+            SystemClock.sleep(2000);
+            
             // Did it go ok?
-            return (sessionKeeperPackage != null);
+            return (mSessionKeeperPackage != null);
 
         } catch (WebsiteHandlerException ex) {
 
-            errorMessage = ex.getMessage();
+            mErrorMessage = ex.getMessage();
             return false;
 
         } catch (Exception ex) {
 
-            errorMessage = context.getString(R.string.general_no_data);
+            mErrorMessage = mContext.getString(R.string.general_no_data);
             return false;
 
         }
@@ -118,33 +149,39 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     @Override
     protected void onPostExecute(Boolean results) {
 
-        if (progressDialog != null) {
-            progressDialog.dismiss();
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
         }
 
         if (results) {
-
+        	
+            // Do we want to start a service?
+            int serviceInterval = mSharedPreferences.getInt(
+                    Constants.SP_BL_INTERVAL_SERVICE,
+                    (Constants.HOUR_IN_SECONDS / 2)) * 1000;
+            startAlarmManager(serviceInterval);
+        	
             // Start new
-            context.startActivity(
+            mContext.startActivity(
 
-                    new Intent(context, DashboardActivity.class).putExtra(
+                    new Intent(mContext, DashboardActivity.class).putExtra(
 
-                            "myProfile", sessionKeeperPackage.getProfileData()
+                            "myProfile", mSessionKeeperPackage.getProfileData()
 
                     ).putExtra(
 
-                            "myLocale", locale
+                                    "myLocale", mLocale
 
-                    ).putExtra("myPlatoon", sessionKeeperPackage.getPlatoons())
+                            ).putExtra("myPlatoon", mSessionKeeperPackage.getPlatoons())
 
             );
 
             // Kill the main
-            ((Activity) context).finish();
+            ((Activity) mContext).finish();
 
         } else {
 
-            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
+            Toast.makeText(mContext, mErrorMessage, Toast.LENGTH_SHORT)
                     .show();
 
         }
@@ -153,22 +190,28 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
     public SessionKeeperPackage renewSession(PostData[] postData) throws WebsiteHandlerException,
             RequestHandlerException {
-        return doLogin(postData);
+    	// Login once again
+        ProfileInformation information = doLogin(postData);
+        ProfileData profileData = new ProfileData.Builder(information.getUserId(), information.getUsername())
+        	.persona(information.getAllPersonas())
+        	.build();
+        
+        return new SessionKeeperPackage(profileData, information.getPlatoons());
     }
 
     // Let's have this one ready
-    private SessionKeeperPackage doLogin(PostData[] postData) throws WebsiteHandlerException,
+    private ProfileInformation doLogin(PostData[] postData) throws WebsiteHandlerException,
             RequestHandlerException {
-        this.postData = postData.clone();
+        this.mPostData = postData.clone();
 
         try {
 
             // Let's login everybody!
             RequestHandler wh = new RequestHandler();
-            String httpContent = wh.post(Constants.URL_LOGIN, this.postData, 0);
+            String httpContent = wh.post(Constants.URL_LOGIN, this.mPostData, 0);
 
             // Did we manage?
-            return httpContent.length() > 0 ? profileData(httpContent) : null;
+            return httpContent.length() > 0 ? fetchProfileInformation(httpContent) : null;
 
         } catch (Exception ex) {
 
@@ -179,7 +222,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
     }
 
-    private SessionKeeperPackage profileData(String httpContent) throws Exception {
+    private ProfileInformation fetchProfileInformation(String httpContent) throws Exception {
         // Set the int
         int startPosition = httpContent.indexOf(Constants.ELEMENT_UID_LINK);
 
@@ -188,50 +231,34 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
                 : processHttpContent(httpContent);
     }
 
-    private SessionKeeperPackage processHttpContent(String httpContent) throws Exception {
-
-        // Get the checksum
+    private ProfileInformation processHttpContent(String httpContent) throws Exception {
+    	
+        // Get the checksum & soldier name from the HTML
         String postCheckSum = substringFrom(httpContent, Constants.ELEMENT_STATUS_CHECKSUM, "\" />");
-
-        // Let's work on getting the "username", not persona name --> profileId
-        String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>")
-                .trim();
-        /*String soldierName = "Eddy_J1";*/
-        ProfileData profile = ProfileClient.getProfileIdFromName(soldierName, postCheckSum);
-        profile = ProfileClient.resolveFullProfileDataFromProfileData(profile);
-        List<PlatoonData> platoons = new ProfileClient(profile).getPlatoons(context);
-        Log.d(Constants.DEBUG_TAG, "profile => " + profile);
-        SharedPreferences sharedPreferences = addToSharedPreferences(profile, platoons,
-                postCheckSum, soldierName);
-
-        // Do we want to start a service?
-        int serviceInterval = sharedPreferences.getInt(
-                Constants.SP_BL_INTERVAL_SERVICE,
-                (Constants.HOUR_IN_SECONDS / 2)) * 1000;
-
-        startAlarmManager(serviceInterval);
+        String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>").trim(); 
+        
+        // Fetch some profile information & store it in SharedPreferences
+        ProfileInformation profileInformation = new ProfileClient(new ProfileData(soldierName)).getInformation(mContext, 0);
+        addToSharedPreferences(profileInformation, postCheckSum);
 
         // Return it!!
-        return new SessionKeeperPackage(profile, platoons);
+        return profileInformation;
     }
 
-    private SharedPreferences addToSharedPreferences(ProfileData profile,
-                                                     List<PlatoonData> platoons, String postCheckSum, String soldierName) throws Exception {
+    private SharedPreferences addToSharedPreferences(ProfileInformation profileInfo, String checkSum) throws Exception {
         // Init
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor spEdit = sharedPreferences.edit();
         // Further more, we would actually like to store the userid and
         // name
         spEdit.putString(Constants.SP_BL_PROFILE_EMAIL,
-                postData[0].getValue());
+                mPostData[0].getValue());
 
         // Should we remember the password?
-        if (savePassword) {
-
+        if (mSavePassword) {
             spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, SimpleCrypto
-                    .encrypt(postData[0].getValue(),
-                            postData[1].getValue()));
+                    .encrypt(mPostData[0].getValue(),
+                            mPostData[1].getValue()));
             spEdit.putBoolean(Constants.SP_BL_PROFILE_REMEMBER, true);
 
         } else {
@@ -254,35 +281,36 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         StringBuilder platoonImages = new StringBuilder();
 
         // We need to append the different parts to the ^ strings
-        for (int i = 0, max = profile.getNumPersonas(); i < max; i++) {
+        for (int i = 0, max = profileInfo.getNumPersonas(); i < max; i++) {
 
-            personaNames.append(profile.getPersona(i).getName() + ":");
-            personaIds.append(profile.getPersona(i).getId() + ":");
-            platformIds.append(profile.getPersona(i).getPlatformId() + ":");
-            personaLogos.append(profile.getPersona(i).getLogo() + ":");
+        	PersonaData persona = profileInfo.getPersona(i);
+            personaNames.append(persona.getName() + ":");
+            personaIds.append(persona.getId() + ":");
+            platformIds.append(persona.getPlatformId() + ":");
+            personaLogos.append(persona.getLogo() + ":");
 
         }
 
         // The platoons need to be "cacheable" too
-        for (int i = 0, max = platoons.size(); i < max; i++) {
+        for (int i = 0, max = profileInfo.getNumPlatoons(); i < max; i++) {
 
-            platoonIds.append(platoons.get(i).getId() + ":");
-            platoonNames.append(platoons.get(i).getName() + ":");
-            platoonTags.append(platoons.get(i).getTag() + ":");
-            platoonPlatformIds.append(platoons.get(i).getPlatformId() + ":");
-            platoonImages.append(platoons.get(i).getImage() + ":");
+        	PlatoonData platoon = profileInfo.getPlatoon(i);
+            platoonIds.append(platoon.getId() + ":");
+            platoonNames.append(platoon.getName() + ":");
+            platoonTags.append(platoon.getTag() + ":");
+            platoonPlatformIds.append(platoon.getPlatformId() + ":");
+            platoonImages.append(platoon.getImage() + ":");
 
         }
 
         // This we keep!!!
-        spEdit.putString(Constants.SP_BL_PROFILE_NAME, soldierName);
+        spEdit.putString(Constants.SP_BL_PROFILE_NAME, profileInfo.getUsername());
         spEdit.putString(Constants.SP_BL_PERSONA_NAME, personaNames.toString());
-        spEdit.putLong(Constants.SP_BL_PROFILE_ID,
-                profile.getId());
+        spEdit.putLong(Constants.SP_BL_PROFILE_ID, profileInfo.getUserId());
         spEdit.putString(Constants.SP_BL_PERSONA_ID, personaIds.toString());
         spEdit.putString(Constants.SP_BL_PLATFORM_ID, platformIds.toString());
         spEdit.putString(Constants.SP_BL_PERSONA_LOGO, personaLogos.toString());
-        spEdit.putString(Constants.SP_BL_PROFILE_CHECKSUM, postCheckSum);
+        spEdit.putString(Constants.SP_BL_PROFILE_CHECKSUM, checkSum);
 
         // Platoons too!
         spEdit.putString(Constants.SP_BL_PLATOON_ID, platoonIds.toString());
@@ -296,7 +324,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         if (sca == null) {
 
             throw new WebsiteHandlerException(
-                    context.getString(R.string.info_login_lostcookie));
+                    mContext.getString(R.string.info_login_lostcookie));
 
         } else {
 
@@ -312,18 +340,18 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     }
 
     private void startAlarmManager(int serviceInterval) {
-        AlarmManager alarmManager = (AlarmManager) context
+        AlarmManager alarmManager = (AlarmManager) mContext
                 .getSystemService(Context.ALARM_SERVICE);
         alarmManager.setInexactRepeating(
 
                 AlarmManager.ELAPSED_REALTIME, 0, serviceInterval,
-                PendingIntent.getService(context, 0, new Intent(
-                        context, BattlelogService.class), 0)
+                PendingIntent.getService(mContext, 0, new Intent(
+                        mContext, BattlelogService.class), 0)
 
         );
     }
 
-    private SessionKeeperPackage elementUidLinkError(String httpContent)
+    private ProfileInformation elementUidLinkError(String httpContent)
             throws WebsiteHandlerException {
         int startPosition;// Update the position
         startPosition = httpContent.indexOf(Constants.ELEMENT_ERROR_MESSAGE);
