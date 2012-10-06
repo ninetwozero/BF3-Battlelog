@@ -72,7 +72,8 @@ public class ListDialogFragment extends DialogFragment {
         public void onClick(DialogInterface dialog, int item) {
             OnCloseListDialogListener act = (OnCloseListDialogListener) getFragmentManager()
                     .findFragmentByTag(TAG);
-            act.onDialogListSelection(item);
+            Long[] ids = data.keySet().toArray(new Long[]{});
+            act.onDialogListSelection(ids[item]);
             dismiss();
         }
     }

@@ -156,26 +156,20 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     }
 
     private long getSelectedPersonaId(int position) {
-        String idsString = mSharedPreferences.getString(Constants.SP_BL_PERSONA_ID, "");
-        String[] ids = idsString.split(":");
-        return Long.parseLong(ids[position]);
+        return mProfileData.getPersonaArray()[position].getId();
     }
 
     private int getPlatformIdFor(int position) {
-        String idsString = mSharedPreferences.getString(Constants.SP_BL_PLATFORM_ID, "");
-        String[] ids = idsString.split(":");
-        return Integer.parseInt(ids[position]);
+        return mProfileData.getPersonaArray()[position].getPlatformId();
     }
 
     private String getSelectedPersonaName(int position) {
-        String names = mSharedPreferences.getString(Constants.SP_BL_PERSONA_NAME, "");
-        String[] namesArray = names.split(":");
-        return namesArray[position];
+        return mProfileData.getPersonaArray()[position].getName();
     }
 
     @Override
-    public void onDialogListSelection(int index) {
-        updateSharedPreference(index);
+    public void onDialogListSelection(long id) {
+        updateSharedPreference(id);
         setSelectedPersonaVariables();
         getData();
     }
@@ -385,13 +379,23 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         return map;
     }
 
-    private void updateSharedPreference(int index) {
+    private void updateSharedPreference(long personaId) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity()
                 .getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong(SP_BL_PERSONA_CURRENT_ID, personaData[index].getId());
-        editor.putInt(SP_BL_PERSONA_CURRENT_POS, index);
+        editor.putLong(SP_BL_PERSONA_CURRENT_ID, personaId);
+        editor.putInt(SP_BL_PERSONA_CURRENT_POS, indexOfPersona(personaId));
         editor.commit();
+    }
+
+    private int indexOfPersona(long platoonId){
+        for(int i = 0; i <  personaData.length; i++){
+            if(personaData[i].getId() == platoonId){
+                return i;
+            }
+        }
+        Log.w(ProfileStatsFragment.class.getSimpleName(), "Failed to find index of the platoon!");
+        return 0;
     }
 
     @Override
