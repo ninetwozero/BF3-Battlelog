@@ -289,8 +289,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             if (result) {
 
                 // Siiiiiiiiilent refresh
-                new AsyncRefresh(SessionKeeper.getProfileData()
-                        .getId()).execute();
+                //new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();
                 if (this.progressDialog != null) {
                     this.progressDialog.dismiss();
                 }
@@ -310,8 +309,8 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 sendToStats(mProfileData);
 
             } else {
-
-                new AsyncRefresh(SessionKeeper.getProfileData().getId(), progressDialog).execute();
+                //TODO disabled refresh, it was crashing application on persona changes in ProfileStatsFragment
+                //new AsyncRefresh(SessionKeeper.getProfileData().getId(), progressDialog).execute();
 
             }
 
@@ -359,11 +358,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                 // Let's get the personas!
                 mProfileInformation = new ProfileClient(mProfileData).getInformation(
-
-                        mContext,
-                        activeProfileId
-
-                );
+                        mContext,activeProfileId);
 
                 // ...and then send it to the stats
                 sendToStats(mProfileData);
