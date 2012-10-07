@@ -123,7 +123,7 @@ public class PlatoonClient extends DefaultClient {
 
         try {
 
-            // Let's login everybody!
+
             String httpContent = mRequestHandler.post(
 
                     RequestHandler.generateUrl(URL_RESPOND, mPlatoonData.getId()),
@@ -551,7 +551,7 @@ public class PlatoonClient extends DefaultClient {
 
             }
 
-            // Let's login everybody!
+
             String httpContent = mRequestHandler.get(url, RequestHandler.HEADER_JSON);
 
             // Did we manage?

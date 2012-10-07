@@ -105,14 +105,18 @@ public class FeedListAdapter extends BaseAdapter {
         String content = textComments.replace("{num}",
                 currentItem.getNumComments() + "");
 
-        // Set the fields
-        ((ImageView) convertView.findViewById(R.id.image_avatar))
-                .setImageBitmap(
-
-                        BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
-                                .toString() + currentItem.getAvatarForPost() + ".png")
-
-                );
+        // Set the ImageView
+        ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.image_avatar);
+        imageAvatar.setImageBitmap(
+    		BitmapFactory.decodeFile(
+                PublicUtils.getCachePath(context) + currentItem.getAvatarForPost() + ".png"
+			)
+        );
+        if( imageAvatar.getBackground() == null ) {
+        	imageAvatar.setImageResource(R.drawable.default_avatar);        	
+        }
+        
+        // Finalize with the TextViews
         ((TextView) convertView.findViewById(R.id.text_date))
                 .setText(PublicUtils.getRelativeDate(context,
                         currentItem.getDate()));

@@ -59,7 +59,7 @@ public class AsyncStatusUpdate extends AsyncTask<String, Integer, Boolean> {
 
         try {
 
-            // Let's login everybody!
+
             return new COMClient(arg0[1]).updateStatus(arg0[0]);
 
         } catch (Exception ex) {

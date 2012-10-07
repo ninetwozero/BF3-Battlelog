@@ -83,8 +83,8 @@ public final class DataBank {
 
         // LANG & LOCALE
         LANGUAGES = new String[]{
-                "English", "Deutsch", "Français", "Español",
-                "Italiano", "Polski", "Pусский", "日本語", "한국어", "中文", "Česky"
+                "English", "Deutsch", "FranÃ§ais", "EspaÃ±ol",
+                "Italiano", "Polski", "PÑƒÑ�Ñ�ÐºÐ¸Ð¹", "æ—¥æœ¬èªž", "í•œêµ­ì–´", "ä¸­æ–‡", "ÄŒesky"
         };
         LOCALES = new String[]{
                 "en", "de", "fr", "es", "it", "pl", "ru",
@@ -831,101 +831,101 @@ public final class DataBank {
         KIT_ITEMS.put("9F789F05-CE7B-DADC-87D7-16E847DBDD09", "M67 Grenade");
         KIT_ITEMS.put("DC9734CD-D3D7-4870-A6A9-07B99BEE6DAC", "SOFLAM");
 
-        AWARDS.put("ID_P_AWARD_R04_NAME", "Sniper Rifle Ribbon");
-        AWARDS.put("ID_P_AWARD_M22_NAME", "Air Warfare Medal");
-        AWARDS.put("ID_P_AWARD_M39_NAME", "M18 Claymore Medal");
-        AWARDS.put("ID_P_AWARD_M27_NAME", "Conquest Medal");
-        AWARDS.put("ID_P_AWARD_M08_NAME", "Melee Medal");
-        AWARDS.put("ID_P_AWARD_R05_NAME", "Hand Gun Ribbon");
-        AWARDS.put("ID_P_AWARD_R18_NAME", "Mvp 3 Ribbon");
-        AWARDS.put("ID_P_AWARD_R06_NAME", "Shotgun Ribbon");
-        AWARDS.put("ID_P_AWARD_M02_NAME", "Carbine Medal");
-        AWARDS.put("ID_P_AWARD_M36_NAME", "Surveillance Medal");
-        AWARDS.put("ID_P_AWARD_M11_NAME", "Avenger Medal");
-        AWARDS.put("ID_P_AWARD_M14_NAME", "Suppression Medal");
-        AWARDS.put("ID_P_AWARD_R21_NAME", "Anti Explosives Ribbon");
-        AWARDS.put("ID_P_AWARD_M44_NAME", "Engineer Service Medal");
-        AWARDS.put("ID_P_AWARD_M21_NAME", "Armored Warfare Medal");
-        AWARDS.put("ID_P_AWARD_R44_NAME", "Medical Efficiency Ribbon");
-        AWARDS.put("ID_P_AWARD_M19_NAME", "Combat Efficiency Medal");
-        AWARDS.put("ID_P_AWARD_R19_NAME", "Ace Squad Ribbon");
-        AWARDS.put("ID_P_AWARD_R23_NAME", "Squad Wipe Ribbon");
-        AWARDS.put("ID_P_AWARD_M40_NAME", "Radio Beacon Medal");
-        AWARDS.put("ID_P_AWARD_M29_NAME", "Squad Rush Medal");
-        AWARDS.put("ID_P_AWARD_R11_NAME", "Accuracy Ribbon");
-        AWARDS.put("ID_P_AWARD_R07_NAME", "Pdw Ribbon");
-        AWARDS.put("ID_P_AWARD_R15_NAME", "Suppression Ribbon");
-        AWARDS.put("ID_P_AWARD_M42_NAME", "Ru Army Service Medal");
-        AWARDS.put("ID_P_AWARD_M17_NAME", "3rd Mvp Medal");
-        AWARDS.put("ID_P_AWARD_M45_NAME", "Support Service Medal");
-        AWARDS.put("ID_P_AWARD_R10_NAME", "Anti Vehicle Ribbon");
-        AWARDS.put("ID_P_AWARD_M06_NAME", "Shotgun Medal");
-        AWARDS.put("ID_P_AWARD_R33_NAME", "Squad Rush Winner Ribbon");
-        AWARDS.put("ID_P_AWARD_M23_NAME", "Stationary Emplacement Medal");
-        AWARDS.put("ID_P_AWARD_M46_NAME", "Recon Service Medal");
-        AWARDS.put("ID_P_AWARD_M01_NAME", "Assault Rifle Medal");
-        AWARDS.put("ID_P_AWARD_M09_NAME", "Anti Vehicle Medal");
-        AWARDS.put("ID_P_AWARD_M05_NAME", "Handgun Medal");
-        AWARDS.put("ID_P_AWARD_R39_NAME", "Squad Deathmatch Ribbon");
-        AWARDS.put("ID_P_AWARD_R36_NAME", "Conquest Ribbon");
-        AWARDS.put("ID_P_AWARD_R29_NAME", "M-com Defender Ribbon");
-        AWARDS.put("ID_P_AWARD_M41_NAME", "Us Marines Service Medal");
-        AWARDS.put("ID_P_AWARD_R13_NAME", "Savior Ribbon");
-        AWARDS.put("ID_P_AWARD_M03_NAME", "Light Machine Gun Medal");
-        AWARDS.put("ID_P_AWARD_M35_NAME", "Medical Medal");
-        AWARDS.put("ID_P_AWARD_M16_NAME", "2nd Mvp Medal");
-        AWARDS.put("ID_P_AWARD_M34_NAME", "Maintenance Medal");
-        AWARDS.put("ID_P_AWARD_R31_NAME", "Conquest Winner Ribbon");
-        AWARDS.put("ID_P_AWARD_M37_NAME", "Mortar Medal");
-        AWARDS.put("ID_P_AWARD_R02_NAME", "Carbine Ribbon");
-        AWARDS.put("ID_P_AWARD_M32_NAME", "Flag Defender Medal");
-        AWARDS.put("ID_P_AWARD_M04_NAME", "Sniper Rifle Medal");
-        AWARDS.put("ID_P_AWARD_M20_NAME", "Transport Warfare Medal");
-        AWARDS.put("ID_P_AWARD_M49_NAME", "Jet Service Medal");
-        AWARDS.put("ID_P_AWARD_R41_NAME", "Flag Defender Ribbon");
-        AWARDS.put("ID_P_AWARD_M28_NAME", "Team Deathmatch Medal");
-        AWARDS.put("ID_P_AWARD_R16_NAME", "Mvp Ribbon");
-        AWARDS.put("ID_P_AWARD_M33_NAME", "Resupply Medal");
-        AWARDS.put("ID_P_AWARD_R30_NAME", "Rush Winner Ribbon");
-        AWARDS.put("ID_P_AWARD_M07_NAME", "Pdw Medal");
-        AWARDS.put("ID_P_AWARD_R34_NAME", "Squad Deathmatch Winner Ribbon");
-        AWARDS.put("ID_P_AWARD_M48_NAME", "Helicopter Service Medal");
-        AWARDS.put("ID_P_AWARD_R01_NAME", "Assault Rifle Ribbon");
-        AWARDS.put("ID_P_AWARD_R40_NAME", "Flag Attacker Ribbon");
-        AWARDS.put("ID_P_AWARD_M10_NAME", "Accuracy Medal");
-        AWARDS.put("ID_P_AWARD_R25_NAME", "Armored Warfare Ribbon");
-        AWARDS.put("ID_P_AWARD_R14_NAME", "Nemesis Ribbon");
-        AWARDS.put("ID_P_AWARD_M50_NAME", "Stationary Service Medal");
-        AWARDS.put("ID_P_AWARD_M13_NAME", "Nemesis Medal");
-        AWARDS.put("ID_P_AWARD_R28_NAME", "M-com Attacker Ribbon");
-        AWARDS.put("ID_P_AWARD_R45_NAME", "Surveillance Efficiency Ribbon");
-        AWARDS.put("ID_P_AWARD_M43_NAME", "Assault Service Medal");
-        AWARDS.put("ID_P_AWARD_R38_NAME", "Squad Rush Ribbon");
-        AWARDS.put("ID_P_AWARD_M25_NAME", "M-com Defender Medal");
-        AWARDS.put("ID_P_AWARD_M18_NAME", "Ace Squad Medal");
-        AWARDS.put("ID_P_AWARD_M31_NAME", "Flag Attacker Medal");
-        AWARDS.put("ID_P_AWARD_M24_NAME", "M-com Attacker Medal");
-        AWARDS.put("ID_P_AWARD_R27_NAME", "Air Warfare Ribbon");
-        AWARDS.put("ID_P_AWARD_R37_NAME", "Team Deathmatch Ribbon");
-        AWARDS.put("ID_P_AWARD_R12_NAME", "Avenger Ribbon");
-        AWARDS.put("ID_P_AWARD_R42_NAME", "Resupply Efficiency Ribbon");
-        AWARDS.put("ID_P_AWARD_R20_NAME", "Combat Efficiency Ribbon");
-        AWARDS.put("ID_P_AWARD_R24_NAME", "Transport Warfare Ribbon");
-        AWARDS.put("ID_P_AWARD_M30_NAME", "Squad Deathmatch Medal");
-        AWARDS.put("ID_P_AWARD_R43_NAME", "Maintenance Efficiency Ribbon");
-        AWARDS.put("ID_P_AWARD_M47_NAME", "Tank Service Medal");
-        AWARDS.put("ID_P_AWARD_R08_NAME", "Melee Ribbon");
-        AWARDS.put("ID_P_AWARD_R09_NAME", "Disable Vehicle Ribbon");
-        AWARDS.put("ID_P_AWARD_R22_NAME", "Squad Spawn Ribbon");
-        AWARDS.put("ID_P_AWARD_R26_NAME", "Stationary Emplacement Ribbon");
-        AWARDS.put("ID_P_AWARD_R35_NAME", "Rush Ribbon");
-        AWARDS.put("ID_P_AWARD_R17_NAME", "Mvp 2 Ribbon");
-        AWARDS.put("ID_P_AWARD_R32_NAME", "Tdm Winner Ribbon");
-        AWARDS.put("ID_P_AWARD_M38_NAME", "Laser Designator Medal");
-        AWARDS.put("ID_P_AWARD_M12_NAME", "Savior Medal");
-        AWARDS.put("ID_P_AWARD_M26_NAME", "Rush Medal");
-        AWARDS.put("ID_P_AWARD_R03_NAME", "Light Machine Gun Ribbon");
-        AWARDS.put("ID_P_AWARD_M15_NAME", "Mvp Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R04_NAME", "Sniper Rifle Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M22_NAME", "Air Warfare Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M39_NAME", "M18 Claymore Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M27_NAME", "Conquest Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M08_NAME", "Melee Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R05_NAME", "Hand Gun Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R18_NAME", "Mvp 3 Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R06_NAME", "Shotgun Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M02_NAME", "Carbine Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M36_NAME", "Surveillance Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M11_NAME", "Avenger Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M14_NAME", "Suppression Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R21_NAME", "Anti Explosives Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M44_NAME", "Engineer Service Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M21_NAME", "Armored Warfare Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R44_NAME", "Medical Efficiency Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M19_NAME", "Combat Efficiency Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R19_NAME", "Ace Squad Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R23_NAME", "Squad Wipe Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M40_NAME", "Radio Beacon Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M29_NAME", "Squad Rush Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R11_NAME", "Accuracy Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R07_NAME", "Pdw Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R15_NAME", "Suppression Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M42_NAME", "Ru Army Service Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M17_NAME", "3rd Mvp Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M45_NAME", "Support Service Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R10_NAME", "Anti Vehicle Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M06_NAME", "Shotgun Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R33_NAME", "Squad Rush Winner Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M23_NAME", "Stationary Emplacement Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M46_NAME", "Recon Service Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M01_NAME", "Assault Rifle Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M09_NAME", "Anti Vehicle Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M05_NAME", "Handgun Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R39_NAME", "Squad Deathmatch Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R36_NAME", "Conquest Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R29_NAME", "M-com Defender Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M41_NAME", "Us Marines Service Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R13_NAME", "Savior Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M03_NAME", "Light Machine Gun Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M35_NAME", "Medical Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M16_NAME", "2nd Mvp Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M34_NAME", "Maintenance Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R31_NAME", "Conquest Winner Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M37_NAME", "Mortar Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R02_NAME", "Carbine Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M32_NAME", "Flag Defender Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M04_NAME", "Sniper Rifle Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M20_NAME", "Transport Warfare Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M49_NAME", "Jet Service Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R41_NAME", "Flag Defender Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M28_NAME", "Team Deathmatch Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R16_NAME", "Mvp Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M33_NAME", "Resupply Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R30_NAME", "Rush Winner Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M07_NAME", "Pdw Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R34_NAME", "Squad Deathmatch Winner Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M48_NAME", "Helicopter Service Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R01_NAME", "Assault Rifle Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R40_NAME", "Flag Attacker Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M10_NAME", "Accuracy Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R25_NAME", "Armored Warfare Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R14_NAME", "Nemesis Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M50_NAME", "Stationary Service Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M13_NAME", "Nemesis Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R28_NAME", "M-com Attacker Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R45_NAME", "Surveillance Efficiency Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M43_NAME", "Assault Service Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R38_NAME", "Squad Rush Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M25_NAME", "M-com Defender Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M18_NAME", "Ace Squad Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M31_NAME", "Flag Attacker Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M24_NAME", "M-com Attacker Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R27_NAME", "Air Warfare Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R37_NAME", "Team Deathmatch Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R12_NAME", "Avenger Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R42_NAME", "Resupply Efficiency Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R20_NAME", "Combat Efficiency Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R24_NAME", "Transport Warfare Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M30_NAME", "Squad Deathmatch Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R43_NAME", "Maintenance Efficiency Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M47_NAME", "Tank Service Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R08_NAME", "Melee Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R09_NAME", "Disable Vehicle Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R22_NAME", "Squad Spawn Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R26_NAME", "Stationary Emplacement Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R35_NAME", "Rush Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R17_NAME", "Mvp 2 Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_R32_NAME", "Tdm Winner Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M38_NAME", "Laser Designator Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M12_NAME", "Savior Medal");
+        AWARDS.put("BF3_ID_P_AWARD_M26_NAME", "Rush Medal");
+        AWARDS.put("BF3_ID_P_AWARD_R03_NAME", "Light Machine Gun Ribbon");
+        AWARDS.put("BF3_ID_P_AWARD_M15_NAME", "Mvp Medal");
         AWARDS.put("ID_P_WSTAR_NAME_M39", "M39 Emr Service Star");
         AWARDS.put("ID_P_WSTAR_NAME_M60", "M60e4 Service Star");
         AWARDS.put("ID_P_WSTAR_NAME_M27", "M27 Iar Service Star");
@@ -1142,7 +1142,7 @@ public final class DataBank {
         CRITERIAS.put("ID_XP1_ASSIGNMENT_1_CRITERIA_1", "10 Revives");
         CRITERIAS.put("ID_XP1_ASSIGNMENT_1_CRITERIA_2", "10 Heals");
         CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_1", "100 Assault Rifles kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_2", "20 Noobtube™ kills");
+        CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_2", "20 Noobtubeâ„¢ kills");
         CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_3", "Win 5 rounds of SQDM");
         CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_1", "10 repairs");
         CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_2", "Kill 1 enemy with Repair Torch");
@@ -1205,7 +1205,7 @@ public final class DataBank {
 
         CRITERIAS.put("ID_XP2_ASSIGNMENT_1_CRITERIA_1", "10 Squad Revives");
         CRITERIAS.put("ID_XP2_ASSIGNMENT_1_CRITERIA_2", "30 Assault Rifle Kills");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_2_CRITERIA_1", "20 kills with Noobtube™");
+        CRITERIAS.put("ID_XP2_ASSIGNMENT_2_CRITERIA_1", "20 kills with Noobtubeâ„¢");
         CRITERIAS.put("ID_XP2_ASSIGNMENT_2_CRITERIA_2", "15 kills with hand grenades");
         CRITERIAS.put("ID_XP2_ASSIGNMENT_3_CRITERIA_1", "20 squad resupplies");
         CRITERIAS.put("ID_XP2_ASSIGNMENT_3_CRITERIA_2", "20 kills with LMGs");
@@ -1314,7 +1314,6 @@ public final class DataBank {
     }
 
     public static String getWeaponTitle(Context c, String key) {
-
         return WEAPONS.containsKey(key) ? c.getString(WEAPONS.get(key)) : key;
     }
 
@@ -1364,10 +1363,9 @@ public final class DataBank {
     }
 
     public static String[] getAssignmentTitle(String key) {
-        return ASSIGNMENTS.containsKey(key) ? ASSIGNMENTS.get(key)
-                : new String[]{
-                key, key
-        };
+        return ASSIGNMENTS.containsKey(key) ? 
+        	ASSIGNMENTS.get(key) : 
+        	new String[]{ key, key};
     }
 
     public static String getAssignmentCriteria(String key) {
@@ -1395,21 +1393,16 @@ public final class DataBank {
     }
 
     public static Intent getContactIntent(int res) {
-
         return CONTACT_INTENTS.get(res);
-
     }
 
     public static int[] getResourcesForAssignment(String s) {
-
         return ASSIGNMENT_RESOURCES.containsKey(s) ? ASSIGNMENT_RESOURCES.get(s)
                 : ASSIGNMENT_RESOURCES.get("default");
     }
 
     public static String getLocale(int p) {
-
         switch (p) {
-
             case 1:
                 return "en";
             case 2:
@@ -1432,96 +1425,64 @@ public final class DataBank {
                 return "zh";
             case 1024:
                 return "cz";
-
             default:
                 return "en";
         }
-
     }
 
     // Static methods
     public static int getPlatformIdFromName(String p) {
-
         for (int i = 0, max = PLATFORMS.length; i < max; i++) {
-
             if (DataBank.PLATFORMS[i].getName().equals(p)) {
-
                 return DataBank.PLATFORMS[i].getId();
-
             }
-
         }
-
         return DataBank.PLATFORMS[0].getId();
     }
 
     public static String getPlatformNameFromId(int pId) {
-
         for (int i = 0, max = PLATFORMS.length; i < max; i++) {
-
             if (DataBank.PLATFORMS[i].getId() == pId) {
-
                 return DataBank.PLATFORMS[i].getName();
-
             }
-
         }
-
         return DataBank.PLATFORMS[0].getName();
     }
 
     public static String resolvePlatformId(int id) {
-
         switch (id) {
-
             case 0:
             case 1:
                 return "[PC]";
-
             case 2:
                 return "[360]";
-
             case 4:
                 return "[PS3]";
-
             default:
                 return "[N/A]";
-
         }
-
     }
 
     public static String getKitTitle(final Context c, final int number) {
-
         switch (number) {
-
             case 1:
                 return c.getString(R.string.info_xml_assault);
-
             case 2:
                 return c.getString(R.string.info_xml_engineer);
-
             case 8:
                 return c.getString(R.string.info_xml_recon);
-
             case 16:
                 return c.getString(R.string.info_xml_vehicles);
-
             case 32:
                 return c.getString(R.string.info_xml_support);
-
             case 64:
                 return c.getString(R.string.info_xml_general);
-
             default:
                 return "";
-
         }
-
     }
 
     public static int getKitIdFromTitle(final Context c, final String s) {
-
         if (s.equalsIgnoreCase("assault")) {
             return 1;
         } else if (s.equalsIgnoreCase("engineer")) {
@@ -1540,65 +1501,44 @@ public final class DataBank {
     }
 
     public static String getGameModeFromId(int number) {
-
         switch (number) {
-
             case 1:
                 return "Conquest";
-
             case 2:
                 return "Rush";
-
             case 32:
                 return "TDM";
-
             case 64:
                 return "Conquest Large";
-
             default:
                 return "(unknown game mode)";
         }
-
     }
-
+   
     public static String getRoleFromId(Context c, int number) {
-
         switch (number) {
-
             case 0:
                 return c.getString(R.string.info_platoon_member_nonmember);
-
             case 1:
                 return c.getString(R.string.info_platoon_member_evaluate);
-
             case 2:
                 return c.getString(R.string.info_platoon_member_invited);
-
             case 4:
                 return c.getString(R.string.info_platoon_member_member);
-
             case 128:
                 return c.getString(R.string.info_platoon_member_admin);
-
             case 256:
                 return c.getString(R.string.info_platoon_member_founder);
-
             default:
                 return "(unknown user role)";
-
         }
-
     }
 
     public static List<AppContributorData> getContributors() {
-
         return APP_CONTRIBUTORS;
     }
 
     public static Map<Integer, Intent> getContactIntents() {
-
         return CONTACT_INTENTS;
-
     }
-
 }

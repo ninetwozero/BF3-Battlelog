@@ -99,23 +99,14 @@ public class CommentListAdapter extends BaseAdapter {
                 currentData.getTimestamp()));
 
         // Set the gravatar
-        Bitmap b = BitmapFactory.decodeFile(
-
-                PublicUtils.getCachePath(context)
-                        + currentData.getAuthor().getGravatarHash() + ".png"
-
+        imageAvatar.setImageBitmap(
+    		BitmapFactory.decodeFile(
+                PublicUtils.getCachePath(context) + currentData.getAuthor().getGravatarHash() + ".png"
+			)
         );
-
-        if (b == null) {
-
-            imageAvatar.setImageResource(R.drawable.default_avatar);
-
-        } else {
-
-            imageAvatar.setImageBitmap(b);
-
+        if( imageAvatar.getBackground() == null ) {
+        	imageAvatar.setImageResource(R.drawable.default_avatar);        	
         }
-
         imageAvatar.setTag(currentData.getAuthor());
 
         // Store the object

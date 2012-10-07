@@ -14,13 +14,24 @@
 
 package com.ninetwozero.battlelog.http;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import com.ninetwozero.battlelog.datatype.PostData;
-import com.ninetwozero.battlelog.datatype.RequestHandlerException;
-import com.ninetwozero.battlelog.datatype.ShareableCookie;
-import com.ninetwozero.battlelog.misc.HttpHeaders;
-import org.apache.http.*;
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.GZIPInputStream;
+
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -39,16 +50,15 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.ByteArrayBuffer;
 import org.apache.http.util.EntityUtils;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.UnknownHostException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.GZIPInputStream;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
+import com.ninetwozero.battlelog.datatype.PostData;
+import com.ninetwozero.battlelog.datatype.RequestHandlerException;
+import com.ninetwozero.battlelog.datatype.ShareableCookie;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.HttpHeaders;
 
 public class RequestHandler {
 
@@ -67,11 +77,9 @@ public class RequestHandler {
 
     public String get(String link, int extraHeaders)
             throws RequestHandlerException {
-
         // Check defaults
         if ("".equals(link)) {
             throw new RequestHandlerException("No link found.");
-
         }
 
         try {
@@ -80,46 +88,36 @@ public class RequestHandler {
             HttpGet httpGet = new HttpGet(link.replace(" ", "%20"));
             httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(extraHeaders));
             httpGet.setHeader("Referer", link);
-
-            HttpResponse httpResponse = RequestHandler.httpClient
-                    .execute(httpGet);
+            HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
 
             // Anything?
             if (httpEntity != null) {
-
-                // Get the content!
                 return EntityUtils.toString(httpEntity);
-
             }
 
         } catch (ClientProtocolException e) {
-
             e.printStackTrace();
 
         } catch (IOException e) {
-
             e.printStackTrace();
 
         } catch (Exception ex) {
-
             throw new RequestHandlerException(ex.getMessage());
 
         }
-
         return "";
 
     }
 
     public HttpEntity getHttpEntity(String link, boolean extraHeaders)
             throws RequestHandlerException {
-
         // Check defaults
         if ("".equals(link)) {
             throw new RequestHandlerException("No link found.");
         }
+        
         try {
-
             // Init the HTTP-related attributes
             HttpGet httpGet = new HttpGet(link.replace(" ", "%20"));
 
@@ -137,7 +135,6 @@ public class RequestHandler {
             return httpEntity;
 
         } catch (Exception ex) {
-
             ex.printStackTrace();
             return null;
         }
@@ -146,7 +143,6 @@ public class RequestHandler {
 
     public Bitmap getImageFromStream(String link, boolean extraHeaders)
             throws RequestHandlerException {
-
         // Check defaults
         if ("".equals(link)) {
             throw new RequestHandlerException("No link found.");
@@ -163,32 +159,24 @@ public class RequestHandler {
                 httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(0));
                 httpGet.setHeader("Referer", link);
             }
-
-            HttpResponse httpResponse = RequestHandler.httpClient
-                    .execute(httpGet);
+            HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
 
             // Create the image
             if (httpEntity != null) {
-
-                // Get the content!
                 image = BitmapFactory.decodeStream(httpEntity.getContent());
-
             }
 
         } catch (Exception ex) {
-
             ex.printStackTrace();
             return null;
         }
-
         return image;
 
     }
 
     public boolean saveFileFromURI(String link, String directory,
                                    String filename) throws RequestHandlerException {
-
         // Check defaults
         if ("".equals(link)) {
             throw new RequestHandlerException("No link found.");
@@ -201,36 +189,25 @@ public class RequestHandler {
 
         // Let's get a *nice* path
         if ("".equals(filename)) {
-
             path = directory + System.currentTimeMillis();
-
         } else {
-
             path = directory + filename;
-
         }
+        
         // Let's do this!
         try {
-
             // Init the HTTP-related attributes
             HttpGet httpGet = new HttpGet(link);
-
-            HttpResponse httpResponse = RequestHandler.httpClient
-                    .execute(httpGet);
+            HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
 
             // Anything?
             if (httpEntity != null) {
 
                 // Grab the response
-                if (
-
-                        httpResponse.containsHeader("Encoding-Type")
-                                && httpResponse.getFirstHeader("Encoding-Type")
-                                .getValue().equalsIgnoreCase("gzip")
-
-                        ) {
-
+                if (httpResponse.containsHeader("Encoding-Type") && 
+                	httpResponse.getFirstHeader("Encoding-Type").getValue().equalsIgnoreCase("gzip")
+                ) {
                     // *Fix* the entity
                     httpEntity = new InflatingEntity(httpEntity);
 
@@ -240,49 +217,34 @@ public class RequestHandler {
                             .getBytes();
 
                 } else {
-
-                    // Grab the response
                     httpContent = EntityUtils.toString(httpEntity).getBytes();
-
                 }
-
             }
 
             // Let's see...
             if (httpContent == null || httpContent.length <= 0) {
-
                 return false;
-
             } else {
                 fileStream = new FileOutputStream(path);
 
                 // Iterate over the bytes
                 for (byte b : httpContent) {
-
                     fileStream.write(b);
-
                 }
 
                 // Clear the stream
                 fileStream.flush();
                 fileStream.close();
-
                 return true;
-
             }
-
+            
         } catch (UnknownHostException ex) {
-
             throw new RequestHandlerException(
                     "Host unreachable - please restart your 3G connection and try again.");
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             throw new RequestHandlerException("No file found");
-
         }
-
     }
 
     public String post(String link, PostData[] postDataArray, int extraHeaders)
@@ -290,7 +252,6 @@ public class RequestHandler {
 
         // Check so it's not empty
         if ("".equals(link)) {
-
             throw new RequestHandlerException("No link found.");
         }
 
@@ -299,7 +260,6 @@ public class RequestHandler {
 
         // Do we need 'em?
         if (extraHeaders > 0) {
-
             if (extraHeaders == 1) {
                 httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders));
             } else if (extraHeaders == 2) {
@@ -307,7 +267,6 @@ public class RequestHandler {
             } else if (extraHeaders == 3) {
                 httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders));
             }
-
         }
 
         // More init
@@ -317,39 +276,33 @@ public class RequestHandler {
 
         // Iterate over the fields and add the NameValuePairs
         for (PostData data : postDataArray) {
-
-            nameValuePairs.add(new BasicNameValuePair(data.getField(), (data
-                    .isHash()) ? this.hash(data.getValue()) : data.getValue()));
-
+            nameValuePairs.add(
+            	new BasicNameValuePair(
+            		data.getField(), (data.isHash()) ? this.hash(data.getValue()) : data.getValue()
+            	)
+            );
         }
 
         try {
 
             // Set the entity
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
-                    HTTP.UTF_8));
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
             httpResponse = httpClient.execute(httpPost);
             httpEntity = httpResponse.getEntity();
 
             // Anything?
             if (httpEntity != null) {
-
-                // Get the content!
                 return EntityUtils.toString(httpEntity);
-
             }
 
         } catch (UnknownHostException ex) {
-
             throw new RequestHandlerException(
                     "Host unreachable - please restart your 3G connection and try again.");
 
         } catch (Exception e) {
-
             e.printStackTrace();
 
         }
-
         return "";
 
     }
@@ -360,7 +313,6 @@ public class RequestHandler {
     public String hash(String str) {
 
         try {
-
             // Create SHA-256
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             digest.update(str.getBytes());
@@ -369,13 +321,11 @@ public class RequestHandler {
             // Create Hex String
             StringBuffer hexString = new StringBuffer();
             for (int i = 0; i < messageDigest.length; i++) {
-
                 String h = Integer.toHexString(0xFF & messageDigest[i]);
                 while (h.length() < 2) {
                     h = "0" + h;
                 }
                 hexString.append(h);
-
             }
             return hexString.toString();
 
@@ -395,14 +345,9 @@ public class RequestHandler {
         ByteArrayBuffer buff_array = new ByteArrayBuffer(50);
 
         try {
-
-            // While we still can read data - go for it. Break loose when done!
-            while (true) {
-
-                // Read the byte
+        	// Read the buffer until -1 (EOL)
+        	while (true) {
                 byte_read = buff_in.read(byte_buffer);
-
-                // If it's -1, we break
                 if (byte_read == -1) {
                     break;
                 }
@@ -410,25 +355,18 @@ public class RequestHandler {
                 // Add the buffered bytes to the array for storage
                 buff_array.append(byte_buffer, 0, byte_read);
             }
-
             return new String(buff_array.toByteArray());
 
         } catch (Exception ex) {
-
-            // Read/write error
             ex.printStackTrace();
             return null;
-
         }
-
     }
 
     public void close() {
-
         if (httpClient.getConnectionManager() != null) {
             httpClient.getConnectionManager().closeExpiredConnections();
         }
-
     }
 
     public static DefaultHttpClient getThreadSafeClient() {
@@ -461,13 +399,10 @@ public class RequestHandler {
 
         // Empty?
         if (!cookies.isEmpty()) {
-
             for (Cookie c : cookies) {
                 sharableCookies.add(new ShareableCookie(c));
             }
-
         }
-
         return (ArrayList<ShareableCookie>) sharableCookies;
     }
 
@@ -493,8 +428,6 @@ public class RequestHandler {
 
         // Init
         CookieStore cookieStore = RequestHandler.httpClient.getCookieStore();
-
-        // Did we have an icicle?
         if (cookieStore.getCookies().isEmpty()) {
 
             // Set it up
@@ -502,76 +435,48 @@ public class RequestHandler {
 
             // Loop & add
             for (ShareableCookie sCookie : serializedCookies) {
-
                 BasicClientCookie tempCookie = new BasicClientCookie(
                         sCookie.getName(), sCookie.getValue());
                 tempCookie.setDomain(sCookie.getDomain());
                 cookieStore.addCookie(tempCookie);
-
             }
-
             RequestHandler.httpClient.setCookieStore(cookieStore);
-
         }
-
     }
 
     static {
-
         httpClient.addRequestInterceptor(
-
-                new HttpRequestInterceptor() {
-
-                    public void process(HttpRequest request, HttpContext context) {
-
-                        // Add header to accept gzip content
-                        if (!request.containsHeader(HEADER_ACCEPT_ENCODING)) {
-                            request.addHeader(HEADER_ACCEPT_ENCODING, ENCODING_GZIP);
-                        }
-
+            new HttpRequestInterceptor() {
+                public void process(HttpRequest request, HttpContext context) {
+                    if (!request.containsHeader(HEADER_ACCEPT_ENCODING)) {
+                        request.addHeader(HEADER_ACCEPT_ENCODING, ENCODING_GZIP);
                     }
-
                 }
-
+            }
         );
 
         httpClient.addResponseInterceptor(
-
                 new HttpResponseInterceptor() {
-
                     public void process(HttpResponse response, HttpContext context) {
-
-                        // Inflate any responses compressed with gzip
                         final HttpEntity entity = response.getEntity();
                         final Header encoding = entity.getContentEncoding();
-
+                        
                         // How's the encoding you ask?
                         if (encoding != null) {
-
                             for (HeaderElement element : encoding.getElements()) {
-
                                 if (element.getName().equalsIgnoreCase(ENCODING_GZIP)) {
-
                                     response.setEntity(new InflatingEntity(response
                                             .getEntity()));
                                     break;
-
                                 }
-
                             }
-
                         }
-
                     }
-
                 }
-
         );
-
     }
 
     private static class InflatingEntity extends HttpEntityWrapper {
-
         public InflatingEntity(HttpEntity wrapped) {
             super(wrapped);
         }
@@ -585,19 +490,15 @@ public class RequestHandler {
         public long getContentLength() {
             return -1;
         }
-
     }
 
     public static String generateUrl(String base, Object... data) {
 
         // Iterate and fix
         for (Object d : data) {
-
             base = base.replaceFirst("\\{[^\\}]+\\}", String.valueOf(d));
-
         }
         return base;
-
     }
 
     public static PostData[] generatePostData(String[] fields, Object... data) {
@@ -607,7 +508,6 @@ public class RequestHandler {
 
         // Iterate over the fields
         for (int i = 0, max = postData.length; i < max; i++) {
-
             // If it's null, we skip it
             if (data[i] == null) {
                 continue;
@@ -615,12 +515,7 @@ public class RequestHandler {
 
             // Save the PostData
             postData[i] = new PostData(fields[i], String.valueOf(data[i]));
-
         }
-
-        // Return
         return postData;
-
     }
-
 }
