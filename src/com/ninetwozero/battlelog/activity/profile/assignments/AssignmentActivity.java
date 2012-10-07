@@ -117,7 +117,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         // Set the title and the view
-        builder.setTitle(R.string.info_dialog_soldierselect);
+        builder.setTitle(R.string.info_dialog_selection_generic);
 
         // Do we have items to show?
         if (mPersonaId == null) {

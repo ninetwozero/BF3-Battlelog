@@ -369,7 +369,7 @@
   <string name="info_forum_newthread_true">Aihe on luotu.</string>
   <string name="info_forum_newthread_false">Aihetta ei voinut luoda.</string>
   <string name="info_xml_enter_content">Syötä sisältö tähän</string>
-  <string name="info_dialog_soldierselect">Valitse sotilas, jota haluat katsoa...</string>
+  
   <string name="info_dialog_threadpost">Kirjoita vastaus</string>
   <string name="info_forum_newpost_true">Vastaus lähetetty.</string>
   <string name="info_forum_newpost_false">Vastausta ei voinut lähettää.</string>

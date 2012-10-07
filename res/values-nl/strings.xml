@@ -382,7 +382,7 @@
   <string name="info_forum_newthread_true">Het topic is gemaakt.</string>
   <string name="info_forum_newthread_false">Het topic kon niet worden gemaakt.</string>
   <string name="info_xml_enter_content">Zet je inhoud hier.</string>
-  <string name="info_dialog_soldierselect">Bekijk soldaat</string>
+  
   <string name="info_dialog_threadpost">Post een reactie.</string>
   <string name="info_forum_newpost_true">De reactie was is gestuurd.</string>
   <string name="info_forum_newpost_false">De reactie is gestuurd.</string>

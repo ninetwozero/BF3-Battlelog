@@ -395,7 +395,7 @@
   <string name="info_forum_newthread_true">Der Thread wurde erstellt.</string>
   <string name="info_forum_newthread_false">Der Thread konnte nicht erstellt werden.</string>
   <string name="info_xml_enter_content">Füge hier den Inhalt ein</string>
-  <string name="info_dialog_soldierselect">Wähle einen Soldaten zum Anzeigen aus ..</string>
+  
   <string name="info_dialog_threadpost">Poste eine Antwort</string>
   <string name="info_forum_newpost_true">Die Antwort wurde gepostet</string>
   <string name="info_forum_newpost_false">Die Antwort konnte nicht gepostet werden</string>

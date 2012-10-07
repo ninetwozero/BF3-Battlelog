@@ -371,7 +371,7 @@
   <string name="info_forum_newthread_true">La discusión se ha creado.</string>
   <string name="info_forum_newthread_false">La discusión no puedes se ha creado.</string>
   <string name="info_xml_enter_content">Escriba el texto aquí</string>
-  <string name="info_dialog_soldierselect">Seleccione un soldado para ver...</string>
+  
   <string name="info_dialog_threadpost">Publicar una respuesta</string>
   <string name="info_forum_newpost_true">La respuesta ha sido publicado.</string>
   <string name="info_forum_newpost_false">La respuesta no puedes ha sido publicado</string>

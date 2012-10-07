@@ -371,7 +371,7 @@
   <string name="info_forum_newthread_true">The thread has been created.</string>
   <string name="info_forum_newthread_false">The thread could not be created.</string>
   <string name="info_xml_enter_content">Enter the content here</string>
-  <string name="info_dialog_soldierselect">Select a soldier to view...</string>
+  
   <string name="info_dialog_threadpost">Post a reply</string>
   <string name="info_forum_newpost_true">The reply has been posted.</string>
   <string name="info_forum_newpost_false">The reply could not be posted.</string>
