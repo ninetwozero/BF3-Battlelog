@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -52,7 +53,6 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
     // Attributes
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private Map<Integer, Intent> MENU_INTENTS;
     private SharedPreferences mSharedPreferences;
 
     // Elements
@@ -115,48 +115,46 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
         // Setup the "persona box"
         setupActiveSoldierContent();
 
-        // Set up the intents
-        MENU_INTENTS = menuOptions();
-
-        // Add the OnClickListeners
-        for (int key : MENU_INTENTS.keySet()) {
-            view.findViewById(key).setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    startActivity(MENU_INTENTS.get(v.getId()));
-
-                }
-            });
-        }
+        view.findViewById(R.id.button_unlocks).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext,UnlockActivity.class)
+                        .putExtra("profile", SessionKeeper.getProfileData()));
+            }
+        });
+        view.findViewById(R.id.button_weapon).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, WeaponListActivity.class)
+                        .putExtra("profile", SessionKeeper.getProfileData()));
+            }
+        });
+        view.findViewById(R.id.button_assignments).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, AssignmentActivity.class)
+                        .putExtra("profile", SessionKeeper.getProfileData()));
+            }
+        });
+        view.findViewById(R.id.button_self).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, ProfileActivity.class)
+                        .putExtra("profile", SessionKeeper.getProfileData()));
+            }
+        });
+        view.findViewById(R.id.button_settings).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, ProfileSettingsActivity.class));
+            }
+        });
     }
 
     private void dataFromSharedPreferences() {
         mPersona = SessionKeeper.getProfileData().getPersonaArray();
         mSelectedPosition = mSharedPreferences.getInt(
                 Constants.SP_BL_PERSONA_CURRENT_POS, 0);
-    }
-
-    private Map<Integer, Intent> menuOptions() {
-        return new HashMap<Integer, Intent>() {
-            {
-                put(R.id.button_unlocks, new Intent(mContext,
-                        UnlockActivity.class).putExtra("profile",
-                        SessionKeeper.getProfileData()));
-                put(R.id.button_weapon, new Intent(mContext,
-                        WeaponListActivity.class).putExtra("profile",
-                        SessionKeeper.getProfileData()));
-                put(R.id.button_assignments, new Intent(mContext,
-                        AssignmentActivity.class).putExtra("profile",
-                        SessionKeeper.getProfileData()));
-                put(R.id.button_self, new Intent(mContext,
-                        ProfileActivity.class).putExtra("profile",
-                        SessionKeeper.getProfileData()));
-                put(R.id.button_settings, new Intent(mContext,
-                        ProfileSettingsActivity.class));
-            }
-        };
-
     }
 
     private Map<Long, String> personasToMap() {
@@ -168,8 +166,8 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
     }
 
     @Override
-    public void onDialogListSelection(int index) {
-        updateSharedPreference(index);
+    public void onDialogListSelection(long id) {
+        updateSharedPreference(id);
         dataFromSharedPreferences();
         setupActiveSoldierContent();
     }
@@ -199,13 +197,23 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
                 + mPersona[mSelectedPosition].resolvePlatformId();
     }
 
-    private void updateSharedPreference(int index) {
+    private void updateSharedPreference(long personaId) {
         SharedPreferences preferences = PreferenceManager
                 .getDefaultSharedPreferences(getActivity()
                         .getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong(SP_BL_PERSONA_CURRENT_ID, mPersona[index].getId());
-        editor.putInt(SP_BL_PERSONA_CURRENT_POS, index);
+        editor.putLong(SP_BL_PERSONA_CURRENT_ID, personaId);
+        editor.putInt(SP_BL_PERSONA_CURRENT_POS, indexOfPersona(personaId));
         editor.commit();
+    }
+
+    private int indexOfPersona(long platoonId){
+        for(int i = 0; i <  mPersona.length; i++){
+            if(mPersona[i].getId() == platoonId){
+                return i;
+            }
+        }
+        Log.w(MenuProfileFragment.class.getSimpleName(), "Failed to find index of the platoon!");
+        return 0;
     }
 }

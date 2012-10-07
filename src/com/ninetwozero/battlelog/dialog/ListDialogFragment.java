@@ -14,8 +14,8 @@ import java.util.Map;
 public class ListDialogFragment extends DialogFragment {
 
     private Map<Long, String> data;
-    private Long[] personaId;
-    private String[] personaName;
+    private Long[] id;
+    private String[] name;
     private final String TAG;
 
     public static ListDialogFragment newInstance(Map<Long, String> data, String tag) {
@@ -41,25 +41,25 @@ public class ListDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.info_dialog_soldierselect);
-        personaId = personaId().clone();
-        personaName = personaName().clone();
+        builder.setTitle(R.string.info_dialog_selection_generic);
+        id = id().clone();
+        name = name().clone();
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //do nothing
             }
         });
-        builder.setSingleChoiceItems(personaName, -1, new SingleChoiceListener());
+        builder.setSingleChoiceItems(name, -1, new SingleChoiceListener());
         return builder.create();
 
     }
 
-    private Long[] personaId() {
+    private Long[] id() {
         return data.keySet().toArray(new Long[data.size()]);
     }
 
-    private String[] personaName() {
+    private String[] name() {
         List<String> name = new ArrayList<String>();
         for (Long id : data.keySet()) {
             name.add(data.get(id));
@@ -72,7 +72,8 @@ public class ListDialogFragment extends DialogFragment {
         public void onClick(DialogInterface dialog, int item) {
             OnCloseListDialogListener act = (OnCloseListDialogListener) getFragmentManager()
                     .findFragmentByTag(TAG);
-            act.onDialogListSelection(item);
+            Long[] ids = data.keySet().toArray(new Long[]{});
+            act.onDialogListSelection(ids[item]);
             dismiss();
         }
     }
