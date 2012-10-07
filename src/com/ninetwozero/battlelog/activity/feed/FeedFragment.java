@@ -62,6 +62,13 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
     private int mType;
     private long mId;
     private boolean mWrite;
+    
+    // Constants
+    public final static int CONTEXT_ID_HOOAH = 0;
+    public final static int CONTEXT_ID_SINGLE = 1;
+    public final static int CONTEXT_ID_GOTO = 2;
+    public final static int CONTEXT_ID_VIEW_HOOAH = 3;
+    public final static int CONTEXT_ID_VIEW_COMMENTS = 4;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -159,28 +166,20 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
                         } else if (mType == FeedClient.TYPE_PROFILE) {
 
-                            new AsyncPostToWall(
-
-                                    mContext, mId, false, FeedFragment.this
-
-                            ).execute(
-
-                                    mSharedPreferences.getString(
-                                            Constants.SP_BL_PROFILE_CHECKSUM, ""), message
-
+                            new AsyncPostToWall(mContext, mId, false, FeedFragment.this).execute(
+                        			mSharedPreferences.getString(
+                        					Constants.SP_BL_PROFILE_CHECKSUM, ""
+                					), 
+                					message
                             );
 
                         } else if (mType == FeedClient.TYPE_PLATOON) {
 
-                            new AsyncPostToWall(
-
-                                    mContext, mId, true, FeedFragment.this
-
-                            ).execute(
-
-                                    mSharedPreferences.getString(
-                                            Constants.SP_BL_PROFILE_CHECKSUM, ""), message
-
+                            new AsyncPostToWall(mContext, mId, true, FeedFragment.this).execute(
+                        			mSharedPreferences.getString(
+                        					Constants.SP_BL_PROFILE_CHECKSUM, ""
+                					), 
+                					message
                             );
 
                         }
@@ -221,17 +220,40 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
 
         // Get the actual menu item and tag
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-
-        // Show the menu
         FeedItem feedItem = (FeedItem) info.targetView.getTag();
-        menu.add(Constants.MENU_ID_FEED, 0, 0,
-                feedItem.isLiked() ? R.string.label_unhooah
-                        : R.string.label_hooah);
-        menu.add(Constants.MENU_ID_FEED, 1, 0, R.string.label_single_post_view);
+        
+        // Add menu items depending on if they're needed
+        menu.add(
+    		Constants.MENU_ID_FEED, 
+    		CONTEXT_ID_HOOAH, 
+    		0,
+            feedItem.isLiked() ? 
+        		R.string.label_unhooah : R.string.label_hooah
+		);
+        
+        if( feedItem.getNumLikes() > 0 ) {
+        	menu.add(
+    			Constants.MENU_ID_FEED,
+    			CONTEXT_ID_VIEW_HOOAH,
+    			0, 
+    			"View hooahs"
+    		);
+        }
+        
+        if( feedItem.getNumComments() > 0 ) {
+        	menu.add(
+        		Constants.MENU_ID_FEED,
+        		CONTEXT_ID_VIEW_COMMENTS,
+        		0,
+        		"View comments"
+			);        	
+        }
+        
+        menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_SINGLE, 0, R.string.label_single_post_view);
 
-        // Platoon feeds only have posts that would open a new platoon activity
+        // Platoon feeds only have posts that would open a new platoon activity => exclude
         if (mType != FeedClient.TYPE_PLATOON) {
-            menu.add(Constants.MENU_ID_FEED, 2, 0, R.string.label_goto_item);
+            menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_GOTO, 0, R.string.label_goto_item);
         }
 
     }
@@ -245,39 +267,29 @@ public class FeedFragment extends ListFragment implements DefaultFragment {
             FeedItem feedItem = (FeedItem) info.targetView.getTag();
 
             // REQUESTS
-            if (item.getItemId() == 0) {
+            if (item.getItemId() == CONTEXT_ID_HOOAH) {
 
                 new AsyncFeedHooah(mContext, info.id, false,
                         feedItem.isLiked(), this).execute(mSharedPreferences
                         .getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
-            } else if (item.getItemId() == 1) {
+            } else if (item.getItemId() == CONTEXT_ID_SINGLE) {
 
                 // Yeah
                 startActivity(
-
-                        new Intent(
-
-                                mContext, SinglePostActivity.class
-
-                        ).putExtra(
-
-                                "feed", feedItem
-
-                        ).putExtra(
-
-                                "canComment", mWrite
-
-                        )
-
+            		new Intent(mContext, SinglePostActivity.class)
+                    .putExtra("feed", feedItem)
+                    .putExtra("canComment", mWrite)
                 );
 
-            } else if (item.getItemId() == 2) {
-
+            } else if( item.getItemId() == CONTEXT_ID_VIEW_HOOAH ) {
+            	Toast.makeText(mContext, "POP HOOAH DIALOG", Toast.LENGTH_SHORT).show();
+            } else if( item.getItemId() == CONTEXT_ID_VIEW_COMMENTS ) {
+            	Toast.makeText(mContext, "POP COMMENTS DIALOG", Toast.LENGTH_SHORT).show();            	
+            } else if (item.getItemId() == CONTEXT_ID_GOTO) {
                 if (feedItem.getIntent(mContext) != null) {
                     startActivity(feedItem.getIntent(mContext));
                 }
-
             }
 
         } catch (Exception ex) {
