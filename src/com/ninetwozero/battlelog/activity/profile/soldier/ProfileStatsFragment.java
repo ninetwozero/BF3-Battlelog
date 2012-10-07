@@ -324,7 +324,6 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     @Override
     public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {
         if (task.result.equals(CompletedTask.Result.SUCCESS)) {
-            Log.e("STATS", "Load finished");
             findViews();
             PersonaInfo pi = personaStatsFrom(task);
             updateDatabase(pi);
