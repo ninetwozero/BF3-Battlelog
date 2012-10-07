@@ -369,7 +369,7 @@
   <string name="info_forum_newthread_true">Vlákno bylo založeno.</string>
   <string name="info_forum_newthread_false">Vlákno se nepodařilo vytvořit.</string>
   <string name="info_xml_enter_content">Zde napište obsah</string>
-  <string name="info_dialog_soldierselect">Vyberte vojáka...</string>
+  
   <string name="info_dialog_threadpost">Odpovědět</string>
   <string name="info_forum_newpost_true">Odpověď odeslána.</string>
   <string name="info_forum_newpost_false">Odpověď se nepodařilo odeslat.</string>

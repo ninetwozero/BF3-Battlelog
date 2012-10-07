@@ -368,7 +368,7 @@
   <string name="info_forum_newthread_true">Temat utworzony.</string>
   <string name="info_forum_newthread_false">Temat nie mógł zostać utworzony.</string>
   <string name="info_xml_enter_content">Wpisz zawartość tutaj</string>
-  <string name="info_dialog_soldierselect">Wybierz żołnierza</string>
+  
   <string name="info_dialog_threadpost">Dodaj odpowiedź</string>
   <string name="info_forum_newpost_true">Odpowiedź została dodana.</string>
   <string name="info_forum_newpost_false">Odpowiedź nie mogła zostać dodana.</string>

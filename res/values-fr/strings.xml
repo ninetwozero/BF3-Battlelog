@@ -365,7 +365,7 @@
   <string name="info_forum_newthread_true">La discussion a été créée.</string>
   <string name="info_forum_newthread_false">La discussion n\'a pas pu être créée.</string>
   <string name="info_xml_enter_content">Saisissez le contenu ici</string>
-  <string name="info_dialog_soldierselect">Sélectionnez un soldat pour voir...</string>
+  
   <string name="info_dialog_threadpost">Poster une réponse</string>
   <string name="info_forum_newpost_true">La réponse a été postée.</string>
   <string name="info_forum_newpost_false">La réponse ne peut pas être postée.</string>

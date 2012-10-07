@@ -369,7 +369,7 @@
   <string name="info_forum_newthread_true">Tråden har skapats.</string>
   <string name="info_forum_newthread_false">Det gick inte att skapa tråden...</string>
   <string name="info_xml_enter_content">Skriv innehållet här</string>
-  <string name="info_dialog_soldierselect">Välj en soldat att visa...</string>
+  
   <string name="info_dialog_threadpost">Skriv ett svar</string>
   <string name="info_forum_newpost_true">Svaret är publicerat.</string>
   <string name="info_forum_newpost_false">Svaret kunde inte publiceras.</string>
