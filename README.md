@@ -49,3 +49,8 @@ BF3 Battlelog is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
+
+### Disclaimer
+This app was not created nor is endorsed by EA/DICE. All images are owned by their respective owners, and Battlefield is a registered trademark of EA Digital Illusions CE AB. No user account information is being stored and/or shared with third-parties.
+
+By using this application, you acknowledge that you (the user) may not use this software to break the law in any way (seen out of the law’s perspective), and I (the developer) is not liable for any damage caused by you (the user) while using (and not using) this application.
