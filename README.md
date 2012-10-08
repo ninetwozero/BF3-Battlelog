@@ -15,8 +15,8 @@ Contributors
 ------------
 
 ### Code
- * Lukas "The Widget" Larson <lukaslarson@gmail.com>
  * Peter Miklosko
+ * Lukas "The Widget" Larson <lukaslarson@gmail.com>
 
 ### Graphics
  * Markus 'Markus96-1337' Olszewski
@@ -32,9 +32,20 @@ Contributors
  * federico73 (Italian)
  * fysme (Swedish)
  * jimhardcore (German)
- * Karl "ninetwozero" Lindmark (Spanish, Swedish)
+ * Karl "ninetwozero" Lindmark (Swedish)
  * kosmiq (Swedish)
  * zAo82 "The Dutch PS3-player" (Dutch)
  
 ### Special thanks
 To all the people that have helped out by testing, providing feedback and/or anything else helpful. Much appreciated. :-)
+
+### LICENSE INFORMATION
+BF3 Battlelog is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BF3 Battlelog is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
