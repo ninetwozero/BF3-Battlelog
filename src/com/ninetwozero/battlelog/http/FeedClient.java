@@ -9,13 +9,13 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.util.Log;
 
+import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.ParsedFeedItemData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.RequestHandlerException;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.factory.FeedItemDataFactory;
-import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 
@@ -162,11 +162,9 @@ public class FeedClient extends DefaultClient {
                 feedItems.addAll(getFeedItemsFromJSON(context, jsonArray, profileId));
             }
             return (ArrayList<FeedItem>) feedItems;
-
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-            
         }
     }
 
@@ -192,6 +190,7 @@ public class FeedClient extends DefaultClient {
         try {
 
             // Variables that we need
+        	List<CommentData> comments = new ArrayList<CommentData>();
             JSONObject ownerObject = currItem.optJSONObject("owner");
             final String event = currItem.getString("event");
             String tempGravatarHash = ownerObject.getString("gravatarMd5");
@@ -210,13 +209,42 @@ public class FeedClient extends DefaultClient {
                     break;
                 }
             }
-
+            
+            // Get the comments
+            final String[] jsonCommentLabels = new String[] {"comment1", "comment2"};
+            for( String label : jsonCommentLabels ) {
+	            if( !currItem.isNull(label) ) {
+	            	JSONObject comment = currItem.getJSONObject(label);
+	            	JSONObject commenter = comment.getJSONObject("owner");
+	            	String gravatarHash = commenter.getString("gravatarMd5");
+	            	comments.add( 
+	        			new CommentData(
+	    					Long.parseLong(comment.getString("id")), 
+	    					0, 
+	    					comment.getLong("creationDate"), 
+	    					comment.getString("body"), 
+	    					new ProfileData.Builder(
+	    						Long.parseLong(commenter.getString("userId")),
+	    						commenter.getString("username")
+							).gravatarHash(gravatarHash).build()
+						)
+	    			);
+	            	
+	            	// Cache the image?
+	            	String filename = gravatarHash + ".png";
+	                if (!CacheHandler.isCached(context, filename)) {
+	                    ProfileClient.cacheGravatar(context, filename, Constants.DEFAULT_AVATAR_SIZE);
+	                }
+	            }
+            }
+	            
             // Set the first profile
             ProfileData mainProfile = new ProfileData.Builder(
                     Long.parseLong(currItem.getString("ownerId")),
                     ownerObject.getString("username")
             ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
 
+            // Get the feed item data
             int feedItemTypeId = getTypeIdFromEvent(event);
             ParsedFeedItemData feedItemData = FeedItemDataFactory.feedItemDataFrom(context, feedItemTypeId, mainProfile, currItem);
 
@@ -237,7 +265,8 @@ public class FeedClient extends DefaultClient {
                     feedItemData.getProfileData(),
                     liked,
                     censored,
-                    tempGravatarHash
+                    tempGravatarHash,
+                    comments
             );
 
         } catch (Exception ex) {

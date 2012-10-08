@@ -1,20 +1,25 @@
 package com.ninetwozero.battlelog.factory;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
+import android.util.Log;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.ParsedFeedItemData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class FeedItemDataFactory {
 
-    public static final String PLATOON = "platoon";
+    public static final String PLATOON_BF3 = "platoon";
+    public static final String PLATOON_MOH = "blazeClub";
     public static final String NAME = "name";
     public static final String NAME_SID = "nameSID";
     public static final String THREAD_TITLE = "threadTitle";
@@ -519,7 +524,7 @@ public class FeedItemDataFactory {
     private static ParsedFeedItemData generateFromLeavingPlatoon(
             Context context, JSONObject currItem, ProfileData profile)
             throws JSONException {
-        JSONObject platoonObject = currItem.getJSONObject(PLATOON);
+        JSONObject platoonObject = currItem.getJSONObject(PLATOON_BF3);
         return new ParsedFeedItemData(
 
                 PublicUtils.createStringWithData(context, R.string.info_p_platoon_left,
@@ -536,7 +541,7 @@ public class FeedItemDataFactory {
             Context context, JSONObject currItem, ProfileData profile)
             throws JSONException {
 
-        JSONObject platoonObject = currItem.getJSONObject(PLATOON);
+        JSONObject platoonObject = currItem.getJSONObject(PLATOON_BF3);
         return new ParsedFeedItemData(
 
                 PublicUtils.createStringWithData(context, R.string.info_p_platoon_kick,
@@ -552,23 +557,24 @@ public class FeedItemDataFactory {
     private static ParsedFeedItemData generateFromJoiningPlatoon(
             Context context, JSONObject currItem, ProfileData profile)
             throws JSONException {
-        JSONObject platoonObject = currItem.getJSONObject(PLATOON);
+
+    	Log.d(Constants.DEBUG_TAG, "urrItem => " + currItem.toString(2));
+	    JSONObject platoonObject = currItem.getJSONObject(currItem.isNull(PLATOON_MOH)?PLATOON_BF3 : PLATOON_MOH);
         return new ParsedFeedItemData(
-
-                PublicUtils.createStringWithData(context, R.string.info_p_platoon_join,
-                        profile.getUsername(), platoonObject.getString(NAME)), "",
-                new ProfileData[]{
-
-                        profile, null
-
-                });
-
+            PublicUtils.createStringWithData(
+        		context, 
+        		R.string.info_p_platoon_join,
+        		profile.getUsername(), platoonObject.getString(NAME)
+    		), 
+    		"",
+            new ProfileData[]{ profile, null }
+		);
     }
 
     private static ParsedFeedItemData generateFromNewPlatoonEmblem(
             Context context, JSONObject currItem, ProfileData profile)
             throws JSONException {
-        JSONObject platoonObject = currItem.getJSONObject(PLATOON);
+        JSONObject platoonObject = currItem.getJSONObject(PLATOON_BF3);
         return new ParsedFeedItemData(
 
                 PublicUtils.createStringWithData(context,
@@ -585,7 +591,7 @@ public class FeedItemDataFactory {
             Context context, JSONObject currItem, ProfileData profile)
             throws JSONException {
 
-        JSONObject platoonObject = currItem.getJSONObject(PLATOON);
+        JSONObject platoonObject = currItem.getJSONObject(PLATOON_BF3);
         return new ParsedFeedItemData(
 
                 PublicUtils.createStringWithData(context,
@@ -652,7 +658,7 @@ public class FeedItemDataFactory {
 
     private static ParsedFeedItemData generateFromPlatoonPost(Context context,
                                                               JSONObject currItem, ProfileData profile) throws JSONException {
-        JSONObject platoonObject = currItem.getJSONObject(PLATOON);
+        JSONObject platoonObject = currItem.getJSONObject(PLATOON_BF3);
         return new ParsedFeedItemData(
 
                 PublicUtils.createStringWithData(context, R.string.info_p_platoon_feed,

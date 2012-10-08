@@ -14,10 +14,13 @@
 
 package com.ninetwozero.battlelog.datatype;
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.forum.ForumActivity;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
@@ -52,117 +55,123 @@ public class FeedItem implements Parcelable {
     public final static int TYPE_NEW_SHARED_GAMEEVENT = 20;
 
     // Attributes
-    private long id, itemId, date;
-    private int numLikes, numComments, type;
-    private String title, content;
-    private ProfileData[] profileData;
-    private boolean liked, censored;
-    private String gravatarHash;
+    private long mId, mItemId, mDate;
+    private int mNumLikes, mNumComments, mType;
+    private String mTitle, mContent;
+    private ProfileData[] mProfileData;
+    private boolean mLiked, mCensored;
+    private String mGravatarHash;
+    private List<CommentData> mPreloadedComments;
 
     // Construct
     public FeedItem(
-
-            long i, long iid, long nDate, int num, int numC, int tp,
-            String t, String c, ProfileData[] pd, boolean il, boolean cs, String im
-
+        long i, long iid, long nDate, int num, int numC, int tp,
+        String t, String c, ProfileData[] pd, boolean il, boolean cs, String im, 
+        List<CommentData> prlc
     ) {
-
-        id = i;
-        itemId = iid;
-        date = nDate;
-        numLikes = num;
-        numComments = numC;
-        type = tp;
-        title = t;
-        content = c;
-        profileData = pd.clone();
-        liked = il;
-        censored = cs;
-        gravatarHash = im;
-
+        mId = i;
+        mItemId = iid;
+        mDate = nDate;
+        mNumLikes = num;
+        mNumComments = numC;
+        mType = tp;
+        mTitle = t;
+        mContent = c;
+        mProfileData = pd.clone();
+        mLiked = il;
+        mCensored = cs;
+        mGravatarHash = im;
+        mPreloadedComments = prlc;
     }
 
     public FeedItem(Parcel in) {
-
-        id = in.readLong();
-        itemId = in.readLong();
-        date = in.readLong();
-        numLikes = in.readInt();
-        numComments = in.readInt();
-        type = in.readInt();
-        title = in.readString();
-        content = in.readString();
-        liked = (in.readInt() == 1);
-        censored = (in.readInt() == 1);
-        gravatarHash = in.readString();
-        profileData = in.createTypedArray(ProfileData.CREATOR);
-
+        mId = in.readLong();
+        mItemId = in.readLong();
+        mDate = in.readLong();
+        mNumLikes = in.readInt();
+        mNumComments = in.readInt();
+        mType = in.readInt();
+        mTitle = in.readString();
+        mContent = in.readString();
+        mLiked = (in.readInt() == 1);
+        mCensored = (in.readInt() == 1);
+        mGravatarHash = in.readString();
+        mProfileData = in.createTypedArray(ProfileData.CREATOR);
+        mPreloadedComments = in.createTypedArrayList(CommentData.CREATOR);
     }
 
     // Getters
     public long getId() {
-        return id;
+        return mId;
     }
 
     public long getItemId() {
-        return itemId;
+        return mItemId;
     }
 
     public long getDate() {
-        return date;
+        return mDate;
     }
 
     public int getNumComments() {
-        return numComments;
+        return mNumComments;
     }
 
     public int getNumLikes() {
-        return numLikes;
+        return mNumLikes;
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
 
     }
 
     public String getContent() {
-        return content;
+        return mContent;
     }
 
     public int getType() {
-        return type;
+        return mType;
     }
 
     public ProfileData[] getProfileData() {
-        return profileData;
+        return mProfileData;
     }
 
     public ProfileData getProfile(int i) {
-        return (i <= profileData.length) ? profileData[i] : null;
+        return (i <= mProfileData.length) ? mProfileData[i] : null;
     }
 
     public boolean isLiked() {
-        return liked;
+        return mLiked;
     }
 
     public boolean isCensored() {
-        return censored;
+        return mCensored;
     }
 
     public String getAvatarForPost() {
-        return gravatarHash;
+        return mGravatarHash;
+    }
+    
+    public boolean hasPreloadedComments() {
+    	return mPreloadedComments != null && mPreloadedComments.size() > 0;
+    }
+    
+    public List<CommentData> getPreloadedComments() {
+    	return mPreloadedComments;
     }
 
     public Intent getIntent(Context c) {
 
         // Get the correct format depending on the type
-        switch (type) {
+        switch (mType) {
             case FeedItem.TYPE_NEW_FORUM_THREAD:
             case FeedItem.TYPE_NEW_FORUM_POST:
 
                 return new Intent(c, ForumActivity.class).putExtra(
 
-                        "threadId", itemId
+                        "threadId", mItemId
 
                 ).putExtra(
 
@@ -177,11 +186,11 @@ public class FeedItem implements Parcelable {
             case FeedItem.TYPE_GOT_PLATOON_POST:
             case FeedItem.TYPE_LEFT_PLATOON:
                 return new Intent(c, PlatoonActivity.class).putExtra("platoon",
-                        new PlatoonData(itemId));
+                        new PlatoonData(mItemId));
 
             case FeedItem.TYPE_COMPLETED_GAME:
                 return new Intent(c, UnlockActivity.class).putExtra("profile",
-                        profileData[0]);
+                        mProfileData[0]);
 
             case FeedItem.TYPE_NEW_RANK:
             case FeedItem.TYPE_NEW_FRIEND:
@@ -195,14 +204,14 @@ public class FeedItem implements Parcelable {
             case FeedItem.TYPE_GOT_AWARD:
                 return new Intent(c, ProfileActivity.class).putExtra(
 
-                        "profile", profileData[0]
+                        "profile", mProfileData[0]
 
                 );
 
             case FeedItem.TYPE_COMPLETED_ASSIGNMENT:
                 return new Intent(c, AssignmentActivity.class).putExtra(
                         "profile",
-                        profileData[0]
+                        mProfileData[0]
                 );
 
             default:
@@ -214,7 +223,7 @@ public class FeedItem implements Parcelable {
     public String getOptionTitle(Context c) {
 
         // Get the correct format depending on the type
-        switch (type) {
+        switch (mType) {
             case FeedItem.TYPE_NEW_FORUM_THREAD:
             case FeedItem.TYPE_NEW_FORUM_POST:
                 return c.getString(R.string.label_goto_forum_thread);
@@ -262,18 +271,19 @@ public class FeedItem implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
-        dest.writeLong(id);
-        dest.writeLong(itemId);
-        dest.writeLong(date);
-        dest.writeInt(numLikes);
-        dest.writeInt(numComments);
-        dest.writeInt(type);
-        dest.writeString(title);
-        dest.writeString(content);
-        dest.writeInt(liked ? 1 : 0);
-        dest.writeInt(censored ? 1 : 0);
-        dest.writeString(gravatarHash);
-        dest.writeTypedArray(profileData, flags);
+        dest.writeLong(mId);
+        dest.writeLong(mItemId);
+        dest.writeLong(mDate);
+        dest.writeInt(mNumLikes);
+        dest.writeInt(mNumComments);
+        dest.writeInt(mType);
+        dest.writeString(mTitle);
+        dest.writeString(mContent);
+        dest.writeInt(mLiked ? 1 : 0);
+        dest.writeInt(mCensored ? 1 : 0);
+        dest.writeString(mGravatarHash);
+        dest.writeTypedArray(mProfileData, flags);
+        dest.writeTypedList(mPreloadedComments);
 
     }
 

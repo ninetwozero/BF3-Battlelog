@@ -14,61 +14,67 @@
 
 package com.ninetwozero.battlelog.adapter;
 
+import java.util.List;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.news.SinglePostActivity;
+import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-
-import java.util.List;
 
 public class FeedListAdapter extends BaseAdapter {
 
     // Attributes
-    private Context context;
-    private List<FeedItem> itemArray;
-    private LayoutInflater layoutInflater;
+    private Context mContext;
+    private List<FeedItem> mItems;
+    private LayoutInflater mLayoutInflater;
 
     // Construct
     public FeedListAdapter(Context c, List<FeedItem> fi, LayoutInflater l) {
 
-        context = c;
-        itemArray = fi;
-        layoutInflater = l;
+        mContext = c;
+        mItems = fi;
+        mLayoutInflater = l;
 
     }
 
     @Override
     public int getCount() {
 
-        return (itemArray != null) ? itemArray.size() : 0;
+        return (mItems != null) ? mItems.size() : 0;
 
     }
 
     @Override
     public FeedItem getItem(int position) {
 
-        return this.itemArray.get(position);
+        return this.mItems.get(position);
 
     }
 
     @Override
     public long getItemId(int position) {
 
-        return this.itemArray.get(position).getId();
+        return this.mItems.get(position).getId();
 
     }
 
     public void setItemArray(List<FeedItem> ia) {
 
-        this.itemArray = ia;
+        this.mItems = ia;
         this.notifyDataSetChanged();
 
     }
@@ -82,25 +88,28 @@ public class FeedListAdapter extends BaseAdapter {
         // Recycle
         if (convertView == null) {
 
-            convertView = layoutInflater.inflate(R.layout.list_item_feed,
+            convertView = mLayoutInflater.inflate(R.layout.list_item_feed,
                     parent, false);
 
         }
 
+        // Grab a few views before we start
+        Button viewAllButton = (Button) convertView.findViewById(R.id.button_viewall);
+        
         // Set the views
         ((TextView) convertView.findViewById(R.id.text_title)).setText(
 
                 !currentItem.isCensored() ? Html.fromHtml(currentItem.getTitle())
-                        : context.getString(R.string.general_censored)
+                        : mContext.getString(R.string.general_censored)
 
         );
 
         // How many likes/comments?
-        String textHooah = (currentItem.getNumLikes() == 1) ? context
-                .getString(R.string.info_hooah_s) : context
+        String textHooah = (currentItem.getNumLikes() == 1) ? mContext
+                .getString(R.string.info_hooah_s) : mContext
                 .getString(R.string.info_hooah_p);
-        String textComments = (currentItem.getNumComments() == 1) ? context
-                .getString(R.string.info_comment_s) : context
+        String textComments = (currentItem.getNumComments() == 1) ? mContext
+                .getString(R.string.info_comment_s) : mContext
                 .getString(R.string.info_comment_p);
         String content = textComments.replace("{num}",
                 currentItem.getNumComments() + "");
@@ -109,16 +118,16 @@ public class FeedListAdapter extends BaseAdapter {
         ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.image_avatar);
         imageAvatar.setImageBitmap(
     		BitmapFactory.decodeFile(
-                PublicUtils.getCachePath(context) + currentItem.getAvatarForPost() + ".png"
+                PublicUtils.getCachePath(mContext) + currentItem.getAvatarForPost() + ".png"
 			)
         );
         if( imageAvatar.getBackground() == null ) {
         	imageAvatar.setImageResource(R.drawable.default_avatar);        	
         }
         
-        // Finalize with the TextViews
+        // Fill the actual content
         ((TextView) convertView.findViewById(R.id.text_date))
-                .setText(PublicUtils.getRelativeDate(context,
+                .setText(PublicUtils.getRelativeDate(mContext,
                         currentItem.getDate()));
         ((TextView) convertView.findViewById(R.id.text_hooah))
                 .setText(textHooah.replace("{num}", currentItem.getNumLikes()
@@ -126,6 +135,70 @@ public class FeedListAdapter extends BaseAdapter {
         ((TextView) convertView.findViewById(R.id.text_comment))
                 .setText(content);
 
+        // Do we need to populate comments?
+        if( currentItem.hasPreloadedComments() ) {
+        	List<CommentData> comments = currentItem.getPreloadedComments();
+        	int numPreloaded = comments.size(); // 1:2
+        	int[] commentWrappers = new int[] {R.id.wrap_comment1, R.id.wrap_comment2};
+        	for( int i = 0, max = commentWrappers.length; i < max; i++ ) {
+        		
+        		// Do we have an item?
+        		if( numPreloaded == i ) {
+        			convertView.findViewById(commentWrappers[i]).setVisibility(View.GONE);
+        			continue;
+        		}
+        		
+        		// Get
+        		View commentRoot = convertView.findViewById(commentWrappers[i]);
+        		CommentData comment = comments.get(i);
+                ImageView commentImageView = (ImageView) commentRoot.findViewById(R.id.image_avatar);
+                
+        		// Try to set the image first
+                commentImageView.setImageBitmap(
+                		BitmapFactory.decodeFile(
+                				PublicUtils.getCachePath(mContext) + currentItem.getAvatarForPost() + ".png"
+        				)
+                );
+                if( commentImageView.getBackground() == null ) {
+                	commentImageView.setImageResource(R.drawable.default_avatar);        	
+                }
+
+                // Set the texts
+                ((TextView) commentRoot.findViewById(R.id.text_name)).setText(comment.getAuthor().getUsername());
+        		((TextView) commentRoot.findViewById(R.id.text_comment)).setText(comment.getContent());
+        		((TextView) commentRoot.findViewById(R.id.text_date)).setText(PublicUtils.getRelativeDate(mContext, comment.getTimestamp()));
+        		
+        		commentRoot.setVisibility(View.VISIBLE);
+        	}
+        	
+        	// We might have to show the "SinglePostView"-button!
+        	if( currentItem.getNumComments() > 2 ) {
+        		viewAllButton.setVisibility(View.VISIBLE);
+        		viewAllButton.setOnClickListener(
+        			new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							mContext.startActivity( 
+								new Intent(
+									mContext, 
+									SinglePostActivity.class
+								).putExtra("feed", (FeedItem) v.getTag())
+							);
+						}
+        				
+        			}
+				);
+        	} else {
+        		viewAllButton.setVisibility(View.GONE);        		
+        		viewAllButton.setOnClickListener(null);
+        	}
+        } else {
+        	convertView.findViewById(R.id.wrap_comment1).setVisibility(View.GONE);
+        	convertView.findViewById(R.id.wrap_comment2).setVisibility(View.GONE);
+        	viewAllButton.setVisibility(View.GONE); 
+        }
+        	
         // Hook it up on the tag
         convertView.setTag(currentItem);
 
