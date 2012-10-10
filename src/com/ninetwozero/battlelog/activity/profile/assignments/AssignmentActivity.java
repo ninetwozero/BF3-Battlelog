@@ -196,7 +196,6 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
             if (progressDialog != null) {
                 progressDialog.dismiss();
             }
-            Log.e("AssignmentActivity", "Data parsed");
         }
     }
 

@@ -14,7 +14,4 @@ public class Assignments {
     @SerializedName("missionTrees")
     private Map<Integer, MissionPacks> missionPacksList = new HashMap<Integer, MissionPacks>();
 
-    class Gadgets{
-
-    }
 }
