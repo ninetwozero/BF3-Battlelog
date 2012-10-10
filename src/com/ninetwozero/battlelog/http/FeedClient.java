@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.FeedItem;
@@ -254,19 +253,19 @@ public class FeedClient extends DefaultClient {
                 ProfileClient.cacheGravatar(context, filename, Constants.DEFAULT_AVATAR_SIZE);
             }
             return new FeedItem(
-                    Long.parseLong(currItem.getString("id")),
-                    Long.parseLong(currItem.getString("itemId")),
-                    currItem.getLong("creationDate"),
-                    numLikes,
-                    numComments,
-                    feedItemTypeId,
-                    feedItemData.getTitle(),
-                    feedItemData.getContent(),
-                    feedItemData.getProfileData(),
-                    liked,
-                    censored,
-                    tempGravatarHash,
-                    comments
+                Long.parseLong(currItem.getString("id")),
+                Long.parseLong(currItem.getString("itemId")),
+                currItem.getLong("creationDate"),
+                numLikes,
+                numComments,
+                feedItemTypeId,
+                feedItemData.getTitle(),
+                feedItemData.getContent(),
+                feedItemData.getProfileData(),
+                liked,
+                censored,
+                tempGravatarHash,
+                comments
             );
 
         } catch (Exception ex) {

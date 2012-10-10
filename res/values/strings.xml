@@ -1615,5 +1615,6 @@
   <string name="info_p_got_wallpost">&lt;b>{username1} » {username2}:&lt;/b> {message}</string>
   <string name="info_p_gameaccess">&lt;b>{username} now has access to &lt;b>{title}&lt;/b> for &lt;b>Battlefield 3&lt;/b>.</string>
   <string name="info_dialog_selection_profile">Select profile to view</string>
+  <string name="info_feed_header_comments">View post to see the remaining comments</string>
 
 </resources>

@@ -31,65 +31,69 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ProfileListAdapter extends BaseAdapter {
 
-    // Attributes
+	// Attributes
 	private Context mContext;
-    private List<ProfileData> mData;
-    private LayoutInflater mLayoutInflater;
+	private List<ProfileData> mData;
+	private LayoutInflater mLayoutInflater;
 
-    // Construct
-    public ProfileListAdapter(Context c, List<ProfileData> p, LayoutInflater l) {
-        mContext = c;
-    	mData = p;
-        mLayoutInflater = l;
-    }
+	// Construct
+	public ProfileListAdapter(Context c, List<ProfileData> p, LayoutInflater l) {
+		mContext = c;
+		mData = p;
+		mLayoutInflater = l;
+	}
 
-    @Override
-    public int getCount() {
-        return (mData != null) ? mData.size() : 0;
-    }
+	@Override
+	public int getCount() {
+		return (mData != null) ? mData.size() : 0;
+	}
 
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
+	@Override
+	public int getViewTypeCount() {
+		return 1;
+	}
 
-    @Override
-    public ProfileData getItem(int position) {
-        return mData.get(position);
-    }
+	@Override
+	public ProfileData getItem(int position) {
+		return mData.get(position);
+	}
 
-    @Override
-    public long getItemId(int position) {
-        return mData.get(position).getId();
-    }
+	@Override
+	public long getItemId(int position) {
+		return mData.get(position).getId();
+	}
 
-    public long getPersonaId(int position) {
-        return mData.get(position).getPersona(0).getId();
-    }
+	public long getPersonaId(int position) {
+		return mData.get(position).getPersona(0).getId();
+	}
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
 
-        // Get the current item
-        ProfileData current = getItem(position);
-        if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.list_item_generic_profile, parent, false);
-        }
-        
-        // Set the image & name
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.image_avatar);
-        imageView.setImageBitmap(
-        	BitmapFactory.decodeFile(PublicUtils.getCachePath(mContext).toString() + current.getGravatarHash() + ".png")
-        );
-        if( imageView.getBackground() == null ) {
-        	imageView.setImageResource(R.drawable.default_avatar);        	
-        }
-        ((TextView) convertView.findViewById(R.id.text_username)).setText(current.getUsername());
-        return convertView;
-    }
+		// Get the current item
+		ProfileData current = getItem(position);
+		if (convertView == null) {
+			convertView = mLayoutInflater.inflate(
+					R.layout.list_item_generic_profile, parent, false);
+		}
 
-    public void setData(List<ProfileData> pa) {
-        mData = pa;
-        notifyDataSetChanged();
-    }
+		// Set the image & name
+		ImageView imageView = (ImageView) convertView
+				.findViewById(R.id.image_avatar);
+		imageView.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
+				.getCachePath(mContext).toString()
+				+ current.getGravatarHash()
+				+ ".png"));
+		if (imageView.getBackground() == null) {
+			imageView.setImageResource(R.drawable.default_avatar);
+		}
+		((TextView) convertView.findViewById(R.id.text_username))
+				.setText(current.getUsername());
+		return convertView;
+	}
+
+	public void setData(List<ProfileData> pa) {
+		mData = pa;
+		notifyDataSetChanged();
+	}
 }

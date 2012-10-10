@@ -16,13 +16,19 @@
                 android:id="@+id/dialog_root"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="#FFFFFF"
-                android:padding="10dp">
+                android:background="#FFFFFF">
 
   <ListView
       android:id="@+id/listView"
       android:layout_width="250dp"
       android:layout_height="wrap_content"
       android:layout_centerHorizontal="true"/>
-
+  <TextView
+      android:id="@+id/empty"
+      android:layout_width="wrap_content"
+      android:layout_height="40dp"
+      android:layout_centerInParent="true"
+      android:gravity="center"
+      android:text="Loading the hooahs..."/>
+  />
 </RelativeLayout>

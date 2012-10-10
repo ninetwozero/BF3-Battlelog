@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.activity.feed;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -53,380 +54,305 @@ import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.dialog.HooahListDialogFragment;
 import com.ninetwozero.battlelog.dialog.OnCloseProfileListDialogListener;
-import com.ninetwozero.battlelog.dialog.ProfileListDialogFragment;
 import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class FeedFragment extends ListFragment implements DefaultFragment, OnCloseProfileListDialogListener {
+public class FeedFragment extends ListFragment implements DefaultFragment,
+		OnCloseProfileListDialogListener {
 
-    // Attributes
-    private Context mContext;
-    private LayoutInflater mLayoutInflater;
+	// Attributes
+	private Context mContext;
+	private LayoutInflater mLayoutInflater;
 
-    // Elements
-    private ListView mListView;
-    private FeedListAdapter mListAdapter;
-    private EditText mFieldMessage;
-    private TextView mTextTitle;
-    private RelativeLayout mWrapInput;
-    private Button mButtonSend;
+	// Elements
+	private ListView mListView;
+	private FeedListAdapter mListAdapter;
+	private EditText mFieldMessage;
+	private TextView mTextTitle;
+	private RelativeLayout mWrapInput;
+	private Button mButtonSend;
 
-    // Misc
-    private List<FeedItem> mFeedItems;
-    private SharedPreferences mSharedPreferences;
-    private String mTitle;
-    private int mType;
-    private long mId;
-    private boolean mWrite;
-    
-    // Constants
-    public final static int CONTEXT_ID_HOOAH = 0;
-    public final static int CONTEXT_ID_SINGLE = 1;
-    public final static int CONTEXT_ID_GOTO = 2;
-    public final static int CONTEXT_ID_VIEW_HOOAH = 3;
-    public final static int CONTEXT_ID_VIEW_COMMENTS = 4;
+	// Misc
+	private List<FeedItem> mFeedItems;
+	private SharedPreferences mSharedPreferences;
+	private String mTitle;
+	private int mType;
+	private long mId;
+	private boolean mWrite;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+	// Constants
+	public final static int CONTEXT_ID_HOOAH = 0;
+	public final static int CONTEXT_ID_SINGLE = 1;
+	public final static int CONTEXT_ID_GOTO = 2;
+	public final static int CONTEXT_ID_VIEW_HOOAH = 3;
 
-        // Set our attributes
-        mContext = getActivity();
-        mSharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(mContext);
-        mLayoutInflater = inflater;
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-        // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.tab_content_feed,
-                container, false);
+		// Set our attributes
+		mContext = getActivity();
+		mSharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(mContext);
+		mLayoutInflater = inflater;
 
-        // Init
-        initFragment(view);
+		// Let's inflate & return the view
+		View view = mLayoutInflater.inflate(R.layout.tab_content_feed,
+				container, false);
 
-        // Return
-        return view;
+		// Init
+		initFragment(view);
 
-    }
+		// Return
+		return view;
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        reload();
+	}
 
-    }
+	@Override
+	public void onResume() {
+		super.onResume();
+		reload();
 
-    public void initFragment(View v) {
+	}
 
-        // Get the elements
-        mWrapInput = (RelativeLayout) v.findViewById(R.id.wrap_input);
-        mListView = (ListView) v.findViewById(android.R.id.list);
-        mFieldMessage = (EditText) v.findViewById(R.id.field_message);
-        mTextTitle = (TextView) v.findViewById(R.id.text_title);
-        mButtonSend = (Button) v.findViewById(R.id.button_send);
+	public void initFragment(View v) {
 
-        // Setup the listAdapter
-        mListAdapter = new FeedListAdapter(mContext, mFeedItems,
-                mLayoutInflater);
-        mListView.setAdapter(mListAdapter);
+		// Get the elements
+		mWrapInput = (RelativeLayout) v.findViewById(R.id.wrap_input);
+		mListView = (ListView) v.findViewById(android.R.id.list);
+		mFieldMessage = (EditText) v.findViewById(R.id.field_message);
+		mTextTitle = (TextView) v.findViewById(R.id.text_title);
+		mButtonSend = (Button) v.findViewById(R.id.button_send);
 
-        // Handle the *type*-specific events here
-        if (mType == FeedClient.TYPE_GLOBAL) {
-            mTextTitle.setText(R.string.info_feed_title_global);
-            mFieldMessage.setHint(R.string.info_xml_hint_status);
-            mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
+		// Setup the listAdapter
+		mListAdapter = new FeedListAdapter(mContext, mFeedItems,
+				mLayoutInflater);
+		mListView.setAdapter(mListAdapter);
 
-        } else if (mType == FeedClient.TYPE_PROFILE) {
-            mTextTitle.setText(mTitle);
-            mFieldMessage.setHint(R.string.info_xml_hint_feed);
-            mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
+		// Handle the *type*-specific events here
+		if (mType == FeedClient.TYPE_GLOBAL) {
+			mTextTitle.setText(R.string.info_feed_title_global);
+			mFieldMessage.setHint(R.string.info_xml_hint_status);
+			mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
 
-        } else if (mType == FeedClient.TYPE_PLATOON) {
-            mTextTitle.setText(mTitle);
-            mFieldMessage.setHint(R.string.info_xml_hint_feed);
-            mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
+		} else if (mType == FeedClient.TYPE_PROFILE) {
+			mTextTitle.setText(mTitle);
+			mFieldMessage.setHint(R.string.info_xml_hint_feed);
+			mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
 
-        } else {
-            mTextTitle.setText(R.string.info_feed_title_global);
-            mFieldMessage.setHint(R.string.info_xml_hint_status);
-            mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
+		} else if (mType == FeedClient.TYPE_PLATOON) {
+			mTextTitle.setText(mTitle);
+			mFieldMessage.setHint(R.string.info_xml_hint_feed);
+			mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
 
-        }
+		} else {
+			mTextTitle.setText(R.string.info_feed_title_global);
+			mFieldMessage.setHint(R.string.info_xml_hint_status);
+			mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
 
-        // Setup the button click
-        mButtonSend.setOnClickListener(
+		}
 
-                new OnClickListener() {
+		// Setup the button click
+		mButtonSend.setOnClickListener(
 
-                    @Override
-                    public void onClick(View v) {
+		new OnClickListener() {
 
-                        // Empty message?
-                        String message = mFieldMessage.getText().toString();
-                        if ("".equals(message)) {
-                            Toast.makeText(mContext, R.string.info_empty_msg,
-                                    Toast.LENGTH_SHORT).show();
+			@Override
+			public void onClick(View v) {
 
-                        }
+				// Empty message?
+				String message = mFieldMessage.getText().toString();
+				if ("".equals(message)) {
+					Toast.makeText(mContext, R.string.info_empty_msg,
+							Toast.LENGTH_SHORT).show();
 
-                        // Let's do it accordingly
-                        if (mType == FeedClient.TYPE_GLOBAL) {
-                            new AsyncStatusUpdate(mContext, FeedFragment.this).execute(
-                                    message, mSharedPreferences.getString(
-                                    Constants.SP_BL_PROFILE_CHECKSUM, ""));
+				}
 
-                        } else if (mType == FeedClient.TYPE_PROFILE) {
-                            new AsyncPostToWall(mContext, mId, false, FeedFragment.this).execute(
-                        			mSharedPreferences.getString(
-                        					Constants.SP_BL_PROFILE_CHECKSUM, ""
-                					), 
-                					message
-                            );
+				// Let's do it accordingly
+				if (mType == FeedClient.TYPE_GLOBAL) {
+					new AsyncStatusUpdate(mContext, FeedFragment.this).execute(
+							message, mSharedPreferences.getString(
+									Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
-                        } else if (mType == FeedClient.TYPE_PLATOON) {
-                            new AsyncPostToWall(mContext, mId, true, FeedFragment.this).execute(
-                        			mSharedPreferences.getString(
-                        					Constants.SP_BL_PROFILE_CHECKSUM, ""
-                					), 
-                					message
-                            );
+				} else if (mType == FeedClient.TYPE_PROFILE) {
+					new AsyncPostToWall(mContext, mId, false, FeedFragment.this)
+							.execute(mSharedPreferences.getString(
+									Constants.SP_BL_PROFILE_CHECKSUM, ""),
+									message);
 
-                        }
+				} else if (mType == FeedClient.TYPE_PLATOON) {
+					new AsyncPostToWall(mContext, mId, true, FeedFragment.this)
+							.execute(mSharedPreferences.getString(
+									Constants.SP_BL_PROFILE_CHECKSUM, ""),
+									message);
 
-                        // Empty the field
-                        mFieldMessage.setText("");
+				}
 
-                    }
-                });
+				// Empty the field
+				mFieldMessage.setText("");
 
-    }
+			}
+		});
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        registerForContextMenu(getListView());
+	}
 
-    }
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		registerForContextMenu(getListView());
 
-    public void reload() {
-        new AsyncRefresh(mContext, SessionKeeper.getProfileData().getId())
-                .execute();
-    }
+	}
 
-    @Override
-    public void onListItemClick(ListView l, View v, int pos, long id) {
-        getActivity().openContextMenu(v);
-    }
+	public void reload() {
+		new AsyncRefresh(mContext, SessionKeeper.getProfileData().getId())
+				.execute();
+	}
 
-    public void createContextMenu(ContextMenu menu, View view,
-                                  ContextMenuInfo menuInfo) {
+	@Override
+	public void onListItemClick(ListView l, View v, int pos, long id) {
+		getActivity().openContextMenu(v);
+	}
 
-        // Get the actual menu item and tag
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        FeedItem feedItem = (FeedItem) info.targetView.getTag();
-        
-        // Add menu items depending on if they're needed
-        menu.add(
-    		Constants.MENU_ID_FEED, 
-    		CONTEXT_ID_HOOAH, 
-    		0,
-            feedItem.isLiked() ? 
-        		R.string.label_unhooah : R.string.label_hooah
-		);
-        
-        if( feedItem.getNumLikes() > 0 ) {
-        	menu.add(
-    			Constants.MENU_ID_FEED,
-    			CONTEXT_ID_VIEW_HOOAH,
-    			0, 
-    			"View hooahs"
-    		);
-        }
-        
-        if( feedItem.getNumComments() > 0 ) {
-        	menu.add(
-        		Constants.MENU_ID_FEED,
-        		CONTEXT_ID_VIEW_COMMENTS,
-        		0,
-        		"View comments"
-			);        	
-        }
-        
-        menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_SINGLE, 0, R.string.label_single_post_view);
+	public void createContextMenu(ContextMenu menu, View view,
+			ContextMenuInfo menuInfo) {
 
-        // Platoon feeds only have posts that would open a new platoon activity => exclude
-        if (mType != FeedClient.TYPE_PLATOON) {
-            menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_GOTO, 0, R.string.label_goto_item);
-        }
-    }
+		// Get the actual menu item and tag
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+		FeedItem feedItem = (FeedItem) info.targetView.getTag();
 
-    public boolean handleSelectedContextItem(
-            AdapterView.AdapterContextMenuInfo info, MenuItem item) {
+		// Add menu items depending on if they're needed
+		menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_HOOAH, 0, feedItem
+				.isLiked() ? R.string.label_unhooah : R.string.label_hooah);
 
-        try {
-            // Grab the data
-            FeedItem feedItem = (FeedItem) info.targetView.getTag();
+		if (feedItem.getNumLikes() > 0) {
+			menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_VIEW_HOOAH, 0,
+					"View hooahs");
+		}
 
-            // REQUESTS
-            if (item.getItemId() == CONTEXT_ID_HOOAH) {
-                new AsyncFeedHooah(
-            		mContext, info.id, false, feedItem.isLiked(), this
-        		).execute(mSharedPreferences.getString(
-    				Constants.SP_BL_PROFILE_CHECKSUM, "")
-				);
+		menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_SINGLE, 0,
+				R.string.label_single_post_view);
 
-            } else if (item.getItemId() == CONTEXT_ID_SINGLE) {
-                startActivity(
-            		new Intent(mContext, SinglePostActivity.class)
-	                    .putExtra("feed", feedItem)
-	                    .putExtra("canComment", mWrite)
-                );
+		// Platoon feeds only have posts that would open a new platoon activity
+		// => exclude
+		if (mType != FeedClient.TYPE_PLATOON) {
+			menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_GOTO, 0,
+					R.string.label_goto_item);
+		}
+	}
 
-            } else if( item.getItemId() == CONTEXT_ID_VIEW_HOOAH ) {
-            	new AsyncGetHooahForDialog(
-        			mContext, 
-        			SessionKeeper.getProfileData().getId(),
-        			feedItem
-            	).execute();
-            } else if( item.getItemId() == CONTEXT_ID_VIEW_COMMENTS ) {
-            	Toast.makeText(mContext, "POP COMMENTS DIALOG", Toast.LENGTH_SHORT).show();            	
-            } else if (item.getItemId() == CONTEXT_ID_GOTO) {
-                if (feedItem.getIntent(mContext) != null) {
-                    startActivity(feedItem.getIntent(mContext));
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-    
-    private class AsyncGetHooahForDialog extends AsyncTask<Void, Void, Boolean> {
-    	
-    	// Attributes
-        private final Context context;
-        private final long activeProfileId;
-        private List<ProfileData> profiles;
-        private FeedItem feedItem;
-        
-        public AsyncGetHooahForDialog(Context c, long pId, FeedItem item) {
-        	context = c;
-        	activeProfileId = pId;
-        	feedItem = item;
-        	profiles = new ArrayList<ProfileData>();
-        }
-        
-        @Override
-        protected void onPreExecute() {
-        	/* TODO: SHOW LOADING DIALOG? */
-        }
+	public boolean handleSelectedContextItem(
+			AdapterView.AdapterContextMenuInfo info, MenuItem item) {
 
-        @Override
-        protected Boolean doInBackground(Void... arg0) {
-            try {
-                profiles = new FeedClient(feedItem.getId(), feedItem.getType()).getHooahs();
-                return (profiles.size() > 0);
-            } catch (WebsiteHandlerException ex) {
-                ex.printStackTrace();
-                return false;
-            }
-        }
+		try {
+			// Grab the data
+			FeedItem feedItem = (FeedItem) info.targetView.getTag();
 
-        @Override
-        protected void onPostExecute(Boolean result) {
-        	if( result ) {
-                FragmentManager manager = getFragmentManager();
-                ProfileListDialogFragment dialog = ProfileListDialogFragment.newInstance(
-                    profiles, 
-                    getTag()
-                );
-                dialog.show(manager, "profile_dialog");        		
-        	} else {
-        		Toast.makeText(context, "No hooahs found!", Toast.LENGTH_SHORT).show();
-        	}
-        }
-    }
+			// REQUESTS
+			if (item.getItemId() == CONTEXT_ID_HOOAH) {
+				new AsyncFeedHooah(mContext, info.id, false,
+						feedItem.isLiked(), this).execute(mSharedPreferences
+						.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
 
-    private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
+			} else if (item.getItemId() == CONTEXT_ID_SINGLE) {
+				startActivity(new Intent(mContext, SinglePostActivity.class)
+						.putExtra("feed", feedItem).putExtra("canComment",
+								mWrite));
 
-        // Attributes
-        private final Context context;
-        private final long activeProfileId;
+			} else if (item.getItemId() == CONTEXT_ID_VIEW_HOOAH) {
+				FragmentManager manager = getFragmentManager();
+				HooahListDialogFragment dialog = HooahListDialogFragment
+						.newInstance(feedItem, getTag());
+				dialog.show(manager, "profile_dialog");
+			} else if (item.getItemId() == CONTEXT_ID_GOTO) {
+				if (feedItem.getIntent(mContext) != null) {
+					startActivity(feedItem.getIntent(mContext));
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 
-        public AsyncRefresh(Context c, long pId) {
-            this.context = c;
-            this.activeProfileId = pId;
-        }
+	private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
-        @Override
-        protected void onPreExecute() {
-        }
+		// Attributes
+		private final Context context;
+		private final long activeProfileId;
 
-        @Override
-        protected Boolean doInBackground(Void... arg0) {
-            try {
-                mFeedItems = new FeedClient(mId, mType).get(
-                    context, 
-                    mSharedPreferences.getInt(Constants.SP_BL_NUM_FEED, Constants.DEFAULT_NUM_FEED), 
-                    activeProfileId
-                );
-                return (mFeedItems != null);
-                
-            } catch (WebsiteHandlerException ex) {
-                ex.printStackTrace();
-                return false;
-            }
-        }
+		public AsyncRefresh(Context c, long pId) {
+			this.context = c;
+			this.activeProfileId = pId;
+		}
 
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (!result) {
-                Toast.makeText(this.context, R.string.info_feed_empty,
-                        Toast.LENGTH_SHORT).show();
-            }
-            mListAdapter.setItemArray(mFeedItems);
-        }
-    }
+		@Override
+		protected void onPreExecute() {
+		}
 
-    public void setTitle(String t) {
-        mTitle = t;
-    }
+		@Override
+		protected Boolean doInBackground(Void... arg0) {
+			try {
+				mFeedItems = new FeedClient(mId, mType).get(context,
+						mSharedPreferences.getInt(Constants.SP_BL_NUM_FEED,
+								Constants.DEFAULT_NUM_FEED), activeProfileId);
+				return (mFeedItems != null);
 
-    public void setType(int t) {
-        mType = t;
-    }
+			} catch (WebsiteHandlerException ex) {
+				ex.printStackTrace();
+				return false;
+			}
+		}
 
-    public int getType() {
-        return mType;
-    }
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if (!result) {
+				Toast.makeText(this.context, R.string.info_feed_empty,
+						Toast.LENGTH_SHORT).show();
+			}
+			mListAdapter.setItems(mFeedItems);
+		}
+	}
 
-    public void setId(long i) {
-        mId = i;
-    }
+	public void setTitle(String t) {
+		mTitle = t;
+	}
 
-    public void setCanWrite(boolean c) {
-        mWrite = c;
-        if (mWrapInput != null) {
-            mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
-        }
-    }
+	public void setType(int t) {
+		mType = t;
+	}
 
-    @Override
-    public Menu prepareOptionsMenu(Menu menu) {
-        return menu;
-    }
+	public int getType() {
+		return mType;
+	}
 
-    @Override
-    public boolean handleSelectedOption(MenuItem item) {
-        return false;
-    }
+	public void setId(long i) {
+		mId = i;
+	}
+
+	public void setCanWrite(boolean c) {
+		mWrite = c;
+		if (mWrapInput != null) {
+			mWrapInput.setVisibility(mWrite ? View.VISIBLE : View.GONE);
+		}
+	}
+
+	@Override
+	public Menu prepareOptionsMenu(Menu menu) {
+		return menu;
+	}
+
+	@Override
+	public boolean handleSelectedOption(MenuItem item) {
+		return false;
+	}
 
 	@Override
 	public void onDialogListSelection(ProfileData profile) {
-		startActivity(
-			new Intent(mContext, ProfileActivity.class).putExtra("profile", profile)
-		);
+		startActivity(new Intent(mContext, ProfileActivity.class).putExtra(
+				"profile", profile));
 	}
 }

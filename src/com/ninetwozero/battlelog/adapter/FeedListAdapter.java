@@ -37,173 +37,156 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class FeedListAdapter extends BaseAdapter {
 
-    // Attributes
-    private Context mContext;
-    private List<FeedItem> mItems;
-    private LayoutInflater mLayoutInflater;
+	// Attributes
+	private Context mContext;
+	private List<FeedItem> mItems;
+	private LayoutInflater mLayoutInflater;
 
-    // Construct
-    public FeedListAdapter(Context c, List<FeedItem> fi, LayoutInflater l) {
+	// Construct
+	public FeedListAdapter(Context c, List<FeedItem> fi, LayoutInflater l) {
 
-        mContext = c;
-        mItems = fi;
-        mLayoutInflater = l;
+		mContext = c;
+		mItems = fi;
+		mLayoutInflater = l;
 
-    }
+	}
 
-    @Override
-    public int getCount() {
+	@Override
+	public int getCount() {
+		return (mItems != null) ? mItems.size() : 0;
+	}
 
-        return (mItems != null) ? mItems.size() : 0;
+	@Override
+	public FeedItem getItem(int position) {
+		return this.mItems.get(position);
+	}
 
-    }
+	@Override
+	public long getItemId(int position) {
+		return this.mItems.get(position).getId();
+	}
 
-    @Override
-    public FeedItem getItem(int position) {
+	public void setItems(List<FeedItem> ia) {
+		this.mItems = ia;
+		this.notifyDataSetChanged();
+	}
 
-        return this.mItems.get(position);
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
 
-    }
+		// Get the current item
+		FeedItem currentItem = getItem(position);
 
-    @Override
-    public long getItemId(int position) {
+		// Recycle
+		if (convertView == null) {
+			convertView = mLayoutInflater.inflate(R.layout.list_item_feed,
+					parent, false);
+		}
 
-        return this.mItems.get(position).getId();
+		// Grab a few views before we start
+		TextView viewAllText = (TextView) convertView
+				.findViewById(R.id.text_comments_overflow);
 
-    }
+		// Set the views
+		((TextView) convertView.findViewById(R.id.text_title)).setText(
 
-    public void setItemArray(List<FeedItem> ia) {
+		!currentItem.isCensored() ? Html.fromHtml(currentItem.getTitle())
+				: mContext.getString(R.string.general_censored)
 
-        this.mItems = ia;
-        this.notifyDataSetChanged();
+		);
 
-    }
+		// How many likes/comments?
+		String textHooah = (currentItem.getNumLikes() == 1) ? mContext
+				.getString(R.string.info_hooah_s) : mContext
+				.getString(R.string.info_hooah_p);
+		String textComments = (currentItem.getNumComments() == 1) ? mContext
+				.getString(R.string.info_comment_s) : mContext
+				.getString(R.string.info_comment_p);
+		String content = textComments.replace("{num}",
+				currentItem.getNumComments() + "");
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+		// Set the ImageView
+		ImageView imageAvatar = (ImageView) convertView
+				.findViewById(R.id.image_avatar);
+		imageAvatar.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
+				.getCachePath(mContext)
+				+ currentItem.getAvatarForPost()
+				+ ".png"));
+		if (imageAvatar.getBackground() == null) {
+			imageAvatar.setImageResource(R.drawable.default_avatar);
+		}
 
-        // Get the current item
-        FeedItem currentItem = getItem(position);
+		// Fill the actual content
+		((TextView) convertView.findViewById(R.id.text_date))
+				.setText(PublicUtils.getRelativeDate(mContext,
+						currentItem.getDate()));
+		((TextView) convertView.findViewById(R.id.text_hooah))
+				.setText(textHooah.replace("{num}", currentItem.getNumLikes()
+						+ ""));
+		((TextView) convertView.findViewById(R.id.text_comment))
+				.setText(content);
 
-        // Recycle
-        if (convertView == null) {
+		// Do we need to populate comments?
+		if (currentItem.hasPreloadedComments()) {
+			List<CommentData> comments = currentItem.getPreloadedComments();
+			int numPreloaded = comments.size(); // 1:2
+			int[] commentWrappers = new int[] { R.id.wrap_comment2,
+					R.id.wrap_comment1 };
+			for (int i = 0, max = commentWrappers.length; i < max; i++) {
 
-            convertView = mLayoutInflater.inflate(R.layout.list_item_feed,
-                    parent, false);
+				// Do we have an item?
+				if (numPreloaded == i) {
+					convertView.findViewById(commentWrappers[i]).setVisibility(
+							View.GONE);
+					continue;
+				}
 
-        }
+				// Get
+				View commentRoot = convertView.findViewById(commentWrappers[i]);
+				CommentData comment = comments.get(i);
+				ImageView commentImageView = (ImageView) commentRoot
+						.findViewById(R.id.image_avatar);
 
-        // Grab a few views before we start
-        Button viewAllButton = (Button) convertView.findViewById(R.id.button_viewall);
-        
-        // Set the views
-        ((TextView) convertView.findViewById(R.id.text_title)).setText(
+				// Try to set the image first
+				commentImageView.setImageBitmap(BitmapFactory
+						.decodeFile(PublicUtils.getCachePath(mContext)
+								+ currentItem.getAvatarForPost() + ".png"));
+				if (commentImageView.getBackground() == null) {
+					commentImageView
+							.setImageResource(R.drawable.default_avatar);
+				}
 
-                !currentItem.isCensored() ? Html.fromHtml(currentItem.getTitle())
-                        : mContext.getString(R.string.general_censored)
+				// Set the texts
+				((TextView) commentRoot.findViewById(R.id.text_name))
+						.setText(comment.getAuthor().getUsername());
+				((TextView) commentRoot.findViewById(R.id.text_comment))
+						.setText(comment.getContent());
+				((TextView) commentRoot.findViewById(R.id.text_date))
+						.setText(PublicUtils.getRelativeDate(mContext,
+								comment.getTimestamp()));
 
-        );
+				commentRoot.setVisibility(View.VISIBLE);
+			}
 
-        // How many likes/comments?
-        String textHooah = (currentItem.getNumLikes() == 1) ? mContext
-                .getString(R.string.info_hooah_s) : mContext
-                .getString(R.string.info_hooah_p);
-        String textComments = (currentItem.getNumComments() == 1) ? mContext
-                .getString(R.string.info_comment_s) : mContext
-                .getString(R.string.info_comment_p);
-        String content = textComments.replace("{num}",
-                currentItem.getNumComments() + "");
+			// We might have to show the "SinglePostView"-button!
+			if (currentItem.getNumComments() > 2) {
+				viewAllText.setVisibility(View.VISIBLE);
+			} else {
+				viewAllText.setVisibility(View.GONE);
+			}
+		} else {
+			convertView.findViewById(R.id.wrap_comment1).setVisibility(
+					View.GONE);
+			convertView.findViewById(R.id.wrap_comment2).setVisibility(
+					View.GONE);
+			viewAllText.setVisibility(View.GONE);
+		}
 
-        // Set the ImageView
-        ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.image_avatar);
-        imageAvatar.setImageBitmap(
-    		BitmapFactory.decodeFile(
-                PublicUtils.getCachePath(mContext) + currentItem.getAvatarForPost() + ".png"
-			)
-        );
-        if( imageAvatar.getBackground() == null ) {
-        	imageAvatar.setImageResource(R.drawable.default_avatar);        	
-        }
-        
-        // Fill the actual content
-        ((TextView) convertView.findViewById(R.id.text_date))
-                .setText(PublicUtils.getRelativeDate(mContext,
-                        currentItem.getDate()));
-        ((TextView) convertView.findViewById(R.id.text_hooah))
-                .setText(textHooah.replace("{num}", currentItem.getNumLikes()
-                        + ""));
-        ((TextView) convertView.findViewById(R.id.text_comment))
-                .setText(content);
+		// Hook it up on the tag
+		convertView.setTag(currentItem);
 
-        // Do we need to populate comments?
-        if( currentItem.hasPreloadedComments() ) {
-        	List<CommentData> comments = currentItem.getPreloadedComments();
-        	int numPreloaded = comments.size(); // 1:2
-        	int[] commentWrappers = new int[] {R.id.wrap_comment1, R.id.wrap_comment2};
-        	for( int i = 0, max = commentWrappers.length; i < max; i++ ) {
-        		
-        		// Do we have an item?
-        		if( numPreloaded == i ) {
-        			convertView.findViewById(commentWrappers[i]).setVisibility(View.GONE);
-        			continue;
-        		}
-        		
-        		// Get
-        		View commentRoot = convertView.findViewById(commentWrappers[i]);
-        		CommentData comment = comments.get(i);
-                ImageView commentImageView = (ImageView) commentRoot.findViewById(R.id.image_avatar);
-                
-        		// Try to set the image first
-                commentImageView.setImageBitmap(
-                		BitmapFactory.decodeFile(
-                				PublicUtils.getCachePath(mContext) + currentItem.getAvatarForPost() + ".png"
-        				)
-                );
-                if( commentImageView.getBackground() == null ) {
-                	commentImageView.setImageResource(R.drawable.default_avatar);        	
-                }
-
-                // Set the texts
-                ((TextView) commentRoot.findViewById(R.id.text_name)).setText(comment.getAuthor().getUsername());
-        		((TextView) commentRoot.findViewById(R.id.text_comment)).setText(comment.getContent());
-        		((TextView) commentRoot.findViewById(R.id.text_date)).setText(PublicUtils.getRelativeDate(mContext, comment.getTimestamp()));
-        		
-        		commentRoot.setVisibility(View.VISIBLE);
-        	}
-        	
-        	// We might have to show the "SinglePostView"-button!
-        	if( currentItem.getNumComments() > 2 ) {
-        		viewAllButton.setVisibility(View.VISIBLE);
-        		viewAllButton.setOnClickListener(
-        			new OnClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							mContext.startActivity( 
-								new Intent(
-									mContext, 
-									SinglePostActivity.class
-								).putExtra("feed", (FeedItem) v.getTag())
-							);
-						}
-        				
-        			}
-				);
-        	} else {
-        		viewAllButton.setVisibility(View.GONE);        		
-        		viewAllButton.setOnClickListener(null);
-        	}
-        } else {
-        	convertView.findViewById(R.id.wrap_comment1).setVisibility(View.GONE);
-        	convertView.findViewById(R.id.wrap_comment2).setVisibility(View.GONE);
-        	viewAllButton.setVisibility(View.GONE); 
-        }
-        	
-        // Hook it up on the tag
-        convertView.setTag(currentItem);
-
-        // Send it back
-        return convertView;
-    }
+		// Send it back
+		return convertView;
+	}
 
 }

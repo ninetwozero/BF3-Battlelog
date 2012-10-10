@@ -108,7 +108,20 @@
         android:gravity="center"
         android:text="10 hooah"
         android:textColor="#BBBBBB"/>
-  </RelativeLayout>
+  </RelativeLayout> 
+  <TextView
+        android:id="@+id/text_comments_overflow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/info_feed_header_comments"
+        android:layout_toRightOf="@id/image_avatar"
+        android:layout_below="@id/wrap_info"
+        android:textColor="#BBBBBB"
+        android:textSize="13sp"
+     	android:layout_marginLeft="10dp"
+     	android:layout_marginRight="10dp"
+     	android:layout_marginTop="10dp"
+  />
   <RelativeLayout
       	android:id="@+id/wrap_comment1"
         android:layout_width="wrap_content"
@@ -116,7 +129,7 @@
      	android:layout_marginLeft="10dp"
      	android:layout_marginRight="10dp"
      	android:layout_marginTop="10dp"
-        android:layout_below="@id/wrap_info">      
+        android:layout_below="@id/text_comments_overflow">      
       <ImageView
           android:id="@+id/image_avatar"
           android:layout_width="30dp"
@@ -191,16 +204,4 @@
         android:textColor="#BBBBBB"
         android:textSize="12sp"/>
   </RelativeLayout>
-  <Button
-      style="@style/FragmentButton"
-      android:id="@+id/button_viewall"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"   
-      android:text="View all comments..."
-      android:textSize="12sp"
-      android:layout_marginTop="10dp"
-      android:layout_marginRight="10dp"
-      android:layout_marginLeft="10dp"
-      android:layout_below="@id/wrap_comment2"
-  />
 </RelativeLayout>
