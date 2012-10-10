@@ -14,14 +14,33 @@
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@drawable/bg_bf3_main">
+                android:layout_height="fill_parent">
+  <RelativeLayout
+      android:id="@+id/login_notice"
+      style="@style/LoginNotice">
+    <TextView
+        android:id="@+id/notice_text"
+        style="@style/Wrap"
+        android:text="@string/notice_text"
+        android:layout_margin="5dp"
+        />
+  </RelativeLayout>
+
+  <CheckBox
+      android:id="@+id/agree_checkbox"
+      style="@style/Wrap"
+      android:layout_below="@id/login_notice"
+      android:text="@string/agree_text"
+      />
 
   <RelativeLayout
+      android:id="@+id/login_form"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
-      android:layout_marginBottom="40dp">
+      android:layout_marginBottom="40dp"
+      android:visibility="gone"
+      >
 
     <EditText
         android:id="@+id/field_email"
@@ -44,20 +63,11 @@
         android:inputType="textPassword"
         android:minWidth="250dp"/>
 
-    <CheckBox
-        android:id="@+id/checkbox_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/field_password"
-        android:layout_centerHorizontal="true"
-        android:text="@string/label_save"
-        android:textColor="#FFFFFF"/>
-
     <Button
         android:id="@+id/button_login"
         style="@style/RegularButton"
         android:layout_width="125dp"
-        android:layout_below="@id/checkbox_save"
+        android:layout_below="@id/field_password"
         android:layout_centerHorizontal="true"
         android:text="@string/label_login"/>
   </RelativeLayout>

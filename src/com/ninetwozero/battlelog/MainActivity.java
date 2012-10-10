@@ -56,34 +56,39 @@ import java.util.ArrayList;
 
 public class MainActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
-    // Attributes
     private String[] mValueFields;
     private PostData[] mPostDataArray;
 
-    // Elements
+    private CheckBox agree;
     private EditText mFieldEmail;
     private EditText mFieldPassword;
-    private CheckBox mCheckboxSave;
     private SlidingDrawer mSlidingDrawer;
     private OnDrawerOpenListener mOnDrawerOpenListener;
     private OnDrawerCloseListener mOnDrawerCloseListener;
+    private static final String USER_AGREED = "user_agreed";
+    private RelativeLayout loginNotice;
+    private RelativeLayout loginForm;
+    private CompoundButton.OnCheckedChangeListener agreeChanged = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            if (isChecked) {
+                loginForm.setVisibility(View.VISIBLE);
+                loginNotice.setVisibility(View.GONE);
+            } else {
+                loginForm.setVisibility(View.GONE);
+                loginNotice.setVisibility(View.VISIBLE);
+            }
+            changeAgreeStatus(isChecked);
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-        // onCreate - save the instance state
         super.onCreate(savedInstanceState);
-
-        // Set the content view
         setContentView(R.layout.main);
 
-        // Does the cache-dir exist?
         cacheDirCheck();
-
-        // Check if the default-file is ok
         defaultFileCheck();
-
-        // Are we active?
         createSession();
 
         // Initialize the attributes
@@ -93,149 +98,103 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
         // Do we need to show the cool changelog-dialog?
         changeLogDialog();
 
-        // Let's populate... or shall we not?
         init();
-
-        // Setup the drawer
         setupDrawer();
-
     }
 
     private void changeLogDialog() {
-
         if (mSharedPreferences.getInt(Constants.SP_V_CHANGELOG,
                 Constants.CHANGELOG_VERSION - 1) < Constants.CHANGELOG_VERSION) {
             createChangelogDialog().show();
         }
-
     }
 
     public void init() {
-
-        // Get the fields
+        loginForm = (RelativeLayout) findViewById(R.id.login_form);
+        loginNotice = (RelativeLayout) findViewById(R.id.login_notice);
+        agree = (CheckBox) findViewById(R.id.agree_checkbox);
+        agree.setOnCheckedChangeListener(agreeChanged);
         mFieldEmail = (EditText) findViewById(R.id.field_email);
         mFieldPassword = (EditText) findViewById(R.id.field_password);
-        mCheckboxSave = (CheckBox) findViewById(R.id.checkbox_save);
-        emailPasswordValues();
+        TextView notice = (TextView) findViewById(R.id.notice_text);
+        notice.setText(Html.fromHtml(getString(R.string.notice_text)));
 
+        if (mSharedPreferences.getBoolean(USER_AGREED, false)) {
+            loginForm.setVisibility(View.VISIBLE);
+            loginNotice.setVisibility(View.GONE);
+            agree.setChecked(true);
+        } else {
+            loginForm.setVisibility(View.GONE);
+            loginNotice.setVisibility(View.VISIBLE);
+        }
+        emailPasswordValues();
     }
 
     private void emailPasswordValues() {
-
         setEmail();
-        setCheckbox();
         setPassword();
-
     }
 
     private void setEmail() {
-
         if (hasEmail()) {
             mFieldEmail.setText(mSharedPreferences.getString(
                     Constants.SP_BL_PROFILE_EMAIL, ""));
         }
-
     }
 
     private boolean hasEmail() {
-
         return mSharedPreferences.contains(Constants.SP_BL_PROFILE_EMAIL);
-
-    }
-
-    private void setCheckbox() {
-
-        if (hasEmail()) {
-            mCheckboxSave.setChecked(isPasswordRemembered());
-        }
-
     }
 
     private boolean isPasswordRemembered() {
-
         return mSharedPreferences.getBoolean(Constants.SP_BL_PROFILE_REMEMBER, false);
-
     }
 
     private void setPassword() {
-
         if (hasEmail() && isPasswordRemembered() && hasPassword()) {
-
             try {
-
-                // Set the password (decrypted version)
                 mFieldPassword.setText(SimpleCrypto.decrypt(
                         mSharedPreferences.getString(Constants.SP_BL_PROFILE_EMAIL,
                                 ""), mSharedPreferences.getString(
                         Constants.SP_BL_PROFILE_PASSWORD, "")));
 
             } catch (Exception e) {
-
                 e.printStackTrace();
-
             }
-
         }
-
     }
 
     private boolean hasPassword() {
-
         return !mSharedPreferences.getString(Constants.SP_BL_PROFILE_PASSWORD, "")
                 .equals("");
     }
 
     private void createSession() {
-
         if (SessionKeeper.getProfileData() != null) {
-
             startActivity(new Intent(this, DashboardActivity.class));
             finish();
-
         } else if (!mSharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE,
                 "").equals("")) {
 
             RequestHandler.setCookies(
-
                     new ShareableCookie(
-
                             mSharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
                             mSharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE,
-                                    ""), Constants.COOKIE_DOMAIN
-
-                    )
-
-            );
-            startActivity(
-
-                    new Intent(this, DashboardActivity.class)
-                            .putExtra(
-
-                                    "myProfile",
-                                    SessionKeeper
-                                            .generateProfileDataFromSharedPreferences(mSharedPreferences)
-                            ).putExtra(
-                            "myPlatoon",
-                            (ArrayList<PlatoonData>) SessionKeeper
-                                    .generatePlatoonDataFromSharedPreferences(mSharedPreferences))
-
-            );
+                                    ""), Constants.COOKIE_DOMAIN));
+            startActivity(new Intent(this, DashboardActivity.class)
+                    .putExtra("myProfile",
+                            SessionKeeper.generateProfileDataFromSharedPreferences(mSharedPreferences))
+                    .putExtra("myPlatoon",
+                            (ArrayList<PlatoonData>) SessionKeeper.generatePlatoonDataFromSharedPreferences(mSharedPreferences)));
             finish();
-
         }
-
     }
 
     private void defaultFileCheck() {
-
         if (mSharedPreferences.getInt(Constants.SP_V_FILE, 0) != Constants.CHANGELOG_VERSION) {
-
-            // Get the sharedPreferences
             SharedPreferences.Editor spEdit = mSharedPreferences.edit();
             String username = mSharedPreferences.getString(Constants.SP_BL_PROFILE_EMAIL, "");
             String password = mSharedPreferences.getString(Constants.SP_BL_PROFILE_PASSWORD, "");
-
-            // Let's clear it out
             spEdit.clear();
 
             // Re-fill
@@ -243,27 +202,24 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
             spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, password);
             spEdit.putBoolean(Constants.SP_BL_PROFILE_REMEMBER, !password.equals(""));
             spEdit.putInt(Constants.SP_V_FILE, Constants.CHANGELOG_VERSION);
-
-            // Commit!!
             spEdit.commit();
-
         }
+    }
 
+    private void changeAgreeStatus(boolean isChecked){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putBoolean(USER_AGREED, isChecked);
+        editor.commit();
     }
 
     private void cacheDirCheck() {
-
         try {
-
             if (!ExternalCacheDirectory.getInstance(this)
                     .getExternalCacheDirectory().exists()) {
 
                 Toast.makeText(this, R.string.info_general_nocache,
                         Toast.LENGTH_SHORT).show();
-
             } else {
-
-                // Is .nomedia created?
                 File nomediaFile = new File(ExternalCacheDirectory
                         .getInstance(this).getExternalCacheDirectory()
                         .toString(), ".nomedia");
@@ -271,48 +227,32 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
                     nomediaFile.createNewFile();
                 }
             }
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             Toast.makeText(this, R.string.info_general_nocache,
                     Toast.LENGTH_SHORT).show();
-
         }
-
     }
 
     private void setupDrawer() {
-
         // Define the SlidingDrawer
         if (mSlidingDrawer == null) {
-
             mSlidingDrawer = (SlidingDrawer) findViewById(R.id.about_slider);
-
-            // Set the drawer listeners
             mOnDrawerCloseListener = new OnDrawerCloseListener() {
-
                 @Override
                 public void onDrawerClosed() {
-
                     mSlidingDrawer.setClickable(false);
                 }
-
             };
             mOnDrawerOpenListener = new OnDrawerOpenListener() {
-
                 @Override
                 public void onDrawerOpened() {
-
                     mSlidingDrawer.setClickable(true);
                 }
-
             };
 
-            // Attach the listeners
             mSlidingDrawer.setOnDrawerOpenListener(mOnDrawerOpenListener);
             mSlidingDrawer.setOnDrawerCloseListener(mOnDrawerCloseListener);
-
             setup();
         }
     }
@@ -320,81 +260,50 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
     // TODO refactor this method and use more reliable check such as
     // http://stackoverflow.com/questions/6119722/how-to-check-edittexts-text-is-email-address-or-not
     public void onClick(View v) {
-
         if (v.getId() == R.id.button_login) {
-
-            // Let's set 'em values
             mValueFields[0] = mFieldEmail.getText().toString();
             mValueFields[1] = mFieldPassword.getText().toString();
             if (validateEmailAndPassword(mValueFields[0], mValueFields[1])) {
-
-                // Iterate and conquer
                 for (int i = 0, max = Constants.FIELD_NAMES_LOGIN.length; i < max; i++) {
-
                     mPostDataArray[i] = new PostData(
                             Constants.FIELD_NAMES_LOGIN[i],
                             (Constants.FIELD_VALUES_LOGIN[i] == null) ? mValueFields[i]
                                     : Constants.FIELD_VALUES_LOGIN[i]);
-
                 }
-
             } else {
-
                 return;
-
-            }
-
-            // Clear the pwd-field
-            if (!mCheckboxSave.isChecked()) {
-
-                mFieldPassword.setText("");
-
             }
 
             // Do the async
             if (PublicUtils.isNetworkAvailable(this)) {
-
-                AsyncLogin al = new AsyncLogin(this, mCheckboxSave.isChecked());
+                AsyncLogin al = new AsyncLogin(this);
                 al.execute(mPostDataArray);
-
             } else {
-
                 Toast.makeText(this, R.string.general_nonetwork,
                         Toast.LENGTH_SHORT).show();
-
             }
-
         }
-
     }
 
     private boolean validateEmailAndPassword(String email, String password) {
-
         if ("".equals(email) || !email.contains("@")) {
-
             Toast.makeText(this, R.string.general_invalid_email,
                     Toast.LENGTH_SHORT).show();
             return false;
-
         } else if ("".equals(password)) {
-
             Toast.makeText(this, R.string.general_invalid_password,
                     Toast.LENGTH_SHORT).show();
             return false;
-
         }
         return true;
     }
 
     public final Dialog createChangelogDialog() {
-
-        // Attributes
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View layout = inflater.inflate(R.layout.changelog_dialog,
                 (ViewGroup) findViewById(R.id.dialog_root));
 
-        // Set the title and the view
         builder.setTitle(getString(R.string.general_changelog_version).replace("{version}",
                 Constants.CHANGELOG_VERSION + ""));
 
@@ -405,50 +314,31 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 
         // Set the button
         builder.setPositiveButton(
-
                 android.R.string.ok, new DialogInterface.OnClickListener() {
-
             public void onClick(DialogInterface dialog, int which) {
-
                 mSharedPreferences
                         .edit()
                         .putInt(Constants.SP_V_CHANGELOG,
                                 Constants.CHANGELOG_VERSION).commit();
-
             }
-
-        }
-
-        );
-
-        // CREATE
+        });
         AlertDialog theDialog = builder.create();
         theDialog.setView(layout, 0, 0, 0, 0);
         return theDialog;
-
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK && mSlidingDrawer.isOpened()) {
-
             mSlidingDrawer.animateClose();
             return true;
-
         }
         return super.onKeyDown(keyCode, event);
-
     }
 
     @Override
     public void setup() {
-
-        // Do we need to setup the fragments?
         if (mListFragments == null) {
-
-            // Add them to the list
             mListFragments = new ArrayList<Fragment>();
             mListFragments.add(Fragment.instantiate(this,
                     AboutMainFragment.class.getName()));
@@ -481,13 +371,10 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
             mViewPager.setOnPageChangeListener(mTabs);
             mViewPager.setCurrentItem(0);
             mViewPager.setOffscreenPageLimit(2);
-
         }
-
     }
 
     @Override
     public void reload() {
     }
-
 }

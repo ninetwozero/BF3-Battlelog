@@ -110,7 +110,6 @@
           android:layout_height="30dip"
           android:layout_alignParentBottom="true"
           android:layout_alignParentLeft="true"
-          android:background="@drawable/bg_bf3_main"
           android:text="BF3"
           android:textColor="#ffffff"
           android:textSize="9sp"
