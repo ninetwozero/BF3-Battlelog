@@ -14,20 +14,29 @@ import java.util.Map;
 public class ListDialogFragment extends DialogFragment {
 
     private Map<Long, String> data;
+    private int titleResource;
     private Long[] id;
     private String[] name;
     private final String TAG;
 
     public static ListDialogFragment newInstance(Map<Long, String> data, String tag) {
-        ListDialogFragment dialog = new ListDialogFragment(data, tag);
+        ListDialogFragment dialog = new ListDialogFragment(data, tag, R.string.info_dialog_selection_generic);
         Bundle bundle = new Bundle();
         dialog.setArguments(bundle);
         return dialog;
     }
 
-    private ListDialogFragment(Map<Long, String> data, String tag) {
+    public static ListDialogFragment newInstance(Map<Long, String> data, String tag, int title) {
+    	ListDialogFragment dialog = new ListDialogFragment(data, tag, title);
+        Bundle bundle = new Bundle();
+        dialog.setArguments(bundle);
+        return dialog;	
+    }
+    
+    private ListDialogFragment(Map<Long, String> data, String tag, int title) {
         this.data = data;
         this.TAG = tag;
+        this.titleResource = title;
     }
 
     @Override
@@ -41,7 +50,7 @@ public class ListDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.info_dialog_selection_generic);
+        builder.setTitle(titleResource);
         id = id().clone();
         name = name().clone();
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

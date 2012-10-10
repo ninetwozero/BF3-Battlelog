@@ -1,5 +1,6 @@
 package com.ninetwozero.battlelog.http;
 
+import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.NotificationData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
@@ -225,17 +226,18 @@ public class NotificationClient extends DefaultClient {
 
                 return new FeedItem(
 
-                        id, id, date, 0,
-                        0, 0, title, content,
-                        new ProfileData[]{
+                    id, id, date, 0,
+                    0, 0, title, content,
+                    new ProfileData[]{
 
-                                new ProfileData.Builder(uid, username[0]).gravatarHash(gravatar)
-                                        .build(),
-                                new ProfileData.Builder(0, username[1]).build()
-                        },
-                        false,
-                        false,
-                        gravatar
+                            new ProfileData.Builder(uid, username[0]).gravatarHash(gravatar)
+                                    .build(),
+                            new ProfileData.Builder(0, username[1]).build()
+                    },
+                    false,
+                    false,
+                    gravatar,
+                    new ArrayList<CommentData>()
 
                 );
 

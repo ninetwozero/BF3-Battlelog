@@ -1613,6 +1613,8 @@
   <string name="name_weapon_knife_razor">ACB-90</string>
   <string name="name_weapon_qbb95">QBB-95</string>
   <string name="info_p_got_wallpost">&lt;b>{username1} » {username2}:&lt;/b> {message}</string>
-  <string name="info_p_gameaccess">&lt;b>{username} now has access to &lt;b>{title}&lt;/b> for &lt;b>Battlefield 3&lt;/b>.</string>
+  <string name="info_p_gameaccess">&lt;b>{username}&lt;/b> now has access to &lt;b>{expansion}&lt;/b> for &lt;b>{game}&lt;/b>.</string>
+  <string name="info_dialog_selection_profile">Select profile to view</string>
+  <string name="info_feed_header_comments">View post to see the remaining comments</string>
 
 </resources>

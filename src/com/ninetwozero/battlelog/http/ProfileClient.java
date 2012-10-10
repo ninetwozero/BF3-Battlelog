@@ -68,7 +68,6 @@ public class ProfileClient extends DefaultClient {
 
     // Constants
     public static final String[] FIELD_NAMES_SETTINGS = new String[]{
-
             "profile-edit-gravatar", "profile-edit-personaId[]",
             "profile-edit-picture[]", "profile-edit-clantag[]",
             "profile-edit-clantag-games[]", "profile-edit-name",
@@ -78,42 +77,29 @@ public class ProfileClient extends DefaultClient {
             "profile-edit-ampm", "profile-edit-utcoffset",
             "profile-edit-hidedetails", "profile-edit-inactivatefeed",
             "profile-edit-allowfriendrequests", "post-check-sum"
-
     };
 
-    public static final String[] FIELD_NAMES_SEARCH = new String[]{
-            "username", "post-check-sum"};
+    public static final String[] FIELD_NAMES_SEARCH = new String[]{"username", "post-check-sum"};
 
     public ProfileClient(ProfileData pd) {
-
         mRequestHandler = new RequestHandler();
         mProfileData = pd;
-
     }
 
     public static ProfileData getProfileIdFromName(final String keyword,
                                                    final String checksum) throws WebsiteHandlerException {
-
         try {
-
-            // Let's login everybody!
             ProfileData profile = null;
             String httpContent = new RequestHandler().post(
-
-                    URL_SEARCH, RequestHandler.generatePostData(
-
-                    FIELD_NAMES_SEARCH, keyword, checksum
-
-            ), RequestHandler.HEADER_NORMAL
-
+                URL_SEARCH, 
+                RequestHandler.generatePostData(FIELD_NAMES_SEARCH, keyword, checksum),
+                RequestHandler.HEADER_NORMAL
             );
 
             // Did we manage?
             if ("".equals(httpContent)) {
-
                 throw new WebsiteHandlerException(
                         "Could not retrieve the ProfileIDs.");
-
             } else {
 
                 // Generate an object
@@ -134,7 +120,6 @@ public class ProfileClient extends DefaultClient {
 
                         // A perfect match?
                         if (tempObj.getString("username").equals(keyword)) {
-
                             profile = new ProfileData.Builder(
                                     Long.parseLong(tempObj.getString("userId")),
                                     tempObj.getString("username"))
@@ -143,7 +128,6 @@ public class ProfileClient extends DefaultClient {
                                     .build();
 
                             break;
-
                         }
 
                         // Grab the "cost"
@@ -152,7 +136,6 @@ public class ProfileClient extends DefaultClient {
 
                         // Somewhat of a match? Get the "best" one!
                         if (costOld > costCurrent) {
-
                             profile = new ProfileData.Builder(
                                     Long.parseLong(tempObj.getString("userId")),
                                     tempObj.getString("username"))
@@ -161,50 +144,32 @@ public class ProfileClient extends DefaultClient {
                                     .build();
 
                         }
-
                         // Shuffle!
                         costOld = costCurrent;
-
                     }
-
                     return resolveFullProfileDataFromProfileData(profile);
-
                 }
-
                 return null; /* TODO: <--- remove */
-
             }
-
         } catch (JSONException e) {
-
             throw new WebsiteHandlerException(e.getMessage());
-
         } catch (RequestHandlerException ex) {
-
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public static ProfileData resolveFullProfileFromPersonaId(
             final long personaId) throws WebsiteHandlerException {
-
         try {
-
-            // Let's login everybody!
             String httpContent = new RequestHandler().get(
                     RequestHandler.generateUrl(URL_OVERVIEW, personaId, 0),
                     RequestHandler.HEADER_NORMAL);
 
             // Did we manage?
             if ("".equals(httpContent)) {
-
                 throw new WebsiteHandlerException(
                         "Could not retrieve the Profile.");
-
             } else {
-
                 // Grab the array
                 JSONObject user = new JSONObject(httpContent).getJSONObject(
                         "data").getJSONObject("user");
@@ -213,36 +178,25 @@ public class ProfileClient extends DefaultClient {
                         .getString("userId")), user.getString("username"))
                         .gravatarHash(user.optString("gravatarMd5", ""))
                         .build();
-
             }
-
         } catch (Exception ex) {
-
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public static ProfileData resolveFullProfileDataFromProfileId(
             final long profileId) throws WebsiteHandlerException {
-
         try {
-
             // Let's get the profile everybody
             String httpContent = new RequestHandler().get(
-
                     RequestHandler.generateUrl(URL_PROFILE, profileId),
                     RequestHandler.HEADER_NORMAL
-
             );
 
             // Did we manage?
             if ("".equals(httpContent)) {
-
                 throw new WebsiteHandlerException(
                         "Could not retrieve the PersonaID.");
-
             } else {
 
                 // Grab the array
@@ -257,7 +211,6 @@ public class ProfileClient extends DefaultClient {
 
                 // Loop
                 for (int i = 0; i < numPersonas; i++) {
-
                     // Current soldier
                     JSONObject personaObject = soldierBox.optJSONObject(i)
                             .getJSONObject("persona");
@@ -271,52 +224,35 @@ public class ProfileClient extends DefaultClient {
                                     .getString("namespace")),
                             personaObject.getString("picture"));
                 }
-
                 return new ProfileData.Builder(profileId,
                         personaArray[0].getName()).persona(personaArray)
                         .build();
-
             }
-
         } catch (Exception ex) {
-
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public static ProfileData resolveFullProfileDataFromProfileData(
             final ProfileData p) throws WebsiteHandlerException {
-
         try {
-        	Log.d(Constants.DEBUG_TAG, "profileDAta => " + p.toString());
             ProfileData profile = resolveFullProfileDataFromProfileId(p.getId());
             return new ProfileData.Builder(p.getId(), p.getUsername()).persona(
-
-                    profile.getPersonaArray()
-
+        		profile.getPersonaArray()
             ).gravatarHash(profile.getGravatarHash()).build();
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             throw new WebsiteHandlerException("No profile found");
-
         }
     }
 
     public PersonaStats getStats(String personaName, long personaId,
                                  int platformId) throws WebsiteHandlerException {
-
         try {
-
             // Get the data
             String content = mRequestHandler.get(
-
                     RequestHandler.generateUrl(URL_OVERVIEW, personaId, platformId),
                     RequestHandler.HEADER_NORMAL
-
             );
 
             // JSON Objects
@@ -325,11 +261,9 @@ public class ProfileClient extends DefaultClient {
 
             // Is overviewStats NULL? If so, no data.
             if (dataObject.isNull("overviewStats")) {
-
                 return new PersonaStats(mProfileData.getUsername(),
                         mProfileData.getId(), personaName, personaId,
                         platformId);
-
             }
 
             // Keep it up!
@@ -342,7 +276,6 @@ public class ProfileClient extends DefaultClient {
 
             // Yay
             return new PersonaStats(
-
                     mProfileData.getUsername(), mProfileData.getPersona(0).getName(),
                     currRankInfo.getString("name"),
                     statsOverview.getLong("rank"), mProfileData.getPersona(0)
@@ -375,60 +308,41 @@ public class ProfileClient extends DefaultClient {
                     statsOverview.getLong("sc_award"),
                     statsOverview.getLong("sc_unlock"),
                     statsOverview.getLong("totalScore")
-
             );
-
         } catch (Exception ex) {
-
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public HashMap<Long, PersonaStats> getStats(final Context context)
             throws WebsiteHandlerException {
-
         try {
-
             // Init
             HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
 
             // Do we have a personaId?
             if (mProfileData.getNumPersonas() == 0) {
-
                 mProfileData = resolveFullProfileDataFromProfileId(mProfileData
                         .getId());
-
             }
 
             // Let's see...
             for (int i = 0, max = mProfileData.getNumPersonas(); i < max; i++) {
-
                 PersonaData current = mProfileData.getPersona(i);
                 stats.put(
                         current.getId(),
                         getStats(current.getName(), current.getId(),
                                 current.getPlatformId()));
-
             }
 
             if (CacheHandler.Persona.insert(context, stats) == 0) {
-
                 CacheHandler.Persona.update(context, stats);
-
             }
-
-            // Return!
             return stats;
 
         } catch (Exception ex) {
-
-            ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public HashMap<Long, UnlockDataWrapper> getUnlocks(final int minCompletion)
@@ -456,12 +370,10 @@ public class ProfileClient extends DefaultClient {
 
                 // Get the data
                 String content = mRequestHandler.get(
-
                         RequestHandler.generateUrl(URL_UNLOCKS, mProfileData
                                 .getPersona(count).getId(),
                                 mProfileData.getPersona(count).getPlatformId()),
                         RequestHandler.HEADER_NORMAL
-
                 );
 
                 // JSON Objects
@@ -475,7 +387,6 @@ public class ProfileClient extends DefaultClient {
                             new UnlockDataWrapper(null, null, null, null, null,
                                     null));
                     continue;
-
                 }
 
                 // Iterate over the unlocksArray
@@ -488,34 +399,23 @@ public class ProfileClient extends DefaultClient {
 
                     if (unlockData == null) {
                         continue;
-
                     }
 
                     // Send it to the appropriate
                     if (unlockData.getType().equals(UnlockData.CATEGORY_WEAPON)) {
-
                         weaponArray.add(unlockData);
-
                     } else if (unlockData.getType().equals(
                             UnlockData.CATEGORY_ATTACHMENT)) {
-
                         attachmentArray.add(unlockData);
-
                     } else if (unlockData.getType().equals(
                             UnlockData.CATEGORY_KIT)) {
-
                         kitUnlockArray.add(unlockData);
-
                     } else if (unlockData.getType().equals(
                             UnlockData.CATEGORY_VEHICLE)) {
-
                         vehicleUpgradeArray.add(unlockData);
-
                     } else if (unlockData.getType().equals(
                             UnlockData.CATEGORY_SKILL)) {
-
                         skillArray.add(unlockData);
-
                     }
 
                 }
@@ -541,23 +441,16 @@ public class ProfileClient extends DefaultClient {
                                 skillArray, unlockArray));
 
             }
-
             return unlockDataMap;
 
         } catch (Exception ex) {
-
-            ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public UnlockData getUnlockDataFromJSON(JSONObject row, double minCompletion)
             throws WebsiteHandlerException {
-
         try {
-
             // Attributes
             final String[] unlockCategories = {UnlockData.CATEGORY_WEAPON,
                     UnlockData.CATEGORY_ATTACHMENT,
@@ -583,40 +476,25 @@ public class ProfileClient extends DefaultClient {
 
                 // Add them to the array
                 return new UnlockData(
-
                         row.optInt("kit", 0), unlockDetails.getDouble("completion"),
                         unlockDetails.optLong("valueNeeded", 0),
                         unlockDetails.optLong("actualValue", 0),
                         row.getString("parentId"),
                         detailObject.getString("unlockId"),
                         unlockDetails.getString("codeNeeded"), category
-
                 );
-
             }
-
             return null;
-
         } catch (Exception ex) {
-
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public ProfileInformation getInformation(Context context,
                                              long activeProfileId) throws WebsiteHandlerException {
-
         try {
-
             // Let's go!
-
             List<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
-            Log.d(Constants.DEBUG_TAG,
-                    "Information from => "
-                            + RequestHandler.generateUrl(URL_INFO,
-                            mProfileData.getUsername()));
             String httpContent = mRequestHandler.get(
                     RequestHandler.generateUrl(URL_INFO,
                             mProfileData.getUsername()),
@@ -624,9 +502,7 @@ public class ProfileClient extends DefaultClient {
 
             // Did we manage?
             if ("".equals(httpContent)) {
-
                 throw new WebsiteHandlerException("Could not get the profile.");
-
             } else {
 
                 // JSON Objects
@@ -658,8 +534,7 @@ public class ProfileClient extends DefaultClient {
                 PersonaData[] personaArray = new PersonaData[numSoldiers];
 
                 // Get the username
-                String username = profileCommonObject.getJSONObject("user")
-                        .getString("username");
+                String username = profileCommonObject.getJSONObject("user").getString("username");
 
                 // Is status messages null?
                 if (statusMessage == null) {
@@ -668,16 +543,11 @@ public class ProfileClient extends DefaultClient {
                 }
 
                 // What's up with the user?
-                if (presenceObject.isNull("serverName")
-                        && presenceObject.getBoolean("isPlaying")) {
-
+                if (presenceObject.isNull("serverName") && presenceObject.getBoolean("isPlaying")) {
                     playingOn = (presenceObject.getInt("platform") == 2) ? "Xbox Live"
                             : "Playstation Network";
-
                 } else {
-
                     playingOn = presenceObject.optString("serverName", "");
-
                 }
 
                 for (int i = 0, max = numSoldiers; i < max; i++) {
@@ -693,8 +563,8 @@ public class ProfileClient extends DefaultClient {
                             (personaObject.isNull("personaName") ? username
                                     : personaObject.getString("personaName")),
                             DataBank.getPlatformIdFromName(personaObject
-                                    .getString("namespace")), null);
-
+                                    .getString("namespace")), null
+                    );
                 }
 
                 // Iterate over the platoons
@@ -708,36 +578,26 @@ public class ProfileClient extends DefaultClient {
 
                     // Is it cached?
                     if (!CacheHandler.isCached(context, title)) {
-
                         PlatoonClient.cacheBadge(
-
                                 context, currItem.getString("badgePath"), title,
                                 Constants.DEFAULT_BADGE_SIZE
-
                         );
-
                     }
 
                     // Store the data
                     platoonDataArray.add(
-
                             new PlatoonData(
-
                                     Long.parseLong(currItem.getString("id")), currItem
                                     .getInt("fanCounter"), currItem
                                     .getInt("memberCounter"), currItem
                                     .getInt("platform"), currItem.getString("name"),
                                     currItem.getString("tag"), title, !currItem
                                     .getBoolean("hidden")
-
                             )
-
                     );
-
                 }
 
                 ProfileInformation tempProfile = new ProfileInformation(
-
                         userInfo.optInt("age", 0), mProfileData.getId(),
                         userInfo.optLong("birthdate", 0), userInfo.optLong(
                         "lastLogin", 0), statusMessage.optLong(
@@ -751,47 +611,31 @@ public class ProfileClient extends DefaultClient {
                         presenceObject.getBoolean("isOnline"),
                         presenceObject.getBoolean("isPlaying"),
                         profileCommonObject.getString("friendStatus").equals(
-                                "ACCEPTED"), platoonDataArray);
+                                "ACCEPTED"), platoonDataArray
+                );
 
                 // Let's log it
                 if (CacheHandler.Profile.insert(context, tempProfile) == 0) {
-
                     CacheHandler.Profile.update(context, tempProfile);
-
                 }
-
-                // RETURN
                 return tempProfile;
-
             }
-
         } catch (Exception ex) {
-
-            ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     //
     public static List<GeneralSearchResult> search(Context context,
                                                    String keyword, String checksum) throws WebsiteHandlerException {
-
         // Init
         List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
-
         try {
-
             // Get the content
             String httpContent = new RequestHandler().post(
-
-                    URL_SEARCH, RequestHandler.generatePostData(
-
-                    FIELD_NAMES_SEARCH, keyword, checksum
-
-            ), RequestHandler.HEADER_NORMAL
-
+                URL_SEARCH, 
+                RequestHandler.generatePostData(FIELD_NAMES_SEARCH, keyword, checksum), 
+                RequestHandler.HEADER_NORMAL
             );
 
             // Did we manage?
@@ -813,27 +657,18 @@ public class ProfileClient extends DefaultClient {
 
                         // Save it into an array
                         results.add(
-
-                                new GeneralSearchResult(
-
-                                        new ProfileData.Builder(Long.parseLong(tempObj
-                                                .getString("userId")), tempObj
-                                                .getString("username")).gravatarHash(
-                                                tempObj.optString("gravatarMd5")).build()
-
-                                )
-
+                            new GeneralSearchResult(
+                                new ProfileData.Builder(Long.parseLong(tempObj
+                                        .getString("userId")), tempObj
+                                        .getString("username")).gravatarHash(
+                                        tempObj.optString("gravatarMd5")).build()
+                            )
                         );
                     }
-
                 }
-
             }
-
         } catch (Exception ex) {
-
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
         // Return the results
         return (ArrayList<GeneralSearchResult>) results;
@@ -841,12 +676,9 @@ public class ProfileClient extends DefaultClient {
     }
 
     public Map<Long, List<WeaponDataWrapper>> getWeapons() {
-
         try {
-
             // Init
             Map<Long, List<WeaponDataWrapper>> weaponDataMap = new HashMap<Long, List<WeaponDataWrapper>>();
-
             for (int i = 0, max = mProfileData.getNumPersonas(); i < max; i++) {
 
                 // Init the array
@@ -856,11 +688,9 @@ public class ProfileClient extends DefaultClient {
                 String httpContent = mRequestHandler.get(
 
                         RequestHandler.generateUrl(
-
                                 URL_WEAPONS, mProfileData.getPersona(i).getId(), mProfileData
                                 .getPersona(i).getPlatformId()),
                         RequestHandler.HEADER_NORMAL
-
                 );
 
                 // So... how'd it go?
@@ -901,35 +731,25 @@ public class ProfileClient extends DefaultClient {
                                     .getJSONArray(currentItem.getString(guid));
 
                             // Iterate over the unlocks
-                            for (int uCount = 0, maxUCount = currentUnlocks
-                                    .length(); uCount < maxUCount; uCount++) {
+                            for (int uCount = 0, maxUCount = currentUnlocks.length(); uCount < maxUCount; uCount++) {
 
                                 // Grab the unlocks
-                                UnlockData unlockData = getUnlockDataFromJSON(
-                                        currentUnlocks.getJSONObject(uCount), 0);
+                                UnlockData unlockData = getUnlockDataFromJSON(currentUnlocks.getJSONObject(uCount), 0);
                                 if (unlockData == null) {
                                     continue;
                                 }
 
                                 // Increment
-                                if (unlockData.getScoreCurrent() >= unlockData
-                                        .getScoreNeeded()) {
-
+                                if (unlockData.getScoreCurrent() >= unlockData.getScoreNeeded()) {
                                     numUnlocked++;
-
                                 }
-
                                 unlocks.add(unlockData);
-
                             }
-
                         }
                         /* TODO: VALIDATE BURST MODES */
                         // Store it
                         weaponDataArray.add(
-
                                 new WeaponDataWrapper(
-
                                         numUnlocked, new WeaponInfo(currentItem
                                         .getString("guid"), currentItem
                                         .getString("name"), currentItem
@@ -939,9 +759,8 @@ public class ProfileClient extends DefaultClient {
                                         .getBoolean("fireModeAuto"),
                                         currentWeapon.getBoolean("fireModeBurst"),
                                         currentWeapon.getBoolean("fireModeSingle")
-
-                                ), new WeaponStats(
-
+                                ), 
+                                new WeaponStats(
                                         currentItem.getString("name"), currentItem
                                         .getString("guid"), currentItem
                                         .getString("slug"),
@@ -954,48 +773,33 @@ public class ProfileClient extends DefaultClient {
                                         .getDouble("accuracy"), currentItem
                                         .getDouble("serviceStars"), currentItem
                                         .optDouble("serviceStarProgress", 0.0)
-
-                                ), unlocks
-
-                                )
-
+                                ), 
+                                unlocks
+                            )
                         );
-
                     }
-
                 }
 
                 Collections.sort(weaponDataArray,
                         new WeaponDataWrapperComparator());
                 weaponDataMap.put(mProfileData.getPersona(i).getId(),
                         weaponDataArray);
-
             }
-
-            // Return it!
             return weaponDataMap;
 
         } catch (RequestHandlerException ex) {
-
             ex.printStackTrace();
             return null;
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             return null;
-
         }
-
     }
 
     public HashMap<Long, WeaponDataWrapper> getWeapon(WeaponInfo weaponInfo,
                                                       WeaponStats weaponStats) {
-
         try {
-
             // Init
-
             List<UnlockData> unlockArray = new ArrayList<UnlockData>();
             HashMap<Long, WeaponDataWrapper> weaponDataArray = new HashMap<Long, WeaponDataWrapper>();
 
@@ -1004,16 +808,12 @@ public class ProfileClient extends DefaultClient {
 
                 // Get the data
                 String httpContent = mRequestHandler.get(
-
                         RequestHandler.generateUrl(
-
                                 URL_WEAPONS_INFO, mProfileData.getPersona(i).getName(),
                                 mProfileData.getPersona(i).getId(), weaponStats
                                 .getSlug(), mProfileData.getPersona(i)
                                 .getPlatformId()
-
                         ), RequestHandler.HEADER_NORMAL
-
                 );
 
                 // So... how'd it go?
@@ -1034,28 +834,21 @@ public class ProfileClient extends DefaultClient {
                     for (int count = 0, maxCount = unlockObjectArray.length(); count < maxCount; count++) {
 
                         // Get the current item
-                        JSONObject unlockObject = unlockObjectArray
-                                .getJSONObject(count);
-                        JSONObject unlockObjectBy = unlockObject
-                                .getJSONObject("unlockedBy");
+                        JSONObject unlockObject = unlockObjectArray.getJSONObject(count);
+                        JSONObject unlockObjectBy = unlockObject.getJSONObject("unlockedBy");
 
                         // Populate the array
                         unlockArray.add(
-
-                                new UnlockData(
-
-                                        weaponStats.getKitId(), unlockObjectBy.optDouble(
-                                        "completion", 0), unlockObjectBy.optLong(
-                                        "valueNeeded", 0), unlockObjectBy.optLong(
-                                        "actualValue", 0), weaponStats.getName(),
-                                        unlockObject.getString("unlockId"),
-                                        unlockObjectBy.getString("codeNeeded"),
-                                        UnlockData.CATEGORY_ATTACHMENT
-
-                                )
-
+                            new UnlockData(
+                                weaponStats.getKitId(), unlockObjectBy.optDouble(
+                                "completion", 0), unlockObjectBy.optLong(
+                                "valueNeeded", 0), unlockObjectBy.optLong(
+                                "actualValue", 0), weaponStats.getName(),
+                                unlockObject.getString("unlockId"),
+                                unlockObjectBy.getString("codeNeeded"),
+                                UnlockData.CATEGORY_ATTACHMENT
+                            )
                         );
-
                     }
 
                     // Sort the unlocks
@@ -1063,40 +856,28 @@ public class ProfileClient extends DefaultClient {
 
                     // Add the data array to the WeaponDataWrapper
                     weaponDataArray.put(
-
-                            mProfileData.getPersona(i).getId(), new WeaponDataWrapper(
-
-                            0, weaponInfo, weaponStats, unlockArray
-
-                    )
-
+                        mProfileData.getPersona(i).getId(), 
+                        new WeaponDataWrapper(
+                    		0, weaponInfo, weaponStats, unlockArray
+	                    )
                     );
                 }
-
             }
-
             // Return it!
             return weaponDataArray;
 
         } catch (RequestHandlerException ex) {
-
             ex.printStackTrace();
             return null;
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             return null;
-
         }
-
     }
 
     public HashMap<Long, AssignmentDataWrapper> getAssignments(Context c)
             throws WebsiteHandlerException {
-
         try {
-
             // Attributes
             HashMap<Long, AssignmentDataWrapper> assignmentMap = new HashMap<Long, AssignmentDataWrapper>();
             List<AssignmentData> b2kAssignments = new ArrayList<AssignmentData>();
@@ -1113,23 +894,17 @@ public class ProfileClient extends DefaultClient {
 
                 // Get the JSON!
                 String httpContent = mRequestHandler.get(
-
                         RequestHandler.generateUrl(
-
                                 URL_ASSIGNMENTS, mProfileData.getPersona(count).getName(),
                                 mProfileData.getPersona(count).getId(), mProfileData
                                 .getId(), mProfileData.getPersona(count)
                                 .getPlatformId()
-
                         ), RequestHandler.HEADER_AJAX
-
                 );
 
                 // Parse the JSON!
-                JSONObject topLevel = new JSONObject(httpContent)
-                        .getJSONObject("data");
+                JSONObject topLevel = new JSONObject(httpContent).getJSONObject("data");
                 if (topLevel.isNull("missionTrees")) {
-
                     assignmentMap.put(mProfileData.getPersona(count).getId(),
                             new AssignmentDataWrapper());
                     continue;
@@ -1153,63 +928,42 @@ public class ProfileClient extends DefaultClient {
 
                     // Init
                     switch (mId) {
-
                         case 512:
                             b2kAssignments.addAll(currentList);
                             break;
-
                         case 1024:
                             premiumAssignments.addAll(currentList);
                             break;
-
                         case 2048:
                             cqAssignments.addAll(currentList);
                             break;
-
                         default:
                             Log.d(Constants.DEBUG_TAG,
                                     "New assignments available!!!");
                             break;
-
                     }
-
                 }
-
                 // Add the items
                 assignmentMap.put(mProfileData.getPersona(count).getId(),
                         new AssignmentDataWrapper(b2kAssignments,
                                 premiumAssignments, cqAssignments));
-
             }
-
-            Log.d(Constants.DEBUG_TAG, "numB2K => " + b2kAssignments.size());
-            Log.d(Constants.DEBUG_TAG,
-                    "numPremium => " + premiumAssignments.size());
-            Log.d(Constants.DEBUG_TAG, "numCQ => " + cqAssignments.size());
             return assignmentMap;
 
         } catch (Exception ex) {
-
-            ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public List<AssignmentData> getAssignmentsFromJSON(JSONObject missions) {
-
         // Init
         List<AssignmentData> assignments = new ArrayList<AssignmentData>();
         try {
-
             // Get the JSONObject per loop
             JSONArray jsonArrayKeys = missions.names();
             List<String> stringArrayKeys = new ArrayList<String>();
             for (int i = 0, max = jsonArrayKeys.length(); i < max; i++) {
-
                 stringArrayKeys.add(String.valueOf(jsonArrayKeys.get(i)));
-
             }
 
             // Iterate over the label from above
@@ -1218,8 +972,7 @@ public class ProfileClient extends DefaultClient {
 
                 JSONObject assignment = missions.getJSONObject(key);
                 JSONArray criteriasJSON = assignment.getJSONArray("criterias");
-                JSONArray dependenciesJSON = assignment
-                        .getJSONArray("dependencies");
+                JSONArray dependenciesJSON = assignment.getJSONArray("dependencies");
                 JSONArray unlocksJSON = assignment.getJSONArray("unlocks");
 
                 // Init
@@ -1232,14 +985,10 @@ public class ProfileClient extends DefaultClient {
                         .length(); criteriaCounter < criteriaCount; criteriaCounter++) {
 
                     // Get the current item
-                    JSONObject currentItem = criteriasJSON
-                            .getJSONObject(criteriaCounter);
-
+                    JSONObject currentItem = criteriasJSON.getJSONObject(criteriaCounter);
                     // New object!
                     criterias.add(
-
                             new AssignmentData.Objective(
-
                                     currentItem.getDouble("actualValue"), currentItem
                                     .getDouble("completionValue"), currentItem
                                     .getString("statCode"), currentItem
@@ -1247,11 +996,8 @@ public class ProfileClient extends DefaultClient {
                                     .getString("paramY"), currentItem
                                     .getString("descriptionID"), currentItem
                                     .getString("unit")
-
                             )
-
                     );
-
                 }
 
                 // Alright, let's do this
@@ -1263,15 +1009,10 @@ public class ProfileClient extends DefaultClient {
 
                     // New object!
                     dependencies.add(
-
-                            new AssignmentData.Dependency(
-
-                                    currentItem.getInt("count"), currentItem.getString("code")
-
-                            )
-
+                        new AssignmentData.Dependency(
+                            currentItem.getInt("count"), currentItem.getString("code")
+                        )
                     );
-
                 }
 
                 // Alright, let's do this
@@ -1282,24 +1023,19 @@ public class ProfileClient extends DefaultClient {
 
                     // New object!
                     unlocks.add(
+                        new AssignmentData.Unlock(
+                                currentItem.getString("unlockId"), currentItem
+                                .getString("unlockType"), currentItem
+                                .getBoolean("visible")
 
-                            new AssignmentData.Unlock(
-
-                                    currentItem.getString("unlockId"), currentItem
-                                    .getString("unlockType"), currentItem
-                                    .getBoolean("visible")
-
-                            )
-
+                        )
                     );
-
                 }
 
                 // Add the assignment
                 Log.d(Constants.DEBUG_TAG, "key => " + key);
                 int[] resources = DataBank.getResourcesForAssignment(key);
                 if (resources != null) {
-
                     assignments.add(new AssignmentData(resources[0],
                             resources[1], assignment.getString("stringID"),
                             assignment.getString("descriptionID"), assignment
@@ -1308,13 +1044,9 @@ public class ProfileClient extends DefaultClient {
 
                     assignmentCounter++;
                 }
-
             }
-
         } catch (JSONException ex) {
-
             ex.printStackTrace();
-
         }
 
         Collections.sort(assignments, new AssignmentComparator());
@@ -1323,27 +1055,20 @@ public class ProfileClient extends DefaultClient {
 
     public ArrayList<PlatoonData> getPlatoons(final Context context)
             throws WebsiteHandlerException {
-
-        // Inir
+        // Init
         List<PlatoonData> platoons = new ArrayList<PlatoonData>();
-
         try {
 
             // Get the content
             String httpContent = mRequestHandler.get(
-
                     RequestHandler.generateUrl(ProfileClient.URL_INFO,
                             mProfileData.getUsername()), RequestHandler.HEADER_AJAX
-
             );
 
             // Is it ok?
             if ("".equals(httpContent)) {
-
                 return null;
-
             } else {
-
                 // JSON
                 JSONArray platoonArray = new JSONObject(httpContent)
                         .getJSONObject("context")
@@ -1361,69 +1086,45 @@ public class ProfileClient extends DefaultClient {
 
                         // Let's cache the gravatar
                         String title = currItem.getString("id") + ".jpeg";
-
-                        // Is it cached?
                         if (!CacheHandler.isCached(context, title)) {
-
                             PlatoonClient.cacheBadge(
-
                                     context, currItem.getString("badgePath"), title,
                                     Constants.DEFAULT_BADGE_SIZE
-
                             );
-
                         }
-
+                        
                         // Add to the ArrayList
                         platoons.add(
-
-                                new PlatoonData(
-
-                                        Long.parseLong(currItem.getString("id")), currItem
-                                        .getInt("fanCounter"), currItem
-                                        .getInt("memberCounter"), currItem
-                                        .getInt("platform"),
-                                        currItem.getString("name"), currItem
-                                        .getString("tag"), title, !currItem
-                                        .getBoolean("hidden")
-
-                                )
-
+                            new PlatoonData(
+                                    Long.parseLong(currItem.getString("id")), currItem
+                                    .getInt("fanCounter"), currItem
+                                    .getInt("memberCounter"), currItem
+                                    .getInt("platform"),
+                                    currItem.getString("name"), currItem
+                                    .getString("tag"), title, !currItem
+                                    .getBoolean("hidden")
+                            )
                         );
                     }
-
                 }
-
                 return (ArrayList<PlatoonData>) platoons;
-
             }
-
         } catch (Exception ex) {
-
-            ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public static boolean cacheGravatar(Context c, String h, int s) {
-
         try {
-
             // Get the external cache dir
             String cacheDir = PublicUtils.getCachePath(c);
-
-            // How does it end?
             if (!cacheDir.endsWith("/")) {
                 cacheDir += "/";
             }
 
             // Get the actual stream
             HttpEntity httpEntity = new RequestHandler().getHttpEntity(
-
-                    RequestHandler.generateUrl(Constants.URL_GRAVATAR, h, s, s), false
-
+                RequestHandler.generateUrl(Constants.URL_GRAVATAR, h, s, s), false
             );
 
             // Init
@@ -1441,21 +1142,17 @@ public class ProfileClient extends DefaultClient {
 
             // Iterate
             while (offset < contentLength) {
-
                 bytesRead = in.read(data, offset, data.length - offset);
                 if (bytesRead == -1) {
                     break;
                 }
                 offset += bytesRead;
-
             }
 
             // Alright?
             if (offset != contentLength) {
-
                 throw new IOException("Only read " + offset
                         + " bytes; Expected " + contentLength + " bytes");
-
             }
 
             // Close the stream
@@ -1464,16 +1161,11 @@ public class ProfileClient extends DefaultClient {
             out.write(data);
             out.flush();
             out.close();
-
             return true;
 
         } catch (Exception ex) {
-
             ex.printStackTrace();
             return false;
-
         }
-
     }
-
 }

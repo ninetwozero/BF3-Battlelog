@@ -146,7 +146,7 @@ public class COMClient extends DefaultClient {
 
         try {
 
-            // Let's login everybody!
+
             String httpContent = mRequestHandler.post(
 
                     URL_SEND,
@@ -199,7 +199,7 @@ public class COMClient extends DefaultClient {
 
         try {
 
-            // Let's login everybody!
+
             String httpContent = mRequestHandler.post(
 
                     URL_FRIENDS,
@@ -363,7 +363,7 @@ public class COMClient extends DefaultClient {
 
         try {
 
-            // Let's login everybody!
+
             List<ProfileData> profileArray = new ArrayList<ProfileData>();
             String httpContent = mRequestHandler.post(
 
@@ -433,7 +433,7 @@ public class COMClient extends DefaultClient {
 
         try {
 
-            // Let's login everybody!
+
             String url = accepting ? Constants.URL_FRIEND_ACCEPT : Constants.URL_FRIEND_DECLINE;
             String httpContent = mRequestHandler.post(
 
@@ -459,7 +459,7 @@ public class COMClient extends DefaultClient {
 
         try {
 
-            // Let's login everybody!
+
             String httpContent = mRequestHandler.post(
 
                     RequestHandler.generateUrl(URL_FRIEND_REQUESTS, profileId),
@@ -485,7 +485,7 @@ public class COMClient extends DefaultClient {
 
         try {
 
-            // Let's login everybody!
+
             String httpContent = mRequestHandler.get(
 
                     RequestHandler.generateUrl(URL_FRIEND_DELETE, profileId),

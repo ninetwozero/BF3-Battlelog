@@ -61,7 +61,7 @@ public class AsyncLogout extends AsyncTask<Void, Integer, Integer> {
 
         try {
 
-            // Let's login everybody!
+
             RequestHandler wh = new RequestHandler();
             httpContent = wh.get(Constants.URL_LOGOUT, 0);
 

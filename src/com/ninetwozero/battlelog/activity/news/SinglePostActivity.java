@@ -136,19 +136,15 @@ public class SinglePostActivity extends FragmentActivity implements DefaultFragm
 
             // Add the profileData
             if (mNews) {
-
                 mFragmentOverview.setData(mNewsData);
                 mFragmentComment.setId(mNewsData.getId());
                 mFragmentComment.setType(CommentData.TYPE_NEWS);
-
             } else {
-
                 mFragmentOverview.setData(mFeedData);
                 mFragmentComment.setId(mFeedData.getId());
                 mFragmentComment.setType(CommentData.TYPE_FEED);
-
             }
-
+            
             // Get the ViewPager
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
