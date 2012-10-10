@@ -14,14 +14,30 @@
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@drawable/bg_bf3_main">
+                android:layout_height="fill_parent">
+  <RelativeLayout
+    android:id="@+id/eula_layout"
+    style="@style/MatchWidth">
+    <TextView
+      android:id="@+id/eula_text"
+      style="@style/MatchWidth"
+      android:text="@string/eula_text"
+      />
+    <CheckBox
+      android:id="@+id/agree_checkbox"
+      style="@style/Wrap"
+      android:layout_below="@id/eula_text"
+      android:text="@string/agree_text"
+      />
+    </RelativeLayout>
 
   <RelativeLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
-      android:layout_marginBottom="40dp">
+      android:layout_marginBottom="40dp"
+      android:visibility="gone"
+      >
 
     <EditText
         android:id="@+id/field_email"
