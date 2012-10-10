@@ -77,7 +77,7 @@ public class AsyncSessionRenew extends AsyncTask<PostData, Integer, Boolean> {
         try {
 
             // Let's try
-            AsyncLogin login = new AsyncLogin(context, true);
+            AsyncLogin login = new AsyncLogin(context);
             profile = login.renewSession(arg0).getProfileData();
 
             // Did it go ok?

@@ -104,7 +104,7 @@ public class ForumSearchAdapter extends BaseAdapter {
 
             // Set the colors
             convertView.findViewById(R.id.bar_official).setBackgroundColor(
-                    context.getResources().getColor(R.color.lightgrey));
+                    context.getResources().getColor(R.color.very_light_grey));
 
         }
 
