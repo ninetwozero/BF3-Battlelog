@@ -86,8 +86,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment,
 	// Constants
 	public final static int CONTEXT_ID_HOOAH = 0;
 	public final static int CONTEXT_ID_SINGLE = 1;
-	public final static int CONTEXT_ID_GOTO = 2;
-	public final static int CONTEXT_ID_VIEW_HOOAH = 3;
+	public final static int CONTEXT_ID_VIEW_HOOAH = 2;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -234,13 +233,6 @@ public class FeedFragment extends ListFragment implements DefaultFragment,
 
 		menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_SINGLE, 0,
 				R.string.label_single_post_view);
-
-		// Platoon feeds only have posts that would open a new platoon activity
-		// => exclude
-		if (mType != FeedClient.TYPE_PLATOON) {
-			menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_GOTO, 0,
-					R.string.label_goto_item);
-		}
 	}
 
 	public boolean handleSelectedContextItem(
@@ -266,10 +258,6 @@ public class FeedFragment extends ListFragment implements DefaultFragment,
 				HooahListDialogFragment dialog = HooahListDialogFragment
 						.newInstance(feedItem, getTag());
 				dialog.show(manager, "profile_dialog");
-			} else if (item.getItemId() == CONTEXT_ID_GOTO) {
-				if (feedItem.getIntent(mContext) != null) {
-					startActivity(feedItem.getIntent(mContext));
-				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
