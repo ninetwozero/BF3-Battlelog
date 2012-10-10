@@ -69,7 +69,7 @@ public class FeedClient extends DefaultClient {
             "assignmentcomplete",
             "commentedgamereport",
             "commentedblog",
-            "gameaccess",
+ "gameaccess",
             "sharedgameevent"
     };
 

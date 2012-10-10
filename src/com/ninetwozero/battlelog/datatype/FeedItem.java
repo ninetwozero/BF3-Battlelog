@@ -30,272 +30,227 @@ import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
 
 public class FeedItem implements Parcelable {
 
-    // Constants
-    public final static String LABEL_NEW_STATUS = "statusmessage";
-    public final static int TYPE_NEW_STATUS = 0;
-    public final static int TYPE_NEW_FRIEND = 1;
-    public final static int TYPE_NEW_FORUM_THREAD = 2;
-    public final static int TYPE_NEW_FORUM_POST = 3;
-    public final static int TYPE_GOT_WALL_POST = 4;
-    public final static int TYPE_GOT_PLATOON_POST = 5;
-    public final static int TYPE_NEW_FAVSERVER = 6;
-    public final static int TYPE_NEW_RANK = 7;
-    public final static int TYPE_COMPLETED_LEVEL = 8;
-    public final static int TYPE_NEW_PLATOON = 9;
-    public final static int TYPE_NEW_EMBLEM = 10;
-    public final static int TYPE_JOINED_PLATOON = 11;
-    public final static int TYPE_KICKED_PLATOON = 12;
-    public final static int TYPE_LEFT_PLATOON = 13;
-    public final static int TYPE_COMPLETED_GAME = 14;
-    public final static int TYPE_GOT_AWARD = 15;
-    public final static int TYPE_COMPLETED_ASSIGNMENT = 16;
-    public final static int TYPE_NEW_COMMENT_GAME = 17;
-    public final static int TYPE_NEW_COMMENT_BLOG = 18;
-    public final static int TYPE_NEW_EXPANSION = 19;
-    public final static int TYPE_NEW_SHARED_GAMEEVENT = 20;
+	// Constants
+	public final static String LABEL_NEW_STATUS = "statusmessage";
+	public final static int TYPE_NEW_STATUS = 0;
+	public final static int TYPE_NEW_FRIEND = 1;
+	public final static int TYPE_NEW_FORUM_THREAD = 2;
+	public final static int TYPE_NEW_FORUM_POST = 3;
+	public final static int TYPE_GOT_WALL_POST = 4;
+	public final static int TYPE_GOT_PLATOON_POST = 5;
+	public final static int TYPE_NEW_FAVSERVER = 6;
+	public final static int TYPE_NEW_RANK = 7;
+	public final static int TYPE_COMPLETED_LEVEL = 8;
+	public final static int TYPE_NEW_PLATOON = 9;
+	public final static int TYPE_NEW_EMBLEM = 10;
+	public final static int TYPE_JOINED_PLATOON = 11;
+	public final static int TYPE_KICKED_PLATOON = 12;
+	public final static int TYPE_LEFT_PLATOON = 13;
+	public final static int TYPE_COMPLETED_GAME = 14;
+	public final static int TYPE_GOT_AWARD = 15;
+	public final static int TYPE_COMPLETED_ASSIGNMENT = 16;
+	public final static int TYPE_NEW_COMMENT_GAME = 17;
+	public final static int TYPE_NEW_COMMENT_BLOG = 18;
+	public final static int TYPE_NEW_EXPANSION = 19;
+	public final static int TYPE_NEW_SHARED_GAMEEVENT = 20;
 
-    // Attributes
-    private long mId, mItemId, mDate;
-    private int mNumLikes, mNumComments, mType;
-    private String mTitle, mContent;
-    private ProfileData[] mProfileData;
-    private boolean mLiked, mCensored;
-    private String mGravatarHash;
-    private List<CommentData> mPreloadedComments;
+	// Attributes
+	private long mId, mItemId, mDate;
+	private int mNumLikes, mNumComments, mType;
+	private String mTitle, mContent;
+	private ProfileData[] mProfileData;
+	private boolean mLiked, mCensored;
+	private String mGravatarHash;
+	private List<CommentData> mPreloadedComments;
 
-    // Construct
-    public FeedItem(
-        long i, long iid, long nDate, int num, int numC, int tp,
-        String t, String c, ProfileData[] pd, boolean il, boolean cs, String im, 
-        List<CommentData> prlc
-    ) {
-        mId = i;
-        mItemId = iid;
-        mDate = nDate;
-        mNumLikes = num;
-        mNumComments = numC;
-        mType = tp;
-        mTitle = t;
-        mContent = c;
-        mProfileData = pd.clone();
-        mLiked = il;
-        mCensored = cs;
-        mGravatarHash = im;
-        mPreloadedComments = prlc;
-    }
+	// Construct
+	public FeedItem(long i, long iid, long nDate, int num, int numC, int tp,
+			String t, String c, ProfileData[] pd, boolean il, boolean cs,
+			String im, List<CommentData> prlc) {
+		mId = i;
+		mItemId = iid;
+		mDate = nDate;
+		mNumLikes = num;
+		mNumComments = numC;
+		mType = tp;
+		mTitle = t;
+		mContent = c;
+		mProfileData = pd.clone();
+		mLiked = il;
+		mCensored = cs;
+		mGravatarHash = im;
+		mPreloadedComments = prlc;
+	}
 
-    public FeedItem(Parcel in) {
-        mId = in.readLong();
-        mItemId = in.readLong();
-        mDate = in.readLong();
-        mNumLikes = in.readInt();
-        mNumComments = in.readInt();
-        mType = in.readInt();
-        mTitle = in.readString();
-        mContent = in.readString();
-        mLiked = (in.readInt() == 1);
-        mCensored = (in.readInt() == 1);
-        mGravatarHash = in.readString();
-        mProfileData = in.createTypedArray(ProfileData.CREATOR);
-        mPreloadedComments = in.createTypedArrayList(CommentData.CREATOR);
-    }
+	public FeedItem(Parcel in) {
+		mId = in.readLong();
+		mItemId = in.readLong();
+		mDate = in.readLong();
+		mNumLikes = in.readInt();
+		mNumComments = in.readInt();
+		mType = in.readInt();
+		mTitle = in.readString();
+		mContent = in.readString();
+		mLiked = (in.readInt() == 1);
+		mCensored = (in.readInt() == 1);
+		mGravatarHash = in.readString();
+		mProfileData = in.createTypedArray(ProfileData.CREATOR);
+		mPreloadedComments = in.createTypedArrayList(CommentData.CREATOR);
+	}
 
-    // Getters
-    public long getId() {
-        return mId;
-    }
+	// Getters
+	public long getId() {
+		return mId;
+	}
 
-    public long getItemId() {
-        return mItemId;
-    }
+	public long getItemId() {
+		return mItemId;
+	}
 
-    public long getDate() {
-        return mDate;
-    }
+	public long getDate() {
+		return mDate;
+	}
 
-    public int getNumComments() {
-        return mNumComments;
-    }
+	public int getNumComments() {
+		return mNumComments;
+	}
 
-    public int getNumLikes() {
-        return mNumLikes;
-    }
+	public int getNumLikes() {
+		return mNumLikes;
+	}
 
-    public String getTitle() {
-        return mTitle;
+	public String getTitle() {
+		return mTitle;
 
-    }
+	}
 
-    public String getContent() {
-        return mContent;
-    }
+	public String getContent() {
+		return mContent;
+	}
 
-    public int getType() {
-        return mType;
-    }
+	public int getType() {
+		return mType;
+	}
 
-    public ProfileData[] getProfileData() {
-        return mProfileData;
-    }
+	public ProfileData[] getProfileData() {
+		return mProfileData;
+	}
 
-    public ProfileData getProfile(int i) {
-        return (i <= mProfileData.length) ? mProfileData[i] : null;
-    }
+	public ProfileData getProfile(int i) {
+		return (i <= mProfileData.length) ? mProfileData[i] : null;
+	}
 
-    public boolean isLiked() {
-        return mLiked;
-    }
+	public boolean isLiked() {
+		return mLiked;
+	}
 
-    public boolean isCensored() {
-        return mCensored;
-    }
+	public boolean isCensored() {
+		return mCensored;
+	}
 
-    public String getAvatarForPost() {
-        return mGravatarHash;
-    }
-    
-    public boolean hasPreloadedComments() {
-    	return mPreloadedComments != null && mPreloadedComments.size() > 0;
-    }
-    
-    public List<CommentData> getPreloadedComments() {
-    	return mPreloadedComments;
-    }
+	public String getAvatarForPost() {
+		return mGravatarHash;
+	}
 
-    public Intent getIntent(Context c) {
+	public boolean hasPreloadedComments() {
+		return mPreloadedComments != null && mPreloadedComments.size() > 0;
+	}
 
-        // Get the correct format depending on the type
-        switch (mType) {
-            case FeedItem.TYPE_NEW_FORUM_THREAD:
-            case FeedItem.TYPE_NEW_FORUM_POST:
+	public List<CommentData> getPreloadedComments() {
+		return mPreloadedComments;
+	}
 
-                return new Intent(c, ForumActivity.class).putExtra(
+	public Intent getIntent(Context c) {
 
-                        "threadId", mItemId
+		// Get the correct format depending on the type
+		switch (mType) {
+		case FeedItem.TYPE_NEW_FORUM_THREAD:
+		case FeedItem.TYPE_NEW_FORUM_POST:
 
-                ).putExtra(
+			return new Intent(c, ForumActivity.class).putExtra(
 
-                        "threadTitle", "N/A"
+			"threadId", mItemId
 
-                ).putExtra("forumId", 0).putExtra("forumTitle", "N/A");
+			).putExtra(
 
-            case FeedItem.TYPE_NEW_PLATOON:
-            case FeedItem.TYPE_NEW_EMBLEM:
-            case FeedItem.TYPE_JOINED_PLATOON:
-            case FeedItem.TYPE_KICKED_PLATOON:
-            case FeedItem.TYPE_GOT_PLATOON_POST:
-            case FeedItem.TYPE_LEFT_PLATOON:
-                return new Intent(c, PlatoonActivity.class).putExtra("platoon",
-                        new PlatoonData(mItemId));
+			"threadTitle", "N/A"
 
-            case FeedItem.TYPE_COMPLETED_GAME:
-                return new Intent(c, UnlockActivity.class).putExtra("profile",
-                        mProfileData[0]);
+			).putExtra("forumId", 0).putExtra("forumTitle", "N/A");
 
-            case FeedItem.TYPE_NEW_RANK:
-            case FeedItem.TYPE_NEW_FRIEND:
-            case FeedItem.TYPE_GOT_WALL_POST:
-            case FeedItem.TYPE_COMPLETED_LEVEL:
-            case FeedItem.TYPE_NEW_STATUS:
-            case FeedItem.TYPE_NEW_FAVSERVER:
-            case FeedItem.TYPE_NEW_COMMENT_GAME:
-            case FeedItem.TYPE_NEW_COMMENT_BLOG:
-            case FeedItem.TYPE_NEW_EXPANSION:
-            case FeedItem.TYPE_GOT_AWARD:
-                return new Intent(c, ProfileActivity.class).putExtra(
+		case FeedItem.TYPE_NEW_PLATOON:
+		case FeedItem.TYPE_NEW_EMBLEM:
+		case FeedItem.TYPE_JOINED_PLATOON:
+		case FeedItem.TYPE_KICKED_PLATOON:
+		case FeedItem.TYPE_GOT_PLATOON_POST:
+		case FeedItem.TYPE_LEFT_PLATOON:
+			return new Intent(c, PlatoonActivity.class).putExtra("platoon",
+					new PlatoonData(mItemId));
 
-                        "profile", mProfileData[0]
+		case FeedItem.TYPE_COMPLETED_GAME:
+			return new Intent(c, UnlockActivity.class).putExtra("profile",
+					mProfileData[0]);
 
-                );
+		case FeedItem.TYPE_NEW_RANK:
+		case FeedItem.TYPE_NEW_FRIEND:
+		case FeedItem.TYPE_GOT_WALL_POST:
+		case FeedItem.TYPE_COMPLETED_LEVEL:
+		case FeedItem.TYPE_NEW_STATUS:
+		case FeedItem.TYPE_NEW_FAVSERVER:
+		case FeedItem.TYPE_NEW_COMMENT_GAME:
+		case FeedItem.TYPE_NEW_COMMENT_BLOG:
+		case FeedItem.TYPE_NEW_EXPANSION:
+		case FeedItem.TYPE_GOT_AWARD:
+			return new Intent(c, ProfileActivity.class).putExtra(
 
-            case FeedItem.TYPE_COMPLETED_ASSIGNMENT:
-                return new Intent(c, AssignmentActivity.class).putExtra(
-                        "profile",
-                        mProfileData[0]
-                );
+			"profile", mProfileData[0]
 
-            default:
-                return new Intent();
-        }
+			);
 
-    }
+		case FeedItem.TYPE_COMPLETED_ASSIGNMENT:
+			return new Intent(c, AssignmentActivity.class).putExtra("profile",
+					mProfileData[0]);
 
-    public String getOptionTitle(Context c) {
+		default:
+			return new Intent();
+		}
 
-        // Get the correct format depending on the type
-        switch (mType) {
-            case FeedItem.TYPE_NEW_FORUM_THREAD:
-            case FeedItem.TYPE_NEW_FORUM_POST:
-                return c.getString(R.string.label_goto_forum_thread);
+	}
 
-            case FeedItem.TYPE_NEW_PLATOON:
-            case FeedItem.TYPE_NEW_EMBLEM:
-            case FeedItem.TYPE_JOINED_PLATOON:
-            case FeedItem.TYPE_KICKED_PLATOON:
-            case FeedItem.TYPE_GOT_PLATOON_POST:
-            case FeedItem.TYPE_LEFT_PLATOON:
-                return c.getString(R.string.label_goto_platoon);
+	@Override
+	public int describeContents() {
 
-            case FeedItem.TYPE_COMPLETED_GAME:
-                return c.getString(R.string.label_goto_unlocks);
+		return 0;
 
-            case FeedItem.TYPE_NEW_RANK:
-            case FeedItem.TYPE_NEW_FRIEND:
-            case FeedItem.TYPE_GOT_WALL_POST:
-            case FeedItem.TYPE_COMPLETED_LEVEL:
-            case FeedItem.TYPE_NEW_STATUS:
-            case FeedItem.TYPE_NEW_FAVSERVER:
-            case FeedItem.TYPE_NEW_COMMENT_GAME:
-            case FeedItem.TYPE_NEW_COMMENT_BLOG:
-            case FeedItem.TYPE_NEW_EXPANSION:
-            case FeedItem.TYPE_GOT_AWARD:
-                return c.getString(R.string.label_goto_profile);
+	}
 
-            case FeedItem.TYPE_COMPLETED_ASSIGNMENT:
-                return c.getString(R.string.label_goto_assignments);
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
 
-            default:
-                return "N/A";
+		dest.writeLong(mId);
+		dest.writeLong(mItemId);
+		dest.writeLong(mDate);
+		dest.writeInt(mNumLikes);
+		dest.writeInt(mNumComments);
+		dest.writeInt(mType);
+		dest.writeString(mTitle);
+		dest.writeString(mContent);
+		dest.writeInt(mLiked ? 1 : 0);
+		dest.writeInt(mCensored ? 1 : 0);
+		dest.writeString(mGravatarHash);
+		dest.writeTypedArray(mProfileData, flags);
+		dest.writeTypedList(mPreloadedComments);
 
-        }
+	}
 
-    }
+	public static final Parcelable.Creator<FeedItem> CREATOR = new Parcelable.Creator<FeedItem>() {
 
-    @Override
-    public int describeContents() {
+		public FeedItem createFromParcel(Parcel in) {
+			return new FeedItem(in);
+		}
 
-        return 0;
+		public FeedItem[] newArray(int size) {
+			return new FeedItem[size];
+		}
 
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-        dest.writeLong(mId);
-        dest.writeLong(mItemId);
-        dest.writeLong(mDate);
-        dest.writeInt(mNumLikes);
-        dest.writeInt(mNumComments);
-        dest.writeInt(mType);
-        dest.writeString(mTitle);
-        dest.writeString(mContent);
-        dest.writeInt(mLiked ? 1 : 0);
-        dest.writeInt(mCensored ? 1 : 0);
-        dest.writeString(mGravatarHash);
-        dest.writeTypedArray(mProfileData, flags);
-        dest.writeTypedList(mPreloadedComments);
-
-    }
-
-    public static final Parcelable.Creator<FeedItem> CREATOR = new Parcelable.Creator<FeedItem>() {
-
-        public FeedItem createFromParcel(Parcel in) {
-            return new FeedItem(in);
-        }
-
-        public FeedItem[] newArray(int size) {
-            return new FeedItem[size];
-        }
-
-    };
+	};
 }
