@@ -99,9 +99,11 @@
     @karllindmark on Twitter (https://twitter.com/karllindmark).&lt;br />&lt;br />
     Thank you for your support!
   </string>
-  <string name="eula_text">This is NOT EA/DICE application! This is 3rd party application. In order to use this application you will need to use your EA login details.
-    Please rest assured that we will never store or use these details anywhere beside login process you are about under take</string>
-  <string name="agree_text"></string>
+  <string name="notice_text">&lt;b>This is NOT EA/DICE application! &lt;/b> &lt;br /> This is a 3rd party application developed by open source community.
+    In order to use this application you will need to use your EA login details. &lt;br /> &lt;br />
+    Please be assured that we will use these details only in the login process you are about undertake and we will &lt;b>NEVER &lt;/b> store or share this data in any way.
+    By clicking on the checkbox below, you will be confirming that you red this notice and want to proceed with the login.</string>
+  <string name="agree_text">I red the notice and want to login</string>
   <string name="general_invalid_email">Invalid e-mail address.</string>
   <string name="general_invalid_password">Please enter your password.</string>
   <string name="general_changelog_version">Changelog version {version}</string>

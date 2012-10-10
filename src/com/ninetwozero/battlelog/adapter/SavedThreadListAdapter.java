@@ -137,7 +137,7 @@ public class SavedThreadListAdapter extends BaseAdapter {
         convertView.findViewById(R.id.bar_status).setBackgroundColor(
                 context.getResources().getColor(
                         currentItem.hasUnread() ? R.color.green
-                                : R.color.lightgrey));
+                                : R.color.very_light_grey));
 
         // Store the object
         convertView.setTag(currentItem);

@@ -21,7 +21,7 @@
       android:layout_width="10dp"
       android:layout_height="fill_parent"
       android:layout_alignParentLeft="true"
-      android:background="@color/lightgrey"/>
+      android:background="@color/very_light_grey"/>
 
   <RelativeLayout
       android:id="@+id/wrap_top"
