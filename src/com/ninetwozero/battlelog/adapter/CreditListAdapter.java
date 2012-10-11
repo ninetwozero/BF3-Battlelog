@@ -101,7 +101,7 @@ public class CreditListAdapter extends BaseAdapter {
 
             // Set the fields
             ((TextView) convertView.findViewById(R.id.text_title))
-                    .setText(data.getName());
+                    .setText(data.getStringId());
             convertView.setOnClickListener(null);
 
         } else {
