@@ -32,18 +32,12 @@ public class AboutActivity extends CustomFragmentActivity implements
 
 	@Override
 	public void onCreate(final Bundle icicle) {
-
-		// onCreate - save the instance state
 		super.onCreate(icicle);
-
-		// Set the content view
 		setContentView(R.layout.viewpager_default);
 
 		// Setup the fragments
-		setup();
-
-		// Setup COM & feed
 		init();
+		setup();
 	}
 
 	public final void init() {
@@ -51,13 +45,10 @@ public class AboutActivity extends CustomFragmentActivity implements
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
-
 		super.onConfigurationChanged(newConfig);
-
 	}
 
 	public void setup() {
-
 		// Do we need to setup the fragments?
 		if (mListFragments == null) {
 
@@ -103,17 +94,11 @@ public class AboutActivity extends CustomFragmentActivity implements
 
 	@Override
 	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-
-		// Hotkeys
 		if (keyCode == KeyEvent.KEYCODE_BACK
-				&& (mViewPager.getCurrentItem() > 0)) {
-
+				&& (mViewPager.getCurrentItem() > 1 )) {
 			mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
 			return true;
-
 		}
-
 		return super.onKeyDown(keyCode, event);
-
 	}
 }
