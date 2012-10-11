@@ -14,6 +14,10 @@
 
 package com.ninetwozero.battlelog.activity;
 
+import java.util.List;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -23,14 +27,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
+
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
-
-import java.util.List;
 
 public class CustomFragmentActivity extends FragmentActivity {
 
@@ -88,9 +90,9 @@ public class CustomFragmentActivity extends FragmentActivity {
 
     }
 
+    /* @see http://stackoverflow.com/a/9021487 */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(Constants.SUPER_COOKIES,
                 RequestHandler.getCookies());
