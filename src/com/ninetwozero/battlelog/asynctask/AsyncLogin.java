@@ -88,7 +88,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     @Override
     protected void onProgressUpdate(Integer... values) {
         if (values[0].equals(1)) {
-            mProgressDialog.setMessage("Downloading information...");
+            mProgressDialog.setMessage("Fetching information (todo)...");
         }
     }
 
@@ -167,7 +167,6 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     private ProfileInformation doLogin(PostData[] postData) throws WebsiteHandlerException,
             RequestHandlerException {
         this.mPostData = postData.clone();
-
         try {
 
             // Let's login everybody!

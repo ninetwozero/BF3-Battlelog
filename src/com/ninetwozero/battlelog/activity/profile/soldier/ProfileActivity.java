@@ -14,297 +14,291 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
+import java.util.ArrayList;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.*;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.http.FeedClient;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
-import java.util.ArrayList;
+public class ProfileActivity extends CustomFragmentActivity implements
+		DefaultFragmentActivity {
+
+	// Fragment related
+	private ProfileOverviewFragment fragmentOverview;
+	private ProfileStatsFragment fragmentStats;
+	private FeedFragment fragmentFeed;
 
-public class ProfileActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
+	// Misc
+	private ProfileData profileData;
 
-    // Fragment related
-    private ProfileOverviewFragment fragmentOverview;
-    private ProfileStatsFragment fragmentStats;
-    private FeedFragment fragmentFeed;
+	@Override
+	public void onCreate(final Bundle icicle) {
 
-    // Misc
-    private ProfileData profileData;
+		// onCreate - save the instance state
+		super.onCreate(icicle);
+		setContentView(R.layout.viewpager_default);
+		
+		// Get the profile data or die
+		if (!getIntent().hasExtra("profile")) {
+			finish();
+		}
+		profileData = getIntent().getParcelableExtra("profile");
+		setup();
+		init();
+
+	}
 
-    @Override
-    public void onCreate(final Bundle icicle) {
+	public void init() {
+	}
 
-        // onCreate - save the instance state
-        super.onCreate(icicle);
+	public void reload() {
+		fragmentOverview.reload();
+	}
 
-        // Get the intent
-        if (!getIntent().hasExtra("profile")) {
-            finish();
-        }
+	public void setup() {
 
-        // Get the profile
-        profileData = getIntent().getParcelableExtra("profile");
+		// Do we need to setup the fragments?
+		if (mListFragments == null) {			
+			// Add them to the list
+			mListFragments = new ArrayList<Fragment>();
+			mListFragments
+					.add(fragmentOverview = (ProfileOverviewFragment) Fragment
+							.instantiate(this,
+									ProfileOverviewFragment.class.getName()));
+			mListFragments.add(fragmentStats = (ProfileStatsFragment) Fragment
+					.instantiate(this, ProfileStatsFragment.class.getName()));
+			mListFragments.add(fragmentFeed = (FeedFragment) Fragment
+					.instantiate(this, FeedFragment.class.getName()));
 
-        // Set the content view
-        setContentView(R.layout.viewpager_default);
+			// Add the profileData
+			fragmentOverview.setProfileData(profileData);
+			fragmentStats.setProfileData(profileData);
 
-        // Let's setup the fragments too
-        setup();
+			// We need to set the type
+			fragmentFeed.setTitle(profileData.getUsername());
+			fragmentFeed.setType(FeedClient.TYPE_PROFILE);
+			fragmentFeed.setId(profileData.getId());
+			fragmentFeed.setCanWrite(false);
 
-        // Init
-        init();
+			// Get the ViewPager
+			mViewPager = (ViewPager) findViewById(R.id.viewpager);
+			mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
-    }
+			// Fill the PagerAdapter & set it to the viewpager
+			mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-    public void init() {
+			mFragmentManager, new String[] { "OVERVIEW", "STATS", "FEED" },
+					mListFragments, mViewPager, mLayoutInflater);
+			mViewPager.setAdapter(mPagerAdapter);
+			mTabs.setAdapter(mPagerAdapter);
 
-    }
+			// Make sure the tabs follow
+			mViewPager.setOnPageChangeListener(mTabs);
+			mViewPager.setCurrentItem(0);
+			mViewPager.setOffscreenPageLimit(2);
 
-    public void reload() {
+		}
 
-        // ASYNC!!
-        fragmentOverview.reload();
+	}
 
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 
-    public void setup() {
+		// Inflate!!
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.option_profileview, menu);
+		return super.onCreateOptionsMenu(menu);
 
-        // Do we need to setup the fragments?
-        if (mListFragments == null) {
+	}
 
-            // Add them to the list
-            mListFragments = new ArrayList<Fragment>();
-            mListFragments.add(fragmentOverview = (ProfileOverviewFragment) Fragment.instantiate(
-                    this, ProfileOverviewFragment.class.getName()));
-            mListFragments.add(fragmentStats = (ProfileStatsFragment) Fragment.instantiate(this,
-                    ProfileStatsFragment.class.getName()));
-            mListFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this,
-                    FeedFragment.class.getName()));
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
 
-            // Add the profileData
-            fragmentOverview.setProfileData(profileData);
-            fragmentStats.setProfileData(profileData);
+		// Our own profile, no need to show the "extra" buttons
+		if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
 
-            // We need to set the type
-            fragmentFeed.setTitle(profileData.getUsername());
-            fragmentFeed.setType(FeedClient.TYPE_PROFILE);
-            fragmentFeed.setId(profileData.getId());
-            fragmentFeed.setCanWrite(false);
+			menu.removeItem(R.id.option_friendadd);
+			menu.removeItem(R.id.option_frienddel);
+			menu.removeItem(R.id.option_compare);
+			menu.removeItem(R.id.option_unlocks);
 
-            // Get the ViewPager
-            mViewPager = (ViewPager) findViewById(R.id.viewpager);
-            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+		} else {
 
-            // Fill the PagerAdapter & set it to the viewpager
-            mPagerAdapter = new SwipeyTabsPagerAdapter(
+			// Which tab is operating?
+			if (mViewPager.getCurrentItem() == 0) {
 
-                    mFragmentManager,
-                    new String[]{
-                            "OVERVIEW", "STATS", "FEED"
-                    },
-                    mListFragments,
-                    mViewPager,
-                    mLayoutInflater
-            );
-            mViewPager.setAdapter(mPagerAdapter);
-            mTabs.setAdapter(mPagerAdapter);
+				return super.onPrepareOptionsMenu(fragmentOverview
+						.prepareOptionsMenu(menu));
 
-            // Make sure the tabs follow
-            mViewPager.setOnPageChangeListener(mTabs);
-            mViewPager.setCurrentItem(0);
-            mViewPager.setOffscreenPageLimit(2);
+			} else if (mViewPager.getCurrentItem() == 1) {
 
-        }
+				return super.onPrepareOptionsMenu(fragmentStats
+						.prepareOptionsMenu(menu));
 
-    }
+			} else if (mViewPager.getCurrentItem() == 2) {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+				((MenuItem) menu.findItem(R.id.option_friendadd))
+						.setVisible(false);
+				((MenuItem) menu.findItem(R.id.option_frienddel))
+						.setVisible(false);
+				((MenuItem) menu.findItem(R.id.option_compare))
+						.setVisible(false);
+				((MenuItem) menu.findItem(R.id.option_unlocks))
+						.setVisible(false);
 
-        // Inflate!!
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_profileview, menu);
-        return super.onCreateOptionsMenu(menu);
+			} else {
 
-    }
+				menu.removeItem(R.id.option_friendadd);
+				menu.removeItem(R.id.option_frienddel);
+				menu.removeItem(R.id.option_compare);
+				menu.removeItem(R.id.option_unlocks);
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+			}
 
-        // Our own profile, no need to show the "extra" buttons
-        if (profileData.getId() == SessionKeeper.getProfileData()
-                .getId()) {
+		}
 
-            menu.removeItem(R.id.option_friendadd);
-            menu.removeItem(R.id.option_frienddel);
-            menu.removeItem(R.id.option_compare);
-            menu.removeItem(R.id.option_unlocks);
+		return super.onPrepareOptionsMenu(menu);
 
-        } else {
+	}
 
-            // Which tab is operating?
-            if (mViewPager.getCurrentItem() == 0) {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
 
-                return super.onPrepareOptionsMenu(fragmentOverview.prepareOptionsMenu(menu));
+		// Let's act!
+		if (item.getItemId() == R.id.option_reload) {
 
-            } else if (mViewPager.getCurrentItem() == 1) {
+			this.reload();
 
-                return super.onPrepareOptionsMenu(fragmentStats.prepareOptionsMenu(menu));
+		} else if (item.getItemId() == R.id.option_back) {
 
-            } else if (mViewPager.getCurrentItem() == 2) {
+			((Activity) this).finish();
 
-                ((MenuItem) menu.findItem(R.id.option_friendadd))
-                        .setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_frienddel))
-                        .setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_compare))
-                        .setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_unlocks))
-                        .setVisible(false);
+		} else {
 
-            } else {
+			if (mViewPager.getCurrentItem() == 0) {
 
-                menu.removeItem(R.id.option_friendadd);
-                menu.removeItem(R.id.option_frienddel);
-                menu.removeItem(R.id.option_compare);
-                menu.removeItem(R.id.option_unlocks);
+				return fragmentOverview.handleSelectedOption(item);
 
-            }
+			} else if (mViewPager.getCurrentItem() == 1) {
 
-        }
+				return fragmentStats.handleSelectedOption(item);
 
-        return super.onPrepareOptionsMenu(menu);
+			}
 
-    }
+		}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+		// Return true yo
+		return true;
 
-        // Let's act!
-        if (item.getItemId() == R.id.option_reload) {
+	}
 
-            this.reload();
+	@Override
+	public void onResume() {
 
-        } else if (item.getItemId() == R.id.option_back) {
+		super.onResume();
 
-            ((Activity) this).finish();
+		// We need to initialize
+		init();
+		reload();
 
-        } else {
+	}
 
-            if (mViewPager.getCurrentItem() == 0) {
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View view,
+			ContextMenuInfo menuInfo) {
 
-                return fragmentOverview.handleSelectedOption(item);
+		switch (mViewPager.getCurrentItem()) {
 
-            } else if (mViewPager.getCurrentItem() == 1) {
+		case 0:
+			break;
 
-                return fragmentStats.handleSelectedOption(item);
+		case 1:
+			break;
 
-            }
+		case 2:
+			fragmentFeed.createContextMenu(menu, view, menuInfo);
+			break;
 
-        }
+		}
 
-        // Return true yo
-        return true;
+	}
 
-    }
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
 
-    @Override
-    public void onResume() {
+		// Declare...
+		AdapterView.AdapterContextMenuInfo info;
 
-        super.onResume();
+		// Let's try to get some menu information via a try/catch
+		try {
 
-        // We need to initialize
-        init();
+			info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-    }
+		} catch (ClassCastException e) {
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view,
-                                    ContextMenuInfo menuInfo) {
+			e.printStackTrace();
+			return false;
 
-        switch (mViewPager.getCurrentItem()) {
+		}
 
-            case 0:
-                break;
+		switch (mViewPager.getCurrentItem()) {
 
-            case 1:
-                break;
+		case 2:
+			return fragmentFeed.handleSelectedContextItem(info, item);
 
-            case 2:
-                fragmentFeed.createContextMenu(menu, view, menuInfo);
-                break;
+		default:
+			break;
 
-        }
+		}
 
-    }
+		return true;
+	}
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
+	public void openStats(ProfileData p) {
 
-        // Declare...
-        AdapterView.AdapterContextMenuInfo info;
+		fragmentStats.setProfileData(p);
+		fragmentStats.reload();
 
-        // Let's try to get some menu information via a try/catch
-        try {
+	}
 
-            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+	public void setFeedPermission(boolean c) {
 
-        } catch (ClassCastException e) {
+		fragmentFeed.setCanWrite(c);
 
-            e.printStackTrace();
-            return false;
+	}
 
-        }
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        switch (mViewPager.getCurrentItem()) {
+		// Hotkeys
+		if (keyCode == KeyEvent.KEYCODE_BACK && mViewPager.getCurrentItem() > 0) {
 
-            case 2:
-                return fragmentFeed.handleSelectedContextItem(info, item);
+			mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+			return true;
 
-            default:
-                break;
-
-        }
-
-        return true;
-    }
-
-    public void openStats(ProfileData p) {
-
-        fragmentStats.setProfileData(p);
-        fragmentStats.reload();
-
-    }
-
-    public void setFeedPermission(boolean c) {
-
-        fragmentFeed.setCanWrite(c);
-
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK && mViewPager.getCurrentItem() > 0) {
-
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
-            return true;
-
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
 }

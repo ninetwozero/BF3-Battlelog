@@ -5,14 +5,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.ParsedFeedItemData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
@@ -558,8 +556,6 @@ public class FeedItemDataFactory {
 	private static ParsedFeedItemData generateFromJoiningPlatoon(
 			Context context, JSONObject currItem, ProfileData profile)
 			throws JSONException {
-
-		Log.d(Constants.DEBUG_TAG, "urrItem => " + currItem.toString(2));
 		JSONObject platoonObject = currItem.getJSONObject(currItem
 				.isNull(PLATOON_MOH) ? PLATOON_BF3 : PLATOON_MOH);
 		return new ParsedFeedItemData(PublicUtils.createStringWithData(context,

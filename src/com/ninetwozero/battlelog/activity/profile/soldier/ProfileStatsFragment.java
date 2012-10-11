@@ -147,11 +147,13 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
                 });
     }
 
+    /* FIXME: if no personas are passed to this activity, then mSelectedPersona will be 0? */
     private void setSelectedPersonaVariables() {
         mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
         mSelectedPersona = getSelectedPersonaId(mSelectedPosition);
         mSelectedPlatformId = getPlatformIdFor(mSelectedPosition);
         mSelectedPersonaName = getSelectedPersonaName(mSelectedPosition);
+        Log.d(Constants.DEBUG_TAG, "mSelectedPersona => " + mSelectedPersona);
         callURI = UriFactory.personaOverview(mSelectedPersona, mSelectedPlatformId);
     }
 
@@ -322,8 +324,9 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     }
 
     @Override
-    public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {
-        if (task.result.equals(CompletedTask.Result.SUCCESS)) {
+    public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {    	
+    	/* FIXME: This doesn't seem right, maybe due to the lack of personas? */
+        if ( task != null && task.result.equals(CompletedTask.Result.SUCCESS)) {
             Log.e("STATS", "Load finished");
             findViews();
             PersonaInfo pi = personaStatsFrom(task);

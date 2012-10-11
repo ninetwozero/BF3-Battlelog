@@ -345,15 +345,10 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
         @Override
         protected Boolean doInBackground(Void... arg0) {
-
             try {
-
-                // Let's try something
                 if (mProfileData.getNumPersonas() == 0) {
-
                     mProfileData = ProfileClient
                             .resolveFullProfileDataFromProfileData(mProfileData);
-
                 }
 
                 // Let's get the personas!
@@ -362,16 +357,12 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                 // ...and then send it to the stats
                 sendToStats(mProfileData);
-
                 return (mProfileInformation != null);
 
             } catch (WebsiteHandlerException ex) {
-
                 ex.printStackTrace();
                 return false;
-
             }
-
         }
 
         @Override
@@ -379,51 +370,36 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
             // Fail?
             if (!result) {
-
                 Toast.makeText(mContext, R.string.general_no_data,
                         Toast.LENGTH_SHORT).show();
-
             }
 
             // Do we have a dialog?
             if (progressDialog != null && progressDialog.isShowing()) {
-
                 progressDialog.dismiss();
-
             }
 
             // Set the data
             showProfile(mProfileInformation);
             setFeedPermission(mProfileInformation.isFriend() || mPostingRights);
-
-            // Get back here!
-
         }
 
     }
 
     public void reload() {
-
-        // ASYNC!!!
         new AsyncRefresh(SessionKeeper.getProfileData()
                 .getId()).execute();
-
     }
 
     public void sendToStats(ProfileData p) {
-
         ((ProfileActivity) mContext).openStats(p);
-
     }
 
     public void setFeedPermission(boolean c) {
-
         ((ProfileActivity) mContext).setFeedPermission(c);
-
     }
 
     public void setProfileData(ProfileData p) {
-
         mProfileData = p;
     }
 
@@ -434,7 +410,6 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             return menu;
         }
         if (mProfileInformation.isAllowingFriendRequests()) {
-
             if (mProfileInformation.isFriend()) {
 
                 ((MenuItem) menu.findItem(R.id.option_friendadd))
@@ -449,7 +424,6 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                 ((MenuItem) menu.findItem(R.id.option_frienddel))
                         .setVisible(false);
             }
-
         } else {
 
             ((MenuItem) menu.findItem(R.id.option_friendadd))
@@ -458,18 +432,14 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                     .setVisible(false);
 
         }
-
         ((MenuItem) menu.findItem(R.id.option_compare))
                 .setVisible(false);
-
         return menu;
 
     }
 
     public boolean handleSelectedOption(MenuItem item) {
-
         if (item.getItemId() == R.id.option_friendadd) {
-
             new AsyncFriendRequest(mContext, mProfileData.getId()).execute(
 
                     mSharedPreferences.getString(
@@ -477,9 +447,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                             Constants.SP_BL_PROFILE_CHECKSUM, "")
 
             );
-
         } else if (item.getItemId() == R.id.option_frienddel) {
-
             new AsyncFriendRemove(mContext, mProfileData.getId()).execute(
 
                     mSharedPreferences.getString(
@@ -487,11 +455,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
                             Constants.SP_BL_PROFILE_CHECKSUM, "")
 
             );
-
         }
-
         return true;
-
     }
-
 }

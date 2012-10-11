@@ -598,7 +598,7 @@ public class ProfileClient extends DefaultClient {
                 }
 
                 ProfileInformation tempProfile = new ProfileInformation(
-                        userInfo.optInt("age", 0), mProfileData.getId(),
+                        userInfo.optInt("age", 0), Long.parseLong(userInfo.getString("userId")),
                         userInfo.optLong("birthdate", 0), userInfo.optLong(
                         "lastLogin", 0), statusMessage.optLong(
                         "statusMessageChanged", 0), personaArray,

@@ -251,8 +251,8 @@
     <string name="info_xml_support">Support</string>
     <string name="info_xml_recon">Recon</string>
     <string name="info_xml_jet">Jet Fighter</string>
-    <string name="info_xml_tank">Main Battle Tanks</string>
-    <string name="info_xml_ifv">Infantry Fighting Vehicle</string>
+    <string name="info_xml_tank">Battle Tanks</string>
+    <string name="info_xml_ifv">Infantry Vehicle</string>
     <string name="info_xml_anti_air">Anti Air</string>
     <string name="info_xml_scout_heli">Scout Helicopter</string>
     <string name="info_xml_attack_heli">Attack Helicopter</string>

@@ -14,10 +14,8 @@
 
 package com.ninetwozero.battlelog.activity.feed;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +24,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -94,8 +93,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment,
 
 		// Set our attributes
 		mContext = getActivity();
-		mSharedPreferences = PreferenceManager
-				.getDefaultSharedPreferences(mContext);
+		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 		mLayoutInflater = inflater;
 
 		// Let's inflate & return the view
@@ -113,8 +111,9 @@ public class FeedFragment extends ListFragment implements DefaultFragment,
 	@Override
 	public void onResume() {
 		super.onResume();
-		reload();
-
+		if( mId > 0 || mType == FeedClient.TYPE_GLOBAL ){
+			reload();
+		}
 	}
 
 	public void initFragment(View v) {
@@ -300,6 +299,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment,
 			if (!result) {
 				Toast.makeText(this.context, R.string.info_feed_empty,
 						Toast.LENGTH_SHORT).show();
+				return;
 			}
 			mListAdapter.setItems(mFeedItems);
 		}
