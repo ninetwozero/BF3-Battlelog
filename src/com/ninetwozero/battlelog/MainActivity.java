@@ -363,7 +363,6 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
                     mViewPager,
                     mLayoutInflater
             );
-            Log.d(Constants.DEBUG_TAG, "pagerAdapter => " + mPagerAdapter);
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 

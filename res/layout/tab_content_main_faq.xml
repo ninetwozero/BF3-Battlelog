@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:autoLink="web"
         android:padding="10dp"
-        android:text="Yes, I\&apos;m 100% certain of that.\n\nThe only time that the app is sending your Origin credentials anywhere is when a) you login manually or b) the background service needs to re-login due to Battlelog logging you out.\n\nIn other words, your login information never gets sent to any third-party servers or similar, and they\&apos;re encrypted locally so that no other application can steal the information with ease."/>
+        android:text="Yes, I\&apos;m 100% certain of that.\n\nThe only time that the app is sending your Origin credentials anywhere is when you login manually.\n\nIn other words, your login information never gets sent to any third-party servers or similar."/>
   </LinearLayout>
 
 </ScrollView>
