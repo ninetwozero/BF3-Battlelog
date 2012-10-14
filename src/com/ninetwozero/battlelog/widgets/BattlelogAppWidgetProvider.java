@@ -112,7 +112,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
                         );
 
-                mFriends = new COMClient(mSharedPreferences.getString(
+                mFriends = new COMClient(0, mSharedPreferences.getString(
                         Constants.SP_BL_PROFILE_CHECKSUM, ""))
                         .getFriendsForCOM(mContext);
                 mNumFriendsOnline = mFriends.getNumTotalOnline();

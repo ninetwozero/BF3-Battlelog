@@ -28,7 +28,6 @@
         style="@style/RegularButton"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:enabled="false"
         android:onClick="onClick"
         android:text="@string/label_send"/>
 

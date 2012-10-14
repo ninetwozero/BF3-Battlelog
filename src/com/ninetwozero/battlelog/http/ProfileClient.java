@@ -1033,7 +1033,6 @@ public class ProfileClient extends DefaultClient {
                 }
 
                 // Add the assignment
-                Log.d(Constants.DEBUG_TAG, "key => " + key);
                 int[] resources = DataBank.getResourcesForAssignment(key);
                 if (resources != null) {
                     assignments.add(new AssignmentData(resources[0],

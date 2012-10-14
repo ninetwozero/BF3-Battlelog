@@ -24,14 +24,28 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.asynctask.AsyncFriendRemove;
 import com.ninetwozero.battlelog.asynctask.AsyncFriendRequest;
-import com.ninetwozero.battlelog.datatype.*;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.ProfileInformation;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -43,6 +57,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
     // Attributes
     private Context mContext;
     private LayoutInflater mLayoutInflater;
+    private COMClient mComClient;
     private SharedPreferences mSharedPreferences;
 
     // Misc
@@ -56,35 +71,28 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
         // Set our attributes
         mContext = getActivity();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
 
         // Let's inflate & return the view
         View view = mLayoutInflater.inflate(R.layout.tab_content_profile_overview,
                 container, false);
-
-        // Init the fragment
         initFragment(view);
-
-        // Let's return the view
         return view;
-
     }
 
     @Override
     public void onResume() {
-
         super.onResume();
         new AsyncCache().execute();
-
     }
 
     public void initFragment(View v) {
-
-        // Let's see if we're allowed to post (before we've gotten the data
-        // atleast)
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+    	mComClient = new COMClient(
+			mProfileData.getId(), 
+			mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
+    	);
         mPostingRights = false;
-
     }
 
     public final void showProfile(ProfileInformation data) {
@@ -92,7 +100,6 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
         // Do we have valid data?
         if (data == null) {
             return;
-
         }
 
         // Get activity
@@ -106,27 +113,18 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
         // When did was the users last login?
         if (data.isPlaying() && data.isOnline()) {
-
             ((TextView) activity.findViewById(R.id.text_online)).setText(
-
-                    getString(R.string.info_profile_playing).replace(
-
-                            "{server name}", data.getCurrentServer()
-
-                    )
-
+                getString(R.string.info_profile_playing).replace(
+                        "{server name}", data.getCurrentServer()
+                )
             );
 
         } else if (data.isOnline()) {
-
             ((TextView) activity.findViewById(R.id.text_online))
                     .setText(R.string.info_profile_online);
-
         } else {
-
             ((TextView) activity.findViewById(R.id.text_online)).setText(data
                     .getLastLogin(mContext));
-
         }
 
         // Is the status ""?
@@ -149,14 +147,11 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
         // Do we have a presentation?
         if ("".equals(data.getPresentation())) {
-
             ((TextView) activity.findViewById(R.id.text_presentation))
                     .setText(R.string.info_profile_empty_pres);
         } else {
-
             ((TextView) activity.findViewById(R.id.text_presentation)).setText(data
                     .getPresentation());
-
         }
 
         // Any platoons?
@@ -173,23 +168,16 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             platoonWrapper.removeAllViews();
 
             final OnClickListener onClickListener = new OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
 
                     // On-click
                     startActivity(
-
-                            new Intent(mContext, PlatoonActivity.class).putExtra(
-
-                                    "platoon", (PlatoonData) v.getTag()
-
-                            )
-
+                        new Intent(mContext, PlatoonActivity.class).putExtra(
+                                "platoon", (PlatoonData) v.getTag()
+                        )
                     );
-
                 }
-
             };
 
             // Iterate over the platoons
@@ -216,12 +204,10 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                 // Almost forgot - we got a Bitmap too!
                 ((ImageView) convertView.findViewById(R.id.image_badge))
-                        .setImageBitmap(
-
-                                BitmapFactory.decodeFile(PublicUtils.getCachePath(mContext)
-                                        + currentPlatoon.getImage())
-
-                        );
+                    .setImageBitmap(
+                            BitmapFactory.decodeFile(PublicUtils.getCachePath(mContext)
+                                    + currentPlatoon.getImage())
+            		);
 
                 // Store it in the tag
                 convertView.setTag(currentPlatoon);
@@ -229,15 +215,11 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                 // Add it!
                 platoonWrapper.addView(convertView);
-
             }
-
         } else {
-
             ((LinearLayout) activity.findViewById(R.id.list_platoons)).removeAllViews();
             ((TextView) activity.findViewById(R.id.text_platoon))
                     .setVisibility(View.VISIBLE);
-
         }
 
         // Set the username
@@ -265,23 +247,15 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
         @Override
         protected Boolean doInBackground(Void... arg0) {
-
             try {
-
-                // Get...
                 mProfileInformation = CacheHandler.Profile.select(mContext,
                         mProfileData.getId());
-
-                // We got one?!
                 return (mProfileInformation != null);
 
             } catch (Exception ex) {
-
                 ex.printStackTrace();
                 return false;
-
             }
-
         }
 
         @Override
@@ -311,13 +285,8 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
             } else {
                 //TODO disabled refresh, it was crashing application on persona changes in ProfileStatsFragment
                 //new AsyncRefresh(SessionKeeper.getProfileData().getId(), progressDialog).execute();
-
             }
-
-            // Get back here!
-
         }
-
     }
 
     public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
@@ -327,16 +296,12 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
         private ProgressDialog progressDialog;
 
         public AsyncRefresh(long pId) {
-
             this.activeProfileId = pId;
-
         }
 
         public AsyncRefresh(long pId, ProgressDialog pDialog) {
-
             this.activeProfileId = pId;
             this.progressDialog = pDialog;
-
         }
 
         @Override
@@ -347,8 +312,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
         protected Boolean doInBackground(Void... arg0) {
             try {
                 if (mProfileData.getNumPersonas() == 0) {
-                    mProfileData = ProfileClient
-                            .resolveFullProfileDataFromProfileData(mProfileData);
+                    mProfileData = ProfileClient.resolveFullProfileDataFromProfileData(mProfileData);
                 }
 
                 // Let's get the personas!
@@ -440,21 +404,9 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
     public boolean handleSelectedOption(MenuItem item) {
         if (item.getItemId() == R.id.option_friendadd) {
-            new AsyncFriendRequest(mContext, mProfileData.getId()).execute(
-
-                    mSharedPreferences.getString(
-
-                            Constants.SP_BL_PROFILE_CHECKSUM, "")
-
-            );
+            new AsyncFriendRequest(mContext, mProfileData.getId()).execute(mComClient);
         } else if (item.getItemId() == R.id.option_frienddel) {
-            new AsyncFriendRemove(mContext, mProfileData.getId()).execute(
-
-                    mSharedPreferences.getString(
-
-                            Constants.SP_BL_PROFILE_CHECKSUM, "")
-
-            );
+            new AsyncFriendRemove(mContext, mProfileData.getId()).execute(mComClient);
         }
         return true;
     }

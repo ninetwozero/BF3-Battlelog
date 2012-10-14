@@ -55,45 +55,32 @@ public class ChatListAdapter extends BaseAdapter {
 
     @Override
     public ChatMessage getItem(int position) {
-
         return this.messageArray.get(position);
-
     }
 
     @Override
     public long getItemId(int position) {
-
-        return this.messageArray.get(position).getChatId();
-
+        return position;
     }
 
     @Override
     public int getItemViewType(int position) {
-
         if (getItem(position).getSender().equals(thisUser)) {
-
             return 1;
-
         } else {
-
             return 0;
 
         }
-
     }
 
     @Override
     public int getViewTypeCount() {
-
         return 2;
-
     }
 
-    public void setMessageArray(List<ChatMessage> m) {
-
+    public void setMessages(List<ChatMessage> m) {
         messageArray = m;
         notifyDataSetChanged();
-
     }
 
     @Override
@@ -121,8 +108,7 @@ public class ChatListAdapter extends BaseAdapter {
 
         // Grab the fields
         textUsername = (TextView) convertView.findViewById(R.id.text_username);
-        textTimestamp = (TextView) convertView
-                .findViewById(R.id.text_timestamp);
+        textTimestamp = (TextView) convertView.findViewById(R.id.text_timestamp);
         textMessage = (TextView) convertView.findViewById(R.id.text_message);
 
         // Set the TextViews

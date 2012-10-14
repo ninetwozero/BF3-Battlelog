@@ -74,15 +74,10 @@ public class SocialWidgetProvider extends AppWidgetProvider {
 
         // if service == active
         if (SessionKeeper.getProfileData() == null) {
-
-            Log.d(Constants.DEBUG_TAG, "No session to use in the widget");
-
+    		Log.d(Constants.DEBUG_TAG, "No session to use in the widget");
         } else {
-
             new AsyncRefresh(context, appWidgetManager).execute();
-
         }
-
     }
 
     @Override
@@ -109,50 +104,34 @@ public class SocialWidgetProvider extends AppWidgetProvider {
         private AppWidgetManager appWidgetManager;
 
         public AsyncRefresh(Context c, AppWidgetManager a) {
-
             context = c;
             appWidgetManager = a;
-
         }
 
         @Override
         protected Boolean doInBackground(Void... arg) {
-
             try {
-
-                mFriends = new COMClient(PreferenceManager.getDefaultSharedPreferences(context)
+                mFriends = new COMClient(0,PreferenceManager.getDefaultSharedPreferences(context)
                         .getString(
                                 Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriendsForCOM(context);
                 mFeedItems = new FeedClient(SessionKeeper.getProfileData().getId(),
                         FeedClient.TYPE_GLOBAL).get(context, 0, Constants.DEFAULT_NUM_FEED);
-
                 return (mFeedItems != null && mFriends != null);
-
             } catch (WebsiteHandlerException ex) {
-
                 ex.printStackTrace();
                 message = ex.getMessage();
                 return false;
-
             }
-
         }
 
         @Override
         protected void onPostExecute(Boolean results) {
-
             if (context != null) {
-
                 drawLayout(context, appWidgetManager);
-
                 if (!results) {
-
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-
                 }
-
             }
-
         }
     }
 
@@ -164,23 +143,16 @@ public class SocialWidgetProvider extends AppWidgetProvider {
 
         // Let's see what's up!
         if (mFriends != null) {
-
             remoteView.setTextViewText(R.id.text_online, mFriends.getNumTotalOnline() + "");
             remoteView.setTextViewText(R.id.text_playing, mFriends.getNumPlaying() + "");
-
         } else {
-
             remoteView.setTextViewText(R.id.text_online, "TBA");
             remoteView.setTextViewText(R.id.text_playing, "TBA");
-
         }
 
         // If the feed items are gone...
         if (mFeedItems != null && !mFeedItems.isEmpty()) {
-
-            // Let's iterate the feed items
             for (int count = 0, max = FEED_DATE_IDS.length; count < max; count++) {
-
                 remoteView.setTextViewText(FEED_CONTENT_IDS[count],
                         Html.fromHtml(mFeedItems.get(mFeedPageId + count).getTitle()));
                 remoteView
@@ -189,20 +161,13 @@ public class SocialWidgetProvider extends AppWidgetProvider {
                 remoteView.setOnClickPendingIntent(FEED_WRAP_IDS[count], PendingIntent.getActivity(
                         c, 0, mFeedItems.get(mFeedPageId + count).getIntent(c), 0));
             }
-
             remoteView.setTextViewText(R.id.text_latest, "Latest updates");
-
         } else {
-
             remoteView.removeAllViews(R.id.wrap_feed);
             remoteView.setTextViewText(R.id.text_latest, "No connection to Battlelog");
-
         }
+
         // Set the click listeners
-        // remoteView.setOnClickPendingIntent(R.id.widget_button,
-        // actionPendingIntent);
-        // remoteView.setOnClickPendingIntent(R.id.widget_button2,
-        // appPendingIntent);
         ComponentName widgetComponent = new ComponentName(c, SocialWidgetProvider.class);
         a.updateAppWidget(widgetComponent, remoteView);
 

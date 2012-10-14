@@ -39,32 +39,24 @@ public class UnlockListAdapter extends BaseAdapter {
 
     // Construct
     public UnlockListAdapter(Context c, List<UnlockData> u, LayoutInflater l) {
-
         context = c;
         dataArray = u;
         layoutInflater = l;
-
     }
 
     @Override
     public int getCount() {
-
         return (dataArray != null) ? dataArray.size() : 0;
-
     }
 
     @Override
     public UnlockData getItem(int position) {
-
         return dataArray.get(position);
-
     }
 
     @Override
     public long getItemId(int position) {
-
         return position;
-
     }
 
     @Override
@@ -72,13 +64,9 @@ public class UnlockListAdapter extends BaseAdapter {
 
         // Get the current item
         UnlockData currentUnlock = getItem(position);
-
-        // Recycle
         if (convertView == null) {
-
             convertView = layoutInflater.inflate(R.layout.list_item_unlock,
                     parent, false);
-
         }
 
         // Grab the progressBar
@@ -109,40 +97,26 @@ public class UnlockListAdapter extends BaseAdapter {
 
         // Tag it!
         convertView.setTag(currentUnlock);
-
         return convertView;
     }
 
     public int getColorForKit(int kitId) {
-
         switch (kitId) {
-
             case 1:
                 return R.color.kit_assault;
-
             case 2:
                 return R.color.kit_engineer;
-
             case 8:
                 return R.color.kit_recon;
-
             case 32:
                 return R.color.kit_support;
-
             default:
                 return R.color.kit_general;
-
         }
-
     }
 
     public void setDataArray(List<UnlockData> data) {
-
-        // Let's do this
-        Log.d(Constants.DEBUG_TAG, "New data y'all");
         dataArray = data;
         notifyDataSetChanged();
-
     }
-
 }

@@ -44,10 +44,8 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 
     // Constructor
     public AsyncServiceTask(Context c, SharedPreferences sp) {
-
         context = c;
         sharedPreferences = sp;
-
     }
 
     @Override
@@ -63,14 +61,11 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 
                 // The user is active, so how many notifications does he have?
                 int numNotifications = new NotificationClient().getNewNotificationsCount(
-
-                        sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
-
+                    sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
                 );
                 return numNotifications;
 
             } else {
-
                 // Attributes
                 String email = sharedPreferences.getString(
                         Constants.SP_BL_PROFILE_EMAIL, "");
@@ -87,31 +82,25 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
                     SessionKeeper.setProfileData(sessionKeeperPackage.getProfileData());
                     SessionKeeper.setPlatoonData(sessionKeeperPackage.getPlatoons());
                 }
-
                 return -1;
-
             }
 
         } catch (Exception ex) {
-
             ex.printStackTrace();
             exception = ex.getMessage();
             return -2;
-
         }
 
     }
 
     private PostData[] postData(String email, String password) {
         return new PostData[]{
-
                 new PostData(Constants.FIELD_NAMES_LOGIN[0], email),
                 new PostData(Constants.FIELD_NAMES_LOGIN[1], password),
                 new PostData(Constants.FIELD_NAMES_LOGIN[2],
                         Constants.FIELD_VALUES_LOGIN[2]),
                 new PostData(Constants.FIELD_NAMES_LOGIN[3],
                         Constants.FIELD_VALUES_LOGIN[3]),
-
         };
     }
 

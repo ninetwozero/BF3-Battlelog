@@ -14,39 +14,36 @@
 
 package com.ninetwozero.battlelog.asynctask;
 
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.social.ChatActivity;
 import com.ninetwozero.battlelog.adapter.ChatListAdapter;
-import com.ninetwozero.battlelog.datatype.ChatMessage;
+import com.ninetwozero.battlelog.datatype.ChatSession;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.COMClient;
-import com.ninetwozero.battlelog.misc.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
+public class AsyncChatRefresh extends AsyncTask<COMClient, Integer, Boolean> {
 
     // Attribute
-    private Context context;
-    private SharedPreferences sharedPreferences;
-    private List<ChatMessage> messageArray = new ArrayList<ChatMessage>();
-    private ListView listView;
+    private Context mContext;
+    private ChatSession mChat;
+    private ListView mListView;
 
     // Constructor
-    public AsyncChatRefresh(Context c, ListView lv) {
-
-        context = c;
-        listView = lv;
-        sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
-
+    public AsyncChatRefresh(Context c, COMClient cc) {
+    	mContext = c;
+        mListView = ((ListActivity) mContext).getListView();
+    }
+    public AsyncChatRefresh(Context c, COMClient cc, ListView lv) {
+        mContext = c;
+        mListView = lv;
     }
 
     @Override
@@ -54,22 +51,14 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Long... profileId) {
-
+    protected Boolean doInBackground(COMClient... chat) {
         try {
-
-            // Let's get this!!
-            messageArray = new COMClient(sharedPreferences.getString(
-                    Constants.SP_BL_PROFILE_CHECKSUM, ""))
-                    .getMessages(profileId[0]);
-            return true;
-
+            mChat = chat[0].getChat();
+            return mChat != null;
         } catch (WebsiteHandlerException e) {
-
+        	e.printStackTrace();
             return false;
-
         }
-
     }
 
     @Override
@@ -79,21 +68,16 @@ public class AsyncChatRefresh extends AsyncTask<Long, Integer, Boolean> {
         if (results) {
 
             // Set the almighty adapter
-            ((ChatListAdapter) listView.getAdapter())
-                    .setMessageArray(messageArray);
+            ((ChatListAdapter) mListView.getAdapter())
+                    .setMessages(mChat.getMessages());
 
             // Do we need to ploop?
-            if (context instanceof ChatActivity) {
-                ((ChatActivity) context).notifyNewPost(messageArray);
+            if (mContext instanceof ChatActivity) {
+                ((ChatActivity) mContext).notifyNewPost(mChat.getMessages());
             }
-
         } else {
-
-            Toast.makeText(context, R.string.msg_chat_norefresh,
+            Toast.makeText(mContext, R.string.msg_chat_norefresh,
                     Toast.LENGTH_SHORT).show();
-
         }
-
     }
-
 }

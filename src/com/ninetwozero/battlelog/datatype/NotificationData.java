@@ -16,12 +16,9 @@ public class NotificationData implements Parcelable {
 
     // Constructs
     public NotificationData(
-
-            long iId, long oId, long cId, long d, int tId, String oName, String cName,
-            String t, String x
-
+        long iId, long oId, long cId, long d, int tId, String oName, String cName,
+        String t, String x
     ) {
-
         itemId = iId;
         ownerId = oId;
         commenterId = cId;
@@ -31,11 +28,9 @@ public class NotificationData implements Parcelable {
         commenter = cName;
         type = t;
         extra = x;
-
     }
 
     public NotificationData(Parcel in) {
-
         itemId = in.readLong();
         ownerId = in.readLong();
         commenterId = in.readLong();
@@ -45,7 +40,6 @@ public class NotificationData implements Parcelable {
         commenter = in.readString();
         type = in.readString();
         extra = in.readString();
-
     }
 
     // Getters
@@ -289,77 +283,57 @@ public class NotificationData implements Parcelable {
     public String resolveActionFromId(Context c, int id) {
 
         switch (typeId) {
-
             case 1: // Friendship
                 return c.getString(R.string.info_friendship);
-
             case 2: // Forum post
                 return c.getString(R.string.info_forum_post);
-
             case 3: // Blog post
                 return c.getString(R.string.info_blog_comment);
-
             case 4: // Game report
                 return c.getString(R.string.info_game_report);
-
             case 6: // Wall post
                 return c.getString(R.string.info_wallpost);
-
             case 7: // Status message
                 return c.getString(R.string.info_status_message);
-
             case 8: // Award
                 return c.getString(R.string.info_award);
-
             case 9: // Battle report?
                 return c.getString(R.string.info_battle_report);
-
             case 11: // Rank
                 return c.getString(R.string.info_new_rank);
-
             case 13: // Platoon activity
             case 15:
             case 16: // Platoon activity
             case 17: // New platoon
                 return c.getString(R.string.info_platoon_activity);
-
             case 20: // Platoon wall post
                 return c.getString(R.string.info_platoon_wall_post);
-
             case 21: // Assignment completed
                 return c.getString(R.string.info_assignment_completed);
-
             case 22: // Got game
                 return c.getString(R.string.info_p_activated_expansion);
-
             default:
                 Log.d(Constants.DEBUG_TAG, "type => " + type + ":" + typeId);
                 return "{unknown action}";
         }
-
     }
 
     // TO STRING
     @Override
     public String toString() {
-
         return (
-
-                "(" + itemId + ")" + " " + commenter + "(" + commenterId
-                        + ") <" + type + "> " + owner + "(" + ownerId + ")"
-
-        );
+            "(" + itemId + ")" + " " + commenter + "(" + commenterId
+                    + ") <" + type + "> " + owner + "(" + ownerId + ")"
+		);
     }
 
     @Override
     public int describeContents() {
-
         return 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
         dest.writeLong(itemId);
         dest.writeLong(ownerId);
         dest.writeLong(commenterId);
@@ -369,11 +343,9 @@ public class NotificationData implements Parcelable {
         dest.writeString(commenter);
         dest.writeString(type);
         dest.writeString(extra);
-
     }
 
     public static final Parcelable.Creator<NotificationData> CREATOR = new Parcelable.Creator<NotificationData>() {
-
         public NotificationData createFromParcel(Parcel in) {
             return new NotificationData(in);
         }
@@ -381,7 +353,6 @@ public class NotificationData implements Parcelable {
         public NotificationData[] newArray(int size) {
             return new NotificationData[size];
         }
-
     };
 
 }
