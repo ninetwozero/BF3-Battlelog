@@ -317,7 +317,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
 
                 // Let's get the personas!
                 mProfileInformation = new ProfileClient(mProfileData).getInformation(
-                        mContext,activeProfileId);
+                        mContext,activeProfileId); /* <-- throws EX */
 
                 // ...and then send it to the stats
                 sendToStats(mProfileData);
