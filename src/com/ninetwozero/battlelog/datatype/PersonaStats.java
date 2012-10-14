@@ -16,7 +16,13 @@ package com.ninetwozero.battlelog.datatype;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.ninetwozero.battlelog.jsonmodel.*;
+
+import com.ninetwozero.battlelog.jsonmodel.KitScores;
+import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
+import com.ninetwozero.battlelog.jsonmodel.PersonaStatsOverview;
+import com.ninetwozero.battlelog.jsonmodel.Rank;
+import com.ninetwozero.battlelog.jsonmodel.User;
+import com.ninetwozero.battlelog.jsonmodel.VehicleScores;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 

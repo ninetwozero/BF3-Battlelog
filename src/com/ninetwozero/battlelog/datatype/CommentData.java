@@ -105,4 +105,8 @@ public class CommentData implements Parcelable {
         }
 
     };
+
+	public String getGravatar() {
+		return mAuthor.getGravatarHash();
+	}
 }

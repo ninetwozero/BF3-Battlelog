@@ -14,21 +14,30 @@
 
 package com.ninetwozero.battlelog.activity.profile.weapon;
 
+import java.util.Map;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatype.*;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
+import com.ninetwozero.battlelog.datatype.WeaponInfo;
+import com.ninetwozero.battlelog.datatype.WeaponStats;
 import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.DrawableResourceList;
 import com.ninetwozero.battlelog.misc.StringResourceList;
-
-import java.util.Map;
 
 public class WeaponInformationFragment extends Fragment implements DefaultFragment {
 

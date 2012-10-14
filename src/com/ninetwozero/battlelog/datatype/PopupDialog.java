@@ -3,6 +3,7 @@ package com.ninetwozero.battlelog.datatype;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+
 import com.ninetwozero.battlelog.R;
 
 public class PopupDialog extends Dialog {
