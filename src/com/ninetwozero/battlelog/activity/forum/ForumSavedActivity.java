@@ -269,7 +269,7 @@ public class ForumSavedActivity extends ListActivity {
 
             } else {
 
-                imageBar.setBackgroundColor(context.getResources().getColor(R.color.lightgrey));
+                imageBar.setBackgroundColor(context.getResources().getColor(R.color.very_light_grey));
 
             }
 

@@ -78,7 +78,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
                         .getString(Constants.SP_BL_PROFILE_PASSWORD, ""));
 
                 // Do the login
-                AsyncLogin login = new AsyncLogin(context, true);
+                AsyncLogin login = new AsyncLogin(context);
                 SessionKeeperPackage sessionKeeperPackage = login.renewSession(postData(email,
                         password));
 

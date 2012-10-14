@@ -12,28 +12,23 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 -->
-<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:gravity="center"
-          android:padding="10dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/dialog_root"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#FFFFFF">
 
-  <LinearLayout
-      android:layout_width="wrap_content"
+  <ListView
+      android:id="@+id/listView"
+      android:layout_width="250dp"
       android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"/>
+  <TextView
+      android:id="@+id/empty"
+      android:layout_width="wrap_content"
+      android:layout_height="40dp"
+      android:layout_centerInParent="true"
       android:gravity="center"
-      android:orientation="horizontal"
-      android:weightSum="2">
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:layout_weight="1">
-
-      <include layout="@layout/assignment_item_general"/>
-
-    </RelativeLayout>
-  </LinearLayout>
-
-</TableRow>
+      android:text="Loading the hooahs..."/>
+  />
+</RelativeLayout>

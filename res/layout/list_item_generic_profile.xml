@@ -14,38 +14,31 @@
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
-                android:layout_height="60dp">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
-  <View
-      android:id="@+id/bar_official"
-      android:layout_width="10dp"
-      android:layout_height="fill_parent"
+  <ImageView
+      android:id="@+id/image_avatar"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
       android:layout_alignParentLeft="true"
-      android:background="@color/very_light_grey"/>
-
-  <RelativeLayout
-      android:id="@+id/wrap_top"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerVertical="true"
-      android:layout_toRightOf="@id/bar_official"
-      android:padding="5dp">
-
+      android:layout_marginRight="5dp"
+      android:src="@drawable/default_avatar"/>
     <TextView
-        android:id="@+id/string_title"
+        android:id="@+id/text_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ellipsize="marquee"
-        android:text="Battlefield 3 (PS3, XBOX 360)"
+        android:text="ninetwozero"
         android:textColor="@color/blue"
-        android:textStyle="bold"/>
-
+        android:textStyle="bold" 
+        android:layout_toRightOf="@id/image_avatar"
+        android:layout_centerVertical="true" />
     <TextView
-        android:id="@+id/string_owner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/string_title"
-        android:text="@string/info_xml_threaddate"/>
-  </RelativeLayout>
-
+        android:text=">>"
+        android:textColor="@color/grey"
+        android:textStyle="bold" 
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
 </RelativeLayout>

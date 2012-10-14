@@ -16,7 +16,6 @@
 
   <item
       android:bottom="4dp"
-      android:drawable="@drawable/bg_bf3_main"
       android:left="4dp"
       android:radius="20dp"
       android:right="4dp"

@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="LoginNotice" parent="MatchWidth">
+    <item name="android:textSize">18sp</item>
+    <item name="android:textColor">@color/black</item>
+    <item name="android:layout_margin">10dp</item>
+    <item name="android:background">@drawable/bg_login_notice</item>
+  </style>
 
   <style name="InfoHeading">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:textSize">20sp</item>
-    <item name="android:background">#000000</item>
-    <item name="android:textColor">#FFFFFF</item>
+    <item name="android:background">@color/black</item>
+    <item name="android:textColor">@color/white</item>
     <item name="android:layout_marginTop">5dp</item>
     <item name="android:layout_marginBottom">5dp</item>
     <item name="android:singleLine">true</item>
@@ -18,7 +25,7 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:textSize">20sp</item>
     <item name="android:background">@drawable/bg_rounded_corners</item>
-    <item name="android:textColor">#FFFFFF</item>
+    <item name="android:textColor">@color/white</item>
     <item name="android:layout_marginTop">5dp</item>
     <item name="android:layout_marginBottom">5dp</item>
     <item name="android:singleLine">true</item>
@@ -27,16 +34,16 @@
   <style name="InfoSubHeading" parent="@style/InfoHeading">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:textSize">16sp</item>
-    <item name="android:background">#CCCCCC</item>
-    <item name="android:textColor">#000000</item>
+    <item name="android:background">@color/light_grey</item>
+    <item name="android:textColor">@color/black</item>
   </style>
 
   <style name="InfoHeadingCompare">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:textSize">18sp</item>
-    <item name="android:background">#000000</item>
-    <item name="android:textColor">#FFFFFF</item>
+    <item name="android:background">@color/black</item>
+    <item name="android:textColor">@color/white</item>
     <item name="android:layout_marginTop">5dp</item>
     <item name="android:layout_marginBottom">5dp</item>
     <item name="android:gravity">center_horizontal</item>
@@ -46,8 +53,8 @@
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:textSize">14sp</item>
-    <item name="android:background">#CCCCCC</item>
-    <item name="android:textColor">#000000</item>
+    <item name="android:background">@color/light_grey</item>
+    <item name="android:textColor">@color/white</item>
   </style>
 
   <style name="InfoRowCompare">
@@ -74,7 +81,7 @@
     <item name="android:layout_height">45dp</item>
     <item name="android:gravity">center</item>
     <item name="android:textSize">20sp</item>
-    <item name="android:textColor">#000000</item>
+    <item name="android:textColor">@color/black</item>
     <item name="android:background">@drawable/button_orange</item>
     <item name="android:layout_marginBottom">10dp</item>
   </style>

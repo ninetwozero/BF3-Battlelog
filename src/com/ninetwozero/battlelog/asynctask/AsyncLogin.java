@@ -54,7 +54,6 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     private ProgressDialog mProgressDialog;
     private Context mContext;
     private AsyncLogin mOrigin;
-    private boolean mSavePassword;
     private SharedPreferences mSharedPreferences;
     private SessionKeeperPackage mSessionKeeperPackage;
     private String mLocale;
@@ -65,12 +64,6 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     public AsyncLogin(Context c) {
         mOrigin = this;
         mContext = c;
-    }
-
-    // Constructor
-    public AsyncLogin(Context c, boolean s) {
-        this(c);
-        mSavePassword = s;
     }
 
     @Override
@@ -95,7 +88,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     @Override
     protected void onProgressUpdate(Integer... values) {
         if (values[0].equals(1)) {
-            mProgressDialog.setMessage("Downloading information...");
+            mProgressDialog.setMessage("Fetching information (todo)...");
         }
     }
 
@@ -174,7 +167,6 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     private ProfileInformation doLogin(PostData[] postData) throws WebsiteHandlerException,
             RequestHandlerException {
         this.mPostData = postData.clone();
-
         try {
 
             // Let's login everybody!
@@ -221,17 +213,9 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         spEdit.putString(Constants.SP_BL_PROFILE_EMAIL,
                 mPostData[0].getValue());
 
-        // Should we remember the password?
-        if (mSavePassword) {
-            spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, SimpleCrypto
-                    .encrypt(mPostData[0].getValue(),
-                            mPostData[1].getValue()));
-            spEdit.putBoolean(Constants.SP_BL_PROFILE_REMEMBER, true);
 
-        } else {
-            spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, "");
-            spEdit.putBoolean(Constants.SP_BL_PROFILE_REMEMBER, false);
-        }
+        spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, "");
+        spEdit.putBoolean(Constants.SP_BL_PROFILE_REMEMBER, false);
 
         // Init the strings
         StringBuilder personaNames = new StringBuilder();

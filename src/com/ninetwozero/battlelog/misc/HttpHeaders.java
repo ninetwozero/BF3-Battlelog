@@ -11,12 +11,15 @@ public final class HttpHeaders {
     private static final Header[] mEmptyHeader = new BasicHeader[]{};
 
     private static final Header[] mAjaxGetHeader = new BasicHeader[]{
-            new BasicHeader("X-Requested-With", "XMLHttpRequest"),
-            new BasicHeader("X-AjaxNavigation", "1"),
-            new BasicHeader("Accept", "application/json, text/javascript, */*"),
-            new BasicHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+        new BasicHeader("X-Requested-With", "XMLHttpRequest"),
+        new BasicHeader("X-AjaxNavigation", "1"),
+        new BasicHeader("Accept", "application/json, text/javascript, */*"),
+        new BasicHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+    };    
+    private static final Header[] mAjaxModGetHeader = new BasicHeader[]{
+	    new BasicHeader("X-Requested-With", "XMLHttpRequest"),
+	    new BasicHeader("Accept", "application/json, text/javascript, */*"),
     };
-
     private static final Header[] mJsonGetHeader = new BasicHeader[]{
             new BasicHeader("Accept", "application/json, text/javascript, */*"),
             new BasicHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"),
@@ -54,18 +57,17 @@ public final class HttpHeaders {
     public static final List<Header[]> GET_HEADERS = new ArrayList<Header[]>() {
 
         private static final long serialVersionUID = 8337984543829725911L;
-
         {
             add(mEmptyHeader);
             add(mAjaxGetHeader);
             add(mJsonGetHeader);
+            add(mAjaxModGetHeader);
         }
     };
 
     public static final List<Header[]> POST_HEADERS = new ArrayList<Header[]>() {
 
         private static final long serialVersionUID = -2164345116720011770L;
-
         {
             add(mEmptyHeader);
             add(mAjaxPostHeader);

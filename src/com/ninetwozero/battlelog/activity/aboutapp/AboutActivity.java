@@ -27,89 +27,78 @@ import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 import java.util.ArrayList;
 
-public class AboutActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
+public class AboutActivity extends CustomFragmentActivity implements
+		DefaultFragmentActivity {
 
-    @Override
-    public void onCreate(final Bundle icicle) {
+	@Override
+	public void onCreate(final Bundle icicle) {
+		super.onCreate(icicle);
+		setContentView(R.layout.viewpager_default);
 
-        // onCreate - save the instance state
-        super.onCreate(icicle);
+		// Setup the fragments
+		init();
+		setup();
+	}
 
-        // Set the content view
-        setContentView(R.layout.viewpager_default);
+	public final void init() {
+	}
 
-        // Setup the fragments
-        setup();
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
 
-        // Setup COM & feed
-        init();
-    }
+	public void setup() {
+		// Do we need to setup the fragments?
+		if (mListFragments == null) {
 
-    public final void init() {
-    }
+			// Add them to the list
+			mListFragments = new ArrayList<Fragment>();
+			mListFragments.add(Fragment.instantiate(this,
+					AboutLicenseFragment.class.getName()));
+			mListFragments.add(Fragment.instantiate(this,
+					AboutMainFragment.class.getName()));
+			mListFragments.add(Fragment.instantiate(this,
+					AboutFAQFragment.class.getName()));
+			mListFragments.add(Fragment.instantiate(this,
+					AboutCreditsFragment.class.getName()));
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+			// Get the ViewPager
+			mViewPager = (ViewPager) findViewById(R.id.viewpager);
+			mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
-        super.onConfigurationChanged(newConfig);
+			// Fill the PagerAdapter & set it to the viewpager
+			mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-    }
+			mFragmentManager, new String[] { 
+					getString(R.string.label_license), 
+					getString(R.string.label_about),
+					getString(R.string.label_faq),
+					getString(R.string.label_credits)
 
-    public void setup() {
+			}, mListFragments, mViewPager, mLayoutInflater);
+			mViewPager.setAdapter(mPagerAdapter);
+			mTabs.setAdapter(mPagerAdapter);
 
-        // Do we need to setup the fragments?
-        if (mListFragments == null) {
+			// Make sure the tabs follow
+			mViewPager.setOnPageChangeListener(mTabs);
+			mViewPager.setCurrentItem(1);
 
-            // Add them to the list
-            mListFragments = new ArrayList<Fragment>();
-            mListFragments.add(Fragment.instantiate(this, AboutMainFragment.class.getName()));
-            mListFragments.add(Fragment.instantiate(this, AboutFAQFragment.class.getName()));
-            mListFragments.add(Fragment.instantiate(this, AboutCreditsFragment.class.getName()));
+		}
 
-            // Get the ViewPager
-            mViewPager = (ViewPager) findViewById(R.id.viewpager);
-            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+	}
 
-            // Fill the PagerAdapter & set it to the viewpager
-            mPagerAdapter = new SwipeyTabsPagerAdapter(
+	@Override
+	public void reload() {
+	}
 
-                    mFragmentManager,
-                    new String[]{
-                            getString(R.string.label_about), getString(R.string.label_faq),
-                            getString(R.string.label_credits)
-
-                    },
-                    mListFragments,
-                    mViewPager,
-                    mLayoutInflater
-            );
-            mViewPager.setAdapter(mPagerAdapter);
-            mTabs.setAdapter(mPagerAdapter);
-
-            // Make sure the tabs follow
-            mViewPager.setOnPageChangeListener(mTabs);
-            mViewPager.setCurrentItem(0);
-
-        }
-
-    }
-
-    @Override
-    public void reload() {
-    }
-
-    @Override
-    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-
-        // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK && (mViewPager.getCurrentItem() > 0)) {
-
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
-            return true;
-
-        }
-
-        return super.onKeyDown(keyCode, event);
-
-    }
+	@Override
+	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK
+				&& (mViewPager.getCurrentItem() > 1 )) {
+			mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }

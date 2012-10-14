@@ -81,23 +81,12 @@ public class DashboardPopupPlatoonListAdapter extends BaseAdapter {
         }
 
         // Set the TextViews
-        ((ImageView) convertView.findViewById(R.id.image_badge))
-                .setImageBitmap(
-
-                        BitmapFactory.decodeFile(currentPlatoon.getImage() + ".jpeg")
-
-                );
-        ((TextView) convertView.findViewById(R.id.text_title))
-                .setText(currentPlatoon.getName());
+        ((TextView) convertView.findViewById(R.id.text_title)).setText(currentPlatoon.getName());
 
         // Almost forgot - we got a Bitmap too!
-        ((ImageView) convertView.findViewById(R.id.image_badge))
-                .setImageBitmap(
-
-                        BitmapFactory.decodeFile(PublicUtils.getCachePath(context)
-                                + currentPlatoon.getId() + ".jpeg")
-
-                );
+        ((ImageView) convertView.findViewById(R.id.image_badge)).setImageBitmap(
+    		BitmapFactory.decodeFile(PublicUtils.getCachePath(context) + currentPlatoon.getId() + ".jpeg")
+        );
 
         // Store it in the tag
         convertView.setTag(currentPlatoon);
