@@ -14,6 +14,8 @@
 
 package com.ninetwozero.battlelog.widgets;
 
+import java.util.List;
+
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -27,6 +29,7 @@ import android.text.Html;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.FriendListDataWrapper;
@@ -36,8 +39,6 @@ import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
-
-import java.util.List;
 
 public class SocialWidgetProvider extends AppWidgetProvider {
 
@@ -136,7 +137,6 @@ public class SocialWidgetProvider extends AppWidgetProvider {
     }
 
     private void drawLayout(Context c, AppWidgetManager a) {
-
         // Draw the GUI
         RemoteViews remoteView = new RemoteViews(c.getPackageName(), R.layout.widget_social);
         remoteView.setTextViewText(R.id.text_title, SessionKeeper.getProfileData().getUsername());
@@ -170,6 +170,5 @@ public class SocialWidgetProvider extends AppWidgetProvider {
         // Set the click listeners
         ComponentName widgetComponent = new ComponentName(c, SocialWidgetProvider.class);
         a.updateAppWidget(widgetComponent, remoteView);
-
     }
 }

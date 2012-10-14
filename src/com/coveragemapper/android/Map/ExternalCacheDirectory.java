@@ -6,11 +6,11 @@ package com.coveragemapper.android.Map;
  *  Additional information: He's a canadian cow on IRC.
  */
 
+import java.io.File;
+
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
-
-import java.io.File;
 
 public abstract class ExternalCacheDirectory {
     protected final Context mContext;

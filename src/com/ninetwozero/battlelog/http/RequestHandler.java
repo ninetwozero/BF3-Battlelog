@@ -52,12 +52,10 @@ import org.apache.http.util.EntityUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.datatype.PostData;
 import com.ninetwozero.battlelog.datatype.RequestHandlerException;
 import com.ninetwozero.battlelog.datatype.ShareableCookie;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.HttpHeaders;
 
 public class RequestHandler {

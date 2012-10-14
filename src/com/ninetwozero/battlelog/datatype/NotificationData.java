@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.Constants;
 

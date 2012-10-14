@@ -1,11 +1,11 @@
 package com.ninetwozero.battlelog.dao;
 
+import static com.ninetwozero.battlelog.misc.ResolvePlatform.platformName;
 import android.content.ContentValues;
 import android.database.Cursor;
+
 import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
 import com.ninetwozero.battlelog.provider.table.RankProgress;
-
-import static com.ninetwozero.battlelog.misc.ResolvePlatform.platformName;
 
 public class RankProgressDAO {
 

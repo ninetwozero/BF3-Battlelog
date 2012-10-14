@@ -14,6 +14,7 @@
 
 package com.ninetwozero.battlelog.asynctask;
 
+import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -25,6 +26,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.DashboardActivity;
 import com.ninetwozero.battlelog.datatype.PostData;
@@ -33,7 +35,6 @@ import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.http.NotificationClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
-import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
 public class AsyncServiceTask extends AsyncTask<String, Integer, Integer> {
 

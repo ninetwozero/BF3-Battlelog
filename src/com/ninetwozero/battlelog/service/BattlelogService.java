@@ -19,9 +19,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.util.Log;
+
 import com.ninetwozero.battlelog.asynctask.AsyncServiceTask;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class BattlelogService extends Service {

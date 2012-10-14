@@ -8,6 +8,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
+
 import com.ninetwozero.battlelog.R;
 
 public class IntegerListPreference extends DialogPreference {

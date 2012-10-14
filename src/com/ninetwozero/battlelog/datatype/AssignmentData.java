@@ -14,10 +14,10 @@
 
 package com.ninetwozero.battlelog.datatype;
 
+import java.util.List;
+
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.List;
 
 public class AssignmentData implements Parcelable {
 

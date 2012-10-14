@@ -16,9 +16,7 @@ package com.ninetwozero.battlelog.asynctask;
 
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
