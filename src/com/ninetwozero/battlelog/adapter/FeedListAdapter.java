@@ -40,7 +40,6 @@ public class FeedListAdapter extends BaseAdapter {
 
 	// Construct
 	public FeedListAdapter(Context c, List<FeedItem> fi, LayoutInflater l) {
-
 		mContext = c;
 		mItems = fi;
 		mLayoutInflater = l;
@@ -108,9 +107,6 @@ public class FeedListAdapter extends BaseAdapter {
 				.getCachePath(mContext)
 				+ currentItem.getAvatarForPost()
 				+ ".png"));
-		if (imageAvatar.getBackground() == null) {
-			imageAvatar.setImageResource(R.drawable.default_avatar);
-		}
 
 		// Fill the actual content
 		((TextView) convertView.findViewById(R.id.text_date))
@@ -146,11 +142,7 @@ public class FeedListAdapter extends BaseAdapter {
 				// Try to set the image first
 				commentImageView.setImageBitmap(BitmapFactory
 						.decodeFile(PublicUtils.getCachePath(mContext)
-								+ currentItem.getAvatarForPost() + ".png"));
-				if (commentImageView.getBackground() == null) {
-					commentImageView
-							.setImageResource(R.drawable.default_avatar);
-				}
+								+ comment.getGravatar() + ".png"));
 
 				// Set the texts
 				((TextView) commentRoot.findViewById(R.id.text_name))
