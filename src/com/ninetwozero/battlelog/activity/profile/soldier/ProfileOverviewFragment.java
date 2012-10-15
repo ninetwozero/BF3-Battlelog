@@ -24,10 +24,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import com.ninetwozero.battlelog.BF3Reload;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.asynctask.AsyncFriendRemove;
 import com.ninetwozero.battlelog.asynctask.AsyncFriendRequest;
@@ -38,7 +41,7 @@ import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class ProfileOverviewFragment extends Fragment implements DefaultFragment {
+public class ProfileOverviewFragment extends Bf3Fragment implements BF3Reload {
 
     // Attributes
     private Context mContext;
@@ -387,6 +390,7 @@ public class ProfileOverviewFragment extends Fragment implements DefaultFragment
     }
 
     public void reload() {
+        Log.e("ProfileOverviewFragment", "RELOAD pressed");
         new AsyncRefresh(SessionKeeper.getProfileData()
                 .getId()).execute();
     }

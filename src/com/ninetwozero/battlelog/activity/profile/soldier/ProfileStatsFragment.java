@@ -29,6 +29,7 @@ import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import com.google.gson.Gson;
+import com.ninetwozero.battlelog.BF3Reload;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
@@ -57,8 +58,7 @@ import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
 
-public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment,
-        OnCloseListDialogListener {
+public class ProfileStatsFragment extends Bf3Fragment implements BF3Reload, OnCloseListDialogListener {
 
     // Attributes
     private Context mContext;
@@ -462,6 +462,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         * and then call getData() method
         * */
         //getLoaderManager().restartLoader(0, bundle, this);
+        Log.e("ProfileStatsFragment", "RELOAD pressed");
     }
 
     private void startLoadingDialog() {   //TODO extract multiple duplicates of same code

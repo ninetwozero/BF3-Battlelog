@@ -47,7 +47,7 @@ import java.util.Map;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 
-public class MenuProfileFragment extends Fragment implements DefaultFragment,
+public class MenuProfileFragment extends Fragment implements /*DefaultFragment*/
         OnCloseListDialogListener {
 
     // Attributes
@@ -172,11 +172,7 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
         setupActiveSoldierContent();
     }
 
-    @Override
-    public void reload() {
-    }
-
-    @Override
+    /*@Override
     public Menu prepareOptionsMenu(Menu menu) {
         return menu;
     }
@@ -184,7 +180,7 @@ public class MenuProfileFragment extends Fragment implements DefaultFragment,
     @Override
     public boolean handleSelectedOption(MenuItem item) {
         return false;
-    }
+    }*/
 
     public void setupActiveSoldierContent() {
         mTextPersona.setText(getPersonaNameAndPlatform());
