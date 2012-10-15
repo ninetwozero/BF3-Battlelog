@@ -462,7 +462,12 @@ public class ProfileStatsFragment extends Bf3Fragment implements BF3Reload, OnCl
         * and then call getData() method
         * */
         //getLoaderManager().restartLoader(0, bundle, this);
-        Log.e("ProfileStatsFragment", "RELOAD pressed");
+        if(!isHidden()){
+            Log.e("ProfileStatsFragment", "Not hidden");
+        }
+        if(isVisible()){
+            Log.e("ProfileStatsFragment", "RELOAD pressed");
+        }
     }
 
     private void startLoadingDialog() {   //TODO extract multiple duplicates of same code

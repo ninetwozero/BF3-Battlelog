@@ -390,7 +390,12 @@ public class ProfileOverviewFragment extends Bf3Fragment implements BF3Reload {
     }
 
     public void reload() {
-        Log.e("ProfileOverviewFragment", "RELOAD pressed");
+        if(!isHidden()){
+            Log.e("ProfileOverviewFragment", "Not hidden");
+        }
+        if(isVisible()){
+            Log.e("ProfileOverviewFragment", "RELOAD pressed");
+        }
         new AsyncRefresh(SessionKeeper.getProfileData()
                 .getId()).execute();
     }
