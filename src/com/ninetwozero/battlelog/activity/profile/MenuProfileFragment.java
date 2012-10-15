@@ -14,6 +14,12 @@
 
 package com.ninetwozero.battlelog.activity.profile;
 
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,11 +28,16 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.assignments.AssignmentActivity;
 import com.ninetwozero.battlelog.activity.profile.settings.ProfileSettingsActivity;
@@ -40,12 +51,6 @@ import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 
 public class MenuProfileFragment extends Fragment implements DefaultFragment,
         OnCloseListDialogListener {

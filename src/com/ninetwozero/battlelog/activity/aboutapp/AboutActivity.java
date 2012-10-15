@@ -14,18 +14,19 @@
 
 package com.ninetwozero.battlelog.activity.aboutapp;
 
+import java.util.ArrayList;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
-
-import java.util.ArrayList;
 
 public class AboutActivity extends CustomFragmentActivity implements
 		DefaultFragmentActivity {

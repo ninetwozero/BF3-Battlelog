@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog.datatype;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.ninetwozero.battlelog.R;
 
 public class WeaponInfo implements Parcelable {

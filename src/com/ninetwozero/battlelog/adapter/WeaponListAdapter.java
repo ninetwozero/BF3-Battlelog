@@ -14,6 +14,8 @@
 
 package com.ninetwozero.battlelog.adapter;
 
+import java.util.List;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +23,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
 import com.ninetwozero.battlelog.datatype.WeaponStats;
 import com.ninetwozero.battlelog.misc.DrawableResourceList;
-
-import java.util.List;
 
 public class WeaponListAdapter extends BaseAdapter {
 
@@ -37,31 +38,23 @@ public class WeaponListAdapter extends BaseAdapter {
     // Construct
     public WeaponListAdapter(List<WeaponDataWrapper> u,
                              LayoutInflater l) {
-
         dataArray = u;
         layoutInflater = l;
-
     }
 
     @Override
     public int getCount() {
-
         return (dataArray != null) ? dataArray.size() : 0;
-
     }
 
     @Override
     public WeaponDataWrapper getItem(int position) {
-
         return dataArray.get(position);
-
     }
 
     @Override
     public long getItemId(int position) {
-
         return position;
-
     }
 
     @Override
@@ -77,13 +70,12 @@ public class WeaponListAdapter extends BaseAdapter {
 
         // Recycle
         if (convertView == null) {
-
             convertView = layoutInflater.inflate(R.layout.list_item_weapon,
                     parent, false);
-
         }
 
         // Populate fields
+        ((TextView) convertView.findViewById(R.id.text_id)).setText(position+1 + "");
         ((TextView) convertView.findViewById(R.id.text_title)).setText(data.getName());
         ((TextView) convertView.findViewById(R.id.text_sstars))
                 .setText((int) data.getServiceStars() + "");
@@ -121,12 +113,8 @@ public class WeaponListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setDataArray(List<WeaponDataWrapper> data) {
-
-        // Let's do this
+    public void setData(List<WeaponDataWrapper> data) {
         dataArray = data;
         notifyDataSetChanged();
-
     }
-
 }

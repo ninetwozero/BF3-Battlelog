@@ -14,6 +14,10 @@
 
 package com.ninetwozero.battlelog.activity;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -21,13 +25,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.forum.ForumActivity;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
@@ -39,10 +48,6 @@ import com.ninetwozero.battlelog.asynctask.AsyncFetchDataToCompare;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class MenuFragment extends Fragment implements DefaultFragment {
 

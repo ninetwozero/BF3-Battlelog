@@ -14,19 +14,20 @@
 
 package com.ninetwozero.battlelog.asynctask;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.CommentListAdapter;
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.CommentClient;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AsyncCommentsRefresh extends AsyncTask<Integer, Integer, Boolean> {
 

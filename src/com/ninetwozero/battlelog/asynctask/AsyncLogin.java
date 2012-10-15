@@ -28,7 +28,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;

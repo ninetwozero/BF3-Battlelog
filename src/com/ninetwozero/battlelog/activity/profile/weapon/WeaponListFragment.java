@@ -14,17 +14,22 @@
 
 package com.ninetwozero.battlelog.activity.profile.weapon;
 
+import java.util.List;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.WeaponListAdapter;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
-
-import java.util.List;
 
 public class WeaponListFragment extends ListFragment implements DefaultFragment {
 
@@ -99,7 +104,7 @@ public class WeaponListFragment extends ListFragment implements DefaultFragment 
     public void showWeapons(List<WeaponDataWrapper> data) {
 
         // Let's set the data
-        ((WeaponListAdapter) mListView.getAdapter()).setDataArray(data);
+        ((WeaponListAdapter) mListView.getAdapter()).setData(data);
 
     }
 

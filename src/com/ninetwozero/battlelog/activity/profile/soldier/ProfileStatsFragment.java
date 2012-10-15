@@ -14,6 +14,24 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
+import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.personaStaticsFromCursor;
+import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.personaStatisticsForDB;
+import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.personaStatisticsFromJSON;
+import static com.ninetwozero.battlelog.dao.RankProgressDAO.rankProgressForDB;
+import static com.ninetwozero.battlelog.dao.RankProgressDAO.rankProgressFromCursor;
+import static com.ninetwozero.battlelog.dao.RankProgressDAO.rankProgressFromJSON;
+import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.scoreStatisticsForDB;
+import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.scoreStatisticsFromCursor;
+import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.scoreStatisticsFromJSON;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
+import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
+
+import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -25,14 +43,27 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
-import com.ninetwozero.battlelog.datatype.*;
+import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.PersonaStats;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.Statistics;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
 import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
 import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
@@ -44,18 +75,6 @@ import com.ninetwozero.battlelog.provider.UriFactory;
 import com.ninetwozero.battlelog.provider.table.PersonaStatistics;
 import com.ninetwozero.battlelog.provider.table.RankProgress;
 import com.ninetwozero.battlelog.provider.table.ScoreStatistics;
-
-import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.*;
-import static com.ninetwozero.battlelog.dao.RankProgressDAO.*;
-import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.*;
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
-import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
 
 public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment,
         OnCloseListDialogListener {
@@ -131,20 +150,18 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         // Click on the wrap
         mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
         mWrapPersona.setOnClickListener(
-
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View sv) {
-
-                        if (personaArrayLength() > 1) {
-                            FragmentManager manager = getFragmentManager();
-                            ListDialogFragment dialog = ListDialogFragment.newInstance(
-                                    personasToMap(), getTag());
-                            dialog.show(manager, DIALOG);
-                        }
+            new OnClickListener() {
+                @Override
+                public void onClick(View sv) {
+                    if (personaArrayLength() > 1) {
+                        FragmentManager manager = getFragmentManager();
+                        ListDialogFragment dialog = ListDialogFragment.newInstance(
+                                personasToMap(), getTag());
+                        dialog.show(manager, DIALOG);
                     }
-                });
+                }
+            }
+       );
     }
 
     /* FIXME: if no personas are passed to this activity, then mSelectedPersona will be 0? */
