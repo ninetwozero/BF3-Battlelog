@@ -58,7 +58,7 @@ import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
 
-public class ProfileStatsFragment extends Bf3Fragment implements BF3Reload, OnCloseListDialogListener {
+public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDialogListener {
 
     // Attributes
     private Context mContext;
