@@ -41,6 +41,7 @@ import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.provider.BattlelogContentProvider;
 import com.ninetwozero.battlelog.provider.UriFactory;
 import com.ninetwozero.battlelog.provider.table.PersonaStatistics;
 import com.ninetwozero.battlelog.provider.table.RankProgress;
@@ -268,11 +269,9 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     }
 
     private void populateRankProgress() {
-
         if (rankProgress == null) {
             return;
         }
-        Log.e("STATS", "Populating view");
         personaName.setText(rankProgress.getPersonaName() + " " + rankProgress.getPlatform());
         rankTitle.setText(fromResource(rankProgress.getRank()));
         rankId.setText(format(rankProgress.getRank()));
@@ -327,7 +326,6 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {    	
     	/* FIXME: This doesn't seem right, maybe due to the lack of personas? */
         if ( task != null && task.result.equals(CompletedTask.Result.SUCCESS)) {
-            Log.e("STATS", "Load finished");
             findViews();
             PersonaInfo pi = personaStatsFrom(task);
             updateDatabase(pi);
@@ -456,18 +454,15 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
     @Override
     public void reload() {
-        /*TODO
-        * can't use this method implementation because for some reason it been called before actual content
-        * showed. Very weird. I would recommend to delete DB record of currently selected persona
-        * and then call getData() method
-        * */
-        //getLoaderManager().restartLoader(0, bundle, this);
-        if(!isHidden()){
-            Log.e("ProfileStatsFragment", "Not hidden");
-        }
-        if(isVisible()){
-            Log.e("ProfileStatsFragment", "RELOAD pressed");
-        }
+        deleteTables();
+        Toast.makeText(getContext(), "Deleted statistics for " + mSelectedPersona, Toast.LENGTH_SHORT).show();
+        getLoaderManager().restartLoader(0, bundle, this);
+    }
+
+    private void deleteTables(){
+        getContext().getContentResolver().delete(RankProgress.URI, BattlelogContentProvider.WHERE_PERSONA_ID, new String[]{String.valueOf(mSelectedPersona)});
+        getContext().getContentResolver().delete(PersonaStatistics.URI, BattlelogContentProvider.WHERE_PERSONA_ID, new String[]{String.valueOf(mSelectedPersona)});
+        getContext().getContentResolver().delete(ScoreStatistics.URI, BattlelogContentProvider.WHERE_PERSONA_ID, new String[]{String.valueOf(mSelectedPersona)});
     }
 
     private void startLoadingDialog() {   //TODO extract multiple duplicates of same code
