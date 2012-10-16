@@ -54,10 +54,10 @@ public class PersonaStatisticsDAO {
         list.add(new Statistics(R.string.info_xml_repairs, format(pso.getRepairs()), R.style.Wrap));
         list.add(new Statistics(R.string.info_xml_resupplies, format(pso.getResupplies()), R.style.Wrap));
         list.add(new Statistics(R.string.info_xml_deaths, format(pso.getDeaths()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_kd_ratio, format(pso.getKdRatio()) + "%", R.style.InfoSubHeading));
+        list.add(new Statistics(R.string.info_xml_kd_ratio, format(pso.getKdRatio()), R.style.InfoSubHeading));
         list.add(new Statistics(R.string.info_xml_wins, format(pso.getGameWon()), R.style.Wrap));
         list.add(new Statistics(R.string.info_xml_losses, format(pso.getGameLost()), R.style.Wrap));
-        list.add(new Statistics(R.string.info_xml_wl_ratio, format(pso.getWlRatio()) + "%", R.style.InfoSubHeading));
+        list.add(new Statistics(R.string.info_xml_wl_ratio, format(pso.getWlRatio()), R.style.InfoSubHeading));
         list.add(new Statistics(R.string.info_xml_accuracy, format(pso.getAccuracy()) + "%", R.style.Wrap));
         list.add(new Statistics(R.string.info_xml_longest_headshot, format(pso.getLongestHeadshot()) + "m", R.style.Wrap));
         list.add(new Statistics(R.string.info_xml_longest_killstreak, format(pso.getLongestKillStreak()), R.style.Wrap));
@@ -80,10 +80,10 @@ public class PersonaStatisticsDAO {
         values.put(PersonaStatistics.Columns.REPAIRS, format(pso.getRepairs()));
         values.put(PersonaStatistics.Columns.RESUPPLIES, format(pso.getResupplies()));
         values.put(PersonaStatistics.Columns.DEATHS, format(pso.getDeaths()));
-        values.put(PersonaStatistics.Columns.KD_RATIO, format(pso.getKdRatio()) + "%");
+        values.put(PersonaStatistics.Columns.KD_RATIO, format(pso.getKdRatio()));
         values.put(PersonaStatistics.Columns.WINS, format(pso.getGameWon()));
         values.put(PersonaStatistics.Columns.LOSSES, format(pso.getGameLost()));
-        values.put(PersonaStatistics.Columns.WL_RATIO, format(pso.getWlRatio()) + "%");
+        values.put(PersonaStatistics.Columns.WL_RATIO, format(pso.getWlRatio()));
         values.put(PersonaStatistics.Columns.ACCURACY, format(pso.getAccuracy()) + "%");
         values.put(PersonaStatistics.Columns.LONGEST_HEADSHOT, format(pso.getLongestHeadshot()) + "m");
         values.put(PersonaStatistics.Columns.LONGEST_KILLSTREAK, format(pso.getLongestKillStreak()));
