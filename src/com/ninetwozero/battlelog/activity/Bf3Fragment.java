@@ -1,17 +1,18 @@
 package com.ninetwozero.battlelog.activity;
 
-import static com.ninetwozero.battlelog.loader.CompletedTask.Result.FAILURE;
-import static com.ninetwozero.battlelog.loader.CompletedTask.Result.SUCCESS;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-
+import com.ninetwozero.battlelog.BF3Reload;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.loader.CompletedTask.Result;
 
-public class Bf3Fragment extends Fragment implements
-/* DefaultFragment, */LoaderCallbacks<CompletedTask> {
+import static com.ninetwozero.battlelog.loader.CompletedTask.Result.FAILURE;
+import static com.ninetwozero.battlelog.loader.CompletedTask.Result.SUCCESS;
+
+public class Bf3Fragment extends Fragment implements LoaderCallbacks<CompletedTask> , BF3Reload{
 
     @Override
     public Loader<CompletedTask> onCreateLoader(int id, Bundle bundle) {
@@ -44,4 +45,12 @@ public class Bf3Fragment extends Fragment implements
     @Override
     public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
     }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void reload() { }
 }

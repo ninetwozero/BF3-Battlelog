@@ -14,22 +14,17 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PersonaStats;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProfileStatsCompareFragment extends Fragment implements DefaultFragment {
 

@@ -14,24 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
-import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.personaStaticsFromCursor;
-import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.personaStatisticsForDB;
-import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.personaStatisticsFromJSON;
-import static com.ninetwozero.battlelog.dao.RankProgressDAO.rankProgressForDB;
-import static com.ninetwozero.battlelog.dao.RankProgressDAO.rankProgressFromCursor;
-import static com.ninetwozero.battlelog.dao.RankProgressDAO.rankProgressFromJSON;
-import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.scoreStatisticsForDB;
-import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.scoreStatisticsFromCursor;
-import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.scoreStatisticsFromJSON;
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
-import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
-
-import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -43,23 +25,13 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.google.gson.Gson;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
-import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PersonaData;
 import com.ninetwozero.battlelog.datatype.PersonaStats;
 import com.ninetwozero.battlelog.datatype.ProfileData;
@@ -71,13 +43,25 @@ import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.provider.BattlelogContentProvider;
 import com.ninetwozero.battlelog.provider.UriFactory;
 import com.ninetwozero.battlelog.provider.table.PersonaStatistics;
 import com.ninetwozero.battlelog.provider.table.RankProgress;
 import com.ninetwozero.battlelog.provider.table.ScoreStatistics;
 
-public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment,
-        OnCloseListDialogListener {
+import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.*;
+import static com.ninetwozero.battlelog.dao.RankProgressDAO.*;
+import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.*;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
+import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
+
+public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDialogListener {
 
     // Attributes
     private Context mContext;
@@ -285,11 +269,9 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     }
 
     private void populateRankProgress() {
-
         if (rankProgress == null) {
             return;
         }
-        Log.e("STATS", "Populating view");
         personaName.setText(rankProgress.getPersonaName() + " " + rankProgress.getPlatform());
         rankTitle.setText(fromResource(rankProgress.getRank()));
         rankId.setText(format(rankProgress.getRank()));
@@ -344,7 +326,6 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {    	
     	/* FIXME: This doesn't seem right, maybe due to the lack of personas? */
         if ( task != null && task.result.equals(CompletedTask.Result.SUCCESS)) {
-            Log.e("STATS", "Load finished");
             findViews();
             PersonaInfo pi = personaStatsFrom(task);
             updateDatabase(pi);
@@ -473,12 +454,15 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
 
     @Override
     public void reload() {
-        /*TODO
-        * can't use this method implementation because for some reason it been called before actual content
-        * showed. Very weird. I would recommend to delete DB record of currently selected persona
-        * and then call getData() method
-        * */
-        //getLoaderManager().restartLoader(0, bundle, this);
+        deleteTables();
+        Toast.makeText(getContext(), "Deleted statistics for " + mSelectedPersona, Toast.LENGTH_SHORT).show();
+        getLoaderManager().restartLoader(0, bundle, this);
+    }
+
+    private void deleteTables(){
+        getContext().getContentResolver().delete(RankProgress.URI, BattlelogContentProvider.WHERE_PERSONA_ID, new String[]{String.valueOf(mSelectedPersona)});
+        getContext().getContentResolver().delete(PersonaStatistics.URI, BattlelogContentProvider.WHERE_PERSONA_ID, new String[]{String.valueOf(mSelectedPersona)});
+        getContext().getContentResolver().delete(ScoreStatistics.URI, BattlelogContentProvider.WHERE_PERSONA_ID, new String[]{String.valueOf(mSelectedPersona)});
     }
 
     private void startLoadingDialog() {   //TODO extract multiple duplicates of same code

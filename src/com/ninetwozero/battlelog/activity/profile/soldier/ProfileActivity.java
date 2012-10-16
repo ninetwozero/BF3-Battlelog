@@ -14,30 +14,25 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
-import java.util.ArrayList;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.AdapterView;
-
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+
+import java.util.ArrayList;
 
 public class ProfileActivity extends CustomFragmentActivity implements
 		DefaultFragmentActivity {
@@ -52,33 +47,25 @@ public class ProfileActivity extends CustomFragmentActivity implements
 
 	@Override
 	public void onCreate(final Bundle icicle) {
-
-		// onCreate - save the instance state
 		super.onCreate(icicle);
 		setContentView(R.layout.viewpager_default);
-		
-		// Get the profile data or die
+
 		if (!getIntent().hasExtra("profile")) {
 			finish();
 		}
 		profileData = getIntent().getParcelableExtra("profile");
 		setup();
 		init();
-
 	}
 
 	public void init() {
 	}
 
 	public void reload() {
-		fragmentOverview.reload();
 	}
 
 	public void setup() {
-
-		// Do we need to setup the fragments?
-		if (mListFragments == null) {			
-			// Add them to the list
+		if (mListFragments == null) {
 			mListFragments = new ArrayList<Fragment>();
 			mListFragments
 					.add(fragmentOverview = (ProfileOverviewFragment) Fragment
@@ -89,24 +76,19 @@ public class ProfileActivity extends CustomFragmentActivity implements
 			mListFragments.add(fragmentFeed = (FeedFragment) Fragment
 					.instantiate(this, FeedFragment.class.getName()));
 
-			// Add the profileData
 			fragmentOverview.setProfileData(profileData);
 			fragmentStats.setProfileData(profileData);
 
-			// We need to set the type
 			fragmentFeed.setTitle(profileData.getUsername());
 			fragmentFeed.setType(FeedClient.TYPE_PROFILE);
 			fragmentFeed.setId(profileData.getId());
 			fragmentFeed.setCanWrite(false);
 
-			// Get the ViewPager
 			mViewPager = (ViewPager) findViewById(R.id.viewpager);
 			mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
-			// Fill the PagerAdapter & set it to the viewpager
 			mPagerAdapter = new SwipeyTabsPagerAdapter(
-
-			mFragmentManager, new String[] { "OVERVIEW", "STATS", "FEED" },
+                    mFragmentManager, new String[] { "OVERVIEW", "STATS", "FEED" },
 					mListFragments, mViewPager, mLayoutInflater);
 			mViewPager.setAdapter(mPagerAdapter);
 			mTabs.setAdapter(mPagerAdapter);
@@ -115,188 +97,115 @@ public class ProfileActivity extends CustomFragmentActivity implements
 			mViewPager.setOnPageChangeListener(mTabs);
 			mViewPager.setCurrentItem(0);
 			mViewPager.setOffscreenPageLimit(2);
-
 		}
-
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate!!
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.option_profileview, menu);
 		return super.onCreateOptionsMenu(menu);
-
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-
-		// Our own profile, no need to show the "extra" buttons
 		if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
-
 			menu.removeItem(R.id.option_friendadd);
 			menu.removeItem(R.id.option_frienddel);
 			menu.removeItem(R.id.option_compare);
 			menu.removeItem(R.id.option_unlocks);
-
 		} else {
-
-			// Which tab is operating?
 			if (mViewPager.getCurrentItem() == 0) {
-
-				return super.onPrepareOptionsMenu(fragmentOverview
-						.prepareOptionsMenu(menu));
-
+				return super.onPrepareOptionsMenu(fragmentOverview.prepareOptionsMenu(menu));
 			} else if (mViewPager.getCurrentItem() == 1) {
-
-				return super.onPrepareOptionsMenu(fragmentStats
-						.prepareOptionsMenu(menu));
-
+				return super.onPrepareOptionsMenu(fragmentStats.prepareOptionsMenu(menu));
 			} else if (mViewPager.getCurrentItem() == 2) {
-
-				((MenuItem) menu.findItem(R.id.option_friendadd))
-						.setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_frienddel))
-						.setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_compare))
-						.setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_unlocks))
-						.setVisible(false);
+				((MenuItem) menu.findItem(R.id.option_friendadd)).setVisible(false);
+				((MenuItem) menu.findItem(R.id.option_frienddel)).setVisible(false);
+				((MenuItem) menu.findItem(R.id.option_compare)).setVisible(false);
+				((MenuItem) menu.findItem(R.id.option_unlocks)).setVisible(false);
 
 			} else {
-
 				menu.removeItem(R.id.option_friendadd);
 				menu.removeItem(R.id.option_frienddel);
 				menu.removeItem(R.id.option_compare);
 				menu.removeItem(R.id.option_unlocks);
-
 			}
-
 		}
-
 		return super.onPrepareOptionsMenu(menu);
-
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
-		// Let's act!
 		if (item.getItemId() == R.id.option_reload) {
-
-			this.reload();
-
+            Fragment fragment = mPagerAdapter.getItem(mViewPager.getCurrentItem());
+            if(fragment instanceof Bf3Fragment){
+                ((Bf3Fragment) fragment).reload();
+            }
 		} else if (item.getItemId() == R.id.option_back) {
-
 			((Activity) this).finish();
-
 		} else {
-
 			if (mViewPager.getCurrentItem() == 0) {
-
 				return fragmentOverview.handleSelectedOption(item);
-
 			} else if (mViewPager.getCurrentItem() == 1) {
-
 				return fragmentStats.handleSelectedOption(item);
-
 			}
-
 		}
-
-		// Return true yo
 		return true;
-
 	}
 
 	@Override
 	public void onResume() {
-
 		super.onResume();
-
-		// We need to initialize
 		init();
-		reload();
-
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View view,
-			ContextMenuInfo menuInfo) {
-
+	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
 		switch (mViewPager.getCurrentItem()) {
-
 		case 0:
 			break;
-
 		case 1:
 			break;
-
 		case 2:
 			fragmentFeed.createContextMenu(menu, view, menuInfo);
 			break;
-
 		}
-
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-
-		// Declare...
 		AdapterView.AdapterContextMenuInfo info;
-
-		// Let's try to get some menu information via a try/catch
 		try {
-
 			info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
 		} catch (ClassCastException e) {
-
 			e.printStackTrace();
 			return false;
-
 		}
 
 		switch (mViewPager.getCurrentItem()) {
-
 		case 2:
 			return fragmentFeed.handleSelectedContextItem(info, item);
-
 		default:
 			break;
-
 		}
-
 		return true;
 	}
 
 	public void openStats(ProfileData p) {
-
 		fragmentStats.setProfileData(p);
-		fragmentStats.reload();
-
 	}
 
 	public void setFeedPermission(boolean c) {
-
 		fragmentFeed.setCanWrite(c);
-
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-		// Hotkeys
 		if (keyCode == KeyEvent.KEYCODE_BACK && mViewPager.getCurrentItem() > 0) {
-
 			mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
 			return true;
-
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-
 }

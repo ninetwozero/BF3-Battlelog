@@ -14,28 +14,17 @@
 
 package com.ninetwozero.battlelog.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutActivity;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
@@ -51,6 +40,11 @@ import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DashboardActivity extends CustomFragmentActivity implements
         DefaultFragmentActivity {
@@ -92,7 +86,6 @@ public class DashboardActivity extends CustomFragmentActivity implements
 
         // Setup COM & feed
         init();
-
     }
 
     public final void init() {
@@ -220,11 +213,9 @@ public class DashboardActivity extends CustomFragmentActivity implements
 
     @Override
     public void reload() {
-
         // Update the COM
         mFragmentComFriends.reload();
         mFragmentComNotifications.reload();
-
     }
 
     @Override
@@ -320,13 +311,7 @@ public class DashboardActivity extends CustomFragmentActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        // Let's act!
-        if (item.getItemId() == R.id.option_refresh) {
-
-            reload();
-
-        } else if (item.getItemId() == R.id.option_settings) {
+        if (item.getItemId() == R.id.option_settings) {
 
             startActivity(new Intent(this, SettingsActivity.class));
             finish();
