@@ -38,6 +38,7 @@ import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.ProfileInformation;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -47,6 +48,7 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 public class ProfileOverviewFragment extends Bf3Fragment {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
+    private COMClient mComClient;
     private SharedPreferences mSharedPreferences;
 
     private ProfileData mProfileData;
@@ -56,7 +58,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
 
         View view = mLayoutInflater.inflate(R.layout.tab_content_profile_overview, container, false);
@@ -72,6 +73,11 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     }
 
     public void initFragment(View v) {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+    	mComClient = new COMClient(
+			mProfileData.getId(),
+			mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
+    	);
         mPostingRights = false;
     }
 
@@ -227,6 +233,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
 
                 sendToStats(mProfileData);
                 return (mProfileInformation != null);
+
             } catch (WebsiteHandlerException ex) {
                 ex.printStackTrace();
                 return false;
@@ -281,17 +288,16 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             ((MenuItem) menu.findItem(R.id.option_friendadd)).setVisible(false);
             ((MenuItem) menu.findItem(R.id.option_frienddel)).setVisible(false);
         }
-        ((MenuItem) menu.findItem(R.id.option_compare)).setVisible(false);
+        ((MenuItem) menu.findItem(R.id.option_compare))
+                .setVisible(false);
         return menu;
     }
 
     public boolean handleSelectedOption(MenuItem item) {
         if (item.getItemId() == R.id.option_friendadd) {
-            new AsyncFriendRequest(mContext, mProfileData.getId()).execute(
-                    mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+            new AsyncFriendRequest(mContext, mProfileData.getId()).execute(mComClient);
         } else if (item.getItemId() == R.id.option_frienddel) {
-            new AsyncFriendRemove(mContext, mProfileData.getId()).execute(
-                    mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+            new AsyncFriendRemove(mContext, mProfileData.getId()).execute(mComClient);
         }
         return true;
     }

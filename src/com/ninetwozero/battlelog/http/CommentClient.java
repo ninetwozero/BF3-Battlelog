@@ -1,14 +1,15 @@
 package com.ninetwozero.battlelog.http;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CommentClient extends DefaultClient {
 

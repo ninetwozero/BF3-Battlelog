@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.datatype.ProfileData;

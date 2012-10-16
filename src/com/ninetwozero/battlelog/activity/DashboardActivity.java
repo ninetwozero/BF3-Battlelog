@@ -25,7 +25,6 @@ import android.widget.AdapterView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.ninetwozero.battlelog.BF3Reload;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutActivity;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
@@ -214,11 +213,9 @@ public class DashboardActivity extends CustomFragmentActivity implements
 
     @Override
     public void reload() {
-
         // Update the COM
-        /*mFragmentComFriends.reload();
-        mFragmentComNotifications.reload();*/
-
+        mFragmentComFriends.reload();
+        mFragmentComNotifications.reload();
     }
 
     @Override
@@ -314,12 +311,7 @@ public class DashboardActivity extends CustomFragmentActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        // Let's act!
-        /*if (item.getItemId() == R.id.option_refresh) {
-            reload();
-
-        } else*/ if (item.getItemId() == R.id.option_settings) {
+        if (item.getItemId() == R.id.option_settings) {
 
             startActivity(new Intent(this, SettingsActivity.class));
             finish();

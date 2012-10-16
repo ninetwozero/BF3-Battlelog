@@ -14,17 +14,18 @@
 
 package com.ninetwozero.battlelog.asynctask;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.ninetwozero.battlelog.adapter.NotificationListAdapter;
 import com.ninetwozero.battlelog.datatype.NotificationData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.NotificationClient;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AsyncNotificationsRefresh extends
         AsyncTask<String, Integer, Boolean> {

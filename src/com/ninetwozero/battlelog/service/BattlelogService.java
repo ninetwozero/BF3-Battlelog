@@ -19,9 +19,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.util.Log;
+
 import com.ninetwozero.battlelog.asynctask.AsyncServiceTask;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class BattlelogService extends Service {
@@ -36,33 +35,21 @@ public class BattlelogService extends Service {
 
     @Override
     public void onCreate() {
-
-        // SET THE SHARED PREFERENCES
         if (mSharedPreferences == null) {
-
             mSharedPreferences = PreferenceManager
                     .getDefaultSharedPreferences(this);
-
         }
-
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        Log.d(Constants.DEBUG_TAG, "Service has reached onStartCommand()");
         if (PublicUtils.isNetworkAvailable(this)) {
-
             new AsyncServiceTask(this, mSharedPreferences).execute();
-
         }
         return Service.START_STICKY;
-
     }
 
     @Override
-    public void onStart(Intent intent, int startid) {
-        Log.d(Constants.DEBUG_TAG, "Service started.");
-    }
+    public void onStart(Intent intent, int startid) {}
 
 }

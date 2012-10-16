@@ -14,18 +14,19 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatype.AppContributorData;
-import com.ninetwozero.battlelog.datatype.PlatformData;
-import com.ninetwozero.battlelog.datatype.VehicleType;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatype.AppContributorData;
+import com.ninetwozero.battlelog.datatype.PlatformData;
+import com.ninetwozero.battlelog.datatype.VehicleType;
 
 public final class DataBank {
 

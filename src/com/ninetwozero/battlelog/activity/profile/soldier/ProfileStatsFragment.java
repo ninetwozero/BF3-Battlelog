@@ -29,11 +29,13 @@ import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import com.google.gson.Gson;
-import com.ninetwozero.battlelog.BF3Reload;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
-import com.ninetwozero.battlelog.datatype.*;
+import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.PersonaStats;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.Statistics;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
 import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
 import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
@@ -132,20 +134,18 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
         // Click on the wrap
         mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
         mWrapPersona.setOnClickListener(
-
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View sv) {
-
-                        if (personaArrayLength() > 1) {
-                            FragmentManager manager = getFragmentManager();
-                            ListDialogFragment dialog = ListDialogFragment.newInstance(
-                                    personasToMap(), getTag());
-                            dialog.show(manager, DIALOG);
-                        }
+            new OnClickListener() {
+                @Override
+                public void onClick(View sv) {
+                    if (personaArrayLength() > 1) {
+                        FragmentManager manager = getFragmentManager();
+                        ListDialogFragment dialog = ListDialogFragment.newInstance(
+                                personasToMap(), getTag());
+                        dialog.show(manager, DIALOG);
                     }
-                });
+                }
+            }
+       );
     }
 
     /* FIXME: if no personas are passed to this activity, then mSelectedPersona will be 0? */

@@ -14,18 +14,6 @@
 
 package com.ninetwozero.battlelog.http;
 
-import android.content.Context;
-import android.preference.PreferenceManager;
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatype.*;
-import com.ninetwozero.battlelog.misc.CacheHandler;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
-import org.apache.http.HttpEntity;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,6 +21,30 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.apache.http.HttpEntity;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import android.content.Context;
+import android.preference.PreferenceManager;
+
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
+import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.PlatoonInformation;
+import com.ninetwozero.battlelog.datatype.PlatoonStats;
+import com.ninetwozero.battlelog.datatype.PlatoonStatsItem;
+import com.ninetwozero.battlelog.datatype.PlatoonTopStatsItem;
+import com.ninetwozero.battlelog.datatype.ProfileComparator;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.RequestHandlerException;
+import com.ninetwozero.battlelog.datatype.TopStatsComparator;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.CacheHandler;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class PlatoonClient extends DefaultClient {
 
@@ -935,26 +947,18 @@ public class PlatoonClient extends DefaultClient {
                         currUser = personaList.getJSONObject(currObj
                                 .getString("bestPersonaId"));
                     } else if (!currObj.getString("personaId").equals("0")) {
-
                         currUser = personaList.getJSONObject(currObj
                                 .getString("personaId"));
 
                     } else {
-
                         // Create a new "stats item"
                         arrayTop.add(
-
-                                new PlatoonTopStatsItem(
-
-                                        "N/A", 0, null
-
-                                )
-
+                            new PlatoonTopStatsItem(
+                                   "N/A", 0, null
+                            )
                         );
-
                         // Continue
                         continue;
-
                     }
 
                     // Store the gravatar
@@ -963,75 +967,50 @@ public class PlatoonClient extends DefaultClient {
 
                     // Do we need to download a new image?
                     if (!CacheHandler.isCached(context, filename)) {
-
                         ProfileClient.cacheGravatar(context, filename,
                                 Constants.DEFAULT_AVATAR_SIZE);
-
                     }
 
                     // Create a new "stats item"
                     arrayTop.add(
-
-                            new PlatoonTopStatsItem(
-
-                                    currObjNames.getString(i), currObj.getInt("spm"),
-                                    new ProfileData.Builder(
-                                            Long.parseLong(currUser.optString("userId", "0")),
-                                            currUser.optString("username", "")
-                                    ).gravatarHash(tempGravatarHash).build()
-
-                            )
-
+                        new PlatoonTopStatsItem(
+                                currObjNames.getString(i), currObj.getInt("spm"),
+                                new ProfileData.Builder(
+                                        Long.parseLong(currUser.optString("userId", "0")),
+                                        currUser.optString("username", "")
+                                ).gravatarHash(tempGravatarHash).build()
+                        )
                     );
 
                     // Store it if it's the highest
                     if (highestSPM == null
                             || highestSPM.getSPM() < arrayTop.get(i).getSPM()) {
-
                         highestSPM = arrayTop.get(i);
-
                     }
-
                 }
 
                 // Set the best & sort
                 arrayTop.add(
-
-                        new PlatoonTopStatsItem(
-
-                                "TOP", highestSPM.getSPM(), highestSPM.getProfile()
-
-                        )
-
+                    new PlatoonTopStatsItem(
+                        "TOP", 
+                        highestSPM.getSPM(), 
+                        highestSPM.getProfile()
+                    )
                 );
                 Collections.sort(arrayTop, new TopStatsComparator());
-
-                // Return it now!!
                 return new PlatoonStats(
-
-                        mPlatoonData.getName(), mPlatoonData.getId(), arrayGeneral,
-                        arrayTop, arrayScore, arraySPM, arrayTime
-
+                    mPlatoonData.getName(), mPlatoonData.getId(), arrayGeneral,
+                    arrayTop, arrayScore, arraySPM, arrayTime
                 );
 
             } else {
-
                 return null;
-
             }
 
-        } catch (JSONException ex) {
-
-            ex.printStackTrace();
-            return null;
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public ArrayList<ProfileData> getFans() throws WebsiteHandlerException {
@@ -1040,14 +1019,9 @@ public class PlatoonClient extends DefaultClient {
 
             // Let's go!
             List<ProfileData> fans = new ArrayList<ProfileData>();
-            String httpContent;
-
-            // Do the request
-            httpContent = mRequestHandler.get(
-
-                    RequestHandler.generateUrl(URL_FANS, mPlatoonData.getId()),
-                    RequestHandler.HEADER_AJAX
-
+            String httpContent = mRequestHandler.get(
+                RequestHandler.generateUrl(URL_FANS, mPlatoonData.getId()),
+                RequestHandler.HEADER_AJAX
             );
 
             // Let's start with the JSON shall we?
@@ -1058,7 +1032,6 @@ public class PlatoonClient extends DefaultClient {
 
             // Iterate over the fans
             if (fanIdArray != null) {
-
                 for (int i = 0, max = fanIdArray.length(); i < max; i++) {
 
                     // Grab the fan
@@ -1067,42 +1040,33 @@ public class PlatoonClient extends DefaultClient {
 
                     // Store him in the ArrayList
                     fans.add(
-
                             new ProfileData.Builder(
                                     Long.parseLong(tempObject.optString("userId", "0")),
                                     tempObject.optString("username", "")
                             ).gravatarHash(tempObject.optString("gravatarMd5")).build()
                     );
-
                 }
-
             }
 
             // Did we get more than 0?
             if (!fans.isEmpty()) {
 
-                // Add a header just 'cause we can
+                // Add a header & sort from A-Z
                 fans.add(new ProfileData("Loyal fans"));
-
-                // a-z please!
                 Collections.sort(fans, new ProfileComparator());
 
             }
-            // Return
             return (ArrayList<ProfileData>) fans;
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
     }
 
     public PlatoonInformation getInformation(
-
-            final Context c, final int num, final long aPId
-
+        final Context c, 
+        final int num, 
+        final long aPId
     ) throws WebsiteHandlerException {
 
         try {
@@ -1151,12 +1115,9 @@ public class PlatoonClient extends DefaultClient {
                 JSONObject currItem;
 
                 // Get the user's friends
-                friends = new COMClient(PreferenceManager.getDefaultSharedPreferences(c)
-                        .getString(Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriends(
-
+                friends = new COMClient(aPId, PreferenceManager.getDefaultSharedPreferences(c).getString(Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriends(
                         aPId,
                         false
-
                 );
 
                 // Let's iterate over the members

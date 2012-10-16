@@ -14,31 +14,25 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-public class ChatMessage {
+import java.util.List;
+
+public class ChatSession {
 
     // Attributes
-    private long mTimestamp;
-    private String mSender;
-    private String mMessage;
-
+    private long mChatId;
+    private List<ChatMessage> mChatMessages;
+    
     // Construct
-    public ChatMessage(long t, String s, String m) {
-        mTimestamp = t;
-        mSender = s;
-        mMessage = m;
+    public ChatSession(long id, List<ChatMessage> cm) {
+        mChatId = id;
+        mChatMessages = cm;
     }
 
     // Getters
-    public long getTimestamp() {
-        return mTimestamp;
-    }
-
-    public String getSender() {
-        return mSender;
-    }
-
-    public String getMessage() {
-        return mMessage;
-    }
-
+    public long getChatId() {
+        return mChatId;
+    } 
+    public List<ChatMessage> getMessages() {
+    	return mChatMessages;
+	}
 }
