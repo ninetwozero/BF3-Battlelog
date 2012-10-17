@@ -21,6 +21,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
@@ -43,14 +44,17 @@ public class WeaponListActivity extends CustomFragmentActivity implements
     private ProfileData mProfileData;
     private Map<Long, List<WeaponDataWrapper>> mItems;
     private long mSelectedPersona;
+	private AsyncRefresh myRefresher;
+	public boolean refreshOngoing;
 
     // private int mSelectedPosition;
 
     @Override
     public void onCreate(final Bundle icicle) {
-
         // onCreate - save the instance state
         super.onCreate(icicle);
+        refreshOngoing = false;
+        
 
         // Get the intent
         if (!getIntent().hasExtra("profile")) {
@@ -86,7 +90,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements
 
     @Override
     public void onResume() {
-
+    	Log.i(getClass().getName(),"onResume...");
         super.onResume();
 
         // Reload
@@ -133,9 +137,12 @@ public class WeaponListActivity extends CustomFragmentActivity implements
     }
 
     public void reload() {
-
-        new AsyncRefresh(this).execute();
-
+    	Log.i(getClass().getName(),"reload...");
+    	if (!refreshOngoing || myRefresher.isCancelled()) {
+    		refreshOngoing = true;
+    		myRefresher = new AsyncRefresh(this);
+    		myRefresher.execute();
+		} 
     }
 
     public void doFinish() {
@@ -156,7 +163,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements
 
         @Override
         protected void onPreExecute() {
-
+        	refreshOngoing = true;
             if (mItems.isEmpty()) {
                 mProgressDialog = new ProgressDialog(mContext);
                 mProgressDialog.setTitle(mContext
@@ -182,18 +189,22 @@ public class WeaponListActivity extends CustomFragmentActivity implements
                 }
 
                 mItems = new ProfileClient(mProfileData).getWeapons();
+                Log.i(getClass().getName(), "doInBackground completed...");
+                
                 return true;
 
             } catch (Exception ex) {
 
                 ex.printStackTrace();
+                Log.i(getClass().getName(), "doInBackground completed...");
                 return false;
             }
+            
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
-
+        	
             if (mContext != null) {
 
                 if (result) {
@@ -214,6 +225,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements
                 }
 
             }
+            refreshOngoing = false;
         }
 
     }
