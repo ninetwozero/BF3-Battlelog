@@ -17,7 +17,15 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:paddingBottom="5dp">
-
+	<TextView
+	    android:id="@+id/text_id"
+		android:layout_width="wrap_content"
+		android:layout_height="70dp"
+		android:text="123"
+		android:textSize="40sp"
+		android:gravity="left|center_vertical"
+    />
+	
   <LinearLayout
       android:id="@+id/wrap_sstars"
       android:layout_width="70dp"
@@ -26,7 +34,9 @@
       android:background="@drawable/bg_rounded_corners"
       android:gravity="center"
       android:orientation="vertical"
-      android:padding="5dp">
+      android:padding="5dp"
+	  android:layout_alignParentRight="true"
+	>
 
     <TextView
         android:id="@+id/text_sstars"
@@ -41,10 +51,19 @@
         android:id="@+id/image_sstars"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:src="@drawable/servicestar31"/>
+        android:src="@drawable/servicestar31" 
+    />
   </LinearLayout>
-
-  <TextView
+  <ImageView
+      android:id="@+id/image_item"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_above="@id/text_title"
+      android:layout_toRightOf="@id/text_id"
+      android:layout_toLeftOf="@id/wrap_sstars"
+      android:src="@drawable/w_xp1_famas"
+  />
+    <TextView
       android:id="@+id/text_title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -81,13 +100,5 @@
       android:layout_alignParentLeft="true"
       android:layout_below="@+id/text_title"
       android:layout_toLeftOf="@id/text_progress"/>
-
-  <ImageView
-      android:id="@+id/image_item"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_above="@id/text_title"
-      android:layout_toRightOf="@id/wrap_sstars"
-      android:src="@drawable/w_xp1_famas"/>
-
+  
 </RelativeLayout>

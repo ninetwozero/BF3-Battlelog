@@ -1,5 +1,15 @@
 package com.ninetwozero.battlelog.preference;
 
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.LOCAL_TIME_VALUES;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.ListPreference;
@@ -10,11 +20,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static com.ninetwozero.battlelog.datatype.ProfileSettings.LOCAL_TIME_VALUES;
 
 public class LocalTimeListPreference extends ListPreference {
 

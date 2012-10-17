@@ -1,5 +1,13 @@
 package com.ninetwozero.battlelog.preference;
 
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.COUNTRY;
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.PROFILE_INFO_COUNTRY;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,15 +19,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static com.ninetwozero.battlelog.datatype.ProfileSettings.COUNTRY;
-import static com.ninetwozero.battlelog.datatype.ProfileSettings.PROFILE_INFO_COUNTRY;
 
 public class CountryPreference extends DialogPreference {
     private AutoCompleteTextView mTextView;

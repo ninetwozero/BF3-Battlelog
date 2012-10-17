@@ -14,23 +14,46 @@
 
 package com.ninetwozero.battlelog.http;
 
-import android.content.Context;
-import android.util.Log;
-import com.ninetwozero.battlelog.datatype.*;
-import com.ninetwozero.battlelog.misc.CacheHandler;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.DataBank;
-import com.ninetwozero.battlelog.misc.PublicUtils;
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import android.content.Context;
+import android.util.Log;
+
+import com.ninetwozero.battlelog.datatype.AssignmentComparator;
+import com.ninetwozero.battlelog.datatype.AssignmentData;
+import com.ninetwozero.battlelog.datatype.AssignmentDataWrapper;
+import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
+import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.PersonaStats;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.ProfileInformation;
+import com.ninetwozero.battlelog.datatype.RequestHandlerException;
+import com.ninetwozero.battlelog.datatype.UnlockComparator;
+import com.ninetwozero.battlelog.datatype.UnlockData;
+import com.ninetwozero.battlelog.datatype.UnlockDataWrapper;
+import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
+import com.ninetwozero.battlelog.datatype.WeaponDataWrapperComparator;
+import com.ninetwozero.battlelog.datatype.WeaponInfo;
+import com.ninetwozero.battlelog.datatype.WeaponStats;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.CacheHandler;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.DataBank;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ProfileClient extends DefaultClient {
 
@@ -1033,7 +1056,6 @@ public class ProfileClient extends DefaultClient {
                 }
 
                 // Add the assignment
-                Log.d(Constants.DEBUG_TAG, "key => " + key);
                 int[] resources = DataBank.getResourcesForAssignment(key);
                 if (resources != null) {
                     assignments.add(new AssignmentData(resources[0],

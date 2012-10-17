@@ -1,5 +1,7 @@
 package com.ninetwozero.battlelog.server;
 
+import java.io.IOException;
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -10,8 +12,6 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
-
-import java.io.IOException;
 
 public class Bf3HttpClient implements HttpClient {
 
