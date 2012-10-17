@@ -413,6 +413,7 @@
     <string name="label_single_post_view">View post</string>
     <string name="info_xml_main_slider">Information about the app</string>
     <string name="label_option_about">About...</string>
+    <string name="label_option_search">Search...</string>
     <string name="title_about">About the app</string>
     <string name="info_option_unlocks">View unlocks</string>
     <string name="info_txt_email_send">Send E-mail</string>

@@ -67,47 +67,28 @@ public class DashboardActivity extends CustomFragmentActivity implements
 
     @Override
     public void onCreate(final Bundle icicle) {
-
-        // onCreate - save the instance state
         super.onCreate(icicle);
-
-        // Set sharedPreferences
-        mSharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        // Validate our session
+        setContentView(R.layout.viewpager_dashboard);
+        
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         validateSession();
 
-        // Set the content view
-        setContentView(R.layout.viewpager_dashboard);
-
-        // Setup the fragments
         setup();
-
-        // Setup COM & feed
         init();
     }
 
     public final void init() {
-
         mSlidingDrawer = (SlidingDrawer) findViewById(R.id.com_slider);
         mSlidingDrawerHandle = (TextView) findViewById(R.id.com_slide_handle_text);
-
     }
 
     @Override
     public void onResume() {
-
         super.onResume();
-
     }
 
     public void setup() {
-
-        // Do we need to setup the fragments?
         if (mListFragments == null) {
-
-            // Add them to the list
             mListFragments = new ArrayList<Fragment>();
             mListFragments.add(Fragment.instantiate(this,
                     NewsListFragment.class.getName()));
@@ -135,7 +116,6 @@ public class DashboardActivity extends CustomFragmentActivity implements
 
             // Fill the PagerAdapter & set it to the viewpager
             mPagerAdapter = new SwipeyTabsPagerAdapter(
-
                     mFragmentManager, new String[]{"NEWS", "PROFILE", "PLATOON",
                     "FORUM", "FEED"}, mListFragments, mViewPager,
                     mLayoutInflater);
@@ -146,12 +126,9 @@ public class DashboardActivity extends CustomFragmentActivity implements
             mViewPager.setOnPageChangeListener(mTabs);
             mViewPager.setOffscreenPageLimit(4);
             mViewPager.setCurrentItem(1);
-
         }
 
         if (mListFragmentsCom == null) {
-
-            // Add them to the list
             mListFragmentsCom = new ArrayList<Fragment>();
             mListFragmentsCom
                     .add(mFragmentComFriends = (ComFriendFragment) Fragment
@@ -178,42 +155,28 @@ public class DashboardActivity extends CustomFragmentActivity implements
             mViewPagerCom.setOnPageChangeListener(mTabsCom);
             mViewPagerCom.setOffscreenPageLimit(1);
             mViewPagerCom.setCurrentItem(0);
-
         }
-
     }
 
     public void validateSession() {
-
-        // We should've gotten a profile
         if (SessionKeeper.getProfileData() == null) {
-
             if (getIntent().hasExtra("myProfile")) {
-
-                // Get 'em
                 ProfileData profileData = getIntent().getParcelableExtra(
                         "myProfile");
                 List<PlatoonData> platoonArray = getIntent()
                         .getParcelableArrayListExtra("myPlatoon");
 
-                // Set 'em
                 SessionKeeper.setProfileData(profileData);
                 SessionKeeper.setPlatoonData(platoonArray);
-
             } else {
-
                 Toast.makeText(this, R.string.info_txt_session_lost,
                         Toast.LENGTH_SHORT).show();
-
             }
-
         }
-
     }
 
     @Override
     public void reload() {
-        // Update the COM
         mFragmentComFriends.reload();
         mFragmentComNotifications.reload();
     }
@@ -221,147 +184,93 @@ public class DashboardActivity extends CustomFragmentActivity implements
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
                                     ContextMenuInfo menuInfo) {
-
         if (mSlidingDrawer.isOpened()) {
-
             switch (mViewPagerCom.getCurrentItem()) {
-
                 case 0:
                     mFragmentComFriends.createContextMenu(menu, view, menuInfo);
                     break;
-
                 default:
                     break;
-
             }
-
         } else {
-
             switch (mViewPager.getCurrentItem()) {
-
                 case VIEWPAGER_POSITION_FEED:
                     mFragmentFeed.createContextMenu(menu, view, menuInfo);
                     break;
-
                 default:
                     break;
-
             }
-
         }
-
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 
-        // Declare...
         AdapterView.AdapterContextMenuInfo info;
-
-        // Let's try to get some menu information via a try/catch
         try {
-
             info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
         } catch (ClassCastException e) {
-
             e.printStackTrace();
             return false;
-
         }
-
         if (mSlidingDrawer.isOpened()) {
-
             switch (mViewPagerCom.getCurrentItem()) {
-
                 case 0:
                     mFragmentComFriends.handleSelectedContextItem(info, item);
                     break;
-
                 default:
                     break;
-
             }
-
         } else {
-
             switch (mViewPager.getCurrentItem()) {
-
                 case VIEWPAGER_POSITION_FEED:
                     return mFragmentFeed.handleSelectedContextItem(info, item);
-
                 default:
                     break;
-
             }
-
         }
-
         return true;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.option_settings) {
-
+        if(item.getItemId() == R.id.option_search) {
+        	startActivity(new Intent(this, SearchActivity.class) );
+        } else if (item.getItemId() == R.id.option_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             finish();
-
         } else if (item.getItemId() == R.id.option_logout) {
-
             new AsyncLogout(this).execute();
-
         } else if (item.getItemId() == R.id.option_about) {
-
             startActivity(new Intent(this, AboutActivity.class));
-
         }
-
-        // Return true yo
         return true;
-
     }
 
     public void setComLabel(String str) {
-
         mSlidingDrawerHandle.setText(str);
-
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-
             if (mSlidingDrawer.isOpened()) {
-
                 mSlidingDrawer.animateClose();
                 return true;
-
             } else if (mViewPager.getCurrentItem() > 1) {
-
-                mViewPager
-                        .setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+                mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
                 return true;
-
             }
-
         } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
-
             startActivity(new Intent(this, SearchActivity.class));
-
         }
         return super.onKeyDown(keyCode, event);
-
     }
 }

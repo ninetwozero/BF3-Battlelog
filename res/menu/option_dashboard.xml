@@ -5,6 +5,12 @@
       android:alphabeticShortcut="A"
       android:icon="@android:drawable/ic_menu_help"
       android:title="@string/label_option_about"/>
+  <item 
+      android:id="@+id/option_search" 
+      android:alphabeticShortcut="S"
+      android:icon="@android:drawable/ic_menu_search"
+      android:title="@string/label_option_search"
+      />
   <!--<item
       android:id="@+id/option_refresh"
       android:alphabeticShortcut="R"
