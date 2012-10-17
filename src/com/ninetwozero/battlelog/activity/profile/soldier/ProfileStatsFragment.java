@@ -455,7 +455,6 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     @Override
     public void reload() {
         deleteTables();
-        Toast.makeText(getContext(), "Deleted statistics for " + mSelectedPersona, Toast.LENGTH_SHORT).show();
         getLoaderManager().restartLoader(0, bundle, this);
     }
 
