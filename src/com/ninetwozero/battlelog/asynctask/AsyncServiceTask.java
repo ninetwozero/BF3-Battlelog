@@ -74,7 +74,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Boolean> {
         Intent notificationIntent = new Intent(mContext, DashboardActivity.class).putExtra("openCOMCenter", true).putExtra("openTabId", 1);
         PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, notificationIntent, 0);
 
-        if (!result) {
+        if (result) {
         	if( mNumNotifications > 0 ) {
         		NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification battlelogNotification = new Notification();
