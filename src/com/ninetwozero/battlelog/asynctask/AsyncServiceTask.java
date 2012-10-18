@@ -14,6 +14,7 @@
 
 package com.ninetwozero.battlelog.asynctask;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -24,16 +25,12 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.DashboardActivity;
-import com.ninetwozero.battlelog.datatype.PostData;
-import com.ninetwozero.battlelog.datatype.SessionKeeperPackage;
 import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.http.NotificationClient;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.SessionKeeper;
-import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
 public class AsyncServiceTask extends AsyncTask<String, Integer, Boolean> {
 
@@ -72,20 +69,18 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean result) {
-        if (result) {
+
+        // Create a new intent despite the result, so that we don't get a mismatch
+        Intent notificationIntent = new Intent(mContext, DashboardActivity.class).putExtra("openCOMCenter", true).putExtra("openTabId", 1);
+        PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, notificationIntent, 0);
+
+        if (!result) {
         	if( mNumNotifications > 0 ) {
         		NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification battlelogNotification = new Notification();
                 battlelogNotification.icon = R.drawable.app_logo;
                 battlelogNotification.when = System.currentTimeMillis();
-
-                // Create a new intent
-                Intent notificationIntent = new Intent(mContext, DashboardActivity.class).putExtra("openCOMCenter", true).putExtra("openTabId", 1);
-                // Convert it to a "PendingIntent" as it won't be activated
-                // right here, right now (later via notification)
-                PendingIntent contentIntent = PendingIntent.getActivity(
-                        mContext, 0, notificationIntent, 0);
-
+                
                 // So... let's fix the singular/plural<insert something here>
                 String text;
                 if (mNumNotifications == 1) {
@@ -129,11 +124,14 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Boolean> {
                 Log.i(Constants.DEBUG_TAG, "No unread notifications");
             }
         } else {
-        	Log.i(Constants.DEBUG_TAG, "No valid session found.");
+            Log.i(Constants.DEBUG_TAG, "No valid session found.");
         	SharedPreferences.Editor spEditor = mSharedPreferences.edit();
         	spEditor.putString(Constants.SP_BL_COOKIE_NAME, "");
         	spEditor.putString(Constants.SP_BL_COOKIE_VALUE, "");
         	spEditor.commit();
+
+        	AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        	alarmManager.cancel(contentIntent);
         }
 
         // Stop the service!!
