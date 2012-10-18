@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.forum;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,21 +21,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.ThreadListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncCreateNewThread;
@@ -47,6 +35,8 @@ import com.ninetwozero.battlelog.datatype.ForumThreadData;
 import com.ninetwozero.battlelog.http.ForumClient;
 import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.Constants;
+
+import java.util.List;
 
 public class ForumFragment extends ListFragment implements DefaultFragment {
 

@@ -14,13 +14,12 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-import java.util.Arrays;
-import java.util.List;
-
 import android.content.Context;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class ProfileInformation {
 

@@ -14,11 +14,10 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.cookie.BasicClientCookie;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.cookie.BasicClientCookie;
 
 public class ShareableCookie implements Parcelable {
 

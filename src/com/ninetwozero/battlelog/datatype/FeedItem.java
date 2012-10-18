@@ -14,18 +14,17 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.ninetwozero.battlelog.activity.forum.ForumActivity;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.activity.profile.assignments.AssignmentActivity;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
+
+import java.util.List;
 
 public class FeedItem implements Parcelable {
 
