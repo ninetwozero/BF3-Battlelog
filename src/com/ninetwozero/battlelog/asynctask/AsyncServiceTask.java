@@ -31,6 +31,7 @@ import com.ninetwozero.battlelog.activity.DashboardActivity;
 import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.http.NotificationClient;
 import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.service.BattlelogService;
 
 public class AsyncServiceTask extends AsyncTask<String, Integer, Boolean> {
 
@@ -69,18 +70,18 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean result) {
-
-        // Create a new intent despite the result, so that we don't get a mismatch
-        Intent notificationIntent = new Intent(mContext, DashboardActivity.class).putExtra("openCOMCenter", true).putExtra("openTabId", 1);
-        PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, notificationIntent, 0);
-
         if (result) {
         	if( mNumNotifications > 0 ) {
+        		// Create the upcoming notification
         		NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification battlelogNotification = new Notification();
                 battlelogNotification.icon = R.drawable.app_logo;
                 battlelogNotification.when = System.currentTimeMillis();
-                
+
+                // Create a new intent despite the result
+                Intent notificationIntent = new Intent(mContext, DashboardActivity.class).putExtra("openCOMCenter", true).putExtra("openTabId", 1);
+                PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, notificationIntent, 0);
+
                 // So... let's fix the singular/plural<insert something here>
                 String text;
                 if (mNumNotifications == 1) {
@@ -130,8 +131,9 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Boolean> {
         	spEditor.putString(Constants.SP_BL_COOKIE_VALUE, "");
         	spEditor.commit();
 
+        	// Cancel the same PendingIntent that we start in AsyncLogin.java
         	AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-        	alarmManager.cancel(contentIntent);
+        	alarmManager.cancel(PendingIntent.getService(mContext, 0, new Intent(mContext, BattlelogService.class), 0));
         }
 
         // Stop the service!!

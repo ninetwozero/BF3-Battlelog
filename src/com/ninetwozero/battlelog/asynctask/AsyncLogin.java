@@ -62,14 +62,13 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         mProgressDialog.setTitle(mContext.getString(R.string.general_wait));
         mProgressDialog.setMessage(mContext.getString(R.string.msg_logging_in));
         mProgressDialog.setOnCancelListener(
-
-                new OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        mOrigin.cancel(true);
-                        dialog.dismiss();
-                    }
+            new OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    mOrigin.cancel(true);
+                    dialog.dismiss();
                 }
+            }
         );
         mProgressDialog.show();
     }
@@ -85,18 +84,16 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     protected Boolean doInBackground(PostData... arg0) {
         try {
             ProfileInformation profileInformation = doLogin(arg0);
-
-            // Generate the SessionKeeperPackage
             ProfileData profileData = new ProfileData.Builder(profileInformation.getUserId(), profileInformation.getUsername())
                     .persona(profileInformation.getAllPersonas())
                     .build();
             mSessionKeeperPackage = new SessionKeeperPackage(profileData, profileInformation.getPlatoons());
 
             // Preloading...
+            /* TODO: Pre-download the profile + active platoon? */
             publishProgress(1);
             SystemClock.sleep(2000);
 
-            // Did it go ok?
             return (mSessionKeeperPackage != null);
 
         } catch (WebsiteHandlerException ex) {
@@ -132,10 +129,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
                             .putExtra("myLocale", mLocale)
                             .putExtra("myPlatoon", mSessionKeeperPackage.getPlatoons())
             );
-
-            // Kill the main
             ((Activity) mContext).finish();
-
         } else {
             Toast.makeText(mContext, mErrorMessage, Toast.LENGTH_SHORT).show();
         }
@@ -143,41 +137,29 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
     public SessionKeeperPackage renewSession(PostData[] postData) throws WebsiteHandlerException,
             RequestHandlerException {
-        // Login once again
         ProfileInformation information = doLogin(postData);
         ProfileData profileData = new ProfileData.Builder(information.getUserId(), information.getUsername())
                 .persona(information.getAllPersonas())
                 .build();
-
         return new SessionKeeperPackage(profileData, information.getPlatoons());
     }
 
     // Let's have this one ready
-    private ProfileInformation doLogin(PostData[] postData) throws WebsiteHandlerException,
-            RequestHandlerException {
+    private ProfileInformation doLogin(PostData[] postData) throws WebsiteHandlerException {
         this.mPostData = postData.clone();
         try {
-
-            // Let's login everybody!
             RequestHandler wh = new RequestHandler();
             String httpContent = wh.post(Constants.URL_LOGIN, this.mPostData, 0);
-
-            // Did we manage?
             return httpContent.length() > 0 ? fetchProfileInformation(httpContent) : null;
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
     }
 
     private ProfileInformation fetchProfileInformation(String httpContent) throws Exception {
         // Set the int
         int startPosition = httpContent.indexOf(Constants.ELEMENT_UID_LINK);
-
-        // Did we find it?
         return startPosition == -1 ? elementUidLinkError(httpContent)
                 : processHttpContent(httpContent);
     }
@@ -186,11 +168,10 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         // Get the checksum & soldier name from the HTML
         String postCheckSum = substringFrom(httpContent, Constants.ELEMENT_STATUS_CHECKSUM, "\" />");
         String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>").trim();
+        
         // Fetch some profile information & store it in SharedPreferences
         ProfileInformation profileInformation = new ProfileClient(new ProfileData(soldierName)).getInformation(mContext, 0);
         addToSharedPreferences(profileInformation, postCheckSum);
-
-        // Return it!!
         return profileInformation;
     }
 
@@ -198,11 +179,9 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         // Init
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor spEdit = sharedPreferences.edit();
+        
         // Further more, we would actually like to store the userid and name
-        spEdit.putString(Constants.SP_BL_PROFILE_EMAIL,
-                mPostData[0].getValue());
-
-
+        spEdit.putString(Constants.SP_BL_PROFILE_EMAIL,mPostData[0].getValue());
         spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, "");
         spEdit.putBoolean(Constants.SP_BL_PROFILE_REMEMBER, false);
 
@@ -257,29 +236,23 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         // Cookie-related
         List<ShareableCookie> sca = RequestHandler.getCookies();
         if (sca == null) {
-
-            throw new WebsiteHandlerException(
-                    mContext.getString(R.string.info_login_lostcookie));
-
+            throw new WebsiteHandlerException(mContext.getString(R.string.info_login_lostcookie));
         } else {
             ShareableCookie sc = sca.get(0);
             spEdit.putString(Constants.SP_BL_COOKIE_NAME, sc.getName());
             spEdit.putString(Constants.SP_BL_COOKIE_VALUE, sc.getValue());
         }
-
-        // Co-co-co-commit
         spEdit.commit();
         return sharedPreferences;
     }
 
     private void startAlarmManager(int serviceInterval) {
-        AlarmManager alarmManager = (AlarmManager) mContext
-                .getSystemService(Context.ALARM_SERVICE);
-
+        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setInexactRepeating(
-                AlarmManager.ELAPSED_REALTIME, 0, serviceInterval,
-                PendingIntent.getService(mContext, 0, new Intent(
-                        mContext, BattlelogService.class), 0)
+    		AlarmManager.ELAPSED_REALTIME, 
+    		0, 
+    		serviceInterval, 
+    		PendingIntent.getService(mContext, 0, new Intent(mContext, BattlelogService.class), 0)
         );
     }
 
