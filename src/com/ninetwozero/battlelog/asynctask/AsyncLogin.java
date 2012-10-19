@@ -14,6 +14,8 @@
 
 package com.ninetwozero.battlelog.asynctask;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -27,9 +29,9 @@ import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.DashboardActivity;
-
 import com.ninetwozero.battlelog.datatype.PersonaData;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.PostData;
@@ -39,14 +41,10 @@ import com.ninetwozero.battlelog.datatype.RequestHandlerException;
 import com.ninetwozero.battlelog.datatype.SessionKeeperPackage;
 import com.ninetwozero.battlelog.datatype.ShareableCookie;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
-
 import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.service.BattlelogService;
-import net.sf.andhsli.hotspotlogin.SimpleCrypto;
-
-import java.util.List;
 
 public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
@@ -54,7 +52,6 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     private ProgressDialog mProgressDialog;
     private Context mContext;
     private AsyncLogin mOrigin;
-    private boolean mSavePassword;
     private SharedPreferences mSharedPreferences;
     private SessionKeeperPackage mSessionKeeperPackage;
     private String mLocale;
@@ -65,12 +62,6 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     public AsyncLogin(Context c) {
         mOrigin = this;
         mContext = c;
-    }
-
-    // Constructor
-    public AsyncLogin(Context c, boolean s) {
-        this(c);
-        mSavePassword = s;
     }
 
     @Override
@@ -95,7 +86,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     @Override
     protected void onProgressUpdate(Integer... values) {
         if (values[0].equals(1)) {
-            mProgressDialog.setMessage("Downloading information...");
+            mProgressDialog.setMessage("Fetching information (todo)...");
         }
     }
 
@@ -174,7 +165,6 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     private ProfileInformation doLogin(PostData[] postData) throws WebsiteHandlerException,
             RequestHandlerException {
         this.mPostData = postData.clone();
-
         try {
 
             // Let's login everybody!
@@ -221,17 +211,9 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         spEdit.putString(Constants.SP_BL_PROFILE_EMAIL,
                 mPostData[0].getValue());
 
-        // Should we remember the password?
-        if (mSavePassword) {
-            spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, SimpleCrypto
-                    .encrypt(mPostData[0].getValue(),
-                            mPostData[1].getValue()));
-            spEdit.putBoolean(Constants.SP_BL_PROFILE_REMEMBER, true);
 
-        } else {
-            spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, "");
-            spEdit.putBoolean(Constants.SP_BL_PROFILE_REMEMBER, false);
-        }
+        spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, "");
+        spEdit.putBoolean(Constants.SP_BL_PROFILE_REMEMBER, false);
 
         // Init the strings
         StringBuilder personaNames = new StringBuilder();
@@ -320,7 +302,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
             throw new WebsiteHandlerException(
                     "The website won't let us in. Please try again later.");
         } else {
-            int endPosition = httpContent.indexOf("</div>");
+        	int endPosition = httpContent.indexOf("</div>", startPosition);
             String errorMsg = httpContent.substring(startPosition, endPosition)
                     .replace("</div>", "")
                     .replace("\n", "")

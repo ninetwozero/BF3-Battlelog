@@ -32,7 +32,10 @@ import com.google.gson.Gson;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
-import com.ninetwozero.battlelog.datatype.*;
+import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.PersonaStats;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.Statistics;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
 import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
 import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
@@ -40,6 +43,7 @@ import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.provider.BattlelogContentProvider;
 import com.ninetwozero.battlelog.provider.UriFactory;
 import com.ninetwozero.battlelog.provider.table.PersonaStatistics;
 import com.ninetwozero.battlelog.provider.table.RankProgress;
@@ -57,8 +61,7 @@ import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
 
-public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment,
-        OnCloseListDialogListener {
+public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDialogListener {
 
     // Attributes
     private Context mContext;
@@ -131,27 +134,27 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
         // Click on the wrap
         mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
         mWrapPersona.setOnClickListener(
-
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View sv) {
-
-                        if (personaArrayLength() > 1) {
-                            FragmentManager manager = getFragmentManager();
-                            ListDialogFragment dialog = ListDialogFragment.newInstance(
-                                    personasToMap(), getTag());
-                            dialog.show(manager, DIALOG);
-                        }
+            new OnClickListener() {
+                @Override
+                public void onClick(View sv) {
+                    if (personaArrayLength() > 1) {
+                        FragmentManager manager = getFragmentManager();
+                        ListDialogFragment dialog = ListDialogFragment.newInstance(
+                                personasToMap(), getTag());
+                        dialog.show(manager, DIALOG);
                     }
-                });
+                }
+            }
+       );
     }
 
+    /* FIXME: if no personas are passed to this activity, then mSelectedPersona will be 0? */
     private void setSelectedPersonaVariables() {
         mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
         mSelectedPersona = getSelectedPersonaId(mSelectedPosition);
         mSelectedPlatformId = getPlatformIdFor(mSelectedPosition);
         mSelectedPersonaName = getSelectedPersonaName(mSelectedPosition);
+        Log.d(Constants.DEBUG_TAG, "mSelectedPersona => " + mSelectedPersona);
         callURI = UriFactory.personaOverview(mSelectedPersona, mSelectedPlatformId);
     }
 
@@ -266,11 +269,9 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     }
 
     private void populateRankProgress() {
-
         if (rankProgress == null) {
             return;
         }
-        Log.e("STATS", "Populating view");
         personaName.setText(rankProgress.getPersonaName() + " " + rankProgress.getPlatform());
         rankTitle.setText(fromResource(rankProgress.getRank()));
         rankId.setText(format(rankProgress.getRank()));
@@ -322,9 +323,9 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
     }
 
     @Override
-    public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {
-        if (task.result.equals(CompletedTask.Result.SUCCESS)) {
-            Log.e("STATS", "Load finished");
+    public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {    	
+    	/* FIXME: This doesn't seem right, maybe due to the lack of personas? */
+        if ( task != null && task.result.equals(CompletedTask.Result.SUCCESS)) {
             findViews();
             PersonaInfo pi = personaStatsFrom(task);
             updateDatabase(pi);
@@ -453,12 +454,14 @@ public class ProfileStatsFragment extends Bf3Fragment implements DefaultFragment
 
     @Override
     public void reload() {
-        /*TODO
-        * can't use this method implementation because for some reason it been called before actual content
-        * showed. Very weird. I would recommend to delete DB record of currently selected persona
-        * and then call getData() method
-        * */
-        //getLoaderManager().restartLoader(0, bundle, this);
+        deleteTables();
+        getLoaderManager().restartLoader(0, bundle, this);
+    }
+
+    private void deleteTables(){
+        getContext().getContentResolver().delete(RankProgress.URI, BattlelogContentProvider.WHERE_PERSONA_ID, new String[]{String.valueOf(mSelectedPersona)});
+        getContext().getContentResolver().delete(PersonaStatistics.URI, BattlelogContentProvider.WHERE_PERSONA_ID, new String[]{String.valueOf(mSelectedPersona)});
+        getContext().getContentResolver().delete(ScoreStatistics.URI, BattlelogContentProvider.WHERE_PERSONA_ID, new String[]{String.valueOf(mSelectedPersona)});
     }
 
     private void startLoadingDialog() {   //TODO extract multiple duplicates of same code

@@ -86,7 +86,6 @@ public class DashboardActivity extends CustomFragmentActivity implements
 
         // Setup COM & feed
         init();
-
     }
 
     public final void init() {
@@ -214,11 +213,9 @@ public class DashboardActivity extends CustomFragmentActivity implements
 
     @Override
     public void reload() {
-
         // Update the COM
         mFragmentComFriends.reload();
         mFragmentComNotifications.reload();
-
     }
 
     @Override
@@ -314,13 +311,7 @@ public class DashboardActivity extends CustomFragmentActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        // Let's act!
-        if (item.getItemId() == R.id.option_refresh) {
-
-            reload();
-
-        } else if (item.getItemId() == R.id.option_settings) {
+        if (item.getItemId() == R.id.option_settings) {
 
             startActivity(new Intent(this, SettingsActivity.class));
             finish();

@@ -17,10 +17,11 @@ package com.ninetwozero.battlelog.asynctask;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.http.COMClient;
 
-public class AsyncFriendRequest extends AsyncTask<String, Integer, Boolean> {
+public class AsyncFriendRequest extends AsyncTask<COMClient, Integer, Boolean> {
 
     // Attribute
     private Context context;
@@ -28,10 +29,8 @@ public class AsyncFriendRequest extends AsyncTask<String, Integer, Boolean> {
 
     // Constructor
     public AsyncFriendRequest(Context c, long pId) {
-
         this.context = c;
         this.profileId = pId;
-
     }
 
     @Override
@@ -39,36 +38,23 @@ public class AsyncFriendRequest extends AsyncTask<String, Integer, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... arg0) {
-
+    protected Boolean doInBackground(COMClient... arg0) {
         try {
-
-            return new COMClient(arg0[0]).sendFriendRequest(profileId);
-
+            return arg0[0].sendFriendRequest(profileId);
         } catch (Exception ex) {
-
             ex.printStackTrace();
             return false;
-
         }
-
     }
 
     @Override
     protected void onPostExecute(Boolean results) {
-
         if (results) {
-
             Toast.makeText(this.context, R.string.msg_frequest_ok,
                     Toast.LENGTH_SHORT).show();
-
         } else {
-
             Toast.makeText(this.context, R.string.msg_frequest_fail,
                     Toast.LENGTH_SHORT).show();
-
         }
-
     }
-
 }

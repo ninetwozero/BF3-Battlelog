@@ -88,9 +88,9 @@ public class CustomFragmentActivity extends FragmentActivity {
 
     }
 
+    /* @see http://stackoverflow.com/a/9021487 */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(Constants.SUPER_COOKIES,
                 RequestHandler.getCookies());

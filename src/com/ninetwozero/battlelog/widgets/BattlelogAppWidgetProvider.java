@@ -26,6 +26,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.widget.RemoteViews;
+
 import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FriendListDataWrapper;
@@ -112,7 +113,7 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
 
                         );
 
-                mFriends = new COMClient(mSharedPreferences.getString(
+                mFriends = new COMClient(0, mSharedPreferences.getString(
                         Constants.SP_BL_PROFILE_CHECKSUM, ""))
                         .getFriendsForCOM(mContext);
                 mNumFriendsOnline = mFriends.getNumTotalOnline();

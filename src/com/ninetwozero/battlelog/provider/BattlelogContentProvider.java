@@ -13,6 +13,8 @@ public class BattlelogContentProvider extends ContentProvider {
 
     private SQLiteDatabase database;
 
+    public static final String WHERE_PERSONA_ID = "personaId=?";
+
     public synchronized SQLiteDatabase getDatabase() {
         if (database == null) {
             databaseManager = new DatabaseManager(getContext());
@@ -59,8 +61,8 @@ public class BattlelogContentProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    public int delete(Uri uri, String where, String[] selection) {
+        return database.delete(getType(uri), where, selection);
     }
 
     @Override

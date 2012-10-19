@@ -1,15 +1,16 @@
 package com.ninetwozero.battlelog.dialog;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import com.ninetwozero.battlelog.R;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.ninetwozero.battlelog.R;
 
 public class ListDialogFragment extends DialogFragment {
 

@@ -14,6 +14,8 @@
 
 package com.ninetwozero.battlelog.adapter;
 
+import java.util.List;
+
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -21,11 +23,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.ForumSearchResult;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-
-import java.util.List;
 
 public class ForumSearchAdapter extends BaseAdapter {
 
@@ -104,7 +105,7 @@ public class ForumSearchAdapter extends BaseAdapter {
 
             // Set the colors
             convertView.findViewById(R.id.bar_official).setBackgroundColor(
-                    context.getResources().getColor(R.color.lightgrey));
+                    context.getResources().getColor(R.color.very_light_grey));
 
         }
 

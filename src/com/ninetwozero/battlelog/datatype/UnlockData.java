@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.datatype;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.DrawableResourceList;
 

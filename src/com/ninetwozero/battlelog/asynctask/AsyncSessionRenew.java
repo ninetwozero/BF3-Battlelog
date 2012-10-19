@@ -22,6 +22,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.PostData;
@@ -77,7 +78,7 @@ public class AsyncSessionRenew extends AsyncTask<PostData, Integer, Boolean> {
         try {
 
             // Let's try
-            AsyncLogin login = new AsyncLogin(context, true);
+            AsyncLogin login = new AsyncLogin(context);
             profile = login.renewSession(arg0).getProfileData();
 
             // Did it go ok?
