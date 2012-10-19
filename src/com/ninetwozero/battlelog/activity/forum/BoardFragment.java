@@ -70,8 +70,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
         mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.board_view,
-                container, false);
+        View view = mLayoutInflater.inflate(R.layout.activity_board, container, false);
 
         // Get the unlocks
         mLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");

@@ -79,7 +79,7 @@ public class ChatActivity extends ListActivity {
         PublicUtils.setupLocale(this, mSharedPreferences);
         
         // Finally set the view
-        setContentView(R.layout.chat_view);
+        setContentView(R.layout.activity_chat);
         
         // Did we get someone to chat with?
         if (!getIntent().hasExtra("activeUser") || !getIntent().hasExtra("otherUser")) {

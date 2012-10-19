@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	This file is part of BF3 Battlelog
+
+    BF3 Battlelog is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    BF3 Battlelog is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+  <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:gravity="center"
+      android:orientation="vertical"
+      android:padding="10dp">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="Platoon name"/>
+
+    <EditText
+        android:id="@+id/text_name"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:hint="John Does"
+        android:maxLength="22"
+        android:singleLine="true"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="Tag"/>
+
+    <EditText
+        android:id="@+id/text_tag"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:hint="ABCD"
+        android:maxLength="4"
+        android:singleLine="true"/>
+
+    <CheckedTextView
+        android:id="@+id/checkbox_active"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="true"
+        android:gravity="center"
+        android:text="Make this platoon your primary?"/>
+
+    <Button
+        android:id="@+id/button_create"
+        style="@style/MenuButton"
+        android:layout_marginTop="5dp"
+        android:onClick="onClick"
+        android:text="Create platoon"/>
+  </LinearLayout>
+
+</ScrollView>

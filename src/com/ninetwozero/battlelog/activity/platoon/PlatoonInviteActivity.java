@@ -80,7 +80,7 @@ public class PlatoonInviteActivity extends ListActivity {
         PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.platoon_invite_view);
+        setContentView(R.layout.activity_platoon_invite);
 
         // Let's see
         initLayout();

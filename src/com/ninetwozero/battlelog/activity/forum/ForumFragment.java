@@ -86,12 +86,10 @@ public class ForumFragment extends ListFragment implements DefaultFragment {
         mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.forum_view, container,
-                false);
+        View view = mLayoutInflater.inflate(R.layout.activity_forum, container, false);
 
         // Get the unlocks
-        mLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE,
-                "en");
+        mLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
         mForumHandler = new ForumClient();
 
         // Init the views
