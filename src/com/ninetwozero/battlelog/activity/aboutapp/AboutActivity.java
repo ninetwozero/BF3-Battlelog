@@ -14,102 +14,92 @@
 
 package com.ninetwozero.battlelog.activity.aboutapp;
 
+import java.util.ArrayList;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
-import java.util.ArrayList;
+public class AboutActivity extends CustomFragmentActivity implements
+		DefaultFragmentActivity {
 
-public class AboutActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
+	@Override
+	public void onCreate(final Bundle icicle) {
+		super.onCreate(icicle);
+		setContentView(R.layout.viewpager_default);
 
-    @Override
-    public void onCreate(final Bundle icicle) {
+		// Setup the fragments
+		init();
+		setup();
+	}
 
-        // onCreate - save the instance state
-        super.onCreate(icicle);
+	public final void init() {
+	}
 
-        // Set the content view
-        setContentView(R.layout.viewpager_default);
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
 
-        // Setup the fragments
-        setup();
+	public void setup() {
+		// Do we need to setup the fragments?
+		if (mListFragments == null) {
 
-        // Setup COM & feed
-        init();
-    }
+			// Add them to the list
+			mListFragments = new ArrayList<Fragment>();
+			mListFragments.add(Fragment.instantiate(this,
+					AboutLicenseFragment.class.getName()));
+			mListFragments.add(Fragment.instantiate(this,
+					AboutMainFragment.class.getName()));
+			mListFragments.add(Fragment.instantiate(this,
+					AboutFAQFragment.class.getName()));
+			mListFragments.add(Fragment.instantiate(this,
+					AboutCreditsFragment.class.getName()));
 
-    public final void init() {
-    }
+			// Get the ViewPager
+			mViewPager = (ViewPager) findViewById(R.id.viewpager);
+			mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+			// Fill the PagerAdapter & set it to the viewpager
+			mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-        super.onConfigurationChanged(newConfig);
+			mFragmentManager, new String[] { 
+					getString(R.string.label_license), 
+					getString(R.string.label_about),
+					getString(R.string.label_faq),
+					getString(R.string.label_credits)
 
-    }
+			}, mListFragments, mViewPager, mLayoutInflater);
+			mViewPager.setAdapter(mPagerAdapter);
+			mTabs.setAdapter(mPagerAdapter);
 
-    public void setup() {
+			// Make sure the tabs follow
+			mViewPager.setOnPageChangeListener(mTabs);
+			mViewPager.setCurrentItem(1);
 
-        // Do we need to setup the fragments?
-        if (mListFragments == null) {
+		}
 
-            // Add them to the list
-            mListFragments = new ArrayList<Fragment>();
-            mListFragments.add(Fragment.instantiate(this, AboutMainFragment.class.getName()));
-            mListFragments.add(Fragment.instantiate(this, AboutFAQFragment.class.getName()));
-            mListFragments.add(Fragment.instantiate(this, AboutCreditsFragment.class.getName()));
+	}
 
-            // Get the ViewPager
-            mViewPager = (ViewPager) findViewById(R.id.viewpager);
-            mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
+	@Override
+	public void reload() {
+	}
 
-            // Fill the PagerAdapter & set it to the viewpager
-            mPagerAdapter = new SwipeyTabsPagerAdapter(
-
-                    mFragmentManager,
-                    new String[]{
-                            getString(R.string.label_about), getString(R.string.label_faq),
-                            getString(R.string.label_credits)
-
-                    },
-                    mListFragments,
-                    mViewPager,
-                    mLayoutInflater
-            );
-            mViewPager.setAdapter(mPagerAdapter);
-            mTabs.setAdapter(mPagerAdapter);
-
-            // Make sure the tabs follow
-            mViewPager.setOnPageChangeListener(mTabs);
-            mViewPager.setCurrentItem(0);
-
-        }
-
-    }
-
-    @Override
-    public void reload() {
-    }
-
-    @Override
-    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-
-        // Hotkeys
-        if (keyCode == KeyEvent.KEYCODE_BACK && (mViewPager.getCurrentItem() > 0)) {
-
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
-            return true;
-
-        }
-
-        return super.onKeyDown(keyCode, event);
-
-    }
+	@Override
+	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK
+				&& (mViewPager.getCurrentItem() > 1 )) {
+			mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }

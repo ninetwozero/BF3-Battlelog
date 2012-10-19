@@ -1,19 +1,20 @@
 package com.ninetwozero.battlelog.http;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.NotificationData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.Constants;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class NotificationClient extends DefaultClient {
 

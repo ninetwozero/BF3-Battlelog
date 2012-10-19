@@ -17,6 +17,7 @@ package com.ninetwozero.battlelog.asynctask;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
 import com.ninetwozero.battlelog.http.FeedClient;

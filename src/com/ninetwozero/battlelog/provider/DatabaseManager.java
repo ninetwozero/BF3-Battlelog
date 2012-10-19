@@ -1,13 +1,14 @@
 package com.ninetwozero.battlelog.provider;
 
+import java.io.IOException;
+
+import novoda.lib.sqliteprovider.migration.Migrations;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import com.ninetwozero.battlelog.Battlelog;
-import novoda.lib.sqliteprovider.migration.Migrations;
 
-import java.io.IOException;
+import com.ninetwozero.battlelog.Battlelog;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 

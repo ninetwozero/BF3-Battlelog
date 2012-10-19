@@ -10,102 +10,112 @@
     BF3 Battlelog is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    GNU General Public License for more details.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@drawable/bg_bf3_main">
-
-  <RelativeLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerInParent="true"
-      android:layout_marginBottom="40dp">
-
-    <EditText
-        android:id="@+id/field_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:hint="@string/info_hint_email"
-        android:inputType="textEmailAddress"
-        android:minWidth="250dp"/>
-
-    <EditText
-        android:id="@+id/field_password"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/field_email"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:hint="@string/info_hint_password"
-        android:inputType="textPassword"
-        android:minWidth="250dp"/>
-
-    <CheckBox
-        android:id="@+id/checkbox_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/field_password"
-        android:layout_centerHorizontal="true"
-        android:text="@string/label_save"
-        android:textColor="#FFFFFF"/>
-
-    <Button
-        android:id="@+id/button_login"
-        style="@style/RegularButton"
-        android:layout_width="125dp"
-        android:layout_below="@id/checkbox_save"
-        android:layout_centerHorizontal="true"
-        android:text="@string/label_login"/>
-  </RelativeLayout>
-
-  <SlidingDrawer
-      android:id="@+id/about_slider"
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:layout_alignParentBottom="true"
-      android:content="@+id/about_slide_content"
-      android:handle="@+id/about_slide_handle"
-      android:topOffset="0dp">
-
-    <LinearLayout
-        android:id="@+id/about_slide_handle"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:orientation="vertical">
-
-      <View
-          android:layout_width="fill_parent"
-          android:layout_height="2dp"
-          android:background="#5c5c5c"/>
-
-      <View
-          android:id="@+id/temp000"
-          android:layout_width="fill_parent"
-          android:layout_height="1dp"
-          android:background="#20201f"/>
-
-      <TextView
-          android:id="@+id/about_slide_handle_text"
-          android:layout_width="fill_parent"
-          android:layout_height="37dp"
-          android:background="@drawable/gradient_greytodarkgrey"
-          android:gravity="center"
-          android:text="@string/info_xml_main_slider"
-          android:textColor="#FFFFFF"/>
-    </LinearLayout>
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
     <RelativeLayout
-        android:id="@+id/about_slide_content"
+        android:id="@+id/login_notice"
+        style="@style/LoginNotice" >
+
+        <TextView
+            android:id="@+id/notice_text"
+            style="@style/Wrap"
+            android:layout_margin="5dp"
+            android:text="@string/notice_text" />
+    </RelativeLayout>
+
+    <CheckBox
+        android:id="@+id/agree_checkbox"
+        style="@style/Wrap"
+        android:layout_below="@id/login_notice"
+        android:text="@string/agree_text" 
+        android:layout_centerHorizontal="true" />
+
+    <RelativeLayout
+        android:id="@+id/login_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="40dp"
+        android:visibility="gone" >
+
+        <EditText
+            android:id="@+id/field_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:hint="@string/info_hint_email"
+            android:inputType="textEmailAddress"
+            android:minWidth="250dp" />
+
+        <EditText
+            android:id="@+id/field_password"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/field_email"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:hint="@string/info_hint_password"
+            android:inputType="textPassword"
+            android:minWidth="250dp" />
+
+        <Button
+            android:id="@+id/button_login"
+            style="@style/RegularButton"
+            android:layout_width="125dp"
+            android:layout_below="@id/field_password"
+            android:layout_centerHorizontal="true"
+            android:text="@string/label_login" />
+    </RelativeLayout>
+
+    <SlidingDrawer
+        android:id="@+id/about_slider"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#FDFDFD">
+        android:layout_alignParentBottom="true"
+        android:content="@+id/about_slide_content"
+        android:handle="@+id/about_slide_handle"
+        android:topOffset="0dp" >
 
-      <include layout="@layout/viewpager_com"/>
-    </RelativeLayout>
-  </SlidingDrawer>
+        <LinearLayout
+            android:id="@+id/about_slide_handle"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:orientation="vertical" >
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:background="#5c5c5c" />
+
+            <View
+                android:id="@+id/temp000"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#20201f" />
+
+            <TextView
+                android:id="@+id/about_slide_handle_text"
+                android:layout_width="fill_parent"
+                android:layout_height="37dp"
+                android:background="@drawable/gradient_greytodarkgrey"
+                android:gravity="center"
+                android:text="@string/info_xml_main_slider"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/about_slide_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FDFDFD" >
+
+            <include layout="@layout/viewpager_com" />
+        </RelativeLayout>
+    </SlidingDrawer>
 
 </RelativeLayout>

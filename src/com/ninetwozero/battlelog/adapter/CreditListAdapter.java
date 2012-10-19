@@ -14,15 +14,16 @@
 
 package com.ninetwozero.battlelog.adapter;
 
+import java.util.List;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.AppContributorData;
-
-import java.util.List;
 
 public class CreditListAdapter extends BaseAdapter {
 
@@ -101,7 +102,7 @@ public class CreditListAdapter extends BaseAdapter {
 
             // Set the fields
             ((TextView) convertView.findViewById(R.id.text_title))
-                    .setText(data.getName());
+                    .setText(data.getStringId());
             convertView.setOnClickListener(null);
 
         } else {

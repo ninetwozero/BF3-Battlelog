@@ -14,15 +14,16 @@
 
 package com.ninetwozero.battlelog.adapter;
 
+import java.util.List;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-import com.ninetwozero.battlelog.datatype.ProfileData;
 
-import java.util.List;
+import com.ninetwozero.battlelog.datatype.ProfileData;
 
 public class FriendSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 

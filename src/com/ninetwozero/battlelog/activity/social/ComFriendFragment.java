@@ -22,12 +22,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.*;
+import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.DashboardActivity;
 import com.ninetwozero.battlelog.activity.profile.assignments.AssignmentActivity;
@@ -50,6 +56,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private SharedPreferences mSharedPreferences;
+    private COMClient mComClient;
 
     // Misc
     private FriendListDataWrapper mFriendListData;
@@ -96,15 +103,18 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
         mListView.setAdapter(mFriendListAdapter = new FriendListAdapter(mContext, null,
                 mLayoutInflater));
         ((Activity) mContext).registerForContextMenu(mListView);
-
+        
+        // Setup the COM
+        mComClient = new COMClient(
+    		SessionKeeper.getProfileData().getId(), 
+    		mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
+		);
     }
 
     @Override
     public void reload() {
-
         new AsyncRefresh().execute(mSharedPreferences
                 .getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
-
     }
 
     @Override
@@ -122,13 +132,10 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
         // Get the actual menu item and tag
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-
-        // Get the "object"
         ProfileData selectedUser = (ProfileData) info.targetView.getTag();
 
         // Wait, is the position 0? If so, it's the heading...
         if (selectedUser.getId() != 0) {
-
             if (selectedUser.isFriend()) {
 
                 menu.add(0, MENU_POS_CHAT, 0, R.string.label_chat_open);
@@ -147,128 +154,68 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
                 menu.add(0, MENU_POS_ASSIGNMENTS, 0, R.string.label_assignments_view);
 
             }
-
         }
-
     }
 
     public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {
-
         try {
-
             ProfileData profileData = (ProfileData) info.targetView.getTag();
             if (item.getItemId() == MENU_POS_CHAT) {
-
                 startActivity(
-
-                        new Intent(
-
-                                mContext, ChatActivity.class
-
-                        ).putExtra(
-
-                                "activeUser", SessionKeeper.getProfileData()
-
-                        ).putExtra(
-
-                                "otherUser", profileData
-
-                        )
-
+                    new Intent(
+                            mContext, ChatActivity.class
+                    ).putExtra(
+                            "activeUser", SessionKeeper.getProfileData()
+                    ).putExtra(
+                            "otherUser", profileData
+                    )
                 );
-
             } else if (item.getItemId() == MENU_POS_REQUEST_Y
                     || item.getItemId() == MENU_POS_REQUEST_N) {
-
                 new AsyncRequest(profileData.getId(), (item.getItemId() == MENU_POS_REQUEST_Y))
                         .execute(mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
-
             } else if (item.getItemId() == MENU_POS_PROFILE) {
-
                 startActivity(
-
-                        new Intent(
-
-                                mContext, ProfileActivity.class
-
-                        ).putExtra(
-
-                                "profile", profileData
-
-                        )
-
+                    new Intent(
+                        mContext, ProfileActivity.class
+                    ).putExtra(
+                        "profile", profileData
+                    )
                 );
-
             } else if (item.getItemId() == MENU_POS_UNLOCKS) {
-
                 startActivity(
-
-                        new Intent(
-
-                                mContext, UnlockActivity.class
-
-                        ).putExtra(
-
-                                "profile", (ProfileData) info.targetView.getTag()
-
-                        )
-
+                    new Intent(
+                            mContext, UnlockActivity.class
+                    ).putExtra(
+                            "profile", (ProfileData) info.targetView.getTag()
+                    )
                 );
-
             } else if (item.getItemId() == MENU_POS_COMPARE) {
 
-                startActivity(
-
-                        new Intent(
-
-                                mContext, CompareActivity.class
-
-                        ).putExtra(
-
-                                "profile1", SessionKeeper.getProfileData()
-
-                        ).putExtra(
-
-                                "profile2", ProfileClient.resolveFullProfileDataFromProfileId(
-
-                                profileData.getId()
-
-                        )
-
-                        )
-
+            	startActivity(
+                    new Intent(
+                            mContext, CompareActivity.class
+                    ).putExtra(
+                            "profile1", SessionKeeper.getProfileData()
+                    ).putExtra(
+                            "profile2", 
+                            ProfileClient.resolveFullProfileDataFromProfileId(profileData.getId())
+                    )
                 );
                 /* TODO: Move profile2 population into ASYNCTASK */
             } else if (item.getItemId() == MENU_POS_ASSIGNMENTS) {
-
                 startActivity(
-
-                        new Intent(
-
-                                mContext, AssignmentActivity.class
-
-                        ).putExtra(
-
-                                "profile", ProfileClient.resolveFullProfileDataFromProfileId(
-
-                                profileData.getId()
-
+                    new Intent(
+                        mContext, AssignmentActivity.class
+                    ).putExtra(
+                        "profile", 
+                        ProfileClient.resolveFullProfileDataFromProfileId(
+                    		profileData.getId()
                         )
-
-                        )
-
+                    )
                 );
-
             }
-
-        } catch (WebsiteHandlerException ex) {
-
-            Toast.makeText(mContext, ex.getMessage(), Toast.LENGTH_SHORT).show();
-            ex.printStackTrace();
-            return false;
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             return false;
         }
@@ -288,26 +235,17 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
         @Override
         protected void onPreExecute() {
-
             ((DashboardActivity) mContext).setComLabel(mContext.getString(R.string.label_wait));
-
         }
 
         @Override
         protected Boolean doInBackground(String... arg0) {
-
             try {
-
-                // Let's get this!
-                mFriendListData = new COMClient(arg0[0]).getFriendsForCOM(mContext);
-                return true;
-
+                mFriendListData = mComClient.getFriendsForCOM(mContext);
+                return mFriendListData != null;
             } catch (WebsiteHandlerException e) {
-
                 return false;
-
             }
-
         }
 
         @Override
@@ -350,7 +288,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
             try {
 
                 // Let's get this!!
-                return new COMClient(arg0[0]).answerFriendRequest(profileId, response);
+                return mComClient.answerFriendRequest(profileId, response);
 
             } catch (WebsiteHandlerException e) {
 

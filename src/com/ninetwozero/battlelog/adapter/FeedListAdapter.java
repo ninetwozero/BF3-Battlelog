@@ -17,20 +17,16 @@ package com.ninetwozero.battlelog.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.activity.news.SinglePostActivity;
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.misc.PublicUtils;
@@ -44,7 +40,6 @@ public class FeedListAdapter extends BaseAdapter {
 
 	// Construct
 	public FeedListAdapter(Context c, List<FeedItem> fi, LayoutInflater l) {
-
 		mContext = c;
 		mItems = fi;
 		mLayoutInflater = l;
@@ -112,9 +107,6 @@ public class FeedListAdapter extends BaseAdapter {
 				.getCachePath(mContext)
 				+ currentItem.getAvatarForPost()
 				+ ".png"));
-		if (imageAvatar.getBackground() == null) {
-			imageAvatar.setImageResource(R.drawable.default_avatar);
-		}
 
 		// Fill the actual content
 		((TextView) convertView.findViewById(R.id.text_date))
@@ -150,11 +142,7 @@ public class FeedListAdapter extends BaseAdapter {
 				// Try to set the image first
 				commentImageView.setImageBitmap(BitmapFactory
 						.decodeFile(PublicUtils.getCachePath(mContext)
-								+ currentItem.getAvatarForPost() + ".png"));
-				if (commentImageView.getBackground() == null) {
-					commentImageView
-							.setImageResource(R.drawable.default_avatar);
-				}
+								+ comment.getGravatar() + ".png"));
 
 				// Set the texts
 				((TextView) commentRoot.findViewById(R.id.text_name))

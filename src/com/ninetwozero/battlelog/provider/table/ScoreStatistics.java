@@ -2,6 +2,7 @@ package com.ninetwozero.battlelog.provider.table;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
+
 import com.ninetwozero.battlelog.Battlelog;
 import com.ninetwozero.battlelog.datatype.Statistics;
 

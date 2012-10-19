@@ -21,8 +21,8 @@ import com.ninetwozero.battlelog.misc.Constants;
 public class FeedClient extends DefaultClient {
 
     // Attributes
-    private long id;
-    private int type;
+    private long mId;
+    private int mType;
 
     // URLS
     public static final String URL_FEED = Constants.URL_MAIN + "feed/?start={NUMSTART}";
@@ -79,8 +79,8 @@ public class FeedClient extends DefaultClient {
 
     public FeedClient(long i, int t) {
         mRequestHandler = new RequestHandler();
-        id = i;
-        type = t;
+        mId = i;
+        mType = t;
     }
 
     public boolean post(String checksum,
@@ -94,8 +94,8 @@ public class FeedClient extends DefaultClient {
                             FIELD_NAMES_POST,
                             content,
                             checksum,
-                            type == TYPE_PLATOON ? null : id,
-                            type == TYPE_PLATOON ? id : null
+                            mType == TYPE_PLATOON ? null : mId,
+                            mType == TYPE_PLATOON ? mId : null
 
                     ),
                     RequestHandler.HEADER_AJAX
@@ -129,15 +129,15 @@ public class FeedClient extends DefaultClient {
             String httpContent;
 
             // What's the url?
-            switch (type) {
+            switch (mType) {
                 case TYPE_GLOBAL:
                     url = URL_FRIEND_FEED;
                     break;
                 case TYPE_PROFILE:
-                    url = RequestHandler.generateUrl(URL_PROFILE, id);
+                    url = RequestHandler.generateUrl(URL_PROFILE, mId);
                     break;
                 case TYPE_PLATOON:
-                    url = RequestHandler.generateUrl(URL_PLATOON, id);
+                    url = RequestHandler.generateUrl(URL_PLATOON, mId);
                     break;
                 default:
                     url = URL_FRIEND_FEED;
@@ -321,7 +321,7 @@ public class FeedClient extends DefaultClient {
     	try {
     		List<ProfileData> profiles = new ArrayList<ProfileData>();
     		String httpContent = mRequestHandler.get(
-    			RequestHandler.generateUrl(URL_HOOAH_LIST, id),
+    			RequestHandler.generateUrl(URL_HOOAH_LIST, mId),
     			RequestHandler.HEADER_GZIP
 			);
 
