@@ -15,7 +15,6 @@
 package com.ninetwozero.battlelog.asynctask;
 
 import android.os.AsyncTask;
-
 import com.ninetwozero.battlelog.http.COMClient;
 
 public class AsyncChatClose extends AsyncTask<Void, Integer, Boolean> {

@@ -1,24 +1,16 @@
 package com.ninetwozero.battlelog.http;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import android.content.Context;
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatype.*;
+import com.ninetwozero.battlelog.misc.Constants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatype.ChatMessage;
-import com.ninetwozero.battlelog.datatype.ChatSession;
-import com.ninetwozero.battlelog.datatype.FriendListDataWrapper;
-import com.ninetwozero.battlelog.datatype.ProfileComparator;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.RequestHandlerException;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.Constants;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class COMClient extends DefaultClient {
 

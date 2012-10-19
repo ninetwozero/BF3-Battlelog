@@ -26,7 +26,6 @@ import android.view.View.OnClickListener;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.http.PlatoonClient;
 import com.ninetwozero.battlelog.misc.Constants;
