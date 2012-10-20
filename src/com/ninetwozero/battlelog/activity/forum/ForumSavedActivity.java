@@ -76,7 +76,7 @@ public class ForumSavedActivity extends ListActivity {
         PublicUtils.setupSession(this, mSharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.forum_saved_view);
+        setContentView(R.layout.activity_forum_saved);
 
         // Last but not least - init
         initActivity();

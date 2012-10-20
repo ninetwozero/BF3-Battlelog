@@ -97,16 +97,13 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Set our attributes
         mContext = getActivity();
-        mSharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(mContext);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.forum_thread_view,
-                container, false);
+        View view = mLayoutInflater.inflate(R.layout.activity_forum_thread, container, false);
 
         // Get the locale
         mLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");
