@@ -17,6 +17,11 @@
       android:icon="@android:drawable/ic_menu_rotate"
       android:title="@string/info_xml_reload"/>-->
   <item
+      android:id="@+id/option_feedback"
+      android:alphabeticShortcut="F"
+      android:icon="@android:drawable/ic_menu_help"
+      android:title="@string/label_option_feedback"/>
+  <item
       android:id="@+id/option_settings"
       android:alphabeticShortcut="S"
       android:icon="@android:drawable/ic_menu_preferences"

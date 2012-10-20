@@ -19,7 +19,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-
 import com.ninetwozero.battlelog.asynctask.AsyncServiceTask;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
@@ -36,8 +35,7 @@ public class BattlelogService extends Service {
     @Override
     public void onCreate() {
         if (mSharedPreferences == null) {
-            mSharedPreferences = PreferenceManager
-                    .getDefaultSharedPreferences(this);
+            mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         }
     }
 

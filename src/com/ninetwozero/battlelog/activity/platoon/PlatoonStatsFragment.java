@@ -14,33 +14,18 @@
 
 package com.ninetwozero.battlelog.activity.platoon;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.view.*;
+import android.widget.*;
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatype.DefaultFragment;
-import com.ninetwozero.battlelog.datatype.PlatoonInformation;
-import com.ninetwozero.battlelog.datatype.PlatoonStats;
-import com.ninetwozero.battlelog.datatype.PlatoonStatsItem;
-import com.ninetwozero.battlelog.datatype.PlatoonTopStatsItem;
+import com.ninetwozero.battlelog.datatype.*;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.List;
 
 public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
 

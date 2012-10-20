@@ -14,9 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.forum;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -28,15 +25,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.ForumListAdapter;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
@@ -44,6 +36,9 @@ import com.ninetwozero.battlelog.datatype.ForumData;
 import com.ninetwozero.battlelog.http.ForumClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BoardFragment extends ListFragment implements DefaultFragment {
 
@@ -70,8 +65,7 @@ public class BoardFragment extends ListFragment implements DefaultFragment {
         mLayoutInflater = inflater;
 
         // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.board_view,
-                container, false);
+        View view = mLayoutInflater.inflate(R.layout.activity_board, container, false);
 
         // Get the unlocks
         mLocale = mSharedPreferences.getString(Constants.SP_BL_FORUM_LOCALE, "en");

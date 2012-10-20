@@ -14,10 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.social;
 
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -27,15 +23,10 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.ChatListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncChatClose;
@@ -47,6 +38,10 @@ import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ChatActivity extends ListActivity {
 
@@ -79,7 +74,7 @@ public class ChatActivity extends ListActivity {
         PublicUtils.setupLocale(this, mSharedPreferences);
         
         // Finally set the view
-        setContentView(R.layout.chat_view);
+        setContentView(R.layout.activity_chat);
         
         // Did we get someone to chat with?
         if (!getIntent().hasExtra("activeUser") || !getIntent().hasExtra("otherUser")) {

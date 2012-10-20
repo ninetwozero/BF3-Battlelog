@@ -82,20 +82,7 @@
     <item>sv</item>
   </string-array>
   <!-- translation starts here -->
-  <string name="changelog">* Fix: Forum (Sorry!) &lt;br />
-    * Fix: Achtergrond service crash &lt;br />
-    * Update: vertalingen &lt;br />
-    * Add: notificatiegeluiden;
-    * Add: Chat geluiden;
-    * Add: Settings toegevoegd;
-    &lt;br />
-    * Donatie mogelijk via \'Over\' scherm &lt;br />
-    * Forum voor de app is toegankelijk via http://bit.ly/bf3blforum &lt;br />
-    &lt;br />
-    Stuur problemen of bugs naar support@ninetwozero.com en/of
-    @karllindmark opTwitter (https://twitter.com/karllindmark).&lt;br />&lt;br />
-    Dank je wel voor het meedenken!
-  </string>
+  
   <string name="general_invalid_email">Onbekend e-mail adres.</string>
   <string name="general_invalid_password">Geef je wachtwoord op.</string>
   <string name="general_changelog_version">Changelog versie {version}</string>

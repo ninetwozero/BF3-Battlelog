@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.forum;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -25,17 +23,11 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.SavedThreadListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncSavedThreadDelete;
@@ -47,6 +39,8 @@ import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+
+import java.util.List;
 
 public class ForumSavedActivity extends ListActivity {
 
@@ -82,7 +76,7 @@ public class ForumSavedActivity extends ListActivity {
         PublicUtils.setupSession(this, mSharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.forum_saved_view);
+        setContentView(R.layout.activity_forum_saved);
 
         // Last but not least - init
         initActivity();

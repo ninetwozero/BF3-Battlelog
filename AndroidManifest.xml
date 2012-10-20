@@ -44,6 +44,12 @@
         android:orientation="vertical"
         android:windowSoftInputMode="stateHidden"/>
     <activity
+        android:name=".activity.aboutapp.FeedbackActivity"
+        android:configChanges="orientation"
+        android:label="@string/title_feedback"
+        android:orientation="vertical"
+   	/>
+    <activity
         android:name=".activity.DashboardActivity"
         android:configChanges="orientation"
         android:label="@string/title_main_menu"
