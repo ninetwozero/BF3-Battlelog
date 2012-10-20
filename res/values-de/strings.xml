@@ -486,7 +486,7 @@
   <string name="info_forum_report_true">Der Eintrag wurde gemeldet.</string>
   <string name="info_forum_report_false">Der Eintrag konnte nicht gemeldet werden.</string>
   <string name="info_forum_search_label">Forensuche</string>
-  <string name="info_forum_search_hint">Suche nach...</string>
+  
   <string name="info_forum_report_reason">Warum möchtest du diesen Eintrag melden?</string>
   <string name="info_forum_report_label">Einen Eintrag melden</string>
   <string name="label_report">Melden</string>

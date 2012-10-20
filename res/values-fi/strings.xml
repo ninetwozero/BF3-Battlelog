@@ -455,7 +455,7 @@
   <string name="info_forum_report_true">Huomautettu ylläpitäjille.</string>
   <string name="info_forum_report_false">Viestiä ei voinut reportoida.</string>
   <string name="info_forum_search_label">Foorumin haku</string>
-  <string name="info_forum_search_hint">Etsi...</string>
+  
   <string name="info_forum_report_reason">Miksi haluat ilmoittaa tästä viestistä?</string>
   <string name="info_forum_report_label">Ilmoita viestistä..</string>
   <string name="label_report">Ilmoita</string>
