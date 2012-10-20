@@ -1,11 +1,6 @@
 package com.ninetwozero.battlelog.factory;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.ParsedFeedItemData;
@@ -13,6 +8,9 @@ import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class FeedItemDataFactory {
 

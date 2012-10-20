@@ -19,7 +19,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.social.ChatActivity;
 import com.ninetwozero.battlelog.adapter.ChatListAdapter;

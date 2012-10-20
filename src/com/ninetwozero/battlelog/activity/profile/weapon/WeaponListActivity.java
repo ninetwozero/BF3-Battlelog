@@ -14,13 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.profile.weapon;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -29,13 +22,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
 import com.ninetwozero.battlelog.http.ProfileClient;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class WeaponListActivity extends CustomFragmentActivity implements
         DefaultFragmentActivity {

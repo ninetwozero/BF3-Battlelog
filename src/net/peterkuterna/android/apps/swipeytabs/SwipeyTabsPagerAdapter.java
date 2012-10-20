@@ -18,8 +18,6 @@
 
 package net.peterkuterna.android.apps.swipeytabs;
 
-import java.util.List;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -28,8 +26,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
+
+import java.util.List;
 
 public class SwipeyTabsPagerAdapter extends FragmentPagerAdapter implements SwipeyTabsAdapter {
 

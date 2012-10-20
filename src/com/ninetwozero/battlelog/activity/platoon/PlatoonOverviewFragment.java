@@ -25,17 +25,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctask.AsyncPlatoonRequest;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;

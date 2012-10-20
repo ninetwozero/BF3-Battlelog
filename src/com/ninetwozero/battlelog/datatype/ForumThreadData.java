@@ -14,11 +14,11 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-import java.util.Calendar;
-import java.util.List;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.Calendar;
+import java.util.List;
 
 public class ForumThreadData implements Parcelable {
 

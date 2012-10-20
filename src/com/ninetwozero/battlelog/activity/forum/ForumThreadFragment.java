@@ -14,13 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.forum;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -33,30 +26,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
@@ -72,6 +50,13 @@ import com.ninetwozero.battlelog.misc.BBCodeUtils;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ForumThreadFragment extends ListFragment implements DefaultFragment {
 

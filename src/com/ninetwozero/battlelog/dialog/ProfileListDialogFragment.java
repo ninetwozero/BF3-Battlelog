@@ -1,7 +1,5 @@
 package com.ninetwozero.battlelog.dialog;
 
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -13,10 +11,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.ProfileListAdapter;
 import com.ninetwozero.battlelog.datatype.ProfileData;
+
+import java.util.List;
 
 public class ProfileListDialogFragment extends DialogFragment {
 

@@ -1,8 +1,5 @@
 package com.ninetwozero.battlelog.dialog;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -16,13 +13,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.ProfileListAdapter;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.FeedClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HooahListDialogFragment extends DialogFragment {
 

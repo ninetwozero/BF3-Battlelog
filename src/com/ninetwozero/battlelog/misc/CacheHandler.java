@@ -14,25 +14,17 @@
 
 package com.ninetwozero.battlelog.misc;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.text.TextUtils;
-
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
-import com.ninetwozero.battlelog.datatype.ForumThreadData;
-import com.ninetwozero.battlelog.datatype.PersonaData;
-import com.ninetwozero.battlelog.datatype.PersonaStats;
-import com.ninetwozero.battlelog.datatype.PlatoonData;
-import com.ninetwozero.battlelog.datatype.PlatoonInformation;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.ProfileInformation;
-import com.ninetwozero.battlelog.datatype.SavedForumThreadData;
+import com.ninetwozero.battlelog.datatype.*;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /* 
  * Methods of this class should be loaded in AsyncTasks, as they would probably lock up the GUI

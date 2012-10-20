@@ -1,12 +1,11 @@
 package com.ninetwozero.battlelog.server;
 
-import java.io.IOException;
-
+import com.ninetwozero.battlelog.server.Bf3ServerCall._403Exception;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.ninetwozero.battlelog.server.Bf3ServerCall._403Exception;
+import java.io.IOException;
 
 public class SimpleHttpCaller {
 
