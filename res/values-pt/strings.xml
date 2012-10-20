@@ -82,21 +82,7 @@
     <item>sv</item>
   </string-array>
   <!-- translation starts here -->
-  <string name="changelog">* Fixed the forum (sorry!) &lt;br />
-    * Fixed the underlying service from crashing (finally?!) &lt;br />
-    * Updated the localization with more translations (contact me if you can help translate!) &lt;br />
-    * You can now select languages via the Settings &lt;br />
-    * Added audible notifications &lt;br />
-    * Added chat sounds &lt;br />
-    * Added settings for the above &lt;br />
-    &lt;br />
-    * DONATE-option available via the About screen (below) &lt;br />
-    * Forum for the app is now available via http://bit.ly/bf3blforum &lt;br />
-    &lt;br />
-    Please report any errors you may encounter to support@ninetwozero.com and/or
-    @karllindmark on Twitter (https://twitter.com/karllindmark).&lt;br />&lt;br />
-    Thank you for your support!
-  </string>
+  
   <string name="general_invalid_email">Endereço de email inválido</string>
   <string name="general_invalid_password">Por favor introduza a sua password.</string>
   <string name="general_changelog_version">Versão do registo de alterações {version}</string>
