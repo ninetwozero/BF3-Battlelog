@@ -26,7 +26,7 @@ import com.ninetwozero.battlelog.datatype.DefaultActivity;
 public class FeedbackActivity extends Activity implements DefaultActivity {
 
 	private WebView mWebView;
-	public static final String URL = "http://ninetwozero.uservoice.com/";
+	public static final String URL = "http://ninetwozero.uservoice.com/forums/180898-bf3-battelog";
 	
 	@Override
 	public void onCreate(final Bundle icicle) {
