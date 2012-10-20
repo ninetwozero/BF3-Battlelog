@@ -37,6 +37,7 @@ import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.datatype.*;
 import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.jsonmodel.assignments.Assignments;
+import com.ninetwozero.battlelog.jsonmodel.assignments.MissionPack;
 import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -62,6 +63,9 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
     private String[] mPersonaName;
     private ProgressDialog progressDialog;
     private URI callURI;
+    private Assignments assignments;
+    private final int[] expansionId = new int[]{512, 1024, 2048, 4096};
+    public static final String EXPANSION_ID = "expansionID";
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -147,27 +151,28 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
 
     public void setup() {
         if (mListFragments == null) {
-            // Add them to the list
-            mListFragments = new ArrayList<Fragment>();
+            for(int expansion : expansionId){
+                Bundle bundle = new Bundle();
+                bundle.putInt(EXPANSION_ID, expansion);
+                mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getSimpleName(), bundle));
+            }
+            /*mListFragments = new ArrayList<Fragment>();
+            mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getName()));
             mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getName()));
             mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getName()));
             mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getName()));
 
-            // Iterate over the fragments
             for (int i = 0, max = mListFragments.size(); i < max; i++) {
                 AssignmentFragment fragment = (AssignmentFragment) mListFragments.get(i);
                 fragment.setViewPagerPosition(i);
-                fragment.setType(i == 1 ? AssignmentFragment.TYPE_STACK
-                        : AssignmentFragment.TYPE_PAIRS);
-
-            }
+                fragment.setType(i == 1 ? AssignmentFragment.TYPE_STACK:AssignmentFragment.TYPE_PAIRS);
+            }*/
 
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
-            // Fill the PagerAdapter & set it to the viewpager
             mPagerAdapter = new SwipeyTabsPagerAdapter(mFragmentManager,
-                    new String[]{"B2K", "Premium", "CQ"},
+                    new String[]{"Back to Karkand", "Premium", "Close Quarters", "Armored Kill"},
                     mListFragments,
                     mViewPager,
                     mLayoutInflater
@@ -175,7 +180,6 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 
-            // Make sure the tabs follow
             mViewPager.setOnPageChangeListener(mTabs);
             mViewPager.setCurrentItem(0);
         }
@@ -183,14 +187,14 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
 
     @Override
     public Loader<CompletedTask> onCreateLoader(int i, Bundle bundle) {
-        //startLoadingDialog();
+        startLoadingDialog();
         return new Bf3Loader(getApplicationContext(), callURI);
     }
 
     @Override
     public void onLoadFinished(Loader<CompletedTask> loader, CompletedTask task) {
         if (task.result.equals(CompletedTask.Result.SUCCESS)) {
-            Assignments assignments = assignmentsFrom(task);
+            assignments = assignmentsFrom(task);
             if (progressDialog != null) {
                 progressDialog.dismiss();
             }
@@ -208,12 +212,14 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
     }
 
     public void reload() {
-        new AsyncGetDataSelf(this).execute(mProfileData);
+        //new AsyncGetDataSelf(this).execute(mProfileData);
     }
 
-    public void doFinish() {}
+    public MissionPack getMissionPack(int id){
+        return assignments.getMissionPacksList().get(id);
+    }
 
-    private class AsyncGetDataSelf extends AsyncTask<ProfileData, Void, Boolean> {
+    /*private class AsyncGetDataSelf extends AsyncTask<ProfileData, Void, Boolean> {
 
         // Attributes
         private Context mContext;
@@ -278,7 +284,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
                 mProgressDialog.dismiss();
             }
         }
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

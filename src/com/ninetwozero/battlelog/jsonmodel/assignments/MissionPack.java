@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MissionPacks {
+public class MissionPack {
 
     @SerializedName("count")
     private int count;
@@ -17,4 +17,24 @@ public class MissionPacks {
     private int completedCount;
     @SerializedName("layout")
     private String layout;
+
+    public int getCount() {
+        return count;
+    }
+
+    public int getGameExpansion() {
+        return gameExpansion;
+    }
+
+    public Map<String, Mission> getMissions() {
+        return missions;
+    }
+
+    public int getCompletedCount() {
+        return completedCount;
+    }
+
+    public String getLayout() {
+        return layout;
+    }
 }

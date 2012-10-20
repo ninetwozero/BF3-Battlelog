@@ -15,6 +15,7 @@
 package com.ninetwozero.battlelog.activity.profile.assignments;
 
 import java.util.List;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -27,16 +28,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.widget.*;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.AssignmentData;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.jsonmodel.assignments.Mission;
+import com.ninetwozero.battlelog.jsonmodel.assignments.MissionPack;
 import com.ninetwozero.battlelog.misc.DataBank;
 
 public class AssignmentFragment extends Fragment implements DefaultFragment {
@@ -47,7 +45,6 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
     // Attributes
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private int mViewPagerPosition;
     private int mType;
 
     // Elements
@@ -55,28 +52,25 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
 
     // Misc
     private List<AssignmentData> mAssignments;
+    private MissionPack missionPack;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle bundle) {
 
         // Set our attributes
         mContext = getActivity();
         mLayoutInflater = inflater;
 
         View view = mLayoutInflater.inflate(R.layout.tab_content_assignments, container, false);
-
-        if (mContext instanceof AssignmentActivity) {
-            mAssignments = ((AssignmentActivity) mContext).getItemsForFragment(mViewPagerPosition);
-        }
-        initFragment(view);
-        show(mAssignments);
+        missionPack = ((AssignmentActivity)getActivity()).getMissionPack(bundle.getInt("expansionId"));
+        mTableAssignments = (TableLayout) view.findViewById(R.id.table_assignments);
+        showData();
         return view;
-
     }
 
     public void initFragment(View v) {
-        mTableAssignments = (TableLayout) v.findViewById(R.id.table_assignments);
+
     }
 
     @Override
@@ -84,12 +78,37 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         super.onResume();
     }
 
-    public int getViewPagerPosition() {
+    /*public int getViewPagerPosition() {
         return mViewPagerPosition;
     }
 
     public void setViewPagerPosition(int p) {
         mViewPagerPosition = p;
+    }*/
+
+    private void showData(){
+        Map<String, Mission> missions = missionPack.getMissions();
+        String[] keys = missions.keySet().toArray(new String[]{});
+        for(int i = 0; i < keys.length; i++){
+            if(i+1 < keys.length && hasDependency(missions.get(keys[i]), missions.get(keys[i+1]))){
+                twoInRow(missions.get(keys[i]), missions.get(keys[i+1]));
+                i++;
+            }else{
+                oneInRow(missions.get(keys[i]));
+            }
+        }
+    }
+
+    private void oneInRow(Mission mission) {
+
+    }
+
+    private void twoInRow(Mission mission1, Mission mission2) {
+
+    }
+
+    private boolean hasDependency(Mission a, Mission b){
+        return b.hasDependencies() && b.isDependentOn(a.getCode());
     }
 
     // Loop & create

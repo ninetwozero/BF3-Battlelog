@@ -12,6 +12,24 @@ public class Assignments {
     @SerializedName("personaId")
     private int personaId;
     @SerializedName("missionTrees")
-    private Map<Integer, MissionPacks> missionPacksList = new HashMap<Integer, MissionPacks>();
+    private Map<Integer, MissionPack> missionPacksList = new HashMap<Integer, MissionPack>();
 
+
+    public Assignments(Gadgets gadgets, int personaId, Map<Integer, MissionPack> missionPacksList) {
+        this.gadgets = gadgets;
+        this.personaId = personaId;
+        this.missionPacksList = missionPacksList;
+    }
+
+    public Gadgets getGadgets() {
+        return gadgets;
+    }
+
+    public int getPersonaId() {
+        return personaId;
+    }
+
+    public Map<Integer, MissionPack> getMissionPacksList() {
+        return missionPacksList;
+    }
 }
