@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.util.MonthDisplayHelper;
 import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
@@ -44,8 +45,8 @@ public class WeaponListActivity extends CustomFragmentActivity implements
     private ProfileData mProfileData;
     private Map<Long, List<WeaponDataWrapper>> mItems;
     private long mSelectedPersona;
-	private AsyncRefresh myRefresher;
-	public boolean refreshOngoing;
+	private AsyncRefresh mAsynchRefresh;
+	public boolean mRefreshOngoing;
 
     // private int mSelectedPosition;
 
@@ -53,7 +54,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements
     public void onCreate(final Bundle icicle) {
         // onCreate - save the instance state
         super.onCreate(icicle);
-        refreshOngoing = false;
+        mRefreshOngoing = false;
         
 
         // Get the intent
@@ -97,6 +98,14 @@ public class WeaponListActivity extends CustomFragmentActivity implements
         reload();
 
     }
+    
+    @Override
+    protected void onPause() {
+    	super.onPause();
+    	Log.i(getClass().getName(), "onPause...");
+    	mAsynchRefresh.cancel(true);
+    	mAsynchRefresh = null;
+    }
 
     public void setup() {
 
@@ -138,11 +147,16 @@ public class WeaponListActivity extends CustomFragmentActivity implements
 
     public void reload() {
     	Log.i(getClass().getName(),"reload...");
-    	if (!refreshOngoing || myRefresher.isCancelled()) {
-    		refreshOngoing = true;
-    		myRefresher = new AsyncRefresh(this);
-    		myRefresher.execute();
-		} 
+    	if (mAsynchRefresh == null) {
+    		mAsynchRefresh = new AsyncRefresh(this);
+    	}			
+    	mAsynchRefresh.execute();
+    	
+//    	if (!mRefreshOngoing || mAsynchRefresh.isCancelled()) {
+//    		mRefreshOngoing = true;
+//    		mAsynchRefresh = new AsyncRefresh(this);
+//    		mAsynchRefresh.execute();
+//		} 
     }
 
     public void doFinish() {
@@ -163,7 +177,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements
 
         @Override
         protected void onPreExecute() {
-        	refreshOngoing = true;
+        	mRefreshOngoing = true;
             if (mItems.isEmpty()) {
                 mProgressDialog = new ProgressDialog(mContext);
                 mProgressDialog.setTitle(mContext
@@ -225,7 +239,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements
                 }
 
             }
-            refreshOngoing = false;
+            mRefreshOngoing = false;
         }
 
     }
