@@ -55,7 +55,7 @@ public class PlatoonCreateActivity extends Activity {
         PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.platoon_create_view);
+        setContentView(R.layout.activity_platoon_create);
 
         // Init the fields
         initActivity();

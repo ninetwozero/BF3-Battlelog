@@ -68,7 +68,7 @@ public class ForumSearchActivity extends ListActivity {
         PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.forum_search_view);
+        setContentView(R.layout.activity_forum_search);
 
         // Prepare to tango
         this.mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
