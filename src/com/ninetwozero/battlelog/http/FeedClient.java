@@ -1,15 +1,23 @@
 package com.ninetwozero.battlelog.http;
 
-import android.content.Context;
-import com.ninetwozero.battlelog.datatype.*;
-import com.ninetwozero.battlelog.factory.FeedItemDataFactory;
-import com.ninetwozero.battlelog.misc.CacheHandler;
-import com.ninetwozero.battlelog.misc.Constants;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
+import android.util.Log;
+
+import com.ninetwozero.battlelog.datatype.CommentData;
+import com.ninetwozero.battlelog.datatype.FeedItem;
+import com.ninetwozero.battlelog.datatype.ParsedFeedItemData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.RequestHandlerException;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.factory.FeedItemDataFactory;
+import com.ninetwozero.battlelog.misc.CacheHandler;
+import com.ninetwozero.battlelog.misc.Constants;
 
 public class FeedClient extends DefaultClient {
 
@@ -82,31 +90,24 @@ public class FeedClient extends DefaultClient {
             String httpContent = wh.post(
                 URL_POST,
                 RequestHandler.generatePostData(
-
                     FIELD_NAMES_POST,
                     content,
                     checksum,
                     mType == TYPE_PLATOON ? null : mId,
                     mType == TYPE_PLATOON ? mId : null
-
                 ),
                 RequestHandler.HEADER_AJAX
             );
-
-            // Did we manage?
             if ("".equals(httpContent)) {
                 throw new WebsiteHandlerException("Post could not be saved.");
             } else {
-                // Check the JSON
                 String status = new JSONObject(httpContent).optString("message", "");
                 return (status.matches("_POST_CREATED"));
             }
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public ArrayList<FeedItem> get(Context context, int num, long profileId) throws WebsiteHandlerException {
@@ -221,6 +222,7 @@ public class FeedClient extends DefaultClient {
             ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
 
             // Get the feed item data
+            Log.d(Constants.DEBUG_TAG, "event => " + event);
             int feedItemTypeId = getTypeIdFromEvent(event);
             ParsedFeedItemData feedItemData = FeedItemDataFactory.feedItemDataFrom(context, feedItemTypeId, mainProfile, currItem);
 
@@ -256,6 +258,7 @@ public class FeedClient extends DefaultClient {
                 return i;
             }
         }
+        Log.d(Constants.DEBUG_TAG, "Event '" + event + "' unknown.");
         return -1;
     }
 

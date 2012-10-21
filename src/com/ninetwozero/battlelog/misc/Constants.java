@@ -95,7 +95,7 @@ public final class Constants {
     public static final int DEFAULT_AVATAR_SIZE = 52;
     public static final int DEFAULT_BADGE_SIZE = 320;
     public static final int DEFAULT_CACHE_LIMIT = 25;
-    public static final int DEFAULT_NUM_FEED = 20;
+    public static final int DEFAULT_NUM_FEED = 100;
 
     // Menu
     public static final long MENU_MY_SOLDIER = 0;

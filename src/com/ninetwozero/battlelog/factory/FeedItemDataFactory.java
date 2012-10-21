@@ -243,7 +243,7 @@ public class FeedItemDataFactory {
 			JSONObject currItem, ProfileData profile) throws JSONException {
 
 		return new ParsedFeedItemData(PublicUtils.createStringWithData(context,
-				R.string.info_p_forumthread, profile.getUsername(),
+				R.string.info_p_forumpost, profile.getUsername(),
 				currItem.getString(THREAD_TITLE)),
 				currItem.getString(POST_BODY), new ProfileData[] {
 
