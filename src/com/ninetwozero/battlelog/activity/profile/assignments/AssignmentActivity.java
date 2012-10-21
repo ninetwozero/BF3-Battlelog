@@ -56,7 +56,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
 
     // Attributes
     private ProfileData mProfileData;
-    private Map<Long, AssignmentDataWrapper> mAssignments;
+    //private Map<Long, AssignmentDataWrapper> mAssignments;
     private long mSelectedPersona;
     private int mSelectedPosition;
     private long[] mPersonaId;
@@ -66,10 +66,12 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
     private Assignments assignments;
     private final int[] expansionId = new int[]{512, 1024, 2048, 4096};
     public static final String EXPANSION_ID = "expansionID";
+    private Bundle bundle;
 
     @Override
     public void onCreate(final Bundle icicle) {
         super.onCreate(icicle);
+        this.bundle = icicle;
         if (!getIntent().hasExtra("profile")) {
             finish();
         }
@@ -78,13 +80,12 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
 
         // Set the content view
         setContentView(R.layout.viewpager_default);
-        setup();
         init();
-        getSupportLoaderManager().restartLoader(0, icicle, this);
+        setup();
     }
 
     public void init() {
-        mAssignments = new HashMap<Long, AssignmentDataWrapper>();
+        //mAssignments = new HashMap<Long, AssignmentDataWrapper>();
 
         // Let's try something out
         if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
@@ -101,12 +102,18 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        getSupportLoaderManager().restartLoader(0, bundle, this);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         reload();
     }
 
-    public Dialog generateDialogPersonaList() {
+    /*public Dialog generateDialogPersonaList() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.info_dialog_selection_generic);
         // Do we have items to show?
@@ -147,14 +154,15 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
             }
         });
         return builder.create();
-    }
+    }*/
 
-    public void setup() {
+    public void setup(){
         if (mListFragments == null) {
+            mListFragments = new ArrayList<Fragment>();
             for(int expansion : expansionId){
                 Bundle bundle = new Bundle();
                 bundle.putInt(EXPANSION_ID, expansion);
-                mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getSimpleName(), bundle));
+                mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getName(), bundle));
             }
             /*mListFragments = new ArrayList<Fragment>();
             mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getName()));
@@ -198,12 +206,15 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
             if (progressDialog != null) {
                 progressDialog.dismiss();
             }
+            for(int i = 0; i < mPagerAdapter.getCount(); i++){
+                Fragment f = mPagerAdapter.getItem(i);
+                ((AssignmentFragment)f).setMissionPack(assignments.getMissionPacksList().get(expansionId[i]));
+            }
         }
     }
 
     @Override
     public void onLoaderReset(Loader<CompletedTask> loader) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     private Assignments assignmentsFrom(CompletedTask task) {
@@ -293,23 +304,23 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void showInFragment(AssignmentDataWrapper data, int position) {
+    /*public void showInFragment(AssignmentDataWrapper data, int position) {
         ((AssignmentFragment) mListFragments.get(position)).show(getItemsForFragment(position));
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.option_reload) {
             reload();
-        } else if (item.getItemId() == R.id.option_change) {
+        } /*else if (item.getItemId() == R.id.option_change) {
             generateDialogPersonaList().show();
-        } else if (item.getItemId() == R.id.option_back) {
+        } */else if (item.getItemId() == R.id.option_back) {
             ((Activity) this).finish();
         }
         return true;
     }
 
-    public List<AssignmentData> getItemsForFragment(int p) {
+    /*public List<AssignmentData> getItemsForFragment(int p) {
         if (mAssignments.isEmpty()) {
             return new ArrayList<AssignmentData>();
         } else {
@@ -330,14 +341,12 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
                     return new ArrayList<AssignmentData>();
             }
         }
-    }
+    }*/
 
     private void startLoadingDialog() {
-        this.progressDialog = new ProgressDialog(getApplicationContext());
-        this.progressDialog.setTitle(getApplicationContext()
-                .getString(R.string.general_wait));
-        this.progressDialog.setMessage(getApplicationContext()
-                .getString(R.string.general_downloading));
-        this.progressDialog.show();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(getApplication().getString(R.string.general_wait));
+        progressDialog.setMessage(getApplication().getString(R.string.general_downloading));
+        progressDialog.show();
     }
 }

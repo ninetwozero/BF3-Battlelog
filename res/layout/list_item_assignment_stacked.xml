@@ -26,6 +26,7 @@
       android:weightSum="2">
 
     <RelativeLayout
+        android:id="@+id/assignment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"

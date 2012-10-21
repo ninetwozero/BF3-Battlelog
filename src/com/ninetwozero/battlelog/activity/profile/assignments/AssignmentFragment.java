@@ -14,6 +14,8 @@
 
 package com.ninetwozero.battlelog.activity.profile.assignments;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +24,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,35 +45,32 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
     public final static int TYPE_PAIRS = 0;
     public final static int TYPE_STACK = 1;
 
-    // Attributes
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private int mType;
-
-    // Elements
     private TableLayout mTableAssignments;
-
-    // Misc
     private List<AssignmentData> mAssignments;
     private MissionPack missionPack;
+    private int expansionId;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle bundle) {
-
-        // Set our attributes
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         mContext = getActivity();
         mLayoutInflater = inflater;
 
         View view = mLayoutInflater.inflate(R.layout.tab_content_assignments, container, false);
-        missionPack = ((AssignmentActivity)getActivity()).getMissionPack(bundle.getInt("expansionId"));
         mTableAssignments = (TableLayout) view.findViewById(R.id.table_assignments);
-        showData();
+        mTableAssignments.setId(getArguments().getInt(AssignmentActivity.EXPANSION_ID));
         return view;
     }
 
     public void initFragment(View v) {
 
+    }
+
+    @Override
+    public void onActivityCreated(Bundle bundle) {
+        super.onActivityCreated(bundle);
     }
 
     @Override
@@ -86,33 +86,79 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         mViewPagerPosition = p;
     }*/
 
+    public void setMissionPack(MissionPack missionPack){
+        this.missionPack = missionPack;
+        showData();
+    }
+
     private void showData(){
         Map<String, Mission> missions = missionPack.getMissions();
-        String[] keys = missions.keySet().toArray(new String[]{});
-        for(int i = 0; i < keys.length; i++){
-            if(i+1 < keys.length && hasDependency(missions.get(keys[i]), missions.get(keys[i+1]))){
-                twoInRow(missions.get(keys[i]), missions.get(keys[i+1]));
+        List<String> keys = Arrays.asList(missions.keySet().toArray(new String[]{}));
+        Collections.sort(keys);
+        for(int i = 0; i < keys.size(); i++){
+            if(i+1 < keys.size() && hasDependency(missions.get(keys.get(i)), missions.get(keys.get(i+1)))){
+                twoInRow(missions.get(keys.get(i)), missions.get(keys.get(i+1)));
                 i++;
             }else{
-                oneInRow(missions.get(keys[i]));
+                oneInRow(missions.get(keys.get(i)));
             }
         }
     }
 
     private void oneInRow(Mission mission) {
-
+        TableRow tableRow = (TableRow) getActivity().getLayoutInflater().inflate(R.layout.list_item_assignment_stacked, mTableAssignments, false);
+        RelativeLayout layout = (RelativeLayout) tableRow.findViewById(R.id.assignment);
+        setMission(layout, mission);
+        mTableAssignments.addView(tableRow);
     }
 
     private void twoInRow(Mission mission1, Mission mission2) {
+        TableRow tableRow = (TableRow) getActivity().getLayoutInflater().inflate(R.layout.list_item_assignment, mTableAssignments, false);
+        RelativeLayout leftLayout = (RelativeLayout) tableRow.findViewById(R.id.assignment_left);
+        setMission(leftLayout, mission1);
+        RelativeLayout rightLayout = (RelativeLayout)tableRow.findViewById(R.id.assignment_right);
+        setMission(rightLayout, mission2);
+        mTableAssignments.addView(tableRow);
+    }
 
+    private void setMission(View view, Mission mission){
+        ImageView image = (ImageView) view.findViewById(R.id.assignment_image);
+        ProgressBar progress = (ProgressBar) view.findViewById(R.id.assignment_progress);
+        image.setImageResource(resourceIdFrom(mission.getCode(), 0));
+        /*if (ass1.isCompleted()) {
+            image.setImageResource(ass2.getResourceId());
+        } else {
+            image.setImageResource(R.drawable.assignment_locked);
+        }*/
+
+        image.setTag(mission.getCode());
+        image.setOnClickListener(
+                new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        /*AssignmentData data = (AssignmentData) v.getTag();
+                        createDialog(data);*/
+                    }
+
+                }
+        );
+
+        progress.setProgress(mission.getCompletion());
+        progress.setMax(100);
     }
 
     private boolean hasDependency(Mission a, Mission b){
+        Log.e("AssignmentFragment", "Dependency between " + a.getCode() + " and " + b.getCode());
         return b.hasDependencies() && b.isDependentOn(a.getCode());
     }
 
+    private int resourceIdFrom(String code, int index){
+        return DataBank.getResourcesForAssignment(code)[index];
+    }
+
     // Loop & create
-    public void displayPairsInTable(List<AssignmentData> assignments) {
+    /*public void displayPairsInTable(List<AssignmentData> assignments) {
 
         for (int i = 0, max = assignments.size(); i < max; i += 2) {
             TableRow tableRow = (TableRow) mLayoutInflater.inflate(
@@ -171,9 +217,9 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
             progressRight.setProgress(progressValueRight);
             progressRight.setMax(100);
         }
-    }
+    }*/
 
-    public void displayStackedInTable(List<AssignmentData> assignments) {
+    /*public void displayStackedInTable(List<AssignmentData> assignments) {
 
         boolean completedAll = false;
         for (int i = 0, max = assignments.size(); i < max; i++) {
@@ -219,7 +265,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         } else if (mType == TYPE_STACK) {
             displayStackedInTable(data);
         }
-    }
+    }*/
 
     @Override
     public void reload() {}

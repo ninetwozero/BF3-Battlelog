@@ -1497,7 +1497,7 @@ public final class DataBank {
 
 	public static int[] getResourcesForAssignment(String s) {
 		return ASSIGNMENT_RESOURCES.containsKey(s) ? ASSIGNMENT_RESOURCES
-				.get(s) : ASSIGNMENT_RESOURCES.get("default");
+				.get(s) : new int[]{R.drawable.assignment_locked, R.drawable.assignment_locked};
 	}
 
 	public static String getLocale(int p) {

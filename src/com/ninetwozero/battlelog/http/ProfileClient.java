@@ -897,7 +897,7 @@ public class ProfileClient extends DefaultClient {
             return null;
         }
     }
-
+    @Deprecated
     public HashMap<Long, AssignmentDataWrapper> getAssignments(Context c)
             throws WebsiteHandlerException {
         try {
@@ -977,7 +977,7 @@ public class ProfileClient extends DefaultClient {
             throw new WebsiteHandlerException(ex.getMessage());
         }
     }
-
+    @Deprecated
     public List<AssignmentData> getAssignmentsFromJSON(JSONObject missions) {
         // Init
         List<AssignmentData> assignments = new ArrayList<AssignmentData>();
