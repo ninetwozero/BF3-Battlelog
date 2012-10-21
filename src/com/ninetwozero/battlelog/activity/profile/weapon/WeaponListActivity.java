@@ -204,12 +204,6 @@ public class WeaponListActivity extends CustomFragmentActivity implements
         }
         
         @Override
-        protected void onCancelled() {
-        	super.onCancelled();
-        	Log.i(getClass().getName(), "Asynch Refresh canceled.");
-        }
-
-        @Override
         protected void onPostExecute(Boolean result) {
         	
             if (mContext != null) {
