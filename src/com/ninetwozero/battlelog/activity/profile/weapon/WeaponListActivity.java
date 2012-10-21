@@ -98,14 +98,6 @@ public class WeaponListActivity extends CustomFragmentActivity implements
         reload();
 
     }
-    
-    @Override
-    protected void onPause() {
-    	super.onPause();
-    	Log.i(getClass().getName(), "onPause...");
-    	mAsynchRefresh.cancel(true);
-    	mAsynchRefresh = null;
-    }
 
     public void setup() {
 
@@ -147,16 +139,11 @@ public class WeaponListActivity extends CustomFragmentActivity implements
 
     public void reload() {
     	Log.i(getClass().getName(),"reload...");
-    	if (mAsynchRefresh == null) {
+    	if (!mRefreshOngoing || mAsynchRefresh.isCancelled()) {
+    		mRefreshOngoing = true;
     		mAsynchRefresh = new AsyncRefresh(this);
-    	}			
-    	mAsynchRefresh.execute();
-    	
-//    	if (!mRefreshOngoing || mAsynchRefresh.isCancelled()) {
-//    		mRefreshOngoing = true;
-//    		mAsynchRefresh = new AsyncRefresh(this);
-//    		mAsynchRefresh.execute();
-//		} 
+    		mAsynchRefresh.execute();
+		} 
     }
 
     public void doFinish() {
@@ -214,6 +201,12 @@ public class WeaponListActivity extends CustomFragmentActivity implements
                 return false;
             }
             
+        }
+        
+        @Override
+        protected void onCancelled() {
+        	super.onCancelled();
+        	Log.i(getClass().getName(), "Asynch Refresh canceled.");
         }
 
         @Override
