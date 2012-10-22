@@ -147,13 +147,10 @@ public class ChatActivity extends ListActivity {
 
     public void onClick(View v) {
         if (v.getId() == R.id.button_send) {
-        	new AsyncChatSend(this, mComClient)
-        		.execute(
-	                mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
-	                mFieldMessage.getText().toString()
-	            );
-
-            // Clear the field
+        	new AsyncChatSend(this, mComClient).execute(
+                mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
+                mFieldMessage.getText().toString()
+            );
             mFieldMessage.setText("");
         }
     }
@@ -167,38 +164,27 @@ public class ChatActivity extends ListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Let's act!
         if (item.getItemId() == R.id.option_reload) {
             this.reload();
         } else if (item.getItemId() == R.id.option_back) {
             ((Activity) this).finish();
         }
         return true;
-
     }
 
     public void notifyNewPost(List<ChatMessage> cm) {
-
-        // Init!
         boolean hasNewResponse = false;
         boolean isFirstRun = true;
         boolean playSound = mSharedPreferences.getBoolean("battlelog_chat_sound", true);
 
-        // Iterate
         for (int curr = cm.size() - 1, min = ((curr > 5) ? curr - 5 : 0); curr > min; curr--) {
-
-            // Let's see what happens.
             ChatMessage m = cm.get(curr);
-            if (m.getSender().equals(mActiveUser.getUsername())
-                    && m.getTimestamp() > mLatestChatResponseTimestamp) {
-
+            if (!m.getSender().equals(mActiveUser.getUsername()) && m.getTimestamp() > mLatestChatResponseTimestamp) {
                 hasNewResponse = true;
                 isFirstRun = (mLatestChatResponseTimestamp == 0);
                 mLatestChatResponseTimestamp = m.getTimestamp();
                 break;
-
             }
-
         }
 
         // So, did we have a new response?
@@ -206,25 +192,21 @@ public class ChatActivity extends ListActivity {
             MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.notification);
             mediaPlayer.start();
             mediaPlayer.setOnCompletionListener(
-
-                    new OnCompletionListener() {
-
-                        @Override
-                        public void onCompletion(MediaPlayer arg0) {
-                            arg0.release();
-                        }
+                new OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer arg0) {
+                        arg0.release();
                     }
+                }
             );
         } else if (isFirstRun) {
-
-            // Scroll down to the bottom
             mListView.post(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            mListView.setSelection(mListView.getAdapter().getCount() - 1);
-                        }
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        mListView.setSelection(mListView.getAdapter().getCount() - 1);
                     }
+                }
             );
         }
     }
@@ -241,24 +223,18 @@ public class ChatActivity extends ListActivity {
     }
 
     public void setupTimer() {
-
-        // Do we have a connection?
         if (PublicUtils.isNetworkAvailable(this) && mTimerReload == null) {
-
-            // Let's reload the chat will we?
             mTimerReload = new Timer();
-            mTimerReload
-                    .schedule(
-                            new TimerTask() {
-                                @Override
-                                public void run() {
-                                    reload();
-                                }
-                            }, 0, mSharedPreferences.getInt(Constants.SP_BL_INTERVAL_CHAT,
-                            25) * 1000
-                    );
+            mTimerReload.schedule(
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        reload();
+                    }
+                }, 
+                0, 
+                mSharedPreferences.getInt(Constants.SP_BL_INTERVAL_CHAT, 25) * 1000
+            );
         }
-
     }
-
 }
