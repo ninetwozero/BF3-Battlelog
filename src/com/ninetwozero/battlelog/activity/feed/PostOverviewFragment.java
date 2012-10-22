@@ -32,90 +32,68 @@ public class PostOverviewFragment extends Fragment implements DefaultFragment {
     // Attributes
     private Context mContext;
 
-    // Elements
     private TextView mTextTitle;
     private TextView mTextInfo;
     private TextView mTextContent;
 
-    // Misc
     private FeedItem mFeedItem;
     private NewsData mNewsData;
     private boolean mNews = false;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Set our attributes
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity();
-
-        // Let's inflate & return the view
         View view = inflater.inflate(
-
-                mNews ? R.layout.tab_content_post_overview_news
-                        : R.layout.tab_content_post_overview_feed,
-
-                container, false);
-
-        // Init
+            mNews ? R.layout.tab_content_post_overview_news : R.layout.tab_content_post_overview_feed,
+            container, 
+            false
+        );
         initFragment(view);
-
-        // Return
         return view;
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         reload();
-
     }
 
     public void setData(FeedItem f) {
-
         mFeedItem = f;
         mNews = false;
     }
 
     public void setData(NewsData n) {
-
         mNewsData = n;
         mNews = true;
     }
 
     public void initFragment(View v) {
-
-        // Set the values
         if (mNews) {
-
             initNews(v);
-
         } else {
-
             initOther(v);
-
         }
-
     }
 
     public void initNews(View v) {
-
         mTextTitle = (TextView) v.findViewById(R.id.text_title);
         mTextContent = (TextView) v.findViewById(R.id.text_content);
         mTextInfo = (TextView) v.findViewById(R.id.text_author);
 
         mTextTitle.setText(mNewsData.getTitle());
-        mTextInfo.setText(Html.fromHtml(getString(R.string.info_news_posted_by).replace(
-                "{author}",
-                mNewsData.getAuthorName()).replace("{date}",
-                PublicUtils.getRelativeDate(mContext, mNewsData.getDate()))));
+        mTextInfo.setText(
+        	Html.fromHtml(
+        		getString(R.string.info_news_posted_by).replace(
+    				"{author}",mNewsData.getAuthorName()
+    			).replace("{date}", PublicUtils.getRelativeDate(mContext, mNewsData.getDate())
+    			)
+    		)
+    	);
         mTextContent.setText(Html.fromHtml(mNewsData.getContent()));
-
     }
 
     public void initOther(View v) {
-
         mTextTitle = (TextView) v.findViewById(R.id.text_title);
         mTextContent = (TextView) v.findViewById(R.id.text_content);
         mTextInfo = (TextView) v.findViewById(R.id.text_date);
@@ -130,9 +108,7 @@ public class PostOverviewFragment extends Fragment implements DefaultFragment {
     }
 
     public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {
-
         return false;
-
     }
 
     @Override
