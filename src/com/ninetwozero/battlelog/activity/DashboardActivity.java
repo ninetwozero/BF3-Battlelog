@@ -248,8 +248,8 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             if (mSlidingDrawer.isOpened()) {
                 mSlidingDrawer.animateClose();
                 return true;
-            } else if (mViewPager.getCurrentItem() > 1) {
-                mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+            } else if (mViewPager.getCurrentItem() != 1) {
+                mViewPager.setCurrentItem(1, true);
                 return true;
             }
         } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
