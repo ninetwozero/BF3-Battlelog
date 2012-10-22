@@ -58,14 +58,13 @@ public class SearchActivity extends ListActivity {
     @Override
     public void onCreate(final Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.activity_search);
+        PublicUtils.restoreCookies(this, icicle);
+        PublicUtils.setupFullscreen(this, mSharedPreferences);
+        PublicUtils.setupLocale(this, mSharedPreferences);
+	setContentView(R.layout.activity_search);
         
         mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        PublicUtils.restoreCookies(this, icicle);
-
-        PublicUtils.setupFullscreen(this, mSharedPreferences);
-        PublicUtils.setupLocale(this, mSharedPreferences);
 
         mButtonSearch = (Button) findViewById(R.id.button_search);
         mFieldSearch = (EditText) findViewById(R.id.field_search);
