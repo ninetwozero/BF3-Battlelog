@@ -81,9 +81,17 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
         init();
         setup();
+        handleIfOpenedViaNotification();
     }
 
-    public final void init() {
+    private void handleIfOpenedViaNotification() {
+		if( getIntent().getBooleanExtra("openCOMCenter", false) ) {
+			mSlidingDrawer.open();
+			mViewPagerCom.setCurrentItem(1);
+		}
+	}
+
+	public final void init() {
         mSlidingDrawer = (SlidingDrawer) findViewById(R.id.com_slider);
         mSlidingDrawerHandle = (TextView) findViewById(R.id.com_slide_handle_text);
     }
