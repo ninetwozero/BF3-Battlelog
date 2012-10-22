@@ -84,18 +84,21 @@ public class CommentClient extends DefaultClient {
                 // Init
                 JSONObject dataObject = null;
                 JSONObject tempObject = null;
-
+                String keyOwner = "";
+                
                 // Is it a feed?
                 if (isFeed) {
                     dataObject = new JSONObject(httpContent).getJSONObject("data");
+                    keyOwner = "owner";
                 } else {
                     dataObject = new JSONObject(httpContent).getJSONObject("context").getJSONObject("blogPost");
+                    keyOwner = "user";
                 }
 
                 JSONArray commentArray = dataObject.getJSONArray("comments");
                 for (int i = 0, max = commentArray.length(); i < max; i++) {
                     tempObject = commentArray.optJSONObject(i);
-                    JSONObject tempOwnerItem = tempObject.getJSONObject("owner");
+                    JSONObject tempOwnerItem = tempObject.getJSONObject(keyOwner);
                     comments.add(
                         new CommentData(
                             mId,
