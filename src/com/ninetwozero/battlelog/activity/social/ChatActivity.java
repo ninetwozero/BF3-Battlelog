@@ -14,6 +14,10 @@
 
 package com.ninetwozero.battlelog.activity.social;
 
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -23,10 +27,16 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.*;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.ChatListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncChatClose;
@@ -38,10 +48,6 @@ import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class ChatActivity extends ListActivity {
 
@@ -89,8 +95,7 @@ public class ChatActivity extends ListActivity {
         // Get the ListView
         mListView = getListView();
         mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-        mListView.setAdapter(new ChatListAdapter(this, null, mActiveUser.getUsername(),
-                mLayoutInflater));
+        mListView.setAdapter(new ChatListAdapter(this, null, mActiveUser.getUsername(), mLayoutInflater));
 
         // Setup the title
         setTitle(getTitle().toString().replace("...", mOtherUser.getUsername()));
@@ -102,8 +107,7 @@ public class ChatActivity extends ListActivity {
         // Try to get the chatid
         mComClient = new COMClient(
     		mOtherUser.getId(), 
-    		mSharedPreferences.getString(
-    				Constants.SP_BL_PROFILE_CHECKSUM, "")
+    		mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 		);
     }
 
@@ -179,7 +183,7 @@ public class ChatActivity extends ListActivity {
 
         for (int curr = cm.size() - 1, min = ((curr > 5) ? curr - 5 : 0); curr > min; curr--) {
             ChatMessage m = cm.get(curr);
-            if (!m.getSender().equals(mActiveUser.getUsername()) && m.getTimestamp() > mLatestChatResponseTimestamp) {
+            if (m.getSender().equals(mOtherUser.getUsername()) && m.getTimestamp() > mLatestChatResponseTimestamp) {
                 hasNewResponse = true;
                 isFirstRun = (mLatestChatResponseTimestamp == 0);
                 mLatestChatResponseTimestamp = m.getTimestamp();
@@ -187,7 +191,6 @@ public class ChatActivity extends ListActivity {
             }
         }
 
-        // So, did we have a new response?
         if (hasNewResponse && !isFirstRun && playSound) {
             MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.notification);
             mediaPlayer.start();
