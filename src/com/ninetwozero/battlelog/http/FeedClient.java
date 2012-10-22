@@ -70,7 +70,7 @@ public class FeedClient extends DefaultClient {
             "assignmentcomplete",
             "commentedgamereport",
             "commentedblog",
- "gameaccess",
+            "gameaccess",
             "sharedgameevent"
     };
 
@@ -116,7 +116,6 @@ public class FeedClient extends DefaultClient {
             JSONArray jsonArray;
             String url;
             
-            // What's the url?
             switch (mType) {
                 case TYPE_GLOBAL:
                     url = URL_FRIEND_FEED;
@@ -132,7 +131,6 @@ public class FeedClient extends DefaultClient {
                     break;
             }
 
-            // Let's see
             for (int i = 0, max = Math.round(num / 10); i < max; i++) {
                 String httpContent = mRequestHandler.get(
                     url.replace(
@@ -156,8 +154,7 @@ public class FeedClient extends DefaultClient {
         List<FeedItem> feedItemArray = new ArrayList<FeedItem>();
         try {
             for (int i = 0, max = jsonArray.length(); i < max; i++) {
-                feedItemArray.add(getFeedItemFromJSON(context, jsonArray.getJSONObject(i),
-                        activeProfileId));
+                feedItemArray.add(getFeedItemFromJSON(context, jsonArray.getJSONObject(i), activeProfileId));
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -179,7 +176,6 @@ public class FeedClient extends DefaultClient {
             boolean liked = false;
             boolean censored = currItem.getBoolean("hidden");
 
-            // Iterate and see if the user has *liked* it already
             for (int likeCount = 0; likeCount < numLikes; likeCount++) {
                 if (Long.parseLong(likeUsers.getString(likeCount)) == activeProfileId) {
                     liked = true;
@@ -187,7 +183,6 @@ public class FeedClient extends DefaultClient {
                 }
             }
             
-            // Get the comments
             final String[] jsonCommentLabels = new String[] {"comment1", "comment2"};
             for( String label : jsonCommentLabels ) {
 	            if( !currItem.isNull(label) ) {
@@ -207,7 +202,6 @@ public class FeedClient extends DefaultClient {
 						)
 	    			);
 	            	
-	            	// Cache the image?
 	            	String filename = gravatarHash + ".png";
 	                if (!CacheHandler.isCached(context, filename)) {
 	                    ProfileClient.cacheGravatar(context, filename, Constants.DEFAULT_AVATAR_SIZE);
@@ -215,18 +209,15 @@ public class FeedClient extends DefaultClient {
 	            }
             }
 	            
-            // Set the first profile
             ProfileData mainProfile = new ProfileData.Builder(
                     Long.parseLong(currItem.getString("ownerId")),
                     ownerObject.getString("username")
             ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
 
-            // Get the feed item data
             int feedItemTypeId = getTypeIdFromEvent(event);
             ParsedFeedItemData feedItemData = FeedItemDataFactory.feedItemDataFrom(context, feedItemTypeId, mainProfile, currItem);
 
-            // Before I forget - let's download the gravatar too!
-            String filename = tempGravatarHash + ".png";
+            String filename = feedItemData.getGravatarHash() + ".png";
             if (!CacheHandler.isCached(context, filename)) {
                 ProfileClient.cacheGravatar(context, filename, Constants.DEFAULT_AVATAR_SIZE);
             }
@@ -242,7 +233,7 @@ public class FeedClient extends DefaultClient {
                 feedItemData.getProfileData(),
                 liked,
                 censored,
-                tempGravatarHash,
+                feedItemData.getGravatarHash(),
                 comments
             );
         } catch (Exception ex) {
