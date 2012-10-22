@@ -53,8 +53,7 @@ import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-public class DashboardActivity extends CustomFragmentActivity implements
-        DefaultFragmentActivity {
+public class DashboardActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // COM-related
     private SlidingDrawer mSlidingDrawer;
@@ -77,13 +76,11 @@ public class DashboardActivity extends CustomFragmentActivity implements
         super.onCreate(icicle);
         setContentView(R.layout.viewpager_dashboard);
 
-        // Set sharedPreferences
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         validateSession();
 
-        // Setup the fragments & init the COM & feed
-        setup();
         init();
+        setup();
     }
 
     public final void init() {
@@ -99,26 +96,20 @@ public class DashboardActivity extends CustomFragmentActivity implements
     public void setup() {
         if (mListFragments == null) {
             mListFragments = new ArrayList<Fragment>();
-            mListFragments.add(Fragment.instantiate(this,
-                    NewsListFragment.class.getName()));
-            mListFragments.add(Fragment.instantiate(this,
-                    MenuProfileFragment.class.getName()));
+            mListFragments.add(Fragment.instantiate(this, NewsListFragment.class.getName()));
+            mListFragments.add(Fragment.instantiate(this, MenuProfileFragment.class.getName()));
             mListFragments.add(mFragmentMenuPlatoon = (MenuPlatoonFragment) Fragment.instantiate(this, MenuPlatoonFragment.class.getName()));
             mListFragments.add(Fragment.instantiate(this, MenuForumFragment.class.getName()));
             mListFragments.add(mFragmentFeed = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
 
-            // Setup platoon tab
             mFragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
 
-            // Setup the feed
             mFragmentFeed.setType(FeedClient.TYPE_GLOBAL);
             mFragmentFeed.setCanWrite(true);
 
-            // Get the ViewPager
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
-            // Fill the PagerAdapter & set it to the viewpager
             mPagerAdapter = new SwipeyTabsPagerAdapter(
                     mFragmentManager, new String[]{"NEWS", "PROFILE", "PLATOON",
                     "FORUM", "FEED"}, mListFragments, mViewPager,
@@ -126,7 +117,6 @@ public class DashboardActivity extends CustomFragmentActivity implements
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 
-            // Make sure the tabs follow
             mViewPager.setOnPageChangeListener(mTabs);
             mViewPager.setOffscreenPageLimit(4);
             mViewPager.setCurrentItem(1);
@@ -137,18 +127,19 @@ public class DashboardActivity extends CustomFragmentActivity implements
             mListFragmentsCom.add(mFragmentComFriends = (ComFriendFragment) Fragment.instantiate(this, ComFriendFragment.class.getName()));
             mListFragmentsCom.add(mFragmentComNotifications = (ComNotificationFragment) Fragment.instantiate(this, ComNotificationFragment.class.getName()));
 
-            // Get the ViewPager
             mViewPagerCom = (ViewPager) findViewById(R.id.viewpager_sub);
             mTabsCom = (SwipeyTabs) findViewById(R.id.swipeytabs_sub);
 
-            // Fill the PagerAdapter & set it to the viewpager
             mPagerAdapterCom = new SwipeyTabsPagerAdapter(
-                    mFragmentManager, new String[]{"FRIENDS", "NOTIFICATIONS"},
-                    mListFragmentsCom, mViewPagerCom, mLayoutInflater);
+                    mFragmentManager, 
+                    new String[]{"FRIENDS", "NOTIFICATIONS"},
+                    mListFragmentsCom, 
+                    mViewPagerCom, 
+                    mLayoutInflater
+            );
             mViewPagerCom.setAdapter(mPagerAdapterCom);
             mTabsCom.setAdapter(mPagerAdapterCom);
 
-            // Make sure the tabs follow
             mViewPagerCom.setOnPageChangeListener(mTabsCom);
             mViewPagerCom.setOffscreenPageLimit(1);
             mViewPagerCom.setCurrentItem(0);
@@ -156,8 +147,6 @@ public class DashboardActivity extends CustomFragmentActivity implements
     }
 
     public void validateSession() {
-
-        // We should've gotten a profile
         if (SessionKeeper.getProfileData() == null) {
             if (getIntent().hasExtra("myProfile")) {
                 ProfileData profileData = getIntent().getParcelableExtra("myProfile");
@@ -166,8 +155,7 @@ public class DashboardActivity extends CustomFragmentActivity implements
                 SessionKeeper.setProfileData(profileData);
                 SessionKeeper.setPlatoonData(platoonArray);
             } else {
-                Toast.makeText(this, R.string.info_txt_session_lost,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
             }
         }
     }
