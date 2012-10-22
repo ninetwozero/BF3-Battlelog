@@ -36,9 +36,12 @@ import android.widget.*;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.AssignmentData;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
+import com.ninetwozero.battlelog.jsonmodel.assignments.Assignments;
 import com.ninetwozero.battlelog.jsonmodel.assignments.Mission;
 import com.ninetwozero.battlelog.jsonmodel.assignments.MissionPack;
 import com.ninetwozero.battlelog.misc.DataBank;
+import com.ninetwozero.battlelog.provider.BusProvider;
+import com.squareup.otto.Subscribe;
 
 public class AssignmentFragment extends Fragment implements DefaultFragment {
 
@@ -52,12 +55,13 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
     private List<AssignmentData> mAssignments;
     private MissionPack missionPack;
     private int expansionId;
+    private Assignments assignments;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         mContext = getActivity();
         mLayoutInflater = inflater;
-
+        expansionId = getArguments().getInt(AssignmentActivity.EXPANSION_ID);
         View view = mLayoutInflater.inflate(R.layout.tab_content_assignments, container, false);
         mTableAssignments = (TableLayout) view.findViewById(R.id.table_assignments);
         mTableAssignments.setId(getArguments().getInt(AssignmentActivity.EXPANSION_ID));
@@ -71,11 +75,23 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
     @Override
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        BusProvider.getInstance().register(this);
+        missionPack = ((AssignmentActivity)getActivity()).getMissionPack(expansionId);
+        if(missionPack != null){
+            showData();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
     }
 
     /*public int getViewPagerPosition() {
@@ -86,10 +102,10 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         mViewPagerPosition = p;
     }*/
 
-    public void setMissionPack(MissionPack missionPack){
+    /*public void setMissionPack(MissionPack missionPack){
         this.missionPack = missionPack;
         showData();
-    }
+    }*/
 
     private void showData(){
         Map<String, Mission> missions = missionPack.getMissions();
@@ -326,5 +342,12 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
 
     public void setType(int i) {
         mType = i;
+    }
+
+    @Subscribe
+    public void assignmentChange(Assignments assignments){
+        this.assignments = assignments;
+        missionPack = assignments.getMissionPacksList().get(expansionId);
+        showData();
     }
 }

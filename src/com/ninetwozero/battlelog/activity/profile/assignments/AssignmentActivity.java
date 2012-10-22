@@ -42,6 +42,7 @@ import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.provider.BusProvider;
 import com.ninetwozero.battlelog.provider.UriFactory;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
@@ -206,10 +207,11 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
             if (progressDialog != null) {
                 progressDialog.dismiss();
             }
-            for(int i = 0; i < mPagerAdapter.getCount(); i++){
+            /*for(int i = 0; i < mPagerAdapter.getCount(); i++){
                 Fragment f = mPagerAdapter.getItem(i);
                 ((AssignmentFragment)f).setMissionPack(assignments.getMissionPacksList().get(expansionId[i]));
-            }
+            }*/
+            BusProvider.getInstance().post(assignments);
         }
     }
 
@@ -227,7 +229,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
     }
 
     public MissionPack getMissionPack(int id){
-        return assignments.getMissionPacksList().get(id);
+        return assignments != null ?assignments.getMissionPacksList().get(id):null;
     }
 
     /*private class AsyncGetDataSelf extends AsyncTask<ProfileData, Void, Boolean> {
