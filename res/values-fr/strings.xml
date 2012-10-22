@@ -82,21 +82,7 @@
     <item>sv</item>
   </string-array>
   <!-- translation starts here -->
-  <string name="changelog">* Correction du forum (désolé !) &lt;br />
-    * Correction des plantages du service en arrière plan (enfin ?!) &lt;br />
-    * Mise à jour de la localisation avec plus de traductions (contactez moi si vous pouvez aider à traduire !) &lt;br
-    />
-    * Ajout de notifications sonores &lt;br />
-    * Ajout de sons pour le chat &lt;br />
-    * Ajout d\'options pour ce qui suit &lt;br />
-    &lt;br />
-    * Possibilité de faire un don via l\'écran A propos (ci-dessous) &lt;br />
-    * Un forum pour l\'app est disponible via http://bit.ly/bf3blforum &lt;br />
-    &lt;br />
-    Veuillez signaler toute erreur que vous pouvez rencontrer à support@ninetwozero.com et/ou
-    @karllindmark sur Twitter (https://twitter.com/karllindmark).&lt;br />&lt;br />
-    Merci de votre soutien !
-  </string>
+  
   <string name="general_invalid_email">Adresse e-mail non valide.</string>
   <string name="general_invalid_password">Veuillez saisir votre mot de passe.</string>
   <string name="general_changelog_version">Historique des versions {version}</string>

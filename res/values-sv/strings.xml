@@ -82,21 +82,7 @@
     <item>sv</item>
   </string-array>
   <!-- translation starts here -->
-  <string name="changelog">* Åtgärdat forumet (oops!) &lt;br />
-    * Åtgärdat krascher i den underliggande tjänsten (äntligen?!) &lt;br />
-    * Val av språk kan numera göras i inställningarna &lt;br />
-    * Uppdaterat språkstödet med fler språk (kontakta mig om du kan hjälpa till med översättning!!) &lt;br />
-    * Lagt till hörbara händelsenotifieringar &lt;br />
-    * Lagt till chattljud &lt;br />
-    * Lagt till inställningar för ovanstående &lt;br />
-    &lt;br />
-    * DONERA-alternativ valbart i Om-information (nedan) &lt;br />
-    * Ett forum för appen finns nu via http://bit.ly/bf3blforum &lt;br />
-    &lt;br />
-    Rapportera alla eventuella fel du stöter på till support@ninetwozero.com och/eller
-    @karllindmark på Twitter (https://twitter.com/karllindmark).&lt;br />&lt;br />
-    Tack för ditt stöd!
-  </string>
+  
   <string name="general_invalid_email">Felaktig e-postadress.</string>
   <string name="general_invalid_password">Vänligen mata in ditt lösenord.</string>
   <string name="general_changelog_version">Förändringar till {version}</string>

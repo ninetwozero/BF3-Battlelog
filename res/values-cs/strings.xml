@@ -84,21 +84,7 @@
     <item>cs</item>
   </string-array>
   <!-- translation starts here -->
-  <string name="changelog">* Opraveno forum &lt;br />
-    * Opraven pad služby na pozadí &lt;br />
-    * Lokalizace do více jazyků &lt;br />
-    * Můžete si nastavit jazyk přes Nastavení &lt;br />
-    * Přidány zvukové notifikace &lt;br />
-    * Přidány zvuky v chatu &lt;br />
-    * Přidáno nastavení pro výše uvedené změny &lt;br />
-    &lt;br />
-    * DOTACE-možnost je přístupná z menu O aplikaci (níže) &lt;br />
-    * Forum aplikace je na adrese http://bit.ly/bf3blforum &lt;br />
-    &lt;br />
-    Prosíme nahlašte nalezené chyby na support@ninetwozero.com a/nebo
-    @karllindmark na Twitteru (https://twitter.com/karllindmark).&lt;br />&lt;br />
-    Děkuji za podporu!
-  </string>
+  
   <string name="general_invalid_email">Chybná emailová adresa.</string>
   <string name="general_invalid_password">Prosím zadejte své heslo.</string>
   <string name="general_changelog_version">Verze dokumentu změn</string>

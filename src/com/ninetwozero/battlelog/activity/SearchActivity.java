@@ -70,7 +70,7 @@ public class SearchActivity extends ListActivity {
         PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.search_view);
+        setContentView(R.layout.activity_search);
 
         // Prepare to tango
         mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);

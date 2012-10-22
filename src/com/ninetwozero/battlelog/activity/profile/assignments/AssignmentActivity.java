@@ -349,4 +349,5 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
         progressDialog.setMessage(getApplication().getString(R.string.general_downloading));
         progressDialog.show();
     }
+
 }

@@ -1,13 +1,7 @@
 package com.ninetwozero.battlelog.dao;
 
-import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.database.Cursor;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.Statistics;
 import com.ninetwozero.battlelog.jsonmodel.soldierstats.KitScores;
@@ -16,6 +10,11 @@ import com.ninetwozero.battlelog.jsonmodel.soldierstats.PersonaStatsOverview;
 import com.ninetwozero.battlelog.jsonmodel.soldierstats.VehicleScores;
 
 import static com.ninetwozero.battlelog.provider.table.ScoreStatistics.Columns;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
 
 public class ScoreStatisticsDAO {
 

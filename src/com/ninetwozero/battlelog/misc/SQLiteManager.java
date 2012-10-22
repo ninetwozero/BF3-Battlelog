@@ -1,7 +1,5 @@
 package com.ninetwozero.battlelog.misc;
 
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,8 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
-
 import com.ninetwozero.battlelog.datatype.DatabaseInformationException;
+
+import java.util.List;
 
 public class SQLiteManager {
 

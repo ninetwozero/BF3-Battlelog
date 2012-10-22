@@ -26,7 +26,6 @@ import android.view.View.OnClickListener;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.http.PlatoonClient;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -56,7 +55,7 @@ public class PlatoonCreateActivity extends Activity {
         PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.platoon_create_view);
+        setContentView(R.layout.activity_platoon_create);
 
         // Init the fields
         initActivity();

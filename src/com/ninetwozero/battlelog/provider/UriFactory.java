@@ -1,16 +1,14 @@
 package com.ninetwozero.battlelog.provider;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-
+import android.content.UriMatcher;
+import com.ninetwozero.battlelog.Battlelog;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 
-import android.content.UriMatcher;
-
-import com.ninetwozero.battlelog.Battlelog;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
 
 public class UriFactory {
 

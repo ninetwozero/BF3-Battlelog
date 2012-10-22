@@ -82,20 +82,7 @@
     <item>sv</item>
   </string-array>
   <!-- translation starts here -->
-  <string name="changelog">* Foorumi korjattu (anteeksi!) &lt;br />
-    * Taustapalvelun kaatuilu korjattu (viimeinkin?!) &lt;br />
-    * Uusia käännöksiä lisätty (ota yhteyttä jos voit auttaa kääntämisessä!) &lt;br />
-    * Merkkiäänet ilmoituksille&lt;br />
-    * Merkkiäänet chatille&lt;br />
-    * Lisätty asetukset merkkiäänille&lt;br />
-    &lt;br />
-    * Lahjoitusnappula lisätty (alhaalla) &lt;br />
-    * Sovelluksen foorumit: http://bit.ly/bf3blforum &lt;br />
-    &lt;br />
-    Jos huomaat virheitä/bugeja, kerrothan niistä osoitteeseen support@ninetwozero.com ja/tai
-    Twitterissä, @karllindmark tai (https://twitter.com/karllindmark).&lt;br />&lt;br />
-    Kiitos avustasi!
-  </string>
+  
   <string name="general_invalid_email">Viallinen sähköpostiosoite.</string>
   <string name="general_invalid_password">Kirjoita salasanasi.</string>
   <string name="general_changelog_version">Viimeisimmät muutokset {version}</string>
