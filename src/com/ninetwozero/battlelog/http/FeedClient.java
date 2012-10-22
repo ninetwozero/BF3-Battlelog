@@ -222,7 +222,6 @@ public class FeedClient extends DefaultClient {
             ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
 
             // Get the feed item data
-            Log.d(Constants.DEBUG_TAG, "event => " + event);
             int feedItemTypeId = getTypeIdFromEvent(event);
             ParsedFeedItemData feedItemData = FeedItemDataFactory.feedItemDataFrom(context, feedItemTypeId, mainProfile, currItem);
 
