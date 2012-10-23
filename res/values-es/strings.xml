@@ -271,7 +271,7 @@
   <string name="info_xml_platoons">Pelotones</string>
   <string name="info_xml_no_platoons">No pelotones unidos.</string>
   <string name="info_xml_rank2">hasta el siguiente rango</string>
-  <string name="info_xml_no_unlocks">No abre encontrado.</string>
+  
   <string name="info_xml_back">Reverso</string>
   <string name="info_xml_reload">Recargar</string>
   <string name="info_xml_logout">Finalizar la sesión</string>

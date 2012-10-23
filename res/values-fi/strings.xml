@@ -267,7 +267,7 @@
   <string name="info_xml_platoons">Joukkueet</string>
   <string name="info_xml_no_platoons">Ei joukkueita.</string>
   <string name="info_xml_rank2">jäljellä seuraavaan arvoon</string>
-  <string name="info_xml_no_unlocks">Ei avauksia</string>
+  
   <string name="info_xml_back">Takaisin</string>
   <string name="info_xml_reload">Lataa uudelleen</string>
   <string name="info_xml_logout">Kirjaudu ulos</string>

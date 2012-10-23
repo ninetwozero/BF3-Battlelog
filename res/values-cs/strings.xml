@@ -269,7 +269,7 @@
   <string name="info_xml_platoons">Čety</string>
   <string name="info_xml_no_platoons">Nejste připojení k žádné četě.</string>
   <string name="info_xml_rank2">dokud nedostanete další ocenění</string>
-  <string name="info_xml_no_unlocks">Nenalezena žádná odemknutí.</string>
+  
   <string name="info_xml_back">Zpět</string>
   <string name="info_xml_reload">Obnovit</string>
   <string name="info_xml_logout">Odhlásit</string>
