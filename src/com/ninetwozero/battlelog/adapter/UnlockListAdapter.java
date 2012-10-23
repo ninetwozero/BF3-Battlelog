@@ -30,26 +30,26 @@ import java.util.List;
 public class UnlockListAdapter extends BaseAdapter {
 
     // Attributes
-    private Context context;
-    private List<UnlockData> dataArray;
-    private LayoutInflater layoutInflater;
-    private ProgressBar progressBar;
+    private Context mContext;
+    private List<UnlockData> mData;
+    private LayoutInflater mLayoutInflater;
+    private ProgressBar mProgressBar;
 
     // Construct
     public UnlockListAdapter(Context c, List<UnlockData> u, LayoutInflater l) {
-        context = c;
-        dataArray = u;
-        layoutInflater = l;
+        mContext = c;
+        mData = u;
+        mLayoutInflater = l;
     }
 
     @Override
     public int getCount() {
-        return (dataArray != null) ? dataArray.size() : 0;
+        return (mData != null) ? mData.size() : 0;
     }
 
     @Override
     public UnlockData getItem(int position) {
-        return dataArray.get(position);
+        return mData.get(position);
     }
 
     @Override
@@ -63,37 +63,32 @@ public class UnlockListAdapter extends BaseAdapter {
         // Get the current item
         UnlockData currentUnlock = getItem(position);
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.list_item_unlock,
-                    parent, false);
+            convertView = mLayoutInflater.inflate(R.layout.list_item_unlock, parent, false);
         }
 
         // Grab the progressBar
-        progressBar = ((ProgressBar) convertView
+        mProgressBar = ((ProgressBar) convertView
                 .findViewById(R.id.progress_unlock));
 
         // Set the TextViews
-        ((View) convertView.findViewById(R.id.divider_left))
-                .setBackgroundColor(context.getResources().getColor(
-                        getColorForKit(currentUnlock.getKitId())));
-        ((TextView) convertView.findViewById(R.id.text_unlock_percent))
-                .setText(currentUnlock.getUnlockPercentage() + "%");
-        ((ImageView) convertView.findViewById(R.id.image_unlock))
-                .setImageResource(currentUnlock.getImageResource());
+        ((View) convertView.findViewById(R.id.divider_left)).setBackgroundColor(
+        	mContext.getResources().getColor(
+	    		getColorForKit(currentUnlock.getKitId())
+	    	)
+    	);
+        ((TextView) convertView.findViewById(R.id.text_unlock_percent)).setText(
+        	currentUnlock.getUnlockPercentage() + "%"
+        );
+        ((ImageView) convertView.findViewById(R.id.image_unlock)).setImageResource(
+        	currentUnlock.getImageResource()
+        );
 
-        // Title
-        ((TextView) convertView.findViewById(R.id.text_unlock_title))
-                .setText(currentUnlock.getTitle(context));
+        ((TextView) convertView.findViewById(R.id.text_unlock_title)).setText(currentUnlock.getTitle(mContext));
+        ((TextView) convertView.findViewById(R.id.text_unlock_desc)).setText(currentUnlock.getObjective(mContext));
 
-        // Description
-        ((TextView) convertView.findViewById(R.id.text_unlock_desc))
-                .setText(currentUnlock.getObjective(context));
+        mProgressBar.setMax(100);
+        mProgressBar.setProgress((int) Math.round(currentUnlock.getUnlockPercentage()));
 
-        // Update the progress
-        progressBar.setMax(100);
-        progressBar.setProgress((int) Math.round(currentUnlock
-                .getUnlockPercentage()));
-
-        // Tag it!
         convertView.setTag(currentUnlock);
         return convertView;
     }
@@ -113,8 +108,8 @@ public class UnlockListAdapter extends BaseAdapter {
         }
     }
 
-    public void setDataArray(List<UnlockData> data) {
-        dataArray = data;
+    public void setData(List<UnlockData> data) {
+        mData = data;
         notifyDataSetChanged();
     }
 }

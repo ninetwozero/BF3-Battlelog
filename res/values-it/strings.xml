@@ -267,7 +267,7 @@
   <string name="info_xml_platoons">Plotoni</string>
   <string name="info_xml_no_platoons">Non fai parte di nessun plotone.</string>
   <string name="info_xml_rank2">alla promozione</string>
-  <string name="info_xml_no_unlocks">Nessuno sblocco trovato.</string>
+  
   <string name="info_xml_back">Indietro</string>
   <string name="info_xml_reload">Ricarica</string>
   <string name="info_xml_logout">Logout</string>

@@ -268,7 +268,7 @@
   <string name="info_xml_platoons">Plutoner</string>
   <string name="info_xml_no_platoons">Inga anslutna plutoner.</string>
   <string name="info_xml_rank2">till nästa rang</string>
-  <string name="info_xml_no_unlocks">Inga upplåsningar hittades.</string>
+  
   <string name="info_xml_back">Tillbaka</string>
   <string name="info_xml_reload">Ladda om</string>
   <string name="info_xml_logout">Logga ut</string>
