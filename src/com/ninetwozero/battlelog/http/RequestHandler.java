@@ -193,7 +193,6 @@ public class RequestHandler {
 
             // Anything?
             if (httpEntity != null) {
-
                 // Grab the response
                 if (httpResponse.containsHeader("Encoding-Type") && 
                 	httpResponse.getFirstHeader("Encoding-Type").getValue().equalsIgnoreCase("gzip")
@@ -250,13 +249,7 @@ public class RequestHandler {
 
         // Do we need 'em?
         if (extraHeaders > 0) {
-            if (extraHeaders == 1) {
-                httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders));
-            } else if (extraHeaders == 2) {
-                httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders));
-            } else if (extraHeaders == 3) {
-                httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders));
-            }
+            httpPost.setHeaders(HttpHeaders.POST_HEADERS.get(extraHeaders));
         }
 
         // More init
@@ -294,7 +287,6 @@ public class RequestHandler {
 
         }
         return "";
-
     }
 
     /**

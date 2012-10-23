@@ -454,7 +454,7 @@
   <string name="info_forum_report_true">Inlägget har rapporterats.</string>
   <string name="info_forum_report_false">Inlägget kunde inte rapporteras.</string>
   <string name="info_forum_search_label">Forumsök</string>
-  <string name="info_forum_search_hint">Sök efter...</string>
+  
   <string name="info_forum_report_reason">Varför vill du rapportera detta inlägg?</string>
   <string name="info_forum_report_label">Rapportera ett inlägg</string>
   <string name="label_report">Rapportera för missbruk</string>
