@@ -278,7 +278,7 @@
   <string name="info_xml_platoons">Pelotons</string>
   <string name="info_xml_no_platoons">Je zit niet in een peloton.</string>
   <string name="info_xml_rank2">voordat je in rang stijgt</string>
-  <string name="info_xml_no_unlocks">Geen unlocks gevonden.</string>
+  
   <string name="info_xml_back">Terug</string>
   <string name="info_xml_reload">Ververs</string>
   <string name="info_xml_logout">Uitloggen</string>

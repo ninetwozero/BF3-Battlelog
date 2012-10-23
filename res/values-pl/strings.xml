@@ -271,7 +271,7 @@
   <string name="info_xml_platoons">Plutony</string>
   <string name="info_xml_no_platoons">Nie dołączono do plutonu</string>
   <string name="info_xml_rank2">Dopóki nie podniesie rangi</string>
-  <string name="info_xml_no_unlocks">Nie znaleziono odblokowań</string>
+  
   <string name="info_xml_back">Wróć</string>
   <string name="info_xml_reload">Przeładuj</string>
   <string name="info_xml_logout">Wyloguj</string>

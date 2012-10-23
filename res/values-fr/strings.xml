@@ -266,7 +266,7 @@
   <string name="info_xml_platoons">Sections</string>
   <string name="info_xml_no_platoons">Aucune section rejointe.</string>
   <string name="info_xml_rank2">jusqu\'au prochain grade</string>
-  <string name="info_xml_no_unlocks">Aucun élément débloqué trouvé</string>
+  
   <string name="info_xml_back">Retour</string>
   <string name="info_xml_reload">Recharger</string>
   <string name="info_xml_logout">Déconnexion</string>

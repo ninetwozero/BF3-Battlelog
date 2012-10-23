@@ -284,7 +284,7 @@
   <string name="info_xml_platoons">Platoons</string>
   <string name="info_xml_no_platoons">Keinem Platoon beigetreten.</string>
   <string name="info_xml_rank2">Bis zum nächsten Rang</string>
-  <string name="info_xml_no_unlocks">Keine Freischaltungen gefunden</string>
+  
   <string name="info_xml_back">Zurück</string>
   <string name="info_xml_reload">Aktualisieren</string>
   <string name="info_xml_logout">Abmelden</string>
