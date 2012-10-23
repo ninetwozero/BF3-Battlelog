@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
@@ -40,7 +42,9 @@ import com.ninetwozero.battlelog.activity.feed.PostOverviewFragment;
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.NewsData;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.RequestHandler;
+import com.ninetwozero.battlelog.http.WebsiteClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
@@ -57,11 +61,8 @@ public class SinglePostActivity extends CustomFragmentActivity {
 
     @Override
     public void onCreate(final Bundle icicle) {
-
-        // onCreate - save the instance state
         super.onCreate(icicle);
 
-        // Get the intent
         if (getIntent().hasExtra("feed")) {
             mFeedData = getIntent().getParcelableExtra("feed");
             mNews = false;
@@ -71,6 +72,7 @@ public class SinglePostActivity extends CustomFragmentActivity {
         } else {
             finish();
         }
+        
         setContentView(R.layout.viewpager_default);
         init();
         setup();

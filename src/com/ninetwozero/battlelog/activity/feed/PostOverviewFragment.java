@@ -15,16 +15,21 @@
 package com.ninetwozero.battlelog.activity.feed;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.NewsData;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.WebsiteClient;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class PostOverviewFragment extends Fragment implements DefaultFragment {
@@ -85,7 +90,7 @@ public class PostOverviewFragment extends Fragment implements DefaultFragment {
         mTextInfo.setText(
         	Html.fromHtml(
         		getString(R.string.info_news_posted_by).replace(
-    				"{author}",mNewsData.getAuthorName()
+    				"{author}", mNewsData.getAuthorName()
     			).replace("{date}", PublicUtils.getRelativeDate(mContext, mNewsData.getDate())
     			)
     		)
@@ -105,7 +110,10 @@ public class PostOverviewFragment extends Fragment implements DefaultFragment {
     }
 
     public void reload() {
-    }
+    	if( mNewsData != null ) {
+    		new AsyncPostRefresh(mContext).execute();
+    	}
+	}
 
     public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {
         return false;
@@ -119,5 +127,39 @@ public class PostOverviewFragment extends Fragment implements DefaultFragment {
     @Override
     public boolean handleSelectedOption(MenuItem item) {
         return false;
+    }
+    
+    public class AsyncPostRefresh extends AsyncTask<Void, Void, Boolean> {
+
+        // Attributes
+        private Context context;
+
+        public AsyncPostRefresh(Context c) {
+            this.context = c;
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... arg0) {
+            try {
+                mNewsData = new WebsiteClient().getNewsFromId(mNewsData.getId());
+                return (mNewsData != null);
+            } catch (WebsiteHandlerException ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (!result) {
+                Toast.makeText(this.context, R.string.info_news_empty, Toast.LENGTH_SHORT).show();
+            } else {
+            	initOther(getView());
+            }
+        }
     }
 }
