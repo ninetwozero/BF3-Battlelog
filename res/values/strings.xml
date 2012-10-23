@@ -275,7 +275,7 @@
     <string name="info_xml_platoons">Platoons</string>
     <string name="info_xml_no_platoons">No platoons joined.</string>
     <string name="info_xml_rank2">until rank up</string>
-    <string name="info_xml_no_unlocks">You've unlocked everything in this view.</string>
+    <string name="info_xml_no_unlocks">You\'ve unlocked everything in this view.</string>
     <string name="info_xml_back">Back</string>
     <string name="info_xml_reload">Reload</string>
     <string name="info_xml_logout">Logout</string>
