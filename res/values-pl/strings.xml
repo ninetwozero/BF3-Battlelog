@@ -453,7 +453,7 @@
   <string name="info_forum_report_true">Post został zaraportowany.</string>
   <string name="info_forum_report_false">Post nie mógł zostać zaraportowany.</string>
   <string name="info_forum_search_label">Wyszukiwarka forum</string>
-  <string name="info_forum_search_hint">Szukaj...</string>
+  
   <string name="info_forum_report_reason">Dlaczego chcesz zaraportować ten post?</string>
   <string name="info_forum_report_label">Raportuj post</string>
   <string name="label_report">Raportuj</string>
