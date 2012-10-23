@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -36,6 +37,7 @@ import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutActivity;
 import com.ninetwozero.battlelog.activity.aboutapp.FeedbackActivity;
@@ -51,6 +53,7 @@ import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.http.FeedClient;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class DashboardActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
@@ -159,11 +162,20 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             if (getIntent().hasExtra("myProfile")) {
                 ProfileData profileData = getIntent().getParcelableExtra("myProfile");
                 List<PlatoonData> platoonArray = getIntent().getParcelableArrayListExtra("myPlatoon");
-
-                SessionKeeper.setProfileData(profileData);
-                SessionKeeper.setPlatoonData(platoonArray);
+                Log.d(Constants.DEBUG_TAG, "profileData => " + profileData);
+                Log.d(Constants.DEBUG_TAG, "platoonData => " + platoonArray);
+                
+                if( profileData == null || platoonArray == null ) {
+                    startActivity(new Intent(this, MainActivity.class));
+                	finish();
+                } else {
+                	SessionKeeper.setProfileData(profileData);
+                	SessionKeeper.setPlatoonData(platoonArray);
+                }
             } else {
                 Toast.makeText(this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
             }
         }
     }
