@@ -158,7 +158,7 @@ public class PostOverviewFragment extends Fragment implements DefaultFragment {
             if (!result) {
                 Toast.makeText(this.context, R.string.info_news_empty, Toast.LENGTH_SHORT).show();
             } else {
-            	initOther(getView());
+            	initNews(getView());
             }
         }
     }

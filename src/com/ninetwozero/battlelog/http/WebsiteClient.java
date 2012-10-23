@@ -129,7 +129,7 @@ public class WebsiteClient extends DefaultClient {
                     item.getLong("creationDate"),
                     item.getInt("devblogCommentCount"),
                     item.getString("title"),
-                    new JSONObject(item.getString("json")).getString("excerpt"),
+                    new JSONObject(item.getString("json")).getString("content"),
                     new ProfileData.Builder(
                             Long.parseLong(user.getString("userId")),
                             user.getString("username")
