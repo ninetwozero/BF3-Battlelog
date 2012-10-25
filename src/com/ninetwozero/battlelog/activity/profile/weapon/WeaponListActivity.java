@@ -14,13 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.profile.weapon;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -28,14 +21,22 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.util.MonthDisplayHelper;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
 import com.ninetwozero.battlelog.http.ProfileClient;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class WeaponListActivity extends CustomFragmentActivity implements
         DefaultFragmentActivity {
@@ -44,14 +45,17 @@ public class WeaponListActivity extends CustomFragmentActivity implements
     private ProfileData mProfileData;
     private Map<Long, List<WeaponDataWrapper>> mItems;
     private long mSelectedPersona;
+	private AsyncRefresh mAsynchRefresh;
+	public boolean mRefreshOngoing;
 
     // private int mSelectedPosition;
 
     @Override
     public void onCreate(final Bundle icicle) {
-
         // onCreate - save the instance state
         super.onCreate(icicle);
+        mRefreshOngoing = false;
+        
 
         // Get the intent
         if (!getIntent().hasExtra("profile")) {
@@ -87,7 +91,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements
 
     @Override
     public void onResume() {
-
+    	Log.i(getClass().getName(),"onResume...");
         super.onResume();
 
         // Reload
@@ -134,9 +138,12 @@ public class WeaponListActivity extends CustomFragmentActivity implements
     }
 
     public void reload() {
-
-        new AsyncRefresh(this).execute();
-
+    	Log.i(getClass().getName(),"reload...");
+    	if (!mRefreshOngoing || mAsynchRefresh.isCancelled()) {
+    		mRefreshOngoing = true;
+    		mAsynchRefresh = new AsyncRefresh(this);
+    		mAsynchRefresh.execute();
+		} 
     }
 
     public void doFinish() {
@@ -157,7 +164,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements
 
         @Override
         protected void onPreExecute() {
-
+        	mRefreshOngoing = true;
             if (mItems.isEmpty()) {
                 mProgressDialog = new ProgressDialog(mContext);
                 mProgressDialog.setTitle(mContext
@@ -183,18 +190,22 @@ public class WeaponListActivity extends CustomFragmentActivity implements
                 }
 
                 mItems = new ProfileClient(mProfileData).getWeapons();
+                Log.i(getClass().getName(), "doInBackground completed...");
+                
                 return true;
 
             } catch (Exception ex) {
 
                 ex.printStackTrace();
+                Log.i(getClass().getName(), "doInBackground completed...");
                 return false;
             }
+            
         }
-
+        
         @Override
         protected void onPostExecute(Boolean result) {
-
+        	
             if (mContext != null) {
 
                 if (result) {
@@ -215,6 +226,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements
                 }
 
             }
+            mRefreshOngoing = false;
         }
 
     }

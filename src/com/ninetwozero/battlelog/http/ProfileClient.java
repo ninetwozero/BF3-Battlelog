@@ -14,46 +14,23 @@
 
 package com.ninetwozero.battlelog.http;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import android.content.Context;
+import android.util.Log;
+import com.ninetwozero.battlelog.datatype.*;
+import com.ninetwozero.battlelog.misc.CacheHandler;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.DataBank;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 import org.apache.http.HttpEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.ninetwozero.battlelog.datatype.AssignmentComparator;
-import com.ninetwozero.battlelog.datatype.AssignmentData;
-import com.ninetwozero.battlelog.datatype.AssignmentDataWrapper;
-import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
-import com.ninetwozero.battlelog.datatype.PersonaData;
-import com.ninetwozero.battlelog.datatype.PersonaStats;
-import com.ninetwozero.battlelog.datatype.PlatoonData;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.ProfileInformation;
-import com.ninetwozero.battlelog.datatype.RequestHandlerException;
-import com.ninetwozero.battlelog.datatype.UnlockComparator;
-import com.ninetwozero.battlelog.datatype.UnlockData;
-import com.ninetwozero.battlelog.datatype.UnlockDataWrapper;
-import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
-import com.ninetwozero.battlelog.datatype.WeaponDataWrapperComparator;
-import com.ninetwozero.battlelog.datatype.WeaponInfo;
-import com.ninetwozero.battlelog.datatype.WeaponStats;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.CacheHandler;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.DataBank;
-import com.ninetwozero.battlelog.misc.PublicUtils;
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 public class ProfileClient extends DefaultClient {
 
@@ -102,15 +79,14 @@ public class ProfileClient extends DefaultClient {
             "profile-edit-allowfriendrequests", "post-check-sum"
     };
 
-    public static final String[] FIELD_NAMES_SEARCH = new String[]{"username", "post-check-sum"};
+    public static final String[] FIELD_NAMES_SEARCH = new String[]{"name", "post-check-sum"};
 
     public ProfileClient(ProfileData pd) {
         mRequestHandler = new RequestHandler();
         mProfileData = pd;
     }
 
-    public static ProfileData getProfileIdFromName(final String keyword,
-                                                   final String checksum) throws WebsiteHandlerException {
+    public static ProfileData getProfileIdFromName(final String keyword, final String checksum) throws WebsiteHandlerException {
         try {
             ProfileData profile = null;
             String httpContent = new RequestHandler().post(
@@ -118,7 +94,7 @@ public class ProfileClient extends DefaultClient {
                 RequestHandler.generatePostData(FIELD_NAMES_SEARCH, keyword, checksum),
                 RequestHandler.HEADER_NORMAL
             );
-
+            
             // Did we manage?
             if ("".equals(httpContent)) {
                 throw new WebsiteHandlerException(
@@ -649,8 +625,7 @@ public class ProfileClient extends DefaultClient {
     }
 
     //
-    public static List<GeneralSearchResult> search(Context context,
-                                                   String keyword, String checksum) throws WebsiteHandlerException {
+    public static List<GeneralSearchResult> search(Context context, String keyword, String checksum) throws WebsiteHandlerException {
         // Init
         List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
         try {
@@ -660,7 +635,7 @@ public class ProfileClient extends DefaultClient {
                 RequestHandler.generatePostData(FIELD_NAMES_SEARCH, keyword, checksum), 
                 RequestHandler.HEADER_NORMAL
             );
-
+            
             // Did we manage?
             if (!"".equals(httpContent)) {
 
@@ -675,16 +650,23 @@ public class ProfileClient extends DefaultClient {
                     for (int i = 0, max = searchResultsProfile.length(); i < max; i++) {
 
                         // Get the JSONObject
-                        JSONObject tempObj = searchResultsProfile
-                                .optJSONObject(i);
+                        JSONObject tempPersonaObj = searchResultsProfile.optJSONObject(i);
+                        JSONObject tempUserObj = tempPersonaObj.getJSONObject("user");
 
                         // Save it into an array
                         results.add(
                             new GeneralSearchResult(
-                                new ProfileData.Builder(Long.parseLong(tempObj
-                                        .getString("userId")), tempObj
-                                        .getString("username")).gravatarHash(
-                                        tempObj.optString("gravatarMd5")).build()
+                                new ProfileData.Builder(
+                            		Long.parseLong(tempUserObj.getString("userId")),
+                            		tempUserObj.getString("username")
+                        		).gravatarHash(tempUserObj.optString("gravatarMd5")).persona(
+                        			new PersonaData(
+                    					Long.parseLong(tempPersonaObj.getString("personaId")),
+                    					tempPersonaObj.getString("personaName"),
+                    					DataBank.getPlatformIdFromName(tempPersonaObj.getString("namespace")),
+                    					""
+                					)
+                				).build()
                             )
                         );
                     }

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
-
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.service.BattlelogService;
 

@@ -269,7 +269,7 @@
   <string name="info_xml_platoons">Čety</string>
   <string name="info_xml_no_platoons">Nejste připojení k žádné četě.</string>
   <string name="info_xml_rank2">dokud nedostanete další ocenění</string>
-  <string name="info_xml_no_unlocks">Nenalezena žádná odemknutí.</string>
+  
   <string name="info_xml_back">Zpět</string>
   <string name="info_xml_reload">Obnovit</string>
   <string name="info_xml_logout">Odhlásit</string>
@@ -455,7 +455,7 @@
   <string name="info_forum_report_true">Příspěvek byl nahlášen.</string>
   <string name="info_forum_report_false">Tento příspěvek nemohl být nahlášen.</string>
   <string name="info_forum_search_label">Hledání</string>
-  <string name="info_forum_search_hint">Hledat...</string>
+  
   <string name="info_forum_report_reason">Proč chcete tento příspěvek nahlásit?</string>
   <string name="info_forum_report_label">Nahlásit příspěvek</string>
   <string name="label_report">Nahlásot</string>

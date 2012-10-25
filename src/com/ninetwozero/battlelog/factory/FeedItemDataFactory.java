@@ -1,11 +1,6 @@
 package com.ninetwozero.battlelog.factory;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.ParsedFeedItemData;
@@ -13,6 +8,9 @@ import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class FeedItemDataFactory {
 
@@ -160,8 +158,6 @@ public class FeedItemDataFactory {
 	private static ParsedFeedItemData generateFromSharedGameEvent(
 			Context context, JSONObject jsonObject, ProfileData profile)
 			throws JSONException {
-
-		// Init
 		String generatedTitle;
 		String shareType = jsonObject.getString("eventName");
 		JSONObject eventData = jsonObject.getJSONObject(shareType);
@@ -171,15 +167,12 @@ public class FeedItemDataFactory {
 		/* TODO: EXPORT TO SMALLER METHODS */
 		if (stats == null) {
 			generatedTitle = PublicUtils.createStringWithData(context,
-					R.string.info_p_shared_rank, profile.getUsername(),
-					DataBank.getRankTitle(eventData.getString("nameSID")),
-					eventData.getString("rank"));
-
+				R.string.info_p_shared_rank, profile.getUsername(),
+				DataBank.getRankTitle(eventData.getString("nameSID")),
+				eventData.getString("rank")
+			);
 		} else {
-
 			for (int counter = 0, maxCounter = stats.length(); counter < maxCounter; counter++) {
-
-				// Let's get the item
 				JSONObject tempSubItem = stats.optJSONObject(counter);
 
 				// Append
@@ -191,12 +184,9 @@ public class FeedItemDataFactory {
 				if (counter > 0) {
 					if (counter == (maxCounter - 1)) {
 						title.append(" </b>and<b> ");
-
 					} else {
 						title.append(", ");
-
 					}
-
 				}
 
 				// Let's see
@@ -208,7 +198,6 @@ public class FeedItemDataFactory {
 				} else {
 					title.append(DataBank.getAttachmentTitle(key));
 				}
-
 			}
 
 			// Set the things straight
@@ -232,101 +221,86 @@ public class FeedItemDataFactory {
 				}
 			}
 
-			generatedTitle = PublicUtils
-					.createStringWithData(context, stringResource,
-							profile.getUsername(), title.append("</b>"));
+			generatedTitle = PublicUtils.createStringWithData(
+				context, 
+				stringResource,
+				profile.getUsername(), title.append("</b>")
+			);
 		}
-
-		return new ParsedFeedItemData(generatedTitle, "", new ProfileData[] {
-				profile, null });
+		return new ParsedFeedItemData(generatedTitle, "", new ProfileData[] {profile, null });
 	}
 
-	private static ParsedFeedItemData generateFromNewForumPost(Context context,
-			JSONObject currItem, ProfileData profile) throws JSONException {
-
-		return new ParsedFeedItemData(PublicUtils.createStringWithData(context,
-				R.string.info_p_forumthread, profile.getUsername(),
-				currItem.getString(THREAD_TITLE)),
-				currItem.getString(POST_BODY), new ProfileData[] {
-
-				profile, null
-
-				});
-	}
-
-	private static ParsedFeedItemData generateFromUnlockedExpansion(
-			Context context, JSONObject currItem, ProfileData profile)
-			throws JSONException {
-
+	private static ParsedFeedItemData generateFromNewForumPost(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
 		return new ParsedFeedItemData(
+			PublicUtils.createStringWithData(
+				context,
+				R.string.info_p_forumpost, 
+				profile.getUsername(),
+				currItem.getString(THREAD_TITLE)
+			),
+			currItem.getString(POST_BODY), 
+			new ProfileData[] {profile, null}
+		);
+	}
 
-		PublicUtils.createStringWithData(context, R.string.info_p_gameaccess,
+	private static ParsedFeedItemData generateFromUnlockedExpansion(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
+		return new ParsedFeedItemData(
+			PublicUtils.createStringWithData(
+				context, 
+				R.string.info_p_gameaccess,
 				profile.getUsername(),
 				DataBank.getExpansionTitle(currItem.getInt(EXPANSION)),
-				DataBank.getGameFromId(currItem.getInt("game"))), "",
-				new ProfileData[] {
-
-				profile, null
-
-				});
+				DataBank.getGameFromId(currItem.getInt("game"))
+			), 
+			"",
+			new ProfileData[] { profile, null }
+		);
 	}
 
-	private static ParsedFeedItemData generateFromCommentOnBlog(
-			Context context, JSONObject currItem, ProfileData profile)
-			throws JSONException {
+	private static ParsedFeedItemData generateFromCommentOnBlog(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
 		return new ParsedFeedItemData(
-
-		PublicUtils.createStringWithData(context, R.string.info_p_blog_comment,
-				profile.getUsername(), currItem.getString(BLOG_TITLE)),
-				currItem.getString(BLOG_COMMENT_BODY), new ProfileData[] {
-
-				profile, null
-
-				});
+			PublicUtils.createStringWithData(
+				context, 
+				R.string.info_p_blog_comment,
+				profile.getUsername(), 
+				currItem.getString(BLOG_TITLE)
+			),
+			currItem.getString(BLOG_COMMENT_BODY), 
+			new ProfileData[] {profile, null}
+		);
 
 	}
 
-	private static ParsedFeedItemData generateFromCommentOnGameReport(
-			Context context, JSONObject currItem, ProfileData profile)
-			throws JSONException {
+	private static ParsedFeedItemData generateFromCommentOnGameReport(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
 		return new ParsedFeedItemData(
-
-		PublicUtils.createStringWithData(context,
-				R.string.info_p_greport_comment, profile.getUsername(),
+			PublicUtils.createStringWithData(
+				context,
+				R.string.info_p_greport_comment, 
+				profile.getUsername(),
 				currItem.getString(SERVER_NAME),
 				DataBank.getMapTitle(currItem.getString(MAP)),
-				DataBank.getGameModeFromId(currItem.getInt(GAME_MODE))),
-				currItem.getString(GAME_REPORT_COMMENT), new ProfileData[] {
-
-				profile, null
-
-				});
-
+				DataBank.getGameModeFromId(currItem.getInt(GAME_MODE))
+			),
+			currItem.getString(GAME_REPORT_COMMENT), new ProfileData[] {profile, null}
+		);
 	}
 
-	private static ParsedFeedItemData generateFromCompletingAssignment(
-			Context context, JSONObject currItem, ProfileData profile)
-			throws JSONException {
-
-		JSONObject statsItem = currItem.getJSONArray(STAT_ITEMS).getJSONObject(
-				0);
-		Object[] tempInfo = DataBank.getAssignmentTitle(statsItem
-				.getString(NAME_SID));
-
+	private static ParsedFeedItemData generateFromCompletingAssignment(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
+		JSONObject statsItem = currItem.getJSONArray(STAT_ITEMS).getJSONObject(0);
+		Object[] tempInfo = DataBank.getAssignmentTitle(statsItem.getString(NAME_SID));
 		return new ParsedFeedItemData(
-
-		PublicUtils.createStringWithData(context,
-				R.string.info_txt_assignment_ok, profile.getUsername(),
-				tempInfo), "", new ProfileData[] {
-
-		profile, null
-
-		});
-
+			PublicUtils.createStringWithData(
+				context,
+				R.string.info_txt_assignment_ok, 
+				profile.getUsername(),
+				tempInfo
+			), 
+			"", 
+			new ProfileData[] {profile, null}
+		);
 	}
 
-	private static ParsedFeedItemData generateFromAward(Context context,
-			JSONObject currItem, ProfileData profile) throws JSONException {
+	private static ParsedFeedItemData generateFromAward(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
 		JSONArray stats = currItem.optJSONArray(STAT_ITEMS);
 		StringBuilder title = new StringBuilder();
 
@@ -341,57 +315,33 @@ public class FeedItemDataFactory {
 
 			// Do we need to append anything?
 			if (counter > 0) {
-
 				if (counter == (maxCounter - 1)) {
-
 					title.append("</b> and <b>");
-
 				} else {
-
 					title.append(", ");
-
 				}
-
 			}
-
-			// Weapon? Attachment?
 			title.append(DataBank.getAwardTitle(tempKey));
-
 		}
 
 		// Set the title
 		String generatedTitle;
 		if (stats.length() > 1) {
-
 			generatedTitle = PublicUtils.createStringWithData(context,
 					R.string.info_p_awards, profile.getUsername(),
 					title.append("</b>"));
-
 		} else {
-
 			generatedTitle = PublicUtils.createStringWithData(context,
 					R.string.info_p_award, profile.getUsername(),
 					title.append("</b>"));
-
 		}
-		return new ParsedFeedItemData(
-
-		generatedTitle, "", new ProfileData[] {
-
-		profile, null
-
-		});
-
+		return new ParsedFeedItemData(generatedTitle, "", new ProfileData[] {profile, null});
 	}
 
-	private static ParsedFeedItemData generateFromGameReport(Context context,
-			JSONObject currItem, ProfileData profile) throws JSONException {
-
-		// Init
+	private static ParsedFeedItemData generateFromGameReport(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
 		JSONArray stats = currItem.optJSONArray(STAT_ITEMS);
 		StringBuilder title = new StringBuilder();
 
-		/* TODO: EXPORT TO SMALLER METHODS */
 		for (int counter = 0, maxCounter = stats.length(); counter < maxCounter; counter++) {
 
 			// Let's get the item
@@ -405,54 +355,32 @@ public class FeedItemDataFactory {
 
 			// Do we need to append anything?
 			if (counter > 0) {
-
 				if (counter == (maxCounter - 1)) {
-
 					title.append(" </b>and<b> ");
-
 				} else {
-
 					title.append(", ");
-
 				}
-
 			}
-
 			title.append(getTitleFromUnlock(context, tempSubItem));
-
 		}
 
 		// Set the things straight
 		String generatedTitle;
 		if (stats.length() > 1) {
-
 			generatedTitle = PublicUtils.createStringWithData(context,
 					R.string.info_p_newunlocks, profile.getUsername(),
 					title.append("</b>"));
-
 		} else {
-
 			generatedTitle = PublicUtils.createStringWithData(context,
 					R.string.info_p_newunlock, profile.getUsername(),
 					title.append("</b>"));
-
 		}
-		return new ParsedFeedItemData(
-
-		generatedTitle, "", new ProfileData[] {
-
-		profile, null
-
-		});
-
+		return new ParsedFeedItemData(generatedTitle, "", new ProfileData[] {profile, null});
 	}
 
-	private static String getTitleFromUnlock(Context context, JSONObject unlock)
-			throws JSONException {
+	private static String getTitleFromUnlock(Context context, JSONObject unlock) throws JSONException {
 
 		StringBuffer title = new StringBuffer();
-
-		// Weapon? Attachment?
 		if (!unlock.isNull(PARENT_NAME_SID)) {
 
 			// Let's see
@@ -461,33 +389,20 @@ public class FeedItemDataFactory {
 
 			// Is it empty?
 			if (!parentKey.equals(tempKey)) {
-
 				title.append(tempKey)
-						.append(" ")
-						.append(DataBank.getAttachmentTitle(unlock
-								.getString(NAME_SID)));
+					.append(" ")
+					.append(DataBank.getAttachmentTitle(unlock.getString(NAME_SID)));
 
 			} else {
-
-				// Grab a vehicle title then
 				tempKey = DataBank.getVehicleTitle(parentKey);
-
-				// Validate
 				if (!parentKey.equals(tempKey)) {
-
 					title.append(tempKey)
-							.append(" ")
-							.append(DataBank.getVehicleUpgradeTitle(unlock
-									.getString(NAME_SID)));
-
+						.append(" ")
+						.append(DataBank.getVehicleUpgradeTitle(unlock.getString(NAME_SID)));
 				} else {
-
 					title.append(tempKey);
-
 				}
-
 			}
-
 		} else {
 
 			// Let's see
@@ -495,247 +410,211 @@ public class FeedItemDataFactory {
 			String guid = unlock.getString("guid");
 
 			if (key.startsWith("ID_P_ANAME_")) {
-
 				title.append(DataBank.getAttachmentTitle(key));
-
 			} else if (key.startsWith("ID_P_WNAME_")) {
-
 				title.append(DataBank.getWeaponTitle(context, guid));
-
 			} else if (key.startsWith("ID_P_VUNAME_")) {
-
 				title.append(DataBank.getVehicleUpgradeTitle(key));
-
 			} else if (key.startsWith("ID_P_SNAME")) {
-
 				title.append(DataBank.getSkillTitle(key));
-
 			} else {
-
 				title.append(DataBank.getKitTitle(key));
-
 			}
-
 		}
 		return title.toString();
 	}
 
-	private static ParsedFeedItemData generateFromLeavingPlatoon(
-			Context context, JSONObject currItem, ProfileData profile)
-			throws JSONException {
+	private static ParsedFeedItemData generateFromLeavingPlatoon(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
 		JSONObject platoonObject = currItem.getJSONObject(PLATOON_BF3);
 		return new ParsedFeedItemData(
-
-		PublicUtils.createStringWithData(context, R.string.info_p_platoon_left,
-				profile.getUsername(), platoonObject.getString(NAME)), "",
-				new ProfileData[] {
-
-				profile, null
-
-				});
+			PublicUtils.createStringWithData(
+				context, 
+				R.string.info_p_platoon_left,
+				profile.getUsername(), 
+				platoonObject.getString(NAME)
+			), 
+			"",
+			new ProfileData[] {profile, null}
+		);
 
 	}
 
-	private static ParsedFeedItemData generateFromGettingKickedFromPlatoon(
-			Context context, JSONObject currItem, ProfileData profile)
-			throws JSONException {
-
+	private static ParsedFeedItemData generateFromGettingKickedFromPlatoon(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
 		JSONObject platoonObject = currItem.getJSONObject(PLATOON_BF3);
 		return new ParsedFeedItemData(
-
-		PublicUtils.createStringWithData(context, R.string.info_p_platoon_kick,
-				profile.getUsername(), platoonObject.getString(NAME)), "",
-				new ProfileData[] {
-
-				profile, null
-
-				});
-
+			PublicUtils.createStringWithData(
+				context, 
+				R.string.info_p_platoon_kick,
+				profile.getUsername(), 
+				platoonObject.getString(NAME)
+			), 
+			"",
+			new ProfileData[] {profile, null}
+		);
 	}
 
-	private static ParsedFeedItemData generateFromJoiningPlatoon(
-			Context context, JSONObject currItem, ProfileData profile)
-			throws JSONException {
-		JSONObject platoonObject = currItem.getJSONObject(currItem
-				.isNull(PLATOON_MOH) ? PLATOON_BF3 : PLATOON_MOH);
-		return new ParsedFeedItemData(PublicUtils.createStringWithData(context,
-				R.string.info_p_platoon_join, profile.getUsername(),
-				platoonObject.getString(NAME)), "", new ProfileData[] {
-				profile, null });
+	private static ParsedFeedItemData generateFromJoiningPlatoon(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
+		JSONObject platoonObject = currItem.getJSONObject(currItem.isNull(PLATOON_MOH) ? PLATOON_BF3 : PLATOON_MOH);
+		return new ParsedFeedItemData(
+			PublicUtils.createStringWithData(
+				context,
+				R.string.info_p_platoon_join, 
+				profile.getUsername(),
+				platoonObject.getString(NAME)
+			), 
+			"", 
+			new ProfileData[] {profile, null }
+		);
 	}
 
-	private static ParsedFeedItemData generateFromNewPlatoonEmblem(
-			Context context, JSONObject currItem, ProfileData profile)
-			throws JSONException {
+	private static ParsedFeedItemData generateFromNewPlatoonEmblem(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
 		JSONObject platoonObject = currItem.getJSONObject(PLATOON_BF3);
 		return new ParsedFeedItemData(
-
-		PublicUtils.createStringWithData(context,
-				R.string.info_p_platoon_badge, profile.getUsername(),
-				platoonObject.getString(NAME)), "", new ProfileData[] {
-
-		profile, null
-
-		});
-
+			PublicUtils.createStringWithData(
+				context,
+				R.string.info_p_platoon_badge, 
+				profile.getUsername(),
+				platoonObject.getString(NAME)
+			), 
+			"", 
+			new ProfileData[] {profile, null}
+		);
 	}
 
-	private static ParsedFeedItemData generateFromCreatingNewPlatoon(
-			Context context, JSONObject currItem, ProfileData profile)
-			throws JSONException {
-
-		JSONObject platoonObject = currItem.getJSONObject(PLATOON_BF3);
+	private static ParsedFeedItemData generateFromCreatingNewPlatoon(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
+		JSONObject platoonObject = currItem.getJSONObject(currItem.isNull(PLATOON_MOH) ? PLATOON_BF3 : PLATOON_MOH);
 		return new ParsedFeedItemData(
-
-		PublicUtils.createStringWithData(context,
-				R.string.info_p_platoon_create, profile.getUsername(),
-				platoonObject.getString(NAME)), "", new ProfileData[] {
-
-		profile, null
-
-		});
-
+			PublicUtils.createStringWithData(
+				context,
+				R.string.info_p_platoon_create, 
+				profile.getUsername(),
+				platoonObject.getString(NAME)
+			), 
+			"", 
+			new ProfileData[] {profile, null}
+		);
 	}
 
-	private static ParsedFeedItemData generateFromCompletingLevel(
-			Context context, JSONObject currItem, ProfileData profile)
-			throws JSONException {
+	private static ParsedFeedItemData generateFromCompletingLevel(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
 		JSONObject friendObject = currItem.getJSONObject(FRIEND);
 		ProfileData profile2 = new ProfileData.Builder(
 				Long.parseLong(friendObject.getString(USER_ID)),
 				friendObject.getString(USERNAME)).gravatarHash(
 				friendObject.getString(GRAVATAR_MD_5)).build();
-
 		return new ParsedFeedItemData(
-
-		PublicUtils.createStringWithData(context,
-				R.string.info_p_coop_level_comp, profile.getUsername(),
+			PublicUtils.createStringWithData(
+				context,
+				R.string.info_p_coop_level_comp, 
+				profile.getUsername(),
 				profile2.getUsername(),
 				DataBank.getCoopLevelTitle(currItem.getString(LEVEL)),
-				currItem.getString(DIFFICULTY)), "", new ProfileData[] {
-
-		profile, profile2
-
-		});
-
+				currItem.getString(DIFFICULTY)
+			), 
+			"", 
+			new ProfileData[] {profile, profile2}
+		);
 	}
 
-	private static ParsedFeedItemData generateFromReachingNewRank(
-			Context context, JSONObject currItem, ProfileData profile)
-			throws JSONException {
-		return new ParsedFeedItemData(PublicUtils.createStringWithData(context,
-				R.string.info_p_promotion, profile.getUsername(),
-				DataBank.getRankTitle(currItem.getString(NAME_SID)),
-				currItem.getString(RANK)), "", new ProfileData[] {
-
-		profile, null
-
-		});
-
-	}
-
-	private static ParsedFeedItemData generateFromFavoritingServer(
-			Context context, JSONObject currItem, ProfileData profile)
-			throws JSONException {
+	private static ParsedFeedItemData generateFromReachingNewRank(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
 		return new ParsedFeedItemData(
-
-		PublicUtils.createStringWithData(context, R.string.info_p_favserver,
-				profile.getUsername(), currItem.getString(SERVER_NAME)), "",
-				new ProfileData[] {
-
-				profile, null
-
-				});
-
+			PublicUtils.createStringWithData(
+				context,
+				R.string.info_p_promotion, 
+				profile.getUsername(),
+				DataBank.getRankTitle(currItem.getString(NAME_SID)),
+				currItem.getString(RANK)
+			), 
+			"", 
+			new ProfileData[] {profile, null}
+		);
 	}
 
-	private static ParsedFeedItemData generateFromPlatoonPost(Context context,
-			JSONObject currItem, ProfileData profile) throws JSONException {
+	private static ParsedFeedItemData generateFromFavoritingServer(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
+		return new ParsedFeedItemData(
+			PublicUtils.createStringWithData(
+				context, 
+				R.string.info_p_favserver,
+				profile.getUsername(), 
+				currItem.getString(SERVER_NAME)
+			), 
+			"",
+			new ProfileData[] {profile, null}
+		);
+	}
+
+	private static ParsedFeedItemData generateFromPlatoonPost(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
 		JSONObject platoonObject = currItem.getJSONObject(PLATOON_BF3);
 		return new ParsedFeedItemData(
-
-		PublicUtils.createStringWithData(context, R.string.info_p_platoon_feed,
-				profile.getUsername(), platoonObject.getString(NAME)),
-				currItem.getString(WALL_BODY), new ProfileData[] {
-
-				profile, null
-
-				});
-
+			PublicUtils.createStringWithData(
+				context, 
+				R.string.info_p_platoon_feed,
+				profile.getUsername(), 
+				platoonObject.getString(NAME)
+			),
+			currItem.getString(WALL_BODY), 
+			new ProfileData[] {profile, null}
+		);
 	}
 
-	private static ParsedFeedItemData generateFromWallPost(Context context,
-			JSONObject currItem, ProfileData profile2) throws JSONException {
-
-		// Let's get it!
+	private static ParsedFeedItemData generateFromWallPost(Context context, JSONObject currItem, ProfileData profile2) throws JSONException {
+		// Let's get the other user
 		JSONObject otherUserObject = currItem.getJSONObject(WRITER_USER);
-
-		// Set the other profile
 		ProfileData profile1 = new ProfileData.Builder(
 				Long.parseLong(otherUserObject.getString(USER_ID)),
 				otherUserObject.getString(USERNAME)).gravatarHash(
 				otherUserObject.getString(GRAVATAR_MD_5)).build();
-
+		
 		return new ParsedFeedItemData(
-
-		PublicUtils.createStringWithData(context, R.string.info_p_got_wallpost,
-				profile1.getUsername(), profile2.getUsername(),
-				currItem.getString(WALL_BODY)), "", new ProfileData[] {
-
-		profile1, profile2 });
-
+			PublicUtils.createStringWithData(
+				context, 
+				R.string.info_p_got_wallpost,
+				profile1.getUsername(), 
+				profile2.getUsername(),
+				currItem.getString(WALL_BODY)
+			), 
+			"", 
+			new ProfileData[] {profile1, profile2 }
+		);
 	}
 
-	private static ParsedFeedItemData generateFromNewThread(Context context,
-			JSONObject currItem, ProfileData profile) throws JSONException {
-
+	private static ParsedFeedItemData generateFromNewThread(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
 		return new ParsedFeedItemData(
-
-		PublicUtils.createStringWithData(context, R.string.info_p_forumthread,
-				profile.getUsername(), currItem.getString(THREAD_TITLE)),
-				currItem.getString(THREAD_BODY), new ProfileData[] {
-
-				profile, null
-
-				});
-
+			PublicUtils.createStringWithData(
+				context, 
+				R.string.info_p_forumthread,
+				profile.getUsername(), 
+				currItem.getString(THREAD_TITLE)
+			),
+			currItem.getString(THREAD_BODY), 
+			new ProfileData[] {profile, null}
+		);
 	}
 
-	private static ParsedFeedItemData generateFromNewFriend(Context context,
-			JSONObject currItem, ProfileData profile) throws JSONException {
-
+	private static ParsedFeedItemData generateFromNewFriend(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
+		// Get the friend
 		JSONObject friendUser = currItem.getJSONObject(FRIEND_USER);
-
-		// Set the first profile
 		ProfileData profile2 = new ProfileData.Builder(
 				Long.parseLong(friendUser.getString(USER_ID)),
 				friendUser.getString(USERNAME)).gravatarHash(
 				friendUser.getString(GRAVATAR_MD_5)).build();
 
-		// Get the title
 		return new ParsedFeedItemData(
-
-		PublicUtils.createStringWithData(context, R.string.info_p_friendship,
-				profile.getUsername(), profile2.getUsername()), "",
-				new ProfileData[] {
-
-				profile, profile2
-
-				});
-
+			PublicUtils.createStringWithData(
+				context, 
+				R.string.info_p_friendship,
+				profile.getUsername(), 
+				profile2.getUsername()
+			), 
+			"",
+			new ProfileData[] {profile, profile2}
+		);
 	}
 
-	private static ParsedFeedItemData generateFromNewStatus(
-			JSONObject currItem, ProfileData profile) throws JSONException {
+	private static ParsedFeedItemData generateFromNewStatus(JSONObject currItem, ProfileData profile) throws JSONException {
 		return new ParsedFeedItemData(
-
-		"<b>" + profile.getUsername() + "</b> "
-				+ currItem.getString("statusMessage"), "", new ProfileData[] {
-
-		profile, null
-
-		});
-
+			"<b>" + profile.getUsername() + "</b> " + currItem.getString("statusMessage"), 
+			"", 
+			new ProfileData[] {profile, null}
+		);
 	}
-
 }
