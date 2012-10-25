@@ -28,14 +28,15 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:scaleType="centerInside"
-        android:src="@drawable/w_xp1_famas"/>
+        android:src="@drawable/w_xp1_famas"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/text_title"
         style="@style/InfoHeading"
         android:layout_below="@id/image_item"
         android:padding="5dp"
-        android:text="FAMAS"/>
+        android:text=""/>
 
     <TextView
         android:id="@+id/text_desc"
@@ -43,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/text_title"
         android:padding="5dp"
-        android:text="M40A3 is a neat gun. I can&apos;t quite remember if it&apos;s actually in BF3, but atleast I&apos;ve seen it in Call of Duty: Modern Warfare."/>
+        android:text=""/>
 
     <TextView
         android:id="@+id/string_specs"
@@ -68,7 +69,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/string_specs"
         android:padding="5dp"
-        android:text="@string/general_no"/>
+        android:text=""/>
 
     <TextView
         android:id="@+id/string_rate_single"
@@ -86,7 +87,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/string_rate_full"
         android:padding="5dp"
-        android:text="@string/general_yes"/>
+        android:text=""/>
 
     <TextView
         android:id="@+id/string_rate_burst"
@@ -104,7 +105,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/text_rate_single"
         android:padding="5dp"
-        android:text="@string/general_yes"/>
+        android:text=""/>
 
     <TextView
         android:id="@+id/string_rate_num"
@@ -122,7 +123,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/text_rate_burst"
         android:padding="5dp"
-        android:text="200"/>
+        android:text=""/>
 
     <TextView
         android:id="@+id/string_ammo"
@@ -140,7 +141,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/text_rate_num"
         android:padding="5dp"
-        android:text="20 [7.62x51mm NATO]"/>
+        android:text=""/>
 
     <TextView
         android:id="@+id/string_range"
@@ -158,7 +159,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/text_ammo"
         android:padding="5dp"
-        android:text="@string/info_weapon_range_short"/>
+        android:text=""/>
   </RelativeLayout>
 
 </ScrollView>

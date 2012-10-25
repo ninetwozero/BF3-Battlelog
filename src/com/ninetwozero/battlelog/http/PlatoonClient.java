@@ -14,6 +14,17 @@
 
 package com.ninetwozero.battlelog.http;
 
+import android.content.Context;
+import android.preference.PreferenceManager;
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatype.*;
+import com.ninetwozero.battlelog.misc.CacheHandler;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.PublicUtils;
+import org.apache.http.HttpEntity;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,30 +32,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.http.HttpEntity;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.content.Context;
-import android.preference.PreferenceManager;
-
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
-import com.ninetwozero.battlelog.datatype.PersonaData;
-import com.ninetwozero.battlelog.datatype.PlatoonData;
-import com.ninetwozero.battlelog.datatype.PlatoonInformation;
-import com.ninetwozero.battlelog.datatype.PlatoonStats;
-import com.ninetwozero.battlelog.datatype.PlatoonStatsItem;
-import com.ninetwozero.battlelog.datatype.PlatoonTopStatsItem;
-import com.ninetwozero.battlelog.datatype.ProfileComparator;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.RequestHandlerException;
-import com.ninetwozero.battlelog.datatype.TopStatsComparator;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.CacheHandler;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class PlatoonClient extends DefaultClient {
 
@@ -1370,68 +1357,39 @@ public class PlatoonClient extends DefaultClient {
             Context context, String keyword, String checksum
 
     ) throws WebsiteHandlerException {
-
-        // Init
         List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
-
         try {
-
-            // Get the content
             String httpContent = new RequestHandler().post(
-
                     URL_SEARCH,
                     RequestHandler.generatePostData(
-
                             FIELD_NAMES_SEARCH,
                             keyword,
                             checksum
-
                     ),
-                    RequestHandler.HEADER_NORMAL
-
+                    RequestHandler.HEADER_JSON
             );
-            // Did we manage?
             if (!"".equals(httpContent)) {
-
-                // Generate an object
                 JSONArray searchResultsPlatoon = new JSONArray(httpContent);
-
-                // Did we get any results?
                 if (searchResultsPlatoon.length() > 0) {
-
-                    // Iterate baby!
                     for (int i = 0, max = searchResultsPlatoon.length(); i < max; i++) {
 
                         // Get the JSONObject
-                        JSONObject tempObj = searchResultsPlatoon
-                                .optJSONObject(i);
-                        final String filename = tempObj.getString("id")
-                                + ".jpeg";
-
-                        // Add it to the ArrayList
+                        JSONObject tempObj = searchResultsPlatoon.optJSONObject(i);
+                        final String filename = tempObj.getString("id") + ".jpeg";
                         results.add(
-
-                                new GeneralSearchResult(
-
-                                        new PlatoonData(
-
-                                                Long.parseLong(tempObj.getString("id")), tempObj
-                                                .getInt("fanCounter"), tempObj
-                                                .getInt("memberCounter"), tempObj
-                                                .getInt("platform"), tempObj
-                                                .getString("name"),
-                                                tempObj.getString("tag"), filename, true
-
-                                        )
-
+                            new GeneralSearchResult(
+                                new PlatoonData(
+                                        Long.parseLong(tempObj.getString("id")), tempObj
+                                        .getInt("fanCounter"), tempObj
+                                        .getInt("memberCounter"), tempObj
+                                        .getInt("platform"), tempObj
+                                        .getString("name"),
+                                        tempObj.getString("tag"), filename, true
                                 )
-
+                           )
                         );
-
                     }
-
                 }
-
             }
 
         } catch (Exception ex) {

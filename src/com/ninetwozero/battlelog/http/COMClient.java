@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.ChatMessage;
@@ -73,20 +74,16 @@ public class COMClient extends DefaultClient {
 				RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
 				RequestHandler.HEADER_NORMAL
 			);
-
-			// Did we manage?
+			
 			if ("".equals(httpContent)) {
 				throw new WebsiteHandlerException("Could not get the chat.");
 			} else {
-
-				// Get the messages
 				JSONObject tempObject;
 				JSONObject chatObject = new JSONObject(httpContent).getJSONObject("data").getJSONObject("chat");
 				JSONArray messages = chatObject.getJSONArray("messages");
 
 				mChatId = Long.parseLong(chatObject.getString("chatId"));
 				
-				// Get the messages
 				for (int i = 0, max = messages.length(); i < max; i++) {
 					tempObject = messages.optJSONObject(i);
 					messageArray.add(
@@ -104,12 +101,14 @@ public class COMClient extends DefaultClient {
 		}
 	}
 
-	public boolean sendMessage(String message)
-			throws WebsiteHandlerException {
+	public boolean sendMessage(String message) throws WebsiteHandlerException {
 		try {
-			String httpContent = mRequestHandler.post(URL_SEND, RequestHandler
-					.generatePostData(FIELD_NAMES_CHAT, message, mChatId, ""),
-					RequestHandler.HEADER_AJAX);
+			String httpContent = mRequestHandler.post(
+				URL_SEND, 
+				RequestHandler.generatePostData(FIELD_NAMES_CHAT, message, mChatId, mChecksum),
+				RequestHandler.HEADER_AJAX
+			);
+			Log.d(Constants.DEBUG_TAG, "httpContent => " + httpContent);
 			return (!"".equals(httpContent));
 		} catch (RequestHandlerException ex) {
 			throw new WebsiteHandlerException(ex.getMessage());
@@ -119,186 +118,116 @@ public class COMClient extends DefaultClient {
 	public static boolean closeChat(long chatId) throws WebsiteHandlerException {
 		try {
 			new RequestHandler().get(
-					RequestHandler.generateUrl(URL_CLOSE, chatId),
-					RequestHandler.HEADER_AJAX);
+				RequestHandler.generateUrl(URL_CLOSE, chatId),
+				RequestHandler.HEADER_AJAX);
 			return true;
 		} catch (RequestHandlerException ex) {
 			throw new WebsiteHandlerException(ex.getMessage());
 		}
 	}
 
-	public final FriendListDataWrapper getFriendsForCOM(final Context c)
-			throws WebsiteHandlerException {
-
+	public final FriendListDataWrapper getFriendsForCOM(final Context c) throws WebsiteHandlerException {
 		try {
-			String httpContent = mRequestHandler.post(URL_FRIENDS,
-					RequestHandler.generatePostData(
-							Constants.FIELD_NAMES_CHECKSUM, mChecksum),
-					RequestHandler.HEADER_NORMAL);
+			String httpContent = mRequestHandler.post(
+				URL_FRIENDS,
+				RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
+				RequestHandler.HEADER_NORMAL
+			);
 
-			// Did we manage?
 			if ("".equals(httpContent)) {
-				throw new WebsiteHandlerException(
-						"Could not retrieve the ProfileIDs.");
+				throw new WebsiteHandlerException("Could not retrieve the ProfileIDs.");
 			} else {
+				JSONObject comData = new JSONObject(httpContent).getJSONObject("data");
+				JSONArray friendsObject = comData.getJSONArray("friendscomcenter");
+				JSONArray requestsObject = comData.getJSONArray("friendrequests");
+				JSONObject tempObj;
+				JSONObject presenceObj;
 
-				// Generate an object
-				JSONObject comData = new JSONObject(httpContent)
-						.getJSONObject("data");
-				JSONArray friendsObject = comData
-						.getJSONArray("friendscomcenter");
-				JSONArray requestsObject = comData
-						.getJSONArray("friendrequests");
-				JSONObject tempObj, presenceObj;
-
-				// Arraylists!
 				List<ProfileData> friends = new ArrayList<ProfileData>();
 				List<ProfileData> profileRowRequests = new ArrayList<ProfileData>();
 				List<ProfileData> profileRowPlaying = new ArrayList<ProfileData>();
 				List<ProfileData> profileRowOnline = new ArrayList<ProfileData>();
 				List<ProfileData> profileRowOffline = new ArrayList<ProfileData>();
 
-				// Grab the lengths
 				int numRequests = requestsObject.length();
 				int numFriends = friendsObject.length();
 				int numPlaying = 0;
 				int numOnline = 0;
 				int numOffline = 0;
 
-				// Got requests?
 				if (numRequests > 0) {
-
-					// Temp
 					ProfileData tempProfileData;
-
-					// Iterate baby!
 					for (int i = 0, max = requestsObject.length(); i < max; i++) {
-
-						// Grab the object
 						tempObj = requestsObject.optJSONObject(i);
-
-						// Save it
 						profileRowRequests.add(
-
-						tempProfileData = new ProfileData.Builder(
-
-						Long.parseLong(tempObj.getString("userId")), tempObj
-								.getString("username")
-
-						).gravatarHash(
-
-						tempObj.optString("gravatarMd5", "")
-
-						).build()
-
+							tempProfileData = new ProfileData.Builder(
+								Long.parseLong(tempObj.getString("userId")), tempObj.getString("username")
+							).gravatarHash(tempObj.optString("gravatarMd5", "")).build()
 						);
-
 						tempProfileData.setFriend(false);
-
 					}
 
-					// Sort it out
-					Collections.sort(profileRowRequests,
-							new ProfileComparator());
-					friends.add(new ProfileData(c
-							.getString(R.string.info_xml_friend_requests)));
+					Collections.sort(profileRowRequests, new ProfileComparator());
+					friends.add(new ProfileData(c.getString(R.string.info_xml_friend_requests)));
 					friends.addAll(profileRowRequests);
-
 				}
 
-				// Do we have more than... well, at least one friend?
 				if (numFriends > 0) {
-
-					// Iterate baby!
 					for (int i = 0; i < numFriends; i++) {
-
-						// Grab the object
 						tempObj = friendsObject.optJSONObject(i);
 						presenceObj = tempObj.getJSONObject("presence");
 
-						// Save it
 						ProfileData tempProfile = new ProfileData.Builder(
-								Long.parseLong(tempObj.getString("userId")),
-								tempObj.getString("username"))
-								.gravatarHash(
-										tempObj.optString("gravatarMd5", ""))
-								.isOnline(presenceObj.getBoolean("isOnline"))
-								.isPlaying(presenceObj.getBoolean("isPlaying"))
-								.isFriend(true).build();
+							Long.parseLong(tempObj.getString("userId")),
+							tempObj.getString("username")
+						).gravatarHash(tempObj.optString("gravatarMd5", ""))
+						 .isOnline(presenceObj.getBoolean("isOnline"))
+						 .isPlaying(presenceObj.getBoolean("isPlaying"))
+						 .isFriend(true)
+						 .build();
 
 						if (tempProfile.isPlaying()) {
-
 							profileRowPlaying.add(tempProfile);
-
 						} else if (tempProfile.isOnline()) {
-
 							profileRowOnline.add(tempProfile);
-
 						} else {
-
 							profileRowOffline.add(tempProfile);
-
 						}
-
 					}
 
-					// How many "online" friends do we have? Playing + idle
 					numPlaying = profileRowPlaying.size();
 					numOnline = profileRowOnline.size();
 					numOffline = profileRowOffline.size();
 
-					// First add the separators)...
 					if (numPlaying > 0) {
-
-						Collections.sort(profileRowPlaying,
-								new ProfileComparator());
-						friends.add(new ProfileData(c
-								.getString(R.string.info_txt_friends_playing)));
+						Collections.sort(profileRowPlaying, new ProfileComparator());
+						friends.add(new ProfileData(c.getString(R.string.info_txt_friends_playing)));
 						friends.addAll(profileRowPlaying);
 					}
 
 					if (numOnline > 0) {
-
-						// ...then we sort it out...
-						Collections.sort(profileRowOnline,
-								new ProfileComparator());
-						friends.add(new ProfileData(c
-								.getString(R.string.info_txt_friends_online)));
+						Collections.sort(profileRowOnline, new ProfileComparator());
+						friends.add(new ProfileData(c.getString(R.string.info_txt_friends_online)));
 						friends.addAll(profileRowOnline);
 					}
 
 					if (numOffline > 0) {
-
-						Collections.sort(profileRowOffline,
-								new ProfileComparator());
-						friends.add(new ProfileData(c
-								.getString(R.string.info_txt_friends_offline)));
+						Collections.sort(profileRowOffline,	new ProfileComparator());
+						friends.add(new ProfileData(c.getString(R.string.info_txt_friends_offline)));
 						friends.addAll(profileRowOffline);
 					}
 				}
-
-				return new FriendListDataWrapper(friends, numRequests,
-						numPlaying, numOnline, numOffline);
-
+				return new FriendListDataWrapper(friends, numRequests, numPlaying, numOnline, numOffline);
 			}
-
 		} catch (JSONException e) {
-
 			throw new WebsiteHandlerException(e.getMessage());
-
 		} catch (RequestHandlerException ex) {
-
 			throw new WebsiteHandlerException(ex.getMessage());
-
 		}
-
 	}
 
-	public final List<ProfileData> getFriends(long profileId, boolean noOffline)
-			throws WebsiteHandlerException {
-
+	public final List<ProfileData> getFriends(long profileId, boolean noOffline) throws WebsiteHandlerException {
 		try {
-
 			List<ProfileData> profileArray = new ArrayList<ProfileData>();
 			String httpContent = mRequestHandler.post(
 				URL_FRIENDS, 
@@ -309,195 +238,109 @@ public class COMClient extends DefaultClient {
 				RequestHandler.HEADER_NORMAL
 			);
 
-			// Did we manage?
 			if ("".equals(httpContent)) {
-				throw new WebsiteHandlerException(
-						"Could not retrieve the ProfileIDs.");
+				throw new WebsiteHandlerException("Could not retrieve the ProfileIDs.");
 			} else {
-
-				// Generate an object
-				JSONArray profileObject = new JSONObject(httpContent)
-						.getJSONObject("data").getJSONArray("friendscomcenter");
+				JSONArray profileObject = new JSONObject(httpContent).getJSONObject("data").getJSONArray("friendscomcenter");
 				JSONObject tempObj;
 
-				// Iterate baby!
 				for (int i = 0, max = profileObject.length(); i < max; i++) {
-
-					// Grab the object
 					tempObj = profileObject.optJSONObject(i);
 
-					// Only online friends?
-					if (noOffline
-							&& !tempObj.getJSONObject("presence").getBoolean(
-									"isOnline")) {
+					if (noOffline && !tempObj.getJSONObject("presence").getBoolean("isOnline")) {
 						continue;
 					}
 
-					// Save it
 					profileArray.add(
-
-					new ProfileData.Builder(
-
-					Long.parseLong(tempObj.getString("userId")), tempObj
-							.getString("username")
-
-					).gravatarHash(tempObj.optString("gravatarMd5", ""))
-							.build()
-
+						new ProfileData.Builder(
+							Long.parseLong(tempObj.getString("userId")), 
+							tempObj.getString("username")
+						).gravatarHash(tempObj.optString("gravatarMd5", "")).build()
 					);
 				}
-
 				return profileArray;
-
 			}
-
 		} catch (JSONException e) {
-
 			throw new WebsiteHandlerException(e.getMessage());
-
 		} catch (RequestHandlerException ex) {
-
 			throw new WebsiteHandlerException(ex.getMessage());
-
 		}
-
 	}
 
-	public boolean answerFriendRequest(long profileId, Boolean accepting)
-			throws WebsiteHandlerException {
-
+	public boolean answerFriendRequest(long profileId, Boolean accepting) throws WebsiteHandlerException {
 		try {
-
-			String url = accepting ? Constants.URL_FRIEND_ACCEPT
-					: Constants.URL_FRIEND_DECLINE;
+			String url = accepting ? Constants.URL_FRIEND_ACCEPT : Constants.URL_FRIEND_DECLINE;
 			String httpContent = mRequestHandler.post(
-
-			RequestHandler.generateUrl(url, profileId),
-					RequestHandler.generatePostData(
-							Constants.FIELD_NAMES_CHECKSUM, mChecksum),
-					RequestHandler.HEADER_NORMAL
-
+				RequestHandler.generateUrl(url, profileId),
+				RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
+				RequestHandler.HEADER_NORMAL
 			);
-
-			// Did we manage?
 			return !"".equals(httpContent);
-
 		} catch (RequestHandlerException ex) {
-
 			throw new WebsiteHandlerException(ex.getMessage());
-
 		}
-
 	}
 
-	public boolean sendFriendRequest(long profileId)
-			throws WebsiteHandlerException {
-
+	public boolean sendFriendRequest(long profileId) throws WebsiteHandlerException {
 		try {
-
 			String httpContent = mRequestHandler.post(
-
-			RequestHandler.generateUrl(URL_FRIEND_REQUESTS, profileId),
-					RequestHandler.generatePostData(
-							Constants.FIELD_NAMES_CHECKSUM, mChecksum),
-					RequestHandler.HEADER_AJAX
-
+				RequestHandler.generateUrl(URL_FRIEND_REQUESTS, profileId),
+				RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, mChecksum),
+				RequestHandler.HEADER_AJAX
 			);
-
-			// Did we manage?
 			return (httpContent != null);
-
 		} catch (Exception ex) {
-
 			ex.printStackTrace();
 			throw new WebsiteHandlerException(ex.getMessage());
-
 		}
-
 	}
 
 	public boolean removeFriend(long profileId) throws WebsiteHandlerException {
-
 		try {
-
 			String httpContent = mRequestHandler.get(
-
-			RequestHandler.generateUrl(URL_FRIEND_DELETE, profileId),
-					RequestHandler.HEADER_AJAX
-
+				RequestHandler.generateUrl(URL_FRIEND_DELETE, profileId),
+				RequestHandler.HEADER_AJAX
 			);
-
-			// Did we manage?
 			return (httpContent != null);
-
 		} catch (Exception ex) {
-
 			ex.printStackTrace();
 			throw new WebsiteHandlerException(ex.getMessage());
-
 		}
-
 	}
 
 	public boolean updateStatus(String content) {
-
 		try {
-
 			String httpContent = mRequestHandler.post(
-
-			URL_STATUS, RequestHandler.generatePostData(
-
-			FIELD_NAMES_STATUS, content, mChecksum, ""
-
-			), RequestHandler.HEADER_NORMAL
-
+				URL_STATUS, 
+				RequestHandler.generatePostData(
+					FIELD_NAMES_STATUS, content, mChecksum, ""
+				), 
+				RequestHandler.HEADER_NORMAL
 			);
 
-			// Did we manage?
 			if (httpContent != null && !httpContent.equals("")) {
-
-				// Set the int
-				int startPosition = httpContent
-						.indexOf(Constants.ELEMENT_STATUS_OK);
-
-				// Did we find it?
+				int startPosition = httpContent.indexOf(Constants.ELEMENT_STATUS_OK);
 				return (startPosition > -1);
-
 			}
-
 			return false;
-
 		} catch (Exception ex) {
-
 			ex.printStackTrace();
 			return false;
-
 		}
-
 	}
+	
 	/* TODO FIXME */
 	public static boolean setActive() throws WebsiteHandlerException {
-
 		try {
-
-			// Let's see
-			String httpContent = new RequestHandler().get(URL_SETACTIVE,
-					RequestHandler.HEADER_AJAX);
+			String httpContent = new RequestHandler().get(URL_SETACTIVE, RequestHandler.HEADER_AJAX);
 			JSONObject httpResponse = new JSONObject(httpContent);
-
-			// Is it ok?
 			return (httpResponse.optString("message", "FAIL").equals("OK"));
 
 		} catch (RequestHandlerException ex) {
-
 			throw new WebsiteHandlerException(ex.getMessage());
-
 		} catch (Exception ex) {
-
 			ex.printStackTrace();
 			return false;
-
 		}
-
 	}
 }

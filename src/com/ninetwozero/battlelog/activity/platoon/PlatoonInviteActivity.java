@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.platoon;
 
-import java.util.List;
-
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -25,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ListView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.PlatoonInviteListAdapter;
 import com.ninetwozero.battlelog.asynctask.AsyncPlatoonMemberInvite;
@@ -33,6 +30,8 @@ import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
+
+import java.util.List;
 
 public class PlatoonInviteActivity extends ListActivity {
 
@@ -80,7 +79,7 @@ public class PlatoonInviteActivity extends ListActivity {
         PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.platoon_invite_view);
+        setContentView(R.layout.activity_platoon_invite);
 
         // Let's see
         initLayout();

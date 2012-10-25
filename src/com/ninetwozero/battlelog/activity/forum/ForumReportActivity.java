@@ -28,7 +28,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.http.ForumClient;
 import com.ninetwozero.battlelog.http.RequestHandler;
@@ -69,7 +68,7 @@ public class ForumReportActivity extends Activity {
         PublicUtils.setupLocale(this, mSharedPreferences);
 
         // Set the content view
-        setContentView(R.layout.forum_report_view);
+        setContentView(R.layout.activity_forum_report);
 
         // Get the elements
         mButtonReport = (Button) findViewById(R.id.button_report);

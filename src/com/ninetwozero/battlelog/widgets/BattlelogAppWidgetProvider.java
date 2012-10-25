@@ -26,7 +26,6 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.widget.RemoteViews;
-
 import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FriendListDataWrapper;

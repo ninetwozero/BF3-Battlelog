@@ -57,64 +57,41 @@ public class SearchActivity extends ListActivity {
 
     @Override
     public void onCreate(final Bundle icicle) {
-
-        // onCreate - save the instance state
         super.onCreate(icicle);
 
-        // Set sharedPreferences
+        mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        PublicUtils.restoreCookies(this, icicle);
 
-        // Setup the important stuff
+        PublicUtils.restoreCookies(this, icicle);
         PublicUtils.setupFullscreen(this, mSharedPreferences);
         PublicUtils.setupLocale(this, mSharedPreferences);
+        
+	setContentView(R.layout.activity_search);
 
-        // Set the content view
-        setContentView(R.layout.search_view);
-
-        // Prepare to tango
-        mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // Get the elements
         mButtonSearch = (Button) findViewById(R.id.button_search);
         mFieldSearch = (EditText) findViewById(R.id.field_search);
 
-        // Threads!
         mSearchResults = new ArrayList<GeneralSearchResult>();
         setupList(mSearchResults);
     }
 
     public void setupList(List<GeneralSearchResult> results) {
-
-        // Do we have it?
         if (mListView == null) {
-
-            // Get the ListView
             mListView = getListView();
             mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-
         }
 
-        // Does it have an adapter?
         if (mListView.getAdapter() == null) {
-
             mListView.setAdapter(new SearchDataAdapter(results, mLayoutInflater));
-
         } else {
-
             ((SearchDataAdapter) mListView.getAdapter()).setItemArray(results);
-
         }
-
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-                RequestHandler.getCookies());
-
+        outState.putParcelableArrayList(Constants.SUPER_COOKIES, RequestHandler.getCookies());
     }
 
     @Override
@@ -124,40 +101,28 @@ public class SearchActivity extends ListActivity {
 
     public void onClick(View v) {
 
-        // Send?
         if (v.getId() == R.id.button_search) {
 
-            // Send it!
             new AsyncForumSearch(this).execute(
-                    mFieldSearch.getText().toString(),
-                    mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
-
+                mFieldSearch.getText().toString(),
+                mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
+            );
         }
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_basic, menu);
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        // Let's act!
         if (item.getItemId() == R.id.option_back) {
-
             ((Activity) this).finish();
-
         }
-
-        // Return true yo
         return true;
-
     }
 
     public class AsyncForumSearch extends AsyncTask<String, Void, Boolean> {
@@ -172,63 +137,40 @@ public class SearchActivity extends ListActivity {
 
         @Override
         protected void onPreExecute() {
-
             if (context instanceof SearchActivity) {
-
                 ((SearchActivity) context).toggleSearchButton();
-
             }
-
         }
 
         @Override
         protected Boolean doInBackground(String... arg0) {
-
             try {
-
                 mSearchResults = WebsiteClient.search(context, arg0[0], arg0[1]);
-                return true;
-
+                return mSearchResults != null;
             } catch (Exception ex) {
-
                 ex.printStackTrace();
                 return false;
-
             }
-
         }
 
         @Override
         protected void onPostExecute(Boolean results) {
-
-            // Let's evaluate
             if (results) {
-
                 if (context instanceof SearchActivity) {
-
                     ((SearchActivity) context).setupList(mSearchResults);
                     ((SearchActivity) context).toggleSearchButton();
-
                 }
-
             } else {
-
                 if (context instanceof SearchActivity) {
-
                     ((SearchActivity) context).toggleSearchButton();
-
                 }
                 Toast.makeText(context, R.string.info_xml_generic_error,
                         Toast.LENGTH_SHORT).show();
-
             }
-
         }
-
     }
 
     public void toggleSearchButton() {
-
         mButtonSearch.setEnabled(!mButtonSearch.isEnabled());
 
         // Update the text
@@ -237,44 +179,26 @@ public class SearchActivity extends ListActivity {
         } else {
             mButtonSearch.setText(R.string.label_search_ongoing);
         }
-
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int p, long id) {
-
-        // Init
         Intent intent = null;
         GeneralSearchResult result = (GeneralSearchResult) v.getTag();
 
         // Build the intent
         if (result.hasProfileData()) {
-
-            intent = new Intent(this, ProfileActivity.class).putExtra("profile",
-                    result.getProfileData());
-
+            intent = new Intent(this, ProfileActivity.class).putExtra("profile", result.getProfileData());
         } else {
-
-            intent = new Intent(this, PlatoonActivity.class).putExtra("platoon",
-                    result.getPlatoonData());
+            intent = new Intent(this, PlatoonActivity.class).putExtra("platoon", result.getPlatoonData());
         }
-
-        // Start the activity
         startActivity(intent);
-
     }
 
     @Override
     public void onResume() {
-
         super.onResume();
-
-        // Setup the locale
         PublicUtils.setupLocale(this, mSharedPreferences);
-
-        // Setup the session
         PublicUtils.setupSession(this, mSharedPreferences);
-
     }
-
 }
