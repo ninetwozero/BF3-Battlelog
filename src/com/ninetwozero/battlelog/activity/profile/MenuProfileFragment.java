@@ -69,7 +69,6 @@ public class MenuProfileFragment extends Fragment implements /*DefaultFragment*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Set our attributes
         mContext = getActivity();
         mSharedPreferences = PreferenceManager
@@ -81,9 +80,7 @@ public class MenuProfileFragment extends Fragment implements /*DefaultFragment*/
                 R.layout.tab_content_dashboard_profile, container, false);
 
         initFragment(view);
-
         return view;
-
     }
 
     public void initFragment(View view) {
@@ -94,19 +91,15 @@ public class MenuProfileFragment extends Fragment implements /*DefaultFragment*/
         // Set up the Persona box
         mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
         mWrapPersona.setOnClickListener(
-
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        FragmentManager manager = getFragmentManager();
-                        ListDialogFragment dialog = ListDialogFragment.newInstance(
-                                personasToMap(), getTag());
-                        dialog.show(manager, DIALOG);
-                    }
-
+            new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager manager = getFragmentManager();
+                    ListDialogFragment dialog = ListDialogFragment.newInstance(
+                            personasToMap(), getTag());
+                    dialog.show(manager, DIALOG);
                 }
-
+            }
         );
         mImagePersona = (ImageView) mWrapPersona
                 .findViewById(R.id.image_persona);

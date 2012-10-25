@@ -482,7 +482,7 @@ public class FeedItemDataFactory {
 	}
 
 	private static ParsedFeedItemData generateFromCreatingNewPlatoon(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
-		JSONObject platoonObject = currItem.getJSONObject(PLATOON_BF3);
+		JSONObject platoonObject = currItem.getJSONObject(currItem.isNull(PLATOON_MOH) ? PLATOON_BF3 : PLATOON_MOH);
 		return new ParsedFeedItemData(
 			PublicUtils.createStringWithData(
 				context,

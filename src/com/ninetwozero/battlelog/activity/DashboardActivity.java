@@ -76,12 +76,10 @@ public class DashboardActivity extends CustomFragmentActivity implements
     public void onCreate(final Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.viewpager_dashboard);
-
-        // Set sharedPreferences
+        
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         validateSession();
 
-        // Setup the fragments & init the COM & feed
         setup();
         init();
     }
@@ -156,13 +154,12 @@ public class DashboardActivity extends CustomFragmentActivity implements
     }
 
     public void validateSession() {
-
-        // We should've gotten a profile
         if (SessionKeeper.getProfileData() == null) {
             if (getIntent().hasExtra("myProfile")) {
+
                 ProfileData profileData = getIntent().getParcelableExtra("myProfile");
                 List<PlatoonData> platoonArray = getIntent().getParcelableArrayListExtra("myPlatoon");
-
+                
                 SessionKeeper.setProfileData(profileData);
                 SessionKeeper.setPlatoonData(platoonArray);
             } else {
@@ -208,7 +205,6 @@ public class DashboardActivity extends CustomFragmentActivity implements
             e.printStackTrace();
             return false;
         }
-
         if (mSlidingDrawer.isOpened()) {
             switch (mViewPagerCom.getCurrentItem()) {
                 case 0:
@@ -237,7 +233,9 @@ public class DashboardActivity extends CustomFragmentActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.option_settings) {
+        if(item.getItemId() == R.id.option_search) {
+        	startActivity(new Intent(this, SearchActivity.class) );
+        } else if (item.getItemId() == R.id.option_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             finish();
         } else if(item.getItemId() == R.id.option_feedback) {
