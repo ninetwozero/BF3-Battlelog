@@ -47,52 +47,31 @@ public class CustomFragmentActivity extends FragmentActivity {
 
     @Override
     public void onCreate(final Bundle icicle) {
-
-        // onCreate - save the instance state
         super.onCreate(icicle);
-
-        // Set sharedPreferences
-        mSharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        // Should we display a title bar?
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         PublicUtils.setupFullscreen(this, mSharedPreferences);
         PublicUtils.restoreCookies(this, icicle);
-
-        // Setup the locale
         PublicUtils.setupLocale(this, mSharedPreferences);
-
-        // Get the layoutInflater
         mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mFragmentManager = getSupportFragmentManager();
-
     }
 
     @Override
     public void onResume() {
-
         super.onResume();
-
-        // Setup the locale
         PublicUtils.setupLocale(this, mSharedPreferences);
-
-        // Setup the session
         PublicUtils.setupSession(this, mSharedPreferences);
-
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-
         super.onConfigurationChanged(newConfig);
-
     }
 
     /* @see http://stackoverflow.com/a/9021487 */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-                RequestHandler.getCookies());
+        outState.putParcelableArrayList(Constants.SUPER_COOKIES, RequestHandler.getCookies());
     }
 }
