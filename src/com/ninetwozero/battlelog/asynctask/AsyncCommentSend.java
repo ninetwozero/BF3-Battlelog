@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.DefaultActivity;
+import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.http.CommentClient;
 import com.ninetwozero.battlelog.misc.Constants;
 
@@ -34,62 +35,41 @@ public class AsyncCommentSend extends AsyncTask<String, Integer, Boolean> {
 
     // Constructor
     public AsyncCommentSend(Context c, long pId, int t, Button b) {
-
         context = c;
         postId = pId;
         type = t;
         buttonSend = b;
-
     }
 
     @Override
     protected void onPreExecute() {
-
-        // Set the button
         buttonSend.setEnabled(false);
         buttonSend.setText(R.string.label_wait);
-
     }
 
     @Override
     protected Boolean doInBackground(String... arg0) {
-
         try {
-
-            // Did we manage?
             return (new CommentClient(postId, type).post(arg0[0], arg0[1]));
-
         } catch (Exception ex) {
-
-            Log.e(Constants.DEBUG_TAG, "", ex);
+            ex.printStackTrace();
             return false;
-
         }
-
     }
 
     @Override
     protected void onPostExecute(Boolean results) {
-
-        // Reload
-        if (context instanceof DefaultActivity) {
-
-            ((DefaultActivity) context).reload();
-
+        if (context instanceof DefaultFragmentActivity) {
+            ((DefaultFragmentActivity) context).reload();
         }
 
-        // Set the button
         buttonSend.setEnabled(true);
         buttonSend.setText(R.string.label_send);
 
         if (results) {
-            Toast.makeText(context, R.string.msg_comment_ok,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.msg_comment_ok, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(context, R.string.msg_comment_fail,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.msg_comment_fail, Toast.LENGTH_SHORT).show();
         }
-
     }
-
 }

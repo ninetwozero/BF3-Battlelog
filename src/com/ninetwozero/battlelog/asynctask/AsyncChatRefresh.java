@@ -60,21 +60,13 @@ public class AsyncChatRefresh extends AsyncTask<COMClient, Integer, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean results) {
-
-        // How did go?
         if (results) {
-
-            // Set the almighty adapter
-            ((ChatListAdapter) mListView.getAdapter())
-                    .setMessages(mChat.getMessages());
-
-            // Do we need to ploop?
+            ((ChatListAdapter) mListView.getAdapter()).setMessages(mChat.getMessages());
             if (mContext instanceof ChatActivity) {
                 ((ChatActivity) mContext).notifyNewPost(mChat.getMessages());
             }
         } else {
-            Toast.makeText(mContext, R.string.msg_chat_norefresh,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.msg_chat_norefresh, Toast.LENGTH_SHORT).show();
         }
     }
 }

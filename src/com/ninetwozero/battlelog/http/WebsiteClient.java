@@ -14,16 +14,22 @@
 
 package com.ninetwozero.battlelog.http;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import com.ninetwozero.battlelog.datatype.*;
-import com.ninetwozero.battlelog.misc.Constants;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+
+import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
+import com.ninetwozero.battlelog.datatype.NewsData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.SearchComparator;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.Constants;
 
 /* 
  * Methods of this class should be loaded in AsyncTasks, as they would probably lock up the GUI
@@ -32,141 +38,109 @@ import java.util.List;
 public class WebsiteClient extends DefaultClient {
 
     public WebsiteClient() {
-
         mRequestHandler = new RequestHandler();
-
     }
 
-    public Bitmap downloadGravatarToBitmap(String hash, int size)
-            throws WebsiteHandlerException {
-
+    public Bitmap downloadGravatarToBitmap(String hash, int size) throws WebsiteHandlerException {
         try {
-
-            // Any size requirements? Otherwise we just pick the standard number
             return new RequestHandler().getImageFromStream(
+                RequestHandler.generateUrl(
+                        Constants.URL_GRAVATAR,
+                        hash,
+                        ((size > 0) ? size : Constants.DEFAULT_AVATAR_SIZE),
+                        Constants.DEFAULT_AVATAR_SIZE
 
-                    RequestHandler.generateUrl(
-                            Constants.URL_GRAVATAR,
-                            hash,
-                            ((size > 0) ? size : Constants.DEFAULT_AVATAR_SIZE),
-                            Constants.DEFAULT_AVATAR_SIZE
-
-                    ),
-                    true
-
+                ),
+                true
             );
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
-    public static List<GeneralSearchResult> search(Context c, String k, String ch)
-            throws WebsiteHandlerException {
-
+    public static List<GeneralSearchResult> search(Context c, String k, String ch) throws WebsiteHandlerException {
         try {
-
-            // Get the results
             List<GeneralSearchResult> results = ProfileClient.search(c, k, ch);
             results.addAll(PlatoonClient.search(c, k, ch));
-
-            // Sort & return
+            
             Collections.sort(results, new SearchComparator());
             return results;
-
         } catch (WebsiteHandlerException ex) {
-
             throw ex;
-
         }
     }
 
     public List<NewsData> getNewsForPage(int p) throws WebsiteHandlerException {
-
         try {
-
-            // Init!
             List<NewsData> news = new ArrayList<NewsData>();
-
-            // Iterate!
             for (int i = 0, max = 2; i < max; i++) {
-
-                // Let's see
                 int num = (10 * p);
                 if (i == 1) {
-
                     num += 5;
-
                 }
 
-                // Get the data
                 String httpContent = mRequestHandler.get(
-
-                        RequestHandler.generateUrl(Constants.URL_NEWS, num),
-                        RequestHandler.HEADER_AJAX
-
+                    RequestHandler.generateUrl(Constants.URL_NEWS, num),
+                    RequestHandler.HEADER_AJAX
                 );
-
-                // Did we get something?
+                
                 if (httpContent != null && !httpContent.equals("")) {
-
-                    // JSON!
-                    JSONArray baseArray = new JSONObject(httpContent).getJSONObject("context")
-                            .getJSONArray("blogPosts");
-
-                    // Iterate
+                    JSONArray baseArray = new JSONObject(httpContent).getJSONObject("context").getJSONArray("blogPosts");
                     for (int count = 0, maxCount = baseArray.length(); count < maxCount; count++) {
-
-                        // Get the current item
                         JSONObject item = baseArray.getJSONObject(count);
                         JSONObject user = item.getJSONObject("user");
-
-                        // Handle the data
                         news.add(
-
-                                new NewsData(
-
-                                        Long.parseLong(item.getString("id")),
-                                        item.getLong("creationDate"),
-                                        item.getInt("devblogCommentCount"),
-                                        item.getString("title"),
-                                        item.getString("body"),
-                                        new ProfileData.Builder(
-
-                                                Long.parseLong(user.getString("userId")),
-                                                user.getString("username")
-
-                                        ).gravatarHash(
-
-                                                user.getString("gravatarMd5")
-
-                                        ).build()
-
-                                )
-
+                            new NewsData(
+                                Long.parseLong(item.getString("id")),
+                                item.getLong("creationDate"),
+                                item.getInt("devblogCommentCount"),
+                                item.getString("title"),
+                                new JSONObject(item.getString("json")).getString("excerpt"),
+                                new ProfileData.Builder(
+                                        Long.parseLong(user.getString("userId")),
+                                        user.getString("username")
+                                ).gravatarHash(
+                                        user.getString("gravatarMd5")
+                                ).build()
+                            )
                         );
-
                     }
-
                 }
-
             }
-
             return news;
-
-        } catch (RequestHandlerException ex) {
-
-            throw new WebsiteHandlerException(ex.getMessage());
-
         } catch (Exception ex) {
-
             throw new WebsiteHandlerException(ex.getMessage());
         }
-
     }
 
+	public NewsData getNewsFromId(long id) throws WebsiteHandlerException {
+        try {
+            String httpContent = mRequestHandler.get(
+                RequestHandler.generateUrl(Constants.URL_NEWS_SINGLE, id),
+                RequestHandler.HEADER_AJAX
+            );
+                
+            if (httpContent != null && !httpContent.equals("")) {
+                JSONObject item = new JSONObject(httpContent).getJSONObject("context").getJSONObject("blogPost");
+                JSONObject user = item.getJSONObject("user");
+                return new NewsData(
+                    Long.parseLong(item.getString("id")),
+                    item.getLong("creationDate"),
+                    item.getInt("devblogCommentCount"),
+                    item.getString("title"),
+                    new JSONObject(item.getString("json")).getString("content"),
+                    new ProfileData.Builder(
+                            Long.parseLong(user.getString("userId")),
+                            user.getString("username")
+                    ).gravatarHash(
+                            user.getString("gravatarMd5")
+                    ).build()
+                );
+            }
+            return null;
+        } catch (Exception ex) {
+            throw new WebsiteHandlerException(ex.getMessage());
+        }
+    }
 }

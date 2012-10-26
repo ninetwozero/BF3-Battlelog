@@ -41,6 +41,7 @@ public final class Constants {
 
     // News
     public static final String URL_NEWS = Constants.URL_MAIN + "news/{COUNT}/";
+    public static final String URL_NEWS_SINGLE = Constants.URL_MAIN + "news/view/{NID}";
 
     // Fields needed for the posts fields
     public static final String[] FIELD_NAMES_LOGIN = new String[]{
