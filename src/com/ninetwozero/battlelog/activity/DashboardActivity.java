@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -53,7 +52,6 @@ import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.http.FeedClient;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 
 public class DashboardActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
@@ -81,7 +79,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         validateSession();
-
+        
         init();
         setup();
         handleIfOpenedViaNotification();
@@ -160,11 +158,10 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
     public void validateSession() {
         if (SessionKeeper.getProfileData() == null) {
             if (getIntent().hasExtra("myProfile")) {
+
                 ProfileData profileData = getIntent().getParcelableExtra("myProfile");
                 List<PlatoonData> platoonArray = getIntent().getParcelableArrayListExtra("myPlatoon");
-                Log.d(Constants.DEBUG_TAG, "profileData => " + profileData);
-                Log.d(Constants.DEBUG_TAG, "platoonData => " + platoonArray);
-                
+
                 if( profileData == null || platoonArray == null ) {
                     startActivity(new Intent(this, MainActivity.class));
                 	finish();
@@ -216,7 +213,6 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             e.printStackTrace();
             return false;
         }
-
         if (mSlidingDrawer.isOpened()) {
             switch (mViewPagerCom.getCurrentItem()) {
                 case 0:
@@ -245,7 +241,9 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.option_settings) {
+        if(item.getItemId() == R.id.option_search) {
+        	startActivity(new Intent(this, SearchActivity.class) );
+        } else if (item.getItemId() == R.id.option_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             finish();
         } else if(item.getItemId() == R.id.option_feedback) {
