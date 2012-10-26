@@ -139,13 +139,9 @@ public class FeedItemDataFactory {
 				break;
 
 			default:
-				throw new WebsiteHandlerException("Unknown event: "
-						+ currItem.getString("event"));
+				throw new WebsiteHandlerException("Unknown event: " + currItem.getString("event"));
 			}
-
-		} catch (WebsiteHandlerException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return feedItemData;
@@ -343,17 +339,12 @@ public class FeedItemDataFactory {
 		StringBuilder title = new StringBuilder();
 
 		for (int counter = 0, maxCounter = stats.length(); counter < maxCounter; counter++) {
-
-			// Let's get the item
-			String tempKey;
 			JSONObject tempSubItem = stats.optJSONObject(counter);
 
-			// Append
 			if (title.length() == 0) {
 				title.append("<b>");
 			}
 
-			// Do we need to append anything?
 			if (counter > 0) {
 				if (counter == (maxCounter - 1)) {
 					title.append(" </b>and<b> ");
@@ -557,7 +548,6 @@ public class FeedItemDataFactory {
 	}
 
 	private static ParsedFeedItemData generateFromWallPost(Context context, JSONObject currItem, ProfileData profile2) throws JSONException {
-		// Let's get the other user
 		JSONObject otherUserObject = currItem.getJSONObject(WRITER_USER);
 		ProfileData profile1 = new ProfileData.Builder(
 				Long.parseLong(otherUserObject.getString(USER_ID)),
@@ -572,7 +562,8 @@ public class FeedItemDataFactory {
 				profile2.getUsername(),
 				currItem.getString(WALL_BODY)
 			), 
-			"", 
+			"",
+			profile1.getGravatarHash(),
 			new ProfileData[] {profile1, profile2 }
 		);
 	}
