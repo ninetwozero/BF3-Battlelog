@@ -23,5 +23,4 @@ classes
 reports
 
 # Credentials
-res\values\credentials.xml
 res/values/credentials.xml
