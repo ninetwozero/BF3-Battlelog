@@ -39,44 +39,31 @@ public class ProfileClient extends DefaultClient {
 
     // URLS
     public static final String URL_INFO = Constants.URL_MAIN + "user/{UNAME}/";
-    public static final String URL_SETTINGS = Constants.URL_MAIN
-            + "profile/edit/";
-    public static final String URL_SETTINGS_EDIT = Constants.URL_MAIN
-            + "profile/update/";
-    public static final String URL_OVERVIEW = Constants.URL_MAIN
-            + "overviewPopulateStats/{PID}/None/{PLATFORM_ID}/";
-    public static final String URL_WEAPONS = Constants.URL_MAIN
-            + "weaponsPopulateStats/{PID}/{PLATFORM_ID}/";
-    public static final String URL_WEAPONS_INFO = Constants.URL_MAIN
-            + "statsitemPopulateStats/iteminfo/{PNAME}/{PID}/{SLUG}/{PLATFORM_ID}/";
-    public static final String URL_VEHICLES = Constants.URL_MAIN
-            + "vehiclesPopulateStats/{PID}/{PLATFORM_ID}/";
-    public static final String URL_AWARDS = Constants.URL_MAIN
-            + "awardsPopulateStats/{PID}/{PLATFORM_ID}/";
-    public static final String URL_UNLOCKS = Constants.URL_MAIN
-            + "upcomingUnlocksPopulateStats/{PID}/{PLATFORM_ID}/";
-    public static final String URL_DOGTAGS = Constants.URL_MAIN
-            + "soldier/dogtagsPopulateStats/{PID}/{UID}/{PLATFORM_ID}/";
-    public static final String URL_ASSIGNMENTS = Constants.URL_MAIN
-            + "soldier/missionsPopulateStats/{PNAME}/{PID}/{UID}/{PLATFORM_ID}/";
-    public static final String URL_ALL = Constants.URL_MAIN
-            + "indexstats/{PID}/{PLATFORM_NAME}/";
-    public static final String URL_SEARCH = Constants.URL_MAIN
-            + "search/getMatches/";
-    public static final String URL_PROFILE = Constants.URL_MAIN
-            + "user/overviewBoxStats/{UID}/";
+    public static final String URL_SETTINGS = Constants.URL_MAIN + "profile/edit/";
+    public static final String URL_SETTINGS_EDIT = Constants.URL_MAIN + "profile/update/";
+    public static final String URL_OVERVIEW = Constants.URL_MAIN + "overviewPopulateStats/{PID}/None/{PLATFORM_ID}/";
+    public static final String URL_WEAPONS = Constants.URL_MAIN + "weaponsPopulateStats/{PID}/{PLATFORM_ID}/";
+    public static final String URL_WEAPONS_INFO = Constants.URL_MAIN + "statsitemPopulateStats/iteminfo/{PNAME}/{PID}/{SLUG}/{PLATFORM_ID}/";
+    public static final String URL_VEHICLES = Constants.URL_MAIN + "vehiclesPopulateStats/{PID}/{PLATFORM_ID}/";
+    public static final String URL_AWARDS = Constants.URL_MAIN + "awardsPopulateStats/{PID}/{PLATFORM_ID}/";
+    public static final String URL_UNLOCKS = Constants.URL_MAIN + "upcomingUnlocksPopulateStats/{PID}/{PLATFORM_ID}/";
+    public static final String URL_DOGTAGS = Constants.URL_MAIN + "soldier/dogtagsPopulateStats/{PID}/{UID}/{PLATFORM_ID}/";
+    public static final String URL_ASSIGNMENTS = Constants.URL_MAIN + "soldier/missionsPopulateStats/{PNAME}/{PID}/{UID}/{PLATFORM_ID}/";
+    public static final String URL_ALL = Constants.URL_MAIN + "indexstats/{PID}/{PLATFORM_NAME}/";
+    public static final String URL_SEARCH = Constants.URL_MAIN + "search/getMatches/";
+    public static final String URL_PROFILE = Constants.URL_MAIN + "user/overviewBoxStats/{UID}/";
 
     // Constants
     public static final String[] FIELD_NAMES_SETTINGS = new String[]{
-            "profile-edit-gravatar", "profile-edit-personaId[]",
-            "profile-edit-picture[]", "profile-edit-clantag[]",
-            "profile-edit-clantag-games[]", "profile-edit-name",
-            "profile-edit-presentation", "profile-edit-birthyear",
-            "profile-edit-birthmonth", "profile-edit-birthday",
-            "profile-edit-location", "profile-edit-dateformat",
-            "profile-edit-ampm", "profile-edit-utcoffset",
-            "profile-edit-hidedetails", "profile-edit-inactivatefeed",
-            "profile-edit-allowfriendrequests", "post-check-sum"
+        "profile-edit-gravatar", "profile-edit-personaId[]",
+        "profile-edit-picture[]", "profile-edit-clantag[]",
+        "profile-edit-clantag-games[]", "profile-edit-name",
+        "profile-edit-presentation", "profile-edit-birthyear",
+        "profile-edit-birthmonth", "profile-edit-birthday",
+        "profile-edit-location", "profile-edit-dateformat",
+        "profile-edit-ampm", "profile-edit-utcoffset",
+        "profile-edit-hidedetails", "profile-edit-inactivatefeed",
+        "profile-edit-allowfriendrequests", "post-check-sum"
     };
 
     public static final String[] FIELD_NAMES_SEARCH = new String[]{"name", "post-check-sum"};
@@ -100,7 +87,6 @@ public class ProfileClient extends DefaultClient {
             } else {
                 JSONArray searchResults = new JSONObject(httpContent).getJSONObject("data").getJSONArray("matches");
                 if (searchResults.length() > 0) {
-
                     int costOld = 999, costCurrent = 0;
                     for (int i = 0, max = searchResults.length(); i < max; i++) {
                         JSONObject tempObj = searchResults.optJSONObject(i);
@@ -226,7 +212,7 @@ public class ProfileClient extends DefaultClient {
             JSONObject nextRankInfo = dataObject.getJSONObject("rankNeeded");
             JSONObject currRankInfo = dataObject.getJSONObject("currentRankNeeded");
 
-        return new PersonaStats(
+            return new PersonaStats(
                 mProfileData.getUsername(), 
                 mProfileData.getPersona(0).getName(),
                 currRankInfo.getString("name"),
@@ -268,9 +254,8 @@ public class ProfileClient extends DefaultClient {
     }
 
     public HashMap<Long, PersonaStats> getStats(final Context context) throws WebsiteHandlerException {
-        try {
-        	HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
-
+    	HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
+    	try {
             if (mProfileData.getNumPersonas() == 0) {
                 mProfileData = resolveFullProfileDataFromProfileId(mProfileData.getId());
             }
@@ -309,7 +294,6 @@ public class ProfileClient extends DefaultClient {
                 vehicleUpgradeArray = new ArrayList<UnlockData>();
                 skillArray = new ArrayList<UnlockData>();
                 unlockArray = new ArrayList<UnlockData>();
-
 
                 String content = mRequestHandler.get(
                     RequestHandler.generateUrl(
@@ -375,7 +359,6 @@ public class ProfileClient extends DefaultClient {
                         unlockArray
                     )
         		);
-
             }
             return unlockDataMap;
         } catch (Exception ex) {
@@ -445,14 +428,11 @@ public class ProfileClient extends DefaultClient {
                 JSONObject statusMessage = profileCommonObject.optJSONObject("userStatusMessage");
                 JSONObject currItem;
                 String playingOn;
-                
 Log.d(Constants.DEBUG_TAG, "platoonArray => " + platoonArray.toString());
-
                 int numSoldiers = soldierArray.length();
                 int numPlatoons = platoonArray.length();
 
                 PersonaData[] personaArray = new PersonaData[numSoldiers];
-
                 String username = profileCommonObject.getJSONObject("user").getString("username");
 
                 if (statusMessage == null) {
@@ -479,12 +459,13 @@ Log.d(Constants.DEBUG_TAG, "platoonArray => " + platoonArray.toString());
 
                 for (int i = 0; i < numPlatoons; i++) {
                     currItem = platoonArray.getJSONObject(i);
-
                     String title = currItem.getString("id") + ".jpeg";
                     if (!CacheHandler.isCached(context, title)) {
                         PlatoonClient.cacheBadge(
-                                context, currItem.getString("badgePath"), title,
-                                Constants.DEFAULT_BADGE_SIZE
+                            context, 
+                            currItem.getString("badgePath"), 
+                            title,
+                            Constants.DEFAULT_BADGE_SIZE
                         );
                     }
 
@@ -532,36 +513,21 @@ Log.d(Constants.DEBUG_TAG, "platoonArray => " + platoonArray.toString());
         }
     }
 
-    //
     public static List<GeneralSearchResult> search(Context context, String keyword, String checksum) throws WebsiteHandlerException {
-        // Init
         List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
         try {
-            // Get the content
             String httpContent = new RequestHandler().post(
                 URL_SEARCH, 
                 RequestHandler.generatePostData(FIELD_NAMES_SEARCH, keyword, checksum), 
                 RequestHandler.HEADER_NORMAL
             );
             
-            // Did we manage?
             if (!"".equals(httpContent)) {
-
-                // Generate an object
-                JSONArray searchResultsProfile = new JSONObject(httpContent)
-                        .getJSONObject("data").getJSONArray("matches");
-
-                // Did we get any results?
+                JSONArray searchResultsProfile = new JSONObject(httpContent).getJSONObject("data").getJSONArray("matches");
                 if (searchResultsProfile.length() > 0) {
-
-                    // Iterate over the results
                     for (int i = 0, max = searchResultsProfile.length(); i < max; i++) {
-
-                        // Get the JSONObject
                         JSONObject tempPersonaObj = searchResultsProfile.optJSONObject(i);
                         JSONObject tempUserObj = tempPersonaObj.getJSONObject("user");
-
-                        // Save it into an array
                         results.add(
                             new GeneralSearchResult(
                                 new ProfileData.Builder(
@@ -583,76 +549,46 @@ Log.d(Constants.DEBUG_TAG, "platoonArray => " + platoonArray.toString());
         } catch (Exception ex) {
             throw new WebsiteHandlerException(ex.getMessage());
         }
-        // Return the results
         return (ArrayList<GeneralSearchResult>) results;
-
     }
 
     public Map<Long, List<WeaponDataWrapper>> getWeapons() {
         try {
-            // Init
             Map<Long, List<WeaponDataWrapper>> weaponDataMap = new HashMap<Long, List<WeaponDataWrapper>>();
             for (int i = 0, max = mProfileData.getNumPersonas(); i < max; i++) {
-
-                // Init the array
-                List<WeaponDataWrapper> weaponDataArray = new ArrayList<WeaponDataWrapper>();
-
-                // Get the data
-                String httpContent = mRequestHandler.get(
-
-                        RequestHandler.generateUrl(
-                                URL_WEAPONS, mProfileData.getPersona(i).getId(), mProfileData
-                                .getPersona(i).getPlatformId()),
-                        RequestHandler.HEADER_NORMAL
+            	List<WeaponDataWrapper> weaponDataArray = new ArrayList<WeaponDataWrapper>();
+            	String httpContent = mRequestHandler.get(
+                    RequestHandler.generateUrl(
+                		URL_WEAPONS, 
+                		mProfileData.getPersona(i).getId(), 
+                		mProfileData.getPersona(i).getPlatformId()
+            		),
+                    RequestHandler.HEADER_NORMAL
                 );
 
-                // So... how'd it go?
                 if (httpContent != null && !httpContent.equals("")) {
+                    JSONObject baseObject = new JSONObject(httpContent)                            .getJSONObject("data");
+                    JSONObject weaponInfoObject = baseObject.getJSONObject("gadgetsLocale").getJSONObject("weapons");
+                    JSONArray weaponStats = baseObject.getJSONArray("mainWeaponStats");
+                    JSONObject unlockMap = baseObject.getJSONObject("unlocksAdded");
 
-                    // Woo, we got results
-                    JSONObject baseObject = new JSONObject(httpContent)
-                            .getJSONObject("data");
-                    JSONObject weaponInfoObject = baseObject.getJSONObject(
-                            "gadgetsLocale").getJSONObject("weapons");
-                    JSONArray weaponStats = baseObject
-                            .getJSONArray("mainWeaponStats");
-                    JSONObject unlockMap = baseObject
-                            .getJSONObject("unlocksAdded");
-
-                    // Let's iterate over the JSONArray
                     for (int count = 0, maxCount = weaponStats.length(); count < maxCount; count++) {
-
-                        // Get the current item
                         int numUnlocked = 0;
                         List<UnlockData> unlocks = new ArrayList<UnlockData>();
-                        JSONObject currentItem = weaponStats
-                                .getJSONObject(count);
+                        JSONObject currentItem = weaponStats.getJSONObject(count);
 
-                        // Determine the GUID
-                        String guid = currentItem.isNull("duplicateOf") ? "guid"
-                                : "duplicateOf";
+                        String guid = currentItem.isNull("duplicateOf") ? "guid" : "duplicateOf";
+                        JSONObject currentWeapon = weaponInfoObject.getJSONObject(currentItem.getString("guid"));
 
-                        // Get the "current weapon information"
-                        JSONObject currentWeapon = weaponInfoObject
-                                .getJSONObject(currentItem.getString("guid"));
-
-                        // Do we have unlocks for this item?
                         if (!unlockMap.isNull(currentItem.getString(guid))) {
+                            JSONArray currentUnlocks = unlockMap.getJSONArray(currentItem.getString(guid));
 
-                            // Unlocks
-                            JSONArray currentUnlocks = unlockMap
-                                    .getJSONArray(currentItem.getString(guid));
-
-                            // Iterate over the unlocks
                             for (int uCount = 0, maxUCount = currentUnlocks.length(); uCount < maxUCount; uCount++) {
-
-                                // Grab the unlocks
                                 UnlockData unlockData = getUnlockDataFromJSON(currentUnlocks.getJSONObject(uCount), 0);
                                 if (unlockData == null) {
                                     continue;
                                 }
 
-                                // Increment
                                 if (unlockData.getScoreCurrent() >= unlockData.getScoreNeeded()) {
                                     numUnlocked++;
                                 }
@@ -660,46 +596,42 @@ Log.d(Constants.DEBUG_TAG, "platoonArray => " + platoonArray.toString());
                             }
                         }
                         /* TODO: VALIDATE BURST MODES */
-                        // Store it
                         weaponDataArray.add(
-                                new WeaponDataWrapper(
-                                        numUnlocked, new WeaponInfo(currentItem
-                                        .getString("guid"), currentItem
-                                        .getString("name"), currentItem
-                                        .getString("slug"), currentWeapon.optInt(
-                                        "rateOfFire", 1), WeaponInfo.RANGE_VLONG,
-                                        "Marshmallows", currentWeapon
-                                        .getBoolean("fireModeAuto"),
-                                        currentWeapon.getBoolean("fireModeBurst"),
-                                        currentWeapon.getBoolean("fireModeSingle")
-                                ), 
-                                new WeaponStats(
-                                        currentItem.getString("name"), currentItem
-                                        .getString("guid"), currentItem
-                                        .getString("slug"),
-                                        currentItem.getInt("kills"), currentItem
-                                        .getInt("headshots"), currentItem
-                                        .optInt("kitId", 999), currentItem
-                                        .getLong("shotsFired"), currentItem
-                                        .getLong("shotsHit"), currentItem
-                                        .getLong("timeEquipped"), currentItem
-                                        .getDouble("accuracy"), currentItem
-                                        .getDouble("serviceStars"), currentItem
-                                        .optDouble("serviceStarProgress", 0.0)
-                                ), 
-                                unlocks
+                            new WeaponDataWrapper(
+                                numUnlocked, 
+                                new WeaponInfo(
+                            		currentItem.getString("guid"), 
+                            		currentItem.getString("name"), 
+                            		currentItem.getString("slug"), 
+                            		currentWeapon.optInt("rateOfFire", 1), 
+                            		WeaponInfo.RANGE_VLONG,
+                            		"Marshmallows", currentWeapon.getBoolean("fireModeAuto"),
+                                    currentWeapon.getBoolean("fireModeBurst"),
+                                    currentWeapon.getBoolean("fireModeSingle")
+                        		), 
+	                            new WeaponStats(
+	                                currentItem.getString("name"), 
+	                                currentItem.getString("guid"), 
+	                                currentItem.getString("slug"),
+	                                currentItem.getInt("kills"), 
+	                                currentItem.getInt("headshots"), 
+	                                currentItem.optInt("kitId", 999), 
+	                                currentItem.getLong("shotsFired"), 
+	                                currentItem.getLong("shotsHit"), 
+	                                currentItem.getLong("timeEquipped"), 
+	                                currentItem.getDouble("accuracy"), 
+	                                currentItem.getDouble("serviceStars"), 
+	                                currentItem.optDouble("serviceStarProgress", 0.0)
+	                            ), 
+	                            unlocks
                             )
                         );
                     }
                 }
-
-                Collections.sort(weaponDataArray,
-                        new WeaponDataWrapperComparator());
-                weaponDataMap.put(mProfileData.getPersona(i).getId(),
-                        weaponDataArray);
+                Collections.sort(weaponDataArray, new WeaponDataWrapperComparator());
+                weaponDataMap.put(mProfileData.getPersona(i).getId(), weaponDataArray);
             }
             return weaponDataMap;
-
         } catch (RequestHandlerException ex) {
             ex.printStackTrace();
             return null;
@@ -709,76 +641,51 @@ Log.d(Constants.DEBUG_TAG, "platoonArray => " + platoonArray.toString());
         }
     }
 
-    public HashMap<Long, WeaponDataWrapper> getWeapon(WeaponInfo weaponInfo,
-                                                      WeaponStats weaponStats) {
+    public HashMap<Long, WeaponDataWrapper> getWeapon(WeaponInfo weaponInfo, WeaponStats weaponStats) {
         try {
-            // Init
             List<UnlockData> unlockArray = new ArrayList<UnlockData>();
             HashMap<Long, WeaponDataWrapper> weaponDataArray = new HashMap<Long, WeaponDataWrapper>();
 
-            // Iterate per persona
             for (int i = 0, max = mProfileData.getNumPersonas(); i < max; i++) {
-
-                // Get the data
                 String httpContent = mRequestHandler.get(
-                        RequestHandler.generateUrl(
-                                URL_WEAPONS_INFO, mProfileData.getPersona(i).getName(),
-                                mProfileData.getPersona(i).getId(), weaponStats
-                                .getSlug(), mProfileData.getPersona(i)
-                                .getPlatformId()
-                        ), RequestHandler.HEADER_NORMAL
+                    RequestHandler.generateUrl(
+                        URL_WEAPONS_INFO,
+                        mProfileData.getPersona(i).getName(),
+                        mProfileData.getPersona(i).getId(), 
+                        weaponStats.getSlug(), 
+                        mProfileData.getPersona(i).getPlatformId()
+                    ), RequestHandler.HEADER_NORMAL
                 );
 
-                // So... how'd it go?
                 if (httpContent != null && !httpContent.equals("")) {
-
-                    // Clear the unlockArray
                     unlockArray = new ArrayList<UnlockData>();
+                    JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
+                    JSONArray unlockObjectArray = baseObject.getJSONObject("statsItem").getJSONObject("itemWeapon").getJSONArray("unlocks");
 
-                    // Woo, we got results
-                    JSONObject baseObject = new JSONObject(httpContent)
-                            .getJSONObject("data");
-                    JSONArray unlockObjectArray = baseObject
-                            .getJSONObject("statsItem")
-                            .getJSONObject("itemWeapon")
-                            .getJSONArray("unlocks");
-
-                    // Let's iterate over the unlocks
                     for (int count = 0, maxCount = unlockObjectArray.length(); count < maxCount; count++) {
-
-                        // Get the current item
                         JSONObject unlockObject = unlockObjectArray.getJSONObject(count);
                         JSONObject unlockObjectBy = unlockObject.getJSONObject("unlockedBy");
 
-                        // Populate the array
                         unlockArray.add(
                             new UnlockData(
-                                weaponStats.getKitId(), unlockObjectBy.optDouble(
-                                "completion", 0), unlockObjectBy.optLong(
-                                "valueNeeded", 0), unlockObjectBy.optLong(
-                                "actualValue", 0), weaponStats.getName(),
+                                weaponStats.getKitId(), 
+                                unlockObjectBy.optDouble("completion", 0), 
+                                unlockObjectBy.optLong("valueNeeded", 0), 
+                                unlockObjectBy.optLong("actualValue", 0), weaponStats.getName(),
                                 unlockObject.getString("unlockId"),
                                 unlockObjectBy.getString("codeNeeded"),
                                 UnlockData.CATEGORY_ATTACHMENT
                             )
                         );
                     }
-
-                    // Sort the unlocks
                     Collections.sort(unlockArray, new UnlockComparator());
-
-                    // Add the data array to the WeaponDataWrapper
                     weaponDataArray.put(
                         mProfileData.getPersona(i).getId(), 
-                        new WeaponDataWrapper(
-                    		0, weaponInfo, weaponStats, unlockArray
-	                    )
+                        new WeaponDataWrapper(0, weaponInfo, weaponStats, unlockArray)
                     );
                 }
             }
-            // Return it!
             return weaponDataArray;
-
         } catch (RequestHandlerException ex) {
             ex.printStackTrace();
             return null;
@@ -788,139 +695,105 @@ Log.d(Constants.DEBUG_TAG, "platoonArray => " + platoonArray.toString());
         }
     }
 
-    public HashMap<Long, AssignmentDataWrapper> getAssignments(Context c)
-            throws WebsiteHandlerException {
+    public HashMap<Long, AssignmentDataWrapper> getAssignments(Context c) throws WebsiteHandlerException {
         try {
-            // Attributes
             HashMap<Long, AssignmentDataWrapper> assignmentMap = new HashMap<Long, AssignmentDataWrapper>();
             List<AssignmentData> b2kAssignments = new ArrayList<AssignmentData>();
             List<AssignmentData> cqAssignments = new ArrayList<AssignmentData>();
             List<AssignmentData> premiumAssignments = new ArrayList<AssignmentData>();
 
-            // Loop over the personas
             for (int count = 0, maxCount = mProfileData.getNumPersonas(); count < maxCount; count++) {
-
-                // Init
                 b2kAssignments = new ArrayList<AssignmentData>();
                 cqAssignments = new ArrayList<AssignmentData>();
                 premiumAssignments = new ArrayList<AssignmentData>();
 
-                // Get the JSON!
                 String httpContent = mRequestHandler.get(
-                        RequestHandler.generateUrl(
-                                URL_ASSIGNMENTS, mProfileData.getPersona(count).getName(),
-                                mProfileData.getPersona(count).getId(), mProfileData
-                                .getId(), mProfileData.getPersona(count)
-                                .getPlatformId()
-                        ), RequestHandler.HEADER_AJAX
+                    RequestHandler.generateUrl(
+                        URL_ASSIGNMENTS, 
+                        mProfileData.getPersona(count).getName(),
+                        mProfileData.getPersona(count).getId(), 
+                        mProfileData.getId(), 
+                        mProfileData.getPersona(count).getPlatformId()
+                    ), RequestHandler.HEADER_AJAX
                 );
 
-                // Parse the JSON!
                 JSONObject topLevel = new JSONObject(httpContent).getJSONObject("data");
                 if (topLevel.isNull("missionTrees")) {
-                    assignmentMap.put(mProfileData.getPersona(count).getId(),
-                            new AssignmentDataWrapper());
+                    assignmentMap.put(mProfileData.getPersona(count).getId(), new AssignmentDataWrapper());
                     continue;
-
                 }
 
-                // Create the missions
-                JSONObject missionTrees = topLevel
-                        .getJSONObject("missionTrees");
+                JSONObject missionTrees = topLevel.getJSONObject("missionTrees");
                 JSONArray missionNames = missionTrees.names();
 
-                for (int missionTreeCount = 0, maxMissionTrees = missionNames
-                        .length(); missionTreeCount < maxMissionTrees; missionTreeCount++) {
-
-                    int mId = Integer.parseInt(String.valueOf(missionNames
-                            .get(missionTreeCount)));
-                    JSONObject missionTop = missionTrees.getJSONObject(String
-                            .valueOf(mId));
+                for (int missionTreeCount = 0, maxMissionTrees = missionNames.length(); missionTreeCount < maxMissionTrees; missionTreeCount++) {
+                    int mId = Integer.parseInt(String.valueOf(missionNames.get(missionTreeCount)));
+                    JSONObject missionTop = missionTrees.getJSONObject(String.valueOf(mId));
                     JSONObject missions = missionTop.getJSONObject("missions");
                     List<AssignmentData> currentList = getAssignmentsFromJSON(missions);
 
-                    // Init
                     switch (mId) {
-                        case 512:
-                            b2kAssignments.addAll(currentList);
-                            break;
-                        case 1024:
-                            premiumAssignments.addAll(currentList);
-                            break;
-                        case 2048:
-                            cqAssignments.addAll(currentList);
-                            break;
-                        default:
-                            Log.d(Constants.DEBUG_TAG,
-                                    "New assignments available!!!");
-                            break;
+	                    case 512:
+	                        b2kAssignments.addAll(currentList);
+	                        break;
+	                    case 1024:
+	                        premiumAssignments.addAll(currentList);
+	                        break;
+	                    case 2048:
+	                        cqAssignments.addAll(currentList);
+	                        break;
+	                    default:
+	                        Log.d(Constants.DEBUG_TAG, "New assignments available!!!");
+	                        break;
                     }
                 }
-                // Add the items
-                assignmentMap.put(mProfileData.getPersona(count).getId(),
-                        new AssignmentDataWrapper(b2kAssignments,
-                                premiumAssignments, cqAssignments));
-            }
+                assignmentMap.put(
+            		mProfileData.getPersona(count).getId(),
+            		new AssignmentDataWrapper(b2kAssignments, premiumAssignments, cqAssignments)
+        		);
+        	}
             return assignmentMap;
-
         } catch (Exception ex) {
             throw new WebsiteHandlerException(ex.getMessage());
         }
     }
 
     public List<AssignmentData> getAssignmentsFromJSON(JSONObject missions) {
-        // Init
         List<AssignmentData> assignments = new ArrayList<AssignmentData>();
         try {
-            // Get the JSONObject per loop
             JSONArray jsonArrayKeys = missions.names();
             List<String> stringArrayKeys = new ArrayList<String>();
             for (int i = 0, max = jsonArrayKeys.length(); i < max; i++) {
                 stringArrayKeys.add(String.valueOf(jsonArrayKeys.get(i)));
             }
 
-            // Iterate over the label from above
-            int assignmentCounter = 0;
             for (String key : stringArrayKeys) {
-
                 JSONObject assignment = missions.getJSONObject(key);
                 JSONArray criteriasJSON = assignment.getJSONArray("criterias");
                 JSONArray dependenciesJSON = assignment.getJSONArray("dependencies");
                 JSONArray unlocksJSON = assignment.getJSONArray("unlocks");
 
-                // Init
                 List<AssignmentData.Objective> criterias = new ArrayList<AssignmentData.Objective>();
                 List<AssignmentData.Dependency> dependencies = new ArrayList<AssignmentData.Dependency>();
                 List<AssignmentData.Unlock> unlocks = new ArrayList<AssignmentData.Unlock>();
 
-                // Alright, let's do this
-                for (int criteriaCounter = 0, criteriaCount = criteriasJSON
-                        .length(); criteriaCounter < criteriaCount; criteriaCounter++) {
-
-                    // Get the current item
+                for (int criteriaCounter = 0, criteriaCount = criteriasJSON.length(); criteriaCounter < criteriaCount; criteriaCounter++) {
                     JSONObject currentItem = criteriasJSON.getJSONObject(criteriaCounter);
-                    // New object!
                     criterias.add(
-                            new AssignmentData.Objective(
-                                    currentItem.getDouble("actualValue"), currentItem
-                                    .getDouble("completionValue"), currentItem
-                                    .getString("statCode"), currentItem
-                                    .getString("paramX"), currentItem
-                                    .getString("paramY"), currentItem
-                                    .getString("descriptionID"), currentItem
-                                    .getString("unit")
-                            )
+                        new AssignmentData.Objective(
+                            currentItem.getDouble("actualValue"), 
+                            currentItem.getDouble("completionValue"), 
+                            currentItem.getString("statCode"), 
+                            currentItem.getString("paramX"), 
+                            currentItem.getString("paramY"), 
+                            currentItem.getString("descriptionID"), 
+                            currentItem.getString("unit")
+                        )
                     );
                 }
 
-                // Alright, let's do this
                 for (int counter = 0, maxCounter = dependenciesJSON.length(); counter < maxCounter; counter++) {
-
-                    // Get the current item
-                    JSONObject currentItem = dependenciesJSON
-                            .getJSONObject(counter);
-
-                    // New object!
+                    JSONObject currentItem = dependenciesJSON.getJSONObject(counter);
                     dependencies.add(
                         new AssignmentData.Dependency(
                             currentItem.getInt("count"), currentItem.getString("code")
@@ -928,93 +801,77 @@ Log.d(Constants.DEBUG_TAG, "platoonArray => " + platoonArray.toString());
                     );
                 }
 
-                // Alright, let's do this
                 for (int counter = 0, maxCounter = unlocksJSON.length(); counter < maxCounter; counter++) {
-
-                    // Get the current item
                     JSONObject currentItem = unlocksJSON.getJSONObject(counter);
-
-                    // New object!
                     unlocks.add(
                         new AssignmentData.Unlock(
-                                currentItem.getString("unlockId"), currentItem
-                                .getString("unlockType"), currentItem
-                                .getBoolean("visible")
-
+                            currentItem.getString("unlockId"), 
+                            currentItem.getString("unlockType"), 
+                            currentItem.getBoolean("visible")
                         )
                     );
                 }
 
-                // Add the assignment
                 int[] resources = DataBank.getResourcesForAssignment(key);
                 if (resources != null) {
-                    assignments.add(new AssignmentData(resources[0],
-                            resources[1], assignment.getString("stringID"),
-                            assignment.getString("descriptionID"), assignment
-                            .getString("license"), criterias,
-                            dependencies, unlocks));
-
-                    assignmentCounter++;
+                    assignments.add(
+                		new AssignmentData(
+            				resources[0],
+                            resources[1], 
+                            assignment.getString("stringID"),
+                            assignment.getString("descriptionID"), 
+                            assignment.getString("license"), 
+                            criterias,
+                            dependencies, 
+                            unlocks
+                        )
+            		);
                 }
             }
         } catch (JSONException ex) {
             ex.printStackTrace();
         }
-
         Collections.sort(assignments, new AssignmentComparator());
         return assignments;
     }
 
-    public ArrayList<PlatoonData> getPlatoons(final Context context)
-            throws WebsiteHandlerException {
-        // Init
+    public ArrayList<PlatoonData> getPlatoons(final Context context) throws WebsiteHandlerException {
         List<PlatoonData> platoons = new ArrayList<PlatoonData>();
         try {
-
-            // Get the content
             String httpContent = mRequestHandler.get(
-                    RequestHandler.generateUrl(ProfileClient.URL_INFO,
-                            mProfileData.getUsername()), RequestHandler.HEADER_AJAX
+                RequestHandler.generateUrl(ProfileClient.URL_INFO, mProfileData.getUsername()),
+                RequestHandler.HEADER_AJAX
             );
-
-            // Is it ok?
             if ("".equals(httpContent)) {
                 return null;
             } else {
-                // JSON
                 JSONArray platoonArray = new JSONObject(httpContent)
-                        .getJSONObject("context")
-                        .getJSONObject("profileCommon")
-                        .getJSONArray("platoons");
-
-                // Validate the platoons
+                    .getJSONObject("context")
+                    .getJSONObject("profileCommon")
+                    .getJSONArray("platoons");
                 if (platoonArray != null && platoonArray.length() > 0) {
-
-                    // Iterate!!
                     for (int i = 0, max = platoonArray.length(); i < max; i++) {
-
-                        // Get the current item
                         JSONObject currItem = platoonArray.getJSONObject(i);
-
-                        // Let's cache the gravatar
+                        
                         String title = currItem.getString("id") + ".jpeg";
                         if (!CacheHandler.isCached(context, title)) {
                             PlatoonClient.cacheBadge(
-                                    context, currItem.getString("badgePath"), title,
-                                    Constants.DEFAULT_BADGE_SIZE
+                                context, 
+                                currItem.getString("badgePath"), 
+                                title,
+                                Constants.DEFAULT_BADGE_SIZE
                             );
                         }
-                        
-                        // Add to the ArrayList
                         platoons.add(
                             new PlatoonData(
-                                    Long.parseLong(currItem.getString("id")), currItem
-                                    .getInt("fanCounter"), currItem
-                                    .getInt("memberCounter"), currItem
-                                    .getInt("platform"),
-                                    currItem.getString("name"), currItem
-                                    .getString("tag"), title, !currItem
-                                    .getBoolean("hidden")
+                                Long.parseLong(currItem.getString("id")), 
+                                currItem.getInt("fanCounter"), 
+                                currItem.getInt("memberCounter"), 
+                                currItem.getInt("platform"),
+                                currItem.getString("name"), 
+                                currItem.getString("tag"), 
+                                title, 
+                                !currItem.getBoolean("hidden")
                             )
                         );
                     }
@@ -1028,7 +885,6 @@ Log.d(Constants.DEBUG_TAG, "platoonArray => " + platoonArray.toString());
 
     public static boolean cacheGravatar(Context c, String h, int s) {
         try {
-            // Get the external cache dir
             String cacheDir = PublicUtils.getCachePath(c);
             if (!cacheDir.endsWith("/")) {
                 cacheDir += "/";
@@ -1039,20 +895,15 @@ Log.d(Constants.DEBUG_TAG, "platoonArray => " + platoonArray.toString());
                 RequestHandler.generateUrl(Constants.URL_GRAVATAR, h, s, s), false
             );
 
-            // Init
             int bytesRead = 0;
             int offset = 0;
             int contentLength = (int) httpEntity.getContentLength();
             byte[] data = new byte[contentLength];
 
-            // Build a path
             String filepath = cacheDir + h;
-
-            // Handle the streams
             InputStream imageStream = httpEntity.getContent();
             BufferedInputStream in = new BufferedInputStream(imageStream);
 
-            // Iterate
             while (offset < contentLength) {
                 bytesRead = in.read(data, offset, data.length - offset);
                 if (bytesRead == -1) {
@@ -1061,20 +912,15 @@ Log.d(Constants.DEBUG_TAG, "platoonArray => " + platoonArray.toString());
                 offset += bytesRead;
             }
 
-            // Alright?
             if (offset != contentLength) {
-                throw new IOException("Only read " + offset
-                        + " bytes; Expected " + contentLength + " bytes");
+                throw new IOException("Only read " + offset + " bytes; Expected " + contentLength + " bytes");
             }
-
-            // Close the stream
             in.close();
             FileOutputStream out = new FileOutputStream(filepath);
             out.write(data);
             out.flush();
             out.close();
             return true;
-
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
