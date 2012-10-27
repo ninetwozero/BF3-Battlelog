@@ -105,7 +105,7 @@ public final class DatabaseStructure {
         public static final String COLUMN_NAME_BOOL_ONLINE = "is_online";
         public static final String COLUMN_NAME_BOOL_PLAYING = "is_playing";
         public static final String COLUMN_NAME_BOOL_IS_FRIEND = "is_friend";
-        public static final String COLUMN_NAME_BOOL_PLATOONS = "platoons";
+        public static final String COLUMN_NAME_BOOL_PLATOONS = "platoons";   /* WHAT THE FUCK IS THIS SHIT???? */
 
         // Sort order
         public static final String DEFAULT_SORT_ORDER = "`_id` DESC";

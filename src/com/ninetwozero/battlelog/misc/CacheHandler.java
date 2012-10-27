@@ -296,9 +296,8 @@ public class CacheHandler {
                     String platformIdString = results.getString(results.getColumnIndex("platform_id"));
                     String personaNameString = results.getString(results.getColumnIndex("persona_name"));
                     String platoonIdString = results.getString(results.getColumnIndex("platoons"));
-Log.d(Constants.DEBUG_TAG, "platoonIdString => " + platoonIdString);
-             
-String[] personaStringArray = TextUtils.split(personaIdString, ":");
+
+					String[] personaStringArray = TextUtils.split(personaIdString, ":");
                     String[] platformStringArray = TextUtils.split(platformIdString, ":");
                     String[] personaNameStringArray = TextUtils.split(personaNameString, ":");
                     String[] platoonStringArray = TextUtils.split(platoonIdString, ":");
