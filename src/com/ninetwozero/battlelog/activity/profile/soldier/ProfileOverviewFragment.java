@@ -23,6 +23,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -180,6 +181,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         protected Boolean doInBackground(Void... arg0) {
             try {
                 mProfileInformation = CacheHandler.Profile.select(mContext, mProfileData.getId());
+                Log.d(Constants.DEBUG_TAG, "mProfileInformation => " + mProfileInformation);
                 return (mProfileInformation != null);
             } catch (Exception ex) {
                 ex.printStackTrace();
