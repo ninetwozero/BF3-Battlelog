@@ -12,241 +12,224 @@ import com.ninetwozero.battlelog.datatype.DatabaseInformationException;
 import java.util.List;
 
 public class SQLiteManager {
-
     class OpenHelper extends SQLiteOpenHelper {
-
         public OpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL("CREATE TABLE IF NOT EXISTS `"
-                    + DatabaseStructure.PersonaStatistics.TABLE_NAME
-                    + "` ("
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID
-                    + " INTEGER PRIMARY KEY, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_RANK
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA
-                    + " INTEGER UNIQUE, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_USER
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PLATFORM
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ACCOUNT_NAME
-                    + " TEXT, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_PERSONA_NAME
-                    + " TEXT, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_RANK
-                    + " TEXT, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_POINTS_NEXT
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_POINTS_THIS
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_KILLS
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_ASSISTS
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_VEHICLES
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_VASSISTS
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_HEALS
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_REVIVES
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_REPAIRS
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_RESUPPLIES
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_DEATHS
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_WINS
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_LOSSES
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_KDR
-                    + " DOUBLE, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_ACCURACY
-                    + " DOUBLE, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_LONGEST_HS
-                    + " DOUBLE, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_LONGEST_KS
-                    + " DOUBLE, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_TIME
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_SKILL
-                    + " DOUBLE, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_SPM
-                    + " DOUBLE, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_ASSAULT
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_ENGINEER
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_SUPPORT
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_RECON
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_VEHICLE
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_COMBAT
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_AWARDS
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_UNLOCKS
-                    + " INTEGER, "
-                    + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_TOTAL
-                    + " INTEGER" + ")"
-            );
-
-            db.execSQL("CREATE TABLE IF NOT EXISTS `"
-                    + DatabaseStructure.UserProfile.TABLE_NAME
-                    + "` ("
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_ID
-                    + " INTEGER PRIMARY KEY, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_NUM_AGE
-                    + " INTEGER, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_NUM_UID
-                    + " INTEGER UNIQUE, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_DATE_BIRTH
-                    + " INTEGER, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_DATE_LOGIN
-                    + " INTEGER, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_DATE_STATUS
-                    + " INTEGER, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_NAME
-                    + " STRING, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_USERNAME
-                    + " STRING, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PRESENTATION
-                    + " STRING, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_LOCATION
-                    + " STRING, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_STATUS
-                    + " STRING, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_SERVER
-                    + " STRING, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PERSONA
-                    + " STRING, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PERSONA_NAME
-                    + " STRING, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PLATFORM
-                    + " STRING, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PLATOON
-                    + " STRING, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PLATOON_NAME
-                    + " STRING, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_ALLOW_REQUESTS
-                    + " INTEGER, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_ONLINE
-                    + " INTEGER, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_PLAYING
-                    + " INTEGER, "
-                    + DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_IS_FRIEND
-                    + " INTEGER " + " )"
+            db.execSQL(
+                "CREATE TABLE IF NOT EXISTS `"
+                + DatabaseStructure.PersonaStatistics.TABLE_NAME
+                + "` ("
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID
+                + " INTEGER PRIMARY KEY, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_RANK
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA
+                + " INTEGER UNIQUE, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_USER
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PLATFORM
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_ACCOUNT_NAME
+                + " TEXT, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_PERSONA_NAME
+                + " TEXT, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_RANK
+                + " TEXT, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_POINTS_NEXT
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_POINTS_THIS
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_KILLS
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_ASSISTS
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_VEHICLES
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_VASSISTS
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_HEALS
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_REVIVES
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_REPAIRS
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_RESUPPLIES
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_DEATHS
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_WINS
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_LOSSES
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_KDR
+                + " DOUBLE, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_ACCURACY
+                + " DOUBLE, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_LONGEST_HS
+                + " DOUBLE, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_LONGEST_KS
+                + " DOUBLE, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_TIME
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_SKILL
+                + " DOUBLE, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_SPM
+                + " DOUBLE, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_ASSAULT
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_ENGINEER
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_SUPPORT
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_RECON
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_VEHICLE
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_COMBAT
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_AWARDS
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_UNLOCKS
+                + " INTEGER, "
+                + DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_TOTAL
+                + " INTEGER" + ")"
             );
 
             db.execSQL(
-                    "CREATE TABLE IF NOT EXISTS `"
-                            + DatabaseStructure.PlatoonProfile.TABLE_NAME
-                            + "` ("
-                            + DatabaseStructure.PlatoonProfile.COLUMN_NAME_ID
-                            + " INTEGER PRIMARY KEY, "
-                            + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID
-                            + " INTEGER UNIQUE, "
-                            + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_DATE
-                            + " INTEGER, "
-                            + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_PLATFORM_ID
-                            + " INTEGER, "
-                            + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_GAME_ID
-                            + " INTEGER, "
-                            + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_FANS
-                            + " INTEGER, "
-                            + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_MEMBERS
-                            + " INTEGER, "
-                            + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_BLAZE_ID
-                            + " INTEGER, "
-                            + DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_NAME
-                            + " STRING, "
-                            + DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_TAG
-                            + " STRING, "
-                            + DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_INFO
-                            + " STRING, "
-                            + DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_WEB
-                            + " STRING, "
-                            + DatabaseStructure.PlatoonProfile.COLUMN_NAME_BOOL_VISIBLE
-                            + " )"
-
+                "CREATE TABLE IF NOT EXISTS `"
+                + DatabaseStructure.UserProfile.TABLE_NAME
+                + "` ("
+                + DatabaseStructure.UserProfile.COLUMN_NAME_ID
+                + " INTEGER PRIMARY KEY, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_NUM_AGE
+                + " INTEGER, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_NUM_UID
+                + " INTEGER UNIQUE, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_DATE_BIRTH
+                + " INTEGER, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_DATE_LOGIN
+                + " INTEGER, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_DATE_STATUS
+                + " INTEGER, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_NAME
+                + " STRING, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_USERNAME
+                + " STRING, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PRESENTATION
+                + " STRING, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_LOCATION
+                + " STRING, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_STATUS
+                + " STRING, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_SERVER
+                + " STRING, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PERSONA
+                + " STRING, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PERSONA_NAME
+                + " STRING, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PLATFORM
+                + " STRING, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PLATOON
+                + " STRING, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PLATOON_NAME
+                + " STRING, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_ALLOW_REQUESTS
+                + " INTEGER, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_ONLINE
+                + " INTEGER, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_PLAYING
+                + " INTEGER, "
+                + DatabaseStructure.UserProfile.COLUMN_NAME_BOOL_IS_FRIEND
+                + " INTEGER " + " )"
             );
 
             db.execSQL(
-
-                    "CREATE TABLE IF NOT EXISTS `"
-                            + DatabaseStructure.ForumThreads.TABLE_NAME
-                            + "` ("
-                            + DatabaseStructure.ForumThreads.COLUMN_NAME_ID
-                            + " INTEGER PRIMARY KEY, "
-                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID
-                            + " INTEGER UNIQUE, "
-                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_FORUM_ID
-                            + " INTEGER, "
-                            + DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_TITLE
-                            + " STRING, "
-                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST
-                            + " INTEGER, "
-                            + DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR
-                            + " STRING, "
-                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_AUTHOR_ID
-                            + " INTEGER, "
-                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_PAGE_ID
-                            + " INTEGER, "
-                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_READ
-                            + " INTEGER, "
-                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED
-                            + " INTEGER, "
-                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS
-                            + " INTEGER, "
-                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD
-                            + " INTEGER, "
-                            + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_PROFILE_ID
-                            + " INTEGER "
-                            + " )"
-
+                "CREATE TABLE IF NOT EXISTS `"
+                    + DatabaseStructure.PlatoonProfile.TABLE_NAME
+                    + "` ("
+                    + DatabaseStructure.PlatoonProfile.COLUMN_NAME_ID
+                    + " INTEGER PRIMARY KEY, "
+                    + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_ID
+                    + " INTEGER UNIQUE, "
+                    + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_DATE
+                    + " INTEGER, "
+                    + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_PLATFORM_ID
+                    + " INTEGER, "
+                    + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_GAME_ID
+                    + " INTEGER, "
+                    + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_FANS
+                    + " INTEGER, "
+                    + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_MEMBERS
+                    + " INTEGER, "
+                    + DatabaseStructure.PlatoonProfile.COLUMN_NAME_NUM_BLAZE_ID
+                    + " INTEGER, "
+                    + DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_NAME
+                    + " STRING, "
+                    + DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_TAG
+                    + " STRING, "
+                    + DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_INFO
+                    + " STRING, "
+                    + DatabaseStructure.PlatoonProfile.COLUMN_NAME_STRING_WEB
+                    + " STRING, "
+                    + DatabaseStructure.PlatoonProfile.COLUMN_NAME_BOOL_VISIBLE
+                    + " )"
             );
 
+            db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `"
+                + DatabaseStructure.ForumThreads.TABLE_NAME
+                + "` ("
+                + DatabaseStructure.ForumThreads.COLUMN_NAME_ID
+                + " INTEGER PRIMARY KEY, "
+                + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_ID
+                + " INTEGER UNIQUE, "
+                + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_FORUM_ID
+                + " INTEGER, "
+                + DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_TITLE
+                + " STRING, "
+                + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_LAST_POST
+                + " INTEGER, "
+                + DatabaseStructure.ForumThreads.COLUMN_NAME_STRING_LAST_AUTHOR
+                + " STRING, "
+                + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_AUTHOR_ID
+                + " INTEGER, "
+                + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_LAST_PAGE_ID
+                + " INTEGER, "
+                + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_READ
+                + " INTEGER, "
+                + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_DATE_CHECKED
+                + " INTEGER, "
+                + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_POSTS
+                + " INTEGER, "
+                + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_HAS_UNREAD
+                + " INTEGER, "
+                + DatabaseStructure.ForumThreads.COLUMN_NAME_NUM_PROFILE_ID
+                + " INTEGER "
+                + " )"
+            );
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
             /* TODO: Handle DB UPDATEs */
             if (oldVersion == 1) {
-
                 onCreate(db);
-
             } else {
-
                 if (oldVersion == 1) {
-
                     /*
                      * If it's the first version, then we do the specific things
                      */
-
                 } else if (oldVersion == 2) {
-
                     /* if it's the second, we do specific things */
-
                 } else {
-
                     /* Current version */
-
                 }
-
             }
-
         }
-
     }
 
     private static final String DATABASE_NAME = "app.db";
