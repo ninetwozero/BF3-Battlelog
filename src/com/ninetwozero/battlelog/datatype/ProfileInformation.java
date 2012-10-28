@@ -15,7 +15,9 @@
 package com.ninetwozero.battlelog.datatype;
 
 import android.content.Context;
+import android.util.Log;
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 import java.util.Arrays;
@@ -43,10 +45,10 @@ public class ProfileInformation {
     private List<PlatoonData> mPlatoons;
 
     // Other
-    private StringBuilder mPersonaString = new StringBuilder();
+    private StringBuilder mPersonaNameString = new StringBuilder();
     private StringBuilder mPersonaIdString = new StringBuilder();
     private StringBuilder mPersonaPlatformString = new StringBuilder();
-    private StringBuilder mPlatoonString = new StringBuilder();
+    private StringBuilder mPlatoonNameString = new StringBuilder();
     private StringBuilder mPlatoonIdString = new StringBuilder();
 
     public ProfileInformation(
@@ -167,26 +169,30 @@ public class ProfileInformation {
 
     public void generate() {
         mPersonaIdString.setLength(0);
-        mPersonaString.setLength(0);
+        mPersonaNameString.setLength(0);
         mPersonaPlatformString.setLength(0);
         mPlatoonIdString.setLength(0);
 
         for (PersonaData p : mPersona) {
             mPersonaIdString.append(p.getId() + ":");
-            mPersonaString.append(p.getName() + ":");
+            mPersonaNameString.append(p.getName() + ":");
             mPersonaPlatformString.append(p.getPlatformId() + ":");
         }
 
         for (PlatoonData p : mPlatoons) {
-            mPlatoonString.append(p.getName() + ":");
+            mPlatoonNameString.append(p.getName() + ":");
             mPlatoonIdString.append(p.getId() + ":");
         }
     }
 
     public final Object[] toArray() {
-        if (mPersonaIdString == null) {
+        if (mPersonaIdString.toString().equals("")) {
             generate();
         }
+
+        Log.d(Constants.DEBUG_TAG, "platoonIdString => " + mPlatoonIdString);
+        Log.d(Constants.DEBUG_TAG, "platoonNameString => " + mPlatoonNameString);
+
 
         return new Object[]{
             mAge,
@@ -200,10 +206,10 @@ public class ProfileInformation {
             (mStatusMessage == null) ? "" : mStatusMessage,
             (mCurrentServer == null) ? "" : mCurrentServer,
             mPersonaIdString.toString(),
-            mPersonaString.toString(),
+            mPersonaNameString.toString(),
             mPersonaPlatformString.toString(),
             mPlatoonIdString.toString(),
-            mPlatoonString.toString(),
+            mPlatoonNameString.toString(),
             mAllowFriendRequests ? "1" : "0",
             mOnline ? "1" : "0",
             mPlaying ? "1" : "0",
@@ -232,10 +238,10 @@ public class ProfileInformation {
                 ", mPlaying=" + mPlaying +
                 ", mFriendStatus=" + mFriendStatus +
                 ", mPlatoons=" + mPlatoons +
-                ", mPersonaString=" + mPersonaString +
+                ", mPersonaNameString=" + mPersonaNameString +
                 ", mPersonaIdString=" + mPersonaIdString +
                 ", mPersonaPlatformString=" + mPersonaPlatformString +
-                ", mPlatoonString=" + mPlatoonString +
+                ", mPlatoonNameString=" + mPlatoonNameString +
                 ", mPlatoonIdString=" + mPlatoonIdString +
                 '}';
     }
