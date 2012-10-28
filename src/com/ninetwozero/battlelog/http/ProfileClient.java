@@ -152,7 +152,6 @@ public class ProfileClient extends DefaultClient {
                 throw new WebsiteHandlerException("Could not retrieve the PersonaID.");
             } else {
                 JSONArray soldierBox = new JSONObject(httpContent).getJSONObject("data").getJSONArray("soldiersBox");
-
                 final int numPersonas = soldierBox.length();
                 PersonaData[] personaArray = new PersonaData[numPersonas];
 
@@ -428,7 +427,7 @@ public class ProfileClient extends DefaultClient {
                 JSONObject statusMessage = profileCommonObject.optJSONObject("userStatusMessage");
                 JSONObject currItem;
                 String playingOn;
-Log.d(Constants.DEBUG_TAG, "platoonArray => " + platoonArray.toString());
+
                 int numSoldiers = soldierArray.length();
                 int numPlatoons = platoonArray.length();
 
