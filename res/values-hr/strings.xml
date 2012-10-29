@@ -270,7 +270,7 @@
   <string name="info_xml_platoons">Platoons</string>
   <string name="info_xml_no_platoons">No platoons joined.</string>
   <string name="info_xml_rank2">until rank up</string>
-  <string name="info_xml_no_unlocks">No unlocks found.</string>
+  
   <string name="info_xml_back">Back</string>
   <string name="info_xml_reload">Reload</string>
   <string name="info_xml_logout">Logout</string>
@@ -456,7 +456,7 @@
   <string name="info_forum_report_true">The post has been reported.</string>
   <string name="info_forum_report_false">The post could not be reported.</string>
   <string name="info_forum_search_label">Forum search</string>
-  <string name="info_forum_search_hint">Search for...</string>
+  
   <string name="info_forum_report_reason">Why do you want to report this post?</string>
   <string name="info_forum_report_label">Report a post</string>
   <string name="label_report">Report</string>

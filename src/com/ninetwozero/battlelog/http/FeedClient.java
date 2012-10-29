@@ -1,15 +1,23 @@
 package com.ninetwozero.battlelog.http;
 
-import android.content.Context;
-import com.ninetwozero.battlelog.datatype.*;
-import com.ninetwozero.battlelog.factory.FeedItemDataFactory;
-import com.ninetwozero.battlelog.misc.CacheHandler;
-import com.ninetwozero.battlelog.misc.Constants;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
+import android.util.Log;
+
+import com.ninetwozero.battlelog.datatype.CommentData;
+import com.ninetwozero.battlelog.datatype.FeedItem;
+import com.ninetwozero.battlelog.datatype.ParsedFeedItemData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.RequestHandlerException;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.factory.FeedItemDataFactory;
+import com.ninetwozero.battlelog.misc.CacheHandler;
+import com.ninetwozero.battlelog.misc.Constants;
 
 public class FeedClient extends DefaultClient {
 
@@ -62,7 +70,7 @@ public class FeedClient extends DefaultClient {
             "assignmentcomplete",
             "commentedgamereport",
             "commentedblog",
- "gameaccess",
+            "gameaccess",
             "sharedgameevent"
     };
 
@@ -76,52 +84,38 @@ public class FeedClient extends DefaultClient {
         mType = t;
     }
 
-    public boolean post(String checksum,
-                        String content) throws WebsiteHandlerException {
+    public boolean post(String checksum, String content) throws WebsiteHandlerException {
         try {
             RequestHandler wh = new RequestHandler();
             String httpContent = wh.post(
-                    URL_POST,
-                    RequestHandler.generatePostData(
-
-                            FIELD_NAMES_POST,
-                            content,
-                            checksum,
-                            mType == TYPE_PLATOON ? null : mId,
-                            mType == TYPE_PLATOON ? mId : null
-
-                    ),
-                    RequestHandler.HEADER_AJAX
+                URL_POST,
+                RequestHandler.generatePostData(
+                    FIELD_NAMES_POST,
+                    content,
+                    checksum,
+                    mType == TYPE_PLATOON ? null : mId,
+                    mType == TYPE_PLATOON ? mId : null
+                ),
+                RequestHandler.HEADER_AJAX
             );
-
-            // Did we manage?
             if ("".equals(httpContent)) {
                 throw new WebsiteHandlerException("Post could not be saved.");
             } else {
-                // Check the JSON
                 String status = new JSONObject(httpContent).optString("message", "");
                 return (status.matches("_POST_CREATED"));
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
-    public ArrayList<FeedItem> get(Context context, int num,
-                                   long profileId) throws WebsiteHandlerException {
+    public ArrayList<FeedItem> get(Context context, int num, long profileId) throws WebsiteHandlerException {
         try {
-
-            // Attributes
             List<FeedItem> feedItems = new ArrayList<FeedItem>();
             JSONArray jsonArray;
             String url;
-            String httpContent;
-
-            // What's the url?
+            
             switch (mType) {
                 case TYPE_GLOBAL:
                     url = URL_FRIEND_FEED;
@@ -137,20 +131,16 @@ public class FeedClient extends DefaultClient {
                     break;
             }
 
-            // Let's see
             for (int i = 0, max = Math.round(num / 10); i < max; i++) {
-
-                // Get the content, and create a JSONArray
-                httpContent = mRequestHandler.get(
-                        url.replace(
-                                "{NUMSTART}",
-                                String.valueOf(i * 10)
-                        ),
-                        RequestHandler.HEADER_AJAX
+                String httpContent = mRequestHandler.get(
+                    url.replace(
+                        "{NUMSTART}",
+                        String.valueOf(i * 10)
+                    ),
+                    RequestHandler.HEADER_AJAX
                 );
 
-                jsonArray = new JSONObject(httpContent).getJSONObject("data")
-                        .getJSONArray("feedEvents");
+                jsonArray = new JSONObject(httpContent).getJSONObject("data").getJSONArray("feedEvents");
                 feedItems.addAll(getFeedItemsFromJSON(context, jsonArray, profileId));
             }
             return (ArrayList<FeedItem>) feedItems;
@@ -161,27 +151,19 @@ public class FeedClient extends DefaultClient {
     }
 
     private ArrayList<FeedItem> getFeedItemsFromJSON(Context context, JSONArray jsonArray, long activeProfileId) {
-        // Variables needed
         List<FeedItem> feedItemArray = new ArrayList<FeedItem>();
         try {
             for (int i = 0, max = jsonArray.length(); i < max; i++) {
-                feedItemArray.add(getFeedItemFromJSON(context, jsonArray.getJSONObject(i),
-                        activeProfileId));
+                feedItemArray.add(getFeedItemFromJSON(context, jsonArray.getJSONObject(i), activeProfileId));
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return (ArrayList<FeedItem>) feedItemArray;
     }
-
-    /* FIXME: Avatars not being downloaded? */    
-    private FeedItem getFeedItemFromJSON(Context context,
-                                         JSONObject currItem, long activeProfileId)
-            throws WebsiteHandlerException {
+ 
+    private FeedItem getFeedItemFromJSON(Context context, JSONObject currItem, long activeProfileId) throws WebsiteHandlerException {
         try {
-
-            // Variables that we need
         	List<CommentData> comments = new ArrayList<CommentData>();
             JSONObject ownerObject = currItem.optJSONObject("owner");
             final String event = currItem.getString("event");
@@ -194,7 +176,6 @@ public class FeedClient extends DefaultClient {
             boolean liked = false;
             boolean censored = currItem.getBoolean("hidden");
 
-            // Iterate and see if the user has *liked* it already
             for (int likeCount = 0; likeCount < numLikes; likeCount++) {
                 if (Long.parseLong(likeUsers.getString(likeCount)) == activeProfileId) {
                     liked = true;
@@ -202,7 +183,6 @@ public class FeedClient extends DefaultClient {
                 }
             }
             
-            // Get the comments
             final String[] jsonCommentLabels = new String[] {"comment1", "comment2"};
             for( String label : jsonCommentLabels ) {
 	            if( !currItem.isNull(label) ) {
@@ -222,7 +202,6 @@ public class FeedClient extends DefaultClient {
 						)
 	    			);
 	            	
-	            	// Cache the image?
 	            	String filename = gravatarHash + ".png";
 	                if (!CacheHandler.isCached(context, filename)) {
 	                    ProfileClient.cacheGravatar(context, filename, Constants.DEFAULT_AVATAR_SIZE);
@@ -230,18 +209,15 @@ public class FeedClient extends DefaultClient {
 	            }
             }
 	            
-            // Set the first profile
             ProfileData mainProfile = new ProfileData.Builder(
                     Long.parseLong(currItem.getString("ownerId")),
                     ownerObject.getString("username")
             ).gravatarHash(ownerObject.getString("gravatarMd5")).build();
 
-            // Get the feed item data
             int feedItemTypeId = getTypeIdFromEvent(event);
             ParsedFeedItemData feedItemData = FeedItemDataFactory.feedItemDataFrom(context, feedItemTypeId, mainProfile, currItem);
 
-            // Before I forget - let's download the gravatar too!
-            String filename = tempGravatarHash + ".png";
+            String filename = feedItemData.getGravatarHash() + ".png";
             if (!CacheHandler.isCached(context, filename)) {
                 ProfileClient.cacheGravatar(context, filename, Constants.DEFAULT_AVATAR_SIZE);
             }
@@ -257,10 +233,9 @@ public class FeedClient extends DefaultClient {
                 feedItemData.getProfileData(),
                 liked,
                 censored,
-                tempGravatarHash,
+                feedItemData.getGravatarHash(),
                 comments
             );
-
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
@@ -273,30 +248,25 @@ public class FeedClient extends DefaultClient {
                 return i;
             }
         }
+        Log.d(Constants.DEBUG_TAG, "Event '" + event + "' unknown.");
         return -1;
     }
 
 
-    public static boolean hooah(long postId, String checksum)
-            throws WebsiteHandlerException {
+    public static boolean hooah(long postId, String checksum) throws WebsiteHandlerException {
         try {
-
             String httpContent = new RequestHandler().post(
                     RequestHandler.generateUrl(URL_HOOAH, postId),
                     RequestHandler.generatePostData(Constants.FIELD_NAMES_CHECKSUM, checksum),
                     RequestHandler.HEADER_AJAX
             );
-
-            // Did we manage?
             return (!"".equals(httpContent));
-            
         } catch (RequestHandlerException ex) {
             throw new WebsiteHandlerException(ex.getMessage());
         }
     }
 
-    public static boolean unhooah(long postId, String checksum)
-            throws WebsiteHandlerException {
+    public static boolean unhooah(long postId, String checksum) throws WebsiteHandlerException {
         try {
             String httpContent = new RequestHandler().post(
                     RequestHandler.generateUrl(URL_UNHOOAH, postId),
@@ -304,7 +274,6 @@ public class FeedClient extends DefaultClient {
                     RequestHandler.HEADER_AJAX
             );
             return (!"".equals(httpContent));
-
         } catch (RequestHandlerException ex) {
             throw new WebsiteHandlerException(ex.getMessage());
         }

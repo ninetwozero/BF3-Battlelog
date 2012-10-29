@@ -79,15 +79,14 @@ public class ProfileClient extends DefaultClient {
             "profile-edit-allowfriendrequests", "post-check-sum"
     };
 
-    public static final String[] FIELD_NAMES_SEARCH = new String[]{"username", "post-check-sum"};
+    public static final String[] FIELD_NAMES_SEARCH = new String[]{"name", "post-check-sum"};
 
     public ProfileClient(ProfileData pd) {
         mRequestHandler = new RequestHandler();
         mProfileData = pd;
     }
 
-    public static ProfileData getProfileIdFromName(final String keyword,
-                                                   final String checksum) throws WebsiteHandlerException {
+    public static ProfileData getProfileIdFromName(final String keyword, final String checksum) throws WebsiteHandlerException {
         try {
             ProfileData profile = null;
             String httpContent = new RequestHandler().post(
@@ -95,7 +94,7 @@ public class ProfileClient extends DefaultClient {
                 RequestHandler.generatePostData(FIELD_NAMES_SEARCH, keyword, checksum),
                 RequestHandler.HEADER_NORMAL
             );
-
+            
             // Did we manage?
             if ("".equals(httpContent)) {
                 throw new WebsiteHandlerException(
@@ -626,8 +625,7 @@ public class ProfileClient extends DefaultClient {
     }
 
     //
-    public static List<GeneralSearchResult> search(Context context,
-                                                   String keyword, String checksum) throws WebsiteHandlerException {
+    public static List<GeneralSearchResult> search(Context context, String keyword, String checksum) throws WebsiteHandlerException {
         // Init
         List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
         try {
@@ -637,7 +635,7 @@ public class ProfileClient extends DefaultClient {
                 RequestHandler.generatePostData(FIELD_NAMES_SEARCH, keyword, checksum), 
                 RequestHandler.HEADER_NORMAL
             );
-
+            
             // Did we manage?
             if (!"".equals(httpContent)) {
 
@@ -652,16 +650,23 @@ public class ProfileClient extends DefaultClient {
                     for (int i = 0, max = searchResultsProfile.length(); i < max; i++) {
 
                         // Get the JSONObject
-                        JSONObject tempObj = searchResultsProfile
-                                .optJSONObject(i);
+                        JSONObject tempPersonaObj = searchResultsProfile.optJSONObject(i);
+                        JSONObject tempUserObj = tempPersonaObj.getJSONObject("user");
 
                         // Save it into an array
                         results.add(
                             new GeneralSearchResult(
-                                new ProfileData.Builder(Long.parseLong(tempObj
-                                        .getString("userId")), tempObj
-                                        .getString("username")).gravatarHash(
-                                        tempObj.optString("gravatarMd5")).build()
+                                new ProfileData.Builder(
+                            		Long.parseLong(tempUserObj.getString("userId")),
+                            		tempUserObj.getString("username")
+                        		).gravatarHash(tempUserObj.optString("gravatarMd5")).persona(
+                        			new PersonaData(
+                    					Long.parseLong(tempPersonaObj.getString("personaId")),
+                    					tempPersonaObj.getString("personaName"),
+                    					DataBank.getPlatformIdFromName(tempPersonaObj.getString("namespace")),
+                    					""
+                					)
+                				).build()
                             )
                         );
                     }

@@ -278,7 +278,7 @@
   <string name="info_xml_platoons">Pelotons</string>
   <string name="info_xml_no_platoons">Je zit niet in een peloton.</string>
   <string name="info_xml_rank2">voordat je in rang stijgt</string>
-  <string name="info_xml_no_unlocks">Geen unlocks gevonden.</string>
+  
   <string name="info_xml_back">Terug</string>
   <string name="info_xml_reload">Ververs</string>
   <string name="info_xml_logout">Uitloggen</string>
@@ -469,7 +469,7 @@
   <string name="info_forum_report_true">Deze post is gerapporteerd.</string>
   <string name="info_forum_report_false">Deze post kon niet gerapporteerd worden.</string>
   <string name="info_forum_search_label">Zoeken</string>
-  <string name="info_forum_search_hint">Zoek voor ...</string>
+  
   <string name="info_forum_report_reason">Waarom wil je deze post rapporteren?</string>
   <string name="info_forum_report_label">Rapporteer een post</string>
   <string name="label_report">Report</string>

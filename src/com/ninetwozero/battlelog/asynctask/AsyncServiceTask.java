@@ -53,10 +53,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Boolean> {
     @Override
     protected Boolean doInBackground(String... arg0) {
         try {
-            // Let's try to setActive
             if (COMClient.setActive()) {
-
-                // The user is active, so how many notifications does he have?
                 mNumNotifications = new NotificationClient().getNewNotificationsCount(
                     mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
                 );
@@ -89,7 +86,7 @@ public class AsyncServiceTask extends AsyncTask<String, Integer, Boolean> {
                 } else {
                     text = mContext.getString(
                             R.string.info_txt_notification_new_p).replace(
-                            "{num}", String.valueOf(result));
+                            "{num}", String.valueOf(mNumNotifications));
                 }
 
                 // Set the ticker (text scrolling up above when first notified)

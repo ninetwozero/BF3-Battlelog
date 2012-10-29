@@ -264,7 +264,9 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
     private void populateView() {
         populateRankProgress();
+        personaStatisticsTable.removeAllViews();
         populateStatistics(listPersonaStatistics, personaStatisticsTable);
+        scoreStatisticsTable.removeAllViews();
         populateStatistics(listScoreStatistics, scoreStatisticsTable);
     }
 
