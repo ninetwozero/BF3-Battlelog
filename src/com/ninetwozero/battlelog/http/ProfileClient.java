@@ -57,6 +57,7 @@ public class ProfileClient extends DefaultClient {
             + "upcomingUnlocksPopulateStats/{PID}/{PLATFORM_ID}/";
     public static final String URL_DOGTAGS = Constants.URL_MAIN
             + "soldier/dogtagsPopulateStats/{PID}/{UID}/{PLATFORM_ID}/";
+    @Deprecated
     public static final String URL_ASSIGNMENTS = Constants.URL_MAIN
             + "soldier/missionsPopulateStats/{PNAME}/{PID}/{UID}/{PLATFORM_ID}/";
     public static final String URL_ALL = Constants.URL_MAIN

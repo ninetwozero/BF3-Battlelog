@@ -82,8 +82,8 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
     public void onResume() {
         super.onResume();
         BusProvider.getInstance().register(this);
-        missionPack = ((AssignmentActivity)getActivity()).getMissionPack(expansionId);
-        if(missionPack != null){
+        missionPack = ((AssignmentActivity) getActivity()).getMissionPack(expansionId);
+        if (missionPack != null) {
             showData();
         }
     }
@@ -107,18 +107,36 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         showData();
     }*/
 
-    private void showData(){
-        Map<String, Mission> missions = missionPack.getMissions();
-        List<String> keys = Arrays.asList(missions.keySet().toArray(new String[]{}));
-        Collections.sort(keys);
-        for(int i = 0; i < keys.size(); i++){
-            if(i+1 < keys.size() && hasDependency(missions.get(keys.get(i)), missions.get(keys.get(i+1)))){
-                twoInRow(missions.get(keys.get(i)), missions.get(keys.get(i+1)));
-                i++;
-            }else{
-                oneInRow(missions.get(keys.get(i)));
+    private void showData() {
+        if (expansionId == 1024) {
+            premiumPackage();
+        } else {
+            Map<String, Mission> missions = missionPack.getMissions();
+            List<String> keys = Arrays.asList(missions.keySet().toArray(new String[]{}));
+            Collections.sort(keys);
+            for (int i = 0; i < keys.size(); i++) {
+                if (i + 1 < keys.size() && hasDependency(missions.get(keys.get(i)), missions.get(keys.get(i + 1)))) {
+                    twoInRow(missions.get(keys.get(i)), missions.get(keys.get(i + 1)), View.VISIBLE);
+                    i++;
+                } else {
+                    oneInRow(missions.get(keys.get(i)));
+                }
             }
         }
+    }
+
+    private void premiumPackage(){
+        Map<String, Mission> missions = missionPack.getMissions();
+        twoInRow(missions.get("xp2prema01"), missions.get("xp2prema06"), View.VISIBLE);
+        twoInRow(missions.get("xp2prema02"), missions.get("xp2prema07"), View.VISIBLE);
+        twoInRow(missions.get("xp2prema03"), missions.get("xp2prema08"), View.VISIBLE);
+        twoInRow(missions.get("xp2prema04"), missions.get("xp2prema09"), View.VISIBLE);
+        twoInRow(missions.get("xp2prema05"), missions.get("xp2prema10"), View.VISIBLE);
+        twoInRow(missions.get("xp3prema01"), missions.get("xp3prema06"), View.INVISIBLE);
+        twoInRow(missions.get("xp3prema02"), missions.get("xp3prema07"), View.INVISIBLE);
+        twoInRow(missions.get("xp3prema03"), missions.get("xp3prema08"), View.INVISIBLE);
+        twoInRow(missions.get("xp3prema04"), missions.get("xp3prema09"), View.INVISIBLE);
+        twoInRow(missions.get("xp3prema05"), missions.get("xp3prema10"), View.INVISIBLE);
     }
 
     private void oneInRow(Mission mission) {
@@ -128,16 +146,17 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         mTableAssignments.addView(tableRow);
     }
 
-    private void twoInRow(Mission mission1, Mission mission2) {
+    private void twoInRow(Mission mission1, Mission mission2, int visibility) {
         TableRow tableRow = (TableRow) getActivity().getLayoutInflater().inflate(R.layout.list_item_assignment, mTableAssignments, false);
         RelativeLayout leftLayout = (RelativeLayout) tableRow.findViewById(R.id.assignment_left);
         setMission(leftLayout, mission1);
-        RelativeLayout rightLayout = (RelativeLayout)tableRow.findViewById(R.id.assignment_right);
+        tableRow.findViewById(R.id.image_arrow).setVisibility(visibility);
+        RelativeLayout rightLayout = (RelativeLayout) tableRow.findViewById(R.id.assignment_right);
         setMission(rightLayout, mission2);
         mTableAssignments.addView(tableRow);
     }
 
-    private void setMission(View view, Mission mission){
+    private void setMission(View view, Mission mission) {
         ImageView image = (ImageView) view.findViewById(R.id.assignment_image);
         ProgressBar progress = (ProgressBar) view.findViewById(R.id.assignment_progress);
         image.setImageResource(resourceIdFrom(mission.getCode(), 0));
@@ -164,12 +183,11 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         progress.setMax(100);
     }
 
-    private boolean hasDependency(Mission a, Mission b){
-        Log.e("AssignmentFragment", "Dependency between " + a.getCode() + " and " + b.getCode());
+    private boolean hasDependency(Mission a, Mission b) {
         return b.hasDependencies() && b.isDependentOn(a.getCode());
     }
 
-    private int resourceIdFrom(String code, int index){
+    private int resourceIdFrom(String code, int index) {
         return DataBank.getResourcesForAssignment(code)[index];
     }
 
@@ -284,7 +302,8 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
     }*/
 
     @Override
-    public void reload() {}
+    public void reload() {
+    }
 
     private void createDialog(AssignmentData mCurrentPopupData) {
 
@@ -292,13 +311,13 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         View dialog = mLayoutInflater.inflate(R.layout.popup_dialog_view, null);
         LinearLayout wrapObjectives = (LinearLayout) dialog.findViewById(R.id.wrap_objectives);
 
-        builder.setCancelable(false).setPositiveButton("OK",new DialogInterface.OnClickListener() {
+        builder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
 
-                });
+        });
 
         builder.setView(dialog);
         builder.setCancelable(true);
@@ -345,7 +364,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
     }
 
     @Subscribe
-    public void assignmentChange(Assignments assignments){
+    public void assignmentChange(Assignments assignments) {
         this.assignments = assignments;
         missionPack = assignments.getMissionPacksList().get(expansionId);
         showData();
