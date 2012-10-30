@@ -17,53 +17,51 @@ public class PlatoonData implements Parcelable {
         readFromParcel(in);
     }
 
-    public PlatoonData(long i) {
-
-        this.id = i;
-        this.countFans = 0;
-        this.countMembers = 0;
-        this.platformId = 0;
-        this.visible = true;
-
+    public PlatoonData(long i, String n) {
+        id = i;
+        name = n;
+        tag = "";
+        image = String.valueOf(id) + ".jpeg";
+        countFans = 0;
+        countMembers = 0;
+        platformId = 0;
+        visible = true;
     }
 
-    public PlatoonData(long i, int cF, int cM, int pId, String n, String t,
-                       String img, boolean v) {
-
-        this.id = i;
-        this.countFans = cF;
-        this.countMembers = cM;
-        this.platformId = pId;
-        this.name = n;
-        this.tag = t;
-        this.image = img;
-        this.visible = v;
-
+    public PlatoonData(long i, int cF, int cM, int pId, String n, String t, String img, boolean v) {
+        id = i;
+        countFans = cF;
+        countMembers = cM;
+        platformId = pId;
+        name = n;
+        tag = t;
+        image = img;
+        visible = v;
     }
 
     // Getters
     public long getId() {
-        return this.id;
+        return id;
     }
 
     public int getCountFans() {
-        return this.countFans;
+        return countFans;
     }
 
     public int getCountMembers() {
-        return this.countMembers;
+        return countMembers;
     }
 
     public int getPlatformId() {
-        return this.platformId;
+        return platformId;
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public String getTag() {
-        return this.tag;
+        return tag;
     }
 
     public String getImage() {
@@ -71,7 +69,7 @@ public class PlatoonData implements Parcelable {
     }
 
     public boolean isVisible() {
-        return this.visible;
+        return visible;
     }
 
     @Override
@@ -83,28 +81,28 @@ public class PlatoonData implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
 
         // Everything else
-        dest.writeLong(this.id);
-        dest.writeInt(this.countFans);
-        dest.writeInt(this.countMembers);
-        dest.writeInt(this.platformId);
-        dest.writeString(this.name);
-        dest.writeString(this.tag);
-        dest.writeString(this.image);
-        dest.writeInt((this.visible) ? 1 : 0);
+        dest.writeLong(id);
+        dest.writeInt(countFans);
+        dest.writeInt(countMembers);
+        dest.writeInt(platformId);
+        dest.writeString(name);
+        dest.writeString(tag);
+        dest.writeString(image);
+        dest.writeInt((visible) ? 1 : 0);
 
     }
 
     private void readFromParcel(Parcel in) {
 
         // Let's retrieve them, same order as above
-        this.id = in.readLong();
-        this.countFans = in.readInt();
-        this.countFans = in.readInt();
-        this.platformId = in.readInt();
-        this.name = in.readString();
-        this.tag = in.readString();
-        this.image = in.readString();
-        this.visible = (in.readInt() == 1);
+        id = in.readLong();
+        countFans = in.readInt();
+        countFans = in.readInt();
+        platformId = in.readInt();
+        name = in.readString();
+        tag = in.readString();
+        image = in.readString();
+        visible = (in.readInt() == 1);
 
     }
 
@@ -122,6 +120,6 @@ public class PlatoonData implements Parcelable {
 
     @Override
     public final String toString() {
-        return this.id + ":" + this.name + ":" + this.tag;
+        return id + ":" + name + ":" + tag;
     }
 }

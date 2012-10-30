@@ -158,6 +158,7 @@ public class FeedItem implements Parcelable {
 		return mPreloadedComments;
 	}
 
+	@Deprecated
 	public Intent getIntent(Context c) {
 
 		// Get the correct format depending on the type
@@ -182,7 +183,7 @@ public class FeedItem implements Parcelable {
 		case FeedItem.TYPE_GOT_PLATOON_POST:
 		case FeedItem.TYPE_LEFT_PLATOON:
 			return new Intent(c, PlatoonActivity.class).putExtra("platoon",
-					new PlatoonData(mItemId));
+					new PlatoonData(mItemId, ""));
 
 		case FeedItem.TYPE_COMPLETED_GAME:
 			return new Intent(c, UnlockActivity.class).putExtra("profile",

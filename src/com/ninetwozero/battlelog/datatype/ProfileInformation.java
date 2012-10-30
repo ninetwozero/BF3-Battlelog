@@ -14,14 +14,15 @@
 
 package com.ninetwozero.battlelog.datatype;
 
+import java.util.Arrays;
+import java.util.List;
+
 import android.content.Context;
 import android.util.Log;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class ProfileInformation {
 
@@ -189,11 +190,7 @@ public class ProfileInformation {
         if (mPersonaIdString.toString().equals("")) {
             generate();
         }
-
-        Log.d(Constants.DEBUG_TAG, "platoonIdString => " + mPlatoonIdString);
-        Log.d(Constants.DEBUG_TAG, "platoonNameString => " + mPlatoonNameString);
-
-
+        
         return new Object[]{
             mAge,
             mUserId,

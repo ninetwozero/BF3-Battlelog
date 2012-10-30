@@ -23,7 +23,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.datatype.ForumThreadData;
@@ -45,7 +44,6 @@ public class CacheHandler {
     }
 
     public static class Persona {
-
         public static long insert(Context context, PersonaStats stats) {
             try {
                 SQLiteManager manager = new SQLiteManager(context);
@@ -292,27 +290,27 @@ public class CacheHandler {
 
                 if (results.moveToFirst()) {
                     List<PlatoonData> platoons = new ArrayList<PlatoonData>();
-                    String personaIdString = results.getString(results.getColumnIndex("persona_id"));
-                    String platformIdString = results.getString(results.getColumnIndex("platform_id"));
-                    String personaNameString = results.getString(results.getColumnIndex("persona_name"));
-                    String platoonIdString = results.getString(results.getColumnIndex("platoons"));
+                    String personaIdString = results.getString(results.getColumnIndex(DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PERSONA));
+                    String platformIdString = results.getString(results.getColumnIndex(DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PLATFORM));
+                    String personaNameString = results.getString(results.getColumnIndex(DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PERSONA_NAME));
+                    String platoonIdString = results.getString(results.getColumnIndex(DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PLATOON));
+                    String platoonNameString = results.getString(results.getColumnIndex(DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PLATOON_NAME));
 
 					String[] personaStringArray = TextUtils.split(personaIdString, ":");
                     String[] platformStringArray = TextUtils.split(platformIdString, ":");
                     String[] personaNameStringArray = TextUtils.split(personaNameString, ":");
-                    String[] platoonStringArray = TextUtils.split(platoonIdString, ":");
+                    String[] platoonIdArray = TextUtils.split(platoonIdString, ":");
+                    String[] platoonNameArray = TextUtils.split(platoonNameString, ":");
 
                     // How many do we have? -1 due to last occurence being empty
                     int numPersonas = personaStringArray.length;
-                    int numPlatoons = platoonStringArray.length;
+                    int numPlatoons = platoonNameArray.length;
                     numPersonas = numPersonas == 0 ? 0 : numPersonas - 1;
                     numPlatoons = numPlatoons == 0 ? 0 : numPlatoons - 1;
 
-                    PersonaData[] personaArray = new PersonaData[numPersonas];
-                    long[] platoonIdArray = new long[numPlatoons];
-
+                    PersonaData[] personas = new PersonaData[numPersonas];
                     for (int i = 0; i < numPersonas; i++) {
-                        personaArray[i] = new PersonaData(
+                        personas[i] = new PersonaData(
                             Long.parseLong(personaStringArray[i]),
                             personaNameStringArray[i],
                             Integer.parseInt(platformStringArray[i]),
@@ -322,9 +320,8 @@ public class CacheHandler {
                   
                     if (numPlatoons > 0) {
                     	for (int i = 0; i < numPlatoons; i++) {
-                    		platoonIdArray[i] = Long.parseLong(platoonStringArray[i]);
+                    		platoons.add(new PlatoonData(Long.parseLong(platoonIdArray[i]), platoonNameArray[i]));
                     	}
-                        platoons = CacheHandler.Platoon.selectPlatoonsForUser(context, platoonIdArray);
                     }
 
                     ProfileInformation profile = new ProfileInformation(
@@ -333,7 +330,7 @@ public class CacheHandler {
                         results.getLong(results.getColumnIndex("birth_date")),
                         results.getLong(results.getColumnIndex("last_login")),
                         results.getLong(results.getColumnIndex("status_changed")),
-                        personaArray,
+                        personas,
                         results.getString(results.getColumnIndex("name")),
                         results.getString(results.getColumnIndex("username")),
                         results.getString(results.getColumnIndex("presentation")),

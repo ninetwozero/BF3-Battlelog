@@ -23,7 +23,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -126,7 +125,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             View convertView;
             LinearLayout platoonWrapper = (LinearLayout) activity.findViewById(R.id.list_platoons);
 
-            (activity.findViewById(R.id.text_platoon)).setVisibility(View.GONE);
+            activity.findViewById(R.id.text_platoon).setVisibility(View.GONE);
             platoonWrapper.removeAllViews();
 
             final OnClickListener onClickListener = new OnClickListener() {
@@ -146,14 +145,12 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 convertView = mLayoutInflater.inflate(R.layout.list_item_platoon, platoonWrapper, false);
 
                 ((TextView) convertView.findViewById(R.id.text_name)).setText(currentPlatoon.getName());
-                ((TextView) convertView.findViewById(R.id.text_tag)).setText("[" + currentPlatoon.getTag() + "]");
                 ((TextView) convertView.findViewById(R.id.text_members)).setText(String.valueOf(currentPlatoon.getCountMembers()));
                 ((TextView) convertView.findViewById(R.id.text_fans)).setText(String.valueOf(currentPlatoon.getCountFans()));
 
-                ((ImageView) convertView.findViewById(R.id.image_badge)).setImageBitmap(
-                	BitmapFactory.decodeFile(PublicUtils.getCachePath(mContext)+ currentPlatoon.getImage())
-                );
-
+                String image = PublicUtils.getCachePath(mContext)+ currentPlatoon.getImage();
+                ((ImageView) convertView.findViewById(R.id.image_badge)).setImageBitmap(BitmapFactory.decodeFile(image));
+                
                 convertView.setTag(currentPlatoon);
                 convertView.setOnClickListener(onClickListener);
 
@@ -181,7 +178,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         protected Boolean doInBackground(Void... arg0) {
             try {
                 mProfileInformation = CacheHandler.Profile.select(mContext, mProfileData.getId());
-                Log.d(Constants.DEBUG_TAG, "mProfileInformation => " + mProfileInformation);
                 return (mProfileInformation != null);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -190,8 +186,8 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
-            if (result) {
+        protected void onPostExecute(Boolean foundCachedVersion) {
+            if (foundCachedVersion) {
                 if (this.progressDialog != null) {
                     this.progressDialog.dismiss();
                 }
@@ -205,7 +201,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 sendToStats(mProfileData);
 
             } else {
-                //TODO disabled refresh, it was crashing application on persona changes in ProfileStatsFragment
                 new AsyncRefresh(SessionKeeper.getProfileData().getId(), progressDialog).execute();
             }
         }
@@ -293,8 +288,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             ((MenuItem) menu.findItem(R.id.option_friendadd)).setVisible(false);
             ((MenuItem) menu.findItem(R.id.option_frienddel)).setVisible(false);
         }
-        ((MenuItem) menu.findItem(R.id.option_compare))
-                .setVisible(false);
+        ((MenuItem) menu.findItem(R.id.option_compare)).setVisible(false);
         return menu;
     }
 

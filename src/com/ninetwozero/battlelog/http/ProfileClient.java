@@ -456,32 +456,34 @@ public class ProfileClient extends DefaultClient {
                     );
                 }
 
-                for (int i = 0; i < numPlatoons; i++) {
-                    currItem = platoonArray.getJSONObject(i);
-                    String title = currItem.getString("id") + ".jpeg";
-                    if (!CacheHandler.isCached(context, title)) {
-                        PlatoonClient.cacheBadge(
-                            context, 
-                            currItem.getString("badgePath"), 
-                            title,
-                            Constants.DEFAULT_BADGE_SIZE
-                        );
-                    }
-
-                    platoonDataArray.add(
-                        new PlatoonData(
-                    		Long.parseLong(currItem.getString("id")), 
-                    		currItem.getInt("fanCounter"), 
-                    		currItem.getInt("memberCounter"), 
-                    		currItem.getInt("platform"), 
-                    		currItem.getString("name"),
-                    		currItem.getString("tag"), 
-                    		title, 
-                    		!currItem.getBoolean("hidden")
-                        )
-                    );
+                if( numPlatoons > 0 ) {
+                	for (int i = 0; i < numPlatoons; i++) {
+	                    currItem = platoonArray.getJSONObject(i);
+	                    String title = currItem.getString("id") + ".jpeg";
+	                    if (!CacheHandler.isCached(context, title)) {
+	                        PlatoonClient.cacheBadge(
+	                            context, 
+	                            currItem.getString("badgePath"), 
+	                            title,
+	                            Constants.DEFAULT_BADGE_SIZE
+	                        );
+	                    }
+	
+	                    platoonDataArray.add(
+	                        new PlatoonData(
+	                    		Long.parseLong(currItem.getString("id")), 
+	                    		currItem.getInt("fanCounter"), 
+	                    		currItem.getInt("memberCounter"), 
+	                    		currItem.getInt("platform"), 
+	                    		currItem.getString("name"),
+	                    		currItem.getString("tag"), 
+	                    		title, 
+	                    		!currItem.getBoolean("hidden")
+	                        )
+	                    );
+	                }	
                 }
-
+                	
                 ProfileInformation tempProfile = new ProfileInformation(
                     userInfo.optInt("age", 0), 
                     Long.parseLong(userInfo.getString("userId")),
