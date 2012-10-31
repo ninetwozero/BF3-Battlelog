@@ -13,6 +13,8 @@ public class Mission {
     private int completion;
     @SerializedName("criterias")
     private List<Criteria> criterias = new ArrayList<Criteria>();
+    @SerializedName("upcomingUnlocks")
+    private List<AddonUnlocks> addonUnlocks = new ArrayList<AddonUnlocks>();
     @SerializedName("dependencies")
     private List<MissionDependency> missionDependencies = new ArrayList<MissionDependency>();
     @SerializedName("stringID")
@@ -28,6 +30,10 @@ public class Mission {
 
     public List<Criteria> getCriterias() {
         return criterias;
+    }
+
+    public List<AddonUnlocks> getAddonUnlocks() {
+        return addonUnlocks;
     }
 
     public List<MissionDependency> getMissionDependencies() {
