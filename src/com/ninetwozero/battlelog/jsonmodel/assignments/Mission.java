@@ -15,6 +15,8 @@ public class Mission {
     private List<Criteria> criterias = new ArrayList<Criteria>();
     @SerializedName("dependencies")
     private List<MissionDependency> missionDependencies = new ArrayList<MissionDependency>();
+    @SerializedName("stringID")
+    private String missionId;
 
     public String getCode() {
         return code;
@@ -30,6 +32,10 @@ public class Mission {
 
     public List<MissionDependency> getMissionDependencies() {
         return missionDependencies;
+    }
+
+    public String getMissionId() {
+        return missionId;
     }
 
     public boolean hasDependencies(){

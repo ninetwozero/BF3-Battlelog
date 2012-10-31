@@ -57,7 +57,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
 
     // Attributes
     private ProfileData mProfileData;
-    //private Map<Long, AssignmentDataWrapper> mAssignments;
+    public static final String ASSIGNMENTS = "assignments";
     private long mSelectedPersona;
     private int mSelectedPosition;
     private long[] mPersonaId;
@@ -165,17 +165,6 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
                 bundle.putInt(EXPANSION_ID, expansion);
                 mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getName(), bundle));
             }
-            /*mListFragments = new ArrayList<Fragment>();
-            mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getName()));
-            mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getName()));
-            mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getName()));
-            mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getName()));
-
-            for (int i = 0, max = mListFragments.size(); i < max; i++) {
-                AssignmentFragment fragment = (AssignmentFragment) mListFragments.get(i);
-                fragment.setViewPagerPosition(i);
-                fragment.setType(i == 1 ? AssignmentFragment.TYPE_STACK:AssignmentFragment.TYPE_PAIRS);
-            }*/
 
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
@@ -207,11 +196,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
             if (progressDialog != null) {
                 progressDialog.dismiss();
             }
-            /*for(int i = 0; i < mPagerAdapter.getCount(); i++){
-                Fragment f = mPagerAdapter.getItem(i);
-                ((AssignmentFragment)f).setMissionPack(assignments.getMissionPacksList().get(expansionId[i]));
-            }*/
-            BusProvider.getInstance().post(assignments);
+            BusProvider.getInstance().post(ASSIGNMENTS);
         }
     }
 

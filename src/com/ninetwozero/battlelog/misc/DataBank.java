@@ -53,7 +53,7 @@ public final class DataBank {
 	private static Map<String, String> COOP_DATA;
 	private static Map<String, String> DIFFICULTY_MAP;
 	private static Map<String, String> CRITERIAS;
-	private static Map<String, String[]> ASSIGNMENTS;
+	@Deprecated private static Map<String, String[]> ASSIGNMENTS;
 	private static Map<String, int[]> ASSIGNMENT_RESOURCES;
 
 	static {
@@ -1442,6 +1442,7 @@ public final class DataBank {
 		return DIFFICULTY_MAP.containsKey(key) ? DIFFICULTY_MAP.get(key) : key;
 	}
 
+    @Deprecated
 	public static String[] getAssignmentTitle(String key) {
 		return ASSIGNMENTS.containsKey(key) ? ASSIGNMENTS.get(key)
 				: new String[] { key, key };

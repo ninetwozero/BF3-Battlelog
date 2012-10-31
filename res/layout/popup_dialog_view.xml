@@ -13,9 +13,8 @@
     GNU General Public License for more details.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="#FFFFFF">
+            style="@style/Match"
+            android:background="@color/white">
 
   <RelativeLayout
       style="@style/StandardPopup"
@@ -27,8 +26,7 @@
 
     <ImageView
         android:id="@+id/image_assignment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Wrap"
         android:layout_centerHorizontal="true"
         android:clickable="true"
         android:onClick="onClick"
@@ -36,11 +34,10 @@
 
     <TextView
         android:id="@+id/text_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Wrap"
         android:layout_below="@id/image_assignment"
         android:text="BEST FRIEND FOREVER"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold"/>
 
