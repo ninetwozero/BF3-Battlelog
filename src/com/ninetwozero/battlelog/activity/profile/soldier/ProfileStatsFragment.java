@@ -112,16 +112,14 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     private List<Statistics> listScoreStatistics;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
 
-        View view = mLayoutInflater.inflate(R.layout.tab_content_profile_stats,
-                container, false);
+        View view = mLayoutInflater.inflate(R.layout.tab_content_profile_stats, container, false);
 
         initFragment(view);
         return view;
@@ -346,14 +344,14 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
             findViews();
             PersonaInfo pi = personaStatsFrom(task);
             updateDatabase(pi);
-            if (progressDialog != null) {
-                progressDialog.dismiss();
-            }
             populateView();
+        }
+        if (progressDialog != null) {
+            progressDialog.dismiss();
         }
     }
 
-    private PersonaInfo personaStatsFrom(CompletedTask task) {
+	private PersonaInfo personaStatsFrom(CompletedTask task) {
         Gson gson = new Gson();
         PersonaInfo data = gson.fromJson(task.jsonObject, PersonaInfo.class);
         return data;
