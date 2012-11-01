@@ -54,7 +54,7 @@ public class AssignmentDialog extends DialogFragment {
             }
 
         });
-
+        builder.setTitle(AssignmentsMap.get(mission.getMissionId()));
         builder.setView(dialog);
         builder.setCancelable(true);
 
@@ -62,7 +62,6 @@ public class AssignmentDialog extends DialogFragment {
         imageAssignment.setImageResource(DataBank.getResourcesForAssignment(mission.getCode())[0]);
 
         imageAssignment.setClickable(false);
-        ((TextView) dialog.findViewById(R.id.text_title)).setText(AssignmentsMap.get(mission.getMissionId()));
 
         for (Criteria criteria : mission.getCriterias()) {
 

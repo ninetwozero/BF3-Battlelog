@@ -33,19 +33,10 @@
         android:src="@drawable/assignment_xp1_01"/>
 
     <TextView
-        android:id="@+id/text_title"
-        style="@style/Wrap"
-        android:layout_below="@id/image_assignment"
-        android:text="BEST FRIEND FOREVER"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:textStyle="bold"/>
-
-    <TextView
         android:id="@id/string000"
         style="@style/InfoSubHeading"
         android:layout_width="fill_parent"
-        android:layout_below="@id/text_title"
+        android:layout_below="@id/image_assignment"
         android:padding="5dp"
         android:text="Objectives"/>
 
@@ -64,7 +55,7 @@
         android:layout_below="@id/wrap_objectives"
         android:padding="5dp"
         android:text="REWARDS"
-        android:textColor="#000000"/>
+        android:textColor="@color/black"/>
 
     <RelativeLayout
         android:id="@+id/wrap_rewards"
@@ -75,20 +66,18 @@
 
       <ImageView
           android:id="@+id/image_reward"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+          style="@style/Wrap"
           android:layout_centerHorizontal="true"
           android:src="@drawable/w_xp1_famas"/>
 
       <TextView
           android:id="@+id/text_rew_name"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+          style="@style/Wrap"
           android:layout_below="@id/image_reward"
           android:layout_centerHorizontal="true"
           android:padding="5dp"
           android:text="FAMAS"
-          android:textColor="#000000"/>
+          android:textColor="@color/black"/>
     </RelativeLayout>
   </RelativeLayout>
 

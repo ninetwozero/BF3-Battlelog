@@ -15,13 +15,7 @@
 package com.ninetwozero.battlelog.activity.profile.assignments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -30,12 +24,12 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 import com.google.gson.Gson;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
-import com.ninetwozero.battlelog.datatype.*;
-import com.ninetwozero.battlelog.http.ProfileClient;
+import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.jsonmodel.assignments.Assignments;
 import com.ninetwozero.battlelog.jsonmodel.assignments.MissionPack;
 import com.ninetwozero.battlelog.loader.Bf3Loader;
@@ -49,9 +43,6 @@ import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class AssignmentActivity extends CustomFragmentActivity implements DefaultFragmentActivity, LoaderManager.LoaderCallbacks<CompletedTask> {
 
@@ -76,19 +67,13 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
         if (!getIntent().hasExtra("profile")) {
             finish();
         }
-        // Get the profile
         mProfileData = getIntent().getParcelableExtra("profile");
-
-        // Set the content view
         setContentView(R.layout.viewpager_default);
         init();
         setup();
     }
 
     public void init() {
-        //mAssignments = new HashMap<Long, AssignmentDataWrapper>();
-
-        // Let's try something out
         if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
             mSelectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID,
                     mProfileData.getPersona(0).getId());
