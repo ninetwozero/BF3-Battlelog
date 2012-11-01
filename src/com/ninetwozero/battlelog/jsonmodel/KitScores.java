@@ -9,9 +9,9 @@ public class KitScores {
     @SerializedName("2")
     private long engineerScore;
     @SerializedName("8")
-    private long supportScore;
-    @SerializedName("32")
     private long reconScore;
+    @SerializedName("32")
+    private long supportScore;
 
     private KitScores(long assaultScore, long engineerScore, long supportScore,
                       long reconScore) {
@@ -51,12 +51,5 @@ public class KitScores {
 
     public void setReconScore(long reconScore) {
         this.reconScore = reconScore;
-    }
-
-    @Override
-    public String toString() {
-        return "KitScores{" + "assaultScore=" + assaultScore
-                + ", engineerScore=" + engineerScore + ", supportScore="
-                + supportScore + ", reconScore=" + reconScore + '}';
     }
 }
