@@ -1372,5 +1372,15 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.</string>
+    <string name="msg_faq_how_contact">How can I contact you?</string>
+    <string name="msg_faq_how_contact_answer">You can use various platforms to reach me, most of them listed in the first tab to the left. Use whichever you feel most comfortable with, and I\'ll respond as soon as possible. :-)</string>
+    <string name="msg_faq_how_translate">My language is all messed up - can I help?</string>
+    <string name="msg_faq_how_translate_answer">Yes you can! Head over to http://bit.ly/bf3bll8n for more information on how you can help out with translating the app!</string>
+    <string name="msg_faq_how_app_works">How does this app work?</string>
+    <string name="msg_faq_how_app_works_answer">This app establishes a direct connection to the actual Battlelog servers and logs in using your Origin-account. If you\'re interested in viewing the actual source, it\'s viewable on github via the following link: http://bit.ly/bf3blsrc</string>
+    <string name="msg_faq_is_app_safe">But... is it safe?</string>
+    <string name="msg_faq_is_app_safe_answer">As the workflow of login process is identical to logging in using a regular web browser, one could say that it\'s as safe as your current network connection is.</string>
+    <string name="msg_faq_is_not_stealing_password">Are you sure that you aren\'t stealing our passwords?</string>
+    <string name="msg_faq_is_not_stealing_password_answer">Yes, I\'m 100% certain of that.\n\nThe only time that the app is sending your Origin credentials anywhere is when you login manually.\n\nIn other words, your login information never gets sent to any third-party servers or similar.</string>
 
 </resources>

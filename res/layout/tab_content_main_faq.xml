@@ -23,57 +23,57 @@
 
     <TextView
         style="@style/FriendHeadingRow"
-        android:text="How can I contact you?"/>
+        android:text="@string/msg_faq_how_contact"/>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:autoLink="web"
         android:padding="10dp"
-        android:text="You can use various platforms to reach me, most of them listed in the first tab to the left. Use whichever you feel most comfortable with, and I\&apos;ll respond as soon as possible. :-)"/>
+        android:text="@string/msg_faq_how_contact_answer"/>
     <TextView
         style="@style/FriendHeadingRow"
-        android:text="My language is all messed up - can I help?"/>
+        android:text="@string/msg_faq_how_translate"/>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:autoLink="web"
         android:padding="10dp"
-        android:text="Yes you can! Head over to http://bit.ly/bf3bll8n for more information on how you can help out with translating the app!"/>
+        android:text="@string/msg_faq_how_translate_answer"/>
     
     <TextView
         style="@style/FriendHeadingRow"
-        android:text="How does this app work?"/>
+        android:text="@string/msg_faq_how_app_works"/>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:autoLink="web"
         android:padding="10dp"
-        android:text="This app establishes a direct connection to the actual Battlelog servers and logs in using your Origin-account. If you\&apos;re interested in viewing the actual source, it\&apos;s viewable on github via the following link: http://bit.ly/bf3blsrc"/>
+        android:text="@string/msg_faq_how_app_works_answer"/>
 
     <TextView
         style="@style/FriendHeadingRow"
-        android:text="But... is it safe?"/>
+        android:text="@string/msg_faq_is_app_safe"/>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:autoLink="web"
         android:padding="10dp"
-        android:text="As the workflow of login process is identical to logging in using a regular web browser, one could say that it\&apos;s as safe as your current network connection is."/>
+        android:text="@string/msg_faq_is_app_safe_answer"/>
 
     <TextView
         style="@style/FriendHeadingRow"
-        android:text="Are you sure that you aren\&apos;t stealing our passwords?"/>
+        android:text="@string/msg_faq_is_not_stealing_password"/>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:autoLink="web"
         android:padding="10dp"
-        android:text="Yes, I\&apos;m 100% certain of that.\n\nThe only time that the app is sending your Origin credentials anywhere is when you login manually.\n\nIn other words, your login information never gets sent to any third-party servers or similar."/>
+        android:text="@string/msg_faq_is_not_stealing_password_answer"/>
   </LinearLayout>
 
 </ScrollView>
