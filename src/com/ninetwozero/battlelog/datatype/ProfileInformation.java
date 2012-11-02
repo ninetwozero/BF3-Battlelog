@@ -14,12 +14,15 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-import android.content.Context;
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.misc.PublicUtils;
-
 import java.util.Arrays;
 import java.util.List;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ProfileInformation {
 
@@ -43,20 +46,17 @@ public class ProfileInformation {
     private List<PlatoonData> mPlatoons;
 
     // Other
-    private StringBuilder mPersonaString = new StringBuilder();
+    private StringBuilder mPersonaNameString = new StringBuilder();
     private StringBuilder mPersonaIdString = new StringBuilder();
     private StringBuilder mPersonaPlatformString = new StringBuilder();
+    private StringBuilder mPlatoonNameString = new StringBuilder();
     private StringBuilder mPlatoonIdString = new StringBuilder();
 
-    // Construct(s)
     public ProfileInformation(
-
-            int a, long uid, long dob, long l, long sc, PersonaData[] pe, String n,
-            String u, String p, String loc, String s, String c, boolean af,
-            boolean o, boolean pl, boolean fs, List<PlatoonData> pd
-
+        int a, long uid, long dob, long l, long sc, PersonaData[] pe, String n,
+        String u, String p, String loc, String s, String c, boolean af,
+        boolean o, boolean pl, boolean fs, List<PlatoonData> pd
     ) {
-
         mAge = a;
         mUserId = uid;
         mDateOfBirth = dob;
@@ -74,7 +74,6 @@ public class ProfileInformation {
         mPlaying = pl;
         mFriendStatus = fs;
         mPlatoons = pd;
-
     }
 
     // Getters
@@ -148,23 +147,19 @@ public class ProfileInformation {
     }
 
     public long getPlatoonId(int position) {
-        return ((mPlatoons.size() < position) ? mPlatoons.get(position).getId()
-                : mPlatoons.get(0).getId());
+        return ((mPlatoons.size() < position) ? mPlatoons.get(position).getId() : mPlatoons.get(0).getId());
     }
 
     public PlatoonData getPlatoon(int position) {
-
         return mPlatoons.get(position);
     }
 
     public int getNumPersonas() {
-
         return mPersona.length;
 
     }
 
     public int getNumPlatoons() {
-
         return mPlatoons.size();
 
     }
@@ -174,73 +169,77 @@ public class ProfileInformation {
     }
 
     public void generate() {
-
-        // Reset
         mPersonaIdString.setLength(0);
-        mPersonaString.setLength(0);
+        mPersonaNameString.setLength(0);
         mPersonaPlatformString.setLength(0);
         mPlatoonIdString.setLength(0);
 
-        // Iterate
         for (PersonaData p : mPersona) {
-
             mPersonaIdString.append(p.getId() + ":");
-            mPersonaString.append(p.getName() + ":");
+            mPersonaNameString.append(p.getName() + ":");
             mPersonaPlatformString.append(p.getPlatformId() + ":");
-
         }
 
-        // Iterate
         for (PlatoonData p : mPlatoons) {
-
+            mPlatoonNameString.append(p.getName() + ":");
             mPlatoonIdString.append(p.getId() + ":");
-
         }
-
     }
 
     public final Object[] toArray() {
-
-        // Do we need to generate?
-        if (mPersonaIdString == null) {
+        if (mPersonaIdString.toString().equals("")) {
             generate();
         }
-
-        // Return it!
+        
         return new Object[]{
-
-                mAge, mUserId, mDateOfBirth, mLastlogin, mStatusMessageChanged, mName,
-                mUsername, (mPresentation == null) ? "" : mPresentation,
-                (mLocation == null) ? "" : mLocation,
-                (mStatusMessage == null) ? "" : mStatusMessage,
-                (mCurrentServer == null) ? "" : mCurrentServer,
-                mPersonaIdString.toString(), mPersonaString.toString(),
-                mPersonaPlatformString.toString(),
-                mAllowFriendRequests ? "1" : "0", mOnline ? "1" : "0",
-                mPlaying ? "1" : "0", mFriendStatus ? "1" : "0",
-                mPlatoonIdString.toString()
-
+            mAge,
+            mUserId,
+            mDateOfBirth,
+            mLastlogin,
+            mStatusMessageChanged, mName,
+            mUsername,
+            (mPresentation == null) ? "" : mPresentation,
+            (mLocation == null) ? "" : mLocation,
+            (mStatusMessage == null) ? "" : mStatusMessage,
+            (mCurrentServer == null) ? "" : mCurrentServer,
+            mPersonaIdString.toString(),
+            mPersonaNameString.toString(),
+            mPersonaPlatformString.toString(),
+            mPlatoonIdString.toString(),
+            mPlatoonNameString.toString(),
+            mAllowFriendRequests ? "1" : "0",
+            mOnline ? "1" : "0",
+            mPlaying ? "1" : "0",
+            mFriendStatus ? "1" : "0"
         };
 
     }
-    
-    @Override
-	public String toString() {
-		return "ProfileInformation [mAge=" + mAge + ", mUserId=" + mUserId
-				+ ", mDateOfBirth=" + mDateOfBirth + ", mLastlogin="
-				+ mLastlogin + ", mStatusMessageChanged="
-				+ mStatusMessageChanged + ", mPersona="
-				+ Arrays.toString(mPersona) + ", mName=" + mName
-				+ ", mUsername=" + mUsername + ", mPresentation="
-				+ mPresentation + ", mLocation=" + mLocation
-				+ ", mStatusMessage=" + mStatusMessage + ", mCurrentServer="
-				+ mCurrentServer + ", mAllowFriendRequests="
-				+ mAllowFriendRequests + ", mOnline=" + mOnline + ", mPlaying="
-				+ mPlaying + ", mFriendStatus=" + mFriendStatus
-				+ ", mPlatoons=" + mPlatoons + ", mPersonaString="
-				+ mPersonaString + ", mPersonaIdString=" + mPersonaIdString
-				+ ", mPersonaPlatformString=" + mPersonaPlatformString
-				+ ", mPlatoonIdString=" + mPlatoonIdString + "]";
-	}
 
+    @Override
+    public String toString() {
+        return "ProfileInformation{" +
+                "mAge=" + mAge +
+                ", mUserId=" + mUserId +
+                ", mDateOfBirth=" + mDateOfBirth +
+                ", mLastlogin=" + mLastlogin +
+                ", mStatusMessageChanged=" + mStatusMessageChanged +
+                ", mPersona=" + (mPersona == null ? null : Arrays.asList(mPersona)) +
+                ", mName='" + mName + '\'' +
+                ", mUsername='" + mUsername + '\'' +
+                ", mPresentation='" + mPresentation + '\'' +
+                ", mLocation='" + mLocation + '\'' +
+                ", mStatusMessage='" + mStatusMessage + '\'' +
+                ", mCurrentServer='" + mCurrentServer + '\'' +
+                ", mAllowFriendRequests=" + mAllowFriendRequests +
+                ", mOnline=" + mOnline +
+                ", mPlaying=" + mPlaying +
+                ", mFriendStatus=" + mFriendStatus +
+                ", mPlatoons=" + mPlatoons +
+                ", mPersonaNameString=" + mPersonaNameString +
+                ", mPersonaIdString=" + mPersonaIdString +
+                ", mPersonaPlatformString=" + mPersonaPlatformString +
+                ", mPlatoonNameString=" + mPlatoonNameString +
+                ", mPlatoonIdString=" + mPlatoonIdString +
+                '}';
+    }
 }

@@ -23,12 +23,17 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
@@ -61,7 +66,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         mLayoutInflater = inflater;
 
         View view = mLayoutInflater.inflate(R.layout.tab_content_profile_overview, container, false);
-
         initFragment(view);
         return view;
     }
@@ -95,7 +99,8 @@ public class ProfileOverviewFragment extends Bf3Fragment {
 
         if (data.isPlaying() && data.isOnline()) {
             ((TextView) activity.findViewById(R.id.text_online)).setText(
-                    getString(R.string.info_profile_playing).replace("{server name}", data.getCurrentServer()));
+                getString(R.string.info_profile_playing).replace("{server name}", data.getCurrentServer())
+            );
         } else if (data.isOnline()) {
             ((TextView) activity.findViewById(R.id.text_online)).setText(R.string.info_profile_online);
         } else {
@@ -120,14 +125,15 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             View convertView;
             LinearLayout platoonWrapper = (LinearLayout) activity.findViewById(R.id.list_platoons);
 
-            (activity.findViewById(R.id.text_platoon)).setVisibility(View.GONE);
+            activity.findViewById(R.id.text_platoon).setVisibility(View.GONE);
             platoonWrapper.removeAllViews();
 
             final OnClickListener onClickListener = new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(mContext, PlatoonActivity.class)
-                            .putExtra("platoon", (PlatoonData) v.getTag()));
+                    startActivity(
+                    	new Intent(mContext, PlatoonActivity.class).putExtra("platoon", (PlatoonData) v.getTag())
+                    );
                 }
             };
 
@@ -138,15 +144,13 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 }
                 convertView = mLayoutInflater.inflate(R.layout.list_item_platoon, platoonWrapper, false);
 
-                // Set the TextViews
                 ((TextView) convertView.findViewById(R.id.text_name)).setText(currentPlatoon.getName());
-                ((TextView) convertView.findViewById(R.id.text_tag)).setText("[" + currentPlatoon.getTag() + "]");
                 ((TextView) convertView.findViewById(R.id.text_members)).setText(String.valueOf(currentPlatoon.getCountMembers()));
                 ((TextView) convertView.findViewById(R.id.text_fans)).setText(String.valueOf(currentPlatoon.getCountFans()));
 
-                ((ImageView) convertView.findViewById(R.id.image_badge))
-                        .setImageBitmap(BitmapFactory.decodeFile(PublicUtils.getCachePath(mContext)+ currentPlatoon.getImage()));
-
+                String image = PublicUtils.getCachePath(mContext)+ currentPlatoon.getImage();
+                ((ImageView) convertView.findViewById(R.id.image_badge)).setImageBitmap(BitmapFactory.decodeFile(image));
+                
                 convertView.setTag(currentPlatoon);
                 convertView.setOnClickListener(onClickListener);
 
@@ -156,7 +160,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             ((LinearLayout) activity.findViewById(R.id.list_platoons)).removeAllViews();
             (activity.findViewById(R.id.text_platoon)).setVisibility(View.VISIBLE);
         }
-
         ((TextView) activity.findViewById(R.id.text_username)).setText(data.getUsername());
     }
 
@@ -175,7 +178,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         protected Boolean doInBackground(Void... arg0) {
             try {
                 mProfileInformation = CacheHandler.Profile.select(mContext, mProfileData.getId());
-
                 return (mProfileInformation != null);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -184,8 +186,8 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
-            if (result) {
+        protected void onPostExecute(Boolean foundCachedVersion) {
+            if (foundCachedVersion) {
                 if (this.progressDialog != null) {
                     this.progressDialog.dismiss();
                 }
@@ -199,8 +201,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 sendToStats(mProfileData);
 
             } else {
-                //TODO disabled refresh, it was crashing application on persona changes in ProfileStatsFragment
-                //new AsyncRefresh(SessionKeeper.getProfileData().getId(), progressDialog).execute();
+                new AsyncRefresh(SessionKeeper.getProfileData().getId(), progressDialog).execute();
             }
         }
     }
@@ -256,8 +257,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     }
 
     public void reload() {
-        new AsyncRefresh(SessionKeeper.getProfileData()
-                .getId()).execute();
+        new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();
     }
 
     public void sendToStats(ProfileData p) {
@@ -288,8 +288,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             ((MenuItem) menu.findItem(R.id.option_friendadd)).setVisible(false);
             ((MenuItem) menu.findItem(R.id.option_frienddel)).setVisible(false);
         }
-        ((MenuItem) menu.findItem(R.id.option_compare))
-                .setVisible(false);
+        ((MenuItem) menu.findItem(R.id.option_compare)).setVisible(false);
         return menu;
     }
 

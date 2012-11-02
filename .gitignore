@@ -21,3 +21,6 @@ classes
 
 # PMD #
 reports
+
+# Credentials
+#res/values/credentials.xml
