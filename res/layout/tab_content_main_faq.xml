@@ -31,7 +31,17 @@
         android:autoLink="web"
         android:padding="10dp"
         android:text="You can use various platforms to reach me, most of them listed in the first tab to the left. Use whichever you feel most comfortable with, and I\&apos;ll respond as soon as possible. :-)"/>
+    <TextView
+        style="@style/FriendHeadingRow"
+        android:text="My language is all messed up - can I help?"/>
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:padding="10dp"
+        android:text="Yes you can! Head over to http://bit.ly/bf3bll8n for more information on how you can help out with translating the app!"/>
+    
     <TextView
         style="@style/FriendHeadingRow"
         android:text="How does this app work?"/>
