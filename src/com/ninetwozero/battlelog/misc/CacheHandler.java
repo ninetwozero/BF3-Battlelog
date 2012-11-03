@@ -25,6 +25,7 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.text.TextUtils;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
+import com.ninetwozero.battlelog.dao.ProfileInformationDAO;
 import com.ninetwozero.battlelog.datatype.ForumThreadData;
 import com.ninetwozero.battlelog.datatype.PersonaData;
 import com.ninetwozero.battlelog.datatype.PersonaStats;
@@ -43,195 +44,6 @@ public class CacheHandler {
     private CacheHandler() {
     }
 
-    public static class Persona {
-        public static long insert(Context context, PersonaStats stats) {
-            try {
-                SQLiteManager manager = new SQLiteManager(context);
-                long results = manager.insert(
-                    DatabaseStructure.PersonaStatistics.TABLE_NAME,
-                    DatabaseStructure.PersonaStatistics.getColumns(),
-                    stats.toArray()
-                );
-                manager.close();
-                return results;
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return -1;
-            }
-        }
-
-        public static long insert(Context context, HashMap<Long, PersonaStats> statsArray) {
-            SQLiteManager manager = new SQLiteManager(context);
-            long results = 0;
-            try {
-                for (long key : statsArray.keySet()) {
-                	PersonaStats stats = statsArray.get(key);
-                	results += manager.insert(
-                        DatabaseStructure.PersonaStatistics.TABLE_NAME,
-                        DatabaseStructure.PersonaStatistics.getColumns(),
-                        stats.toArray()
-                    );
-                }
-                manager.close();
-                return results;
-            } catch (SQLiteConstraintException ex) { 
-            	// Duplicate input, no worries!
-                manager.close();
-                return 0;
-            } catch (Exception ex) {
-                manager.close();
-                ex.printStackTrace();
-                return -1;
-            }
-        }
-
-        public static boolean update(Context context, PersonaStats stats) {
-            SQLiteManager manager = new SQLiteManager(context);
-            try {
-                manager.update(
-                    DatabaseStructure.PersonaStatistics.TABLE_NAME,
-                    DatabaseStructure.PersonaStatistics.getColumns(),
-                    stats.toArray(),
-                    DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA,
-                    stats.getPersonaId()
-                );
-                manager.close();
-                return true;
-            } catch (Exception ex) {
-                manager.close();
-                ex.printStackTrace();
-                return false;
-            }
-        }
-
-        public static boolean update(Context context, HashMap<Long, PersonaStats> statsArray) {
-            SQLiteManager manager = new SQLiteManager(context);
-            int results = 0;
-            try {
-                for (long key : statsArray.keySet()) {
-                	PersonaStats stats = statsArray.get(key);
-                	results += manager.update(
-                        DatabaseStructure.PersonaStatistics.TABLE_NAME,
-                        DatabaseStructure.PersonaStatistics.getColumns(),
-                        stats.toArray(),
-                        DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA,
-                        stats.getPersonaId()
-        			);
-
-                }
-                manager.close();
-                return (results > 0);
-            } catch (Exception ex) {
-                manager.close();
-                ex.printStackTrace();
-                return false;
-            }
-        }
-
-        public static HashMap<Long, PersonaStats> select(final Context context, final PersonaData[] persona) {
-            SQLiteManager manager = new SQLiteManager(context);
-            try {
-                StringBuilder strQuestionMarks = new StringBuilder("(?");
-                String[] personaIdArray = new String[persona.length];
-                HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
-
-                for (int i = 0, max = persona.length; i < max; i++) {
-                    if (i > 0) {
-                        strQuestionMarks.append(", ?");
-                    }
-                    personaIdArray[i] = String.valueOf(persona[i].getId());
-                }
-                strQuestionMarks.append(")");
-
-                Cursor results = manager.query(
-                    DatabaseStructure.PersonaStatistics.TABLE_NAME,
-                    null,
-                    DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA + " IN " + strQuestionMarks,
-                    personaIdArray,
-                    null,
-                    null,
-                    DatabaseStructure.PersonaStatistics.DEFAULT_SORT_ORDER
-                );
-
-                if (results.moveToFirst()) {
-                	do {
-                        stats.put(
-                    		results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA)),
-                    		new PersonaStats(
-                				results.getString(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ACCOUNT_NAME)),
-                                results.getString(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_PERSONA_NAME)),
-                                results.getString(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_RANK)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_RANK)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_USER)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PLATFORM)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_TIME)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_POINTS_THIS)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_POINTS_NEXT)),
-                                results.getInt(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_KILLS)),
-                                results.getInt(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_ASSISTS)),
-                                results.getInt(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_VEHICLES)),
-                                results.getInt(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_VASSISTS)),
-                                results.getInt(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_HEALS)),
-                                results.getInt(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_REVIVES)),
-                                results.getInt(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_REPAIRS)),
-                                results.getInt(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_RESUPPLIES)),
-                                results.getInt(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_DEATHS)),
-                                results.getInt(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_WINS)),
-                                results.getInt(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_NUM_LOSSES)),
-                                results.getDouble(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_KDR)),
-                                results.getDouble(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_ACCURACY)),
-                                results.getDouble(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_LONGEST_HS)),
-                                results.getDouble(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_LONGEST_KS)),
-                                results.getDouble(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_SKILL)),
-                                results.getDouble(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_STATS_SPM)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_ASSAULT)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_ENGINEER)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_SUPPORT)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_RECON)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_VEHICLE)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_COMBAT)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_AWARDS)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_UNLOCKS)),
-                                results.getLong(results.getColumnIndex(DatabaseStructure.PersonaStatistics.COLUMN_NAME_SCORE_TOTAL))
-                            )
-                        );
-
-                    } while (results.moveToNext());
-                }
-
-                results.close();
-                manager.close();
-                return stats;
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                manager.close();
-                return null;
-            }
-        }
-
-        public static boolean delete(final Context context, final long[] personaId) {
-            SQLiteManager manager = new SQLiteManager(context);
-            try {
-                String[] personaIdArray = new String[personaId.length];
-                for (int i = 0, max = personaId.length; i < max; i++) {
-                    personaIdArray[i] = String.valueOf(personaId[i]);
-                }
-                int results = manager.delete(
-                    DatabaseStructure.PersonaStatistics.TABLE_NAME,
-                    DatabaseStructure.PersonaStatistics.COLUMN_NAME_ID_PERSONA,
-                    personaIdArray
-                );
-                manager.close();
-                return (results > 0);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                manager.close();
-                return false;
-            }
-        }
-    }
-
     public static class Profile {
         public static long insert(Context context, ProfileInformation stats) {
             SQLiteManager manager = new SQLiteManager(context);
@@ -239,7 +51,7 @@ public class CacheHandler {
                 long results = manager.insert(
                     DatabaseStructure.UserProfile.TABLE_NAME,
                     DatabaseStructure.UserProfile.getColumns(),
-                    stats.toArray()
+                    new Object[] {}
                 );
                 manager.close();
                 return results;
@@ -262,7 +74,7 @@ public class CacheHandler {
                 results += manager.update(
                     DatabaseStructure.UserProfile.TABLE_NAME,
                     DatabaseStructure.UserProfile.getColumns(),
-                    stats.toArray(),
+                    new Object[] {},
                     DatabaseStructure.UserProfile.COLUMN_NAME_NUM_UID,
                     stats.getUserId()
                 );
@@ -289,60 +101,7 @@ public class CacheHandler {
                 );
 
                 if (results.moveToFirst()) {
-                    List<PlatoonData> platoons = new ArrayList<PlatoonData>();
-                    String personaIdString = results.getString(results.getColumnIndex(DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PERSONA));
-                    String platformIdString = results.getString(results.getColumnIndex(DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PLATFORM));
-                    String personaNameString = results.getString(results.getColumnIndex(DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PERSONA_NAME));
-                    String platoonIdString = results.getString(results.getColumnIndex(DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PLATOON));
-                    String platoonNameString = results.getString(results.getColumnIndex(DatabaseStructure.UserProfile.COLUMN_NAME_STRING_PLATOON_NAME));
-
-					String[] personaStringArray = TextUtils.split(personaIdString, ":");
-                    String[] platformStringArray = TextUtils.split(platformIdString, ":");
-                    String[] personaNameStringArray = TextUtils.split(personaNameString, ":");
-                    String[] platoonIdArray = TextUtils.split(platoonIdString, ":");
-                    String[] platoonNameArray = TextUtils.split(platoonNameString, ":");
-
-                    // How many do we have? -1 due to last occurence being empty
-                    int numPersonas = personaStringArray.length;
-                    int numPlatoons = platoonNameArray.length;
-                    numPersonas = numPersonas == 0 ? 0 : numPersonas - 1;
-                    numPlatoons = numPlatoons == 0 ? 0 : numPlatoons - 1;
-
-                    PersonaData[] personas = new PersonaData[numPersonas];
-                    for (int i = 0; i < numPersonas; i++) {
-                        personas[i] = new PersonaData(
-                            Long.parseLong(personaStringArray[i]),
-                            personaNameStringArray[i],
-                            Integer.parseInt(platformStringArray[i]),
-                            null
-                        );
-                    }
-                  
-                    if (numPlatoons > 0) {
-                    	for (int i = 0; i < numPlatoons; i++) {
-                    		platoons.add(new PlatoonData(Long.parseLong(platoonIdArray[i]), platoonNameArray[i]));
-                    	}
-                    }
-
-                    ProfileInformation profile = new ProfileInformation(
-                        results.getInt(results.getColumnIndex("age")),
-                        results.getLong(results.getColumnIndex("user_id")),
-                        results.getLong(results.getColumnIndex("birth_date")),
-                        results.getLong(results.getColumnIndex("last_login")),
-                        results.getLong(results.getColumnIndex("status_changed")),
-                        personas,
-                        results.getString(results.getColumnIndex("name")),
-                        results.getString(results.getColumnIndex("username")),
-                        results.getString(results.getColumnIndex("presentation")),
-                        results.getString(results.getColumnIndex("location")),
-                        results.getString(results.getColumnIndex("status_message")),
-                        results.getString(results.getColumnIndex("current_server")),
-                        results.getString(results.getColumnIndex("allow_friendrequests")).equalsIgnoreCase("true"),
-                        results.getString(results.getColumnIndex("is_online")).equalsIgnoreCase("true"),
-                        results.getString(results.getColumnIndex("is_playing")).equalsIgnoreCase("true"),
-                        results.getString(results.getColumnIndex("is_friend")).equalsIgnoreCase("true"),
-                        platoons
-                    );
+                    ProfileInformation profile = ProfileInformationDAO.getProfileInformationFromCursor(results);
                     results.close();
                     manager.close();
                     return profile;
@@ -351,7 +110,6 @@ public class CacheHandler {
                     manager.close();
                     return null;
                 }
-
             } catch (Exception ex) {
                 ex.printStackTrace();
                 manager.close();

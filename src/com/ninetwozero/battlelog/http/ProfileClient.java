@@ -15,7 +15,10 @@
 package com.ninetwozero.battlelog.http;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.util.Log;
+
+import com.ninetwozero.battlelog.dao.ProfileInformationDAO;
 import com.ninetwozero.battlelog.datatype.*;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -266,10 +269,6 @@ public class ProfileClient extends DefaultClient {
                     getStats(current.getName(), current.getId(), current.getPlatformId())
                 );
             }
-
-            if (CacheHandler.Persona.insert(context, stats) == 0) {
-                CacheHandler.Persona.update(context, stats);
-            }
             return stats;
         } catch (Exception ex) {
             throw new WebsiteHandlerException(ex.getMessage());
@@ -484,30 +483,28 @@ public class ProfileClient extends DefaultClient {
 	                }	
                 }
                 	
-                ProfileInformation tempProfile = new ProfileInformation(
-                    userInfo.optInt("age", 0), 
-                    Long.parseLong(userInfo.getString("userId")),
-                    userInfo.optLong("birthdate", 0), 
-                    userInfo.optLong("lastLogin", 0), 
-                    statusMessage.optLong("statusMessageChanged", 0), 
-                    personaArray,
-                    userInfo.optString("name", "N/A"), 
-                    username,
-                    userInfo.isNull("presentation") ? "" : userInfo.getString("presentation"), 
-            		userInfo.optString("location", "us"), 
-            		statusMessage.optString("statusMessage", ""), 
-            		playingOn,
-                    userInfo.optBoolean("allowFriendRequests", true),
-                    presenceObject.getBoolean("isOnline"),
-                    presenceObject.getBoolean("isPlaying"),
-                    profileCommonObject.getString("friendStatus").equals("ACCEPTED"), 
-                    platoonDataArray
-                );
-
-                if (CacheHandler.Profile.insert(context, tempProfile) == 0) {
-                    CacheHandler.Profile.update(context, tempProfile);
-                }
-                return tempProfile;
+                ProfileInformation.Builder tempProfile = new ProfileInformation.Builder(
+            		Long.parseLong(userInfo.getString("userId")),
+            		username
+        		);
+                ProfileInformation profile = tempProfile
+            		.name(userInfo.optString("name", "N/A"))
+                	.age(userInfo.optInt("age", 0))
+                	.birthday(userInfo.optLong("birthdate", 0))
+                	.loginDate(userInfo.optLong("lastLogin", 0))
+                	.statusMessage(statusMessage.optString("statusMessage", ""))
+                	.statusDate(statusMessage.optLong("statusMessageChanged", 0))
+                	.persona(personaArray)
+                	.presentation(userInfo.isNull("presentation") ? "" : userInfo.getString("presentation"))
+                	.location(userInfo.optString("location", "us"))
+                	.server(playingOn)
+                	.allowFriendRequests(userInfo.optBoolean("allowFriendRequests", true))
+                	.isOnline(presenceObject.getBoolean("isOnline"))
+                	.isPlaying(presenceObject.getBoolean("isPlaying"))
+                	.isFriend(profileCommonObject.getString("friendStatus").equals("ACCEPTED")) 
+                    .platoons(platoonDataArray)
+                    .build();
+                return profile;
             }
         } catch (Exception ex) {
             throw new WebsiteHandlerException(ex.getMessage());

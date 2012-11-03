@@ -39,13 +39,13 @@ import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.asynctask.AsyncFriendRemove;
 import com.ninetwozero.battlelog.asynctask.AsyncFriendRequest;
+import com.ninetwozero.battlelog.dao.ProfileInformationDAO;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.ProfileInformation;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.COMClient;
 import com.ninetwozero.battlelog.http.ProfileClient;
-import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
@@ -86,17 +86,12 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     }
 
     public final void showProfile(ProfileInformation data) {
-        if (data == null) {
+        if (data == null || mContext == null) {
             return;
         }
-
-        Activity activity = getActivity();
-        if (activity == null) {
-            return;
-        }
-
+        Activity activity = (Activity) mContext;
+        
         ((TextView) activity.findViewById(R.id.text_username)).setText(data.getUsername());
-
         if (data.isPlaying() && data.isOnline()) {
             ((TextView) activity.findViewById(R.id.text_online)).setText(
                 getString(R.string.info_profile_playing).replace("{server name}", data.getCurrentServer())
@@ -104,7 +99,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         } else if (data.isOnline()) {
             ((TextView) activity.findViewById(R.id.text_online)).setText(R.string.info_profile_online);
         } else {
-            ((TextView) activity.findViewById(R.id.text_online)).setText(data.getLastLogin(mContext));
+            ((TextView) activity.findViewById(R.id.text_online)).setText(data.getLastLoginString(mContext));
         }
 
         if ("".equals(data.getStatusMessage())) {
@@ -174,10 +169,20 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             this.progressDialog.show();
         }
 
+        /* TODO: Investigate why there are no platoons/personas when reading the cache */
+        
         @Override
         protected Boolean doInBackground(Void... arg0) {
             try {
-                mProfileInformation = CacheHandler.Profile.select(mContext, mProfileData.getId());
+                mProfileInformation = ProfileInformationDAO.getProfileInformationFromCursor(
+            		mContext.getContentResolver().query(
+	            		ProfileInformationDAO.URI, 
+	            		null,
+	            		ProfileInformationDAO.Columns.USER_ID + "=?",
+	            		new String[] {String.valueOf(mProfileData.getId())},
+	            		null
+	            	)
+				);
                 return (mProfileInformation != null);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -192,6 +197,8 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                     this.progressDialog.dismiss();
                 }
 
+                /* COMPARE CACHE VS TIMESTAMP TO SEE IF NEED TO RELOAD DIRECTLY */
+                
                 showProfile(mProfileInformation);
 
                 if (mProfileData.getNumPersonas() < mProfileInformation.getNumPersonas()) {
@@ -232,6 +239,16 @@ public class ProfileOverviewFragment extends Bf3Fragment {
 
                 mProfileInformation = new ProfileClient(mProfileData).getInformation(mContext, activeProfileId);
 
+                /* TODO: Check to see which performs better - select+update or delete+insert */
+                mContext.getContentResolver().delete(   		
+            		ProfileInformationDAO.URI,             		
+            		ProfileInformationDAO.Columns.USER_ID + " = ?",
+                	new String[] { String.valueOf(mProfileInformation.getUserId()) }
+        		);
+                mContext.getContentResolver().insert(
+            		ProfileInformationDAO.URI, 
+            		ProfileInformationDAO.getProfileInformationForDB(mProfileInformation, System.currentTimeMillis())
+				);
                 sendToStats(mProfileData);
                 return (mProfileInformation != null);
 

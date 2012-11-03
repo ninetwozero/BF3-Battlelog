@@ -8,19 +8,16 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
 public class BattlelogContentProvider extends ContentProvider {
-
-    private DatabaseManager databaseManager;
-
-    private SQLiteDatabase database;
-
+    private DatabaseManager mDatabaseManager;
+    private SQLiteDatabase mDatabase;
     public static final String WHERE_PERSONA_ID = "personaId=?";
 
     public synchronized SQLiteDatabase getDatabase() {
-        if (database == null) {
-            databaseManager = new DatabaseManager(getContext());
-            database = databaseManager.getWritableDatabase();
+        if (mDatabase == null) {
+            mDatabaseManager = new DatabaseManager(getContext());
+            mDatabase = mDatabaseManager.getWritableDatabase();
         }
-        return database;
+        return mDatabase;
     }
 
     @Override
@@ -42,6 +39,8 @@ public class BattlelogContentProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         switch (UriFactory.URI_MATCHER.match(uri)) {
+        	case UriFactory.URI_CODES.PROFILE_INFO:
+        		return UriFactory.URI_PATH.PROFILE_INFO;
             case UriFactory.URI_CODES.RANK_PROGRESS:
                 return UriFactory.URI_PATH.RANK_PROGRESS;
             case UriFactory.URI_CODES.PERSONA_STATISTICS:
@@ -55,18 +54,18 @@ public class BattlelogContentProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        long id = database.insert(getType(uri), null, contentValues);
+        long id = mDatabase.insert(getType(uri), null, contentValues);
         getContext().getContentResolver().notifyChange(uri, null);
         return Uri.parse(getType(uri) + "/" + id);
     }
 
     @Override
     public int delete(Uri uri, String where, String[] selection) {
-        return database.delete(getType(uri), where, selection);
+        return mDatabase.delete(getType(uri), where, selection);
     }
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0;
     }
 }

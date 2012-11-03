@@ -167,8 +167,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
         mSelectedPersona = getSelectedPersonaId(mSelectedPosition);
         mSelectedPlatformId = getPlatformIdFor(mSelectedPosition);
         mSelectedPersonaName = getSelectedPersonaName(mSelectedPosition);
-        Log.d(Constants.DEBUG_TAG, "mSelectedPersona => " + mSelectedPersona);
-        callURI = UriFactory.personaOverview(mSelectedPersona, mSelectedPlatformId);
+        callURI = UriFactory.getPersonaOverviewUri(mSelectedPersona, mSelectedPlatformId);
     }
 
     private long getSelectedPersonaId(int position) {

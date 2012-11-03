@@ -148,17 +148,16 @@ public class ProfileData implements Parcelable {
         private final String mUsername;
 
         // Optional params
-        private String mGravatarHash;
-        private PersonaData[] mPersona;
-        private boolean mPlaying;
-        private boolean mOnline;
-        private boolean mFriend;
-        private int mMembershipLevel;
+        private String mGravatarHash = "";
+        private PersonaData[] mPersona = new PersonaData[0];
+        private boolean mPlaying = false;
+        private boolean mOnline = false;
+        private boolean mFriend = false;
+        private int mMembershipLevel = 0;
 
         public Builder(long i, String u) {
             mId = i;
             mUsername = u;
-
         }
 
         public Builder gravatarHash(String s) {
