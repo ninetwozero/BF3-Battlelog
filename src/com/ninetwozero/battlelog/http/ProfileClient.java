@@ -504,6 +504,7 @@ public class ProfileClient extends DefaultClient {
                 	.isFriend(profileCommonObject.getString("friendStatus").equals("ACCEPTED")) 
                     .platoons(platoonDataArray)
                     .build();
+                profile.generateSerializedState();
                 return profile;
             }
         } catch (Exception ex) {

@@ -91,11 +91,7 @@ public class SQLiteManager {
             if (oldVersion == 1) {
                 onCreate(db);
             } else {
-                if (oldVersion == 1) {
-                    /*
-                     * If it's the first version, then we do the specific things
-                     */
-                } else if (oldVersion == 2) {
+                if (oldVersion == 2) {
                     /* if it's the second, we do specific things */
                 } else {
                     /* Current version */

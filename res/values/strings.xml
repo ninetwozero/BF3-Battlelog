@@ -1383,5 +1383,5 @@
     <string name="msg_faq_is_not_stealing_password">Are you sure that you aren\'t stealing our passwords?</string>
     <string name="msg_faq_is_not_stealing_password_answer">Yes, I\'m 100% certain of that.\n\nThe only time that the app is sending your Origin credentials anywhere is when you login manually.\n\nIn other words, your login information never gets sent to any third-party servers or similar.</string>
     <string name="msg_failed_to_load_stats">The data is currently unavailable.</string>
-
+	<string name="info_favorited_server">favorite server</string>
 </resources>

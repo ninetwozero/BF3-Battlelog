@@ -26,27 +26,21 @@ public class PersonaData implements Parcelable {
 
     // Constructs
     public PersonaData(Parcel in) {
-
         id = in.readLong();
         name = in.readString();
         platformId = in.readInt();
         logo = in.readString(); // TODO: This needs to be incorporated into SP
-
     }
 
     public PersonaData(String n) {
-
         this(0, n, 0, null);
-
     }
 
     public PersonaData(long i, String n, int pId, String l) {
-
         id = i;
         name = n;
         platformId = pId;
         logo = l;
-
     }
 
     // Getters
@@ -68,12 +62,10 @@ public class PersonaData implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
         dest.writeLong(id);
         dest.writeString(name);
         dest.writeInt(platformId);
         dest.writeString(logo);
-
     }
 
     @Override
@@ -94,34 +86,24 @@ public class PersonaData implements Parcelable {
     };
 
     public String resolvePlatformId() {
-
         switch (platformId) {
-
             case 0:
             case 1:
                 return "[PC]";
-
             case 2:
                 return "[360]";
-
             case 4:
                 return "[PS3]";
-
             default:
                 return "[N/A]";
-
         }
-
     }
 
     // toString
     @Override
     public String toString() {
-
         return (
-
                 id + ":" + name + ":" + logo + ":" + platformId
-
         );
     }
 }

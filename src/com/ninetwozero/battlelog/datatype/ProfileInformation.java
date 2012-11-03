@@ -19,10 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ProfileInformation {
@@ -217,7 +215,38 @@ public class ProfileInformation {
     	return mPlatoonNameString.toString();
     }
     
-    public void generate() {
+    public void generateFromSerializedState() {
+    	String[] personaIdArray = mPersonaIdString.toString().split(":");
+    	String[] personaNameArray = mPersonaNameString.toString().split(":");
+    	String[] personaPlatoonArray = mPersonaPlatformString.toString().split(":");
+    	String[] platoonIdArray = mPlatoonIdString.toString().split(":");
+    	String[] platoonNameArray = mPlatoonNameString.toString().split(":");
+    	
+    	int numPersonas = personaIdArray.length;
+    	int numPlatoons = platoonIdArray.length;
+    	
+    	mPersona = new PersonaData[numPersonas];
+    	for (int i = 0; i < numPersonas; i++) {
+    		mPersona[i] = new PersonaData(
+    			Long.parseLong(personaIdArray[i]),
+    			personaNameArray[i],
+    			Integer.parseInt(personaPlatoonArray[i]),
+    			""
+			);
+    	}    	
+    	
+    	mPlatoon = new ArrayList<PlatoonData>();
+    	for (int i = 0; i < numPlatoons; i++) {
+    		mPlatoon.add(
+				new PlatoonData(
+	    			Long.parseLong(platoonIdArray[i]),
+	    			platoonNameArray[i]
+				)
+			);
+    	}
+    }
+    
+    public void generateSerializedState() {
         mPersonaIdString.setLength(0);
         mPersonaNameString.setLength(0);
         mPersonaPlatformString.setLength(0);
@@ -234,9 +263,6 @@ public class ProfileInformation {
             mPlatoonIdString.append(p.getId() + ":");
             mPlatoonNameString.append(p.getName() + ":");
         }
-
-        Log.d(Constants.DEBUG_TAG, "Number of personas: " + mPersona.length);
-        Log.d(Constants.DEBUG_TAG, "Number of platoons: " + mPlatoon.size());
     }
     
     public static class Builder {

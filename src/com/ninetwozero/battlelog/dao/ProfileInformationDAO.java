@@ -1,11 +1,15 @@
 package com.ninetwozero.battlelog.dao;
 
+import java.util.Map.Entry;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 import com.ninetwozero.battlelog.Battlelog;
 import com.ninetwozero.battlelog.datatype.ProfileInformation;
+import com.ninetwozero.battlelog.misc.Constants;
 
 public class ProfileInformationDAO {
 	public static final Uri URI = Uri.parse("content://" + Battlelog.AUTHORITY + "/profile/");
@@ -20,7 +24,7 @@ public class ProfileInformationDAO {
     		cursor.getString(cursor.getColumnIndex(Columns.USERNAME))
 		);
         
-        tempProfile = tempProfile
+        ProfileInformation profile = tempProfile
 			.name(cursor.getString(cursor.getColumnIndex(Columns.NAME)))		
 	        .age(cursor.getInt(cursor.getColumnIndex(Columns.AGE)))
 	        .birthday(cursor.getLong(cursor.getColumnIndex(Columns.BIRTHDAY)))
@@ -33,16 +37,16 @@ public class ProfileInformationDAO {
 			.personaNameString(cursor.getString(cursor.getColumnIndex(Columns.PERSONA_NAME)))
 			.personaPlatformString(cursor.getString(cursor.getColumnIndex(Columns.PERSONA_PLATFORM)))
 			.platoonIdString(cursor.getString(cursor.getColumnIndex(Columns.PLATOON_ID)))
-			.platoonNameString(cursor.getString(cursor.getColumnIndex(Columns.PLATOON_NAME)));
+			.platoonNameString(cursor.getString(cursor.getColumnIndex(Columns.PLATOON_NAME)))
+			.build();
         
-        ProfileInformation profile = tempProfile.build();
-        profile.generate();
+        profile.generateFromSerializedState();
         cursor.close();
         return profile;
     }
 
     public static ProfileInformation getProfileInformationFromJSON(ProfileInformation pi) {
-    	pi.generate();
+    	pi.generateSerializedState();
     	return pi;
     }
 
@@ -70,9 +74,7 @@ public class ProfileInformationDAO {
     private static String getValueFromCursor(Cursor cursor, String name) {
         return cursor.getString(cursor.getColumnIndexOrThrow(name));
     }
-    
-
-	
+    	
 	public final class Columns {
     	public final static String USER_ID = "userId";
     	public final static String USERNAME = "username";
