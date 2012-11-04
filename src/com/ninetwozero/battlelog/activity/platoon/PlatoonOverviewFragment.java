@@ -15,31 +15,29 @@
 package com.ninetwozero.battlelog.activity.platoon;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.asynctask.AsyncPlatoonRequest;
-import com.ninetwozero.battlelog.dao.PlatoonInformationDAO;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.PlatoonInformation;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
-import com.ninetwozero.battlelog.http.PlatoonClient;
-import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
@@ -58,7 +56,6 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
     // Misc
     private PlatoonData mPlatoonData;
     private PlatoonInformation mPlatoonInformation;
-    private boolean mPostingRights;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,12 +72,9 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
     @Override
     public void onResume() {
         super.onResume();
-        new AsyncCache().execute();
     }
 
     public void initFragment(View v) {
-        mPostingRights = false;
-
         mWrapWeb = (RelativeLayout) v.findViewById(R.id.wrap_web);
         mWrapWeb.setOnClickListener(
     		new OnClickListener() {
@@ -100,13 +94,10 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         }
         Activity activity = (Activity) mContext;
 
-        // Let's start by getting an ImageView
         if (mImageViewBadge == null) {
-            mImageViewBadge = (ImageView) activity
-                    .findViewById(R.id.image_badge);
+            mImageViewBadge = (ImageView) activity.findViewById(R.id.image_badge);
         }
 
-        // Set some TextViews
         ((TextView) activity.findViewById(R.id.text_name_platoon)).setText(data.getName() + " [" + data.getTag() + "]");
         ((TextView) activity.findViewById(R.id.text_date)).setText(
             getString(R.string.info_platoon_created).replace(
@@ -115,7 +106,6 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             ).replace(
             	"{RELATIVE DATE}", 
             	PublicUtils.getRelativeDate(mContext, data.getDateCreated())
-
             )
         );
 
@@ -130,7 +120,6 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             case 4:
                 ((ImageView) activity.findViewById(R.id.image_platform)).setImageResource(R.drawable.logo_ps3);
                 break;
-
             default:
                 ((ImageView) activity.findViewById(R.id.image_platform)).setImageResource(R.drawable.logo_pc);
                 break;
@@ -157,142 +146,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         }
     }
 
-    public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
-
-        // Attributes
-        private ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            this.progressDialog = new ProgressDialog(mContext);
-            this.progressDialog.setTitle(mContext.getString(R.string.general_wait));
-            this.progressDialog.setMessage(mContext.getString(R.string.general_downloading));
-            this.progressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... arg0) {
-            try {
-            	mPlatoonInformation = PlatoonInformationDAO.getPlatoonInformationFromCursor(
-        			mContext.getContentResolver().query(
-	            		PlatoonInformationDAO.URI,
-	            		null, 
-	            		PlatoonInformationDAO.Columns.PLATOON_ID + "=?", 
-	            		new String[] { String.valueOf(mPlatoonData.getId())},
-	            		null
-	            	)
-        		);
-                return (mPlatoonInformation != null);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean cacheExists) {
-            if (cacheExists) {
-                
-            	/* TODO VALIDATE THE TIMESTAMP */
-            	new AsyncRefresh(mContext, mPlatoonData, SessionKeeper.getProfileData().getId()).execute();
-                
-            	if (this.progressDialog != null) {
-                    this.progressDialog.dismiss();
-                }
-
-                // Set the data
-                showProfile(mPlatoonInformation);
-                sendToStats(mPlatoonInformation);
-            } else {
-                new AsyncRefresh(mContext, mPlatoonData, SessionKeeper.getProfileData().getId(), progressDialog).execute();
-            }
-        }
-    }
-
-    public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
-
-        // Attributes
-        private Context context;
-        private ProgressDialog progressDialog;
-        private PlatoonData platoonData;
-        private long activeProfileId;
-
-        public AsyncRefresh(Context c, PlatoonData pd, long pId) {
-            this.context = c;
-            this.platoonData = pd;
-            this.activeProfileId = pId;
-        }
-
-        public AsyncRefresh(Context c, PlatoonData pd, long pId, ProgressDialog p) {
-            this.context = c;
-            this.platoonData = pd;
-            this.activeProfileId = pId;
-            this.progressDialog = p;
-        }
-
-        @Override
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... arg0) {
-            try {
-                mPlatoonInformation = new PlatoonClient(this.platoonData).getInformation(
-                	context, 
-                	mSharedPreferences.getInt(Constants.SP_BL_NUM_FEED,Constants.DEFAULT_NUM_FEED),
-                	this.activeProfileId
-            	);
-                
-                if( mPlatoonInformation != null ) {
-                	mContext.getContentResolver().delete(
-                		PlatoonInformationDAO.URI,
-                		PlatoonInformationDAO.Columns.PLATOON_ID + "=?",
-                		new String[] { String.valueOf(mPlatoonInformation.getId()) }
-        			);
-                	mContext.getContentResolver().insert(
-                		PlatoonInformationDAO.URI,
-                		PlatoonInformationDAO.getPlatoonInformationForDB(mPlatoonInformation, System.currentTimeMillis())
-        			);                	
-                }
-                return false;
-            } catch (WebsiteHandlerException ex) {
-                ex.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-
-        	if (!result) {
-                Toast.makeText(context, R.string.general_no_data,Toast.LENGTH_SHORT).show();
-                return;
-            }
-        	
-            showProfile(mPlatoonInformation);
-            sendToStats(mPlatoonInformation);
-            sendToUsers(mPlatoonInformation);
-            setFeedPermission(mPlatoonInformation.isMember() || mPostingRights);
-        }
-    }
-
     public void reload() {
-        new AsyncRefresh(mContext, mPlatoonData, SessionKeeper.getProfileData().getId()).execute();
-    }
-
-    public void sendToStats(PlatoonInformation p) {
-        ((PlatoonActivity) mContext).openStats(p);
-    }
-
-    public void sendToUsers(PlatoonInformation p) {
-        ((PlatoonActivity) mContext).openMembers(p);
-    }
-
-    public void setFeedPermission(boolean c) {
-        ((PlatoonActivity) mContext).setFeedPermission(c);
     }
 
     public void setPlatoonData(PlatoonData p) {

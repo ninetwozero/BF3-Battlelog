@@ -14,31 +14,41 @@
 
 package com.ninetwozero.battlelog.activity.platoon;
 
+import java.util.ArrayList;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
-import android.content.res.Configuration;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.*;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
-import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
+import com.ninetwozero.battlelog.dao.PlatoonInformationDAO;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.PlatoonInformation;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.FeedClient;
-import com.ninetwozero.battlelog.http.RequestHandler;
+import com.ninetwozero.battlelog.http.PlatoonClient;
 import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+import com.ninetwozero.battlelog.misc.SessionKeeper;
 
-import java.util.ArrayList;
-
-public class PlatoonActivity extends CustomFragmentActivity implements
-        DefaultFragmentActivity {
+public class PlatoonActivity extends CustomFragmentActivity {
 
     // Fragment related
     private PlatoonOverviewFragment mFragmentOverview;
@@ -48,30 +58,21 @@ public class PlatoonActivity extends CustomFragmentActivity implements
 
     // Misc
     private PlatoonData mPlatoonData;
+    private PlatoonInformation mPlatoonInformation;
+    private boolean mPostingRights;
 
     @Override
     public void onCreate(final Bundle icicle) {
-
-        // onCreate - save the instance state
         super.onCreate(icicle);
 
-        // Get the intent
         if (!getIntent().hasExtra("platoon")) {
             finish();
         }
-
-        // Get the platoon data
         mPlatoonData = (PlatoonData) getIntent().getParcelableExtra("platoon");
 
-        // Set the content view
         setContentView(R.layout.viewpager_default);
-
-        // Let's setup the fragments too
         setup();
-
-        // Init
         init();
-
     }
 
     public void init() {
@@ -79,260 +80,279 @@ public class PlatoonActivity extends CustomFragmentActivity implements
     }
 
     public void reload() {
+        new AsyncRefresh(this, mPlatoonData, SessionKeeper.getProfileData().getId()).execute();
+    }
+    
 
-        // ASYNC!!
-        mFragmentOverview.reload();
+    public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
+    	private Context context;
+    	private ProgressDialog progressDialog;
 
+        public AsyncCache(Context c) {
+        	context = c;
+        }
+        
+        @Override
+        protected void onPreExecute() {
+            this.progressDialog = new ProgressDialog(context);
+            this.progressDialog.setTitle(context.getString(R.string.general_wait));
+            this.progressDialog.setMessage(context.getString(R.string.general_downloading));
+            this.progressDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... arg0) {
+            try {
+            	mPlatoonInformation = PlatoonInformationDAO.getPlatoonInformationFromCursor(
+        			context.getContentResolver().query(
+	            		PlatoonInformationDAO.URI,
+	            		null, 
+	            		PlatoonInformationDAO.Columns.PLATOON_ID + "=?", 
+	            		new String[] { String.valueOf(mPlatoonData.getId())},
+	            		null
+	            	)
+        		);
+                return (mPlatoonInformation != null);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean cacheExists) {
+            if (cacheExists) {
+            	long cacheExpiration = System.currentTimeMillis()-((Constants.MINUTE_IN_SECONDS*30)*1000);
+                if(( mPlatoonInformation.getTimestamp() < cacheExpiration)) {
+                	new AsyncRefresh(context, mPlatoonData, SessionKeeper.getProfileData().getId()).execute();
+            	}
+                
+            	if (this.progressDialog != null) {
+                    this.progressDialog.dismiss();
+                }
+
+                mFragmentOverview.showProfile(mPlatoonInformation);
+                mFragmentStats.showStats(mPlatoonInformation);
+                mFragmentMember.showMembers(mPlatoonInformation);
+                mFragmentFeed.setCanWrite(mPostingRights);
+            } else {
+                new AsyncRefresh(context, mPlatoonData, SessionKeeper.getProfileData().getId(), progressDialog).execute();
+            }
+        }
+    }
+
+    public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
+        private Context context;
+        private ProgressDialog progressDialog;
+        private PlatoonData platoonData;
+        private long activeProfileId;
+
+        public AsyncRefresh(Context c, PlatoonData pd, long pId) {
+            this.context = c;
+            this.platoonData = pd;
+            this.activeProfileId = pId;
+        }
+
+        public AsyncRefresh(Context c, PlatoonData pd, long pId, ProgressDialog p) {
+            this.context = c;
+            this.platoonData = pd;
+            this.activeProfileId = pId;
+            this.progressDialog = p;
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... arg0) {
+            try {
+                mPlatoonInformation = new PlatoonClient(this.platoonData).getInformation(
+                	context, 
+                	mSharedPreferences.getInt(Constants.SP_BL_NUM_FEED,Constants.DEFAULT_NUM_FEED),
+                	this.activeProfileId
+            	);
+                
+                if( mPlatoonInformation != null ) {
+                	context.getContentResolver().delete(
+                		PlatoonInformationDAO.URI,
+                		PlatoonInformationDAO.Columns.PLATOON_ID + "=?",
+                		new String[] { String.valueOf(mPlatoonInformation.getId()) }
+        			);
+                	context.getContentResolver().insert(
+                		PlatoonInformationDAO.URI,
+                		PlatoonInformationDAO.getPlatoonInformationForDB(mPlatoonInformation, System.currentTimeMillis())
+        			);                	
+                }
+                return false;
+            } catch (WebsiteHandlerException ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+
+        	if (!result) {
+                Toast.makeText(context, R.string.general_no_data,Toast.LENGTH_SHORT).show();
+                return;
+            }
+        	
+
+            // Set the data
+            mFragmentOverview.showProfile(mPlatoonInformation);
+            mFragmentStats.showStats(mPlatoonInformation);
+            mFragmentMember.showMembers(mPlatoonInformation);
+            mFragmentFeed.setCanWrite(mPlatoonInformation.isMember() || mPostingRights);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate!!
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_platoonview, menu);
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-        // Our own profile, no need to show the "extra" buttons
         if (mViewPager.getCurrentItem() == 0) {
-
-            return super.onPrepareOptionsMenu(mFragmentOverview
-                    .prepareOptionsMenu(menu));
-
+            return super.onPrepareOptionsMenu(mFragmentOverview.prepareOptionsMenu(menu));
         } else if (mViewPager.getCurrentItem() == 1) {
-
-            return super.onPrepareOptionsMenu(mFragmentStats
-                    .prepareOptionsMenu(menu));
-
+            return super.onPrepareOptionsMenu(mFragmentStats.prepareOptionsMenu(menu));
         } else if (mViewPager.getCurrentItem() == 2) {
-
-            return super.onPrepareOptionsMenu(mFragmentMember
-                    .prepareOptionsMenu(menu));
-
+            return super.onPrepareOptionsMenu(mFragmentMember.prepareOptionsMenu(menu));
         } else {
-
             menu.removeItem(R.id.option_friendadd);
             menu.removeItem(R.id.option_frienddel);
             menu.removeItem(R.id.option_compare);
             menu.removeItem(R.id.option_unlocks);
-
         }
-
         return super.onPrepareOptionsMenu(menu);
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        // Let's act!
         if (item.getItemId() == R.id.option_reload) {
-
             this.reload();
-
         } else if (item.getItemId() == R.id.option_back) {
-
             ((Activity) this).finish();
-
         } else {
-
             if (mViewPager.getCurrentItem() == 0) {
-
                 return mFragmentOverview.handleSelectedOption(item);
-
             } else if (mViewPager.getCurrentItem() == 1) {
-
                 return mFragmentStats.handleSelectedOption(item);
-
             } else if (mViewPager.getCurrentItem() == 2) {
-
                 return mFragmentMember.handleSelectedOption(item);
-
             }
-
         }
-
-        // Return true yo
         return true;
-
     }
 
     @Override
     public void onResume() {
-
         super.onResume();
-
-        // Setup the locale
-        PublicUtils.setupLocale(this, mSharedPreferences);
-
-        // Setup the session
-        PublicUtils.setupSession(this, mSharedPreferences);
-
-        // We need to initialize
-        init();
-
+        new AsyncCache(this).execute();
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.SUPER_COOKIES,
-                RequestHandler.getCookies());
-
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view,
-                                    ContextMenuInfo menuInfo) {
-
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
         switch (mViewPager.getCurrentItem()) {
-
             case 0:
                 break;
-
             case 1:
                 break;
-
             case 2:
                 mFragmentMember.createContextMenu(menu, view, menuInfo);
                 break;
-
             case 3:
                 mFragmentFeed.createContextMenu(menu, view, menuInfo);
                 break;
-
             default:
                 break;
         }
-
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-
-        // Declare...
         AdapterView.AdapterContextMenuInfo info;
-
-        // Let's try to get some menu information via a try/catch
         try {
-
             info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
         } catch (ClassCastException e) {
-
             e.printStackTrace();
             return false;
-
         }
-
+        
         switch (mViewPager.getCurrentItem()) {
-
             case 2:
                 return mFragmentMember.handleSelectedContextItem(info, item);
-
             case 3:
                 return mFragmentFeed.handleSelectedContextItem(info, item);
-
             default:
                 break;
-
         }
-
         return true;
     }
 
     public void setup() {
-
-        // Do we need to setup the fragments?
         if (mListFragments == null) {
-
-            // Add them to the list
             mListFragments = new ArrayList<Fragment>();
-            mListFragments
-                    .add(mFragmentOverview = (PlatoonOverviewFragment) Fragment
-                            .instantiate(this,
-                                    PlatoonOverviewFragment.class.getName()));
-            mListFragments.add(mFragmentStats = (PlatoonStatsFragment) Fragment
-                    .instantiate(this, PlatoonStatsFragment.class.getName()));
-            mListFragments
-                    .add(mFragmentMember = (PlatoonMemberFragment) Fragment
-                            .instantiate(this,
-                                    PlatoonMemberFragment.class.getName()));
-            mListFragments.add(mFragmentFeed = (FeedFragment) Fragment
-                    .instantiate(this, FeedFragment.class.getName()));
+            mListFragments.add(mFragmentOverview = (PlatoonOverviewFragment) Fragment.instantiate(this, PlatoonOverviewFragment.class.getName()));
+            mListFragments.add(mFragmentStats = (PlatoonStatsFragment) Fragment.instantiate(this, PlatoonStatsFragment.class.getName()));
+            mListFragments.add(mFragmentMember = (PlatoonMemberFragment) Fragment.instantiate(this, PlatoonMemberFragment.class.getName()));
+            mListFragments.add(mFragmentFeed = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
 
-            // Add the profileData
             mFragmentOverview.setPlatoonData(mPlatoonData);
             mFragmentMember.setPlatoonData(mPlatoonData);
 
-            // We need to set the type
             mFragmentFeed.setTitle(mPlatoonData.getName());
             mFragmentFeed.setType(FeedClient.TYPE_PLATOON);
             mFragmentFeed.setId(mPlatoonData.getId());
             mFragmentFeed.setCanWrite(false);
 
-            // Get the ViewPager
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
-            // Fill the PagerAdapter & set it to the viewpager
             mPagerAdapter = new SwipeyTabsPagerAdapter(
-
-                    mFragmentManager, new String[]{"OVERVIEW", "STATS", "USERS",
-                    "FEED"}, mListFragments, mViewPager, mLayoutInflater);
+                mFragmentManager, 
+                new String[]{"OVERVIEW", "STATS", "USERS", "FEED"}, 
+                mListFragments, 
+                mViewPager, 
+                mLayoutInflater
+            );
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 
-            // Make sure the tabs follow
             mViewPager.setOnPageChangeListener(mTabs);
             mViewPager.setCurrentItem(0);
             mViewPager.setOffscreenPageLimit(3);
-
         }
-
     }
 
     public void openStats(PlatoonInformation p) {
-
         mFragmentStats.setPlatoonInformation(p);
         mFragmentStats.reload();
-
     }
 
     public void openMembers(PlatoonInformation p) {
-
         mFragmentMember.showMembers(p);
-
     }
 
     public void setFeedPermission(boolean c) {
-
         mFragmentFeed.setCanWrite(c);
-
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        // Hotkeys
         if (keyCode == KeyEvent.KEYCODE_BACK && mViewPager.getCurrentItem() > 0) {
-
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+            mViewPager.setCurrentItem(0, true);
             return true;
-
         }
         return super.onKeyDown(keyCode, event);
     }
-
 }

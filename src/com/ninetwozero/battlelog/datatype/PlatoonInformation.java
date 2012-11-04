@@ -39,6 +39,7 @@ public class PlatoonInformation {
     private List<ProfileData> fans;
     private List<ProfileData> invitableFriends;
     private PlatoonStats stats;
+    private long timestamp;
 
     // Construct(s)
     public PlatoonInformation(PlatoonInformation.Builder builder) {
@@ -61,6 +62,7 @@ public class PlatoonInformation {
         fans = builder.fans;
         invitableFriends = builder.invitableFriends;
         stats = builder.stats;
+        timestamp = builder.timestamp;
     }
 
     // Getters
@@ -140,6 +142,10 @@ public class PlatoonInformation {
         return stats;
     }
     
+    public long getTimestamp() {
+    	return timestamp;
+    }
+    
     public static class Builder {
     	private final long id;
         private final String name;
@@ -162,6 +168,7 @@ public class PlatoonInformation {
         public List<ProfileData> members = new ArrayList<ProfileData>();
         public List<ProfileData> invitableFriends = new ArrayList<ProfileData>();
         public PlatoonStats stats = null;
+        public long timestamp = System.currentTimeMillis();
         
         public Builder(long i, String n, String t) {
             id = i;
@@ -233,7 +240,10 @@ public class PlatoonInformation {
         	stats = s;
         	return this;
         }
-
+        public Builder timestamp(long n) {
+        	timestamp = n;
+        	return this;
+        }
         public PlatoonInformation build() {
             return new PlatoonInformation(this);
         }

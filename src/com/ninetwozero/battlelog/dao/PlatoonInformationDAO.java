@@ -28,7 +28,8 @@ public class PlatoonInformationDAO {
         	.presentation(cursor.getString(cursor.getColumnIndex(Columns.PRESENTATION)))
         	.numFans(cursor.getInt(cursor.getColumnIndex(Columns.NUM_FANS)))
     		.numMembers(cursor.getInt(cursor.getColumnIndex(Columns.NUM_MEMBERS)))
-    		.blazeClubId(cursor.getLong(cursor.getColumnIndex(Columns.BLAZE_CLUB_ID)));
+    		.blazeClubId(cursor.getLong(cursor.getColumnIndex(Columns.BLAZE_CLUB_ID)))
+    		.timestamp(cursor.getLong(cursor.getColumnIndex(Columns.TIMESTAMP)));
         cursor.close();
         return platoon.build();
     }
