@@ -45,6 +45,7 @@ public class ProfileInformationDAO {
         return profile;
     }
 
+    /* TODO: Fix with loader */
     public static ProfileInformation getProfileInformationFromJSON(ProfileInformation pi) {
     	pi.generateSerializedState();
     	return pi;

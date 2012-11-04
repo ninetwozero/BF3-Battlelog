@@ -238,8 +238,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 }
 
                 mProfileInformation = new ProfileClient(mProfileData).getInformation(mContext, activeProfileId);
-
-                /* TODO: Check to see which performs better - select+update or delete+insert */
                 mContext.getContentResolver().delete(   		
             		ProfileInformationDAO.URI,             		
             		ProfileInformationDAO.Columns.USER_ID + " = ?",
@@ -249,9 +247,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             		ProfileInformationDAO.URI, 
             		ProfileInformationDAO.getProfileInformationForDB(mProfileInformation, System.currentTimeMillis())
 				);
-                sendToStats(mProfileData);
                 return (mProfileInformation != null);
-
             } catch (WebsiteHandlerException ex) {
                 ex.printStackTrace();
                 return false;
@@ -269,6 +265,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             }
 
             showProfile(mProfileInformation);
+            sendToStats(mProfileData);
             setFeedPermission(mProfileInformation.isFriend() || mPostingRights);
         }
     }

@@ -864,31 +864,29 @@ public class PlatoonClient extends DefaultClient {
                     PlatoonClient.cacheBadge(c, profileCommonObject.getString("badgePath"), filename, Constants.DEFAULT_BADGE_SIZE);
                 }
 
-                PlatoonInformation platoonInformation = new PlatoonInformation(
+                PlatoonInformation.Builder platoonInformation = new PlatoonInformation.Builder(
                     platoonId, 
-                    profileCommonObject.getLong("creationDate"),
-                    profileCommonObject.getInt("platform"),
-                    profileCommonObject.getInt("game"),
-                    profileCommonObject.getInt("fanCounter"),
-                    profileCommonObject.getInt("memberCounter"),
-                    profileCommonObject.getInt("blazeClubId"),
                     profileCommonObject.getString("name"),
-                    profileCommonObject.getString("tag"),
-                    profileCommonObject.getString("presentation"),
-                    PublicUtils.normalizeUrl(profileCommonObject.optString("website", "")),
-                    !profileCommonObject.getBoolean("hidden"), 
-                    isMember,
-                    isAdmin,
-                    profileCommonObject.getBoolean("allowNewMembers"), 
-                    members, 
-                    fans, 
-                    friends,
-                    stats
+                    profileCommonObject.getString("tag")
                 );
-                if (CacheHandler.Platoon.insert(c, platoonInformation) == 0) {
-                    CacheHandler.Platoon.update(c, platoonInformation);
-                }
-                return platoonInformation;
+                return platoonInformation
+                	.date(profileCommonObject.getLong("creationDate"))
+                	.platformId(profileCommonObject.getInt("platform"))
+                    .gameId(profileCommonObject.getInt("game"))
+                    .numFans(profileCommonObject.getInt("fanCounter"))
+                    .numMembers(profileCommonObject.getInt("memberCounter"))
+                    .blazeClubId(profileCommonObject.getInt("blazeClubId"))
+                    .presentation(profileCommonObject.getString("presentation"))
+                    .website(PublicUtils.normalizeUrl(profileCommonObject.optString("website", "")))
+                    .visibility(!profileCommonObject.getBoolean("hidden")) 
+                    .isMember(isMember)
+                    .isAdmin(isAdmin)
+                    .allowNewMembers(profileCommonObject.getBoolean("allowNewMembers")) 
+                    .members(members) 
+                    .fans(fans) 
+                    .invitableFriends(friends)
+                    .stats(stats)
+                    .build();
             } else {
                 throw new WebsiteHandlerException("Could not get the platoon.");
             }

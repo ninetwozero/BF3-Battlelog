@@ -21,6 +21,7 @@ public class UriFactory {
         public static final int RANK_PROGRESS = 10;
         public static final int PERSONA_STATISTICS = 20;
         public static final int SCORE_STATISTICS = 30;
+        public static final int PLATOON_INFO = 40;
     }
 
     public interface URI_PATH {
@@ -28,6 +29,7 @@ public class UriFactory {
         public static final String RANK_PROGRESS = "rankProgress";
         public static final String PERSONA_STATISTICS = "personaStatistics";
         public static final String SCORE_STATISTICS = "scoreStatistics";
+        public static final String PLATOON_INFO = "platoon";
     }
 
     public static final UriMatcher URI_MATCHER;
@@ -38,6 +40,7 @@ public class UriFactory {
         URI_MATCHER.addURI(Battlelog.AUTHORITY, URI_PATH.RANK_PROGRESS + "/",URI_CODES.RANK_PROGRESS);
         URI_MATCHER.addURI(Battlelog.AUTHORITY, URI_PATH.PERSONA_STATISTICS + "/", URI_CODES.PERSONA_STATISTICS);
         URI_MATCHER.addURI(Battlelog.AUTHORITY, URI_PATH.SCORE_STATISTICS + "/", URI_CODES.SCORE_STATISTICS);
+        URI_MATCHER.addURI(Battlelog.AUTHORITY, URI_PATH.PLATOON_INFO + "/", URI_CODES.PLATOON_INFO);
     }
 
     public static URI getProfileInformationUri(String username) {
