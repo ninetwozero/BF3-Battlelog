@@ -168,8 +168,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             this.progressDialog.setMessage(mContext.getString(R.string.general_downloading));
             this.progressDialog.show();
         }
-
-        /* TODO: Investigate why there are no platoons/personas when reading the cache */
         
         @Override
         protected Boolean doInBackground(Void... arg0) {
@@ -193,6 +191,10 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         @Override
         protected void onPostExecute(Boolean foundCachedVersion) {
             if (foundCachedVersion) {
+            	long cacheExpiration = System.currentTimeMillis()-((Constants.MINUTE_IN_SECONDS*15)*1000);
+            	if( mProfileInformation.getTimestamp() < cacheExpiration) {
+            		new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();
+            	}
                 if (this.progressDialog != null) {
                     this.progressDialog.dismiss();
                 }

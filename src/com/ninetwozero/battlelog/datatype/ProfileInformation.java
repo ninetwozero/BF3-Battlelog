@@ -43,6 +43,7 @@ public class ProfileInformation {
     private boolean mPlaying;
     private boolean mFriendStatus;
     private List<PlatoonData> mPlatoon;
+    private long mTimestamp;
 
     // Other
     private StringBuilder mPersonaNameString = new StringBuilder();
@@ -69,6 +70,7 @@ public class ProfileInformation {
         mPlaying = builder.playing;
         mFriendStatus = builder.friend;
         mPlatoon = builder.platoons;
+        mTimestamp = builder.timestamp;
         
         mPersonaIdString.append(builder.personaIdString);
         mPersonaNameString.append(builder.personaNameString);
@@ -168,6 +170,10 @@ public class ProfileInformation {
 
     public List<PlatoonData> getPlatoons() {
         return mPlatoon;
+    }
+    
+    public long getTimestamp() {
+    	return mTimestamp;
     }
     
     public void setSerializedPersonaIds(String s) {
@@ -285,6 +291,7 @@ public class ProfileInformation {
         private boolean playing = false;
         private boolean friend = false;
         private List<PlatoonData> platoons = new ArrayList<PlatoonData>();
+        private long timestamp;
         
         private String personaNameString = "";
         private String personaIdString = "";
@@ -396,7 +403,12 @@ public class ProfileInformation {
         	platoonNameString = s;
         	return this;
         }
-        
+
+
+    	public Builder timestamp(long n) {
+    		timestamp = n;
+    		return this;
+    	}
         
         public ProfileInformation build() {
             return new ProfileInformation(this);

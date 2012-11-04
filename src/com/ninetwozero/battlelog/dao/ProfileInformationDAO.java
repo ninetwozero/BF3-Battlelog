@@ -38,6 +38,7 @@ public class ProfileInformationDAO {
 			.personaPlatformString(cursor.getString(cursor.getColumnIndex(Columns.PERSONA_PLATFORM)))
 			.platoonIdString(cursor.getString(cursor.getColumnIndex(Columns.PLATOON_ID)))
 			.platoonNameString(cursor.getString(cursor.getColumnIndex(Columns.PLATOON_NAME)))
+			.timestamp(cursor.getLong(cursor.getColumnIndex(Columns.TIMESTAMP)))
 			.build();
         
         profile.generateFromSerializedState();
