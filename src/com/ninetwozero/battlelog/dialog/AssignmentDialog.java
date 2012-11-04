@@ -73,9 +73,8 @@ public class AssignmentDialog extends DialogFragment {
             wrapObjectives.addView(v);
         }
 
-        /*((ImageView) dialog.findViewById(R.id.image_reward)).setImageResource(mCurrentPopupData.getUnlockResourceId());
-        ((TextView) dialog.findViewById(R.id.text_rew_name)).setText(assignmentTitleData[1]);*/
-
+        ((ImageView) dialog.findViewById(R.id.image_reward)).setImageResource(AssignmentsMap.rewardDrawable(mission.getCode()));
+        ((TextView) dialog.findViewById(R.id.text_rew_name)).setText(AssignmentsMap.rewardLabel(mission.getCode()));
 
         return builder.create();
     }

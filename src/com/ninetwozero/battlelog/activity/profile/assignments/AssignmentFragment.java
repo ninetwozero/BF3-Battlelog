@@ -16,6 +16,7 @@ package com.ninetwozero.battlelog.activity.profile.assignments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -148,7 +149,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
 
                 }
         );
-
+        Log.e("AssignmentFragment", expansionId + "- " + mission.getAddonUnlocks().get(0).getUnlockId());
         progress.setProgress(mission.getCompletion());
         progress.setMax(100);
     }
