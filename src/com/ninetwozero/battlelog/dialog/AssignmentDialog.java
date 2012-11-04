@@ -54,12 +54,13 @@ public class AssignmentDialog extends DialogFragment {
             }
 
         });
+        builder.setIcon(R.drawable.lock);
         builder.setTitle(AssignmentsMap.get(mission.getMissionId()));
         builder.setView(dialog);
         builder.setCancelable(true);
 
         ImageView imageAssignment = ((ImageView) dialog.findViewById(R.id.image_assignment));
-        imageAssignment.setImageResource(DataBank.getResourcesForAssignment(mission.getCode())[0]);
+        imageAssignment.setImageResource(AssignmentsMap.assignmentDrawable(mission.getCode()));
 
         imageAssignment.setClickable(false);
 

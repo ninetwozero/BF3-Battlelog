@@ -24,8 +24,8 @@ import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.dialog.AssignmentDialog;
 import com.ninetwozero.battlelog.jsonmodel.assignments.Mission;
 import com.ninetwozero.battlelog.jsonmodel.assignments.MissionPack;
-import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.provider.BusProvider;
+import com.ninetwozero.battlelog.util.AssignmentsMap;
 import com.squareup.otto.Subscribe;
 
 import java.util.Arrays;
@@ -129,7 +129,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
     private void setMission(View view, final Mission mission) {
         ImageView image = (ImageView) view.findViewById(R.id.assignment_image);
         ProgressBar progress = (ProgressBar) view.findViewById(R.id.assignment_progress);
-        image.setImageResource(resourceIdFrom(mission.getCode(), 0));
+        image.setImageResource(assignmentImage(mission.getCode()));
         /*if (ass1.isCompleted()) {
             image.setImageResource(ass2.getResourceId());
         } else {
@@ -157,8 +157,8 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         return b.hasDependencies() && b.isDependentOn(a.getCode());
     }
 
-    private int resourceIdFrom(String code, int index) {
-        return DataBank.getResourcesForAssignment(code)[index];
+    private int assignmentImage(String code) {
+        return AssignmentsMap.assignmentDrawable(code);
     }
 
     @Override

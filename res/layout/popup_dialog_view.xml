@@ -30,7 +30,7 @@
         android:layout_centerHorizontal="true"
         android:clickable="true"
         android:onClick="onClick"
-        android:src="@drawable/assignment_xp1_01"/>
+        android:src="@drawable/a01"/>
 
     <TextView
         android:id="@id/string000"

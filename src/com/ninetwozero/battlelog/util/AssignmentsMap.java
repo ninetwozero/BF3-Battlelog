@@ -62,6 +62,61 @@ public class AssignmentsMap{
         put("BF3_ID_XP3_ASSIGNMENT_5",  R.string.xp3_assignment_5);
     }};
 
+    private static Map<String, int[]> ASSIGNMENT_RESOURCES = new HashMap<String, int[]>(){{
+        /* BACK TO KARKAND*/
+        put("xpma01", new int[] {R.drawable.a01, R.drawable.w_xp1_famas });
+        put("xpma02", new int[] {R.drawable.a02, R.drawable.w_xp1_l85a2 });
+        put("xpma03", new int[] {R.drawable.a03, R.drawable.w_xp1_hk53 });
+        put("xpma04", new int[] {R.drawable.a04, R.drawable.w_xp1_qbz95b });
+        put("xpma05", new int[] {R.drawable.a05, R.drawable.w_xp1_qbb95 });
+        put("xpma06", new int[] {R.drawable.a06, R.drawable.w_xp1_mg36 });
+        put("xpma07", new int[] {R.drawable.a07, R.drawable.w_xp1_qbu88 });
+        put("xpma08", new int[] {R.drawable.a08, R.drawable.w_xp1_l96 });
+        put("xpma09", new int[] {R.drawable.a09, R.drawable.w_xp1_pp19 });
+        put("xpma10", new int[] {R.drawable.a10, R.drawable.w_xp1_jackhammer });
+
+        /* PREMIUM */
+        put("xp2prema01", new int[] {R.drawable.pre1a01, R.drawable.d_xp2p1_assault });
+        put("xp2prema02", new int[] {R.drawable.pre1a02, R.drawable.d_xp2p1_support });
+        put("xp2prema03", new int[] {R.drawable.pre1a03, R.drawable.d_xp2p1_recon });
+        put("xp2prema04", new int[] {R.drawable.pre1a04, R.drawable.d_xp2p1_engineer });
+        put("xp2prema05", new int[] {R.drawable.pre1a05, R.drawable.d_xp2p1_common });
+        put("xp2prema06", new int[] {R.drawable.pre1a06, R.drawable.d_xp2p1_assault });
+        put("xp2prema07", new int[] {R.drawable.pre1a07, R.drawable.d_xp2p1_support });
+        put("xp2prema08", new int[] {R.drawable.pre1a08, R.drawable.d_xp2p1_recon });
+        put("xp2prema09", new int[] {R.drawable.pre1a09, R.drawable.d_xp2p1_engineer });
+        put("xp2prema10", new int[] {R.drawable.pre1a10, R.drawable.d_xp2p1_common });
+        put("xp3prema01", new int[] {R.drawable.xp3prem2a01, R.drawable.d_xp2p1_assault });
+        put("xp3prema02", new int[] {R.drawable.xp3prem2a02, R.drawable.d_xp2p1_support });
+        put("xp3prema03", new int[] {R.drawable.xp3prem2a03, R.drawable.d_xp2p1_recon });
+        put("xp3prema04", new int[] {R.drawable.xp3prem2a04, R.drawable.d_xp2p1_engineer });
+        put("xp3prema05", new int[] {R.drawable.xp3prem2a05, R.drawable.d_xp2p1_common });
+        put("xp3prema06", new int[] {R.drawable.xp3prem2a06, R.drawable.d_xp2p1_assault });
+        put("xp3prema07", new int[] {R.drawable.xp3prem2a07, R.drawable.d_xp2p1_support });
+        put("xp3prema08", new int[] {R.drawable.xp3prem2a08, R.drawable.d_xp2p1_recon });
+        put("xp3prema09", new int[] {R.drawable.xp3prem2a09, R.drawable.d_xp2p1_engineer });
+        put("xp3prema10", new int[] {R.drawable.xp3prem2a10, R.drawable.d_xp2p1_common });
+
+        /* CLOSE QUARTERS */
+        put("xp2ma01", new int[] {R.drawable.xp2a01, R.drawable.w_xp2_steyraug });
+        put("xp2ma02", new int[] {R.drawable.xp2a02, R.drawable.w_xp2_scarl });
+        put("xp2ma03", new int[] {R.drawable.xp2a03, R.drawable.w_xp2_l86 });
+        put("xp2ma04", new int[] {R.drawable.xp2a04, R.drawable.w_xp2_lsat });
+        put("xp2ma05", new int[] {R.drawable.xp2a05, R.drawable.w_xp2_acr });
+        put("xp2ma06", new int[] {R.drawable.xp2a06, R.drawable.w_xp2_mtar });
+        put("xp2ma07", new int[] {R.drawable.xp2a07, R.drawable.w_xp2_hk417 });
+        put("xp2ma08", new int[] {R.drawable.xp2a08, R.drawable.w_xp2_jng90 });
+        put("xp2ma09", new int[] {R.drawable.xp2a09, R.drawable.w_xp2_spas12 });
+        put("xp2ma10", new int[] {R.drawable.xp2a10, R.drawable.w_xp2_mp5k });
+
+        /* ARMORED KILL*/
+        put("xp3ma01", new int[] {R.drawable.xp3a01, R.drawable.w_xp2_steyraug });
+        put("xp3ma02", new int[] {R.drawable.xp3a02, R.drawable.w_xp2_scarl });
+        put("xp3ma03", new int[] {R.drawable.xp3a03, R.drawable.w_xp2_l86 });
+        put("xp3ma04", new int[] {R.drawable.xp3a04, R.drawable.w_xp2_lsat });
+        put("xp3ma05", new int[] {R.drawable.xp3a05, R.drawable.w_xp2_acr });
+    }};
+
     private static final Map<String, Integer> criteria = new HashMap<String, Integer>(){{
         
         /*BACK TO KARKAND*/
@@ -189,5 +244,13 @@ public class AssignmentsMap{
 
     public static Integer getCriteria(String key){
         return criteria.get(key);
+    }
+
+    public static int assignmentDrawable(String key) {
+        return ASSIGNMENT_RESOURCES.containsKey(key) ? ASSIGNMENT_RESOURCES.get(key)[0] : R.drawable.assignment_locked;
+    }
+
+    public static int rewardDrawable(String key){
+        return ASSIGNMENT_RESOURCES.containsKey(key) ? ASSIGNMENT_RESOURCES.get(key)[1] : R.drawable.assignment_locked;
     }
 }

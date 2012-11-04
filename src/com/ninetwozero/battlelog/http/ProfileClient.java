@@ -1039,8 +1039,8 @@ public class ProfileClient extends DefaultClient {
                 }
 
                 // Add the assignment
-                int[] resources = DataBank.getResourcesForAssignment(key);
-                if (resources != null) {
+                //int[] resources = DataBank.getResourcesForAssignment(key);
+                /*if (resources != null) {
                     assignments.add(new AssignmentData(resources[0],
                             resources[1], assignment.getString("stringID"),
                             assignment.getString("descriptionID"), assignment
@@ -1048,7 +1048,7 @@ public class ProfileClient extends DefaultClient {
                             dependencies, unlocks));
 
                     assignmentCounter++;
-                }
+                }*/
             }
         } catch (JSONException ex) {
             ex.printStackTrace();

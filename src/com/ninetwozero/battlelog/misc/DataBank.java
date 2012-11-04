@@ -54,7 +54,6 @@ public final class DataBank {
 	private static Map<String, String> DIFFICULTY_MAP;
 	private static Map<String, String> CRITERIAS;
 	@Deprecated private static Map<String, String[]> ASSIGNMENTS;
-	private static Map<String, int[]> ASSIGNMENT_RESOURCES;
 
 	static {
 
@@ -77,7 +76,6 @@ public final class DataBank {
 		DIFFICULTY_MAP = new HashMap<String, String>();
 		ASSIGNMENTS = new HashMap<String, String[]>();
 		CRITERIAS = new HashMap<String, String>();
-		ASSIGNMENT_RESOURCES = new HashMap<String, int[]>();
 
 		// LANG & LOCALE
 		LANGUAGES = new String[] { "English", "Deutsch", "FranÃ§ais",
@@ -1332,59 +1330,6 @@ public final class DataBank {
 		CRITERIAS.put("ID_XP2_ASSIGNMENT_10_CRITERIA_1",
 				"Finish top5 in Gun Master");
 		CRITERIAS.put("ID_XP2_ASSIGNMENT_10_CRITERIA_2", "100 kills with SMGs");
-
-		ASSIGNMENT_RESOURCES.put("xpma01", new int[] {
-				R.drawable.assignment_xp1_01, R.drawable.w_xp1_famas });
-		ASSIGNMENT_RESOURCES.put("xpma02", new int[] {
-				R.drawable.assignment_xp1_02, R.drawable.w_xp1_l85a2 });
-		ASSIGNMENT_RESOURCES.put("xpma03", new int[] {
-				R.drawable.assignment_xp1_03, R.drawable.w_xp1_hk53 });
-		ASSIGNMENT_RESOURCES.put("xpma04", new int[] {
-				R.drawable.assignment_xp1_04, R.drawable.w_xp1_qbz95b });
-		ASSIGNMENT_RESOURCES.put("xpma05", new int[] {
-				R.drawable.assignment_xp1_05, R.drawable.w_xp1_qbb95 });
-		ASSIGNMENT_RESOURCES.put("xpma06", new int[] {
-				R.drawable.assignment_xp1_06, R.drawable.w_xp1_mg36 });
-		ASSIGNMENT_RESOURCES.put("xpma07", new int[] {
-				R.drawable.assignment_xp1_07, R.drawable.w_xp1_qbu88 });
-		ASSIGNMENT_RESOURCES.put("xpma08", new int[] {
-				R.drawable.assignment_xp1_08, R.drawable.w_xp1_l96 });
-		ASSIGNMENT_RESOURCES.put("xpma09", new int[] {
-				R.drawable.assignment_xp1_09, R.drawable.w_xp1_pp19 });
-		ASSIGNMENT_RESOURCES.put("xpma10", new int[] {
-				R.drawable.assignment_xp1_10, R.drawable.w_xp1_jackhammer });
-
-		ASSIGNMENT_RESOURCES.put("xp2prema01", new int[] {
-				R.drawable.assignment_xp2p_01, R.drawable.d_xp2p1_assault });
-		ASSIGNMENT_RESOURCES.put("xp2prema02", new int[] {
-				R.drawable.assignment_xp2p_02, R.drawable.d_xp2p1_support });
-		ASSIGNMENT_RESOURCES.put("xp2prema03", new int[] {
-				R.drawable.assignment_xp2p_03, R.drawable.d_xp2p1_recon });
-		ASSIGNMENT_RESOURCES.put("xp2prema04", new int[] {
-				R.drawable.assignment_xp2p_04, R.drawable.d_xp2p1_engineer });
-		ASSIGNMENT_RESOURCES.put("xp2prema05", new int[] {
-				R.drawable.assignment_xp2p_05, R.drawable.d_xp2p1_common });
-
-		ASSIGNMENT_RESOURCES.put("xp2ma01", new int[] {
-				R.drawable.assignment_xp2_01, R.drawable.w_xp2_steyraug });
-		ASSIGNMENT_RESOURCES.put("xp2ma02", new int[] {
-				R.drawable.assignment_xp2_02, R.drawable.w_xp2_scarl });
-		ASSIGNMENT_RESOURCES.put("xp2ma03", new int[] {
-				R.drawable.assignment_xp2_03, R.drawable.w_xp2_l86 });
-		ASSIGNMENT_RESOURCES.put("xp2ma04", new int[] {
-				R.drawable.assignment_xp2_04, R.drawable.w_xp2_lsat });
-		ASSIGNMENT_RESOURCES.put("xp2ma05", new int[] {
-				R.drawable.assignment_xp2_05, R.drawable.w_xp2_acr });
-		ASSIGNMENT_RESOURCES.put("xp2ma06", new int[] {
-				R.drawable.assignment_xp2_06, R.drawable.w_xp2_mtar });
-		ASSIGNMENT_RESOURCES.put("xp2ma07", new int[] {
-				R.drawable.assignment_xp2_07, R.drawable.w_xp2_hk417 });
-		ASSIGNMENT_RESOURCES.put("xp2ma08", new int[] {
-				R.drawable.assignment_xp2_08, R.drawable.w_xp2_jng90 });
-		ASSIGNMENT_RESOURCES.put("xp2ma09", new int[] {
-				R.drawable.assignment_xp2_09, R.drawable.w_xp2_spas12 });
-		ASSIGNMENT_RESOURCES.put("xp2ma10", new int[] {
-				R.drawable.assignment_xp2_10, R.drawable.w_xp2_mp5k });
 	}
 
 	// Getters
@@ -1493,11 +1438,6 @@ public final class DataBank {
 
 	public static Intent getContactIntent(int res) {
 		return CONTACT_INTENTS.get(res);
-	}
-
-	public static int[] getResourcesForAssignment(String s) {
-		return ASSIGNMENT_RESOURCES.containsKey(s) ? ASSIGNMENT_RESOURCES
-				.get(s) : new int[]{R.drawable.assignment_locked, R.drawable.assignment_locked};
 	}
 
 	public static String getLocale(int p) {

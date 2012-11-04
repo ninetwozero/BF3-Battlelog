@@ -4,7 +4,7 @@
       android:id="@+id/assignment_image"
       android:layout_width="fill_parent"
       android:layout_height="50dp"
-      android:src="@drawable/assignment_xp1_01"/>
+      android:src="@drawable/a01"/>
 
   <ProgressBar
       android:id="@+id/assignment_progress"
