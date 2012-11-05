@@ -28,7 +28,6 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
@@ -212,11 +211,11 @@ public class PlatoonClient extends DefaultClient {
                         if (tempObj.getString("name").equals(keyword)) {
                             platoon = new PlatoonData(
                             	Long.parseLong(tempObj.getString("id")),
-                                tempObj.getInt("fanCounter"),
-                                tempObj.getInt("memberCounter"),
-                                tempObj.getInt("platform"),
                                 tempObj.getString("name"),
-                                tempObj.getString("tag"), null, true
+                                tempObj.getString("tag"),
+                                tempObj.getInt("platform"),
+                                tempObj.getInt("fanCounter"),
+                                tempObj.getInt("memberCounter"), true
                             );
                             break;
                         }
@@ -228,11 +227,11 @@ public class PlatoonClient extends DefaultClient {
                         if (costOld > costCurrent) {
                             platoon = new PlatoonData(
                                 Long.parseLong(tempObj.getString("id")),
-                                tempObj.getInt("fanCounter"),
-                                tempObj.getInt("memberCounter"),
-                                tempObj.getInt("platform"),
                                 tempObj.getString("name"),
-                                tempObj.getString("tag"), null, true
+                                tempObj.getString("tag"),
+                                tempObj.getInt("platform"),
+                                tempObj.getInt("fanCounter"),
+                                tempObj.getInt("memberCounter"), true
                             );
                         }
                         costOld = costCurrent;
@@ -410,12 +409,11 @@ public class PlatoonClient extends DefaultClient {
                         JSONObject tempPlatoonData = new JSONObject(tempHttpContent).getJSONObject("context").getJSONObject("platoon");
                         mPlatoonData = new PlatoonData(
                             mPlatoonData.getId(), 
-                            tempPlatoonData.getInt("fanCounter"), 
-                            tempPlatoonData.getInt("memberCounter"),
-                            tempPlatoonData.getInt("platform"),
-                            tempPlatoonData.getString("name"),
+                            tempPlatoonData.getString("name"), 
                             tempPlatoonData.getString("tag"),
-                            mPlatoonData.getId() + ".jpeg",
+                            tempPlatoonData.getInt("platform"),
+                            tempPlatoonData.getInt("fanCounter"),
+                            tempPlatoonData.getInt("memberCounter"),
                             tempPlatoonData.getBoolean("hidden")
                         );
                         return getStats(context);
@@ -743,7 +741,6 @@ public class PlatoonClient extends DefaultClient {
 
             if (!"".equals(httpContent)) {
                 JSONObject contextObject = new JSONObject(httpContent).optJSONObject("context");
-
                 if (contextObject.isNull("platoon")) {
                     return null;
                 }
@@ -757,17 +754,18 @@ public class PlatoonClient extends DefaultClient {
             		aPId, PreferenceManager.getDefaultSharedPreferences(c).getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
         		).getFriends(aPId,false);
 
+                if(memberArray.has(String.valueOf(aPId))) {
+                	isMember = true;
+                	if( memberArray.optJSONObject(String.valueOf(aPId)).getInt("membershipLevel") >= 128 ){
+                		isAdmin = true;
+                	}
+                }
+                
                 JSONArray idArray = memberArray.names();
                 for (int counter = 0, max = idArray.length(); counter < max; counter++) {
                     ProfileData tempProfile;
                     currItem = memberArray.optJSONObject(idArray.getString(counter));
-                    if (idArray.getString(counter).equals(aPId)) {
-                        isMember = true;
-                        if (currItem.getInt("membershipLevel") >= 128) {
-                            isAdmin = true;
-                        }
-                    }
-
+                    
                     if (!currItem.isNull("persona")) {
                         tempProfile = new ProfileData.Builder(
                             Long.parseLong(currItem.getString("userId")),
@@ -868,7 +866,7 @@ public class PlatoonClient extends DefaultClient {
                     platoonId, 
                     profileCommonObject.getString("name"),
                     profileCommonObject.getString("tag")
-                );
+                );                
                 return platoonInformation
                 	.date(profileCommonObject.getLong("creationDate"))
                 	.platformId(profileCommonObject.getInt("platform"))
@@ -913,17 +911,15 @@ public class PlatoonClient extends DefaultClient {
                 if (searchResultsPlatoon.length() > 0) {
                     for (int i = 0, max = searchResultsPlatoon.length(); i < max; i++) {
                         JSONObject tempObj = searchResultsPlatoon.optJSONObject(i);
-                        final String filename = tempObj.getString("id") + ".jpeg";
                         results.add(
                             new GeneralSearchResult(
                                 new PlatoonData(
                                     Long.parseLong(tempObj.getString("id")), 
-                                    tempObj.getInt("fanCounter"), 
-                                    tempObj.getInt("memberCounter"), 
-                                    tempObj.getInt("platform"), 
-                                    tempObj.getString("name"),
+                                    tempObj.getString("name"), 
                                     tempObj.getString("tag"), 
-                                    filename, 
+                                    tempObj.getInt("platform"), 
+                                    tempObj.getInt("fanCounter"),
+                                    tempObj.getInt("memberCounter"), 
                                     true
                                 )
                            )

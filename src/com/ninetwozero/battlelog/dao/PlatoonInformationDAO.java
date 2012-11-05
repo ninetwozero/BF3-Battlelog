@@ -5,10 +5,29 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.ninetwozero.battlelog.Battlelog;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.PlatoonInformation;
 
 public class PlatoonInformationDAO {
 	public static final Uri URI = Uri.parse("content://" + Battlelog.AUTHORITY + "/platoon/");
+	
+	public static PlatoonData getPlatoonDataFromCursor(Cursor cursor) {
+    	if( !cursor.moveToFirst() ) {
+    		cursor.close();
+    		return new PlatoonData(0, "NO PLATOON FOUND", "N/A", 0, 0, 0, true);
+    	}
+    	PlatoonData platoon = new PlatoonData(
+    		cursor.getLong(cursor.getColumnIndex(Columns.PLATOON_ID)),
+    		cursor.getString(cursor.getColumnIndex(Columns.NAME)),
+    		cursor.getString(cursor.getColumnIndex(Columns.TAG)),
+    		cursor.getInt(cursor.getColumnIndex(Columns.PLATFORM_ID)),
+    		cursor.getInt(cursor.getColumnIndex(Columns.NUM_FANS)),
+    		cursor.getInt(cursor.getColumnIndex(Columns.NUM_MEMBERS)),
+    		true
+		);
+		cursor.close();
+		return platoon;
+	}
 	
     public static PlatoonInformation getPlatoonInformationFromCursor(Cursor cursor) {
     	if( !cursor.moveToFirst() ) {
@@ -38,7 +57,19 @@ public class PlatoonInformationDAO {
     	return pi;
     }
 
-    public static ContentValues getPlatoonInformationForDB(final PlatoonInformation pi, long timestamp) {
+    public static ContentValues convertPlatoonDataForDB(final PlatoonData p) {
+        ContentValues values = new ContentValues();
+        values.put(Columns.PLATOON_ID, p.getId());
+        values.put(Columns.NAME, p.getName());
+        values.put(Columns.TAG, p.getTag());
+        values.put(Columns.PLATFORM_ID, p.getPlatformId());
+        values.put(Columns.NUM_FANS, p.getCountFans());
+        values.put(Columns.NUM_MEMBERS, p.getCountMembers());
+        values.put(Columns.TIMESTAMP, 0);
+        return values;
+    }
+    
+    public static ContentValues convertPlatoonInformationForDB(final PlatoonInformation pi, long timestamp) {
         ContentValues values = new ContentValues();
         values.put(Columns.PLATOON_ID, pi.getId());
         values.put(Columns.NAME, pi.getName());
@@ -54,10 +85,6 @@ public class PlatoonInformationDAO {
         values.put(Columns.TIMESTAMP, timestamp);
         return values;
     }
-
-    private static String getValueFromCursor(Cursor cursor, String name) {
-        return cursor.getString(cursor.getColumnIndexOrThrow(name));
-    }
     	
 	public final class Columns {
     	public final static String PLATOON_ID = "platoonId";
@@ -72,5 +99,17 @@ public class PlatoonInformationDAO {
     	public final static String NUM_MEMBERS = "numberOfMembers";
     	public final static String BLAZE_CLUB_ID = "blazeClubId";
     	public final static String TIMESTAMP = "timestamp";
-    };
+	};
+	
+	public static String[] getSmallerProjection() {
+		return new String[] {
+			"_ID",
+			Columns.PLATOON_ID,	
+			Columns.NAME,
+			Columns.TAG,
+			Columns.PLATFORM_ID,
+			Columns.NUM_FANS,
+			Columns.NUM_MEMBERS
+		};
+	}
 }

@@ -14,11 +14,16 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,6 +44,7 @@ import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.platoon.PlatoonActivity;
 import com.ninetwozero.battlelog.asynctask.AsyncFriendRemove;
 import com.ninetwozero.battlelog.asynctask.AsyncFriendRequest;
+import com.ninetwozero.battlelog.dao.PlatoonInformationDAO;
 import com.ninetwozero.battlelog.dao.ProfileInformationDAO;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
@@ -73,6 +79,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mContext = getActivity();
         new AsyncCache().execute();
     }
 
@@ -132,7 +139,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 }
             };
 
-            // Iterate over the platoons
             for (PlatoonData currentPlatoon : data.getPlatoons()) {
                 if (platoonWrapper.findViewWithTag(currentPlatoon) != null) {
                     continue;
@@ -181,7 +187,26 @@ public class ProfileOverviewFragment extends Bf3Fragment {
 	            		null
 	            	)
 				);
-                return (mProfileInformation != null);
+
+                if( mProfileInformation != null ) {
+	                List<PlatoonData> platoons = new ArrayList<PlatoonData>();
+	                for(String platoonId : mProfileInformation.getSerializedPlatoonIds().split(":")) {
+	                	platoons.add(
+	            			PlatoonInformationDAO.getPlatoonDataFromCursor(
+	            				mContext.getContentResolver().query(
+	            					PlatoonInformationDAO.URI,
+	            					PlatoonInformationDAO.getSmallerProjection(),
+	            					PlatoonInformationDAO.Columns.PLATOON_ID + "=?",
+	            					new String[] { platoonId },
+	            					null
+	    						)
+	    					)
+	                	);
+	                }
+	                mProfileInformation.setPlatoons(platoons);
+	                return true;
+                }
+                return false;
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return false;
@@ -199,8 +224,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                     this.progressDialog.dismiss();
                 }
 
-                /* COMPARE CACHE VS TIMESTAMP TO SEE IF NEED TO RELOAD DIRECTLY */
-                
                 showProfile(mProfileInformation);
 
                 if (mProfileData.getNumPersonas() < mProfileInformation.getNumPersonas()) {
@@ -238,17 +261,13 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 if (mProfileData.getNumPersonas() == 0) {
                     mProfileData = ProfileClient.resolveFullProfileDataFromProfileData(mProfileData);
                 }
-
+                
                 mProfileInformation = new ProfileClient(mProfileData).getInformation(mContext, activeProfileId);
-                mContext.getContentResolver().delete(   		
-            		ProfileInformationDAO.URI,             		
-            		ProfileInformationDAO.Columns.USER_ID + " = ?",
-                	new String[] { String.valueOf(mProfileInformation.getUserId()) }
-        		);
-                mContext.getContentResolver().insert(
-            		ProfileInformationDAO.URI, 
-            		ProfileInformationDAO.getProfileInformationForDB(mProfileInformation, System.currentTimeMillis())
-				);
+                updateProfileInDB(mProfileInformation);
+               
+                for(PlatoonData p : mProfileInformation.getPlatoons()) {
+                	updatePlatoonInDB(p);
+                }
                 return (mProfileInformation != null);
             } catch (WebsiteHandlerException ex) {
                 ex.printStackTrace();
@@ -276,7 +295,35 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();
     }
 
-    public void sendToStats(ProfileData p) {
+    public void updateProfileInDB(ProfileInformation p) {
+    	ContentValues contentValues = ProfileInformationDAO.convertProfileInformationForDB(p, System.currentTimeMillis());
+    	try {
+    		 mContext.getContentResolver().insert(ProfileInformationDAO.URI, contentValues);		
+    	 } catch(SQLiteConstraintException ex) {
+    		 mContext.getContentResolver().update(
+				 ProfileInformationDAO.URI, 
+				 contentValues,
+				 ProfileInformationDAO.Columns.USER_ID + "=?", 
+				 new String[] { String.valueOf(p.getUserId()) }
+			 );
+    	 }
+	}
+    
+    public void updatePlatoonInDB(PlatoonData p) {
+    	ContentValues contentValues = PlatoonInformationDAO.convertPlatoonDataForDB(p);
+    	try {
+    		 mContext.getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);		
+    	 } catch(SQLiteConstraintException ex) {
+    		 mContext.getContentResolver().update(
+				 PlatoonInformationDAO.URI, 
+				 contentValues,
+				 PlatoonInformationDAO.Columns.PLATOON_ID + "=?", 
+				 new String[] { String.valueOf(p.getId()) }
+			 );
+    	 }
+	}
+
+	public void sendToStats(ProfileData p) {
         ((ProfileActivity) mContext).openStats(p);
     }
 

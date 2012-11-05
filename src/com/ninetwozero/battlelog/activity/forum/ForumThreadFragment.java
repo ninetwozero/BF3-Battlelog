@@ -849,8 +849,8 @@ public class ForumThreadFragment extends ListFragment implements DefaultFragment
                             intent = new Intent(context, PlatoonActivity.class)
                                     .putExtra(
 
-                                            "platoon", new PlatoonData(platoonId, 0, 0,
-                                            0, null, null, null, true)
+                                            "platoon", new PlatoonData(platoonId, null, null,
+                                            0, 0, 0, true)
 
                                     );
 

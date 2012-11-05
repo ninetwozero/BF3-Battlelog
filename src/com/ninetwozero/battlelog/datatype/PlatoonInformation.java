@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlatoonInformation {
-
-    // Attributes
     private int platformId;
     private int gameId;
     private int numFans;
@@ -41,7 +39,6 @@ public class PlatoonInformation {
     private PlatoonStats stats;
     private long timestamp;
 
-    // Construct(s)
     public PlatoonInformation(PlatoonInformation.Builder builder) {
         platformId = builder.platformId;
         gameId = builder.gameId;
@@ -65,7 +62,6 @@ public class PlatoonInformation {
         timestamp = builder.timestamp;
     }
 
-    // Getters
     public int getPlatformId() {
         return platformId;
     }
@@ -247,5 +243,31 @@ public class PlatoonInformation {
         public PlatoonInformation build() {
             return new PlatoonInformation(this);
         }
+    }
+    
+    @Override
+	public String toString() {
+		return "PlatoonInformation [platformId=" + platformId + ", gameId="
+				+ gameId + ", numFans=" + numFans + ", numMembers="
+				+ numMembers + ", id=" + id + ", blazeClubId=" + blazeClubId
+				+ ", date=" + date + ", name=" + name + ", tag=" + tag
+				+ ", presentation=" + presentation + ", website=" + website
+				+ ", visible=" + visible + ", isMember=" + isMember
+				+ ", isAdmin=" + isAdmin + ", allowNewMembers="
+				+ allowNewMembers + ", members=" + members + ", fans=" + fans
+				+ ", invitableFriends=" + invitableFriends + ", stats=" + stats
+				+ ", timestamp=" + timestamp + "]";
+	}
+
+	public PlatoonData toPlatoonData() {
+    	return new PlatoonData(
+    		id,
+    		name,
+    		tag,
+    		platformId,
+    		numFans,
+    		numMembers,
+    		visible
+		);
     }
 }

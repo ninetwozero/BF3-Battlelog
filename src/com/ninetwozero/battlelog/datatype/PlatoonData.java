@@ -6,70 +6,72 @@ import android.os.Parcelable;
 public class PlatoonData implements Parcelable {
 
     // Attributes
-    private long id;
-    private int countFans, countMembers, platformId;
-    private String name, tag, image;
-    private boolean visible;
-
-    // Constructs
-
+    private long mId;
+    private String mName;
+    private String mTag;
+    private String mImage;
+    private int mPlatformId;
+    private int mCountFans;
+    private int mCountMembers;
+    private boolean mVisible;
+    
     public PlatoonData(Parcel in) {
         readFromParcel(in);
     }
 
     public PlatoonData(long i, String n) {
-        id = i;
-        name = n;
-        tag = "";
-        image = String.valueOf(id) + ".jpeg";
-        countFans = 0;
-        countMembers = 0;
-        platformId = 0;
-        visible = true;
+        mId = i;
+        mName = n;
+        mTag = "";
+        mImage = String.valueOf(mId) + ".jpeg";
+        mCountFans = 0;
+        mCountMembers = 0;
+        mPlatformId = 0;
+        mVisible = true;
     }
 
-    public PlatoonData(long i, int cF, int cM, int pId, String n, String t, String img, boolean v) {
-        id = i;
-        countFans = cF;
-        countMembers = cM;
-        platformId = pId;
-        name = n;
-        tag = t;
-        image = img;
-        visible = v;
+    public PlatoonData(long i, String n, String t, int pId, int cF, int cM, boolean v) {
+        mId = i;
+        mName = n;
+        mTag = t;
+        mPlatformId = pId;
+        mCountFans = cF;
+        mCountMembers = cM;
+        mImage = String.valueOf(mId) + ".jpeg";
+        mVisible = v;
     }
 
     // Getters
     public long getId() {
-        return id;
+        return mId;
     }
 
     public int getCountFans() {
-        return countFans;
+        return mCountFans;
     }
 
     public int getCountMembers() {
-        return countMembers;
+        return mCountMembers;
     }
 
     public int getPlatformId() {
-        return platformId;
+        return mPlatformId;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public String getTag() {
-        return tag;
+        return mTag;
     }
 
     public String getImage() {
-        return image;
+        return mImage;
     }
 
     public boolean isVisible() {
-        return visible;
+        return mVisible;
     }
 
     @Override
@@ -81,28 +83,28 @@ public class PlatoonData implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
 
         // Everything else
-        dest.writeLong(id);
-        dest.writeInt(countFans);
-        dest.writeInt(countMembers);
-        dest.writeInt(platformId);
-        dest.writeString(name);
-        dest.writeString(tag);
-        dest.writeString(image);
-        dest.writeInt((visible) ? 1 : 0);
+        dest.writeLong(mId);
+        dest.writeInt(mCountFans);
+        dest.writeInt(mCountMembers);
+        dest.writeInt(mPlatformId);
+        dest.writeString(mName);
+        dest.writeString(mTag);
+        dest.writeString(mImage);
+        dest.writeInt((mVisible) ? 1 : 0);
 
     }
 
     private void readFromParcel(Parcel in) {
 
         // Let's retrieve them, same order as above
-        id = in.readLong();
-        countFans = in.readInt();
-        countFans = in.readInt();
-        platformId = in.readInt();
-        name = in.readString();
-        tag = in.readString();
-        image = in.readString();
-        visible = (in.readInt() == 1);
+        mId = in.readLong();
+        mCountFans = in.readInt();
+        mCountFans = in.readInt();
+        mPlatformId = in.readInt();
+        mName = in.readString();
+        mTag = in.readString();
+        mImage = in.readString();
+        mVisible = (in.readInt() == 1);
 
     }
 
@@ -120,6 +122,6 @@ public class PlatoonData implements Parcelable {
 
     @Override
     public final String toString() {
-        return id + ":" + name + ":" + tag;
+        return mId + ":" + mName + ":" + mTag;
     }
 }

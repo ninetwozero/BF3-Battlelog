@@ -22,17 +22,10 @@ import java.util.List;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
-import android.text.TextUtils;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
-import com.ninetwozero.battlelog.dao.ProfileInformationDAO;
 import com.ninetwozero.battlelog.datatype.ForumThreadData;
-import com.ninetwozero.battlelog.datatype.PersonaData;
-import com.ninetwozero.battlelog.datatype.PersonaStats;
-import com.ninetwozero.battlelog.datatype.PlatoonData;
-import com.ninetwozero.battlelog.datatype.PlatoonInformation;
 import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.ProfileInformation;
 import com.ninetwozero.battlelog.datatype.SavedForumThreadData;
 
 /* 

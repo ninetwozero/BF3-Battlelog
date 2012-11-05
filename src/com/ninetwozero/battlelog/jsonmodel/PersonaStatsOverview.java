@@ -93,7 +93,7 @@ public class PersonaStatsOverview {
         this.timePlayed = timePlayed;
         this.gameWon = gameWon;
         this.gameLost = gameLost;
-        this.wlRatio = wlRatio;
+        this.wlRatio = wnRatio;
         this.awardScore = awardScore;
         this.unlockScore = unlockScore;
         this.kills = kills;

@@ -119,7 +119,7 @@
   <string name="label_stats">Statistika</string>
   <string name="label_users">Korisnici</string>
   <string name="info_platoon_created">Kreirano {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">ČLANOVI</string>
+  <string name="label_members">ČLANOVI</string>
   <string name="label_fans">OBOŽAVATELJI</string>
   <string name="info_platoon_compare">Ne možete uspoređivati vodove... (još?)</string>
   <string name="info_empty_msg">Ne možete postati praznu poruku.</string>

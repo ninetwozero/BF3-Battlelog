@@ -1,15 +1,11 @@
 package com.ninetwozero.battlelog.dao;
 
-import java.util.Map.Entry;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 
 import com.ninetwozero.battlelog.Battlelog;
 import com.ninetwozero.battlelog.datatype.ProfileInformation;
-import com.ninetwozero.battlelog.misc.Constants;
 
 public class ProfileInformationDAO {
 	public static final Uri URI = Uri.parse("content://" + Battlelog.AUTHORITY + "/profile/");
@@ -52,7 +48,7 @@ public class ProfileInformationDAO {
     	return pi;
     }
 
-    public static ContentValues getProfileInformationForDB(final ProfileInformation pi, long timestamp) {
+    public static ContentValues convertProfileInformationForDB(final ProfileInformation pi, long timestamp) {
         ContentValues values = new ContentValues();
         values.put(Columns.USER_ID, pi.getUserId());
         values.put(Columns.USERNAME, pi.getUsername());
@@ -71,10 +67,6 @@ public class ProfileInformationDAO {
         values.put(Columns.STATUS_DATE, pi.getStatusMessageChanged());
         values.put(Columns.TIMESTAMP, timestamp);
         return values;
-    }
-
-    private static String getValueFromCursor(Cursor cursor, String name) {
-        return cursor.getString(cursor.getColumnIndexOrThrow(name));
     }
     	
 	public final class Columns {

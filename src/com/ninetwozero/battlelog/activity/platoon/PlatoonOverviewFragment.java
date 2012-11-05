@@ -88,7 +88,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         );
     }
 
-    public final void showProfile(PlatoonInformation data) {
+    public final void show(PlatoonInformation data) {
         if (data == null || mContext == null) {
             return;
         }
@@ -99,15 +99,19 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         }
 
         ((TextView) activity.findViewById(R.id.text_name_platoon)).setText(data.getName() + " [" + data.getTag() + "]");
-        ((TextView) activity.findViewById(R.id.text_date)).setText(
-            getString(R.string.info_platoon_created).replace(
-            	"{DATE}", 
-            	PublicUtils.getDate(data.getDateCreated())
-            ).replace(
-            	"{RELATIVE DATE}", 
-            	PublicUtils.getRelativeDate(mContext, data.getDateCreated())
-            )
-        );
+        if( data.getDateCreated() == 0 ) {
+        	((TextView) activity.findViewById(R.id.text_date)).setText(R.string.msg_unknown_time);
+        } else {
+        	((TextView) activity.findViewById(R.id.text_date)).setText(
+	            getString(R.string.info_platoon_created).replace(
+	            	"{DATE}", 
+	            	PublicUtils.getDate(data.getDateCreated())
+	            ).replace(
+	            	"{RELATIVE DATE}", 
+	            	PublicUtils.getRelativeDate(mContext, data.getDateCreated())
+	            )
+			);
+        }
 
         // Platform!!
         switch (data.getPlatformId()) {

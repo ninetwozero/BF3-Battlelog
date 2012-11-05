@@ -20,7 +20,9 @@ import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -59,7 +61,6 @@ public class PlatoonActivity extends CustomFragmentActivity {
     // Misc
     private PlatoonData mPlatoonData;
     private PlatoonInformation mPlatoonInformation;
-    private boolean mPostingRights;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -82,7 +83,6 @@ public class PlatoonActivity extends CustomFragmentActivity {
     public void reload() {
         new AsyncRefresh(this, mPlatoonData, SessionKeeper.getProfileData().getId()).execute();
     }
-    
 
     public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
     	private Context context;
@@ -120,21 +120,25 @@ public class PlatoonActivity extends CustomFragmentActivity {
         }
 
         @Override
+        /* TODO: Future work flow: Each fragment fixes its own data, as they are only dependent on PlatoonData. Each caches at different table in Provider etc*/
         protected void onPostExecute(Boolean cacheExists) {
             if (cacheExists) {
             	long cacheExpiration = System.currentTimeMillis()-((Constants.MINUTE_IN_SECONDS*30)*1000);
                 if(( mPlatoonInformation.getTimestamp() < cacheExpiration)) {
                 	new AsyncRefresh(context, mPlatoonData, SessionKeeper.getProfileData().getId()).execute();
             	}
+
+                mFragmentOverview.show(mPlatoonInformation);
+                mFragmentStats.show(mPlatoonInformation.getStats());
+                
+                mFragmentMember.setMembers(mPlatoonInformation.getMembers());
+                mFragmentMember.setFans(mPlatoonInformation.getFans());
+                mFragmentMember.setAdmin(mPlatoonInformation.isAdmin());
+                mFragmentMember.show(); 
                 
             	if (this.progressDialog != null) {
                     this.progressDialog.dismiss();
                 }
-
-                mFragmentOverview.showProfile(mPlatoonInformation);
-                mFragmentStats.showStats(mPlatoonInformation);
-                mFragmentMember.showMembers(mPlatoonInformation);
-                mFragmentFeed.setCanWrite(mPostingRights);
             } else {
                 new AsyncRefresh(context, mPlatoonData, SessionKeeper.getProfileData().getId(), progressDialog).execute();
             }
@@ -172,17 +176,9 @@ public class PlatoonActivity extends CustomFragmentActivity {
                 	mSharedPreferences.getInt(Constants.SP_BL_NUM_FEED,Constants.DEFAULT_NUM_FEED),
                 	this.activeProfileId
             	);
-                
                 if( mPlatoonInformation != null ) {
-                	context.getContentResolver().delete(
-                		PlatoonInformationDAO.URI,
-                		PlatoonInformationDAO.Columns.PLATOON_ID + "=?",
-                		new String[] { String.valueOf(mPlatoonInformation.getId()) }
-        			);
-                	context.getContentResolver().insert(
-                		PlatoonInformationDAO.URI,
-                		PlatoonInformationDAO.getPlatoonInformationForDB(mPlatoonInformation, System.currentTimeMillis())
-        			);                	
+                	updatePlatoonInDB(mPlatoonInformation);
+                	return true;
                 }
                 return false;
             } catch (WebsiteHandlerException ex) {
@@ -202,12 +198,14 @@ public class PlatoonActivity extends CustomFragmentActivity {
                 return;
             }
         	
-
-            // Set the data
-            mFragmentOverview.showProfile(mPlatoonInformation);
-            mFragmentStats.showStats(mPlatoonInformation);
-            mFragmentMember.showMembers(mPlatoonInformation);
-            mFragmentFeed.setCanWrite(mPlatoonInformation.isMember() || mPostingRights);
+            mFragmentOverview.show(mPlatoonInformation);
+            mFragmentStats.show(mPlatoonInformation.getStats());
+            mFragmentFeed.setCanWrite(mPlatoonInformation.isMember());
+            
+            mFragmentMember.setMembers(mPlatoonInformation.getMembers());
+            mFragmentMember.setFans(mPlatoonInformation.getFans());
+            mFragmentMember.setAdmin(mPlatoonInformation.isAdmin());
+            mFragmentMember.show();
         }
     }
 
@@ -218,7 +216,21 @@ public class PlatoonActivity extends CustomFragmentActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
+    public void updatePlatoonInDB(PlatoonInformation p) {
+		ContentValues contentValues = PlatoonInformationDAO.convertPlatoonInformationForDB(p, System.currentTimeMillis());
+    	try {
+	    	getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);     
+    	} catch(SQLiteConstraintException ex) {
+    		getContentResolver().update(
+	    		PlatoonInformationDAO.URI,
+	    		contentValues,	    		
+	    		PlatoonInformationDAO.Columns.PLATOON_ID + "=?",
+	    		new String[] { String.valueOf(p.getId()) }
+			);
+    	}
+	}
+
+	@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (mViewPager.getCurrentItem() == 0) {
             return super.onPrepareOptionsMenu(mFragmentOverview.prepareOptionsMenu(menu));
@@ -333,16 +345,7 @@ public class PlatoonActivity extends CustomFragmentActivity {
             mViewPager.setOffscreenPageLimit(3);
         }
     }
-
-    public void openStats(PlatoonInformation p) {
-        mFragmentStats.setPlatoonInformation(p);
-        mFragmentStats.reload();
-    }
-
-    public void openMembers(PlatoonInformation p) {
-        mFragmentMember.showMembers(p);
-    }
-
+    
     public void setFeedPermission(boolean c) {
         mFragmentFeed.setCanWrite(c);
     }

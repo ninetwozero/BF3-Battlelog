@@ -57,7 +57,7 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
 
     @Override
     public void reload() {}
-    public void showStats(PlatoonStats stats) {
+    public void show(PlatoonStats stats) {
     	if (mContext == null || stats == null ) {
             return;
         }

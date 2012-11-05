@@ -176,6 +176,10 @@ public class ProfileInformation {
     	return mTimestamp;
     }
     
+    public void setPlatoons(List<PlatoonData> p) {
+    	mPlatoon = p;
+    }
+    
     public void setSerializedPersonaIds(String s) {
     	mPersonaIdString.setLength(0);
     	mPersonaIdString.append(s);

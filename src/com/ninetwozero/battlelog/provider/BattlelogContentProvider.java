@@ -3,6 +3,7 @@ package com.ninetwozero.battlelog.provider;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
@@ -55,10 +56,10 @@ public class BattlelogContentProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
-        long id = mDatabase.insert(getType(uri), null, contentValues);
-        getContext().getContentResolver().notifyChange(uri, null);
-        return Uri.parse(getType(uri) + "/" + id);
+    public Uri insert(Uri uri, ContentValues contentValues) throws SQLiteConstraintException {
+        long id = mDatabase.insertOrThrow(getType(uri), null, contentValues);
+    	getContext().getContentResolver().notifyChange(uri, null);
+    	return Uri.parse(getType(uri) + "/" + id);
     }
 
     @Override

@@ -119,7 +119,7 @@
   <string name="label_stats">Stats</string>
   <string name="label_users">Brugere</string>
   <string name="info_platoon_created">Oprettet {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">MEDLEMMER</string>
+  <string name="label_members">MEDLEMMER</string>
   <string name="label_fans">FANS</string>
   <string name="info_platoon_compare">Du kan ikke sammenligne delinger... (endnu?)</string>
   <string name="info_empty_msg">Du kan ikke skrive en tom besked.</string>

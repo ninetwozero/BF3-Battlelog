@@ -25,7 +25,7 @@
       android:id="@+id/feed_title"
       style="@style/InfoHeading"
       android:padding="5dp"
-      android:text="@string/label_own_soldiermbers"/>
+      android:text="@string/label_members"/>
 
   <ListView
       android:id="@+id/list_users"
