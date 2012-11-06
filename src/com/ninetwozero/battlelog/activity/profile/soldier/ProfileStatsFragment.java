@@ -37,7 +37,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
@@ -52,7 +51,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -299,27 +297,15 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     }
 
     private void populateStatistics(List<Statistics> statistics, TableLayout layout) {
-        for (Statistics ps : statistics) {
-            TableRow tr = new TableRow(getContext());
-            tr.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            if (ps.getStyle() == R.style.InfoSubHeading) {
-                tr.setBackgroundColor(Color.parseColor("#EEEEEE"));
-            }
-
-            TextView title = new TextView(getContext());
-            title.setText(ps.getTitle());
-            title.setTextColor(Color.parseColor("#000000"));
-            title.setPadding(5, 5, 5, 5);
-            tr.addView(title);
-
-            TextView value = new TextView(getContext());
-            value.setText(ps.getValue());
-            value.setTextColor(Color.parseColor("#000000"));
-            value.setPadding(5, 5, 5, 5);
-            tr.addView(value);
-
-            layout.addView(tr);
-        }
+		for (Statistics ps : statistics) {
+			View tr = mLayoutInflater.inflate(
+					R.layout.list_item_assignment_popup, null);
+			((TextView) tr.findViewById(R.id.text_obj_title)).setText(ps
+					.getTitle());
+			((TextView) tr.findViewById(R.id.text_obj_values)).setText(ps
+					.getValue());
+			layout.addView(tr);
+		}
     }
 
     private int personaArrayLength() {
