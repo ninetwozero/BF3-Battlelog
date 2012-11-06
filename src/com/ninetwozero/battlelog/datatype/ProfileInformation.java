@@ -14,70 +14,71 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-import android.content.Context;
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.misc.PublicUtils;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import android.content.Context;
+
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class ProfileInformation {
 
     // Attributes
-    private int mAge;
     private long mUserId;
-    private long mDateOfBirth;
+    private String mUsername;
+    private String mName;
+    private int mAge;
+    private long mBirthday;
+    private String mLocation;
+    private String mCurrentServer;
+    private String mStatusMessage;
+    private String mPresentation;
     private long mLastlogin;
     private long mStatusMessageChanged;
     private PersonaData[] mPersona;
-    private String mName;
-    private String mUsername;
-    private String mPresentation;
-    private String mLocation;
-    private String mStatusMessage;
-    private String mCurrentServer;
     private boolean mAllowFriendRequests;
     private boolean mOnline;
     private boolean mPlaying;
     private boolean mFriendStatus;
-    private List<PlatoonData> mPlatoons;
+    private List<PlatoonData> mPlatoon;
+    private long mTimestamp;
 
     // Other
-    private StringBuilder mPersonaString = new StringBuilder();
+    private StringBuilder mPersonaNameString = new StringBuilder();
     private StringBuilder mPersonaIdString = new StringBuilder();
     private StringBuilder mPersonaPlatformString = new StringBuilder();
+    private StringBuilder mPlatoonNameString = new StringBuilder();
     private StringBuilder mPlatoonIdString = new StringBuilder();
 
-    // Construct(s)
-    public ProfileInformation(
-
-            int a, long uid, long dob, long l, long sc, PersonaData[] pe, String n,
-            String u, String p, String loc, String s, String c, boolean af,
-            boolean o, boolean pl, boolean fs, List<PlatoonData> pd
-
-    ) {
-
-        mAge = a;
-        mUserId = uid;
-        mDateOfBirth = dob;
-        mLastlogin = l;
-        mStatusMessageChanged = sc;
-        mPersona = pe.clone();
-        mName = n;
-        mUsername = u;
-        mPresentation = p;
-        mLocation = loc;
-        mStatusMessage = s;
-        mCurrentServer = c;
-        mAllowFriendRequests = af;
-        mOnline = o;
-        mPlaying = pl;
-        mFriendStatus = fs;
-        mPlatoons = pd;
-
+    public ProfileInformation(final Builder builder) {
+        mUserId = builder.id;
+        mUsername = builder.username;
+        mName = builder.name;
+        mAge = builder.age;
+        mLocation = builder.location;
+        mBirthday = builder.birthday;
+        mLastlogin = builder.loginDate;
+        mStatusMessageChanged = builder.statusDate;
+        mPersona = builder.personas.clone();
+        mPresentation = builder.presentation;
+        mStatusMessage = builder.statusMessage;
+        mCurrentServer = builder.currentServer;
+        mAllowFriendRequests = builder.allowFriendRequests;
+        mOnline = builder.online;
+        mPlaying = builder.playing;
+        mFriendStatus = builder.friend;
+        mPlatoon = builder.platoons;
+        mTimestamp = builder.timestamp;
+        
+        mPersonaIdString.append(builder.personaIdString);
+        mPersonaNameString.append(builder.personaNameString);
+        mPersonaPlatformString.append(builder.personaPlatformString);
+        mPlatoonIdString.append(builder.platoonIdString);
+        mPlatoonNameString.append(builder.platoonNameString);
     }
 
-    // Getters
     public int getAge() {
         return mAge;
     }
@@ -86,13 +87,15 @@ public class ProfileInformation {
         return mUserId;
     }
 
-    public long getDOB() {
-        return mDateOfBirth;
+    public long getBirthday() {
+        return mBirthday;
     }
 
-    public String getLastLogin(Context c) {
-        return PublicUtils.getRelativeDate(c, mLastlogin,
-                R.string.info_lastlogin);
+    public long getLastLogin() {
+    	return mLastlogin;
+    }
+    public String getLastLoginString(Context c) {
+        return PublicUtils.getRelativeDate(c, mLastlogin,R.string.info_lastlogin);
     }
 
     public long getStatusMessageChanged() {
@@ -148,99 +151,299 @@ public class ProfileInformation {
     }
 
     public long getPlatoonId(int position) {
-        return ((mPlatoons.size() < position) ? mPlatoons.get(position).getId()
-                : mPlatoons.get(0).getId());
+        return ((mPlatoon.size() < position) ? mPlatoon.get(position).getId() : mPlatoon.get(0).getId());
     }
 
     public PlatoonData getPlatoon(int position) {
-
-        return mPlatoons.get(position);
+        return mPlatoon.get(position);
     }
 
     public int getNumPersonas() {
-
         return mPersona.length;
 
     }
 
     public int getNumPlatoons() {
-
-        return mPlatoons.size();
+        return mPlatoon.size();
 
     }
 
     public List<PlatoonData> getPlatoons() {
-        return mPlatoons;
-    }
-
-    public void generate() {
-
-        // Reset
-        mPersonaIdString.setLength(0);
-        mPersonaString.setLength(0);
-        mPersonaPlatformString.setLength(0);
-        mPlatoonIdString.setLength(0);
-
-        // Iterate
-        for (PersonaData p : mPersona) {
-
-            mPersonaIdString.append(p.getId() + ":");
-            mPersonaString.append(p.getName() + ":");
-            mPersonaPlatformString.append(p.getPlatformId() + ":");
-
-        }
-
-        // Iterate
-        for (PlatoonData p : mPlatoons) {
-
-            mPlatoonIdString.append(p.getId() + ":");
-
-        }
-
-    }
-
-    public final Object[] toArray() {
-
-        // Do we need to generate?
-        if (mPersonaIdString == null) {
-            generate();
-        }
-
-        // Return it!
-        return new Object[]{
-
-                mAge, mUserId, mDateOfBirth, mLastlogin, mStatusMessageChanged, mName,
-                mUsername, (mPresentation == null) ? "" : mPresentation,
-                (mLocation == null) ? "" : mLocation,
-                (mStatusMessage == null) ? "" : mStatusMessage,
-                (mCurrentServer == null) ? "" : mCurrentServer,
-                mPersonaIdString.toString(), mPersonaString.toString(),
-                mPersonaPlatformString.toString(),
-                mAllowFriendRequests ? "1" : "0", mOnline ? "1" : "0",
-                mPlaying ? "1" : "0", mFriendStatus ? "1" : "0",
-                mPlatoonIdString.toString()
-
-        };
-
+        return mPlatoon;
     }
     
-    @Override
-	public String toString() {
-		return "ProfileInformation [mAge=" + mAge + ", mUserId=" + mUserId
-				+ ", mDateOfBirth=" + mDateOfBirth + ", mLastlogin="
-				+ mLastlogin + ", mStatusMessageChanged="
-				+ mStatusMessageChanged + ", mPersona="
-				+ Arrays.toString(mPersona) + ", mName=" + mName
-				+ ", mUsername=" + mUsername + ", mPresentation="
-				+ mPresentation + ", mLocation=" + mLocation
-				+ ", mStatusMessage=" + mStatusMessage + ", mCurrentServer="
-				+ mCurrentServer + ", mAllowFriendRequests="
-				+ mAllowFriendRequests + ", mOnline=" + mOnline + ", mPlaying="
-				+ mPlaying + ", mFriendStatus=" + mFriendStatus
-				+ ", mPlatoons=" + mPlatoons + ", mPersonaString="
-				+ mPersonaString + ", mPersonaIdString=" + mPersonaIdString
-				+ ", mPersonaPlatformString=" + mPersonaPlatformString
-				+ ", mPlatoonIdString=" + mPlatoonIdString + "]";
-	}
+    public long getTimestamp() {
+    	return mTimestamp;
+    }
+    
+    public void setPlatoons(List<PlatoonData> p) {
+    	mPlatoon = p;
+    }
+    
+    public void setSerializedPersonaIds(String s) {
+    	mPersonaIdString.setLength(0);
+    	mPersonaIdString.append(s);
+    }
+    
+    public void setSerializedPersonaNames(String s) {
+    	mPersonaNameString.setLength(0);
+    	mPersonaNameString.append(s);
+    }
+    
+    public void setSerializedPersonaPlatforms(String s) {
+    	mPersonaPlatformString.setLength(0);
+    	mPersonaPlatformString.append(s);
+    }
+    
+    public void setSerializedPlatoonIds(String s) {
+    	mPlatoonIdString.setLength(0);
+    	mPlatoonIdString.append(s);
+    }
 
+    public void setSerializedPlatoonNames(String s) {
+    	mPlatoonNameString.setLength(0);
+    	mPlatoonNameString.append(s);
+    }
+    
+    public String getSerializedPersonaIds() {
+    	return mPersonaIdString.toString();
+    }
+    
+    public String getSerializedPersonaNames() {
+    	return mPersonaNameString.toString();
+    }
+
+    public String getSerializedPersonaPlatforms() {
+    	return mPersonaPlatformString.toString();
+    }
+
+    public String getSerializedPlatoonIds() {
+    	return mPlatoonIdString.toString();
+    }
+    
+    public String getSerializedPlatoonNames() {
+    	return mPlatoonNameString.toString();
+    }
+    
+    public void generateFromSerializedState() {
+    	String[] personaIdArray = mPersonaIdString.toString().split(":");
+    	String[] personaNameArray = mPersonaNameString.toString().split(":");
+    	String[] personaPlatoonArray = mPersonaPlatformString.toString().split(":");
+    	String[] platoonIdArray = mPlatoonIdString.toString().split(":");
+    	String[] platoonNameArray = mPlatoonNameString.toString().split(":");
+    	
+    	int numPersonas = personaIdArray.length;
+    	int numPlatoons = platoonIdArray.length;
+    	
+    	mPersona = new PersonaData[numPersonas];
+    	for (int i = 0; i < numPersonas; i++) {
+    		mPersona[i] = new PersonaData(
+    			Long.parseLong(personaIdArray[i]),
+    			personaNameArray[i],
+    			Integer.parseInt(personaPlatoonArray[i]),
+    			""
+			);
+    	}    	
+    	
+    	mPlatoon = new ArrayList<PlatoonData>();
+    	for (int i = 0; i < numPlatoons; i++) {
+    		mPlatoon.add(
+				new PlatoonData(
+	    			Long.parseLong(platoonIdArray[i]),
+	    			platoonNameArray[i]
+				)
+			);
+    	}
+    }
+    
+    public void generateSerializedState() {
+        mPersonaIdString.setLength(0);
+        mPersonaNameString.setLength(0);
+        mPersonaPlatformString.setLength(0);
+        mPlatoonIdString.setLength(0);
+        mPlatoonNameString.setLength(0);
+        
+        for (PersonaData p : mPersona) {
+            mPersonaIdString.append(p.getId() + ":");
+            mPersonaNameString.append(p.getName() + ":");
+            mPersonaPlatformString.append(p.getPlatformId() + ":");
+        }
+
+        for (PlatoonData p : mPlatoon) {
+            mPlatoonIdString.append(p.getId() + ":");
+            mPlatoonNameString.append(p.getName() + ":");
+        }
+    }
+    
+    public static class Builder {
+    	private final long id;
+        private final String username;
+
+        // Optional params
+        private int age = 0;
+        private long birthday = 0;
+        private long loginDate = 0;
+        private long statusDate = 0;
+        private PersonaData[] personas = new PersonaData[0];
+        private String name = "";
+        private String presentation = "";
+        private String location = "";
+        private String statusMessage = "";
+        private String currentServer = "";
+        private boolean allowFriendRequests = false;
+        private boolean online = false;
+        private boolean playing = false;
+        private boolean friend = false;
+        private List<PlatoonData> platoons = new ArrayList<PlatoonData>();
+        private long timestamp;
+        
+        private String personaNameString = "";
+        private String personaIdString = "";
+        private String personaPlatformString = "";
+        private String platoonNameString = "";
+        private String platoonIdString = "";
+        
+        public Builder(long i, String u) {
+            id = i;
+            username = u;
+        }
+        
+        public Builder age(int n) {
+        	age = n;
+        	return this;
+        }
+
+        public Builder birthday(long n) {
+        	birthday = n;
+        	return this;
+        }
+        
+        public Builder loginDate(long n) {
+        	loginDate = n;
+        	return this;
+        }
+        
+        public Builder statusDate(long n) {
+        	statusDate = n;
+        	return this;
+        }
+
+        public Builder name(String s) {
+        	name = s;
+        	return this;
+        }
+        
+        public Builder presentation(String s) {
+        	presentation = s;
+        	return this;
+        }
+        
+        public Builder location(String s) {
+        	location = s;
+        	return this;
+        }
+        
+        public Builder statusMessage(String s) {
+        	statusMessage = s;
+        	return this;
+        }
+        
+        public Builder server(String s) {
+        	currentServer = s;
+        	return this;
+        }
+        
+        public Builder allowFriendRequests(boolean b) {
+        	allowFriendRequests = b;
+        	return this;
+        }
+        
+        public Builder isOnline(boolean b) {
+            online = b;
+            return this;
+        }
+
+        public Builder isPlaying(boolean b) {
+            playing = b;
+            return this;
+        }
+
+        public Builder isFriend(boolean b) {
+            friend = b;
+            return this;
+        }
+
+        public Builder persona(PersonaData... p) {
+            personas = p;
+            return this;
+        }
+
+        public Builder platoons(List<PlatoonData> p) {
+        	platoons = p;
+        	return this;
+        }
+        
+        public Builder personaIdString(String s) {
+        	personaIdString = s;
+        	return this;
+        }
+        
+        public Builder personaNameString(String s) {
+        	personaNameString = s;
+        	return this;
+        }
+        
+        public Builder personaPlatformString(String s) {
+        	personaPlatformString = s;
+        	return this;
+        }
+        
+        public Builder platoonIdString(String s) {
+        	platoonIdString = s;
+        	return this;
+        }
+        
+        public Builder platoonNameString(String s) {
+        	platoonNameString = s;
+        	return this;
+        }
+
+
+    	public Builder timestamp(long n) {
+    		timestamp = n;
+    		return this;
+    	}
+        
+        public ProfileInformation build() {
+            return new ProfileInformation(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ProfileInformation{" +
+                "mAge=" + mAge +
+                ", mUserId=" + mUserId +
+                ", mDateOfBirth=" + mBirthday +
+                ", mLastlogin=" + mLastlogin +
+                ", mStatusMessageChanged=" + mStatusMessageChanged +
+                ", mPersona=" + (mPersona == null ? null : Arrays.asList(mPersona)) +
+                ", mName='" + mName + '\'' +
+                ", mUsername='" + mUsername + '\'' +
+                ", mPresentation='" + mPresentation + '\'' +
+                ", mLocation='" + mLocation + '\'' +
+                ", mStatusMessage='" + mStatusMessage + '\'' +
+                ", mCurrentServer='" + mCurrentServer + '\'' +
+                ", mAllowFriendRequests=" + mAllowFriendRequests +
+                ", mOnline=" + mOnline +
+                ", mPlaying=" + mPlaying +
+                ", mFriendStatus=" + mFriendStatus +
+                ", mPlatoons=" + mPlatoon +
+                ", mPersonaNameString=" + mPersonaNameString +
+                ", mPersonaIdString=" + mPersonaIdString +
+                ", mPersonaPlatformString=" + mPersonaPlatformString +
+                ", mPlatoonNameString=" + mPlatoonNameString +
+                ", mPlatoonIdString=" + mPlatoonIdString +
+                '}';
+    }
 }

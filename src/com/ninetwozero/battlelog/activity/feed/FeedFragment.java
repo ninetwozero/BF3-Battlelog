@@ -106,8 +106,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment,
 		mButtonSend = (Button) v.findViewById(R.id.button_send);
 		
 		// Setup the listAdapter
-		mListAdapter = new FeedListAdapter(mContext, mFeedItems,
-				mLayoutInflater);
+		mListAdapter = new FeedListAdapter(mContext, mFeedItems, mLayoutInflater);
 		mListView.setAdapter(mListAdapter);
 
 		// Handle the *type*-specific events here

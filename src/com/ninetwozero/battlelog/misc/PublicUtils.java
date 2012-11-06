@@ -17,9 +17,12 @@
 
 package com.ninetwozero.battlelog.misc;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,6 +32,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.Toast;
+
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
@@ -37,17 +41,10 @@ import com.ninetwozero.battlelog.asynctask.AsyncSessionValidate;
 import com.ninetwozero.battlelog.datatype.ShareableCookie;
 import com.ninetwozero.battlelog.http.RequestHandler;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
 public class PublicUtils {
 
     public static String getDate(final Long d) {
-
         return new SimpleDateFormat("yyyy-MM-dd").format(new Date(d * 1000));
-
     }
 
     /**
@@ -61,128 +58,82 @@ public class PublicUtils {
      */
 
     public static final String getDate(long d, String s) {
-
         return s + " " + getDate(d);
-
     }
 
-    public static String getRelativeDate(final Context c, final Long d) {
-
-        // Let's just expect it to be millis seconds already
-        Long dateStart = d;
-        Long dateNow = System.currentTimeMillis() / 1000;
-        Long dateDiff = dateNow - dateStart;
+    public static String getRelativeDate(final Context c, final long d) {
+        long dateStart = d;
+        long dateNow = System.currentTimeMillis() / 1000;
+        long dateDiff = dateNow - dateStart;
         String dateString = null;
 
-        // When did we start? 0 == just one login (if I haven't understood it
-        // too wrong)
         if (d == 0) {
-            return "an unknown amount of time ago.";
+            return "N/A";
         }
-
-        // Diff is not allowed to be < 0
+        
         dateDiff = (dateDiff < 0) ? 0 : dateDiff;
-
-        // What's the difference (in seconds) y'all?
         if ((dateDiff / Constants.MINUTE_IN_SECONDS) < 1) {
-
-            // Diff is in seconds
+        	// Diff is in the scope of seconds
             if (dateDiff == 1) {
-
-                dateString = c.getString(R.string.info_time_second).replace(
-                        "{seconds}", String.valueOf(1));
-
+            	dateString = c.getString(R.string.info_time_second).replace("{seconds}", String.valueOf(1));
             } else {
-
                 dateString = c.getString(R.string.info_time_second_p).replace(
-                        "{seconds}",
-                        String.valueOf(dateDiff % Constants.MINUTE_IN_SECONDS));
-
+                    "{seconds}",
+                    String.valueOf(dateDiff % Constants.MINUTE_IN_SECONDS)
+                );
             }
-
         } else if ((dateDiff / Constants.HOUR_IN_SECONDS) < 1) {
-
-            // Diff is in minutes
+        	// Diff is in the scope of minutes
             if ((dateDiff / Constants.MINUTE_IN_SECONDS) == 1) {
-
-                dateString = c.getString(R.string.info_time_min).replace(
-                        "{minutes}", String.valueOf(1));
-
+                dateString = c.getString(R.string.info_time_min).replace("{minutes}", String.valueOf(1));
             } else {
-
                 dateString = c.getString(R.string.info_time_min_p).replace(
-                        "{minutes}",
-                        String.valueOf(dateDiff / Constants.MINUTE_IN_SECONDS));
-
+                	"{minutes}",
+                	String.valueOf(dateDiff / Constants.MINUTE_IN_SECONDS)
+        		);
             }
         } else if ((dateDiff / Constants.DAY_IN_SECONDS) < 1) {
-
-            // Diff is in hours
+        	// Diff is in the scope of hours
             if ((dateDiff / Constants.HOUR_IN_SECONDS) == 1) {
-
-                dateString = c.getString(R.string.info_time_hour).replace(
-                        "{hours}", String.valueOf(1));
-
+                dateString = c.getString(R.string.info_time_hour).replace("{hours}", String.valueOf(1));
             } else {
-
                 dateString = c.getString(R.string.info_time_hour_p).replace(
-                        "{hours}",
-                        String.valueOf(dateDiff / Constants.HOUR_IN_SECONDS));
-
+            		"{hours}",
+                    String.valueOf(dateDiff / Constants.HOUR_IN_SECONDS)
+                );
             }
-
         } else if ((dateDiff / Constants.WEEK_IN_SECONDS) < 1) {
-
-            // Diff is in days
+            // Diff is in the scope of days
             if ((dateDiff / Constants.DAY_IN_SECONDS) == 1) {
-
-                dateString = c.getString(R.string.info_time_day).replace(
-                        "{days}", String.valueOf(1));
-
+                dateString = c.getString(R.string.info_time_day).replace("{days}", String.valueOf(1));
             } else {
-
                 dateString = c.getString(R.string.info_time_day_p).replace(
-                        "{days}",
-                        String.valueOf(dateDiff / Constants.DAY_IN_SECONDS));
-
+                    "{days}",
+                    String.valueOf(dateDiff / Constants.DAY_IN_SECONDS)
+                );
             }
-
         } else if ((dateDiff / Constants.YEAR_IN_SECONDS) < 1) {
-
-            // Diff is in weeks
+            // Diff is in the scope of weeks
             if ((dateDiff / Constants.WEEK_IN_SECONDS) == 1) {
-
-                dateString = c.getString(R.string.info_time_week).replace(
-                        "{weeks}", String.valueOf(1));
-
+                dateString = c.getString(R.string.info_time_week).replace("{weeks}", String.valueOf(1));
             } else {
-
                 dateString = c.getString(R.string.info_time_week_p).replace(
-                        "{weeks}",
-                        String.valueOf(dateDiff / Constants.WEEK_IN_SECONDS));
-
+            		"{weeks}",
+                    String.valueOf(dateDiff / Constants.WEEK_IN_SECONDS)
+                );
             }
-
         } else {
-
-            // Diff is probably in years
+            // Diff is most likely in the scope of years(++)
             if ((dateDiff / Constants.YEAR_IN_SECONDS) == 1) {
-
-                dateString = c.getString(R.string.info_time_year).replace(
-                        "{years}", String.valueOf(1));
-
+                dateString = c.getString(R.string.info_time_year).replace("{years}", String.valueOf(1));
             } else {
-
                 dateString = c.getString(R.string.info_time_year_p).replace(
-                        "{years}",
-                        String.valueOf(dateDiff / Constants.YEAR_IN_SECONDS));
-
+                    "{years}",
+                    String.valueOf(dateDiff / Constants.YEAR_IN_SECONDS)
+                );
             }
-
         }
-
         return dateString;
-
     }
 
     /**
@@ -195,9 +146,7 @@ public class PublicUtils {
      * @return String the relative date
      */
     public static final String getRelativeDate(Context c, long d, int s) {
-
         return c.getString(s).replace("{date}", getRelativeDate(c, d));
-
     }
 
     /**
@@ -209,22 +158,13 @@ public class PublicUtils {
      */
 
     public static final String normalizeUrl(final String s) {
-
-        // Check if we have a valid prefix
         if ("".equals(s)) {
-
             return "";
-
         } else if (s.contains("://")) {
-
             return s;
-
         } else {
-
             return "http://" + s;
-
         }
-
     }
 
     /**
@@ -304,8 +244,6 @@ public class PublicUtils {
     }
 
     public static String timeToLiteral(long s) {
-
-        // Let's see what we can do
         if ((s / 60) < 1) {
             return s + "S";
         } else if ((s / 3600) < 1) {
@@ -316,62 +254,23 @@ public class PublicUtils {
     }
 
     /*
-     * Author:
-     * http://www.mobile-web-consulting.de/post/5272654457/android-check-
-     * if-a-service-is-running Modified by: Karl Lindmark
-     * @param Context The context to be called from
-     * @return boolean True/false regarding if the app is running
-     */
-
-    public static boolean isMyServiceRunning(Context context) {
-
-        ActivityManager manager = (ActivityManager) context
-                .getSystemService(Context.ACTIVITY_SERVICE);
-        for (RunningServiceInfo service : manager
-                .getRunningServices(Integer.MAX_VALUE)) {
-
-            if ("com.ninetwozero.battlelog.service.BattlelogService"
-                    .equals(service.service.getClassName())) {
-                return true;
-            }
-
-        }
-        return false;
-
-    }
-
-    /*
-     * Author: http://stackoverflow.com/a/4239019/860212 Modified by: Karl
-     * Lindmark
+     * Author: http://stackoverflow.com/a/4239019/860212 
+     * Modified by: Karl Lindmark
      * @param Context The context to be called from
      * @return boolean True/false regarding if the network is available
      */
 
     public static boolean isNetworkAvailable(final Context c) {
-
-        // Let's get the connection manager
-        ConnectivityManager connMan = (ConnectivityManager) c
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMan = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connMan.getActiveNetworkInfo() != null) {
-
-            // ...and the network information
             NetworkInfo networkInfo = connMan.getActiveNetworkInfo();
-
-            // If it's WiFi, it's ok
             if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-
                 return true;
-
-            } else if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE
-                    && connMan.getBackgroundDataSetting()) {
-
+            } else if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE && connMan.getBackgroundDataSetting()) {
                 return true;
-
             }
-
         }
         return false;
-
     }
 
     /*
@@ -381,19 +280,11 @@ public class PublicUtils {
      */
 
     public static String getCachePath(final Context c) {
-
-        // Get the file
-        String path = ExternalCacheDirectory.getInstance(c)
-                .getExternalCacheDirectory().toString();
-
-        // Append if needed
+        String path = ExternalCacheDirectory.getInstance(c).getExternalCacheDirectory().toString();
         if (!path.endsWith("/")) {
             path += "/";
         }
-
-        // Return it
         return path;
-
     }
 
     /*
@@ -404,25 +295,14 @@ public class PublicUtils {
      */
 
     public static void restoreCookies(Context context, Bundle icicle) {
-
-        // Did it get passed on?
         if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
-
-            List<ShareableCookie> shareableCookies = icicle
-                    .getParcelableArrayList(Constants.SUPER_COOKIES);
-
+            List<ShareableCookie> shareableCookies = icicle.getParcelableArrayList(Constants.SUPER_COOKIES);
             if (shareableCookies == null) {
-
                 ((Activity) context).finish();
-
             } else {
-
                 RequestHandler.setCookies(shareableCookies);
-
             }
-
         }
-
     }
 
     /*
@@ -433,114 +313,59 @@ public class PublicUtils {
      */
 
     public static void setupLocale(Context context, SharedPreferences sharedPreferences) {
-
         if (!sharedPreferences.getString(Constants.SP_BL_LANG, "").equals("")) {
-
-            Locale locale = new Locale(sharedPreferences.getString(
-                    Constants.SP_BL_LANG, "en"));
+            Locale locale = new Locale(sharedPreferences.getString(Constants.SP_BL_LANG, "en"));
             Locale.setDefault(locale);
+            
             Configuration config = new Configuration();
             config.locale = locale;
-            context.getResources().updateConfiguration(config,
-                    context.getResources().getDisplayMetrics());
-
+            context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
         }
-
     }
 
     public static void setupSession(Context context, SharedPreferences sharedPreferences) {
-
-        // Let's just check if it's MainActivity, to prevent loops
         if (context instanceof MainActivity) {
-
             return;
-
         }
 
-        // Let's set "active" against the website
         new AsyncSessionSetActive().execute();
-
-        // If we don't have a profile...
         if (SessionKeeper.getProfileData() == null) {
-
-            // ...but we do indeed have a cookie...
             String cookieValue = sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "");
             if ("".equals(cookieValue)) {
-
-                // ...we set the SessionKeeper, but also reload the cookies!
-                // Easy peasy!
-                SessionKeeper
-                        .setProfileData(SessionKeeper
-                                .generateProfileDataFromSharedPreferences(sharedPreferences));
-                RequestHandler.setCookies(
-
-                        new ShareableCookie(
-
-                                sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
-                                cookieValue,
-                                Constants.COOKIE_DOMAIN
-
-                        )
-
+                SessionKeeper.setProfileData(
+                	SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences)
                 );
-
-                SessionKeeper.setPlatoonData(SessionKeeper
-                        .generatePlatoonDataFromSharedPreferences(sharedPreferences));
-
-                // ...but just to be sure, we try to verify our session
-                // "behind the scenes"
+                RequestHandler.setCookies(
+                    new ShareableCookie(
+                        sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
+                        cookieValue,
+                        Constants.COOKIE_DOMAIN
+                    )
+                );
+                SessionKeeper.setPlatoonData(SessionKeeper.generatePlatoonDataFromSharedPreferences(sharedPreferences));
                 new AsyncSessionValidate(context, sharedPreferences).execute();
-
             } else {
-
-                // Aw man, that backfired.
-                Toast.makeText(context, R.string.info_txt_session_lost,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
                 ((Activity) context).startActivity(new Intent(context, MainActivity.class));
                 ((Activity) context).finish();
-
             }
-
         }
-
     }
 
     public static void setupFullscreen(Context context, SharedPreferences sharedPreferences) {
-
-        // Is fullscreen enableD?
         if (sharedPreferences.getBoolean(Constants.SP_BL_FULLSCREEN, true)) {
-
             ((Activity) context).requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         }
-
     }
 
     public static String insertToString(String base, Object... data) {
-
-        // Iterate and fix
         for (Object d : data) {
-
             base = base.replaceFirst("\\{[^\\}]+\\}", String.valueOf(d));
-
         }
         return base;
-
     }
 
     public static String createStringWithData(Context c, int resource, Object... data) {
-
-        // Get the base
-        String base = c.getString(resource);
-
-        // Iterate and fix
-        for (Object d : data) {
-
-            base = base.replaceFirst("\\{[^\\}]+\\}", String.valueOf(d));
-
-        }
-        return base;
-
+        return insertToString(c.getString(resource), data);
     }
-
 }

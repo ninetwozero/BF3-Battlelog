@@ -119,7 +119,7 @@
   <string name="label_stats">Statistiken</string>
   <string name="label_users">Benutzer</string>
   <string name="info_platoon_created">Erstellt am {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">Mitglieder</string>
+  <string name="label_members">Mitglieder</string>
   <string name="label_fans">Fans</string>
   <string name="info_platoon_compare">Du kannst (noch?) keine Kolonnen vergleichen...</string>
   <string name="info_empty_msg">Sie können keine leere Nachricht senden</string>

@@ -14,28 +14,32 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
+import java.util.ArrayList;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.*;
+import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.Bf3Fragment;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.activity.feed.FeedFragment;
-import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
-import java.util.ArrayList;
-
-public class ProfileActivity extends CustomFragmentActivity implements
-		DefaultFragmentActivity {
+public class ProfileActivity extends CustomFragmentActivity {
 
 	// Fragment related
 	private ProfileOverviewFragment fragmentOverview;
@@ -54,6 +58,7 @@ public class ProfileActivity extends CustomFragmentActivity implements
 			finish();
 		}
 		profileData = getIntent().getParcelableExtra("profile");
+		
 		setup();
 		init();
 	}
@@ -67,14 +72,9 @@ public class ProfileActivity extends CustomFragmentActivity implements
 	public void setup() {
 		if (mListFragments == null) {
 			mListFragments = new ArrayList<Fragment>();
-			mListFragments
-					.add(fragmentOverview = (ProfileOverviewFragment) Fragment
-							.instantiate(this,
-									ProfileOverviewFragment.class.getName()));
-			mListFragments.add(fragmentStats = (ProfileStatsFragment) Fragment
-					.instantiate(this, ProfileStatsFragment.class.getName()));
-			mListFragments.add(fragmentFeed = (FeedFragment) Fragment
-					.instantiate(this, FeedFragment.class.getName()));
+			mListFragments.add(fragmentOverview = (ProfileOverviewFragment) Fragment.instantiate(this, ProfileOverviewFragment.class.getName()));
+			mListFragments.add(fragmentStats = (ProfileStatsFragment) Fragment.instantiate(this, ProfileStatsFragment.class.getName()));
+			mListFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
 
 			fragmentOverview.setProfileData(profileData);
 			fragmentStats.setProfileData(profileData);
@@ -88,12 +88,15 @@ public class ProfileActivity extends CustomFragmentActivity implements
 			mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
 			mPagerAdapter = new SwipeyTabsPagerAdapter(
-                    mFragmentManager, new String[] { "OVERVIEW", "STATS", "FEED" },
-					mListFragments, mViewPager, mLayoutInflater);
+                mFragmentManager, 
+                new String[] { "OVERVIEW", "STATS", "FEED" },
+				mListFragments, 
+				mViewPager, 
+				mLayoutInflater
+			);
 			mViewPager.setAdapter(mPagerAdapter);
 			mTabs.setAdapter(mPagerAdapter);
 
-			// Make sure the tabs follow
 			mViewPager.setOnPageChangeListener(mTabs);
 			mViewPager.setCurrentItem(0);
 			mViewPager.setOffscreenPageLimit(2);
@@ -120,11 +123,10 @@ public class ProfileActivity extends CustomFragmentActivity implements
 			} else if (mViewPager.getCurrentItem() == 1) {
 				return super.onPrepareOptionsMenu(fragmentStats.prepareOptionsMenu(menu));
 			} else if (mViewPager.getCurrentItem() == 2) {
-				((MenuItem) menu.findItem(R.id.option_friendadd)).setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_frienddel)).setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_compare)).setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_unlocks)).setVisible(false);
-
+				menu.findItem(R.id.option_friendadd).setVisible(false);
+				menu.findItem(R.id.option_frienddel).setVisible(false);
+				menu.findItem(R.id.option_compare).setVisible(false);
+				menu.findItem(R.id.option_unlocks).setVisible(false);
 			} else {
 				menu.removeItem(R.id.option_friendadd);
 				menu.removeItem(R.id.option_frienddel);
@@ -203,7 +205,7 @@ public class ProfileActivity extends CustomFragmentActivity implements
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && mViewPager.getCurrentItem() > 0) {
-			mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+			mViewPager.setCurrentItem(0, true);
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);

@@ -475,8 +475,6 @@ public class RequestHandler {
     }
 
     public static String generateUrl(String base, Object... data) {
-
-        // Iterate and fix
         for (Object d : data) {
             base = base.replaceFirst("\\{[^\\}]+\\}", String.valueOf(d));
         }

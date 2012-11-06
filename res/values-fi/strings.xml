@@ -119,7 +119,7 @@
   <string name="label_stats">Tilastot</string>
   <string name="label_users">Käyttäjät</string>
   <string name="info_platoon_created">Luotu: {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">JÄSENET</string>
+  <string name="label_members">JÄSENET</string>
   <string name="label_fans">FANIT</string>
   <string name="info_platoon_compare">Et voi vertailla joukkueita.. (vielä?)</string>
   <string name="info_empty_msg">Et voi kirjoittaa tyhjää viestiä.</string>
