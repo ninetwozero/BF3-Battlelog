@@ -281,7 +281,6 @@ public class NotificationData implements Parcelable {
 
     // Misc
     public String resolveActionFromId(Context c, int id) {
-
         switch (typeId) {
             case 1: // Friendship
                 return c.getString(R.string.info_friendship);
@@ -301,6 +300,8 @@ public class NotificationData implements Parcelable {
                 return c.getString(R.string.info_battle_report);
             case 11: // Rank
                 return c.getString(R.string.info_new_rank);
+            case 12:
+            	return c.getString(R.string.info_favorited_server);
             case 13: // Platoon activity
             case 15:
             case 16: // Platoon activity
@@ -313,7 +314,7 @@ public class NotificationData implements Parcelable {
             case 22: // Got game
                 return c.getString(R.string.info_p_activated_expansion);
             default:
-                Log.d(Constants.DEBUG_TAG, "type => " + type + ":" + typeId);
+                Log.d(Constants.DEBUG_TAG, "notification type is unknown => " + type + ":" + typeId);
                 return "{unknown action}";
         }
     }

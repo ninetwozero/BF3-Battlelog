@@ -14,6 +14,24 @@
 
 package com.ninetwozero.battlelog.activity.profile.soldier;
 
+import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.personaStaticsFromCursor;
+import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.personaStatisticsForDB;
+import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.personaStatisticsFromJSON;
+import static com.ninetwozero.battlelog.dao.RankProgressDAO.rankProgressForDB;
+import static com.ninetwozero.battlelog.dao.RankProgressDAO.rankProgressFromCursor;
+import static com.ninetwozero.battlelog.dao.RankProgressDAO.rankProgressFromJSON;
+import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.scoreStatisticsForDB;
+import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.scoreStatisticsFromCursor;
+import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.scoreStatisticsFromJSON;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
+import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
+
+import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -25,9 +43,18 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.Bf3Fragment;
@@ -48,18 +75,6 @@ import com.ninetwozero.battlelog.provider.UriFactory;
 import com.ninetwozero.battlelog.provider.table.PersonaStatistics;
 import com.ninetwozero.battlelog.provider.table.RankProgress;
 import com.ninetwozero.battlelog.provider.table.ScoreStatistics;
-
-import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static com.ninetwozero.battlelog.dao.PersonaStatisticsDAO.*;
-import static com.ninetwozero.battlelog.dao.RankProgressDAO.*;
-import static com.ninetwozero.battlelog.dao.ScoreStatisticsDAO.*;
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
-import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
 
 public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDialogListener {
 
@@ -97,16 +112,14 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     private List<Statistics> listScoreStatistics;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
 
-        View view = mLayoutInflater.inflate(R.layout.tab_content_profile_stats,
-                container, false);
+        View view = mLayoutInflater.inflate(R.layout.tab_content_profile_stats, container, false);
 
         initFragment(view);
         return view;
@@ -154,8 +167,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
         mSelectedPersona = getSelectedPersonaId(mSelectedPosition);
         mSelectedPlatformId = getPlatformIdFor(mSelectedPosition);
         mSelectedPersonaName = getSelectedPersonaName(mSelectedPosition);
-        Log.d(Constants.DEBUG_TAG, "mSelectedPersona => " + mSelectedPersona);
-        callURI = UriFactory.personaOverview(mSelectedPersona, mSelectedPlatformId);
+        callURI = UriFactory.getPersonaOverviewUri(mSelectedPersona, mSelectedPlatformId);
     }
 
     private long getSelectedPersonaId(int position) {
@@ -331,14 +343,14 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
             findViews();
             PersonaInfo pi = personaStatsFrom(task);
             updateDatabase(pi);
-            if (progressDialog != null) {
-                progressDialog.dismiss();
-            }
             populateView();
+        }
+        if (progressDialog != null) {
+            progressDialog.dismiss();
         }
     }
 
-    private PersonaInfo personaStatsFrom(CompletedTask task) {
+	private PersonaInfo personaStatsFrom(CompletedTask task) {
         Gson gson = new Gson();
         PersonaInfo data = gson.fromJson(task.jsonObject, PersonaInfo.class);
         return data;

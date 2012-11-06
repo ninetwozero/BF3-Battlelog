@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.service.BattlelogService;
 
+@Deprecated
 public class NetworkReceiver extends BroadcastReceiver {
 
     @Override

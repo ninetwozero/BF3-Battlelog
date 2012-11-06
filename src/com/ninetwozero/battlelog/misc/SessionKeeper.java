@@ -133,12 +133,11 @@ public final class SessionKeeper {
                     new PlatoonData(
 
                             Long.parseLong(platoonIdArray[i]),
-                            0,
-                            0,
-                            Integer.parseInt(platformIdArray[i]),
                             platoonNameArray[i],
                             platoonTagArray[i],
-                            platoonImageArray[i],
+                            Integer.parseInt(platformIdArray[i]),
+                            0,
+                            0,
                             true
                     )
 

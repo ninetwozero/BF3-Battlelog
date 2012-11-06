@@ -25,20 +25,13 @@
       android:paddingLeft="10dp"
       android:paddingRight="10dp"
       android:paddingTop="5dp">
-
-    <TextView
-        android:id="@+id/text_name_platoon_tab2"
-        style="@style/InfoHeading"
-        android:padding="5dp"
-        android:text="Non-turbined Zebras"/>
-
+      
     <!-- GENERAL STATS -->
 
     <RelativeLayout
         android:id="@+id/wrap_general"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_name_platoon_tab2">
+        android:layout_height="wrap_content">
 
       <TextView
           android:id="@+id/string100"

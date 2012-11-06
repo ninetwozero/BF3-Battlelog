@@ -20,78 +20,74 @@ import android.os.Parcelable;
 import java.util.List;
 
 public class PlatoonStats implements Parcelable {
+    private String mName;
+    private long mId;
 
-    // Base-section
-    private String name;
-    private long id;
-
-    // General stats
-    private List<PlatoonStatsItem> globalTop, scores, spm, time;
-    private List<PlatoonTopStatsItem> topPlayers;
+    private List<PlatoonStatsItem> mGlobalToplist; 
+    private List<PlatoonStatsItem> mScores; 
+    private List<PlatoonStatsItem> mScorePerMinute;
+    private List<PlatoonStatsItem> mTime;
+    private List<PlatoonTopStatsItem> mTopPlayers;
 
     // Construct
-    public PlatoonStats(String sName, long lId, List<PlatoonStatsItem> gS,
-                        List<PlatoonTopStatsItem> tP, List<PlatoonStatsItem> kS,
-                        List<PlatoonStatsItem> kSPM, List<PlatoonStatsItem> kT) {
+    public PlatoonStats(
+		String sName, 
+		long lId, 
+		List<PlatoonStatsItem> gS,
+		List<PlatoonTopStatsItem> tP, 
+		List<PlatoonStatsItem> kS,	
+		List<PlatoonStatsItem> kSPM, 
+		List<PlatoonStatsItem> kT
+	) {
+        mName = sName;
+        mId = lId;
 
-        // Basic attributes
-        name = sName;
-        id = lId;
-
-        globalTop = gS;
-        topPlayers = tP;
-        scores = kS;
-        spm = kSPM;
-        time = kT;
-
+        mGlobalToplist = gS;
+        mTopPlayers = tP;
+        mScores = kS;
+        mScorePerMinute = kSPM;
+        mTime = kT;
     }
 
     @SuppressWarnings("unchecked")
     public PlatoonStats(Parcel in) {
+        mName = in.readString();
+        mId = in.readLong();
 
-        // Basic attributes
-        name = in.readString();
-        id = in.readLong();
-
-        globalTop = (List<PlatoonStatsItem>) in.readParcelable(PlatoonStatsItem.class
-                .getClassLoader());
-        topPlayers = (List<PlatoonTopStatsItem>) in.readParcelable(PlatoonStatsItem.class
-                .getClassLoader());
-        scores = (List<PlatoonStatsItem>) in
-                .readParcelable(PlatoonStatsItem.class.getClassLoader());
-        spm = (List<PlatoonStatsItem>) in.readParcelable(PlatoonStatsItem.class.getClassLoader());
-        time = (List<PlatoonStatsItem>) in.readParcelable(PlatoonTopStatsItem.class
-                .getClassLoader());
-
+        mGlobalToplist = (List<PlatoonStatsItem>) in.readParcelable(PlatoonStatsItem.class.getClassLoader());
+        mTopPlayers = (List<PlatoonTopStatsItem>) in.readParcelable(PlatoonStatsItem.class.getClassLoader());
+        mScores = (List<PlatoonStatsItem>) in.readParcelable(PlatoonStatsItem.class.getClassLoader());
+        mScorePerMinute = (List<PlatoonStatsItem>) in.readParcelable(PlatoonStatsItem.class.getClassLoader());
+        mTime = (List<PlatoonStatsItem>) in.readParcelable(PlatoonTopStatsItem.class.getClassLoader());
     }
 
     // Getters
     public final String getName() {
-        return name;
+        return mName;
     }
 
     public final long getId() {
-        return id;
+        return mId;
     }
 
     public final List<PlatoonTopStatsItem> getTopPlayers() {
-        return topPlayers;
+        return mTopPlayers;
     }
 
     public final List<PlatoonStatsItem> getGlobalTop() {
-        return globalTop;
+        return mGlobalToplist;
     }
 
     public final List<PlatoonStatsItem> getScores() {
-        return scores;
+        return mScores;
     }
 
     public final List<PlatoonStatsItem> getSpm() {
-        return spm;
+        return mScorePerMinute;
     }
 
     public final List<PlatoonStatsItem> getTime() {
-        return time;
+        return mTime;
     }
 
     @Override
@@ -104,7 +100,6 @@ public class PlatoonStats implements Parcelable {
     }
 
     public static final Parcelable.Creator<PlatoonStats> CREATOR = new Parcelable.Creator<PlatoonStats>() {
-
         public PlatoonStats createFromParcel(Parcel in) {
             return new PlatoonStats(in);
         }
@@ -112,7 +107,14 @@ public class PlatoonStats implements Parcelable {
         public PlatoonStats[] newArray(int size) {
             return new PlatoonStats[size];
         }
-
     };
 
+	@Override
+	public String toString() {
+		return "PlatoonStats [mName=" + mName + ", mId=" + mId
+				+ ", mGlobalToplist=" + mGlobalToplist + ", mScores=" + mScores
+				+ ", mScorePerMinute=" + mScorePerMinute + ", mTime=" + mTime
+				+ ", mTopPlayers=" + mTopPlayers + "]";
+	}
+    
 }

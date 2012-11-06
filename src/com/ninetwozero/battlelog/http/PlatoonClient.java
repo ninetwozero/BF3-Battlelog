@@ -14,17 +14,6 @@
 
 package com.ninetwozero.battlelog.http;
 
-import android.content.Context;
-import android.preference.PreferenceManager;
-import com.ninetwozero.battlelog.R;
-import com.ninetwozero.battlelog.datatype.*;
-import com.ninetwozero.battlelog.misc.CacheHandler;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.PublicUtils;
-import org.apache.http.HttpEntity;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,6 +22,30 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import android.content.Context;
+import android.preference.PreferenceManager;
+
+import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
+import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.PlatoonData;
+import com.ninetwozero.battlelog.datatype.PlatoonInformation;
+import com.ninetwozero.battlelog.datatype.PlatoonStats;
+import com.ninetwozero.battlelog.datatype.PlatoonStatsItem;
+import com.ninetwozero.battlelog.datatype.PlatoonTopStatsItem;
+import com.ninetwozero.battlelog.datatype.ProfileComparator;
+import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.RequestHandlerException;
+import com.ninetwozero.battlelog.datatype.TopStatsComparator;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.CacheHandler;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.PublicUtils;
+
 public class PlatoonClient extends DefaultClient {
 
     // Attributes
@@ -40,68 +53,54 @@ public class PlatoonClient extends DefaultClient {
 
     // URLS
     public static final String URL_INFO = Constants.URL_MAIN + "platoon/{PLATOON_ID}/";
-    public static final String URL_FANS = Constants.URL_MAIN
-            + "platoon/{PLATOON_ID}/listfans/";
-    public static final String URL_MEMBERS = Constants.URL_MAIN
-            + "platoon/{PLATOON_ID}/listmembers/";
-    public static final String URL_STATS = Constants.URL_MAIN
-            + "platoon/platoonMemberStats/{PLATOON_ID}/2/{PLATFORM_ID}/";
-    public static final String URL_PROMOTE = Constants.URL_MAIN
-            + "platoon/promotemember/{PLATOON_ID}/{UID}/";
-    public static final String URL_DEMOTE = Constants.URL_MAIN
-            + "platoon/demotemember/{PLATOON_ID}/{UID}/";
-    public static final String URL_APPLY = Constants.URL_MAIN
-            + "platoon/applyformembership/";
-    public static final String URL_RESPOND = Constants.URL_MAIN
-            + "platoon/applyingactions/{PLATOON_ID}/";
+    public static final String URL_FANS = Constants.URL_MAIN + "platoon/{PLATOON_ID}/listfans/";
+    public static final String URL_MEMBERS = Constants.URL_MAIN + "platoon/{PLATOON_ID}/listmembers/";
+    public static final String URL_STATS = Constants.URL_MAIN + "platoon/platoonMemberStats/{PLATOON_ID}/2/{PLATFORM_ID}/";
+    public static final String URL_PROMOTE = Constants.URL_MAIN + "platoon/promotemember/{PLATOON_ID}/{UID}/";
+    public static final String URL_DEMOTE = Constants.URL_MAIN + "platoon/demotemember/{PLATOON_ID}/{UID}/";
+    public static final String URL_APPLY = Constants.URL_MAIN + "platoon/applyformembership/";
+    public static final String URL_RESPOND = Constants.URL_MAIN + "platoon/applyingactions/{PLATOON_ID}/";
     public static final String URL_LEAVE = Constants.URL_MAIN + "platoon/leave/";
-    public static final String URL_KICK = Constants.URL_MAIN
-            + "platoon/kickmember/{PLATOON_ID}/{UID}/";
-    public static final String URL_INVITE = Constants.URL_MAIN
-            + "platoon/invitemember/";
+    public static final String URL_KICK = Constants.URL_MAIN + "platoon/kickmember/{PLATOON_ID}/{UID}/";
+    public static final String URL_INVITE = Constants.URL_MAIN + "platoon/invitemember/";
     public static final String URL_NEW = Constants.URL_MAIN + "platoon/newplatoon/";
     public static final String URL_EDIT = Constants.URL_MAIN + "platoon/edit/{PLATOON_ID}/";
     public static final String URL_SEARCH = Constants.URL_MAIN + "platoon/search/";
-    public static final String URL_IMAGE = Constants.URL_STATIC_CONTENT
-            + "prod/emblems/320/{BADGE_PATH}";
-    public static final String URL_THUMBS = Constants.URL_STATIC_CONTENT
-            + "prod/emblems/60/{BADGE_PATH}";
+    public static final String URL_IMAGE = Constants.URL_STATIC_CONTENT + "prod/emblems/320/{BADGE_PATH}";
+    public static final String URL_THUMBS = Constants.URL_STATIC_CONTENT + "prod/emblems/60/{BADGE_PATH}";
 
     // Constants
     public static final String[] FIELD_NAMES_SETTINGS = new String[]{
-
-            "name", "tag", "presentation", "website", "allow_members_apply", "post-check-sum"
-
+    	"name", "tag", "presentation", "website", "allow_members_apply", "post-check-sum"
     };
 
     public static final String[] FIELD_NAMES_SEARCH = new String[]{
-            "searchplat", "post-check-sum"
+        "searchplat", "post-check-sum"
     };
 
     public static final String[] FIELD_NAMES_APPLY = new String[]{
-            "platoonId", "post-check-sum"
+        "platoonId", "post-check-sum"
     };
 
     public static final String[] FIELD_NAMES_RESPOND = new String[]{
-            "apply-action", "userIds[]", "post-check-sum", "accept", "deny"
+        "apply-action", "userIds[]", "post-check-sum", "accept", "deny"
     };
     public static final String[] FIELD_VALUES_RESPOND = new String[]{
-            "", null, null, "accept", "deny"
+        "", null, null, "accept", "deny"
     };
 
     public static final String[] FIELD_NAMES_INVITE = new String[]{
-            "platoonId", "post-check-sum", "userIds[]"
+        "platoonId", "post-check-sum", "userIds[]"
     };
 
     public static final String[] FIELD_NAMES_LEAVE = new String[]{
-            "platoonId", "userId", "post-check-sum"
+        "platoonId", "userId", "post-check-sum"
     };
 
     public static final String[] FIELD_NAMES_NEW = new String[]{
-            "name", "tag", "active", "post-check-sum"
+        "name", "tag", "active", "post-check-sum"
     };
 
-    // Constants
     public static final int FILTER_PROMOTE = 0;
     public static final int FILTER_DEMOTE = 1;
     public static final int FILTER_KICK = 2;
@@ -111,812 +110,511 @@ public class PlatoonClient extends DefaultClient {
     public static final int STATE_ERROR = 1;
 
     public PlatoonClient(PlatoonData p) {
-
         mRequestHandler = new RequestHandler();
         mPlatoonData = p;
-
     }
 
-    public boolean answerPlatoonRequest(long pId, Boolean accepting, String checksum)
-            throws WebsiteHandlerException {
-
+    public boolean answerPlatoonRequest(long pId, Boolean accepting, String checksum) throws WebsiteHandlerException {
         try {
-
-
             String httpContent = mRequestHandler.post(
-
-                    RequestHandler.generateUrl(URL_RESPOND, mPlatoonData.getId()),
-                    RequestHandler.generatePostData(
-
-                            FIELD_NAMES_RESPOND,
-                            "",
-                            pId,
-                            checksum,
-                            accepting ? FIELD_VALUES_RESPOND[3] : null,
-                            !accepting ? FIELD_VALUES_RESPOND[4] : null
-
-                    ),
-                    RequestHandler.HEADER_NORMAL
-
+                RequestHandler.generateUrl(URL_RESPOND, mPlatoonData.getId()),
+                RequestHandler.generatePostData(
+                    FIELD_NAMES_RESPOND,
+                    "",
+                    pId,
+                    checksum,
+                    accepting ? FIELD_VALUES_RESPOND[3] : null,
+                    !accepting ? FIELD_VALUES_RESPOND[4] : null
+                ),
+                RequestHandler.HEADER_NORMAL
             );
-
-            // Did we manage?
             return (!"".equals(httpContent));
-
         } catch (RequestHandlerException ex) {
-
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public boolean applyForPlatoonMembership(final String checksum) throws WebsiteHandlerException {
-
         try {
-
-            // Let's set it up!
             String httpContent = mRequestHandler.post(
-
-                    URL_APPLY,
-                    RequestHandler.generatePostData(
-                            FIELD_NAMES_APPLY,
-                            mPlatoonData.getId(),
-                            checksum
-
-                    ),
-                    RequestHandler.HEADER_GZIP
-
+                URL_APPLY,
+                RequestHandler.generatePostData(
+                    FIELD_NAMES_APPLY,
+                    mPlatoonData.getId(),
+                    checksum
+                ),
+                RequestHandler.HEADER_GZIP
             );
 
             // What up?
-            if (httpContent == null || httpContent.equals("")) {
-
+            if ("".equals(httpContent)) {
                 throw new WebsiteHandlerException("Invalid request");
-
             } else {
-
                 if ("success".equals(httpContent)) {
-
                     return true;
-
                 } else if ("wrongplatform".equals(httpContent)) {
-
                     throw new WebsiteHandlerException("Wrong platform.");
-
                 } else if ("maxmembersreached".equals(httpContent)) {
-
                     throw new WebsiteHandlerException("The platoon has reached its level cap.");
-
                 } else {
-
                     throw new WebsiteHandlerException("Unknown request");
-
                 }
-
             }
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
-    public boolean leave(final long userId, final String checksum)
-            throws WebsiteHandlerException {
-
+    public boolean leave(final long userId, final String checksum) throws WebsiteHandlerException {
         try {
-
-            // Let's set it up!
             String httpContent = mRequestHandler.post(
-
-                    URL_LEAVE,
-                    RequestHandler.generatePostData(
-
-                            FIELD_NAMES_LEAVE,
-                            mPlatoonData.getId(),
-                            userId,
-                            checksum
-
-                    ),
-                    RequestHandler.HEADER_GZIP
-
+                URL_LEAVE,
+                RequestHandler.generatePostData(
+                    FIELD_NAMES_LEAVE,
+                    mPlatoonData.getId(),
+                    userId,
+                    checksum
+                ),
+                RequestHandler.HEADER_GZIP
             );
-
-            // What up?
             return !"".equals(httpContent);
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
-    public static PlatoonData getPlatoonId(final String keyword,
-                                           final String checksum) throws WebsiteHandlerException {
-
+    public static PlatoonData getPlatoonId(final String keyword, final String checksum) throws WebsiteHandlerException {
         try {
-
-            // Let's do this!
             PlatoonData platoon = null;
             String httpContent = new RequestHandler().post(
-
-                    URL_SEARCH,
-                    RequestHandler.generatePostData(
-
-                            FIELD_NAMES_SEARCH,
-                            keyword,
-                            checksum
-
-                    ),
-                    RequestHandler.HEADER_GZIP
-
+                URL_SEARCH,
+                RequestHandler.generatePostData(
+                    FIELD_NAMES_SEARCH,
+                    keyword,
+                    checksum
+                ),
+                RequestHandler.HEADER_GZIP
             );
-
-            // Did we manage?
             if (!"".equals(httpContent)) {
-
-                // Generate an object
                 JSONArray searchResults = new JSONArray(httpContent);
-
-                // Did we get any results?
                 if (searchResults.length() > 0) {
 
                     // init cost counters
                     int costOld = 999, costCurrent = 0;
-
-                    // Iterate baby!
                     for (int i = 0, max = searchResults.length(); i < max; i++) {
-
-                        // Get the JSONObject
                         JSONObject tempObj = searchResults.optJSONObject(i);
-
-                        // Is it visible?
                         if (tempObj.getBoolean("hidden")) {
                             continue;
                         }
-
-                        // A perfect match?
                         if (tempObj.getString("name").equals(keyword)) {
-
-                            platoon = new PlatoonData(Long.parseLong(tempObj
-                                    .getString("id")),
-                                    tempObj.getInt("fanCounter"),
-                                    tempObj.getInt("memberCounter"),
-                                    tempObj.getInt("platform"),
-                                    tempObj.getString("name"),
-                                    tempObj.getString("tag"), null, true);
-
+                            platoon = new PlatoonData(
+                            	Long.parseLong(tempObj.getString("id")),
+                                tempObj.getString("name"),
+                                tempObj.getString("tag"),
+                                tempObj.getInt("platform"),
+                                tempObj.getInt("fanCounter"),
+                                tempObj.getInt("memberCounter"), true
+                            );
                             break;
-
                         }
 
                         // Grab the "cost"
-                        costCurrent = PublicUtils.getLevenshteinDistance(
-                                keyword, tempObj.getString("name"));
+                        costCurrent = PublicUtils.getLevenshteinDistance(keyword, tempObj.getString("name"));
 
                         // Somewhat of a match? Get the "best" one!
                         if (costOld > costCurrent) {
-
                             platoon = new PlatoonData(
-
-                                    Long.parseLong(tempObj.getString("id")),
-                                    tempObj.getInt("fanCounter"),
-                                    tempObj.getInt("memberCounter"),
-                                    tempObj.getInt("platform"),
-                                    tempObj.getString("name"),
-                                    tempObj.getString("tag"), null, true
-
+                                Long.parseLong(tempObj.getString("id")),
+                                tempObj.getString("name"),
+                                tempObj.getString("tag"),
+                                tempObj.getInt("platform"),
+                                tempObj.getInt("fanCounter"),
+                                tempObj.getInt("memberCounter"), true
                             );
-
                         }
-
-                        // Shuffle!
                         costOld = costCurrent;
-
                     }
-
                     return platoon;
-
                 }
-
                 throw new WebsiteHandlerException("No platoons found.");
-
             } else {
-
-                throw new WebsiteHandlerException(
-                        "Could not retreive the ProfileIDs.");
-
+                throw new WebsiteHandlerException("Could not retreive the ProfileIDs.");
             }
-
         } catch (Exception ex) {
-
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public static boolean create(Object... params) {
-
         try {
-
-            // Let's do the actual request
             String httpContent = new RequestHandler().post(
-
-                    URL_NEW,
-                    RequestHandler.generatePostData(
-
-                            FIELD_NAMES_NEW,
-                            params
-
-                    ),
-                    RequestHandler.HEADER_AJAX
-
+                URL_NEW,
+                RequestHandler.generatePostData(
+                    FIELD_NAMES_NEW,
+                    params
+                ),
+                RequestHandler.HEADER_AJAX
             );
-
-            // Is the httpContent !null?
-            if (httpContent != null && !httpContent.equals("")) {
-
-                // Let's validate further...
+            if ("".equals(httpContent)) {
                 return !(new JSONObject(httpContent).optJSONObject("data").isNull("platoon"));
-
             }
-
             return false;
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             return false;
-
         }
-
     }
 
     public static boolean cacheBadge(Context c, String h, String fName, int s) {
-
         try {
-
-            // Get the external cache dir
             String cacheDir = PublicUtils.getCachePath(c);
-
-            // How does it end?
             if (!cacheDir.endsWith("/")) {
                 cacheDir += "/";
             }
+            
+            String url = RequestHandler.generateUrl(URL_IMAGE, h);
+            if( h.startsWith("http") ) {
+            	h = h.replace('[', '{').replace(']', '}');
+            	url = RequestHandler.generateUrl(h, s, ".jpeg");
+            }
+            HttpEntity httpEntity = new RequestHandler().getHttpEntity(url, true);
+            InputStream imageStream = httpEntity.getContent();
+            BufferedInputStream in = new BufferedInputStream(imageStream);
+            String filepath = cacheDir + fName;
 
-            // Get the actual stream
-            HttpEntity httpEntity = new RequestHandler().getHttpEntity(
-
-                    RequestHandler.generateUrl(URL_IMAGE, h),
-                    true
-
-            );
-
-            // Init
             int bytesRead = 0;
             int offset = 0;
             int contentLength = (int) httpEntity.getContentLength();
             byte[] data = new byte[contentLength];
-
-            // Handle the streams
-            InputStream imageStream = httpEntity.getContent();
-            BufferedInputStream in = new BufferedInputStream(imageStream);
-
-            // Build a path
-            String filepath = cacheDir + fName;
-
-            // Iterate
             while (offset < contentLength) {
-
                 bytesRead = in.read(data, offset, data.length - offset);
                 if (bytesRead == -1) {
                     break;
                 }
                 offset += bytesRead;
-
             }
 
-            // Alright?
             if (offset != contentLength) {
-
-                throw new IOException("Only read " + offset
-                        + " bytes; Expected " + contentLength + " bytes");
-
+                throw new IOException("Only read " + offset + " bytes; Expected " + contentLength + " bytes");
             }
 
-            // Close the in-stream, start the outbound
             in.close();
             FileOutputStream out = new FileOutputStream(filepath);
             out.write(data);
             out.flush();
             out.close();
-
             return true;
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             return false;
-
         }
-
     }
 
-    public int sendInvite(final Object[] userId, final String checksum)
-            throws WebsiteHandlerException {
-
+    public int sendInvite(final Object[] userId, final String checksum) throws WebsiteHandlerException {
         try {
-
-            // Let's login everybody
             int numUsers = userId.length;
             String httpContent = mRequestHandler.post(
-
-                    URL_INVITE,
-                    RequestHandler.generatePostData(
-
-                            FIELD_NAMES_INVITE,
-                            mPlatoonData.getId(),
-                            checksum,
-                            userId
-
-                    ),
-                    RequestHandler.HEADER_JSON
+                URL_INVITE,
+                RequestHandler.generatePostData(
+                    FIELD_NAMES_INVITE,
+                    mPlatoonData.getId(),
+                    checksum,
+                    userId
+                ),
+                RequestHandler.HEADER_JSON
             );
 
-            // Did we manage?
             if (!"".equals(httpContent)) {
-
-                // Check the JSON
                 JSONObject baseObject = new JSONObject(httpContent);
-                JSONArray errors = (baseObject.isNull("errors")) ? null
-                        : baseObject.optJSONArray("errors");
+                JSONArray errors = (baseObject.isNull("errors")) ? null : baseObject.optJSONArray("errors");
                 int numErrors = (errors == null) ? 0 : errors.length();
 
-                // Let's see what we got
                 if (numErrors == 0) {
-
                     return STATE_OK;
-
                 } else if (numErrors == numUsers) {
-
                     return STATE_FAIL;
-
                 } else if (numErrors < numUsers) {
-
                     return STATE_ERROR;
-
                 }
-
             }
-
-            // Fallback
             return STATE_FAIL;
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
-    public boolean editMember(final long userId, final int filter)
-            throws WebsiteHandlerException {
-
+    public boolean editMember(final long userId, final int filter) throws WebsiteHandlerException {
         try {
-
-            // Init!
             String url = "";
-
-            // Let's see filter we have here
             if (filter == PlatoonClient.FILTER_PROMOTE) {
-
                 url = RequestHandler.generateUrl(
-
-                        URL_PROMOTE,
-                        userId,
-                        mPlatoonData.getId()
-
+                    URL_PROMOTE,
+                    userId,
+                    mPlatoonData.getId()
                 );
-
             } else if (filter == PlatoonClient.FILTER_DEMOTE) {
-
                 url = RequestHandler.generateUrl(
-
-                        URL_DEMOTE,
-                        userId,
-                        mPlatoonData.getId()
-
+                    URL_DEMOTE,
+                    userId,
+                    mPlatoonData.getId()
                 );
-
             } else if (filter == PlatoonClient.FILTER_KICK) {
-
                 url = RequestHandler.generateUrl(
-
-                        URL_KICK,
-                        userId,
-                        mPlatoonData.getId()
-
+                    URL_KICK,
+                    userId,
+                    mPlatoonData.getId()
                 );
-
             }
-
 
             String httpContent = mRequestHandler.get(url, RequestHandler.HEADER_JSON);
-
-            // Did we manage?
             if ("".equals(httpContent)) {
-
                 return false;
-
             } else {
-
-                // Check the JSON
-                String status = new JSONObject(httpContent).optString(
-                        "message", "");
-                return ("USER_PROMOTED".equals(status)
-                        || "USER_DEMOTED".equals(status)
-                        || "MEMBER_KICKED".equals(status));
-
+                String status = new JSONObject(httpContent).optString("message", "");
+                return (
+                	"USER_PROMOTED".equals(status) || 
+                    "USER_DEMOTED".equals(status) || 
+                    "MEMBER_KICKED".equals(status)
+                );
             }
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public PlatoonStats getStats(final Context context) throws WebsiteHandlerException {
-
         try {
-
-            // Get the content
             String httpContent = mRequestHandler.get(
-
-                    RequestHandler.generateUrl(
-
-                            URL_STATS,
-                            mPlatoonData.getId(),
-                            mPlatoonData.getPlatformId()
-
-                    ),
-                    RequestHandler.HEADER_AJAX
-
+                RequestHandler.generateUrl(
+                    URL_STATS,
+                    mPlatoonData.getId(),
+                    mPlatoonData.getPlatformId()
+                ),
+                RequestHandler.HEADER_AJAX
             );
 
-            // Did we manage?
             if (!"".equals(httpContent)) {
-
-                // JSON-base!!
-                JSONObject baseObject = new JSONObject(httpContent)
-                        .getJSONObject("data");
-
-                // Wait, did I just see what I think I saw?
+                JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
                 if (baseObject.isNull("platoonPersonas")) {
-
-                    // Do we have a platformId?
                     if (mPlatoonData.getPlatformId() == 0) {
-
-                        // Get the content
                         String tempHttpContent = mRequestHandler.get(
-
-                                RequestHandler.generateUrl(URL_INFO, mPlatoonData.getId()),
-                                RequestHandler.HEADER_AJAX
-
+                            RequestHandler.generateUrl(URL_INFO, mPlatoonData.getId()),
+                            RequestHandler.HEADER_AJAX
                         );
 
-                        // Build an object
-                        JSONObject tempPlatoonData = new JSONObject(
-                                tempHttpContent).getJSONObject("context")
-                                .getJSONObject("platoon");
-
-                        // Return and reloop
+                        JSONObject tempPlatoonData = new JSONObject(tempHttpContent).getJSONObject("context").getJSONObject("platoon");
                         mPlatoonData = new PlatoonData(
-
-                                mPlatoonData.getId(), tempPlatoonData
-                                .getInt("fanCounter"), tempPlatoonData
-                                .getInt("memberCounter"),
-                                tempPlatoonData.getInt("platform"),
-                                tempPlatoonData.getString("name"),
-                                tempPlatoonData.getString("tag"),
-                                mPlatoonData.getId() + ".jpeg",
-                                tempPlatoonData.getBoolean("hidden")
-
+                            mPlatoonData.getId(), 
+                            tempPlatoonData.getString("name"), 
+                            tempPlatoonData.getString("tag"),
+                            tempPlatoonData.getInt("platform"),
+                            tempPlatoonData.getInt("fanCounter"),
+                            tempPlatoonData.getInt("memberCounter"),
+                            tempPlatoonData.getBoolean("hidden")
                         );
                         return getStats(context);
-
                     } else {
-
                         return null;
-
                     }
-
                 }
 
-                // Hold on...
-                JSONObject memberStats = baseObject
-                        .getJSONObject("memberStats");
-                JSONObject personaList = baseObject
-                        .optJSONObject("platoonPersonas");
-
-                // JSON data-branches
+                JSONObject memberStats = baseObject.getJSONObject("memberStats");
+                JSONObject personaList = baseObject.optJSONObject("platoonPersonas");
                 JSONObject objectGeneral = memberStats.getJSONObject("general");
-                JSONObject objectKit = memberStats
-                        .getJSONObject("kitsVehicles");
+                JSONObject objectKit = memberStats.getJSONObject("kitsVehicles");
                 JSONObject objectTop = memberStats.getJSONObject("topPlayers");
                 JSONObject objectScore = objectKit.getJSONObject("score");
-                JSONObject objectSPM = objectKit
-                        .getJSONObject("scorePerMinute");
+                JSONObject objectSPM = objectKit.getJSONObject("scorePerMinute");
                 JSONObject objectTime = objectKit.getJSONObject("time");
                 JSONObject currObj = null;
                 JSONObject currUser = null;
                 JSONArray currObjNames = null;
 
-                // Let's iterate and create the containers
                 List<PlatoonStatsItem> arrayGeneral = new ArrayList<PlatoonStatsItem>();
                 List<PlatoonStatsItem> arrayScore = new ArrayList<PlatoonStatsItem>();
                 List<PlatoonStatsItem> arraySPM = new ArrayList<PlatoonStatsItem>();
                 List<PlatoonStatsItem> arrayTime = new ArrayList<PlatoonStatsItem>();
                 List<PlatoonTopStatsItem> arrayTop = new ArrayList<PlatoonTopStatsItem>();
 
-                // More temp
                 List<Integer> tempMid = new ArrayList<Integer>();
                 String tempGravatarHash = null;
 
-                // Get the *general* stats
                 currObjNames = objectGeneral.names();
                 int maxNames = currObjNames.length();
-
-                // Got any?
                 if (maxNames == 0) {
                     return null;
                 }
 
                 for (int i = 0; i < maxNames; i++) {
-
-                    // Grab the current object
-                    currObj = objectGeneral.getJSONObject(currObjNames
-                            .getString(i));
-
-                    // Is it the KD? The KD == DOUBLE
+                    currObj = objectGeneral.getJSONObject(currObjNames.getString(i));
                     if (currObjNames.getString(i).equals("kd")) {
-
-                        // Create a new "stats item"
                         arrayGeneral.add(
-
-                                new PlatoonStatsItem(
-
-                                        currObjNames.getString(i), currObj.getDouble("min"),
-                                        currObj.getDouble("median"), currObj
-                                        .getDouble("best"), currObj
-                                        .getDouble("average"), null
-
-                                )
-
+                            new PlatoonStatsItem(
+                                currObjNames.getString(i), 
+                                currObj.getDouble("min"),
+                                currObj.getDouble("median"), 
+                                currObj.getDouble("best"), 
+                                currObj.getDouble("average"), 
+                                null
+                            )
                         );
-
                     } else {
-
-                        // Create a new "stats item"
                         arrayGeneral.add(
-
-                                new PlatoonStatsItem(
-
-                                        currObjNames.getString(i), currObj.getInt("min"),
-                                        currObj.getInt("median"), currObj
-                                        .getInt("best"), currObj
-                                        .getInt("average"), null
-
-                                )
-
+                            new PlatoonStatsItem(
+                                currObjNames.getString(i), 
+                                currObj.getInt("min"),
+                                currObj.getInt("median"), 
+                                currObj.getInt("best"), 
+                                currObj.getInt("average"), 
+                                null
+                            )
                         );
-
                     }
-
                 }
 
                 // Create a new "overall item"
-                arrayScore.add(new PlatoonStatsItem(context
-                        .getString(R.string.info_platoon_stats_overall), 0, 0,
-                        0, 0, null));
+                arrayScore.add(new PlatoonStatsItem(context.getString(R.string.info_platoon_stats_overall), 0, 0, 0, 0, null));
 
-                // Get the *kit* scores
+                // Persona Scores
                 currObjNames = objectScore.names();
                 for (int i = 0, max = currObjNames.length(); i < max; i++) {
-
-                    // Grab the current object
-                    currObj = objectScore.getJSONObject(currObjNames
-                            .getString(i));
-
-                    // Hmm, where is the userInfo?
+                    currObj = objectScore.getJSONObject(currObjNames.getString(i));
                     if (currObj.has("bestPersonaId")) {
-                        currUser = personaList.getJSONObject(currObj
-                                .getString("bestPersonaId"));
+                        currUser = personaList.getJSONObject(currObj.getString("bestPersonaId"));
                     } else {
-                        currUser = personaList.getJSONObject(currObj
-                                .getString("personaId"));
+                        currUser = personaList.getJSONObject(currObj.getString("personaId"));
                     }
 
-                    // Store the gravatar
                     tempGravatarHash = currUser.optString("gravatarMd5", "");
 
-                    // Create a new "stats item"
                     arrayScore.add(
-
-                            new PlatoonStatsItem(
-
-                                    currObjNames.getString(i), currObj.getInt("min"), currObj
-                                    .getInt("median"), currObj.getInt("best"), currObj
-                                    .getInt("average"),
-                                    new ProfileData.Builder(
-                                            Long.parseLong(currUser.optString("userId", "0")),
-                                            currUser.optString("username", "")
-                                    ).persona(
-                                            new PersonaData(
-                                                    Long.parseLong(currObj
-                                                            .optString(
-                                                                    "bestPersonaId", "")), currUser
-                                                    .optString(
-                                                            "username", ""), mPlatoonData
-                                                    .getPlatformId(), null)
-                                    ).gravatarHash(tempGravatarHash).build()
-
-                            )
-
+                        new PlatoonStatsItem(
+                            currObjNames.getString(i), 
+                            currObj.getInt("min"), 
+                            currObj.getInt("median"), 
+                            currObj.getInt("best"), 
+                            currObj.getInt("average"),
+                            new ProfileData.Builder(
+                            	Long.parseLong(currUser.optString("userId", "0")),
+                                currUser.optString("username", "")
+                            ).persona(
+                        		new PersonaData(
+                    				Long.parseLong(currObj.optString("bestPersonaId", "")), 
+                    				currUser.optString("username", ""), 
+                    				mPlatoonData.getPlatformId(), 
+                    				null
+                				)
+                            ).gravatarHash(tempGravatarHash).build()
+                        )
                     );
 
                     // Is it ! the first?
                     if (i > 0) {
                         tempMid.add(arrayScore.get(i + 1).getMid());
                     }
-
-                    // Update the "overall"
                     arrayScore.get(0).add(arrayScore.get(i + 1));
-
                 }
                 Collections.sort(tempMid);
-                arrayScore.get(0).setMid(
-                        tempMid.get((int) Math.ceil(tempMid.size() / 2)));
+                arrayScore.get(0).setMid(tempMid.get((int) Math.ceil(tempMid.size() / 2)));
                 tempMid.clear();
 
                 // Create a new "overall item"
-                arraySPM.add(new PlatoonStatsItem(context
-                        .getString(R.string.info_platoon_stats_overall), 0, 0,
-                        0, 0, null));
+                arraySPM.add(new PlatoonStatsItem(context.getString(R.string.info_platoon_stats_overall), 0, 0,0, 0, null));
 
                 // Get the *kit* score/min
                 currObjNames = objectSPM.names();
                 for (int i = 0, max = currObjNames.length(); i < max; i++) {
+                    currObj = objectSPM.getJSONObject(currObjNames.getString(i));
 
-                    // Grab the current object
-                    currObj = objectSPM
-                            .getJSONObject(currObjNames.getString(i));
-
-                    // Hmm, where is the userInfo?
                     if (currObj.has("bestPersonaId")) {
-                        currUser = personaList.getJSONObject(currObj
-                                .getString("bestPersonaId"));
+                        currUser = personaList.getJSONObject(currObj.getString("bestPersonaId"));
                     } else {
-                        currUser = personaList.getJSONObject(currObj
-                                .getString("personaId"));
+                        currUser = personaList.getJSONObject(currObj.getString("personaId"));
                     }
 
-                    // Store the gravatar
                     tempGravatarHash = currUser.optString("gravatarMd5", "");
 
-                    // Create a new "stats item"
                     arraySPM.add(
-
-                            new PlatoonStatsItem(
-
-                                    currObjNames.getString(i), currObj.getInt("min"), currObj
-                                    .getInt("median"), currObj.getInt("best"), currObj
-                                    .getInt("average"),
-                                    new ProfileData.Builder(
-                                            Long.parseLong(currUser.optString("userId", "0")),
-                                            currUser.optString("username", "")
-                                    ).persona(
-                                            new PersonaData(
-                                                    Long.parseLong(currObj
-                                                            .optString(
-                                                                    "bestPersonaId", "")), currUser
-                                                    .optString(
-                                                            "username", ""), mPlatoonData
-                                                    .getPlatformId(), null)
-                                    ).gravatarHash(tempGravatarHash).build()
-
+                		new PlatoonStatsItem(
+                                currObjNames.getString(i), 
+                                currObj.getInt("min"), 
+                                currObj.getInt("median"), 
+                                currObj.getInt("best"), 
+                                currObj.getInt("average"),
+                                new ProfileData.Builder(
+                                	Long.parseLong(currUser.optString("userId", "0")),
+                                    currUser.optString("username", "")
+                                ).persona(
+                            		new PersonaData(
+                        				Long.parseLong(currObj.optString("bestPersonaId", "")), 
+                        				currUser.optString("username", ""), 
+                        				mPlatoonData.getPlatformId(), 
+                        				null
+                    				)
+                                ).gravatarHash(tempGravatarHash).build()
                             )
-
                     );
 
                     // Is it ! the first?
                     if (i > 0) {
                         tempMid.add(arraySPM.get(0).getMid());
                     }
-
-                    // Update the "overall"
                     arraySPM.get(0).add(arraySPM.get(i + 1));
 
                 }
                 Collections.sort(tempMid);
-                arraySPM.get(0).setMid(
-                        tempMid.get((int) Math.ceil(tempMid.size() / 2)));
+                arraySPM.get(0).setMid(tempMid.get((int) Math.ceil(tempMid.size() / 2)));
                 tempMid.clear();
 
                 // Create a new "overall item"
-                arrayTime.add(new PlatoonStatsItem(context
-                        .getString(R.string.info_platoon_stats_overall), 0, 0,
-                        0, 0, null));
+                arrayTime.add(new PlatoonStatsItem(context.getString(R.string.info_platoon_stats_overall), 0, 0,0, 0, null));
 
                 // Get the *kit* times
                 currObjNames = objectTime.names();
                 for (int i = 0, max = currObjNames.length(); i < max; i++) {
+                    currObj = objectTime.getJSONObject(currObjNames.getString(i));
 
-                    // Grab the current object
-                    currObj = objectTime.getJSONObject(currObjNames
-                            .getString(i));
-
-                    // Hmm, where is the userInfo?
                     if (currObj.has("bestPersonaId")) {
-                        currUser = personaList.getJSONObject(currObj
-                                .getString("bestPersonaId"));
+                        currUser = personaList.getJSONObject(currObj.getString("bestPersonaId"));
                     } else {
-                        currUser = personaList.getJSONObject(currObj
-                                .getString("personaId"));
+                        currUser = personaList.getJSONObject(currObj.getString("personaId"));
                     }
 
-                    // Store the gravatar
                     tempGravatarHash = currUser.optString("gravatarMd5", "");
 
-                    // Create a new "stats item"
                     arrayTime.add(
-
-                            new PlatoonStatsItem(
-
-                                    currObjNames.getString(i), currObj.getInt("min"), currObj
-                                    .getInt("median"), currObj.getInt("best"), currObj
-                                    .getInt("average"),
-                                    new ProfileData.Builder(
-                                            Long.parseLong(currUser.optString("userId", "0")),
-                                            currUser.optString("username", "")
-                                    ).persona(
-                                            new PersonaData(
-                                                    Long.parseLong(currObj
-                                                            .optString(
-                                                                    "bestPersonaId", "")), currUser
-                                                    .optString(
-                                                            "username", ""), mPlatoonData
-                                                    .getPlatformId(), null)
-                                    ).gravatarHash(tempGravatarHash).build()
-
+                		new PlatoonStatsItem(
+                                currObjNames.getString(i), 
+                                currObj.getInt("min"), 
+                                currObj.getInt("median"), 
+                                currObj.getInt("best"), 
+                                currObj.getInt("average"),
+                                new ProfileData.Builder(
+                                	Long.parseLong(currUser.optString("userId", "0")),
+                                    currUser.optString("username", "")
+                                ).persona(
+                            		new PersonaData(
+                        				Long.parseLong(currObj.optString("bestPersonaId", "")), 
+                        				currUser.optString("username", ""), 
+                        				mPlatoonData.getPlatformId(), 
+                        				null
+                    				)
+                                ).gravatarHash(tempGravatarHash).build()
                             )
-
                     );
 
                     // Is it ! the first?
                     if (i > 0) {
                         tempMid.add(arrayTime.get(0).getMid());
                     }
-
-                    // Update the "overall"
                     arrayTime.get(0).add(arrayTime.get(i + 1));
-
                 }
                 Collections.sort(tempMid);
-                arrayTime.get(0).setMid(
-                        tempMid.get((int) Math.ceil(tempMid.size() / 2)));
+                arrayTime.get(0).setMid(tempMid.get((int) Math.ceil(tempMid.size() / 2)));
                 tempMid.clear();
 
                 // Get the *top player* Tops
@@ -924,54 +622,37 @@ public class PlatoonClient extends DefaultClient {
                 currObjNames = objectTop.names();
 
                 for (int i = 0, max = currObjNames.length(); i < max; i++) {
-
-                    // Grab the current object
-                    currObj = objectTop
-                            .getJSONObject(currObjNames.getString(i));
-
-                    // Hmm, where is the userInfo?
+                    currObj = objectTop.getJSONObject(currObjNames.getString(i));
                     if (currObj.has("bestPersonaId")) {
-                        currUser = personaList.getJSONObject(currObj
-                                .getString("bestPersonaId"));
+                        currUser = personaList.getJSONObject(currObj.getString("bestPersonaId"));
                     } else if (!currObj.getString("personaId").equals("0")) {
-                        currUser = personaList.getJSONObject(currObj
-                                .getString("personaId"));
-
+                        currUser = personaList.getJSONObject(currObj.getString("personaId"));
                     } else {
-                        // Create a new "stats item"
-                        arrayTop.add(
-                            new PlatoonTopStatsItem(
-                                   "N/A", 0, null
-                            )
-                        );
-                        // Continue
+                        arrayTop.add(new PlatoonTopStatsItem("N/A", 0, null));
                         continue;
                     }
 
-                    // Store the gravatar
                     tempGravatarHash = currUser.optString("gravatarMd5", "");
                     String filename = tempGravatarHash + ".png";
 
-                    // Do we need to download a new image?
                     if (!CacheHandler.isCached(context, filename)) {
-                        ProfileClient.cacheGravatar(context, filename,
-                                Constants.DEFAULT_AVATAR_SIZE);
+                        ProfileClient.cacheGravatar(context, filename, Constants.DEFAULT_AVATAR_SIZE);
                     }
 
                     // Create a new "stats item"
                     arrayTop.add(
                         new PlatoonTopStatsItem(
-                                currObjNames.getString(i), currObj.getInt("spm"),
-                                new ProfileData.Builder(
-                                        Long.parseLong(currUser.optString("userId", "0")),
-                                        currUser.optString("username", "")
-                                ).gravatarHash(tempGravatarHash).build()
+                            currObjNames.getString(i), 
+                            currObj.getInt("spm"),
+                            new ProfileData.Builder(
+                                Long.parseLong(currUser.optString("userId", "0")),
+                                currUser.optString("username", "")
+                            ).gravatarHash(tempGravatarHash).build()
                         )
                     );
 
                     // Store it if it's the highest
-                    if (highestSPM == null
-                            || highestSPM.getSPM() < arrayTop.get(i).getSPM()) {
+                    if (highestSPM == null || highestSPM.getSPM() < arrayTop.get(i).getSPM()) {
                         highestSPM = arrayTop.get(i);
                     }
                 }
@@ -986,14 +667,17 @@ public class PlatoonClient extends DefaultClient {
                 );
                 Collections.sort(arrayTop, new TopStatsComparator());
                 return new PlatoonStats(
-                    mPlatoonData.getName(), mPlatoonData.getId(), arrayGeneral,
-                    arrayTop, arrayScore, arraySPM, arrayTime
+                    mPlatoonData.getName(), 
+                    mPlatoonData.getId(), 
+                    arrayGeneral,
+                    arrayTop, 
+                    arrayScore, 
+                    arraySPM, 
+                    arrayTime
                 );
-
             } else {
                 return null;
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
@@ -1001,47 +685,32 @@ public class PlatoonClient extends DefaultClient {
     }
 
     public ArrayList<ProfileData> getFans() throws WebsiteHandlerException {
-
         try {
-
-            // Let's go!
             List<ProfileData> fans = new ArrayList<ProfileData>();
             String httpContent = mRequestHandler.get(
                 RequestHandler.generateUrl(URL_FANS, mPlatoonData.getId()),
                 RequestHandler.HEADER_AJAX
             );
 
-            // Let's start with the JSON shall we?
-            JSONObject fanArray = new JSONObject(httpContent).getJSONObject(
-                    "context").getJSONObject("fans");
+            JSONObject fanArray = new JSONObject(httpContent).getJSONObject("context").getJSONObject("fans");
             JSONArray fanIdArray = fanArray.names();
             JSONObject tempObject = null;
 
-            // Iterate over the fans
             if (fanIdArray != null) {
                 for (int i = 0, max = fanIdArray.length(); i < max; i++) {
-
-                    // Grab the fan
-                    tempObject = fanArray
-                            .getJSONObject(fanIdArray.getString(i));
-
-                    // Store him in the ArrayList
+                    tempObject = fanArray.getJSONObject(fanIdArray.getString(i));
                     fans.add(
-                            new ProfileData.Builder(
-                                    Long.parseLong(tempObject.optString("userId", "0")),
-                                    tempObject.optString("username", "")
-                            ).gravatarHash(tempObject.optString("gravatarMd5")).build()
+                        new ProfileData.Builder(
+                            Long.parseLong(tempObject.optString("userId", "0")),
+                            tempObject.optString("username", "")
+                        ).gravatarHash(tempObject.optString("gravatarMd5")).build()
                     );
                 }
             }
 
-            // Did we get more than 0?
             if (!fans.isEmpty()) {
-
-                // Add a header & sort from A-Z
                 fans.add(new ProfileData("Loyal fans"));
                 Collections.sort(fans, new ProfileComparator());
-
             }
             return (ArrayList<ProfileData>) fans;
         } catch (Exception ex) {
@@ -1050,341 +719,208 @@ public class PlatoonClient extends DefaultClient {
         }
     }
 
-    public PlatoonInformation getInformation(
-        final Context c, 
-        final int num, 
-        final long aPId
-    ) throws WebsiteHandlerException {
-
+    public PlatoonInformation getInformation(final Context c, final int num, final long aPId) throws WebsiteHandlerException {
         try {
-
-            // Let's go!
             List<ProfileData> fans = new ArrayList<ProfileData>();
             List<ProfileData> members = new ArrayList<ProfileData>();
             List<ProfileData> friends = new ArrayList<ProfileData>();
             PlatoonStats stats = null;
 
-            // Arrays to divide the users in
             List<ProfileData> founderMembers = new ArrayList<ProfileData>();
             List<ProfileData> adminMembers = new ArrayList<ProfileData>();
             List<ProfileData> regularMembers = new ArrayList<ProfileData>();
             List<ProfileData> invitedMembers = new ArrayList<ProfileData>();
             List<ProfileData> requestMembers = new ArrayList<ProfileData>();
 
-            // Get the content
             String httpContent = mRequestHandler.get(
-
-                    RequestHandler.generateUrl(URL_INFO, mPlatoonData.getId()),
-                    RequestHandler.HEADER_AJAX
-
+                RequestHandler.generateUrl(URL_INFO, mPlatoonData.getId()),
+                RequestHandler.HEADER_AJAX
             );
             boolean isAdmin = false;
             boolean isMember = false;
 
-            // Did we manage?
             if (!"".equals(httpContent)) {
-
-                // JSON Objects
-                JSONObject contextObject = new JSONObject(httpContent)
-                        .optJSONObject("context");
-
-                // Does the platoon exist?
+                JSONObject contextObject = new JSONObject(httpContent).optJSONObject("context");
                 if (contextObject.isNull("platoon")) {
                     return null;
                 }
 
-                // Moar JSON
-                JSONObject profileCommonObject = contextObject
-                        .optJSONObject("platoon");
-                JSONObject memberArray = profileCommonObject
-                        .optJSONObject("members");
+                JSONObject profileCommonObject = contextObject.optJSONObject("platoon");
+                JSONObject memberArray = profileCommonObject.optJSONObject("members");
                 // JSONArray feedItems = contextObject.getJSONArray( "feed" );
                 JSONObject currItem;
 
-                // Get the user's friends
-                friends = new COMClient(aPId, PreferenceManager.getDefaultSharedPreferences(c).getString(Constants.SP_BL_PROFILE_CHECKSUM, "")).getFriends(
-                        aPId,
-                        false
-                );
+                friends = new COMClient(
+            		aPId, PreferenceManager.getDefaultSharedPreferences(c).getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
+        		).getFriends(aPId,false);
 
-                // Let's iterate over the members
+                if(memberArray.has(String.valueOf(aPId))) {
+                	isMember = true;
+                	if( memberArray.optJSONObject(String.valueOf(aPId)).getInt("membershipLevel") >= 128 ){
+                		isAdmin = true;
+                	}
+                }
+                
                 JSONArray idArray = memberArray.names();
                 for (int counter = 0, max = idArray.length(); counter < max; counter++) {
-
-                    // Temporary var
                     ProfileData tempProfile;
-
-                    // Get the current item
-                    currItem = memberArray.optJSONObject(idArray
-                            .getString(counter));
-
-                    // Check the *rights* of the user
-                    if (idArray.getString(counter).equals("" + aPId)) {
-
-                        isMember = true;
-                        if (currItem.getInt("membershipLevel") >= 128) {
-                            isAdmin = true;
-                        }
-                    }
-
-                    // If we have a persona >> add it to the members
+                    currItem = memberArray.optJSONObject(idArray.getString(counter));
+                    
                     if (!currItem.isNull("persona")) {
-
                         tempProfile = new ProfileData.Builder(
-
-                                Long.parseLong(currItem.getString("userId")),
-                                currItem.getJSONObject("user").getString("username")
+                            Long.parseLong(currItem.getString("userId")),
+                            currItem.getJSONObject("user").getString("username")
                         ).persona(
-                                new PersonaData(
-                                        Long.parseLong(currItem
-                                                .getString("personaId")),
-                                        currItem
-                                                .getJSONObject("persona").getString(
-                                                "personaName"),
-                                        profileCommonObject.getInt("platform"),
-                                        null
-
-                                )
-                        )
-                                .gravatarHash(currItem.optString("gravatarMd5", ""))
-                                .isOnline(
-                                        currItem.getJSONObject("user")
-                                                .getJSONObject("presence")
-                                                .getBoolean("isOnline")
-                                )
-                                .isPlaying(
-                                        currItem.getJSONObject("user")
-                                                .getJSONObject("presence")
-                                                .getBoolean("isPlaying")
-                                ).membershipLevel(currItem.getInt("membershipLevel"))
-                                .build();
-
+                            new PersonaData(
+                                Long.parseLong(currItem.getString("personaId")),
+                                currItem.getJSONObject("persona").getString("personaName"),
+                                profileCommonObject.getInt("platform"),
+                                null
+                            )
+                        ).gravatarHash(currItem.optString("gravatarMd5", "")).isOnline(
+                    		currItem.getJSONObject("user").getJSONObject("presence").getBoolean("isOnline")
+                        ).isPlaying(
+                    		currItem.getJSONObject("user").getJSONObject("presence").getBoolean("isPlaying")
+                        ).membershipLevel(currItem.getInt("membershipLevel")).build();
                     } else {
-
                         continue;
-
                     }
 
-                    // Add the user to the correct *part* of the (future) merged
-                    // list
                     switch (currItem.getInt("membershipLevel")) {
-
                         case 1:
                             requestMembers.add(tempProfile);
                             break;
-
                         case 2:
                             invitedMembers.add(tempProfile);
                             break;
-
                         case 4:
                             regularMembers.add(tempProfile);
                             break;
-
                         case 128:
                             adminMembers.add(tempProfile);
                             break;
-
                         case 256:
                             founderMembers.add(tempProfile);
                             break;
-
                         default:
                             regularMembers.add(tempProfile);
                             break;
                     }
-
                 }
 
-                // Let's sort the members...
                 Collections.sort(requestMembers, new ProfileComparator());
                 Collections.sort(invitedMembers, new ProfileComparator());
                 Collections.sort(regularMembers, new ProfileComparator());
                 Collections.sort(adminMembers, new ProfileComparator());
                 Collections.sort(founderMembers, new ProfileComparator());
 
-                // ...and then merge them with their *labels*
                 if (!founderMembers.isEmpty()) {
-
-                    // Plural?
                     if (founderMembers.size() > 1) {
-
-                        members.add(new ProfileData(c
-                                .getString(R.string.info_platoon_member_founder_p)));
-
+                        members.add(new ProfileData(c.getString(R.string.info_platoon_member_founder_p)));
                     } else {
-
-                        members.add(new ProfileData(c
-                                .getString(R.string.info_platoon_member_founder)));
-
+                        members.add(new ProfileData(c.getString(R.string.info_platoon_member_founder)));
                     }
-
-                    // Add them to the members
                     members.addAll(founderMembers);
-
                 }
 
                 if (!adminMembers.isEmpty()) {
-
-                    // Plural?
                     if (adminMembers.size() > 1) {
-
-                        members.add(new ProfileData(c
-                                .getString(R.string.info_platoon_member_admin_p)));
-
+                        members.add(new ProfileData(c.getString(R.string.info_platoon_member_admin_p)));
                     } else {
-
                         members.add(new ProfileData(c.getString(R.string.info_platoon_member_admin)));
-
                     }
-
-                    // Add them to the members
                     members.addAll(adminMembers);
-
                 }
 
                 if (!regularMembers.isEmpty()) {
-
-                    // Plural?
                     if (regularMembers.size() > 1) {
-
-                        members.add(new ProfileData(c
-                                .getString(R.string.info_platoon_member_regular_p)));
-
+                        members.add(new ProfileData(c.getString(R.string.info_platoon_member_regular_p)));
                     } else {
-
-                        members.add(new ProfileData(c
-                                .getString(R.string.info_platoon_member_regular)));
-
+                        members.add(new ProfileData(c.getString(R.string.info_platoon_member_regular)));
                     }
-
-                    // Add them to the members
                     members.addAll(regularMembers);
-
                 }
 
-                // Is the user *admin* or higher?
                 if (isAdmin) {
-
                     if (!invitedMembers.isEmpty()) {
-
-                        // Just add them
-                        members.add(new ProfileData(c
-                                .getString(R.string.info_platoon_member_invited_label)));
+                        members.add(new ProfileData(c.getString(R.string.info_platoon_member_invited_label)));
                         members.addAll(invitedMembers);
-
                     }
 
                     if (!requestMembers.isEmpty()) {
-
-                        // Just add them
-                        members.add(new ProfileData(c
-                                .getString(R.string.info_platoon_member_requested_label)));
+                        members.add(new ProfileData(c.getString(R.string.info_platoon_member_requested_label)));
                         members.addAll(requestMembers);
-
                     }
-
                 }
-
-                // Let's get 'em fans too
                 fans = getFans();
-
-                // Oh man, don't forget the stats!!!
                 stats = getStats(c);
 
-                // Required
-                long platoonId = Long.parseLong(profileCommonObject
-                        .getString("id"));
+                long platoonId = Long.parseLong(profileCommonObject.getString("id"));
                 String filename = platoonId + ".jpeg";
 
-                // Is the image already cached?
                 if (!CacheHandler.isCached(c, filename)) {
-
-                    PlatoonClient.cacheBadge(c,
-                            profileCommonObject.getString("badgePath"),
-                            filename, Constants.DEFAULT_BADGE_SIZE);
-
+                    PlatoonClient.cacheBadge(c, profileCommonObject.getString("badgePath"), filename, Constants.DEFAULT_BADGE_SIZE);
                 }
 
-                // Return it!
-                PlatoonInformation platoonInformation = new PlatoonInformation(
-
-                        platoonId, profileCommonObject.getLong("creationDate"),
-                        profileCommonObject.getInt("platform"),
-                        profileCommonObject.getInt("game"),
-                        profileCommonObject.getInt("fanCounter"),
-                        profileCommonObject.getInt("memberCounter"),
-                        profileCommonObject.getInt("blazeClubId"),
-                        profileCommonObject.getString("name"),
-                        profileCommonObject.getString("tag"),
-                        profileCommonObject.getString("presentation"),
-                        PublicUtils.normalizeUrl(profileCommonObject.optString(
-                                "website", "")),
-                        !profileCommonObject.getBoolean("hidden"), isMember,
-                        isAdmin,
-                        profileCommonObject.getBoolean("allowNewMembers"), members, fans, friends,
-                        stats
-
-                );
-
-                // Let's log it
-                if (CacheHandler.Platoon.insert(c, platoonInformation) == 0) {
-
-                    CacheHandler.Platoon.update(c, platoonInformation);
-
-                }
-
-                // return
-                return platoonInformation;
-
+                PlatoonInformation.Builder platoonInformation = new PlatoonInformation.Builder(
+                    platoonId, 
+                    profileCommonObject.getString("name"),
+                    profileCommonObject.getString("tag")
+                );                
+                return platoonInformation
+                	.date(profileCommonObject.getLong("creationDate"))
+                	.platformId(profileCommonObject.getInt("platform"))
+                    .gameId(profileCommonObject.getInt("game"))
+                    .numFans(profileCommonObject.getInt("fanCounter"))
+                    .numMembers(profileCommonObject.getInt("memberCounter"))
+                    .blazeClubId(profileCommonObject.getInt("blazeClubId"))
+                    .presentation(profileCommonObject.getString("presentation"))
+                    .website(PublicUtils.normalizeUrl(profileCommonObject.optString("website", "")))
+                    .visibility(!profileCommonObject.getBoolean("hidden")) 
+                    .isMember(isMember)
+                    .isAdmin(isAdmin)
+                    .allowNewMembers(profileCommonObject.getBoolean("allowNewMembers")) 
+                    .members(members) 
+                    .fans(fans) 
+                    .invitableFriends(friends)
+                    .stats(stats)
+                    .build();
             } else {
-
                 throw new WebsiteHandlerException("Could not get the platoon.");
-
             }
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
-    public static ArrayList<GeneralSearchResult> search(
-
-            Context context, String keyword, String checksum
-
-    ) throws WebsiteHandlerException {
+    public static ArrayList<GeneralSearchResult> search(Context context, String keyword, String checksum) throws WebsiteHandlerException {
         List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
         try {
             String httpContent = new RequestHandler().post(
-                    URL_SEARCH,
-                    RequestHandler.generatePostData(
-                            FIELD_NAMES_SEARCH,
-                            keyword,
-                            checksum
-                    ),
-                    RequestHandler.HEADER_JSON
+                URL_SEARCH,
+                RequestHandler.generatePostData(
+                    FIELD_NAMES_SEARCH,
+                    keyword,
+                    checksum
+                ),
+                RequestHandler.HEADER_JSON
             );
             if (!"".equals(httpContent)) {
                 JSONArray searchResultsPlatoon = new JSONArray(httpContent);
                 if (searchResultsPlatoon.length() > 0) {
                     for (int i = 0, max = searchResultsPlatoon.length(); i < max; i++) {
-
-                        // Get the JSONObject
                         JSONObject tempObj = searchResultsPlatoon.optJSONObject(i);
-                        final String filename = tempObj.getString("id") + ".jpeg";
                         results.add(
                             new GeneralSearchResult(
                                 new PlatoonData(
-                                        Long.parseLong(tempObj.getString("id")), tempObj
-                                        .getInt("fanCounter"), tempObj
-                                        .getInt("memberCounter"), tempObj
-                                        .getInt("platform"), tempObj
-                                        .getString("name"),
-                                        tempObj.getString("tag"), filename, true
+                                    Long.parseLong(tempObj.getString("id")), 
+                                    tempObj.getString("name"), 
+                                    tempObj.getString("tag"), 
+                                    tempObj.getInt("platform"), 
+                                    tempObj.getInt("fanCounter"),
+                                    tempObj.getInt("memberCounter"), 
+                                    true
                                 )
                            )
                         );
@@ -1393,15 +929,9 @@ public class PlatoonClient extends DefaultClient {
             }
 
         } catch (Exception ex) {
-
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
-        // Return the results
         return (ArrayList<GeneralSearchResult>) results;
-
     }
-
 }

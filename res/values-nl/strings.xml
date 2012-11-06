@@ -119,7 +119,7 @@
   <string name="label_stats">Statistieken</string>
   <string name="label_users">Gebruikers</string>
   <string name="info_platoon_created">Gemaakt op {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">Leden</string>
+  <string name="label_members">Leden</string>
   <string name="label_fans">FANS</string>
   <string name="info_platoon_compare">Pelotons kunnen (nog?) niet worden vergeleken...</string>
   <string name="info_empty_msg">Je kunt geen lege berichten plaatsen.</string>

@@ -18,72 +18,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlatoonInformation {
-
-    // Attributes
-    private int platformId, gameId, numFans, numMembers, blazeClubId;
-    private long id, date;
-    private String name, tag, presentation, website;
-    private boolean visible, isMember, isAdmin, allowNewMembers;
-    private List<ProfileData> members, fans;
+    private int platformId;
+    private int gameId;
+    private int numFans;
+    private int numMembers;
+    private long id;
+    private long blazeClubId;
+    private long date;
+    private String name;
+    private String tag;
+    private String presentation;
+    private String website;
+    private boolean visible;
+    private boolean isMember;
+    private boolean isAdmin;
+    private boolean allowNewMembers;
+    private List<ProfileData> members;
+    private List<ProfileData> fans;
     private List<ProfileData> invitableFriends;
     private PlatoonStats stats;
+    private long timestamp;
 
-    // Construct(s)
-    public PlatoonInformation(
-
-            long i, long d, int pId, int gId, int nF, int nM, int bcId, String n,
-            String t, String p, String w, int v
-
-    ) {
-
-        id = i;
-        date = d;
-        platformId = pId;
-        gameId = gId;
-        numFans = nF;
-        numMembers = nM;
-        blazeClubId = bcId;
-        name = n;
-        tag = t;
-        presentation = p;
-        website = w;
-        visible = (v == 1);
-
+    public PlatoonInformation(PlatoonInformation.Builder builder) {
+        platformId = builder.platformId;
+        gameId = builder.gameId;
+        numFans = builder.numFans;
+        numMembers = builder.numMembers;
+        blazeClubId = builder.blazeClubId;
+        id = builder.id;
+        date = builder.date;
+        name = builder.name;
+        tag = builder.tag;
+        presentation = builder.presentation;
+        website = builder.website;
+        visible = builder.visibility;
+        isMember = builder.isMember;
+        isAdmin = builder.isAdmin;
+        allowNewMembers = builder.allowNewMembers;
+        members = builder.members;
+        fans = builder.fans;
+        invitableFriends = builder.invitableFriends;
+        stats = builder.stats;
+        timestamp = builder.timestamp;
     }
 
-    public PlatoonInformation(
-
-            long i, long d, int pId, int g, int nF, int nM, int bcId, String n,
-            String t, String p, String w, boolean v, boolean ism, boolean isa,
-            boolean a, List<ProfileData> m,
-            List<ProfileData> fa, List<ProfileData> pd,
-            PlatoonStats st
-
-    ) {
-
-        platformId = pId;
-        gameId = g;
-        numFans = nF;
-        numMembers = nM;
-        blazeClubId = bcId;
-        id = i;
-        date = d;
-        name = n;
-        tag = t;
-        presentation = p;
-        website = w;
-        visible = v;
-        isMember = ism;
-        isAdmin = isa;
-        allowNewMembers = a;
-        members = m;
-        fans = fa;
-        invitableFriends = pd;
-        stats = st;
-
-    }
-
-    // Getters
     public int getPlatformId() {
         return platformId;
     }
@@ -100,7 +78,7 @@ public class PlatoonInformation {
         return numMembers;
     }
 
-    public int getBlazeClubId() {
+    public long getBlazeClubId() {
         return blazeClubId;
     }
 
@@ -116,7 +94,7 @@ public class PlatoonInformation {
         return id;
     }
 
-    public long getDate() {
+    public long getDateCreated() {
         return date;
     }
 
@@ -159,18 +137,137 @@ public class PlatoonInformation {
     public PlatoonStats getStats() {
         return stats;
     }
-
-    public Object[] toArray() {
-
-        return new Object[]{
-
-                id, platformId, gameId,
-                numFans, numMembers, blazeClubId,
-                date, name, tag, presentation,
-                website, (visible ? 1 : 0),
-
-        };
-
+    
+    public long getTimestamp() {
+    	return timestamp;
     }
+    
+    public static class Builder {
+    	private final long id;
+        private final String name;
+        private final String tag;
+        
+        // Optional
+        public String presentation = "";
+        public String website = "";
+        public int platformId = 0;
+        public int gameId = 0;
+        public int numFans = 0;
+        public int numMembers = 0;
+        public long blazeClubId = 0;
+        public long date = 0;
+        public boolean visibility = true;
+        public boolean isMember = false;
+        public boolean isAdmin = false;
+        public boolean allowNewMembers = false;
+        public List<ProfileData> fans = new ArrayList<ProfileData>();
+        public List<ProfileData> members = new ArrayList<ProfileData>();
+        public List<ProfileData> invitableFriends = new ArrayList<ProfileData>();
+        public PlatoonStats stats = null;
+        public long timestamp = System.currentTimeMillis();
+        
+        public Builder(long i, String n, String t) {
+            id = i;
+            name = n;
+            tag = t;
+        }
+        
+        public Builder presentation(String s) {
+        	presentation = s;
+        	return this;
+        }
+        public Builder website(String s) {
+        	website = s;
+        	return this;
+        }
+        public Builder platformId(int n) {
+        	platformId = n;
+        	return this;
+        }
+        public Builder gameId(int n) {
+        	gameId = n;
+        	return this;
+        }
+        public Builder numFans(int n) {
+        	numFans = n;
+        	return this;
+        }
+        public Builder numMembers(int n) {
+        	numMembers = n;
+        	return this;
+        }
+        public Builder blazeClubId(long n) {
+        	blazeClubId = n;
+        	return this;
+        }
+        public Builder date(long n) {
+        	date = n;
+        	return this;
+        }
+        public Builder visibility(boolean b) {
+        	visibility = b;
+        	return this;
+        }
+        public Builder isMember(boolean b) {
+        	isMember = b;
+        	return this;
+        }
+        public Builder isAdmin(boolean b) {
+        	isAdmin = b;
+        	return this;
+        }
+        public Builder allowNewMembers(boolean b) {
+        	allowNewMembers = b;
+        	return this;
+        }
+        public Builder fans(List<ProfileData> l) {
+        	fans = l;
+        	return this;
+        }
+        public Builder members(List<ProfileData> l) {
+        	members = l;
+        	return this;
+        }
+        public Builder invitableFriends(List<ProfileData> l) {
+        	invitableFriends = l;
+        	return this;
+        }
+        public Builder stats(PlatoonStats s) {
+        	stats = s;
+        	return this;
+        }
+        public Builder timestamp(long n) {
+        	timestamp = n;
+        	return this;
+        }
+        public PlatoonInformation build() {
+            return new PlatoonInformation(this);
+        }
+    }
+    
+    @Override
+	public String toString() {
+		return "PlatoonInformation [platformId=" + platformId + ", gameId="
+				+ gameId + ", numFans=" + numFans + ", numMembers="
+				+ numMembers + ", id=" + id + ", blazeClubId=" + blazeClubId
+				+ ", date=" + date + ", name=" + name + ", tag=" + tag
+				+ ", presentation=" + presentation + ", website=" + website
+				+ ", visible=" + visible + ", isMember=" + isMember
+				+ ", isAdmin=" + isAdmin + ", allowNewMembers="
+				+ allowNewMembers + ", members=" + members + ", fans=" + fans
+				+ ", invitableFriends=" + invitableFriends + ", stats=" + stats
+				+ ", timestamp=" + timestamp + "]";
+	}
 
+	public PlatoonData toPlatoonData() {
+    	return new PlatoonData(
+    		id,
+    		name,
+    		tag,
+    		platformId,
+    		numFans,
+    		numMembers,
+    		visible
+		);
+    }
 }
