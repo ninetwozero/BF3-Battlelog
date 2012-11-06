@@ -7,8 +7,9 @@ import com.ninetwozero.battlelog.misc.DebugLogConfig;
 
 public class Battlelog extends Application {
 
-    public static final String NAME = "battlelog.db";
     private static boolean isInDebugMode;
+    public static final String NAME = "battlelog.db";
+    private static final String BUGSENSE_KEY = "d604d325";
 
     private static Battlelog instance;
     public static final String AUTHORITY = "com.ninetwozero.battlelog.provider";
