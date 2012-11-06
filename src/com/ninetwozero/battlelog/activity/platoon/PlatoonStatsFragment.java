@@ -102,7 +102,7 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
 
         int numCols = 2;
         for (int i = 0, max = topStats.size(); i < max; i++) {
-            mCacheView = (RelativeLayout) mLayoutInflater.inflate(R.layout.grid_item_platoon_top_stats, null);
+            mCacheView = mLayoutInflater.inflate(R.layout.grid_item_platoon_top_stats, null);
             if (cacheTableRow == null || (i % numCols) == 0) {
                 mTableTopList.addView(cacheTableRow = new TableRow(mContext));
                 cacheTableRow.setLayoutParams(

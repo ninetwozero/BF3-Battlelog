@@ -123,10 +123,10 @@ public class ProfileActivity extends CustomFragmentActivity {
 			} else if (mViewPager.getCurrentItem() == 1) {
 				return super.onPrepareOptionsMenu(fragmentStats.prepareOptionsMenu(menu));
 			} else if (mViewPager.getCurrentItem() == 2) {
-				((MenuItem) menu.findItem(R.id.option_friendadd)).setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_frienddel)).setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_compare)).setVisible(false);
-				((MenuItem) menu.findItem(R.id.option_unlocks)).setVisible(false);
+				menu.findItem(R.id.option_friendadd).setVisible(false);
+				menu.findItem(R.id.option_frienddel).setVisible(false);
+				menu.findItem(R.id.option_compare).setVisible(false);
+				menu.findItem(R.id.option_unlocks).setVisible(false);
 			} else {
 				menu.removeItem(R.id.option_friendadd);
 				menu.removeItem(R.id.option_frienddel);
