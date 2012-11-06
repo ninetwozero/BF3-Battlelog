@@ -27,7 +27,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -120,13 +119,17 @@ public class PlatoonActivity extends CustomFragmentActivity {
         }
 
         @Override
-        /* TODO: Future work flow: Each fragment fixes its own data, as they are only dependent on PlatoonData. Each caches at different table in Provider etc*/
+        /* TODO: 
+         * Future work flow: 
+         * Each fragment fixes its own data, as they are only dependent on PlatoonData. 
+         * Each caches at different table in Provider etc
+         * Each fragment has its own "cache expiration" date. */
         protected void onPostExecute(Boolean cacheExists) {
             if (cacheExists) {
-            	long cacheExpiration = System.currentTimeMillis()-((Constants.MINUTE_IN_SECONDS*30)*1000);
-                if(( mPlatoonInformation.getTimestamp() < cacheExpiration)) {
+            	//long cacheExpiration = System.currentTimeMillis()-((Constants.MINUTE_IN_SECONDS*30)*1000);
+                //if(( mPlatoonInformation.getTimestamp() < cacheExpiration)) {
                 	new AsyncRefresh(context, mPlatoonData, SessionKeeper.getProfileData().getId()).execute();
-            	}
+            	//}
 
                 mFragmentOverview.show(mPlatoonInformation);
                 mFragmentStats.show(mPlatoonInformation.getStats());
@@ -219,7 +222,7 @@ public class PlatoonActivity extends CustomFragmentActivity {
     public void updatePlatoonInDB(PlatoonInformation p) {
 		ContentValues contentValues = PlatoonInformationDAO.convertPlatoonInformationForDB(p, System.currentTimeMillis());
     	try {
-	    	getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);     
+	    	getContentResolver().insert(PlatoonInformationDAO.URI, contentValues); 
     	} catch(SQLiteConstraintException ex) {
     		getContentResolver().update(
 	    		PlatoonInformationDAO.URI,

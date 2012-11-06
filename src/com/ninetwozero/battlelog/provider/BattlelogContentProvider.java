@@ -69,6 +69,6 @@ public class BattlelogContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return 0;
+        return mDatabase.update(getType(uri), contentValues, s, strings);
     }
 }
