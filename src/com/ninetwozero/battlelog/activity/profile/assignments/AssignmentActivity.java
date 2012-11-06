@@ -14,7 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.profile.assignments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -49,6 +48,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
     // Attributes
     private ProfileData mProfileData;
     public static final String ASSIGNMENTS = "assignments";
+    private final int ASSIGNMENT_CODE = 15;
     private long mSelectedPersona;
     private int mSelectedPosition;
     private long[] mPersonaId;
@@ -90,57 +90,14 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
     @Override
     protected void onStart() {
         super.onStart();
-        getSupportLoaderManager().restartLoader(0, bundle, this);
+        getSupportLoaderManager().restartLoader(ASSIGNMENT_CODE, bundle, this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        reload();
+        refresh();
     }
-
-    /*public Dialog generateDialogPersonaList() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.info_dialog_selection_generic);
-        // Do we have items to show?
-        if (mPersonaId == null) {
-            mPersonaId = new long[mProfileData.getNumPersonas()];
-            mPersonaName = new String[mProfileData.getNumPersonas()];
-
-            for (int count = 0, max = mPersonaId.length; count < max; count++) {
-                mPersonaId[count] = mProfileData.getPersona(count).getId();
-                mPersonaName[count] = mProfileData.getPersona(count).getName();
-            }
-        }
-
-        // Set it up
-        builder.setSingleChoiceItems(mPersonaName, -1, new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int item) {
-                if (mPersonaId[item] != mSelectedPersona) {
-                    mSelectedPersona = mPersonaId[item];
-
-                    // Store selectedPersonaPos
-                    mSelectedPosition = item;
-
-                    // Load the new!
-                    showInFragment(mAssignments.get(mSelectedPersona),
-                            mViewPager.getCurrentItem());
-
-                    // Save it
-                    if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
-                        SharedPreferences.Editor spEdit = mSharedPreferences.edit();
-                        spEdit.putLong(Constants.SP_BL_PERSONA_CURRENT_ID, mSelectedPersona);
-                        spEdit.putInt(Constants.SP_BL_PERSONA_CURRENT_POS,
-                                mSelectedPosition);
-                        spEdit.commit();
-                    }
-                }
-                dialog.dismiss();
-            }
-        });
-        return builder.create();
-    }*/
 
     public void setup(){
         if (mListFragments == null) {
@@ -195,79 +152,16 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
     }
 
     public void reload() {
-        //new AsyncGetDataSelf(this).execute(mProfileData);
+
+    }
+
+    private void refresh(){
+        getSupportLoaderManager().restartLoader(ASSIGNMENT_CODE, bundle, this);
     }
 
     public MissionPack getMissionPack(int id){
         return assignments != null ?assignments.getMissionPacksList().get(id):null;
     }
-
-    /*private class AsyncGetDataSelf extends AsyncTask<ProfileData, Void, Boolean> {
-
-        // Attributes
-        private Context mContext;
-        private ProgressDialog mProgressDialog;
-
-        public AsyncGetDataSelf(Context c) {
-            mContext = c;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            if (mAssignments.isEmpty()) {
-                mProgressDialog = new ProgressDialog(mContext);
-                mProgressDialog.setTitle(mContext.getString(R.string.general_wait));
-                mProgressDialog.setMessage(getString(R.string.general_downloading));
-                mProgressDialog.show();
-            }
-        }
-
-        @Override
-        protected Boolean doInBackground(ProfileData... arg0) {
-            try {
-                ProfileData profile = arg0[0];
-                if (profile.getNumPersonas() == 0) {
-                    profile = ProfileClient.resolveFullProfileDataFromProfileData(profile);
-                    mSelectedPersona = profile.getPersona(0).getId();
-                }
-
-                mAssignments = new ProfileClient(profile).getAssignments(mContext);
-                return !mAssignments.isEmpty();
-
-            } catch (WebsiteHandlerException ex) {
-                ex.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            // Fail?
-            if (!result) {
-                if (mProgressDialog != null) {
-                    mProgressDialog.dismiss();
-                }
-                Toast.makeText(mContext, R.string.general_no_data,
-                        Toast.LENGTH_SHORT).show();
-                ((Activity) mContext).finish();
-            }
-
-            // Do actual stuff, like sending to an adapter
-            int num = mViewPager.getCurrentItem();
-            showInFragment(mAssignments.get(mSelectedPersona), num);
-            if (num > 0) {
-                showInFragment(mAssignments.get(mSelectedPersona), num - 1);
-            }
-            if (num < mViewPager.getChildCount()) {
-                showInFragment(mAssignments.get(mSelectedPersona), num + 1);
-            }
-
-            // Go go go
-            if (mProgressDialog != null) {
-                mProgressDialog.dismiss();
-            }
-        }
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -276,44 +170,17 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
         return super.onCreateOptionsMenu(menu);
     }
 
-    /*public void showInFragment(AssignmentDataWrapper data, int position) {
-        ((AssignmentFragment) mListFragments.get(position)).show(getItemsForFragment(position));
-    }*/
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.option_reload) {
-            reload();
+            refresh();
         } /*else if (item.getItemId() == R.id.option_change) {
             generateDialogPersonaList().show();
         } */else if (item.getItemId() == R.id.option_back) {
-            ((Activity) this).finish();
+            finish();
         }
         return true;
     }
-
-    /*public List<AssignmentData> getItemsForFragment(int p) {
-        if (mAssignments.isEmpty()) {
-            return new ArrayList<AssignmentData>();
-        } else {
-            AssignmentDataWrapper assignmentDataWrapper = mAssignments.get(mSelectedPersona);
-
-            if (assignmentDataWrapper == null) {
-                return new ArrayList<AssignmentData>();
-            }
-
-            switch (p) {
-                case 0:
-                    return assignmentDataWrapper.getB2KAssignments();
-                case 1:
-                    return assignmentDataWrapper.getPremiumAssignments();
-                case 2:
-                    return assignmentDataWrapper.getCQAssignments();
-                default:
-                    return new ArrayList<AssignmentData>();
-            }
-        }
-    }*/
 
     private void startLoadingDialog() {
         progressDialog = new ProgressDialog(this);

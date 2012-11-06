@@ -14,21 +14,21 @@ import android.widget.TextView;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.jsonmodel.assignments.Criteria;
 import com.ninetwozero.battlelog.jsonmodel.assignments.Mission;
-import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.util.AssignmentsMap;
+import com.ninetwozero.battlelog.util.TimeFormatter;
 
 public class AssignmentDialog extends DialogFragment {
 
     private Mission mission;
 
-    public static AssignmentDialog newInstance(Mission mission){
+    public static AssignmentDialog newInstance(Mission mission) {
         AssignmentDialog dialog = new AssignmentDialog(mission);
         Bundle bundle = new Bundle();
         dialog.setArguments(bundle);
         return dialog;
     }
 
-    private AssignmentDialog(Mission mission){
+    private AssignmentDialog(Mission mission) {
         this.mission = mission;
     }
 
@@ -69,7 +69,11 @@ public class AssignmentDialog extends DialogFragment {
             View v = layoutInflater.inflate(R.layout.list_item_assignment_popup, null);
 
             ((TextView) v.findViewById(R.id.text_obj_title)).setText(AssignmentsMap.getCriteria(criteria.getDescriptionId()));
-            ((TextView) v.findViewById(R.id.text_obj_values)).setText((int)criteria.getActualValue() + "/" + (int) criteria.getCompletionValue());
+            if (criteria.getUnit().equalsIgnoreCase("time_hours")) {
+                ((TextView) v.findViewById(R.id.text_obj_values)).setText(timeValues(criteria.getActualValue(), criteria.getCompletionValue()));
+            } else {
+                ((TextView) v.findViewById(R.id.text_obj_values)).setText((int) criteria.getActualValue() + "/" + (int) criteria.getCompletionValue());
+            }
             wrapObjectives.addView(v);
         }
 
@@ -77,5 +81,13 @@ public class AssignmentDialog extends DialogFragment {
         ((TextView) dialog.findViewById(R.id.text_rew_name)).setText(AssignmentsMap.rewardLabel(mission.getCode()));
 
         return builder.create();
+    }
+
+    private String timeValues(double actual, double completion) {
+        return new StringBuilder()
+                .append(TimeFormatter.timeString((int) actual))
+                .append("/")
+                .append(TimeFormatter.timeString((int) completion))
+                .toString();
     }
 }

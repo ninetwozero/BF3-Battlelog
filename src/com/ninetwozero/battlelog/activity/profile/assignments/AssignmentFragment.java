@@ -16,7 +16,6 @@ package com.ninetwozero.battlelog.activity.profile.assignments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -78,7 +77,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
     }
 
     private void showData() {
-
+        table.removeAllViews();
         if (expansionId == 1024) {
             premiumPackage();
         } else {
@@ -131,11 +130,6 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         ImageView image = (ImageView) view.findViewById(R.id.assignment_image);
         ProgressBar progress = (ProgressBar) view.findViewById(R.id.assignment_progress);
         image.setImageResource(assignmentImage(mission.getCode()));
-        /*if (ass1.isCompleted()) {
-            image.setImageResource(ass2.getResourceId());
-        } else {
-            image.setImageResource(R.drawable.assignment_locked);
-        }*/
 
         image.setTag(mission.getCode());
         image.setOnClickListener(
@@ -149,7 +143,6 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
 
                 }
         );
-        Log.e("AssignmentFragment", expansionId + "- " + mission.getAddonUnlocks().get(0).getUnlockId());
         progress.setProgress(mission.getCompletion());
         progress.setMax(100);
     }

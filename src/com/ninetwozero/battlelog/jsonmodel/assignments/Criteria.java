@@ -14,6 +14,8 @@ public class Criteria {
     private double completionValue;
     @SerializedName("statCode")
     private String statCode;
+    @SerializedName("unit")
+    private String unit;
 
     public String getDescriptionId() {
         return descriptionId;
@@ -33,5 +35,9 @@ public class Criteria {
 
     public String getStatCode() {
         return statCode;
+    }
+
+    public String getUnit() {
+        return unit;
     }
 }
