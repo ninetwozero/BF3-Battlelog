@@ -126,10 +126,14 @@ public class PlatoonActivity extends CustomFragmentActivity {
          * Each fragment has its own "cache expiration" date. */
         protected void onPostExecute(Boolean cacheExists) {
             if (cacheExists) {
-            	//long cacheExpiration = System.currentTimeMillis()-((Constants.MINUTE_IN_SECONDS*30)*1000);
-                //if(( mPlatoonInformation.getTimestamp() < cacheExpiration)) {
-                	new AsyncRefresh(context, mPlatoonData, SessionKeeper.getProfileData().getId()).execute();
-            	//}
+            	
+            	/** Reload prevention is not needed at the time of writing.
+            		long cacheExpiration = System.currentTimeMillis()-((Constants.MINUTE_IN_SECONDS*30)*1000);
+                	if(( mPlatoonInformation.getTimestamp() < cacheExpiration)) {
+                		new AsyncRefresh(context, mPlatoonData, SessionKeeper.getProfileData().getId()).execute();
+            		}
+        		*/
+            	new AsyncRefresh(context, mPlatoonData, SessionKeeper.getProfileData().getId()).execute();
 
                 mFragmentOverview.show(mPlatoonInformation);
                 mFragmentStats.show(mPlatoonInformation.getStats());
