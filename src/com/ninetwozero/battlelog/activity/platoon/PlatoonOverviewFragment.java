@@ -94,10 +94,6 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         }
         Activity activity = (Activity) mContext;
 
-        if (mImageViewBadge == null) {
-            mImageViewBadge = (ImageView) activity.findViewById(R.id.image_badge);
-        }
-
         ((TextView) activity.findViewById(R.id.text_name_platoon)).setText(data.getName() + " [" + data.getTag() + "]");
         if( data.getDateCreated() == 0 ) {
         	((TextView) activity.findViewById(R.id.text_date)).setText(R.string.msg_unknown_time);
@@ -113,7 +109,6 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 			);
         }
 
-        // Platform!!
         switch (data.getPlatformId()) {
             case 1:
                 ((ImageView) activity.findViewById(R.id.image_platform)).setImageResource(R.drawable.logo_pc);
@@ -129,12 +124,10 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
                 break;
         }
 
-        // Set the properties
-        mImageViewBadge.setImageBitmap(
+        ((ImageView) activity.findViewById(R.id.image_badge)).setImageBitmap(
         	BitmapFactory.decodeFile(PublicUtils.getCachePath(mContext) + data.getId() + ".jpeg")
         );
 
-        // Do we have a link?!
         if ("".equals(data.getWebsite())) {
             ((View) activity.findViewById(R.id.wrap_web)).setVisibility(View.GONE);
         } else {
@@ -142,7 +135,6 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             ((View) activity.findViewById(R.id.wrap_web)).setTag(data.getWebsite());
         }
 
-        // Do we have a presentation?
         if (data.getPresentation().equals("")) {
         	((TextView) activity.findViewById(R.id.text_presentation)).setText(R.string.info_profile_empty_pres);
         } else {
@@ -193,20 +185,19 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
     public boolean handleSelectedOption(MenuItem item) {
         if (item.getItemId() == R.id.option_join) {
-            new AsyncPlatoonRequest(
-            	mContext, 
-            	mPlatoonData, 
-            	SessionKeeper.getProfileData().getId(),
-            	mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
-            ).execute(true);
+            modifyMembership(true);
         } else if (item.getItemId() == R.id.option_leave) {
-            new AsyncPlatoonRequest(
-                    mContext, 
-                    mPlatoonData, 
-                    SessionKeeper.getProfileData().getId(),
-                    mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
-            ).execute(false);
+            modifyMembership(false);
         }
         return true;
     }
+
+	private void modifyMembership(boolean isJoining) {
+		new AsyncPlatoonRequest(
+        	mContext, 
+        	mPlatoonData, 
+        	SessionKeeper.getProfileData().getId(),
+        	mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
+        ).execute(isJoining);		
+	}
 }

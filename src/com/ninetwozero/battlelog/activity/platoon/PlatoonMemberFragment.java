@@ -104,7 +104,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
         mTextTitle = (TextView) v.findViewById(R.id.text_title_users);
     }
     public final void show() {
-    	if( mContext == null ) {
+    	if( getActivity() == null ) {
     		return;
     	}
     	
@@ -203,44 +203,47 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
     }
 
     public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {
-        try {
-            if (item.getGroupId() == 2) {
-                ProfileData data = (ProfileData) info.targetView.getTag();
-                if (item.getItemId() == 0) {
-                    startActivity(
-                        new Intent(mContext, ProfileActivity.class).putExtra(
-                            "profile", data
-                        )
-                    );
-                } else if (item.getItemId() == 1) {
-                    if (data.isAdmin()) {
-                        Toast.makeText(mContext, R.string.info_platoon_member_demoting, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(mContext, R.string.info_platoon_member_promoting, Toast.LENGTH_SHORT).show();
-
-                    }
-                    new AsyncPlatoonMemberManagement(mContext, data.getId(), mPlatoonData).execute(!data.isAdmin());
-                } else if (item.getItemId() == 2) {
-                    Toast.makeText(mContext, R.string.info_platoon_member_kicking, Toast.LENGTH_SHORT).show();
-                    new AsyncPlatoonMemberManagement(mContext, data.getId(), mPlatoonData).execute();
-                } else if (item.getItemId() == 3) {
-                    Toast.makeText(mContext, R.string.info_platoon_member_new_ok, Toast.LENGTH_SHORT).show();
-                    new AsyncPlatoonRespond(
-                		mContext, mPlatoonData, data.getId(), true
-            		).execute(
-        				mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
-    				);
-                } else if (item.getItemId() == 4) {
-                    Toast.makeText(mContext, R.string.info_platoon_member_new_false, Toast.LENGTH_SHORT).show();
-                    new AsyncPlatoonRespond(
-                    	mContext, mPlatoonData, data.getId(), false
-                    ).execute(mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
-                }
+        if (item.getGroupId() == 2) {
+            ProfileData user = (ProfileData) info.targetView.getTag();
+            switch(item.getItemId()) {
+            	case 0:
+                    startActivity(new Intent(mContext, ProfileActivity.class).putExtra("profile", user));
+            		break;
+            	case 1:
+            		modifyMembership(user);
+            		break;
+            	case 2:
+            		kickUser(user);
+            		break;
+            	case 3:
+            		answerUserApplication(user, true);
+            		break;
+            	case 4:
+            		answerUserApplication(user, false);
+            		break;
+            	default:
+            		return false;
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
         }
         return true;
     }
+
+	private void answerUserApplication(ProfileData user, boolean isAccepting) {
+		int string = isAccepting? R.string.info_platoon_member_new_ok : R.string.info_platoon_member_new_false;
+		Toast.makeText(mContext, string, Toast.LENGTH_SHORT).show();
+        new AsyncPlatoonRespond(mContext, mPlatoonData, user.getId(), isAccepting).execute(
+			mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
+		);
+	}
+
+	private void kickUser(ProfileData data) {
+		Toast.makeText(mContext, R.string.info_platoon_member_kicking, Toast.LENGTH_SHORT).show();
+        new AsyncPlatoonMemberManagement(mContext, data.getId(), mPlatoonData).execute();
+	}
+
+	private void modifyMembership(ProfileData user) {
+        int string = user.isAdmin() ? R.string.info_platoon_member_demoting : R.string.info_platoon_member_promoting;
+        Toast.makeText(mContext, string, Toast.LENGTH_SHORT).show();
+        new AsyncPlatoonMemberManagement(mContext, user.getId(), mPlatoonData).execute(!user.isAdmin());
+	}
 }
