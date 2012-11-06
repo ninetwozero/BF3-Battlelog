@@ -33,10 +33,12 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
@@ -83,10 +85,16 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
     // Elements
     private RelativeLayout mWrapPersona;
+    private ProgressDialog progressDialog;
     private ProgressBar mProgressBar;
-
+    private TextView personaName;
+    private TextView rankTitle;
+    private TextView rankId;
+    private TextView currentLevelPoints;
+    private TextView nextLevelPoints;
+    private TextView pointsToMake;
+    
     private PersonaData[] personaData;
-    // Misc
     private ProfileData mProfileData;
     private Map<Long, PersonaStats> mPersonaStats;
     private long mSelectedPersona;
@@ -97,12 +105,8 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
     private URI callURI;
     private final String DIALOG = "dialog";
-    private TextView personaName, rankTitle, rankId, currentLevelPoints, nextLevelPoints,
-            pointsToMake;
 
-    //private PersonaStats ps;
     private Bundle bundle;
-    private ProgressDialog progressDialog;
     private RankProgress rankProgress;
     private TableLayout personaStatisticsTable;
     private TableLayout scoreStatisticsTable;
@@ -111,17 +115,13 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        // Set our attributes
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
 
         View view = mLayoutInflater.inflate(R.layout.tab_content_profile_stats, container, false);
-
         initFragment(view);
         return view;
-
     }
 
     @Override
@@ -133,16 +133,12 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
 
     public void initFragment(View view) {
-
-        // Progressbar
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress_level);
-
-        // Let's try something out
+        
         if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
             setSelectedPersonaVariables();
         }
 
-        // Click on the wrap
         mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
         mWrapPersona.setOnClickListener(
             new OnClickListener() {
@@ -227,9 +223,13 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     }
 
     private boolean hasScoreStatistics() {
-        Cursor cursor = getContext().getContentResolver()
-                .query(ScoreStatistics.URI, ScoreStatistics.SCORE_STATISTICS_PROJECTION,
-                        ScoreStatistics.Columns.PERSONA_ID + "=?", new String[]{String.valueOf(mSelectedPersona)}, null);
+        Cursor cursor = getContext().getContentResolver().query(
+    		ScoreStatistics.URI, 
+    		ScoreStatistics.SCORE_STATISTICS_PROJECTION,
+    		ScoreStatistics.Columns.PERSONA_ID + "=?", 
+    		new String[]{String.valueOf(mSelectedPersona)}, 
+    		null
+		);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             listScoreStatistics = scoreStatisticsFromCursor(cursor);
@@ -240,8 +240,6 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     }
 
     public void findViews() {
-
-        // Let's find it
         View view = getView();
         if (view == null) {
             return;
@@ -288,7 +286,6 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
         rankTitle.setText(fromResource(rankProgress.getRank()));
         rankId.setText(format(rankProgress.getRank()));
 
-        // Progress
         mProgressBar.setMax((int) (rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
         mProgressBar.setProgress((int) (rankProgress.getScore() - rankProgress.getCurrentRankScore()));
         currentLevelPoints.setText(format(rankProgress.getScore() - rankProgress.getCurrentRankScore()));
@@ -298,12 +295,9 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
     private void populateStatistics(List<Statistics> statistics, TableLayout layout) {
 		for (Statistics ps : statistics) {
-			View tr = mLayoutInflater.inflate(
-					R.layout.list_item_assignment_popup, null);
-			((TextView) tr.findViewById(R.id.text_obj_title)).setText(ps
-					.getTitle());
-			((TextView) tr.findViewById(R.id.text_obj_values)).setText(ps
-					.getValue());
+			View tr = mLayoutInflater.inflate(R.layout.list_item_assignment_popup, null);
+			((TextView) tr.findViewById(R.id.text_obj_title)).setText(ps.getTitle());
+			((TextView) tr.findViewById(R.id.text_obj_values)).setText(ps.getValue());
 			layout.addView(tr);
 		}
     }
@@ -354,17 +348,47 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
     private void updateRankProgressDB(PersonaInfo pi) {
         rankProgress = rankProgressFromJSON(pi);
-        getContext().getContentResolver().insert(RankProgress.URI, rankProgressForDB(pi, mSelectedPersona));
+        ContentValues contentValues = rankProgressForDB(pi, mSelectedPersona);
+        try {
+        	getContext().getContentResolver().insert(RankProgress.URI, contentValues);
+        } catch(SQLiteConstraintException ex) {
+        	getContext().getContentResolver().update(
+    			RankProgress.URI, 
+    			contentValues,
+    			RankProgress.Columns.PERSONA_ID + "=?",
+    			new String[] { String.valueOf(pi.getPersonaId()) }
+			);
+        }
     }
 
     private void updatePersonaStats(PersonaInfo pi) {
         listPersonaStatistics = personaStatisticsFromJSON(pi);
-        getContext().getContentResolver().insert(PersonaStatistics.URI, personaStatisticsForDB(pi, mSelectedPersona));
+        ContentValues contentValues = personaStatisticsForDB(pi, mSelectedPersona);
+        try {
+            getContext().getContentResolver().insert(PersonaStatistics.URI, contentValues);
+        } catch(SQLiteConstraintException ex) {
+        	getContext().getContentResolver().update(
+    			PersonaStatistics.URI, 
+    			contentValues,
+    			PersonaStatistics.Columns.PERSONA_ID + "=?",
+    			new String[] { String.valueOf(pi.getPersonaId()) }
+			);
+        }
     }
 
     private void updateScoreStatistics(PersonaInfo pi) {
-        listScoreStatistics = scoreStatisticsFromJSON(pi);
-        getContext().getContentResolver().insert(ScoreStatistics.URI, scoreStatisticsForDB(pi, mSelectedPersona));
+        listScoreStatistics = scoreStatisticsFromJSON(pi);        
+        ContentValues contentValues = scoreStatisticsForDB(pi, mSelectedPersona);
+        try {
+            getContext().getContentResolver().insert(ScoreStatistics.URI, contentValues);
+        } catch(SQLiteConstraintException ex) {
+        	getContext().getContentResolver().update(
+    			ScoreStatistics.URI, 
+    			contentValues,
+    			ScoreStatistics.Columns.PERSONA_ID + "=?",
+    			new String[] { String.valueOf(pi.getPersonaId()) }
+			);
+        }
     }
 
     public void setProfileData(ProfileData p) {
@@ -381,8 +405,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     }
 
     private void updateSharedPreference(long personaId) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity()
-                .getApplicationContext());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putLong(SP_BL_PERSONA_CURRENT_ID, personaId);
         editor.putInt(SP_BL_PERSONA_CURRENT_POS, indexOfPersona(personaId));
@@ -405,45 +428,34 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     }
 
     public Menu prepareOptionsMenu(Menu menu) {
-
-        ((MenuItem) menu.findItem(R.id.option_friendadd))
-                .setVisible(false);
-        ((MenuItem) menu.findItem(R.id.option_frienddel))
-                .setVisible(false);
-        ((MenuItem) menu.findItem(R.id.option_compare))
-                .setVisible(true);
-        ((MenuItem) menu.findItem(R.id.option_unlocks))
-                .setVisible(true);
+        menu.findItem(R.id.option_friendadd).setVisible(false);
+        menu.findItem(R.id.option_frienddel).setVisible(false);
+        menu.findItem(R.id.option_compare).setVisible(true);
+        menu.findItem(R.id.option_unlocks).setVisible(true);
         return menu;
-
     }
 
     public boolean handleSelectedOption(MenuItem item) {
-
         if (item.getItemId() == R.id.option_compare) {
-
             startActivity(new Intent(mContext, CompareActivity.class)
-                    .putExtra("profile1", SessionKeeper.getProfileData())
-                    .putExtra("profile2", mProfileData)
-                    .putExtra("selectedPosition", mSelectedPosition));
-
+                .putExtra("profile1", SessionKeeper.getProfileData())
+                .putExtra("profile2", mProfileData)
+                .putExtra("selectedPosition", mSelectedPosition));
         } else if (item.getItemId() == R.id.option_unlocks) {
-
             int position = 0;
             for (long key : mPersonaStats.keySet()) {
-
                 if (key == mSelectedPersona) {
                     break;
                 } else {
                     position++;
                 }
             }
-
             startActivity(
-
-                    new Intent(mContext, UnlockActivity.class)
-                            .putExtra("profile", mProfileData)
-                            .putExtra("selectedPosition", position));
+        		new Intent(mContext, UnlockActivity.class)
+                    .putExtra("profile", mProfileData)
+                    .putExtra("selectedPosition", position
+        		)
+            );
         }
         return true;
     }
@@ -454,7 +466,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
     @Override
     public void reload() {
-        deleteTables();
+        //deleteTables();
         getLoaderManager().restartLoader(0, bundle, this);
     }
 
@@ -466,10 +478,8 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
     private void startLoadingDialog() {   //TODO extract multiple duplicates of same code
         this.progressDialog = new ProgressDialog(mContext);
-        this.progressDialog.setTitle(mContext
-                .getString(R.string.general_wait));
-        this.progressDialog.setMessage(mContext
-                .getString(R.string.general_downloading));
+        this.progressDialog.setTitle(mContext.getString(R.string.general_wait));
+        this.progressDialog.setMessage(mContext.getString(R.string.general_downloading));
         this.progressDialog.show();
     }
 }
