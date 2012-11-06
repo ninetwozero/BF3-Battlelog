@@ -156,7 +156,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
     }
 
     private void refresh(){
-        getSupportLoaderManager().restartLoader(ASSIGNMENT_CODE, bundle, this);
+        //getSupportLoaderManager().restartLoader(ASSIGNMENT_CODE, bundle, this);
     }
 
     public MissionPack getMissionPack(int id){

@@ -18,7 +18,7 @@
 
   <TextView
       android:id="@+id/text_obj_title"
-      android:layout_width="0dp"
+      android:layout_width="0dip"
       android:layout_height="wrap_content"
       android:padding="2dp"
       android:text="10 revives"
@@ -27,12 +27,10 @@
 
   <TextView
       android:id="@+id/text_obj_values"
-      android:layout_width="0dp"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_alignParentRight="true"
       android:padding="2dp"
       android:text="10/10"
-      android:layout_weight="1"
       android:textColor="@color/black"/>
 
 </LinearLayout>
