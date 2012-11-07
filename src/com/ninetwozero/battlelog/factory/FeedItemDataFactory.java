@@ -1,16 +1,20 @@
 package com.ninetwozero.battlelog.factory;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
+import android.util.Log;
+
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.ParsedFeedItemData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.PublicUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class FeedItemDataFactory {
 
@@ -116,7 +120,7 @@ public class FeedItemDataFactory {
 				break;
 			case FeedItem.TYPE_COMPLETED_ASSIGNMENT:
 				feedItemData = generateFromCompletingAssignment(context,
-						currItem.getJSONObject("COMPLETEDASSIGNMENT"),
+						currItem.getJSONObject("ASSIGNMENTCOMPLETE"),
 						profileData);
 				break;
 			case FeedItem.TYPE_NEW_COMMENT_GAME:
@@ -289,7 +293,8 @@ public class FeedItemDataFactory {
 				context,
 				R.string.info_txt_assignment_ok, 
 				profile.getUsername(),
-				tempInfo
+				tempInfo[0],
+				tempInfo[1]
 			), 
 			"", 
 			new ProfileData[] {profile, null}

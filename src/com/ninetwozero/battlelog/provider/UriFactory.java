@@ -48,6 +48,11 @@ public class UriFactory {
     	return createUri(path);
     }
     
+    public static URI getProfilePersonasUri(long userId) {
+    	String path = new StringBuilder("user/overviewBoxStats/").append(userId).toString();
+    	return createUri(path);
+    }
+    
     public static URI getPersonaOverviewUri(long personaId, int platformId) {
         String path = new StringBuilder("/overviewPopulateStats/").append(personaId).append("/None/").append(platformId).toString();
         return createUri(path);
