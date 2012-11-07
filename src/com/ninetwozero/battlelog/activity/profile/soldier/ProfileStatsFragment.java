@@ -136,7 +136,6 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
         getData();
     }
 
-
     public void initFragment(View view) {
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress_level);
         
@@ -214,6 +213,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
             cursor.close();
             return true;
         }
+        cursor.close();
         return false;
     }
 
@@ -231,6 +231,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
             cursor.close();
             return true;
         }
+        cursor.close();
         return false;
     }
 
@@ -248,6 +249,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
             cursor.close();
             return true;
         }
+        cursor.close();
         return false;
     }
 
@@ -453,6 +455,11 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
     public void setProfileData(ProfileData p) {
         mProfileData = p;
+        if( mProfileData.getNumPersonas() > 0 ) { 
+        	mSelectedPersona = mProfileData.getPersona(0).getId();
+        	mSelectedPlatformId = mProfileData.getPersona(0).getPlatformId();
+        	getData();
+        }
     }
 
     private Map<Long, String> personasToMap() {
