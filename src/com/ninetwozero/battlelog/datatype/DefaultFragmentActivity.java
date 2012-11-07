@@ -14,7 +14,8 @@
 
 package com.ninetwozero.battlelog.datatype;
 
-
+/*TODO replace on the go, do not try to do it for all activities or some other dependent stuff can get broken*/
+@Deprecated
 public interface DefaultFragmentActivity {
 
     void init();

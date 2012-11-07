@@ -20,13 +20,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.google.gson.Gson;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
-import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
 import com.ninetwozero.battlelog.datatype.PersonaData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.jsonmodel.assignments.Assignments;
@@ -43,16 +43,13 @@ import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import java.net.URI;
 import java.util.ArrayList;
 
-public class AssignmentActivity extends CustomFragmentActivity implements DefaultFragmentActivity, LoaderManager.LoaderCallbacks<CompletedTask> {
+public class AssignmentActivity extends CustomFragmentActivity implements LoaderManager.LoaderCallbacks<CompletedTask> {
 
-    // Attributes
     private ProfileData mProfileData;
     public static final String ASSIGNMENTS = "assignments";
     private final int ASSIGNMENT_CODE = 15;
     private long mSelectedPersona;
     private int mSelectedPosition;
-    private long[] mPersonaId;
-    private String[] mPersonaName;
     private ProgressDialog progressDialog;
     private URI callURI;
     private Assignments assignments;
@@ -90,12 +87,12 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
     @Override
     protected void onStart() {
         super.onStart();
-        getSupportLoaderManager().restartLoader(ASSIGNMENT_CODE, bundle, this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.e("AssignmentsActivity", "onResume");
         refresh();
     }
 
@@ -156,7 +153,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
     }
 
     private void refresh(){
-        //getSupportLoaderManager().restartLoader(ASSIGNMENT_CODE, bundle, this);
+        getSupportLoaderManager().restartLoader(ASSIGNMENT_CODE, bundle, this);
     }
 
     public MissionPack getMissionPack(int id){
@@ -173,6 +170,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Defaul
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.option_reload) {
+            Log.e("AssignmentActivity", "Reload pressed");
             refresh();
         } /*else if (item.getItemId() == R.id.option_change) {
             generateDialogPersonaList().show();
