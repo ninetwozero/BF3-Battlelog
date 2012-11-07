@@ -74,7 +74,7 @@ public class SocialWidgetProvider extends AppWidgetProvider {
 
         // if service == active
         if (SessionKeeper.getProfileData() == null) {
-    		Log.d(Constants.DEBUG_TAG, "No session to use in the widget");
+    		Log.i(Constants.DEBUG_TAG, "No session to use in the widget");
         } else {
             new AsyncRefresh(context, appWidgetManager).execute();
         }

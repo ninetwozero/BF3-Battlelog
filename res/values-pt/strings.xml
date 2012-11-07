@@ -119,7 +119,7 @@
   <string name="label_stats">Estatísticas</string>
   <string name="label_users">Utilizadores</string>
   <string name="info_platoon_created">Criado em {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">MEMBROS</string>
+  <string name="label_members">MEMBROS</string>
   <string name="label_fans">FÃS</string>
   <string name="info_platoon_compare">Não consegue comparar pelotões (ainda?)</string>
   <string name="info_empty_msg">Não é permitido colocar uma mensagem vazia</string>

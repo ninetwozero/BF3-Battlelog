@@ -6,72 +6,72 @@ import android.os.Parcelable;
 public class PlatoonData implements Parcelable {
 
     // Attributes
-    private long id;
-    private int countFans, countMembers, platformId;
-    private String name, tag, image;
-    private boolean visible;
-
-    // Constructs
-
+    private long mId;
+    private String mName;
+    private String mTag;
+    private String mImage;
+    private int mPlatformId;
+    private int mCountFans;
+    private int mCountMembers;
+    private boolean mVisible;
+    
     public PlatoonData(Parcel in) {
         readFromParcel(in);
     }
 
-    public PlatoonData(long i) {
-
-        this.id = i;
-        this.countFans = 0;
-        this.countMembers = 0;
-        this.platformId = 0;
-        this.visible = true;
-
+    public PlatoonData(long i, String n) {
+        mId = i;
+        mName = n;
+        mTag = "";
+        mImage = String.valueOf(mId) + ".jpeg";
+        mCountFans = 0;
+        mCountMembers = 0;
+        mPlatformId = 0;
+        mVisible = true;
     }
 
-    public PlatoonData(long i, int cF, int cM, int pId, String n, String t,
-                       String img, boolean v) {
-
-        this.id = i;
-        this.countFans = cF;
-        this.countMembers = cM;
-        this.platformId = pId;
-        this.name = n;
-        this.tag = t;
-        this.image = img;
-        this.visible = v;
-
+    public PlatoonData(long i, String n, String t, int pId, int cF, int cM, boolean v) {
+        mId = i;
+        mName = n;
+        mTag = t;
+        mPlatformId = pId;
+        mCountFans = cF;
+        mCountMembers = cM;
+        mImage = String.valueOf(mId) + ".jpeg";
+        mVisible = v;
     }
 
     // Getters
     public long getId() {
-        return this.id;
+        return mId;
     }
 
     public int getCountFans() {
-        return this.countFans;
+        return mCountFans;
     }
 
     public int getCountMembers() {
-        return this.countMembers;
+        return mCountMembers;
     }
 
     public int getPlatformId() {
-        return this.platformId;
+        return mPlatformId;
     }
 
     public String getName() {
-        return this.name;
+        return mName;
     }
 
     public String getTag() {
-        return this.tag;
+        return mTag;
     }
 
     public String getImage() {
-        return image;
+        return mImage;
     }
 
     public boolean isVisible() {
-        return this.visible;
+        return mVisible;
     }
 
     @Override
@@ -83,28 +83,28 @@ public class PlatoonData implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
 
         // Everything else
-        dest.writeLong(this.id);
-        dest.writeInt(this.countFans);
-        dest.writeInt(this.countMembers);
-        dest.writeInt(this.platformId);
-        dest.writeString(this.name);
-        dest.writeString(this.tag);
-        dest.writeString(this.image);
-        dest.writeInt((this.visible) ? 1 : 0);
+        dest.writeLong(mId);
+        dest.writeInt(mCountFans);
+        dest.writeInt(mCountMembers);
+        dest.writeInt(mPlatformId);
+        dest.writeString(mName);
+        dest.writeString(mTag);
+        dest.writeString(mImage);
+        dest.writeInt((mVisible) ? 1 : 0);
 
     }
 
     private void readFromParcel(Parcel in) {
 
         // Let's retrieve them, same order as above
-        this.id = in.readLong();
-        this.countFans = in.readInt();
-        this.countFans = in.readInt();
-        this.platformId = in.readInt();
-        this.name = in.readString();
-        this.tag = in.readString();
-        this.image = in.readString();
-        this.visible = (in.readInt() == 1);
+        mId = in.readLong();
+        mCountFans = in.readInt();
+        mCountFans = in.readInt();
+        mPlatformId = in.readInt();
+        mName = in.readString();
+        mTag = in.readString();
+        mImage = in.readString();
+        mVisible = (in.readInt() == 1);
 
     }
 
@@ -122,6 +122,6 @@ public class PlatoonData implements Parcelable {
 
     @Override
     public final String toString() {
-        return this.id + ":" + this.name + ":" + this.tag;
+        return mId + ":" + mName + ":" + mTag;
     }
 }

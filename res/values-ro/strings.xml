@@ -119,7 +119,7 @@
   <string name="label_stats">Stats</string>
   <string name="label_users">Users</string>
   <string name="info_platoon_created">Created on {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">MEMBERS</string>
+  <string name="label_members">MEMBERS</string>
   <string name="label_fans">FANS</string>
   <string name="info_platoon_compare">You can\'t compare platoons... (yet?)</string>
   <string name="info_empty_msg">You\'re not allowed to post an empty message.</string>

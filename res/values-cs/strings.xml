@@ -121,7 +121,7 @@
   <string name="label_stats">Statistiky</string>
   <string name="label_users">Uživatelé</string>
   <string name="info_platoon_created">Vytvořeno {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">ČLENOVÉ</string>
+  <string name="label_members">ČLENOVÉ</string>
   <string name="label_fans">FANOUŠCI</string>
   <string name="info_platoon_compare">Čety není možné porovnávat... (zatím?)</string>
   <string name="info_empty_msg">Není povolené poslat prázdnou zprávu.</string>

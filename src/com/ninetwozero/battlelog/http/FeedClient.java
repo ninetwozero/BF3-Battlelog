@@ -167,7 +167,6 @@ public class FeedClient extends DefaultClient {
         	List<CommentData> comments = new ArrayList<CommentData>();
             JSONObject ownerObject = currItem.optJSONObject("owner");
             final String event = currItem.getString("event");
-            String tempGravatarHash = ownerObject.getString("gravatarMd5");
 
             // Process the likes & comments
             JSONArray likeUsers = currItem.getJSONArray("likeUserIds");

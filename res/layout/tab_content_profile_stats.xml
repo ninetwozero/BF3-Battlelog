@@ -17,7 +17,6 @@
             android:id="@+id/the_scroll"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
-
   <RelativeLayout
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
@@ -25,7 +24,6 @@
       android:paddingLeft="10dp"
       android:paddingRight="10dp"
       android:paddingTop="5dp">
-
     <RelativeLayout
         android:id="@+id/wrap_persona"
         android:layout_width="fill_parent"
@@ -189,7 +187,5 @@
         </TableRow>
       </TableLayout>
     </RelativeLayout>
-
   </RelativeLayout>
-
 </ScrollView>

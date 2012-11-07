@@ -6,8 +6,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 import com.ninetwozero.battlelog.datatype.CommentData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;

@@ -120,7 +120,7 @@
   <string name="label_stats">Statistiche</string>
   <string name="label_users">Utenti</string>
   <string name="info_platoon_created">Creato il {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">MEMBRI</string>
+  <string name="label_members">MEMBRI</string>
   <string name="label_fans">FANS</string>
   <string name="info_platoon_compare">Non puoi confrontare plotoni...(per ora?)</string>
   <string name="info_empty_msg">Non puoi inserire un messaggio vuoto</string>
