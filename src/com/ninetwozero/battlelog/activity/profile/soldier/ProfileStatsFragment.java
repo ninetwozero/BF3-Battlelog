@@ -38,7 +38,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
@@ -411,46 +410,19 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     private void updateRankProgressDB(PersonaInfo pi) {
         rankProgress = rankProgressFromJSON(pi);
         ContentValues contentValues = rankProgressForDB(pi, mSelectedPersona);
-        try {
-        	getContext().getContentResolver().insert(RankProgress.URI, contentValues);
-        } catch(SQLiteConstraintException ex) {
-        	getContext().getContentResolver().update(
-    			RankProgress.URI, 
-    			contentValues,
-    			RankProgress.Columns.PERSONA_ID + "=?",
-    			new String[] { String.valueOf(pi.getPersonaId()) }
-			);
-        }
+        getContext().getContentResolver().insert(RankProgress.URI, contentValues);
     }
 
     private void updatePersonaStats(PersonaInfo pi) {
         listPersonaStatistics = personaStatisticsFromJSON(pi);
         ContentValues contentValues = personaStatisticsForDB(pi, mSelectedPersona);
-        try {
-            getContext().getContentResolver().insert(PersonaStatistics.URI, contentValues);
-        } catch(SQLiteConstraintException ex) {
-        	getContext().getContentResolver().update(
-    			PersonaStatistics.URI, 
-    			contentValues,
-    			PersonaStatistics.Columns.PERSONA_ID + "=?",
-    			new String[] { String.valueOf(pi.getPersonaId()) }
-			);
-        }
+        getContext().getContentResolver().insert(PersonaStatistics.URI, contentValues);
     }
 
     private void updateScoreStatistics(PersonaInfo pi) {
         listScoreStatistics = scoreStatisticsFromJSON(pi);        
         ContentValues contentValues = scoreStatisticsForDB(pi, mSelectedPersona);
-        try {
-            getContext().getContentResolver().insert(ScoreStatistics.URI, contentValues);
-        } catch(SQLiteConstraintException ex) {
-        	getContext().getContentResolver().update(
-    			ScoreStatistics.URI, 
-    			contentValues,
-    			ScoreStatistics.Columns.PERSONA_ID + "=?",
-    			new String[] { String.valueOf(pi.getPersonaId()) }
-			);
-        }
+        getContext().getContentResolver().insert(ScoreStatistics.URI, contentValues);
     }
 
     public void setProfileData(ProfileData p) {
@@ -458,7 +430,6 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
         if( mProfileData.getNumPersonas() > 0 ) { 
         	mSelectedPersona = mProfileData.getPersona(0).getId();
         	mSelectedPlatformId = mProfileData.getPersona(0).getPlatformId();
-        	getData();
         }
     }
 
@@ -519,8 +490,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
             startActivity(
         		new Intent(mContext, UnlockActivity.class)
                     .putExtra("profile", mProfileData)
-                    .putExtra("selectedPosition", position
-        		)
+                    .putExtra("selectedPosition", position)
             );
         }
         return true;
@@ -530,6 +500,10 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
         mComparing = c;
     }
 
+    public void reloadFromCache() {
+    	getData();
+    }
+    
     @Override
     public void reload() {
     	restartLoader();

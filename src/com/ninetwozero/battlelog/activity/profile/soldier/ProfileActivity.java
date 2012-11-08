@@ -196,7 +196,7 @@ public class ProfileActivity extends CustomFragmentActivity {
 
 	public void openStats(ProfileData p) {
 		fragmentStats.setProfileData(p);
-		fragmentStats.reload();
+		fragmentStats.reloadFromCache();
 	}
 
 	public void setFeedPermission(boolean c) {
