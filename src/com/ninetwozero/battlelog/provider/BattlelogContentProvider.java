@@ -56,7 +56,7 @@ public class BattlelogContentProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) throws SQLiteConstraintException {
+    public Uri insert(Uri uri, ContentValues contentValues) {
         long id = mDatabase.replaceOrThrow(getType(uri), null, contentValues);
     	getContext().getContentResolver().notifyChange(uri, null);
     	return Uri.parse(getType(uri) + "/" + id);
