@@ -15,7 +15,9 @@
 package com.ninetwozero.battlelog.activity.profile.assignments;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -29,19 +31,27 @@ import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.datatype.PersonaData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.dialog.ListDialogFragment;
 import com.ninetwozero.battlelog.jsonmodel.assignments.Assignments;
 import com.ninetwozero.battlelog.jsonmodel.assignments.MissionPack;
 import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.model.SelectedPersona;
 import com.ninetwozero.battlelog.provider.BusProvider;
 import com.ninetwozero.battlelog.provider.UriFactory;
+import com.squareup.otto.Subscribe;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
+import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 
 public class AssignmentActivity extends CustomFragmentActivity implements LoaderManager.LoaderCallbacks<CompletedTask> {
 
@@ -56,6 +66,8 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     private final int[] expansionId = new int[]{512, 1024, 2048, 4096};
     public static final String EXPANSION_ID = "expansionID";
     private Bundle bundle;
+    private final String DIALOG = "dialog";
+    private PersonaData[] personaData;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -71,6 +83,10 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     }
 
     public void init() {
+        buildCallUri();
+    }
+
+    private void buildCallUri() {
         if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
             mSelectedPersona = mSharedPreferences.getLong(Constants.SP_BL_PERSONA_CURRENT_ID,
                     mProfileData.getPersona(0).getId());
@@ -85,15 +101,16 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+        refresh();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.e("AssignmentsActivity", "onResume");
-        refresh();
+    protected void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
     }
 
     public void setup(){
@@ -172,12 +189,27 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
         if (item.getItemId() == R.id.option_reload) {
             Log.e("AssignmentActivity", "Reload pressed");
             refresh();
-        } /*else if (item.getItemId() == R.id.option_change) {
-            generateDialogPersonaList().show();
-        } */else if (item.getItemId() == R.id.option_back) {
+        } else if (item.getItemId() == R.id.option_change) {
+            if (personaArrayLength() > 1) {
+                ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap());
+                dialog.show(mFragmentManager, DIALOG);
+            }
+        } else if (item.getItemId() == R.id.option_back) {
             finish();
         }
         return true;
+    }
+
+    private Map<Long, String> personasToMap() {
+        personaData = SessionKeeper.getProfileData().getPersonaArray();
+        Map<Long, String> map = new HashMap<Long, String>();
+        for (PersonaData pd : personaData) {
+            map.put(pd.getId(), pd.getName() + " " + pd.resolvePlatformId());
+        }
+        return map;
+    }
+    private int personaArrayLength() {
+        return mProfileData.getPersonaArray().length;
     }
 
     private void startLoadingDialog() {
@@ -187,4 +219,29 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
         progressDialog.show();
     }
 
+    @Subscribe
+    public void personaChanged(SelectedPersona selectedPersona){
+        updateSharedPreference(selectedPersona.getPersonaId());
+        buildCallUri();
+        refresh();
+    }
+
+    private void updateSharedPreference(long personaId) {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong(SP_BL_PERSONA_CURRENT_ID, personaId);
+        editor.putInt(SP_BL_PERSONA_CURRENT_POS, indexOfPersona(personaId));
+        editor.commit();
+    }
+
+    private int indexOfPersona(long platoonId){
+        for(int i = 0; i <  personaData.length; i++){
+            if(personaData[i].getId() == platoonId){
+                return i;
+            }
+        }
+        Log.w(AssignmentActivity.class.getSimpleName(), "Failed to find index of the platoon!");
+        return 0;
+    }
 }

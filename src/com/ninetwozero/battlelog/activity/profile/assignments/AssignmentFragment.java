@@ -97,6 +97,14 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
 
     private void premiumPackage() {
         Map<String, Mission> missions = missionPack.getMissions();
+        if(missions.get("xp2prema01").isActive()){
+            premiumMember(missions);
+        } else {
+            nonPremiumMember(missions);
+        }
+    }
+
+    private void premiumMember(Map<String, Mission> missions){
         twoInRow(missions.get("xp2prema01"), missions.get("xp2prema06"), View.VISIBLE);
         twoInRow(missions.get("xp2prema02"), missions.get("xp2prema07"), View.VISIBLE);
         twoInRow(missions.get("xp2prema03"), missions.get("xp2prema08"), View.VISIBLE);
@@ -107,6 +115,19 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         twoInRow(missions.get("xp3prema03"), missions.get("xp3prema08"), View.INVISIBLE);
         twoInRow(missions.get("xp3prema04"), missions.get("xp3prema09"), View.INVISIBLE);
         twoInRow(missions.get("xp3prema05"), missions.get("xp3prema10"), View.INVISIBLE);
+    }
+
+    private void nonPremiumMember(Map<String, Mission> missions){
+        oneInRow(missions.get("xp2prema01"));
+        oneInRow(missions.get("xp2prema02"));
+        oneInRow(missions.get("xp2prema03"));
+        oneInRow(missions.get("xp2prema04"));
+        oneInRow(missions.get("xp2prema05"));
+        oneInRow(missions.get("xp3prema01"));
+        oneInRow(missions.get("xp3prema02"));
+        oneInRow(missions.get("xp3prema03"));
+        oneInRow(missions.get("xp3prema04"));
+        oneInRow(missions.get("xp3prema05"));
     }
 
     private void oneInRow(Mission mission) {

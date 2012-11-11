@@ -19,6 +19,8 @@ public class Mission {
     private List<MissionDependency> missionDependencies = new ArrayList<MissionDependency>();
     @SerializedName("stringID")
     private String missionId;
+    @SerializedName("active")
+    private boolean active;
 
     public String getCode() {
         return code;
@@ -55,6 +57,10 @@ public class Mission {
             }
         }
         return false;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     public class MissionDependency{
