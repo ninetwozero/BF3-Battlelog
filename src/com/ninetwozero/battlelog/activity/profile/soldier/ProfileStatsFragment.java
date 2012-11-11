@@ -324,11 +324,10 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
         if( id == LOADER_PERSONA ) {
         	startLoadingDialog();
         	return new Bf3Loader(getContext(), UriFactory.getProfilePersonasUri(mProfileData.getId()));
-        } else if( id == LOADER_STATS ) {
+        } else {
 	    	startLoadingDialog();
 	        return new Bf3Loader(getContext(), UriFactory.getPersonaOverviewUri(mSelectedPersona, mSelectedPlatformId));
         }
-        return null;
     }
 
     private Context getContext() {
