@@ -20,8 +20,8 @@ import android.os.Parcelable;
 import java.util.List;
 
 public class PlatoonStats implements Parcelable {
-    private String mName;
-    private long mId;
+    private String mPersonaName;
+    private long mPersonaId;
 
     private List<PlatoonStatsItem> mGlobalToplist; 
     private List<PlatoonStatsItem> mScores; 
@@ -31,28 +31,28 @@ public class PlatoonStats implements Parcelable {
 
     // Construct
     public PlatoonStats(
-		String sName, 
-		long lId, 
-		List<PlatoonStatsItem> gS,
-		List<PlatoonTopStatsItem> tP, 
-		List<PlatoonStatsItem> kS,	
-		List<PlatoonStatsItem> kSPM, 
-		List<PlatoonStatsItem> kT
+		String personaName, 
+		long personaId, 
+		List<PlatoonStatsItem> globalToplist,
+		List<PlatoonTopStatsItem> topPlayers, 
+		List<PlatoonStatsItem> scoreStatistics,	
+		List<PlatoonStatsItem> spmStatistics, 
+		List<PlatoonStatsItem> timeStatistics
 	) {
-        mName = sName;
-        mId = lId;
+        mPersonaName = personaName;
+        mPersonaId = personaId;
 
-        mGlobalToplist = gS;
-        mTopPlayers = tP;
-        mScores = kS;
-        mScorePerMinute = kSPM;
-        mTime = kT;
+        mGlobalToplist = globalToplist;
+        mTopPlayers = topPlayers;
+        mScores = scoreStatistics;
+        mScorePerMinute = spmStatistics;
+        mTime = timeStatistics;
     }
 
     @SuppressWarnings("unchecked")
     public PlatoonStats(Parcel in) {
-        mName = in.readString();
-        mId = in.readLong();
+        mPersonaName = in.readString();
+        mPersonaId = in.readLong();
 
         mGlobalToplist = (List<PlatoonStatsItem>) in.readParcelable(PlatoonStatsItem.class.getClassLoader());
         mTopPlayers = (List<PlatoonTopStatsItem>) in.readParcelable(PlatoonStatsItem.class.getClassLoader());
@@ -63,11 +63,11 @@ public class PlatoonStats implements Parcelable {
 
     // Getters
     public final String getName() {
-        return mName;
+        return mPersonaName;
     }
 
     public final long getId() {
-        return mId;
+        return mPersonaId;
     }
 
     public final List<PlatoonTopStatsItem> getTopPlayers() {
@@ -111,10 +111,9 @@ public class PlatoonStats implements Parcelable {
 
 	@Override
 	public String toString() {
-		return "PlatoonStats [mName=" + mName + ", mId=" + mId
+		return "PlatoonStats [mName=" + mPersonaName + ", mId=" + mPersonaId
 				+ ", mGlobalToplist=" + mGlobalToplist + ", mScores=" + mScores
 				+ ", mScorePerMinute=" + mScorePerMinute + ", mTime=" + mTime
 				+ ", mTopPlayers=" + mTopPlayers + "]";
 	}
-    
 }
