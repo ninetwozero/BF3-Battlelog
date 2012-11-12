@@ -150,7 +150,7 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
     private void setMission(View view, final Mission mission) {
         ImageView image = (ImageView) view.findViewById(R.id.assignment_image);
         ProgressBar progress = (ProgressBar) view.findViewById(R.id.assignment_progress);
-        image.setImageResource(assignmentImage(mission.getCode()));
+        image.setImageResource(assignmentImage(mission.getCode(), mission.isActive()));
 
         image.setTag(mission.getCode());
         image.setOnClickListener(
@@ -172,8 +172,8 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         return b.hasDependencies() && b.isDependentOn(a.getCode());
     }
 
-    private int assignmentImage(String code) {
-        return AssignmentsMap.assignmentDrawable(code);
+    private int assignmentImage(String code, boolean isActive) {
+        return isActive ? AssignmentsMap.assignmentDrawable(code) : R.drawable.assignment_locked;
     }
 
     @Override
