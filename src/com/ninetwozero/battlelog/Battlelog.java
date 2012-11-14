@@ -9,7 +9,7 @@ public class Battlelog extends Application {
 
     private static boolean isInDebugMode;
     public static final String NAME = "battlelog.db";
-    private static final String BUGSENSE_KEY = "d604d325";
+    private static final String BUGSENSE_KEY = "448b2f3b";
 
     private static Battlelog instance;
     public static final String AUTHORITY = "com.ninetwozero.battlelog.provider";
