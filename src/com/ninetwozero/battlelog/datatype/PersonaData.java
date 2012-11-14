@@ -16,35 +16,55 @@ package com.ninetwozero.battlelog.datatype;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import com.google.gson.annotations.SerializedName;
+import com.ninetwozero.battlelog.misc.Constants;
 
 public class PersonaData implements Parcelable {
-
-    // Attributes
+	
+	@SerializedName("personaId")
     protected long id;
-    protected String name, logo;
-    protected int platformId;
+	
+	@SerializedName("personaName")
+    protected String name;
+	
+	@SerializedName("namespace")
+    private String platform;
+	
+	protected int platformId;
+	
+	@SerializedName("picture")
+    protected String logo;
 
-    // Constructs
     public PersonaData(Parcel in) {
         id = in.readLong();
         name = in.readString();
         platformId = in.readInt();
-        logo = in.readString(); // TODO: This needs to be incorporated into SP
+        logo = in.readString();
     }
 
     public PersonaData(String n) {
         this(0, n, 0, null);
     }
 
-    public PersonaData(long i, String n, int pId, String l) {
-        id = i;
-        name = n;
-        platformId = pId;
-        logo = l;
-    }
+	public PersonaData(long id, String name, int platformId, String logo) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.platformId = platformId;
+		this.logo = logo;
+	}
+	
+	public PersonaData(long id, String name, String platform, String logo) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.platformId = resolveIdFromPlatformName(platform);
+		this.logo = logo;
+	}
 
-    // Getters
-    public long getId() {
+	public long getId() {
         return id;
     }
 
@@ -74,15 +94,12 @@ public class PersonaData implements Parcelable {
     }
 
     public static final Parcelable.Creator<PersonaData> CREATOR = new Parcelable.Creator<PersonaData>() {
-
         public PersonaData createFromParcel(Parcel in) {
             return new PersonaData(in);
         }
-
         public PersonaData[] newArray(int size) {
             return new PersonaData[size];
         }
-
     };
 
     public String resolvePlatformId() {
@@ -98,12 +115,21 @@ public class PersonaData implements Parcelable {
                 return "[N/A]";
         }
     }
+	
+	public int resolveIdFromPlatformName(String platform) {
+		Log.d(Constants.DEBUG_TAG, "platform => " + platform);
+		if(platform.equals("xbox")) {
+			return 2;
+		} else if(platform.equals("ps3")) {
+			return 4;
+		} else {
+			return 0;
+		}	
+	}
 
-    // toString
-    @Override
-    public String toString() {
-        return (
-                id + ":" + name + ":" + logo + ":" + platformId
-        );
-    }
+	@Override
+	public String toString() {
+		return "PersonaData [id=" + id + ", name=" + name + ", platformId="
+				+ platformId + ", logo=" + logo + "]";
+	}
 }

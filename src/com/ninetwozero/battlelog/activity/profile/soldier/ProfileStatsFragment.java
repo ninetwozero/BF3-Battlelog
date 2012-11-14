@@ -345,7 +345,6 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 	    			mProfileData.setPersona(personaData);
 	    			mSelectedPersona = personaData[0].getId();
 	    			mSelectedPlatformId = personaData[0].getPlatformId();
-    	            
 	    			findViews();
 	    			reload();
     			}
@@ -363,27 +362,35 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
         }
     }
 
-    /* FIXME: Peter, how the hell does GSON work in this case? Do show! */
     private PersonaData[] personaArrayFrom(CompletedTask task) {
     	try {
     		JsonArray personaArray = task.jsonObject.getAsJsonArray("soldiersBox");
     		int numOfPersonas = personaArray.size();
     		PersonaData[] personas = new PersonaData[numOfPersonas];
-    		
     		for( int i = 0; i < numOfPersonas; i++ ) {
     			JsonObject personaObject = personaArray.get(i).getAsJsonObject().get("persona").getAsJsonObject();
-    			String picture = personaObject.get("picture").isJsonNull()? 
-					"" : 
-					personaObject.get("picture").getAsString();
-    			
+    			String picture = personaObject.get("picture").isJsonNull()? "" : personaObject.get("picture").getAsString();
     			personas[i] = new PersonaData(
     				personaObject.get("personaId").getAsLong(),
     				personaObject.get("personaName").getAsString(),
     				DataBank.getPlatformIdFromName(personaObject.get("namespace").getAsString()),
     				picture
-				);
+    			);
     		}
     		return personas;
+    		/* FIXME: Doesn't really work as we would like it to
+    		Gson gson = new Gson();
+    		SoldierInfoBox soldierInfoBox = gson.fromJson(task.jsonObject, SoldierInfoBox.class);
+    		List<SoldierInfo> soldiers = soldierInfoBox.getSoldierInfo();
+    		int numSoldiers = soldiers.size();
+    		     		
+    		PersonaData[] personas = new PersonaData[numSoldiers];
+    		for( int i = 0; i < numSoldiers; i++ ) {
+    			personas[i] = soldiers.get(i).getPersona();
+    			Log.d(Constants.DEBUG_TAG, "persona => " + personas[i]);
+     		}
+     		*/
+
     	} catch(Exception ex) {
     		ex.printStackTrace();
     		return null;
@@ -509,6 +516,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     }
 
     private void restartLoader() {
+    	Log.d(Constants.DEBUG_TAG, "numPersonas => " + mProfileData.getNumPersonas());
     	if( mProfileData.getNumPersonas() == 0 ) {
     		getLoaderManager().restartLoader(LOADER_PERSONA, bundle, this);
     	}
