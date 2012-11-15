@@ -471,7 +471,7 @@ public class ProfileClient extends DefaultClient {
                         Long.parseLong(personaObject.getString("personaId")),
                         (personaObject.isNull("personaName") ? username : personaObject.getString("personaName")),
                         DataBank.getPlatformIdFromName(personaObject.getString("namespace")),
-                        null
+                        personaObject.getString("picture")
                     );
                 }
 
