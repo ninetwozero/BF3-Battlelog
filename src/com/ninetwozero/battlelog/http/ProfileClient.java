@@ -14,46 +14,22 @@
 
 package com.ninetwozero.battlelog.http;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import android.content.Context;
+import com.ninetwozero.battlelog.datatype.*;
+import com.ninetwozero.battlelog.misc.CacheHandler;
+import com.ninetwozero.battlelog.misc.Constants;
+import com.ninetwozero.battlelog.misc.DataBank;
+import com.ninetwozero.battlelog.misc.PublicUtils;
 import org.apache.http.HttpEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.ninetwozero.battlelog.datatype.AssignmentComparator;
-import com.ninetwozero.battlelog.datatype.AssignmentData;
-import com.ninetwozero.battlelog.datatype.AssignmentDataWrapper;
-import com.ninetwozero.battlelog.datatype.GeneralSearchResult;
-import com.ninetwozero.battlelog.datatype.PersonaData;
-import com.ninetwozero.battlelog.datatype.PersonaStats;
-import com.ninetwozero.battlelog.datatype.PlatoonData;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.ProfileInformation;
-import com.ninetwozero.battlelog.datatype.RequestHandlerException;
-import com.ninetwozero.battlelog.datatype.UnlockComparator;
-import com.ninetwozero.battlelog.datatype.UnlockData;
-import com.ninetwozero.battlelog.datatype.UnlockDataWrapper;
-import com.ninetwozero.battlelog.datatype.WeaponDataWrapper;
-import com.ninetwozero.battlelog.datatype.WeaponDataWrapperComparator;
-import com.ninetwozero.battlelog.datatype.WeaponInfo;
-import com.ninetwozero.battlelog.datatype.WeaponStats;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
-import com.ninetwozero.battlelog.misc.CacheHandler;
-import com.ninetwozero.battlelog.misc.Constants;
-import com.ninetwozero.battlelog.misc.DataBank;
-import com.ninetwozero.battlelog.misc.PublicUtils;
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 public class ProfileClient extends DefaultClient {
 
@@ -110,7 +86,7 @@ public class ProfileClient extends DefaultClient {
             } else {
                 JSONArray searchResults = new JSONObject(httpContent).getJSONObject("data").getJSONArray("matches");
                 if (searchResults.length() > 0) {
-                    int costOld = 999, costCurrent = 0;
+                    int costOld = 999, costCurrent;
                     for (int i = 0, max = searchResults.length(); i < max; i++) {
                         JSONObject tempObj = searchResults.optJSONObject(i);
                         if (tempObj.getString("username").equals(keyword)) {
@@ -138,28 +114,6 @@ public class ProfileClient extends DefaultClient {
         } catch (JSONException e) {
             throw new WebsiteHandlerException(e.getMessage());
         } catch (RequestHandlerException ex) {
-            throw new WebsiteHandlerException(ex.getMessage());
-        }
-    }
-
-    public static ProfileData resolveFullProfileFromPersonaId(final long personaId) throws WebsiteHandlerException {
-        try {
-            String httpContent = new RequestHandler().get(
-                RequestHandler.generateUrl(URL_OVERVIEW, personaId, 0),
-                RequestHandler.HEADER_NORMAL
-    		);
-
-            if ("".equals(httpContent)) {
-                throw new WebsiteHandlerException("Could not retrieve the Profile.");
-            } else {
-                JSONObject user = new JSONObject(httpContent).getJSONObject("data").getJSONObject("user");
-                return new ProfileData.Builder(
-            		Long.parseLong(
-        				user.getString("userId")), 
-        				user.getString("username")
-    				).gravatarHash(user.optString("gravatarMd5", "")).build();
-            }
-        } catch (Exception ex) {
             throw new WebsiteHandlerException(ex.getMessage());
         }
     }
@@ -270,26 +224,6 @@ public class ProfileClient extends DefaultClient {
                 statsOverview.getLong("sc_unlock"),
                 statsOverview.getLong("totalScore")
             );
-        } catch (Exception ex) {
-            throw new WebsiteHandlerException(ex.getMessage());
-        }
-    }
-
-    public HashMap<Long, PersonaStats> getStats(final Context context) throws WebsiteHandlerException {
-    	HashMap<Long, PersonaStats> stats = new HashMap<Long, PersonaStats>();
-    	try {
-            if (mProfileData.getNumPersonas() == 0) {
-                mProfileData = resolveFullProfileDataFromProfileId(mProfileData.getId());
-            }
-
-            for (int i = 0, max = mProfileData.getNumPersonas(); i < max; i++) {
-                PersonaData current = mProfileData.getPersona(i);
-                stats.put(
-                    current.getId(),
-                    getStats(current.getName(), current.getId(), current.getPlatformId())
-                );
-            }
-            return stats;
         } catch (Exception ex) {
             throw new WebsiteHandlerException(ex.getMessage());
         }
@@ -423,7 +357,7 @@ public class ProfileClient extends DefaultClient {
         }
     }
 
-    public ProfileInformation getInformation(Context context, long activeProfileId) throws WebsiteHandlerException {
+    public ProfileInformation getInformation(Context context) throws WebsiteHandlerException {
         try {
             List<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
             String httpContent = mRequestHandler.get(
@@ -463,7 +397,7 @@ public class ProfileClient extends DefaultClient {
                     playingOn = presenceObject.optString("serverName", "");
                 }
 
-                for (int i = 0, max = numSoldiers; i < max; i++) {
+                for (int i = 0; i < numSoldiers; i++) {
                     currItem = soldierArray.getJSONObject(i);
                     JSONObject personaObject = currItem.getJSONObject("persona");
 
@@ -531,7 +465,7 @@ public class ProfileClient extends DefaultClient {
         }
     }
 
-    public static List<GeneralSearchResult> search(Context context, String keyword, String checksum) throws WebsiteHandlerException {
+    public static List<GeneralSearchResult> search(String keyword, String checksum) throws WebsiteHandlerException {
         List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
         try {
             String httpContent = new RequestHandler().post(
@@ -661,7 +595,7 @@ public class ProfileClient extends DefaultClient {
 
     public HashMap<Long, WeaponDataWrapper> getWeapon(WeaponInfo weaponInfo, WeaponStats weaponStats) {
         try {
-            List<UnlockData> unlockArray = new ArrayList<UnlockData>();
+            List<UnlockData> unlockArray;
             HashMap<Long, WeaponDataWrapper> weaponDataArray = new HashMap<Long, WeaponDataWrapper>();
 
             for (int i = 0, max = mProfileData.getNumPersonas(); i < max; i++) {
@@ -711,146 +645,6 @@ public class ProfileClient extends DefaultClient {
             ex.printStackTrace();
             return null;
         }
-    }
-
-    public HashMap<Long, AssignmentDataWrapper> getAssignments(Context c) throws WebsiteHandlerException {
-        try {
-            HashMap<Long, AssignmentDataWrapper> assignmentMap = new HashMap<Long, AssignmentDataWrapper>();
-            List<AssignmentData> b2kAssignments = new ArrayList<AssignmentData>();
-            List<AssignmentData> cqAssignments = new ArrayList<AssignmentData>();
-            List<AssignmentData> premiumAssignments = new ArrayList<AssignmentData>();
-
-            for (int count = 0, maxCount = mProfileData.getNumPersonas(); count < maxCount; count++) {
-                b2kAssignments = new ArrayList<AssignmentData>();
-                cqAssignments = new ArrayList<AssignmentData>();
-                premiumAssignments = new ArrayList<AssignmentData>();
-
-                String httpContent = mRequestHandler.get(
-                    RequestHandler.generateUrl(
-                        URL_ASSIGNMENTS, 
-                        mProfileData.getPersona(count).getName(),
-                        mProfileData.getPersona(count).getId(), 
-                        mProfileData.getId(), 
-                        mProfileData.getPersona(count).getPlatformId()
-                    ), RequestHandler.HEADER_AJAX
-                );
-
-                JSONObject topLevel = new JSONObject(httpContent).getJSONObject("data");
-                if (topLevel.isNull("missionTrees")) {
-                    assignmentMap.put(mProfileData.getPersona(count).getId(), new AssignmentDataWrapper());
-                    continue;
-                }
-
-                JSONObject missionTrees = topLevel.getJSONObject("missionTrees");
-                JSONArray missionNames = missionTrees.names();
-
-                for (int missionTreeCount = 0, maxMissionTrees = missionNames.length(); missionTreeCount < maxMissionTrees; missionTreeCount++) {
-                    int mId = Integer.parseInt(String.valueOf(missionNames.get(missionTreeCount)));
-                    JSONObject missionTop = missionTrees.getJSONObject(String.valueOf(mId));
-                    JSONObject missions = missionTop.getJSONObject("missions");
-                    List<AssignmentData> currentList = getAssignmentsFromJSON(missions);
-
-                    switch (mId) {
-	                    case 512:
-	                        b2kAssignments.addAll(currentList);
-	                        break;
-	                    case 1024:
-	                        premiumAssignments.addAll(currentList);
-	                        break;
-	                    case 2048:
-	                        cqAssignments.addAll(currentList);
-	                        break;
-	                    default:
-	                        Log.d(Constants.DEBUG_TAG, "New assignments available!!!");
-	                        break;
-                    }
-                }
-                assignmentMap.put(
-            		mProfileData.getPersona(count).getId(),
-            		new AssignmentDataWrapper(b2kAssignments, premiumAssignments, cqAssignments)
-        		);
-        	}
-            return assignmentMap;
-        } catch (Exception ex) {
-            throw new WebsiteHandlerException(ex.getMessage());
-        }
-    }
-
-    public List<AssignmentData> getAssignmentsFromJSON(JSONObject missions) {
-        List<AssignmentData> assignments = new ArrayList<AssignmentData>();
-        try {
-            JSONArray jsonArrayKeys = missions.names();
-            List<String> stringArrayKeys = new ArrayList<String>();
-            for (int i = 0, max = jsonArrayKeys.length(); i < max; i++) {
-                stringArrayKeys.add(String.valueOf(jsonArrayKeys.get(i)));
-            }
-
-            for (String key : stringArrayKeys) {
-                JSONObject assignment = missions.getJSONObject(key);
-                JSONArray criteriasJSON = assignment.getJSONArray("criterias");
-                JSONArray dependenciesJSON = assignment.getJSONArray("dependencies");
-                JSONArray unlocksJSON = assignment.getJSONArray("unlocks");
-
-                List<AssignmentData.Objective> criterias = new ArrayList<AssignmentData.Objective>();
-                List<AssignmentData.Dependency> dependencies = new ArrayList<AssignmentData.Dependency>();
-                List<AssignmentData.Unlock> unlocks = new ArrayList<AssignmentData.Unlock>();
-
-                for (int criteriaCounter = 0, criteriaCount = criteriasJSON.length(); criteriaCounter < criteriaCount; criteriaCounter++) {
-                    JSONObject currentItem = criteriasJSON.getJSONObject(criteriaCounter);
-                    criterias.add(
-                        new AssignmentData.Objective(
-                            currentItem.getDouble("actualValue"), 
-                            currentItem.getDouble("completionValue"), 
-                            currentItem.getString("statCode"), 
-                            currentItem.getString("paramX"), 
-                            currentItem.getString("paramY"), 
-                            currentItem.getString("descriptionID"), 
-                            currentItem.getString("unit")
-                        )
-                    );
-                }
-
-                for (int counter = 0, maxCounter = dependenciesJSON.length(); counter < maxCounter; counter++) {
-                    JSONObject currentItem = dependenciesJSON.getJSONObject(counter);
-                    dependencies.add(
-                        new AssignmentData.Dependency(
-                            currentItem.getInt("count"), currentItem.getString("code")
-                        )
-                    );
-                }
-
-                for (int counter = 0, maxCounter = unlocksJSON.length(); counter < maxCounter; counter++) {
-                    JSONObject currentItem = unlocksJSON.getJSONObject(counter);
-                    unlocks.add(
-                        new AssignmentData.Unlock(
-                            currentItem.getString("unlockId"), 
-                            currentItem.getString("unlockType"), 
-                            currentItem.getBoolean("visible")
-                        )
-                    );
-                }
-
-                int[] resources = DataBank.getResourcesForAssignment(key);
-                if (resources != null) {
-                    assignments.add(
-                		new AssignmentData(
-            				resources[0],
-                            resources[1], 
-                            assignment.getString("stringID"),
-                            assignment.getString("descriptionID"), 
-                            assignment.getString("license"), 
-                            criterias,
-                            dependencies, 
-                            unlocks
-                        )
-            		);
-                }
-            }
-        } catch (JSONException ex) {
-            ex.printStackTrace();
-        }
-        Collections.sort(assignments, new AssignmentComparator());
-        return assignments;
     }
 
     public ArrayList<PlatoonData> getPlatoons(final Context context) throws WebsiteHandlerException {
@@ -912,7 +706,7 @@ public class ProfileClient extends DefaultClient {
                 RequestHandler.generateUrl(Constants.URL_GRAVATAR, h, s, s), false
             );
 
-            int bytesRead = 0;
+            int bytesRead;
             int offset = 0;
             int contentLength = (int) httpEntity.getContentLength();
             byte[] data = new byte[contentLength];

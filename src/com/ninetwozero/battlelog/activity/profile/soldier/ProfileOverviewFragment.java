@@ -262,7 +262,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                     mProfileData = ProfileClient.resolveFullProfileDataFromProfileData(mProfileData);
                 }
                 
-                mProfileInformation = new ProfileClient(mProfileData).getInformation(mContext, activeProfileId);
+                mProfileInformation = new ProfileClient(mProfileData).getInformation(mContext);
                 updateProfileInDB(mProfileInformation);
                
                 for(PlatoonData p : mProfileInformation.getPlatoons()) {

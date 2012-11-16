@@ -37,10 +37,12 @@ import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.battlelog.activity.profile.weapon.WeaponListActivity;
 import com.ninetwozero.battlelog.datatype.PersonaData;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
-import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.model.SelectedPersona;
+import com.ninetwozero.battlelog.provider.BusProvider;
+import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,36 +50,27 @@ import java.util.Map;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 
-public class MenuProfileFragment extends Fragment implements /*DefaultFragment*/
-        OnCloseListDialogListener {
+public class MenuProfileFragment extends Fragment {
 
-    // Attributes
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private SharedPreferences mSharedPreferences;
 
-    // Elements
     private RelativeLayout mWrapPersona;
     private TextView mTextPersona;
     private ImageView mImagePersona;
 
-    // Let's store the position & persona
     private PersonaData[] mPersona;
     private int mSelectedPosition;
     private final String DIALOG = "dialog";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Set our attributes
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         mContext = getActivity();
-        mSharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(mContext);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
 
-        // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(
-                R.layout.tab_content_dashboard_profile, container, false);
+        View view = mLayoutInflater.inflate(R.layout.tab_content_dashboard_profile, container, false);
 
         initFragment(view);
         return view;
@@ -85,28 +78,23 @@ public class MenuProfileFragment extends Fragment implements /*DefaultFragment*/
 
     public void initFragment(View view) {
 
-        // Let's set the vars
         dataFromSharedPreferences();
 
-        // Set up the Persona box
         mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
         mWrapPersona.setOnClickListener(
             new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     FragmentManager manager = getFragmentManager();
-                    ListDialogFragment dialog = ListDialogFragment.newInstance(
-                            personasToMap(), getTag());
+                    ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap());
                     dialog.show(manager, DIALOG);
                 }
             }
         );
-        mImagePersona = (ImageView) mWrapPersona
-                .findViewById(R.id.image_persona);
+        mImagePersona = (ImageView) mWrapPersona.findViewById(R.id.image_persona);
         mTextPersona = (TextView) mWrapPersona.findViewById(R.id.text_persona);
         mTextPersona.setSelected(true);
 
-        // Setup the "persona box"
         setupActiveSoldierContent();
 
         view.findViewById(R.id.button_unlocks).setOnClickListener(new OnClickListener() {
@@ -160,21 +148,23 @@ public class MenuProfileFragment extends Fragment implements /*DefaultFragment*/
     }
 
     @Override
-    public void onDialogListSelection(long id) {
-        updateSharedPreference(id);
-        dataFromSharedPreferences();
-        setupActiveSoldierContent();
-    }
-
-    /*@Override
-    public Menu prepareOptionsMenu(Menu menu) {
-        return menu;
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
     }
 
     @Override
-    public boolean handleSelectedOption(MenuItem item) {
-        return false;
-    }*/
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void personaChanged(SelectedPersona selectedPersona) {
+        updateSharedPreference(selectedPersona.getPersonaId());
+        dataFromSharedPreferences();
+        setupActiveSoldierContent();
+    }
 
     public void setupActiveSoldierContent() {
         mTextPersona.setText(getPersonaNameAndPlatform());
