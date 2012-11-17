@@ -54,7 +54,7 @@ public class AssignmentDialog extends DialogFragment {
             }
 
         });
-        builder.setIcon(R.drawable.lock);
+        builder.setIcon(getIcon());
         builder.setTitle(AssignmentsMap.get(mission.getMissionId()));
         builder.setView(dialog);
         builder.setCancelable(true);
@@ -81,6 +81,10 @@ public class AssignmentDialog extends DialogFragment {
         ((TextView) dialog.findViewById(R.id.text_rew_name)).setText(AssignmentsMap.rewardLabel(mission.getCode()));
 
         return builder.create();
+    }
+
+    private int getIcon() {
+        return mission.getCompletion() < 100 ? R.drawable.lock : R.drawable.unlocked;
     }
 
     private String timeValues(double actual, double completion) {
