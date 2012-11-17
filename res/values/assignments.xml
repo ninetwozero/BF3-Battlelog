@@ -101,10 +101,10 @@
   <string name="pre2_assignment_07">MTAR Specialist</string>
   <string name="pre2_assignment_08">LSAT Specialist</string>
   <string name="pre2_assignment_09">SKS Specialist</string>
-  <string name="pre2_assignment_1_criteria_1">50 kills in MBT's</string>
-  <string name="pre2_assignment_2_criteria_1">50 kills in IFV's</string>
+  <string name="pre2_assignment_1_criteria_1">50 kills in MBT\'s</string>
+  <string name="pre2_assignment_2_criteria_1">50 kills in IFV\'s</string>
   <string name="pre2_assignment_3_criteria_1">50 kills with scout or attack helicopters</string>
-  <string name="pre2_assignment_3_criteria_2">Destroy 25 MBT's with scout or attack helicopters</string>
+  <string name="pre2_assignment_3_criteria_2">Destroy 25 MBT\'s with scout or attack helicopters</string>
   <string name="pre2_assignment_4_criteria_1">50 kills with jets</string>
   <string name="pre2_assignment_4_criteria_2">Destroy 25 attack or scout helicopters with jets</string>
   <string name="pre2_assignment_5_criteria_1">50 kills in jeeps, boats, quads or transport helicopters</string>
