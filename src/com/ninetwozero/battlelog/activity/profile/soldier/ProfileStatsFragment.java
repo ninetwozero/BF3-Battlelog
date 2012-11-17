@@ -42,6 +42,8 @@ import com.ninetwozero.battlelog.datatype.PersonaStats;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.Statistics;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
+import com.ninetwozero.battlelog.jsonmodel.personas.Soldier;
+import com.ninetwozero.battlelog.jsonmodel.personas.UserSoldiers;
 import com.ninetwozero.battlelog.jsonmodel.soldierstats.PersonaInfo;
 import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
@@ -68,7 +70,7 @@ import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
 
-public class ProfileStatsFragment extends Bf3Fragment{
+public class ProfileStatsFragment extends Bf3Fragment {
 
     // Attributes
     private Context mContext;
@@ -85,7 +87,7 @@ public class ProfileStatsFragment extends Bf3Fragment{
     private TextView currentLevelPoints;
     private TextView nextLevelPoints;
     private TextView pointsToMake;
-    
+
     private PersonaData[] personaData;
     private ProfileData mProfileData;
     private Map<Long, PersonaStats> mPersonaStats;
@@ -134,17 +136,17 @@ public class ProfileStatsFragment extends Bf3Fragment{
 
         mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
         mWrapPersona.setOnClickListener(
-            new OnClickListener() {
-                @Override
-                public void onClick(View sv) {
-                    if (personaArrayLength() > 1) {
-                        FragmentManager manager = getFragmentManager();
-                        ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap());
-                        dialog.show(manager, DIALOG);
+                new OnClickListener() {
+                    @Override
+                    public void onClick(View sv) {
+                        if (personaArrayLength() > 1) {
+                            FragmentManager manager = getFragmentManager();
+                            ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap());
+                            dialog.show(manager, DIALOG);
+                        }
                     }
                 }
-            }
-       );
+        );
     }
 
     /* FIXME: if no personas are passed to this activity, then mSelectedPersona will be 0? */
@@ -308,13 +310,13 @@ public class ProfileStatsFragment extends Bf3Fragment{
     }
 
     private void populateStatistics(List<Statistics> statistics, TableLayout layout) {
-		for (Statistics ps : statistics) {
-			View tr = mLayoutInflater.inflate(
-					R.layout.list_item_assignment_popup, null);
-			((TextView) tr.findViewById(R.id.text_obj_title)).setText(ps.getTitle());
-			((TextView) tr.findViewById(R.id.text_obj_values)).setText(ps.getValue());
-			layout.addView(tr);
-		}
+        for (Statistics ps : statistics) {
+            View tr = mLayoutInflater.inflate(
+                    R.layout.list_item_assignment_popup, null);
+            ((TextView) tr.findViewById(R.id.text_obj_title)).setText(ps.getTitle());
+            ((TextView) tr.findViewById(R.id.text_obj_values)).setText(ps.getValue());
+            layout.addView(tr);
+        }
     }
 
     private int personaArrayLength() {
@@ -323,12 +325,12 @@ public class ProfileStatsFragment extends Bf3Fragment{
 
     @Override
     protected Loader<CompletedTask> createLoader(int id, Bundle bundle) {
-        if( id == LOADER_PERSONA ) {
-        	startLoadingDialog();
-        	return new Bf3Loader(getContext(), UriFactory.getProfilePersonasUri(mProfileData.getId()));
+        if (id == LOADER_PERSONA) {
+            startLoadingDialog();
+            return new Bf3Loader(getContext(), UriFactory.getProfilePersonasUri(mProfileData.getId()));
         } else {
-	    	startLoadingDialog();
-	        return new Bf3Loader(getContext(), UriFactory.getPersonaOverviewUri(mSelectedPersona, mSelectedPlatformId));
+            startLoadingDialog();
+            return new Bf3Loader(getContext(), UriFactory.getPersonaOverviewUri(mSelectedPersona, mSelectedPlatformId));
         }
     }
 
@@ -338,12 +340,16 @@ public class ProfileStatsFragment extends Bf3Fragment{
 
     @Override
     public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {
-    	/* FIXME: This doesn't seem right, maybe due to the lack of personas? */
-        if ( task != null && task.result.equals(CompletedTask.Result.SUCCESS)) {
-            findViews();
-            PersonaInfo pi = personaStatsFrom(task);
-            updateDatabase(pi);
-            populateView();
+        /* FIXME: This doesn't seem right, maybe due to the lack of personas? */
+        if (task != null && task.result.equals(CompletedTask.Result.SUCCESS)) {
+            if (loader.getId() == LOADER_STATS) {
+                findViews();
+                PersonaInfo pi = personaStatsFrom(task);
+                updateDatabase(pi);
+                populateView();
+            } else if(loader.getId() == LOADER_PERSONA){
+                userSoldiersFrom(task);
+            }
         }
         if (progressDialog != null) {
             progressDialog.dismiss();
@@ -351,41 +357,41 @@ public class ProfileStatsFragment extends Bf3Fragment{
     }
 
     private PersonaData[] personaArrayFrom(CompletedTask task) {
-    	try {
-    		JsonArray personaArray = task.jsonObject.getAsJsonArray("soldiersBox");
-    		int numOfPersonas = personaArray.size();
-    		PersonaData[] personas = new PersonaData[numOfPersonas];
-    		for( int i = 0; i < numOfPersonas; i++ ) {
-    			JsonObject personaObject = personaArray.get(i).getAsJsonObject().get("persona").getAsJsonObject();
-    			String picture = personaObject.get("picture").isJsonNull()? "" : personaObject.get("picture").getAsString();
-    			personas[i] = new PersonaData(
-    				personaObject.get("personaId").getAsLong(),
-    				personaObject.get("personaName").getAsString(),
-    				DataBank.getPlatformIdFromName(personaObject.get("namespace").getAsString()),
-    				picture
-    			);
-    		}
-    		return personas;
-    		/* FIXME: Doesn't really work as we would like it to
-    		Gson gson = new Gson();
-    		SoldierInfoBox soldierInfoBox = gson.fromJson(task.jsonObject, SoldierInfoBox.class);
-    		List<SoldierInfo> soldiers = soldierInfoBox.getSoldierInfo();
-    		int numSoldiers = soldiers.size();
-    		     		
-    		PersonaData[] personas = new PersonaData[numSoldiers];
-    		for( int i = 0; i < numSoldiers; i++ ) {
-    			personas[i] = soldiers.get(i).getPersona();
-    			Log.d(Constants.DEBUG_TAG, "persona => " + personas[i]);
-     		}
-     		*/
-
-    	} catch(Exception ex) {
-    		ex.printStackTrace();
-    		return null;
-    	}
+        try {
+            JsonArray personaArray = task.jsonObject.getAsJsonArray("soldiersBox");
+            int numOfPersonas = personaArray.size();
+            PersonaData[] personas = new PersonaData[numOfPersonas];
+            for (int i = 0; i < numOfPersonas; i++) {
+                JsonObject personaObject = personaArray.get(i).getAsJsonObject().get("persona").getAsJsonObject();
+                String picture = personaObject.get("picture").isJsonNull() ? "" : personaObject.get("picture").getAsString();
+                personas[i] = new PersonaData(
+                        personaObject.get("personaId").getAsLong(),
+                        personaObject.get("personaName").getAsString(),
+                        DataBank.getPlatformIdFromName(personaObject.get("namespace").getAsString()),
+                        picture
+                );
+            }
+            return personas;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
-    
-	private PersonaInfo personaStatsFrom(CompletedTask task) {
+
+    private void userSoldiersFrom(CompletedTask task) {
+        Gson gson = new Gson();
+        UserSoldiers userSoldiers = gson.fromJson(task.jsonObject, UserSoldiers.class);
+        List<Soldier> soldiers = userSoldiers.getSoldierInfo();
+        int numSoldiers = soldiers.size();
+
+        /*PersonaData[] personas = new PersonaData[numSoldiers];
+        for( int i = 0; i < numSoldiers; i++ ) {
+            personas[i] = soldiers.get(i).getPersona();
+            Log.d(Constants.DEBUG_TAG, "persona => " + personas[i]);
+        }*/
+    }
+
+    private PersonaInfo personaStatsFrom(CompletedTask task) {
         Gson gson = new Gson();
         PersonaInfo data = gson.fromJson(task.jsonObject, PersonaInfo.class);
         return data;
@@ -414,16 +420,16 @@ public class ProfileStatsFragment extends Bf3Fragment{
     }
 
     private void updateScoreStatistics(PersonaInfo pi) {
-        listScoreStatistics = scoreStatisticsFromJSON(pi);        
+        listScoreStatistics = scoreStatisticsFromJSON(pi);
         ContentValues contentValues = scoreStatisticsForDB(pi, mSelectedPersona);
         getContext().getContentResolver().insert(ScoreStatistics.URI, contentValues);
     }
 
     public void setProfileData(ProfileData p) {
         mProfileData = p;
-        if( mProfileData.getNumPersonas() > 0 ) { 
-        	mSelectedPersona = mProfileData.getPersona(0).getId();
-        	mSelectedPlatformId = mProfileData.getPersona(0).getPlatformId();
+        if (mProfileData.getNumPersonas() > 0) {
+            mSelectedPersona = mProfileData.getPersona(0).getId();
+            mSelectedPlatformId = mProfileData.getPersona(0).getPlatformId();
         }
     }
 
@@ -443,9 +449,9 @@ public class ProfileStatsFragment extends Bf3Fragment{
         editor.commit();
     }
 
-    private int indexOfPersona(long personaId){
-        for(int i = 0; i <  personaData.length; i++){
-            if(personaData[i].getId() == personaId){
+    private int indexOfPersona(long personaId) {
+        for (int i = 0; i < personaData.length; i++) {
+            if (personaData[i].getId() == personaId) {
                 return i;
             }
         }
@@ -465,9 +471,9 @@ public class ProfileStatsFragment extends Bf3Fragment{
     public boolean handleSelectedOption(MenuItem item) {
         if (item.getItemId() == R.id.option_compare) {
             startActivity(new Intent(mContext, CompareActivity.class)
-                .putExtra("profile1", SessionKeeper.getProfileData())
-                .putExtra("profile2", mProfileData)
-                .putExtra("selectedPosition", mSelectedPosition));
+                    .putExtra("profile1", SessionKeeper.getProfileData())
+                    .putExtra("profile2", mProfileData)
+                    .putExtra("selectedPosition", mSelectedPosition));
         } else if (item.getItemId() == R.id.option_unlocks) {
             int position = 0;
             for (long key : mPersonaStats.keySet()) {
@@ -490,28 +496,28 @@ public class ProfileStatsFragment extends Bf3Fragment{
     }
 
     public void reloadFromCache() {
-    	getData();
+        getData();
     }
-    
+
     @Override
     public void reload() {
-    	restartLoader();
+        restartLoader();
     }
 
     private void restartLoader() {
-    	Log.d(Constants.DEBUG_TAG, "numPersonas => " + mProfileData.getNumPersonas());
-    	if( mProfileData.getNumPersonas() == 0 ) {
-    		getLoaderManager().restartLoader(LOADER_PERSONA, bundle, this);
-    	}
+        Log.d(Constants.DEBUG_TAG, "numPersonas => " + mProfileData.getNumPersonas());
+        if (mProfileData.getNumPersonas() == 0) {
+            getLoaderManager().restartLoader(LOADER_PERSONA, bundle, this);
+        }
         getLoaderManager().restartLoader(LOADER_STATS, bundle, this);
     }
-    
+
     private void startLoadingDialog() {   //TODO extract multiple duplicates of same code
-    	if( this.progressDialog == null ) {
-	        this.progressDialog = new ProgressDialog(mContext);
-	        this.progressDialog.setTitle(mContext.getString(R.string.general_wait));
-	        this.progressDialog.setMessage(mContext.getString(R.string.general_downloading));
-	        this.progressDialog.show();
-    	}
+        if (this.progressDialog == null) {
+            this.progressDialog = new ProgressDialog(mContext);
+            this.progressDialog.setTitle(mContext.getString(R.string.general_wait));
+            this.progressDialog.setMessage(mContext.getString(R.string.general_downloading));
+            this.progressDialog.show();
+        }
     }
 }

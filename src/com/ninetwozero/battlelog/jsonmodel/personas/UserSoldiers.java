@@ -12,26 +12,22 @@
     GNU General Public License for more details.
  */
 
-package com.ninetwozero.battlelog.jsonmodel;
+package com.ninetwozero.battlelog.jsonmodel.personas;
 
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-public class SoldierInfoBox {
+public class UserSoldiers {
 
     @SerializedName("soldiersBox")
-    private List<SoldierInfo> soldiers;
+    private List<Soldier> soldiers;
     
-    public SoldierInfoBox(List<SoldierInfo> soldierInfo) {
-    	soldiers = soldierInfo;
+    public UserSoldiers(List<Soldier> soldier) {
+    	soldiers = soldier;
     }
 
-    public List<SoldierInfo> getSoldierInfo() {
+    public List<Soldier> getSoldierInfo() {
         return soldiers;
-    }
-
-    public void setSoldierInfo(List<SoldierInfo> soldierInfo) {
-        soldiers = soldierInfo;
     }
 }
