@@ -16,7 +16,7 @@ package com.ninetwozero.battlelog.datatype;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Deprecated
 public class AssignmentDataWrapper {
 
     // Attributes

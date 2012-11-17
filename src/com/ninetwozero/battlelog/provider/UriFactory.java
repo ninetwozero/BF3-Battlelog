@@ -58,6 +58,13 @@ public class UriFactory {
         return createUri(path);
     }
 
+    public static URI assignments(String personaName, long personaId, long userId, int platformId){
+        String path = new StringBuilder("soldier/missionsPopulateStats/")
+                .append(personaName).append("/").append(personaId).append("/")
+                .append(userId).append("/").append(platformId).toString();
+        return createUri(path);
+    }
+
     private static URI createUri(String path) {
         return prepareURI(path, null);
     }

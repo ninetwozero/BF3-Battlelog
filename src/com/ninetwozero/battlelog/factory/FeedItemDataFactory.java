@@ -287,6 +287,7 @@ public class FeedItemDataFactory {
 
 	private static ParsedFeedItemData generateFromCompletingAssignment(Context context, JSONObject currItem, ProfileData profile) throws JSONException {
 		JSONObject statsItem = currItem.getJSONArray(STAT_ITEMS).getJSONObject(0);
+        /*TODO check UnlockData for explanation, besides hard to sort since whole array used instead of just title*/
 		Object[] tempInfo = DataBank.getAssignmentTitle(statsItem.getString(NAME_SID));
 		return new ParsedFeedItemData(
 			PublicUtils.createStringWithData(

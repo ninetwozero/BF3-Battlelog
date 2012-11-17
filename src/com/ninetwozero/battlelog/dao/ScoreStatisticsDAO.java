@@ -4,11 +4,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.Statistics;
-import com.ninetwozero.battlelog.jsonmodel.KitScores;
-import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
-import com.ninetwozero.battlelog.jsonmodel.PersonaStatsOverview;
-import com.ninetwozero.battlelog.jsonmodel.VehicleScores;
-import com.ninetwozero.battlelog.provider.table.ScoreStatistics.Columns;
+import com.ninetwozero.battlelog.jsonmodel.soldierstats.KitScores;
+import com.ninetwozero.battlelog.jsonmodel.soldierstats.PersonaInfo;
+import com.ninetwozero.battlelog.jsonmodel.soldierstats.PersonaStatsOverview;
+import com.ninetwozero.battlelog.jsonmodel.soldierstats.VehicleScores;
+
+import static com.ninetwozero.battlelog.provider.table.ScoreStatistics.Columns;
 
 import java.util.ArrayList;
 import java.util.List;

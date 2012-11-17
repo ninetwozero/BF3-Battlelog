@@ -2,7 +2,7 @@ package com.ninetwozero.battlelog.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
+import com.ninetwozero.battlelog.jsonmodel.soldierstats.PersonaInfo;
 import com.ninetwozero.battlelog.provider.table.RankProgress;
 
 import static com.ninetwozero.battlelog.misc.ResolvePlatform.platformName;
