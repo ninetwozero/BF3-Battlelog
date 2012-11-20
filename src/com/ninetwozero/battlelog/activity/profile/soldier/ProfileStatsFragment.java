@@ -99,8 +99,8 @@ public class ProfileStatsFragment extends Bf3Fragment {
 
     private URI callURI;
     private final String DIALOG = "dialog";
-    private final int LOADER_PERSONA = 0;
-    private final int LOADER_STATS = 1;
+    private final int LOADER_PERSONA = 20;
+    private final int LOADER_STATS = 21;
 
     private Bundle bundle;
     private RankProgress rankProgress;

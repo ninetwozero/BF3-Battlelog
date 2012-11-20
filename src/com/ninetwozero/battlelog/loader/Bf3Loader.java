@@ -15,7 +15,6 @@ public class Bf3Loader extends AsyncTaskLoader<CompletedTask> implements
 
     private final Bf3ServerCall serverCall;
     private CompletedTask completedTask;
-    private boolean loading;
 
     public Bf3Loader(Context context, URI uri) {
         super(context);
@@ -30,9 +29,7 @@ public class Bf3Loader extends AsyncTaskLoader<CompletedTask> implements
 
     @Override
     public CompletedTask loadInBackground() {
-        loading = true;
         serverCall.execute();
-        loading = false;
         return completedTask;
     }
 
