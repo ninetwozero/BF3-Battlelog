@@ -80,6 +80,8 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         table.removeAllViews();
         if (expansionId == 1024) {
             premiumPackage();
+        } else if(expansionId == 8192){
+            aftermath(missionPack.getMissions());
         } else {
             Map<String, Mission> missions = missionPack.getMissions();
             List<String> keys = Arrays.asList(missions.keySet().toArray(new String[]{}));
@@ -115,6 +117,11 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         twoInRow(missions.get("xp3prema03"), missions.get("xp3prema08"), View.INVISIBLE);
         twoInRow(missions.get("xp3prema04"), missions.get("xp3prema09"), View.INVISIBLE);
         twoInRow(missions.get("xp3prema05"), missions.get("xp3prema10"), View.INVISIBLE);
+        oneInRow(missions.get("xp4prema01"));
+        oneInRow(missions.get("xp4prema02"));
+        oneInRow(missions.get("xp4prema03"));
+        oneInRow(missions.get("xp4prema04"));
+        oneInRow(missions.get("xp4prema05"));
     }
 
     private void nonPremiumMember(Map<String, Mission> missions){
@@ -128,6 +135,19 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         oneInRow(missions.get("xp3prema03"));
         oneInRow(missions.get("xp3prema04"));
         oneInRow(missions.get("xp3prema05"));
+        oneInRow(missions.get("xp4prema01"));
+        oneInRow(missions.get("xp4prema02"));
+        oneInRow(missions.get("xp4prema03"));
+        oneInRow(missions.get("xp4prema04"));
+        oneInRow(missions.get("xp4prema05"));
+    }
+
+    private void aftermath(Map<String, Mission> missions){
+        twoInRow(missions.get("xp4ma02"), missions.get("xp4ma09"), View.VISIBLE);
+        twoInRow(missions.get("xp4ma01"), missions.get("xp4ma05"), View.VISIBLE);
+        twoInRow(missions.get("xp4ma03"), missions.get("xp4ma06"), View.VISIBLE);
+        twoInRow(missions.get("xp4ma04"), missions.get("xp4ma07"), View.VISIBLE);
+        twoInRow(missions.get("xp4ma08"), missions.get("xp4ma10"), View.VISIBLE);
     }
 
     private void oneInRow(Mission mission) {
