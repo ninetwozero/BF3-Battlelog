@@ -63,7 +63,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     private ProgressDialog progressDialog;
     private URI callURI;
     private Assignments assignments;
-    private final int[] expansionId = new int[]{512, 1024, 2048, 4096};
+    private final int[] expansionId = new int[]{512, 1024, 2048, 4096, 8192};
     public static final String EXPANSION_ID = "expansionID";
     private Bundle bundle;
     private final String DIALOG = "dialog";
@@ -126,7 +126,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             mPagerAdapter = new SwipeyTabsPagerAdapter(mFragmentManager,
-                    new String[]{"Back to Karkand", "Premium", "Close Quarters", "Armored Kill"},
+                    new String[]{"Back to Karkand", "Premium", "Close Quarters", "Armored Kill", "Aftermath"},
                     mListFragments,
                     mViewPager,
                     mLayoutInflater
