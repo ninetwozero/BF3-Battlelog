@@ -15,8 +15,9 @@ Contributors
 ------------
 
 ### Code
+ * Peter Miklosko (peter_budo)
+ * Alexander Oskarsson (redfungi)
  * Lukas "The Widget" Larson <lukaslarson@gmail.com>
- * Peter Miklosko
 
 ### Graphics
  * Markus 'Markus96-1337' Olszewski
@@ -25,16 +26,18 @@ Contributors
 ### Translations
  * bagione (Serbian)
  * basr (Dutch)
- * capalex65 <@Lord_Gabriel> (Danish)
+ * capalex65 (Danish)
  * Coval "coval" Delanight (French)
  * cyrq (Polish)
  * Darko "DarkoKukovec" (Croatian)
  * federico73 (Italian)
  * fysme (Swedish)
  * jimhardcore (German)
- * Karl "ninetwozero" Lindmark (Spanish, Swedish)
  * kosmiq (Swedish)
  * zAo82 "The Dutch PS3-player" (Dutch)
+
+### This readme
+ * Narno
  
 ### Special thanks
 To all the people that have helped out by testing, providing feedback and/or anything else helpful. Much appreciated. :-)

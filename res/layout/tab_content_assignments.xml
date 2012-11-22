@@ -21,5 +21,4 @@
       android:layout_width="fill_parent"
       android:layout_height="wrap_content">
   </TableLayout>
-
 </ScrollView>

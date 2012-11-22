@@ -168,9 +168,9 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
         // Get the checksum & soldier name from the HTML
         String postCheckSum = substringFrom(httpContent, Constants.ELEMENT_STATUS_CHECKSUM, "\" />");
         String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>").trim();
-        
+
         // Fetch some profile information & store it in SharedPreferences
-        ProfileInformation profileInformation = new ProfileClient(new ProfileData(soldierName)).getInformation(mContext, 0);
+        ProfileInformation profileInformation = new ProfileClient(new ProfileData(soldierName)).getInformation(mContext);
         addToSharedPreferences(profileInformation, postCheckSum);
         return profileInformation;
     }

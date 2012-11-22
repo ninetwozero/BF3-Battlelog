@@ -61,7 +61,7 @@ public class WebsiteClient extends DefaultClient {
 
     public static List<GeneralSearchResult> search(Context c, String k, String ch) throws WebsiteHandlerException {
         try {
-            List<GeneralSearchResult> results = ProfileClient.search(c, k, ch);
+            List<GeneralSearchResult> results = ProfileClient.search(k, ch);
             results.addAll(PlatoonClient.search(c, k, ch));
             
             Collections.sort(results, new SearchComparator());
