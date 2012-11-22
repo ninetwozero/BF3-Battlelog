@@ -116,15 +116,24 @@ public final class DataBank {
                                 Intent.ACTION_VIEW,
                                 Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y8GLB993JKTCL")));
 
-        // PERSONA IMAGES
-        PERSONA_IMAGES.put("bf3-us-engineer", R.drawable.bf3_us_engineer);
-        PERSONA_IMAGES.put("bf3-ru-engineer", R.drawable.bf3_ru_engineer);
-        PERSONA_IMAGES.put("bf3-us-assault", R.drawable.bf3_us_assault);
-        PERSONA_IMAGES.put("bf3-ru-assault", R.drawable.bf3_ru_assault);
-        PERSONA_IMAGES.put("bf3-us-support", R.drawable.bf3_us_support);
-        PERSONA_IMAGES.put("bf3-ru-support", R.drawable.bf3_ru_support);
-        PERSONA_IMAGES.put("bf3-us-recon", R.drawable.bf3_us_recon);
-        PERSONA_IMAGES.put("bf3-ru-recon", R.drawable.bf3_ru_recon);
+		// PERSONA IMAGES
+		PERSONA_IMAGES.put("bf3-us-engineer", R.drawable.bf3_us_engineer);
+		PERSONA_IMAGES.put("bf3-ru-engineer", R.drawable.bf3_ru_engineer);
+		PERSONA_IMAGES.put("bf3-us-assault", R.drawable.bf3_us_assault);
+		PERSONA_IMAGES.put("bf3-ru-assault", R.drawable.bf3_ru_assault);
+		PERSONA_IMAGES.put("bf3-us-support", R.drawable.bf3_us_support);
+		PERSONA_IMAGES.put("bf3-ru-support", R.drawable.bf3_ru_support);
+		PERSONA_IMAGES.put("bf3-us-recon", R.drawable.bf3_us_recon);
+		PERSONA_IMAGES.put("bf3-ru-recon", R.drawable.bf3_ru_recon);
+		PERSONA_IMAGES.put("bf3-us-engineer2", R.drawable.bf3_us_engineer2);
+		PERSONA_IMAGES.put("bf3-ru-engineer2", R.drawable.bf3_ru_engineer2);
+		PERSONA_IMAGES.put("bf3-us-assault2", R.drawable.bf3_us_assault2);
+		PERSONA_IMAGES.put("bf3-ru-assault2", R.drawable.bf3_ru_assault2);
+		PERSONA_IMAGES.put("bf3-us-support2", R.drawable.bf3_us_support2);
+		PERSONA_IMAGES.put("bf3-ru-support2", R.drawable.bf3_ru_support2);
+		PERSONA_IMAGES.put("bf3-us-recon2", R.drawable.bf3_us_recon2);
+		PERSONA_IMAGES.put("bf3-ru-recon2", R.drawable.bf3_ru_recon2);
+		
 
         // CONTRIBUTORS
         APP_CONTRIBUTORS
