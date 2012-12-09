@@ -73,9 +73,7 @@ public class SettingsActivity extends PreferenceActivity {
 
                 );
 
-                Log.d(Constants.DEBUG_TAG,
-                        "Setting the service to update every "
-                                + serviceInterval / 60000 + " minutes");
+                Log.i(Constants.DEBUG_TAG, "Setting the service to update every " + serviceInterval / 60000 + " minutes");
             }
             startActivity(new Intent(this, DashboardActivity.class));
             finish();

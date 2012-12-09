@@ -17,9 +17,9 @@ package com.ninetwozero.battlelog.datatype;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.DrawableResourceList;
+import com.ninetwozero.battlelog.util.AssignmentsMap;
 
 public class UnlockData implements Parcelable {
 
@@ -199,59 +199,35 @@ public class UnlockData implements Parcelable {
     }
 
     public String getObjective(Context c) {
-
         if (mObjective.startsWith("sc_")) {
-
-            return DataBank.getUnlockGoal(mObjective).replace(
-
-                    "{scoreCurr}/{scoreNeeded}",
-                    mScoreCurrent + "/" + mScoreNeeded
-
-            );
-
+            return DataBank.getUnlockGoal(mObjective)
+                    .replace("{scoreCurr}/{scoreNeeded}", mScoreCurrent + "/" + mScoreNeeded
+                    );
         } else if ("rank".equals(mObjective)) {
-
-            return DataBank.getUnlockGoal(mObjective).replace(
-
-                    "{rank}", String.valueOf(getScoreNeeded())
-
-            ).replace(
-
-                    "{rankCurr}", String.valueOf(getScoreCurrent())
-
-            );
-
+            return DataBank.getUnlockGoal(mObjective)
+                    .replace("{rank}", String.valueOf(getScoreNeeded()))
+                    .replace("{rankCurr}", String.valueOf(getScoreCurrent())
+                    );
         } else if (mObjective.startsWith("c_")) {
-
-            return DataBank.getUnlockGoal("c_").replace(
-
-                    "{scoreCurr}/{scoreNeeded} {name}",
-                    mScoreCurrent + "/" + mScoreNeeded + " "
-                            + getParent(c)
-
-            );
-
+            return DataBank.getUnlockGoal("c_")
+                    .replace("{scoreCurr}/{scoreNeeded} {name}", mScoreCurrent + "/" + mScoreNeeded + " " + getParent(c)
+                    );
         } else if (mObjective.startsWith("xpm")) {
-
             String digits = mObjective.subSequence(4, 6).toString();
-
             if (digits.charAt(0) == 0) {
                 digits = digits.substring(1);
             }
-
             return DataBank.getUnlockGoal("xpm")
-                    .replace(
-
-                            "{name}",
-                            DataBank.getAssignmentTitle("ID_XP1_ASSIGNMENT_"
-                                    + digits)[0]
-
-                    );
-
+                    .replace("{name}",stringFromResource(c, digits));
         }
-
         return mObjective;
 
+    }
+    /*TODO temporary fix as this cares only for first set of assignments with prefix of "ID_XP1_ASSIGNMENT_" if handled directly on layout
+     * there would be no need for getResource() call as int of resource can be used directly on view to be displayed
+     */
+    private String stringFromResource(Context context, String digits) {
+        return context.getResources().getString(AssignmentsMap.getCriteria("ID_XP1_ASSIGNMENT_" + digits));
     }
 
     public String getType() {

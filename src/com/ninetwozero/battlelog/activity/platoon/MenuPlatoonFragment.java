@@ -14,10 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.platoon;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,29 +24,30 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.profile.settings.ProfileSettingsActivity;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
-import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
 import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.model.SelectedPersona;
+import com.ninetwozero.battlelog.provider.BusProvider;
+import com.squareup.otto.Subscribe;
 
-public class MenuPlatoonFragment extends Fragment implements DefaultFragment, OnCloseListDialogListener {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class MenuPlatoonFragment extends Fragment implements DefaultFragment{
 
     // Attributes
     private Context mContext;
@@ -98,8 +95,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment, On
                     @Override
                     public void onClick(View v) {
                         FragmentManager manager = getFragmentManager();
-                        ListDialogFragment dialog = ListDialogFragment.newInstance(
-                                platoonsToMap(), getTag());
+                        ListDialogFragment dialog = ListDialogFragment.newInstance(platoonsToMap());
                         dialog.show(manager, DIALOG);
                     }
 
@@ -160,6 +156,9 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment, On
 
     @Override
     public void reload() {
+        /*TODO if AsyncRefresh is not finished (rotation and async call restart issue) before user access other part of application
+        * this can cause application crash. Example after login, went into assignments, loaded all assignments
+        * and browsed them. After it I pressed return button and app crashed.*/
         new AsyncRefresh().execute(SessionKeeper.getProfileData());
     }
 
@@ -182,8 +181,20 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment, On
     }
 
     @Override
-    public void onDialogListSelection(long id) {
-        updateSharedPreference(id);
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void personaChanged(SelectedPersona selectedPersona) {
+        updateSharedPreference(selectedPersona.getPersonaId());
         getPlatoonPreferences();
         setupPlatoonBox();
     }

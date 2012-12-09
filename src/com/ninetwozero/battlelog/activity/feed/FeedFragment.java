@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.activity.feed;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,23 +22,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.news.SinglePostActivity;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
@@ -57,6 +43,8 @@ import com.ninetwozero.battlelog.dialog.OnCloseProfileListDialogListener;
 import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+
+import java.util.List;
 
 public class FeedFragment extends ListFragment implements DefaultFragment,
 		OnCloseProfileListDialogListener {
@@ -118,8 +106,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment,
 		mButtonSend = (Button) v.findViewById(R.id.button_send);
 		
 		// Setup the listAdapter
-		mListAdapter = new FeedListAdapter(mContext, mFeedItems,
-				mLayoutInflater);
+		mListAdapter = new FeedListAdapter(mContext, mFeedItems, mLayoutInflater);
 		mListView.setAdapter(mListAdapter);
 
 		// Handle the *type*-specific events here

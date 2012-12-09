@@ -3,13 +3,13 @@ package com.ninetwozero.battlelog;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
-
 import com.ninetwozero.battlelog.misc.DebugLogConfig;
 
 public class Battlelog extends Application {
 
-    public static final String NAME = "battlelog.db";
     private static boolean isInDebugMode;
+    public static final String NAME = "battlelog.db";
+    private static final String BUGSENSE_KEY = "448b2f3b";
 
     private static Battlelog instance;
     public static final String AUTHORITY = "com.ninetwozero.battlelog.provider";

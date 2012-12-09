@@ -31,143 +31,91 @@ public class CommentClient extends DefaultClient {
             "comment", "post-check-sum"};
 
     public CommentClient(long i, int t) {
-
         mRequestHandler = new RequestHandler();
         mId = i;
         mType = t;
-
     }
 
-    public boolean post(String checksum, String comment)
-            throws WebsiteHandlerException {
-
+    public boolean post(String checksum, String comment) throws WebsiteHandlerException {
         try {
-
-            // Let's post!
             boolean isFeed = (mType == CommentData.TYPE_FEED);
-            String url = RequestHandler.generateUrl(isFeed ? URL_COMMENT
-                    : URL_NEWS_COMMENT, mId, 1);
+            String url = RequestHandler.generateUrl(isFeed ? URL_COMMENT : URL_NEWS_COMMENT, mId, 1);
 
-            // Get the httpContent
             String httpContent = mRequestHandler.post(
-
-                    url, RequestHandler.generatePostData(
-
-                    FIELD_NAMES_COMMENT, comment, checksum
-
-            ), RequestHandler.HEADER_JSON
-
+                url, 
+                RequestHandler.generatePostData(FIELD_NAMES_COMMENT, comment, checksum), 
+	            RequestHandler.HEADER_JSON
             );
 
-            // Did we manage?
             if (httpContent.length() > 0) {
-
-                // Hopefully this goes as planned
-                return (!httpContent.equals("Internal server error"));
-
+            	JSONObject dataObject = new JSONObject(httpContent).getJSONObject("data");
+                return dataObject.isNull("error");
             } else {
-
                 throw new WebsiteHandlerException("Could not post the comment.");
-
             }
-
         } catch (Exception ex) {
-
             ex.printStackTrace();
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
-
     }
 
     public List<CommentData> get() throws WebsiteHandlerException {
-
         return get(1);
-
     }
 
     public List<CommentData> get(int pId) throws WebsiteHandlerException {
-
         try {
-
-            // Let's do this!
             List<CommentData> comments = new ArrayList<CommentData>();
             boolean isFeed = (mType == CommentData.TYPE_FEED);
 
-            // Get the content depending on the pagee
             String httpContent = mRequestHandler.get(
-
-                    RequestHandler.generateUrl(
-
-                            isFeed ? URL_LIST : URL_NEWS_LIST, mId, pId),
-                    RequestHandler.HEADER_AJAX
-
+                RequestHandler.generateUrl(
+            		isFeed ? URL_LIST : URL_NEWS_LIST, 
+    				mId, 
+    				pId
+    			),
+                RequestHandler.HEADER_AJAX
             );
 
-            // Did we manage?
             if (httpContent.length() > 0) {
 
                 // Init
                 JSONObject dataObject = null;
                 JSONObject tempObject = null;
-
+                String keyOwner = "";
+                
                 // Is it a feed?
                 if (isFeed) {
-
-                    dataObject = new JSONObject(httpContent)
-                            .getJSONObject("data");
-
+                    dataObject = new JSONObject(httpContent).getJSONObject("data");
+                    keyOwner = "owner";
                 } else {
-
-                    dataObject = new JSONObject(httpContent).getJSONObject(
-                            "context").getJSONObject("blogPost");
-
+                    dataObject = new JSONObject(httpContent).getJSONObject("context").getJSONObject("blogPost");
+                    keyOwner = "user";
                 }
 
-                // Get the comment array
                 JSONArray commentArray = dataObject.getJSONArray("comments");
-
-                // Iterate
                 for (int i = 0, max = commentArray.length(); i < max; i++) {
-
                     tempObject = commentArray.optJSONObject(i);
-                    JSONObject tempOwnerItem = tempObject
-                            .getJSONObject("owner");
+                    JSONObject tempOwnerItem = tempObject.getJSONObject(keyOwner);
                     comments.add(
-
-                            new CommentData(
-
-                                    mId, Long.parseLong(tempObject.getString("itemId")), Long
-                                    .parseLong(tempObject.getString("creationDate")),
-                                    tempObject.getString("body"),
-                                    new ProfileData.Builder(
-
-                                            Long.parseLong(tempOwnerItem.getString("userId")),
-                                            tempOwnerItem.getString("username"))
-                                            .gravatarHash(
-                                                    tempOwnerItem
-                                                            .getString("gravatarMd5"))
-                                            .build()
-
-                            )
-
+                        new CommentData(
+                            mId,
+                            Long.parseLong(tempObject.getString("itemId")), 
+                            Long.parseLong(tempObject.getString("creationDate")),
+                            tempObject.getString("body"),
+                            new ProfileData.Builder(
+                                Long.parseLong(tempOwnerItem.getString("userId")),
+                                tempOwnerItem.getString("username")
+                            ).gravatarHash(tempOwnerItem.getString("gravatarMd5")).build()
+                        )
                     );
-
                 }
-
                 return (ArrayList<CommentData>) comments;
-
             } else {
-
                 throw new WebsiteHandlerException("Could not get the comments.");
-
             }
-
         } catch (Exception ex) {
-
             throw new WebsiteHandlerException(ex.getMessage());
-
         }
     }
-
 }

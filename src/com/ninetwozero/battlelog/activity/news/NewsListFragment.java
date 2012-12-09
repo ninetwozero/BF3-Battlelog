@@ -14,21 +14,14 @@
 
 package com.ninetwozero.battlelog.activity.news;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.adapter.NewsListAdapter;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
@@ -36,86 +29,58 @@ import com.ninetwozero.battlelog.datatype.NewsData;
 import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
 import com.ninetwozero.battlelog.http.WebsiteClient;
 
+import java.util.List;
+
 public class NewsListFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
     private Context mContext;
     private LayoutInflater mLayoutInflater;
 
-    // Elements
     private ListView mListView;
     private NewsListAdapter mNewsListAdapter;
 
-    // Misc
     private List<NewsData> mNewsItems;
     private int mStart;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Set our attributes
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity();
         mLayoutInflater = inflater;
 
-        // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(
-                R.layout.tab_content_dashboard_news, container, false);
-
-        // Init
+        View view = mLayoutInflater.inflate(R.layout.tab_content_dashboard_news, container, false);
         initFragment(view);
-
-        // Return
         return view;
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         reload();
-
     }
 
     public void initFragment(View v) {
-
-        // Get the elements
         mListView = (ListView) v.findViewById(android.R.id.list);
-
-        // Setup the listAdapter
-        mNewsListAdapter = new NewsListAdapter(mContext, mNewsItems,
-                mLayoutInflater);
+        mNewsListAdapter = new NewsListAdapter(mContext, mNewsItems, mLayoutInflater);
         mListView.setAdapter(mNewsListAdapter);
-
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-
         super.onActivityCreated(savedInstanceState);
-
     }
 
     public void reload() {
-
-        // Feed refresh!
         new AsyncFeedRefresh(mContext).execute();
-
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
-
         mContext.startActivity(
-
-                new Intent(mContext, SinglePostActivity.class).putExtra(
-
-                        "news", (NewsData) v.getTag()
-
-                )
-
+            new Intent(mContext, SinglePostActivity.class).putExtra(
+                    "news", (NewsData) v.getTag()
+            )
         );
-
     }
 
     public class AsyncFeedRefresh extends AsyncTask<Void, Void, Boolean> {
@@ -124,9 +89,7 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
         private Context context;
 
         public AsyncFeedRefresh(Context c) {
-
             this.context = c;
-
         }
 
         @Override
@@ -135,46 +98,27 @@ public class NewsListFragment extends ListFragment implements DefaultFragment {
 
         @Override
         protected Boolean doInBackground(Void... arg0) {
-
             try {
-
-                // Get...
                 mNewsItems = new WebsiteClient().getNewsForPage(mStart);
-
-                // ...validate!
                 return (mNewsItems != null);
-
             } catch (WebsiteHandlerException ex) {
-
                 ex.printStackTrace();
                 return false;
-
             }
-
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
-
-            // Fail?
             if (!result) {
-
-                Toast.makeText(this.context, R.string.info_news_empty,
-                        Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(this.context, R.string.info_news_empty, Toast.LENGTH_SHORT).show();
+            } else {
+            	mNewsListAdapter.setItemArray(mNewsItems);
             }
-
-            // Update
-            mNewsListAdapter.setItemArray(mNewsItems);
-
         }
-
     }
 
     public void setStart(int s) {
-
         mStart = s;
-
     }
 
     @Override

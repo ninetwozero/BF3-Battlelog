@@ -119,7 +119,7 @@
   <string name="label_stats">Statistiken</string>
   <string name="label_users">Benutzer</string>
   <string name="info_platoon_created">Erstellt am {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">Mitglieder</string>
+  <string name="label_members">Mitglieder</string>
   <string name="label_fans">Fans</string>
   <string name="info_platoon_compare">Du kannst (noch?) keine Kolonnen vergleichen...</string>
   <string name="info_empty_msg">Sie können keine leere Nachricht senden</string>
@@ -284,7 +284,7 @@
   <string name="info_xml_platoons">Platoons</string>
   <string name="info_xml_no_platoons">Keinem Platoon beigetreten.</string>
   <string name="info_xml_rank2">Bis zum nächsten Rang</string>
-  <string name="info_xml_no_unlocks">Keine Freischaltungen gefunden</string>
+  
   <string name="info_xml_back">Zurück</string>
   <string name="info_xml_reload">Aktualisieren</string>
   <string name="info_xml_logout">Abmelden</string>
@@ -486,7 +486,7 @@
   <string name="info_forum_report_true">Der Eintrag wurde gemeldet.</string>
   <string name="info_forum_report_false">Der Eintrag konnte nicht gemeldet werden.</string>
   <string name="info_forum_search_label">Forensuche</string>
-  <string name="info_forum_search_hint">Suche nach...</string>
+  
   <string name="info_forum_report_reason">Warum möchtest du diesen Eintrag melden?</string>
   <string name="info_forum_report_label">Einen Eintrag melden</string>
   <string name="label_report">Melden</string>

@@ -1,12 +1,5 @@
 package com.ninetwozero.battlelog.preference;
 
-import static com.ninetwozero.battlelog.datatype.ProfileSettings.PROFILE_INFO_BIRTHDAY;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,6 +9,13 @@ import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.DatePicker;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import static com.ninetwozero.battlelog.datatype.ProfileSettings.PROFILE_INFO_BIRTHDAY;
 
 public class DatePickerPreference extends DialogPreference implements
         DatePicker.OnDateChangedListener {

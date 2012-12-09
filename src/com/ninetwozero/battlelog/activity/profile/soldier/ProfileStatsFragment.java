@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
@@ -27,7 +26,10 @@ import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TextView;
 import com.google.gson.Gson;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.Bf3Fragment;
@@ -37,17 +39,19 @@ import com.ninetwozero.battlelog.datatype.PersonaStats;
 import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.datatype.Statistics;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
-import com.ninetwozero.battlelog.dialog.OnCloseListDialogListener;
-import com.ninetwozero.battlelog.jsonmodel.PersonaInfo;
+import com.ninetwozero.battlelog.jsonmodel.soldierstats.PersonaInfo;
 import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import com.ninetwozero.battlelog.model.SelectedPersona;
 import com.ninetwozero.battlelog.provider.BattlelogContentProvider;
+import com.ninetwozero.battlelog.provider.BusProvider;
 import com.ninetwozero.battlelog.provider.UriFactory;
 import com.ninetwozero.battlelog.provider.table.PersonaStatistics;
 import com.ninetwozero.battlelog.provider.table.RankProgress;
 import com.ninetwozero.battlelog.provider.table.ScoreStatistics;
+import com.squareup.otto.Subscribe;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -61,7 +65,7 @@ import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
 import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
 import static com.ninetwozero.battlelog.misc.NumberFormatter.format;
 
-public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDialogListener {
+public class ProfileStatsFragment extends Bf3Fragment{
 
     // Attributes
     private Context mContext;
@@ -97,16 +101,14 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     private List<Statistics> listScoreStatistics;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Set our attributes
         mContext = getActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
 
-        View view = mLayoutInflater.inflate(R.layout.tab_content_profile_stats,
-                container, false);
+        View view = mLayoutInflater.inflate(R.layout.tab_content_profile_stats, container, false);
 
         initFragment(view);
         return view;
@@ -122,16 +124,12 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
 
     public void initFragment(View view) {
-
-        // Progressbar
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress_level);
 
-        // Let's try something out
         if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
             setSelectedPersonaVariables();
         }
 
-        // Click on the wrap
         mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
         mWrapPersona.setOnClickListener(
             new OnClickListener() {
@@ -139,8 +137,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
                 public void onClick(View sv) {
                     if (personaArrayLength() > 1) {
                         FragmentManager manager = getFragmentManager();
-                        ListDialogFragment dialog = ListDialogFragment.newInstance(
-                                personasToMap(), getTag());
+                        ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap());
                         dialog.show(manager, DIALOG);
                     }
                 }
@@ -154,8 +151,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
         mSelectedPersona = getSelectedPersonaId(mSelectedPosition);
         mSelectedPlatformId = getPlatformIdFor(mSelectedPosition);
         mSelectedPersonaName = getSelectedPersonaName(mSelectedPosition);
-        Log.d(Constants.DEBUG_TAG, "mSelectedPersona => " + mSelectedPersona);
-        callURI = UriFactory.personaOverview(mSelectedPersona, mSelectedPlatformId);
+        callURI = UriFactory.getPersonaOverviewUri(mSelectedPersona, mSelectedPlatformId);
     }
 
     private long getSelectedPersonaId(int position) {
@@ -171,8 +167,20 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     }
 
     @Override
-    public void onDialogListSelection(long id) {
-        updateSharedPreference(id);
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void personaChanged(SelectedPersona selectedPersona) {
+        updateSharedPreference(selectedPersona.getPersonaId());
         setSelectedPersonaVariables();
         getData();
     }
@@ -231,7 +239,6 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
     public void findViews() {
 
-        // Let's find it
         View view = getView();
         if (view == null) {
             return;
@@ -241,12 +248,10 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
             view.findViewById(R.id.img_persona_list).setVisibility(View.INVISIBLE);
         }
 
-        // Persona & rank
         personaName = (TextView) view.findViewById(R.id.string_persona);
         rankTitle = (TextView) view.findViewById(R.id.string_rank_title);
         rankId = (TextView) view.findViewById(R.id.string_rank_short);
 
-        // Progress
         currentLevelPoints = (TextView) view.findViewById(R.id.string_progress_curr);
         nextLevelPoints = (TextView) view.findViewById(R.id.string_progress_max);
         pointsToMake = (TextView) view.findViewById(R.id.string_progress_left);
@@ -264,7 +269,9 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
 
     private void populateView() {
         populateRankProgress();
+        personaStatisticsTable.removeAllViews();
         populateStatistics(listPersonaStatistics, personaStatisticsTable);
+        scoreStatisticsTable.removeAllViews();
         populateStatistics(listScoreStatistics, scoreStatisticsTable);
     }
 
@@ -285,27 +292,13 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     }
 
     private void populateStatistics(List<Statistics> statistics, TableLayout layout) {
-        for (Statistics ps : statistics) {
-            TableRow tr = new TableRow(getContext());
-            tr.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            if (ps.getStyle() == R.style.InfoSubHeading) {
-                tr.setBackgroundColor(Color.parseColor("#EEEEEE"));
-            }
-
-            TextView title = new TextView(getContext());
-            title.setText(ps.getTitle());
-            title.setTextColor(Color.parseColor("#000000"));
-            title.setPadding(5, 5, 5, 5);
-            tr.addView(title);
-
-            TextView value = new TextView(getContext());
-            value.setText(ps.getValue());
-            value.setTextColor(Color.parseColor("#000000"));
-            value.setPadding(5, 5, 5, 5);
-            tr.addView(value);
-
-            layout.addView(tr);
-        }
+		for (Statistics ps : statistics) {
+			View tr = mLayoutInflater.inflate(
+					R.layout.list_item_assignment_popup, null);
+			((TextView) tr.findViewById(R.id.text_obj_title)).setText(ps.getTitle());
+			((TextView) tr.findViewById(R.id.text_obj_values)).setText(ps.getValue());
+			layout.addView(tr);
+		}
     }
 
     private int personaArrayLength() {
@@ -323,20 +316,20 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
     }
 
     @Override
-    public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {    	
+    public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {
     	/* FIXME: This doesn't seem right, maybe due to the lack of personas? */
         if ( task != null && task.result.equals(CompletedTask.Result.SUCCESS)) {
             findViews();
             PersonaInfo pi = personaStatsFrom(task);
             updateDatabase(pi);
-            if (progressDialog != null) {
-                progressDialog.dismiss();
-            }
             populateView();
+        }
+        if (progressDialog != null) {
+            progressDialog.dismiss();
         }
     }
 
-    private PersonaInfo personaStatsFrom(CompletedTask task) {
+	private PersonaInfo personaStatsFrom(CompletedTask task) {
         Gson gson = new Gson();
         PersonaInfo data = gson.fromJson(task.jsonObject, PersonaInfo.class);
         return data;
@@ -399,21 +392,12 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
         return 0;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 
     public Menu prepareOptionsMenu(Menu menu) {
-
-        ((MenuItem) menu.findItem(R.id.option_friendadd))
-                .setVisible(false);
-        ((MenuItem) menu.findItem(R.id.option_frienddel))
-                .setVisible(false);
-        ((MenuItem) menu.findItem(R.id.option_compare))
-                .setVisible(true);
-        ((MenuItem) menu.findItem(R.id.option_unlocks))
-                .setVisible(true);
+        menu.findItem(R.id.option_friendadd).setVisible(false);
+        menu.findItem(R.id.option_frienddel).setVisible(false);
+        menu.findItem(R.id.option_compare).setVisible(true);
+        menu.findItem(R.id.option_unlocks).setVisible(true);
         return menu;
 
     }
@@ -428,19 +412,15 @@ public class ProfileStatsFragment extends Bf3Fragment implements OnCloseListDial
                     .putExtra("selectedPosition", mSelectedPosition));
 
         } else if (item.getItemId() == R.id.option_unlocks) {
-
             int position = 0;
             for (long key : mPersonaStats.keySet()) {
-
                 if (key == mSelectedPersona) {
                     break;
                 } else {
                     position++;
                 }
             }
-
             startActivity(
-
                     new Intent(mContext, UnlockActivity.class)
                             .putExtra("profile", mProfileData)
                             .putExtra("selectedPosition", position));

@@ -119,7 +119,7 @@
   <string name="label_stats">Tilastot</string>
   <string name="label_users">Käyttäjät</string>
   <string name="info_platoon_created">Luotu: {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">JÄSENET</string>
+  <string name="label_members">JÄSENET</string>
   <string name="label_fans">FANIT</string>
   <string name="info_platoon_compare">Et voi vertailla joukkueita.. (vielä?)</string>
   <string name="info_empty_msg">Et voi kirjoittaa tyhjää viestiä.</string>
@@ -267,7 +267,7 @@
   <string name="info_xml_platoons">Joukkueet</string>
   <string name="info_xml_no_platoons">Ei joukkueita.</string>
   <string name="info_xml_rank2">jäljellä seuraavaan arvoon</string>
-  <string name="info_xml_no_unlocks">Ei avauksia</string>
+  
   <string name="info_xml_back">Takaisin</string>
   <string name="info_xml_reload">Lataa uudelleen</string>
   <string name="info_xml_logout">Kirjaudu ulos</string>
@@ -455,7 +455,7 @@
   <string name="info_forum_report_true">Huomautettu ylläpitäjille.</string>
   <string name="info_forum_report_false">Viestiä ei voinut reportoida.</string>
   <string name="info_forum_search_label">Foorumin haku</string>
-  <string name="info_forum_search_hint">Etsi...</string>
+  
   <string name="info_forum_report_reason">Miksi haluat ilmoittaa tästä viestistä?</string>
   <string name="info_forum_report_label">Ilmoita viestistä..</string>
   <string name="label_report">Ilmoita</string>

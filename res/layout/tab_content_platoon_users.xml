@@ -26,7 +26,7 @@
       style="@style/InfoHeading"
       android:layout_marginBottom="0dp"
       android:padding="5dp"
-      android:text="@string/label_own_soldiermbers"/>
+      android:text="@string/label_members"/>
 
   <ListView
       android:id="@android:id/list"

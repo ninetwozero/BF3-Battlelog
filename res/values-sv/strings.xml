@@ -119,7 +119,7 @@
   <string name="label_stats">Stats</string>
   <string name="label_users">Användare</string>
   <string name="info_platoon_created">Skapades den {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">MEDLEMMAR</string>
+  <string name="label_members">MEDLEMMAR</string>
   <string name="label_fans">FANS</string>
   <string name="info_platoon_compare">Du kan inte jämföra plutoner... (än?)</string>
   <string name="info_empty_msg">Det är inte tillåtet att skriva tomma inlägg.</string>
@@ -268,7 +268,7 @@
   <string name="info_xml_platoons">Plutoner</string>
   <string name="info_xml_no_platoons">Inga anslutna plutoner.</string>
   <string name="info_xml_rank2">till nästa rang</string>
-  <string name="info_xml_no_unlocks">Inga upplåsningar hittades.</string>
+  
   <string name="info_xml_back">Tillbaka</string>
   <string name="info_xml_reload">Ladda om</string>
   <string name="info_xml_logout">Logga ut</string>
@@ -454,7 +454,7 @@
   <string name="info_forum_report_true">Inlägget har rapporterats.</string>
   <string name="info_forum_report_false">Inlägget kunde inte rapporteras.</string>
   <string name="info_forum_search_label">Forumsök</string>
-  <string name="info_forum_search_hint">Sök efter...</string>
+  
   <string name="info_forum_report_reason">Varför vill du rapportera detta inlägg?</string>
   <string name="info_forum_report_label">Rapportera ett inlägg</string>
   <string name="label_report">Rapportera för missbruk</string>

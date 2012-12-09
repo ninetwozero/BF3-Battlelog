@@ -119,7 +119,7 @@
   <string name="label_stats">Statistiques</string>
   <string name="label_users">Utilisateurs</string>
   <string name="info_platoon_created">Créée le {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">MEMBRES</string>
+  <string name="label_members">MEMBRES</string>
   <string name="label_fans">FANS</string>
   <string name="info_platoon_compare">Vous ne pouvez pas comparer les pelotons ... (pour l\'instant?)</string>
   <string name="info_empty_msg">Vous n\'êtes pas autorisé à poster un message vide.</string>
@@ -266,7 +266,7 @@
   <string name="info_xml_platoons">Sections</string>
   <string name="info_xml_no_platoons">Aucune section rejointe.</string>
   <string name="info_xml_rank2">jusqu\'au prochain grade</string>
-  <string name="info_xml_no_unlocks">Aucun élément débloqué trouvé</string>
+  
   <string name="info_xml_back">Retour</string>
   <string name="info_xml_reload">Recharger</string>
   <string name="info_xml_logout">Déconnexion</string>
@@ -452,7 +452,7 @@
   <string name="info_forum_report_true">Le message a été signalé.</string>
   <string name="info_forum_report_false">Ce message n\'a pas pu être signalé.</string>
   <string name="info_forum_search_label">Recherche dans le forum</string>
-  <string name="info_forum_search_hint">Recherche...</string>
+  
   <string name="info_forum_report_reason">Pourquoi voulez-vous signaler ce sujet ?</string>
   <string name="info_forum_report_label">Signaler un message</string>
   <string name="label_report">Signaler</string>

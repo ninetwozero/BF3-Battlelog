@@ -14,8 +14,6 @@
 
 package com.ninetwozero.battlelog.widgets;
 
-import java.util.List;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -29,7 +27,6 @@ import android.text.Html;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.FriendListDataWrapper;
@@ -39,6 +36,8 @@ import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+
+import java.util.List;
 
 public class SocialWidgetProvider extends AppWidgetProvider {
 
@@ -75,7 +74,7 @@ public class SocialWidgetProvider extends AppWidgetProvider {
 
         // if service == active
         if (SessionKeeper.getProfileData() == null) {
-    		Log.d(Constants.DEBUG_TAG, "No session to use in the widget");
+    		Log.i(Constants.DEBUG_TAG, "No session to use in the widget");
         } else {
             new AsyncRefresh(context, appWidgetManager).execute();
         }

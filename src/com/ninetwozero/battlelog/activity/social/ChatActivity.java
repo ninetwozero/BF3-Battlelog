@@ -27,6 +27,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,7 +80,7 @@ public class ChatActivity extends ListActivity {
         PublicUtils.setupLocale(this, mSharedPreferences);
         
         // Finally set the view
-        setContentView(R.layout.chat_view);
+        setContentView(R.layout.activity_chat);
         
         // Did we get someone to chat with?
         if (!getIntent().hasExtra("activeUser") || !getIntent().hasExtra("otherUser")) {
@@ -94,8 +95,7 @@ public class ChatActivity extends ListActivity {
         // Get the ListView
         mListView = getListView();
         mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-        mListView.setAdapter(new ChatListAdapter(this, null, mActiveUser.getUsername(),
-                mLayoutInflater));
+        mListView.setAdapter(new ChatListAdapter(this, null, mActiveUser.getUsername(), mLayoutInflater));
 
         // Setup the title
         setTitle(getTitle().toString().replace("...", mOtherUser.getUsername()));
@@ -107,8 +107,7 @@ public class ChatActivity extends ListActivity {
         // Try to get the chatid
         mComClient = new COMClient(
     		mOtherUser.getId(), 
-    		mSharedPreferences.getString(
-    				Constants.SP_BL_PROFILE_CHECKSUM, "")
+    		mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
 		);
     }
 
@@ -152,13 +151,10 @@ public class ChatActivity extends ListActivity {
 
     public void onClick(View v) {
         if (v.getId() == R.id.button_send) {
-        	new AsyncChatSend(this, mComClient)
-        		.execute(
-	                mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
-	                mFieldMessage.getText().toString()
-	            );
-
-            // Clear the field
+        	new AsyncChatSend(this, mComClient).execute(
+                mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""),
+                mFieldMessage.getText().toString()
+            );
             mFieldMessage.setText("");
         }
     }
@@ -172,64 +168,48 @@ public class ChatActivity extends ListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Let's act!
         if (item.getItemId() == R.id.option_reload) {
             this.reload();
         } else if (item.getItemId() == R.id.option_back) {
             ((Activity) this).finish();
         }
         return true;
-
     }
 
     public void notifyNewPost(List<ChatMessage> cm) {
-
-        // Init!
         boolean hasNewResponse = false;
         boolean isFirstRun = true;
         boolean playSound = mSharedPreferences.getBoolean("battlelog_chat_sound", true);
 
-        // Iterate
         for (int curr = cm.size() - 1, min = ((curr > 5) ? curr - 5 : 0); curr > min; curr--) {
-
-            // Let's see what happens.
             ChatMessage m = cm.get(curr);
-            if (m.getSender().equals(mActiveUser.getUsername())
-                    && m.getTimestamp() > mLatestChatResponseTimestamp) {
-
+            if (m.getSender().equals(mOtherUser.getUsername()) && m.getTimestamp() > mLatestChatResponseTimestamp) {
                 hasNewResponse = true;
                 isFirstRun = (mLatestChatResponseTimestamp == 0);
                 mLatestChatResponseTimestamp = m.getTimestamp();
                 break;
-
             }
-
         }
 
-        // So, did we have a new response?
         if (hasNewResponse && !isFirstRun && playSound) {
             MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.notification);
             mediaPlayer.start();
             mediaPlayer.setOnCompletionListener(
-
-                    new OnCompletionListener() {
-
-                        @Override
-                        public void onCompletion(MediaPlayer arg0) {
-                            arg0.release();
-                        }
+                new OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer arg0) {
+                        arg0.release();
                     }
+                }
             );
         } else if (isFirstRun) {
-
-            // Scroll down to the bottom
             mListView.post(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            mListView.setSelection(mListView.getAdapter().getCount() - 1);
-                        }
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        mListView.setSelection(mListView.getAdapter().getCount() - 1);
                     }
+                }
             );
         }
     }
@@ -246,24 +226,18 @@ public class ChatActivity extends ListActivity {
     }
 
     public void setupTimer() {
-
-        // Do we have a connection?
         if (PublicUtils.isNetworkAvailable(this) && mTimerReload == null) {
-
-            // Let's reload the chat will we?
             mTimerReload = new Timer();
-            mTimerReload
-                    .schedule(
-                            new TimerTask() {
-                                @Override
-                                public void run() {
-                                    reload();
-                                }
-                            }, 0, mSharedPreferences.getInt(Constants.SP_BL_INTERVAL_CHAT,
-                            25) * 1000
-                    );
+            mTimerReload.schedule(
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        reload();
+                    }
+                }, 
+                0, 
+                mSharedPreferences.getInt(Constants.SP_BL_INTERVAL_CHAT, 25) * 1000
+            );
         }
-
     }
-
 }

@@ -119,7 +119,7 @@
   <string name="label_stats">Statystyki</string>
   <string name="label_users">Użytkownicy</string>
   <string name="info_platoon_created">Stworzono {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">CZŁONKOWIE</string>
+  <string name="label_members">CZŁONKOWIE</string>
   <string name="label_fans">FANI</string>
   <string name="info_platoon_compare">Nie możesz porównywać plutonów...(jeszcze)</string>
   <string name="info_empty_msg">Nie możesz dodać pustej wiadomości</string>
@@ -271,7 +271,7 @@
   <string name="info_xml_platoons">Plutony</string>
   <string name="info_xml_no_platoons">Nie dołączono do plutonu</string>
   <string name="info_xml_rank2">Dopóki nie podniesie rangi</string>
-  <string name="info_xml_no_unlocks">Nie znaleziono odblokowań</string>
+  
   <string name="info_xml_back">Wróć</string>
   <string name="info_xml_reload">Przeładuj</string>
   <string name="info_xml_logout">Wyloguj</string>
@@ -453,7 +453,7 @@
   <string name="info_forum_report_true">Post został zaraportowany.</string>
   <string name="info_forum_report_false">Post nie mógł zostać zaraportowany.</string>
   <string name="info_forum_search_label">Wyszukiwarka forum</string>
-  <string name="info_forum_search_hint">Szukaj...</string>
+  
   <string name="info_forum_report_reason">Dlaczego chcesz zaraportować ten post?</string>
   <string name="info_forum_report_label">Raportuj post</string>
   <string name="label_report">Raportuj</string>

@@ -1,42 +1,41 @@
 package com.ninetwozero.battlelog.dialog;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-
 import com.ninetwozero.battlelog.R;
+import com.ninetwozero.battlelog.model.SelectedPersona;
+import com.ninetwozero.battlelog.provider.BusProvider;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ListDialogFragment extends DialogFragment {
 
-    private Map<Long, String> data;
-    private int titleResource;
+    private final Map<Long, String> data;
+    private final int titleResource;
     private Long[] id;
     private String[] name;
-    private final String TAG;
 
-    public static ListDialogFragment newInstance(Map<Long, String> data, String tag) {
-        ListDialogFragment dialog = new ListDialogFragment(data, tag, R.string.info_dialog_selection_generic);
+    public static ListDialogFragment newInstance(Map<Long, String> data) {
+        ListDialogFragment dialog = new ListDialogFragment(data, R.string.info_dialog_selection_generic);
         Bundle bundle = new Bundle();
         dialog.setArguments(bundle);
         return dialog;
     }
 
-    public static ListDialogFragment newInstance(Map<Long, String> data, String tag, int title) {
-    	ListDialogFragment dialog = new ListDialogFragment(data, tag, title);
+    public static ListDialogFragment newInstance(Map<Long, String> data, int title) {
+    	ListDialogFragment dialog = new ListDialogFragment(data, title);
         Bundle bundle = new Bundle();
         dialog.setArguments(bundle);
         return dialog;	
     }
     
-    private ListDialogFragment(Map<Long, String> data, String tag, int title) {
+    private ListDialogFragment(Map<Long, String> data, int title) {
         this.data = data;
-        this.TAG = tag;
         this.titleResource = title;
     }
 
@@ -80,10 +79,8 @@ public class ListDialogFragment extends DialogFragment {
     private class SingleChoiceListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int item) {
-            OnCloseListDialogListener act = (OnCloseListDialogListener) getFragmentManager()
-                    .findFragmentByTag(TAG);
             Long[] ids = data.keySet().toArray(new Long[]{});
-            act.onDialogListSelection(ids[item]);
+            BusProvider.getInstance().post(new SelectedPersona(ids[item], data.get(ids[item])));
             dismiss();
         }
     }

@@ -15,21 +15,21 @@
 package com.ninetwozero.battlelog.activity.feed;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.FeedItem;
 import com.ninetwozero.battlelog.datatype.NewsData;
+import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.http.WebsiteClient;
 import com.ninetwozero.battlelog.misc.PublicUtils;
 
 public class PostOverviewFragment extends Fragment implements DefaultFragment {
@@ -37,90 +37,68 @@ public class PostOverviewFragment extends Fragment implements DefaultFragment {
     // Attributes
     private Context mContext;
 
-    // Elements
     private TextView mTextTitle;
     private TextView mTextInfo;
     private TextView mTextContent;
 
-    // Misc
     private FeedItem mFeedItem;
     private NewsData mNewsData;
     private boolean mNews = false;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Set our attributes
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity();
-
-        // Let's inflate & return the view
         View view = inflater.inflate(
-
-                mNews ? R.layout.tab_content_post_overview_news
-                        : R.layout.tab_content_post_overview_feed,
-
-                container, false);
-
-        // Init
+            mNews ? R.layout.tab_content_post_overview_news : R.layout.tab_content_post_overview_feed,
+            container, 
+            false
+        );
         initFragment(view);
-
-        // Return
         return view;
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         reload();
-
     }
 
     public void setData(FeedItem f) {
-
         mFeedItem = f;
         mNews = false;
     }
 
     public void setData(NewsData n) {
-
         mNewsData = n;
         mNews = true;
     }
 
     public void initFragment(View v) {
-
-        // Set the values
         if (mNews) {
-
             initNews(v);
-
         } else {
-
             initOther(v);
-
         }
-
     }
 
     public void initNews(View v) {
-
         mTextTitle = (TextView) v.findViewById(R.id.text_title);
         mTextContent = (TextView) v.findViewById(R.id.text_content);
         mTextInfo = (TextView) v.findViewById(R.id.text_author);
 
         mTextTitle.setText(mNewsData.getTitle());
-        mTextInfo.setText(Html.fromHtml(getString(R.string.info_news_posted_by).replace(
-                "{author}",
-                mNewsData.getAuthorName()).replace("{date}",
-                PublicUtils.getRelativeDate(mContext, mNewsData.getDate()))));
+        mTextInfo.setText(
+        	Html.fromHtml(
+        		getString(R.string.info_news_posted_by).replace(
+    				"{author}", mNewsData.getAuthorName()
+    			).replace("{date}", PublicUtils.getRelativeDate(mContext, mNewsData.getDate())
+    			)
+    		)
+    	);
         mTextContent.setText(Html.fromHtml(mNewsData.getContent()));
-
     }
 
     public void initOther(View v) {
-
         mTextTitle = (TextView) v.findViewById(R.id.text_title);
         mTextContent = (TextView) v.findViewById(R.id.text_content);
         mTextInfo = (TextView) v.findViewById(R.id.text_date);
@@ -132,12 +110,13 @@ public class PostOverviewFragment extends Fragment implements DefaultFragment {
     }
 
     public void reload() {
-    }
+    	if( mNewsData != null ) {
+    		new AsyncPostRefresh(mContext).execute();
+    	}
+	}
 
     public boolean handleSelectedContextItem(AdapterView.AdapterContextMenuInfo info, MenuItem item) {
-
         return false;
-
     }
 
     @Override
@@ -148,5 +127,39 @@ public class PostOverviewFragment extends Fragment implements DefaultFragment {
     @Override
     public boolean handleSelectedOption(MenuItem item) {
         return false;
+    }
+    
+    public class AsyncPostRefresh extends AsyncTask<Void, Void, Boolean> {
+
+        // Attributes
+        private Context context;
+
+        public AsyncPostRefresh(Context c) {
+            this.context = c;
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... arg0) {
+            try {
+                mNewsData = new WebsiteClient().getNewsFromId(mNewsData.getId());
+                return (mNewsData != null);
+            } catch (WebsiteHandlerException ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (!result) {
+                Toast.makeText(this.context, R.string.info_news_empty, Toast.LENGTH_SHORT).show();
+            } else {
+            	initNews(getView());
+            }
+        }
     }
 }

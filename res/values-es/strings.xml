@@ -119,7 +119,7 @@
   <string name="label_stats">Estadísticas</string>
   <string name="label_users">Usuarios</string>
   <string name="info_platoon_created">Creado el {DATE} ({RELATIVE DATE})</string>
-  <string name="label_own_soldiermbers">Miembros</string>
+  <string name="label_members">Miembros</string>
   <string name="label_fans">Fans</string>
   <string name="info_platoon_compare">No se puede comparar pelotones ... (¿todavía?)</string>
   <string name="info_empty_msg">Usted no está autorizado a publicar un mensaje en blanco.</string>
@@ -271,7 +271,7 @@
   <string name="info_xml_platoons">Pelotones</string>
   <string name="info_xml_no_platoons">No pelotones unidos.</string>
   <string name="info_xml_rank2">hasta el siguiente rango</string>
-  <string name="info_xml_no_unlocks">No abre encontrado.</string>
+  
   <string name="info_xml_back">Reverso</string>
   <string name="info_xml_reload">Recargar</string>
   <string name="info_xml_logout">Finalizar la sesión</string>
@@ -457,7 +457,7 @@
   <string name="info_forum_report_true">The post has been reported.</string>
   <string name="info_forum_report_false">The post could not be reported.</string>
   <string name="info_forum_search_label">Forum search</string>
-  <string name="info_forum_search_hint">Search for...</string>
+  
   <string name="info_forum_report_reason">Why do you want to report this post?</string>
   <string name="info_forum_report_label">Report a post</string>
   <string name="label_report">Report</string>

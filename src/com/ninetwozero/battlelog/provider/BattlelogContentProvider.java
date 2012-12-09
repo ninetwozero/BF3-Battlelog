@@ -3,24 +3,22 @@ package com.ninetwozero.battlelog.provider;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
 public class BattlelogContentProvider extends ContentProvider {
-
-    private DatabaseManager databaseManager;
-
-    private SQLiteDatabase database;
-
+    private DatabaseManager mDatabaseManager;
+    private SQLiteDatabase mDatabase;
     public static final String WHERE_PERSONA_ID = "personaId=?";
 
     public synchronized SQLiteDatabase getDatabase() {
-        if (database == null) {
-            databaseManager = new DatabaseManager(getContext());
-            database = databaseManager.getWritableDatabase();
+        if (mDatabase == null) {
+            mDatabaseManager = new DatabaseManager(getContext());
+            mDatabase = mDatabaseManager.getWritableDatabase();
         }
-        return database;
+        return mDatabase;
     }
 
     @Override
@@ -42,31 +40,39 @@ public class BattlelogContentProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         switch (UriFactory.URI_MATCHER.match(uri)) {
+        	case UriFactory.URI_CODES.PROFILE_INFO:
+        		return UriFactory.URI_PATH.PROFILE_INFO;
             case UriFactory.URI_CODES.RANK_PROGRESS:
                 return UriFactory.URI_PATH.RANK_PROGRESS;
             case UriFactory.URI_CODES.PERSONA_STATISTICS:
                 return UriFactory.URI_PATH.PERSONA_STATISTICS;
             case UriFactory.URI_CODES.SCORE_STATISTICS:
                 return UriFactory.URI_PATH.SCORE_STATISTICS;
+            case UriFactory.URI_CODES.PLATOON_INFO:
+            	return UriFactory.URI_PATH.PLATOON_INFO;
             default:
                 return "";
         }
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
-        long id = database.insert(getType(uri), null, contentValues);
-        getContext().getContentResolver().notifyChange(uri, null);
-        return Uri.parse(getType(uri) + "/" + id);
+    public Uri insert(Uri uri, ContentValues contentValues) throws SQLiteConstraintException {
+        long id = mDatabase.insertOrThrow(getType(uri), null, contentValues);
+    	getContext().getContentResolver().notifyChange(uri, null);
+    	return Uri.parse(getType(uri) + "/" + id);
     }
 
     @Override
     public int delete(Uri uri, String where, String[] selection) {
-        return database.delete(getType(uri), where, selection);
+        int status = mDatabase.delete(getType(uri), where, selection);
+        getContext().getContentResolver().notifyChange(uri, null);
+        return status;
     }
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        int status = mDatabase.update(getType(uri), contentValues, s, strings);
+    	getContext().getContentResolver().notifyChange(uri, null);
+        return status;
     }
 }

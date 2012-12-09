@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.news.CommentListFragment;
 import com.ninetwozero.battlelog.datatype.CommentData;

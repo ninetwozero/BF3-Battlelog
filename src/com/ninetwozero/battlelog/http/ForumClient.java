@@ -1,22 +1,15 @@
 package com.ninetwozero.battlelog.http;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.content.Context;
-
-import com.ninetwozero.battlelog.datatype.ForumData;
-import com.ninetwozero.battlelog.datatype.ForumPostData;
-import com.ninetwozero.battlelog.datatype.ForumSearchResult;
-import com.ninetwozero.battlelog.datatype.ForumThreadData;
-import com.ninetwozero.battlelog.datatype.ProfileData;
-import com.ninetwozero.battlelog.datatype.WebsiteHandlerException;
+import com.ninetwozero.battlelog.datatype.*;
 import com.ninetwozero.battlelog.misc.CacheHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ForumClient extends DefaultClient {
 
