@@ -64,11 +64,15 @@ public class BattlelogContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String where, String[] selection) {
-        return mDatabase.delete(getType(uri), where, selection);
+        int status = mDatabase.delete(getType(uri), where, selection);
+        getContext().getContentResolver().notifyChange(uri, null);
+        return status;
     }
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return mDatabase.update(getType(uri), contentValues, s, strings);
+        int status = mDatabase.update(getType(uri), contentValues, s, strings);
+    	getContext().getContentResolver().notifyChange(uri, null);
+        return status;
     }
 }
