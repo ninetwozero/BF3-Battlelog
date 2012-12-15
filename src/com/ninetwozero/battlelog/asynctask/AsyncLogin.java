@@ -34,6 +34,7 @@ import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.http.RequestHandler;
 import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.service.BattlelogService;
+import com.ninetwozero.battlelog.util.HtmlParsing;
 
 import java.util.List;
 
@@ -159,20 +160,26 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
     private ProfileInformation fetchProfileInformation(String httpContent) throws Exception {
         // Set the int
-        int startPosition = httpContent.indexOf(Constants.ELEMENT_UID_LINK);
+        int startPosition = httpContent.indexOf(HtmlParsing.ELEMENT_UID_LINK);
         return startPosition == -1 ? elementUidLinkError(httpContent)
                 : processHttpContent(httpContent);
     }
 
     private ProfileInformation processHttpContent(String httpContent) throws Exception {
         // Get the checksum & soldier name from the HTML
-        String postCheckSum = substringFrom(httpContent, Constants.ELEMENT_STATUS_CHECKSUM, "\" />");
-        String soldierName = substringFrom(httpContent, Constants.ELEMENT_USERNAME_LINK, "</div>").trim();
-
+        String postCheckSum = substringFrom(httpContent, HtmlParsing.ELEMENT_STATUS_CHECKSUM, "\" />");
+        String soldierName = substringFrom(httpContent, HtmlParsing.ELEMENT_USERNAME_LINK, "</div>").trim();
+        long userId = fetchUserId(httpContent);
         // Fetch some profile information & store it in SharedPreferences
         ProfileInformation profileInformation = new ProfileClient(new ProfileData(soldierName)).getInformation(mContext);
         addToSharedPreferences(profileInformation, postCheckSum);
         return profileInformation;
+    }
+
+    private long fetchUserId(String httpContent){
+        String divContent = substringFrom(httpContent, "title=\"Your profile\"", "</div>");
+        String idAsString = substringFrom(divContent, "<div rel=\"", "\" class=");
+        return Long.parseLong(idAsString);
     }
 
     private SharedPreferences addToSharedPreferences(ProfileInformation profileInfo, String checkSum) throws Exception {
@@ -259,7 +266,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
     private ProfileInformation elementUidLinkError(String httpContent)
             throws WebsiteHandlerException {
         int startPosition;// Update the position
-        startPosition = httpContent.indexOf(Constants.ELEMENT_ERROR_MESSAGE);
+        startPosition = httpContent.indexOf(HtmlParsing.ELEMENT_ERROR_MESSAGE);
 
         // Is it -1 again?
         if (startPosition == -1) {
@@ -270,7 +277,7 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
             String errorMsg = httpContent.substring(startPosition, endPosition)
                     .replace("</div>", "")
                     .replace("\n", "")
-                    .replace(Constants.ELEMENT_ERROR_MESSAGE, "");
+                    .replace(HtmlParsing.ELEMENT_ERROR_MESSAGE, "");
             throw new WebsiteHandlerException(errorMsg);
         }
     }

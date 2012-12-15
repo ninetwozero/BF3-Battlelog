@@ -267,8 +267,6 @@ public class RequestHandler {
         }
 
         try {
-
-            // Set the entity
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
             httpResponse = httpClient.execute(httpPost);
             httpEntity = httpResponse.getEntity();

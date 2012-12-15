@@ -50,6 +50,9 @@
         android:orientation="vertical"
    	/>
     <activity
+      android:name=".LoginActivity"
+      />
+    <activity
         android:name=".activity.DashboardActivity"
         android:configChanges="orientation"
         android:label="@string/title_main_menu"

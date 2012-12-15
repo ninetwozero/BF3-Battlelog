@@ -58,11 +58,7 @@ public final class Constants {
     };
 
     // HTML-elements to grab
-    public static final String ELEMENT_UID_LINK = "<a class=\"base-header-soldier-link\" href=\"/bf3/soldier/";
-    public static final String ELEMENT_ERROR_MESSAGE = "<div class=\"gate-login-errormsg wfont\">";
-    public static final String ELEMENT_USERNAME_LINK = "<div class=\"base-header-profile-username\">";
     public static final String ELEMENT_STATUS_OK = "";
-    public static final String ELEMENT_STATUS_CHECKSUM = "<input type=\"hidden\" name=\"post-check-sum\" value=\"";
 
     public static final String PATTERN_POST_SINGLE_ID = "<li id=\"feed-item-([0-9]+)\" class=\"feed-single-item feed-no-border\">";
     public static final String PATTERN_POST_SINGLE_UID = "<div rel=\"([0-9]+)\" class=\"base-avatar-container base-avatar-size-medium\">";

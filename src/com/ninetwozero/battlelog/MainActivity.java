@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,9 +39,7 @@ import com.ninetwozero.battlelog.activity.aboutapp.AboutCreditsFragment;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutFAQFragment;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutLicenseFragment;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutMainFragment;
-import com.ninetwozero.battlelog.asynctask.AsyncLogin;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.PostData;
 import com.ninetwozero.battlelog.datatype.ShareableCookie;
 import com.ninetwozero.battlelog.http.RequestHandler;
@@ -49,26 +48,26 @@ import com.ninetwozero.battlelog.misc.PublicUtils;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
-import net.sf.andhsli.hotspotlogin.SimpleCrypto;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class MainActivity extends CustomFragmentActivity implements
-		DefaultFragmentActivity {
+public class MainActivity extends CustomFragmentActivity implements DefaultFragmentActivity{
 
 	private String[] mValueFields;
 	private PostData[] mPostDataArray;
 
 	private CheckBox agree;
-	private EditText mFieldEmail;
-	private EditText mFieldPassword;
+	private EditText emailField;
+	private EditText passwordField;
 	private SlidingDrawer mSlidingDrawer;
 	private OnDrawerOpenListener mOnDrawerOpenListener;
 	private OnDrawerCloseListener mOnDrawerCloseListener;
 	private static final String USER_AGREED = "user_agreed";
 	private RelativeLayout loginNotice;
 	private RelativeLayout loginForm;
+
+
 	private CompoundButton.OnCheckedChangeListener agreeChanged = new CompoundButton.OnCheckedChangeListener() {
 		@Override
 		public void onCheckedChanged(CompoundButton compoundButton,
@@ -97,7 +96,6 @@ public class MainActivity extends CustomFragmentActivity implements
 		mPostDataArray = new PostData[Constants.FIELD_NAMES_LOGIN.length];
 		mValueFields = new String[2];
 
-		// Do we need to show the cool changelog-dialog?
 		showChangeLogDialog();
 
 		init();
@@ -116,8 +114,8 @@ public class MainActivity extends CustomFragmentActivity implements
 		loginNotice = (RelativeLayout) findViewById(R.id.login_notice);
 		agree = (CheckBox) findViewById(R.id.agree_checkbox);
 		agree.setOnCheckedChangeListener(agreeChanged);
-		mFieldEmail = (EditText) findViewById(R.id.field_email);
-		mFieldPassword = (EditText) findViewById(R.id.field_password);
+		emailField = (EditText) findViewById(R.id.field_email);
+		passwordField = (EditText) findViewById(R.id.field_password);
 		TextView notice = (TextView) findViewById(R.id.notice_text);
 		notice.setText(Html.fromHtml(getString(R.string.notice_text)));
 
@@ -129,47 +127,18 @@ public class MainActivity extends CustomFragmentActivity implements
 			loginForm.setVisibility(View.GONE);
 			loginNotice.setVisibility(View.VISIBLE);
 		}
-		emailPasswordValues();
-	}
-
-	private void emailPasswordValues() {
 		setEmail();
-		setPassword();
 	}
 
 	private void setEmail() {
 		if (hasEmail()) {
-			mFieldEmail.setText(mSharedPreferences.getString(
-					Constants.SP_BL_PROFILE_EMAIL, ""));
+			emailField.setText(mSharedPreferences.getString(
+                    Constants.SP_BL_PROFILE_EMAIL, ""));
 		}
 	}
 
 	private boolean hasEmail() {
 		return mSharedPreferences.contains(Constants.SP_BL_PROFILE_EMAIL);
-	}
-
-	private boolean isPasswordRemembered() {
-		return mSharedPreferences.getBoolean(Constants.SP_BL_PROFILE_REMEMBER,
-				false);
-	}
-
-	private void setPassword() {
-		if (hasEmail() && isPasswordRemembered() && hasPassword()) {
-			try {
-				mFieldPassword.setText(SimpleCrypto.decrypt(mSharedPreferences
-						.getString(Constants.SP_BL_PROFILE_EMAIL, ""),
-						mSharedPreferences.getString(
-								Constants.SP_BL_PROFILE_PASSWORD, "")));
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private boolean hasPassword() {
-		return !mSharedPreferences.getString(Constants.SP_BL_PROFILE_PASSWORD,
-				"").equals("");
 	}
 
 	private void createSession() {
@@ -179,19 +148,9 @@ public class MainActivity extends CustomFragmentActivity implements
 		} else if (!mSharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE,
 				"").equals("")) {
 
-			RequestHandler.setCookies(new ShareableCookie(mSharedPreferences
-					.getString(Constants.SP_BL_COOKIE_NAME, ""),
-					mSharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE,
-							""), Constants.COOKIE_DOMAIN));
-			startActivity(new Intent(this, DashboardActivity.class)
-					.putExtra(
-							"myProfile",
-							SessionKeeper
-									.generateProfileDataFromSharedPreferences(mSharedPreferences))
-					.putExtra(
-							"myPlatoon",
-							(ArrayList<PlatoonData>) SessionKeeper
-									.generatePlatoonDataFromSharedPreferences(mSharedPreferences)));
+			RequestHandler.setCookies(new ShareableCookie(mSharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
+					mSharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE,""), Constants.COOKIE_DOMAIN));
+			startActivity(new Intent(this, DashboardActivity.class));
 			finish();
 		}
 	}
@@ -223,21 +182,17 @@ public class MainActivity extends CustomFragmentActivity implements
 
 	private void cacheDirCheck() {
 		try {
-			if (!ExternalCacheDirectory.getInstance(this)
-					.getExternalCacheDirectory().exists()) {
-
-				Toast.makeText(this, R.string.info_general_nocache,
-						Toast.LENGTH_SHORT).show();
+			if (!ExternalCacheDirectory.getInstance(this).getExternalCacheDirectory().exists()) {
+				Toast.makeText(this, R.string.info_general_nocache, Toast.LENGTH_SHORT).show();
 			} else {
-				File nomediaFile = new File(ExternalCacheDirectory
-						.getInstance(this).getExternalCacheDirectory()
+				File nomediaFile = new File(ExternalCacheDirectory.getInstance(this).getExternalCacheDirectory()
 						.toString(), ".nomedia");
 				if (!nomediaFile.exists()) {
 					nomediaFile.createNewFile();
 				}
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+            Log.w("MainActivity", ex.toString());
 			Toast.makeText(this, R.string.info_general_nocache,
 					Toast.LENGTH_SHORT).show();
 		}
@@ -270,8 +225,8 @@ public class MainActivity extends CustomFragmentActivity implements
 	// http://stackoverflow.com/questions/6119722/how-to-check-edittexts-text-is-email-address-or-not
 	public void onClick(View v) {
 		if (v.getId() == R.id.button_login) {
-			mValueFields[0] = mFieldEmail.getText().toString();
-			mValueFields[1] = mFieldPassword.getText().toString();
+			mValueFields[0] = emailField.getText().toString();
+			mValueFields[1] = passwordField.getText().toString();
 			if (validateEmailAndPassword(mValueFields[0], mValueFields[1])) {
 				for (int i = 0, max = Constants.FIELD_NAMES_LOGIN.length; i < max; i++) {
 					mPostDataArray[i] = new PostData(
@@ -285,14 +240,19 @@ public class MainActivity extends CustomFragmentActivity implements
 
 			// Do the async
 			if (PublicUtils.isNetworkAvailable(this)) {
-				AsyncLogin al = new AsyncLogin(this);
-				al.execute(mPostDataArray);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                intent.putExtra(LoginActivity.EMAIL, emailField.getText().toString());
+                intent.putExtra(LoginActivity.PASSWORD, passwordField.getText().toString());
+                startActivity(intent);
 			} else {
 				Toast.makeText(this, R.string.general_nonetwork,
 						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
+
+
+
 
 	private boolean validateEmailAndPassword(String email, String password) {
 		if ("".equals(email) || !email.contains("@")) {
@@ -305,35 +265,6 @@ public class MainActivity extends CustomFragmentActivity implements
 			return false;
 		}
 		return true;
-	}
-
-	public final Dialog createChangelogDialog() {
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		final View layout = inflater.inflate(R.layout.changelog_dialog,
-				(ViewGroup) findViewById(R.id.dialog_root));
-
-		builder.setTitle(getString(R.string.general_changelog_version).replace(
-				"{version}", Constants.CHANGELOG_VERSION + ""));
-
-		// Grab the fields
-		final TextView textView = (TextView) layout
-				.findViewById(R.id.text_changelog);
-		textView.setText(Html.fromHtml(getString(R.string.changelog)));
-
-		// Set the button
-		builder.setPositiveButton(android.R.string.ok,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						mSharedPreferences
-								.edit()
-								.putInt(Constants.SP_V_CHANGELOG,
-										Constants.CHANGELOG_VERSION).commit();
-					}
-				});
-		AlertDialog theDialog = builder.create();
-		theDialog.setView(layout, 0, 0, 0, 0);
-		return theDialog;
 	}
 
 	@Override
@@ -378,6 +309,35 @@ public class MainActivity extends CustomFragmentActivity implements
 			mViewPager.setCurrentItem(1);
 			mViewPager.setOffscreenPageLimit(2);
 		}
+	}
+
+	public final Dialog createChangelogDialog() {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		final View layout = inflater.inflate(R.layout.changelog_dialog,
+				(ViewGroup) findViewById(R.id.dialog_root));
+
+		builder.setTitle(getString(R.string.general_changelog_version).replace(
+				"{version}", Constants.CHANGELOG_VERSION + ""));
+
+		// Grab the fields
+		final TextView textView = (TextView) layout
+				.findViewById(R.id.text_changelog);
+		textView.setText(Html.fromHtml(getString(R.string.changelog)));
+
+		// Set the button
+		builder.setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						mSharedPreferences
+								.edit()
+								.putInt(Constants.SP_V_CHANGELOG,
+										Constants.CHANGELOG_VERSION).commit();
+					}
+				});
+		AlertDialog theDialog = builder.create();
+		theDialog.setView(layout, 0, 0, 0, 0);
+		return theDialog;
 	}
 
 	@Override

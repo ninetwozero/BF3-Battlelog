@@ -43,28 +43,6 @@ public class UriFactory {
         URI_MATCHER.addURI(Battlelog.AUTHORITY, URI_PATH.PLATOON_INFO + "/", URI_CODES.PLATOON_INFO);
     }
 
-    public static URI getProfileInformationUri(String username) {
-    	String path = new StringBuilder("/user/").append(username).toString();
-    	return createUri(path);
-    }
-    
-    public static URI getProfilePersonasUri(long userId) {
-    	String path = new StringBuilder("user/overviewBoxStats/").append(userId).toString();
-    	return createUri(path);
-    }
-    
-    public static URI getPersonaOverviewUri(long personaId, int platformId) {
-        String path = new StringBuilder("/overviewPopulateStats/").append(personaId).append("/None/").append(platformId).toString();
-        return createUri(path);
-    }
-
-    public static URI assignments(String personaName, long personaId, long userId, int platformId){
-        String path = new StringBuilder("soldier/missionsPopulateStats/")
-                .append(personaName).append("/").append(personaId).append("/")
-                .append(userId).append("/").append(platformId).toString();
-        return createUri(path);
-    }
-
     private static URI createUri(String path) {
         return prepareURI(path, null);
     }
@@ -80,5 +58,31 @@ public class UriFactory {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static URI getLogginUri(){
+        return createUri("/gate/login/");
+    }
+
+    public static URI getProfileInformationUri(String username) {
+    	String path = new StringBuilder("/user/").append(username).toString();
+    	return createUri(path);
+    }
+
+    public static URI getProfilePersonasUri(long userId) {
+    	String path = new StringBuilder("user/overviewBoxStats/").append(userId).toString();
+    	return createUri(path);
+    }
+
+    public static URI getPersonaOverviewUri(long personaId, int platformId) {
+        String path = new StringBuilder("/overviewPopulateStats/").append(personaId).append("/None/").append(platformId).toString();
+        return createUri(path);
+    }
+
+    public static URI assignments(String personaName, long personaId, long userId, int platformId){
+        String path = new StringBuilder("soldier/missionsPopulateStats/")
+                .append(personaName).append("/").append(personaId).append("/")
+                .append(userId).append("/").append(platformId).toString();
+        return createUri(path);
     }
 }

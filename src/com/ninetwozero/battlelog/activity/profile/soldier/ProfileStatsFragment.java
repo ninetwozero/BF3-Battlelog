@@ -56,7 +56,9 @@ import com.ninetwozero.battlelog.provider.UriFactory;
 import com.ninetwozero.battlelog.provider.table.PersonaStatistics;
 import com.ninetwozero.battlelog.provider.table.RankProgress;
 import com.ninetwozero.battlelog.provider.table.ScoreStatistics;
+import com.ninetwozero.battlelog.server.Bf3ServerCall;
 import com.squareup.otto.Subscribe;
+import org.apache.http.client.methods.HttpGet;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -327,10 +329,10 @@ public class ProfileStatsFragment extends Bf3Fragment {
     protected Loader<CompletedTask> createLoader(int id, Bundle bundle) {
         if (id == LOADER_PERSONA) {
             startLoadingDialog();
-            return new Bf3Loader(getContext(), UriFactory.getProfilePersonasUri(mProfileData.getId()));
+            return new Bf3Loader(getContext(), new Bf3ServerCall.HttpData(UriFactory.getProfilePersonasUri(mProfileData.getId()), HttpGet.METHOD_NAME));
         } else {
             startLoadingDialog();
-            return new Bf3Loader(getContext(), UriFactory.getPersonaOverviewUri(mSelectedPersona, mSelectedPlatformId));
+            return new Bf3Loader(getContext(), new Bf3ServerCall.HttpData(UriFactory.getPersonaOverviewUri(mSelectedPersona, mSelectedPlatformId), HttpGet.METHOD_NAME));
         }
     }
 
