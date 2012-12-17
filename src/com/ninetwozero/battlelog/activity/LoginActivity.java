@@ -1,14 +1,13 @@
-package com.ninetwozero.battlelog;
+package com.ninetwozero.battlelog.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.*;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.widget.Toast;
-import com.ninetwozero.battlelog.activity.DashboardActivity;
-import com.ninetwozero.battlelog.dialog.ProgressDialogFragment;
+import com.ninetwozero.battlelog.Battlelog;
+import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.loader.Bf3Loader;
 import com.ninetwozero.battlelog.loader.CompletedTask;
 import com.ninetwozero.battlelog.provider.UriFactory;
@@ -22,13 +21,12 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<CompletedTask>{
+public class LoginActivity extends Bf3FragmentActivity{
 
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
 
     private Bundle bundle;
-    private DialogFragment progressDialog;
     private final int LOGIN_ACTION = 1;
     private final int USER_DATA_ACTION = 2;
 
@@ -81,7 +79,6 @@ public class LoginActivity extends FragmentActivity implements LoaderManager.Loa
         if(isTaskSuccess(completedTask.result) && completedTaskLoader.getId() == LOGIN_ACTION){
             processLoginResult(completedTask.response);
         } else if(isTaskSuccess(completedTask.result) && completedTaskLoader.getId() == USER_DATA_ACTION){
-            Log.e("LoginActivity", "Process user data");
             processUserDataResult(completedTask.response);
         }
         else {
@@ -104,12 +101,10 @@ public class LoginActivity extends FragmentActivity implements LoaderManager.Loa
     }
 
     private void processUserDataResult(String response){
-        Log.e("LoginActivity", "Processing user data");
         String processResponse = new HtmlParsing().extractUserData(response);
-        Log.e("LoginActivity", "User data processed");
         if(processResponse.equals("")){
-            closeProgressDialog();
             startActivity(new Intent(getContext(), DashboardActivity.class));
+            closeProgressDialog();
             finish();
         } else {
 
@@ -122,18 +117,5 @@ public class LoginActivity extends FragmentActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
-    }
-
-    private void startLoadingDialog() {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialogFragment();
-        }
-        progressDialog.show(getSupportFragmentManager(), "dialog");
-    }
-
-    private void closeProgressDialog(){
-        if(progressDialog != null){
-            progressDialog.dismiss();
-        }
     }
 }

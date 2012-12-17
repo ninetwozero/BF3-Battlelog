@@ -50,7 +50,7 @@
         android:orientation="vertical"
    	/>
     <activity
-      android:name=".LoginActivity"
+      android:name=".activity.LoginActivity"
       />
     <activity
         android:name=".activity.DashboardActivity"

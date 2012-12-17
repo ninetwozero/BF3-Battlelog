@@ -1,6 +1,5 @@
 package com.ninetwozero.battlelog.util;
 
-import android.util.Log;
 import com.ninetwozero.battlelog.Battlelog;
 import com.ninetwozero.battlelog.datatype.SimplePersona;
 import com.ninetwozero.battlelog.datatype.SimplePlatoon;
@@ -31,10 +30,8 @@ public class HtmlParsing {
         String message = "";
         document = Jsoup.parse(httpContent);
         if(loggedInPage()){
-            Log.i("HtmlParsing", "User logged");
             extractUserCredentials();
         } else {
-            Log.i("HtmlParsing", "There is possible exception");
             extractError();
         }
 

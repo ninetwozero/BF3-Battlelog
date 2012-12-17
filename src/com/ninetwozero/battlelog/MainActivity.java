@@ -35,6 +35,7 @@ import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.battlelog.activity.CustomFragmentActivity;
 import com.ninetwozero.battlelog.activity.DashboardActivity;
+import com.ninetwozero.battlelog.activity.LoginActivity;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutCreditsFragment;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutFAQFragment;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutLicenseFragment;
