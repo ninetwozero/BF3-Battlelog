@@ -21,9 +21,9 @@ public class HtmlParsing {
     public static final String ELEMENT_USERNAME_LINK = "<div class=\"base-header-profile-username\">";
 
     private Document document;
-    private final String XBOX = "xbox";
-    private final String PS3 = "ps3";
-    private final String PC = "pc";
+    private final String XBOX = "Xbox";
+    private final String PS3 = "PS3";
+    private final String PC = "PC";
 
 
     public String extractUserDetails(String httpContent){
