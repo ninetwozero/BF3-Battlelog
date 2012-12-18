@@ -96,7 +96,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             mListFragments.add(Fragment.instantiate(this, MenuForumFragment.class.getName()));
             mListFragments.add(mFragmentFeed = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
 
-            mFragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
+            //mFragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
 
             mFragmentFeed.setType(FeedClient.TYPE_GLOBAL);
             mFragmentFeed.setCanWrite(true);
