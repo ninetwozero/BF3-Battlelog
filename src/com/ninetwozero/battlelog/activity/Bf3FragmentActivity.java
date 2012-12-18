@@ -35,14 +35,6 @@ public class Bf3FragmentActivity extends FragmentActivity implements LoaderManag
     }
 
     public void closeProgressDialog(){
-        /*runOnUiThread(new Runnable(){
-            @Override
-            public void run() {
-                if(progressDialog != null){
-                    progressDialog.dismiss();
-                }
-            }
-        });*/
         handler.post(new Runnable() {
             @Override
             public void run() {

@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.ninetwozero.battlelog.Battlelog;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.DashboardActivity;
 import com.ninetwozero.battlelog.activity.profile.assignments.AssignmentActivity;
@@ -100,8 +101,8 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
         
         // Setup the COM
         mComClient = new COMClient(
-    		SessionKeeper.getProfileData().getId(), 
-    		mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
+    		/*SessionKeeper.getProfileData().getId()*/Battlelog.getUserId(),
+    		/*mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")*/Battlelog.getCheckSum()
 		);
     }
 
