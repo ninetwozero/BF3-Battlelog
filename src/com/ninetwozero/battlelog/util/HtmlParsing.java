@@ -66,7 +66,7 @@ public class HtmlParsing {
     }
 
     private String checkSumFromDocument(){
-        Element input = document.select("input[name=post-check-sum").first();
+        Element input = document.select("input[name=post-check-sum]").first();
         return input.attr("value");
     }
 

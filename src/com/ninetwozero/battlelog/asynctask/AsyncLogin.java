@@ -37,7 +37,7 @@ import com.ninetwozero.battlelog.service.BattlelogService;
 import com.ninetwozero.battlelog.util.HtmlParsing;
 
 import java.util.List;
-
+@Deprecated
 public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
     // Attribute
