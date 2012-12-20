@@ -311,16 +311,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     
     public void updatePlatoonInDB(PlatoonData p) {
     	ContentValues contentValues = PlatoonInformationDAO.convertPlatoonDataForDB(p);
-    	try {
-    		 mContext.getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);		
-    	 } catch(SQLiteConstraintException ex) {
-    		 mContext.getContentResolver().update(
-				 PlatoonInformationDAO.URI, 
-				 contentValues,
-				 PlatoonInformationDAO.Columns.PLATOON_ID + "=?", 
-				 new String[] { String.valueOf(p.getId()) }
-			 );
-    	 }
+    	mContext.getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);		
 	}
 
 	public void sendToStats(ProfileData p) {

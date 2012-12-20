@@ -7,7 +7,7 @@
 
   <uses-sdk
       android:minSdkVersion="7"
-      android:targetSdkVersion="8"/>
+      android:targetSdkVersion="16"/>
 
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -49,6 +49,9 @@
         android:label="@string/title_feedback"
         android:orientation="vertical"
    	/>
+    <activity
+      android:name=".activity.LoginActivity"
+      />
     <activity
         android:name=".activity.DashboardActivity"
         android:configChanges="orientation"
