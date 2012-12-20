@@ -356,7 +356,7 @@ public class ProfileClient extends DefaultClient {
             throw new WebsiteHandlerException(ex.getMessage());
         }
     }
-
+    @Deprecated
     public ProfileInformation getInformation(Context context) throws WebsiteHandlerException {
         try {
             List<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();

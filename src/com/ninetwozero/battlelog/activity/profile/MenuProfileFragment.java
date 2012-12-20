@@ -16,9 +16,7 @@ package com.ninetwozero.battlelog.activity.profile;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -36,8 +34,8 @@ import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.battlelog.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.battlelog.activity.profile.weapon.WeaponListActivity;
 import com.ninetwozero.battlelog.datatype.PersonaData;
+import com.ninetwozero.battlelog.datatype.SimplePersona;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
-import com.ninetwozero.battlelog.misc.Constants;
 import com.ninetwozero.battlelog.misc.DataBank;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.model.SelectedPersona;
@@ -47,27 +45,28 @@ import com.squareup.otto.Subscribe;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
-import static com.ninetwozero.battlelog.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
+import static com.ninetwozero.battlelog.Battlelog.getUserPersonas;
+import static com.ninetwozero.battlelog.Battlelog.selectedUserPersona;
+import static com.ninetwozero.battlelog.Battlelog.setSelectedUserPersona;
 
 public class MenuProfileFragment extends Fragment {
 
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private SharedPreferences mSharedPreferences;
+    //private SharedPreferences mSharedPreferences;
 
     private RelativeLayout mWrapPersona;
     private TextView mTextPersona;
     private ImageView mImagePersona;
 
     private PersonaData[] mPersona;
-    private int mSelectedPosition;
+    //private int mSelectedPosition;
     private final String DIALOG = "dialog";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         mContext = getActivity();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        //mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mLayoutInflater = inflater;
 
         View view = mLayoutInflater.inflate(R.layout.tab_content_dashboard_profile, container, false);
@@ -78,7 +77,7 @@ public class MenuProfileFragment extends Fragment {
 
     public void initFragment(View view) {
 
-        dataFromSharedPreferences();
+        //dataFromSharedPreferences();
 
         mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
         mWrapPersona.setOnClickListener(
@@ -133,16 +132,16 @@ public class MenuProfileFragment extends Fragment {
         });
     }
 
-    private void dataFromSharedPreferences() {
+    /*private void dataFromSharedPreferences() {
         mPersona = SessionKeeper.getProfileData().getPersonaArray();
-        mSelectedPosition = mSharedPreferences.getInt(
-                Constants.SP_BL_PERSONA_CURRENT_POS, 0);
-    }
+        *//*mSelectedPosition = mSharedPreferences.getInt(
+                Constants.SP_BL_PERSONA_CURRENT_POS, 0);*//*
+    }*/
 
     private Map<Long, String> personasToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
-        for (PersonaData pd : mPersona) {
-            map.put(pd.getId(), pd.getName() + " " + pd.resolvePlatformId());
+        for (SimplePersona simplePersona : getUserPersonas()) {
+            map.put(simplePersona.getPersonaId(), simplePersona.getPersonaName() + " " + simplePersona.getPlatform());
         }
         return map;
     }
@@ -161,23 +160,28 @@ public class MenuProfileFragment extends Fragment {
 
     @Subscribe
     public void personaChanged(SelectedPersona selectedPersona) {
-        updateSharedPreference(selectedPersona.getPersonaId());
-        dataFromSharedPreferences();
+        //updateSharedPreference(selectedPersona.getPersonaId());
+        setSelectedUserPersona(selectedPersona.getPersonaId());
+        //dataFromSharedPreferences();
         setupActiveSoldierContent();
     }
 
     public void setupActiveSoldierContent() {
         mTextPersona.setText(getPersonaNameAndPlatform());
-        mImagePersona.setImageResource(DataBank
-                .getImageForPersona(mPersona[mSelectedPosition].getLogo()));
+        mImagePersona.setImageResource(DataBank.getImageForPersona(selectedPersona().getPersonaImage()));
     }
 
     private String getPersonaNameAndPlatform() {
-        return mPersona[mSelectedPosition].getName()
-                + mPersona[mSelectedPosition].resolvePlatformId();
+        /*return mPersona[mSelectedPosition].getName()
+                + mPersona[mSelectedPosition].resolvePlatformId();*/
+        return selectedPersona().getPersonaName() + " " + selectedPersona().getPlatform();
     }
 
-    private void updateSharedPreference(long personaId) {
+    private SimplePersona selectedPersona() {
+        return selectedUserPersona();
+    }
+
+    /*private void updateSharedPreference(long personaId) {
         SharedPreferences preferences = PreferenceManager
                 .getDefaultSharedPreferences(getActivity()
                         .getApplicationContext());
@@ -185,7 +189,7 @@ public class MenuProfileFragment extends Fragment {
         editor.putLong(SP_BL_PERSONA_CURRENT_ID, personaId);
         editor.putInt(SP_BL_PERSONA_CURRENT_POS, indexOfPersona(personaId));
         editor.commit();
-    }
+    }*/
 
     private int indexOfPersona(long platoonId){
         for(int i = 0; i <  mPersona.length; i++){

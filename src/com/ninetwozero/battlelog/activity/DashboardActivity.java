@@ -14,29 +14,15 @@
 
 package com.ninetwozero.battlelog.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.ninetwozero.battlelog.MainActivity;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.aboutapp.AboutActivity;
 import com.ninetwozero.battlelog.activity.aboutapp.FeedbackActivity;
@@ -49,10 +35,13 @@ import com.ninetwozero.battlelog.activity.social.ComFriendFragment;
 import com.ninetwozero.battlelog.activity.social.ComNotificationFragment;
 import com.ninetwozero.battlelog.asynctask.AsyncLogout;
 import com.ninetwozero.battlelog.datatype.DefaultFragmentActivity;
-import com.ninetwozero.battlelog.datatype.PlatoonData;
-import com.ninetwozero.battlelog.datatype.ProfileData;
 import com.ninetwozero.battlelog.http.FeedClient;
 import com.ninetwozero.battlelog.misc.SessionKeeper;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DashboardActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
@@ -76,10 +65,6 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
     public void onCreate(final Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.viewpager_dashboard);
-
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        validateSession();
-        
         init();
         setup();
         handleIfOpenedViaNotification();
@@ -111,7 +96,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             mListFragments.add(Fragment.instantiate(this, MenuForumFragment.class.getName()));
             mListFragments.add(mFragmentFeed = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
 
-            mFragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
+            //mFragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
 
             mFragmentFeed.setType(FeedClient.TYPE_GLOBAL);
             mFragmentFeed.setCanWrite(true);
@@ -152,28 +137,6 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             mViewPagerCom.setOnPageChangeListener(mTabsCom);
             mViewPagerCom.setOffscreenPageLimit(1);
             mViewPagerCom.setCurrentItem(0);
-        }
-    }
-
-    public void validateSession() {
-        if (SessionKeeper.getProfileData() == null) {
-            if (getIntent().hasExtra("myProfile")) {
-
-                ProfileData profileData = getIntent().getParcelableExtra("myProfile");
-                List<PlatoonData> platoonArray = getIntent().getParcelableArrayListExtra("myPlatoon");
-
-                if( profileData == null || platoonArray == null ) {
-                    startActivity(new Intent(this, MainActivity.class));
-                	finish();
-                } else {
-                	SessionKeeper.setProfileData(profileData);
-                	SessionKeeper.setPlatoonData(platoonArray);
-                }
-            } else {
-                Toast.makeText(this, R.string.info_txt_session_lost, Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-            }
         }
     }
 

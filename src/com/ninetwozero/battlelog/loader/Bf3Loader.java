@@ -5,8 +5,6 @@ import android.support.v4.content.AsyncTaskLoader;
 import com.google.gson.JsonObject;
 import com.ninetwozero.battlelog.server.Bf3ServerCall;
 
-import java.net.URI;
-
 import static com.ninetwozero.battlelog.loader.CompletedTask.Result.FAILURE;
 import static com.ninetwozero.battlelog.loader.CompletedTask.Result.SUCCESS;
 
@@ -15,11 +13,10 @@ public class Bf3Loader extends AsyncTaskLoader<CompletedTask> implements
 
     private final Bf3ServerCall serverCall;
     private CompletedTask completedTask;
-    private boolean loading;
 
-    public Bf3Loader(Context context, URI uri) {
+    public Bf3Loader(Context context, Bf3ServerCall.HttpData httpData){
         super(context);
-        serverCall = new Bf3ServerCall(uri, this);
+        serverCall = new Bf3ServerCall(httpData, this);
     }
 
     @Override
@@ -30,15 +27,18 @@ public class Bf3Loader extends AsyncTaskLoader<CompletedTask> implements
 
     @Override
     public CompletedTask loadInBackground() {
-        loading = true;
         serverCall.execute();
-        loading = false;
         return completedTask;
     }
 
     @Override
     public void onBf3CallSuccess(JsonObject jsonObject) {
         completedTask = new CompletedTask(SUCCESS, jsonObject);
+    }
+
+    @Override
+    public void onBf3CallSuccess(String response){
+        completedTask = new CompletedTask(SUCCESS, response);
     }
 
     @Override

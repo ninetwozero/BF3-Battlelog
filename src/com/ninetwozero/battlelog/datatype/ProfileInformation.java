@@ -247,6 +247,7 @@ public class ProfileInformation {
     	
     	mPlatoon = new ArrayList<PlatoonData>();
     	for (int i = 0; i < numPlatoons; i++) {
+    		if( platoonIdArray[i].equals("") ) continue;
     		mPlatoon.add(
 				new PlatoonData(
 	    			Long.parseLong(platoonIdArray[i]),

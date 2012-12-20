@@ -41,9 +41,11 @@ import com.ninetwozero.battlelog.misc.SessionKeeper;
 import com.ninetwozero.battlelog.model.SelectedPersona;
 import com.ninetwozero.battlelog.provider.BusProvider;
 import com.ninetwozero.battlelog.provider.UriFactory;
+import com.ninetwozero.battlelog.server.Bf3ServerCall;
 import com.squareup.otto.Subscribe;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+import org.apache.http.client.methods.HttpGet;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -142,7 +144,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     @Override
     public Loader<CompletedTask> onCreateLoader(int i, Bundle bundle) {
         startLoadingDialog();
-        return new Bf3Loader(getApplicationContext(), callURI);
+        return new Bf3Loader(getApplicationContext(), new Bf3ServerCall.HttpData(callURI, HttpGet.METHOD_NAME));
     }
 
     @Override
@@ -187,7 +189,6 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.option_reload) {
-            Log.e("AssignmentActivity", "Reload pressed");
             refresh();
         } else if (item.getItemId() == R.id.option_change) {
             if (personaArrayLength() > 1) {

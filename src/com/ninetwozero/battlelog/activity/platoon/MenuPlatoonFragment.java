@@ -34,6 +34,7 @@ import com.ninetwozero.battlelog.activity.profile.settings.ProfileSettingsActivi
 import com.ninetwozero.battlelog.datatype.DefaultFragment;
 import com.ninetwozero.battlelog.datatype.PlatoonData;
 import com.ninetwozero.battlelog.datatype.ProfileData;
+import com.ninetwozero.battlelog.datatype.SimplePlatoon;
 import com.ninetwozero.battlelog.dialog.ListDialogFragment;
 import com.ninetwozero.battlelog.http.ProfileClient;
 import com.ninetwozero.battlelog.misc.Constants;
@@ -47,19 +48,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MenuPlatoonFragment extends Fragment implements DefaultFragment{
+import static com.ninetwozero.battlelog.Battlelog.getUserPlatoons;
+import static com.ninetwozero.battlelog.Battlelog.selectedUserPlatoon;
+
+public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
     // Attributes
     private Context mContext;
-    private SharedPreferences mSharedPreferences;
 
     // Elements
     private RelativeLayout mWrapPlatoon;
     private TextView mTextPlatoon;
     private ImageView mImagePlatoon;
 
-    // Let's store the position & platoon
-    private List<PlatoonData> mPlatoonData;
     private long[] mPlatoonId;
     private String[] mPlatoonName;
     private long mSelectedPlatoon;
@@ -72,10 +73,8 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment{
 
         // Set our attributes
         mContext = getActivity();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
-        View view = inflater.inflate(R.layout.tab_content_dashboard_platoon,
-                container, false);
+        View view = inflater.inflate(R.layout.tab_content_dashboard_platoon, container, false);
 
         initFragment(view);
 
@@ -84,26 +83,20 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment{
     }
 
     public void initFragment(View view) {
-        getPlatoonPreferences();
-
         // Set up the Platoon box
         mWrapPlatoon = (RelativeLayout) view.findViewById(R.id.wrap_platoon);
-        mWrapPlatoon.setOnClickListener(
+        mWrapPlatoon.setOnClickListener(new OnClickListener() {
 
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        FragmentManager manager = getFragmentManager();
-                        ListDialogFragment dialog = ListDialogFragment.newInstance(platoonsToMap());
-                        dialog.show(manager, DIALOG);
-                    }
-
-                }
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                ListDialogFragment dialog = ListDialogFragment.newInstance(platoonsToMap());
+                dialog.show(manager, DIALOG);
+            }
+        }
 
         );
-        mImagePlatoon = (ImageView) mWrapPlatoon
-                .findViewById(R.id.image_platoon);
+        mImagePlatoon = (ImageView) mWrapPlatoon.findViewById(R.id.image_platoon);
         mTextPlatoon = (TextView) mWrapPlatoon.findViewById(R.id.text_platoon);
         mTextPlatoon.setSelected(true);
 
@@ -113,7 +106,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment{
         view.findViewById(R.id.button_new).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext,PlatoonCreateActivity.class));
+                startActivity(new Intent(mContext, PlatoonCreateActivity.class));
             }
         });
         view.findViewById(R.id.button_invites).setOnClickListener(new OnClickListener() {
@@ -125,33 +118,22 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment{
         view.findViewById(R.id.button_self).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mPlatoonData != null && !mPlatoonData.isEmpty()){
-                    startActivity(new Intent(mContext,
-                            PlatoonActivity.class).putExtra("platoon",
-                            mPlatoonData.get(mSelectedPosition)));
+                if (getUserPlatoons().size() > 0) {
+                    startActivity(new Intent(mContext, PlatoonActivity.class));
                 }
             }
         });
         view.findViewById(R.id.button_settings).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mPlatoonData != null && !mPlatoonData.isEmpty()){
-                    startActivity(new Intent(mContext,
-                            ProfileSettingsActivity.class).putExtra("platoon",
-                            mPlatoonData.get(mSelectedPosition)));
+                if (getUserPlatoons().size() > 0) {
+                    startActivity(new Intent(mContext, ProfileSettingsActivity.class));
                 }
             }
         });
 
         // Let's reload!
         reload();
-    }
-
-    private void getPlatoonPreferences() {
-        mSelectedPosition = mSharedPreferences.getInt(
-                Constants.SP_BL_PLATOON_CURRENT_POS, 0);
-        mSelectedPlatoon = mSharedPreferences.getLong(
-                Constants.SP_BL_PLATOON_CURRENT_ID, 0);
     }
 
     @Override
@@ -172,10 +154,10 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment{
         return false;
     }
 
-    private Map<Long, String> platoonsToMap(){
+    private Map<Long, String> platoonsToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
-        for(PlatoonData pd : mPlatoonData){
-            map.put(pd.getId(), pd.getName());
+        for (SimplePlatoon platoon : getUserPlatoons()) {
+            map.put(platoon.getPlatoonId(), platoon.getName());
         }
         return map;
     }
@@ -195,7 +177,6 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment{
     @Subscribe
     public void personaChanged(SelectedPersona selectedPersona) {
         updateSharedPreference(selectedPersona.getPersonaId());
-        getPlatoonPreferences();
         setupPlatoonBox();
     }
 
@@ -209,9 +190,9 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment{
         editor.commit();
     }
 
-    private int indexOfPlatoon(long platoonId){
-        for(int i = 0; i <  mPlatoonData.size(); i++){
-            if(mPlatoonData.get(i).getId() == platoonId){
+    private int indexOfPlatoon(long platoonId) {
+        for (int i = 0; i < getUserPlatoons().size(); i++) {
+            if (getUserPlatoons().get(i).getPlatoonId() == platoonId) {
                 return i;
             }
         }
@@ -220,35 +201,33 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment{
     }
 
     public void setupPlatoonBox() {
-        if (mPlatoonData != null && !mPlatoonData.isEmpty()
+        if (getUserPlatoons().size() > 0
                 && mTextPlatoon != null) {
 
-            getPlatoonPreferences();
-
-            mTextPlatoon.setText(mPlatoonData.get(mSelectedPosition).getName()
-                    + "[" + mPlatoonData.get(mSelectedPosition).getTag() + "]");
-            mImagePlatoon.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
+            mTextPlatoon.setText(selectedUserPlatoon().getName());
+           /* mImagePlatoon.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
                     .getCachePath(mContext)
-                    + mPlatoonData.get(mSelectedPosition).getImage()));
+                    + mPlatoonData.get(mSelectedPosition).getImage()));*/
         }
     }
 
-    public void setPlatoonData(List<PlatoonData> p) {
+    /*public void setPlatoonData(List<PlatoonData> p) {
         mPlatoonData = p;
         setupPlatoonBox();
 
-    }
+    }*/
 
     public class AsyncRefresh extends AsyncTask<ProfileData, Void, Boolean> {
         @Override
         protected Boolean doInBackground(ProfileData... arg0) {
-            try {
+            /*try {
                 mPlatoonData = new ProfileClient(arg0[0]).getPlatoons(mContext);
                 return (mPlatoonData != null);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return false;
-            }
+            }*/
+            return false;
         }
 
         @Override

@@ -27,6 +27,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import com.ninetwozero.battlelog.Battlelog;
 import com.ninetwozero.battlelog.R;
 import com.ninetwozero.battlelog.activity.news.SinglePostActivity;
 import com.ninetwozero.battlelog.activity.profile.soldier.ProfileActivity;
@@ -170,7 +171,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment,
 	}
 
 	public void reload() {
-		new AsyncRefresh(mContext, SessionKeeper.getProfileData().getId()).execute();
+		new AsyncRefresh(mContext, /*SessionKeeper.getProfileData().getId()*/Battlelog.selectedUserPersona().getPersonaId()).execute();
 	}
 
 	@Override
