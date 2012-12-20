@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">BF3 Battlelog</string>
+    <string name="app_name">BF3 Droid</string>
     <string name="widget_name">Battlelog - Stats+Friends</string>
 
     <integer-array name="service_update_intervals_values">
@@ -325,21 +325,21 @@
     <string name="info_p_shared_rank">&lt;b>{username}&lt;/b> shared a received promotion: &lt;b>{title}
     ({rank})&lt;/b>.</string>
     <string name="info_new_rank">new rank</string>
-    <string name="title_main_menu">BF3 Battlelog - Main menu</string>
-    <string name="title_profile">BF3 Battlelog - Profile</string>
-    <string name="title_platoon">BF3 Battlelog - Platoon</string>
-    <string name="title_performance">BF3 Battlelog - Your performance</string>
-    <string name="title_chat">BF3 Battlelog - Chatting with ...</string>
-    <string name="title_comments">BF3 Battlelog - Comments</string>
-    <string name="title_comparing_battle_scars">BF3 Battlelog - Comparing battle scars</string>
-    <string name="title_unlocks">BF3 Battlelog - Upcoming unlocks</string>
-    <string name="title_settings">BF3 Battlelog - Settings</string>
-    <string name="title_forum">BF3 Battlelog - Forum</string>
+    <string name="title_main_menu">BF3 Droid - Main menu</string>
+    <string name="title_profile">BF3 Droid - Profile</string>
+    <string name="title_platoon">BF3 Droid - Platoon</string>
+    <string name="title_performance">BF3 Droid - Your performance</string>
+    <string name="title_chat">BF3 Droid - Chatting with ...</string>
+    <string name="title_comments">BF3 Droid - Comments</string>
+    <string name="title_comparing_battle_scars">BF3 Droid - Comparing battle scars</string>
+    <string name="title_unlocks">BF3 Droid - Upcoming unlocks</string>
+    <string name="title_settings">BF3 Droid - Settings</string>
+    <string name="title_forum">BF3 Droid - Forum</string>
     <string name="label_forum">Forum</string>
     <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> completed an assignment - &lt;b>\"{assignment}\"&lt;/b>
     (unlocks &lt;b>{unlock}&lt;/b>).</string>
     <string name="info_assignments_new_unknown">New assignments have been added - please notify the developer!</string>
-    <string name="title_assignments">BF3 Battlelog - Viewing your assignments</string>
+    <string name="title_assignments">BF3 Droid - Viewing your assignments</string>
     <string name="info_xml_platoons_my">My platoons</string>
     <string name="info_xml_assignments_my">My assignments</string>
     <string name="msg_no_cookies">No cookies found - please try to re-login.</string>
@@ -468,7 +468,7 @@
     <string name="label_report">Report</string>
     <string name="info_forum_report_empty">You need to enter a reason for reporting this post.</string>
     <string name="info_report_active">Reporting...</string>
-    <string name="title_forum_report">BF3 Battlelog - Reporting a forum post</string>
+    <string name="title_forum_report">BF3 Droid - Reporting a forum post</string>
     <string name="info_forum_lang">Select a language for the forums...</string>
     <string name="info_general_nocache">The cache directory doesn\'t exist: please contact the developer!</string>
     <string name="info_unlock_change">Change soldier...</string>
@@ -547,8 +547,8 @@
     <string name="info_settings_fullscreen_false">The app will show the title and notification bar.</string>
     <string name="info_settings_fullscreen">Fullscreen</string>
     <string name="label_app_settings">Application settings</string>
-    <string name="title_profile_settings">BF3 Battlelog - Setting up your profile</string>
-    <string name="title_platoon_new">BF3 Battlelog - Creating a new platoon</string>
+    <string name="title_profile_settings">BF3 Droid - Setting up your profile</string>
+    <string name="title_platoon_new">BF3 Droid - Creating a new platoon</string>
     <string name="info_platoon_new_empty_name">You need to enter a name for the platoon.</string>
     <string name="info_platoon_new_empty_tag">You need to enter a tag for the platoon.</string>
     <string name="info_platoon_new_creating">Creating the platoon...</string>
@@ -556,7 +556,7 @@
     <string name="info_platoon_new_false">The platoon could not be created.</string>
     <string name="info_forum_empty_saved">No saved threads found.</string>
     <string name="info_xml_forum_posts">Posts</string>
-    <string name="title_forum_saved">BF3 Battlelog - Viewing the saved threads</string>
+    <string name="title_forum_saved">BF3 Droid - Viewing the saved threads</string>
     <string name="info_xml_forum_save">Save thread</string>
     <string name="info_forum_save_true">The thread has been saved.</string>
     <string name="info_forum_save_false">The thread could not be saved.</string>
@@ -585,7 +585,7 @@
     <string name="local_time">Your local time</string>
 
     <!-- WIDGET -->
-    <string name="widget_name_social">BF3 Battlelog - Social</string>
+    <string name="widget_name_social">BF3 Droid - Social</string>
 
     <!-- DESCRIPTIONS -->
     <string name="desc_not_found">Description not found.</string>
@@ -1365,10 +1365,10 @@
     <string name="info_dialog_selection_profile">Select profile to view</string>
     <string name="info_feed_header_comments">View post to see the remaining comments</string>
     <string name="info_about_copyright">This app was not created nor is endorsed by EA/DICE. All images are owned by their respective owners, and Battlefield is a registered trademark of EA Digital Illusions CE AB. No user account information is being stored and/or shared with third-parties.</string>
-    <string name="license_info">BF3 Battlelog is free software: you can redistribute it and/or modify
+    <string name="license_info">BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.\n\nBF3 Battlelog is distributed in the hope that it will be useful,
+    (at your option) any later version.\n\nBF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.</string>

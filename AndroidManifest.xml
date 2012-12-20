@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ninetwozero.battlelog"
+          package="com.ninetwozero.bf3droid"
           android:installLocation="internalOnly"
           android:versionCode="13"
           android:versionName="2.0">
@@ -32,7 +32,7 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
       <intent-filter>
-        <action android:name="com.ninetwozero.battlelog.widgets.BattlelogAppWidgetProvider.ACTION_WIDGET_OPENAPP"/>
+        <action android:name="com.ninetwozero.bf3droid.widgets.BattlelogAppWidgetProvider.ACTION_WIDGET_OPENAPP"/>
 
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
@@ -81,7 +81,7 @@
     <activity
         android:name=".activity.forum.ForumActivity"
         android:configChanges="orientation"
-        android:label="BF3 Battlelog - Browsing the forums"/>
+        android:label="BF3 Droid - Browsing the forums"/>
     <activity
         android:name=".activity.forum.ForumSearchActivity"
         android:configChanges="orientation"
@@ -137,14 +137,14 @@
         android:windowSoftInputMode="stateHidden"/>
 
     <provider
-        android:authorities="com.ninetwozero.battlelog.provider"
+        android:authorities="com.ninetwozero.bf3droid.provider"
         android:name=".provider.BattlelogContentProvider"
         />
 
     <!--
   TODO: This currently kills the app (and the phone) so it won\'t be active.
     ANYONE KNOWS HOW THIS WORKS???
-    <receiver android:name="com.ninetwozero.battlelog.broadcastreceivers.NetworkReceiver">
+    <receiver android:name="com.ninetwozero.bf3droid.broadcastreceivers.NetworkReceiver">
   <intent-filter>
     <action android:name="android.net.conn.CONNECTIVITY_CHANGE"></action>
   </intent-filter>

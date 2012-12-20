@@ -28,7 +28,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.ninetwozero.battlelog.R;
+import com.ninetwozero.bf3droid.R;
 
 public class SwipeyTabs extends ViewGroup implements OnPageChangeListener {
 

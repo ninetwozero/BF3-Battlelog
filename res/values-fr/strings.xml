@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">BF3 Battlelog</string>
+  <string name="app_name">BF3 Droid</string>
   <string name="widget_name">Battlelog - Stats+Amis</string>
 
   <integer-array name="service_update_intervals_values">
@@ -311,16 +311,16 @@
   </string>
   <string name="info_p_award">&lt;b>{username}&lt;/b> a recu un nouvea prix: &lt;b>{award}&lt;/b>.</string>
   <string name="info_new_rank">nouveau grade</string>
-  <string name="title_main_menu">BF3 Battlelog - Menu principal</string>
-  <string name="title_profile">BF3 Battlelog - Profil</string>
-  <string name="title_platoon">BF3 Battlelog - Section</string>
-  <string name="title_performance">BF3 Battlelog - Votre performance</string>
-  <string name="title_chat">BF3 Battlelog - Discussion avec...</string>
-  <string name="title_comments">BF3 Battlelog - Commentaires</string>
-  <string name="title_comparing_battle_scars">BF3 Battlelog - Comparer les cicatrices de bataille</string>
-  <string name="title_unlocks">BF3 Battlelog - Déblocages à venir</string>
-  <string name="title_settings">BF3 Battlelog - Paramètres</string>
-  <string name="title_forum">BF3 Battlelog - Forum</string>
+  <string name="title_main_menu">BF3 Droid - Menu principal</string>
+  <string name="title_profile">BF3 Droid - Profil</string>
+  <string name="title_platoon">BF3 Droid - Section</string>
+  <string name="title_performance">BF3 Droid - Votre performance</string>
+  <string name="title_chat">BF3 Droid - Discussion avec...</string>
+  <string name="title_comments">BF3 Droid - Commentaires</string>
+  <string name="title_comparing_battle_scars">BF3 Droid - Comparer les cicatrices de bataille</string>
+  <string name="title_unlocks">BF3 Droid - Déblocages à venir</string>
+  <string name="title_settings">BF3 Droid - Paramètres</string>
+  <string name="title_forum">BF3 Droid - Forum</string>
   <string name="label_forum">Forum</string>
   <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> a accompli une mission - &lt;b>\"{assignment}\"&lt;/b>
     (unlocks &lt;b>{unlock}&lt;/b>).
@@ -328,7 +328,7 @@
   <string name="info_assignments_new_unknown">De nouvelles missions ont été ajoutées - prière de notifier le
     développeur!
   </string>
-  <string name="title_assignments">BF3 Battlelog - Voir vos missions</string>
+  <string name="title_assignments">BF3 Droid - Voir vos missions</string>
   <string name="info_xml_platoons_my">Mes sections</string>
   <string name="info_xml_assignments_my">Mes missions</string>
   <string name="msg_no_cookies">Aucun cookie trouvé - veuillez essayer de vous re-connecter.</string>
@@ -458,7 +458,7 @@
   <string name="label_report">Signaler</string>
   <string name="info_forum_report_empty">Vous avez besoin de saisir une raison pour signaler un message.</string>
   <string name="info_report_active">Signalement...</string>
-  <string name="title_forum_report">BF3 Battlelog - Signaler message du forum</string>
+  <string name="title_forum_report">BF3 Droid - Signaler message du forum</string>
   <string name="info_forum_lang">Sélectionnez une langue pour les forum...</string>
   <string name="info_general_nocache">Le répertoire de cache n\'existe pas : Veuillez contacter le développeur !
   </string>

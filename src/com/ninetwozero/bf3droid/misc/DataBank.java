@@ -1,12 +1,12 @@
 /*
-	This file is part of BF3 Battlelog
+	This file is part of BF3 Droid
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
+    BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
+    BF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -81,7 +81,7 @@ public final class DataBank {
 
         // LANG & LOCALE
         LANGUAGES = new String[]{"English", "Deutsch", "FranÃ§ais",
-                "EspaÃ±ol", "Italiano", "Polski", "PÑƒÑ�Ñ��?º�?¸�?¹", "æ—¥æœ¬èªž",
+                "EspaÃ±ol", "Italiano", "Polski", "PÑƒÑ�Ñ��?º�?¸�?¹", "æ—¥æœ¬èªž",
                 "í•œêµ­ì–´", "ä¸­æ–‡", "ÄŒesky"};
         LOCALES = new String[]{"en", "de", "fr", "es", "it", "pl", "ru",
                 "jp", "kr", "zh", "cz"};

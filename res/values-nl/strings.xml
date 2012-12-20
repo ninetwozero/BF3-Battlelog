@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">BF3 Battlelog</string>
+  <string name="app_name">BF3 Droid</string>
   <string name="widget_name">Battlelog - Stats+Vrienden</string>
 
   <integer-array name="service_update_intervals_values">
@@ -332,22 +332,22 @@
   <string name="info_p_award">&lt;b>{username}&lt;/b> heeft de volgende nieuwe award ontvangen: &lt;b>{award}&lt;/b>.
   </string>
   <string name="info_new_rank">new rank</string>
-  <string name="title_main_menu">BF3 Battlelog - Main menu</string>
-  <string name="title_profile">BF3 Battlelog - Profile</string>
-  <string name="title_platoon">BF3 Battlelog - Platoon</string>
-  <string name="title_performance">BF3 Battlelog - Your performance</string>
-  <string name="title_chat">BF3 Battlelog - Chatting with ...</string>
-  <string name="title_comments">BF3 Battlelog - Comments</string>
-  <string name="title_comparing_battle_scars">BF3 Battlelog - Comparing battle scars</string>
-  <string name="title_unlocks">BF3 Battlelog - Upcoming unlocks</string>
-  <string name="title_settings">BF3 Battlelog - Settings</string>
-  <string name="title_forum">BF3 Battlelog - Forum</string>
+  <string name="title_main_menu">BF3 Droid - Main menu</string>
+  <string name="title_profile">BF3 Droid - Profile</string>
+  <string name="title_platoon">BF3 Droid - Platoon</string>
+  <string name="title_performance">BF3 Droid - Your performance</string>
+  <string name="title_chat">BF3 Droid - Chatting with ...</string>
+  <string name="title_comments">BF3 Droid - Comments</string>
+  <string name="title_comparing_battle_scars">BF3 Droid - Comparing battle scars</string>
+  <string name="title_unlocks">BF3 Droid - Upcoming unlocks</string>
+  <string name="title_settings">BF3 Droid - Settings</string>
+  <string name="title_forum">BF3 Droid - Forum</string>
   <string name="label_forum">Forum</string>
   <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> completed an assignment - &lt;b>\"{assignment}\"&lt;/b>
     (unlocks &lt;b>{unlock}&lt;/b>).
   </string>
   <string name="info_assignments_new_unknown">New assignments have been added - please notify the developer!</string>
-  <string name="title_assignments">BF3 Battlelog - Viewing your assignments</string>
+  <string name="title_assignments">BF3 Droid - Viewing your assignments</string>
   <string name="info_xml_platoons_my">My platoons</string>
   <string name="info_xml_assignments_my">My assignments</string>
   <string name="msg_no_cookies">No cookies found - please try to re-login.</string>
@@ -475,7 +475,7 @@
   <string name="label_report">Report</string>
   <string name="info_forum_report_empty">Je moet een reden aangeven.</string>
   <string name="info_report_active">Bezig met rapporteren ...</string>
-  <string name="title_forum_report">BF3 Battlelog - Rapport</string>
+  <string name="title_forum_report">BF3 Droid - Rapport</string>
   <string name="info_forum_lang">Selecteer een taal voor het forum..</string>
   <string name="info_general_nocache">The cache directory bestaat niet: neem contact op met de ontwikkelaar.</string>
   <string name="info_unlock_change">Andere soldaat</string>

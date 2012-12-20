@@ -318,22 +318,22 @@
   </string>
   <string name="info_p_award">&lt;b>{username}&lt;/b> sai uuden palkinnon: &lt;b>{award}&lt;/b>.</string>
   <string name="info_new_rank">uusi taso</string>
-  <string name="title_main_menu">BF3 Battlelog - Päävalikko</string>
-  <string name="title_profile">BF3 Battlelog - Profiili</string>
-  <string name="title_platoon">BF3 Battlelog - Joukkue</string>
-  <string name="title_performance">BF3 Battlelog - Omat suoritukset</string>
-  <string name="title_chat">BF3 Battlelog - Keskustelu</string>
-  <string name="title_comments">BF3 Battlelog - Kommentit</string>
-  <string name="title_comparing_battle_scars">BF3 Battlelog - Tilastojen vertailu</string>
-  <string name="title_unlocks">BF3 Battlelog - Tulevat avaukset</string>
-  <string name="title_settings">BF3 Battlelog - Asetukset</string>
-  <string name="title_forum">BF3 Battlelog - Foorumi</string>
+  <string name="title_main_menu">BF3 Droid - Päävalikko</string>
+  <string name="title_profile">BF3 Droid - Profiili</string>
+  <string name="title_platoon">BF3 Droid - Joukkue</string>
+  <string name="title_performance">BF3 Droid - Omat suoritukset</string>
+  <string name="title_chat">BF3 Droid - Keskustelu</string>
+  <string name="title_comments">BF3 Droid - Kommentit</string>
+  <string name="title_comparing_battle_scars">BF3 Droid - Tilastojen vertailu</string>
+  <string name="title_unlocks">BF3 Droid - Tulevat avaukset</string>
+  <string name="title_settings">BF3 Droid - Asetukset</string>
+  <string name="title_forum">BF3 Droid - Foorumi</string>
   <string name="label_forum">Foorumi</string>
   <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> suoritti assingmentin - &lt;b>\"{assignment}\"&lt;/b>
     (unlocks &lt;b>{unlock}&lt;/b>).
   </string>
   <string name="info_assignments_new_unknown">Uusia assingmenttejä lisätty - ilmoita kehittäjälle!</string>
-  <string name="title_assignments">BF3 Battlelog - Näytetään assingmenttisi</string>
+  <string name="title_assignments">BF3 Droid - Näytetään assingmenttisi</string>
   <string name="info_xml_platoons_my">Omat joukkueet</string>
   <string name="info_xml_assignments_my">Omat tehtävät</string>
   <string name="msg_no_cookies">Evästeitä ei löydetty - kokeile kirjautua uudestaan</string>
@@ -461,7 +461,7 @@
   <string name="label_report">Ilmoita</string>
   <string name="info_forum_report_empty">Sinun pitää kirjoittaa syy, miksi haluat ilmoittaa tästä viestistä.</string>
   <string name="info_report_active">Ilmoitetaan...</string>
-  <string name="title_forum_report">BF3 Battlelog - Ilmoitetaan foorumin viestistä..</string>
+  <string name="title_forum_report">BF3 Droid - Ilmoitetaan foorumin viestistä..</string>
   <string name="info_forum_lang">Valitse kieli foorumeille...</string>
   <string name="info_general_nocache">Välimuistin kansiota ei ole olemassa, ota yhteyttä kehittäjään!</string>
   <string name="info_unlock_change">Vaihda sotilasta...</string>
