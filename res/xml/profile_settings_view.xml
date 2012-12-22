@@ -28,23 +28,23 @@
         android:key="profile_info_presentation"
         android:title="Presentation"/>
 
-    <com.ninetwozero.battlelog.preference.DatePickerPreference
+    <com.ninetwozero.bf3droid.preference.DatePickerPreference
         android:dialogMessage="@string/profile_info_birthday_msg"
         android:title="@string/birthday"/>
   </PreferenceCategory>
   <PreferenceCategory android:title="Demographic information">
-    <com.ninetwozero.battlelog.preference.CountryPreference
+    <com.ninetwozero.bf3droid.preference.CountryPreference
         android:dialogMessage="@string/profile_info_country"
         android:title="@string/country"/>
 
-    <com.ninetwozero.battlelog.preference.DateTimePreference
+    <com.ninetwozero.bf3droid.preference.DateTimePreference
         android:key="profile_info_date_format"
         android:title="@string/date_format"/>
-    <com.ninetwozero.battlelog.preference.DateTimePreference
+    <com.ninetwozero.bf3droid.preference.DateTimePreference
         android:key="profile_info_time_format"
         android:title="@string/time_format"/>
 
-    <com.ninetwozero.battlelog.preference.LocalTimeListPreference
+    <com.ninetwozero.bf3droid.preference.LocalTimeListPreference
         android:key="profile_info_local_time"
         android:title="@string/local_time"/>
   </PreferenceCategory>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ninetwozero.battlelog"
+          package="com.ninetwozero.bf3droid"
           android:installLocation="internalOnly"
           android:versionCode="13"
           android:versionName="2.0">
@@ -17,12 +17,12 @@
   <!-- TODO add prior to release android:debuggable="false" -->
   <application
       android:debuggable="true"
-      android:name=".Battlelog"
+      android:name="com.ninetwozero.bf3droid.Battlelog"
       android:icon="@drawable/app_logo"
       android:label="@string/app_name"
       android:theme="@android:style/Theme.Light">
     <activity
-        android:name=".MainActivity"
+        android:name="com.ninetwozero.bf3droid.MainActivity"
         android:configChanges="orientation"
         android:label="@string/app_name"
         android:orientation="vertical">
@@ -32,126 +32,126 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
       <intent-filter>
-        <action android:name="com.ninetwozero.battlelog.widgets.BattlelogAppWidgetProvider.ACTION_WIDGET_OPENAPP"/>
+        <action android:name="com.ninetwozero.bf3droid.widgets.BattlelogAppWidgetProvider.ACTION_WIDGET_OPENAPP"/>
 
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
     <activity
-        android:name=".activity.aboutapp.AboutActivity"
+        android:name="com.ninetwozero.bf3droid.activity.aboutapp.AboutActivity"
         android:configChanges="orientation"
         android:label="@string/title_about"
         android:orientation="vertical"
         android:windowSoftInputMode="stateHidden"/>
     <activity
-        android:name=".activity.aboutapp.FeedbackActivity"
+        android:name="com.ninetwozero.bf3droid.activity.aboutapp.FeedbackActivity"
         android:configChanges="orientation"
         android:label="@string/title_feedback"
         android:orientation="vertical"
    	/>
     <activity
-      android:name=".activity.LoginActivity"
+      android:name="com.ninetwozero.bf3droid.activity.LoginActivity"
       />
     <activity
-        android:name=".activity.DashboardActivity"
+        android:name="com.ninetwozero.bf3droid.activity.DashboardActivity"
         android:configChanges="orientation"
         android:label="@string/title_main_menu"
         android:orientation="vertical"
         android:windowSoftInputMode="stateHidden"/>
     <activity
-        android:name=".activity.profile.soldier.ProfileActivity"
+        android:name="com.ninetwozero.bf3droid.activity.profile.soldier.ProfileActivity"
         android:configChanges="orientation"
         android:label="@string/title_profile"/>
     <activity
-        android:name=".activity.platoon.PlatoonActivity"
+        android:name="com.ninetwozero.bf3droid.activity.platoon.PlatoonActivity"
         android:configChanges="orientation"
         android:label="@string/title_platoon"/>
     <activity
-        android:name=".activity.platoon.PlatoonInviteActivity"
+        android:name="com.ninetwozero.bf3droid.activity.platoon.PlatoonInviteActivity"
         android:configChanges="orientation"
         android:label="@string/title_platoon_invite"/>
     <activity
-        android:name=".activity.social.ChatActivity"
+        android:name="com.ninetwozero.bf3droid.activity.social.ChatActivity"
         android:configChanges="orientation"
         android:label="@string/title_chat"/>
     <activity
-        android:name=".activity.profile.soldier.CompareActivity"
+        android:name="com.ninetwozero.bf3droid.activity.profile.soldier.CompareActivity"
         android:configChanges="orientation"
         android:label="@string/title_comparing_battle_scars"/>
     <activity
-        android:name=".activity.forum.ForumActivity"
+        android:name="com.ninetwozero.bf3droid.activity.forum.ForumActivity"
         android:configChanges="orientation"
         android:label="BF3 Battlelog - Browsing the forums"/>
     <activity
-        android:name=".activity.forum.ForumSearchActivity"
+        android:name="com.ninetwozero.bf3droid.activity.forum.ForumSearchActivity"
         android:configChanges="orientation"
         android:label="@string/title_forum_search"/>
     <activity
-        android:name=".activity.forum.ForumSavedActivity"
+        android:name="com.ninetwozero.bf3droid.activity.forum.ForumSavedActivity"
         android:configChanges="orientation"
         android:label="@string/title_forum_saved"/>
     <activity
-        android:name=".activity.forum.ForumReportActivity"
+        android:name="com.ninetwozero.bf3droid.activity.forum.ForumReportActivity"
         android:configChanges="orientation"
         android:label="@string/title_forum_report"/>
     <activity
-        android:name=".activity.profile.unlocks.UnlockActivity"
+        android:name="com.ninetwozero.bf3droid.activity.profile.unlocks.UnlockActivity"
         android:configChanges="orientation"
         android:label="@string/title_unlocks"/>
     <activity
-        android:name=".activity.SearchActivity"
+        android:name="com.ninetwozero.bf3droid.activity.SearchActivity"
         android:configChanges="orientation"
         android:label="@string/title_search"/>
     <activity
-        android:name=".activity.SettingsActivity"
+        android:name="com.ninetwozero.bf3droid.activity.SettingsActivity"
         android:configChanges="orientation"
         android:label="@string/title_settings"
         android:theme="@android:style/Theme.Light"/>
     <activity
-        android:name=".activity.profile.settings.ProfileSettingsActivity"
+        android:name="com.ninetwozero.bf3droid.activity.profile.settings.ProfileSettingsActivity"
         android:configChanges="orientation"
         android:label="@string/title_profile_settings"
         android:theme="@android:style/Theme.Light"/>
     <activity
-        android:name=".activity.profile.assignments.AssignmentActivity"
+        android:name="com.ninetwozero.bf3droid.activity.profile.assignments.AssignmentActivity"
         android:configChanges="orientation"
         android:label="@string/title_assignments"/>
     <activity
-        android:name=".activity.platoon.PlatoonCreateActivity"
+        android:name="com.ninetwozero.bf3droid.activity.platoon.PlatoonCreateActivity"
         android:configChanges="orientation"
         android:label="@string/title_platoon_new"/>
     <activity
-        android:name=".activity.profile.weapon.WeaponListActivity"
+        android:name="com.ninetwozero.bf3droid.activity.profile.weapon.WeaponListActivity"
         android:configChanges="orientation"
         android:label="TODO"
         android:windowSoftInputMode="stateHidden"/>
     <activity
-        android:name=".activity.profile.weapon.SingleWeaponActivity"
+        android:name="com.ninetwozero.bf3droid.activity.profile.weapon.SingleWeaponActivity"
         android:configChanges="orientation"
         android:label="TODO"
         android:windowSoftInputMode="stateHidden"/>
     <activity
-        android:name=".activity.news.SinglePostActivity"
+        android:name="com.ninetwozero.bf3droid.activity.news.SinglePostActivity"
         android:configChanges="orientation"
         android:label="TODO"
         android:windowSoftInputMode="stateHidden"/>
 
     <provider
-        android:authorities="com.ninetwozero.battlelog.provider"
-        android:name=".provider.BattlelogContentProvider"
+        android:authorities="com.ninetwozero.bf3droid.provider"
+        android:name="com.ninetwozero.bf3droid.provider.BattlelogContentProvider"
         />
 
     <!--
   TODO: This currently kills the app (and the phone) so it won\'t be active.
     ANYONE KNOWS HOW THIS WORKS???
-    <receiver android:name="com.ninetwozero.battlelog.broadcastreceivers.NetworkReceiver">
+    <receiver android:name="com.ninetwozero.bf3droid.broadcastreceivers.NetworkReceiver">
   <intent-filter>
     <action android:name="android.net.conn.CONNECTIVITY_CHANGE"></action>
   </intent-filter>
 </receiver>
     -->
     <receiver
-        android:name=".widgets.BattlelogAppWidgetProvider"
+        android:name="com.ninetwozero.bf3droid.widgets.BattlelogAppWidgetProvider"
         android:label="@string/widget_name">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -176,7 +176,7 @@
 </receiver>
     -->
     <service
-        android:name=".service.BattlelogService"
+        android:name="com.ninetwozero.bf3droid.service.BattlelogService"
         android:enabled="true"/>
   </application>
 
