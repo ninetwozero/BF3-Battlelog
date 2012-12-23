@@ -1,9 +1,8 @@
 package com.ninetwozero.bf3droid.util;
 
-import com.ninetwozero.bf3droid.Battlelog;
+import com.ninetwozero.bf3droid.datatype.LoginResult;
 import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
-import com.ninetwozero.bf3droid.datatype.WebsiteHandlerException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -26,34 +25,45 @@ public class HtmlParsing {
     private final String PC = "PC";
 
 
-    public String extractUserDetails(String httpContent){
-        String message = "";
+    public LoginResult extractUserDetails(String httpContent){
         document = Jsoup.parse(httpContent);
         if(loggedInPage()){
-            extractUserCredentials();
+            return extractUserCredentials();
         } else {
-            extractError();
+            return extractError(httpContent);
         }
-
-        return message;
     }
 
-    public String extractUserData(String httpContent){
+    public List<SimplePersona> extractUserPersonas(String httpContent) {
         document = Jsoup.parse(httpContent);
-        extractUserPersonas();
-        extractPlatoons();
-        return "";
+        List<SimplePersona> personas = new ArrayList<SimplePersona>();
+        Elements soldierList = document.select("#soldier-list li");
+        for(Element element : soldierList){
+            personas.add(extractSimplePersona(element));
+        }
+        return personas;
+    }
+
+    public List<SimplePlatoon> extractPlatoons(String httpContent) {
+        document = Jsoup.parse(httpContent);
+        List<SimplePlatoon> platoons = new ArrayList<SimplePlatoon>();
+        Elements platoonElement = document.select(".profile-platoons li");
+        for(Element element : platoonElement){
+            platoons.add(extractSimplePlatoon(element));
+        }
+        return platoons;
     }
 
     private boolean loggedInPage(){
         return userElement() != null;
     }
 
-    private void extractUserCredentials() {
+    private LoginResult extractUserCredentials() {
         Element userElement = userElement();
-        Battlelog.setUser(userElement.text());
-        Battlelog.setUserId(userIdFromDocument());
-        Battlelog.setCheckSum(checkSumFromDocument());
+        String userName = userElement.text();
+        long userId = userIdFromDocument();
+        String checkSum = checkSumFromDocument();
+        return new LoginResult(userName, userId, checkSum);
     }
 
     private Element userElement() {
@@ -68,15 +78,6 @@ public class HtmlParsing {
     private String checkSumFromDocument(){
         Element input = document.select("input[name=post-check-sum]").first();
         return input.attr("value");
-    }
-
-    private void extractUserPersonas() {
-        List<SimplePersona> personas = new ArrayList<SimplePersona>();
-        Elements soldierList = document.select("#soldier-list li");
-        for(Element element : soldierList){
-            personas.add(extractSimplePersona(element));
-        }
-        Battlelog.setUserPersonas(personas);
     }
 
     private SimplePersona extractSimplePersona(Element element){
@@ -106,15 +107,6 @@ public class HtmlParsing {
         return lastElement.substring(0, lastElement.indexOf('.'));
     }
 
-    private void extractPlatoons() {
-        List<SimplePlatoon> platoons = new ArrayList<SimplePlatoon>();
-        Elements platoonElement = document.select(".profile-platoons li");
-        for(Element element : platoonElement){
-            platoons.add(extractSimplePlatoon(element));
-        }
-        Battlelog.setUserPlatoons(platoons);
-    }
-
     private SimplePlatoon extractSimplePlatoon(Element element) {
         String name = element.select(".profile-platoon-name").first().text();
         long id = idFromHref(element.select(".profile-platoon-name").first().attr("href"));
@@ -127,23 +119,22 @@ public class HtmlParsing {
         return Long.parseLong(linkElements[linkElements.length - 1]);
     }
 
-    private void extractError(){
-
+    private LoginResult extractError(String httpContent){
+        return new LoginResult(elementUidLinkError(httpContent));
     }
 
-    private void elementUidLinkError(String httpContent) throws WebsiteHandlerException {
+    //TODO refactor to use Jsoup
+    private String elementUidLinkError(String httpContent) {
         int startPosition = httpContent.indexOf(ELEMENT_ERROR_MESSAGE);
 
         if (startPosition == -1) {
-            throw new WebsiteHandlerException(
-                    "The website won't let us in. Please try again later.");
+            return "The website won't let us in. Please try again later.";
         } else {
             int endPosition = httpContent.indexOf("</div>", startPosition);
-            String errorMsg = httpContent.substring(startPosition, endPosition)
+            return httpContent.substring(startPosition, endPosition)
                     .replace("</div>", "")
                     .replace("\n", "")
                     .replace(ELEMENT_ERROR_MESSAGE, "");
-            throw new WebsiteHandlerException(errorMsg);
         }
     }
 }

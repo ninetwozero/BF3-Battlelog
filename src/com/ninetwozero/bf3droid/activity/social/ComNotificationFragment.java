@@ -23,7 +23,7 @@ import android.support.v4.app.ListFragment;
 import android.view.*;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.ninetwozero.bf3droid.Battlelog;
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.adapter.NotificationListAdapter;
 import com.ninetwozero.bf3droid.datatype.DefaultFragment;
@@ -78,7 +78,7 @@ public class ComNotificationFragment extends ListFragment implements
         mListView = (ListView) view.findViewById(android.R.id.list);
         mListView
                 .setAdapter(mNotificationListAdapter = new NotificationListAdapter(
-                        mContext, null, mLayoutInflater, Battlelog.getUserId()));
+                        mContext, null, mLayoutInflater, BF3Droid.getUserId()));
         registerForContextMenu(mListView);
 
     }

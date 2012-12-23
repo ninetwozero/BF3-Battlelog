@@ -45,9 +45,9 @@ import com.squareup.otto.Subscribe;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ninetwozero.bf3droid.Battlelog.getUserPersonas;
-import static com.ninetwozero.bf3droid.Battlelog.selectedUserPersona;
-import static com.ninetwozero.bf3droid.Battlelog.setSelectedUserPersona;
+import static com.ninetwozero.bf3droid.BF3Droid.getUserPersonas;
+import static com.ninetwozero.bf3droid.BF3Droid.selectedUserPersona;
+import static com.ninetwozero.bf3droid.BF3Droid.setSelectedUserPersona;
 
 public class MenuProfileFragment extends Fragment {
 

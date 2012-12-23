@@ -27,7 +27,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import com.ninetwozero.bf3droid.Battlelog;
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.news.SinglePostActivity;
 import com.ninetwozero.bf3droid.activity.profile.soldier.ProfileActivity;
@@ -170,7 +170,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment,
 	}
 
 	public void reload() {
-		new AsyncRefresh(mContext, /*SessionKeeper.getProfileData().getId()*/Battlelog.selectedUserPersona().getPersonaId()).execute();
+		new AsyncRefresh(mContext, /*SessionKeeper.getProfileData().getId()*/BF3Droid.selectedUserPersona().getPersonaId()).execute();
 	}
 
 	@Override

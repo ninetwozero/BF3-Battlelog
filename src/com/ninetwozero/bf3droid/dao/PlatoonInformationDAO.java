@@ -4,12 +4,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.ninetwozero.bf3droid.Battlelog;
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.datatype.PlatoonData;
 import com.ninetwozero.bf3droid.datatype.PlatoonInformation;
 
 public class PlatoonInformationDAO {
-	public static final Uri URI = Uri.parse("content://" + Battlelog.AUTHORITY + "/platoon/");
+	public static final Uri URI = Uri.parse("content://" + BF3Droid.AUTHORITY + "/platoon/");
 	
 	public static PlatoonData getPlatoonDataFromCursor(Cursor cursor) {
     	if( !cursor.moveToFirst() ) {

@@ -2,15 +2,20 @@ package com.ninetwozero.bf3droid.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.widget.Toast;
-import com.ninetwozero.bf3droid.Battlelog;
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.MainActivity;
+import com.ninetwozero.bf3droid.datatype.LoginResult;
+import com.ninetwozero.bf3droid.datatype.SimplePersona;
+import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.loader.Bf3Loader;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.provider.UriFactory;
+import com.ninetwozero.bf3droid.provider.table.Personas;
 import com.ninetwozero.bf3droid.server.Bf3ServerCall;
 import com.ninetwozero.bf3droid.util.HtmlParsing;
 import org.apache.http.NameValuePair;
@@ -71,7 +76,7 @@ public class LoginActivity extends Bf3FragmentActivity{
     }
 
     private Bf3ServerCall.HttpData userHttpData() {
-        return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(Battlelog.getUser()), HttpGet.METHOD_NAME, false);
+        return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(BF3Droid.getUser()), HttpGet.METHOD_NAME, false);
     }
 
     @Override
@@ -91,24 +96,66 @@ public class LoginActivity extends Bf3FragmentActivity{
     }
 
     private void processLoginResult(String response){
-        String processResult = new HtmlParsing().extractUserDetails(response);
-        if(processResult.equals("")){
-            getSupportLoaderManager().initLoader(USER_DATA_ACTION, bundle, this);
+        LoginResult result = new HtmlParsing().extractUserDetails(response);
+        if(result.getError().equals("")){
+            saveForApplication(result);
+            fetchPersonaAndPlatoonData();
         } else{
-            Toast.makeText(getContext(), processResult, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), result.getError(), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getContext(), MainActivity.class));
         }
     }
 
+    private void saveForApplication(LoginResult result) {
+        BF3Droid.setUser(result.getUserName());
+        BF3Droid.setUserId(result.getUserId());
+        BF3Droid.setCheckSum(result.getCheckSum());
+    }
+
+    private void saveForApplication(List<SimplePersona> personas, List<SimplePlatoon> platoons){
+        BF3Droid.setUserPersonas(personas);
+        BF3Droid.setUserPlatoons(platoons);
+    }
+
+    private void fetchPersonaAndPlatoonData(){
+        if(!hasPersonas()){
+            getSupportLoaderManager().initLoader(USER_DATA_ACTION, bundle, this);
+        }
+    }
+
     private void processUserDataResult(String response){
-        String processResponse = new HtmlParsing().extractUserData(response);
-        if(processResponse.equals("")){
+        HtmlParsing parser = new HtmlParsing();
+        List<SimplePersona> personas = parser.extractUserPersonas(response);
+        List<SimplePlatoon> platoons = parser.extractPlatoons(response);
+        saveForApplication(personas, platoons);
+        if(personas.size() > 0){
             startActivity(new Intent(getContext(), DashboardActivity.class));
             closeProgressDialog();
             finish();
         } else {
 
         }
+    }
+
+    private boolean hasPersonas() {
+        Cursor cursor = getContext().getContentResolver().query(
+                Personas.URI,
+                Personas.PERSONAS_PROJECTION,
+                Personas.Columns.USER_ID + "=?",
+                new String[]{String.valueOf(BF3Droid.getUserId())},
+                null
+        );
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            do{
+                //cursor to simple persona
+                //rankProgress = rankProgressFromCursor(cursor);
+            }while(cursor.moveToNext());
+            cursor.close();
+            return true;
+        }
+        cursor.close();
+        return false;
     }
 
     private Context getContext() {

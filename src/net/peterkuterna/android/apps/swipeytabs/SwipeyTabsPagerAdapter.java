@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/* Modfied by Karl Lindmark for BF3 Battlelog */
+/* Modfied by Karl Lindmark for BF3 BF3Droid */
 
 package net.peterkuterna.android.apps.swipeytabs;
 
