@@ -7,6 +7,7 @@ import android.net.Uri;
 import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.datatype.PlatoonData;
 import com.ninetwozero.bf3droid.datatype.PlatoonInformation;
+import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 
 public class PlatoonInformationDAO {
 	public static final Uri URI = Uri.parse("content://" + BF3Droid.AUTHORITY + "/platoon/");
@@ -28,6 +29,14 @@ public class PlatoonInformationDAO {
 		cursor.close();
 		return platoon;
 	}
+
+    public static SimplePlatoon simplePlatoonFrom(Cursor cursor){
+        String name = cursor.getString(cursor.getColumnIndex(Columns.NAME));
+        long platoonId = cursor.getLong(cursor.getColumnIndex(Columns.PLATOON_ID));
+        String image = cursor.getString(cursor.getColumnIndex(Columns.BADGE));
+        String platform = cursor.getString(cursor.getColumnIndex(Columns.PLATFORM));
+        return new SimplePlatoon(name, platoonId, image, platform);
+    }
 	
     public static PlatoonInformation getPlatoonInformationFromCursor(Cursor cursor) {
     	if( !cursor.moveToFirst() ) {
@@ -53,11 +62,7 @@ public class PlatoonInformationDAO {
         return platoon.build();
     }
 
-    public static PlatoonInformation getPlatoonInformationFromJSON(PlatoonInformation pi) {
-    	return pi;
-    }
-
-    public static ContentValues convertPlatoonDataForDB(final PlatoonData p) {
+    public static ContentValues platoonDataForDB(final PlatoonData p) {
         ContentValues values = new ContentValues();
         values.put(Columns.PLATOON_ID, p.getId());
         values.put(Columns.NAME, p.getName());
@@ -69,7 +74,7 @@ public class PlatoonInformationDAO {
         return values;
     }
     
-    public static ContentValues convertPlatoonInformationForDB(final PlatoonInformation pi, long timestamp) {
+    public static ContentValues platoonInformationForDB(final PlatoonInformation pi, long timestamp) {
         ContentValues values = new ContentValues();
         values.put(Columns.PLATOON_ID, pi.getId());
         values.put(Columns.NAME, pi.getName());
@@ -85,12 +90,24 @@ public class PlatoonInformationDAO {
         values.put(Columns.TIMESTAMP, timestamp);
         return values;
     }
+
+    public static ContentValues simplePlatoonToDatabase(SimplePlatoon platoon, long userId){
+        ContentValues values = new ContentValues();
+        values.put(Columns.PLATOON_ID, platoon.getPlatoonId());
+        values.put(Columns.USER_ID, userId);
+        values.put(Columns.NAME, platoon.getName());
+        values.put(Columns.BADGE, platoon.getPlatoonBadge());
+        values.put(Columns.PLATFORM, platoon.getPlatform());
+        return values;
+    }
     	
 	public final class Columns {
     	public final static String PLATOON_ID = "platoonId";
+        public final static String USER_ID = "userId";
     	public final static String NAME = "name";
     	public final static String TAG = "tag";
     	public final static String PLATFORM_ID = "platformId";
+        public final static String PLATFORM = "platform";
     	public final static String GAME_ID = "gameId";
     	public final static String DATE_CREATED = "dateCreated";
     	public final static String WEBSITE = "website";
@@ -99,6 +116,7 @@ public class PlatoonInformationDAO {
     	public final static String NUM_MEMBERS = "numberOfMembers";
     	public final static String BLAZE_CLUB_ID = "blazeClubId";
     	public final static String TIMESTAMP = "timestamp";
+        public static final String BADGE = "badge";
 	};
 	
 	public static String[] getSmallerProjection() {
@@ -112,4 +130,7 @@ public class PlatoonInformationDAO {
 			Columns.NUM_MEMBERS
 		};
 	}
+
+    public static final String[] SIMPLE_PLATOON_PROJECTION = new String[]{Columns.PLATOON_ID, Columns.NAME,
+            Columns.BADGE, Columns.PLATFORM};
 }

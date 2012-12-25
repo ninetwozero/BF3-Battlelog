@@ -141,7 +141,7 @@ public class MenuProfileFragment extends Fragment {
     private Map<Long, String> personasToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
         for (SimplePersona simplePersona : getUserPersonas()) {
-            map.put(simplePersona.getPersonaId(), simplePersona.getPersonaName() + " " + simplePersona.getPlatform());
+            map.put(simplePersona.getPersonaId(), simplePersona.getPersonaName() + " [" + simplePersona.getPlatform() + "]");
         }
         return map;
     }
@@ -174,7 +174,7 @@ public class MenuProfileFragment extends Fragment {
     private String getPersonaNameAndPlatform() {
         /*return mPersona[mSelectedPosition].getName()
                 + mPersona[mSelectedPosition].resolvePlatformId();*/
-        return selectedPersona().getPersonaName() + " " + selectedPersona().getPlatform();
+        return selectedPersona().getPersonaName() + " [" + selectedPersona().getPlatform() + "]";
     }
 
     private SimplePersona selectedPersona() {

@@ -217,7 +217,7 @@ public class PlatoonActivity extends CustomFragmentActivity {
     }
 
     public void updatePlatoonInDB(PlatoonInformation p) {
-		ContentValues contentValues = PlatoonInformationDAO.convertPlatoonInformationForDB(p, System.currentTimeMillis());
+		ContentValues contentValues = PlatoonInformationDAO.platoonInformationForDB(p, System.currentTimeMillis());
     	try {
 	    	getContentResolver().insert(PlatoonInformationDAO.URI, contentValues); 
     	} catch(SQLiteConstraintException ex) {

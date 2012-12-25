@@ -150,7 +150,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     private Map<Long, String> platoonsToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
         for (SimplePlatoon platoon : BF3Droid.getUserPlatoons()) {
-            map.put(platoon.getPlatoonId(), platoon.getName());
+            map.put(platoon.getPlatoonId(), platoon.getName()+ " ["+platoon.getPlatform()+"]");
         }
         return map;
     }
@@ -197,7 +197,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         if (BF3Droid.getUserPlatoons().size() > 0
                 && mTextPlatoon != null) {
 
-            mTextPlatoon.setText(BF3Droid.selectedUserPlatoon().getName());
+            mTextPlatoon.setText(BF3Droid.selectedUserPlatoon().getName()+ " ["+ BF3Droid.selectedUserPlatoon().getPlatform() + "]");
            /* mImagePlatoon.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
                     .getCachePath(mContext)
                     + mPlatoonData.get(mSelectedPosition).getImage()));*/

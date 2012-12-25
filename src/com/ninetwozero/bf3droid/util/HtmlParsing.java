@@ -23,6 +23,9 @@ public class HtmlParsing {
     private final String XBOX = "Xbox";
     private final String PS3 = "PS3";
     private final String PC = "PC";
+    private final String PLATOON_XBOX = "common-game-2-2";
+    private final String PLATOON_PS3 = "common-game-2-4";
+    private final String PLATOON_PC = "common-game-2-1";
 
 
     public LoginResult extractUserDetails(String httpContent){
@@ -94,7 +97,7 @@ public class HtmlParsing {
         int lastIndex = linkElements.length - 1;
         if(linkElements[lastIndex].equalsIgnoreCase(XBOX)){
             return XBOX;
-        } else if(linkElements[lastIndex].equals(PS3)){
+        } else if(linkElements[lastIndex].equalsIgnoreCase(PS3)){
             return PS3;
         } else {
             return PC;
@@ -111,7 +114,21 @@ public class HtmlParsing {
         String name = element.select(".profile-platoon-name").first().text();
         long id = idFromHref(element.select(".profile-platoon-name").first().attr("href"));
         String badge = element.select(".platoon-badge-item").attr("src");
-        return new SimplePlatoon(name, id, badge);
+        String platform = platoonPlatform(element);
+        return new SimplePlatoon(name, id, badge, platform);
+    }
+
+    private String platoonPlatform(Element element){
+        String classAttributes = element.select(".profile-platoon-info span").first().attr("class");
+        if(classAttributes.contains(PLATOON_XBOX)){
+            return XBOX;
+        } else if(classAttributes.contains(PLATOON_PS3)){
+            return PS3;
+        } else if(classAttributes.contains(PLATOON_PC)){
+            return PC;
+        } else {
+            return "";
+        }
     }
 
     private long idFromHref(String href){

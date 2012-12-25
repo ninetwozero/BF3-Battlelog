@@ -6,7 +6,7 @@ import com.ninetwozero.bf3droid.BF3Droid;
 
 public class Personas {
 
-    public static final Uri URI = Uri.parse("content://" + BF3Droid.AUTHORITY + "/persona/");
+    public static final Uri URI = Uri.parse("content://" + BF3Droid.AUTHORITY + "/personas/");
 
     public interface Columns extends BaseColumns {
         public static final String PERSONA_ID = "personaId";
