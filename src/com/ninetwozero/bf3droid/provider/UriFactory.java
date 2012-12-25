@@ -1,7 +1,7 @@
 package com.ninetwozero.bf3droid.provider;
 
 import android.content.UriMatcher;
-import com.ninetwozero.bf3droid.Battlelog;
+import com.ninetwozero.bf3droid.BF3Droid;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -22,6 +22,7 @@ public class UriFactory {
         public static final int PERSONA_STATISTICS = 20;
         public static final int SCORE_STATISTICS = 30;
         public static final int PLATOON_INFO = 40;
+        public static final int PERSONAS = 50;
     }
 
     public interface URI_PATH {
@@ -30,17 +31,19 @@ public class UriFactory {
         public static final String PERSONA_STATISTICS = "personaStatistics";
         public static final String SCORE_STATISTICS = "scoreStatistics";
         public static final String PLATOON_INFO = "platoon";
+        public static final String PERSONAS = "personas";
     }
 
     public static final UriMatcher URI_MATCHER;
 
     static {
         URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
-        URI_MATCHER.addURI(Battlelog.AUTHORITY, URI_PATH.PROFILE_INFO + "/",URI_CODES.PROFILE_INFO);
-        URI_MATCHER.addURI(Battlelog.AUTHORITY, URI_PATH.RANK_PROGRESS + "/",URI_CODES.RANK_PROGRESS);
-        URI_MATCHER.addURI(Battlelog.AUTHORITY, URI_PATH.PERSONA_STATISTICS + "/", URI_CODES.PERSONA_STATISTICS);
-        URI_MATCHER.addURI(Battlelog.AUTHORITY, URI_PATH.SCORE_STATISTICS + "/", URI_CODES.SCORE_STATISTICS);
-        URI_MATCHER.addURI(Battlelog.AUTHORITY, URI_PATH.PLATOON_INFO + "/", URI_CODES.PLATOON_INFO);
+        URI_MATCHER.addURI(BF3Droid.AUTHORITY, URI_PATH.PROFILE_INFO + "/",URI_CODES.PROFILE_INFO);
+        URI_MATCHER.addURI(BF3Droid.AUTHORITY, URI_PATH.RANK_PROGRESS + "/",URI_CODES.RANK_PROGRESS);
+        URI_MATCHER.addURI(BF3Droid.AUTHORITY, URI_PATH.PERSONA_STATISTICS + "/", URI_CODES.PERSONA_STATISTICS);
+        URI_MATCHER.addURI(BF3Droid.AUTHORITY, URI_PATH.SCORE_STATISTICS + "/", URI_CODES.SCORE_STATISTICS);
+        URI_MATCHER.addURI(BF3Droid.AUTHORITY, URI_PATH.PLATOON_INFO + "/", URI_CODES.PLATOON_INFO);
+        URI_MATCHER.addURI(BF3Droid.AUTHORITY, URI_PATH.PERSONAS + "/", URI_CODES.PERSONAS);
     }
 
     private static URI createUri(String path) {

@@ -2,11 +2,11 @@ package com.ninetwozero.bf3droid.provider.table;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
-import com.ninetwozero.bf3droid.Battlelog;
+import com.ninetwozero.bf3droid.BF3Droid;
 
 public class RankProgress {
 
-    public static final Uri URI = Uri.parse("content://" + Battlelog.AUTHORITY
+    public static final Uri URI = Uri.parse("content://" + BF3Droid.AUTHORITY
             + "/rankProgress/");
 
     public interface Columns extends BaseColumns {

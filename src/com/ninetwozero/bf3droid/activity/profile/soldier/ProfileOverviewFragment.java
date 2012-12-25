@@ -310,7 +310,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
 	}
     
     public void updatePlatoonInDB(PlatoonData p) {
-    	ContentValues contentValues = PlatoonInformationDAO.convertPlatoonDataForDB(p);
+    	ContentValues contentValues = PlatoonInformationDAO.platoonDataForDB(p);
     	mContext.getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);		
 	}
 

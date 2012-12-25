@@ -29,6 +29,7 @@ public class PlatoonInformation {
     private String tag;
     private String presentation;
     private String website;
+    private String image;
     private boolean visible;
     private boolean isMember;
     private boolean isAdmin;
@@ -51,6 +52,7 @@ public class PlatoonInformation {
         tag = builder.tag;
         presentation = builder.presentation;
         website = builder.website;
+        image = builder.image;
         visible = builder.visibility;
         isMember = builder.isMember;
         isAdmin = builder.isAdmin;
@@ -114,6 +116,10 @@ public class PlatoonInformation {
         return website;
     }
 
+    public String getImage() {
+        return image;
+    }
+
     public boolean isVisible() {
         return visible;
     }
@@ -150,6 +156,7 @@ public class PlatoonInformation {
         // Optional
         public String presentation = "";
         public String website = "";
+        public String image = "";
         public int platformId = 0;
         public int gameId = 0;
         public int numFans = 0;
@@ -179,6 +186,10 @@ public class PlatoonInformation {
         public Builder website(String s) {
         	website = s;
         	return this;
+        }
+        public Builder image(String i){
+            image = i;
+            return this;
         }
         public Builder platformId(int n) {
         	platformId = n;

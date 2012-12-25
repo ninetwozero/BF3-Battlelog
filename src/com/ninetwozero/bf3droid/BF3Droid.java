@@ -9,14 +9,14 @@ import com.ninetwozero.bf3droid.misc.DebugLogConfig;
 
 import java.util.List;
 
-public class Battlelog extends Application {
+public class BF3Droid extends Application {
 
     private static boolean isInDebugMode;
     public static final String NAME = "battlelog.db";
     private static final String BUGSENSE_KEY = "448b2f3b";
 
-    private static Battlelog instance;
-    public static final String AUTHORITY = "com.ninetwozero.battlelog.provider";
+    private static BF3Droid instance;
+    public static final String AUTHORITY = "com.ninetwozero.bf3droid.provider";
     private static String user;
     private static String checkSum;
     private static long userId;
@@ -63,7 +63,7 @@ public class Battlelog extends Application {
     }
 
     public static void setUser(String user) {
-        Battlelog.user = user;
+        BF3Droid.user = user;
     }
 
     public static String getCheckSum() {
@@ -71,7 +71,7 @@ public class Battlelog extends Application {
     }
 
     public static void setCheckSum(String checkSum) {
-        Battlelog.checkSum = checkSum;
+        BF3Droid.checkSum = checkSum;
     }
 
     public static long getUserId() {
@@ -79,11 +79,11 @@ public class Battlelog extends Application {
     }
 
     public static void setUserId(long userId) {
-        Battlelog.userId = userId;
+        BF3Droid.userId = userId;
     }
 
     public static void setUserPersonas(List<SimplePersona> userPersonas){
-        Battlelog.userPersonas = userPersonas;
+        BF3Droid.userPersonas = userPersonas;
     }
 
     public static List<SimplePersona> getUserPersonas(){
@@ -95,15 +95,15 @@ public class Battlelog extends Application {
     }
 
     public static void setGuestPersonas(List<SimplePersona> guestPersonas) {
-        Battlelog.guestPersonas = guestPersonas;
+        BF3Droid.guestPersonas = guestPersonas;
     }
 
     public static void setSelectedUserPersona(long selectedUserPersona) {
-        Battlelog.selectedUserPersona = selectedUserPersona;
+        BF3Droid.selectedUserPersona = selectedUserPersona;
     }
 
     public static void setSelectedGuestPersona(long selectedGuestPersona) {
-        Battlelog.selectedGuestPersona = selectedGuestPersona;
+        BF3Droid.selectedGuestPersona = selectedGuestPersona;
     }
 
     public static SimplePersona selectedUserPersona(){
@@ -119,7 +119,7 @@ public class Battlelog extends Application {
     }
 
     public static void setUserPlatoons(List<SimplePlatoon> platoons) {
-        Battlelog.userPlatoons = platoons;
+        BF3Droid.userPlatoons = platoons;
     }
 
     public static List<SimplePlatoon> getUserPlatoons() {

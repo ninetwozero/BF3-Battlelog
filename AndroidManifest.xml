@@ -17,7 +17,7 @@
   <!-- TODO add prior to release android:debuggable="false" -->
   <application
       android:debuggable="true"
-      android:name="com.ninetwozero.bf3droid.Battlelog"
+      android:name=".BF3Droid"
       android:icon="@drawable/app_logo"
       android:label="@string/app_name"
       android:theme="@android:style/Theme.Light">
