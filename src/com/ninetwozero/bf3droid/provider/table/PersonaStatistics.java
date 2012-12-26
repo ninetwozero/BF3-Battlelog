@@ -2,12 +2,12 @@ package com.ninetwozero.bf3droid.provider.table;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
-import com.ninetwozero.bf3droid.Battlelog;
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.datatype.Statistics;
 
 public class PersonaStatistics extends Statistics {
 
-    public static final Uri URI = Uri.parse("content://" + Battlelog.AUTHORITY + "/personaStatistics");
+    public static final Uri URI = Uri.parse("content://" + BF3Droid.AUTHORITY + "/personaStatistics");
 
     public interface Columns extends BaseColumns {
         public static final String ID = "_id";

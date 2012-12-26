@@ -4,11 +4,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.ninetwozero.bf3droid.Battlelog;
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.datatype.ProfileInformation;
 
 public class ProfileInformationDAO {
-	public static final Uri URI = Uri.parse("content://" + Battlelog.AUTHORITY + "/profile/");
+	public static final Uri URI = Uri.parse("content://" + BF3Droid.AUTHORITY + "/profile/");
 	
     public static ProfileInformation getProfileInformationFromCursor(Cursor cursor) {
     	if( !cursor.moveToFirst() ) {

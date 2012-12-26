@@ -28,7 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.ninetwozero.bf3droid.Battlelog;
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.DashboardActivity;
 import com.ninetwozero.bf3droid.activity.profile.assignments.AssignmentActivity;
@@ -101,8 +101,8 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
         
         // Setup the COM
         mComClient = new COMClient(
-    		/*SessionKeeper.getProfileData().getId()*/Battlelog.getUserId(),
-    		/*mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")*/Battlelog.getCheckSum()
+    		/*SessionKeeper.getProfileData().getId()*/BF3Droid.getUserId(),
+    		/*mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")*/BF3Droid.getCheckSum()
 		);
     }
 

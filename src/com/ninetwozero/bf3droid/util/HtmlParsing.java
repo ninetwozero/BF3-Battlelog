@@ -1,9 +1,8 @@
 package com.ninetwozero.bf3droid.util;
 
-import com.ninetwozero.bf3droid.Battlelog;
+import com.ninetwozero.bf3droid.datatype.LoginResult;
 import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
-import com.ninetwozero.bf3droid.datatype.WebsiteHandlerException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,36 +23,50 @@ public class HtmlParsing {
     private final String XBOX = "Xbox";
     private final String PS3 = "PS3";
     private final String PC = "PC";
+    private final String PLATOON_XBOX = "common-game-2-2";
+    private final String PLATOON_PS3 = "common-game-2-4";
+    private final String PLATOON_PC = "common-game-2-1";
 
 
-    public String extractUserDetails(String httpContent){
-        String message = "";
+    public LoginResult extractUserDetails(String httpContent){
         document = Jsoup.parse(httpContent);
         if(loggedInPage()){
-            extractUserCredentials();
+            return extractUserCredentials();
         } else {
-            extractError();
+            return extractError(httpContent);
         }
-
-        return message;
     }
 
-    public String extractUserData(String httpContent){
+    public List<SimplePersona> extractUserPersonas(String httpContent) {
         document = Jsoup.parse(httpContent);
-        extractUserPersonas();
-        extractPlatoons();
-        return "";
+        List<SimplePersona> personas = new ArrayList<SimplePersona>();
+        Elements soldierList = document.select("#soldier-list li");
+        for(Element element : soldierList){
+            personas.add(extractSimplePersona(element));
+        }
+        return personas;
+    }
+
+    public List<SimplePlatoon> extractPlatoons(String httpContent) {
+        document = Jsoup.parse(httpContent);
+        List<SimplePlatoon> platoons = new ArrayList<SimplePlatoon>();
+        Elements platoonElement = document.select(".profile-platoons li");
+        for(Element element : platoonElement){
+            platoons.add(extractSimplePlatoon(element));
+        }
+        return platoons;
     }
 
     private boolean loggedInPage(){
         return userElement() != null;
     }
 
-    private void extractUserCredentials() {
+    private LoginResult extractUserCredentials() {
         Element userElement = userElement();
-        Battlelog.setUser(userElement.text());
-        Battlelog.setUserId(userIdFromDocument());
-        Battlelog.setCheckSum(checkSumFromDocument());
+        String userName = userElement.text();
+        long userId = userIdFromDocument();
+        String checkSum = checkSumFromDocument();
+        return new LoginResult(userName, userId, checkSum);
     }
 
     private Element userElement() {
@@ -70,15 +83,6 @@ public class HtmlParsing {
         return input.attr("value");
     }
 
-    private void extractUserPersonas() {
-        List<SimplePersona> personas = new ArrayList<SimplePersona>();
-        Elements soldierList = document.select("#soldier-list li");
-        for(Element element : soldierList){
-            personas.add(extractSimplePersona(element));
-        }
-        Battlelog.setUserPersonas(personas);
-    }
-
     private SimplePersona extractSimplePersona(Element element){
         long id = Long.parseLong(element.attr("data-id"));
         Element nameElement = element.select(".soldier-name h3 a").first();
@@ -93,7 +97,7 @@ public class HtmlParsing {
         int lastIndex = linkElements.length - 1;
         if(linkElements[lastIndex].equalsIgnoreCase(XBOX)){
             return XBOX;
-        } else if(linkElements[lastIndex].equals(PS3)){
+        } else if(linkElements[lastIndex].equalsIgnoreCase(PS3)){
             return PS3;
         } else {
             return PC;
@@ -106,20 +110,25 @@ public class HtmlParsing {
         return lastElement.substring(0, lastElement.indexOf('.'));
     }
 
-    private void extractPlatoons() {
-        List<SimplePlatoon> platoons = new ArrayList<SimplePlatoon>();
-        Elements platoonElement = document.select(".profile-platoons li");
-        for(Element element : platoonElement){
-            platoons.add(extractSimplePlatoon(element));
-        }
-        Battlelog.setUserPlatoons(platoons);
-    }
-
     private SimplePlatoon extractSimplePlatoon(Element element) {
         String name = element.select(".profile-platoon-name").first().text();
         long id = idFromHref(element.select(".profile-platoon-name").first().attr("href"));
         String badge = element.select(".platoon-badge-item").attr("src");
-        return new SimplePlatoon(name, id, badge);
+        String platform = platoonPlatform(element);
+        return new SimplePlatoon(name, id, badge, platform);
+    }
+
+    private String platoonPlatform(Element element){
+        String classAttributes = element.select(".profile-platoon-info span").first().attr("class");
+        if(classAttributes.contains(PLATOON_XBOX)){
+            return XBOX;
+        } else if(classAttributes.contains(PLATOON_PS3)){
+            return PS3;
+        } else if(classAttributes.contains(PLATOON_PC)){
+            return PC;
+        } else {
+            return "";
+        }
     }
 
     private long idFromHref(String href){
@@ -127,23 +136,22 @@ public class HtmlParsing {
         return Long.parseLong(linkElements[linkElements.length - 1]);
     }
 
-    private void extractError(){
-
+    private LoginResult extractError(String httpContent){
+        return new LoginResult(elementUidLinkError(httpContent));
     }
 
-    private void elementUidLinkError(String httpContent) throws WebsiteHandlerException {
+    //TODO refactor to use Jsoup
+    private String elementUidLinkError(String httpContent) {
         int startPosition = httpContent.indexOf(ELEMENT_ERROR_MESSAGE);
 
         if (startPosition == -1) {
-            throw new WebsiteHandlerException(
-                    "The website won't let us in. Please try again later.");
+            return "The website won't let us in. Please try again later.";
         } else {
             int endPosition = httpContent.indexOf("</div>", startPosition);
-            String errorMsg = httpContent.substring(startPosition, endPosition)
+            return httpContent.substring(startPosition, endPosition)
                     .replace("</div>", "")
                     .replace("\n", "")
                     .replace(ELEMENT_ERROR_MESSAGE, "");
-            throw new WebsiteHandlerException(errorMsg);
         }
     }
 }

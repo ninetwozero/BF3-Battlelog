@@ -49,6 +49,8 @@ public class BattlelogContentProvider extends ContentProvider {
                 return UriFactory.URI_PATH.SCORE_STATISTICS;
             case UriFactory.URI_CODES.PLATOON_INFO:
             	return UriFactory.URI_PATH.PLATOON_INFO;
+            case UriFactory.URI_CODES.PERSONAS:
+            	return UriFactory.URI_PATH.PERSONAS;
             default:
                 return "";
         }

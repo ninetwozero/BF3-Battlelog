@@ -45,9 +45,9 @@ import com.squareup.otto.Subscribe;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ninetwozero.bf3droid.Battlelog.getUserPersonas;
-import static com.ninetwozero.bf3droid.Battlelog.selectedUserPersona;
-import static com.ninetwozero.bf3droid.Battlelog.setSelectedUserPersona;
+import static com.ninetwozero.bf3droid.BF3Droid.getUserPersonas;
+import static com.ninetwozero.bf3droid.BF3Droid.selectedUserPersona;
+import static com.ninetwozero.bf3droid.BF3Droid.setSelectedUserPersona;
 
 public class MenuProfileFragment extends Fragment {
 
@@ -141,7 +141,7 @@ public class MenuProfileFragment extends Fragment {
     private Map<Long, String> personasToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
         for (SimplePersona simplePersona : getUserPersonas()) {
-            map.put(simplePersona.getPersonaId(), simplePersona.getPersonaName() + " " + simplePersona.getPlatform());
+            map.put(simplePersona.getPersonaId(), simplePersona.getPersonaName() + " [" + simplePersona.getPlatform() + "]");
         }
         return map;
     }
@@ -174,7 +174,7 @@ public class MenuProfileFragment extends Fragment {
     private String getPersonaNameAndPlatform() {
         /*return mPersona[mSelectedPosition].getName()
                 + mPersona[mSelectedPosition].resolvePlatformId();*/
-        return selectedPersona().getPersonaName() + " " + selectedPersona().getPlatform();
+        return selectedPersona().getPersonaName() + " [" + selectedPersona().getPlatform() + "]";
     }
 
     private SimplePersona selectedPersona() {
