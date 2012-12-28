@@ -39,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3Fragment;
 import com.ninetwozero.bf3droid.activity.platoon.PlatoonActivity;
@@ -46,10 +47,7 @@ import com.ninetwozero.bf3droid.asynctask.AsyncFriendRemove;
 import com.ninetwozero.bf3droid.asynctask.AsyncFriendRequest;
 import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
 import com.ninetwozero.bf3droid.dao.ProfileInformationDAO;
-import com.ninetwozero.bf3droid.datatype.PlatoonData;
-import com.ninetwozero.bf3droid.datatype.ProfileData;
-import com.ninetwozero.bf3droid.datatype.ProfileInformation;
-import com.ninetwozero.bf3droid.datatype.WebsiteHandlerException;
+import com.ninetwozero.bf3droid.datatype.*;
 import com.ninetwozero.bf3droid.http.COMClient;
 import com.ninetwozero.bf3droid.http.ProfileClient;
 import com.ninetwozero.bf3droid.misc.Constants;
@@ -230,8 +228,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                     mProfileData.setPersona(mProfileInformation.getAllPersonas());
                 }
 
-                sendToStats(mProfileData);
-
             } else {
                 new AsyncRefresh(SessionKeeper.getProfileData().getId(), progressDialog).execute();
             }
@@ -286,7 +282,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             }
 
             showProfile(mProfileInformation);
-            sendToStats(mProfileData);
             setFeedPermission(mProfileInformation.isFriend() || mPostingRights);
         }
     }
@@ -314,16 +309,8 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     	mContext.getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);		
 	}
 
-	public void sendToStats(ProfileData p) {
-        ((ProfileActivity) mContext).openStats(p);
-    }
-
     public void setFeedPermission(boolean c) {
         ((ProfileActivity) mContext).setFeedPermission(c);
-    }
-
-    public void setProfileData(ProfileData p) {
-        mProfileData = p;
     }
 
     public Menu prepareOptionsMenu(Menu menu) {
@@ -332,26 +319,30 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         }
         if (mProfileInformation.isAllowingFriendRequests()) {
             if (mProfileInformation.isFriend()) {
-                ((MenuItem) menu.findItem(R.id.option_friendadd)).setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_frienddel)).setVisible(true);
+                (menu.findItem(R.id.option_friendadd)).setVisible(false);
+                (menu.findItem(R.id.option_frienddel)).setVisible(true);
             } else {
-                ((MenuItem) menu.findItem(R.id.option_friendadd)).setVisible(true);
-                ((MenuItem) menu.findItem(R.id.option_frienddel)).setVisible(false);
+                (menu.findItem(R.id.option_friendadd)).setVisible(true);
+                (menu.findItem(R.id.option_frienddel)).setVisible(false);
             }
         } else {
-            ((MenuItem) menu.findItem(R.id.option_friendadd)).setVisible(false);
-            ((MenuItem) menu.findItem(R.id.option_frienddel)).setVisible(false);
+            ( menu.findItem(R.id.option_friendadd)).setVisible(false);
+            ( menu.findItem(R.id.option_frienddel)).setVisible(false);
         }
-        ((MenuItem) menu.findItem(R.id.option_compare)).setVisible(false);
+        (menu.findItem(R.id.option_compare)).setVisible(false);
         return menu;
     }
 
     public boolean handleSelectedOption(MenuItem item) {
         if (item.getItemId() == R.id.option_friendadd) {
-            new AsyncFriendRequest(mContext, mProfileData.getId()).execute(mComClient);
+            new AsyncFriendRequest(mContext, selectedPersona().getPersonaId()).execute(mComClient);
         } else if (item.getItemId() == R.id.option_frienddel) {
-            new AsyncFriendRemove(mContext, mProfileData.getId()).execute(mComClient);
+            new AsyncFriendRemove(mContext, selectedPersona().getPersonaId()).execute(mComClient);
         }
         return true;
+    }
+
+    private SimplePersona selectedPersona(){
+        return BF3Droid.selectedUserPersona();
     }
 }

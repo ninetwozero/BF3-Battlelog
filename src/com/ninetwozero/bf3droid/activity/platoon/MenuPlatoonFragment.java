@@ -194,8 +194,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     }
 
     public void setupPlatoonBox() {
-        if (BF3Droid.getUserPlatoons().size() > 0
-                && mTextPlatoon != null) {
+        if (BF3Droid.getUserPlatoons().size() > 0 && mTextPlatoon != null) {
 
             mTextPlatoon.setText(BF3Droid.selectedUserPlatoon().getName()+ " ["+ BF3Droid.selectedUserPlatoon().getPlatform() + "]");
            /* mImagePlatoon.setImageBitmap(BitmapFactory.decodeFile(PublicUtils

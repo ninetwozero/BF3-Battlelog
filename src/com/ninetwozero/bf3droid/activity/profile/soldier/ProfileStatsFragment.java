@@ -427,14 +427,6 @@ public class ProfileStatsFragment extends Bf3Fragment {
         getContext().getContentResolver().insert(ScoreStatistics.URI, contentValues);
     }
 
-    public void setProfileData(ProfileData p) {
-        mProfileData = p;
-        if (mProfileData.getNumPersonas() > 0) {
-            mSelectedPersona = mProfileData.getPersona(0).getId();
-            mSelectedPlatformId = mProfileData.getPersona(0).getPlatformId();
-        }
-    }
-
     private Map<Long, String> personasToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
         for (PersonaData pd : personaData) {
