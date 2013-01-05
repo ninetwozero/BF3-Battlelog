@@ -14,10 +14,12 @@ import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
 import com.ninetwozero.bf3droid.datatype.LoginResult;
 import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
+import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.loader.Bf3Loader;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.provider.table.Personas;
+import com.ninetwozero.bf3droid.provider.table.UserProfileData;
 import com.ninetwozero.bf3droid.server.Bf3ServerCall;
 import com.ninetwozero.bf3droid.util.HtmlParsing;
 import org.apache.http.NameValuePair;
@@ -83,7 +85,7 @@ public class LoginActivity extends Bf3FragmentActivity {
     }
 
     private Bf3ServerCall.HttpData userHttpData() {     //Replace BF3Droid.getUser() with a username to check app on different profile
-        return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(BF3Droid.getUser()), HttpGet.METHOD_NAME, false);
+        return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(/*BF3Droid.getUser()*/"Eddy_J1"), HttpGet.METHOD_NAME, false);
     }
 
     @Override
@@ -143,11 +145,11 @@ public class LoginActivity extends Bf3FragmentActivity {
 
     private void processUserDataResult(String response) {
         HtmlParsing parser = new HtmlParsing();
-        List<SimplePersona> personas = parser.extractUserPersonas(response);
-        List<SimplePlatoon> platoons = parser.extractPlatoons(response);
-        saveForApplication(personas, platoons);
-        personasToDatabase(personas);
-        platoonsToDatabase(platoons);
+        UserInfo userInfo = parser.extractUserInfo(response);
+        saveForApplication(userInfo.getPersonas(), userInfo.getPlatoons());
+        personasToDatabase(userInfo.getPersonas());
+        platoonsToDatabase(userInfo.getPlatoons());
+        //userProfileDataToDatabase(userInfo.getUserProfileData());)
         redirect();
     }
 
