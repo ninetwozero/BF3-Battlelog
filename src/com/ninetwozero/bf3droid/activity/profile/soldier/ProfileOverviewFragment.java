@@ -28,6 +28,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,21 +56,21 @@ import com.ninetwozero.bf3droid.misc.PublicUtils;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
 
 public class ProfileOverviewFragment extends Bf3Fragment {
-    private Context mContext;
-    private LayoutInflater mLayoutInflater;
-    private COMClient mComClient;
-    private SharedPreferences mSharedPreferences;
+    private Context context;
+    private LayoutInflater layoutInflater;
+    private COMClient comClient;
+    private SharedPreferences sharedPreferences;
 
-    private ProfileData mProfileData;
-    private ProfileInformation mProfileInformation;
-    private boolean mPostingRights;
+    private ProfileData profileData;
+    private ProfileInformation profileInformation;
+    private boolean postingRights;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mContext = getActivity();
-        mLayoutInflater = inflater;
+        context = getActivity();
+        layoutInflater = inflater;
 
-        View view = mLayoutInflater.inflate(R.layout.tab_content_profile_overview, container, false);
+        View view = layoutInflater.inflate(R.layout.tab_content_profile_overview, container, false);
         initFragment(view);
         return view;
     }
@@ -77,24 +78,24 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mContext = getActivity();
-        new AsyncCache().execute();
+        context = getActivity();
+        //new AsyncCache().execute();
     }
 
     public void initFragment(View v) {
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-    	mComClient = new COMClient(
-			mProfileData.getId(),
-			mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    	comClient = new COMClient(
+			profileData.getId(),
+			sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
     	);
-        mPostingRights = false;
+        postingRights = false;
     }
 
     public final void showProfile(ProfileInformation data) {
-        if (data == null || mContext == null) {
+        if (data == null || context == null) {
             return;
         }
-        Activity activity = (Activity) mContext;
+        Activity activity = (Activity) context;
         
         ((TextView) activity.findViewById(R.id.text_username)).setText(data.getUsername());
         if (data.isPlaying() && data.isOnline()) {
@@ -104,14 +105,14 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         } else if (data.isOnline()) {
             ((TextView) activity.findViewById(R.id.text_online)).setText(R.string.info_profile_online);
         } else {
-            ((TextView) activity.findViewById(R.id.text_online)).setText(data.getLastLoginString(mContext));
+            ((TextView) activity.findViewById(R.id.text_online)).setText(data.getLastLoginString(context));
         }
 
         if ("".equals(data.getStatusMessage())) {
             (activity.findViewById(R.id.wrap_status)).setVisibility(View.GONE);
         } else {
             ((TextView) activity.findViewById(R.id.text_status)).setText(data.getStatusMessage());
-            ((TextView) activity.findViewById(R.id.text_status_date)).setText(PublicUtils.getRelativeDate(mContext,
+            ((TextView) activity.findViewById(R.id.text_status_date)).setText(PublicUtils.getRelativeDate(context,
                     data.getStatusMessageChanged(), R.string.info_lastupdate));
         }
 
@@ -132,7 +133,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 @Override
                 public void onClick(View v) {
                     startActivity(
-                    	new Intent(mContext, PlatoonActivity.class).putExtra("platoon", (PlatoonData) v.getTag())
+                    	new Intent(context, PlatoonActivity.class).putExtra("platoon", (PlatoonData) v.getTag())
                     );
                 }
             };
@@ -141,13 +142,13 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 if (platoonWrapper.findViewWithTag(currentPlatoon) != null) {
                     continue;
                 }
-                convertView = mLayoutInflater.inflate(R.layout.list_item_platoon, platoonWrapper, false);
+                convertView = layoutInflater.inflate(R.layout.list_item_platoon, platoonWrapper, false);
 
                 ((TextView) convertView.findViewById(R.id.text_name)).setText(currentPlatoon.getName());
                 ((TextView) convertView.findViewById(R.id.text_members)).setText(String.valueOf(currentPlatoon.getCountMembers()));
                 ((TextView) convertView.findViewById(R.id.text_fans)).setText(String.valueOf(currentPlatoon.getCountFans()));
 
-                String image = PublicUtils.getCachePath(mContext)+ currentPlatoon.getImage();
+                String image = PublicUtils.getCachePath(context)+ currentPlatoon.getImage();
                 ((ImageView) convertView.findViewById(R.id.image_badge)).setImageBitmap(BitmapFactory.decodeFile(image));
                 
                 convertView.setTag(currentPlatoon);
@@ -167,31 +168,31 @@ public class ProfileOverviewFragment extends Bf3Fragment {
 
         @Override
         protected void onPreExecute() {
-            this.progressDialog = new ProgressDialog(mContext);
-            this.progressDialog.setTitle(mContext.getString(R.string.general_wait));
-            this.progressDialog.setMessage(mContext.getString(R.string.general_downloading));
+            this.progressDialog = new ProgressDialog(context);
+            this.progressDialog.setTitle(context.getString(R.string.general_wait));
+            this.progressDialog.setMessage(context.getString(R.string.general_downloading));
             this.progressDialog.show();
         }
         
         @Override
         protected Boolean doInBackground(Void... arg0) {
             try {
-                mProfileInformation = ProfileInformationDAO.getProfileInformationFromCursor(
-            		mContext.getContentResolver().query(
-	            		ProfileInformationDAO.URI, 
-	            		null,
-	            		ProfileInformationDAO.Columns.USER_ID + "=?",
-	            		new String[] {String.valueOf(mProfileData.getId())},
-	            		null
-	            	)
-				);
+                profileInformation = ProfileInformationDAO.getProfileInformationFromCursor(
+                        context.getContentResolver().query(
+                                ProfileInformationDAO.URI,
+                                null,
+                                ProfileInformationDAO.Columns.USER_ID + "=?",
+                                new String[]{String.valueOf(profileData.getId())},
+                                null
+                        )
+                );
 
-                if( mProfileInformation != null ) {
+                if( profileInformation != null ) {
 	                List<PlatoonData> platoons = new ArrayList<PlatoonData>();
-	                for(String platoonId : mProfileInformation.getSerializedPlatoonIds().split(":")) {
+	                for(String platoonId : profileInformation.getSerializedPlatoonIds().split(":")) {
 	                	platoons.add(
 	            			PlatoonInformationDAO.getPlatoonDataFromCursor(
-                                    mContext.getContentResolver().query(
+                                    context.getContentResolver().query(
                                             PlatoonInformationDAO.URI,
                                             PlatoonInformationDAO.getSmallerProjection(),
                                             PlatoonInformationDAO.Columns.PLATOON_ID + "=?",
@@ -201,7 +202,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                             )
 	                	);
 	                }
-	                mProfileInformation.setPlatoons(platoons);
+	                profileInformation.setPlatoons(platoons);
 	                return true;
                 }
                 return false;
@@ -215,17 +216,17 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         protected void onPostExecute(Boolean foundCachedVersion) {
             if (foundCachedVersion) {
             	long cacheExpiration = System.currentTimeMillis()-((Constants.MINUTE_IN_SECONDS*15)*1000);
-            	if( mProfileInformation.getTimestamp() < cacheExpiration) {
+            	if( profileInformation.getTimestamp() < cacheExpiration) {
             		new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();
             	}
                 if (this.progressDialog != null) {
                     this.progressDialog.dismiss();
                 }
 
-                showProfile(mProfileInformation);
+                showProfile(profileInformation);
 
-                if (mProfileData.getNumPersonas() < mProfileInformation.getNumPersonas()) {
-                    mProfileData.setPersona(mProfileInformation.getAllPersonas());
+                if (profileData.getNumPersonas() < profileInformation.getNumPersonas()) {
+                    profileData.setPersona(profileInformation.getAllPersonas());
                 }
 
             } else {
@@ -254,17 +255,17 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         @Override
         protected Boolean doInBackground(Void... arg0) {
             try {
-                if (mProfileData.getNumPersonas() == 0) {
-                    mProfileData = ProfileClient.resolveFullProfileDataFromProfileData(mProfileData);
+                if (profileData.getNumPersonas() == 0) {
+                    profileData = ProfileClient.resolveFullProfileDataFromProfileData(profileData);
                 }
                 
-                mProfileInformation = new ProfileClient(mProfileData).getInformation(mContext);
-                updateProfileInDB(mProfileInformation);
+                profileInformation = new ProfileClient(profileData).getInformation(context);
+                updateProfileInDB(profileInformation);
                
-                for(PlatoonData p : mProfileInformation.getPlatoons()) {
+                for(PlatoonData p : profileInformation.getPlatoons()) {
                 	updatePlatoonInDB(p);
                 }
-                return (mProfileInformation != null);
+                return (profileInformation != null);
             } catch (WebsiteHandlerException ex) {
                 ex.printStackTrace();
                 return false;
@@ -274,28 +275,29 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         @Override
         protected void onPostExecute(Boolean result) {
             if (!result) {
-                Toast.makeText(mContext, R.string.general_no_data,Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.general_no_data,Toast.LENGTH_SHORT).show();
             }
 
             if (progressDialog != null && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
 
-            showProfile(mProfileInformation);
-            setFeedPermission(mProfileInformation.isFriend() || mPostingRights);
+            showProfile(profileInformation);
+            setFeedPermission(profileInformation.isFriend() || postingRights);
         }
     }
 
     public void reload() {
-        new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();
+        //new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();
+        Log.e("ProfileOverviewFragment", "Reload pressed");
     }
 
     public void updateProfileInDB(ProfileInformation p) {
     	ContentValues contentValues = ProfileInformationDAO.convertProfileInformationForDB(p, System.currentTimeMillis());
     	try {
-    		 mContext.getContentResolver().insert(ProfileInformationDAO.URI, contentValues);		
+    		 context.getContentResolver().insert(ProfileInformationDAO.URI, contentValues);
     	 } catch(SQLiteConstraintException ex) {
-    		 mContext.getContentResolver().update(
+    		 context.getContentResolver().update(
 				 ProfileInformationDAO.URI, 
 				 contentValues,
 				 ProfileInformationDAO.Columns.USER_ID + "=?", 
@@ -306,19 +308,19 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     
     public void updatePlatoonInDB(PlatoonData p) {
     	ContentValues contentValues = PlatoonInformationDAO.platoonDataForDB(p);
-    	mContext.getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);		
+    	context.getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);
 	}
 
     public void setFeedPermission(boolean c) {
-        ((ProfileActivity) mContext).setFeedPermission(c);
+        ((ProfileActivity) context).setFeedPermission(c);
     }
 
     public Menu prepareOptionsMenu(Menu menu) {
-        if (mProfileInformation == null) {
+        if (profileInformation == null) {
             return menu;
         }
-        if (mProfileInformation.isAllowingFriendRequests()) {
-            if (mProfileInformation.isFriend()) {
+        if (profileInformation.isAllowingFriendRequests()) {
+            if (profileInformation.isFriend()) {
                 (menu.findItem(R.id.option_friendadd)).setVisible(false);
                 (menu.findItem(R.id.option_frienddel)).setVisible(true);
             } else {
@@ -335,9 +337,9 @@ public class ProfileOverviewFragment extends Bf3Fragment {
 
     public boolean handleSelectedOption(MenuItem item) {
         if (item.getItemId() == R.id.option_friendadd) {
-            new AsyncFriendRequest(mContext, selectedPersona().getPersonaId()).execute(mComClient);
+            new AsyncFriendRequest(context, selectedPersona().getPersonaId()).execute(comClient);
         } else if (item.getItemId() == R.id.option_frienddel) {
-            new AsyncFriendRemove(mContext, selectedPersona().getPersonaId()).execute(mComClient);
+            new AsyncFriendRemove(context, selectedPersona().getPersonaId()).execute(comClient);
         }
         return true;
     }

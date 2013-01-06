@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.MainActivity;
 import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
+import com.ninetwozero.bf3droid.dao.UserProfileDataDAO;
 import com.ninetwozero.bf3droid.datatype.LoginResult;
 import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
@@ -34,6 +35,7 @@ import static com.ninetwozero.bf3droid.dao.PersonasDAO.simplePersonaFrom;
 import static com.ninetwozero.bf3droid.dao.PersonasDAO.simplePersonaToDB;
 import static com.ninetwozero.bf3droid.dao.PlatoonInformationDAO.simplePlatoonFrom;
 import static com.ninetwozero.bf3droid.dao.PlatoonInformationDAO.simplePlatoonToDatabase;
+import static com.ninetwozero.bf3droid.dao.UserProfileDataDAO.userProfileDataToDB;
 
 public class LoginActivity extends Bf3FragmentActivity {
 
@@ -149,7 +151,7 @@ public class LoginActivity extends Bf3FragmentActivity {
         saveForApplication(userInfo.getPersonas(), userInfo.getPlatoons());
         personasToDatabase(userInfo.getPersonas());
         platoonsToDatabase(userInfo.getPlatoons());
-        //userProfileDataToDatabase(userInfo.getUserProfileData());)
+        userProfileDataToDatabase(userInfo.getUserProfileData());
         redirect();
     }
 
@@ -165,6 +167,11 @@ public class LoginActivity extends Bf3FragmentActivity {
             ContentValues contentValues = simplePlatoonToDatabase(platoon, BF3Droid.getUserId());
             getContext().getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);
         }
+    }
+
+    private void userProfileDataToDatabase(UserProfileData profileData){
+        ContentValues contentValues = userProfileDataToDB(profileData);
+        getContext().getContentResolver().insert(UserProfileDataDAO.URI, contentValues);
     }
 
     private boolean hasPersonas() {

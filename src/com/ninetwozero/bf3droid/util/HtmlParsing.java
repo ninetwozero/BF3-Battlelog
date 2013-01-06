@@ -68,14 +68,16 @@ public class HtmlParsing {
     }
 
     protected UserProfileData extractUserProfile() {
+        String name = userProfileName();
         String age = userAge();
         String enlisted = userEnlisted();
         String lastSeen = userLastSeen();
         String presentation = userPresentation();
         String country = userCountry();
         int veteranStatus = userVeteranStatus();
-        return new UserProfileData(BF3Droid.getUserId(), BF3Droid.getUser(), age, enlisted, lastSeen,
-                presentation, country, veteranStatus);
+        String statusMessage = userStatusMessage();
+        return new UserProfileData(BF3Droid.getUserId(), BF3Droid.getUser(), name, age, enlisted, lastSeen,
+                presentation, country, veteranStatus, statusMessage);
     }
 
     private boolean loggedInPage() {
@@ -157,22 +159,23 @@ public class HtmlParsing {
         return Long.parseLong(linkElements[linkElements.length - 1]);
     }
 
+    private String userProfileName(){
+        Elements elements = document.select("#profile-information h2 img");
+        if(elements.size() > 0 && elements.get(0).hasText()){
+            return elements.get(0).ownText();
+        }else{
+            return EMPTY_STRING;
+        }
+    }
+
     private String userAge() {
         Elements li = profileInformationSecondListElements();
-        if (li.isEmpty()) {
-            return EMPTY_STRING;
-        } else {
-            return timeValueFor("Age", li);
-        }
+        return li.isEmpty() ? EMPTY_STRING : timeValueFor("Age", li);
     }
 
     private String userEnlisted() {
         Elements li = profileInformationSecondListElements();
-        if (li.isEmpty()) {
-            return EMPTY_STRING;
-        } else {
-            return timeValueFor("Enlisted", li);
-        }
+        return li.isEmpty() ? EMPTY_STRING : timeValueFor("Enlisted", li);
     }
 
     private String userLastSeen() {
@@ -191,20 +194,23 @@ public class HtmlParsing {
     }
 
     private String userCountry() {
-        return document.select("#profile-information h2 img").first().attr("alt");
+        Elements elements = document.select("#profile-information h2 img");
+        return elements.size() > 0 ? elements.first().attr("alt") : EMPTY_STRING;
     }
 
     private int userVeteranStatus() {
-        return Integer.parseInt(document.select("#profile-veteran-status .profile-veteran-status").first().text());
+        Elements elements = document.select("#profile-veteran-status .profile-veteran-status");
+        return elements.size() > 0 ? Integer.parseInt(elements.first().text()) : 0;
+    }
+
+    private String userStatusMessage(){
+        Elements elements = document.select(".profile-status-message-text");
+        return elements.size() > 0 ? elements.first().ownText() : EMPTY_STRING;
     }
 
     private Elements profileInformationSecondListElements() {
         Elements ul = document.select("#profile-information ul");
-        if (ul.size() > 1) {
-            return ul.get(1).select("li");
-        } else {
-            return new Elements();
-        }
+        return ul.size() > 1 ? ul.get(1).select("li") : new Elements();
     }
 
     private String timeValueFor(String key, Elements elements) {

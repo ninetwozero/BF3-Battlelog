@@ -75,14 +75,14 @@ import static com.ninetwozero.bf3droid.misc.NumberFormatter.format;
 public class ProfileStatsFragment extends Bf3Fragment {
 
     // Attributes
-    private Context mContext;
-    private LayoutInflater mLayoutInflater;
-    private SharedPreferences mSharedPreferences;
+    private Context context;
+    private LayoutInflater layoutInflater;
+    private SharedPreferences sharedPreferences;
 
     // Elements
     private RelativeLayout mWrapPersona;
     private ProgressDialog progressDialog;
-    private ProgressBar mProgressBar;
+    private ProgressBar progressBar;
     private TextView personaName;
     private TextView rankTitle;
     private TextView rankId;
@@ -91,13 +91,13 @@ public class ProfileStatsFragment extends Bf3Fragment {
     private TextView pointsToMake;
 
     private PersonaData[] personaData;
-    private ProfileData mProfileData;
-    private Map<Long, PersonaStats> mPersonaStats;
-    private long mSelectedPersona;
-    private int mSelectedPosition;
-    private int mSelectedPlatformId;
-    private String mSelectedPersonaName;
-    private boolean mComparing;
+    private ProfileData profileData;
+    private Map<Long, PersonaStats> personaStats;
+    private long selectedPersona;
+    private int selectedPosition;
+    private int selectedPlatformId;
+    private String selectedPersonaName;
+    private boolean comparing;
 
     private URI callURI;
     private final String DIALOG = "dialog";
@@ -113,11 +113,11 @@ public class ProfileStatsFragment extends Bf3Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mContext = getActivity();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        mLayoutInflater = inflater;
+        context = getActivity();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        layoutInflater = inflater;
 
-        View view = mLayoutInflater.inflate(R.layout.tab_content_profile_stats, container, false);
+        View view = layoutInflater.inflate(R.layout.tab_content_profile_stats, container, false);
         initFragment(view);
         return view;
     }
@@ -130,9 +130,9 @@ public class ProfileStatsFragment extends Bf3Fragment {
     }
 
     public void initFragment(View view) {
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress_level);
+        progressBar = (ProgressBar) view.findViewById(R.id.progress_level);
 
-        if (mProfileData.getId() == SessionKeeper.getProfileData().getId()) {
+        if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
             setSelectedPersonaVariables();
         }
 
@@ -151,25 +151,25 @@ public class ProfileStatsFragment extends Bf3Fragment {
         );
     }
 
-    /* FIXME: if no personas are passed to this activity, then mSelectedPersona will be 0? */
+    /* FIXME: if no personas are passed to this activity, then selectedPersona will be 0? */
     private void setSelectedPersonaVariables() {
-        mSelectedPosition = mSharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
-        mSelectedPersona = getSelectedPersonaId(mSelectedPosition);
-        mSelectedPlatformId = getPlatformIdFor(mSelectedPosition);
-        mSelectedPersonaName = getSelectedPersonaName(mSelectedPosition);
-        callURI = UriFactory.getPersonaOverviewUri(mSelectedPersona, mSelectedPlatformId);
+        selectedPosition = sharedPreferences.getInt(Constants.SP_BL_PERSONA_CURRENT_POS, 0);
+        selectedPersona = getSelectedPersonaId(selectedPosition);
+        selectedPlatformId = getPlatformIdFor(selectedPosition);
+        selectedPersonaName = getSelectedPersonaName(selectedPosition);
+        callURI = UriFactory.getPersonaOverviewUri(selectedPersona, selectedPlatformId);
     }
 
     private long getSelectedPersonaId(int position) {
-        return mProfileData.getPersonaArray()[position].getId();
+        return profileData.getPersonaArray()[position].getId();
     }
 
     private int getPlatformIdFor(int position) {
-        return mProfileData.getPersonaArray()[position].getPlatformId();
+        return profileData.getPersonaArray()[position].getPlatformId();
     }
 
     private String getSelectedPersonaName(int position) {
-        return mProfileData.getPersonaArray()[position].getName();
+        return profileData.getPersonaArray()[position].getName();
     }
 
     @Override
@@ -209,7 +209,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
                 RankProgress.URI,
                 RankProgress.RANK_PROGRESS_PROJECTION,
                 RankProgress.Columns.PERSONA_ID + "=?",
-                new String[]{String.valueOf(mSelectedPersona)},
+                new String[]{String.valueOf(selectedPersona)},
                 null
         );
         if (cursor.getCount() > 0) {
@@ -227,7 +227,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
                 PersonaStatistics.URI,
                 PersonaStatistics.PERSONA_STATS_PROJECTION,
                 PersonaStatistics.Columns.PERSONA_ID + "=?",
-                new String[]{String.valueOf(mSelectedPersona)},
+                new String[]{String.valueOf(selectedPersona)},
                 null
         );
         if (cursor.getCount() > 0) {
@@ -245,7 +245,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
                 ScoreStatistics.URI,
                 ScoreStatistics.SCORE_STATISTICS_PROJECTION,
                 ScoreStatistics.Columns.PERSONA_ID + "=?",
-                new String[]{String.valueOf(mSelectedPersona)},
+                new String[]{String.valueOf(selectedPersona)},
                 null
         );
         if (cursor.getCount() > 0) {
@@ -304,8 +304,8 @@ public class ProfileStatsFragment extends Bf3Fragment {
         rankTitle.setText(fromResource(rankProgress.getRank()));
         rankId.setText(format(rankProgress.getRank()));
 
-        mProgressBar.setMax((int) (rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
-        mProgressBar.setProgress((int) (rankProgress.getScore() - rankProgress.getCurrentRankScore()));
+        progressBar.setMax((int) (rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
+        progressBar.setProgress((int) (rankProgress.getScore() - rankProgress.getCurrentRankScore()));
         currentLevelPoints.setText(format(rankProgress.getScore() - rankProgress.getCurrentRankScore()));
         nextLevelPoints.setText(format(rankProgress.getNextRankScore() - rankProgress.getCurrentRankScore()));
         pointsToMake.setText(format(rankProgress.getNextRankScore() - rankProgress.getScore()));
@@ -313,7 +313,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
 
     private void populateStatistics(List<Statistics> statistics, TableLayout layout) {
         for (Statistics ps : statistics) {
-            View tr = mLayoutInflater.inflate(
+            View tr = layoutInflater.inflate(
                     R.layout.list_item_assignment_popup, null);
             ((TextView) tr.findViewById(R.id.text_obj_title)).setText(ps.getTitle());
             ((TextView) tr.findViewById(R.id.text_obj_values)).setText(ps.getValue());
@@ -322,17 +322,17 @@ public class ProfileStatsFragment extends Bf3Fragment {
     }
 
     private int personaArrayLength() {
-        return mProfileData.getPersonaArray().length;
+        return profileData.getPersonaArray().length;
     }
 
     @Override
     protected Loader<CompletedTask> createLoader(int id, Bundle bundle) {
         if (id == LOADER_PERSONA) {
             startLoadingDialog();
-            return new Bf3Loader(getContext(), new Bf3ServerCall.HttpData(UriFactory.getProfilePersonasUri(mProfileData.getId()), HttpGet.METHOD_NAME));
+            return new Bf3Loader(getContext(), new Bf3ServerCall.HttpData(UriFactory.getProfilePersonasUri(profileData.getId()), HttpGet.METHOD_NAME));
         } else {
             startLoadingDialog();
-            return new Bf3Loader(getContext(), new Bf3ServerCall.HttpData(UriFactory.getPersonaOverviewUri(mSelectedPersona, mSelectedPlatformId), HttpGet.METHOD_NAME));
+            return new Bf3Loader(getContext(), new Bf3ServerCall.HttpData(UriFactory.getPersonaOverviewUri(selectedPersona, selectedPlatformId), HttpGet.METHOD_NAME));
         }
     }
 
@@ -411,19 +411,19 @@ public class ProfileStatsFragment extends Bf3Fragment {
 
     private void updateRankProgressDB(PersonaInfo pi) {
         rankProgress = rankProgressFromJSON(pi);
-        ContentValues contentValues = rankProgressForDB(pi, mSelectedPersona);
+        ContentValues contentValues = rankProgressForDB(pi, selectedPersona);
         getContext().getContentResolver().insert(RankProgress.URI, contentValues);
     }
 
     private void updatePersonaStats(PersonaInfo pi) {
         listPersonaStatistics = PersonaStatisticsDAO.personaStatisticsFromJSON(pi);
-        ContentValues contentValues = PersonaStatisticsDAO.personaStatisticsForDB(pi, mSelectedPersona);
+        ContentValues contentValues = PersonaStatisticsDAO.personaStatisticsForDB(pi, selectedPersona);
         getContext().getContentResolver().insert(PersonaStatistics.URI, contentValues);
     }
 
     private void updateScoreStatistics(PersonaInfo pi) {
         listScoreStatistics = ScoreStatisticsDAO.scoreStatisticsFromJSON(pi);
-        ContentValues contentValues = ScoreStatisticsDAO.scoreStatisticsForDB(pi, mSelectedPersona);
+        ContentValues contentValues = ScoreStatisticsDAO.scoreStatisticsForDB(pi, selectedPersona);
         getContext().getContentResolver().insert(ScoreStatistics.URI, contentValues);
     }
 
@@ -464,29 +464,29 @@ public class ProfileStatsFragment extends Bf3Fragment {
 
     public boolean handleSelectedOption(MenuItem item) {
         if (item.getItemId() == R.id.option_compare) {
-            startActivity(new Intent(mContext, CompareActivity.class)
+            startActivity(new Intent(context, CompareActivity.class)
                     .putExtra("profile1", SessionKeeper.getProfileData())
-                    .putExtra("profile2", mProfileData)
-                    .putExtra("selectedPosition", mSelectedPosition));
+                    .putExtra("profile2", profileData)
+                    .putExtra("selectedPosition", selectedPosition));
         } else if (item.getItemId() == R.id.option_unlocks) {
             int position = 0;
-            for (long key : mPersonaStats.keySet()) {
-                if (key == mSelectedPersona) {
+            for (long key : personaStats.keySet()) {
+                if (key == selectedPersona) {
                     break;
                 } else {
                     position++;
                 }
             }
             startActivity(
-                    new Intent(mContext, UnlockActivity.class)
-                            .putExtra("profile", mProfileData)
+                    new Intent(context, UnlockActivity.class)
+                            .putExtra("profile", profileData)
                             .putExtra("selectedPosition", position));
         }
         return true;
     }
 
     public void setComparing(boolean c) {
-        mComparing = c;
+        comparing = c;
     }
 
     public void reloadFromCache() {
@@ -499,8 +499,8 @@ public class ProfileStatsFragment extends Bf3Fragment {
     }
 
     private void restartLoader() {
-        Log.d(Constants.DEBUG_TAG, "numPersonas => " + mProfileData.getNumPersonas());
-        if (mProfileData.getNumPersonas() == 0) {
+        Log.d(Constants.DEBUG_TAG, "numPersonas => " + profileData.getNumPersonas());
+        if (profileData.getNumPersonas() == 0) {
             getLoaderManager().restartLoader(LOADER_PERSONA, bundle, this);
         }
         getLoaderManager().restartLoader(LOADER_STATS, bundle, this);
@@ -508,9 +508,9 @@ public class ProfileStatsFragment extends Bf3Fragment {
 
     private void startLoadingDialog() {   //TODO extract multiple duplicates of same code
         if (this.progressDialog == null) {
-            this.progressDialog = new ProgressDialog(mContext);
-            this.progressDialog.setTitle(mContext.getString(R.string.general_wait));
-            this.progressDialog.setMessage(mContext.getString(R.string.general_downloading));
+            this.progressDialog = new ProgressDialog(context);
+            this.progressDialog.setTitle(context.getString(R.string.general_wait));
+            this.progressDialog.setMessage(context.getString(R.string.general_downloading));
             this.progressDialog.show();
         }
     }
