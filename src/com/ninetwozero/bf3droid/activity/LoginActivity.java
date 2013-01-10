@@ -158,19 +158,16 @@ public class LoginActivity extends Bf3FragmentActivity {
     }
 
     private void personasToDatabase(List<SimplePersona> personas) {
-        List<ContentValues> contentValues = new ArrayList<ContentValues>();
         for (SimplePersona persona : personas) {
-            contentValues.add(simplePersonaToDB(persona, BF3Droid.getUserId()));
-            getContext().getContentResolver().bulkInsert(Personas.URI, contentValues.toArray(new ContentValues[]{}));
+            ContentValues contentValues = simplePersonaToDB(persona, BF3Droid.getUserId());
+            getContext().getContentResolver().insert(Personas.URI, contentValues);
         }
     }
 
     private void platoonsToDatabase(List<SimplePlatoon> platoons) {
-        List<ContentValues> contentValues = new ArrayList<ContentValues>();
         for (SimplePlatoon platoon : platoons) {
-            Log.e("LoginActivity", "Saving platoon "+platoon.toString());
-            contentValues.add(simplePlatoonToDatabase(platoon, BF3Droid.getUserId()));
-            getContext().getContentResolver().bulkInsert(PlatoonInformationDAO.URI, contentValues.toArray(new ContentValues[]{}));
+            ContentValues contentValues = simplePlatoonToDatabase(platoon, BF3Droid.getUserId());
+            getContext().getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);
         }
     }
 
