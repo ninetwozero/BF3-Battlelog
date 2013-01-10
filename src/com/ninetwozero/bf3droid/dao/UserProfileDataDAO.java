@@ -9,7 +9,7 @@ import com.ninetwozero.bf3droid.provider.table.UserProfileData;
 public class UserProfileDataDAO {
     public static final Uri URI = Uri.parse("content://" + BF3Droid.AUTHORITY + "/profile/");
 
-    public static ContentValues userProfileDataToDB(UserProfileData profileData){
+    public static ContentValues userProfileDataToDB(UserProfileData profileData) {
         ContentValues values = new ContentValues();
         values.put(Columns.USER_ID, profileData.getUserId());
         values.put(Columns.USERNAME, profileData.getUsername());
@@ -21,10 +21,12 @@ public class UserProfileDataDAO {
         values.put(Columns.COUNTRY, profileData.getCountry());
         values.put(Columns.VETERAN_STATUS, profileData.getVeteranStatus());
         values.put(Columns.STATUS_MESSAGE, profileData.getStatusMessage());
+        values.put(Columns.STATUS_MESSAGE_DATE, profileData.getStatusMessageDate());
         return values;
     }
 
-    public static UserProfileData userProfileDataFrom(Cursor cursor){
+    public static UserProfileData userProfileDataFrom(Cursor cursor) {
+        cursor.moveToFirst();
         long userId = cursor.getLong(cursor.getColumnIndex(Columns.USER_ID));
         String username = cursor.getString(cursor.getColumnIndex(Columns.USERNAME));
         String name = cursor.getString(cursor.getColumnIndex(Columns.NAME));
@@ -34,12 +36,13 @@ public class UserProfileDataDAO {
         String presentation = cursor.getString(cursor.getColumnIndex(Columns.PRESENTATION));
         String country = cursor.getString(cursor.getColumnIndex(Columns.COUNTRY));
         int veteranStatus = cursor.getInt(cursor.getColumnIndex(Columns.VETERAN_STATUS));
-        String statusMessage = cursor.getString(cursor.getColumnIndex(Columns.STATUS_MESSAGE));;
+        String statusMessage = cursor.getString(cursor.getColumnIndex(Columns.STATUS_MESSAGE));
+        String statusMessageDate = cursor.getString(cursor.getColumnIndex(Columns.STATUS_MESSAGE_DATE));
         return new UserProfileData(userId, username, name, age, enlisted, lastSeen, presentation, country
-                , veteranStatus, statusMessage);
+                , veteranStatus, statusMessage, statusMessageDate);
     }
 
-    public final class Columns{
+    public final class Columns {
         public static final String USER_ID = "userId";
         public static final String USERNAME = "username";
         public static final String NAME = "name";
@@ -50,5 +53,10 @@ public class UserProfileDataDAO {
         public static final String COUNTRY = "country";
         public static final String VETERAN_STATUS = "veteranStatus";
         public static final String STATUS_MESSAGE = "statusMessage";
+        public static final String STATUS_MESSAGE_DATE = "statusMessageDate";
     }
+
+    public static final String[] PROJECTION = {Columns.USER_ID, Columns.USERNAME, Columns.NAME, Columns.AGE,
+            Columns.ENLISTED, Columns.LAST_SEEN, Columns.PRESENTATION, Columns.COUNTRY, Columns.VETERAN_STATUS,
+            Columns.STATUS_MESSAGE, Columns.STATUS_MESSAGE_DATE};
 }

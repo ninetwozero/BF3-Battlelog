@@ -56,21 +56,6 @@
         android:layout_below="@id/text_name"
         android:layout_toRightOf="@id/string000"
         android:text="10"/>
-
-    <TextView
-        android:id="@+id/string100"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/string000"
-        android:text="Number of fans: "/>
-
-    <TextView
-        android:id="@+id/text_fans"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/string000"
-        android:layout_toRightOf="@id/string100"
-        android:text="100"/>
   </RelativeLayout>
 
 </RelativeLayout>

@@ -50,9 +50,9 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     private Context mContext;
 
     // Elements
-    private RelativeLayout mWrapPlatoon;
-    private TextView mTextPlatoon;
-    private ImageView mImagePlatoon;
+    private RelativeLayout wrapPlatoon;
+    private TextView platoonText;
+    private ImageView platoonImage;
 
     private long[] mPlatoonId;
     private String[] mPlatoonName;
@@ -77,8 +77,8 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
     public void initFragment(View view) {
         // Set up the Platoon box
-        mWrapPlatoon = (RelativeLayout) view.findViewById(R.id.wrap_platoon);
-        mWrapPlatoon.setOnClickListener(new OnClickListener() {
+        wrapPlatoon = (RelativeLayout) view.findViewById(R.id.wrap_platoon);
+        wrapPlatoon.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -89,9 +89,9 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         }
 
         );
-        mImagePlatoon = (ImageView) mWrapPlatoon.findViewById(R.id.image_platoon);
-        mTextPlatoon = (TextView) mWrapPlatoon.findViewById(R.id.text_platoon);
-        mTextPlatoon.setSelected(true);
+        platoonImage = (ImageView) wrapPlatoon.findViewById(R.id.image_platoon);
+        platoonText = (TextView) wrapPlatoon.findViewById(R.id.text_platoon);
+        platoonText.setSelected(true);
 
         // Setup the "platoon box"
         setupPlatoonBox();
@@ -194,10 +194,10 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     }
 
     public void setupPlatoonBox() {
-        if (BF3Droid.getUserPlatoons().size() > 0 && mTextPlatoon != null) {
+        if (BF3Droid.getUserPlatoons().size() > 0 && platoonText != null) {
 
-            mTextPlatoon.setText(BF3Droid.selectedUserPlatoon().getName()+ " ["+ BF3Droid.selectedUserPlatoon().getPlatform() + "]");
-           /* mImagePlatoon.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
+            platoonText.setText(BF3Droid.selectedUserPlatoon().getName()+ " ["+ BF3Droid.selectedUserPlatoon().getPlatform() + "]");
+           /* platoonImage.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
                     .getCachePath(mContext)
                     + mPlatoonData.get(mSelectedPosition).getImage()));*/
         }

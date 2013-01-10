@@ -35,7 +35,8 @@ public class PlatoonInformationDAO {
         long platoonId = cursor.getLong(cursor.getColumnIndex(Columns.PLATOON_ID));
         String image = cursor.getString(cursor.getColumnIndex(Columns.BADGE));
         String platform = cursor.getString(cursor.getColumnIndex(Columns.PLATFORM));
-        return new SimplePlatoon(name, platoonId, image, platform);
+        String membersCount = cursor.getString(cursor.getColumnIndex(Columns.MEMBERS_COUNT));
+        return new SimplePlatoon(name, platoonId, image, platform, membersCount);
     }
 	
     public static PlatoonInformation getPlatoonInformationFromCursor(Cursor cursor) {
@@ -98,6 +99,7 @@ public class PlatoonInformationDAO {
         values.put(Columns.NAME, platoon.getName());
         values.put(Columns.BADGE, platoon.getPlatoonBadge());
         values.put(Columns.PLATFORM, platoon.getPlatform());
+        values.put(Columns.MEMBERS_COUNT, platoon.getMembersCount());
         return values;
     }
     	
@@ -117,6 +119,7 @@ public class PlatoonInformationDAO {
     	public final static String BLAZE_CLUB_ID = "blazeClubId";
     	public final static String TIMESTAMP = "timestamp";
         public static final String BADGE = "badge";
+        public static final String MEMBERS_COUNT = "membersCount";
 	};
 	
 	public static String[] getSmallerProjection() {
@@ -132,5 +135,5 @@ public class PlatoonInformationDAO {
 	}
 
     public static final String[] SIMPLE_PLATOON_PROJECTION = new String[]{Columns.PLATOON_ID, Columns.NAME,
-            Columns.BADGE, Columns.PLATFORM};
+            Columns.BADGE, Columns.PLATFORM, Columns.MEMBERS_COUNT};
 }

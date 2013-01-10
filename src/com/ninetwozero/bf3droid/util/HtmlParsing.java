@@ -6,13 +6,14 @@ import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import java.util.ArrayList;
-import java.util.List;
 
 //TODO need some safety check if user details, personas and platoons found like personas must be at least one, and it does found platoons section
 public class HtmlParsing {
@@ -76,8 +77,9 @@ public class HtmlParsing {
         String country = userCountry();
         int veteranStatus = userVeteranStatus();
         String statusMessage = userStatusMessage();
+        String statusMessageDate = userStatusMessageDate();
         return new UserProfileData(BF3Droid.getUserId(), BF3Droid.getUser(), name, age, enlisted, lastSeen,
-                presentation, country, veteranStatus, statusMessage);
+                presentation, country, veteranStatus, statusMessage, statusMessageDate);
     }
 
     private boolean loggedInPage() {
@@ -138,7 +140,8 @@ public class HtmlParsing {
         long id = idFromHref(element.select(".profile-platoon-name").first().attr("href"));
         String badge = element.select(".platoon-badge-item").attr("src");
         String platform = platoonPlatform(element);
-        return new SimplePlatoon(name, id, badge, platform);
+        String membersCount = element.select(".profile-platoon-info").first().ownText();
+        return new SimplePlatoon(name, id, badge, platform, membersCount);
     }
 
     private String platoonPlatform(Element element) {
@@ -205,6 +208,11 @@ public class HtmlParsing {
 
     private String userStatusMessage(){
         Elements elements = document.select(".profile-status-message-text");
+        return elements.size() > 0 ? elements.first().ownText() : EMPTY_STRING;
+    }
+
+    private String userStatusMessageDate(){
+        Elements elements = document.select(".profile-status-message-date");
         return elements.size() > 0 ? elements.first().ownText() : EMPTY_STRING;
     }
 

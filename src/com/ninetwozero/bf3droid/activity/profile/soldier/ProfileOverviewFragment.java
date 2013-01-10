@@ -14,20 +14,17 @@
 
 package com.ninetwozero.bf3droid.activity.profile.soldier;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,7 +35,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
@@ -48,22 +44,20 @@ import com.ninetwozero.bf3droid.asynctask.AsyncFriendRemove;
 import com.ninetwozero.bf3droid.asynctask.AsyncFriendRequest;
 import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
 import com.ninetwozero.bf3droid.dao.ProfileInformationDAO;
+import com.ninetwozero.bf3droid.dao.UserProfileDataDAO;
 import com.ninetwozero.bf3droid.datatype.*;
 import com.ninetwozero.bf3droid.http.COMClient;
-import com.ninetwozero.bf3droid.http.ProfileClient;
-import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
-import com.ninetwozero.bf3droid.misc.SessionKeeper;
+import com.ninetwozero.bf3droid.provider.table.UserProfileData;
 
 public class ProfileOverviewFragment extends Bf3Fragment {
     private Context context;
     private LayoutInflater layoutInflater;
     private COMClient comClient;
     private SharedPreferences sharedPreferences;
-
-    private ProfileData profileData;
-    private ProfileInformation profileInformation;
     private boolean postingRights;
+    private List<SimplePlatoon> platoons;
+    private UserProfileData profileData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,25 +74,22 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         super.onResume();
         context = getActivity();
         //new AsyncCache().execute();
+        profileData = userProfileDataFromDB();
+        platoons = BF3Droid.getUserPlatoons();
+        showProfile();
     }
 
     public void initFragment(View v) {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-    	comClient = new COMClient(
-			profileData.getId(),
-			sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
-    	);
+    	comClient = new COMClient(BF3Droid.getUserId(), BF3Droid.getCheckSum());
         postingRights = false;
     }
 
-    public final void showProfile(ProfileInformation data) {
-        if (data == null || context == null) {
-            return;
-        }
+    public final void showProfile() {
         Activity activity = (Activity) context;
         
-        ((TextView) activity.findViewById(R.id.text_username)).setText(data.getUsername());
-        if (data.isPlaying() && data.isOnline()) {
+        ((TextView) activity.findViewById(R.id.text_username)).setText(BF3Droid.getUser());
+
+        /*if (data.isPlaying() && data.isOnline()) {
             ((TextView) activity.findViewById(R.id.text_online)).setText(
                 getString(R.string.info_profile_playing).replace("{server name}", data.getCurrentServer())
             );
@@ -106,23 +97,26 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             ((TextView) activity.findViewById(R.id.text_online)).setText(R.string.info_profile_online);
         } else {
             ((TextView) activity.findViewById(R.id.text_online)).setText(data.getLastLoginString(context));
-        }
+        }*/
 
-        if ("".equals(data.getStatusMessage())) {
+        if ("".equals(profileData.getStatusMessage())) {
             (activity.findViewById(R.id.wrap_status)).setVisibility(View.GONE);
         } else {
-            ((TextView) activity.findViewById(R.id.text_status)).setText(data.getStatusMessage());
-            ((TextView) activity.findViewById(R.id.text_status_date)).setText(PublicUtils.getRelativeDate(context,
-                    data.getStatusMessageChanged(), R.string.info_lastupdate));
+            ((TextView) activity.findViewById(R.id.text_status)).setText(profileData.getStatusMessage());
+            ((TextView) activity.findViewById(R.id.text_status_date)).setText(profileData.getStatusMessageDate());
         }
 
-        if ("".equals(data.getPresentation())) {
+        if ("".equals(profileData.getPresentation())) {
             ((TextView) activity.findViewById(R.id.text_presentation)).setText(R.string.info_profile_empty_pres);
         } else {
-            ((TextView) activity.findViewById(R.id.text_presentation)).setText(data.getPresentation());
+            ((TextView) activity.findViewById(R.id.text_presentation)).setText(profileData.getPresentation());
         }
 
-        if (data.getNumPlatoons() > 0) {
+        showPlatoons(activity);
+    }
+
+    private void showPlatoons(Activity activity) {
+        if (platoons.size() > 0) {
             View convertView;
             LinearLayout platoonWrapper = (LinearLayout) activity.findViewById(R.id.list_platoons);
 
@@ -138,20 +132,19 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 }
             };
 
-            for (PlatoonData currentPlatoon : data.getPlatoons()) {
-                if (platoonWrapper.findViewWithTag(currentPlatoon) != null) {
+            for (SimplePlatoon platoon : platoons) {
+                if (platoonWrapper.findViewWithTag(platoon) != null) {
                     continue;
                 }
                 convertView = layoutInflater.inflate(R.layout.list_item_platoon, platoonWrapper, false);
 
-                ((TextView) convertView.findViewById(R.id.text_name)).setText(currentPlatoon.getName());
-                ((TextView) convertView.findViewById(R.id.text_members)).setText(String.valueOf(currentPlatoon.getCountMembers()));
-                ((TextView) convertView.findViewById(R.id.text_fans)).setText(String.valueOf(currentPlatoon.getCountFans()));
+                ((TextView) convertView.findViewById(R.id.text_name)).setText(platoon.getName());
+                ((TextView) convertView.findViewById(R.id.text_members)).setText(String.valueOf(platoon.getMembersCount()));
 
-                String image = PublicUtils.getCachePath(context)+ currentPlatoon.getImage();
-                ((ImageView) convertView.findViewById(R.id.image_badge)).setImageBitmap(BitmapFactory.decodeFile(image));
-                
-                convertView.setTag(currentPlatoon);
+                /*String image = PublicUtils.getCachePath(context)+ currentPlatoon.getImage();
+                ((ImageView) convertView.findViewById(R.id.image_badge)).setImageBitmap(BitmapFactory.decodeFile(image));*/
+
+                convertView.setTag(platoon);
                 convertView.setOnClickListener(onClickListener);
 
                 platoonWrapper.addView(convertView);
@@ -160,132 +153,19 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             ((LinearLayout) activity.findViewById(R.id.list_platoons)).removeAllViews();
             (activity.findViewById(R.id.text_platoon)).setVisibility(View.VISIBLE);
         }
-        ((TextView) activity.findViewById(R.id.text_username)).setText(data.getUsername());
     }
 
-    public class AsyncCache extends AsyncTask<Void, Void, Boolean> {
-        private ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            this.progressDialog = new ProgressDialog(context);
-            this.progressDialog.setTitle(context.getString(R.string.general_wait));
-            this.progressDialog.setMessage(context.getString(R.string.general_downloading));
-            this.progressDialog.show();
-        }
-        
-        @Override
-        protected Boolean doInBackground(Void... arg0) {
-            try {
-                profileInformation = ProfileInformationDAO.getProfileInformationFromCursor(
-                        context.getContentResolver().query(
-                                ProfileInformationDAO.URI,
-                                null,
-                                ProfileInformationDAO.Columns.USER_ID + "=?",
-                                new String[]{String.valueOf(profileData.getId())},
-                                null
-                        )
-                );
-
-                if( profileInformation != null ) {
-	                List<PlatoonData> platoons = new ArrayList<PlatoonData>();
-	                for(String platoonId : profileInformation.getSerializedPlatoonIds().split(":")) {
-	                	platoons.add(
-	            			PlatoonInformationDAO.getPlatoonDataFromCursor(
-                                    context.getContentResolver().query(
-                                            PlatoonInformationDAO.URI,
-                                            PlatoonInformationDAO.getSmallerProjection(),
-                                            PlatoonInformationDAO.Columns.PLATOON_ID + "=?",
-                                            new String[]{platoonId},
-                                            null
-                                    )
-                            )
-	                	);
-	                }
-	                profileInformation.setPlatoons(platoons);
-	                return true;
-                }
-                return false;
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean foundCachedVersion) {
-            if (foundCachedVersion) {
-            	long cacheExpiration = System.currentTimeMillis()-((Constants.MINUTE_IN_SECONDS*15)*1000);
-            	if( profileInformation.getTimestamp() < cacheExpiration) {
-            		new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();
-            	}
-                if (this.progressDialog != null) {
-                    this.progressDialog.dismiss();
-                }
-
-                showProfile(profileInformation);
-
-                if (profileData.getNumPersonas() < profileInformation.getNumPersonas()) {
-                    profileData.setPersona(profileInformation.getAllPersonas());
-                }
-
-            } else {
-                new AsyncRefresh(SessionKeeper.getProfileData().getId(), progressDialog).execute();
-            }
-        }
+    private UserProfileData userProfileDataFromDB(){
+        Cursor cursor = getContext().getContentResolver().query(
+                UserProfileDataDAO.URI,
+                UserProfileDataDAO.PROJECTION,
+                UserProfileDataDAO.Columns.USER_ID + "=?",
+                new String[]{String.valueOf(BF3Droid.getUserId())},
+                null
+        );
+        return UserProfileDataDAO.userProfileDataFrom(cursor);
     }
 
-    public class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
-        private long activeProfileId;
-        private ProgressDialog progressDialog;
-
-        public AsyncRefresh(long pId) {
-            this.activeProfileId = pId;
-        }
-
-        public AsyncRefresh(long pId, ProgressDialog pDialog) {
-            this.activeProfileId = pId;
-            this.progressDialog = pDialog;
-        }
-
-        @Override
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... arg0) {
-            try {
-                if (profileData.getNumPersonas() == 0) {
-                    profileData = ProfileClient.resolveFullProfileDataFromProfileData(profileData);
-                }
-                
-                profileInformation = new ProfileClient(profileData).getInformation(context);
-                updateProfileInDB(profileInformation);
-               
-                for(PlatoonData p : profileInformation.getPlatoons()) {
-                	updatePlatoonInDB(p);
-                }
-                return (profileInformation != null);
-            } catch (WebsiteHandlerException ex) {
-                ex.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (!result) {
-                Toast.makeText(context, R.string.general_no_data,Toast.LENGTH_SHORT).show();
-            }
-
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-
-            showProfile(profileInformation);
-            setFeedPermission(profileInformation.isFriend() || postingRights);
-        }
-    }
 
     public void reload() {
         //new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();
@@ -316,6 +196,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     }
 
     public Menu prepareOptionsMenu(Menu menu) {
+        /* Disabled for time being
         if (profileInformation == null) {
             return menu;
         }
@@ -330,7 +211,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         } else {
             ( menu.findItem(R.id.option_friendadd)).setVisible(false);
             ( menu.findItem(R.id.option_frienddel)).setVisible(false);
-        }
+        }*/
         (menu.findItem(R.id.option_compare)).setVisible(false);
         return menu;
     }
@@ -343,6 +224,11 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         }
         return true;
     }
+
+    private Context getContext() {
+        return getActivity().getApplicationContext();
+    }
+
 
     private SimplePersona selectedPersona(){
         return BF3Droid.selectedUserPersona();

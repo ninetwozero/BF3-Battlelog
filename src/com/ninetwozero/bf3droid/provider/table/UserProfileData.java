@@ -12,9 +12,10 @@ public class UserProfileData {
     private final String country;
     private final int veteranStatus;
     private final String statusMessage;
+    private final String statusMessageDate;
 
     public UserProfileData(long userId, String username, String name, String age, String enlisted, String lastSeen,
-                           String presentation, String country, int veteranStatus, String statusMessage) {
+                           String presentation, String country, int veteranStatus, String statusMessage, String statusMessageDate) {
         this.userId = userId;
         this.username = username;
         this.name = name;
@@ -25,6 +26,7 @@ public class UserProfileData {
         this.country = country;
         this.veteranStatus = veteranStatus;
         this.statusMessage = statusMessage;
+        this.statusMessageDate = statusMessageDate;
     }
 
     public long getUserId() {
@@ -65,5 +67,9 @@ public class UserProfileData {
 
     public String getStatusMessage() {
         return statusMessage;
+    }
+
+    public String getStatusMessageDate() {
+        return statusMessageDate;
     }
 }

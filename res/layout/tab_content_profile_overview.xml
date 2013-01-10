@@ -19,8 +19,7 @@
             android:fillViewport="true">
 
   <RelativeLayout
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
+      style="@style/Match"
       android:paddingBottom="10dp"
       android:paddingLeft="10dp"
       android:paddingRight="10dp"
@@ -34,8 +33,7 @@
 
     <TextView
         android:id="@+id/text_online"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Wrap"
         android:layout_below="@id/text_username"
         android:paddingBottom="5dp"
         android:paddingLeft="5dp"

@@ -86,8 +86,8 @@ public class PlatoonListAdapter extends BaseAdapter {
                 .setText(currentPlatoon.getTag());
         ((TextView) convertView.findViewById(R.id.text_members))
                 .setText(currentPlatoon.getCountMembers() + "");
-        ((TextView) convertView.findViewById(R.id.text_fans))
-                .setText(currentPlatoon.getCountFans() + "");
+        /*((TextView) convertView.findViewById(R.id.text_fans))
+                .setText(currentPlatoon.getCountFans() + "");*/
 
         // Almost forgot - we got a Bitmap too!
         ((ImageView) convertView.findViewById(R.id.image_badge))

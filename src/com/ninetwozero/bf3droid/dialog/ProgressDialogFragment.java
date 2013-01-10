@@ -9,8 +9,8 @@ import android.support.v4.app.DialogFragment;
 import com.ninetwozero.bf3droid.R;
 
 public class ProgressDialogFragment extends DialogFragment {
-    private String mMessage;
-    private boolean mFinishActivityOnCancel;
+    private String message;
+    private boolean finishActivityOnCancel;
 
     public ProgressDialogFragment() {
         checkForArguments();
@@ -19,11 +19,11 @@ public class ProgressDialogFragment extends DialogFragment {
     public void checkForArguments() {
         Bundle arguments = getArguments();
         if( arguments == null ) {
-            mMessage = "Loading...";
-            mFinishActivityOnCancel = false;
+            message = "Loading...";
+            finishActivityOnCancel = false;
         } else {
-            mMessage = arguments.getString("message");
-            mFinishActivityOnCancel = arguments.getBoolean("finish");
+            message = arguments.getString("message");
+            finishActivityOnCancel = arguments.getBoolean("finish");
         }
     }
     @Override
@@ -39,7 +39,7 @@ public class ProgressDialogFragment extends DialogFragment {
         checkForArguments();
         final ProgressDialog dialog = new ProgressDialog(getActivity());
         dialog.setTitle(R.string.label_wait);
-        dialog.setMessage(mMessage);
+        dialog.setMessage(message);
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
         return dialog;
@@ -52,25 +52,25 @@ public class ProgressDialogFragment extends DialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        if(mFinishActivityOnCancel && getActivity() != null) {
+        if(finishActivityOnCancel && getActivity() != null) {
             getActivity().finish();
         }
         return;
     }
 
     public static class Builder {
-        private static ProgressDialogFragment mDialog;
+        private static ProgressDialogFragment dialogFragment;
 
         public static ProgressDialogFragment getInstance() {
-            if( mDialog == null ) {
+            if( dialogFragment == null ) {
                 Bundle bundle = new Bundle();
                 bundle.putString("message", "Loading...");
                 bundle.putBoolean("finish", false);
 
-                mDialog = new ProgressDialogFragment();
-                mDialog.setArguments(bundle);
+                dialogFragment = new ProgressDialogFragment();
+                dialogFragment.setArguments(bundle);
             }
-            return mDialog;
+            return dialogFragment;
         }
     }
 }
