@@ -45,7 +45,7 @@ import com.ninetwozero.bf3droid.jsonmodel.soldierstats.PersonaInfo;
 import com.ninetwozero.bf3droid.loader.Bf3Loader;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
-import com.ninetwozero.bf3droid.model.SelectedPersona;
+import com.ninetwozero.bf3droid.model.SelectedOption;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.provider.table.PersonaStatistics;
@@ -83,7 +83,6 @@ public class ProfileStatsFragment extends Bf3Fragment {
     private Map<Long, PersonaStats> personaStats;
     private boolean comparing;
     private final String DIALOG = "dialog";
-    //private final int LOADER_PERSONA = 20;
     private final int LOADER_STATS = 21;
 
     private Bundle bundle;
@@ -113,7 +112,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
                     public void onClick(View sv) {
                         if (userPersonasCount() > 1) {
                             FragmentManager manager = getFragmentManager();
-                            ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap());
+                            ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), SelectedOption.PERSONA);
                             dialog.show(manager, DIALOG);
                         }
                     }
@@ -140,11 +139,11 @@ public class ProfileStatsFragment extends Bf3Fragment {
     }
 
     @Subscribe
-    public void personaChanged(SelectedPersona selectedPersona) {
-        //updateSharedPreference(selectedPersona.getPersonaId());
-        //setSelectedPersonaVariables();
-        BF3Droid.setSelectedUserPersona(selectedPersona.getPersonaId());
-        getData();
+    public void selectionChanged(SelectedOption selectedOption) {
+        if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
+            BF3Droid.setSelectedUserPersona(selectedOption.getSelectedId());
+            getData();
+        }
     }
 
     private void getData() {
@@ -293,7 +292,6 @@ public class ProfileStatsFragment extends Bf3Fragment {
 
     @Override
     public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {
-        /* FIXME: This doesn't seem right, maybe due to the lack of personas? */
         if (task != null && task.result.equals(CompletedTask.Result.SUCCESS)) {
             findViews();
             PersonaInfo pi = personaStatsFrom(task);
@@ -302,7 +300,6 @@ public class ProfileStatsFragment extends Bf3Fragment {
             closeProgressDialog(ProfileStatsFragment.class.getSimpleName());
         }
     }
-
 
     private PersonaInfo personaStatsFrom(CompletedTask task) {
         Gson gson = new Gson();
@@ -345,7 +342,6 @@ public class ProfileStatsFragment extends Bf3Fragment {
         }
         return map;
     }
-
 
     public Menu prepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.option_friendadd).setVisible(false);

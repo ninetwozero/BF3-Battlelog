@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
 import com.google.gson.Gson;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
@@ -38,19 +39,21 @@ import com.ninetwozero.bf3droid.loader.Bf3Loader;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
-import com.ninetwozero.bf3droid.model.SelectedPersona;
+import com.ninetwozero.bf3droid.model.SelectedOption;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.server.Bf3ServerCall;
 import com.squareup.otto.Subscribe;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
-import org.apache.http.client.methods.HttpGet;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
+
+import org.apache.http.client.methods.HttpGet;
 
 import static com.ninetwozero.bf3droid.misc.Constants.SP_BL_PERSONA_CURRENT_ID;
 import static com.ninetwozero.bf3droid.misc.Constants.SP_BL_PERSONA_CURRENT_POS;
@@ -115,10 +118,10 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
         BusProvider.getInstance().unregister(this);
     }
 
-    public void setup(){
+    public void setup() {
         if (mListFragments == null) {
             mListFragments = new ArrayList<Fragment>();
-            for(int expansion : expansionId){
+            for (int expansion : expansionId) {
                 Bundle bundle = new Bundle();
                 bundle.putInt(EXPANSION_ID, expansion);
                 mListFragments.add(Fragment.instantiate(this, AssignmentFragment.class.getName(), bundle));
@@ -171,12 +174,12 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
 
     }
 
-    private void refresh(){
+    private void refresh() {
         getSupportLoaderManager().restartLoader(ASSIGNMENT_CODE, bundle, this);
     }
 
-    public MissionPack getMissionPack(int id){
-        return assignments != null ?assignments.getMissionPacksList().get(id):null;
+    public MissionPack getMissionPack(int id) {
+        return assignments != null ? assignments.getMissionPacksList().get(id) : null;
     }
 
     @Override
@@ -192,7 +195,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
             refresh();
         } else if (item.getItemId() == R.id.option_change) {
             if (personaArrayLength() > 1) {
-                ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap());
+                ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), SelectedOption.PERSONA);
                 dialog.show(mFragmentManager, DIALOG);
             }
         } else if (item.getItemId() == R.id.option_back) {
@@ -209,6 +212,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
         }
         return map;
     }
+
     private int personaArrayLength() {
         return mProfileData.getPersonaArray().length;
     }
@@ -221,10 +225,12 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     }
 
     @Subscribe
-    public void personaChanged(SelectedPersona selectedPersona){
-        updateSharedPreference(selectedPersona.getPersonaId());
-        buildCallUri();
-        refresh();
+    public void personaChanged(SelectedOption selectedOption) {
+        if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
+            updateSharedPreference(selectedOption.getSelectedId());
+            buildCallUri();
+            refresh();
+        }
     }
 
     private void updateSharedPreference(long personaId) {
@@ -236,9 +242,9 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
         editor.commit();
     }
 
-    private int indexOfPersona(long platoonId){
-        for(int i = 0; i <  personaData.length; i++){
-            if(personaData[i].getId() == platoonId){
+    private int indexOfPersona(long platoonId) {
+        for (int i = 0; i < personaData.length; i++) {
+            if (personaData[i].getId() == platoonId) {
                 return i;
             }
         }

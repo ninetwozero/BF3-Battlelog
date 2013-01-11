@@ -126,6 +126,10 @@ public class BF3Droid extends Application {
         return userPlatoons;
     }
 
+    public static void setSelectedUserPlatoon(long selectedUserPlatoon){
+        BF3Droid.selectedUserPlatoon = selectedUserPlatoon;
+    }
+
     public static SimplePlatoon selectedUserPlatoon() {
         if(selectedUserPlatoon == 0){
             return userPlatoons.get(0);
