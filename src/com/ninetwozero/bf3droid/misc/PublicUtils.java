@@ -17,11 +17,6 @@
 
 package com.ninetwozero.bf3droid.misc;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -41,21 +36,16 @@ import com.ninetwozero.bf3droid.asynctask.AsyncSessionValidate;
 import com.ninetwozero.bf3droid.datatype.ShareableCookie;
 import com.ninetwozero.bf3droid.http.RequestHandler;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 public class PublicUtils {
 
     public static String getDate(final Long d) {
         return new SimpleDateFormat("yyyy-MM-dd").format(new Date(d * 1000));
     }
-
-    /**
-     * <p>
-     * Get the "relative" date
-     * </p>
-     *
-     * @param d the first String, must not be null
-     * @param s the second String, must not be null
-     * @return String the relative date
-     */
 
     public static final String getDate(long d, String s) {
         return s + " " + getDate(d);
@@ -65,41 +55,41 @@ public class PublicUtils {
         long dateStart = d;
         long dateNow = System.currentTimeMillis() / 1000;
         long dateDiff = dateNow - dateStart;
-        String dateString = null;
+        String dateString;
 
         if (d == 0) {
             return "N/A";
         }
-        
+
         dateDiff = (dateDiff < 0) ? 0 : dateDiff;
         if ((dateDiff / Constants.MINUTE_IN_SECONDS) < 1) {
-        	// Diff is in the scope of seconds
+            // Diff is in the scope of seconds
             if (dateDiff == 1) {
-            	dateString = c.getString(R.string.info_time_second).replace("{seconds}", String.valueOf(1));
+                dateString = c.getString(R.string.info_time_second).replace("{seconds}", String.valueOf(1));
             } else {
                 dateString = c.getString(R.string.info_time_second_p).replace(
-                    "{seconds}",
-                    String.valueOf(dateDiff % Constants.MINUTE_IN_SECONDS)
+                        "{seconds}",
+                        String.valueOf(dateDiff % Constants.MINUTE_IN_SECONDS)
                 );
             }
         } else if ((dateDiff / Constants.HOUR_IN_SECONDS) < 1) {
-        	// Diff is in the scope of minutes
+            // Diff is in the scope of minutes
             if ((dateDiff / Constants.MINUTE_IN_SECONDS) == 1) {
                 dateString = c.getString(R.string.info_time_min).replace("{minutes}", String.valueOf(1));
             } else {
                 dateString = c.getString(R.string.info_time_min_p).replace(
-                	"{minutes}",
-                	String.valueOf(dateDiff / Constants.MINUTE_IN_SECONDS)
-        		);
+                        "{minutes}",
+                        String.valueOf(dateDiff / Constants.MINUTE_IN_SECONDS)
+                );
             }
         } else if ((dateDiff / Constants.DAY_IN_SECONDS) < 1) {
-        	// Diff is in the scope of hours
+            // Diff is in the scope of hours
             if ((dateDiff / Constants.HOUR_IN_SECONDS) == 1) {
                 dateString = c.getString(R.string.info_time_hour).replace("{hours}", String.valueOf(1));
             } else {
                 dateString = c.getString(R.string.info_time_hour_p).replace(
-            		"{hours}",
-                    String.valueOf(dateDiff / Constants.HOUR_IN_SECONDS)
+                        "{hours}",
+                        String.valueOf(dateDiff / Constants.HOUR_IN_SECONDS)
                 );
             }
         } else if ((dateDiff / Constants.WEEK_IN_SECONDS) < 1) {
@@ -108,8 +98,8 @@ public class PublicUtils {
                 dateString = c.getString(R.string.info_time_day).replace("{days}", String.valueOf(1));
             } else {
                 dateString = c.getString(R.string.info_time_day_p).replace(
-                    "{days}",
-                    String.valueOf(dateDiff / Constants.DAY_IN_SECONDS)
+                        "{days}",
+                        String.valueOf(dateDiff / Constants.DAY_IN_SECONDS)
                 );
             }
         } else if ((dateDiff / Constants.YEAR_IN_SECONDS) < 1) {
@@ -118,8 +108,8 @@ public class PublicUtils {
                 dateString = c.getString(R.string.info_time_week).replace("{weeks}", String.valueOf(1));
             } else {
                 dateString = c.getString(R.string.info_time_week_p).replace(
-            		"{weeks}",
-                    String.valueOf(dateDiff / Constants.WEEK_IN_SECONDS)
+                        "{weeks}",
+                        String.valueOf(dateDiff / Constants.WEEK_IN_SECONDS)
                 );
             }
         } else {
@@ -128,34 +118,17 @@ public class PublicUtils {
                 dateString = c.getString(R.string.info_time_year).replace("{years}", String.valueOf(1));
             } else {
                 dateString = c.getString(R.string.info_time_year_p).replace(
-                    "{years}",
-                    String.valueOf(dateDiff / Constants.YEAR_IN_SECONDS)
+                        "{years}",
+                        String.valueOf(dateDiff / Constants.YEAR_IN_SECONDS)
                 );
             }
         }
         return dateString;
     }
 
-    /**
-     * <p>
-     * Get the "relative" date
-     * </p>
-     *
-     * @param d the first String, must not be null
-     * @param s the second String, must not be null
-     * @return String the relative date
-     */
     public static final String getRelativeDate(Context c, long d, int s) {
         return c.getString(s).replace("{date}", getRelativeDate(c, d));
     }
-
-    /**
-     * <p/>
-     * Normalize the given url (adding the http-prefix if none given)
-     *
-     * @param s the link to be normalized
-     * @return link the normalized link
-     */
 
     public static final String normalizeUrl(final String s) {
         if ("".equals(s)) {
@@ -222,25 +195,19 @@ public class PublicUtils {
             p[i] = i;
         }
         for (j = 1; j <= m; j++) {
-
             t_j = t.charAt(j - 1);
             d[0] = j;
-
             for (i = 1; i <= n; i++) {
 
                 cost = s.charAt(i - 1) == t_j ? 0 : 1;
                 d[i] = Math.min(Math.min(d[i - 1] + 1, p[i] + 1), p[i - 1]
                         + cost);
-
             }
-
             _d = p;
             p = d;
             d = _d;
         }
-
         return p[n];
-
     }
 
     public static String timeToLiteral(long s) {
@@ -252,13 +219,6 @@ public class PublicUtils {
             return (s / 3600) + "H " + ((s % 3600) / 60) + "M";
         }
     }
-
-    /*
-     * Author: http://stackoverflow.com/a/4239019/860212 
-     * Modified by: Karl Lindmark
-     * @param Context The context to be called from
-     * @return boolean True/false regarding if the network is available
-     */
 
     public static boolean isNetworkAvailable(final Context c) {
         ConnectivityManager connMan = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -273,12 +233,6 @@ public class PublicUtils {
         return false;
     }
 
-    /*
-     * Author: Karl Lindmark
-     * @param Context The context to be called from
-     * @return String The path to the cache directory
-     */
-
     public static String getCachePath(final Context c) {
         String path = ExternalCacheDirectory.getInstance(c).getExternalCacheDirectory().toString();
         if (!path.endsWith("/")) {
@@ -286,13 +240,6 @@ public class PublicUtils {
         }
         return path;
     }
-
-    /*
-     * Author: Karl Lindmark
-     * @param Context The context to be called from
-     * @param Bundle The bundle from onCreate()
-     * @return Nothing
-     */
 
     public static void restoreCookies(Context context, Bundle icicle) {
         if (icicle != null && icicle.containsKey(Constants.SUPER_COOKIES)) {
@@ -305,18 +252,11 @@ public class PublicUtils {
         }
     }
 
-    /*
-     * Author: Karl Lindmark
-     * @param Context The context to be called from
-     * @param SharedPreferences The SharedPreferences for the app
-     * @return Nothing
-     */
-
     public static void setupLocale(Context context, SharedPreferences sharedPreferences) {
         if (!sharedPreferences.getString(Constants.SP_BL_LANG, "").equals("")) {
             Locale locale = new Locale(sharedPreferences.getString(Constants.SP_BL_LANG, "en"));
             Locale.setDefault(locale);
-            
+
             Configuration config = new Configuration();
             config.locale = locale;
             context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
@@ -333,14 +273,14 @@ public class PublicUtils {
             String cookieValue = sharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE, "");
             if ("".equals(cookieValue)) {
                 SessionKeeper.setProfileData(
-                	SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences)
+                        SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences)
                 );
                 RequestHandler.setCookies(
-                    new ShareableCookie(
-                        sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
-                        cookieValue,
-                        Constants.COOKIE_DOMAIN
-                    )
+                        new ShareableCookie(
+                                sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
+                                cookieValue,
+                                Constants.COOKIE_DOMAIN
+                        )
                 );
                 SessionKeeper.setPlatoonData(SessionKeeper.generatePlatoonDataFromSharedPreferences(sharedPreferences));
                 new AsyncSessionValidate(context, sharedPreferences).execute();
