@@ -14,32 +14,25 @@
 
 package com.ninetwozero.bf3droid.activity.profile.soldier;
 
-import java.util.ArrayList;
-
-import com.ninetwozero.bf3droid.BF3Droid;
-import com.ninetwozero.bf3droid.datatype.SimplePersona;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.AdapterView;
 
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3Fragment;
 import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
 import com.ninetwozero.bf3droid.activity.feed.FeedFragment;
-import com.ninetwozero.bf3droid.datatype.ProfileData;
+import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.http.FeedClient;
-import com.ninetwozero.bf3droid.misc.SessionKeeper;
+
+import java.util.ArrayList;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 public class ProfileActivity extends CustomFragmentActivity {
 
@@ -74,9 +67,9 @@ public class ProfileActivity extends CustomFragmentActivity {
 			mListFragments.add(fragmentStats = (ProfileStatsFragment) Fragment.instantiate(this, ProfileStatsFragment.class.getName()));
 			mListFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
 
-			fragmentFeed.setTitle(selectedPersona().getPersonaName());
+			fragmentFeed.setTitle(BF3Droid.getUser());
 			fragmentFeed.setType(FeedClient.TYPE_PROFILE);
-			fragmentFeed.setId(selectedPersona().getPersonaId());
+			fragmentFeed.setId(BF3Droid.getUserId());
 			fragmentFeed.setCanWrite(false);
 
 			mViewPager = (ViewPager) findViewById(R.id.viewpager);

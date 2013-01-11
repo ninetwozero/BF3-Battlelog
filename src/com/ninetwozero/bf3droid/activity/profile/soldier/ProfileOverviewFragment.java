@@ -14,8 +14,6 @@
 
 package com.ninetwozero.bf3droid.activity.profile.soldier;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,16 +21,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,10 +37,14 @@ import com.ninetwozero.bf3droid.asynctask.AsyncFriendRequest;
 import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
 import com.ninetwozero.bf3droid.dao.ProfileInformationDAO;
 import com.ninetwozero.bf3droid.dao.UserProfileDataDAO;
-import com.ninetwozero.bf3droid.datatype.*;
+import com.ninetwozero.bf3droid.datatype.PlatoonData;
+import com.ninetwozero.bf3droid.datatype.ProfileInformation;
+import com.ninetwozero.bf3droid.datatype.SimplePersona;
+import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.http.COMClient;
-import com.ninetwozero.bf3droid.misc.PublicUtils;
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
+
+import java.util.List;
 
 public class ProfileOverviewFragment extends Bf3Fragment {
     private Context context;
@@ -218,9 +214,9 @@ public class ProfileOverviewFragment extends Bf3Fragment {
 
     public boolean handleSelectedOption(MenuItem item) {
         if (item.getItemId() == R.id.option_friendadd) {
-            new AsyncFriendRequest(context, selectedPersona().getPersonaId()).execute(comClient);
+            new AsyncFriendRequest(context, BF3Droid.getUserId()).execute(comClient);
         } else if (item.getItemId() == R.id.option_frienddel) {
-            new AsyncFriendRemove(context, selectedPersona().getPersonaId()).execute(comClient);
+            new AsyncFriendRemove(context, BF3Droid.getUserId()).execute(comClient);
         }
         return true;
     }
