@@ -38,6 +38,10 @@ import com.ninetwozero.bf3droid.util.HtmlParsing;
 
 import java.util.List;
 @Deprecated
+/*
+* TODO Need to delete this class together with AsyncSessionRenew and AsyncSessionValidate
+* and find suitable replacement how to validate checksum
+* */
 public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
     // Attribute
@@ -123,7 +127,6 @@ public class AsyncLogin extends AsyncTask<PostData, Integer, Boolean> {
 
             // Start new
             mContext.startActivity(
-
                     new Intent(mContext,
                             DashboardActivity.class)
                             .putExtra("myProfile", mSessionKeeperPackage.getProfileData())

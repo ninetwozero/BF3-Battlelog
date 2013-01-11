@@ -33,7 +33,7 @@
         android:src="@drawable/a01"/>
 
     <TextView
-        android:id="@id/string000"
+        android:id="@+id/label_objectives"
         style="@style/InfoSubHeading"
         android:layout_width="fill_parent"
         android:layout_below="@id/image_assignment"
@@ -44,12 +44,12 @@
         android:id="@+id/wrap_objectives"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/string000"
+        android:layout_below="@id/label_objectives"
         android:orientation="vertical">
     </LinearLayout>
 
     <TextView
-        android:id="@id/string100"
+        android:id="@+id/label_rewards"
         style="@style/InfoSubHeading"
         android:layout_width="fill_parent"
         android:layout_below="@id/wrap_objectives"
@@ -61,7 +61,7 @@
         android:id="@+id/wrap_rewards"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/string100"
+        android:layout_below="@id/label_rewards"
         android:layout_marginTop="5dp">
 
       <ImageView

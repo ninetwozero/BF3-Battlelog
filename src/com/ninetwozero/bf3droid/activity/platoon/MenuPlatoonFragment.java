@@ -16,10 +16,8 @@ package com.ninetwozero.bf3droid.activity.platoon;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -28,6 +26,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.profile.settings.ProfileSettingsActivity;
@@ -35,9 +34,8 @@ import com.ninetwozero.bf3droid.datatype.DefaultFragment;
 import com.ninetwozero.bf3droid.datatype.ProfileData;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.dialog.ListDialogFragment;
-import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
-import com.ninetwozero.bf3droid.model.SelectedPersona;
+import com.ninetwozero.bf3droid.model.SelectedOption;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.squareup.otto.Subscribe;
 
@@ -50,9 +48,9 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     private Context mContext;
 
     // Elements
-    private RelativeLayout mWrapPlatoon;
-    private TextView mTextPlatoon;
-    private ImageView mImagePlatoon;
+    private RelativeLayout wrapPlatoon;
+    private TextView platoonText;
+    private ImageView platoonImage;
 
     private long[] mPlatoonId;
     private String[] mPlatoonName;
@@ -77,21 +75,21 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
     public void initFragment(View view) {
         // Set up the Platoon box
-        mWrapPlatoon = (RelativeLayout) view.findViewById(R.id.wrap_platoon);
-        mWrapPlatoon.setOnClickListener(new OnClickListener() {
+        wrapPlatoon = (RelativeLayout) view.findViewById(R.id.wrap_platoon);
+        wrapPlatoon.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
-                ListDialogFragment dialog = ListDialogFragment.newInstance(platoonsToMap());
+                ListDialogFragment dialog = ListDialogFragment.newInstance(platoonsToMap(), SelectedOption.PLATOON);
                 dialog.show(manager, DIALOG);
             }
         }
 
         );
-        mImagePlatoon = (ImageView) mWrapPlatoon.findViewById(R.id.image_platoon);
-        mTextPlatoon = (TextView) mWrapPlatoon.findViewById(R.id.text_platoon);
-        mTextPlatoon.setSelected(true);
+        platoonImage = (ImageView) wrapPlatoon.findViewById(R.id.image_platoon);
+        platoonText = (TextView) wrapPlatoon.findViewById(R.id.text_platoon);
+        platoonText.setSelected(true);
 
         // Setup the "platoon box"
         setupPlatoonBox();
@@ -150,7 +148,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     private Map<Long, String> platoonsToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
         for (SimplePlatoon platoon : BF3Droid.getUserPlatoons()) {
-            map.put(platoon.getPlatoonId(), platoon.getName()+ " ["+platoon.getPlatform()+"]");
+            map.put(platoon.getPlatoonId(), platoon.getName() + " [" + platoon.getPlatform() + "]");
         }
         return map;
     }
@@ -168,19 +166,11 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     }
 
     @Subscribe
-    public void personaChanged(SelectedPersona selectedPersona) {
-        updateSharedPreference(selectedPersona.getPersonaId());
-        setupPlatoonBox();
-    }
-
-    private void updateSharedPreference(long platoonId) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(getActivity()
-                        .getApplicationContext());
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong(Constants.SP_BL_PLATOON_CURRENT_ID, platoonId);
-        editor.putInt(Constants.SP_BL_PLATOON_CURRENT_POS, indexOfPlatoon(platoonId));
-        editor.commit();
+    public void selectionChanged(SelectedOption selectedOption) {
+        if (selectedOption.getChangedGroup().equals(SelectedOption.PLATOON)) {
+            BF3Droid.setSelectedUserPlatoon(selectedOption.getSelectedId());
+            setupPlatoonBox();
+        }
     }
 
     private int indexOfPlatoon(long platoonId) {
@@ -194,21 +184,14 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     }
 
     public void setupPlatoonBox() {
-        if (BF3Droid.getUserPlatoons().size() > 0
-                && mTextPlatoon != null) {
+        if (BF3Droid.getUserPlatoons().size() > 0 && platoonText != null) {
 
-            mTextPlatoon.setText(BF3Droid.selectedUserPlatoon().getName()+ " ["+ BF3Droid.selectedUserPlatoon().getPlatform() + "]");
-           /* mImagePlatoon.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
+            platoonText.setText(BF3Droid.selectedUserPlatoon().getName() + " [" + BF3Droid.selectedUserPlatoon().getPlatform() + "]");
+           /* platoonImage.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
                     .getCachePath(mContext)
                     + mPlatoonData.get(mSelectedPosition).getImage()));*/
         }
     }
-
-    /*public void setPlatoonData(List<PlatoonData> p) {
-        mPlatoonData = p;
-        setupPlatoonBox();
-
-    }*/
 
     public class AsyncRefresh extends AsyncTask<ProfileData, Void, Boolean> {
         @Override

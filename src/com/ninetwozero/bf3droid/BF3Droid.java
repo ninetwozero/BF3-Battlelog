@@ -12,7 +12,7 @@ import java.util.List;
 public class BF3Droid extends Application {
 
     private static boolean isInDebugMode;
-    public static final String NAME = "battlelog.db";
+    public static final String NAME = "bf3droid.db";
     private static final String BUGSENSE_KEY = "448b2f3b";
 
     private static BF3Droid instance;
@@ -124,6 +124,10 @@ public class BF3Droid extends Application {
 
     public static List<SimplePlatoon> getUserPlatoons() {
         return userPlatoons;
+    }
+
+    public static void setSelectedUserPlatoon(long selectedUserPlatoon){
+        BF3Droid.selectedUserPlatoon = selectedUserPlatoon;
     }
 
     public static SimplePlatoon selectedUserPlatoon() {

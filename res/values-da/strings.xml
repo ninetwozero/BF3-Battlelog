@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">BF3 Battlelog</string>
+  <string name="app_name">BF3 Droid</string>
   <string name="widget_name">Battlelog - Stats+Venner</string>
 
   <integer-array name="service_update_intervals_values">
@@ -82,7 +82,7 @@
     <item>sv</item>
   </string-array>
   <!-- translation starts here -->
-  
+
   <string name="general_invalid_email">Ugyldig e-mail adresse.</string>
   <string name="general_invalid_password">Indtast venligst dit password.</string>
   <string name="general_changelog_version">Ændringslog version {version}</string>
@@ -271,7 +271,7 @@
   <string name="info_xml_platoons">Platoons</string>
   <string name="info_xml_no_platoons">No platoons joined.</string>
   <string name="info_xml_rank2">until rank up</string>
-  
+
   <string name="info_xml_back">Back</string>
   <string name="info_xml_reload">Reload</string>
   <string name="info_xml_logout">Logout</string>
@@ -320,22 +320,23 @@
   </string>
   <string name="info_p_award">&lt;b>{username}&lt;/b> received a new award: &lt;b>{award}&lt;/b>.</string>
   <string name="info_new_rank">new rank</string>
-  <string name="title_main_menu">BF3 Battlelog - Main menu</string>
-  <string name="title_profile">BF3 Battlelog - Profile</string>
-  <string name="title_platoon">BF3 Battlelog - Platoon</string>
-  <string name="title_performance">BF3 Battlelog - Your performance</string>
-  <string name="title_chat">BF3 Battlelog - Chatting with ...</string>
-  <string name="title_comments">BF3 Battlelog - Comments</string>
-  <string name="title_comparing_battle_scars">BF3 Battlelog - Comparing battle scars</string>
-  <string name="title_unlocks">BF3 Battlelog - Upcoming unlocks</string>
-  <string name="title_settings">BF3 Battlelog - Settings</string>
-  <string name="title_forum">BF3 Battlelog - Forum</string>
+  <string name="title_main_menu">BF3 Droid - Main menu</string>
+  <string name="title_profile">BF3 Droid - Profile</string>
+  <string name="title_platoon">BF3 Droid - Platoon</string>
+  <string name="title_performance">BF3 Droid - Your performance</string>
+  <string name="title_chat">BF3 Droid - Chatting with ...</string>
+  <string name="title_comments">BF3 Droid - Comments</string>
+  <string name="title_comparing_battle_scars">BF3 Droid - Comparing battle scars</string>
+  <string name="title_unlocks">BF3 Droid - Upcoming unlocks</string>
+  <string name="title_settings">BF3 Droid - Settings</string>
+  <string name="title_forum">BF3 Droid - Forum</string>
+  <string name="title_browsing_forum">BF3 Droid - Browsing the forums</string>
   <string name="label_forum">Forum</string>
   <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> completed an assignment - &lt;b>\"{assignment}\"&lt;/b>
     (unlocks &lt;b>{unlock}&lt;/b>).
   </string>
   <string name="info_assignments_new_unknown">New assignments have been added - please notify the developer!</string>
-  <string name="title_assignments">BF3 Battlelog - Viewing your assignments</string>
+  <string name="title_assignments">BF3 Droid - Viewing your assignments</string>
   <string name="info_xml_platoons_my">My platoons</string>
   <string name="info_xml_assignments_my">My assignments</string>
   <string name="msg_no_cookies">No cookies found - please try to re-login.</string>
@@ -358,7 +359,7 @@
   <string name="info_forum_newthread_true">The thread has been created.</string>
   <string name="info_forum_newthread_false">The thread could not be created.</string>
   <string name="info_xml_enter_content">Enter the content here</string>
-  
+
   <string name="info_dialog_threadpost">Post a reply</string>
   <string name="info_forum_newpost_true">The reply has been posted.</string>
   <string name="info_forum_newpost_false">The reply could not be posted.</string>
@@ -453,17 +454,17 @@
   <string name="info_about_donating">If you like the work I\'ve been doing and feel like donating a sum of your choice
     to my development fund, just tap this text to go to Paypal for further instructions.
   </string>
-  <string name="general_censored">This post has been censored by the Battlelog staff.</string>
+  <string name="general_censored">This post has been censored by the Droid staff.</string>
   <string name="info_forum_report_true">The post has been reported.</string>
   <string name="info_forum_report_false">The post could not be reported.</string>
   <string name="info_forum_search_label">Forum search</string>
-  
+
   <string name="info_forum_report_reason">Why do you want to report this post?</string>
   <string name="info_forum_report_label">Report a post</string>
   <string name="label_report">Report</string>
   <string name="info_forum_report_empty">You need to enter a reason for reporting this post.</string>
   <string name="info_report_active">Reporting...</string>
-  <string name="title_forum_report">BF3 Battlelog - Reporting a forum post</string>
+  <string name="title_forum_report">BF3 Droid - Reporting a forum post</string>
   <string name="info_forum_lang">Select a language for the forums...</string>
   <string name="info_general_nocache">The cache directory doesn\'t exist: please contact the developer!</string>
   <string name="info_unlock_change">Change soldier...</string>

@@ -2,7 +2,9 @@ package com.ninetwozero.bf3droid.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import com.ninetwozero.bf3droid.dialog.ProgressDialogFragment;
@@ -26,20 +28,21 @@ public class Bf3FragmentActivity extends FragmentActivity implements LoaderManag
     public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
     }
 
-
-    public void startLoadingDialog() {
+    public void startLoadingDialog(String tag) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialogFragment();
         }
-        progressDialog.show(getSupportFragmentManager(), "dialog");
+        progressDialog.show(getSupportFragmentManager(), tag);
     }
 
-    public void closeProgressDialog(){
+    public void closeProgressDialog(final String tag){
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if(progressDialog != null){
-                    progressDialog.dismiss();
+                FragmentManager manager = getSupportFragmentManager();
+                DialogFragment fragment = (DialogFragment) manager.findFragmentByTag(tag);
+                if (fragment != null) {
+                    fragment.dismiss();
                 }
             }
         });

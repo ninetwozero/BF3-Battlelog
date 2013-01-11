@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">BF3 Battlelog</string>
+  <string name="app_name">BF3 Droid</string>
   <string name="widget_name">Battlelog - Statistik+Vänner</string>
 
   <integer-array name="service_update_intervals_values">
@@ -82,7 +82,7 @@
     <item>sv</item>
   </string-array>
   <!-- translation starts here -->
-  
+
   <string name="general_invalid_email">Felaktig e-postadress.</string>
   <string name="general_invalid_password">Vänligen mata in ditt lösenord.</string>
   <string name="general_changelog_version">Förändringar till {version}</string>
@@ -268,7 +268,7 @@
   <string name="info_xml_platoons">Plutoner</string>
   <string name="info_xml_no_platoons">Inga anslutna plutoner.</string>
   <string name="info_xml_rank2">till nästa rang</string>
-  
+
   <string name="info_xml_back">Tillbaka</string>
   <string name="info_xml_reload">Ladda om</string>
   <string name="info_xml_logout">Logga ut</string>
@@ -317,22 +317,23 @@
   </string>
   <string name="info_p_award">&lt;b>{username}&lt;/b> fick en ny belöning: &lt;b>{award}&lt;/b>.</string>
   <string name="info_new_rank">nya rank</string>
-  <string name="title_main_menu">BF3 Battlelog - Huvudmenyn</string>
-  <string name="title_profile">BF3 Battlelog - Profil</string>
-  <string name="title_platoon">BF3 Battlelog - Plutonprofil</string>
-  <string name="title_performance">BF3 Battlelog - Din prestation</string>
-  <string name="title_chat">BF3 Battlelog - Chattar med ...</string>
-  <string name="title_comments">BF3 Battlelog - Kommentarer</string>
-  <string name="title_comparing_battle_scars">BF3 Battlelog - Jämför krigsärr</string>
-  <string name="title_unlocks">BF3 Battlelog - Dina kommande upplåsningar</string>
-  <string name="title_settings">BF3 Battlelog - Inställningar</string>
-  <string name="title_forum">BF3 Battlelog - Forum</string>
+  <string name="title_main_menu">BF3 Droid - Huvudmenyn</string>
+  <string name="title_profile">BF3 Droid - Profil</string>
+  <string name="title_platoon">BF3 Droid - Plutonprofil</string>
+  <string name="title_performance">BF3 Droid - Din prestation</string>
+  <string name="title_chat">BF3 Droid - Chattar med ...</string>
+  <string name="title_comments">BF3 Droid - Kommentarer</string>
+  <string name="title_comparing_battle_scars">BF3 Droid - Jämför krigsärr</string>
+  <string name="title_unlocks">BF3 Droid - Dina kommande upplåsningar</string>
+  <string name="title_settings">BF3 Droid - Inställningar</string>
+  <string name="title_forum">BF3 Droid - Forum</string>
+  <string name="title_browsing_forum">BF3 Droid - Browsing the forums</string>
   <string name="label_forum">Forum</string>
   <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> klarade ett uppdrag - &lt;b>\"{assignment}\"&lt;/b> (ger
     &lt;b>{unlock}&lt;/b>).
   </string>
   <string name="info_assignments_new_unknown">Nya uppdrag har lagts till - vänligen tipsa utvecklaren!</string>
-  <string name="title_assignments">BF3 Battlelog - Kollar på tillgänliga uppdrag</string>
+  <string name="title_assignments">BF3 Droid - Kollar på tillgänliga uppdrag</string>
   <string name="info_xml_platoons_my">Mina plutoner</string>
   <string name="info_xml_assignments_my">Mina uppdrag</string>
   <string name="msg_no_cookies">Sessionskakorna är försvunna - vänligen logga in igen.</string>
@@ -355,7 +356,7 @@
   <string name="info_forum_newthread_true">Tråden har skapats.</string>
   <string name="info_forum_newthread_false">Det gick inte att skapa tråden...</string>
   <string name="info_xml_enter_content">Skriv innehållet här</string>
-  
+
   <string name="info_dialog_threadpost">Skriv ett svar</string>
   <string name="info_forum_newpost_true">Svaret är publicerat.</string>
   <string name="info_forum_newpost_false">Svaret kunde inte publiceras.</string>
@@ -454,13 +455,13 @@
   <string name="info_forum_report_true">Inlägget har rapporterats.</string>
   <string name="info_forum_report_false">Inlägget kunde inte rapporteras.</string>
   <string name="info_forum_search_label">Forumsök</string>
-  
+
   <string name="info_forum_report_reason">Varför vill du rapportera detta inlägg?</string>
   <string name="info_forum_report_label">Rapportera ett inlägg</string>
   <string name="label_report">Rapportera för missbruk</string>
   <string name="info_forum_report_empty">Du måste ange en anledning till varför du rapporterar detta inlägg.</string>
   <string name="info_report_active">Rapporterar...</string>
-  <string name="title_forum_report">BF3 Battlelog - Rapporterar ett foruminlägg</string>
+  <string name="title_forum_report">BF3 Droid - Rapporterar ett foruminlägg</string>
   <string name="info_forum_lang">Välj ett språk för forum...</string>
   <string name="info_general_nocache">Sökvägen för cache finns inte. Kontakta utvecklaren!</string>
   <string name="info_unlock_change">Ändra soldat...</string>

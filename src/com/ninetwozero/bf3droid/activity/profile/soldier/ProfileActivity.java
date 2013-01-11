@@ -14,30 +14,25 @@
 
 package com.ninetwozero.bf3droid.activity.profile.soldier;
 
-import java.util.ArrayList;
-
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.AdapterView;
 
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3Fragment;
 import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
 import com.ninetwozero.bf3droid.activity.feed.FeedFragment;
-import com.ninetwozero.bf3droid.datatype.ProfileData;
+import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.http.FeedClient;
-import com.ninetwozero.bf3droid.misc.SessionKeeper;
+
+import java.util.ArrayList;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 public class ProfileActivity extends CustomFragmentActivity {
 
@@ -45,9 +40,6 @@ public class ProfileActivity extends CustomFragmentActivity {
 	private ProfileOverviewFragment fragmentOverview;
 	private ProfileStatsFragment fragmentStats;
 	private FeedFragment fragmentFeed;
-
-	// Misc
-	private ProfileData profileData;
 
 	@Override
 	public void onCreate(final Bundle icicle) {
@@ -57,7 +49,6 @@ public class ProfileActivity extends CustomFragmentActivity {
 		if (!getIntent().hasExtra("profile")) {
 			finish();
 		}
-		profileData = getIntent().getParcelableExtra("profile");
 		
 		setup();
 		init();
@@ -76,12 +67,9 @@ public class ProfileActivity extends CustomFragmentActivity {
 			mListFragments.add(fragmentStats = (ProfileStatsFragment) Fragment.instantiate(this, ProfileStatsFragment.class.getName()));
 			mListFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
 
-			fragmentOverview.setProfileData(profileData);
-			fragmentStats.setProfileData(profileData);
-
-			fragmentFeed.setTitle(profileData.getUsername());
+			fragmentFeed.setTitle(BF3Droid.getUser());
 			fragmentFeed.setType(FeedClient.TYPE_PROFILE);
-			fragmentFeed.setId(profileData.getId());
+			fragmentFeed.setId(BF3Droid.getUserId());
 			fragmentFeed.setCanWrite(false);
 
 			mViewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -112,12 +100,13 @@ public class ProfileActivity extends CustomFragmentActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
+		//TODO a bundle boolean required to decide when user or visitor persona used and based on that show appropriate menu options
+		/*if (profileData.getId() == SessionKeeper.getProfileData().getId()) {
 			menu.removeItem(R.id.option_friendadd);
 			menu.removeItem(R.id.option_frienddel);
 			menu.removeItem(R.id.option_compare);
 			menu.removeItem(R.id.option_unlocks);
-		} else {
+		} else {*/
 			if (mViewPager.getCurrentItem() == 0) {
 				return super.onPrepareOptionsMenu(fragmentOverview.prepareOptionsMenu(menu));
 			} else if (mViewPager.getCurrentItem() == 1) {
@@ -133,7 +122,7 @@ public class ProfileActivity extends CustomFragmentActivity {
 				menu.removeItem(R.id.option_compare);
 				menu.removeItem(R.id.option_unlocks);
 			}
-		}
+		//}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -145,7 +134,7 @@ public class ProfileActivity extends CustomFragmentActivity {
                 ((Bf3Fragment) fragment).reload();
             }
 		} else if (item.getItemId() == R.id.option_back) {
-			((Activity) this).finish();
+			finish();
 		} else {
 			if (mViewPager.getCurrentItem() == 0) {
 				return fragmentOverview.handleSelectedOption(item);
@@ -194,14 +183,13 @@ public class ProfileActivity extends CustomFragmentActivity {
 		return true;
 	}
 
-	public void openStats(ProfileData p) {
-		fragmentStats.setProfileData(p);
-		fragmentStats.reloadFromCache();
-	}
-
 	public void setFeedPermission(boolean c) {
 		fragmentFeed.setCanWrite(c);
 	}
+
+    private SimplePersona selectedPersona(){
+        return BF3Droid.selectedUserPersona();
+    }
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
