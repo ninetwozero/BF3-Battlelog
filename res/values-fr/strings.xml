@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">BF3 Battlelog</string>
+  <string name="app_name">BF3 Droid</string>
   <string name="widget_name">Battlelog - Stats+Amis</string>
 
   <integer-array name="service_update_intervals_values">
@@ -82,7 +82,7 @@
     <item>sv</item>
   </string-array>
   <!-- translation starts here -->
-  
+
   <string name="general_invalid_email">Adresse e-mail non valide.</string>
   <string name="general_invalid_password">Veuillez saisir votre mot de passe.</string>
   <string name="general_changelog_version">Historique des versions {version}</string>
@@ -266,7 +266,7 @@
   <string name="info_xml_platoons">Sections</string>
   <string name="info_xml_no_platoons">Aucune section rejointe.</string>
   <string name="info_xml_rank2">jusqu\'au prochain grade</string>
-  
+
   <string name="info_xml_back">Retour</string>
   <string name="info_xml_reload">Recharger</string>
   <string name="info_xml_logout">Déconnexion</string>
@@ -311,16 +311,17 @@
   </string>
   <string name="info_p_award">&lt;b>{username}&lt;/b> a recu un nouvea prix: &lt;b>{award}&lt;/b>.</string>
   <string name="info_new_rank">nouveau grade</string>
-  <string name="title_main_menu">BF3 Battlelog - Menu principal</string>
-  <string name="title_profile">BF3 Battlelog - Profil</string>
-  <string name="title_platoon">BF3 Battlelog - Section</string>
-  <string name="title_performance">BF3 Battlelog - Votre performance</string>
-  <string name="title_chat">BF3 Battlelog - Discussion avec...</string>
-  <string name="title_comments">BF3 Battlelog - Commentaires</string>
-  <string name="title_comparing_battle_scars">BF3 Battlelog - Comparer les cicatrices de bataille</string>
-  <string name="title_unlocks">BF3 Battlelog - Déblocages à venir</string>
-  <string name="title_settings">BF3 Battlelog - Paramètres</string>
-  <string name="title_forum">BF3 Battlelog - Forum</string>
+  <string name="title_main_menu">BF3 Droid - Menu principal</string>
+  <string name="title_profile">BF3 Droid - Profil</string>
+  <string name="title_platoon">BF3 Droid - Section</string>
+  <string name="title_performance">BF3 Droid - Votre performance</string>
+  <string name="title_chat">BF3 Droid - Discussion avec...</string>
+  <string name="title_comments">BF3 Droid - Commentaires</string>
+  <string name="title_comparing_battle_scars">BF3 Droid - Comparer les cicatrices de bataille</string>
+  <string name="title_unlocks">BF3 Droid - Déblocages à venir</string>
+  <string name="title_settings">BF3 Droid - Paramètres</string>
+  <string name="title_forum">BF3 Droid - Forum</string>
+  <string name="title_browsing_forum">BF3 Droid - Browsing the forums</string>
   <string name="label_forum">Forum</string>
   <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> a accompli une mission - &lt;b>\"{assignment}\"&lt;/b>
     (unlocks &lt;b>{unlock}&lt;/b>).
@@ -328,7 +329,7 @@
   <string name="info_assignments_new_unknown">De nouvelles missions ont été ajoutées - prière de notifier le
     développeur!
   </string>
-  <string name="title_assignments">BF3 Battlelog - Voir vos missions</string>
+  <string name="title_assignments">BF3 Droid - Voir vos missions</string>
   <string name="info_xml_platoons_my">Mes sections</string>
   <string name="info_xml_assignments_my">Mes missions</string>
   <string name="msg_no_cookies">Aucun cookie trouvé - veuillez essayer de vous re-connecter.</string>
@@ -351,7 +352,7 @@
   <string name="info_forum_newthread_true">La discussion a été créée.</string>
   <string name="info_forum_newthread_false">La discussion n\'a pas pu être créée.</string>
   <string name="info_xml_enter_content">Saisissez le contenu ici</string>
-  
+
   <string name="info_dialog_threadpost">Poster une réponse</string>
   <string name="info_forum_newpost_true">La réponse a été postée.</string>
   <string name="info_forum_newpost_false">La réponse ne peut pas être postée.</string>
@@ -452,13 +453,13 @@
   <string name="info_forum_report_true">Le message a été signalé.</string>
   <string name="info_forum_report_false">Ce message n\'a pas pu être signalé.</string>
   <string name="info_forum_search_label">Recherche dans le forum</string>
-  
+
   <string name="info_forum_report_reason">Pourquoi voulez-vous signaler ce sujet ?</string>
   <string name="info_forum_report_label">Signaler un message</string>
   <string name="label_report">Signaler</string>
   <string name="info_forum_report_empty">Vous avez besoin de saisir une raison pour signaler un message.</string>
   <string name="info_report_active">Signalement...</string>
-  <string name="title_forum_report">BF3 Battlelog - Signaler message du forum</string>
+  <string name="title_forum_report">BF3 Droid - Signaler message du forum</string>
   <string name="info_forum_lang">Sélectionnez une langue pour les forum...</string>
   <string name="info_general_nocache">Le répertoire de cache n\'existe pas : Veuillez contacter le développeur !
   </string>
