@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">BF3 Battlelog</string>
+  <string name="app_name">BF3 Droid</string>
   <string name="widget_name">Battlelog - Statistiken &amp; Freunde</string>
 
   <integer-array name="service_update_intervals_values">
@@ -82,7 +82,7 @@
     <item>sv</item>
   </string-array>
   <!-- translation starts here -->
-  
+
   <string name="general_invalid_email">Ungültige E-Mail Adresse.</string>
   <string name="general_invalid_password">Bitte Passwort eingeben</string>
   <string name="general_changelog_version">Changelog Version {version}</string>
@@ -284,7 +284,7 @@
   <string name="info_xml_platoons">Platoons</string>
   <string name="info_xml_no_platoons">Keinem Platoon beigetreten.</string>
   <string name="info_xml_rank2">Bis zum nächsten Rang</string>
-  
+
   <string name="info_xml_back">Zurück</string>
   <string name="info_xml_reload">Aktualisieren</string>
   <string name="info_xml_logout">Abmelden</string>
@@ -342,23 +342,24 @@
   <string name="info_p_award">&lt;b>{username}&lt;/b> hat eine neue Auszeichnung erhalten: &lt;b>{award}&lt;/b>.
   </string>
   <string name="info_new_rank">Neuer Rang</string>
-  <string name="title_main_menu">BF3 Battlelog - Hauptmenü</string>
-  <string name="title_profile">BF3 Battlelog - Profil</string>
-  <string name="title_platoon">BF3 Battlelog - Platoon</string>
-  <string name="title_performance">BF3 Battlelog - Deine Statistiken</string>
-  <string name="title_chat">BF3 Battlelog - Chattet mit ...</string>
-  <string name="title_comments">BF3 Battlelog - Kommentare</string>
-  <string name="title_comparing_battle_scars">BF3 Battlelog - Vergleiche Kampfstatistiken</string>
-  <string name="title_unlocks">BF3 Battlelog - Nächste Freischaltungen</string>
-  <string name="title_settings">BF3 Battlelog - Einstellungen</string>
-  <string name="title_forum">BF3 Battlelog - Forum</string>
+  <string name="title_main_menu">BF3 Droid - Hauptmenü</string>
+  <string name="title_profile">BF3 Droid - Profil</string>
+  <string name="title_platoon">BF3 Droid - Platoon</string>
+  <string name="title_performance">BF3 Droid - Deine Statistiken</string>
+  <string name="title_chat">BF3 Droid - Chattet mit ...</string>
+  <string name="title_comments">BF3 Droid - Kommentare</string>
+  <string name="title_comparing_battle_scars">BF3 Droid - Vergleiche Kampfstatistiken</string>
+  <string name="title_unlocks">BF3 Droid - Nächste Freischaltungen</string>
+  <string name="title_settings">BF3 Droid - Einstellungen</string>
+  <string name="title_forum">BF3 Droid - Forum</string>
+  <string name="title_browsing_forum">BF3 Droid - Browsing the forums</string>
   <string name="label_forum">Forum</string>
   <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> hat einen Auftrag abgeschlossen t: - &lt;b>\"{assignment}\"&lt;/b>
     (unlocks &lt;b>{unlock}&lt;/b>).
   </string>
   <string name="info_assignments_new_unknown">Neue Aufträge wurden hinzugefügt - bitte informiert die Entwickler!
   </string>
-  <string name="title_assignments">BF3 Battlelog - Deine Aufträge</string>
+  <string name="title_assignments">BF3 Droid - Deine Aufträge</string>
   <string name="info_xml_platoons_my">Meine Platoons</string>
   <string name="info_xml_assignments_my">Meine Aufträge</string>
   <string name="msg_no_cookies">Keine Cookies gefunden - Bitte nochmal einloggen</string>
@@ -381,7 +382,7 @@
   <string name="info_forum_newthread_true">Der Thread wurde erstellt.</string>
   <string name="info_forum_newthread_false">Der Thread konnte nicht erstellt werden.</string>
   <string name="info_xml_enter_content">Füge hier den Inhalt ein</string>
-  
+
   <string name="info_dialog_threadpost">Poste eine Antwort</string>
   <string name="info_forum_newpost_true">Die Antwort wurde gepostet</string>
   <string name="info_forum_newpost_false">Die Antwort konnte nicht gepostet werden</string>
@@ -486,13 +487,13 @@
   <string name="info_forum_report_true">Der Eintrag wurde gemeldet.</string>
   <string name="info_forum_report_false">Der Eintrag konnte nicht gemeldet werden.</string>
   <string name="info_forum_search_label">Forensuche</string>
-  
+
   <string name="info_forum_report_reason">Warum möchtest du diesen Eintrag melden?</string>
   <string name="info_forum_report_label">Einen Eintrag melden</string>
   <string name="label_report">Melden</string>
   <string name="info_forum_report_empty">Du musst den Grund für die Meldung angeben.</string>
   <string name="info_report_active">Melde...</string>
-  <string name="title_forum_report">BF3 Battlelog - Foreneintrag melden</string>
+  <string name="title_forum_report">BF3 Droid - Foreneintrag melden</string>
   <string name="info_forum_lang">Wähle eine Sprache für das Forum...</string>
   <string name="info_general_nocache">Das Zwischenspeicherverzeichnis existiert nicht: Bitte kontaktiere den
     Entwickler!

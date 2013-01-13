@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import com.ninetwozero.bf3droid.R;
-import com.ninetwozero.bf3droid.model.SelectedPersona;
+import com.ninetwozero.bf3droid.model.SelectedOption;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 
 import java.util.ArrayList;
@@ -17,26 +17,28 @@ public class ListDialogFragment extends DialogFragment {
 
     private final Map<Long, String> data;
     private final int titleResource;
+    private final String changedGroup;
     private Long[] id;
     private String[] name;
 
-    public static ListDialogFragment newInstance(Map<Long, String> data) {
-        ListDialogFragment dialog = new ListDialogFragment(data, R.string.info_dialog_selection_generic);
+    public static ListDialogFragment newInstance(Map<Long, String> data, String changedGroup) {
+        ListDialogFragment dialog = new ListDialogFragment(data, R.string.info_dialog_selection_generic, changedGroup);
         Bundle bundle = new Bundle();
         dialog.setArguments(bundle);
         return dialog;
     }
 
-    public static ListDialogFragment newInstance(Map<Long, String> data, int title) {
+    /*public static ListDialogFragment newInstance(Map<Long, String> data, int title) {
     	ListDialogFragment dialog = new ListDialogFragment(data, title);
         Bundle bundle = new Bundle();
         dialog.setArguments(bundle);
-        return dialog;	
-    }
+        return dialog;
+    }*/
     
-    private ListDialogFragment(Map<Long, String> data, int title) {
+    private ListDialogFragment(Map<Long, String> data, int title, String changedGroup) {
         this.data = data;
         this.titleResource = title;
+        this.changedGroup = changedGroup;
     }
 
     @Override
@@ -80,7 +82,7 @@ public class ListDialogFragment extends DialogFragment {
         @Override
         public void onClick(DialogInterface dialog, int item) {
             Long[] ids = data.keySet().toArray(new Long[]{});
-            BusProvider.getInstance().post(new SelectedPersona(ids[item], data.get(ids[item])));
+            BusProvider.getInstance().post(new SelectedOption(ids[item], changedGroup));
             dismiss();
         }
     }

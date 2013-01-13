@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">BF3 Battlelog</string>
+  <string name="app_name">BF3 Droid</string>
   <string name="widget_name">Battlelog - Statystyki+Znajomi</string>
 
   <integer-array name="service_update_intervals_values">
@@ -82,7 +82,7 @@
     <item>sv</item>
   </string-array>
   <!-- translation starts here -->
-  
+
   <string name="general_invalid_email">Niepoprawny adres e-mail.</string>
   <string name="general_invalid_password">Wprowadź swoje hasło</string>
   <string name="general_changelog_version">Lista zmian {version}</string>
@@ -271,7 +271,7 @@
   <string name="info_xml_platoons">Plutony</string>
   <string name="info_xml_no_platoons">Nie dołączono do plutonu</string>
   <string name="info_xml_rank2">Dopóki nie podniesie rangi</string>
-  
+
   <string name="info_xml_back">Wróć</string>
   <string name="info_xml_reload">Przeładuj</string>
   <string name="info_xml_logout">Wyloguj</string>
@@ -316,22 +316,23 @@
   </string>
   <string name="info_p_award">&lt;b>{username}&lt;/b> otrzymał nową nagrodę: &lt;b>{award}&lt;/b>.</string>
   <string name="info_new_rank">nowy poziom</string>
-  <string name="title_main_menu">BF3 Battlelog - Menu główne</string>
-  <string name="title_profile">BF3 Battlelog - Profil</string>
-  <string name="title_platoon">BF3 Battlelog - Pluton</string>
-  <string name="title_performance">BF3 Battlelog - Twoje statystyki</string>
-  <string name="title_chat">BF3 Battlelog - Chat z ...</string>
-  <string name="title_comments">BF3 Battlelog - Komentarze</string>
-  <string name="title_comparing_battle_scars">BF3 Battlelog - Porównanie statystyk</string>
-  <string name="title_unlocks">BF3 Battlelog - Nadchodzące odblokowania</string>
-  <string name="title_settings">BF3 Battlelog - Ustawienia</string>
-  <string name="title_forum">BF3 Battlelog - Forum</string>
+  <string name="title_main_menu">BF3 Droid - Menu główne</string>
+  <string name="title_profile">BF3 Droid - Profil</string>
+  <string name="title_platoon">BF3 Droid - Pluton</string>
+  <string name="title_performance">BF3 Droid - Twoje statystyki</string>
+  <string name="title_chat">BF3 Droid - Chat z ...</string>
+  <string name="title_comments">BF3 Droid - Komentarze</string>
+  <string name="title_comparing_battle_scars">BF3 Droid - Porównanie statystyk</string>
+  <string name="title_unlocks">BF3 Droid - Nadchodzące odblokowania</string>
+  <string name="title_settings">BF3 Droid - Ustawienia</string>
+  <string name="title_forum">BF3 Droid - Forum</string>
+  <string name="title_browsing_forum">BF3 Droid - Browsing the forums</string>
   <string name="label_forum">Forum</string>
   <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> ukończył zadanie - &lt;b>\"{assignment}\"&lt;/b>
     (unlocks &lt;b>{unlock}&lt;/b>).
   </string>
   <string name="info_assignments_new_unknown">Dodano nowe zadania - powiadom twórce programu!</string>
-  <string name="title_assignments">BF3 Battlelog - Twoje zadania</string>
+  <string name="title_assignments">BF3 Droid - Twoje zadania</string>
   <string name="info_xml_platoons_my">Moje plutony</string>
   <string name="info_xml_assignments_my">Moje zadania</string>
   <string name="msg_no_cookies">Nie znaleziono plików cookie - spróbuj zalogować się ponownie</string>
@@ -354,7 +355,7 @@
   <string name="info_forum_newthread_true">Temat utworzony.</string>
   <string name="info_forum_newthread_false">Temat nie mógł zostać utworzony.</string>
   <string name="info_xml_enter_content">Wpisz zawartość tutaj</string>
-  
+
   <string name="info_dialog_threadpost">Dodaj odpowiedź</string>
   <string name="info_forum_newpost_true">Odpowiedź została dodana.</string>
   <string name="info_forum_newpost_false">Odpowiedź nie mogła zostać dodana.</string>
@@ -453,13 +454,13 @@
   <string name="info_forum_report_true">Post został zaraportowany.</string>
   <string name="info_forum_report_false">Post nie mógł zostać zaraportowany.</string>
   <string name="info_forum_search_label">Wyszukiwarka forum</string>
-  
+
   <string name="info_forum_report_reason">Dlaczego chcesz zaraportować ten post?</string>
   <string name="info_forum_report_label">Raportuj post</string>
   <string name="label_report">Raportuj</string>
   <string name="info_forum_report_empty">Musisz podać powód zaraportowania postu.</string>
   <string name="info_report_active">Raportowanie...</string>
-  <string name="title_forum_report">BF3 Battlelog - Raportowanie postu</string>
+  <string name="title_forum_report">BF3 Droid - Raportowanie postu</string>
   <string name="info_forum_lang">Wybierz język forum...</string>
   <string name="info_general_nocache">Katalog pamięci podręcznej nie istnieje: proszę skontaktować się z producentem
     aplikacji!

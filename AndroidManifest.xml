@@ -81,7 +81,7 @@
     <activity
         android:name="com.ninetwozero.bf3droid.activity.forum.ForumActivity"
         android:configChanges="orientation"
-        android:label="BF3 Battlelog - Browsing the forums"/>
+        android:label="@string/title_browsing_forum"/>
     <activity
         android:name="com.ninetwozero.bf3droid.activity.forum.ForumSearchActivity"
         android:configChanges="orientation"
@@ -138,7 +138,7 @@
 
     <provider
         android:authorities="com.ninetwozero.bf3droid.provider"
-        android:name="com.ninetwozero.bf3droid.provider.BattlelogContentProvider"
+        android:name=".provider.Bf3DroidContentProvider"
         />
 
     <!--

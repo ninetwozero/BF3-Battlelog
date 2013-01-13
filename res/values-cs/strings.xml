@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">BF3 Battlelog</string>
+  <string name="app_name">BF3 Droid</string>
   <string name="widget_name">Battlelog - Statistiky+Přátelé</string>
 
   <integer-array name="service_update_intervals_values">
@@ -84,7 +84,7 @@
     <item>cs</item>
   </string-array>
   <!-- translation starts here -->
-  
+
   <string name="general_invalid_email">Chybná emailová adresa.</string>
   <string name="general_invalid_password">Prosím zadejte své heslo.</string>
   <string name="general_changelog_version">Verze dokumentu změn</string>
@@ -269,7 +269,7 @@
   <string name="info_xml_platoons">Čety</string>
   <string name="info_xml_no_platoons">Nejste připojení k žádné četě.</string>
   <string name="info_xml_rank2">dokud nedostanete další ocenění</string>
-  
+
   <string name="info_xml_back">Zpět</string>
   <string name="info_xml_reload">Obnovit</string>
   <string name="info_xml_logout">Odhlásit</string>
@@ -315,22 +315,23 @@
   </string>
   <string name="info_p_award">&lt;b>{username}&lt;/b> obdržel odměnu: &lt;b>{award}&lt;/b>.</string>
   <string name="info_new_rank">nové ohodnocení</string>
-  <string name="title_main_menu">BF3 Battlelog - Hlavní menu</string>
-  <string name="title_profile">BF3 Battlelog - Profil</string>
-  <string name="title_platoon">BF3 Battlelog - Četa</string>
-  <string name="title_performance">BF3 Battlelog - Váš výkon</string>
-  <string name="title_chat">BF3 Battlelog - Chatuji s ...</string>
-  <string name="title_comments">BF3 Battlelog - Komentáře</string>
-  <string name="title_comparing_battle_scars">BF3 Battlelog - Srovnání jizev z bitvy</string>
-  <string name="title_unlocks">BF3 Battlelog - Budoucí odemknutí</string>
-  <string name="title_settings">BF3 Battlelog - Nastavení</string>
-  <string name="title_forum">BF3 Battlelog - Forum</string>
+  <string name="title_main_menu">BF3 Droid - Hlavní menu</string>
+  <string name="title_profile">BF3 Droid - Profil</string>
+  <string name="title_platoon">BF3 Droid - Četa</string>
+  <string name="title_performance">BF3 Droid - Váš výkon</string>
+  <string name="title_chat">BF3 Droid - Chatuji s ...</string>
+  <string name="title_comments">BF3 Droid - Komentáře</string>
+  <string name="title_comparing_battle_scars">BF3 Droid - Srovnání jizev z bitvy</string>
+  <string name="title_unlocks">BF3 Droid - Budoucí odemknutí</string>
+  <string name="title_settings">BF3 Droid - Nastavení</string>
+  <string name="title_forum">BF3 Droid - Forum</string>
+  <string name="title_browsing_forum">BF3 Droid - Browsing the forums</string>
   <string name="label_forum">Forum</string>
   <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> dokončil cíl - &lt;b>\"{assignment}\"&lt;/b> (odemyká
     &lt;b>{unlock}&lt;/b>).
   </string>
   <string name="info_assignments_new_unknown">Nové cíle byly přidány - prosím upozorněte vývojáře!</string>
-  <string name="title_assignments">BF3 Battlelog - Prohlížení cílů</string>
+  <string name="title_assignments">BF3 Droid - Prohlížení cílů</string>
   <string name="info_xml_platoons_my">Moje čety</string>
   <string name="info_xml_assignments_my">Moje cíle</string>
   <string name="msg_no_cookies">Nenalezeny cookies, přihlašte se znovu.</string>
@@ -355,7 +356,7 @@
   <string name="info_forum_newthread_true">Vlákno bylo založeno.</string>
   <string name="info_forum_newthread_false">Vlákno se nepodařilo vytvořit.</string>
   <string name="info_xml_enter_content">Zde napište obsah</string>
-  
+
   <string name="info_dialog_threadpost">Odpovědět</string>
   <string name="info_forum_newpost_true">Odpověď odeslána.</string>
   <string name="info_forum_newpost_false">Odpověď se nepodařilo odeslat.</string>
@@ -451,17 +452,17 @@
   <string name="info_about_donating">Pokud se vám aplikace líbí a rádi byste mi zaslali jakoukoliv odměnu, stačí
     kliknout na tento text a otevře se Paypal.
   </string>
-  <string name="general_censored">Tento příspěvek byl cenzorován administrátory Battlelogu.</string>
+  <string name="general_censored">Tento příspěvek byl cenzorován administrátory Droidu.</string>
   <string name="info_forum_report_true">Příspěvek byl nahlášen.</string>
   <string name="info_forum_report_false">Tento příspěvek nemohl být nahlášen.</string>
   <string name="info_forum_search_label">Hledání</string>
-  
+
   <string name="info_forum_report_reason">Proč chcete tento příspěvek nahlásit?</string>
   <string name="info_forum_report_label">Nahlásit příspěvek</string>
   <string name="label_report">Nahlásot</string>
   <string name="info_forum_report_empty">Musíte napsat důvod, proč chcete příspěvek nahlásit.</string>
   <string name="info_report_active">Nahlašuji...</string>
-  <string name="title_forum_report">BF3 Battlelog - Nahlašování příspěvku z fóra</string>
+  <string name="title_forum_report">BF3 Droid - Nahlašování příspěvku z fóra</string>
   <string name="info_forum_lang">Vyberte svůj jazyk pro toto fórum...</string>
   <string name="info_general_nocache">Adresář pro cache neexistuje, kontaktujte vývojáře!</string>
   <string name="info_unlock_change">Změnit vojáka...</string>

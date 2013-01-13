@@ -32,7 +32,6 @@ public class AsyncSessionValidate extends AsyncTask<PostData, Integer, Boolean> 
 
     // Constructor
     public AsyncSessionValidate(Context c, SharedPreferences sp) {
-
         origin = c;
         sharedPreferences = sp;
     }
@@ -43,55 +42,35 @@ public class AsyncSessionValidate extends AsyncTask<PostData, Integer, Boolean> 
 
     @Override
     protected Boolean doInBackground(PostData... arg0) {
-
         try {
-
             return COMClient.setActive();
-
         } catch (WebsiteHandlerException e) {
-
             return false;
-
         }
-
     }
 
     @Override
     protected void onPostExecute(Boolean results) {
-
         if (!results) {
-
-            // Get the e-mail
-            String email = sharedPreferences.getString(Constants.SP_BL_PROFILE_EMAIL,
-                    "");
+            String email = sharedPreferences.getString(Constants.SP_BL_PROFILE_EMAIL,"");
 
             // Let's renew it
             try {
-
                 new AsyncSessionRenew(origin).execute(
 
                         new PostData(Constants.FIELD_NAMES_LOGIN[0], email),
                         new PostData(
-
                                 Constants.FIELD_NAMES_LOGIN[1], SimpleCrypto.decrypt(
                                 email, sharedPreferences.getString(
-                                Constants.SP_BL_PROFILE_PASSWORD, ""))
-
-                        ), new PostData(Constants.FIELD_NAMES_LOGIN[2], ""),
+                                Constants.SP_BL_PROFILE_PASSWORD, ""))),
+                        new PostData(Constants.FIELD_NAMES_LOGIN[2], ""),
                         new PostData(Constants.FIELD_NAMES_LOGIN[3],
                                 Constants.FIELD_VALUES_LOGIN[3])
-
                 );
 
             } catch (Exception ex) {
-
-                Toast.makeText(origin, ex.getMessage(), Toast.LENGTH_SHORT)
-                        .show();
-
+                Toast.makeText(origin, ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
-
         }
-
     }
-
 }
