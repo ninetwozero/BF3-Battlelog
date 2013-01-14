@@ -1,12 +1,12 @@
 /*
-	This file is part of BF3 Battlelog
+	This file is part of BF3 Droid
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
+    BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
+    BF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -18,19 +18,24 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+
+import com.ninetwozero.bf3droid.dialog.ProgressDialogFragment;
 import com.ninetwozero.bf3droid.http.RequestHandler;
 import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 import java.util.List;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 public class CustomFragmentActivity extends FragmentActivity {
 
@@ -44,6 +49,9 @@ public class CustomFragmentActivity extends FragmentActivity {
     protected FragmentManager mFragmentManager;
     protected ViewPager mViewPager;
     protected List<Fragment> mListFragments;
+
+    private Handler handler = new Handler();
+    private ProgressDialogFragment progressDialog;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -73,5 +81,26 @@ public class CustomFragmentActivity extends FragmentActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(Constants.SUPER_COOKIES, RequestHandler.getCookies());
+    }
+
+    /*TEMPORARY SOLUTION SO PROGRESS DIALOG CAN BE EXTRACTED*/
+    public void startLoadingDialog(String tag) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialogFragment();
+        }
+        progressDialog.show(getSupportFragmentManager(), tag);
+    }
+
+    public void closeProgressDialog(final String tag) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                FragmentManager manager = getSupportFragmentManager();
+                DialogFragment fragment = (DialogFragment) manager.findFragmentByTag(tag);
+                if (fragment != null) {
+                    fragment.dismiss();
+                }
+            }
+        });
     }
 }
