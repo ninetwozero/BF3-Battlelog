@@ -159,28 +159,28 @@
   <string name="pre3_assignment_6_criteria_1">Get 100 kills with the M416</string>
   <string name="pre3_assignment_6_criteria_2">Get 25 avenger kills</string>
   <string name="pre3_assignment_6_criteria_3">Get 15 Medical Efficiency Ribbons</string>
-  <string name="pre3_assignment_6_reward">REPLACE WHEN KNOWN!</string>
+  <string name="pre3_assignment_6_reward">M416 Woodland Stripe Camo</string>
   <string name="pre3_assignment_7">ACW-R Specialist</string>
   <string name="pre3_assignment_7_criteria_1">Get 100 kills with the ACW-R</string>
   <string name="pre3_assignment_7_criteria_2">Disable 50 vehicles</string>
   <string name="pre3_assignment_7_criteria_3">Get 15 Carbine Ribbons</string>
-  <string name="pre3_assignment_7_reward">REPLACE WHEN KNOWN!</string>
+  <string name="pre3_assignment_7_reward">ACW-R Digital Woodland Camo</string>
   <string name="pre3_assignment_8">JNG-90 Specialist</string>
   <string name="pre3_assignment_8_criteria_1">Get 100 kills with the JNG-90</string>
   <string name="pre3_assignment_8_criteria_2">Get 50 spot assists with the TUGS</string>
   <string name="pre3_assignment_8_criteria_3">Get 15 Surveillance Efficiency Ribbons</string>
-  <string name="pre3_assignment_8_reward">REPLACE WHEN KNOWN!</string>
+  <string name="pre3_assignment_8_reward">JNG-90 Navy Blue Digital Camo</string>
   <string name="pre3_assignment_9">M240B Specialist</string>
   <string name="pre3_assignment_9_criteria_1">Get 100 kills with the M240B</string>
   <string name="pre3_assignment_9_criteria_2">Resupply team mates 100 times</string>
   <string name="pre3_assignment_9_criteria_3">Get 15 LMG Ribbons</string>
-  <string name="pre3_assignment_9_reward">REPLACE WHEN KNOWN!</string>
+  <string name="pre3_assignment_9_reward">M240B Woodland Oak Camo</string>
   <string name="pre3_assignment_10">PP-19 Specialist</string>
   <string name="pre3_assignment_10_criteria_1">Get 50 kills with the PP-19 as Assault</string>
   <string name="pre3_assignment_10_criteria_2">Get 50 kills with the PP-19 as Support</string>
   <string name="pre3_assignment_10_criteria_3">Get 50 kills with the PP-19 as Engineer</string>
   <string name="pre3_assignment_10_criteria_4">Get 50 kills with the PP-19 as Recon</string>
-  <string name="pre3_assignment_10_reward">REPLACE WHEN KNOWN!</string>
+  <string name="pre3_assignment_10_reward">PP-19 Desert Stripe Camo</string>
 
   <!-- CLOSE QUARTERS-->
   <string name="xp2_assignment_1">Shepard</string>

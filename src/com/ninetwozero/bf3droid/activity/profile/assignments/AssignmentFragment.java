@@ -1,12 +1,12 @@
 /*
-    This file is part of BF3 Battlelog
+    This file is part of BF3 Droid
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
+    BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
+    BF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -117,11 +117,11 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         twoInRow(missions.get("xp3prema03"), missions.get("xp3prema08"), View.INVISIBLE);
         twoInRow(missions.get("xp3prema04"), missions.get("xp3prema09"), View.INVISIBLE);
         twoInRow(missions.get("xp3prema05"), missions.get("xp3prema10"), View.INVISIBLE);
-        oneInRow(missions.get("xp4prema01"));
-        oneInRow(missions.get("xp4prema02"));
-        oneInRow(missions.get("xp4prema03"));
-        oneInRow(missions.get("xp4prema04"));
-        oneInRow(missions.get("xp4prema05"));
+        twoInRow(missions.get("xp4prema01"), missions.get("xp4prema06"), View.INVISIBLE);
+        twoInRow(missions.get("xp4prema02"), missions.get("xp4prema07"), View.INVISIBLE);
+        twoInRow(missions.get("xp4prema03"), missions.get("xp4prema08"), View.INVISIBLE);
+        twoInRow(missions.get("xp4prema04"), missions.get("xp4prema09"), View.INVISIBLE);
+        twoInRow(missions.get("xp4prema05"), missions.get("xp4prema10"), View.INVISIBLE);
     }
 
     private void nonPremiumMember(Map<String, Mission> missions){
