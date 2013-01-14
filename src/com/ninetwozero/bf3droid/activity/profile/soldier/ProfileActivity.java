@@ -1,12 +1,12 @@
 /*
-	This file is part of BF3 Battlelog
+	This file is part of BF3 Droid
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
+    BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
+    BF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -26,7 +26,6 @@ import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3Fragment;
 import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
 import com.ninetwozero.bf3droid.activity.feed.FeedFragment;
-import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.http.FeedClient;
 
 import java.util.ArrayList;
@@ -186,10 +185,6 @@ public class ProfileActivity extends CustomFragmentActivity {
 	public void setFeedPermission(boolean c) {
 		fragmentFeed.setCanWrite(c);
 	}
-
-    private SimplePersona selectedPersona(){
-        return BF3Droid.selectedUserPersona();
-    }
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

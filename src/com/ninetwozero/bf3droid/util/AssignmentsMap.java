@@ -46,6 +46,11 @@ public class AssignmentsMap{
         put("BF3_ID_PRE3_ASSIGNMENT_3", R.string.pre3_assignment_3);
         put("BF3_ID_PRE3_ASSIGNMENT_4", R.string.pre3_assignment_4);
         put("BF3_ID_PRE3_ASSIGNMENT_5", R.string.pre3_assignment_5);
+        put("BF3_ID_PRE3_ASSIGNMENT_6", R.string.pre3_assignment_6);
+        put("BF3_ID_PRE3_ASSIGNMENT_7", R.string.pre3_assignment_7);
+        put("BF3_ID_PRE3_ASSIGNMENT_8", R.string.pre3_assignment_8);
+        put("BF3_ID_PRE3_ASSIGNMENT_9", R.string.pre3_assignment_9);
+        put("BF3_ID_PRE3_ASSIGNMENT_10", R.string.pre3_assignment_10);
 
         /*CLOSE QUARTERS*/
         put("BF3_ID_XP2_ASSIGNMENT_1",  R.string.xp2_assignment_1);
@@ -118,6 +123,11 @@ public class AssignmentsMap{
         put("xp4prema03", new int[] {R.drawable.xp4prem3a03, R.drawable.xp4_prem3_dta003, R.string.pre3_assignment_3_reward });
         put("xp4prema04", new int[] {R.drawable.xp4prem3a04, R.drawable.xp4_prem3_dta004, R.string.pre3_assignment_4_reward });
         put("xp4prema05", new int[] {R.drawable.xp4prem3a05, R.drawable.xp4_prem3_dta005, R.string.pre3_assignment_5_reward });
+        put("xp4prema06", new int[] {R.drawable.xp4prem3a06, R.drawable.premiumcamo_kamysh, R.string.pre3_assignment_6_reward });
+        put("xp4prema07", new int[] {R.drawable.xp4prem3a07, R.drawable.premiumcamo_digiflora, R.string.pre3_assignment_7_reward });
+        put("xp4prema08", new int[] {R.drawable.xp4prem3a08, R.drawable.premiumcamo_nwu, R.string.pre3_assignment_8_reward });
+        put("xp4prema09", new int[] {R.drawable.xp4prem3a09, R.drawable.premiumcamo_partizan, R.string.pre3_assignment_9_reward });
+        put("xp4prema10", new int[] {R.drawable.xp4prem3a10, R.drawable.premiumcamo_deserttiger, R.string.pre3_assignment_10_reward });
 
         /* CLOSE QUARTERS */
         put("xp2ma01", new int[] {R.drawable.xp2a01, R.drawable.w_xp2_steyraug, R.string.name_weapon_steyraug });
@@ -254,6 +264,22 @@ public class AssignmentsMap{
         put("BF3_ID_PRE3_ASSIGNMENT_4_CRITERIA_3", R.string.pre3_assignment_4_criteria_3);
         put("BF3_ID_PRE3_ASSIGNMENT_5_CRITERIA_1", R.string.pre3_assignment_5_criteria_1);
         put("BF3_ID_PRE3_ASSIGNMENT_5_CRITERIA_2", R.string.pre3_assignment_5_criteria_2);
+        put("BF3_ID_PRE3_ASSIGNMENT_6_CRITERIA_1", R.string.pre3_assignment_6_criteria_1);
+        put("BF3_ID_PRE3_ASSIGNMENT_6_CRITERIA_2", R.string.pre3_assignment_6_criteria_2);
+        put("BF3_ID_PRE3_ASSIGNMENT_6_CRITERIA_3", R.string.pre3_assignment_6_criteria_3);
+        put("BF3_ID_PRE3_ASSIGNMENT_7_CRITERIA_1", R.string.pre3_assignment_7_criteria_1);
+        put("BF3_ID_PRE3_ASSIGNMENT_7_CRITERIA_2", R.string.pre3_assignment_7_criteria_2);
+        put("BF3_ID_PRE3_ASSIGNMENT_7_CRITERIA_3", R.string.pre3_assignment_7_criteria_3);
+        put("BF3_ID_PRE3_ASSIGNMENT_8_CRITERIA_1", R.string.pre3_assignment_8_criteria_1);
+        put("BF3_ID_PRE3_ASSIGNMENT_8_CRITERIA_2", R.string.pre3_assignment_8_criteria_2);
+        put("BF3_ID_PRE3_ASSIGNMENT_8_CRITERIA_3", R.string.pre3_assignment_8_criteria_3);
+        put("BF3_ID_PRE3_ASSIGNMENT_9_CRITERIA_1", R.string.pre3_assignment_9_criteria_1);
+        put("BF3_ID_PRE3_ASSIGNMENT_9_CRITERIA_2", R.string.pre3_assignment_9_criteria_2);
+        put("BF3_ID_PRE3_ASSIGNMENT_9_CRITERIA_3", R.string.pre3_assignment_9_criteria_3);
+        put("BF3_ID_PRE3_ASSIGNMENT_10_CRITERIA_1", R.string.pre3_assignment_10_criteria_1);
+        put("BF3_ID_PRE3_ASSIGNMENT_10_CRITERIA_2", R.string.pre3_assignment_10_criteria_2);
+        put("BF3_ID_PRE3_ASSIGNMENT_10_CRITERIA_3", R.string.pre3_assignment_10_criteria_3);
+        put("BF3_ID_PRE3_ASSIGNMENT_10_CRITERIA_4", R.string.pre3_assignment_10_criteria_4);
         
         /*CLOSE QUARTERS*/
         put("BF3_ID_XP2_ASSIGNMENT_1_CRITERIA_1",  R.string.xp2_assignment_1_criteria_1);
