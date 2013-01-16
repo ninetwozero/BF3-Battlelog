@@ -144,7 +144,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     public void onLoadFinished(Loader<CompletedTask> loader, CompletedTask task) {
         if (task.result.equals(CompletedTask.Result.SUCCESS)) {
             assignments = assignmentsFrom(task);
-            closeProgressDialog(DIALOG);
+            closeLoadingDialog(DIALOG);
             BusProvider.getInstance().post(ASSIGNMENTS);
         }
     }

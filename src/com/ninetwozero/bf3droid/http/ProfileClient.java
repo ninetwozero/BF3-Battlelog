@@ -1,12 +1,12 @@
 /*
-	This file is part of BF3 Battlelog
+	This file is part of BF3 Droid
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
+    BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
+    BF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -16,11 +16,13 @@ package com.ninetwozero.bf3droid.http;
 
 import android.content.Context;
 
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.datatype.*;
 import com.ninetwozero.bf3droid.misc.CacheHandler;
 import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.misc.DataBank;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
+import com.ninetwozero.bf3droid.util.Platform;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -72,6 +74,10 @@ public class ProfileClient extends DefaultClient {
     public ProfileClient(ProfileData pd) {
         mRequestHandler = new RequestHandler();
         mProfileData = pd;
+    }
+
+    public ProfileClient(){
+        mRequestHandler = new RequestHandler();
     }
 
     public static ProfileData getProfileIdFromName(final String keyword, final String checksum) throws WebsiteHandlerException {
@@ -509,13 +515,13 @@ public class ProfileClient extends DefaultClient {
     public Map<Long, List<WeaponDataWrapper>> getWeapons() {
         try {
             Map<Long, List<WeaponDataWrapper>> weaponDataMap = new HashMap<Long, List<WeaponDataWrapper>>();
-            for (int i = 0, max = mProfileData.getNumPersonas(); i < max; i++) {
+            for (SimplePersona persona : BF3Droid.getUserPersonas()) {
             	List<WeaponDataWrapper> weaponDataArray = new ArrayList<WeaponDataWrapper>();
             	String httpContent = mRequestHandler.get(
                     RequestHandler.generateUrl(
                 		URL_WEAPONS, 
-                		mProfileData.getPersona(i).getId(), 
-                		mProfileData.getPersona(i).getPlatformId()
+                		persona.getPersonaId(),
+                		Platform.resolveIdFromPlatformName(persona.getPlatform())
             		),
                     RequestHandler.HEADER_NORMAL
                 );
@@ -583,7 +589,7 @@ public class ProfileClient extends DefaultClient {
                     }
                 }
                 Collections.sort(weaponDataArray, new WeaponDataWrapperComparator());
-                weaponDataMap.put(mProfileData.getPersona(i).getId(), weaponDataArray);
+                weaponDataMap.put(persona.getPersonaId(), weaponDataArray);
             }
             return weaponDataMap;
         } catch (RequestHandlerException ex) {
@@ -600,14 +606,14 @@ public class ProfileClient extends DefaultClient {
             List<UnlockData> unlockArray;
             HashMap<Long, WeaponDataWrapper> weaponDataArray = new HashMap<Long, WeaponDataWrapper>();
 
-            for (int i = 0, max = mProfileData.getNumPersonas(); i < max; i++) {
+            for (SimplePersona persona : BF3Droid.getUserPersonas()) {
                 String httpContent = mRequestHandler.get(
                     RequestHandler.generateUrl(
                         URL_WEAPONS_INFO,
-                        mProfileData.getPersona(i).getName(),
-                        mProfileData.getPersona(i).getId(), 
+                        persona.getPersonaName(),
+                        persona.getPersonaId(),
                         weaponStats.getSlug(), 
-                        mProfileData.getPersona(i).getPlatformId()
+                        Platform.resolveIdFromPlatformName(persona.getPlatform())
                     ), RequestHandler.HEADER_NORMAL
                 );
 
@@ -633,8 +639,7 @@ public class ProfileClient extends DefaultClient {
                         );
                     }
                     Collections.sort(unlockArray, new UnlockComparator());
-                    weaponDataArray.put(
-                        mProfileData.getPersona(i).getId(), 
+                    weaponDataArray.put(persona.getPersonaId(),
                         new WeaponDataWrapper(0, weaponInfo, weaponStats, unlockArray)
                     );
                 }

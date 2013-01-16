@@ -297,7 +297,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
             PersonaInfo pi = personaStatsFrom(task);
             updateDatabase(pi);
             populateView();
-            closeProgressDialog(ProfileStatsFragment.class.getSimpleName());
+            closeLoadingDialog(ProfileStatsFragment.class.getSimpleName());
         }
     }
 

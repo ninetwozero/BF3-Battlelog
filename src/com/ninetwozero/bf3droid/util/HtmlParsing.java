@@ -111,10 +111,15 @@ public class HtmlParsing {
     private SimplePersona extractSimplePersona(Element element) {
         long id = Long.parseLong(element.attr("data-id"));
         Element nameElement = element.select(".soldier-name h3 a").first();
-        String name = nameElement.text();
+        String name = extractPersonaName(nameElement.attr("href"));
         String platform = extractPlatform(nameElement.attr("href"));
         String soldierImage = extractSoldierImage(element.select("a img").first());
         return new SimplePersona(name, id, platform, soldierImage);
+    }
+
+    private String extractPersonaName(String url){
+        String[] linkElements = url.split("/");
+        return linkElements[3];
     }
 
     private String extractPlatform(String url) {

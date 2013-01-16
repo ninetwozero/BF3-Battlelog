@@ -52,12 +52,12 @@ public class LoginActivity extends Bf3FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.bundle = savedInstanceState;
+        startLoginLoader();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        startLoginLoader();
     }
 
     private void startLoginLoader() {
@@ -138,7 +138,7 @@ public class LoginActivity extends Bf3FragmentActivity {
     }
 
     private void redirect() {
-        closeProgressDialog(LoginActivity.class.getSimpleName());
+        closeLoadingDialog(LoginActivity.class.getSimpleName());
         if (BF3Droid.getUserPersonas().size() > 0) {
             startActivity(new Intent(getContext(), DashboardActivity.class));
         } else {

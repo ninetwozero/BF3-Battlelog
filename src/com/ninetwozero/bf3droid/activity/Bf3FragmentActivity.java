@@ -7,13 +7,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
+
 import com.ninetwozero.bf3droid.dialog.ProgressDialogFragment;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
 
-public class Bf3FragmentActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<CompletedTask>{
+public class Bf3FragmentActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<CompletedTask> {
 
     private Handler handler = new Handler();
-    private ProgressDialogFragment progressDialog;
 
     @Override
     public Loader<CompletedTask> onCreateLoader(int i, Bundle bundle) {
@@ -29,20 +30,21 @@ public class Bf3FragmentActivity extends FragmentActivity implements LoaderManag
     }
 
     public void startLoadingDialog(String tag) {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialogFragment();
-        }
-        progressDialog.show(getSupportFragmentManager(), tag);
+        DialogFragment dialog = new ProgressDialogFragment();
+        dialog.show(getSupportFragmentManager(), tag);
     }
 
-    public void closeProgressDialog(final String tag){
+    public void closeLoadingDialog(final String tag) {
         handler.post(new Runnable() {
             @Override
             public void run() {
                 FragmentManager manager = getSupportFragmentManager();
                 DialogFragment fragment = (DialogFragment) manager.findFragmentByTag(tag);
                 if (fragment != null) {
+                    Log.i("Bf3FragmentActivity", "Closing dialog " + tag);
                     fragment.dismiss();
+                } else{
+                    Log.i("Bf3FragmentActivity", "Couldn't close dialog, didn't found " + tag);
                 }
             }
         });
