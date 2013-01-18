@@ -247,7 +247,7 @@ public class ProfileClient extends DefaultClient {
             List<UnlockData> skillArray;
             List<UnlockData> unlockArray;
 
-            for (int count = 0, maxCount = mProfileData.getNumPersonas(); count < maxCount; count++) {
+            for (SimplePersona persona : BF3Droid.getUserPersonas()) {
                 weaponArray = new ArrayList<UnlockData>();
                 attachmentArray = new ArrayList<UnlockData>();
                 kitUnlockArray = new ArrayList<UnlockData>();
@@ -258,8 +258,8 @@ public class ProfileClient extends DefaultClient {
                 String content = mRequestHandler.get(
                     RequestHandler.generateUrl(
                 		URL_UNLOCKS, 
-                		mProfileData.getPersona(count).getId(),
-                        mProfileData.getPersona(count).getPlatformId()
+                		persona.getPersonaId(),
+                        Platform.resolveIdFromPlatformName(persona.getPlatform())
                     ),
                     RequestHandler.HEADER_NORMAL
                 );
@@ -268,7 +268,7 @@ public class ProfileClient extends DefaultClient {
                 JSONArray unlockResults = dataObject.optJSONArray("unlocks");
                 if (dataObject.isNull("unlocks") || unlockResults.length() == 0) {
                     unlockDataMap.put(
-                		mProfileData.getPersona(count).getId(),
+                		persona.getPersonaId(),
                         new UnlockDataWrapper(null, null, null, null, null, null)
             		);
                     continue;
@@ -309,7 +309,7 @@ public class ProfileClient extends DefaultClient {
                 Collections.sort(unlockArray, new UnlockComparator());
 
                 unlockDataMap.put(
-            		mProfileData.getPersona(count).getId(),
+            		persona.getPersonaId(),
                     new UnlockDataWrapper(
                 		weaponArray, 
                 		attachmentArray,
