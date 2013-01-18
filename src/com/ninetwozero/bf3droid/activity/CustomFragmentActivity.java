@@ -25,6 +25,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 
 import com.ninetwozero.bf3droid.dialog.ProgressDialogFragment;
@@ -51,7 +52,6 @@ public class CustomFragmentActivity extends FragmentActivity {
     protected List<Fragment> mListFragments;
 
     private Handler handler = new Handler();
-    private ProgressDialogFragment progressDialog;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -85,20 +85,21 @@ public class CustomFragmentActivity extends FragmentActivity {
 
     /*TEMPORARY SOLUTION SO PROGRESS DIALOG CAN BE EXTRACTED*/
     public void startLoadingDialog(String tag) {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialogFragment();
-        }
-        progressDialog.show(getSupportFragmentManager(), tag);
+        DialogFragment dialog = new ProgressDialogFragment();
+        dialog.show(getSupportFragmentManager(), tag);
     }
 
-    public void closeProgressDialog(final String tag) {
+    public void closeLoadingDialog(final String tag) {
         handler.post(new Runnable() {
             @Override
             public void run() {
                 FragmentManager manager = getSupportFragmentManager();
                 DialogFragment fragment = (DialogFragment) manager.findFragmentByTag(tag);
                 if (fragment != null) {
+                    Log.i("Bf3FragmentActivity", "Closing dialog " + tag);
                     fragment.dismiss();
+                } else {
+                    Log.i("Bf3FragmentActivity", "Couldn't close dialog, didn't found " + tag);
                 }
             }
         });

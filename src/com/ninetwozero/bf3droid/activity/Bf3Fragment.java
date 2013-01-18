@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.util.Log;
 
 import com.ninetwozero.bf3droid.BF3Reload;
 import com.ninetwozero.bf3droid.dialog.ProgressDialogFragment;
@@ -63,20 +64,27 @@ public class Bf3Fragment extends Fragment implements LoaderCallbacks<CompletedTa
     }
 
     public void startLoadingDialog(String tag) {
-        DialogFragment fragment = new ProgressDialogFragment();
-        fragment.show(getActivity().getSupportFragmentManager(), tag);
+        DialogFragment dialog = new ProgressDialogFragment();
+        dialog.show(getSupportFragmentManager(), tag);
     }
 
-    public void closeProgressDialog(final String tag) {
+    public void closeLoadingDialog(final String tag) {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                FragmentManager manager = getFragmentManager();
+                FragmentManager manager = getSupportFragmentManager();
                 DialogFragment fragment = (DialogFragment) manager.findFragmentByTag(tag);
                 if (fragment != null) {
+                    Log.i("Bf3FragmentActivity", "Closing dialog " + tag);
                     fragment.dismiss();
+                } else {
+                    Log.i("Bf3FragmentActivity", "Couldn't close dialog, didn't found " + tag);
                 }
             }
         });
+    }
+
+    private FragmentManager getSupportFragmentManager() {
+        return getActivity().getSupportFragmentManager();
     }
 }

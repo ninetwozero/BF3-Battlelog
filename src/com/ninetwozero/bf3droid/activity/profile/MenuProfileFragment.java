@@ -87,10 +87,10 @@ public class MenuProfileFragment extends Fragment {
 
         setupActiveSoldierContent();
 
-        view.findViewById(R.id.button_unlocks).setOnClickListener(new OnClickListener() {
+        view.findViewById(R.id.button_self).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(context, UnlockActivity.class)
+                startActivity(new Intent(context, ProfileActivity.class)
                         .putExtra("profile", SessionKeeper.getProfileData()));
             }
         });
@@ -101,17 +101,17 @@ public class MenuProfileFragment extends Fragment {
                         .putExtra("profile", SessionKeeper.getProfileData()));
             }
         });
+        view.findViewById(R.id.button_unlocks).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context, UnlockActivity.class)
+                        .putExtra("profile", SessionKeeper.getProfileData()));
+            }
+        });
         view.findViewById(R.id.button_assignments).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(context, AssignmentActivity.class)
-                        .putExtra("profile", SessionKeeper.getProfileData()));
-            }
-        });
-        view.findViewById(R.id.button_self).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(context, ProfileActivity.class)
                         .putExtra("profile", SessionKeeper.getProfileData()));
             }
         });

@@ -1,12 +1,12 @@
 /*
-    This file is part of BF3 Battlelog
+    This file is part of BF3 Droid
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
+    BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
+    BF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -18,10 +18,13 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.*;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.datatype.*;
 import com.ninetwozero.bf3droid.http.ProfileClient;
@@ -32,115 +35,64 @@ import java.util.Map;
 
 public class WeaponInformationFragment extends Fragment implements DefaultFragment {
 
-    // Attributes
-    private Context mContext;
-    private LayoutInflater mLayoutInflater;
-    private int mViewPagerPosition;
+    private Context context;
+    private LayoutInflater layoutInflater;
 
     // Elements
-    private ImageView mImageItem;
-    private TextView mTextTitle;
-    private TextView mTextDesc;
-    private TextView mTextAuto;
-    private TextView mTextBurst;
-    private TextView mTextSingle;
-    private TextView mTextAmmo;
-    private TextView mTextRange;
-    private TextView mTextRateOfFire;
+    private ImageView weaponImage;
+    private TextView title;
+    private TextView description;
+    private TextView autoFire;
+    private TextView burstFire;
+    private TextView singleShotFire;
+    private TextView ammunition;
+    private TextView range;
+    private TextView rateOfFire;
 
-    // Misc
-    private ProfileData mProfileData;
-    private WeaponInfo mWeaponInfo;
-    private WeaponStats mWeaponStats;
-    private long mSelectedPersona;
+    private WeaponInfo weaponInfo;
+    private WeaponStats weaponStats;
     private Map<Long, WeaponDataWrapper> mWeaponDataWrapper;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        context = getActivity();
+        layoutInflater = inflater;
 
-        // Set our attributes
-        mContext = getActivity();
-        mLayoutInflater = inflater;
+        View view = layoutInflater.inflate(R.layout.tab_content_weapon_info, container, false);
 
-        // Let's inflate & return the view
-        View view = mLayoutInflater.inflate(R.layout.tab_content_weapon_info,
-                container, false);
-
-        // Init views
         initFragment(view);
-
-        // Return the view
         return view;
-
     }
 
     public void initFragment(View v) {
-
-        // Let's setup the fields
-        mImageItem = (ImageView) v.findViewById(R.id.image_item);
-        mTextTitle = (TextView) v.findViewById(R.id.text_title);
-        mTextDesc = (TextView) v.findViewById(R.id.text_desc);
-        mTextAuto = (TextView) v.findViewById(R.id.text_rate_full);
-        mTextBurst = (TextView) v.findViewById(R.id.text_rate_burst);
-        mTextSingle = (TextView) v.findViewById(R.id.text_rate_single);
-        mTextAmmo = (TextView) v.findViewById(R.id.text_ammo);
-        mTextRange = (TextView) v.findViewById(R.id.text_range);
-        mTextRateOfFire = (TextView) v.findViewById(R.id.text_rate_num);
-
-        // Let's see
-        if (mSelectedPersona == 0 && mProfileData.getNumPersonas() > 0) {
-
-            mSelectedPersona = mProfileData.getPersona(0).getId();
-
-        }
+        weaponImage = (ImageView) v.findViewById(R.id.image_item);
+        title = (TextView) v.findViewById(R.id.text_title);
+        description = (TextView) v.findViewById(R.id.text_desc);
+        autoFire = (TextView) v.findViewById(R.id.text_rate_full);
+        burstFire = (TextView) v.findViewById(R.id.text_rate_burst);
+        singleShotFire = (TextView) v.findViewById(R.id.text_rate_single);
+        ammunition = (TextView) v.findViewById(R.id.text_ammo);
+        range = (TextView) v.findViewById(R.id.text_range);
+        rateOfFire = (TextView) v.findViewById(R.id.text_rate_num);
     }
 
     @Override
     public void onResume() {
-
         super.onResume();
-        if (mProfileData != null) {
-
-            reload();
-
-        }
-
-    }
-
-    public int getViewPagerPosition() {
-
-        return mViewPagerPosition;
-
-    }
-
-    public void setSelectedPersona(long p) {
-
-        mSelectedPersona = p;
-    }
-
-    public void setProfileData(ProfileData p) {
-
-        mProfileData = p;
-
+        reload();
     }
 
     public void setWeaponInfo(WeaponInfo w) {
-
-        mWeaponInfo = w;
-
+        weaponInfo = w;
     }
 
     public void setWeaponStats(WeaponStats w) {
-
-        mWeaponStats = w;
+        weaponStats = w;
     }
 
     @Override
     public void reload() {
-
         new AsyncRefresh().execute();
-
     }
 
     @Override
@@ -157,69 +109,47 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
 
         @Override
         protected Boolean doInBackground(Void... arg) {
-
             try {
-
-                if (mProfileData.getNumPersonas() == 0) {
-
-                    mProfileData = ProfileClient
-                            .resolveFullProfileDataFromProfileData(mProfileData);
-                    mSelectedPersona = mProfileData.getPersona(0).getId();
-
-                }
-
-                mWeaponDataWrapper = new ProfileClient(mProfileData).getWeapon(mWeaponInfo,
-                        mWeaponStats);
+                mWeaponDataWrapper = new ProfileClient().getWeapon(weaponInfo, weaponStats);
                 return true;
-
             } catch (Exception ex) {
-
-                ex.printStackTrace();
+                Log.d("WeaponInformationFragment", ex.toString());
                 return false;
             }
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
-
-            if (mContext != null) {
-
+            if (context != null) {
                 if (result) {
-
-                    show(mWeaponDataWrapper.get(mSelectedPersona));
-
+                    show(mWeaponDataWrapper.get(selectedPersonaId()));
                 } else {
-
-                    Toast.makeText(mContext, R.string.general_no_data, Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(context, R.string.general_no_data, Toast.LENGTH_SHORT).show();
                 }
-
             }
         }
 
+        private long selectedPersonaId() {
+            return BF3Droid.selectedUserPersona().getPersonaId();
+        }
     }
 
     private void show(WeaponDataWrapper w) {
-
-        // No need to pass null
         if (w == null || w.getData() == null) {
             return;
         }
 
-        mImageItem.setImageResource(DrawableResourceList.getWeapon(w.getData().getIdentifier()));
-        mTextTitle.setText(w.getData().getName());
-        mTextDesc.setText(StringResourceList.getWeaponDescription(w.getData().getIdentifier()));
+        weaponImage.setImageResource(DrawableResourceList.getWeapon(w.getData().getIdentifier()));
+        title.setText(w.getData().getName());
+        description.setText(StringResourceList.getWeaponDescription(w.getData().getIdentifier()));
 
-        // Add fields for the text, and set the data
-        mTextAuto.setText(w.getData().isAuto() ? R.string.general_yes : R.string.general_no);
-        mTextBurst.setText(w.getData().isBurst() ? R.string.general_yes : R.string.general_no);
-        mTextSingle.setText(w.getData().isSingle() ? R.string.general_yes : R.string.general_no);
-        mTextAmmo.setText(w.getData().getAmmo());
-        mTextRange.setText(w.getData().getRangeTitle());
-        mTextRateOfFire.setText(String.valueOf(w.getData().getRateOfFire()));
+        autoFire.setText(w.getData().isAuto() ? R.string.general_yes : R.string.general_no);
+        burstFire.setText(w.getData().isBurst() ? R.string.general_yes : R.string.general_no);
+        singleShotFire.setText(w.getData().isSingle() ? R.string.general_yes : R.string.general_no);
+        ammunition.setText(w.getData().getAmmo());
+        range.setText(w.getData().getRangeTitle());
+        rateOfFire.setText(String.valueOf(w.getData().getRateOfFire()));
 
-        // Update the previous
-        ((SingleWeaponActivity) mContext).showData(w);
+        ((SingleWeaponActivity) context).showData(w);
     }
-
 }
