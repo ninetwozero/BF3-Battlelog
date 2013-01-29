@@ -19,6 +19,7 @@ public class BF3Droid extends Application {
     public static final String AUTHORITY = "com.ninetwozero.bf3droid.provider";
     private static String user;
     private static String checkSum;
+    private static String cookie = "";
     private static long userId;
     private static List<SimplePersona> userPersonas;
     private static List<SimplePersona> guestPersonas;
@@ -66,12 +67,28 @@ public class BF3Droid extends Application {
         BF3Droid.user = user;
     }
 
+    public static boolean hasUser(){
+        return getUser() != null;
+    }
+
     public static String getCheckSum() {
         return checkSum;
     }
 
     public static void setCheckSum(String checkSum) {
         BF3Droid.checkSum = checkSum;
+    }
+
+    public static String getCookie() {
+        return cookie;
+    }
+
+    public static boolean hasCookie(){
+        return !getCookie().equals("");
+    }
+
+    public static void setCookie(String cookie) {
+        BF3Droid.cookie = cookie;
     }
 
     public static long getUserId() {

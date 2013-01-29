@@ -57,7 +57,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
 	private RelativeLayout wrapInput;
 	private Button send;
 
-	private long id;
+	private long id = 0;
 	private int feedType;
 	private String titleText;
 	private boolean isWritable;

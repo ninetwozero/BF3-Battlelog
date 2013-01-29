@@ -16,10 +16,26 @@ package com.ninetwozero.bf3droid.http;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
+
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.datatype.PostData;
 import com.ninetwozero.bf3droid.datatype.RequestHandlerException;
 import com.ninetwozero.bf3droid.datatype.ShareableCookie;
 import com.ninetwozero.bf3droid.misc.HttpHeaders;
+import com.ninetwozero.bf3droid.server.Bf3ServerCall;
+
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.GZIPInputStream;
+
 import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
@@ -38,17 +54,6 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.ByteArrayBuffer;
 import org.apache.http.util.EntityUtils;
-
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.UnknownHostException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.GZIPInputStream;
 
 public class RequestHandler {
 
@@ -73,31 +78,29 @@ public class RequestHandler {
         }
 
         try {
-
             // Init the HTTP-related attributes
             HttpGet httpGet = new HttpGet(link.replace(" ", "%20"));
+
+            if (BF3Droid.hasCookie()) {
+                httpGet.setHeader(Bf3ServerCall.COOKIE_KEY, BF3Droid.getCookie());
+            }
             httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(extraHeaders));
             httpGet.setHeader("Referer", link);
             HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
 
-            // Anything?
             if (httpEntity != null) {
                 return EntityUtils.toString(httpEntity);
             }
 
         } catch (ClientProtocolException e) {
-            e.printStackTrace();
-
+            Log.w("requestHandler", e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
-
+            Log.w("requestHandler", e.toString());
         } catch (Exception ex) {
             throw new RequestHandlerException(ex.getMessage());
-
         }
         return "";
-
     }
 
     public HttpEntity getHttpEntity(String link, boolean extraHeaders)
@@ -108,17 +111,14 @@ public class RequestHandler {
         }
         
         try {
-            // Init the HTTP-related attributes
             HttpGet httpGet = new HttpGet(link.replace(" ", "%20"));
 
-            // Do we need those extra headers?
             if (extraHeaders) {
                 httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(0));
                 httpGet.setHeader("Referer", link);
             }
 
-            HttpResponse httpResponse = RequestHandler.httpClient
-                    .execute(httpGet);
+            HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
 
             // Create the image
@@ -354,20 +354,8 @@ public class RequestHandler {
         DefaultHttpClient client = new DefaultHttpClient();
         ClientConnectionManager mgr = client.getConnectionManager();
         HttpParams params = client.getParams();
-        client = new DefaultHttpClient(
-
-                new ThreadSafeClientConnManager(
-
-                        params, mgr.getSchemeRegistry()
-
-                ),
-
-                params
-
-        );
-
+        client = new DefaultHttpClient(new ThreadSafeClientConnManager(params, mgr.getSchemeRegistry()), params);
         return client;
-
     }
 
     public static ArrayList<ShareableCookie> getCookies() {

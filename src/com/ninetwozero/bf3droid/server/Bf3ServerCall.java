@@ -1,8 +1,19 @@
 package com.ninetwozero.bf3droid.server;
 
+import android.util.Log;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.ninetwozero.bf3droid.BF3Droid;
+import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.server.SimpleHttpCaller.SimpleHttpCallerCallback;
+
+import java.io.*;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -12,12 +23,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 
-import java.io.*;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Bf3ServerCall implements SimpleHttpCallerCallback {
+
+    public final String FIND_COOKIE_HEADER = "Set-Cookie";
+    public static final String COOKIE_KEY = "Cookie";
 
     public interface Bf3ServerCallCallback {
         void onBf3CallSuccess(JsonObject jsonObject);
@@ -53,21 +62,53 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
 
     protected SimpleHttpCaller buildHttpGetCaller() throws Exception {
         HttpGet request = new HttpGet(httpData.getCall());
+        if(BF3Droid.hasCookie()){
+            request.setHeader(COOKIE_KEY, BF3Droid.getCookie());
+        }
         return new SimpleHttpCaller(httpClient, request, this);
     }
 
     protected SimpleHttpCaller buildHttpPostCaller() throws Exception {
         HttpPost request = new HttpPost(httpData.getCall());
+        if (BF3Droid.hasCookie()) {
+            request.setHeader(COOKIE_KEY, BF3Droid.getCookie());
+        }
         request.setEntity(new UrlEncodedFormEntity(httpData.getNameValuePairs(), HTTP.UTF_8));
         return new SimpleHttpCaller(httpClient, request, this);
     }
 
     @Override
     public void onSimpleHttpCallSuccess(HttpResponse response) {
+        if (isProfileURI()) {
+            printHeaders(response.getAllHeaders());
+        }
         if (httpData.isGetMethod() && httpData.doesReturnsJson()) {
             doJsonCallback(response);
         } else {
             doStringCallback(response);
+        }
+    }
+
+    private boolean isProfileURI(){
+        return BF3Droid.hasUser() && httpData.getCall().equals(UriFactory.getProfileInformationUri(BF3Droid.getUser()));
+    }
+
+    //Set-Cookie => beaker.session.id=d3a331e6151c7bd440f5006ca3d7b0ea; Path=/;HttpOnly
+    private void printHeaders(Header[] headers) {
+        for (Header header : headers) {
+            if(header.getName().equals(FIND_COOKIE_HEADER)){
+                storeCookie(header);
+            }
+        }
+    }
+
+    private void storeCookie(Header header){
+        String[] rawCookieParams = header.getValue().split(";");
+        String[] rawCookieNameAndValue = rawCookieParams[0].split("=");
+        if(rawCookieNameAndValue.length != 2){
+            Log.e("Bf3ServerCall", "Invalid cookie: missing name and value");
+        } else{
+            BF3Droid.setCookie(rawCookieNameAndValue[1].trim());
         }
     }
 
@@ -89,6 +130,7 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
             }
             callback.onBf3CallSuccess(result.toString());
         } catch (IOException io) {
+            Log.e("Bf3ServerCall", io.toString());
             callback.onBf3CallError();
         }
     }
@@ -127,7 +169,7 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
             this(call, new ArrayList<NameValuePair>(), method, true);
         }
 
-        public HttpData(URI call, String method, boolean json){
+        public HttpData(URI call, String method, boolean json) {
             this(call, new ArrayList<NameValuePair>(), method, json);
         }
 
