@@ -20,6 +20,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -42,11 +44,17 @@ import com.ninetwozero.bf3droid.datatype.WebsiteHandlerException;
 import com.ninetwozero.bf3droid.dialog.HooahListDialogFragment;
 import com.ninetwozero.bf3droid.dialog.OnCloseProfileListDialogListener;
 import com.ninetwozero.bf3droid.http.FeedClient;
+import com.ninetwozero.bf3droid.loader.Bf3Loader;
+import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.misc.Constants;
+import com.ninetwozero.bf3droid.provider.UriFactory;
+import com.ninetwozero.bf3droid.server.Bf3ServerCall;
 
 import java.util.List;
 
-public class FeedFragment extends ListFragment implements DefaultFragment, OnCloseProfileListDialogListener {
+import org.apache.http.client.methods.HttpGet;
+
+public class FeedFragment extends ListFragment implements DefaultFragment, OnCloseProfileListDialogListener, LoaderManager.LoaderCallbacks<CompletedTask> {
 	private Context context;
 	private LayoutInflater layoutInflater;
 
@@ -62,8 +70,9 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
 	private String titleText;
 	private boolean isWritable;
 	private List<FeedItem> feedItems;
+    private Bundle bundle;
 	
-	// Constants
+	private final int FEED_ACTION = 30;
 	public final static int CONTEXT_ID_HOOAH = 0;
 	public final static int CONTEXT_ID_SINGLE = 1;
 	public final static int CONTEXT_ID_VIEW_HOOAH = 2;
@@ -72,6 +81,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		context = getActivity();
 		layoutInflater = inflater;
+        this.bundle = bundle;
 
 		View view = layoutInflater.inflate(R.layout.tab_content_feed, container, false);
 		initFragment(view);
@@ -159,10 +169,35 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
 	}
 
 	public void reload() {
-		new AsyncRefresh(context, BF3Droid.selectedUserPersona().getPersonaId()).execute();
+		//new AsyncRefresh(context, BF3Droid.selectedUserPersona().getPersonaId()).execute();
+        getLoaderManager().restartLoader(FEED_ACTION, bundle, this);
 	}
 
-	@Override
+    @Override
+    public Loader<CompletedTask> onCreateLoader(int i, Bundle bundle) {
+        return new Bf3Loader(getContext(), httpData());
+    }
+
+    private Bf3ServerCall.HttpData httpData() {
+        return new Bf3ServerCall.HttpData(UriFactory.userFeeds(), HttpGet.METHOD_NAME);
+    }
+
+    private Context getContext() {
+        return getActivity().getApplicationContext();
+    }
+
+    @Override
+    public void onLoadFinished(Loader<CompletedTask> completedTaskLoader, CompletedTask completedTask) {
+        if(completedTask.result == CompletedTask.Result.SUCCESS){
+            String response = completedTask.response;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
+    }
+
+    @Override
 	public void onListItemClick(ListView l, View v, int pos, long id) {
 		getActivity().openContextMenu(v);
 	}

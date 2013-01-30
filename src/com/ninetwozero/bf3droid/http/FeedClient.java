@@ -25,7 +25,7 @@ public class FeedClient extends DefaultClient {
     public static final String URL_PLATOON = Constants.URL_MAIN
             + "feed/platoonevents/{PLATOON_ID}/?start={NUMSTART}";
     public static final String URL_FRIEND_FEED = Constants.URL_MAIN
-            + "feed/homeevents/?start={NUMSTART}";
+            + "feed/homeevents?start={NUMSTART}";
     public static final String URL_PROFILE = Constants.URL_MAIN
             + "feed/profileevents/{PID}/?start={NUMSTART}";
     public static final String URL_POST = Constants.URL_MAIN + "wall/postmessage";

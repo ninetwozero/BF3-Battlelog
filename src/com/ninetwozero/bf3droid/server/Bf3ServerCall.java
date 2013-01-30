@@ -100,16 +100,17 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
                 storeCookie(header);
             }
         }
+        Log.e("Bf3ServerCall", "Invalid cookie: missing name and value");
     }
 
     private void storeCookie(Header header){
         String[] rawCookieParams = header.getValue().split(";");
-        String[] rawCookieNameAndValue = rawCookieParams[0].split("=");
-        if(rawCookieNameAndValue.length != 2){
-            Log.e("Bf3ServerCall", "Invalid cookie: missing name and value");
-        } else{
-            BF3Droid.setCookie(rawCookieNameAndValue[1].trim());
-        }
+        Log.e("Bf3ServerCall", "Session cookie = " + header.getValue());
+        //String[] rawCookieNameAndValue = rawCookieParams[0].split("=");
+        /*if(rawCookieParams.length > 0){
+        } else{*/
+            BF3Droid.setCookie(header.getValue()/*rawCookieParams[0].trim()*/);
+        //}
     }
 
     private void doJsonCallback(HttpResponse response) {
