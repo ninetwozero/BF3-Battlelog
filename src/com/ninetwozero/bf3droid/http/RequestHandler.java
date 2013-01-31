@@ -18,12 +18,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.datatype.PostData;
 import com.ninetwozero.bf3droid.datatype.RequestHandlerException;
 import com.ninetwozero.bf3droid.datatype.ShareableCookie;
 import com.ninetwozero.bf3droid.misc.HttpHeaders;
-import com.ninetwozero.bf3droid.server.Bf3ServerCall;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -80,10 +78,17 @@ public class RequestHandler {
         try {
             // Init the HTTP-related attributes
             HttpGet httpGet = new HttpGet(link.replace(" ", "%20"));
-
-            if (BF3Droid.hasCookie()) {
-                httpGet.setHeader(Bf3ServerCall.COOKIE_KEY, BF3Droid.getCookie());
+            List<Cookie> cookies = RequestHandler.httpClient.getCookieStore().getCookies();
+            RequestHandler.httpClient.getCookieStore().clear();
+            for(Cookie cookie : cookies){
+                if(cookie.getName() != null && cookie.getValue() != null){
+                    RequestHandler.httpClient.getCookieStore().addCookie(cookie);
+                }
             }
+
+            /*if (BF3Droid.hasCookie()) {
+                httpGet.setHeader(Bf3ServerCall.COOKIE_KEY, BF3Droid.getCookie());
+            }*/
             httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(extraHeaders));
             httpGet.setHeader("Referer", link);
             HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);
