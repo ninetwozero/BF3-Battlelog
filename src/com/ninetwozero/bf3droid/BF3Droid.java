@@ -3,11 +3,14 @@ package com.ninetwozero.bf3droid;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+
 import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.misc.DebugLogConfig;
 
 import java.util.List;
+
+import org.apache.http.cookie.Cookie;
 
 public class BF3Droid extends Application {
 
@@ -19,7 +22,7 @@ public class BF3Droid extends Application {
     public static final String AUTHORITY = "com.ninetwozero.bf3droid.provider";
     private static String user;
     private static String checkSum;
-    private static String cookie = "";
+    private static Cookie cookie;
     private static long userId;
     private static List<SimplePersona> userPersonas;
     private static List<SimplePersona> guestPersonas;
@@ -79,15 +82,15 @@ public class BF3Droid extends Application {
         BF3Droid.checkSum = checkSum;
     }
 
-    public static String getCookie() {
+    public static Cookie getCookie() {
         return cookie;
     }
 
     public static boolean hasCookie(){
-        return !getCookie().equals("");
+        return getCookie() != null;
     }
 
-    public static void setCookie(String cookie) {
+    public static void setCookie(Cookie cookie) {
         BF3Droid.cookie = cookie;
     }
 

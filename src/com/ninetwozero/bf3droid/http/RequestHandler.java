@@ -18,6 +18,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.datatype.PostData;
 import com.ninetwozero.bf3droid.datatype.RequestHandlerException;
 import com.ninetwozero.bf3droid.datatype.ShareableCookie;
@@ -36,16 +37,15 @@ import java.util.zip.GZIPInputStream;
 
 import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.HttpEntityWrapper;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
@@ -76,19 +76,11 @@ public class RequestHandler {
         }
 
         try {
-            // Init the HTTP-related attributes
             HttpGet httpGet = new HttpGet(link.replace(" ", "%20"));
-            List<Cookie> cookies = RequestHandler.httpClient.getCookieStore().getCookies();
-            RequestHandler.httpClient.getCookieStore().clear();
-            for(Cookie cookie : cookies){
-                if(cookie.getName() != null && cookie.getValue() != null){
-                    RequestHandler.httpClient.getCookieStore().addCookie(cookie);
-                }
-            }
 
-            /*if (BF3Droid.hasCookie()) {
-                httpGet.setHeader(Bf3ServerCall.COOKIE_KEY, BF3Droid.getCookie());
-            }*/
+            if (RequestHandler.httpClient.getCookieStore().getCookies().size() == 0 && BF3Droid.hasCookie()) {
+                droidCookie();
+            }
             httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(extraHeaders));
             httpGet.setHeader("Referer", link);
             HttpResponse httpResponse = RequestHandler.httpClient.execute(httpGet);
@@ -106,6 +98,12 @@ public class RequestHandler {
             throw new RequestHandlerException(ex.getMessage());
         }
         return "";
+    }
+
+    private void droidCookie() {
+        BasicCookieStore store = new BasicCookieStore();
+        store.addCookie(BF3Droid.getCookie());
+        RequestHandler.httpClient.setCookieStore(store);
     }
 
     public HttpEntity getHttpEntity(String link, boolean extraHeaders)
@@ -380,7 +378,7 @@ public class RequestHandler {
     }
 
     public static void setCookies(ShareableCookie sc) {
-
+/*
         // Init
         CookieStore cookieStore = RequestHandler.httpClient.getCookieStore();
 
@@ -393,13 +391,13 @@ public class RequestHandler {
             cookieStore.addCookie(tempCookie);
             RequestHandler.httpClient.setCookieStore(cookieStore);
 
-        }
+        }*/
 
     }
 
     public static void setCookies(List<ShareableCookie> sc) {
 
-        // Init
+        /*// Init
         CookieStore cookieStore = RequestHandler.httpClient.getCookieStore();
         if (cookieStore.getCookies().isEmpty()) {
 
@@ -414,7 +412,7 @@ public class RequestHandler {
                 cookieStore.addCookie(tempCookie);
             }
             RequestHandler.httpClient.setCookieStore(cookieStore);
-        }
+        }*/
     }
 
     static {

@@ -16,17 +16,17 @@ import java.util.List;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.protocol.HTTP;
 
 public class Bf3ServerCall implements SimpleHttpCallerCallback {
 
-    public final String FIND_COOKIE_HEADER = "Set-Cookie";
-    public static final String COOKIE_KEY = "Cookie";
+    private final String FIND_COOKIE_HEADER = "Set-Cookie";
 
     public interface Bf3ServerCallCallback {
         void onBf3CallSuccess(JsonObject jsonObject);
@@ -39,7 +39,7 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
     }
 
     protected final Bf3ServerCallCallback callback;
-    private final HttpClient httpClient;
+    private final DefaultHttpClient httpClient;
     private HttpData httpData;
 
     public Bf3ServerCall(HttpData httpData, Bf3ServerCallCallback callback) {
@@ -56,25 +56,30 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
                 buildHttpPostCaller().execute();
             }
         } catch (final Exception e) {
+            Log.e("Bf3ServerCall", "HttpClient exception " + e.toString());
             callback.onBf3CallError();
         }
     }
 
     protected SimpleHttpCaller buildHttpGetCaller() throws Exception {
         HttpGet request = new HttpGet(httpData.getCall());
-        if(BF3Droid.hasCookie()){
-            request.setHeader(COOKIE_KEY, BF3Droid.getCookie());
-        }
+        manageCookie();
         return new SimpleHttpCaller(httpClient, request, this);
     }
 
     protected SimpleHttpCaller buildHttpPostCaller() throws Exception {
         HttpPost request = new HttpPost(httpData.getCall());
-        if (BF3Droid.hasCookie()) {
-            request.setHeader(COOKIE_KEY, BF3Droid.getCookie());
-        }
+        manageCookie();
         request.setEntity(new UrlEncodedFormEntity(httpData.getNameValuePairs(), HTTP.UTF_8));
         return new SimpleHttpCaller(httpClient, request, this);
+    }
+
+    private void manageCookie() {
+        if ((httpClient.getCookieStore() == null || httpClient.getCookieStore().getCookies().size() == 0) && BF3Droid.hasCookie()) {
+            BasicCookieStore store = new BasicCookieStore();
+            store.addCookie(BF3Droid.getCookie());
+            httpClient.setCookieStore(store);
+        }
     }
 
     @Override
@@ -89,28 +94,35 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
         }
     }
 
-    private boolean isProfileURI(){
+    private boolean isProfileURI() {
         return BF3Droid.hasUser() && httpData.getCall().equals(UriFactory.getProfileInformationUri(BF3Droid.getUser()));
     }
 
     //Set-Cookie => beaker.session.id=d3a331e6151c7bd440f5006ca3d7b0ea; Path=/;HttpOnly
     private void printHeaders(Header[] headers) {
         for (Header header : headers) {
-            if(header.getName().equals(FIND_COOKIE_HEADER)){
+            if (header.getName().equals(FIND_COOKIE_HEADER)) {
                 storeCookie(header);
             }
         }
         Log.e("Bf3ServerCall", "Invalid cookie: missing name and value");
     }
 
-    private void storeCookie(Header header){
+    private void storeCookie(Header header) {
         String[] rawCookieParams = header.getValue().split(";");
-        Log.e("Bf3ServerCall", "Session cookie = " + header.getValue());
-        //String[] rawCookieNameAndValue = rawCookieParams[0].split("=");
-        /*if(rawCookieParams.length > 0){
-        } else{*/
-            BF3Droid.setCookie(header.getValue()/*rawCookieParams[0].trim()*/);
-        //}
+        String[] rawCookieNameAndValue = rawCookieParams[0].split("=");
+        BasicClientCookie cookie = new BasicClientCookie(rawCookieNameAndValue[0], rawCookieNameAndValue[1]);
+        cookie.setDomain("battlelog.battlefield.com");
+        for (int i = 1; i < rawCookieParams.length; i++) {
+            String[] attributes = rawCookieParams[i].split("=");
+            if (attributes.length == 2) {
+                cookie.setAttribute(attributes[0], attributes[1]);
+            } else {
+                cookie.setAttribute(attributes[0], "");
+            }
+        }
+        cookie.setPath("/");
+        BF3Droid.setCookie(cookie);
     }
 
     private void doJsonCallback(HttpResponse response) {
