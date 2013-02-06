@@ -96,7 +96,7 @@
   <string name="label_friends">Přátelé</string>
   <string name="label_notifications">Upozornění</string>
   <string name="label_own_soldier">Můj voják</string>
-  <string name="label_unlocks">Mé odemknutí</string>
+  <string name="label_unlocks">Mé odemknuté položky</string>
   <string name="label_find_soldier">Najít vojáka</string>
   <string name="label_find_platoon">Najít četu</string>
   <string name="label_compare_bs">Porovnat válečné jizvy</string>
