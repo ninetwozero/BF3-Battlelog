@@ -1,10 +1,12 @@
 package com.ninetwozero.bf3droid.server;
 
+import com.ninetwozero.bf3droid.BF3Droid;
+
 import java.io.IOException;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 public class SimpleHttpCaller {
 
@@ -16,10 +18,10 @@ public class SimpleHttpCaller {
     }
 
     private final SimpleHttpCallerCallback callback;
-    private final HttpClient httpClient;
+    private final DefaultHttpClient httpClient;
     private final HttpUriRequest request;
 
-    public SimpleHttpCaller(HttpClient httpClient, HttpUriRequest request,
+    public SimpleHttpCaller(DefaultHttpClient httpClient, HttpUriRequest request,
                             SimpleHttpCallerCallback callback) {
         this.callback = callback;
         this.request = request;
@@ -28,6 +30,7 @@ public class SimpleHttpCaller {
 
     public void execute() throws IOException {
         HttpResponse response = httpClient.execute(request);
+        BF3Droid.setCookieStore(httpClient.getCookieStore());
         handleResponse(response);
         request.abort();
     }

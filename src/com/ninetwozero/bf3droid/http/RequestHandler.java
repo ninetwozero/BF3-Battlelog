@@ -43,7 +43,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.HttpEntityWrapper;
-import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
@@ -78,8 +77,8 @@ public class RequestHandler {
         try {
             HttpGet httpGet = new HttpGet(link.replace(" ", "%20"));
 
-            if (RequestHandler.httpClient.getCookieStore().getCookies().size() == 0 && BF3Droid.hasCookie()) {
-                droidCookie();
+            if (BF3Droid.hasCookie()) {
+                RequestHandler.httpClient.setCookieStore(BF3Droid.getCookieStore());
             }
             httpGet.setHeaders(HttpHeaders.GET_HEADERS.get(extraHeaders));
             httpGet.setHeader("Referer", link);
@@ -98,12 +97,6 @@ public class RequestHandler {
             throw new RequestHandlerException(ex.getMessage());
         }
         return "";
-    }
-
-    private void droidCookie() {
-        BasicCookieStore store = new BasicCookieStore();
-        store.addCookie(BF3Droid.getCookie());
-        RequestHandler.httpClient.setCookieStore(store);
     }
 
     public HttpEntity getHttpEntity(String link, boolean extraHeaders)

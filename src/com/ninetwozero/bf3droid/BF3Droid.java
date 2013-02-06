@@ -10,6 +10,7 @@ import com.ninetwozero.bf3droid.misc.DebugLogConfig;
 
 import java.util.List;
 
+import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
 
 public class BF3Droid extends Application {
@@ -23,6 +24,7 @@ public class BF3Droid extends Application {
     private static String user;
     private static String checkSum;
     private static Cookie cookie;
+    private static CookieStore cookieStore;
     private static long userId;
     private static List<SimplePersona> userPersonas;
     private static List<SimplePersona> guestPersonas;
@@ -92,6 +94,18 @@ public class BF3Droid extends Application {
 
     public static void setCookie(Cookie cookie) {
         BF3Droid.cookie = cookie;
+    }
+
+    public static CookieStore getCookieStore(){
+        return cookieStore;
+    }
+
+    public static void setCookieStore(CookieStore cookieStore) {
+        BF3Droid.cookieStore = cookieStore;
+    }
+
+    public static boolean hasCookieStore(){
+        return getCookieStore() != null;
     }
 
     public static long getUserId() {

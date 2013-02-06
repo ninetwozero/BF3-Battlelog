@@ -19,7 +19,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.protocol.HTTP;
@@ -45,7 +44,15 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
     public Bf3ServerCall(HttpData httpData, Bf3ServerCallCallback callback) {
         this.httpData = httpData;
         this.callback = callback;
-        this.httpClient = new DefaultHttpClient();
+        this.httpClient = httpClient();
+    }
+
+    private DefaultHttpClient httpClient(){
+        DefaultHttpClient client = new DefaultHttpClient();
+        if (BF3Droid.hasCookieStore()) {
+            client.setCookieStore(BF3Droid.getCookieStore());
+        }
+        return client;
     }
 
     public void execute() {
@@ -63,23 +70,18 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
 
     protected SimpleHttpCaller buildHttpGetCaller() throws Exception {
         HttpGet request = new HttpGet(httpData.getCall());
-        manageCookie();
+        //request.setHeader("Referer", "http://battlelog.battlefield.com/bf3/");
+        //request.setHeader("Accept", "application/json, text/javascript, */*");
+        //request.setHeader("Accept-Language", "en");
+        //request.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        //request.setHeader("X-Requested-With", "XMLHttpRequest");
         return new SimpleHttpCaller(httpClient, request, this);
     }
 
     protected SimpleHttpCaller buildHttpPostCaller() throws Exception {
         HttpPost request = new HttpPost(httpData.getCall());
-        manageCookie();
         request.setEntity(new UrlEncodedFormEntity(httpData.getNameValuePairs(), HTTP.UTF_8));
         return new SimpleHttpCaller(httpClient, request, this);
-    }
-
-    private void manageCookie() {
-        if ((httpClient.getCookieStore() == null || httpClient.getCookieStore().getCookies().size() == 0) && BF3Droid.hasCookie()) {
-            BasicCookieStore store = new BasicCookieStore();
-            store.addCookie(BF3Droid.getCookie());
-            httpClient.setCookieStore(store);
-        }
     }
 
     @Override
@@ -118,7 +120,7 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
             if (attributes.length == 2) {
                 cookie.setAttribute(attributes[0], attributes[1]);
             } else {
-                cookie.setAttribute(attributes[0], "");
+                cookie.setAttribute(attributes[0], null);
             }
         }
         cookie.setPath("/");
