@@ -1,7 +1,5 @@
 package com.ninetwozero.bf3droid.server;
 
-import com.ninetwozero.bf3droid.BF3Droid;
-
 import java.io.IOException;
 
 import org.apache.http.HttpResponse;
@@ -30,7 +28,6 @@ public class SimpleHttpCaller {
 
     public void execute() throws IOException {
         HttpResponse response = httpClient.execute(request);
-        BF3Droid.setCookieStore(httpClient.getCookieStore());
         handleResponse(response);
         request.abort();
     }
