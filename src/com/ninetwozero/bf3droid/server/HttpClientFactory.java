@@ -9,7 +9,7 @@ public class HttpClientFactory {
 
     private static DefaultHttpClient client;
 
-    public static DefaultHttpClient getThreadSafeClient() {
+    public synchronized static DefaultHttpClient getThreadSafeClient() {
         if (client != null)
             return client;
 
@@ -18,5 +18,9 @@ public class HttpClientFactory {
         HttpParams params = client.getParams();
         client = new DefaultHttpClient(new ThreadSafeClientConnManager(params, mgr.getSchemeRegistry()), params);
         return client;
+    }
+
+    private HttpClientFactory(){
+        //Just so class cannot be instantiated and only access is through method
     }
 }
