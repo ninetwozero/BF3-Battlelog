@@ -3,6 +3,7 @@ package com.ninetwozero.bf3droid;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+
 import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.misc.DebugLogConfig;
@@ -64,6 +65,10 @@ public class BF3Droid extends Application {
 
     public static void setUser(String user) {
         BF3Droid.user = user;
+    }
+
+    public static boolean hasUser(){
+        return getUser() != null;
     }
 
     public static String getCheckSum() {

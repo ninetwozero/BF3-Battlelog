@@ -32,8 +32,8 @@ import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
+
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
-import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
 import com.ninetwozero.bf3droid.activity.DashboardActivity;
 import com.ninetwozero.bf3droid.activity.LoginActivity;
@@ -43,16 +43,15 @@ import com.ninetwozero.bf3droid.activity.aboutapp.AboutLicenseFragment;
 import com.ninetwozero.bf3droid.activity.aboutapp.AboutMainFragment;
 import com.ninetwozero.bf3droid.datatype.DefaultFragmentActivity;
 import com.ninetwozero.bf3droid.datatype.PostData;
-import com.ninetwozero.bf3droid.datatype.ShareableCookie;
-import com.ninetwozero.bf3droid.http.RequestHandler;
 import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 public class MainActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
@@ -150,8 +149,8 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 		} else if (!mSharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE,
 				"").equals("")) {
 
-			RequestHandler.setCookies(new ShareableCookie(mSharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
-					mSharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE,""), Constants.COOKIE_DOMAIN));
+			/*RequestHandler.setCookies(new ShareableCookie(mSharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
+					mSharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE,""), Constants.COOKIE_DOMAIN));*/
 			startActivity(new Intent(this, DashboardActivity.class));
 			finish();
 		}
