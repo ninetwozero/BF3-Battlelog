@@ -1,21 +1,23 @@
 package com.ninetwozero.bf3droid.server;
 
+import android.util.Log;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ninetwozero.bf3droid.server.SimpleHttpCaller.SimpleHttpCallerCallback;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HTTP;
 
 import java.io.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 
 public class Bf3ServerCall implements SimpleHttpCallerCallback {
 
@@ -30,13 +32,13 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
     }
 
     protected final Bf3ServerCallCallback callback;
-    private final HttpClient httpClient;
+    private final DefaultHttpClient httpClient;
     private HttpData httpData;
 
     public Bf3ServerCall(HttpData httpData, Bf3ServerCallCallback callback) {
         this.httpData = httpData;
         this.callback = callback;
-        this.httpClient = new DefaultHttpClient();
+        this.httpClient = HttpClientFactory.getThreadSafeClient();
     }
 
     public void execute() {
@@ -47,6 +49,7 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
                 buildHttpPostCaller().execute();
             }
         } catch (final Exception e) {
+            Log.e("Bf3ServerCall", "HttpClient exception " + e.toString());
             callback.onBf3CallError();
         }
     }
@@ -89,6 +92,7 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
             }
             callback.onBf3CallSuccess(result.toString());
         } catch (IOException io) {
+            Log.e("Bf3ServerCall", io.toString());
             callback.onBf3CallError();
         }
     }
@@ -127,7 +131,7 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
             this(call, new ArrayList<NameValuePair>(), method, true);
         }
 
-        public HttpData(URI call, String method, boolean json){
+        public HttpData(URI call, String method, boolean json) {
             this(call, new ArrayList<NameValuePair>(), method, json);
         }
 

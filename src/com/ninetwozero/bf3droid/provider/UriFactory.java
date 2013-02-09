@@ -1,14 +1,16 @@
 package com.ninetwozero.bf3droid.provider;
 
 import android.content.UriMatcher;
+
 import com.ninetwozero.bf3droid.BF3Droid;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URIUtils;
-import org.apache.http.client.utils.URLEncodedUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URIUtils;
+import org.apache.http.client.utils.URLEncodedUtils;
 
 public class UriFactory {
     private static final String SCHEME = "http";
@@ -87,5 +89,9 @@ public class UriFactory {
                 .append(personaName).append("/").append(personaId).append("/")
                 .append(userId).append("/").append(platformId).toString();
         return createUri(path);
+    }
+
+    public static URI userFeeds(){
+        return createUri("feed/homeevents/?start=0");
     }
 }

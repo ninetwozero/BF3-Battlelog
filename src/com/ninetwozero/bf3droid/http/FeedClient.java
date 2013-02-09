@@ -1,23 +1,18 @@
 package com.ninetwozero.bf3droid.http;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.ninetwozero.bf3droid.datatype.FeedItem;
-import com.ninetwozero.bf3droid.datatype.ParsedFeedItemData;
-import com.ninetwozero.bf3droid.datatype.RequestHandlerException;
-import com.ninetwozero.bf3droid.misc.CacheHandler;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.util.Log;
 
-import com.ninetwozero.bf3droid.datatype.CommentData;
-import com.ninetwozero.bf3droid.datatype.ProfileData;
-import com.ninetwozero.bf3droid.datatype.WebsiteHandlerException;
+import com.ninetwozero.bf3droid.datatype.*;
 import com.ninetwozero.bf3droid.factory.FeedItemDataFactory;
+import com.ninetwozero.bf3droid.misc.CacheHandler;
 import com.ninetwozero.bf3droid.misc.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class FeedClient extends DefaultClient {
 
@@ -30,7 +25,7 @@ public class FeedClient extends DefaultClient {
     public static final String URL_PLATOON = Constants.URL_MAIN
             + "feed/platoonevents/{PLATOON_ID}/?start={NUMSTART}";
     public static final String URL_FRIEND_FEED = Constants.URL_MAIN
-            + "feed/homeevents/?start={NUMSTART}";
+            + "feed/homeevents?start={NUMSTART}";
     public static final String URL_PROFILE = Constants.URL_MAIN
             + "feed/profileevents/{PID}/?start={NUMSTART}";
     public static final String URL_POST = Constants.URL_MAIN + "wall/postmessage";
@@ -133,10 +128,7 @@ public class FeedClient extends DefaultClient {
 
             for (int i = 0, max = Math.round(num / 10); i < max; i++) {
                 String httpContent = mRequestHandler.get(
-                    url.replace(
-                        "{NUMSTART}",
-                        String.valueOf(i * 10)
-                    ),
+                    url.replace("{NUMSTART}",String.valueOf(i * 10)),
                     RequestHandler.HEADER_AJAX
                 );
 
@@ -145,7 +137,7 @@ public class FeedClient extends DefaultClient {
             }
             return (ArrayList<FeedItem>) feedItems;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Log.e("FeedClient", ex.toString());
             throw new WebsiteHandlerException(ex.getMessage());
         }
     }
@@ -157,7 +149,7 @@ public class FeedClient extends DefaultClient {
                 feedItemArray.add(getFeedItemFromJSON(context, jsonArray.getJSONObject(i), activeProfileId));
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Log.i("FeedClient", ex.toString());
         }
         return (ArrayList<FeedItem>) feedItemArray;
     }
@@ -236,7 +228,7 @@ public class FeedClient extends DefaultClient {
                 comments
             );
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Log.i("FeedClient", ex.toString());
             throw new WebsiteHandlerException(ex.getMessage());
         }
     }

@@ -92,11 +92,11 @@
   <string name="general_downloading">Stahují se data...</string>
   <string name="general_no_data">Data nebyla nalezena.</string>
   <string name="label_own_soldiernu">Menu</string>
-  <string name="label_feed">Zěď</string>
+  <string name="label_feed">Zeď</string>
   <string name="label_friends">Přátelé</string>
   <string name="label_notifications">Upozornění</string>
   <string name="label_own_soldier">Můj voják</string>
-  <string name="label_unlocks">Mé odemknutí</string>
+  <string name="label_unlocks">Mé odemknuté položky</string>
   <string name="label_find_soldier">Najít vojáka</string>
   <string name="label_find_platoon">Najít četu</string>
   <string name="label_compare_bs">Porovnat válečné jizvy</string>
@@ -110,7 +110,7 @@
   <string name="label_chat_open">Otevřít chat</string>
   <string name="label_soldier_view">Zobrazit vojáka</string>
   <string name="label_hooah">Hooah!</string>
-  <string name="label_unhooah">Un-hooah!</string>
+  <string name="label_unhooah">Odstranit hooah!</string>
   <string name="label_comment_view">Zobrazit komentáře</string>
   <string name="msg_unimplemented">Neimplementovaná funkcionalita.</string>
   <string name="info_feed_empty">Žádné příspevky nebyly nalezeny.</string>
@@ -129,8 +129,8 @@
   <string name="info_profile_playing">Hraje na {server name}</string>
   <string name="info_profile_empty_pres">Nenalezena žádná prezentace.</string>
   <string name="info_hooah_s">{num} hooah</string>
-  <string name="info_hooah_p">{num} hooahs</string>
-  <string name="info_comment_s">{num} komentářů</string>
+  <string name="info_hooah_p">{num} hooahů</string>
+  <string name="info_comment_s">{num} komentář</string>
   <string name="info_comment_p">{num} komentářů</string>
   <string name="label_playing">Hraje</string>
   <string name="label_online">Online</string>
@@ -154,10 +154,10 @@
   <string name="msg_login_fail">Přihlášení selhalo.</string>
   <string name="msg_logout">Odehlašování...</string>
   <string name="msg_error">Nastala chyba.</string>
-  <string name="msg_prequest_ok">Požádali ste o připojení se k četě.</string>
+  <string name="msg_prequest_ok">Požádali jste o připojení se k četě.</string>
   <string name="msg_prequest_fail_pres">Nemůžete požádat o připojení kvůli omezením čety.</string>
-  <string name="msg_prequest_fail_full">Nemůžete požádat o připojení protože četa je plná.</string>
-  <string name="msg_prequest_fail_error">Při připojování k čete došlo k chybě.</string>
+  <string name="msg_prequest_fail_full">Nemůžete požádat o připojení, protože četa je plná.</string>
+  <string name="msg_prequest_fail_error">Při připojování k četě došlo k chybě.</string>
   <string name="msg_platoon_left">Opustili jste četu.</string>
   <string name="msg_platoon_left_fail">Při opouštění čety došlo k chybě.</string>
   <string name="msg_feed_ok">Zpráva úspěšně odeslána!</string>
@@ -193,7 +193,7 @@
   <string name="info_wallpost">příspěvek na zeď</string>
   <string name="info_status_message">status</string>
   <string name="info_award">odměna</string>
-  <string name="info_battle_report">Zpráva z bitvy</string>
+  <string name="info_battle_report">Hlášení z bitvy</string>
   <string name="info_platoon_wall_post">zprávy na zeď čety</string>
   <string name="info_lastlogin">Naposledy přihlášen {date}</string>
   <string name="info_time_second">Před {seconds} sekundami</string>
@@ -215,28 +215,28 @@
   <string name="label_com_handle_default">COM CENTRUM (0 ONLINE)</string>
   <string name="info_hint_comment_msg">Napište zprávu</string>
   <string name="info_xml_comment_empty">Nenalezeny žádné komentáře</string>
-  <string name="info_xml_rank">Šarže</string>
+  <string name="info_xml_rank">Hodnost</string>
   <string name="info_xml_kills">Zabití</string>
   <string name="info_xml_assists">Asistence</string>
   <string name="info_xml_vehicles_destroyed">Zničená vozidla</string>
-  <string name="info_xml_vehicles_assisted_with">Zničeno vozidli</string>
-  <string name="info_xml_heals">Léčení</string>
+  <string name="info_xml_vehicles_assisted_with">Zničeno vozidly</string>
+  <string name="info_xml_heals">Ošetření</string>
   <string name="info_xml_revives">Oživení</string>
   <string name="info_xml_repairs">Opravy</string>
   <string name="info_xml_resupplies">Zásobování</string>
-  <string name="info_xml_deaths">Smrti</string>
-  <string name="info_xml_kd_ratio">Poměr Z/S</string>
+  <string name="info_xml_deaths">Úmrtí</string>
+  <string name="info_xml_kd_ratio">Poměr Z/Ú</string>
   <string name="info_xml_wins">Výhry</string>
   <string name="info_xml_losses">Prohry</string>
-  <string name="info_xml_wl_ratio">poměr V/P</string>
+  <string name="info_xml_wl_ratio">Poměr V/P</string>
   <string name="info_xml_accuracy">Přesnost</string>
   <string name="info_xml_longest_headshot">Nejdelší zásah do hlavy</string>
   <string name="info_xml_longest_killstreak">Nejdelší počet zabití v řadě</string>
   <string name="info_xml_skill_rating">Ohodnocení schopností</string>
   <string name="info_xml_time_played">Herní čas</string>
-  <string name="info_xml_score_minute">Skóre/minutu</string>
+  <string name="info_xml_score_minute">Skóre/min</string>
   <string name="info_xml_assault">Útočník</string>
-  <string name="info_xml_engineer">Inženýr</string>
+  <string name="info_xml_engineer">Ženista</string>
   <string name="info_xml_support">Podpora</string>
   <string name="info_xml_recon">Průzkumník</string>
   <string name="info_xml_vehicles">Vozidla</string>
@@ -327,11 +327,11 @@
   <string name="title_forum">BF3 Droid - Forum</string>
   <string name="title_browsing_forum">BF3 Droid - Browsing the forums</string>
   <string name="label_forum">Forum</string>
-  <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> dokončil cíl - &lt;b>\"{assignment}\"&lt;/b> (odemyká
+  <string name="info_txt_assignment_ok">&lt;b>{username}&lt;/b> dokončil úkol - &lt;b>\"{assignment}\"&lt;/b> (odemyká
     &lt;b>{unlock}&lt;/b>).
   </string>
-  <string name="info_assignments_new_unknown">Nové cíle byly přidány - prosím upozorněte vývojáře!</string>
-  <string name="title_assignments">BF3 Droid - Prohlížení cílů</string>
+  <string name="info_assignments_new_unknown">Nové úkoly byly přidány - prosím upozorněte vývojáře!</string>
+  <string name="title_assignments">BF3 Droid - Prohlížení úkolů</string>
   <string name="info_xml_platoons_my">Moje čety</string>
   <string name="info_xml_assignments_my">Moje cíle</string>
   <string name="msg_no_cookies">Nenalezeny cookies, přihlašte se znovu.</string>
@@ -376,7 +376,7 @@
   <string name="label_search_ongoing">Hledání...</string>
   <string name="info_p_awards">&lt;b>{username}&lt;/b> obdržel novou odměnu: {award}.</string>
   <string name="label_own_platoon">Mé čety</string>
-  <string name="label_assignments">Mé cíle</string>
+  <string name="label_assignments">Mé úkoly</string>
   <string name="info_xml_invite">Pozvat...</string>
   <string name="title_platoon_invite">Pozvat přátele do čety</string>
   <string name="info_xml_platoon_select">Vyberte četu...</string>
@@ -400,7 +400,7 @@
   <string name="title_about">O aplikaci</string>
   <string name="info_option_unlocks">Zobrazit odemknutí</string>
   <string name="info_txt_email_send">Odeslat email</string>
-  <string name="label_about">O</string>
+  <string name="label_about">O aplikaci</string>
   <string name="label_faq">FAQ</string>
   <string name="label_credits">Poděkování</string>
   <string name="info_assignment_completed">cíl splněn</string>
@@ -438,11 +438,11 @@
   <string name="info_platoon_member_founder_p">Zakladatelé</string>
   <string name="info_platoon_member_admin_p">Administrátoři</string>
   <string name="info_platoon_member_regular">Člen</string>
-  <string name="info_platoon_member_regular_p">Členi</string>
+  <string name="info_platoon_member_regular_p">Členové</string>
   <string name="info_platoon_member_invited_label">Pozván k připojení se</string>
   <string name="info_platoon_member_requested_label">Vyzván k připojení se</string>
   <string name="info_platoon_stats_overall">Celkem</string>
-  <string name="label_assignments_view">Zobrazit cíle</string>
+  <string name="label_assignments_view">Zobrazit úkoly</string>
   <string name="label_goto_section">Jit na {section}</string>
   <string name="label_goto_assignments">cíle</string>
   <string name="label_goto_forum_thread">vlákno fóra</string>
@@ -452,14 +452,14 @@
   <string name="info_about_donating">Pokud se vám aplikace líbí a rádi byste mi zaslali jakoukoliv odměnu, stačí
     kliknout na tento text a otevře se Paypal.
   </string>
-  <string name="general_censored">Tento příspěvek byl cenzorován administrátory Droidu.</string>
+  <string name="general_censored">Tento příspěvek byl cenzorován administrátory Battlelogu.</string>
   <string name="info_forum_report_true">Příspěvek byl nahlášen.</string>
   <string name="info_forum_report_false">Tento příspěvek nemohl být nahlášen.</string>
   <string name="info_forum_search_label">Hledání</string>
 
   <string name="info_forum_report_reason">Proč chcete tento příspěvek nahlásit?</string>
   <string name="info_forum_report_label">Nahlásit příspěvek</string>
-  <string name="label_report">Nahlásot</string>
+  <string name="label_report">Nahlásit</string>
   <string name="info_forum_report_empty">Musíte napsat důvod, proč chcete příspěvek nahlásit.</string>
   <string name="info_report_active">Nahlašuji...</string>
   <string name="title_forum_report">BF3 Droid - Nahlašování příspěvku z fóra</string>
@@ -467,10 +467,10 @@
   <string name="info_general_nocache">Adresář pro cache neexistuje, kontaktujte vývojáře!</string>
   <string name="info_unlock_change">Změnit vojáka...</string>
   <string name="info_general_noprofile">Není vybrán žádný profil.</string>
-  <string name="info_assignments_empty">Nenalezeny žádné cíle pro tohoto vojáka.</string>
+  <string name="info_assignments_empty">Nenalezeny žádné úkoly pro tohoto vojáka.</string>
   <string name="info_unlocks_empty">Žádná odemknutí.</string>
   <string name="info_login_lostcookie">Přihlašování bylo úspěšné, přesto jsme nenalezli žádná cookies. :-(</string>
-  <string name="info_conn_hostunreach">Server není dostupny. Prosím restartujte své 3G připojení.</string>
+  <string name="info_conn_hostunreach">Server není dostupný. Prosím restartujte své 3G připojení.</string>
   <string name="info_session_expired">Sezení vypršelo. Navazuji nové.</string>
   <string name="info_session_renew_ok">Sezení obnoveno!</string>
   <string name="info_session_renew_fail">Sezení se nepodařilo obnovit.</string>
@@ -493,7 +493,7 @@
   <string name="info_settings_notification_desc_beep_true">Vaše notifikace budou vydávat zvuky.</string>
   <string name="info_settings_notification_desc_beep_false">Neuslyšíte nic</string>
   <string name="info_settings_notification_desc_beep_spec_true">PÍÍÍP!</string>
-  <string name="info_settings_notification_desc_light_true">Používat LED dioda.</string>
+  <string name="info_settings_notification_desc_light_true">Používat LED diodu.</string>
   <string name="info_settings_notification_desc_light_false">LED dioda nebude blikat.</string>
   <string name="info_settings_notification_desc_beep_spec_false">Použít systémový zvuk pro notifikace.</string>
   <string name="info_credits_contributors">Seznam příspěvatelů</string>
