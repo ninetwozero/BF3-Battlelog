@@ -40,7 +40,7 @@ import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 public class WeaponListActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
-    private Map<Long, List<WeaponDataWrapper>> weapons;
+    private Map<Long, List<WeaponDataWrapper>> weapons = new HashMap<Long, List<WeaponDataWrapper>>();
 
     private final String DIALOG = "WeaponListActivity";
 
@@ -51,7 +51,6 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         setContentView(R.layout.viewpager_default);
 
         setup();
-        weapons = new HashMap<Long, List<WeaponDataWrapper>>();
     }
 
     @Override
@@ -61,7 +60,9 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
     @Override
     public void onResume() {
         super.onResume();
-        reload();
+        if (weapons == null || weapons.size() == 0) {
+            reload();
+        }
     }
 
     public void setup() {
@@ -144,7 +145,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         startActivity(new Intent(this, SingleWeaponActivity.class).putExtra("weapon", w));
     }
 
-    private long selectedPersonaId(){
+    private long selectedPersonaId() {
         return BF3Droid.selectedUserPersona().getPersonaId();
     }
 }
