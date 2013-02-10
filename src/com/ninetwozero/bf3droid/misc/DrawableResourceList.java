@@ -46,7 +46,6 @@ public final class DrawableResourceList {
         skills = new HashMap<String, Integer>();
         dogtags = new HashMap<String, Integer>();
 
-        // Fill 'em up
         weapons.put("75D1FFC8-D442-4212-B668-96AED9030FC6", R.drawable.w_rpk);
         weapons.put("DC356150-2A5F-4FCA-BE6C-B993EE7F8A8B", R.drawable.w_fgm148);
         weapons.put("CB018ADD-3648-4504-9359-9BAFB8D92F7D", R.drawable.w_mk11_russian);
@@ -146,6 +145,9 @@ public final class DrawableResourceList {
         weapons.put("6D99F118-04BD-449A-BA0E-1978DDF5894D", R.drawable.w_xp2_spas12);
         weapons.put("0A54B1A8-0368-4939-9558-D31E40FE488F", R.drawable.w_xp2_mtar);
         weapons.put("BF6E6CB2-D5AA-4425-A0C8-0FB8D89A1372", R.drawable.w_xp2_lsat);
+        weapons.put("F444F973-F411-4616-9A85-395B8ED7FEF2", R.drawable.w_combatknife);
+        weapons.put("B20C05A8-D9E7-4ECB-AE8C-DEAD08A2E61E", R.drawable.w_xp4_crossbowkobra);
+        weapons.put("12DA9127-4627-4A8F-88E5-1D43B4B9FBB6", R.drawable.w_xp4_crossbowriflescope);
 
         // Set up the vehicles
         vehicles.put("F998F5E4-220D-463A-A437-1C18D5C3A19E", R.drawable.v_btr90);
@@ -289,6 +291,10 @@ public final class DrawableResourceList {
         attachments.put("ID_P_ANAME_FRAG", R.drawable.a_frag);
         attachments.put("ID_P_ANAME_M145", R.drawable.a_m145);
         attachments.put("ID_P_ANAME_SGA_FLECH", R.drawable.a_flechette);
+        attachments.put("ID_P_ANAME_BOLT_STANDARD", R.drawable.a_bolt_standard);
+        attachments.put("ID_P_ANAME_BOLT_SCAN", R.drawable.a_bolt_scan);
+        attachments.put("ID_P_ANAME_BOLT_BA", R.drawable.a_bolt_ba);
+        attachments.put("ID_P_ANAME_BOLT_HE", R.drawable.a_bolt_he);
 
         // Kits
         kits.put("DC9734CD-D3D7-4870-A6A9-07B99BEE6DAC", R.drawable.k_soflam);

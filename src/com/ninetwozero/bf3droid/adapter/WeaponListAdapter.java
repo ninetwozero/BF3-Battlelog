@@ -1,12 +1,12 @@
 /*
-	This file is part of BF3 Battlelog
+	This file is part of BF3 Droid
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
+    BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
+    BF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -29,14 +29,10 @@ import com.ninetwozero.bf3droid.misc.DrawableResourceList;
 import java.util.List;
 
 public class WeaponListAdapter extends BaseAdapter {
-
-    // Attributes
     private List<WeaponDataWrapper> dataArray;
     private LayoutInflater layoutInflater;
 
-    // Construct
-    public WeaponListAdapter(List<WeaponDataWrapper> u,
-                             LayoutInflater l) {
+    public WeaponListAdapter(List<WeaponDataWrapper> u, LayoutInflater l) {
         dataArray = u;
         layoutInflater = l;
     }
@@ -57,40 +53,27 @@ public class WeaponListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        // Get the current item
-        WeaponDataWrapper base = getItem(position);
+    public View getView(int index, View convertView, ViewGroup parent) {
+        WeaponDataWrapper base = getItem(index);
         WeaponStats data = base.getStats();
 
-        // Calculate teh unlock progress
-        double unlockProgress = base.getNumUnlocks() == 0 ? 1 : base.getNumUnlocked()
-                / ((double) base.getNumUnlocks());
+        double unlockProgress = base.getNumUnlocks() == 0 ? 1 : base.getNumUnlocked() / ((double) base.getNumUnlocks());
 
-        // Recycle
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.list_item_weapon,
-                    parent, false);
+            convertView = layoutInflater.inflate(R.layout.list_item_weapon, parent, false);
         }
 
-        // Populate fields
-        ((TextView) convertView.findViewById(R.id.text_id)).setText(position+1 + "");
-        ((TextView) convertView.findViewById(R.id.text_title)).setText(data.getName());
-        ((TextView) convertView.findViewById(R.id.text_sstars))
-                .setText((int) data.getServiceStars() + "");
-
-        // Setup the progress
+        ((TextView) convertView.findViewById(R.id.text_id)).setText(index+1 + "");
+        ((TextView) convertView.findViewById(R.id.text_title)).setText(data.getSlug().toUpperCase());
+        ((TextView) convertView.findViewById(R.id.text_sstars)).setText((int) data.getServiceStars() + "");
         ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progress_unlocks);
         TextView textProgress = (TextView) convertView.findViewById(R.id.text_progress);
-        if (unlockProgress >= 1.0) {
 
-            ((TextView) convertView.findViewById(R.id.text_status))
-                    .setText(R.string.info_unlocks_done);
+        if (unlockProgress >= 1.0) {
+            ((TextView) convertView.findViewById(R.id.text_status)).setText(R.string.info_unlocks_done);
             progressBar.setVisibility(View.GONE);
             textProgress.setVisibility(View.GONE);
-
         } else {
-
             progressBar.setMax(1000);
             progressBar.setProgress(((int) (unlockProgress * 1000)));
             progressBar.setVisibility(View.VISIBLE);
@@ -98,16 +81,10 @@ public class WeaponListAdapter extends BaseAdapter {
             textProgress.setText((Math.round(unlockProgress * 1000) / 10.0) + "%");
             textProgress.setVisibility(View.VISIBLE);
 
-            ((TextView) convertView.findViewById(R.id.text_status)).setText(base.getNumUnlocks()
-                    + "/" + base.getNumUnlocks());
-
+            ((TextView) convertView.findViewById(R.id.text_status)).setText(base.getNumUnlocks()+ "/" + base.getNumUnlocks());
         }
 
-        // Last but not least - the almighty image
-        ((ImageView) convertView.findViewById(R.id.image_item))
-                .setImageResource(DrawableResourceList.getWeapon(data.getGuid()));
-
-        // Tag it!
+        ((ImageView) convertView.findViewById(R.id.image_item)).setImageResource(DrawableResourceList.getWeapon(data.getGuid()));
         convertView.setTag(base);
         return convertView;
     }

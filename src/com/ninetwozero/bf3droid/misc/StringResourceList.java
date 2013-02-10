@@ -146,6 +146,9 @@ public final class StringResourceList {
         mDescriptionWeapons.put("6D99F118-04BD-449A-BA0E-1978DDF5894D", R.string.desc_w_spas12);
         mDescriptionWeapons.put("0A54B1A8-0368-4939-9558-D31E40FE488F", R.string.desc_w_mtar21);
         mDescriptionWeapons.put("BF6E6CB2-D5AA-4425-A0C8-0FB8D89A1372", R.string.desc_w_lsat);
+        mDescriptionWeapons.put("F444F973-F411-4616-9A85-395B8ED7FEF2", R.string.desc_w_combatknife);
+        mDescriptionWeapons.put("B20C05A8-D9E7-4ECB-AE8C-DEAD08A2E61E", R.string.desc_w_crossbowkobra);
+        mDescriptionWeapons.put("12DA9127-4627-4A8F-88E5-1D43B4B9FBB6", R.string.desc_w_crossbowriflescope);
 
         // Set up the vehicles
         mDescriptionVehicles.put("89BEA1D6-2FF4-11DE-8C23-DAB1D69416DE", R.string.desc_v_mi28);
