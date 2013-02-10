@@ -29,30 +29,30 @@ import java.util.List;
 public class UnlockFragment extends ListFragment implements DefaultFragment {
 
     // Attributes
-    private Context mContext;
-    private LayoutInflater mLayoutInflater;
-    private int mViewPagerPosition;
+    private Context context;
+    private LayoutInflater layoutInflater;
+    private int viewPagerIndex;
 
-    private ListView mListView;
-    private List<UnlockData> mUnlocks;
+    private ListView listView;
+    private List<UnlockData> unlocks;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mContext = getActivity();
-        mLayoutInflater = inflater;
+        context = getActivity();
+        layoutInflater = inflater;
         
-        if (mContext instanceof UnlockActivity) {
-            mUnlocks = ((UnlockActivity) mContext).getItemsForFragment(mViewPagerPosition);
+        if (context instanceof UnlockActivity) {
+            unlocks = ((UnlockActivity) context).getItemsForFragment(viewPagerIndex);
         }
         
-        View view = mLayoutInflater.inflate(R.layout.tab_content_unlocks, container, false);
+        View view = layoutInflater.inflate(R.layout.tab_content_unlocks, container, false);
         initFragment(view);
         return view;
     }
 
     public void initFragment(View v) {
-        mListView = (ListView) v.findViewById(android.R.id.list);
-        mListView.setAdapter(new UnlockListAdapter(mContext, mUnlocks, mLayoutInflater));
+        listView = (ListView) v.findViewById(android.R.id.list);
+        listView.setAdapter(new UnlockListAdapter(context, unlocks, layoutInflater));
     }
 
     @Override
@@ -61,11 +61,11 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
     }
 
     public int getViewPagerPosition() {
-        return mViewPagerPosition;
+        return viewPagerIndex;
     }
 
     public void setViewPagerPosition(int p) {
-        mViewPagerPosition = p;
+        viewPagerIndex = p;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class UnlockFragment extends ListFragment implements DefaultFragment {
     }
 
     public void showUnlocks(List<UnlockData> unlockData) {
-        ((UnlockListAdapter) mListView.getAdapter()).setData(unlockData);
+        ((UnlockListAdapter) listView.getAdapter()).setData(unlockData);
     }
 
     @Override

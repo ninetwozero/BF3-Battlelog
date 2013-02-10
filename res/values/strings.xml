@@ -1072,6 +1072,13 @@
     designs. With the shoulder stock completely removed and the shortened receiver, this ultra compact personal defense
     weapon is capable of very high rates of fire, as well as great stopping power at close range.
   </string>
+  <string name="desc_w_combatknife">Advanced Combat Blade model 90 is a heavy duty combat blade with a razor sharp edge,
+    partly serrated and complete with a gut hook at its tip. This premium piece of equipment allows for quick, clean,
+    silent kills when approaching a target from behind and claiming the victimʹs Dogtags in the process. Slash attacks
+    from the front can be lethal with multiple attacks, however they will not result in Dogtag trophies.</string>
+  <string name="desc_w_crossbowkobra">The Xbow fires a variety of different bolts.</string>
+  <string name="desc_w_crossbowriflescope">The Xbow fires a variety of different bolts.</string>
+
   <string name="desc_v_lavad">The LAV-AD includes the Avenger anti-air system on a LAV-25 chassis.</string>
   <string name="desc_v_lav25">The LAV-25 is an eight-wheeled amphibious infantry fighting vehicle (IFV) used by the
     United States Marine Corps.

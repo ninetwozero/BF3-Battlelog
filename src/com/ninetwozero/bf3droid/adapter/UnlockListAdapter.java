@@ -1,12 +1,12 @@
 /*
-	This file is part of BF3 Battlelog
+	This file is part of BF3 Droid
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
+    BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
+    BF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -28,28 +28,25 @@ import com.ninetwozero.bf3droid.datatype.UnlockData;
 import java.util.List;
 
 public class UnlockListAdapter extends BaseAdapter {
+    private Context context;
+    private List<UnlockData> unlockData;
+    private LayoutInflater layoutInflater;
+    private ProgressBar progressBar;
 
-    // Attributes
-    private Context mContext;
-    private List<UnlockData> mData;
-    private LayoutInflater mLayoutInflater;
-    private ProgressBar mProgressBar;
-
-    // Construct
     public UnlockListAdapter(Context c, List<UnlockData> u, LayoutInflater l) {
-        mContext = c;
-        mData = u;
-        mLayoutInflater = l;
+        context = c;
+        unlockData = u;
+        layoutInflater = l;
     }
 
     @Override
     public int getCount() {
-        return (mData != null) ? mData.size() : 0;
+        return (unlockData != null) ? unlockData.size() : 0;
     }
 
     @Override
     public UnlockData getItem(int position) {
-        return mData.get(position);
+        return unlockData.get(position);
     }
 
     @Override
@@ -60,34 +57,25 @@ public class UnlockListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        // Get the current item
         UnlockData currentUnlock = getItem(position);
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.list_item_unlock, parent, false);
+            convertView = layoutInflater.inflate(R.layout.list_item_unlock, parent, false);
         }
 
-        // Grab the progressBar
-        mProgressBar = ((ProgressBar) convertView
-                .findViewById(R.id.progress_unlock));
+        progressBar = ((ProgressBar) convertView.findViewById(R.id.progress_unlock));
 
-        // Set the TextViews
-        ((View) convertView.findViewById(R.id.divider_left)).setBackgroundColor(
-        	mContext.getResources().getColor(
-	    		getColorForKit(currentUnlock.getKitId())
-	    	)
-    	);
+        convertView.findViewById(R.id.divider_left).setBackgroundColor(
+                context.getResources().getColor(getColorForKit(currentUnlock.getKitId())));
         ((TextView) convertView.findViewById(R.id.text_unlock_percent)).setText(
-        	currentUnlock.getUnlockPercentage() + "%"
-        );
+                currentUnlock.getUnlockPercentage() + "%");
         ((ImageView) convertView.findViewById(R.id.image_unlock)).setImageResource(
-        	currentUnlock.getImageResource()
-        );
+                currentUnlock.getImageResource());
 
-        ((TextView) convertView.findViewById(R.id.text_unlock_title)).setText(currentUnlock.getTitle(mContext));
-        ((TextView) convertView.findViewById(R.id.text_unlock_desc)).setText(currentUnlock.getObjective(mContext));
+        ((TextView) convertView.findViewById(R.id.text_unlock_title)).setText(currentUnlock.getTitle(context));
+        ((TextView) convertView.findViewById(R.id.text_unlock_desc)).setText(currentUnlock.getObjective(context));
 
-        mProgressBar.setMax(100);
-        mProgressBar.setProgress((int) Math.round(currentUnlock.getUnlockPercentage()));
+        progressBar.setMax(100);
+        progressBar.setProgress((int) Math.round(currentUnlock.getUnlockPercentage()));
 
         convertView.setTag(currentUnlock);
         return convertView;
@@ -109,7 +97,7 @@ public class UnlockListAdapter extends BaseAdapter {
     }
 
     public void setData(List<UnlockData> data) {
-        mData = data;
+        unlockData = data;
         notifyDataSetChanged();
     }
 }
