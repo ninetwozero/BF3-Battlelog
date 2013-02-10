@@ -275,13 +275,13 @@ public class PublicUtils {
                 SessionKeeper.setProfileData(
                         SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences)
                 );
-                RequestHandler.setCookies(
+                /*RequestHandler.setCookies(
                         new ShareableCookie(
                                 sharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
                                 cookieValue,
                                 Constants.COOKIE_DOMAIN
                         )
-                );
+                );*/
                 SessionKeeper.setPlatoonData(SessionKeeper.generatePlatoonDataFromSharedPreferences(sharedPreferences));
                 new AsyncSessionValidate(context, sharedPreferences).execute();
             } else {
