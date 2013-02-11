@@ -16,9 +16,10 @@ package com.ninetwozero.bf3droid.datatype;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.ninetwozero.bf3droid.jsonmodel.soldierstats.*;
-import com.ninetwozero.bf3droid.misc.DataBank;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
+import com.ninetwozero.bf3droid.util.Ranks;
 
 public class PersonaStats implements Parcelable {
 
@@ -206,7 +207,7 @@ public class PersonaStats implements Parcelable {
     }
 
     public final String getRankTitle() {
-        return DataBank.getRankTitle(rankTitle);
+        return Ranks.getRankTitle(rankTitle);
     }
 
     public final long getRankId() {
