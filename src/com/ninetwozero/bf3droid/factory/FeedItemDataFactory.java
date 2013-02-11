@@ -1,18 +1,20 @@
 package com.ninetwozero.bf3droid.factory;
 
-import com.ninetwozero.bf3droid.datatype.FeedItem;
-import com.ninetwozero.bf3droid.datatype.ParsedFeedItemData;
-import com.ninetwozero.bf3droid.misc.DataBank;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 
 import com.ninetwozero.bf3droid.R;
+import com.ninetwozero.bf3droid.datatype.FeedItem;
+import com.ninetwozero.bf3droid.datatype.ParsedFeedItemData;
 import com.ninetwozero.bf3droid.datatype.ProfileData;
 import com.ninetwozero.bf3droid.datatype.WebsiteHandlerException;
+import com.ninetwozero.bf3droid.misc.DataBank;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
+import com.ninetwozero.bf3droid.util.AwardsMap;
+import com.ninetwozero.bf3droid.util.Ranks;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class FeedItemDataFactory {
 
@@ -166,7 +168,7 @@ public class FeedItemDataFactory {
 		if (stats == null) {
 			generatedTitle = PublicUtils.createStringWithData(context,
 				R.string.info_p_shared_rank, profile.getUsername(),
-				DataBank.getRankTitle(eventData.getString("nameSID")),
+				Ranks.getRankTitle(eventData.getString("nameSID")),
 				eventData.getString("rank")
 			);
 		} else {
@@ -190,7 +192,7 @@ public class FeedItemDataFactory {
 				// Let's see
 				String key = tempSubItem.getString(NAME_SID);
 				if (shareType.equals("BF3AWARDS")) {
-					title.append(DataBank.getAwardTitle(key));
+					title.append(AwardsMap.getAwardTitle(key));
 				} else if (shareType.equals("BF3GAMEREPORT")) {
 					title.append(getTitleFromUnlock(context, tempSubItem));
 				} else {
@@ -321,7 +323,7 @@ public class FeedItemDataFactory {
 					title.append(", ");
 				}
 			}
-			title.append(DataBank.getAwardTitle(tempKey));
+			title.append(AwardsMap.getAwardTitle(tempKey));
 		}
 
 		// Set the title
@@ -516,7 +518,7 @@ public class FeedItemDataFactory {
 				context,
 				R.string.info_p_promotion, 
 				profile.getUsername(),
-				DataBank.getRankTitle(currItem.getString(NAME_SID)),
+				Ranks.getRankTitle(currItem.getString(NAME_SID)),
 				currItem.getString(RANK)
 			), 
 			"", 
