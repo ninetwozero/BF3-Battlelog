@@ -17,14 +17,12 @@ package com.ninetwozero.bf3droid.misc;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+
 import com.ninetwozero.bf3droid.R;
-import com.ninetwozero.bf3droid.datatype.AppContributorData;
 import com.ninetwozero.bf3droid.datatype.PlatformData;
 import com.ninetwozero.bf3droid.datatype.VehicleType;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public final class DataBank {
@@ -38,9 +36,8 @@ public final class DataBank {
     private static String[] LANGUAGES;
     private static String[] LOCALES;
     private static Map<String, Integer> PERSONA_IMAGES;
-    private static List<AppContributorData> APP_CONTRIBUTORS;
     private static Map<Integer, Intent> CONTACT_INTENTS;
-    private static Map<String, String> RANKS;
+
     private static Map<String, VehicleType> VEHICLES;
     private static Map<String, String> KIT_ITEMS;
     private static Map<String, String> SKILLS;
@@ -48,11 +45,10 @@ public final class DataBank {
     private static Map<String, String> WEAPON_ATTACHMENTS;
     private static Map<String, Integer> WEAPONS;
     private static Map<String, String> UNLOCK_GOALS;
-    private static Map<String, String> AWARDS;
+
     private static Map<String, String> MAPS;
     private static Map<String, String> COOP_DATA;
     private static Map<String, String> DIFFICULTY_MAP;
-    private static Map<String, String> CRITERIAS;
     @Deprecated
     private static Map<String, String[]> ASSIGNMENTS;
 
@@ -62,21 +58,17 @@ public final class DataBank {
         PLATFORMS = new PlatformData[4];
         CONTACT_INTENTS = new HashMap<Integer, Intent>();
         PERSONA_IMAGES = new HashMap<String, Integer>();
-        APP_CONTRIBUTORS = new ArrayList<AppContributorData>();
         VEHICLES = new HashMap<String, VehicleType>();
-        RANKS = new HashMap<String, String>();
         KIT_ITEMS = new HashMap<String, String>();
         SKILLS = new HashMap<String, String>();
         VEHICLE_ADDONS = new HashMap<String, String>();
         WEAPONS = new HashMap<String, Integer>();
         WEAPON_ATTACHMENTS = new HashMap<String, String>();
         UNLOCK_GOALS = new HashMap<String, String>();
-        AWARDS = new HashMap<String, String>();
         MAPS = new HashMap<String, String>();
         COOP_DATA = new HashMap<String, String>();
         DIFFICULTY_MAP = new HashMap<String, String>();
         ASSIGNMENTS = new HashMap<String, String[]>();
-        CRITERIAS = new HashMap<String, String>();
 
         // LANG & LOCALE
         LANGUAGES = new String[]{"English", "Deutsch", "FranÃ§ais",
@@ -133,53 +125,6 @@ public final class DataBank {
 		PERSONA_IMAGES.put("bf3-ru-support2", R.drawable.bf3_ru_support2);
 		PERSONA_IMAGES.put("bf3-us-recon2", R.drawable.bf3_us_recon2);
 		PERSONA_IMAGES.put("bf3-ru-recon2", R.drawable.bf3_ru_recon2);
-		
-
-        // CONTRIBUTORS
-        APP_CONTRIBUTORS
-                .add(new AppContributorData(R.string.info_credits_code));
-        APP_CONTRIBUTORS.add(new AppContributorData("Lukas Larson",
-                "mailto:lukaslarson@gmail.com"));
-        APP_CONTRIBUTORS.add(new AppContributorData("Martin Nuc",
-                "http://www.nuc.cz/"));
-        APP_CONTRIBUTORS.add(new AppContributorData("Peter Miklo\u0161ko",
-                "https://github.com/peter-budo"));
-        APP_CONTRIBUTORS.add(new AppContributorData(
-                R.string.info_credits_graphics));
-        APP_CONTRIBUTORS.add(new AppContributorData("Marcus Januszewski", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData(
-                "Stephen 'Dbagjones' Beaudet", "http://djonesradio.com"));
-        APP_CONTRIBUTORS.add(new AppContributorData(
-                R.string.info_credits_translations));
-        APP_CONTRIBUTORS.add(new AppContributorData("Alexander Katsero",
-                "http://vk.com/crybot"));
-        APP_CONTRIBUTORS.add(new AppContributorData("Angelo Zangarini", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("Arnaud Ligny", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("artsiputsi", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("bagione", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("basr", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("capalex", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("Coval Delanight", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("Cuprax", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("cyrq", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("DarkoKukovec", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("federico", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("fysme", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("Judit Tur", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("Klaus Thenmayer", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("Mirella Lindmark", ""));
-        APP_CONTRIBUTORS
-                .add(new AppContributorData("MMario1989",
-                        "http://www.facebook.com/people/M%C3%A1ri%C3%B3-Morvai/100001683668440"));
-        APP_CONTRIBUTORS.add(new AppContributorData("neurokirurgi", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("pauldegroot", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("pingus", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("Ricket008", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("sangr1aman", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("waldzias", ""));
-        APP_CONTRIBUTORS.add(new AppContributorData("zAo82",
-                "mailto:sbkg0002@gmail.com"));
-        APP_CONTRIBUTORS.add(new AppContributorData("zauriel", ""));
 
         // DIFFICULTIES
         DIFFICULTY_MAP.put("ID_RP_DIFFICULTY_MEDIUM", "Normal");
@@ -229,153 +174,6 @@ public final class DataBank {
         UNLOCK_GOALS.put("c_", "{scoreCurr}/{scoreNeeded} {name} kills");
         UNLOCK_GOALS.put("xpm", "Complete \"{name}\"");
 
-        // RANKS
-        RANKS.put("ID_P_RANK00_NAME", "Recruit");
-        RANKS.put("ID_P_RANK01_NAME", "Private First Class");
-        RANKS.put("ID_P_RANK02_NAME", "Private First Class 1 Star");
-        RANKS.put("ID_P_RANK03_NAME", "Private First Class 2 Star");
-        RANKS.put("ID_P_RANK04_NAME", "Private First Class 3 Star");
-        RANKS.put("ID_P_RANK05_NAME", "Lance Corporal");
-        RANKS.put("ID_P_RANK06_NAME", "Lance Corporal 1 Star");
-        RANKS.put("ID_P_RANK07_NAME", "Lance Corporal 2 Star");
-        RANKS.put("ID_P_RANK08_NAME", "Lance Corporal 3 Star");
-        RANKS.put("ID_P_RANK09_NAME", "Corporal");
-        RANKS.put("ID_P_RANK10_NAME", "Corporal 1 Star");
-        RANKS.put("ID_P_RANK11_NAME", "Corporal 2 Star");
-        RANKS.put("ID_P_RANK12_NAME", "Corporal 3 Star");
-        RANKS.put("ID_P_RANK13_NAME", "Sergeant");
-        RANKS.put("ID_P_RANK14_NAME", "Sergeant 1 Star");
-        RANKS.put("ID_P_RANK15_NAME", "Sergeant 2 Star");
-        RANKS.put("ID_P_RANK16_NAME", "Sergeant 3 Star");
-        RANKS.put("ID_P_RANK17_NAME", "Staff Sergeant");
-        RANKS.put("ID_P_RANK18_NAME", "Staff Sergeant 1 Star");
-        RANKS.put("ID_P_RANK19_NAME", "Staff Sergeant 2 Star");
-        RANKS.put("ID_P_RANK20_NAME", "Gunnery Sergeant");
-        RANKS.put("ID_P_RANK21_NAME", "Gunnery Sergeant 1 Star");
-        RANKS.put("ID_P_RANK22_NAME", "Gunnery Sergeant 2 Star");
-        RANKS.put("ID_P_RANK23_NAME", "Master Sergeant");
-        RANKS.put("ID_P_RANK24_NAME", "Master Sergeant 1 Star");
-        RANKS.put("ID_P_RANK25_NAME", "Master Sergeant 2 Star");
-        RANKS.put("ID_P_RANK26_NAME", "First Sergeant");
-        RANKS.put("ID_P_RANK27_NAME", "First Sergeant 1 Star");
-        RANKS.put("ID_P_RANK28_NAME", "First Sergeant 2 Star");
-        RANKS.put("ID_P_RANK29_NAME", "Master Gunnery Sergeant");
-        RANKS.put("ID_P_RANK30_NAME", "Master Gunnery Sergeant 1 Star");
-        RANKS.put("ID_P_RANK31_NAME", "Master Gunnery Sergeant 2 Star");
-        RANKS.put("ID_P_RANK32_NAME", "Sergeant Major");
-        RANKS.put("ID_P_RANK33_NAME", "Sergeant Major 1 Star");
-        RANKS.put("ID_P_RANK34_NAME", "Sergeant Major 2 Star");
-        RANKS.put("ID_P_RANK35_NAME", "Warrant Officer 1 Star");
-        RANKS.put("ID_P_RANK36_NAME", "Chief Warrant Officer Two");
-        RANKS.put("ID_P_RANK37_NAME", "Chief Warrant Officer THREE");
-        RANKS.put("ID_P_RANK38_NAME", "Chief Warrant Officer FOUR");
-        RANKS.put("ID_P_RANK39_NAME", "Chief Warrant Officer FIVE");
-        RANKS.put("ID_P_RANK40_NAME", "Second Lieutenant");
-        RANKS.put("ID_P_RANK41_NAME", "First Lieutenant");
-        RANKS.put("ID_P_RANK42_NAME", "Captain");
-        RANKS.put("ID_P_RANK43_NAME", "Major");
-        RANKS.put("ID_P_RANK44_NAME", "Lieutenant Colonel");
-        RANKS.put("ID_P_RANK45_NAME", "Colonel");
-        RANKS.put("ID_P_RANK46_NAME", "Colonel Service Star 1");
-        RANKS.put("ID_P_RANK47_NAME", "Colonel Service Star 2");
-        RANKS.put("ID_P_RANK48_NAME", "Colonel Service Star 3");
-        RANKS.put("ID_P_RANK49_NAME", "Colonel Service Star 4");
-        RANKS.put("ID_P_RANK50_NAME", "Colonel Service Star 5");
-        RANKS.put("ID_P_RANK51_NAME", "Colonel Service Star 6");
-        RANKS.put("ID_P_RANK52_NAME", "Colonel Service Star 7");
-        RANKS.put("ID_P_RANK53_NAME", "Colonel Service Star 8");
-        RANKS.put("ID_P_RANK54_NAME", "Colonel Service Star 9");
-        RANKS.put("ID_P_RANK55_NAME", "Colonel Service Star 10");
-        RANKS.put("ID_P_RANK56_NAME", "Colonel Service Star 11");
-        RANKS.put("ID_P_RANK57_NAME", "Colonel Service Star 12");
-        RANKS.put("ID_P_RANK58_NAME", "Colonel Service Star 13");
-        RANKS.put("ID_P_RANK59_NAME", "Colonel Service Star 14");
-        RANKS.put("ID_P_RANK60_NAME", "Colonel Service Star 15");
-        RANKS.put("ID_P_RANK61_NAME", "Colonel Service Star 16");
-        RANKS.put("ID_P_RANK62_NAME", "Colonel Service Star 17");
-        RANKS.put("ID_P_RANK63_NAME", "Colonel Service Star 18");
-        RANKS.put("ID_P_RANK64_NAME", "Colonel Service Star 19");
-        RANKS.put("ID_P_RANK65_NAME", "Colonel Service Star 20");
-        RANKS.put("ID_P_RANK66_NAME", "Colonel Service Star 21");
-        RANKS.put("ID_P_RANK67_NAME", "Colonel Service Star 22");
-        RANKS.put("ID_P_RANK68_NAME", "Colonel Service Star 23");
-        RANKS.put("ID_P_RANK69_NAME", "Colonel Service Star 24");
-        RANKS.put("ID_P_RANK70_NAME", "Colonel Service Star 25");
-        RANKS.put("ID_P_RANK71_NAME", "Colonel Service Star 26");
-        RANKS.put("ID_P_RANK72_NAME", "Colonel Service Star 27");
-        RANKS.put("ID_P_RANK73_NAME", "Colonel Service Star 28");
-        RANKS.put("ID_P_RANK74_NAME", "Colonel Service Star 29");
-        RANKS.put("ID_P_RANK75_NAME", "Colonel Service Star 30");
-        RANKS.put("ID_P_RANK76_NAME", "Colonel Service Star 31");
-        RANKS.put("ID_P_RANK77_NAME", "Colonel Service Star 32");
-        RANKS.put("ID_P_RANK78_NAME", "Colonel Service Star 33");
-        RANKS.put("ID_P_RANK79_NAME", "Colonel Service Star 34");
-        RANKS.put("ID_P_RANK80_NAME", "Colonel Service Star 35");
-        RANKS.put("ID_P_RANK81_NAME", "Colonel Service Star 36");
-        RANKS.put("ID_P_RANK82_NAME", "Colonel Service Star 37");
-        RANKS.put("ID_P_RANK83_NAME", "Colonel Service Star 38");
-        RANKS.put("ID_P_RANK84_NAME", "Colonel Service Star 39");
-        RANKS.put("ID_P_RANK85_NAME", "Colonel Service Star 40");
-        RANKS.put("ID_P_RANK86_NAME", "Colonel Service Star 41");
-        RANKS.put("ID_P_RANK87_NAME", "Colonel Service Star 42");
-        RANKS.put("ID_P_RANK88_NAME", "Colonel Service Star 43");
-        RANKS.put("ID_P_RANK89_NAME", "Colonel Service Star 44");
-        RANKS.put("ID_P_RANK90_NAME", "Colonel Service Star 45");
-        RANKS.put("ID_P_RANK91_NAME", "Colonel Service Star 46");
-        RANKS.put("ID_P_RANK92_NAME", "Colonel Service Star 47");
-        RANKS.put("ID_P_RANK93_NAME", "Colonel Service Star 48");
-        RANKS.put("ID_P_RANK94_NAME", "Colonel Service Star 49");
-        RANKS.put("ID_P_RANK95_NAME", "Colonel Service Star 50");
-        RANKS.put("ID_P_RANK96_NAME", "Colonel Service Star 51");
-        RANKS.put("ID_P_RANK97_NAME", "Colonel Service Star 52");
-        RANKS.put("ID_P_RANK98_NAME", "Colonel Service Star 53");
-        RANKS.put("ID_P_RANK99_NAME", "Colonel Service Star 54");
-        RANKS.put("ID_P_RANK100_NAME", "Colonel Service Star 55");
-        RANKS.put("ID_P_RANK101_NAME", "Colonel Service Star 56");
-        RANKS.put("ID_P_RANK102_NAME", "Colonel Service Star 57");
-        RANKS.put("ID_P_RANK103_NAME", "Colonel Service Star 58");
-        RANKS.put("ID_P_RANK104_NAME", "Colonel Service Star 59");
-        RANKS.put("ID_P_RANK105_NAME", "Colonel Service Star 60");
-        RANKS.put("ID_P_RANK106_NAME", "Colonel Service Star 61");
-        RANKS.put("ID_P_RANK107_NAME", "Colonel Service Star 62");
-        RANKS.put("ID_P_RANK108_NAME", "Colonel Service Star 63");
-        RANKS.put("ID_P_RANK109_NAME", "Colonel Service Star 64");
-        RANKS.put("ID_P_RANK110_NAME", "Colonel Service Star 65");
-        RANKS.put("ID_P_RANK111_NAME", "Colonel Service Star 66");
-        RANKS.put("ID_P_RANK112_NAME", "Colonel Service Star 67");
-        RANKS.put("ID_P_RANK113_NAME", "Colonel Service Star 68");
-        RANKS.put("ID_P_RANK114_NAME", "Colonel Service Star 69");
-        RANKS.put("ID_P_RANK115_NAME", "Colonel Service Star 70");
-        RANKS.put("ID_P_RANK116_NAME", "Colonel Service Star 71");
-        RANKS.put("ID_P_RANK117_NAME", "Colonel Service Star 72");
-        RANKS.put("ID_P_RANK118_NAME", "Colonel Service Star 73");
-        RANKS.put("ID_P_RANK119_NAME", "Colonel Service Star 74");
-        RANKS.put("ID_P_RANK120_NAME", "Colonel Service Star 75");
-        RANKS.put("ID_P_RANK121_NAME", "Colonel Service Star 76");
-        RANKS.put("ID_P_RANK122_NAME", "Colonel Service Star 77");
-        RANKS.put("ID_P_RANK123_NAME", "Colonel Service Star 78");
-        RANKS.put("ID_P_RANK124_NAME", "Colonel Service Star 79");
-        RANKS.put("ID_P_RANK125_NAME", "Colonel Service Star 80");
-        RANKS.put("ID_P_RANK126_NAME", "Colonel Service Star 81");
-        RANKS.put("ID_P_RANK127_NAME", "Colonel Service Star 82");
-        RANKS.put("ID_P_RANK128_NAME", "Colonel Service Star 83");
-        RANKS.put("ID_P_RANK129_NAME", "Colonel Service Star 84");
-        RANKS.put("ID_P_RANK130_NAME", "Colonel Service Star 85");
-        RANKS.put("ID_P_RANK131_NAME", "Colonel Service Star 86");
-        RANKS.put("ID_P_RANK132_NAME", "Colonel Service Star 87");
-        RANKS.put("ID_P_RANK133_NAME", "Colonel Service Star 88");
-        RANKS.put("ID_P_RANK134_NAME", "Colonel Service Star 89");
-        RANKS.put("ID_P_RANK135_NAME", "Colonel Service Star 90");
-        RANKS.put("ID_P_RANK136_NAME", "Colonel Service Star 91");
-        RANKS.put("ID_P_RANK137_NAME", "Colonel Service Star 92");
-        RANKS.put("ID_P_RANK138_NAME", "Colonel Service Star 93");
-        RANKS.put("ID_P_RANK139_NAME", "Colonel Service Star 94");
-        RANKS.put("ID_P_RANK140_NAME", "Colonel Service Star 95");
-        RANKS.put("ID_P_RANK141_NAME", "Colonel Service Star 96");
-        RANKS.put("ID_P_RANK142_NAME", "Colonel Service Star 97");
-        RANKS.put("ID_P_RANK143_NAME", "Colonel Service Star 98");
-        RANKS.put("ID_P_RANK144_NAME", "Colonel Service Star 99");
-        RANKS.put("ID_P_RANK145_NAME", "Colonel Service Star 100");
 
         /* TODO: GENERATE STRINGS FOR VEHICLES */
         VEHICLES.put("0E09B2D0-BA4A-1509-E1D2-949FB0C04DBE", new VehicleType(
@@ -763,8 +561,7 @@ public final class DataBank {
         WEAPONS.put("ID_P_WNAME_M39", R.string.name_weapon_m39);
         WEAPONS.put("ID_P_WNAME_M1014", R.string.name_weapon_m1014);
         WEAPONS.put("ID_P_WNAME_PDR", R.string.name_weapon_pdr);
-        WEAPONS.put("ID_P_XP2_PREMIUM_WNAME_KNIFE_RAZOR",
-                R.string.name_weapon_knife_razor);
+        WEAPONS.put("ID_P_XP2_PREMIUM_WNAME_KNIFE_RAZOR", R.string.name_weapon_knife_razor);
         WEAPONS.put("ID_P_XP1_WNAME_QBB95", R.string.name_weapon_qbb95);
         WEAPONS.put("ID_P_WNAME_SVD", R.string.name_weapon_svd);
 
@@ -950,193 +747,6 @@ public final class DataBank {
         KIT_ITEMS.put("9F789F05-CE7B-DADC-87D7-16E847DBDD09", "M67 Grenade");
         KIT_ITEMS.put("DC9734CD-D3D7-4870-A6A9-07B99BEE6DAC", "SOFLAM");
 
-        AWARDS.put("BF3_ID_P_AWARD_R04_NAME", "Sniper Rifle Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M22_NAME", "Air Warfare Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M39_NAME", "M18 Claymore Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M27_NAME", "Conquest Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M08_NAME", "Melee Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R05_NAME", "Hand Gun Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R18_NAME", "Mvp 3 Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R06_NAME", "Shotgun Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M02_NAME", "Carbine Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M36_NAME", "Surveillance Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M11_NAME", "Avenger Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M14_NAME", "Suppression Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R21_NAME", "Anti Explosives Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M44_NAME", "Engineer Service Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M21_NAME", "Armored Warfare Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R44_NAME", "Medical Efficiency Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M19_NAME", "Combat Efficiency Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R19_NAME", "Ace Squad Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R23_NAME", "Squad Wipe Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M40_NAME", "Radio Beacon Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M29_NAME", "Squad Rush Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R11_NAME", "Accuracy Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R07_NAME", "Pdw Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R15_NAME", "Suppression Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M42_NAME", "Ru Army Service Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M17_NAME", "3rd Mvp Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M45_NAME", "Support Service Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R10_NAME", "Anti Vehicle Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M06_NAME", "Shotgun Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R33_NAME", "Squad Rush Winner Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M23_NAME", "Stationary Emplacement Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M46_NAME", "Recon Service Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M01_NAME", "Assault Rifle Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M09_NAME", "Anti Vehicle Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M05_NAME", "Handgun Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R39_NAME", "Squad Deathmatch Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R36_NAME", "Conquest Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R29_NAME", "M-com Defender Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M41_NAME", "Us Marines Service Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R13_NAME", "Savior Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M03_NAME", "Light Machine Gun Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M35_NAME", "Medical Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M16_NAME", "2nd Mvp Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M34_NAME", "Maintenance Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R31_NAME", "Conquest Winner Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M37_NAME", "Mortar Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R02_NAME", "Carbine Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M32_NAME", "Flag Defender Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M04_NAME", "Sniper Rifle Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M20_NAME", "Transport Warfare Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M49_NAME", "Jet Service Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R41_NAME", "Flag Defender Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M28_NAME", "Team Deathmatch Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R16_NAME", "Mvp Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M33_NAME", "Resupply Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R30_NAME", "Rush Winner Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M07_NAME", "Pdw Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R34_NAME", "Squad Deathmatch Winner Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M48_NAME", "Helicopter Service Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R01_NAME", "Assault Rifle Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R40_NAME", "Flag Attacker Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M10_NAME", "Accuracy Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R25_NAME", "Armored Warfare Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R14_NAME", "Nemesis Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M50_NAME", "Stationary Service Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M13_NAME", "Nemesis Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R28_NAME", "M-com Attacker Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R45_NAME", "Surveillance Efficiency Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M43_NAME", "Assault Service Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R38_NAME", "Squad Rush Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M25_NAME", "M-com Defender Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M18_NAME", "Ace Squad Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M31_NAME", "Flag Attacker Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M24_NAME", "M-com Attacker Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R27_NAME", "Air Warfare Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R37_NAME", "Team Deathmatch Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R12_NAME", "Avenger Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R42_NAME", "Resupply Efficiency Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R20_NAME", "Combat Efficiency Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R24_NAME", "Transport Warfare Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M30_NAME", "Squad Deathmatch Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R43_NAME", "Maintenance Efficiency Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M47_NAME", "Tank Service Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R08_NAME", "Melee Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R09_NAME", "Disable Vehicle Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R22_NAME", "Squad Spawn Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R26_NAME", "Stationary Emplacement Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R35_NAME", "Rush Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R17_NAME", "Mvp 2 Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_R32_NAME", "Tdm Winner Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M38_NAME", "Laser Designator Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M12_NAME", "Savior Medal");
-        AWARDS.put("BF3_ID_P_AWARD_M26_NAME", "Rush Medal");
-        AWARDS.put("BF3_ID_P_AWARD_R03_NAME", "Light Machine Gun Ribbon");
-        AWARDS.put("BF3_ID_P_AWARD_M15_NAME", "Mvp Medal");
-        AWARDS.put("ID_P_WSTAR_NAME_M39", "M39 Emr Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M60", "M60e4 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M27", "M27 Iar Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M26", "M26 Mass Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_AN94", "An-94 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_JACKH", "Mk3a1 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_KNIFE", "Knife Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M1911SILENCED", "M1911 Supp");
-        AWARDS.put("ID_P_WSTAR_NAME_DAO12", "Dao-12 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_G3A4", "G3a3 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_G36C", "G36c Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_PP19", "Pp-19 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_L96", "L96 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_QBU88", "Qbu-88 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_PP2000", "Pp-2000 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_F2000", "F2000 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M1911", "M1911 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_MP7", "Mp7 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_SV98", "Sv98 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M9SILENCED", "M9 Supp");
-        AWARDS.put("ID_P_WSTAR_NAME_MP443SILENCED", "Mp443 Supp");
-        AWARDS.put("ID_P_WSTAR_NAME_RPG7", "Rpg-7v2 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M1911TACTICAL", "M1911 S-tac Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M16A4", "M16 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_QBB95", "Qbb-95 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_GLOCK18SILENCED", "G18 Supp");
-        AWARDS.put("ID_P_WSTAR_NAME_M9", "M9 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_FAMAS", "Famas Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_PECHENEG", "Pkp Pecheneg Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_C4", "C4 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M240", "M240b Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M249", "M249 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M26FRAG", "M26 Frag Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_QBZ95B", "Qbz-95b Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_USAS12", "Usas-12 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_GLOCK17SILENCED", "G17c Supp");
-        AWARDS.put("ID_P_WSTAR_NAME_870", "870mcs Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M416", "M416 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_HK53", "Hk53 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M4A1", "M4a1 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_MP443", "Mp443 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_MP443LIT", "Mp443 Tact");
-        AWARDS.put("ID_P_WSTAR_NAME_AK74M", "Ak-74m Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_ASVAL", "As Val Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_IGLA", "Sa-18 Igla Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_UMP", "Ump-45 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_SMAW", "Smaw Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_SKS", "Sks Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_MINE", "M15 Mine Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_SVD", "Svd Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_SG553", "Sg553 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_GLOCK18", "G18 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_GLOCK17", "G17c Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M1014", "M1014 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M320SG", "M320 Shotgun Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_L85A2", "L85a2 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M412REX", "M412 Rex Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_JAVELIN", "Fgm-148 Javelin Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M26FLECHETTE", "M26 Dart Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_AKS74U", "Aks-74u Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_MG36", "Mg36 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_KH2002", "Kh2002 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M320HE", "M320 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M1911LIT", "M1911 Tact");
-        AWARDS.put("ID_P_WSTAR_NAME_SAIGA", "Saiga 12k Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_PDR", "Pdw-r Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_CLAY", "Claymore Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_SCARH", "Scar-h Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_STINGER", "Fim-92 Stinger Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_P90", "P90 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_TYPE88", "Type 88 Lmg Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_MK11", "Mk11 Mod 0 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_RPK", "Rpk-74m Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M26SLUG", "M26 Slug Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_AEK971", "Aek-971 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_A91", "A-91 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M40A5", "M40a5 Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M93R", "93r Service Star");
-        AWARDS.put("ID_P_WSTAR_NAME_M98B", "M98b Service Star");
-        AWARDS.put("ID_P_CLASS_STAR_NAME_SHELI",
-                "Scout Helicopter Service Star");
-        AWARDS.put("ID_P_CLASS_STAR_NAME_AHELI",
-                "Attack Helicopter Service Star");
-        AWARDS.put("ID_P_CLASS_STAR_NAME_AA", "Aa Service Star");
-        AWARDS.put("ID_P_CLASS_STAR_NAME_RECON", "Recon Service Star");
-        AWARDS.put("ID_P_CLASS_STAR_NAME_ASSAULT", "Assault Service Star");
-        AWARDS.put("ID_P_CLASS_STAR_NAME_IFV", "Ifv Service Star");
-        AWARDS.put("ID_P_CLASS_STAR_NAME_SUPPORT", "Support Service Star");
-        AWARDS.put("ID_P_CLASS_STAR_NAME_ENGINEER", "Engineer Service Star");
-        AWARDS.put("ID_P_CLASS_STAR_NAME_JET", "Jet Service Star");
-        AWARDS.put("ID_P_CLASS_STAR_NAME_MBT", "Mbt Service Star");
-
         COOP_DATA.put("COOP_EXFILTRATION", "Exfiltration");
         COOP_DATA.put("COOP_ASSASSINATION", "Assassination");
         COOP_DATA.put("COOP_MISSION", "CO-OP MISSION ");
@@ -1222,130 +832,9 @@ public final class DataBank {
                 "SPAS-12"});
         ASSIGNMENTS.put("ID_XP2_ASSIGNMENT_10", new String[]{
                 "Hold the trigger", "M5K"});
-
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_1_CRITERIA_1", "10 Revives");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_1_CRITERIA_2", "10 Heals");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_1",
-                "100 Assault Rifles kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_2", "20 Noobtubeâ„¢ kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_2_CRITERIA_3", "Win 5 rounds of SQDM");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_1", "10 repairs");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_3_CRITERIA_2",
-                "Kill 1 enemy with Repair Torch");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_3",
-                "Win 5 rounds of Conquest");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_1", "50 AT rocket kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_4_CRITERIA_2",
-                "Destroy 1 vehicle w/ Repair Torch");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_5_CRITERIA_1", "20 LMG kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_5_CRITERIA_2", "2 mortar kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_3", "50 Ammo Resupplies");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_1", "100 LMG kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_6_CRITERIA_2",
-                "50 Suppression Assists");
-        CRITERIAS
-                .put("ID_XP1_ASSIGNMENT_7_CRITERIA_1", "20 Sniper Rifle kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_7_CRITERIA_2", "5 Laser Designations");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_8_CRITERIA_1", "50 Headshots");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_8_CRITERIA_2", "50 Spot Assists");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_8_CRITERIA_3", "5 Knife takedowns");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_9_CRITERIA_1", "Arm 10 MCOMs");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_9_CRITERIA_2", "Capture 10 flags");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_9_CRITERIA_3",
-                "Play 2 hours on Karkand");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_1", "10 PP-19 Kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_2", "5 DPV Jeep kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_3", "10 BTR-90 IFV Kills");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_4",
-                "Play 2 hours on Sharqi");
-        CRITERIAS.put("ID_XP1_ASSIGNMENT_10_CRITERIA_5",
-                "Play 2 hours on 'Oman");
-
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_1_CRITERIA_1", "50 F2000 kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_1_CRITERIA_2", "25 F2000 headshots");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_1_CRITERIA_3", "50 squad heals");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_2_CRITERIA_1",
-                "50 PKP Pecheneg kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_2_CRITERIA_2",
-                "50 PKP Pecheneg suppression assists");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_2_CRITERIA_3",
-                "25 M18 Claymore kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_3_CRITERIA_1", "50 L96 kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_3_CRITERIA_2", "25 L96 headshots");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_3_CRITERIA_3",
-                "25 spawns on your Radio Beacon");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_4_CRITERIA_1", "50 SCAR-H kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_4_CRITERIA_2", "50 Squad Repairs");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_4_CRITERIA_3", "25 Shotgun kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_5_CRITERIA_1",
-                "30 Assault Rifle kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_5_CRITERIA_2", "30 Carbine kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_5_CRITERIA_3", "30 Sniper kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_5_CRITERIA_4", "30 LMG kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_5_CRITERIA_5", "15 Pistols kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_6_CRITERIA_1", "100 F2000 kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_6_CRITERIA_2", "50 Squad Revives");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_6_CRITERIA_3", "25 M26 Mass kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_7_CRITERIA_1",
-                "100 PKP Pecheneg kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_7_CRITERIA_2", "50 Squad Resupplies");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_7_CRITERIA_3",
-                "Destroy 25 vehicles with C4");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_8_CRITERIA_1", "100 L96 kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_8_CRITERIA_2", "50 MAV spot assists");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_8_CRITERIA_3",
-                "350 meter head shot with L96");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_9_CRITERIA_1", "100 SCAR-H kills");
-        CRITERIAS
-                .put("ID_PRE1_ASSIGNMENT_9_CRITERIA_2", "20 M15 AT Mine kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_9_CRITERIA_3",
-                "Destroy 5 air vehicles with AT Launchers");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_10_CRITERIA_1",
-                "Get 500 Assault kit kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_10_CRITERIA_2",
-                "Get 500 Engineer kit kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_10_CRITERIA_3",
-                "Get 400 Support kit kills");
-        CRITERIAS.put("ID_PRE1_ASSIGNMENT_10_CRITERIA_4",
-                "Get 300 Recon kit kills");
-
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_1_CRITERIA_1", "10 Squad Revives");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_1_CRITERIA_2",
-                "30 Assault Rifle Kills");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_2_CRITERIA_1",
-                "20 kills with Noobtubeâ„¢");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_2_CRITERIA_2",
-                "15 kills with hand grenades");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_3_CRITERIA_1", "20 squad resupplies");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_3_CRITERIA_2", "20 kills with LMGs");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_4_CRITERIA_1", "10 kills with C4");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_4_CRITERIA_2", "10 knife takedowns");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_5_CRITERIA_1", "20 AT rocket kills");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_5_CRITERIA_2",
-                "30 kills with carbines");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_6_CRITERIA_1",
-                "Get a kill with EOD bot");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_6_CRITERIA_2",
-                "100 kills with carbines");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_7_CRITERIA_1", "10 T-UGS assists");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_7_CRITERIA_2", "Capture 20 flags");
-        CRITERIAS
-                .put("ID_XP2_ASSIGNMENT_8_CRITERIA_1", "50 kills with Snipers");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_8_CRITERIA_3",
-                "Win 3 rounds of CQ DOM");
-        CRITERIAS
-                .put("ID_XP2_ASSIGNMENT_9_CRITERIA_1", "20 kills with pistols");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_9_CRITERIA_2",
-                "20 kills with shotguns");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_10_CRITERIA_1",
-                "Finish top5 in Gun Master");
-        CRITERIAS.put("ID_XP2_ASSIGNMENT_10_CRITERIA_2", "100 kills with SMGs");
     }
 
     // Getters
-    public static String getRankTitle(String key) {
-        return RANKS.containsKey(key) ? RANKS.get(key) : key;
-    }
 
     public static String getWeaponTitle(Context c, String key) {
         return WEAPONS.containsKey(key) ? c.getString(WEAPONS.get(key)) : key;
@@ -1381,10 +870,6 @@ public final class DataBank {
         return UNLOCK_GOALS.containsKey(key) ? UNLOCK_GOALS.get(key) : key;
     }
 
-    public static String getAwardTitle(String key) {
-        return AWARDS.containsKey(key) ? AWARDS.get(key) : key;
-    }
-
     public static String getMapTitle(String key) {
         return MAPS.containsKey(key) ? MAPS.get(key) : key;
     }
@@ -1401,10 +886,6 @@ public final class DataBank {
     public static String[] getAssignmentTitle(String key) {
         return ASSIGNMENTS.containsKey(key) ? ASSIGNMENTS.get(key)
                 : new String[]{key, key};
-    }
-
-    public static String getAssignmentCriteria(String key) {
-        return CRITERIAS.containsKey(key) ? CRITERIAS.get(key) : key;
     }
 
     public static String getExpansionTitle(int key) {
@@ -1489,29 +970,6 @@ public final class DataBank {
         return DataBank.PLATFORMS[0].getId();
     }
 
-    public static String getPlatformNameFromId(int pId) {
-        for (int i = 0, max = PLATFORMS.length; i < max; i++) {
-            if (DataBank.PLATFORMS[i].getId() == pId) {
-                return DataBank.PLATFORMS[i].getName();
-            }
-        }
-        return DataBank.PLATFORMS[0].getName();
-    }
-
-    public static String resolvePlatformId(int id) {
-        switch (id) {
-            case 0:
-            case 1:
-                return "[PC]";
-            case 2:
-                return "[360]";
-            case 4:
-                return "[PS3]";
-            default:
-                return "[N/A]";
-        }
-    }
-
     public static String getKitTitle(final Context c, final int number) {
         switch (number) {
             case 1:
@@ -1591,10 +1049,6 @@ public final class DataBank {
             default:
                 return "(unknown user role)";
         }
-    }
-
-    public static List<AppContributorData> getContributors() {
-        return APP_CONTRIBUTORS;
     }
 
     public static Map<Integer, Intent> getContactIntents() {
