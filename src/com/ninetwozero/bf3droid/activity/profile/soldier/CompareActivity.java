@@ -19,16 +19,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
+
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
 import com.ninetwozero.bf3droid.datatype.DefaultFragmentActivity;
 import com.ninetwozero.bf3droid.datatype.PersonaStats;
 import com.ninetwozero.bf3droid.datatype.ProfileData;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 public class CompareActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
@@ -151,9 +153,6 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
     }
 
     public void sendToCompare(ProfileData p, Map<Long, PersonaStats> ps, long id, boolean toggle) {
-        mFragmentCompare.showStats(ps, id,
-                p.getId() == mProfileData[0].getId() ? 0 : 1,
-                toggle
-        );
+        mFragmentCompare.showStats(ps, id,p.getId() == mProfileData[0].getId() ? 0 : 1, toggle);
     }
 }

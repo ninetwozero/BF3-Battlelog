@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+	This file is part of BF3 Droid
+
+    BF3 Droid is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    BF3 Droid is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+-->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/the_scroll"
+  style="@style/Match">
+
+  <RelativeLayout
+    style="@style/MatchWidth"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp">
+
+    <RelativeLayout
+      android:id="@+id/wrap_persona"
+      style="@style/MatchWidth"
+      android:clickable="true">
+
+      <TextView
+        android:id="@+id/string_persona"
+        style="@style/InfoHeading"
+        android:padding="5dp"
+        android:text="NINETWOZERO" />
+
+      <ImageView
+        android:id="@+id/img_persona_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="20dp"
+        android:src="@android:drawable/arrow_down_float" />
+    </RelativeLayout>
+
+    <TextView
+      android:id="@+id/string_rank_title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/wrap_persona"
+      android:text="PRIVATE FIRST CLASS 1 STAR" />
+
+    <TextView
+      android:id="@+id/string_rank_literal"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/string_rank_title"
+      android:paddingRight="5dp"
+      android:text="@string/info_xml_rank" />
+
+    <TextView
+      android:id="@+id/string_rank_short"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/string_rank_title"
+      android:layout_toRightOf="@id/string_rank_literal"
+      android:text="2" />
+
+    <RelativeLayout
+      android:id="@+id/wrap_progress"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/string_rank_short">
+
+      <ProgressBar
+        android:id="@+id/progress_level"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp" />
+
+      <TextView
+        android:id="@+id/string_progress_curr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/progress_level"
+        android:text="9000" />
+
+      <TextView
+        android:id="@+id/string000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/progress_level"
+        android:layout_toRightOf="@id/string_progress_curr"
+        android:text=" / " />
+
+      <TextView
+        android:id="@+id/string_progress_max"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/progress_level"
+        android:layout_toRightOf="@id/string000"
+        android:text="10000" />
+
+      <TextView
+        android:id="@+id/string001"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/progress_level"
+        android:paddingLeft="5dp"
+        android:text="@string/info_xml_rank2" />
+
+      <TextView
+        android:id="@+id/string_progress_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/progress_level"
+        android:layout_toLeftOf="@id/string001"
+        android:text="1000" />
+    </RelativeLayout>
+
+    <!-- STATS -->
+
+    <RelativeLayout
+      android:id="@+id/wrap_stats"
+      style="@style/Wrap"
+      android:layout_below="@+id/wrap_progress">
+
+      <TextView
+        android:id="@+id/stats_header"
+        style="@style/InfoHeading"
+        android:padding="5dp"
+        android:text="@string/label_stats" />
+
+      <TableLayout
+        android:id="@+id/persona_statistics"
+        style="@style/MatchWidth"
+        android:layout_below="@id/stats_header">
+
+        <TableRow
+          style="@style/Wrap"
+          android:visibility="gone">
+
+          <TextView
+            style="@style/Wrap"
+            android:text="@string/title_profile" />
+
+          <TextView
+            style="@style/Wrap"
+            android:text="@string/title_profile" />
+        </TableRow>
+      </TableLayout>
+    </RelativeLayout>
+
+    <!-- SCORE -->
+
+    <RelativeLayout
+      android:id="@+id/wrap_score"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/wrap_stats">
+
+      <TextView
+        android:id="@+id/score_header"
+        style="@style/InfoHeading"
+        android:padding="5dp"
+        android:text="@string/info_xml_score" />
+
+      <TableLayout
+        android:id="@+id/score_statistics"
+        style="@style/MatchWidth"
+        android:layout_below="@id/score_header">
+
+        <TableRow
+          style="@style/Wrap"
+          android:visibility="gone">
+
+          <TextView
+            style="@style/Wrap"
+            android:text="@string/title_profile" />
+
+          <TextView
+            style="@style/Wrap"
+            android:text="@string/title_profile" />
+        </TableRow>
+      </TableLayout>
+    </RelativeLayout>
+  </RelativeLayout>
+</ScrollView>
