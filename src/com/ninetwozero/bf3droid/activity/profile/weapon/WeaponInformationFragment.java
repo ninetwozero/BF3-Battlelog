@@ -130,7 +130,7 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         }
 
         private long selectedPersonaId() {
-            return BF3Droid.selectedUserPersona().getPersonaId();
+            return BF3Droid.getUser().selectedPersona().getPersonaId();
         }
     }
 

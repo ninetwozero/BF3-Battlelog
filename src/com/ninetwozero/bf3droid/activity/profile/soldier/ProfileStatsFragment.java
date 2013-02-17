@@ -46,6 +46,7 @@ import com.ninetwozero.bf3droid.loader.Bf3Loader;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
 import com.ninetwozero.bf3droid.model.SelectedOption;
+import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.provider.table.PersonaStatistics;
@@ -141,7 +142,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
     @Subscribe
     public void selectionChanged(SelectedOption selectedOption) {
         if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
-            BF3Droid.setSelectedUserPersona(selectedOption.getSelectedId());
+            getUser().selectPersona(selectedOption.getSelectedId());
             getData();
         }
     }
@@ -337,7 +338,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
 
     private Map<Long, String> personasToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
-        for (SimplePersona persona : BF3Droid.getUserPersonas()) {
+        for (SimplePersona persona : getUser().getPersonas()) {
             map.put(persona.getPersonaId(), persona.getPersonaName() + " " + persona.getPlatform());
         }
         return map;
@@ -383,7 +384,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
     }
 
     private SimplePersona selectedPersona() {
-        return BF3Droid.selectedUserPersona();
+        return getUser().selectedPersona();
     }
 
     public void setComparing(boolean c) {
@@ -400,6 +401,10 @@ public class ProfileStatsFragment extends Bf3Fragment {
     }
 
     private int userPersonasCount() {
-        return BF3Droid.getUserPersonas().size();
+        return getUser().getPersonas().size();
+    }
+
+    private User getUser(){
+        return BF3Droid.getUser();
     }
 }

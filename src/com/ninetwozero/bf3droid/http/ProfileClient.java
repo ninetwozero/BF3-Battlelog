@@ -22,6 +22,7 @@ import com.ninetwozero.bf3droid.misc.CacheHandler;
 import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.misc.DataBank;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
+import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.util.Platform;
 
 import java.io.BufferedInputStream;
@@ -247,7 +248,7 @@ public class ProfileClient extends DefaultClient {
             List<UnlockData> skillArray;
             List<UnlockData> unlockArray;
 
-            for (SimplePersona persona : BF3Droid.getUserPersonas()) {
+            for (SimplePersona persona : user().getPersonas()) {
                 weaponArray = new ArrayList<UnlockData>();
                 attachmentArray = new ArrayList<UnlockData>();
                 kitUnlockArray = new ArrayList<UnlockData>();
@@ -515,7 +516,7 @@ public class ProfileClient extends DefaultClient {
     public Map<Long, List<WeaponDataWrapper>> getWeapons() {
         try {
             Map<Long, List<WeaponDataWrapper>> weaponDataMap = new HashMap<Long, List<WeaponDataWrapper>>();
-            for (SimplePersona persona : BF3Droid.getUserPersonas()) {
+            for (SimplePersona persona : user().getPersonas()) {
             	List<WeaponDataWrapper> weaponDataArray = new ArrayList<WeaponDataWrapper>();
             	String httpContent = mRequestHandler.get(
                     RequestHandler.generateUrl(
@@ -606,7 +607,7 @@ public class ProfileClient extends DefaultClient {
             List<UnlockData> unlockArray;
             HashMap<Long, WeaponDataWrapper> weaponDataArray = new HashMap<Long, WeaponDataWrapper>();
 
-            for (SimplePersona persona : BF3Droid.getUserPersonas()) {
+            for (SimplePersona persona : user().getPersonas()) {
                 String httpContent = mRequestHandler.get(
                     RequestHandler.generateUrl(
                         URL_WEAPONS_INFO,
@@ -696,5 +697,9 @@ public class ProfileClient extends DefaultClient {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    private User user(){
+        return BF3Droid.getUser();
     }
 }

@@ -34,6 +34,7 @@ import com.ninetwozero.bf3droid.jsonmodel.assignments.MissionPack;
 import com.ninetwozero.bf3droid.loader.Bf3Loader;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.model.SelectedOption;
+import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.server.Bf3ServerCall;
@@ -76,7 +77,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     }
 
     private String username() {
-        return BF3Droid.getUser();
+        return user().getName();
     }
 
     private long personaId() {
@@ -84,7 +85,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     }
 
     private long userId() {
-        return BF3Droid.getUserId();
+        return user().getId();
     }
 
     private int platformId() {
@@ -92,7 +93,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     }
 
     private SimplePersona selectedPersona() {
-        return BF3Droid.selectedUserPersona();
+        return user().selectedPersona();
     }
 
     @Override
@@ -182,7 +183,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
         if (item.getItemId() == R.id.option_reload) {
             refresh();
         } else if (item.getItemId() == R.id.option_change) {
-            if (BF3Droid.getGuestPersonas().size() > 1) {
+            if (guest().getPersonas().size() > 1) {
                 ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), SelectedOption.PERSONA);
                 dialog.show(mFragmentManager, DIALOG);
             }
@@ -194,7 +195,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
 
     private Map<Long, String> personasToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
-        for (SimplePersona persona : BF3Droid.getUserPersonas()) {
+        for (SimplePersona persona : user().getPersonas()) {
             map.put(persona.getPersonaId(), persona.getPersonaName() + " [" + persona.getPlatform()+"]");
         }
         return map;
@@ -203,9 +204,17 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     @Subscribe
     public void personaChanged(SelectedOption selectedOption) {
         if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
-            BF3Droid.setSelectedUserPersona(selectedOption.getSelectedId());
+            user().selectPersona(selectedOption.getSelectedId());
             buildCallUri();
             refresh();
         }
+    }
+
+    private User user(){
+        return BF3Droid.getUser();
+    }
+
+    private User guest(){
+        return BF3Droid.getGuest();
     }
 }

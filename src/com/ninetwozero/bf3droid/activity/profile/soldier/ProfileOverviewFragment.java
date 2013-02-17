@@ -42,6 +42,7 @@ import com.ninetwozero.bf3droid.datatype.ProfileInformation;
 import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.http.COMClient;
+import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
 
 import java.util.List;
@@ -71,19 +72,19 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         context = getActivity();
         //new AsyncCache().execute();
         profileData = userProfileDataFromDB();
-        platoons = BF3Droid.getUserPlatoons();
+        platoons = user().getPlatoons();
         showProfile();
     }
 
     public void initFragment(View v) {
-    	comClient = new COMClient(BF3Droid.getUserId(), BF3Droid.getCheckSum());
+    	comClient = new COMClient(getUserId(), BF3Droid.getCheckSum());
         postingRights = false;
     }
 
     public final void showProfile() {
         Activity activity = (Activity) context;
         
-        ((TextView) activity.findViewById(R.id.text_username)).setText(BF3Droid.getUser());
+        ((TextView) activity.findViewById(R.id.text_username)).setText(BF3Droid.getUser().getName());
 
         /*if (data.isPlaying() && data.isOnline()) {
             ((TextView) activity.findViewById(R.id.text_online)).setText(
@@ -156,7 +157,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 UserProfileDataDAO.URI,
                 UserProfileDataDAO.PROJECTION,
                 UserProfileDataDAO.Columns.USER_ID + "=?",
-                new String[]{String.valueOf(BF3Droid.getUserId())},
+                new String[]{String.valueOf(getUserId())},
                 null
         );
         return UserProfileDataDAO.userProfileDataFrom(cursor);
@@ -214,9 +215,9 @@ public class ProfileOverviewFragment extends Bf3Fragment {
 
     public boolean handleSelectedOption(MenuItem item) {
         if (item.getItemId() == R.id.option_friendadd) {
-            new AsyncFriendRequest(context, BF3Droid.getUserId()).execute(comClient);
+            new AsyncFriendRequest(context, getUserId()).execute(comClient);
         } else if (item.getItemId() == R.id.option_frienddel) {
-            new AsyncFriendRemove(context, BF3Droid.getUserId()).execute(comClient);
+            new AsyncFriendRemove(context, getUserId()).execute(comClient);
         }
         return true;
     }
@@ -225,8 +226,15 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         return getActivity().getApplicationContext();
     }
 
+    private long getUserId(){
+        return BF3Droid.getUser().getId();
+    }
 
     private SimplePersona selectedPersona(){
-        return BF3Droid.selectedUserPersona();
+        return user().selectedPersona();
+    }
+
+    private User user(){
+        return BF3Droid.getUser();
     }
 }

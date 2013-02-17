@@ -146,6 +146,6 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
     }
 
     private long selectedPersonaId() {
-        return BF3Droid.selectedUserPersona().getPersonaId();
+        return BF3Droid.getUser().selectedPersona().getPersonaId();
     }
 }

@@ -169,7 +169,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
 	}
 
 	public void reload() {
-		new AsyncRefresh(context, BF3Droid.selectedUserPersona().getPersonaId()).execute();
+		new AsyncRefresh(context, BF3Droid.getUser().selectedPersona().getPersonaId()).execute();
         //getLoaderManager().restartLoader(FEED_ACTION, bundle, this);
 	}
 

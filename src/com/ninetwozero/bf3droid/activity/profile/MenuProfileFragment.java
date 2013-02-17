@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.profile.assignments.AssignmentActivity;
 import com.ninetwozero.bf3droid.activity.profile.settings.ProfileSettingsActivity;
@@ -38,13 +39,12 @@ import com.ninetwozero.bf3droid.dialog.ListDialogFragment;
 import com.ninetwozero.bf3droid.misc.DataBank;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
 import com.ninetwozero.bf3droid.model.SelectedOption;
+import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.ninetwozero.bf3droid.BF3Droid.*;
 
 public class MenuProfileFragment extends Fragment {
 
@@ -125,7 +125,7 @@ public class MenuProfileFragment extends Fragment {
 
     private Map<Long, String> personasToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
-        for (SimplePersona simplePersona : getUserPersonas()) {
+        for (SimplePersona simplePersona : getUser().getPersonas()) {
             map.put(simplePersona.getPersonaId(), simplePersona.getPersonaName() + " [" + simplePersona.getPlatform() + "]");
         }
         return map;
@@ -146,7 +146,7 @@ public class MenuProfileFragment extends Fragment {
     @Subscribe
     public void selectionChanged(SelectedOption selectedOption) {
         if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
-            setSelectedUserPersona(selectedOption.getSelectedId());
+            getUser().selectPersona(selectedOption.getSelectedId());
             setupActiveSoldierContent();
         }
     }
@@ -161,6 +161,10 @@ public class MenuProfileFragment extends Fragment {
     }
 
     private SimplePersona selectedPersona() {
-        return selectedUserPersona();
+        return getUser().selectedPersona();
+    }
+
+    private User getUser(){
+        return BF3Droid.getUser();
     }
 }

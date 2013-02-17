@@ -19,6 +19,7 @@ import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.loader.Bf3Loader;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
+import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.provider.table.Personas;
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
@@ -89,7 +90,7 @@ public class LoginActivity extends Bf3FragmentActivity {
     }
 
     private Bf3ServerCall.HttpData userHttpData() {     //Replace BF3Droid.getUser() with a username to check app on different profile
-        return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(BF3Droid.getUser()), HttpGet.METHOD_NAME, false);
+        return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(BF3Droid.getUser().getName()), HttpGet.METHOD_NAME, false);
     }
 
     @Override
@@ -119,14 +120,13 @@ public class LoginActivity extends Bf3FragmentActivity {
     }
 
     private void savePostLoginData(LoginResult result) {
-        BF3Droid.setUser(result.getUserName());
-        BF3Droid.setUserId(result.getUserId());
+        BF3Droid.setUser(new User(result.getUserName(), result.getUserId()));
         BF3Droid.setCheckSum(result.getCheckSum());
     }
 
     private void saveForApplication(List<SimplePersona> personas, List<SimplePlatoon> platoons) {
-        BF3Droid.setUserPersonas(personas);
-        BF3Droid.setUserPlatoons(platoons);
+        user().setPersonas(personas);
+        user().setPlatoons(platoons);
     }
 
     private void fetchPersonaAndPlatoonData() {
@@ -139,7 +139,7 @@ public class LoginActivity extends Bf3FragmentActivity {
 
     private void redirect() {
         closeLoadingDialog(LoginActivity.class.getSimpleName());
-        if (BF3Droid.getUserPersonas().size() > 0) {
+        if (user().getPersonas().size() > 0) {
             startActivity(new Intent(getContext(), DashboardActivity.class));
         } else {
             startActivity(new Intent(getContext(), MainActivity.class));
@@ -159,14 +159,14 @@ public class LoginActivity extends Bf3FragmentActivity {
 
     private void personasToDatabase(List<SimplePersona> personas) {
         for (SimplePersona persona : personas) {
-            ContentValues contentValues = simplePersonaToDB(persona, BF3Droid.getUserId());
+            ContentValues contentValues = simplePersonaToDB(persona, getUserId());
             getContext().getContentResolver().insert(Personas.URI, contentValues);
         }
     }
 
     private void platoonsToDatabase(List<SimplePlatoon> platoons) {
         for (SimplePlatoon platoon : platoons) {
-            ContentValues contentValues = simplePlatoonToDatabase(platoon, BF3Droid.getUserId());
+            ContentValues contentValues = simplePlatoonToDatabase(platoon, getUserId());
             getContext().getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);
         }
     }
@@ -187,7 +187,7 @@ public class LoginActivity extends Bf3FragmentActivity {
                 cursor.moveToNext();
             }
             cursor.close();
-            BF3Droid.setUserPersonas(personas);
+            user().setPersonas(personas);
             return true;
         }
         cursor.close();
@@ -199,7 +199,7 @@ public class LoginActivity extends Bf3FragmentActivity {
                 Personas.URI,
                 Personas.PERSONAS_PROJECTION,
                 Personas.Columns.USER_ID + "=?",
-                new String[]{String.valueOf(BF3Droid.getUserId())},
+                new String[]{String.valueOf(getUserId())},
                 null
         );
     }
@@ -215,7 +215,7 @@ public class LoginActivity extends Bf3FragmentActivity {
                 cursor.moveToNext();
             }
             cursor.close();
-            BF3Droid.setUserPlatoons(platoons);
+            user().setPlatoons(platoons);
             return true;
         }
         cursor.close();
@@ -227,7 +227,7 @@ public class LoginActivity extends Bf3FragmentActivity {
                 PlatoonInformationDAO.URI,
                 PlatoonInformationDAO.SIMPLE_PLATOON_PROJECTION,
                 PlatoonInformationDAO.Columns.USER_ID + "=?",
-                new String[]{String.valueOf(BF3Droid.getUserId())},
+                new String[]{String.valueOf(getUserId())},
                 null
         );
     }
@@ -236,7 +236,15 @@ public class LoginActivity extends Bf3FragmentActivity {
         return getApplicationContext();
     }
 
+    private long getUserId(){
+        return BF3Droid.getUser().getId();
+    }
+
     @Override
     public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
+    }
+
+    private User user(){
+        return BF3Droid.getUser();
     }
 }

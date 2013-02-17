@@ -78,7 +78,7 @@ public class ComNotificationFragment extends ListFragment implements
         mListView = (ListView) view.findViewById(android.R.id.list);
         mListView
                 .setAdapter(mNotificationListAdapter = new NotificationListAdapter(
-                        mContext, null, mLayoutInflater, BF3Droid.getUserId()));
+                        mContext, null, mLayoutInflater, BF3Droid.getUser().getId()));
         registerForContextMenu(mListView);
 
     }

@@ -66,9 +66,9 @@ public class ProfileActivity extends CustomFragmentActivity {
 			mListFragments.add(fragmentStats = (ProfileStatsFragment) Fragment.instantiate(this, ProfileStatsFragment.class.getName()));
 			mListFragments.add(fragmentFeed = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
 
-			fragmentFeed.setTitle(BF3Droid.getUser());
+			fragmentFeed.setTitle(BF3Droid.getUser().getName());
 			fragmentFeed.setType(FeedClient.TYPE_PROFILE);
-			fragmentFeed.setId(BF3Droid.getUserId());
+			fragmentFeed.setId(BF3Droid.getUser().getId());
 			fragmentFeed.setCanWrite(false);
 
 			mViewPager = (ViewPager) findViewById(R.id.viewpager);

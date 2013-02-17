@@ -78,7 +78,7 @@ public class HtmlParsing {
         int veteranStatus = userVeteranStatus();
         String statusMessage = userStatusMessage();
         String statusMessageDate = userStatusMessageDate();
-        return new UserProfileData(BF3Droid.getUserId(), BF3Droid.getUser(), name, age, enlisted, lastSeen,
+        return new UserProfileData(BF3Droid.getUser().getId(), BF3Droid.getUser().getName(), name, age, enlisted, lastSeen,
                 presentation, country, veteranStatus, statusMessage, statusMessageDate);
     }
 
