@@ -8,6 +8,7 @@ import com.ninetwozero.bf3droid.provider.table.RankProgress;
 import static com.ninetwozero.bf3droid.misc.ResolvePlatform.platformName;
 
 public class RankProgressDAO {
+
     public static RankProgress rankProgressFromCursor(Cursor cursor) {
         RankProgress rp = new RankProgress();
         rp.setPersonaId(cursor.getLong(cursor.getColumnIndexOrThrow(RankProgress.Columns.PERSONA_ID)));

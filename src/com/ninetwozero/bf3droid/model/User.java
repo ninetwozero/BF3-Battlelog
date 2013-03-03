@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
+    public static final String USER = "user";
+    public static final String GUEST = "guest";
 
     private final String name;
     private final long id;

@@ -18,8 +18,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,29 +35,35 @@ import com.ninetwozero.bf3droid.asynctask.AsyncFriendRequest;
 import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
 import com.ninetwozero.bf3droid.dao.ProfileInformationDAO;
 import com.ninetwozero.bf3droid.dao.UserProfileDataDAO;
-import com.ninetwozero.bf3droid.datatype.PlatoonData;
-import com.ninetwozero.bf3droid.datatype.ProfileInformation;
-import com.ninetwozero.bf3droid.datatype.SimplePersona;
-import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
+import com.ninetwozero.bf3droid.datatype.*;
 import com.ninetwozero.bf3droid.http.COMClient;
 import com.ninetwozero.bf3droid.model.User;
+import com.ninetwozero.bf3droid.provider.BusProvider;
+import com.ninetwozero.bf3droid.provider.table.Personas;
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
+import static com.ninetwozero.bf3droid.dao.PersonasDAO.simplePersonaToDB;
+import static com.ninetwozero.bf3droid.dao.PlatoonInformationDAO.simplePlatoonToDatabase;
+import static com.ninetwozero.bf3droid.dao.UserProfileDataDAO.userProfileDataToDB;
+
 public class ProfileOverviewFragment extends Bf3Fragment {
+
     private Context context;
     private LayoutInflater layoutInflater;
     private COMClient comClient;
-    private SharedPreferences sharedPreferences;
     private boolean postingRights;
     private List<SimplePlatoon> platoons;
     private UserProfileData profileData;
+    private Bundle bundle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getActivity();
         layoutInflater = inflater;
+        bundle = savedInstanceState;
 
         View view = layoutInflater.inflate(R.layout.tab_content_profile_overview, container, false);
         initFragment(view);
@@ -69,21 +73,34 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        BusProvider.getInstance().register(this);
         context = getActivity();
-        //new AsyncCache().execute();
-        profileData = userProfileDataFromDB();
-        platoons = user().getPlatoons();
+        if(platoons != null && profileData != null){
+            showProfile();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void overviewUpdate(UserInfo userInfo) {
+        platoons = userInfo.getPlatoons();
+        profileData = userInfo.getUserProfileData();
         showProfile();
     }
 
     public void initFragment(View v) {
-    	comClient = new COMClient(getUserId(), BF3Droid.getCheckSum());
+        comClient = new COMClient(getUserId(), BF3Droid.getCheckSum());
         postingRights = false;
     }
 
     public final void showProfile() {
         Activity activity = (Activity) context;
-        
+
         ((TextView) activity.findViewById(R.id.text_username)).setText(BF3Droid.getUser().getName());
 
         /*if (data.isPlaying() && data.isOnline()) {
@@ -113,6 +130,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     }
 
     private void showPlatoons(Activity activity) {
+        platoons = user().getPlatoons();
         if (platoons.size() > 0) {
             View convertView;
             LinearLayout platoonWrapper = (LinearLayout) activity.findViewById(R.id.list_platoons);
@@ -124,7 +142,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 @Override
                 public void onClick(View v) {
                     startActivity(
-                    	new Intent(context, PlatoonActivity.class).putExtra("platoon", (PlatoonData) v.getTag())
+                            new Intent(context, PlatoonActivity.class).putExtra("platoon", (PlatoonData) v.getTag())
                     );
                 }
             };
@@ -152,7 +170,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         }
     }
 
-    private UserProfileData userProfileDataFromDB(){
+    /*private boolean userProfileDataFromDB(){
         Cursor cursor = getContext().getContentResolver().query(
                 UserProfileDataDAO.URI,
                 UserProfileDataDAO.PROJECTION,
@@ -160,33 +178,61 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 new String[]{String.valueOf(getUserId())},
                 null
         );
-        return UserProfileDataDAO.userProfileDataFrom(cursor);
-    }
-
+        if(cursor.getCount() > 0){
+        profileData = UserProfileDataDAO.userProfileDataFrom(cursor);
+            return true;
+        } else{
+            return false;
+        }
+    }*/
 
     public void reload() {
         //new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();
         Log.e("ProfileOverviewFragment", "Reload pressed");
     }
 
+    private void saveForApplication(List<SimplePersona> personas, List<SimplePlatoon> platoons) {
+        user().setPersonas(personas);
+        user().setPlatoons(platoons);
+    }
+
+    private void personasToDatabase(List<SimplePersona> personas) {
+        for (SimplePersona persona : personas) {
+            ContentValues contentValues = simplePersonaToDB(persona, getUserId());
+            getContext().getContentResolver().insert(Personas.URI, contentValues);
+        }
+    }
+
+    private void platoonsToDatabase(List<SimplePlatoon> platoons) {
+        for (SimplePlatoon platoon : platoons) {
+            ContentValues contentValues = simplePlatoonToDatabase(platoon, getUserId());
+            getContext().getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);
+        }
+    }
+
+    private void userProfileDataToDatabase(UserProfileData profileData) {
+        ContentValues contentValues = userProfileDataToDB(profileData);
+        getContext().getContentResolver().insert(UserProfileDataDAO.URI, contentValues);
+    }
+
     public void updateProfileInDB(ProfileInformation p) {
-    	ContentValues contentValues = ProfileInformationDAO.convertProfileInformationForDB(p, System.currentTimeMillis());
-    	try {
-    		 context.getContentResolver().insert(ProfileInformationDAO.URI, contentValues);
-    	 } catch(SQLiteConstraintException ex) {
-    		 context.getContentResolver().update(
-				 ProfileInformationDAO.URI, 
-				 contentValues,
-				 ProfileInformationDAO.Columns.USER_ID + "=?", 
-				 new String[] { String.valueOf(p.getUserId()) }
-			 );
-    	 }
-	}
-    
+        ContentValues contentValues = ProfileInformationDAO.convertProfileInformationForDB(p, System.currentTimeMillis());
+        try {
+            context.getContentResolver().insert(ProfileInformationDAO.URI, contentValues);
+        } catch (SQLiteConstraintException ex) {
+            context.getContentResolver().update(
+                    ProfileInformationDAO.URI,
+                    contentValues,
+                    ProfileInformationDAO.Columns.USER_ID + "=?",
+                    new String[]{String.valueOf(p.getUserId())}
+            );
+        }
+    }
+
     public void updatePlatoonInDB(PlatoonData p) {
-    	ContentValues contentValues = PlatoonInformationDAO.platoonDataForDB(p);
-    	context.getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);
-	}
+        ContentValues contentValues = PlatoonInformationDAO.platoonDataForDB(p);
+        context.getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);
+    }
 
     public void setFeedPermission(boolean c) {
         ((ProfileActivity) context).setFeedPermission(c);
@@ -226,15 +272,11 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         return getActivity().getApplicationContext();
     }
 
-    private long getUserId(){
+    private long getUserId() {
         return BF3Droid.getUser().getId();
     }
 
-    private SimplePersona selectedPersona(){
-        return user().selectedPersona();
-    }
-
-    private User user(){
+    private User user() {
         return BF3Droid.getUser();
     }
 }

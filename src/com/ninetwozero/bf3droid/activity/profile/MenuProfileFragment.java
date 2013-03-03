@@ -91,7 +91,7 @@ public class MenuProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(context, ProfileActivity.class)
-                        .putExtra("profile", SessionKeeper.getProfileData()));
+                        .putExtra("user", User.USER));
             }
         });
         view.findViewById(R.id.button_weapon).setOnClickListener(new OnClickListener() {

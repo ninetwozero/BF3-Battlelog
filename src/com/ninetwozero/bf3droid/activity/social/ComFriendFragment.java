@@ -165,8 +165,7 @@ public class ComFriendFragment extends ListFragment implements DefaultFragment {
 
     private void viewSoldier(ProfileData profileData) {
         BF3Droid.setGuest(new User(profileData.getUsername(), profileData.getId()));
-        startActivity(new Intent(context, ProfileActivity.class).putExtra("profile", profileData)
-        );
+        startActivity(new Intent(context, ProfileActivity.class).putExtra("user", User.GUEST));
     }
 
     @Override

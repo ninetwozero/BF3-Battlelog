@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.Loader;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
@@ -28,7 +27,6 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3Fragment;
@@ -42,36 +40,28 @@ import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.Statistics;
 import com.ninetwozero.bf3droid.dialog.ListDialogFragment;
 import com.ninetwozero.bf3droid.jsonmodel.soldierstats.PersonaInfo;
-import com.ninetwozero.bf3droid.loader.Bf3Loader;
-import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
 import com.ninetwozero.bf3droid.model.SelectedOption;
 import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
-import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.provider.table.PersonaStatistics;
 import com.ninetwozero.bf3droid.provider.table.RankProgress;
 import com.ninetwozero.bf3droid.provider.table.ScoreStatistics;
-import com.ninetwozero.bf3droid.server.Bf3ServerCall;
-import com.ninetwozero.bf3droid.util.Platform;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.client.methods.HttpGet;
-
+import static com.ninetwozero.bf3droid.dao.PersonaStatisticsDAO.personaStatisticsFromJSON;
+import static com.ninetwozero.bf3droid.dao.RankProgressDAO.rankProgressFromJSON;
+import static com.ninetwozero.bf3droid.dao.ScoreStatisticsDAO.scoreStatisticsFromJSON;
 import static com.ninetwozero.bf3droid.misc.NumberFormatter.format;
 
 public class ProfileStatsFragment extends Bf3Fragment {
-
-    // Attributes
     private Context context;
     private LayoutInflater layoutInflater;
 
-    // Elements
-    private RelativeLayout wrapPersona;
     private ProgressBar progressBar;
     private TextView personaName;
     private TextView rankTitle;
@@ -80,11 +70,9 @@ public class ProfileStatsFragment extends Bf3Fragment {
     private TextView nextLevelPoints;
     private TextView pointsToMake;
 
-    //private ProfileData profileData;
     private Map<Long, PersonaStats> personaStats;
     private boolean comparing;
     private final String DIALOG = "dialog";
-    private final int LOADER_STATS = 21;
 
     private Bundle bundle;
     private RankProgress rankProgress;
@@ -92,6 +80,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
     private TableLayout scoreStatisticsTable;
     private List<Statistics> listPersonaStatistics;
     private List<Statistics> listScoreStatistics;
+    private PersonaInfo personaInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,7 +95,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
     public void initFragment(View view) {
         progressBar = (ProgressBar) view.findViewById(R.id.progress_level);
 
-        wrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
+        RelativeLayout wrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
         wrapPersona.setOnClickListener(
                 new OnClickListener() {
                     @Override
@@ -147,12 +136,19 @@ public class ProfileStatsFragment extends Bf3Fragment {
         }
     }
 
+    @Subscribe
+    public void personaInfo(PersonaInfo personaInfo) {
+        this.personaInfo = personaInfo;
+        updateDatabase(personaInfo);
+        populateView();
+    }
+
     private void getData() {
         if (dbHasData()) {
             findViews();
-            populateView();
+            //populateView();
         } else {
-            restartLoader();
+            //restartLoader();
         }
     }
 
@@ -246,9 +242,13 @@ public class ProfileStatsFragment extends Bf3Fragment {
 
     private void populateView() {
         populateRankProgress();
-        personaStatisticsTable.removeAllViews();
+        if (personaStatisticsTable.getChildCount() > 0) {
+            personaStatisticsTable.removeAllViews();
+        }
         populateStatistics(listPersonaStatistics, personaStatisticsTable);
-        scoreStatisticsTable.removeAllViews();
+        if (scoreStatisticsTable.getChildCount() > 0) {
+            scoreStatisticsTable.removeAllViews();
+        }
         populateStatistics(listScoreStatistics, scoreStatisticsTable);
     }
 
@@ -277,36 +277,19 @@ public class ProfileStatsFragment extends Bf3Fragment {
         }
     }
 
-    @Override
-    protected Loader<CompletedTask> createLoader(int id, Bundle bundle) {
-        startLoadingDialog(ProfileStatsFragment.class.getSimpleName());
-        return new Bf3Loader(getContext(), httpData());
-    }
-
-    private Bf3ServerCall.HttpData httpData() {
-        return new Bf3ServerCall.HttpData(UriFactory.getPersonaOverviewUri(selectedPersonaId(), platformId()), HttpGet.METHOD_NAME);
-    }
-
     private Context getContext() {
         return getActivity().getApplicationContext();
     }
 
-    @Override
+   /* @Override
     public void loadFinished(Loader<CompletedTask> loader, CompletedTask task) {
         if (task != null && task.result.equals(CompletedTask.Result.SUCCESS)) {
             findViews();
-            PersonaInfo pi = personaStatsFrom(task);
             updateDatabase(pi);
             populateView();
             closeLoadingDialog(ProfileStatsFragment.class.getSimpleName());
         }
-    }
-
-    private PersonaInfo personaStatsFrom(CompletedTask task) {
-        Gson gson = new Gson();
-        PersonaInfo data = gson.fromJson(task.jsonObject, PersonaInfo.class);
-        return data;
-    }
+    }*/
 
     private String fromResource(int rank) {
         return getResources().getStringArray(R.array.rank)[rank];
@@ -319,19 +302,19 @@ public class ProfileStatsFragment extends Bf3Fragment {
     }
 
     private void updateRankProgressDB(PersonaInfo pi) {
-        rankProgress = RankProgressDAO.rankProgressFromJSON(pi);
+        rankProgress = rankProgressFromJSON(pi);
         ContentValues contentValues = RankProgressDAO.rankProgressForDB(pi, selectedPersonaId());
         getContext().getContentResolver().insert(RankProgress.URI, contentValues);
     }
 
     private void updatePersonaStats(PersonaInfo pi) {
-        listPersonaStatistics = PersonaStatisticsDAO.personaStatisticsFromJSON(pi);
+        listPersonaStatistics = personaStatisticsFromJSON(pi);
         ContentValues contentValues = PersonaStatisticsDAO.personaStatisticsForDB(pi, selectedPersonaId());
         getContext().getContentResolver().insert(PersonaStatistics.URI, contentValues);
     }
 
     private void updateScoreStatistics(PersonaInfo pi) {
-        listScoreStatistics = ScoreStatisticsDAO.scoreStatisticsFromJSON(pi);
+        listScoreStatistics = scoreStatisticsFromJSON(pi);
         ContentValues contentValues = ScoreStatisticsDAO.scoreStatisticsForDB(pi, selectedPersonaId());
         getContext().getContentResolver().insert(ScoreStatistics.URI, contentValues);
     }
@@ -369,14 +352,10 @@ public class ProfileStatsFragment extends Bf3Fragment {
             }
             startActivity(
                     new Intent(context, UnlockActivity.class)
-                            .putExtra("profile", /*profileData*/new ProfileData(""))
+                            .putExtra("profile", new ProfileData(""))
                             .putExtra("selectedPosition", position));
         }
         return true;
-    }
-
-    private int platformId() {
-        return Platform.resolveIdFromPlatformName(selectedPersona().getPlatform());
     }
 
     private long selectedPersonaId() {
@@ -393,18 +372,18 @@ public class ProfileStatsFragment extends Bf3Fragment {
 
     @Override
     public void reload() {
-        restartLoader();
-    }
-
-    private void restartLoader() {
-        getLoaderManager().restartLoader(LOADER_STATS, bundle, this);
+        //restartLoader();
     }
 
     private int userPersonasCount() {
         return getUser().getPersonas().size();
     }
 
-    private User getUser(){
-        return BF3Droid.getUser();
+    private User getUser() {
+        if (getArguments().getString("user").equals(User.USER)) {
+            return BF3Droid.getUser();
+        } else {
+            return BF3Droid.getGuest();
+        }
     }
 }
