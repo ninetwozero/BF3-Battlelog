@@ -14,12 +14,12 @@
 
 package com.ninetwozero.bf3droid.activity.profile.soldier;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteConstraintException;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
@@ -33,19 +33,29 @@ import com.ninetwozero.bf3droid.activity.platoon.PlatoonActivity;
 import com.ninetwozero.bf3droid.asynctask.AsyncFriendRemove;
 import com.ninetwozero.bf3droid.asynctask.AsyncFriendRequest;
 import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
-import com.ninetwozero.bf3droid.dao.ProfileInformationDAO;
 import com.ninetwozero.bf3droid.dao.UserProfileDataDAO;
-import com.ninetwozero.bf3droid.datatype.*;
+import com.ninetwozero.bf3droid.datatype.PlatoonData;
+import com.ninetwozero.bf3droid.datatype.SimplePersona;
+import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
+import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.http.COMClient;
+import com.ninetwozero.bf3droid.loader.Bf3Loader;
+import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
+import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.provider.table.Personas;
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
-import com.squareup.otto.Subscribe;
+import com.ninetwozero.bf3droid.server.Bf3ServerCall;
+import com.ninetwozero.bf3droid.util.HtmlParsing;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.client.methods.HttpGet;
+
 import static com.ninetwozero.bf3droid.dao.PersonasDAO.simplePersonaToDB;
+import static com.ninetwozero.bf3droid.dao.PlatoonInformationDAO.simplePlatoonFrom;
 import static com.ninetwozero.bf3droid.dao.PlatoonInformationDAO.simplePlatoonToDatabase;
 import static com.ninetwozero.bf3droid.dao.UserProfileDataDAO.userProfileDataToDB;
 
@@ -56,12 +66,12 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     private COMClient comClient;
     private boolean postingRights;
     private List<SimplePlatoon> platoons;
-    private UserProfileData profileData;
     private Bundle bundle;
+    private UserProfileData userProfileData;
+    private final int LOADER_OVERVIEW = 22;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        context = getActivity();
         layoutInflater = inflater;
         bundle = savedInstanceState;
 
@@ -73,24 +83,29 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        BusProvider.getInstance().register(this);
         context = getActivity();
-        if(platoons != null && profileData != null){
-            showProfile();
-        }
+        getData();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        BusProvider.getInstance().unregister(this);
     }
 
-    @Subscribe
-    public void overviewUpdate(UserInfo userInfo) {
-        platoons = userInfo.getPlatoons();
-        profileData = userInfo.getUserProfileData();
-        showProfile();
+    private void getData() {
+        if (userProfileDataFromDB() && platoonsFromDB()) {
+            UserInfo userInfo = new UserInfo(new ArrayList<SimplePersona>(), platoons, userProfileData);
+            BusProvider.getInstance().post(userInfo);
+            showProfile();
+            showPlatoons();
+        } else {
+            startLoadingDialog(ProfileStatsFragment.class.getSimpleName());
+            restartLoader();
+        }
+    }
+
+    private void restartLoader() {
+        getLoaderManager().restartLoader(LOADER_OVERVIEW, bundle, this);
     }
 
     public void initFragment(View v) {
@@ -99,9 +114,8 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     }
 
     public final void showProfile() {
-        Activity activity = (Activity) context;
 
-        ((TextView) activity.findViewById(R.id.text_username)).setText(BF3Droid.getUser().getName());
+        ((TextView) getView().findViewById(R.id.text_username)).setText(user().getName());
 
         /*if (data.isPlaying() && data.isOnline()) {
             ((TextView) activity.findViewById(R.id.text_online)).setText(
@@ -113,29 +127,27 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             ((TextView) activity.findViewById(R.id.text_online)).setText(data.getLastLoginString(context));
         }*/
 
-        if ("".equals(profileData.getStatusMessage())) {
-            (activity.findViewById(R.id.wrap_status)).setVisibility(View.GONE);
+        if ("".equals(userProfileData.getStatusMessage())) {
+            (getView().findViewById(R.id.wrap_status)).setVisibility(View.GONE);
         } else {
-            ((TextView) activity.findViewById(R.id.text_status)).setText(profileData.getStatusMessage());
-            ((TextView) activity.findViewById(R.id.text_status_date)).setText(profileData.getStatusMessageDate());
+            ((TextView) getView().findViewById(R.id.text_status)).setText(userProfileData.getStatusMessage());
+            ((TextView) getView().findViewById(R.id.text_status_date)).setText(userProfileData.getStatusMessageDate());
         }
 
-        if ("".equals(profileData.getPresentation())) {
-            ((TextView) activity.findViewById(R.id.text_presentation)).setText(R.string.info_profile_empty_pres);
+        if ("".equals(userProfileData.getPresentation())) {
+            ((TextView) getView().findViewById(R.id.text_presentation)).setText(R.string.info_profile_empty_pres);
         } else {
-            ((TextView) activity.findViewById(R.id.text_presentation)).setText(profileData.getPresentation());
+            ((TextView) getView().findViewById(R.id.text_presentation)).setText(userProfileData.getPresentation());
         }
-
-        showPlatoons(activity);
     }
 
-    private void showPlatoons(Activity activity) {
+    private void showPlatoons() {
         platoons = user().getPlatoons();
         if (platoons.size() > 0) {
             View convertView;
-            LinearLayout platoonWrapper = (LinearLayout) activity.findViewById(R.id.list_platoons);
+            LinearLayout platoonWrapper = (LinearLayout) getView().findViewById(R.id.list_platoons);
 
-            activity.findViewById(R.id.text_platoon).setVisibility(View.GONE);
+            getView().findViewById(R.id.text_platoon).setVisibility(View.GONE);
             platoonWrapper.removeAllViews();
 
             final OnClickListener onClickListener = new OnClickListener() {
@@ -165,35 +177,96 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 platoonWrapper.addView(convertView);
             }
         } else {
-            ((LinearLayout) activity.findViewById(R.id.list_platoons)).removeAllViews();
-            (activity.findViewById(R.id.text_platoon)).setVisibility(View.VISIBLE);
+            ((LinearLayout) getView().findViewById(R.id.list_platoons)).removeAllViews();
+            (getView().findViewById(R.id.text_platoon)).setVisibility(View.VISIBLE);
         }
     }
 
-    /*private boolean userProfileDataFromDB(){
+    private boolean userProfileDataFromDB() {
         Cursor cursor = getContext().getContentResolver().query(
                 UserProfileDataDAO.URI,
                 UserProfileDataDAO.PROJECTION,
                 UserProfileDataDAO.Columns.USER_ID + "=?",
-                new String[]{String.valueOf(getUserId())},
+                new String[]{String.valueOf(user().getId())},
                 null
         );
-        if(cursor.getCount() > 0){
-        profileData = UserProfileDataDAO.userProfileDataFrom(cursor);
+        if (cursor.getCount() > 0) {
+            userProfileData = UserProfileDataDAO.userProfileDataFrom(cursor);
+            cursor.close();
             return true;
-        } else{
+        } else {
             return false;
         }
-    }*/
+    }
+
+    private boolean platoonsFromDB() {
+        Cursor cursor = getContext().getContentResolver().query(
+                PlatoonInformationDAO.URI,
+                PlatoonInformationDAO.SIMPLE_PLATOON_PROJECTION,
+                PlatoonInformationDAO.Columns.USER_ID + "=?",
+                new String[]{String.valueOf(user().getId())},
+                null
+        );
+        if (cursor.getCount() > 0) {
+            platoons = new ArrayList<SimplePlatoon>();
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                platoons.add(simplePlatoonFrom(cursor));
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return true;
+    }
+
+    @Override
+    public Loader<CompletedTask> onCreateLoader(int id, Bundle bundle) {
+        return new Bf3Loader(getContext(), httpDataOverview());
+    }
+
+    private Bf3ServerCall.HttpData httpDataOverview() {
+        return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(user().getName()), HttpGet.METHOD_NAME, false);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<CompletedTask> loader, CompletedTask completedTask) {
+        if (isTaskSuccess(completedTask.result)) {
+            processOverviewLoaderResult(completedTask);
+        } else {
+            Log.e(ProfileOverviewFragment.class.getSimpleName(), "User data extraction failed for " + user().getName());
+        }
+        closeLoadingDialog(ProfileStatsFragment.class.getSimpleName());
+    }
+
+    private void processOverviewLoaderResult(CompletedTask completedTask) {
+        UserInfo userInfo = processUserDataResult(completedTask.response);
+        savePersonaToApp(userInfo);
+        ((ProfileActivity)getActivity()).post(userInfo);
+        showProfile();
+        showPlatoons();
+    }
+
+    private boolean isTaskSuccess(CompletedTask.Result result) {
+        return result == CompletedTask.Result.SUCCESS;
+    }
+
+    private UserInfo processUserDataResult(String response) {
+        HtmlParsing parser = new HtmlParsing();
+        return parser.extractUserInfo(response);
+    }
+
+    private void savePersonaToApp(UserInfo userInfo) {
+        user().setPersonas(userInfo.getPersonas());
+        user().setPlatoons(userInfo.getPlatoons());
+        personasToDatabase(userInfo.getPersonas());
+        platoonsToDatabase(userInfo.getPlatoons());
+        userProfileDataToDatabase(userInfo.getUserProfileData());
+        userProfileData = userInfo.getUserProfileData();
+    }
 
     public void reload() {
         //new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();
         Log.e("ProfileOverviewFragment", "Reload pressed");
-    }
-
-    private void saveForApplication(List<SimplePersona> personas, List<SimplePlatoon> platoons) {
-        user().setPersonas(personas);
-        user().setPlatoons(platoons);
     }
 
     private void personasToDatabase(List<SimplePersona> personas) {
@@ -213,25 +286,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     private void userProfileDataToDatabase(UserProfileData profileData) {
         ContentValues contentValues = userProfileDataToDB(profileData);
         getContext().getContentResolver().insert(UserProfileDataDAO.URI, contentValues);
-    }
-
-    public void updateProfileInDB(ProfileInformation p) {
-        ContentValues contentValues = ProfileInformationDAO.convertProfileInformationForDB(p, System.currentTimeMillis());
-        try {
-            context.getContentResolver().insert(ProfileInformationDAO.URI, contentValues);
-        } catch (SQLiteConstraintException ex) {
-            context.getContentResolver().update(
-                    ProfileInformationDAO.URI,
-                    contentValues,
-                    ProfileInformationDAO.Columns.USER_ID + "=?",
-                    new String[]{String.valueOf(p.getUserId())}
-            );
-        }
-    }
-
-    public void updatePlatoonInDB(PlatoonData p) {
-        ContentValues contentValues = PlatoonInformationDAO.platoonDataForDB(p);
-        context.getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);
     }
 
     public void setFeedPermission(boolean c) {
@@ -273,10 +327,14 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     }
 
     private long getUserId() {
-        return BF3Droid.getUser().getId();
+        return user().getId();
     }
 
     private User user() {
-        return BF3Droid.getUser();
+        if (getArguments().getString("user").equals(User.USER)) {
+            return BF3Droid.getUser();
+        } else {
+            return BF3Droid.getGuest();
+        }
     }
 }

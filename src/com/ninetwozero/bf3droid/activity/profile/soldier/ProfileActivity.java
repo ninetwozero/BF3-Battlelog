@@ -14,61 +14,33 @@
 
 package com.ninetwozero.bf3droid.activity.profile.soldier;
 
-import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 
-import com.google.gson.Gson;
 import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3Fragment;
 import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
 import com.ninetwozero.bf3droid.activity.feed.FeedFragment;
-import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
-import com.ninetwozero.bf3droid.dao.UserProfileDataDAO;
-import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.http.FeedClient;
-import com.ninetwozero.bf3droid.jsonmodel.soldierstats.PersonaInfo;
-import com.ninetwozero.bf3droid.loader.Bf3Loader;
-import com.ninetwozero.bf3droid.loader.CompletedTask;
-import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
-import com.ninetwozero.bf3droid.provider.UriFactory;
-import com.ninetwozero.bf3droid.provider.table.UserProfileData;
-import com.ninetwozero.bf3droid.server.Bf3ServerCall;
-import com.ninetwozero.bf3droid.util.HtmlParsing;
-import com.ninetwozero.bf3droid.util.Platform;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
-import org.apache.http.client.methods.HttpGet;
+public class ProfileActivity extends CustomFragmentActivity {
 
-import static com.ninetwozero.bf3droid.dao.PlatoonInformationDAO.simplePlatoonFrom;
-
-public class ProfileActivity extends CustomFragmentActivity implements LoaderManager.LoaderCallbacks<CompletedTask> {
-
-    private final int LOADER_OVERVIEW = 22;
-    private static final int LOADER_STATS = 23;
-    private static final String TAG = "ProfileActivity";
     private ProfileOverviewFragment fragmentOverview;
     private ProfileStatsFragment fragmentStats;
     private FeedFragment fragmentFeed;
     private Bundle bundle;
-    private UserProfileData userProfileData;
-    private List<SimplePlatoon> platoons;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -80,7 +52,6 @@ public class ProfileActivity extends CustomFragmentActivity implements LoaderMan
         } else {
             finish();
         }
-
         setup();
         init();
     }
@@ -89,143 +60,12 @@ public class ProfileActivity extends CustomFragmentActivity implements LoaderMan
     public void onResume() {
         super.onResume();
         init();
-        getData();
     }
 
     public void init() {
     }
 
     public void reload() {
-    }
-
-
-
-    private void getData() {
-        startLoadingDialog(TAG);
-        fetchOverview();
-        fetchStats();
-        closeLoadingDialog(TAG);
-    }
-
-    private void fetchOverview() {
-        if (userProfileDataFromDB() && platoonsFromDB()) {
-            BusProvider.getInstance().post(new UserInfo(platoons, userProfileData));
-        } else {
-            restartLoader(LOADER_OVERVIEW);
-        }
-    }
-
-    private void fetchStats() {
-        Log.e("ProfileActivity", "Starting stats loading");
-        restartLoader(LOADER_STATS);
-    }
-
-    private boolean userProfileDataFromDB() {
-        Cursor cursor = context().getContentResolver().query(
-                UserProfileDataDAO.URI,
-                UserProfileDataDAO.PROJECTION,
-                UserProfileDataDAO.Columns.USER_ID + "=?",
-                new String[]{String.valueOf(user().getId())},
-                null
-        );
-        if (cursor.getCount() > 0) {
-            userProfileData = UserProfileDataDAO.userProfileDataFrom(cursor);
-            cursor.close();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean platoonsFromDB() {
-        Cursor cursor = context().getContentResolver().query(
-                PlatoonInformationDAO.URI,
-                PlatoonInformationDAO.SIMPLE_PLATOON_PROJECTION,
-                PlatoonInformationDAO.Columns.USER_ID + "=?",
-                new String[]{String.valueOf(user().getId())},
-                null
-        );
-        if (cursor.getCount() > 0) {
-            platoons = new ArrayList<SimplePlatoon>();
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                platoons.add(simplePlatoonFrom(cursor));
-                cursor.moveToNext();
-            }
-        }
-        cursor.close();
-        return true;
-    }
-
-    private void restartLoader(int callId) {
-        if (callId == LOADER_OVERVIEW) {
-            getSupportLoaderManager().restartLoader(LOADER_OVERVIEW, bundle, this);
-        } else {
-            getSupportLoaderManager().restartLoader(LOADER_STATS, bundle, this);
-        }
-    }
-
-    @Override
-    public Loader<CompletedTask> onCreateLoader(int id, Bundle bundle) {
-        if (id == LOADER_OVERVIEW) { Log.e("ProfileActivity", "Overview loader started");
-            return new Bf3Loader(context(), httpDataOverview());
-        } else {
-            Log.e("ProfileActivity", "Stats loader started");
-            return new Bf3Loader(context(), httpDataStats());
-        }
-    }
-
-    private Bf3ServerCall.HttpData httpDataStats() {
-        return new Bf3ServerCall.HttpData(UriFactory.getPersonaOverviewUri(selectedPersonaId(), platformId()), HttpGet.METHOD_NAME);
-    }
-
-    private Bf3ServerCall.HttpData httpDataOverview() {
-        return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(user().getName()), HttpGet.METHOD_NAME, false);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<CompletedTask> loader, CompletedTask completedTask) {
-        Log.e("ProfileActivity", "Loader fetched some data");
-        if (loader.getId() == LOADER_OVERVIEW && isTaskSuccess(completedTask.result)) {
-            processOverviewLoaderResult(completedTask);
-        } else if (loader.getId() == LOADER_STATS && isTaskSuccess(completedTask.result)) {
-            processStatsLoaderResult(completedTask);
-        } else {
-            Log.e("ProfileOverviewFragment", "User data extraction failed for " + user().getName());
-        }
-    }
-
-    private void processOverviewLoaderResult(CompletedTask completedTask) {
-        UserInfo userInfo = processUserDataResult(completedTask.response);
-        savePersonaToApp(userInfo);
-        BusProvider.getInstance().post(userInfo);
-        Log.e("ProfileActivity", "Overview loaded, starting stats loading");
-        restartLoader(LOADER_STATS);
-    }
-
-    private void processStatsLoaderResult(CompletedTask completedTask) {
-        PersonaInfo personaInfo = personaStatsFrom(completedTask);
-        BusProvider.getInstance().post(personaInfo);
-        Log.e("ProfileActivity", "Stats loaded");
-    }
-
-    @Override
-    public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
-    }
-
-    private boolean isTaskSuccess(CompletedTask.Result result) {
-        return result == CompletedTask.Result.SUCCESS;
-    }
-
-    private UserInfo processUserDataResult(String response) {
-        HtmlParsing parser = new HtmlParsing();
-        return parser.extractUserInfo(response);
-    }
-
-    private PersonaInfo personaStatsFrom(CompletedTask task) {
-        Gson gson = new Gson();
-        PersonaInfo data = gson.fromJson(task.jsonObject, PersonaInfo.class);
-        return data;
     }
 
     public void setup() {
@@ -363,28 +203,7 @@ public class ProfileActivity extends CustomFragmentActivity implements LoaderMan
         return super.onKeyDown(keyCode, event);
     }
 
-    private void savePersonaToApp(UserInfo userInfo) {
-        user().setPersonas(userInfo.getPersonas());
-        user().setPlatoons(userInfo.getPlatoons());
-    }
-
-    private Context context() {
-        return getApplicationContext();
-    }
-
-    private User user() {
-        if (getIntent().getStringExtra("user").equals(User.USER)) {
-            return BF3Droid.getUser();
-        } else {
-            return BF3Droid.getGuest();
-        }
-    }
-
-    private long selectedPersonaId(){
-        return user().selectedPersona().getPersonaId();
-    }
-
-    private int platformId() {
-        return Platform.resolveIdFromPlatformName(user().selectedPersona().getPlatform());
+    public void post(UserInfo userInfo){
+        BusProvider.getInstance().post(userInfo);
     }
 }

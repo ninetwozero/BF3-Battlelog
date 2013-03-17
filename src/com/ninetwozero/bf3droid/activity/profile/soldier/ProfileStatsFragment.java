@@ -20,6 +20,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
@@ -27,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3Fragment;
@@ -34,24 +37,28 @@ import com.ninetwozero.bf3droid.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.bf3droid.dao.PersonaStatisticsDAO;
 import com.ninetwozero.bf3droid.dao.RankProgressDAO;
 import com.ninetwozero.bf3droid.dao.ScoreStatisticsDAO;
-import com.ninetwozero.bf3droid.datatype.PersonaStats;
-import com.ninetwozero.bf3droid.datatype.ProfileData;
-import com.ninetwozero.bf3droid.datatype.SimplePersona;
-import com.ninetwozero.bf3droid.datatype.Statistics;
+import com.ninetwozero.bf3droid.datatype.*;
 import com.ninetwozero.bf3droid.dialog.ListDialogFragment;
 import com.ninetwozero.bf3droid.jsonmodel.soldierstats.PersonaInfo;
+import com.ninetwozero.bf3droid.loader.Bf3Loader;
+import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
 import com.ninetwozero.bf3droid.model.SelectedOption;
 import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
+import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.provider.table.PersonaStatistics;
 import com.ninetwozero.bf3droid.provider.table.RankProgress;
 import com.ninetwozero.bf3droid.provider.table.ScoreStatistics;
+import com.ninetwozero.bf3droid.server.Bf3ServerCall;
+import com.ninetwozero.bf3droid.util.Platform;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.http.client.methods.HttpGet;
 
 import static com.ninetwozero.bf3droid.dao.PersonaStatisticsDAO.personaStatisticsFromJSON;
 import static com.ninetwozero.bf3droid.dao.RankProgressDAO.rankProgressFromJSON;
@@ -81,6 +88,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
     private List<Statistics> listPersonaStatistics;
     private List<Statistics> listScoreStatistics;
     private PersonaInfo personaInfo;
+    private static final int LOADER_STATS = 23;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -113,13 +121,16 @@ public class ProfileStatsFragment extends Bf3Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.bundle = savedInstanceState;
-        getData();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         BusProvider.getInstance().register(this);
+        findViews();
+        if (isUser()) {
+            getData();
+        }
     }
 
     @Override
@@ -128,28 +139,44 @@ public class ProfileStatsFragment extends Bf3Fragment {
         BusProvider.getInstance().unregister(this);
     }
 
+    private void getData() {
+        if (dbHasData()) {
+            populateView();
+        } else {
+            restartLoader();
+        }
+    }
+
     @Subscribe
+    public void ottoUpdate(Object o){
+        if( o instanceof SelectedOption){
+            SelectedOption selectedOption = (SelectedOption) o;
+            if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
+                user().selectPersona(selectedOption.getSelectedId());
+                getData();
+            }
+        } else if(o instanceof UserInfo) {
+            Log.e(ProfileStatsFragment.class.getSimpleName(), "Received UserInfo");
+            restartLoader();
+        }
+    }
+
+    /*@Subscribe
     public void selectionChanged(SelectedOption selectedOption) {
         if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
-            getUser().selectPersona(selectedOption.getSelectedId());
+            user().selectPersona(selectedOption.getSelectedId());
             getData();
         }
     }
 
     @Subscribe
-    public void personaInfo(PersonaInfo personaInfo) {
-        this.personaInfo = personaInfo;
-        updateDatabase(personaInfo);
-        populateView();
-    }
+    public void personaInfo(UserInfo userInfo) {
+        Log.e(ProfileStatsFragment.class.getSimpleName(), "Received UserInfo");
+        restartLoader();
+    }*/
 
-    private void getData() {
-        if (dbHasData()) {
-            findViews();
-            //populateView();
-        } else {
-            //restartLoader();
-        }
+    private void restartLoader() {
+        getLoaderManager().restartLoader(LOADER_STATS, bundle, this);
     }
 
     private boolean dbHasData() {
@@ -208,6 +235,46 @@ public class ProfileStatsFragment extends Bf3Fragment {
         }
         cursor.close();
         return false;
+    }
+
+    @Override
+    public Loader<CompletedTask> onCreateLoader(int id, Bundle bundle) {
+        startLoadingDialog(ProfileStatsFragment.class.getSimpleName());
+        return new Bf3Loader(getContext(), httpDataStats());
+    }
+
+    private Bf3ServerCall.HttpData httpDataStats() {
+        return new Bf3ServerCall.HttpData(UriFactory.getPersonaOverviewUri(selectedPersonaId(), platformId()), HttpGet.METHOD_NAME);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<CompletedTask> loader, CompletedTask completedTask) {
+        if (isTaskSuccess(completedTask.result)) {
+            processStatsLoaderResult(completedTask);
+        } else {
+            Log.e("ProfileOverviewFragment", "User data extraction failed for " + user().getName());
+        }
+        closeLoadingDialog(ProfileStatsFragment.class.getSimpleName());
+    }
+
+    private void processStatsLoaderResult(CompletedTask completedTask) {
+        PersonaInfo personaInfo = personaStatsFrom(completedTask);
+        updateDatabase(personaInfo);
+        populateView();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
+    }
+
+    private boolean isTaskSuccess(CompletedTask.Result result) {
+        return result == CompletedTask.Result.SUCCESS;
+    }
+
+    private PersonaInfo personaStatsFrom(CompletedTask task) {
+        Gson gson = new Gson();
+        PersonaInfo data = gson.fromJson(task.jsonObject, PersonaInfo.class);
+        return data;
     }
 
     public void findViews() {
@@ -321,7 +388,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
 
     private Map<Long, String> personasToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
-        for (SimplePersona persona : getUser().getPersonas()) {
+        for (SimplePersona persona : user().getPersonas()) {
             map.put(persona.getPersonaId(), persona.getPersonaName() + " " + persona.getPlatform());
         }
         return map;
@@ -358,32 +425,36 @@ public class ProfileStatsFragment extends Bf3Fragment {
         return true;
     }
 
-    private long selectedPersonaId() {
-        return selectedPersona().getPersonaId();
-    }
-
-    private SimplePersona selectedPersona() {
-        return getUser().selectedPersona();
-    }
-
     public void setComparing(boolean c) {
         comparing = c;
     }
 
     @Override
     public void reload() {
-        //restartLoader();
+        restartLoader();
     }
 
     private int userPersonasCount() {
-        return getUser().getPersonas().size();
+        return user().getPersonas().size();
     }
 
-    private User getUser() {
-        if (getArguments().getString("user").equals(User.USER)) {
+    private User user() {
+        if (isUser()) {
             return BF3Droid.getUser();
         } else {
             return BF3Droid.getGuest();
         }
+    }
+
+    private boolean isUser() {
+        return getArguments().getString("user").equals(User.USER);
+    }
+
+    private long selectedPersonaId() {
+        return user().selectedPersona().getPersonaId();
+    }
+
+    private int platformId() {
+        return Platform.resolveIdFromPlatformName(user().selectedPersona().getPlatform());
     }
 }
