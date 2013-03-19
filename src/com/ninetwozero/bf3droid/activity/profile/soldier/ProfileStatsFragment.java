@@ -128,9 +128,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
         super.onResume();
         BusProvider.getInstance().register(this);
         findViews();
-        if (isUser()) {
-            getData();
-        }
+        getData();
     }
 
     @Override
@@ -148,32 +146,12 @@ public class ProfileStatsFragment extends Bf3Fragment {
     }
 
     @Subscribe
-    public void ottoUpdate(Object o){
-        if( o instanceof SelectedOption){
-            SelectedOption selectedOption = (SelectedOption) o;
-            if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
-                user().selectPersona(selectedOption.getSelectedId());
-                getData();
-            }
-        } else if(o instanceof UserInfo) {
-            Log.e(ProfileStatsFragment.class.getSimpleName(), "Received UserInfo");
-            restartLoader();
-        }
-    }
-
-    /*@Subscribe
     public void selectionChanged(SelectedOption selectedOption) {
         if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
             user().selectPersona(selectedOption.getSelectedId());
             getData();
         }
     }
-
-    @Subscribe
-    public void personaInfo(UserInfo userInfo) {
-        Log.e(ProfileStatsFragment.class.getSimpleName(), "Received UserInfo");
-        restartLoader();
-    }*/
 
     private void restartLoader() {
         getLoaderManager().restartLoader(LOADER_STATS, bundle, this);

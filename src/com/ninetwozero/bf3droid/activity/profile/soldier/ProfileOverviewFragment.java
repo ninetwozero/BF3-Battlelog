@@ -14,12 +14,10 @@
 
 package com.ninetwozero.bf3droid.activity.profile.soldier;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
@@ -39,25 +37,14 @@ import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.http.COMClient;
-import com.ninetwozero.bf3droid.loader.Bf3Loader;
-import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
-import com.ninetwozero.bf3droid.provider.UriFactory;
-import com.ninetwozero.bf3droid.provider.table.Personas;
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
-import com.ninetwozero.bf3droid.server.Bf3ServerCall;
-import com.ninetwozero.bf3droid.util.HtmlParsing;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.client.methods.HttpGet;
-
-import static com.ninetwozero.bf3droid.dao.PersonasDAO.simplePersonaToDB;
 import static com.ninetwozero.bf3droid.dao.PlatoonInformationDAO.simplePlatoonFrom;
-import static com.ninetwozero.bf3droid.dao.PlatoonInformationDAO.simplePlatoonToDatabase;
-import static com.ninetwozero.bf3droid.dao.UserProfileDataDAO.userProfileDataToDB;
 
 public class ProfileOverviewFragment extends Bf3Fragment {
 
@@ -68,7 +55,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     private List<SimplePlatoon> platoons;
     private Bundle bundle;
     private UserProfileData userProfileData;
-    private final int LOADER_OVERVIEW = 22;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,14 +84,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             BusProvider.getInstance().post(userInfo);
             showProfile();
             showPlatoons();
-        } else {
-            startLoadingDialog(ProfileStatsFragment.class.getSimpleName());
-            restartLoader();
         }
-    }
-
-    private void restartLoader() {
-        getLoaderManager().restartLoader(LOADER_OVERVIEW, bundle, this);
     }
 
     public void initFragment(View v) {
@@ -219,73 +198,11 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         return true;
     }
 
-    @Override
-    public Loader<CompletedTask> onCreateLoader(int id, Bundle bundle) {
-        return new Bf3Loader(getContext(), httpDataOverview());
-    }
 
-    private Bf3ServerCall.HttpData httpDataOverview() {
-        return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(user().getName()), HttpGet.METHOD_NAME, false);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<CompletedTask> loader, CompletedTask completedTask) {
-        if (isTaskSuccess(completedTask.result)) {
-            processOverviewLoaderResult(completedTask);
-        } else {
-            Log.e(ProfileOverviewFragment.class.getSimpleName(), "User data extraction failed for " + user().getName());
-        }
-        closeLoadingDialog(ProfileStatsFragment.class.getSimpleName());
-    }
-
-    private void processOverviewLoaderResult(CompletedTask completedTask) {
-        UserInfo userInfo = processUserDataResult(completedTask.response);
-        savePersonaToApp(userInfo);
-        ((ProfileActivity)getActivity()).post(userInfo);
-        showProfile();
-        showPlatoons();
-    }
-
-    private boolean isTaskSuccess(CompletedTask.Result result) {
-        return result == CompletedTask.Result.SUCCESS;
-    }
-
-    private UserInfo processUserDataResult(String response) {
-        HtmlParsing parser = new HtmlParsing();
-        return parser.extractUserInfo(response);
-    }
-
-    private void savePersonaToApp(UserInfo userInfo) {
-        user().setPersonas(userInfo.getPersonas());
-        user().setPlatoons(userInfo.getPlatoons());
-        personasToDatabase(userInfo.getPersonas());
-        platoonsToDatabase(userInfo.getPlatoons());
-        userProfileDataToDatabase(userInfo.getUserProfileData());
-        userProfileData = userInfo.getUserProfileData();
-    }
 
     public void reload() {
         //new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();
         Log.e("ProfileOverviewFragment", "Reload pressed");
-    }
-
-    private void personasToDatabase(List<SimplePersona> personas) {
-        for (SimplePersona persona : personas) {
-            ContentValues contentValues = simplePersonaToDB(persona, getUserId());
-            getContext().getContentResolver().insert(Personas.URI, contentValues);
-        }
-    }
-
-    private void platoonsToDatabase(List<SimplePlatoon> platoons) {
-        for (SimplePlatoon platoon : platoons) {
-            ContentValues contentValues = simplePlatoonToDatabase(platoon, getUserId());
-            getContext().getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);
-        }
-    }
-
-    private void userProfileDataToDatabase(UserProfileData profileData) {
-        ContentValues contentValues = userProfileDataToDB(profileData);
-        getContext().getContentResolver().insert(UserProfileDataDAO.URI, contentValues);
     }
 
     public void setFeedPermission(boolean c) {

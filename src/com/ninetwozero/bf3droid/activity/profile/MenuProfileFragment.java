@@ -68,6 +68,26 @@ public class MenuProfileFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void selectionChanged(SelectedOption selectedOption) {
+        if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
+            getUser().selectPersona(selectedOption.getSelectedId());
+            setupActiveSoldierContent();
+        }
+    }
+
     public void initFragment(View view) {
 
         mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
@@ -129,26 +149,6 @@ public class MenuProfileFragment extends Fragment {
             map.put(simplePersona.getPersonaId(), simplePersona.getPersonaName() + " [" + simplePersona.getPlatform() + "]");
         }
         return map;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        BusProvider.getInstance().register(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        BusProvider.getInstance().unregister(this);
-    }
-
-    @Subscribe
-    public void selectionChanged(SelectedOption selectedOption) {
-        if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
-            getUser().selectPersona(selectedOption.getSelectedId());
-            setupActiveSoldierContent();
-        }
     }
 
     public void setupActiveSoldierContent() {

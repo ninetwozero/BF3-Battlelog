@@ -26,9 +26,7 @@ import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3Fragment;
 import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
 import com.ninetwozero.bf3droid.activity.feed.FeedFragment;
-import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.http.FeedClient;
-import com.ninetwozero.bf3droid.provider.BusProvider;
 
 import java.util.ArrayList;
 
@@ -201,9 +199,5 @@ public class ProfileActivity extends CustomFragmentActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    public void post(UserInfo userInfo){
-        BusProvider.getInstance().post(userInfo);
     }
 }
