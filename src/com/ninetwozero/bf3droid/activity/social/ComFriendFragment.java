@@ -39,7 +39,6 @@ import com.ninetwozero.bf3droid.activity.profile.assignments.AssignmentActivity;
 import com.ninetwozero.bf3droid.activity.profile.soldier.CompareActivity;
 import com.ninetwozero.bf3droid.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.bf3droid.activity.profile.soldier.ProfileOverviewFragment;
-import com.ninetwozero.bf3droid.activity.profile.soldier.ProfileStatsFragment;
 import com.ninetwozero.bf3droid.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.bf3droid.adapter.FriendListAdapter;
 import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
@@ -146,7 +145,7 @@ public class ComFriendFragment extends Bf3ListFragment {
         selectedItem = item;
         ProfileData profileData = (ProfileData) selectedInfo.targetView.getTag();
         BF3Droid.setGuest(new User(profileData.getUsername(), profileData.getId()));
-        startLoadingDialog(ProfileStatsFragment.class.getSimpleName());
+        startLoadingDialog(ComFriendFragment.class.getSimpleName());
         restartLoader();
 
         return true;
@@ -213,7 +212,7 @@ public class ComFriendFragment extends Bf3ListFragment {
         } else {
             Log.e(ProfileOverviewFragment.class.getSimpleName(), "User data extraction failed for " + user().getName());
         }
-        closeLoadingDialog(ProfileStatsFragment.class.getSimpleName());
+        closeLoadingDialog(ComFriendFragment.class.getSimpleName());
         menuActionAfterLoad();
     }
 

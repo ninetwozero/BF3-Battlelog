@@ -33,12 +33,9 @@ import com.ninetwozero.bf3droid.asynctask.AsyncFriendRequest;
 import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
 import com.ninetwozero.bf3droid.dao.UserProfileDataDAO;
 import com.ninetwozero.bf3droid.datatype.PlatoonData;
-import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
-import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.http.COMClient;
 import com.ninetwozero.bf3droid.model.User;
-import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
 
 import java.util.ArrayList;
@@ -80,8 +77,6 @@ public class ProfileOverviewFragment extends Bf3Fragment {
 
     private void getData() {
         if (userProfileDataFromDB() && platoonsFromDB()) {
-            UserInfo userInfo = new UserInfo(new ArrayList<SimplePersona>(), platoons, userProfileData);
-            BusProvider.getInstance().post(userInfo);
             showProfile();
             showPlatoons();
         }
