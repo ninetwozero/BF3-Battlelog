@@ -34,17 +34,16 @@ import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 public class CompareActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
-    // Fragment related
-    private ProfileStatsFragment[] mFragmentStats;
-    private ProfileStatsCompareFragment mFragmentCompare;
+    private ProfileStatsFragment[] statsFragments;
+    private ProfileStatsCompareFragment compareFragment;
 
     // Misc
-    private ProfileData[] mProfileData;
+    private ProfileData[] profileData;
 
     @Override
     public void onCreate(final Bundle icicle) {
         super.onCreate(icicle);
-        mProfileData = new ProfileData[]{
+        profileData = new ProfileData[]{
                 (ProfileData) getIntent().getParcelableExtra("profile1"),
                 (ProfileData) getIntent().getParcelableExtra("profile2")
         };
@@ -57,8 +56,8 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
     }
 
     public void reload() {
-        mFragmentStats[0].reload();
-        mFragmentStats[1].reload();
+        statsFragments[0].reload();
+        statsFragments[1].reload();
     }
 
     @Override
@@ -76,9 +75,9 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
             finish();
         } else {
             if (mViewPager.getCurrentItem() == 0) {
-                return mFragmentStats[0].handleSelectedOption(item);
+                return statsFragments[0].handleSelectedOption(item);
             } else if (mViewPager.getCurrentItem() == 2) {
-                return mFragmentStats[1].handleSelectedOption(item);
+                return statsFragments[1].handleSelectedOption(item);
             }
         }
         return true;
@@ -103,23 +102,23 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
     public void setup() {
         if (mListFragments == null) {
             mListFragments = new ArrayList<Fragment>();
-            mFragmentStats = new ProfileStatsFragment[2];
-            mListFragments.add(mFragmentStats[0] = (ProfileStatsFragment) Fragment.instantiate(
+            statsFragments = new ProfileStatsFragment[2];
+            mListFragments.add(statsFragments[0] = (ProfileStatsFragment) Fragment.instantiate(
                     this, ProfileStatsFragment.class.getName()));
-            mListFragments.add(mFragmentCompare = (ProfileStatsCompareFragment) Fragment
+            mListFragments.add(compareFragment = (ProfileStatsCompareFragment) Fragment
                     .instantiate(
                             this,
                             ProfileStatsCompareFragment.class.getName()));
-            mListFragments.add(mFragmentStats[1] = (ProfileStatsFragment) Fragment.instantiate(
+            mListFragments.add(statsFragments[1] = (ProfileStatsFragment) Fragment.instantiate(
                     this,
                     ProfileStatsFragment.class.getName()));
 
             /* TODO introduce bundle boolean to decide when to use user and visitor personas
-            mFragmentStats[0].setProfileData(mProfileData[0]);
-            mFragmentStats[1].setProfileData(mProfileData[1]);*/
+            statsFragments[0].setProfileData(profileData[0]);
+            statsFragments[1].setProfileData(profileData[1]);*/
 
-            mFragmentStats[0].setComparing(true);
-            mFragmentStats[1].setComparing(true);
+            statsFragments[0].setComparing(true);
+            statsFragments[1].setComparing(true);
 
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
@@ -128,8 +127,8 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
 
                     mFragmentManager,
                     new String[]{
-                            mProfileData[0].getUsername(), "Compare",
-                            mProfileData[1].getUsername()
+                            profileData[0].getUsername(), "Compare",
+                            profileData[1].getUsername()
                     },
                     mListFragments,
                     mViewPager,
@@ -153,6 +152,6 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
     }
 
     public void sendToCompare(ProfileData p, Map<Long, PersonaStats> ps, long id, boolean toggle) {
-        mFragmentCompare.showStats(ps, id,p.getId() == mProfileData[0].getId() ? 0 : 1, toggle);
+        compareFragment.showStats(ps, id, p.getId() == profileData[0].getId() ? 0 : 1, toggle);
     }
 }

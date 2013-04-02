@@ -65,7 +65,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     public void onCreate(final Bundle icicle) {
         super.onCreate(icicle);
         this.bundle = icicle;
-        if (!getIntent().hasExtra("profile")) {
+        if (!getIntent().hasExtra("user")) {
             finish();
         }
         setContentView(R.layout.viewpager_default);
@@ -183,7 +183,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
         if (item.getItemId() == R.id.option_reload) {
             refresh();
         } else if (item.getItemId() == R.id.option_change) {
-            if (guest().getPersonas().size() > 1) {
+            if (user().getPersonas().size() > 1) {
                 ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), SelectedOption.PERSONA);
                 dialog.show(mFragmentManager, DIALOG);
             }
@@ -196,7 +196,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     private Map<Long, String> personasToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
         for (SimplePersona persona : user().getPersonas()) {
-            map.put(persona.getPersonaId(), persona.getPersonaName() + " [" + persona.getPlatform()+"]");
+            map.put(persona.getPersonaId(), persona.getPersonaName() + " [" + persona.getPlatform() + "]");
         }
         return map;
     }
@@ -210,11 +210,11 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
         }
     }
 
-    private User user(){
-        return BF3Droid.getUser();
-    }
-
-    private User guest(){
-        return BF3Droid.getGuest();
+    private User user() {
+        if (getIntent().getExtras().getString("user").equals(User.USER)) {
+            return BF3Droid.getUser();
+        } else  {
+            return BF3Droid.getGuest();
+        }
     }
 }

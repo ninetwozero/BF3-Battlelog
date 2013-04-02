@@ -16,7 +16,6 @@ package com.ninetwozero.bf3droid.activity.profile.soldier;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -28,20 +27,17 @@ import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3Fragment;
 import com.ninetwozero.bf3droid.activity.platoon.PlatoonActivity;
+import com.ninetwozero.bf3droid.activity.profile.soldier.restorer.UserInfoRestorer;
 import com.ninetwozero.bf3droid.asynctask.AsyncFriendRemove;
 import com.ninetwozero.bf3droid.asynctask.AsyncFriendRequest;
-import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
-import com.ninetwozero.bf3droid.dao.UserProfileDataDAO;
 import com.ninetwozero.bf3droid.datatype.PlatoonData;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
+import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.http.COMClient;
 import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.ninetwozero.bf3droid.dao.PlatoonInformationDAO.simplePlatoonFrom;
 
 public class ProfileOverviewFragment extends Bf3Fragment {
 
@@ -52,6 +48,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     private List<SimplePlatoon> platoons;
     private Bundle bundle;
     private UserProfileData userProfileData;
+    private UserInfoRestorer restorer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,7 +73,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     }
 
     private void getData() {
-        if (userProfileDataFromDB() && platoonsFromDB()) {
+        if (hasUserInfo()) {
             showProfile();
             showPlatoons();
         }
@@ -156,44 +153,18 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         }
     }
 
-    private boolean userProfileDataFromDB() {
-        Cursor cursor = getContext().getContentResolver().query(
-                UserProfileDataDAO.URI,
-                UserProfileDataDAO.PROJECTION,
-                UserProfileDataDAO.Columns.USER_ID + "=?",
-                new String[]{String.valueOf(user().getId())},
-                null
-        );
-        if (cursor.getCount() > 0) {
-            userProfileData = UserProfileDataDAO.userProfileDataFrom(cursor);
-            cursor.close();
-            return true;
-        } else {
+    private boolean hasUserInfo(){
+        this.restorer = new UserInfoRestorer(context, getArguments().getString("user"));
+        UserInfo userInfo = restorer.fetch();
+        if(userInfo.isEmpty()){
             return false;
+        } else{
+            user().setPersonas(userInfo.getPersonas());
+            user().setPlatoons(userInfo.getPlatoons());
+            userProfileData = userInfo.getUserProfileData();
+            return  true;
         }
     }
-
-    private boolean platoonsFromDB() {
-        Cursor cursor = getContext().getContentResolver().query(
-                PlatoonInformationDAO.URI,
-                PlatoonInformationDAO.SIMPLE_PLATOON_PROJECTION,
-                PlatoonInformationDAO.Columns.USER_ID + "=?",
-                new String[]{String.valueOf(user().getId())},
-                null
-        );
-        if (cursor.getCount() > 0) {
-            platoons = new ArrayList<SimplePlatoon>();
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                platoons.add(simplePlatoonFrom(cursor));
-                cursor.moveToNext();
-            }
-        }
-        cursor.close();
-        return true;
-    }
-
-
 
     public void reload() {
         //new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();

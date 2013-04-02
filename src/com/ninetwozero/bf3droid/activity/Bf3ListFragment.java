@@ -47,6 +47,10 @@ public class Bf3ListFragment extends ListFragment implements LoaderManager.Loade
         // TODO show toast with error code
     }
 
+    protected boolean isTaskSuccess(CompletedTask.Result result) {
+        return result == CompletedTask.Result.SUCCESS;
+    }
+
     @Override
     public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
     }
