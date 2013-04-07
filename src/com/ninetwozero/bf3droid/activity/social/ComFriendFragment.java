@@ -174,8 +174,7 @@ public class ComFriendFragment extends Bf3ListFragment implements ProfileLoader.
     }
 
     private void restartLoader() {
-        ProfileLoader loader = new ProfileLoader(this, context, User.GUEST);
-        loader.restart(getLoaderManager());
+        new ProfileLoader(this, context, User.GUEST, getLoaderManager()).restart();
     }
 
     @Override

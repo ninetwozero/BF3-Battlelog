@@ -159,10 +159,6 @@ public class LoginActivity extends Bf3FragmentActivity {
         return getApplicationContext();
     }
 
-    private long getUserId(){
-        return BF3Droid.getUser().getId();
-    }
-
     @Override
     public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
     }

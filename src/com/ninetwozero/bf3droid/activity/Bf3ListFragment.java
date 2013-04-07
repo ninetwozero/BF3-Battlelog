@@ -20,6 +20,11 @@ public class Bf3ListFragment extends ListFragment implements LoaderManager.Loade
     private Handler handler = new Handler();
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public Loader<CompletedTask> onCreateLoader(int id, Bundle bundle) {
         return createLoader(id, bundle);
     }

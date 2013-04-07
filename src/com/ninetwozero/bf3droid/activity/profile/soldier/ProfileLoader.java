@@ -23,19 +23,21 @@ public class ProfileLoader implements LoaderManager.LoaderCallbacks<CompletedTas
     private final Callback callback;
     private final Context context;
     private final String user;
+    private final LoaderManager loaderManager;
     private final int LOADER_OVERVIEW = 22;
 
     public interface Callback {
         void onLoadFinished(UserInfo userInfo);
     }
 
-    public ProfileLoader(Callback callback, Context context, String user){
+    public ProfileLoader(Callback callback, Context context, String user, LoaderManager loaderManager){
         this.callback = callback;
         this.context = context;
         this.user = user;
+        this.loaderManager = loaderManager;
     }
 
-    public void restart(LoaderManager loaderManager){
+    public void restart(){
         loaderManager.restartLoader(LOADER_OVERVIEW, new Bundle(), this);
     }
 
@@ -50,6 +52,7 @@ public class ProfileLoader implements LoaderManager.LoaderCallbacks<CompletedTas
 
     @Override
     public void onLoadFinished(Loader<CompletedTask>loader, CompletedTask completedTask) {
+        loaderManager.destroyLoader(LOADER_OVERVIEW);
         if (isTaskSuccess(completedTask.result)) {
             UserInfo userInfo = processOverviewLoaderResult(completedTask);
             callback.onLoadFinished(userInfo);

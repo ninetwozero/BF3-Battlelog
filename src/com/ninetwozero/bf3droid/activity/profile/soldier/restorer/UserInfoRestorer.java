@@ -1,6 +1,5 @@
 package com.ninetwozero.bf3droid.activity.profile.soldier.restorer;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -138,19 +137,6 @@ public class UserInfoRestorer extends Restorer<UserInfo> {
     private void userProfileDataToDatabase(UserProfileData profileData) {
         ContentValues contentValues = userProfileDataToDB(profileData);
         context.getContentResolver().insert(UserProfileDataDAO.URI, contentValues);
-    }
-
-    public static boolean hasUserProfile(ContentResolver contentResolver, long userId){
-        Cursor cursor = contentResolver.query(
-                UserProfileDataDAO.URI,
-                UserProfileDataDAO.PROJECTION,
-                UserProfileDataDAO.Columns.USER_ID + "=?",
-                new String[]{String.valueOf(userId)},
-                null
-        );
-        int count = cursor.getCount();
-        cursor.close();
-        return count > 0;
     }
 
     private long getUserId() {
