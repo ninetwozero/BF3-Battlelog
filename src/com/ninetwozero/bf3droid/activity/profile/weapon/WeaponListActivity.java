@@ -110,7 +110,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         @Override
         protected Boolean doInBackground(Void... arg) {
             try {
-                weapons = new ProfileClient().getWeapons();
+                weapons = new ProfileClient().getWeapons(getIntent().getStringExtra("user"));
                 return true;
             } catch (Exception ex) {
                 Log.d("WeaponListActivity", ex.toString());
@@ -142,7 +142,10 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
     }
 
     public void open(WeaponDataWrapper w) {
-        startActivity(new Intent(this, SingleWeaponActivity.class).putExtra("weapon", w));
+        startActivity(new Intent(this,
+                SingleWeaponActivity.class)
+                .putExtra("weapon", w)
+                .putExtra("user", getIntent().getStringExtra("user")));
     }
 
     private long selectedPersonaId() {

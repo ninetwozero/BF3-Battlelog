@@ -86,7 +86,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
 
     public final void showProfile() {
 
-        ((TextView) getView().findViewById(R.id.text_username)).setText(user().getName());
+        ((TextView) getView().findViewById(R.id.text_username)).setText(user(getArguments().getString("user")).getName());
 
         /*if (data.isPlaying() && data.isOnline()) {
             ((TextView) activity.findViewById(R.id.text_online)).setText(
@@ -113,7 +113,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     }
 
     private void showPlatoons() {
-        platoons = user().getPlatoons();
+        platoons = user(getArguments().getString("user")).getPlatoons();
         if (platoons.size() > 0) {
             View convertView;
             LinearLayout platoonWrapper = (LinearLayout) getView().findViewById(R.id.list_platoons);
@@ -159,8 +159,8 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         if(userInfo.isEmpty()){
             return false;
         } else{
-            user().setPersonas(userInfo.getPersonas());
-            user().setPlatoons(userInfo.getPlatoons());
+            user(getArguments().getString("user")).setPersonas(userInfo.getPersonas());
+            user(getArguments().getString("user")).setPlatoons(userInfo.getPlatoons());
             userProfileData = userInfo.getUserProfileData();
             return  true;
         }
@@ -210,14 +210,10 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     }
 
     private long getUserId() {
-        return user().getId();
+        return user(getArguments().getString("user")).getId();
     }
 
-    private User user() {
-        if (getArguments().getString("user").equals(User.USER)) {
-            return BF3Droid.getUser();
-        } else {
-            return BF3Droid.getGuest();
-        }
+    private User user(String user) {
+        return BF3Droid.getUserBy(user);
     }
 }

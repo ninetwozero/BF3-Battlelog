@@ -47,7 +47,7 @@ public class ProfileLoader implements LoaderManager.LoaderCallbacks<CompletedTas
     }
 
     private Bf3ServerCall.HttpData httpDataOverview() {
-        return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(user().getName()), HttpGet.METHOD_NAME, false);
+        return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(user(user).getName()), HttpGet.METHOD_NAME, false);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ProfileLoader implements LoaderManager.LoaderCallbacks<CompletedTas
             UserInfo userInfo = processOverviewLoaderResult(completedTask);
             callback.onLoadFinished(userInfo);
         } else {
-            Log.e(ProfileOverviewFragment.class.getSimpleName(), "User data extraction failed for " + user().getName());
+            Log.e(ProfileOverviewFragment.class.getSimpleName(), "User data extraction failed for " + user(user).getName());
         }
     }
 
@@ -81,11 +81,7 @@ public class ProfileLoader implements LoaderManager.LoaderCallbacks<CompletedTas
         return result == CompletedTask.Result.SUCCESS;
     }
 
-    private User user() {
-        if (user.equals(User.USER)) {
-            return BF3Droid.getUser();
-        } else {
-            return BF3Droid.getGuest();
-        }
+    private User user(String user) {
+        return BF3Droid.getUserBy(user);
     }
 }

@@ -110,7 +110,7 @@ public class WeaponInformationFragment extends Fragment implements DefaultFragme
         @Override
         protected Boolean doInBackground(Void... arg) {
             try {
-                mWeaponDataWrapper = new ProfileClient().getWeapon(weaponInfo, weaponStats);
+                mWeaponDataWrapper = new ProfileClient().getWeapon(weaponInfo, weaponStats, getArguments().getString("user"));
                 return true;
             } catch (Exception ex) {
                 Log.d("WeaponInformationFragment", ex.toString());

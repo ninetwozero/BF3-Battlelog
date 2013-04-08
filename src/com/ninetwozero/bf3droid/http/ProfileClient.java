@@ -59,15 +59,15 @@ public class ProfileClient extends DefaultClient {
 
     // Constants
     public static final String[] FIELD_NAMES_SETTINGS = new String[]{
-        "profile-edit-gravatar", "profile-edit-personaId[]",
-        "profile-edit-picture[]", "profile-edit-clantag[]",
-        "profile-edit-clantag-games[]", "profile-edit-name",
-        "profile-edit-presentation", "profile-edit-birthyear",
-        "profile-edit-birthmonth", "profile-edit-birthday",
-        "profile-edit-location", "profile-edit-dateformat",
-        "profile-edit-ampm", "profile-edit-utcoffset",
-        "profile-edit-hidedetails", "profile-edit-inactivatefeed",
-        "profile-edit-allowfriendrequests", "post-check-sum"
+            "profile-edit-gravatar", "profile-edit-personaId[]",
+            "profile-edit-picture[]", "profile-edit-clantag[]",
+            "profile-edit-clantag-games[]", "profile-edit-name",
+            "profile-edit-presentation", "profile-edit-birthyear",
+            "profile-edit-birthmonth", "profile-edit-birthday",
+            "profile-edit-location", "profile-edit-dateformat",
+            "profile-edit-ampm", "profile-edit-utcoffset",
+            "profile-edit-hidedetails", "profile-edit-inactivatefeed",
+            "profile-edit-allowfriendrequests", "post-check-sum"
     };
 
     public static final String[] FIELD_NAMES_SEARCH = new String[]{"name", "post-check-sum"};
@@ -77,7 +77,7 @@ public class ProfileClient extends DefaultClient {
         mProfileData = pd;
     }
 
-    public ProfileClient(){
+    public ProfileClient() {
         mRequestHandler = new RequestHandler();
     }
 
@@ -85,11 +85,11 @@ public class ProfileClient extends DefaultClient {
         try {
             ProfileData profile = null;
             String httpContent = new RequestHandler().post(
-                URL_SEARCH, 
-                RequestHandler.generatePostData(FIELD_NAMES_SEARCH, keyword, checksum),
-                RequestHandler.HEADER_NORMAL
+                    URL_SEARCH,
+                    RequestHandler.generatePostData(FIELD_NAMES_SEARCH, keyword, checksum),
+                    RequestHandler.HEADER_NORMAL
             );
-            
+
             if ("".equals(httpContent)) {
                 throw new WebsiteHandlerException("Could not retrieve the ProfileIDs.");
             } else {
@@ -100,8 +100,8 @@ public class ProfileClient extends DefaultClient {
                         JSONObject tempObj = searchResults.optJSONObject(i);
                         if (tempObj.getString("username").equals(keyword)) {
                             profile = new ProfileData.Builder(
-                        		Long.parseLong(tempObj.getString("userId")),
-                                tempObj.getString("username")
+                                    Long.parseLong(tempObj.getString("userId")),
+                                    tempObj.getString("username")
                             ).gravatarHash(tempObj.optString("gravatarMd5", "")).build();
                             break;
                         }
@@ -110,8 +110,8 @@ public class ProfileClient extends DefaultClient {
                         // Somewhat of a match? Get the "best" one!
                         if (costOld > costCurrent) {
                             profile = new ProfileData.Builder(
-                                Long.parseLong(tempObj.getString("userId")),
-                                tempObj.getString("username")
+                                    Long.parseLong(tempObj.getString("userId")),
+                                    tempObj.getString("username")
                             ).gravatarHash(tempObj.optString("gravatarMd5", "")).build();
                         }
                         costOld = costCurrent;
@@ -129,12 +129,12 @@ public class ProfileClient extends DefaultClient {
 
     public static ProfileData resolveFullProfileDataFromProfileId(final long profileId) throws WebsiteHandlerException {
         try {
-        	String httpContent = new RequestHandler().get(
-                RequestHandler.generateUrl(URL_PROFILE, profileId),
-                RequestHandler.HEADER_NORMAL
+            String httpContent = new RequestHandler().get(
+                    RequestHandler.generateUrl(URL_PROFILE, profileId),
+                    RequestHandler.HEADER_NORMAL
             );
 
-        	if ("".equals(httpContent)) {
+            if ("".equals(httpContent)) {
                 throw new WebsiteHandlerException("Could not retrieve the PersonaID.");
             } else {
                 JSONArray soldierBox = new JSONObject(httpContent).getJSONObject("data").getJSONArray("soldiersBox");
@@ -144,16 +144,16 @@ public class ProfileClient extends DefaultClient {
                 for (int i = 0; i < numPersonas; i++) {
                     JSONObject personaObject = soldierBox.optJSONObject(i).getJSONObject("persona");
                     personaArray[i] = new PersonaData(
-                        personaObject.getLong("personaId"),
-                        personaObject.getString("personaName"),
-                        DataBank.getPlatformIdFromName(personaObject.getString("namespace")),
-                        personaObject.getString("picture")
+                            personaObject.getLong("personaId"),
+                            personaObject.getString("personaName"),
+                            DataBank.getPlatformIdFromName(personaObject.getString("namespace")),
+                            personaObject.getString("picture")
                     );
                 }
                 return new ProfileData.Builder(
-            		profileId, 
-            		personaArray[0].getName()
-        		).persona(personaArray).build();
+                        profileId,
+                        personaArray[0].getName()
+                ).persona(personaArray).build();
             }
         } catch (Exception ex) {
             throw new WebsiteHandlerException(ex.getMessage());
@@ -164,9 +164,9 @@ public class ProfileClient extends DefaultClient {
         try {
             ProfileData profile = resolveFullProfileDataFromProfileId(p.getId());
             return new ProfileData.Builder(
-        		p.getId(), 
-        		p.getUsername()
-    		).persona(profile.getPersonaArray()
+                    p.getId(),
+                    p.getUsername()
+            ).persona(profile.getPersonaArray()
             ).gravatarHash(profile.getGravatarHash()).build();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -177,18 +177,18 @@ public class ProfileClient extends DefaultClient {
     public PersonaStats getStats(String personaName, long personaId, int platformId) throws WebsiteHandlerException {
         try {
             String content = mRequestHandler.get(
-                RequestHandler.generateUrl(URL_OVERVIEW, personaId, platformId),
-                RequestHandler.HEADER_NORMAL
+                    RequestHandler.generateUrl(URL_OVERVIEW, personaId, platformId),
+                    RequestHandler.HEADER_NORMAL
             );
 
             JSONObject dataObject = new JSONObject(content).getJSONObject("data");
             if (dataObject.isNull("overviewStats")) {
                 return new PersonaStats(
-            		mProfileData.getUsername(),
-            		mProfileData.getId(), 
-            		personaName, 
-            		personaId,
-                    platformId
+                        mProfileData.getUsername(),
+                        mProfileData.getId(),
+                        personaName,
+                        personaId,
+                        platformId
                 );
             }
 
@@ -198,47 +198,47 @@ public class ProfileClient extends DefaultClient {
             JSONObject currRankInfo = dataObject.getJSONObject("currentRankNeeded");
 
             return new PersonaStats(
-                mProfileData.getUsername(), 
-                mProfileData.getPersona(0).getName(),
-                currRankInfo.getString("name"),
-                statsOverview.getLong("rank"), 
-                mProfileData.getPersona(0).getId(), 
-                mProfileData.getId(), 
-                mProfileData.getPersona(0).getPlatformId(),
-                statsOverview.getLong("timePlayed"),
-                currRankInfo.getLong("pointsNeeded"),
-                nextRankInfo.getLong("pointsNeeded"),
-                statsOverview.getInt("kills"),
-                statsOverview.getInt("killAssists"),
-                statsOverview.getInt("vehiclesDestroyed"),
-                statsOverview.getInt("vehiclesDestroyedAssists"),
-                statsOverview.getInt("heals"),
-                statsOverview.getInt("revives"),
-                statsOverview.getInt("repairs"),
-                statsOverview.getInt("resupplies"),
-                statsOverview.getInt("deaths"),
-                statsOverview.getInt("numWins"),
-                statsOverview.getInt("numLosses"),
-                statsOverview.getDouble("kdRatio"),
-                statsOverview.getDouble("accuracy"),
-                statsOverview.getDouble("longestHeadshot"),
-                statsOverview.getDouble("killStreakBonus"),
-                statsOverview.getDouble("elo"),
-                statsOverview.getDouble("scorePerMinute"),
-                kitScores.getLong("1"), kitScores.getLong("2"),
-                kitScores.getLong("32"), kitScores.getLong("8"),
-                statsOverview.getLong("sc_vehicle"),
-                statsOverview.getLong("combatScore"),
-                statsOverview.getLong("sc_award"),
-                statsOverview.getLong("sc_unlock"),
-                statsOverview.getLong("totalScore")
+                    mProfileData.getUsername(),
+                    mProfileData.getPersona(0).getName(),
+                    currRankInfo.getString("name"),
+                    statsOverview.getLong("rank"),
+                    mProfileData.getPersona(0).getId(),
+                    mProfileData.getId(),
+                    mProfileData.getPersona(0).getPlatformId(),
+                    statsOverview.getLong("timePlayed"),
+                    currRankInfo.getLong("pointsNeeded"),
+                    nextRankInfo.getLong("pointsNeeded"),
+                    statsOverview.getInt("kills"),
+                    statsOverview.getInt("killAssists"),
+                    statsOverview.getInt("vehiclesDestroyed"),
+                    statsOverview.getInt("vehiclesDestroyedAssists"),
+                    statsOverview.getInt("heals"),
+                    statsOverview.getInt("revives"),
+                    statsOverview.getInt("repairs"),
+                    statsOverview.getInt("resupplies"),
+                    statsOverview.getInt("deaths"),
+                    statsOverview.getInt("numWins"),
+                    statsOverview.getInt("numLosses"),
+                    statsOverview.getDouble("kdRatio"),
+                    statsOverview.getDouble("accuracy"),
+                    statsOverview.getDouble("longestHeadshot"),
+                    statsOverview.getDouble("killStreakBonus"),
+                    statsOverview.getDouble("elo"),
+                    statsOverview.getDouble("scorePerMinute"),
+                    kitScores.getLong("1"), kitScores.getLong("2"),
+                    kitScores.getLong("32"), kitScores.getLong("8"),
+                    statsOverview.getLong("sc_vehicle"),
+                    statsOverview.getLong("combatScore"),
+                    statsOverview.getLong("sc_award"),
+                    statsOverview.getLong("sc_unlock"),
+                    statsOverview.getLong("totalScore")
             );
         } catch (Exception ex) {
             throw new WebsiteHandlerException(ex.getMessage());
         }
     }
 
-    public HashMap<Long, UnlockDataWrapper> getUnlocks(final int minCompletion) throws WebsiteHandlerException {
+    public HashMap<Long, UnlockDataWrapper> getUnlocks(final int minCompletion, String user) throws WebsiteHandlerException {
         try {
             HashMap<Long, UnlockDataWrapper> unlockDataMap = new HashMap<Long, UnlockDataWrapper>();
             List<UnlockData> weaponArray;
@@ -248,7 +248,7 @@ public class ProfileClient extends DefaultClient {
             List<UnlockData> skillArray;
             List<UnlockData> unlockArray;
 
-            for (SimplePersona persona : user().getPersonas()) {
+            for (SimplePersona persona : user(user).getPersonas()) {
                 weaponArray = new ArrayList<UnlockData>();
                 attachmentArray = new ArrayList<UnlockData>();
                 kitUnlockArray = new ArrayList<UnlockData>();
@@ -257,21 +257,21 @@ public class ProfileClient extends DefaultClient {
                 unlockArray = new ArrayList<UnlockData>();
 
                 String content = mRequestHandler.get(
-                    RequestHandler.generateUrl(
-                		URL_UNLOCKS, 
-                		persona.getPersonaId(),
-                        Platform.resolveIdFromPlatformName(persona.getPlatform())
-                    ),
-                    RequestHandler.HEADER_NORMAL
+                        RequestHandler.generateUrl(
+                                URL_UNLOCKS,
+                                persona.getPersonaId(),
+                                Platform.resolveIdFromPlatformName(persona.getPlatform())
+                        ),
+                        RequestHandler.HEADER_NORMAL
                 );
 
                 JSONObject dataObject = new JSONObject(content).getJSONObject("data");
                 JSONArray unlockResults = dataObject.optJSONArray("unlocks");
                 if (dataObject.isNull("unlocks") || unlockResults.length() == 0) {
                     unlockDataMap.put(
-                		persona.getPersonaId(),
-                        new UnlockDataWrapper(null, null, null, null, null, null)
-            		);
+                            persona.getPersonaId(),
+                            new UnlockDataWrapper(null, null, null, null, null, null)
+                    );
                     continue;
                 }
 
@@ -310,16 +310,16 @@ public class ProfileClient extends DefaultClient {
                 Collections.sort(unlockArray, new UnlockComparator());
 
                 unlockDataMap.put(
-            		persona.getPersonaId(),
-                    new UnlockDataWrapper(
-                		weaponArray, 
-                		attachmentArray,
-                        kitUnlockArray, 
-                        vehicleUpgradeArray,
-                        skillArray, 
-                        unlockArray
-                    )
-        		);
+                        persona.getPersonaId(),
+                        new UnlockDataWrapper(
+                                weaponArray,
+                                attachmentArray,
+                                kitUnlockArray,
+                                vehicleUpgradeArray,
+                                skillArray,
+                                unlockArray
+                        )
+                );
             }
             return unlockDataMap;
         } catch (Exception ex) {
@@ -330,11 +330,11 @@ public class ProfileClient extends DefaultClient {
     public UnlockData getUnlockDataFromJSON(JSONObject row, double minCompletion) throws WebsiteHandlerException {
         try {
             final String[] unlockCategories = {
-        		UnlockData.CATEGORY_WEAPON,
-                UnlockData.CATEGORY_ATTACHMENT,
-                UnlockData.CATEGORY_VEHICLE, 
-                UnlockData.CATEGORY_KIT,
-                UnlockData.CATEGORY_SKILL
+                    UnlockData.CATEGORY_WEAPON,
+                    UnlockData.CATEGORY_ATTACHMENT,
+                    UnlockData.CATEGORY_VEHICLE,
+                    UnlockData.CATEGORY_KIT,
+                    UnlockData.CATEGORY_SKILL
             };
 
             for (String category : unlockCategories) {
@@ -350,14 +350,14 @@ public class ProfileClient extends DefaultClient {
                 }
 
                 return new UnlockData(
-                    row.optInt("kit", 0), 
-                    unlockDetails.getDouble("completion"),
-                    unlockDetails.optLong("valueNeeded", 0),
-                    unlockDetails.optLong("actualValue", 0),
-                    row.getString("parentId"),
-                    detailObject.getString("unlockId"),
-                    unlockDetails.getString("codeNeeded"), 
-                    category
+                        row.optInt("kit", 0),
+                        unlockDetails.getDouble("completion"),
+                        unlockDetails.optLong("valueNeeded", 0),
+                        unlockDetails.optLong("actualValue", 0),
+                        row.getString("parentId"),
+                        detailObject.getString("unlockId"),
+                        unlockDetails.getString("codeNeeded"),
+                        category
                 );
             }
             return null;
@@ -365,13 +365,14 @@ public class ProfileClient extends DefaultClient {
             throw new WebsiteHandlerException(ex.getMessage());
         }
     }
+
     @Deprecated
     public ProfileInformation getInformation(Context context) throws WebsiteHandlerException {
         try {
             List<PlatoonData> platoonDataArray = new ArrayList<PlatoonData>();
             String httpContent = mRequestHandler.get(
-                RequestHandler.generateUrl(URL_INFO, mProfileData.getUsername()),
-                RequestHandler.HEADER_AJAX
+                    RequestHandler.generateUrl(URL_INFO, mProfileData.getUsername()),
+                    RequestHandler.HEADER_AJAX
             );
 
             if ("".equals(httpContent)) {
@@ -411,61 +412,61 @@ public class ProfileClient extends DefaultClient {
                     JSONObject personaObject = currItem.getJSONObject("persona");
 
                     personaArray[i] = new PersonaData(
-                        Long.parseLong(personaObject.getString("personaId")),
-                        (personaObject.isNull("personaName") ? username : personaObject.getString("personaName")),
-                        DataBank.getPlatformIdFromName(personaObject.getString("namespace")),
-                        personaObject.getString("picture")
+                            Long.parseLong(personaObject.getString("personaId")),
+                            (personaObject.isNull("personaName") ? username : personaObject.getString("personaName")),
+                            DataBank.getPlatformIdFromName(personaObject.getString("namespace")),
+                            personaObject.getString("picture")
                     );
                 }
 
-                if( numPlatoons > 0 ) {
-                	for (int i = 0; i < numPlatoons; i++) {
-	                    currItem = platoonArray.getJSONObject(i);
-	                    String title = currItem.getString("id") + ".jpeg";
-	                    if (!CacheHandler.isCached(context, title)) {
-	                        PlatoonClient.cacheBadge(
-	                            context, 
-	                            currItem.getString("badgePath"), 
-	                            title,
-	                            Constants.DEFAULT_BADGE_SIZE
-	                        );
-	                    }
-	
-	                    platoonDataArray.add(
-	                        new PlatoonData(
-	                    		Long.parseLong(currItem.getString("id")), 
-	                    		currItem.getString("name"), 
-	                    		currItem.getString("tag"), 
-	                    		currItem.getInt("platform"), 
-	                    		currItem.getInt("fanCounter"),
-	                    		currItem.getInt("memberCounter"), 
-	                    		!currItem.getBoolean("hidden")
-	                        )
-	                    );
-	                }	
+                if (numPlatoons > 0) {
+                    for (int i = 0; i < numPlatoons; i++) {
+                        currItem = platoonArray.getJSONObject(i);
+                        String title = currItem.getString("id") + ".jpeg";
+                        if (!CacheHandler.isCached(context, title)) {
+                            PlatoonClient.cacheBadge(
+                                    context,
+                                    currItem.getString("badgePath"),
+                                    title,
+                                    Constants.DEFAULT_BADGE_SIZE
+                            );
+                        }
+
+                        platoonDataArray.add(
+                                new PlatoonData(
+                                        Long.parseLong(currItem.getString("id")),
+                                        currItem.getString("name"),
+                                        currItem.getString("tag"),
+                                        currItem.getInt("platform"),
+                                        currItem.getInt("fanCounter"),
+                                        currItem.getInt("memberCounter"),
+                                        !currItem.getBoolean("hidden")
+                                )
+                        );
+                    }
                 }
-                	
+
                 ProfileInformation.Builder tempProfile = new ProfileInformation.Builder(
-            		Long.parseLong(userInfo.getString("userId")),
-            		username
-        		);
+                        Long.parseLong(userInfo.getString("userId")),
+                        username
+                );
                 ProfileInformation profile = tempProfile
-            		.name(userInfo.optString("name", "N/A"))
-                	.age(userInfo.optInt("age", 0))
-                	.birthday(userInfo.optLong("birthdate", 0))
-                	.loginDate(userInfo.optLong("lastLogin", 0))
-                	.statusMessage(statusMessage.optString("statusMessage", ""))
-                	.statusDate(statusMessage.optLong("statusMessageChanged", 0))
-                	.persona(personaArray)
-                	.presentation(userInfo.isNull("presentation") ? "" : userInfo.getString("presentation"))
-                	.location(userInfo.optString("location", "us"))
-                	.server(playingOn)
-                	.allowFriendRequests(userInfo.optBoolean("allowFriendRequests", true))
-                	.isOnline(presenceObject.getBoolean("isOnline"))
-                	.isPlaying(presenceObject.getBoolean("isPlaying"))
-                	.isFriend(profileCommonObject.getString("friendStatus").equals("ACCEPTED")) 
-                    .platoons(platoonDataArray)
-                    .build();
+                        .name(userInfo.optString("name", "N/A"))
+                        .age(userInfo.optInt("age", 0))
+                        .birthday(userInfo.optLong("birthdate", 0))
+                        .loginDate(userInfo.optLong("lastLogin", 0))
+                        .statusMessage(statusMessage.optString("statusMessage", ""))
+                        .statusDate(statusMessage.optLong("statusMessageChanged", 0))
+                        .persona(personaArray)
+                        .presentation(userInfo.isNull("presentation") ? "" : userInfo.getString("presentation"))
+                        .location(userInfo.optString("location", "us"))
+                        .server(playingOn)
+                        .allowFriendRequests(userInfo.optBoolean("allowFriendRequests", true))
+                        .isOnline(presenceObject.getBoolean("isOnline"))
+                        .isPlaying(presenceObject.getBoolean("isPlaying"))
+                        .isFriend(profileCommonObject.getString("friendStatus").equals("ACCEPTED"))
+                        .platoons(platoonDataArray)
+                        .build();
                 profile.generateSerializedState();
                 return profile;
             }
@@ -478,11 +479,11 @@ public class ProfileClient extends DefaultClient {
         List<GeneralSearchResult> results = new ArrayList<GeneralSearchResult>();
         try {
             String httpContent = new RequestHandler().post(
-                URL_SEARCH, 
-                RequestHandler.generatePostData(FIELD_NAMES_SEARCH, keyword, checksum), 
-                RequestHandler.HEADER_NORMAL
+                    URL_SEARCH,
+                    RequestHandler.generatePostData(FIELD_NAMES_SEARCH, keyword, checksum),
+                    RequestHandler.HEADER_NORMAL
             );
-            
+
             if (!"".equals(httpContent)) {
                 JSONArray searchResultsProfile = new JSONObject(httpContent).getJSONObject("data").getJSONArray("matches");
                 if (searchResultsProfile.length() > 0) {
@@ -490,19 +491,19 @@ public class ProfileClient extends DefaultClient {
                         JSONObject tempPersonaObj = searchResultsProfile.optJSONObject(i);
                         JSONObject tempUserObj = tempPersonaObj.getJSONObject("user");
                         results.add(
-                            new GeneralSearchResult(
-                                new ProfileData.Builder(
-                            		Long.parseLong(tempUserObj.getString("userId")),
-                            		tempUserObj.getString("username")
-                        		).gravatarHash(tempUserObj.optString("gravatarMd5")).persona(
-                        			new PersonaData(
-                    					Long.parseLong(tempPersonaObj.getString("personaId")),
-                    					tempPersonaObj.getString("personaName"),
-                    					DataBank.getPlatformIdFromName(tempPersonaObj.getString("namespace")),
-                    					""
-                					)
-                				).build()
-                            )
+                                new GeneralSearchResult(
+                                        new ProfileData.Builder(
+                                                Long.parseLong(tempUserObj.getString("userId")),
+                                                tempUserObj.getString("username")
+                                        ).gravatarHash(tempUserObj.optString("gravatarMd5")).persona(
+                                                new PersonaData(
+                                                        Long.parseLong(tempPersonaObj.getString("personaId")),
+                                                        tempPersonaObj.getString("personaName"),
+                                                        DataBank.getPlatformIdFromName(tempPersonaObj.getString("namespace")),
+                                                        ""
+                                                )
+                                        ).build()
+                                )
                         );
                     }
                 }
@@ -513,22 +514,22 @@ public class ProfileClient extends DefaultClient {
         return results;
     }
 
-    public Map<Long, List<WeaponDataWrapper>> getWeapons() {
+    public Map<Long, List<WeaponDataWrapper>> getWeapons(String user) {
         try {
             Map<Long, List<WeaponDataWrapper>> weaponDataMap = new HashMap<Long, List<WeaponDataWrapper>>();
-            for (SimplePersona persona : user().getPersonas()) {
-            	List<WeaponDataWrapper> weaponDataArray = new ArrayList<WeaponDataWrapper>();
-            	String httpContent = mRequestHandler.get(
-                    RequestHandler.generateUrl(
-                		URL_WEAPONS, 
-                		persona.getPersonaId(),
-                		Platform.resolveIdFromPlatformName(persona.getPlatform())
-            		),
-                    RequestHandler.HEADER_NORMAL
+            for (SimplePersona persona : user(user).getPersonas()) {
+                List<WeaponDataWrapper> weaponDataArray = new ArrayList<WeaponDataWrapper>();
+                String httpContent = mRequestHandler.get(
+                        RequestHandler.generateUrl(
+                                URL_WEAPONS,
+                                persona.getPersonaId(),
+                                Platform.resolveIdFromPlatformName(persona.getPlatform())
+                        ),
+                        RequestHandler.HEADER_NORMAL
                 );
 
                 if (httpContent != null && !httpContent.equals("")) {
-                    JSONObject baseObject = new JSONObject(httpContent)                            .getJSONObject("data");
+                    JSONObject baseObject = new JSONObject(httpContent).getJSONObject("data");
                     JSONObject weaponInfoObject = baseObject.getJSONObject("gadgetsLocale").getJSONObject("weapons");
                     JSONArray weaponStats = baseObject.getJSONArray("mainWeaponStats");
                     JSONObject unlockMap = baseObject.getJSONObject("unlocksAdded");
@@ -558,34 +559,34 @@ public class ProfileClient extends DefaultClient {
                         }
                         /* TODO: VALIDATE BURST MODES */
                         weaponDataArray.add(
-                            new WeaponDataWrapper(
-                                numUnlocked, 
-                                new WeaponInfo(
-                            		currentItem.getString("guid"), 
-                            		currentItem.getString("name"), 
-                            		currentItem.getString("slug"), 
-                            		currentWeapon.optInt("rateOfFire", 1), 
-                            		WeaponInfo.RANGE_VLONG,
-                            		"Marshmallows", currentWeapon.getBoolean("fireModeAuto"),
-                                    currentWeapon.getBoolean("fireModeBurst"),
-                                    currentWeapon.getBoolean("fireModeSingle")
-                        		), 
-	                            new WeaponStats(
-	                                currentItem.getString("name"), 
-	                                currentItem.getString("guid"), 
-	                                currentItem.getString("slug"),
-	                                currentItem.getInt("kills"), 
-	                                currentItem.getInt("headshots"), 
-	                                currentItem.optInt("kitId", 999), 
-	                                currentItem.getLong("shotsFired"), 
-	                                currentItem.getLong("shotsHit"), 
-	                                currentItem.getLong("timeEquipped"), 
-	                                currentItem.getDouble("accuracy"), 
-	                                currentItem.getDouble("serviceStars"), 
-	                                currentItem.optDouble("serviceStarProgress", 0.0)
-	                            ), 
-	                            unlocks
-                            )
+                                new WeaponDataWrapper(
+                                        numUnlocked,
+                                        new WeaponInfo(
+                                                currentItem.getString("guid"),
+                                                currentItem.getString("name"),
+                                                currentItem.getString("slug"),
+                                                currentWeapon.optInt("rateOfFire", 1),
+                                                WeaponInfo.RANGE_VLONG,
+                                                "Marshmallows", currentWeapon.getBoolean("fireModeAuto"),
+                                                currentWeapon.getBoolean("fireModeBurst"),
+                                                currentWeapon.getBoolean("fireModeSingle")
+                                        ),
+                                        new WeaponStats(
+                                                currentItem.getString("name"),
+                                                currentItem.getString("guid"),
+                                                currentItem.getString("slug"),
+                                                currentItem.getInt("kills"),
+                                                currentItem.getInt("headshots"),
+                                                currentItem.optInt("kitId", 999),
+                                                currentItem.getLong("shotsFired"),
+                                                currentItem.getLong("shotsHit"),
+                                                currentItem.getLong("timeEquipped"),
+                                                currentItem.getDouble("accuracy"),
+                                                currentItem.getDouble("serviceStars"),
+                                                currentItem.optDouble("serviceStarProgress", 0.0)
+                                        ),
+                                        unlocks
+                                )
                         );
                     }
                 }
@@ -602,20 +603,20 @@ public class ProfileClient extends DefaultClient {
         }
     }
 
-    public HashMap<Long, WeaponDataWrapper> getWeapon(WeaponInfo weaponInfo, WeaponStats weaponStats) {
+    public HashMap<Long, WeaponDataWrapper> getWeapon(WeaponInfo weaponInfo, WeaponStats weaponStats, String user) {
         try {
             List<UnlockData> unlockArray;
             HashMap<Long, WeaponDataWrapper> weaponDataArray = new HashMap<Long, WeaponDataWrapper>();
 
-            for (SimplePersona persona : user().getPersonas()) {
+            for (SimplePersona persona : user(user).getPersonas()) {
                 String httpContent = mRequestHandler.get(
-                    RequestHandler.generateUrl(
-                        URL_WEAPONS_INFO,
-                        persona.getPersonaName(),
-                        persona.getPersonaId(),
-                        weaponStats.getSlug(), 
-                        Platform.resolveIdFromPlatformName(persona.getPlatform())
-                    ), RequestHandler.HEADER_NORMAL
+                        RequestHandler.generateUrl(
+                                URL_WEAPONS_INFO,
+                                persona.getPersonaName(),
+                                persona.getPersonaId(),
+                                weaponStats.getSlug(),
+                                Platform.resolveIdFromPlatformName(persona.getPlatform())
+                        ), RequestHandler.HEADER_NORMAL
                 );
 
                 if (httpContent != null && !httpContent.equals("")) {
@@ -628,20 +629,20 @@ public class ProfileClient extends DefaultClient {
                         JSONObject unlockObjectBy = unlockObject.getJSONObject("unlockedBy");
 
                         unlockArray.add(
-                            new UnlockData(
-                                weaponStats.getKitId(), 
-                                unlockObjectBy.optDouble("completion", 0), 
-                                unlockObjectBy.optLong("valueNeeded", 0), 
-                                unlockObjectBy.optLong("actualValue", 0), weaponStats.getName(),
-                                unlockObject.getString("unlockId"),
-                                unlockObjectBy.getString("codeNeeded"),
-                                UnlockData.CATEGORY_ATTACHMENT
-                            )
+                                new UnlockData(
+                                        weaponStats.getKitId(),
+                                        unlockObjectBy.optDouble("completion", 0),
+                                        unlockObjectBy.optLong("valueNeeded", 0),
+                                        unlockObjectBy.optLong("actualValue", 0), weaponStats.getName(),
+                                        unlockObject.getString("unlockId"),
+                                        unlockObjectBy.getString("codeNeeded"),
+                                        UnlockData.CATEGORY_ATTACHMENT
+                                )
                         );
                     }
                     Collections.sort(unlockArray, new UnlockComparator());
                     weaponDataArray.put(persona.getPersonaId(),
-                        new WeaponDataWrapper(0, weaponInfo, weaponStats, unlockArray)
+                            new WeaponDataWrapper(0, weaponInfo, weaponStats, unlockArray)
                     );
                 }
             }
@@ -664,7 +665,7 @@ public class ProfileClient extends DefaultClient {
 
             // Get the actual stream
             HttpEntity httpEntity = new RequestHandler().getHttpEntity(
-                RequestHandler.generateUrl(Constants.URL_GRAVATAR, h, s, s), false
+                    RequestHandler.generateUrl(Constants.URL_GRAVATAR, h, s, s), false
             );
 
             int bytesRead;
@@ -699,7 +700,11 @@ public class ProfileClient extends DefaultClient {
         }
     }
 
-    private User user(){
-        return BF3Droid.getUser();
+    private User user(String user) {
+        if (user.equals(User.USER)) {
+            return BF3Droid.getUser();
+        } else {
+            return BF3Droid.getGuest();
+        }
     }
 }

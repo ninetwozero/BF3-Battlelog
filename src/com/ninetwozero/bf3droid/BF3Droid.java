@@ -71,4 +71,12 @@ public class BF3Droid extends Application {
     public static void setGuest(User guest) {
         BF3Droid.guest = guest;
     }
+
+    public static User getUserBy(String user){
+        if(user.equals(User.USER)){
+            return getUser();
+        } else {
+            return getGuest();
+        }
+    }
 }

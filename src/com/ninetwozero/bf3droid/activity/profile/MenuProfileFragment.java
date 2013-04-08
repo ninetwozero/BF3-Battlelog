@@ -118,14 +118,16 @@ public class MenuProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(context, WeaponListActivity.class)
-                        .putExtra("profile", SessionKeeper.getProfileData()));
+                        .putExtra("profile", SessionKeeper.getProfileData())
+                        .putExtra("user", User.USER));
             }
         });
         view.findViewById(R.id.button_unlocks).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(context, UnlockActivity.class)
-                        .putExtra("profile", SessionKeeper.getProfileData()));
+                        .putExtra("profile", SessionKeeper.getProfileData())
+                        .putExtra("user", User.USER));
             }
         });
         view.findViewById(R.id.button_assignments).setOnClickListener(new OnClickListener() {
@@ -164,7 +166,7 @@ public class MenuProfileFragment extends Fragment {
         return getUser().selectedPersona();
     }
 
-    private User getUser(){
+    private User getUser() {
         return BF3Droid.getUser();
     }
 }

@@ -31,6 +31,7 @@ import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
 import com.ninetwozero.bf3droid.datatype.*;
 import com.ninetwozero.bf3droid.http.ProfileClient;
+import com.ninetwozero.bf3droid.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +116,7 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
         protected Boolean doInBackground(ProfileData... arg0) {
             try {
                 ProfileClient profileHandler = new ProfileClient();
-                unlocks = profileHandler.getUnlocks(1);
+                unlocks = profileHandler.getUnlocks(1, getIntent().getStringExtra("user"));
                 return (unlocks != null);
             } catch (WebsiteHandlerException ex) {
                 Log.i("UnlockActivity", ex.toString());
@@ -192,6 +193,10 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
     }
 
     private long selectedPersonaId(){
-        return BF3Droid.getUser().selectedPersona().getPersonaId();
+        return user(getIntent().getStringExtra("user")).selectedPersona().getPersonaId();
+    }
+
+    private User user(String user){
+            return BF3Droid.getUserBy(user);
     }
 }

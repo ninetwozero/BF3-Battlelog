@@ -93,7 +93,7 @@ public class ComFriendFragment extends Bf3ListFragment implements ProfileLoader.
         listView.setAdapter(friendListAdapter = new FriendListAdapter(context, null, layoutInflater));
         ((Activity) context).registerForContextMenu(listView);
 
-        comClient = new COMClient(BF3Droid.getUser().getId(), BF3Droid.getCheckSum());
+        comClient = new COMClient(user(User.USER).getId(), BF3Droid.getCheckSum());
     }
 
     public void reload() {
@@ -152,7 +152,9 @@ public class ComFriendFragment extends Bf3ListFragment implements ProfileLoader.
             } else if (selectedItem.getItemId() == MENU_VIEW_SOLDIER) {
                 viewSoldier();
             } else if (selectedItem.getItemId() == MENU_VIEW_UNLOCKS) {
-                startActivity(new Intent(context, UnlockActivity.class).putExtra("profile", (ProfileData) selectedInfo.targetView.getTag())
+                startActivity(new Intent(context, UnlockActivity.class)
+                        .putExtra("profile", (ProfileData) selectedInfo.targetView.getTag())
+                        .putExtra("user", User.GUEST)
                 );
             } else if (selectedItem.getItemId() == MENU_COMPARE_BATTLESCARS) {
                 startActivity(
@@ -192,6 +194,7 @@ public class ComFriendFragment extends Bf3ListFragment implements ProfileLoader.
 
     @Override
     public void onLoadFinished(UserInfo userInfo) {
+        saveToApp(userInfo);
         closeLoadingDialog(ComFriendFragment.class.getSimpleName());
         menuActionAfterLoad();
     }
@@ -199,6 +202,11 @@ public class ComFriendFragment extends Bf3ListFragment implements ProfileLoader.
     @Override
     public void onListItemClick(ListView lv, View v, int position, long id) {
         getActivity().openContextMenu(v);
+    }
+
+    private void saveToApp(UserInfo userInfo){
+        user(User.GUEST).setPersonas(userInfo.getPersonas());
+        user(User.GUEST).setPlatoons(userInfo.getPlatoons());
     }
 
     private class AsyncRefresh extends AsyncTask<String, Integer, Boolean> {
@@ -267,13 +275,5 @@ public class ComFriendFragment extends Bf3ListFragment implements ProfileLoader.
     public void onResume() {
         super.onResume();
         reload();
-    }
-
-    private long getUserId() {
-        return user().getId();
-    }
-
-    private User user() {
-        return BF3Droid.getGuest();
     }
 }
