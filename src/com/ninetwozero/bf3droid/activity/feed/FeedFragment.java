@@ -47,6 +47,7 @@ import com.ninetwozero.bf3droid.http.FeedClient;
 import com.ninetwozero.bf3droid.loader.Bf3Loader;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.misc.Constants;
+import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.server.Bf3ServerCall;
 
@@ -169,7 +170,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
     }
 
     public void reload() {
-        new AsyncRefresh(context, personaId()).execute();
+        new AsyncRefresh(context, user().getId(), personaId()).execute();
         //getLoaderManager().restartLoader(FEED_ACTION, bundle, this);
     }
 
@@ -202,11 +203,15 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
         getActivity().openContextMenu(v);
     }
 
-    private long personaId() {
+    private long personaId(){
+        return user().selectedPersona().getPersonaId();
+    }
+
+    private User user() {
         if (getArguments() != null && getArguments().containsKey("user")) {
-            return BF3Droid.getUserBy(getArguments().getString("user")).selectedPersona().getPersonaId();
+            return BF3Droid.getUserBy(getArguments().getString("user"));
         } else {
-            return BF3Droid.getUser().selectedPersona().getPersonaId();
+            return BF3Droid.getUser();
         }
     }
 
@@ -252,11 +257,13 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
     private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
         private final Context context;
-        private final long activeProfileId;
+        private final long userId;
+        private final long personaId;
 
-        public AsyncRefresh(Context c, long pId) {
+        public AsyncRefresh(Context c, long userId, long personaId) {
             this.context = c;
-            this.activeProfileId = pId;
+            this.userId = userId;
+            this.personaId = personaId;
         }
 
         @Override
@@ -266,7 +273,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
         @Override
         protected Boolean doInBackground(Void... arg0) {
             try {
-                feedItems = new FeedClient(id, feedType).get(context, Constants.DEFAULT_NUM_FEED, activeProfileId);
+                feedItems = new FeedClient(userId, feedType).get(context, Constants.DEFAULT_NUM_FEED, personaId);
                 return (feedItems != null);
             } catch (WebsiteHandlerException ex) {
                 Log.i("FeedFragment", ex.toString());

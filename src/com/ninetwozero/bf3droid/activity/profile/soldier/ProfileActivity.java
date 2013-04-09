@@ -78,7 +78,7 @@ public class ProfileActivity extends CustomFragmentActivity {
             mListFragments.add(fragmentStats);
             mListFragments.add(fragmentFeed);
 
-            fragmentFeed.setTitle(BF3Droid.getUserBy(getIntent().getStringExtra("user")).getName());
+            fragmentFeed.setTitle(BF3Droid.getUserBy(userFromIntent()).getName());
             fragmentFeed.setType(FeedClient.TYPE_PROFILE);
             fragmentFeed.setId(BF3Droid.getUser().getId());
             fragmentFeed.setCanWrite(false);
@@ -100,6 +100,10 @@ public class ProfileActivity extends CustomFragmentActivity {
             mViewPager.setCurrentItem(0);
             mViewPager.setOffscreenPageLimit(2);
         }
+    }
+
+    private String userFromIntent() {
+        return getIntent().getStringExtra("user");
     }
 
     @Override
