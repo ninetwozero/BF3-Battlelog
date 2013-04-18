@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -38,6 +37,7 @@ import com.ninetwozero.bf3droid.activity.profile.assignments.AssignmentActivity;
 import com.ninetwozero.bf3droid.activity.profile.soldier.CompareActivity;
 import com.ninetwozero.bf3droid.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.bf3droid.activity.profile.soldier.ProfileLoader;
+import com.ninetwozero.bf3droid.activity.profile.soldier.restorer.UserInfoRestorer;
 import com.ninetwozero.bf3droid.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.bf3droid.adapter.FriendListAdapter;
 import com.ninetwozero.bf3droid.datatype.FriendListDataWrapper;
@@ -46,7 +46,6 @@ import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.datatype.WebsiteHandlerException;
 import com.ninetwozero.bf3droid.http.COMClient;
 import com.ninetwozero.bf3droid.http.ProfileClient;
-import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
 import com.ninetwozero.bf3droid.model.User;
@@ -141,37 +140,53 @@ public class ComFriendFragment extends Bf3ListFragment implements ProfileLoader.
             ProfileData profileData = (ProfileData) selectedInfo.targetView.getTag();
 
             if (selectedItem.getItemId() == MENU_OPEN_CHAT) {
-                startActivity(
-                        new Intent(context, ChatActivity.class)
-                                .putExtra("activeUser", SessionKeeper.getProfileData())
-                                .putExtra("otherUser", profileData)
-                );
+                gotToChat(profileData);
             } else if (selectedItem.getItemId() == MENU_ACCEPT_REQUEST || selectedItem.getItemId() == MENU_REJECT_REQUEST) {
                 new AsyncRequest(profileData.getId(), (selectedItem.getItemId() == MENU_ACCEPT_REQUEST))
                         .execute(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
             } else if (selectedItem.getItemId() == MENU_VIEW_SOLDIER) {
-                viewSoldier();
+                goToProfileView();
             } else if (selectedItem.getItemId() == MENU_VIEW_UNLOCKS) {
-                startActivity(new Intent(context, UnlockActivity.class)
-                        .putExtra("profile", (ProfileData) selectedInfo.targetView.getTag())
-                        .putExtra("user", User.GUEST)
-                );
+                goToUnlocks();
             } else if (selectedItem.getItemId() == MENU_COMPARE_BATTLESCARS) {
-                startActivity(
-                        new Intent(context, CompareActivity.class)
-                                .putExtra("profile1", SessionKeeper.getProfileData())
-                                .putExtra("profile2", ProfileClient.resolveFullProfileDataFromProfileId(profileData.getId()))
-                );
+                doCompare(profileData);
                 /* TODO: Move profile2 population into ASYNCTASK */
             } else if (selectedItem.getItemId() == MENU_VIEW_ASSIGNMENTS) {
-                startActivity(new Intent(context, AssignmentActivity.class).putExtra("user", User.GUEST));
+                goToAssignments();
             }
         } catch (Exception ex) {
             Log.e(ComFriendFragment.class.getSimpleName(), ex.toString());
         }
     }
 
-    private void viewSoldier() {
+    private void gotToChat(ProfileData profileData) {
+        startActivity(
+                new Intent(context, ChatActivity.class)
+                        .putExtra("activeUser", SessionKeeper.getProfileData())
+                        .putExtra("otherUser", profileData)
+        );
+    }
+
+    private void goToUnlocks() {
+        startActivity(new Intent(context, UnlockActivity.class)
+                .putExtra("profile", (ProfileData) selectedInfo.targetView.getTag())
+                .putExtra("user", User.GUEST)
+        );
+    }
+
+    private void doCompare(ProfileData profileData) throws WebsiteHandlerException {
+        startActivity(
+                new Intent(context, CompareActivity.class)
+                        .putExtra("profile1", SessionKeeper.getProfileData())
+                        .putExtra("profile2", ProfileClient.resolveFullProfileDataFromProfileId(profileData.getId()))
+        );
+    }
+
+    private void goToAssignments() {
+        startActivity(new Intent(context, AssignmentActivity.class).putExtra("user", User.GUEST));
+    }
+
+    private void goToProfileView() {
         startActivity(new Intent(context, ProfileActivity.class).putExtra("user", User.GUEST));
     }
 
@@ -180,21 +195,9 @@ public class ComFriendFragment extends Bf3ListFragment implements ProfileLoader.
     }
 
     @Override
-    public Loader<CompletedTask> onCreateLoader(int id, Bundle bundle) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<CompletedTask> loader, CompletedTask completedTask) {
-    }
-
-    @Override
-    public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
-    }
-
-    @Override
     public void onLoadFinished(UserInfo userInfo) {
         saveToApp(userInfo);
+        new UserInfoRestorer(context, User.GUEST).save(userInfo);
         closeLoadingDialog(ComFriendFragment.class.getSimpleName());
         menuActionAfterLoad();
     }

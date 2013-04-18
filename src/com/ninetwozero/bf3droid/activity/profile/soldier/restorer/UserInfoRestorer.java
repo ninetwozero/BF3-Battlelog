@@ -4,13 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
 import com.ninetwozero.bf3droid.dao.UserProfileDataDAO;
 import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.datatype.UserInfo;
-import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.table.Personas;
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
 import com.ninetwozero.bf3droid.service.Restorer;
@@ -27,11 +25,11 @@ import static com.ninetwozero.bf3droid.dao.UserProfileDataDAO.userProfileDataToD
 public class UserInfoRestorer extends Restorer<UserInfo> {
 
     private final Context context;
-    private final String user;
+    private final String userType;
 
-    public UserInfoRestorer(Context context, String user) {
+    public UserInfoRestorer(Context context, String userType) {
         this.context = context;
-        this.user = user;
+        this.userType = userType;
     }
 
     @Override
@@ -108,7 +106,7 @@ public class UserInfoRestorer extends Restorer<UserInfo> {
                 UserProfileDataDAO.URI,
                 UserProfileDataDAO.PROJECTION,
                 UserProfileDataDAO.Columns.USER_ID + "=?",
-                new String[]{String.valueOf(user().getId())},
+                new String[]{String.valueOf(userBy(userType).getId())},
                 null
         );
         if (cursor.getCount() > 0) {
@@ -140,14 +138,6 @@ public class UserInfoRestorer extends Restorer<UserInfo> {
     }
 
     private long getUserId() {
-        return user().getId();
-    }
-
-    private User user() {
-        if (user.equals(User.USER)) {
-            return BF3Droid.getUser();
-        } else {
-            return BF3Droid.getGuest();
-        }
+        return userBy(userType).getId();
     }
 }

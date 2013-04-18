@@ -10,10 +10,12 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
 
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.BF3Reload;
 import com.ninetwozero.bf3droid.dialog.ProgressDialogFragment;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.loader.CompletedTask.Result;
+import com.ninetwozero.bf3droid.model.User;
 
 import static com.ninetwozero.bf3droid.loader.CompletedTask.Result.FAILURE;
 import static com.ninetwozero.bf3droid.loader.CompletedTask.Result.SUCCESS;
@@ -86,5 +88,9 @@ public class Bf3Fragment extends Fragment implements LoaderCallbacks<CompletedTa
 
     private FragmentManager getSupportFragmentManager() {
         return getActivity().getSupportFragmentManager();
+    }
+
+    protected User user(String user){
+        return BF3Droid.getUserBy(user);
     }
 }

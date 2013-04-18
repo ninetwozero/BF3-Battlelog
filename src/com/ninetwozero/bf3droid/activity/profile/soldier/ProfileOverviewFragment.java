@@ -34,7 +34,6 @@ import com.ninetwozero.bf3droid.datatype.PlatoonData;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.http.COMClient;
-import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
 
 import java.util.List;
@@ -86,7 +85,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
 
     public final void showProfile() {
 
-        ((TextView) getView().findViewById(R.id.text_username)).setText(user(getArguments().getString("user")).getName());
+        ((TextView) getView().findViewById(R.id.text_username)).setText(user(userFromArgument()).getName());
 
         /*if (data.isPlaying() && data.isOnline()) {
             ((TextView) activity.findViewById(R.id.text_online)).setText(
@@ -113,7 +112,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     }
 
     private void showPlatoons() {
-        platoons = user(getArguments().getString("user")).getPlatoons();
+        platoons = user(userFromArgument()).getPlatoons();
         if (platoons.size() > 0) {
             View convertView;
             LinearLayout platoonWrapper = (LinearLayout) getView().findViewById(R.id.list_platoons);
@@ -154,16 +153,20 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     }
 
     private boolean hasUserInfo(){
-        this.restorer = new UserInfoRestorer(context, getArguments().getString("user"));
+        this.restorer = new UserInfoRestorer(context, userFromArgument());
         UserInfo userInfo = restorer.fetch();
         if(userInfo.isEmpty()){
             return false;
         } else{
-            user(getArguments().getString("user")).setPersonas(userInfo.getPersonas());
-            user(getArguments().getString("user")).setPlatoons(userInfo.getPlatoons());
+            user(userFromArgument()).setPersonas(userInfo.getPersonas());
+            user(userFromArgument()).setPlatoons(userInfo.getPlatoons());
             userProfileData = userInfo.getUserProfileData();
             return  true;
         }
+    }
+
+    private String userFromArgument() {
+        return getArguments().getString("user");
     }
 
     public void reload() {
@@ -205,15 +208,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
         return true;
     }
 
-    private Context getContext() {
-        return getActivity().getApplicationContext();
-    }
-
     private long getUserId() {
-        return user(getArguments().getString("user")).getId();
-    }
-
-    private User user(String user) {
-        return BF3Droid.getUserBy(user);
+        return user(userFromArgument()).getId();
     }
 }

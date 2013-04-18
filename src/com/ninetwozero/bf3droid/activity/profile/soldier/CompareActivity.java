@@ -113,12 +113,12 @@ public class CompareActivity extends CustomFragmentActivity implements DefaultFr
                     this,
                     ProfileStatsFragment.class.getName()));
 
-            /* TODO introduce bundle boolean to decide when to use user and visitor personas
+            /*
             statsFragments[0].setProfileData(profileData[0]);
             statsFragments[1].setProfileData(profileData[1]);*/
 
-            statsFragments[0].setComparing(true);
-            statsFragments[1].setComparing(true);
+            /*statsFragments[0].setComparing(true);
+            statsFragments[1].setComparing(true);*/
 
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
