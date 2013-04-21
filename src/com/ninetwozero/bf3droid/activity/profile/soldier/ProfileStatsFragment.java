@@ -18,8 +18,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
@@ -27,37 +25,25 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3Fragment;
 import com.ninetwozero.bf3droid.activity.profile.soldier.restorer.PersonaStatisticsRestorer;
 import com.ninetwozero.bf3droid.activity.profile.unlocks.UnlockActivity;
-import com.ninetwozero.bf3droid.dao.PersonaStatisticsDAO;
-import com.ninetwozero.bf3droid.dao.RankProgressDAO;
-import com.ninetwozero.bf3droid.dao.ScoreStatisticsDAO;
 import com.ninetwozero.bf3droid.datatype.*;
 import com.ninetwozero.bf3droid.dialog.ListDialogFragment;
-import com.ninetwozero.bf3droid.jsonmodel.soldierstats.PersonaInfo;
-import com.ninetwozero.bf3droid.loader.Bf3Loader;
-import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
 import com.ninetwozero.bf3droid.model.SelectedOption;
 import com.ninetwozero.bf3droid.provider.BusProvider;
-import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.provider.table.RankProgress;
-import com.ninetwozero.bf3droid.server.Bf3ServerCall;
-import com.ninetwozero.bf3droid.util.Platform;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.http.client.methods.HttpGet;
-
 import static com.ninetwozero.bf3droid.misc.NumberFormatter.format;
 
-public class ProfileStatsFragment extends Bf3Fragment {
+public class ProfileStatsFragment extends Bf3Fragment implements ProfileStatsLoader.Callback{
     private Context context;
     private LayoutInflater layoutInflater;
 
@@ -78,8 +64,6 @@ public class ProfileStatsFragment extends Bf3Fragment {
     private RankProgress rankProgress;
     private Map<String, Statistics> personaStatisticsMap;
     private Map<String, Statistics> scoreStatisticsMap;
-    private PersonaInfo personaInfo;
-    private static final int LOADER_STATS = 23;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -132,7 +116,8 @@ public class ProfileStatsFragment extends Bf3Fragment {
         if (dbHasData()) {
             populateView();
         } else {
-            restartLoader();
+            startLoadingDialog(ProfileStatsFragment.class.getSimpleName());
+            new ProfileStatsLoader(this, getContext(), userTypeFromArgument(), getLoaderManager()).restart();
         }
     }
 
@@ -142,10 +127,6 @@ public class ProfileStatsFragment extends Bf3Fragment {
             user(userTypeFromArgument()).selectPersona(selectedOption.getSelectedId());
             getData();
         }
-    }
-
-    private void restartLoader() {
-        getLoaderManager().restartLoader(LOADER_STATS, bundle, this);
     }
 
     private boolean dbHasData() {
@@ -161,46 +142,12 @@ public class ProfileStatsFragment extends Bf3Fragment {
     }
 
     @Override
-    public Loader<CompletedTask> onCreateLoader(int id, Bundle bundle) {
-        startLoadingDialog(ProfileStatsFragment.class.getSimpleName());
-        return new Bf3Loader(getContext(), httpDataStats());
-    }
-
-    private Bf3ServerCall.HttpData httpDataStats() {
-        return new Bf3ServerCall.HttpData(UriFactory.getPersonaOverviewUri(selectedPersonaId(), platformId()), HttpGet.METHOD_NAME);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<CompletedTask> loader, CompletedTask completedTask) {
-        if (isTaskSuccess(completedTask.result)) {
-            processStatsLoaderResult(completedTask);
-        } else {
-            Log.e("ProfileOverviewFragment", "User data extraction failed for " + user(userTypeFromArgument()).getName());
-        }
+    public void onLoadFinished(PersonaOverviewStatistics pos) {
+        rankProgress = pos.getRankProgress();
+        personaStatisticsMap = pos.getPersonaStats();
+        scoreStatisticsMap = pos.getScoreStats();
         closeLoadingDialog(ProfileStatsFragment.class.getSimpleName());
-    }
-
-    private void processStatsLoaderResult(CompletedTask completedTask) {
-        PersonaOverviewStatistics stats = personaStatsFrom(completedTask);
-        new PersonaStatisticsRestorer(getContext(), userTypeFromArgument()).save(stats);
         populateView();
-    }
-
-    @Override
-    public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
-    }
-
-    private boolean isTaskSuccess(CompletedTask.Result result) {
-        return result == CompletedTask.Result.SUCCESS;
-    }
-
-    private PersonaOverviewStatistics personaStatsFrom(CompletedTask task) {
-        Gson gson = new Gson();
-        PersonaInfo data = gson.fromJson(task.jsonObject, PersonaInfo.class);
-        rankProgress = RankProgressDAO.rankProgressFromJSON(data);
-        personaStatisticsMap = PersonaStatisticsDAO.personaStatisticsFromJSON(data);
-        scoreStatisticsMap = ScoreStatisticsDAO.scoreStatisticsFromJSON(data);
-        return new PersonaOverviewStatistics(rankProgress, personaStatisticsMap, scoreStatisticsMap);
     }
 
     public void findViews() {
@@ -320,7 +267,7 @@ public class ProfileStatsFragment extends Bf3Fragment {
 
     @Override
     public void reload() {
-        restartLoader();
+        new ProfileStatsLoader(this, getContext(), userTypeFromArgument(), getLoaderManager()).restart();
     }
 
     private int userPersonasCount() {
@@ -333,9 +280,5 @@ public class ProfileStatsFragment extends Bf3Fragment {
 
     private long selectedPersonaId() {
         return user(userTypeFromArgument()).selectedPersona().getPersonaId();
-    }
-
-    private int platformId() {
-        return Platform.resolveIdFromPlatformName(user(userTypeFromArgument()).selectedPersona().getPlatform());
     }
 }

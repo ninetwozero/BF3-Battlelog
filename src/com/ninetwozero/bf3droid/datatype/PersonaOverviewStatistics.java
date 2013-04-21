@@ -9,6 +9,7 @@ public class PersonaOverviewStatistics {
     private RankProgress rankProgress;
     private Map<String, Statistics> personaStats;
     private Map<String, Statistics> scoreStats;
+    private String userType;
 
     public PersonaOverviewStatistics(RankProgress rankProgress, Map<String, Statistics> personaStats, Map<String, Statistics> scoreStats) {
         this.rankProgress = rankProgress;
@@ -26,6 +27,14 @@ public class PersonaOverviewStatistics {
 
     public Map<String, Statistics> getScoreStats() {
         return scoreStats;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public boolean isEmpty(){

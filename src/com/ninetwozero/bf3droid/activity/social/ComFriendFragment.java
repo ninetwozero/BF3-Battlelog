@@ -34,9 +34,9 @@ import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3ListFragment;
 import com.ninetwozero.bf3droid.activity.DashboardActivity;
 import com.ninetwozero.bf3droid.activity.profile.assignments.AssignmentActivity;
-import com.ninetwozero.bf3droid.activity.profile.soldier.CompareActivity;
 import com.ninetwozero.bf3droid.activity.profile.soldier.ProfileActivity;
-import com.ninetwozero.bf3droid.activity.profile.soldier.ProfileLoader;
+import com.ninetwozero.bf3droid.activity.profile.soldier.UserInfoLoader;
+import com.ninetwozero.bf3droid.activity.profile.soldier.SoldierCompareActivity;
 import com.ninetwozero.bf3droid.activity.profile.soldier.restorer.UserInfoRestorer;
 import com.ninetwozero.bf3droid.activity.profile.unlocks.UnlockActivity;
 import com.ninetwozero.bf3droid.adapter.FriendListAdapter;
@@ -45,12 +45,11 @@ import com.ninetwozero.bf3droid.datatype.ProfileData;
 import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.datatype.WebsiteHandlerException;
 import com.ninetwozero.bf3droid.http.COMClient;
-import com.ninetwozero.bf3droid.http.ProfileClient;
 import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
 import com.ninetwozero.bf3droid.model.User;
 
-public class ComFriendFragment extends Bf3ListFragment implements ProfileLoader.Callback{
+public class ComFriendFragment extends Bf3ListFragment implements UserInfoLoader.Callback{
 
     private Context context;
     private LayoutInflater layoutInflater;
@@ -176,9 +175,10 @@ public class ComFriendFragment extends Bf3ListFragment implements ProfileLoader.
 
     private void doCompare(ProfileData profileData) throws WebsiteHandlerException {
         startActivity(
-                new Intent(context, CompareActivity.class)
+                /*new Intent(context, CompareActivity.class)
                         .putExtra("profile1", SessionKeeper.getProfileData())
-                        .putExtra("profile2", ProfileClient.resolveFullProfileDataFromProfileId(profileData.getId()))
+                        .putExtra("profile2", ProfileClient.resolveFullProfileDataFromProfileId(profileData.getId()))*/
+                new Intent(context, SoldierCompareActivity.class)
         );
     }
 
@@ -191,7 +191,7 @@ public class ComFriendFragment extends Bf3ListFragment implements ProfileLoader.
     }
 
     private void restartLoader() {
-        new ProfileLoader(this, context, User.GUEST, getLoaderManager()).restart();
+        new UserInfoLoader(this, context, User.GUEST, getLoaderManager()).restart();
     }
 
     @Override

@@ -18,7 +18,7 @@ import com.ninetwozero.bf3droid.util.HtmlParsing;
 
 import org.apache.http.client.methods.HttpGet;
 
-public class ProfileLoader implements LoaderManager.LoaderCallbacks<CompletedTask>{
+public class UserInfoLoader implements LoaderManager.LoaderCallbacks<CompletedTask>{
 
     private final Callback callback;
     private final Context context;
@@ -30,7 +30,7 @@ public class ProfileLoader implements LoaderManager.LoaderCallbacks<CompletedTas
         void onLoadFinished(UserInfo userInfo);
     }
 
-    public ProfileLoader(Callback callback, Context context, String user, LoaderManager loaderManager){
+    public UserInfoLoader(Callback callback, Context context, String user, LoaderManager loaderManager){
         this.callback = callback;
         this.context = context;
         this.user = user;

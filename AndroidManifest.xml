@@ -79,6 +79,10 @@
         android:configChanges="orientation"
         android:label="@string/title_comparing_battle_scars"/>
     <activity
+        android:name="com.ninetwozero.bf3droid.activity.profile.soldier.SoldierCompareActivity"
+        android:configChanges="orientation"
+        android:label="@string/title_compare_soldiers"/>
+    <activity
         android:name="com.ninetwozero.bf3droid.activity.forum.ForumActivity"
         android:configChanges="orientation"
         android:label="@string/title_browsing_forum"/>
@@ -123,17 +127,17 @@
     <activity
         android:name="com.ninetwozero.bf3droid.activity.profile.weapon.WeaponListActivity"
         android:configChanges="orientation"
-        android:label="TODO"
+        android:label="@string/title_weapons"
         android:windowSoftInputMode="stateHidden"/>
     <activity
         android:name="com.ninetwozero.bf3droid.activity.profile.weapon.SingleWeaponActivity"
         android:configChanges="orientation"
-        android:label="TODO"
+        android:label="@string/title_weapon_info"
         android:windowSoftInputMode="stateHidden"/>
     <activity
         android:name="com.ninetwozero.bf3droid.activity.news.SinglePostActivity"
         android:configChanges="orientation"
-        android:label="TODO"
+        android:label="@string/title_post_view"
         android:windowSoftInputMode="stateHidden"/>
 
     <provider

@@ -350,6 +350,7 @@
   <string name="title_chat">BF3 Droid - Chatting with ...</string>
   <string name="title_comments">BF3 Droid - Comments</string>
   <string name="title_comparing_battle_scars">BF3 Droid - Comparing battle scars</string>
+  <string name="title_compare_soldiers">BF3 Droid - Comparing Soldier stats</string>
   <string name="title_unlocks">BF3 Droid - Upcoming unlocks</string>
   <string name="title_settings">BF3 Droid - Settings</string>
   <string name="title_forum">BF3 Droid - Forum</string>
@@ -573,6 +574,9 @@
   <string name="label_app_settings">Application settings</string>
   <string name="title_profile_settings">BF3 Droid - Setting up your profile</string>
   <string name="title_platoon_new">BF3 Droid - Creating a new platoon</string>
+  <string name="title_weapons">BF3 Droid - Weapons</string>
+  <string name="title_weapon_info">BF3 Droid - Weapon Info</string>
+  <string name="title_post_view">BF3 Droid - Post</string>
   <string name="info_platoon_new_empty_name">You need to enter a name for the platoon.</string>
   <string name="info_platoon_new_empty_tag">You need to enter a tag for the platoon.</string>
   <string name="info_platoon_new_creating">Creating the platoon...</string>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+This file is part of BF3 Droid
+
+BF3 Droid is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BF3 Droid is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+-->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/the_scroll"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+
+  <RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp">
+
+    <TableLayout
+      android:id="@+id/soldier_ranks"
+      style="@style/MatchWidth"
+      android:layout_alignParentBottom="true">
+
+      <TableRow style="@style/MatchWidth">
+
+        <LinearLayout
+          android:id="@+id/wrap_user"
+          android:layout_weight="1">
+
+          <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NINETWOZERO" />
+
+          <ImageView
+            android:id="@+id/user_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@android:drawable/arrow_down_float" />
+        </LinearLayout>
+
+        <LinearLayout
+          android:id="@+id/wrap_guest"
+          android:layout_weight="1">
+
+          <TextView
+            android:id="@+id/guest_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NINETWOZERO" />
+
+          <ImageView
+            android:id="@+id/guest_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@android:drawable/arrow_down_float" />
+        </LinearLayout>
+      </TableRow>
+
+      <TableRow style="@style/MatchWidth">
+        <TextView
+          android:id="@+id/user_rank"
+          android:layout_weight="1" />
+        <TextView
+          android:id="@+id/guest_rank"
+          android:layout_weight="1" />
+      </TableRow>
+
+      <TableRow style="@style/MatchWidth">
+        <TextView
+          android:id="@+id/user_score"
+          android:layout_weight="1" />
+        <TextView
+          android:id="@+id/guest_score"
+          android:layout_weight="1" />
+      </TableRow>
+
+    </TableLayout>
+
+  </RelativeLayout>
+</ScrollView>
