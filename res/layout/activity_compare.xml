@@ -16,11 +16,11 @@ GNU General Public License for more details.
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/the_scroll"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
 
   <RelativeLayout
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="10dp"
     android:paddingLeft="10dp"
@@ -28,9 +28,8 @@ GNU General Public License for more details.
     android:paddingTop="5dp">
 
     <TableLayout
-      android:id="@+id/soldier_ranks"
-      style="@style/MatchWidth"
-      android:layout_alignParentBottom="true">
+      android:id="@+id/compare_soldiers_ranks"
+      style="@style/MatchWidth">
 
       <TableRow style="@style/MatchWidth">
 
@@ -72,18 +71,22 @@ GNU General Public License for more details.
       </TableRow>
 
       <TableRow style="@style/MatchWidth">
+
         <TextView
           android:id="@+id/user_rank"
           android:layout_weight="1" />
+
         <TextView
           android:id="@+id/guest_rank"
           android:layout_weight="1" />
       </TableRow>
 
       <TableRow style="@style/MatchWidth">
+
         <TextView
           android:id="@+id/user_score"
           android:layout_weight="1" />
+
         <TextView
           android:id="@+id/guest_score"
           android:layout_weight="1" />
@@ -91,5 +94,9 @@ GNU General Public License for more details.
 
     </TableLayout>
 
+    <TableLayout
+      android:id="@+id/compare_soldiers_stats"
+      style="@style/MatchWidth"
+      android:layout_below="@id/compare_soldiers_ranks"></TableLayout>
   </RelativeLayout>
 </ScrollView>
