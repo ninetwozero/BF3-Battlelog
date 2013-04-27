@@ -14,89 +14,65 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/the_scroll"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
 
-  <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="5dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  style="@style/Match">
 
-    <TableLayout
-      android:id="@+id/compare_soldiers_ranks"
-      style="@style/MatchWidth">
+  <TableLayout
+    android:id="@+id/compare_soldiers_ranks"
+    style="@style/table">
 
-      <TableRow style="@style/MatchWidth">
+    <TableRow style="@style/MatchWidth">
 
-        <LinearLayout
-          android:id="@+id/wrap_user"
-          android:layout_weight="1">
+      <TextView
+        android:id="@+id/user_name"
+        style="@style/InfoHeading"
+        android:layout_weight="1"
+        android:drawableRight="@android:drawable/arrow_down_float" />
 
-          <TextView
-            android:id="@+id/user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="NINETWOZERO" />
+      <TextView
+        android:id="@+id/guest_name"
+        style="@style/InfoHeading"
+        android:layout_weight="1"
+        android:drawableRight="@android:drawable/arrow_down_float" />
+    </TableRow>
 
-          <ImageView
-            android:id="@+id/user_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@android:drawable/arrow_down_float" />
-        </LinearLayout>
+    <TableRow style="@style/MatchWidth">
 
-        <LinearLayout
-          android:id="@+id/wrap_guest"
-          android:layout_weight="1">
+      <TextView
+        android:id="@+id/user_rank"
+        style="@style/TableRowItemLeft"
+        android:layout_weight="1" />
 
-          <TextView
-            android:id="@+id/guest_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="NINETWOZERO" />
+      <TextView
+        android:id="@+id/guest_rank"
+        style="@style/TableRowItemGravityRight"
+        android:layout_weight="1" />
+    </TableRow>
 
-          <ImageView
-            android:id="@+id/guest_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@android:drawable/arrow_down_float" />
-        </LinearLayout>
-      </TableRow>
+    <TableRow style="@style/MatchWidth">
 
-      <TableRow style="@style/MatchWidth">
+      <TextView
+        android:id="@+id/user_score"
+        style="@style/TableRowItemLeft"
+        android:layout_weight="1" />
 
-        <TextView
-          android:id="@+id/user_rank"
-          android:layout_weight="1" />
+      <TextView
+        android:id="@+id/guest_score"
+        style="@style/TableRowItemGravityRight"
+        android:layout_weight="1" />
+    </TableRow>
 
-        <TextView
-          android:id="@+id/guest_rank"
-          android:layout_weight="1" />
-      </TableRow>
+  </TableLayout>
 
-      <TableRow style="@style/MatchWidth">
-
-        <TextView
-          android:id="@+id/user_score"
-          android:layout_weight="1" />
-
-        <TextView
-          android:id="@+id/guest_score"
-          android:layout_weight="1" />
-      </TableRow>
-
-    </TableLayout>
+  <ScrollView
+    android:id="@+id/the_scroll"
+    style="@style/ScrollView"
+    android:layout_below="@id/compare_soldiers_ranks">
 
     <TableLayout
       android:id="@+id/compare_soldiers_stats"
-      style="@style/MatchWidth"
-      android:layout_below="@id/compare_soldiers_ranks"></TableLayout>
-  </RelativeLayout>
-</ScrollView>
+      style="@style/table"
+      />
+  </ScrollView>
+</RelativeLayout>

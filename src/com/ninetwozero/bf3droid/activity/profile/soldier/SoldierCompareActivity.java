@@ -5,16 +5,19 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3FragmentActivity;
 import com.ninetwozero.bf3droid.activity.profile.soldier.restorer.PersonaStatisticsRestorer;
 import com.ninetwozero.bf3droid.datatype.PersonaOverviewStatistics;
 import com.ninetwozero.bf3droid.datatype.Statistics;
+import com.ninetwozero.bf3droid.misc.NumberFormatter;
 import com.ninetwozero.bf3droid.model.User;
+import com.ninetwozero.bf3droid.provider.table.PersonaStatistics;
 import com.ninetwozero.bf3droid.provider.table.RankProgress;
+import com.ninetwozero.bf3droid.provider.table.ScoreStatistics;
 
 import java.util.Map;
-import java.util.Set;
 
 public class SoldierCompareActivity extends Bf3FragmentActivity implements ProfileStatsLoader.Callback {
 
@@ -58,6 +61,7 @@ public class SoldierCompareActivity extends Bf3FragmentActivity implements Profi
     public void onLoadFinished(PersonaOverviewStatistics pos) {
         if (pos.getUserType().equals(User.USER)) {
             userStats = pos;
+            getGuestStats();
         } else {
             guestStats = pos;
             fillView();
@@ -67,24 +71,31 @@ public class SoldierCompareActivity extends Bf3FragmentActivity implements Profi
     private void fillView() {
         closeLoadingDialog(SoldierCompareActivity.class.getSimpleName());
         populateRanks(userStats.getRankProgress(), guestStats.getRankProgress());
-        addStats(userStats.getPersonaStats(), guestStats.getPersonaStats());
-        addStats(userStats.getScoreStats(), guestStats.getScoreStats());
+        addStats(userStats.getPersonaStats(), guestStats.getPersonaStats(), PersonaStatistics.PERSONA_STATISTICS);
+        addStats(userStats.getScoreStats(), guestStats.getScoreStats(), ScoreStatistics.SCORE_STATISTICS);
     }
 
     private void populateRanks(RankProgress userRank, RankProgress guestRank) {
-        ((TextView) findViewById(R.id.user_name)).setText(userRank.getPersonaName());
-        ((TextView) findViewById(R.id.guest_name)).setText(guestRank.getPersonaName());
+        setUsername(R.id.user_name, userRank.getPersonaName(), User.USER);
+        setUsername(R.id.guest_name, guestRank.getPersonaName(), User.GUEST);
 
         ((TextView) findViewById(R.id.user_rank)).setText(fromResource(userRank.getRank()));
         ((TextView) findViewById(R.id.guest_rank)).setText(fromResource(guestRank.getRank()));
 
-        ((TextView) findViewById(R.id.user_score)).setText(String.valueOf(userRank.getScore()));
-        ((TextView) findViewById(R.id.guest_score)).setText(String.valueOf(guestRank.getScore()));
+        ((TextView) findViewById(R.id.user_score)).setText(NumberFormatter.format(userRank.getScore()));
+        ((TextView) findViewById(R.id.guest_score)).setText(NumberFormatter.format(guestRank.getScore()));
     }
 
-    private void addStats(Map<String, Statistics> user, Map<String, Statistics> guest) {
+    private void setUsername(int fieldId, String name, String userType){
+        TextView nameView = (TextView) findViewById(fieldId);
+        nameView.setText(name);
+        if (personasCount(userType) == 1) {
+            nameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.empty_drawable, 0);
+        }
+    }
+
+    private void addStats(Map<String, Statistics> user, Map<String, Statistics> guest, String[] keys) {
         TableLayout table = (TableLayout) findViewById(R.id.compare_soldiers_stats);
-        Set<String> keys = user.keySet();
         for (String key : keys) {
             TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.compare_item_table_row, null);
             ((TextView) row.findViewById(R.id.header)).setText(user.get(key).getTitle());
@@ -96,5 +107,9 @@ public class SoldierCompareActivity extends Bf3FragmentActivity implements Profi
 
     private String fromResource(int rank) {
         return getResources().getStringArray(R.array.rank)[rank];
+    }
+
+    private int personasCount(String userType) {
+        return BF3Droid.getUserBy(userType).getPersonas().size();
     }
 }

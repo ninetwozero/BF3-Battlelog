@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ninetwozero.bf3droid.misc.NumberFormatter.format;
+import static com.ninetwozero.bf3droid.misc.NumberFormatter.*;
 
 public class ScoreStatisticsDAO {
 
@@ -71,6 +71,6 @@ public class ScoreStatisticsDAO {
     }
 
     private static String valueFromCursor(Cursor cursor, String name) {
-        return format(cursor.getLong(cursor.getColumnIndexOrThrow(name)));
+        return cursor.getString(cursor.getColumnIndexOrThrow(name));
     }
 }

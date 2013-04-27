@@ -4,26 +4,21 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
   <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+   style="@style/MatchWidth"
+    android:background="@color/very_light_grey">
     <TextView
       android:id="@+id/header"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      style="@style/InfoHeadingReverse"
       android:gravity="center"
       />
     <TextView
       android:id="@+id/user_value"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentLeft="true"
+      style="@style/TableRowItemLeft"
       android:layout_below="@id/header"
       />
     <TextView
       android:id="@+id/guest_value"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentRight="true"
+      style="@style/TableRowItemRight"
       android:layout_below="@id/header"
       />
 

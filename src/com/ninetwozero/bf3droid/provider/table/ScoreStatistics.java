@@ -33,4 +33,10 @@ public class ScoreStatistics extends Statistics {
             Columns.IFV, Columns.ANTI_AIR, Columns.ATTACK_HELI, Columns.SCOUT_HELI, Columns.COMBAT,
             Columns.AWARD, Columns.UNLOCKS, Columns.TOTAL_SCORE
     };
+
+    public static final String[] SCORE_STATISTICS = new String[]{
+            Columns.ASSAULT, Columns.ENGINEER, Columns.SUPPORT, Columns.RECON, Columns.JET, Columns.TANK,
+            Columns.IFV, Columns.ANTI_AIR, Columns.ATTACK_HELI, Columns.SCOUT_HELI, Columns.COMBAT,
+            Columns.AWARD, Columns.UNLOCKS, Columns.TOTAL_SCORE
+    };
 }
