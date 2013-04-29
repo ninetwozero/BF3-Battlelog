@@ -85,7 +85,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements ProfileStatsLoa
                     public void onClick(View sv) {
                         if (userPersonasCount() > 1) {
                             FragmentManager manager = getFragmentManager();
-                            ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), SelectedOption.PERSONA);
+                            ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), userType());
                             dialog.show(manager, DIALOG);
                         }
                     }
@@ -117,20 +117,20 @@ public class ProfileStatsFragment extends Bf3Fragment implements ProfileStatsLoa
             populateView();
         } else {
             startLoadingDialog(ProfileStatsFragment.class.getSimpleName());
-            new ProfileStatsLoader(this, getContext(), userTypeFromArgument(), getLoaderManager()).restart();
+            new ProfileStatsLoader(this, getContext(), userType(), getLoaderManager()).restart();
         }
     }
 
     @Subscribe
     public void selectionChanged(SelectedOption selectedOption) {
-        if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
-            user(userTypeFromArgument()).selectPersona(selectedOption.getSelectedId());
+        if (selectedOption.getChangedGroup().equals(userType())) {
+            user(userType()).selectPersona(selectedOption.getSelectedId());
             getData();
         }
     }
 
     private boolean dbHasData() {
-        PersonaOverviewStatistics pos = new PersonaStatisticsRestorer(context, userTypeFromArgument()).fetch();
+        PersonaOverviewStatistics pos = new PersonaStatisticsRestorer(context, userType()).fetch();
         if (pos.isEmpty()) {
             return false;
         } else {
@@ -228,7 +228,7 @@ public class ProfileStatsFragment extends Bf3Fragment implements ProfileStatsLoa
 
     private Map<Long, String> personasToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
-        for (SimplePersona persona : user(userTypeFromArgument()).getPersonas()) {
+        for (SimplePersona persona : user(userType()).getPersonas()) {
             map.put(persona.getPersonaId(), persona.getPersonaName() + " " + persona.getPlatform());
         }
         return map;
@@ -267,18 +267,18 @@ public class ProfileStatsFragment extends Bf3Fragment implements ProfileStatsLoa
 
     @Override
     public void reload() {
-        new ProfileStatsLoader(this, getContext(), userTypeFromArgument(), getLoaderManager()).restart();
+        new ProfileStatsLoader(this, getContext(), userType(), getLoaderManager()).restart();
     }
 
     private int userPersonasCount() {
-        return user(userTypeFromArgument()).getPersonas().size();
+        return user(userType()).getPersonas().size();
     }
 
-    private String userTypeFromArgument() {
+    private String userType() {
         return getArguments().getString("user");
     }
 
     private long selectedPersonaId() {
-        return user(userTypeFromArgument()).selectedPersona().getPersonaId();
+        return user(userType()).selectedPersona().getPersonaId();
     }
 }

@@ -82,7 +82,7 @@ public class MenuProfileFragment extends Fragment {
 
     @Subscribe
     public void selectionChanged(SelectedOption selectedOption) {
-        if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
+        if (selectedOption.getChangedGroup().equals(User.USER)) {
             getUser().selectPersona(selectedOption.getSelectedId());
             setupActiveSoldierContent();
         }
@@ -96,7 +96,7 @@ public class MenuProfileFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         FragmentManager manager = getFragmentManager();
-                        ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), SelectedOption.PERSONA);
+                        ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), User.USER);
                         dialog.show(manager, DIALOG);
                     }
                 }

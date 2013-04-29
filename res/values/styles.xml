@@ -79,7 +79,7 @@
   </style>
 
   <style name="FragmentButton" parent="@style/RegularButton">
-    <item name="android:onClick"></item>
+    <item name="android:onClick"/>
   </style>
 
   <style name="MenuButton" parent="@style/RegularButton">
@@ -102,7 +102,7 @@
 
   <!-- Dialog -->
 
-  <style name="StandardPopup" parent="@android:style/Theme.Dialog">
+  <style name="StandardPopup">
     <item name="android:windowFrame">@null</item>
     <item name="android:windowTitleStyle">@android:color/black</item>
     <item name="android:background">@android:color/white</item>

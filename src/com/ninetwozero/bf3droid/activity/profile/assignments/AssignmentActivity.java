@@ -184,7 +184,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
             refresh();
         } else if (item.getItemId() == R.id.option_change) {
             if (user().getPersonas().size() > 1) {
-                ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), SelectedOption.PERSONA);
+                ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), userType());
                 dialog.show(mFragmentManager, DIALOG);
             }
         } else if (item.getItemId() == R.id.option_back) {
@@ -203,7 +203,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
 
     @Subscribe
     public void personaChanged(SelectedOption selectedOption) {
-        if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
+        if (selectedOption.getChangedGroup().equals(userType())) {
             user().selectPersona(selectedOption.getSelectedId());
             buildCallUri();
             refresh();
@@ -211,10 +211,14 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     }
 
     private User user() {
-        if (getIntent().getExtras().getString("user").equals(User.USER)) {
+        if (userType().equals(User.USER)) {
             return BF3Droid.getUser();
         } else  {
             return BF3Droid.getGuest();
         }
+    }
+
+    private String userType() {
+        return getIntent().getExtras().getString("user");
     }
 }
