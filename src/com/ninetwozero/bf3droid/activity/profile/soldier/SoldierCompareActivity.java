@@ -154,7 +154,7 @@ public class SoldierCompareActivity extends Bf3FragmentActivity implements Profi
     private Map<Long, String> personasToMap(String userType){
         Map<Long, String> map = new HashMap<Long, String>();
         for (SimplePersona simplePersona : BF3Droid.getUserBy(userType).getPersonas()) {
-            map.put(simplePersona.getPersonaId(), simplePersona.getPersonaName() + simplePersona.getPlatform());
+            map.put(simplePersona.getPersonaId(), simplePersona.getPersonaName() + " [" + simplePersona.getPlatform() + "]");
         }
         return map;
     }

@@ -701,10 +701,6 @@ public class ProfileClient extends DefaultClient {
     }
 
     private User user(String user) {
-        if (user.equals(User.USER)) {
-            return BF3Droid.getUser();
-        } else {
-            return BF3Droid.getGuest();
-        }
+        return BF3Droid.getUserBy(user);
     }
 }

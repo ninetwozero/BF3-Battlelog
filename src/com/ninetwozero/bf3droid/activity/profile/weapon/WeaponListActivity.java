@@ -110,7 +110,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         @Override
         protected Boolean doInBackground(Void... arg) {
             try {
-                weapons = new ProfileClient().getWeapons(getIntent().getStringExtra("user"));
+                weapons = new ProfileClient().getWeapons(userType());
                 return true;
             } catch (Exception ex) {
                 Log.d("WeaponListActivity", ex.toString());
@@ -145,10 +145,14 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         startActivity(new Intent(this,
                 SingleWeaponActivity.class)
                 .putExtra("weapon", w)
-                .putExtra("user", getIntent().getStringExtra("user")));
+                .putExtra("user", userType()));
+    }
+
+    private String userType() {
+        return getIntent().getStringExtra("user");
     }
 
     private long selectedPersonaId() {
-        return BF3Droid.getUser().selectedPersona().getPersonaId();
+        return BF3Droid.getUserBy(userType()).selectedPersona().getPersonaId();
     }
 }
