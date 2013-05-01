@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="language_titles">
+    <item>Cрпски</item>
+    <item>Dansk</item>
+    <item>Deutsch</item>
+    <item>English</item>
+    <item>Español</item>
+    <item>Francais</item>
+    <item>Hrvatski</item>
+    <item>Italiano</item>
+    <item>Nederlands</item>
+    <item>Polski</item>
+    <item>Português</item>
+    <item>Român</item>
+    <item>Suomi</item>
+    <item>Svenska</item>
+    <item>Česky</item>
+  </string-array>
+  <string-array name="language_values">
+    <item>sr</item>
+    <item>da</item>
+    <item>de</item>
+    <item>en</item>
+    <item>es</item>
+    <item>fr</item>
+    <item>hr</item>
+    <item>it</item>
+    <item>nl</item>
+    <item>pl</item>
+    <item>pt</item>
+    <item>ro</item>
+    <item>fi</item>
+    <item>sv</item>
+    <item>cs</item>
+  </string-array>
+</resources>

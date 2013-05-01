@@ -93,7 +93,6 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 		defaultFileCheck();
 		createSession();
 
-		// Initialize the attributes
 		mPostDataArray = new PostData[Constants.FIELD_NAMES_LOGIN.length];
 		mValueFields = new String[2];
 
@@ -133,8 +132,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 
 	private void setEmail() {
 		if (hasEmail()) {
-			emailField.setText(mSharedPreferences.getString(
-                    Constants.SP_BL_PROFILE_EMAIL, ""));
+			emailField.setText(mSharedPreferences.getString(Constants.SP_BL_PROFILE_EMAIL, ""));
 		}
 	}
 
@@ -146,11 +144,7 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 		if (SessionKeeper.getProfileData() != null) {
 			startActivity(new Intent(this, DashboardActivity.class));
 			finish();
-		} else if (!mSharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE,
-				"").equals("")) {
-
-			/*RequestHandler.setCookies(new ShareableCookie(mSharedPreferences.getString(Constants.SP_BL_COOKIE_NAME, ""),
-					mSharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE,""), Constants.COOKIE_DOMAIN));*/
+		} else if (!mSharedPreferences.getString(Constants.SP_BL_COOKIE_VALUE,"").equals("")) {
 			startActivity(new Intent(this, DashboardActivity.class));
 			finish();
 		}
@@ -159,13 +153,10 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 	private void defaultFileCheck() {
 		if (mSharedPreferences.getInt(Constants.SP_V_FILE, 0) != Constants.CHANGELOG_VERSION) {
 			SharedPreferences.Editor spEdit = mSharedPreferences.edit();
-			String username = mSharedPreferences.getString(
-					Constants.SP_BL_PROFILE_EMAIL, "");
-			String password = mSharedPreferences.getString(
-					Constants.SP_BL_PROFILE_PASSWORD, "");
+			String username = mSharedPreferences.getString(Constants.SP_BL_PROFILE_EMAIL, "");
+			String password = mSharedPreferences.getString(Constants.SP_BL_PROFILE_PASSWORD, "");
 			spEdit.clear();
 
-			// Re-fill
 			spEdit.putString(Constants.SP_BL_PROFILE_EMAIL, username);
 			spEdit.putString(Constants.SP_BL_PROFILE_PASSWORD, password);
 			spEdit.putBoolean(Constants.SP_BL_PROFILE_REMEMBER,
@@ -200,7 +191,6 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 	}
 
 	private void setupDrawer() {
-		// Define the SlidingDrawer
 		if (mSlidingDrawer == null) {
 			mSlidingDrawer = (SlidingDrawer) findViewById(R.id.about_slider);
 			mOnDrawerCloseListener = new OnDrawerCloseListener() {
@@ -239,7 +229,6 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 				return;
 			}
 
-			// Do the async
 			if (PublicUtils.isNetworkAvailable(this)) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 intent.putExtra(LoginActivity.EMAIL, emailField.getText().toString());
@@ -251,9 +240,6 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 			}
 		}
 	}
-
-
-
 
 	private boolean validateEmailAndPassword(String email, String password) {
 		if ("".equals(email) || !email.contains("@")) {
@@ -281,31 +267,21 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 	public void setup() {
 		if (mListFragments == null) {
 			mListFragments = new ArrayList<Fragment>();
-			mListFragments.add(Fragment.instantiate(this,
-					AboutLicenseFragment.class.getName()));
-			mListFragments.add(Fragment.instantiate(this,
-					AboutMainFragment.class.getName()));
-			mListFragments.add(Fragment.instantiate(this,
-					AboutFAQFragment.class.getName()));
-			mListFragments.add(Fragment.instantiate(this,
-					AboutCreditsFragment.class.getName()));
+			mListFragments.add(Fragment.instantiate(this, AboutLicenseFragment.class.getName()));
+			mListFragments.add(Fragment.instantiate(this, AboutMainFragment.class.getName()));
+			mListFragments.add(Fragment.instantiate(this, AboutFAQFragment.class.getName()));
+			mListFragments.add(Fragment.instantiate(this, AboutCreditsFragment.class.getName()));
 
-			// Get the ViewPager
 			mViewPager = (ViewPager) findViewById(R.id.viewpager_sub);
 			mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs_sub);
 
-			// Fill the PagerAdapter & set it to the viewpager
 			mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-			mFragmentManager, new String[] { getString(R.string.label_license),
-					getString(R.string.label_about),
-					getString(R.string.label_faq),
-					getString(R.string.label_credits) }, mListFragments,
+			mFragmentManager,tabTitles(R.array.about_tab), mListFragments,
 					mViewPager, mLayoutInflater);
 			mViewPager.setAdapter(mPagerAdapter);
 			mTabs.setAdapter(mPagerAdapter);
 
-			// Make sure the tabs follow
 			mViewPager.setOnPageChangeListener(mTabs);
 			mViewPager.setCurrentItem(1);
 			mViewPager.setOffscreenPageLimit(2);

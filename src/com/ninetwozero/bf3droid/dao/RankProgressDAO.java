@@ -2,12 +2,14 @@ package com.ninetwozero.bf3droid.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+
 import com.ninetwozero.bf3droid.jsonmodel.soldierstats.PersonaInfo;
 import com.ninetwozero.bf3droid.provider.table.RankProgress;
 
 import static com.ninetwozero.bf3droid.misc.ResolvePlatform.platformName;
 
 public class RankProgressDAO {
+
     public static RankProgress rankProgressFromCursor(Cursor cursor) {
         RankProgress rp = new RankProgress();
         rp.setPersonaId(cursor.getLong(cursor.getColumnIndexOrThrow(RankProgress.Columns.PERSONA_ID)));
@@ -32,15 +34,15 @@ public class RankProgressDAO {
         return rp;
     }
 
-    public static ContentValues rankProgressForDB(PersonaInfo pi, long personaId) {
+    public static ContentValues rankProgressForDB(RankProgress rp) {
         ContentValues values = new ContentValues();
-        values.put(RankProgress.Columns.PERSONA_ID, personaId);
-        values.put(RankProgress.Columns.PERSONA_NAME, pi.getUser().getUserName());
-        values.put(RankProgress.Columns.PLATFORM,platformName(pi.getPlatform()));
-        values.put(RankProgress.Columns.RANK, pi.getCurrentRank().getLevel());
-        values.put(RankProgress.Columns.CURRENT_RANK_SCORE, pi.getCurrentRank().getRankPoints());
-        values.put(RankProgress.Columns.NEXT_RANK_SCORE, pi.getNextRank().getRankPoints());
-        values.put(RankProgress.Columns.SCORE, pi.getStatsOverview().getScore());
+        values.put(RankProgress.Columns.PERSONA_ID, rp.getPersonaId());
+        values.put(RankProgress.Columns.PERSONA_NAME,rp.getPersonaName());
+        values.put(RankProgress.Columns.PLATFORM,rp.getPlatform());
+        values.put(RankProgress.Columns.RANK, rp.getRank());
+        values.put(RankProgress.Columns.CURRENT_RANK_SCORE, rp.getCurrentRankScore());
+        values.put(RankProgress.Columns.NEXT_RANK_SCORE, rp.getNextRankScore());
+        values.put(RankProgress.Columns.SCORE, rp.getScore());
         return values;
     }
 }

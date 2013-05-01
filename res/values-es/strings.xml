@@ -2,86 +2,8 @@
 <resources>
 
   <string name="app_name">BF3 Droid</string>
-  <string name="widget_name">Battlelog - Stats y Amigos</string>
-
-  <integer-array name="service_update_intervals_values">
-    <item>300</item>
-    <item>600</item>
-    <item>1800</item>
-    <item>3600</item>
-    <item>7200</item>
-    <item>21600</item>
-    <item>43200</item>
-    <item>64800</item>
-    <item>86400</item>
-  </integer-array>
-  <integer-array name="chat_update_intervals_values">
-    <item>5</item>
-    <item>10</item>
-    <item>15</item>
-    <item>20</item>
-    <item>25</item>
-    <item>30</item>
-    <item>60</item>
-    <item>90</item>
-    <item>120</item>
-  </integer-array>
-
-  <string-array name="service_update_intervals_labels">
-    <item>@string/label_update_interval_minutes_5</item>
-    <item>@string/label_update_interval_minutes_10</item>
-    <item>@string/label_update_interval_minutes_30</item>
-    <item>@string/label_update_interval_hours_1</item>
-    <item>@string/label_update_interval_hours_2</item>
-    <item>@string/label_update_interval_hours_6</item>
-    <item>@string/label_update_interval_hours_12</item>
-    <item>@string/label_update_interval_hours_18</item>
-    <item>@string/label_update_interval_days_1</item>
-  </string-array>
-  <string-array name="chat_update_intervals_labels">
-    <item>@string/label_update_interval_seconds_5</item>
-    <item>@string/label_update_interval_seconds_10</item>
-    <item>@string/label_update_interval_seconds_15</item>
-    <item>@string/label_update_interval_seconds_20</item>
-    <item>@string/label_update_interval_seconds_25</item>
-    <item>@string/label_update_interval_seconds_30</item>
-    <item>@string/label_update_interval_minutes_1</item>
-    <item>@string/label_update_interval_seconds_90</item>
-    <item>@string/label_update_interval_minutes_2</item>
-  </string-array>
-  <string-array name="language_titles">
-    <item>Cрпски</item>
-    <item>Dansk</item>
-    <item>Deutsch</item>
-    <item>English</item>
-    <item>Español</item>
-    <item>Francais</item>
-    <item>Hrvatski</item>
-    <item>Italiano</item>
-    <item>Nederlands</item>
-    <item>Polski</item>
-    <item>Português</item>
-    <item>Român</item>
-    <item>Suomi</item>
-    <item>Svenska</item>
-  </string-array>
-  <string-array name="language_values">
-    <item>sr</item>
-    <item>da</item>
-    <item>de</item>
-    <item>en</item>
-    <item>es</item>
-    <item>fr</item>
-    <item>hr</item>
-    <item>it</item>
-    <item>nl</item>
-    <item>pl</item>
-    <item>pt</item>
-    <item>ro</item>
-    <item>fi</item>
-    <item>sv</item>
-  </string-array>
   <!-- translation starts here -->
+  <string name="widget_name">Battlelog - Stats y Amigos</string>
 
   <string name="general_invalid_email">Dirección de correo electrónico no válida.</string>
   <string name="general_invalid_password">Por favor, introduzca su contraseña.</string>

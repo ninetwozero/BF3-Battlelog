@@ -14,13 +14,8 @@
 
 package com.ninetwozero.bf3droid.activity.profile.soldier;
 
-import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -32,33 +27,32 @@ import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3Fragment;
 import com.ninetwozero.bf3droid.activity.platoon.PlatoonActivity;
+import com.ninetwozero.bf3droid.activity.profile.soldier.restorer.UserInfoRestorer;
 import com.ninetwozero.bf3droid.asynctask.AsyncFriendRemove;
 import com.ninetwozero.bf3droid.asynctask.AsyncFriendRequest;
-import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
-import com.ninetwozero.bf3droid.dao.ProfileInformationDAO;
-import com.ninetwozero.bf3droid.dao.UserProfileDataDAO;
 import com.ninetwozero.bf3droid.datatype.PlatoonData;
-import com.ninetwozero.bf3droid.datatype.ProfileInformation;
-import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
+import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.http.COMClient;
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
 
 import java.util.List;
 
 public class ProfileOverviewFragment extends Bf3Fragment {
+
     private Context context;
     private LayoutInflater layoutInflater;
     private COMClient comClient;
-    private SharedPreferences sharedPreferences;
     private boolean postingRights;
     private List<SimplePlatoon> platoons;
-    private UserProfileData profileData;
+    private Bundle bundle;
+    private UserProfileData userProfileData;
+    private UserInfoRestorer restorer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        context = getActivity();
         layoutInflater = inflater;
+        bundle = savedInstanceState;
 
         View view = layoutInflater.inflate(R.layout.tab_content_profile_overview, container, false);
         initFragment(view);
@@ -69,21 +63,29 @@ public class ProfileOverviewFragment extends Bf3Fragment {
     public void onResume() {
         super.onResume();
         context = getActivity();
-        //new AsyncCache().execute();
-        profileData = userProfileDataFromDB();
-        platoons = BF3Droid.getUserPlatoons();
-        showProfile();
+        getData();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    private void getData() {
+        if (hasUserInfo()) {
+            showProfile();
+            showPlatoons();
+        }
     }
 
     public void initFragment(View v) {
-    	comClient = new COMClient(BF3Droid.getUserId(), BF3Droid.getCheckSum());
+        comClient = new COMClient(getUserId(), BF3Droid.getCheckSum());
         postingRights = false;
     }
 
     public final void showProfile() {
-        Activity activity = (Activity) context;
-        
-        ((TextView) activity.findViewById(R.id.text_username)).setText(BF3Droid.getUser());
+
+        ((TextView) getView().findViewById(R.id.text_username)).setText(user(userFromArgument()).getName());
 
         /*if (data.isPlaying() && data.isOnline()) {
             ((TextView) activity.findViewById(R.id.text_online)).setText(
@@ -95,35 +97,34 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             ((TextView) activity.findViewById(R.id.text_online)).setText(data.getLastLoginString(context));
         }*/
 
-        if ("".equals(profileData.getStatusMessage())) {
-            (activity.findViewById(R.id.wrap_status)).setVisibility(View.GONE);
+        if ("".equals(userProfileData.getStatusMessage())) {
+            (getView().findViewById(R.id.wrap_status)).setVisibility(View.GONE);
         } else {
-            ((TextView) activity.findViewById(R.id.text_status)).setText(profileData.getStatusMessage());
-            ((TextView) activity.findViewById(R.id.text_status_date)).setText(profileData.getStatusMessageDate());
+            ((TextView) getView().findViewById(R.id.text_status)).setText(userProfileData.getStatusMessage());
+            ((TextView) getView().findViewById(R.id.text_status_date)).setText(userProfileData.getStatusMessageDate());
         }
 
-        if ("".equals(profileData.getPresentation())) {
-            ((TextView) activity.findViewById(R.id.text_presentation)).setText(R.string.info_profile_empty_pres);
+        if ("".equals(userProfileData.getPresentation())) {
+            ((TextView) getView().findViewById(R.id.text_presentation)).setText(R.string.info_profile_empty_pres);
         } else {
-            ((TextView) activity.findViewById(R.id.text_presentation)).setText(profileData.getPresentation());
+            ((TextView) getView().findViewById(R.id.text_presentation)).setText(userProfileData.getPresentation());
         }
-
-        showPlatoons(activity);
     }
 
-    private void showPlatoons(Activity activity) {
+    private void showPlatoons() {
+        platoons = user(userFromArgument()).getPlatoons();
         if (platoons.size() > 0) {
             View convertView;
-            LinearLayout platoonWrapper = (LinearLayout) activity.findViewById(R.id.list_platoons);
+            LinearLayout platoonWrapper = (LinearLayout) getView().findViewById(R.id.list_platoons);
 
-            activity.findViewById(R.id.text_platoon).setVisibility(View.GONE);
+            getView().findViewById(R.id.text_platoon).setVisibility(View.GONE);
             platoonWrapper.removeAllViews();
 
             final OnClickListener onClickListener = new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startActivity(
-                    	new Intent(context, PlatoonActivity.class).putExtra("platoon", (PlatoonData) v.getTag())
+                            new Intent(context, PlatoonActivity.class).putExtra("platoon", (PlatoonData) v.getTag())
                     );
                 }
             };
@@ -146,46 +147,32 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 platoonWrapper.addView(convertView);
             }
         } else {
-            ((LinearLayout) activity.findViewById(R.id.list_platoons)).removeAllViews();
-            (activity.findViewById(R.id.text_platoon)).setVisibility(View.VISIBLE);
+            ((LinearLayout) getView().findViewById(R.id.list_platoons)).removeAllViews();
+            (getView().findViewById(R.id.text_platoon)).setVisibility(View.VISIBLE);
         }
     }
 
-    private UserProfileData userProfileDataFromDB(){
-        Cursor cursor = getContext().getContentResolver().query(
-                UserProfileDataDAO.URI,
-                UserProfileDataDAO.PROJECTION,
-                UserProfileDataDAO.Columns.USER_ID + "=?",
-                new String[]{String.valueOf(BF3Droid.getUserId())},
-                null
-        );
-        return UserProfileDataDAO.userProfileDataFrom(cursor);
+    private boolean hasUserInfo(){
+        this.restorer = new UserInfoRestorer(context, userFromArgument());
+        UserInfo userInfo = restorer.fetch();
+        if(userInfo.isEmpty()){
+            return false;
+        } else{
+            user(userFromArgument()).setPersonas(userInfo.getPersonas());
+            user(userFromArgument()).setPlatoons(userInfo.getPlatoons());
+            userProfileData = userInfo.getUserProfileData();
+            return  true;
+        }
     }
 
+    private String userFromArgument() {
+        return getArguments().getString("user");
+    }
 
     public void reload() {
         //new AsyncRefresh(SessionKeeper.getProfileData().getId()).execute();
         Log.e("ProfileOverviewFragment", "Reload pressed");
     }
-
-    public void updateProfileInDB(ProfileInformation p) {
-    	ContentValues contentValues = ProfileInformationDAO.convertProfileInformationForDB(p, System.currentTimeMillis());
-    	try {
-    		 context.getContentResolver().insert(ProfileInformationDAO.URI, contentValues);
-    	 } catch(SQLiteConstraintException ex) {
-    		 context.getContentResolver().update(
-				 ProfileInformationDAO.URI, 
-				 contentValues,
-				 ProfileInformationDAO.Columns.USER_ID + "=?", 
-				 new String[] { String.valueOf(p.getUserId()) }
-			 );
-    	 }
-	}
-    
-    public void updatePlatoonInDB(PlatoonData p) {
-    	ContentValues contentValues = PlatoonInformationDAO.platoonDataForDB(p);
-    	context.getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);
-	}
 
     public void setFeedPermission(boolean c) {
         ((ProfileActivity) context).setFeedPermission(c);
@@ -214,19 +201,14 @@ public class ProfileOverviewFragment extends Bf3Fragment {
 
     public boolean handleSelectedOption(MenuItem item) {
         if (item.getItemId() == R.id.option_friendadd) {
-            new AsyncFriendRequest(context, BF3Droid.getUserId()).execute(comClient);
+            new AsyncFriendRequest(context, getUserId()).execute(comClient);
         } else if (item.getItemId() == R.id.option_frienddel) {
-            new AsyncFriendRemove(context, BF3Droid.getUserId()).execute(comClient);
+            new AsyncFriendRemove(context, getUserId()).execute(comClient);
         }
         return true;
     }
 
-    private Context getContext() {
-        return getActivity().getApplicationContext();
-    }
-
-
-    private SimplePersona selectedPersona(){
-        return BF3Droid.selectedUserPersona();
+    private long getUserId() {
+        return user(userFromArgument()).getId();
     }
 }

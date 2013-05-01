@@ -47,6 +47,7 @@ import com.ninetwozero.bf3droid.http.FeedClient;
 import com.ninetwozero.bf3droid.loader.Bf3Loader;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.misc.Constants;
+import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.server.Bf3ServerCall;
 
@@ -55,81 +56,81 @@ import java.util.List;
 import org.apache.http.client.methods.HttpGet;
 
 public class FeedFragment extends ListFragment implements DefaultFragment, OnCloseProfileListDialogListener, LoaderManager.LoaderCallbacks<CompletedTask> {
-	private Context context;
-	private LayoutInflater layoutInflater;
+    private Context context;
+    private LayoutInflater layoutInflater;
 
-	private ListView listView;
-	private FeedListAdapter listAdapter;
-	private EditText message;
-	private TextView title;
-	private RelativeLayout wrapInput;
-	private Button send;
+    private ListView listView;
+    private FeedListAdapter listAdapter;
+    private EditText message;
+    private TextView title;
+    private RelativeLayout wrapInput;
+    private Button send;
 
-	private long id = 0;
-	private int feedType;
-	private String titleText;
-	private boolean isWritable;
-	private List<FeedItem> feedItems;
+    private long id = 0;
+    private int feedType;
+    private String titleText;
+    private boolean isWritable;
+    private List<FeedItem> feedItems;
     private Bundle bundle;
-	
-	private final int FEED_ACTION = 30;
-	public final static int CONTEXT_ID_HOOAH = 0;
-	public final static int CONTEXT_ID_SINGLE = 1;
-	public final static int CONTEXT_ID_VIEW_HOOAH = 2;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		context = getActivity();
-		layoutInflater = inflater;
+    private final int FEED_ACTION = 30;
+    public final static int CONTEXT_ID_HOOAH = 0;
+    public final static int CONTEXT_ID_SINGLE = 1;
+    public final static int CONTEXT_ID_VIEW_HOOAH = 2;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        context = getActivity();
+        layoutInflater = inflater;
         this.bundle = bundle;
 
-		View view = layoutInflater.inflate(R.layout.tab_content_feed, container, false);
-		initFragment(view);
-		return view;
-	}
+        View view = layoutInflater.inflate(R.layout.tab_content_feed, container, false);
+        initFragment(view);
+        return view;
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		if(id > 0 || feedType == FeedClient.TYPE_GLOBAL){
-			reload();
-		}
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (id > 0 || feedType == FeedClient.TYPE_GLOBAL) {
+            reload();
+        }
+    }
 
-	public void initFragment(View v) {
+    public void initFragment(View v) {
 
-		// Get the elements
-		wrapInput = (RelativeLayout) v.findViewById(R.id.wrap_input);
-		listView = (ListView) v.findViewById(android.R.id.list);
-		message = (EditText) v.findViewById(R.id.field_message);
-		title = (TextView) v.findViewById(R.id.text_title);
-		send = (Button) v.findViewById(R.id.button_send);
-		
-		// Setup the listAdapter
-		listAdapter = new FeedListAdapter(context, feedItems, layoutInflater);
-		listView.setAdapter(listAdapter);
+        // Get the elements
+        wrapInput = (RelativeLayout) v.findViewById(R.id.wrap_input);
+        listView = (ListView) v.findViewById(android.R.id.list);
+        message = (EditText) v.findViewById(R.id.field_message);
+        title = (TextView) v.findViewById(R.id.text_title);
+        send = (Button) v.findViewById(R.id.button_send);
 
-		// Handle the *type*-specific events here
-		if (feedType == FeedClient.TYPE_GLOBAL) {
-			title.setText(R.string.info_feed_title_global);
-			message.setHint(R.string.info_xml_hint_status);
-			wrapInput.setVisibility(isWritable ? View.VISIBLE : View.GONE);
-		} else if (feedType == FeedClient.TYPE_PROFILE) {
-			title.setText(titleText);
-			message.setHint(R.string.info_xml_hint_feed);
-			wrapInput.setVisibility(isWritable ? View.VISIBLE : View.GONE);
-		} else if (feedType == FeedClient.TYPE_PLATOON) {
-			title.setText(titleText);
-			message.setHint(R.string.info_xml_hint_feed);
-			wrapInput.setVisibility(isWritable ? View.VISIBLE : View.GONE);
-		} else {
-			title.setText(R.string.info_feed_title_global);
-			message.setHint(R.string.info_xml_hint_status);
-			wrapInput.setVisibility(isWritable ? View.VISIBLE : View.GONE);
-		}
+        // Setup the listAdapter
+        listAdapter = new FeedListAdapter(context, feedItems, layoutInflater);
+        listView.setAdapter(listAdapter);
 
-		// Setup the button click
-		send.setOnClickListener(
+        // Handle the *type*-specific events here
+        if (feedType == FeedClient.TYPE_GLOBAL) {
+            title.setText(R.string.info_feed_title_global);
+            message.setHint(R.string.info_xml_hint_status);
+            wrapInput.setVisibility(isWritable ? View.VISIBLE : View.GONE);
+        } else if (feedType == FeedClient.TYPE_PROFILE) {
+            title.setText(titleText);
+            message.setHint(R.string.info_xml_hint_feed);
+            wrapInput.setVisibility(isWritable ? View.VISIBLE : View.GONE);
+        } else if (feedType == FeedClient.TYPE_PLATOON) {
+            title.setText(titleText);
+            message.setHint(R.string.info_xml_hint_feed);
+            wrapInput.setVisibility(isWritable ? View.VISIBLE : View.GONE);
+        } else {
+            title.setText(R.string.info_feed_title_global);
+            message.setHint(R.string.info_xml_hint_status);
+            wrapInput.setVisibility(isWritable ? View.VISIBLE : View.GONE);
+        }
+
+        // Setup the button click
+        send.setOnClickListener(
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -156,22 +157,22 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
                     }
                 }
         );
-	}
+    }
 
     private String checksum() {
         return BF3Droid.getCheckSum();
     }
 
     @Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		registerForContextMenu(getListView());
-	}
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        registerForContextMenu(getListView());
+    }
 
-	public void reload() {
-		new AsyncRefresh(context, BF3Droid.selectedUserPersona().getPersonaId()).execute();
+    public void reload() {
+        new AsyncRefresh(context, user().getId(), personaId()).execute();
         //getLoaderManager().restartLoader(FEED_ACTION, bundle, this);
-	}
+    }
 
     @Override
     public Loader<CompletedTask> onCreateLoader(int i, Bundle bundle) {
@@ -188,7 +189,7 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
 
     @Override
     public void onLoadFinished(Loader<CompletedTask> completedTaskLoader, CompletedTask completedTask) {
-        if(completedTask.result == CompletedTask.Result.SUCCESS){
+        if (completedTask.result == CompletedTask.Result.SUCCESS) {
             String response = completedTask.response;
         }
     }
@@ -198,127 +199,142 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
     }
 
     @Override
-	public void onListItemClick(ListView l, View v, int pos, long id) {
-		getActivity().openContextMenu(v);
-	}
+    public void onListItemClick(ListView l, View v, int pos, long id) {
+        getActivity().openContextMenu(v);
+    }
 
-	public void createContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
+    private long personaId(){
+        return user().selectedPersona().getPersonaId();
+    }
 
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-		FeedItem feedItem = (FeedItem) info.targetView.getTag();
+    private User user() {
+        if (getArguments() != null && getArguments().containsKey("user")) {
+            return BF3Droid.getUserBy(getArguments().getString("user"));
+        } else {
+            return BF3Droid.getUser();
+        }
+    }
 
-		menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_HOOAH, 0, feedItem
-				.isLiked() ? R.string.label_unhooah : R.string.label_hooah);
+    public void createContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
 
-		if (feedItem.getNumLikes() > 0) {
-			menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_VIEW_HOOAH, 0,"View hooahs");
-		}
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+        FeedItem feedItem = (FeedItem) info.targetView.getTag();
 
-		menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_SINGLE, 0,
-				R.string.label_single_post_view);
-	}
+        menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_HOOAH, 0, feedItem
+                .isLiked() ? R.string.label_unhooah : R.string.label_hooah);
 
-	public boolean handleSelectedContextItem(
-			AdapterView.AdapterContextMenuInfo info, MenuItem item) {
+        if (feedItem.getNumLikes() > 0) {
+            menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_VIEW_HOOAH, 0, "View hooahs");
+        }
 
-		try {
-			FeedItem feedItem = (FeedItem) info.targetView.getTag();
+        menu.add(Constants.MENU_ID_FEED, CONTEXT_ID_SINGLE, 0,
+                R.string.label_single_post_view);
+    }
 
-			if (item.getItemId() == CONTEXT_ID_HOOAH) {
-				new AsyncFeedHooah(context, info.id, false, feedItem.isLiked(), this).execute(checksum());
-			} else if (item.getItemId() == CONTEXT_ID_SINGLE) {
-				startActivity(new Intent(context, SinglePostActivity.class)
-						.putExtra("feed", feedItem).putExtra("canComment", isWritable));
-			} else if (item.getItemId() == CONTEXT_ID_VIEW_HOOAH) {
-				FragmentManager manager = getFragmentManager();
-				HooahListDialogFragment dialog = HooahListDialogFragment.newInstance(feedItem, getTag());
-				dialog.show(manager, "profile_dialog");
-			}
-		} catch (Exception ex) {
-			Log.i("FeedFragment", ex.toString());
-			return false;
-		}
-		return true;
-	}
+    public boolean handleSelectedContextItem(
+            AdapterView.AdapterContextMenuInfo info, MenuItem item) {
 
-	private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
+        try {
+            FeedItem feedItem = (FeedItem) info.targetView.getTag();
 
-		private final Context context;
-		private final long activeProfileId;
+            if (item.getItemId() == CONTEXT_ID_HOOAH) {
+                new AsyncFeedHooah(context, info.id, false, feedItem.isLiked(), this).execute(checksum());
+            } else if (item.getItemId() == CONTEXT_ID_SINGLE) {
+                startActivity(new Intent(context, SinglePostActivity.class)
+                        .putExtra("feed", feedItem).putExtra("canComment", isWritable));
+            } else if (item.getItemId() == CONTEXT_ID_VIEW_HOOAH) {
+                FragmentManager manager = getFragmentManager();
+                HooahListDialogFragment dialog = HooahListDialogFragment.newInstance(feedItem, getTag());
+                dialog.show(manager, "profile_dialog");
+            }
+        } catch (Exception ex) {
+            Log.i("FeedFragment", ex.toString());
+            return false;
+        }
+        return true;
+    }
 
-		public AsyncRefresh(Context c, long pId) {
-			this.context = c;
-			this.activeProfileId = pId;
-		}
+    private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
 
-		@Override
-		protected void onPreExecute() {
-		}
+        private final Context context;
+        private final long userId;
+        private final long personaId;
 
-		@Override
-		protected Boolean doInBackground(Void... arg0) {
-			try {
-				feedItems = new FeedClient(id, feedType).get(context,Constants.DEFAULT_NUM_FEED, activeProfileId);
-				return (feedItems != null);
-			} catch (WebsiteHandlerException ex) {
+        public AsyncRefresh(Context c, long userId, long personaId) {
+            this.context = c;
+            this.userId = userId;
+            this.personaId = personaId;
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... arg0) {
+            try {
+                feedItems = new FeedClient(userId, feedType).get(context, Constants.DEFAULT_NUM_FEED, personaId);
+                return (feedItems != null);
+            } catch (WebsiteHandlerException ex) {
                 Log.i("FeedFragment", ex.toString());
                 return false;
-			}
-		}
+            }
+        }
 
-		@Override
-		protected void onPostExecute(Boolean result) {
-			if (!result) {
-				Toast.makeText(this.context, R.string.info_feed_empty,Toast.LENGTH_SHORT).show();
-				return;
-			}
-			listAdapter.setItems(feedItems);
-		}
-	}
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (!result) {
+                Toast.makeText(this.context, R.string.info_feed_empty, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            listAdapter.setItems(feedItems);
+        }
+    }
 
-	public void setTitle(String t) {
-		titleText = t;
-	}
+    public void setTitle(String t) {
+        titleText = t;
+    }
 
-	public void setType(int t) {
-		feedType = t;
-	}
+    public void setType(int t) {
+        feedType = t;
+    }
 
-	public int getType() {
-		return feedType;
-	}
+    public int getType() {
+        return feedType;
+    }
 
-	public void setId(long i) {
-		id = i;
-	}
+    public void setId(long i) {
+        id = i;
+    }
 
-	public void setCanWrite(boolean c) {
-		isWritable = c;
-		if (wrapInput != null) {
-			wrapInput.setVisibility(isWritable ? View.VISIBLE : View.GONE);
-		}
-	}
-	
-	public void prePostMode() {
-		send.setEnabled(false);
-	}
-	public void postPostMode() {
-		send.setEnabled(true);
-		message.setText("");
-	}
+    public void setCanWrite(boolean c) {
+        isWritable = c;
+        if (wrapInput != null) {
+            wrapInput.setVisibility(isWritable ? View.VISIBLE : View.GONE);
+        }
+    }
 
-	@Override
-	public Menu prepareOptionsMenu(Menu menu) {
-		return menu;
-	}
+    public void prePostMode() {
+        send.setEnabled(false);
+    }
 
-	@Override
-	public boolean handleSelectedOption(MenuItem item) {
-		return false;
-	}
+    public void postPostMode() {
+        send.setEnabled(true);
+        message.setText("");
+    }
 
-	@Override
-	public void onDialogListSelection(ProfileData profile) {
-		startActivity(new Intent(context, ProfileActivity.class).putExtra("profile", profile));
-	}
+    @Override
+    public Menu prepareOptionsMenu(Menu menu) {
+        return menu;
+    }
+
+    @Override
+    public boolean handleSelectedOption(MenuItem item) {
+        return false;
+    }
+
+    @Override
+    public void onDialogListSelection(ProfileData profile) {
+        startActivity(new Intent(context, ProfileActivity.class).putExtra("profile", profile));
+    }
 }

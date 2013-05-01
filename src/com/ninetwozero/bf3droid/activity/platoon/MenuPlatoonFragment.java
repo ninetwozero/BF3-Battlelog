@@ -36,6 +36,7 @@ import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.dialog.ListDialogFragment;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
 import com.ninetwozero.bf3droid.model.SelectedOption;
+import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.squareup.otto.Subscribe;
 
@@ -109,7 +110,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         view.findViewById(R.id.button_self).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (BF3Droid.getUserPlatoons().size() > 0) {
+                if (user().getPlatoons().size() > 0) {
                     startActivity(new Intent(mContext, PlatoonActivity.class));
                 }
             }
@@ -117,7 +118,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         view.findViewById(R.id.button_settings).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (BF3Droid.getUserPlatoons().size() > 0) {
+                if (user().getPlatoons().size() > 0) {
                     startActivity(new Intent(mContext, ProfileSettingsActivity.class));
                 }
             }
@@ -147,7 +148,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
     private Map<Long, String> platoonsToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
-        for (SimplePlatoon platoon : BF3Droid.getUserPlatoons()) {
+        for (SimplePlatoon platoon : user().getPlatoons()) {
             map.put(platoon.getPlatoonId(), platoon.getName() + " [" + platoon.getPlatform() + "]");
         }
         return map;
@@ -168,14 +169,14 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     @Subscribe
     public void selectionChanged(SelectedOption selectedOption) {
         if (selectedOption.getChangedGroup().equals(SelectedOption.PLATOON)) {
-            BF3Droid.setSelectedUserPlatoon(selectedOption.getSelectedId());
+            user().selectPlatoon(selectedOption.getSelectedId());
             setupPlatoonBox();
         }
     }
 
     private int indexOfPlatoon(long platoonId) {
-        for (int i = 0; i < BF3Droid.getUserPlatoons().size(); i++) {
-            if (BF3Droid.getUserPlatoons().get(i).getPlatoonId() == platoonId) {
+        for (int i = 0; i < user().getPlatoons().size(); i++) {
+            if (user().getPlatoons().get(i).getPlatoonId() == platoonId) {
                 return i;
             }
         }
@@ -184,9 +185,9 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
     }
 
     public void setupPlatoonBox() {
-        if (BF3Droid.getUserPlatoons().size() > 0 && platoonText != null) {
+        if (user().getPlatoons().size() > 0 && platoonText != null) {
 
-            platoonText.setText(BF3Droid.selectedUserPlatoon().getName() + " [" + BF3Droid.selectedUserPlatoon().getPlatform() + "]");
+            platoonText.setText(user().selectedPlatoon().getName() + " [" + user().selectedPlatoon().getPlatform() + "]");
            /* platoonImage.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
                     .getCachePath(mContext)
                     + mPlatoonData.get(mSelectedPosition).getImage()));*/
@@ -212,5 +213,9 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
                 setupPlatoonBox();
             }
         }
+    }
+
+    private User user(){
+        return BF3Droid.getUser();
     }
 }

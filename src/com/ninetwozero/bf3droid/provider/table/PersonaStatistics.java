@@ -39,4 +39,11 @@ public class PersonaStatistics extends Statistics {
             Columns.WL_RATIO, Columns.ACCURACY, Columns.LONGEST_HEADSHOT, Columns.LONGEST_KILLSTREAK,
             Columns.SKILLRATING, Columns.TIME_PLAYED, Columns.SCORE_PER_MINUTE
     };
+
+    public static final String[] PERSONA_STATISTICS = new String[]{Columns.KILLS,
+            Columns.KILL_ASSISTS, Columns.VEHICLE_DESTROYED, Columns.VEHICLE_ASSISTS, Columns.HEALS, Columns.REVIVES,
+            Columns.REPAIRS, Columns.RESUPPLIES, Columns.DEATHS, Columns.KD_RATIO, Columns.WINS, Columns.LOSSES,
+            Columns.WL_RATIO, Columns.ACCURACY, Columns.LONGEST_HEADSHOT, Columns.LONGEST_KILLSTREAK,
+            Columns.SKILLRATING, Columns.TIME_PLAYED, Columns.SCORE_PER_MINUTE
+    };
 }

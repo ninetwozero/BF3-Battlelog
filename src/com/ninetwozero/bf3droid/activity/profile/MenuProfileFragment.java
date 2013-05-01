@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.profile.assignments.AssignmentActivity;
 import com.ninetwozero.bf3droid.activity.profile.settings.ProfileSettingsActivity;
@@ -38,13 +39,12 @@ import com.ninetwozero.bf3droid.dialog.ListDialogFragment;
 import com.ninetwozero.bf3droid.misc.DataBank;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
 import com.ninetwozero.bf3droid.model.SelectedOption;
+import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.ninetwozero.bf3droid.BF3Droid.*;
 
 public class MenuProfileFragment extends Fragment {
 
@@ -68,69 +68,6 @@ public class MenuProfileFragment extends Fragment {
         return view;
     }
 
-    public void initFragment(View view) {
-
-        mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
-        mWrapPersona.setOnClickListener(
-                new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        FragmentManager manager = getFragmentManager();
-                        ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), SelectedOption.PERSONA);
-                        dialog.show(manager, DIALOG);
-                    }
-                }
-        );
-        mImagePersona = (ImageView) mWrapPersona.findViewById(R.id.image_persona);
-        mTextPersona = (TextView) mWrapPersona.findViewById(R.id.text_persona);
-        mTextPersona.setSelected(true);
-
-        setupActiveSoldierContent();
-
-        view.findViewById(R.id.button_self).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(context, ProfileActivity.class)
-                        .putExtra("profile", SessionKeeper.getProfileData()));
-            }
-        });
-        view.findViewById(R.id.button_weapon).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(context, WeaponListActivity.class)
-                        .putExtra("profile", SessionKeeper.getProfileData()));
-            }
-        });
-        view.findViewById(R.id.button_unlocks).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(context, UnlockActivity.class)
-                        .putExtra("profile", SessionKeeper.getProfileData()));
-            }
-        });
-        view.findViewById(R.id.button_assignments).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(context, AssignmentActivity.class)
-                        .putExtra("profile", SessionKeeper.getProfileData()));
-            }
-        });
-        view.findViewById(R.id.button_settings).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(context, ProfileSettingsActivity.class));
-            }
-        });
-    }
-
-    private Map<Long, String> personasToMap() {
-        Map<Long, String> map = new HashMap<Long, String>();
-        for (SimplePersona simplePersona : getUserPersonas()) {
-            map.put(simplePersona.getPersonaId(), simplePersona.getPersonaName() + " [" + simplePersona.getPlatform() + "]");
-        }
-        return map;
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -145,10 +82,75 @@ public class MenuProfileFragment extends Fragment {
 
     @Subscribe
     public void selectionChanged(SelectedOption selectedOption) {
-        if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
-            setSelectedUserPersona(selectedOption.getSelectedId());
+        if (selectedOption.getChangedGroup().equals(User.USER)) {
+            getUser().selectPersona(selectedOption.getSelectedId());
             setupActiveSoldierContent();
         }
+    }
+
+    public void initFragment(View view) {
+
+        mWrapPersona = (RelativeLayout) view.findViewById(R.id.wrap_persona);
+        mWrapPersona.setOnClickListener(
+                new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FragmentManager manager = getFragmentManager();
+                        ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), User.USER);
+                        dialog.show(manager, DIALOG);
+                    }
+                }
+        );
+        mImagePersona = (ImageView) mWrapPersona.findViewById(R.id.image_persona);
+        mTextPersona = (TextView) mWrapPersona.findViewById(R.id.text_persona);
+        mTextPersona.setSelected(true);
+
+        setupActiveSoldierContent();
+
+        view.findViewById(R.id.button_self).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context, ProfileActivity.class)
+                        .putExtra("user", User.USER));
+            }
+        });
+        view.findViewById(R.id.button_weapon).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context, WeaponListActivity.class)
+                        .putExtra("profile", SessionKeeper.getProfileData())
+                        .putExtra("user", User.USER));
+            }
+        });
+        view.findViewById(R.id.button_unlocks).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context, UnlockActivity.class)
+                        .putExtra("profile", SessionKeeper.getProfileData())
+                        .putExtra("user", User.USER));
+            }
+        });
+        view.findViewById(R.id.button_assignments).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context, AssignmentActivity.class)
+                        .putExtra("user", User.USER));
+            }
+        });
+        view.findViewById(R.id.button_settings).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context, ProfileSettingsActivity.class));
+            }
+        });
+    }
+
+    private Map<Long, String> personasToMap() {
+        Map<Long, String> map = new HashMap<Long, String>();
+        for (SimplePersona simplePersona : getUser().getPersonas()) {
+            map.put(simplePersona.getPersonaId(), simplePersona.getPersonaName() + " [" + simplePersona.getPlatform() + "]");
+        }
+        return map;
     }
 
     public void setupActiveSoldierContent() {
@@ -161,6 +163,10 @@ public class MenuProfileFragment extends Fragment {
     }
 
     private SimplePersona selectedPersona() {
-        return selectedUserPersona();
+        return getUser().selectedPersona();
+    }
+
+    private User getUser() {
+        return BF3Droid.getUser();
     }
 }

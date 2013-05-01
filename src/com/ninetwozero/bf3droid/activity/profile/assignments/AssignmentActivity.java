@@ -34,6 +34,7 @@ import com.ninetwozero.bf3droid.jsonmodel.assignments.MissionPack;
 import com.ninetwozero.bf3droid.loader.Bf3Loader;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.model.SelectedOption;
+import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.server.Bf3ServerCall;
@@ -64,7 +65,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     public void onCreate(final Bundle icicle) {
         super.onCreate(icicle);
         this.bundle = icicle;
-        if (!getIntent().hasExtra("profile")) {
+        if (!getIntent().hasExtra("user")) {
             finish();
         }
         setContentView(R.layout.viewpager_default);
@@ -76,7 +77,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     }
 
     private String username() {
-        return BF3Droid.getUser();
+        return user().getName();
     }
 
     private long personaId() {
@@ -84,7 +85,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     }
 
     private long userId() {
-        return BF3Droid.getUserId();
+        return user().getId();
     }
 
     private int platformId() {
@@ -92,7 +93,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     }
 
     private SimplePersona selectedPersona() {
-        return BF3Droid.selectedUserPersona();
+        return user().selectedPersona();
     }
 
     @Override
@@ -121,7 +122,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             mPagerAdapter = new SwipeyTabsPagerAdapter(mFragmentManager,
-                    new String[]{"Back to Karkand", "Premium", "Close Quarters", "Armored Kill", "Aftermath"},
+                    tabTitles(R.array.assignment_tab),
                     mListFragments,
                     mViewPager,
                     mLayoutInflater
@@ -182,8 +183,8 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
         if (item.getItemId() == R.id.option_reload) {
             refresh();
         } else if (item.getItemId() == R.id.option_change) {
-            if (BF3Droid.getGuestPersonas().size() > 1) {
-                ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), SelectedOption.PERSONA);
+            if (user().getPersonas().size() > 1) {
+                ListDialogFragment dialog = ListDialogFragment.newInstance(personasToMap(), userType());
                 dialog.show(mFragmentManager, DIALOG);
             }
         } else if (item.getItemId() == R.id.option_back) {
@@ -194,18 +195,30 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
 
     private Map<Long, String> personasToMap() {
         Map<Long, String> map = new HashMap<Long, String>();
-        for (SimplePersona persona : BF3Droid.getUserPersonas()) {
-            map.put(persona.getPersonaId(), persona.getPersonaName() + " [" + persona.getPlatform()+"]");
+        for (SimplePersona persona : user().getPersonas()) {
+            map.put(persona.getPersonaId(), persona.getPersonaName() + " [" + persona.getPlatform() + "]");
         }
         return map;
     }
 
     @Subscribe
     public void personaChanged(SelectedOption selectedOption) {
-        if (selectedOption.getChangedGroup().equals(SelectedOption.PERSONA)) {
-            BF3Droid.setSelectedUserPersona(selectedOption.getSelectedId());
+        if (selectedOption.getChangedGroup().equals(userType())) {
+            user().selectPersona(selectedOption.getSelectedId());
             buildCallUri();
             refresh();
         }
+    }
+
+    private User user() {
+        if (userType().equals(User.USER)) {
+            return BF3Droid.getUser();
+        } else  {
+            return BF3Droid.getGuest();
+        }
+    }
+
+    private String userType() {
+        return getIntent().getExtras().getString("user");
     }
 }

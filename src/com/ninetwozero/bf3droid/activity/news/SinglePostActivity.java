@@ -14,14 +14,6 @@
 
 package com.ninetwozero.bf3droid.activity.news;
 
-import java.util.ArrayList;
-
-import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
-import com.ninetwozero.bf3droid.datatype.CommentData;
-import com.ninetwozero.bf3droid.datatype.FeedItem;
-import com.ninetwozero.bf3droid.datatype.NewsData;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -33,9 +25,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.ninetwozero.bf3droid.R;
+import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
 import com.ninetwozero.bf3droid.activity.feed.PostOverviewFragment;
+import com.ninetwozero.bf3droid.datatype.CommentData;
+import com.ninetwozero.bf3droid.datatype.FeedItem;
+import com.ninetwozero.bf3droid.datatype.NewsData;
 import com.ninetwozero.bf3droid.http.RequestHandler;
 import com.ninetwozero.bf3droid.misc.Constants;
+
+import java.util.ArrayList;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 public class SinglePostActivity extends CustomFragmentActivity {
 
@@ -105,9 +106,7 @@ public class SinglePostActivity extends CustomFragmentActivity {
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
             mPagerAdapter = new SwipeyTabsPagerAdapter(
                 mFragmentManager,
-                new String[]{
-                        "OVERVIEW", "COMMENTS"
-                },
+                tabTitles(R.array.single_post_tab),
                 mListFragments,
                 mViewPager,
                 mLayoutInflater

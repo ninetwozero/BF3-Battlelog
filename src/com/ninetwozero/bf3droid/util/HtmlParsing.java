@@ -1,6 +1,5 @@
 package com.ninetwozero.bf3droid.util;
 
-import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.datatype.LoginResult;
 import com.ninetwozero.bf3droid.datatype.SimplePersona;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
@@ -69,6 +68,8 @@ public class HtmlParsing {
     }
 
     protected UserProfileData extractUserProfile() {
+        long userId = userId();
+        String username = username();
         String name = userProfileName();
         String age = userAge();
         String enlisted = userEnlisted();
@@ -78,7 +79,7 @@ public class HtmlParsing {
         int veteranStatus = userVeteranStatus();
         String statusMessage = userStatusMessage();
         String statusMessageDate = userStatusMessageDate();
-        return new UserProfileData(BF3Droid.getUserId(), BF3Droid.getUser(), name, age, enlisted, lastSeen,
+        return new UserProfileData(userId, username, name, age, enlisted, lastSeen,
                 presentation, country, veteranStatus, statusMessage, statusMessageDate);
     }
 
@@ -165,6 +166,19 @@ public class HtmlParsing {
     private long idFromHref(String href) {
         String[] linkElements = href.split("/");
         return Long.parseLong(linkElements[linkElements.length - 1]);
+    }
+
+    private long userId(){
+        Elements elements = document.select("#soldier-list");
+        String link = elements.size() > 0 ? elements.first().attr("data") : EMPTY_STRING;
+        String[] linkElements = link.split("/");
+        return Long.parseLong(linkElements[linkElements.length - 1]);
+    }
+
+    private String username(){
+        Elements elements = document.select("#profile-header .username h1");
+        String name = elements.size() > 0 ? elements.first().ownText() : EMPTY_STRING;
+        return name.substring(1, name.length() -2);
     }
 
     private String userProfileName(){

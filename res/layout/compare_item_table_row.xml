@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+  <RelativeLayout
+   style="@style/MatchWidth"
+    android:background="@color/very_light_grey">
+    <TextView
+      android:id="@+id/header"
+      style="@style/InfoHeadingReverse"
+      android:gravity="center"
+      />
+    <TextView
+      android:id="@+id/user_value"
+      style="@style/TableRowItemLeft"
+      android:layout_below="@id/header"
+      />
+    <TextView
+      android:id="@+id/guest_value"
+      style="@style/TableRowItemRight"
+      android:layout_below="@id/header"
+      />
+
+    </RelativeLayout>
+</TableRow>
