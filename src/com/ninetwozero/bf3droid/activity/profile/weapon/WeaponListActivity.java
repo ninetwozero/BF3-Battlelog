@@ -79,7 +79,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             mPagerAdapter = new SwipeyTabsPagerAdapter(
-                    mFragmentManager, new String[]{"WEAPONS"}, mListFragments,
+                    mFragmentManager, tabTitles(R.array.weapon_list_title), mListFragments,
                     mViewPager, mLayoutInflater);
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);

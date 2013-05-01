@@ -32,6 +32,7 @@ import java.util.Map;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
+@Deprecated
 public class CompareActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     private ProfileStatsFragment[] statsFragments;

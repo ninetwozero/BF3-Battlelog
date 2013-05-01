@@ -23,6 +23,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
+
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.aboutapp.AboutActivity;
 import com.ninetwozero.bf3droid.activity.aboutapp.FeedbackActivity;
@@ -36,11 +37,12 @@ import com.ninetwozero.bf3droid.activity.social.ComNotificationFragment;
 import com.ninetwozero.bf3droid.asynctask.AsyncLogout;
 import com.ninetwozero.bf3droid.datatype.DefaultFragmentActivity;
 import com.ninetwozero.bf3droid.http.FeedClient;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 public class DashboardActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
@@ -104,8 +106,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             mPagerAdapter = new SwipeyTabsPagerAdapter(
-                    mFragmentManager, new String[]{"NEWS", "PROFILE", "PLATOON",
-                    "FORUM", "FEED"}, mListFragments, mViewPager,
+                    mFragmentManager, tabTitles(R.array.dashboard_tab), mListFragments, mViewPager,
                     mLayoutInflater);
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
@@ -125,7 +126,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
             mPagerAdapterCom = new SwipeyTabsPagerAdapter(
                     mFragmentManager, 
-                    new String[]{"FRIENDS", "NOTIFICATIONS"},
+                    tabTitles(R.array.dashboard_com_tab),
                     mListFragmentsCom, 
                     mViewPagerCom, 
                     mLayoutInflater

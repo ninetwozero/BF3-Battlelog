@@ -88,7 +88,7 @@ public class ProfileActivity extends CustomFragmentActivity {
 
             mPagerAdapter = new SwipeyTabsPagerAdapter(
                     mFragmentManager,
-                    new String[]{"OVERVIEW", "STATS", "FEED"},
+                    tabTitles(R.array.profile_tab),
                     mListFragments,
                     mViewPager,
                     mLayoutInflater

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="dashboard_tab">
+    <item>@string/news_tab_title</item>
+    <item>@string/profile_tab_title</item>
+    <item>@string/platoon_tab_title</item>
+    <item>@string/forum_tab_title</item>
+    <item>@string/feed_tab_title</item>
+  </string-array>
+
+  <string-array name="weapon_tab">
+    <item>@string/information_tab_title</item>
+    <item>@string/statistics_tab_title</item>
+    <item>@string/unlocks_tab_title</item>
+  </string-array>
+
+  <string-array name="dashboard_com_tab">
+    <item>@string/friends_tab_title</item>
+    <item>@string/notifications_tab_title</item>
+  </string-array>
+
+  <string-array name="forum_tab">
+    <item>@string/forums_tab_title</item>
+    <item>@string/threads_tab_title</item>
+    <item>@string/posts_tab_title</item>
+  </string-array>
+
+  <string-array name="single_post_tab">
+    <item>@string/overview_tab_title</item>
+    <item>@string/comments_tab_title</item>
+  </string-array>
+
+  <string-array name="platoon_tab">
+    <item>@string/overview_tab_title</item>
+    <item>@string/stats_tab_title</item>
+    <item>@string/users_tab_title</item>
+    <item>@string/feed_tab_title</item>
+  </string-array>
+
+  <string-array name="assignment_tab">
+    <item>Back to Karkand</item>
+    <item>Premium</item>
+    <item>Close Quarters</item>
+    <item>Armored Kill</item>
+    <item>Aftermath</item>
+  </string-array>
+
+  <string-array name="profile_tab">
+    <item>@string/overview_tab_title</item>
+    <item>@string/stats_tab_title</item>
+    <item>@string/feed_tab_title</item>
+  </string-array>
+
+  <string-array name="unlock_tab">
+    <item>@string/weapons_tab_title</item>
+    <item>@string/attachments_tab_title</item>
+    <item>@string/kit_unlocks_tab_title</item>
+    <item>@string/vehicle_addons_tab_title</item>
+    <item>@string/skills_tab_title</item>
+  </string-array>
+
+  <string-array name="weapon_list_title">
+    <item>@string/weapons_tab_title</item>
+  </string-array>
+
+  <string-array name="about_tab">
+    <item>@string/label_license</item>
+    <item>@string/label_about</item>
+    <item>@string/label_faq</item>
+    <item>@string/label_credits</item>
+  </string-array>
+</resources>

@@ -122,7 +122,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             mPagerAdapter = new SwipeyTabsPagerAdapter(mFragmentManager,
-                    new String[]{"Back to Karkand", "Premium", "Close Quarters", "Armored Kill", "Aftermath"},
+                    tabTitles(R.array.assignment_tab),
                     mListFragments,
                     mViewPager,
                     mLayoutInflater

@@ -92,7 +92,7 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
 
             mPagerAdapter = new SwipeyTabsPagerAdapter(
                     mFragmentManager,
-                    new String[]{"INFORMATION", "STATISTICS", "UNLOCKS"},
+                    tabTitles(R.array.weapon_tab),
                     mListFragments,
                     mViewPager,
                     mLayoutInflater

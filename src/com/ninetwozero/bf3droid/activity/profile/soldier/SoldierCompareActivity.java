@@ -115,7 +115,7 @@ public class SoldierCompareActivity extends Bf3FragmentActivity implements Profi
 
     private void setUsername(int fieldId, RankProgress rankProgress, final String userType){
         TextView nameView = (TextView) findViewById(fieldId);
-        nameView.setText(rankProgress.getPersonaName() + rankProgress.getPlatform());
+        nameView.setText(rankProgress.getPersonaName() + " " + rankProgress.getPlatform());
         if (personasCount(userType) == 1) {
             nameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.empty_drawable, 0);
         }

@@ -22,18 +22,17 @@ GNU General Public License for more details.
     android:id="@+id/compare_soldiers_ranks"
     style="@style/table">
 
-    <TableRow style="@style/MatchWidth">
+    <TableRow style="@style/MatchWidth"
+      android:background="@color/black">
 
       <TextView
         android:id="@+id/user_name"
-        style="@style/InfoHeading"
-        android:layout_weight="1"
+        style="@style/TableRowInfoHeading"
         android:drawableRight="@android:drawable/arrow_down_float" />
 
       <TextView
         android:id="@+id/guest_name"
-        style="@style/InfoHeading"
-        android:layout_weight="1"
+        style="@style/TableRowInfoHeading"
         android:drawableRight="@android:drawable/arrow_down_float" />
     </TableRow>
 
@@ -41,26 +40,22 @@ GNU General Public License for more details.
 
       <TextView
         android:id="@+id/user_rank"
-        style="@style/TableRowItemLeft"
-        android:layout_weight="1" />
+        style="@style/TableRowItemLeft"/>
 
       <TextView
         android:id="@+id/guest_rank"
-        style="@style/TableRowItemGravityRight"
-        android:layout_weight="1" />
+        style="@style/TableRowItemGravityRight"/>
     </TableRow>
 
     <TableRow style="@style/MatchWidth">
 
       <TextView
         android:id="@+id/user_score"
-        style="@style/TableRowItemLeft"
-        android:layout_weight="1" />
+        style="@style/TableRowItemLeft" />
 
       <TextView
         android:id="@+id/guest_score"
-        style="@style/TableRowItemGravityRight"
-        android:layout_weight="1" />
+        style="@style/TableRowItemGravityRight"/>
     </TableRow>
 
   </TableLayout>

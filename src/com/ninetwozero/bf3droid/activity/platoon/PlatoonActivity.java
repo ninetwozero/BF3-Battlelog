@@ -14,18 +14,6 @@
 
 package com.ninetwozero.bf3droid.activity.platoon;
 
-import java.util.ArrayList;
-
-import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
-import com.ninetwozero.bf3droid.activity.feed.FeedFragment;
-import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
-import com.ninetwozero.bf3droid.datatype.PlatoonData;
-import com.ninetwozero.bf3droid.datatype.PlatoonInformation;
-import com.ninetwozero.bf3droid.http.FeedClient;
-import com.ninetwozero.bf3droid.http.PlatoonClient;
-import com.ninetwozero.bf3droid.misc.SessionKeeper;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -35,19 +23,27 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.ninetwozero.bf3droid.R;
+import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
+import com.ninetwozero.bf3droid.activity.feed.FeedFragment;
+import com.ninetwozero.bf3droid.dao.PlatoonInformationDAO;
+import com.ninetwozero.bf3droid.datatype.PlatoonData;
+import com.ninetwozero.bf3droid.datatype.PlatoonInformation;
 import com.ninetwozero.bf3droid.datatype.WebsiteHandlerException;
+import com.ninetwozero.bf3droid.http.FeedClient;
+import com.ninetwozero.bf3droid.http.PlatoonClient;
 import com.ninetwozero.bf3droid.misc.Constants;
+import com.ninetwozero.bf3droid.misc.SessionKeeper;
+
+import java.util.ArrayList;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 public class PlatoonActivity extends CustomFragmentActivity {
 
@@ -332,7 +328,7 @@ public class PlatoonActivity extends CustomFragmentActivity {
 
             mPagerAdapter = new SwipeyTabsPagerAdapter(
                 mFragmentManager, 
-                new String[]{"OVERVIEW", "STATS", "USERS", "FEED"}, 
+                tabTitles(R.array.platoon_tab),
                 mListFragments, 
                 mViewPager, 
                 mLayoutInflater

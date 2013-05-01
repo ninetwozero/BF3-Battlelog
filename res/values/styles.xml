@@ -21,6 +21,13 @@
     <item name="android:ellipsize">marquee</item>
   </style>
 
+  <style name="TableRowInfoHeading" parent="InfoHeading">
+    <item name="android:width">0dp</item>
+    <item name="android:gravity">center</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:inputType">textMultiLine</item>
+  </style>
+
   <style name="InfoHeadingReverse" parent="@style/InfoHeading">
     <item name="android:background">@color/white</item>
     <item name="android:textColor">@color/black</item>
@@ -123,7 +130,7 @@
   </style>
 
   <style name="TableRowItemGravityRight" parent="Wrap">
-    <item name="android:layout_gravity">right</item>
+    <item name="android:gravity">right</item>
     <item name="android:padding">@dimen/padding_small</item>
   </style>
 

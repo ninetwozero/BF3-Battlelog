@@ -78,9 +78,8 @@ public class UnlockActivity extends CustomFragmentActivity implements DefaultFra
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
             mPagerAdapter = new SwipeyTabsPagerAdapter(
-
                     mFragmentManager,
-                    new String[]{"WEAPONS", "ATTACHMENTS", "KIT UNLOCKS", "VEHICLE ADDONS", "SKILLS"},
+                    tabTitles(R.array.unlock_tab),
                     mListFragments,
                     mViewPager,
                     mLayoutInflater
