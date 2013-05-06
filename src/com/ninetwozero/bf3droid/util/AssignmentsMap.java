@@ -51,6 +51,11 @@ public class AssignmentsMap{
         put("BF3_ID_PRE3_ASSIGNMENT_8", R.string.pre3_assignment_8);
         put("BF3_ID_PRE3_ASSIGNMENT_9", R.string.pre3_assignment_9);
         put("BF3_ID_PRE3_ASSIGNMENT_10", R.string.pre3_assignment_10);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_1", R.string.pre5_assignment_1);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_2", R.string.pre5_assignment_2);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_3", R.string.pre5_assignment_3);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_4", R.string.pre5_assignment_4);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_5", R.string.pre5_assignment_5);
 
         /*CLOSE QUARTERS*/
         put("BF3_ID_XP2_ASSIGNMENT_1",  R.string.xp2_assignment_1);
@@ -82,6 +87,13 @@ public class AssignmentsMap{
         put("BF3_ID_XP4_ASSIGNMENT_8",  R.string.xp4_assignment_8);
         put("BF3_ID_XP4_ASSIGNMENT_9",  R.string.xp4_assignment_9);
         put("BF3_ID_XP4_ASSIGNMENT_10",  R.string.xp4_assignment_10);
+
+        /* END GAME */
+        put("BF3_ID_XP5_ASSIGNMENT_1", R.string.xp5_assignment_1);
+        put("BF3_ID_XP5_ASSIGNMENT_2", R.string.xp5_assignment_2);
+        put("BF3_ID_XP5_ASSIGNMENT_3", R.string.xp5_assignment_3);
+        put("BF3_ID_XP5_ASSIGNMENT_4", R.string.xp5_assignment_4);
+        put("BF3_ID_XP5_ASSIGNMENT_5", R.string.xp5_assignment_5);
     }};
 
     private static Map<String, int[]> ASSIGNMENT_RESOURCES = new HashMap<String, int[]>(){{
@@ -128,6 +140,11 @@ public class AssignmentsMap{
         put("xp4prema08", new int[] {R.drawable.xp4prem3a08, R.drawable.premiumcamo_nwu, R.string.pre3_assignment_8_reward });
         put("xp4prema09", new int[] {R.drawable.xp4prem3a09, R.drawable.premiumcamo_partizan, R.string.pre3_assignment_9_reward });
         put("xp4prema10", new int[] {R.drawable.xp4prem3a10, R.drawable.premiumcamo_deserttiger, R.string.pre3_assignment_10_reward });
+        put("xp5prema01", new int[] {R.drawable.xp5prem1a01, R.drawable.premiumcamo_atacs, R.string.pre5_assignment_1_reward_1, R.drawable.premiumcamo_partizan, R.string.pre5_assignment_1_reward_2});
+        put("xp5prema02", new int[] {R.drawable.xp5prem2a01, R.drawable.premiumcamo_deserttiger, R.string.pre5_assignment_2_reward_1, R.drawable.premiumcamo_digiflora, R.string.pre5_assignment_2_reward_2});
+        put("xp5prema03", new int[] {R.drawable.xp5prem3a01, R.drawable.premiumcamo_nwu, R.string.pre5_assignment_3_reward_1, R.drawable.premiumcamo_kamysh, R.string.pre5_assignment_3_reward_2});
+        put("xp5prema04", new int[] {R.drawable.xp5prem4a01, R.drawable.premiumcamo_berkut, R.string.pre5_assignment_4_reward_1, R.drawable.premiumcamo_abu, R.string.pre5_assignment_4_reward_2});
+        put("xp5prema05", new int[] {R.drawable.xp5prem5a01, R.drawable.premiumcamo_abu, R.string.pre5_assignment_5_reward_1, R.drawable.premiumcamo_partizan, R.string.pre5_assignment_5_reward_2});
 
         /* CLOSE QUARTERS */
         put("xp2ma01", new int[] {R.drawable.xp2a01, R.drawable.w_xp2_steyraug, R.string.name_weapon_steyraug });
@@ -159,6 +176,13 @@ public class AssignmentsMap{
         put("xp4ma08", new int[] {R.drawable.xp4a08, R.drawable.xp4_greasemonkey, R.string.xp4_assignment_8_reward });
         put("xp4ma09", new int[] {R.drawable.xp4a09, R.drawable.xp4_silenthunter, R.string.xp4_assignment_9_reward });
         put("xp4ma10", new int[] {R.drawable.xp4a10, R.drawable.xp4_quake, R.string.xp4_assignment_10_reward });
+
+        /* END GAME*/
+        put("xp5ma01", new int[] {R.drawable.xp5a01, R.drawable.xp5_a_assignments_fly_swatter, R.string.xp5_assignment_1_reward});
+        put("xp5ma02", new int[] {R.drawable.xp5a03, R.drawable.xp5_a_assignments_standard_bearer, R.string.xp5_assignment_2_reward});
+        put("xp5ma03", new int[] {R.drawable.xp5a05, R.drawable.xp5_a_assignments_look_up, R.string.xp5_assignment_3_reward});
+        put("xp5ma04", new int[] {R.drawable.xp5a02, R.drawable.xp5_a_assignments_road_warrior, R.string.xp5_assignment_4_reward});
+        put("xp5ma05", new int[] {R.drawable.xp5a04, R.drawable.m1911tactical_fancy, R.string.xp5_assignment_5_reward_1, R.drawable.xp5_a_assignments_stac_unlocked, R.string.xp5_assignment_5_reward_2});
     }};
 
     private static final Map<String, Integer> CRITERIA = new HashMap<String, Integer>(){{
@@ -280,7 +304,19 @@ public class AssignmentsMap{
         put("BF3_ID_PRE3_ASSIGNMENT_10_CRITERIA_2", R.string.pre3_assignment_10_criteria_2);
         put("BF3_ID_PRE3_ASSIGNMENT_10_CRITERIA_3", R.string.pre3_assignment_10_criteria_3);
         put("BF3_ID_PRE3_ASSIGNMENT_10_CRITERIA_4", R.string.pre3_assignment_10_criteria_4);
-        
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_1_CRITERIA_1", R.string.pre5_assignment_1_criteria_1);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_1_CRITERIA_2", R.string.pre5_assignment_1_criteria_2);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_2_CRITERIA_1", R.string.pre5_assignment_2_criteria_1);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_2_CRITERIA_2", R.string.pre5_assignment_2_criteria_2);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_3_CRITERIA_1", R.string.pre5_assignment_3_criteria_1);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_3_CRITERIA_2", R.string.pre5_assignment_3_criteria_2);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_4_CRITERIA_1", R.string.pre5_assignment_4_criteria_1);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_4_CRITERIA_2", R.string.pre5_assignment_4_criteria_2);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_5_CRITERIA_1", R.string.pre5_assignment_5_criteria_1);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_5_CRITERIA_2", R.string.pre5_assignment_5_criteria_2);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_5_CRITERIA_3", R.string.pre5_assignment_5_criteria_3);
+        put("BF3_ID_XP5_PRE_ASSIGNMENT_5_CRITERIA_4", R.string.pre5_assignment_5_criteria_4);
+
         /*CLOSE QUARTERS*/
         put("BF3_ID_XP2_ASSIGNMENT_1_CRITERIA_1",  R.string.xp2_assignment_1_criteria_1);
         put("BF3_ID_XP2_ASSIGNMENT_1_CRITERIA_2",  R.string.xp2_assignment_1_criteria_2);
@@ -337,6 +373,18 @@ public class AssignmentsMap{
         put("BF3_ID_XP4_ASSIGNMENT_10_CRITERIA_3",  R.string.xp4_assignment_10_criteria_3);
         put("BF3_ID_XP4_ASSIGNMENT_10_CRITERIA_4",  R.string.xp4_assignment_10_criteria_4);
         put("BF3_ID_XP4_ASSIGNMENT_10_CRITERIA_5",  R.string.xp4_assignment_10_criteria_5);
+
+        /* END GAME */
+        put("BF3_ID_XP5_ASSIGNMENT_1_CRITERIA_1", R.string.xp5_assignment_1_criteria_1);
+        put("BF3_ID_XP5_ASSIGNMENT_2_CRITERIA_1", R.string.xp5_assignment_2_criteria_1);
+        put("BF3_ID_XP5_ASSIGNMENT_2_CRITERIA_2", R.string.xp5_assignment_2_criteria_2);
+        put("BF3_ID_XP5_ASSIGNMENT_2_CRITERIA_3", R.string.xp5_assignment_2_criteria_3);
+        put("BF3_ID_XP5_ASSIGNMENT_3_CRITERIA_2", R.string.xp5_assignment_3_criteria_1);
+        put("BF3_ID_XP5_ASSIGNMENT_3_CRITERIA_3", R.string.xp5_assignment_3_criteria_2);
+        put("BF3_ID_XP5_ASSIGNMENT_3_CRITERIA_1", R.string.xp5_assignment_3_criteria_3);
+        put("BF3_ID_XP5_ASSIGNMENT_4_CRITERIA_1", R.string.xp5_assignment_4_criteria_1);
+        put("BF3_ID_XP5_ASSIGNMENT_4_CRITERIA_2", R.string.xp5_assignment_4_criteria_2);
+        put("BF3_ID_XP5_ASSIGNMENT_5_CRITERIA_1", R.string.xp5_assignment_5_criteria_1);
     }};
 
     public static Integer get(String key){

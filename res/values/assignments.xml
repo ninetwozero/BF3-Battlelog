@@ -181,6 +181,33 @@
   <string name="pre3_assignment_10_criteria_3">Get 50 kills with the PP-19 as Engineer</string>
   <string name="pre3_assignment_10_criteria_4">Get 50 kills with the PP-19 as Recon</string>
   <string name="pre3_assignment_10_reward">PP-19 Desert Stripe Camo</string>
+  <string name="pre5_assignment_1">M39 Specialist</string>
+  <string name="pre5_assignment_1_criteria_1">Get 50 kills with the M39</string>
+  <string name="pre5_assignment_1_criteria_2">Kill 10 enemy flag carriers in CTF</string>
+  <string name="pre5_assignment_1_reward_1">M39 EMR Tactical Camo</string>
+  <string name="pre5_assignment_1_reward_2">M39 EMR Woodland Oak Camo</string>
+  <string name="pre5_assignment_2">SCAR-L Specialist</string>
+  <string name="pre5_assignment_2_criteria_1">Get 100 kills with the SCAR-L</string>
+  <string name="pre5_assignment_2_criteria_2">Capture the flag 3 times in CTF</string>
+  <string name="pre5_assignment_2_reward_1">SCAR-L Desert Stripe Camo</string>
+  <string name="pre5_assignment_2_reward_2">SCAR-L Digital Woodland Camo</string>
+  <string name="pre5_assignment_3">G53 Specialist</string>
+  <string name="pre5_assignment_3_criteria_1">Get 50 kills with the G53</string>
+  <string name="pre5_assignment_3_criteria_2">Destroy 20 vehicles as a engineer</string>
+  <string name="pre5_assignment_3_reward_1">G53 Navy Blue Digital Camo</string>
+  <string name="pre5_assignment_3_reward_2">G53 Woodland Stripe Camo</string>
+  <string name="pre5_assignment_4">QBB-95 Specialist</string>
+  <string name="pre5_assignment_4_criteria_1">Get 100 kills with the QBB-95</string>
+  <string name="pre5_assignment_4_criteria_2">Get 50 ammo resupplies as support</string>
+  <string name="pre5_assignment_4_reward_1">QBB-95 Berkut Camo</string>
+  <string name="pre5_assignment_4_reward_2">QBB-95 Airman Camo</string>
+  <string name="pre5_assignment_5">MK3A1 Specialist</string>
+  <string name="pre5_assignment_5_criteria_1">Get 20 kills with the MK3A1 as assault</string>
+  <string name="pre5_assignment_5_criteria_2">Get 20 kills with the MK3A1 as engineer</string>
+  <string name="pre5_assignment_5_criteria_3">Get 20 kills with the MK3A1 as recon</string>
+  <string name="pre5_assignment_5_criteria_4">Get 20 kills with the MK3A1 as support</string>
+  <string name="pre5_assignment_5_reward_1">MK3A1 Airman Camo</string>
+  <string name="pre5_assignment_5_reward_2">MK3A1 Woodland Oak Camo</string>
 
   <!-- CLOSE QUARTERS-->
   <string name="xp2_assignment_1">Shepard</string>
@@ -289,6 +316,28 @@
   <string name="xp4_assignment_10_criteria_5">Pick up 200 weapons in Scavenger</string>
   <string name="xp4_assignment_10_reward">Quake Survivor</string>
 
+  <!-- END GAME-->
+  <string name="xp5_assignment_1">Defender of the Earth</string>
+  <string name="xp5_assignment_1_criteria_1">Destroy 5 air vehicles using AA jeeps</string>
+  <string name="xp5_assignment_1_reward">Fly Swatter</string>
+  <string name="xp5_assignment_2">Scar Spangled Banner</string>
+  <string name="xp5_assignment_2_criteria_1">Return 5 CTF flags</string>
+  <string name="xp5_assignment_2_criteria_2">Capture 2 CTF flags</string>
+  <string name="xp5_assignment_2_criteria_3">Win 1 round of CTF</string>
+  <string name="xp5_assignment_2_reward">Standard Bearer</string>
+  <string name="xp5_assignment_3">Fatal Drop</string>
+  <string name="xp5_assignment_3_criteria_1">Kill 1 enemy soldier from airdropped IFV</string>
+  <string name="xp5_assignment_3_criteria_2">Destroy 1 enemy transport vehicle from airdropped IFV</string>
+  <string name="xp5_assignment_3_criteria_3">Destroy 1 enemy IFV from airdropped IFV</string>
+  <string name="xp5_assignment_3_reward">Look Up</string>
+  <string name="xp5_assignment_4">Road Warrior</string>
+  <string name="xp5_assignment_4_criteria_1">Destroy 20 vehicles</string>
+  <string name="xp5_assignment_4_criteria_2">Get a road kill with the dirtbike</string>
+  <string name="xp5_assignment_4_reward">Road Warrior</string>
+  <string name="xp5_assignment_5">All About Precision</string>
+  <string name="xp5_assignment_5_criteria_1">Score 20 headshots with pistols</string>
+  <string name="xp5_assignment_5_reward_1">M1911 S-TAC</string>
+  <string name="xp5_assignment_5_reward_2">S-TAC</string>
 
   <string name="resource_missing">New assignment resource missing</string>
 </resources>

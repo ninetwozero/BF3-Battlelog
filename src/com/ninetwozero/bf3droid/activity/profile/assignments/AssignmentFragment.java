@@ -28,23 +28,17 @@ import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.ninetwozero.bf3droid.util.AssignmentsMap;
 import com.squareup.otto.Subscribe;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AssignmentFragment extends Fragment implements DefaultFragment {
-
-    private LayoutInflater mLayoutInflater;
     private TableLayout table;
     private MissionPack missionPack;
     private int expansionId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-        mLayoutInflater = inflater;
         expansionId = getArguments().getInt(AssignmentActivity.EXPANSION_ID);
-        View view = mLayoutInflater.inflate(R.layout.tab_content_assignments, container, false);
+        View view = inflater.inflate(R.layout.tab_content_assignments, container, false);
         table = (TableLayout) view.findViewById(R.id.table_assignments);
         table.setId(getArguments().getInt(AssignmentActivity.EXPANSION_ID));
         return view;
@@ -82,9 +76,13 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
             premiumPackage();
         } else if(expansionId == 8192){
             aftermath(missionPack.getMissions());
-        } else {
+         } else if(expansionId == 16384){
+            endGame(missionPack.getMissions());
+        }
+        else {
             Map<String, Mission> missions = missionPack.getMissions();
-            List<String> keys = Arrays.asList(missions.keySet().toArray(new String[]{}));
+            Set<String> keySet = missions.keySet();
+            List<String> keys = Arrays.asList(keySet.toArray(new String[keySet.size()]));
             Collections.sort(keys);
             for (int i = 0; i < keys.size(); i++) {
                 if (i + 1 < keys.size() && hasDependency(missions.get(keys.get(i)), missions.get(keys.get(i + 1)))) {
@@ -122,6 +120,11 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         twoInRow(missions.get("xp4prema03"), missions.get("xp4prema08"), View.INVISIBLE);
         twoInRow(missions.get("xp4prema04"), missions.get("xp4prema09"), View.INVISIBLE);
         twoInRow(missions.get("xp4prema05"), missions.get("xp4prema10"), View.INVISIBLE);
+        oneInRow(missions.get("xp5prema01"));
+        oneInRow(missions.get("xp5prema02"));
+        oneInRow(missions.get("xp5prema03"));
+        oneInRow(missions.get("xp5prema04"));
+        oneInRow(missions.get("xp5prema05"));
     }
 
     private void nonPremiumMember(Map<String, Mission> missions){
@@ -148,6 +151,14 @@ public class AssignmentFragment extends Fragment implements DefaultFragment {
         twoInRow(missions.get("xp4ma03"), missions.get("xp4ma06"), View.VISIBLE);
         twoInRow(missions.get("xp4ma04"), missions.get("xp4ma07"), View.VISIBLE);
         twoInRow(missions.get("xp4ma08"), missions.get("xp4ma10"), View.VISIBLE);
+    }
+
+    private void endGame(Map<String, Mission> missions){
+        oneInRow(missions.get("xp5ma01"));
+        oneInRow(missions.get("xp5ma02"));
+        oneInRow(missions.get("xp5ma03"));
+        oneInRow(missions.get("xp5ma04"));
+        oneInRow(missions.get("xp5ma05"));
     }
 
     private void oneInRow(Mission mission) {
