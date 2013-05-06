@@ -79,7 +79,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             mPagerAdapter = new SwipeyTabsPagerAdapter(
-                    mFragmentManager, new String[]{"WEAPONS"}, mListFragments,
+                    mFragmentManager, tabTitles(R.array.weapon_list_title), mListFragments,
                     mViewPager, mLayoutInflater);
             mViewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
@@ -110,7 +110,7 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
         @Override
         protected Boolean doInBackground(Void... arg) {
             try {
-                weapons = new ProfileClient().getWeapons();
+                weapons = new ProfileClient().getWeapons(userType());
                 return true;
             } catch (Exception ex) {
                 Log.d("WeaponListActivity", ex.toString());
@@ -142,10 +142,17 @@ public class WeaponListActivity extends CustomFragmentActivity implements Defaul
     }
 
     public void open(WeaponDataWrapper w) {
-        startActivity(new Intent(this, SingleWeaponActivity.class).putExtra("weapon", w));
+        startActivity(new Intent(this,
+                SingleWeaponActivity.class)
+                .putExtra("weapon", w)
+                .putExtra("user", userType()));
+    }
+
+    private String userType() {
+        return getIntent().getStringExtra("user");
     }
 
     private long selectedPersonaId() {
-        return BF3Droid.selectedUserPersona().getPersonaId();
+        return BF3Droid.getUserBy(userType()).selectedPersona().getPersonaId();
     }
 }

@@ -2,38 +2,51 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
   <style name="LoginNotice" parent="MatchWidth">
-    <item name="android:textSize">18sp</item>
+    <item name="android:textSize">@dimen/text_m</item>
     <item name="android:textColor">@color/black</item>
-    <item name="android:layout_margin">10dp</item>
+    <item name="android:layout_margin">@dimen/padding_medium</item>
     <item name="android:background">@drawable/bg_login_notice</item>
   </style>
 
-  <style name="InfoHeading">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textSize">20sp</item>
+  <style name="InfoHeading" parent="MatchWidth">
+    <item name="android:textSize">@dimen/text_l</item>
     <item name="android:background">@color/black</item>
     <item name="android:textColor">@color/white</item>
-    <item name="android:layout_marginTop">5dp</item>
-    <item name="android:layout_marginBottom">5dp</item>
+    <item name="android:layout_marginBottom">@dimen/padding_medium</item>
+    <item name="android:paddingLeft">@dimen/padding_small</item>
+    <item name="android:paddingRight">@dimen/padding_small</item>
+    <item name="android:paddingTop">@dimen/padding_small</item>
+    <item name="android:paddingBottom">@dimen/padding_small</item>
     <item name="android:singleLine">true</item>
     <item name="android:ellipsize">marquee</item>
+  </style>
+
+  <style name="TableRowInfoHeading" parent="InfoHeading">
+    <item name="android:width">0dp</item>
+    <item name="android:gravity">center</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:inputType">textMultiLine</item>
+  </style>
+
+  <style name="InfoHeadingReverse" parent="@style/InfoHeading">
+    <item name="android:background">@color/white</item>
+    <item name="android:textColor">@color/black</item>
   </style>
 
   <style name="InfoHeadingWidget">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:textSize">20sp</item>
+    <item name="android:textSize">@dimen/text_l</item>
     <item name="android:background">@drawable/bg_rounded_corners</item>
     <item name="android:textColor">@color/white</item>
-    <item name="android:layout_marginTop">5dp</item>
-    <item name="android:layout_marginBottom">5dp</item>
+    <item name="android:layout_marginTop">@dimen/padding_small</item>
+    <item name="android:layout_marginBottom">@dimen/padding_small</item>
     <item name="android:singleLine">true</item>
   </style>
 
   <style name="InfoSubHeading" parent="@style/InfoHeading">
     <item name="android:layout_width">wrap_content</item>
-    <item name="android:textSize">16sp</item>
+    <item name="android:textSize">@dimen/text_s</item>
     <item name="android:background">@color/light_grey</item>
     <item name="android:textColor">@color/black</item>
   </style>
@@ -41,18 +54,18 @@
   <style name="InfoHeadingCompare">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:textSize">18sp</item>
+    <item name="android:textSize">@dimen/text_m</item>
     <item name="android:background">@color/black</item>
     <item name="android:textColor">@color/white</item>
-    <item name="android:layout_marginTop">5dp</item>
-    <item name="android:layout_marginBottom">5dp</item>
+    <item name="android:layout_marginTop">@dimen/padding_small</item>
+    <item name="android:layout_marginBottom">@dimen/padding_small</item>
     <item name="android:gravity">center_horizontal</item>
   </style>
 
   <style name="InfoSubHeadingCompare" parent="@style/InfoHeadingCompare">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:textSize">14sp</item>
+    <item name="android:textSize">@dimen/text_xs</item>
     <item name="android:background">@color/light_grey</item>
     <item name="android:textColor">@color/white</item>
   </style>
@@ -67,36 +80,36 @@
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:background">@drawable/button_orange_bg</item>
-    <item name="android:paddingTop">10dp</item>
-    <item name="android:paddingBottom">10dp</item>
+    <item name="android:paddingTop">@dimen/padding_medium</item>
+    <item name="android:paddingBottom">@dimen/padding_medium</item>
     <item name="android:onClick">onClick</item>
   </style>
 
   <style name="FragmentButton" parent="@style/RegularButton">
-    <item name="android:onClick"></item>
+    <item name="android:onClick"/>
   </style>
 
   <style name="MenuButton" parent="@style/RegularButton">
-    <item name="android:layout_width">250dp</item>
-    <item name="android:layout_height">45dp</item>
+    <item name="android:layout_width">@dimen/menu_button_width</item>
+    <item name="android:layout_height">@dimen/menu_button_height</item>
     <item name="android:gravity">center</item>
-    <item name="android:textSize">20sp</item>
+    <item name="android:textSize">@dimen/text_l</item>
     <item name="android:textColor">@color/black</item>
     <item name="android:background">@drawable/button_orange</item>
-    <item name="android:layout_marginBottom">10dp</item>
+    <item name="android:layout_marginBottom">@dimen/padding_medium</item>
   </style>
 
   <style name="FriendHeadingRow">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:background">#EBEBEB</item>
+    <item name="android:background">@color/white_grey</item>
     <item name="android:textColor">@color/grey</item>
-    <item name="android:padding">5dp</item>
+    <item name="android:padding">@dimen/padding_small</item>
   </style>
 
   <!-- Dialog -->
 
-  <style name="StandardPopup" parent="@android:style/Theme.Dialog">
+  <style name="StandardPopup">
     <item name="android:windowFrame">@null</item>
     <item name="android:windowTitleStyle">@android:color/black</item>
     <item name="android:background">@android:color/white</item>
@@ -104,5 +117,28 @@
     <item name="android:windowContentOverlay">@null</item>
     <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
     <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+  </style>
+
+  <style name="TableRowItemLeft" parent="Wrap">
+    <item name="android:layout_alignParentLeft">true</item>
+    <item name="android:padding">@dimen/padding_small</item>
+  </style>
+
+  <style name="TableRowItemRight" parent="Wrap">
+    <item name="android:layout_alignParentRight">true</item>
+    <item name="android:padding">@dimen/padding_small</item>
+  </style>
+
+  <style name="TableRowItemGravityRight" parent="Wrap">
+    <item name="android:gravity">right</item>
+    <item name="android:padding">@dimen/padding_small</item>
+  </style>
+
+  <style name="ScrollView" parent="Match">
+    <item name="android:fillViewport">true</item>
+  </style>
+
+  <style name="table" parent="MatchWidth">
+    <item name="android:stretchColumns">*</item>
   </style>
 </resources>

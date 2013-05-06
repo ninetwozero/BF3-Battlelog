@@ -17,6 +17,7 @@ package com.ninetwozero.bf3droid.activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -103,5 +104,10 @@ public class CustomFragmentActivity extends FragmentActivity {
                 }
             }
         });
+    }
+
+    protected String[] tabTitles(int id) {
+        Resources r = getResources();
+        return r.getStringArray(id);
     }
 }

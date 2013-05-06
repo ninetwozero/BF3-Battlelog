@@ -41,6 +41,7 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
     private WeaponInformationFragment weaponInformationFragment;
     private WeaponStatisticsFragment weaponStatisticsFragment;
     private UnlockFragment unlockFragment;
+    private Bundle bundle;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -48,6 +49,10 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
 
         if (!getIntent().hasExtra("weapon")) {
             finish();
+        }
+
+        if (getIntent().hasExtra("user")) {
+            bundle = getIntent().getExtras();
         }
         weaponDataWrapper = getIntent().getParcelableExtra("weapon");
         weaponInfo = weaponDataWrapper.getData();
@@ -73,11 +78,11 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
 
             mListFragments = new ArrayList<Fragment>();
             mListFragments.add(weaponInformationFragment = (WeaponInformationFragment) Fragment
-                    .instantiate(this, WeaponInformationFragment.class.getName()));
+                    .instantiate(this, WeaponInformationFragment.class.getName(), bundle));
             mListFragments.add(weaponStatisticsFragment = (WeaponStatisticsFragment) Fragment
-                    .instantiate(this, WeaponStatisticsFragment.class.getName()));
+                    .instantiate(this, WeaponStatisticsFragment.class.getName(), bundle));
             mListFragments.add(unlockFragment = (UnlockFragment) Fragment.instantiate(this,
-                    UnlockFragment.class.getName()));
+                    UnlockFragment.class.getName(), bundle));
 
             weaponInformationFragment.setWeaponInfo(weaponInfo);
             weaponInformationFragment.setWeaponStats(weaponStats);
@@ -87,7 +92,7 @@ public class SingleWeaponActivity extends CustomFragmentActivity implements Defa
 
             mPagerAdapter = new SwipeyTabsPagerAdapter(
                     mFragmentManager,
-                    new String[]{"INFORMATION", "STATISTICS", "UNLOCKS"},
+                    tabTitles(R.array.weapon_tab),
                     mListFragments,
                     mViewPager,
                     mLayoutInflater

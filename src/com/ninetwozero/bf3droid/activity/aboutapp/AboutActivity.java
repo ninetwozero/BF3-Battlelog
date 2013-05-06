@@ -19,13 +19,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
+
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
 import com.ninetwozero.bf3droid.datatype.DefaultFragmentActivity;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
-import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 import java.util.ArrayList;
+
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
 public class AboutActivity extends CustomFragmentActivity implements
         DefaultFragmentActivity {
@@ -70,13 +72,7 @@ public class AboutActivity extends CustomFragmentActivity implements
 			// Fill the PagerAdapter & set it to the viewpager
 			mPagerAdapter = new SwipeyTabsPagerAdapter(
 
-			mFragmentManager, new String[] { 
-					getString(R.string.label_license), 
-					getString(R.string.label_about),
-					getString(R.string.label_faq),
-					getString(R.string.label_credits)
-
-			}, mListFragments, mViewPager, mLayoutInflater);
+			mFragmentManager, tabTitles(R.array.about_tab), mListFragments, mViewPager, mLayoutInflater);
 			mViewPager.setAdapter(mPagerAdapter);
 			mTabs.setAdapter(mPagerAdapter);
 

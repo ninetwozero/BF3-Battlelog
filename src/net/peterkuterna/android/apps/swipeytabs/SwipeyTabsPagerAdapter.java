@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+
 import com.ninetwozero.bf3droid.R;
 
 import java.util.List;
@@ -37,15 +38,12 @@ public class SwipeyTabsPagerAdapter extends FragmentPagerAdapter implements Swip
     private LayoutInflater layoutInflater;
     private ViewPager viewPager;
 
-    public SwipeyTabsPagerAdapter(FragmentManager fm, String[] t, List<Fragment> f,
-            ViewPager v, LayoutInflater l) {
+    public SwipeyTabsPagerAdapter(FragmentManager fm, String[] t, List<Fragment> f, ViewPager v, LayoutInflater l) {
         super(fm);
-
         titles = t.clone();
         fragments = f;
         viewPager = v;
         layoutInflater = l;
-
     }
 
     @Override
@@ -60,20 +58,14 @@ public class SwipeyTabsPagerAdapter extends FragmentPagerAdapter implements Swip
 
     @Override
     public TextView getTab(final int position, SwipeyTabs root) {
-
-        // Get the TextView, set the title & the onClickListener
-        TextView view = (TextView) layoutInflater.inflate(
-                R.layout.swipey_tab_indicator, root, false);
+        TextView view = (TextView) layoutInflater.inflate(R.layout.swipey_tab_indicator, root, false);
         view.setText(titles[position]);
         view.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-
                 viewPager.setCurrentItem(position);
             }
         });
-        view.setTextColor(0xffffffff);
-
-        // Return it back for usage
+        view.setTextColor(R.color.alpha_white);
         return view;
     }
 

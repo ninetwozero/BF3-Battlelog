@@ -104,7 +104,7 @@ public class ThreadPostListAdapter extends BaseAdapter {
         // Store the object
         if (currentItem.isOfficial()) {
 
-            convertView.setBackgroundColor(context.getResources().getColor(R.color.officialblue));
+            convertView.setBackgroundColor(context.getResources().getColor(R.color.official_blue));
             textPostedBy.setBackgroundColor(0xFFEEEEEE);
 
         } else {

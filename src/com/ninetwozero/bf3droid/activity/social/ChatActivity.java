@@ -82,7 +82,7 @@ public class ChatActivity extends ListActivity {
 
         listView = getListView();
         listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-        listView.setAdapter(new ChatListAdapter(this, null, BF3Droid.getUser(), layoutInflater));
+        listView.setAdapter(new ChatListAdapter(this, null, BF3Droid.getUser().getName(), layoutInflater));
 
         setTitle(getTitle().toString().replace("...", otherUser.getUsername()));
 

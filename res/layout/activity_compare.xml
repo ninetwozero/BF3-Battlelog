@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+This file is part of BF3 Droid
+
+BF3 Droid is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BF3 Droid is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+-->
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  style="@style/Match">
+
+  <TableLayout
+    android:id="@+id/compare_soldiers_ranks"
+    style="@style/table">
+
+    <TableRow style="@style/MatchWidth"
+      android:background="@color/black">
+
+      <TextView
+        android:id="@+id/user_name"
+        style="@style/TableRowInfoHeading"
+        android:drawableRight="@android:drawable/arrow_down_float" />
+
+      <TextView
+        android:id="@+id/guest_name"
+        style="@style/TableRowInfoHeading"
+        android:drawableRight="@android:drawable/arrow_down_float" />
+    </TableRow>
+
+    <TableRow style="@style/MatchWidth">
+
+      <TextView
+        android:id="@+id/user_rank"
+        style="@style/TableRowItemLeft"/>
+
+      <TextView
+        android:id="@+id/guest_rank"
+        style="@style/TableRowItemGravityRight"/>
+    </TableRow>
+
+    <TableRow style="@style/MatchWidth">
+
+      <TextView
+        android:id="@+id/user_score"
+        style="@style/TableRowItemLeft" />
+
+      <TextView
+        android:id="@+id/guest_score"
+        style="@style/TableRowItemGravityRight"/>
+    </TableRow>
+
+  </TableLayout>
+
+  <ScrollView
+    android:id="@+id/the_scroll"
+    style="@style/ScrollView"
+    android:layout_below="@id/compare_soldiers_ranks">
+
+    <TableLayout
+      android:id="@+id/compare_soldiers_stats"
+      style="@style/table"
+      />
+  </ScrollView>
+</RelativeLayout>

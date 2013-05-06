@@ -4,11 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 
-import com.ninetwozero.bf3droid.datatype.SimplePersona;
-import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.misc.DebugLogConfig;
-
-import java.util.List;
+import com.ninetwozero.bf3droid.model.User;
 
 public class BF3Droid extends Application {
 
@@ -18,17 +15,9 @@ public class BF3Droid extends Application {
 
     private static BF3Droid instance;
     public static final String AUTHORITY = "com.ninetwozero.bf3droid.provider";
-    private static String user;
     private static String checkSum;
-    private static long userId;
-    private static List<SimplePersona> userPersonas;
-    private static List<SimplePersona> guestPersonas;
-    private static long selectedUserPersona = 0;
-    private static long selectedGuestPersona = 0;
-    private static List<SimplePlatoon> userPlatoons;
-    private static List<SimplePlatoon> guestPlatoons;
-    private static long selectedUserPlatoon = 0;
-    private static long getSelectedGuestPersona = 0;
+    private static User user;
+    private static User guest;
 
     @Override
     public void onCreate() {
@@ -59,18 +48,6 @@ public class BF3Droid extends Application {
         //BugSenseHandler.setup(this, BUGSENSE_KEY);
     }
 
-    public static String getUser() {
-        return user;
-    }
-
-    public static void setUser(String user) {
-        BF3Droid.user = user;
-    }
-
-    public static boolean hasUser(){
-        return getUser() != null;
-    }
-
     public static String getCheckSum() {
         return checkSum;
     }
@@ -79,71 +56,27 @@ public class BF3Droid extends Application {
         BF3Droid.checkSum = checkSum;
     }
 
-    public static long getUserId() {
-        return userId;
+    public static User getUser() {
+        return user;
     }
 
-    public static void setUserId(long userId) {
-        BF3Droid.userId = userId;
+    public static void setUser(User user) {
+        BF3Droid.user = user;
     }
 
-    public static void setUserPersonas(List<SimplePersona> userPersonas){
-        BF3Droid.userPersonas = userPersonas;
+    public static User getGuest() {
+        return guest;
     }
 
-    public static List<SimplePersona> getUserPersonas(){
-        return userPersonas;
+    public static void setGuest(User guest) {
+        BF3Droid.guest = guest;
     }
 
-    public static List<SimplePersona> getGuestPersonas() {
-        return guestPersonas;
-    }
-
-    public static void setGuestPersonas(List<SimplePersona> guestPersonas) {
-        BF3Droid.guestPersonas = guestPersonas;
-    }
-
-    public static void setSelectedUserPersona(long selectedUserPersona) {
-        BF3Droid.selectedUserPersona = selectedUserPersona;
-    }
-
-    public static void setSelectedGuestPersona(long selectedGuestPersona) {
-        BF3Droid.selectedGuestPersona = selectedGuestPersona;
-    }
-
-    public static SimplePersona selectedUserPersona(){
-        if(selectedUserPersona == 0){
-            return userPersonas.get(0);
+    public static User getUserBy(String user){
+        if(user.equals(User.USER)){
+            return getUser();
+        } else {
+            return getGuest();
         }
-        for (SimplePersona simplePersona: userPersonas){
-            if (simplePersona.getPersonaId() == selectedUserPersona){
-                return simplePersona;
-            }
-        }
-        return userPersonas.get(0);
-    }
-
-    public static void setUserPlatoons(List<SimplePlatoon> platoons) {
-        BF3Droid.userPlatoons = platoons;
-    }
-
-    public static List<SimplePlatoon> getUserPlatoons() {
-        return userPlatoons;
-    }
-
-    public static void setSelectedUserPlatoon(long selectedUserPlatoon){
-        BF3Droid.selectedUserPlatoon = selectedUserPlatoon;
-    }
-
-    public static SimplePlatoon selectedUserPlatoon() {
-        if(selectedUserPlatoon == 0){
-            return userPlatoons.get(0);
-        }
-        for(SimplePlatoon simplePlatoon : userPlatoons){
-            if(simplePlatoon.getPlatoonId() == selectedUserPlatoon){
-                return  simplePlatoon;
-            }
-        }
-        return userPlatoons.get(0);
     }
 }

@@ -2,6 +2,7 @@ package com.ninetwozero.bf3droid.datatype;
 
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserInfo {
@@ -26,5 +27,11 @@ public class UserInfo {
 
     public List<SimplePlatoon> getPlatoons() {
         return platoons;
+    }
+
+    public boolean isEmpty(){
+        return personas.equals(new ArrayList<SimplePersona>())
+                || platoons.equals(new ArrayList<SimplePlatoon>())
+                || userProfileData == null;
     }
 }

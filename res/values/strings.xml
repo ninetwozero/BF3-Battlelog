@@ -4,86 +4,6 @@
   <string name="app_name">BF3 Droid</string>
   <string name="widget_name">Battlelog - Stats+Friends</string>
 
-  <integer-array name="service_update_intervals_values">
-    <item>300</item>
-    <item>600</item>
-    <item>1800</item>
-    <item>3600</item>
-    <item>7200</item>
-    <item>21600</item>
-    <item>43200</item>
-    <item>64800</item>
-    <item>86400</item>
-  </integer-array>
-  <integer-array name="chat_update_intervals_values">
-    <item>5</item>
-    <item>10</item>
-    <item>15</item>
-    <item>20</item>
-    <item>25</item>
-    <item>30</item>
-    <item>60</item>
-    <item>90</item>
-    <item>120</item>
-  </integer-array>
-
-  <string-array name="service_update_intervals_labels">
-    <item>@string/label_update_interval_minutes_5</item>
-    <item>@string/label_update_interval_minutes_10</item>
-    <item>@string/label_update_interval_minutes_30</item>
-    <item>@string/label_update_interval_hours_1</item>
-    <item>@string/label_update_interval_hours_2</item>
-    <item>@string/label_update_interval_hours_6</item>
-    <item>@string/label_update_interval_hours_12</item>
-    <item>@string/label_update_interval_hours_18</item>
-    <item>@string/label_update_interval_days_1</item>
-  </string-array>
-  <string-array name="chat_update_intervals_labels">
-    <item>@string/label_update_interval_seconds_5</item>
-    <item>@string/label_update_interval_seconds_10</item>
-    <item>@string/label_update_interval_seconds_15</item>
-    <item>@string/label_update_interval_seconds_20</item>
-    <item>@string/label_update_interval_seconds_25</item>
-    <item>@string/label_update_interval_seconds_30</item>
-    <item>@string/label_update_interval_minutes_1</item>
-    <item>@string/label_update_interval_seconds_90</item>
-    <item>@string/label_update_interval_minutes_2</item>
-  </string-array>
-  <string-array name="language_titles">
-    <item>Česky</item>
-    <item>Cрпски</item>
-    <item>Dansk</item>
-    <item>Deutsch</item>
-    <item>English</item>
-    <item>Español</item>
-    <item>Francais</item>
-    <item>Hrvatski</item>
-    <item>Italiano</item>
-    <item>Nederlands</item>
-    <item>Polski</item>
-    <item>Português</item>
-    <item>Român</item>
-    <item>Suomi</item>
-    <item>Svenska</item>
-  </string-array>
-  <string-array name="language_values">
-    <item>cs</item>
-    <item>sr</item>
-    <item>da</item>
-    <item>de</item>
-    <item>en</item>
-    <item>es</item>
-    <item>fr</item>
-    <item>hr</item>
-    <item>it</item>
-    <item>nl</item>
-    <item>pl</item>
-    <item>pt</item>
-    <item>ro</item>
-    <item>fi</item>
-    <item>sv</item>
-  </string-array>
-
   <string name="changelog">To be determined... - @karllindmark</string>
   <string name="notice_text">&lt;b>This app is NOT created nor endorsed by EA/DICE! &lt;/b>&lt;br />This is a
     third-party app developed by the Open Source Community.&lt;p>In order to use this application you will need to login
@@ -350,6 +270,7 @@
   <string name="title_chat">BF3 Droid - Chatting with ...</string>
   <string name="title_comments">BF3 Droid - Comments</string>
   <string name="title_comparing_battle_scars">BF3 Droid - Comparing battle scars</string>
+  <string name="title_compare_soldiers">BF3 Droid - Comparing Soldier stats</string>
   <string name="title_unlocks">BF3 Droid - Upcoming unlocks</string>
   <string name="title_settings">BF3 Droid - Settings</string>
   <string name="title_forum">BF3 Droid - Forum</string>
@@ -573,6 +494,9 @@
   <string name="label_app_settings">Application settings</string>
   <string name="title_profile_settings">BF3 Droid - Setting up your profile</string>
   <string name="title_platoon_new">BF3 Droid - Creating a new platoon</string>
+  <string name="title_weapons">BF3 Droid - Weapons</string>
+  <string name="title_weapon_info">BF3 Droid - Weapon Info</string>
+  <string name="title_post_view">BF3 Droid - Post</string>
   <string name="info_platoon_new_empty_name">You need to enter a name for the platoon.</string>
   <string name="info_platoon_new_empty_tag">You need to enter a tag for the platoon.</string>
   <string name="info_platoon_new_creating">Creating the platoon...</string>
@@ -1658,4 +1582,27 @@
   <string name="msg_failed_to_load_stats">The data is currently unavailable.</string>
   <string name="info_favorited_server">favorite server</string>
   <string name="msg_unknown_time">Created an unknown amount of time ago.</string>
+  <!--KEEP IT IN CAPITALS THESE ARE TABS TITLES-->
+  <string name="news_tab_title">NEWS</string>
+  <string name="profile_tab_title">PROFILE</string>
+  <string name="platoon_tab_title">PLATOON</string>
+  <string name="forum_tab_title">FORUM</string>
+  <string name="feed_tab_title">FEED</string>
+  <string name="information_tab_title">INFORMATION</string>
+  <string name="statistics_tab_title">STATISTICS</string>
+  <string name="unlocks_tab_title">UNLOCKS</string>
+  <string name="friends_tab_title">FRIENDS</string>
+  <string name="notifications_tab_title">NOTIFICATIONS</string>
+  <string name="forums_tab_title">FORUMS</string>
+  <string name="threads_tab_title">THREADS</string>
+  <string name="posts_tab_title">POSTS</string>
+  <string name="overview_tab_title">OVERVIEW</string>
+  <string name="comments_tab_title">COMMENTS</string>
+  <string name="stats_tab_title">STATS</string>
+  <string name="users_tab_title">USERS</string>
+  <string name="weapons_tab_title">WEAPONS</string>
+  <string name="attachments_tab_title">ATTACHMENTS</string>
+  <string name="kit_unlocks_tab_title">KIT UNLOCKS</string>
+  <string name="vehicle_addons_tab_title">VEHICLE ADDONS</string>
+  <string name="skills_tab_title">SKILLS</string>
 </resources>

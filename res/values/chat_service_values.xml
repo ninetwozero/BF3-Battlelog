@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <integer-array name="service_update_intervals_values">
+    <item>300</item>
+    <item>600</item>
+    <item>1800</item>
+    <item>3600</item>
+    <item>7200</item>
+    <item>21600</item>
+    <item>43200</item>
+    <item>64800</item>
+    <item>86400</item>
+  </integer-array>
+  <integer-array name="chat_update_intervals_values">
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
+    <item>30</item>
+    <item>60</item>
+    <item>90</item>
+    <item>120</item>
+  </integer-array>
+
+  <string-array name="service_update_intervals_labels">
+    <item>@string/label_update_interval_minutes_5</item>
+    <item>@string/label_update_interval_minutes_10</item>
+    <item>@string/label_update_interval_minutes_30</item>
+    <item>@string/label_update_interval_hours_1</item>
+    <item>@string/label_update_interval_hours_2</item>
+    <item>@string/label_update_interval_hours_6</item>
+    <item>@string/label_update_interval_hours_12</item>
+    <item>@string/label_update_interval_hours_18</item>
+    <item>@string/label_update_interval_days_1</item>
+  </string-array>
+  <string-array name="chat_update_intervals_labels">
+    <item>@string/label_update_interval_seconds_5</item>
+    <item>@string/label_update_interval_seconds_10</item>
+    <item>@string/label_update_interval_seconds_15</item>
+    <item>@string/label_update_interval_seconds_20</item>
+    <item>@string/label_update_interval_seconds_25</item>
+    <item>@string/label_update_interval_seconds_30</item>
+    <item>@string/label_update_interval_minutes_1</item>
+    <item>@string/label_update_interval_seconds_90</item>
+    <item>@string/label_update_interval_minutes_2</item>
+  </string-array>
+</resources>
