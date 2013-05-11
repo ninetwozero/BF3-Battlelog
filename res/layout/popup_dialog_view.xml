@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 	This file is part of BF3 Droid
 
     BF3 Droid is free software: you can redistribute it and/or modify
@@ -13,72 +12,54 @@
     GNU General Public License for more details.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            style="@style/Match"
-            android:background="@color/white">
+  style="@style/Match"
+  android:background="@color/white">
 
   <RelativeLayout
-      style="@style/StandardPopup"
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:minHeight="200dp"
-      android:minWidth="200dp"
-      android:padding="10dp">
+    style="@style/StandardPopup"
+    android:minHeight="@dimen/min_size"
+    android:minWidth="@dimen/min_size"
+    android:padding="@dimen/padding_medium">
 
     <ImageView
-        android:id="@+id/image_assignment"
-        style="@style/Wrap"
-        android:layout_centerHorizontal="true"
-        android:clickable="true"
-        android:onClick="onClick"
-        android:src="@drawable/a01"/>
+      android:id="@+id/image_assignment"
+      style="@style/Wrap"
+      android:layout_centerHorizontal="true"
+      android:clickable="true"
+      android:onClick="onClick"
+      android:paddingBottom="@dimen/padding_small"
+      android:contentDescription="@string/popup_image_assignment" />
 
     <TextView
-        android:id="@+id/label_objectives"
-        style="@style/InfoSubHeading"
-        android:layout_width="fill_parent"
-        android:layout_below="@id/image_assignment"
-        android:padding="5dp"
-        android:text="Objectives"/>
+      android:id="@+id/label_objectives"
+      style="@style/InfoSubHeading"
+      android:layout_width="fill_parent"
+      android:layout_below="@id/image_assignment"
+      android:padding="@dimen/padding_small"
+      android:text="@string/popup_objectives" />
 
     <LinearLayout
-        android:id="@+id/wrap_objectives"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label_objectives"
-        android:orientation="vertical">
-    </LinearLayout>
+      android:id="@+id/wrap_objectives"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/label_objectives"
+      android:orientation="vertical" />
 
     <TextView
-        android:id="@+id/label_rewards"
-        style="@style/InfoSubHeading"
-        android:layout_width="fill_parent"
-        android:layout_below="@id/wrap_objectives"
-        android:padding="5dp"
-        android:text="REWARDS"
-        android:textColor="@color/black"/>
+      android:id="@+id/label_rewards"
+      style="@style/InfoSubHeading"
+      android:layout_width="fill_parent"
+      android:layout_below="@id/wrap_objectives"
+      android:padding="@dimen/padding_small"
+      android:text="@string/popup_rewards"
+      android:textColor="@color/black" />
 
-    <RelativeLayout
-        android:id="@+id/wrap_rewards"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label_rewards"
-        android:layout_marginTop="5dp">
-
-      <ImageView
-          android:id="@+id/image_reward"
-          style="@style/Wrap"
-          android:layout_centerHorizontal="true"
-          android:src="@drawable/w_xp1_famas"/>
-
-      <TextView
-          android:id="@+id/text_rew_name"
-          style="@style/Wrap"
-          android:layout_below="@id/image_reward"
-          android:layout_centerHorizontal="true"
-          android:padding="5dp"
-          android:text="FAMAS"
-          android:textColor="@color/black"/>
-    </RelativeLayout>
+    <LinearLayout
+      android:id="@+id/wrap_rewards"
+      style="@style/MatchWidth"
+      android:layout_below="@id/label_rewards"
+      android:layout_marginTop="@dimen/padding_small"
+      android:layout_centerHorizontal="true"/>
   </RelativeLayout>
 
 </ScrollView>

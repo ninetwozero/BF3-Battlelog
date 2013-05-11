@@ -1582,6 +1582,11 @@
   <string name="msg_failed_to_load_stats">The data is currently unavailable.</string>
   <string name="info_favorited_server">favorite server</string>
   <string name="msg_unknown_time">Created an unknown amount of time ago.</string>
+  <string name="popup_image_assignment">Assignment image</string>
+  <string name="popup_objectives">Objectives</string>
+  <string name="popup_rewards">REWARDS</string>
+  <string name="popup_reward_description">Reward description</string>
+
   <!--KEEP IT IN CAPITALS THESE ARE TABS TITLES-->
   <string name="news_tab_title">NEWS</string>
   <string name="profile_tab_title">PROFILE</string>

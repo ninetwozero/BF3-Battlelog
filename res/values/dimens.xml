@@ -17,4 +17,6 @@
   <dimen name="text_l">20sp</dimen>
   <dimen name="text_xl">28sp</dimen>
   <dimen name="text_xxl">48sp</dimen>
+
+  <dimen name="min_size">200dp</dimen>
 </resources>
