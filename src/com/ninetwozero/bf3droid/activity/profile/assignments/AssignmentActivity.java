@@ -54,12 +54,11 @@ import org.apache.http.client.methods.HttpGet;
 public class AssignmentActivity extends CustomFragmentActivity implements LoaderManager.LoaderCallbacks<CompletedTask> {
 
     public static final String ASSIGNMENTS = "assignments";
-    private final int ASSIGNMENT_CODE = 15;
     private Assignments assignments;
-    private final int[] expansionId = new int[]{512, 1024, 2048, 4096, 8192};
+    private final int[] expansionId = new int[]{512, 1024, 2048, 4096, 8192, 16384};
     public static final String EXPANSION_ID = "expansionID";
     private Bundle bundle;
-    private final String DIALOG = "AssignmentActivity";
+    private final String DIALOG = AssignmentActivity.class.getSimpleName();
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -164,6 +163,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     }
 
     private void refresh() {
+        int ASSIGNMENT_CODE = 15;
         getSupportLoaderManager().restartLoader(ASSIGNMENT_CODE, bundle, this);
     }
 
@@ -211,11 +211,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
     }
 
     private User user() {
-        if (userType().equals(User.USER)) {
-            return BF3Droid.getUser();
-        } else  {
-            return BF3Droid.getGuest();
-        }
+        return BF3Droid.getUserBy(userType());
     }
 
     private String userType() {

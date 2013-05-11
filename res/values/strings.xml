@@ -29,7 +29,7 @@
   <string name="label_compare_bs">Compare battle scars</string>
   <string name="label_settings">Settings</string>
   <string name="status_empty_input">Please enter a status text to continue.</string>
-  <string name="status_error_unknown">An error has occured: please relogin and try again.</string>
+  <string name="status_error_unknown">An error has occurred: please relogin and try again.</string>
   <string name="general_empty_user">You need to enter a username</string>
   <string name="info_profile_soldier">View soldier profile of...</string>
   <string name="info_profile_platoon">View the platoon profile for...</string>
@@ -80,7 +80,7 @@
   <string name="msg_logging_in">Logging in...</string>
   <string name="msg_login_fail">Login failed.</string>
   <string name="msg_logout">Logging out...</string>
-  <string name="msg_error">An error has occured.</string>
+  <string name="msg_error">An error has occurred.</string>
   <string name="msg_prequest_ok">You applied for the platoon.</string>
   <string name="msg_prequest_fail_pres">You could not apply due to platform restrictions.</string>
   <string name="msg_prequest_fail_full">You could not apply due to the platoon being full.</string>
@@ -318,7 +318,7 @@
   <string name="title_forum_search">Searching through the forums</string>
   <string name="title_search">Searching through users and platoons</string>
   <string name="info_xml_search">Search...</string>
-  <string name="info_xml_generic_error">An error has occured.</string>
+  <string name="info_xml_generic_error">An error has occurred.</string>
   <string name="label_search">Search</string>
   <string name="label_search_ongoing">Searching...</string>
   <string name="info_p_awards">&lt;b>{username}&lt;/b> recieved new awards: {award}.</string>
@@ -1582,6 +1582,11 @@
   <string name="msg_failed_to_load_stats">The data is currently unavailable.</string>
   <string name="info_favorited_server">favorite server</string>
   <string name="msg_unknown_time">Created an unknown amount of time ago.</string>
+  <string name="popup_image_assignment">Assignment image</string>
+  <string name="popup_objectives">Objectives</string>
+  <string name="popup_rewards">REWARDS</string>
+  <string name="popup_reward_description">Reward description</string>
+
   <!--KEEP IT IN CAPITALS THESE ARE TABS TITLES-->
   <string name="news_tab_title">NEWS</string>
   <string name="profile_tab_title">PROFILE</string>

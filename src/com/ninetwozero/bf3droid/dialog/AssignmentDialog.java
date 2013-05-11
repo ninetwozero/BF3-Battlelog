@@ -6,16 +6,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.jsonmodel.assignments.Criteria;
 import com.ninetwozero.bf3droid.jsonmodel.assignments.Mission;
 import com.ninetwozero.bf3droid.util.AssignmentsMap;
 import com.ninetwozero.bf3droid.util.TimeFormatter;
+
+import java.util.List;
 
 public class AssignmentDialog extends DialogFragment {
 
@@ -64,8 +68,17 @@ public class AssignmentDialog extends DialogFragment {
 
         imageAssignment.setClickable(false);
 
-        for (Criteria criteria : mission.getCriterias()) {
+        showCriteria(layoutInflater, wrapObjectives);
 
+        LinearLayout wrapRewards = (LinearLayout) dialog.findViewById(R.id.wrap_rewards);
+        List<Integer> rewards = AssignmentsMap.rewardResources(mission.getCode());
+        showRewards(wrapRewards, rewards);
+
+        return builder.create();
+    }
+
+    private void showCriteria(LayoutInflater layoutInflater, LinearLayout wrapObjectives) {
+        for (Criteria criteria : mission.getCriterias()) {
             View v = layoutInflater.inflate(R.layout.list_item_assignment_popup, null);
 
             ((TextView) v.findViewById(R.id.text_obj_title)).setText(AssignmentsMap.getCriteria(criteria.getDescriptionId()));
@@ -76,11 +89,17 @@ public class AssignmentDialog extends DialogFragment {
             }
             wrapObjectives.addView(v);
         }
+    }
 
-        ((ImageView) dialog.findViewById(R.id.image_reward)).setImageResource(AssignmentsMap.rewardDrawable(mission.getCode()));
-        ((TextView) dialog.findViewById(R.id.text_rew_name)).setText(AssignmentsMap.rewardLabel(mission.getCode()));
-
-        return builder.create();
+    private void showRewards(LinearLayout wrapRewards, List<Integer> rewards) {
+        for(int i = 0; i < rewards.size(); i += 2){
+            TextView reward = new TextView(getActivity().getApplicationContext());
+            reward.setText(rewards.get(i+1));
+            reward.setTextColor(getResources().getColor(R.color.black));
+            reward.setGravity(Gravity.CENTER_HORIZONTAL);
+            reward.setCompoundDrawablesWithIntrinsicBounds(0, rewards.get(i), 0, 0);
+            wrapRewards.addView(reward);
+        }
     }
 
     private int getIcon() {
@@ -88,8 +107,7 @@ public class AssignmentDialog extends DialogFragment {
     }
 
     private String timeValues(double actual, double completion) {
-        return new StringBuilder()
-                .append(TimeFormatter.timeString((int) actual))
+        return new StringBuilder(TimeFormatter.timeString((int) actual))
                 .append("/")
                 .append(TimeFormatter.timeString((int) completion))
                 .toString();
