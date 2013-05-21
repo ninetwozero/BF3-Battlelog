@@ -37,6 +37,7 @@ public class LoginActivity extends Bf3FragmentActivity {
     private Bundle bundle;
     private final int LOGIN_ACTION = 1;
     private final int USER_DATA_ACTION = 2;
+    private String loggedUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +99,7 @@ public class LoginActivity extends Bf3FragmentActivity {
     }
 
     private void processLoginResult(String response) {
-        LoginResult result = new HtmlParsing().extractUserDetails(response);
+        LoginResult result = new HtmlParsing(response).extractUserDetails();
         if (result.getError().equals("")) {
             savePostLoginData(result);
             fetchPersonaAndPlatoonData();
@@ -109,7 +110,7 @@ public class LoginActivity extends Bf3FragmentActivity {
     }
 
     private void savePostLoginData(LoginResult result) {
-        BF3Droid.setUser(new User(result.getUserName(), result.getUserId()));
+        loggedUserName = result.getUserName();
         BF3Droid.setCheckSum(result.getCheckSum());
     }
 
@@ -137,8 +138,9 @@ public class LoginActivity extends Bf3FragmentActivity {
     }
 
     private void processUserDataResult(String response) {
-        HtmlParsing parser = new HtmlParsing();
-        UserInfo userInfo = parser.extractUserInfo(response);
+        HtmlParsing parser = new HtmlParsing(response);
+        BF3Droid.setUser(new User(loggedUserName, parser.logedUserId()));
+        UserInfo userInfo = parser.extractUserInfo();
         saveForApplication(userInfo.getPersonas(), userInfo.getPlatoons());
         new UserInfoRestorer(getContext(), User.USER).save(userInfo);
         redirect();

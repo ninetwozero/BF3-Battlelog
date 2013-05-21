@@ -17,6 +17,11 @@ public class User {
     private long selectedPersona;
     private long selectedPlatoon;
 
+    public User(String name){
+        this.name = name;
+        this.id = 0;
+    }
+
     public User(String name, long id){
         this.name = name;
         this.id = id;

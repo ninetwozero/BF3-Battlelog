@@ -73,8 +73,8 @@ public class UserInfoLoader implements LoaderManager.LoaderCallbacks<CompletedTa
     }
 
     private UserInfo processUserDataResult(String response) {
-        HtmlParsing parser = new HtmlParsing();
-        return parser.extractUserInfo(response);
+        HtmlParsing parser = new HtmlParsing(response);
+        return parser.extractUserInfo();
     }
 
     private boolean isTaskSuccess(CompletedTask.Result result) {

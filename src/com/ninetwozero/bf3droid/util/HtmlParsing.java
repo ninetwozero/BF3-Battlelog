@@ -21,8 +21,9 @@ public class HtmlParsing {
     public static final String ELEMENT_UID_LINK = "<a class=\"base-header-soldier-link\" href=\"/bf3/soldier/";
     public static final String ELEMENT_STATUS_CHECKSUM = "<input type=\"hidden\" name=\"post-check-sum\" value=\"";
     public static final String ELEMENT_USERNAME_LINK = "<div class=\"base-header-profile-username\">";
+    private final String httpContent;
 
-    private Document document;
+    private final Document document;
     private final String XBOX = "Xbox";
     private final String PS3 = "PS3";
     private final String PC = "PC";
@@ -31,9 +32,12 @@ public class HtmlParsing {
     private final String PLATOON_PC = "common-game-2-1";
     private final String EMPTY_STRING = "";
 
+    public HtmlParsing(String httpContent) {
+        this.httpContent = httpContent;
+        this.document = Jsoup.parse(httpContent);
+    }
 
-    public LoginResult extractUserDetails(String httpContent) {
-        document = Jsoup.parse(httpContent);
+    public LoginResult extractUserDetails() {
         if (loggedInPage()) {
             return extractUserCredentials();
         } else {
@@ -41,8 +45,11 @@ public class HtmlParsing {
         }
     }
 
-    public UserInfo extractUserInfo(String httpContent){
-        document = Jsoup.parse(httpContent);
+    public long logedUserId() {
+        return userIdFromDocument();
+    }
+
+    public UserInfo extractUserInfo() {
         List<SimplePersona> personas = extractUserPersonas();
         List<SimplePlatoon> platoons = extractPlatoons();
         UserProfileData profileData = extractUserProfile();
@@ -89,19 +96,24 @@ public class HtmlParsing {
 
     private LoginResult extractUserCredentials() {
         Element userElement = userElement();
-        String userName = userElement.text();
-        long userId = userIdFromDocument();
+        String userName = userName(userElement);
         String checkSum = checkSumFromDocument();
-        return new LoginResult(userName, userId, checkSum);
+        return new LoginResult(userName, checkSum);
     }
 
     private Element userElement() {
-        return document.select(".base-header-soldier-link").first();
+        return document.select("ul[class=popover-content header-profile-dropdown] .profile").first();
+    }
+
+    private String userName(Element userElement) {
+        Elements divContainer = elementFrom(userElement, "a div");
+        return divContainer.size() > 0 ? divContainer.first().ownText() : "";
     }
 
     private long userIdFromDocument() {
-        Element id = document.select(".base-avatar-size-medium").first();
-        return Long.parseLong(id.attr("rel"));
+        Element id = document.select("#profile-main-column span").first();
+        String[] idElements = id.attr("id").split("-");
+        return Long.parseLong(idElements[idElements.length - 1]);
     }
 
     private String checkSumFromDocument() {
@@ -118,7 +130,7 @@ public class HtmlParsing {
         return new SimplePersona(name, id, platform, soldierImage);
     }
 
-    private String extractPersonaName(String url){
+    private String extractPersonaName(String url) {
         String[] linkElements = url.split("/");
         return linkElements[3];
     }
@@ -168,24 +180,24 @@ public class HtmlParsing {
         return Long.parseLong(linkElements[linkElements.length - 1]);
     }
 
-    private long userId(){
+    private long userId() {
         Elements elements = document.select("#soldier-list");
         String link = elements.size() > 0 ? elements.first().attr("data") : EMPTY_STRING;
         String[] linkElements = link.split("/");
         return Long.parseLong(linkElements[linkElements.length - 1]);
     }
 
-    private String username(){
+    private String username() {
         Elements elements = document.select("#profile-header .username h1");
         String name = elements.size() > 0 ? elements.first().ownText() : EMPTY_STRING;
-        return name.substring(1, name.length() -2);
+        return name.substring(1, name.length() - 2);
     }
 
-    private String userProfileName(){
+    private String userProfileName() {
         Elements elements = document.select("#profile-information h2 img");
-        if(elements.size() > 0 && elements.get(0).hasText()){
+        if (elements.size() > 0 && elements.get(0).hasText()) {
             return elements.get(0).ownText();
-        }else{
+        } else {
             return EMPTY_STRING;
         }
     }
@@ -225,12 +237,12 @@ public class HtmlParsing {
         return elements.size() > 0 ? Integer.parseInt(elements.first().text()) : 0;
     }
 
-    private String userStatusMessage(){
+    private String userStatusMessage() {
         Elements elements = document.select(".profile-status-message-text");
         return elements.size() > 0 ? elements.first().ownText() : EMPTY_STRING;
     }
 
-    private String userStatusMessageDate(){
+    private String userStatusMessageDate() {
         Elements elements = document.select(".profile-status-message-date");
         return elements.size() > 0 ? elements.first().ownText() : EMPTY_STRING;
     }
@@ -247,6 +259,10 @@ public class HtmlParsing {
             }
         }
         return EMPTY_STRING;
+    }
+
+    private Elements elementFrom(Element element, String selectStatement) {
+        return element.select(selectStatement);
     }
 
     private LoginResult extractError(String httpContent) {
