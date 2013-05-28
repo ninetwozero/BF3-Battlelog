@@ -80,7 +80,7 @@ public class LoginActivity extends Bf3FragmentActivity {
     }
 
     private Bf3ServerCall.HttpData userHttpData() {     //Replace BF3Droid.getUser() with a username to check app on different profile
-        return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(BF3Droid.getUser().getName()), HttpGet.METHOD_NAME, false);
+        return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(loggedUserName), HttpGet.METHOD_NAME, false);
     }
 
     @Override
@@ -120,11 +120,7 @@ public class LoginActivity extends Bf3FragmentActivity {
     }
 
     private void fetchPersonaAndPlatoonData() {
-        if (hasUserInDatabase()) {
-            redirect();
-        } else {
-            getSupportLoaderManager().initLoader(USER_DATA_ACTION, bundle, this);
-        }
+        getSupportLoaderManager().initLoader(USER_DATA_ACTION, bundle, this);
     }
 
     private void redirect() {
@@ -144,17 +140,6 @@ public class LoginActivity extends Bf3FragmentActivity {
         saveForApplication(userInfo.getPersonas(), userInfo.getPlatoons());
         new UserInfoRestorer(getContext(), User.USER).save(userInfo);
         redirect();
-    }
-
-    private boolean hasUserInDatabase(){
-        UserInfo userInfo = new UserInfoRestorer(getContext(), User.USER).fetch();
-        if(userInfo.isEmpty()){
-            return false;
-        } else {
-            user().setPersonas(userInfo.getPersonas());
-            user().setPlatoons(userInfo.getPlatoons());
-            return true;
-        }
     }
 
     private Context getContext() {
