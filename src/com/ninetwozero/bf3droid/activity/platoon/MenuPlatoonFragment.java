@@ -1,12 +1,12 @@
 /*
-    This file is part of BF3 Battlelog
+    This file is part of BF3 Droid
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
+    BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
+    BF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -34,7 +34,6 @@ import com.ninetwozero.bf3droid.datatype.DefaultFragment;
 import com.ninetwozero.bf3droid.datatype.ProfileData;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.dialog.ListDialogFragment;
-import com.ninetwozero.bf3droid.misc.SessionKeeper;
 import com.ninetwozero.bf3droid.model.SelectedOption;
 import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
@@ -45,37 +44,21 @@ import java.util.Map;
 
 public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
-    // Attributes
-    private Context mContext;
-
-    // Elements
+    private Context context;
     private RelativeLayout wrapPlatoon;
     private TextView platoonText;
     private ImageView platoonImage;
-
-    private long[] mPlatoonId;
-    private String[] mPlatoonName;
-    private long mSelectedPlatoon;
-    private int mSelectedPosition;
     private final String DIALOG = "dialog";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Set our attributes
-        mContext = getActivity();
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        context = getActivity();
         View view = inflater.inflate(R.layout.tab_content_dashboard_platoon, container, false);
-
         initFragment(view);
-
         return view;
-
     }
 
     public void initFragment(View view) {
-        // Set up the Platoon box
         wrapPlatoon = (RelativeLayout) view.findViewById(R.id.wrap_platoon);
         wrapPlatoon.setOnClickListener(new OnClickListener() {
 
@@ -92,26 +75,25 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         platoonText = (TextView) wrapPlatoon.findViewById(R.id.text_platoon);
         platoonText.setSelected(true);
 
-        // Setup the "platoon box"
         setupPlatoonBox();
 
         view.findViewById(R.id.button_new).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext, PlatoonCreateActivity.class));
+                startActivity(new Intent(context, PlatoonCreateActivity.class));
             }
         });
         view.findViewById(R.id.button_invites).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext, ProfileSettingsActivity.class));
+                startActivity(new Intent(context, ProfileSettingsActivity.class));
             }
         });
         view.findViewById(R.id.button_self).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (user().getPlatoons().size() > 0) {
-                    startActivity(new Intent(mContext, PlatoonActivity.class));
+                    startActivity(new Intent(context, PlatoonActivity.class));
                 }
             }
         });
@@ -119,21 +101,14 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
             @Override
             public void onClick(View view) {
                 if (user().getPlatoons().size() > 0) {
-                    startActivity(new Intent(mContext, ProfileSettingsActivity.class));
+                    startActivity(new Intent(context, ProfileSettingsActivity.class));
                 }
             }
         });
-
-        // Let's reload!
-        reload();
     }
 
     @Override
     public void reload() {
-        /*TODO if AsyncRefresh is not finished (rotation and async call restart issue) before user access other part of application
-        * this can cause application crash. Example after login, went into assignments, loaded all assignments
-        * and browsed them. After it I pressed return button and app crashed.*/
-        new AsyncRefresh().execute(SessionKeeper.getProfileData());
     }
 
     @Override
@@ -189,11 +164,12 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
 
             platoonText.setText(user().selectedPlatoon().getName() + " [" + user().selectedPlatoon().getPlatform() + "]");
            /* platoonImage.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
-                    .getCachePath(mContext)
+                    .getCachePath(context)
                     + mPlatoonData.get(mSelectedPosition).getImage()));*/
         }
     }
 
+    @Deprecated
     public class AsyncRefresh extends AsyncTask<ProfileData, Void, Boolean> {
         @Override
         protected Boolean doInBackground(ProfileData... arg0) {

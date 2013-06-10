@@ -1,12 +1,12 @@
 /*
-    This file is part of BF3 Battlelog
+    This file is part of BF3 Droid
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
+    BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
+    BF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -44,26 +44,21 @@ import com.ninetwozero.bf3droid.misc.SessionKeeper;
 
 public class PlatoonOverviewFragment extends Fragment implements DefaultFragment {
 
-    // Attributes
-    private Context mContext;
-    private LayoutInflater mLayoutInflater;
+    private Context context;
+    private LayoutInflater inflater;
     private SharedPreferences mSharedPreferences;
-
-    // Elements
-    private ImageView mImageViewBadge;
+    private ImageView platoonBadge;
     private RelativeLayout mWrapWeb;
-
-    // Misc
     private PlatoonData mPlatoonData;
     private PlatoonInformation mPlatoonInformation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mContext = getActivity();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        mLayoutInflater = inflater;
+        context = getActivity();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        this.inflater = inflater;
 
-        View view = mLayoutInflater.inflate(R.layout.tab_content_platoon_overview, container, false);
+        View view = this.inflater.inflate(R.layout.tab_content_platoon_overview, container, false);
         initFragment(view);
         return view;
 
@@ -89,10 +84,10 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
     }
 
     public final void show(PlatoonInformation data) {
-        if (data == null || mContext == null) {
+        if (data == null || context == null) {
             return;
         }
-        Activity activity = (Activity) mContext;
+        Activity activity = (Activity) context;
 
         ((TextView) activity.findViewById(R.id.text_name_platoon)).setText(data.getName() + " [" + data.getTag() + "]");
         if( data.getDateCreated() == 0 ) {
@@ -104,7 +99,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 	            	PublicUtils.getDate(data.getDateCreated())
 	            ).replace(
 	            	"{RELATIVE DATE}", 
-	            	PublicUtils.getRelativeDate(mContext, data.getDateCreated())
+	            	PublicUtils.getRelativeDate(context, data.getDateCreated())
 	            )
 			);
         }
@@ -125,7 +120,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         }
 
         ((ImageView) activity.findViewById(R.id.image_badge)).setImageBitmap(
-        	BitmapFactory.decodeFile(PublicUtils.getCachePath(mContext) + data.getId() + ".jpeg")
+        	BitmapFactory.decodeFile(PublicUtils.getCachePath(context) + data.getId() + ".jpeg")
         );
 
         if ("".equals(data.getWebsite())) {
@@ -155,30 +150,30 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         }
         if (mPlatoonInformation.isOpenForNewMembers()) {
             if (mPlatoonInformation.isMember()) {
-                ((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(true);
-                ((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_invite)).setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_members)).setVisible(false);
+                menu.findItem(R.id.option_join).setVisible(false);
+                menu.findItem(R.id.option_leave).setVisible(true);
+                menu.findItem(R.id.option_fans).setVisible(false);
+                menu.findItem(R.id.option_invite).setVisible(false);
+                menu.findItem(R.id.option_members).setVisible(false);
             } else if (mPlatoonInformation.isOpenForNewMembers()) {
-                ((MenuItem) menu.findItem(R.id.option_join)).setVisible(true);
-                ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_invite)).setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_members)).setVisible(false);
+                menu.findItem(R.id.option_join).setVisible(true);
+                menu.findItem(R.id.option_leave).setVisible(false);
+                menu.findItem(R.id.option_fans).setVisible(false);
+                menu.findItem(R.id.option_invite).setVisible(false);
+                menu.findItem(R.id.option_members).setVisible(false);
             } else {
-                ((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_invite)).setVisible(false);
-                ((MenuItem) menu.findItem(R.id.option_members)).setVisible(false);
+                menu.findItem(R.id.option_join).setVisible(false);
+                menu.findItem(R.id.option_leave).setVisible(false);
+                menu.findItem(R.id.option_fans).setVisible(false);
+                menu.findItem(R.id.option_invite).setVisible(false);
+                menu.findItem(R.id.option_members).setVisible(false);
             }
         } else {
-            ((MenuItem) menu.findItem(R.id.option_join)).setVisible(false);
-            ((MenuItem) menu.findItem(R.id.option_leave)).setVisible(false);
-            ((MenuItem) menu.findItem(R.id.option_fans)).setVisible(false);
-            ((MenuItem) menu.findItem(R.id.option_invite)).setVisible(false);
-            ((MenuItem) menu.findItem(R.id.option_members)).setVisible(false);
+            menu.findItem(R.id.option_join).setVisible(false);
+            menu.findItem(R.id.option_leave).setVisible(false);
+            menu.findItem(R.id.option_fans).setVisible(false);
+            menu.findItem(R.id.option_invite).setVisible(false);
+            menu.findItem(R.id.option_members).setVisible(false);
         }
         return menu;
     }
@@ -194,7 +189,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
 	private void modifyMembership(boolean isJoining) {
 		new AsyncPlatoonRequest(
-        	mContext, 
+                context,
         	mPlatoonData, 
         	SessionKeeper.getProfileData().getId(),
         	mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")

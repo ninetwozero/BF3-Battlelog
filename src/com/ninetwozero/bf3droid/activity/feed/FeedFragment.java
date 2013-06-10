@@ -98,19 +98,15 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
     }
 
     public void initFragment(View v) {
-
-        // Get the elements
         wrapInput = (RelativeLayout) v.findViewById(R.id.wrap_input);
         listView = (ListView) v.findViewById(android.R.id.list);
         message = (EditText) v.findViewById(R.id.field_message);
         title = (TextView) v.findViewById(R.id.text_title);
         send = (Button) v.findViewById(R.id.button_send);
 
-        // Setup the listAdapter
         listAdapter = new FeedListAdapter(context, feedItems, layoutInflater);
         listView.setAdapter(listAdapter);
 
-        // Handle the *type*-specific events here
         if (feedType == FeedClient.TYPE_GLOBAL) {
             title.setText(R.string.info_feed_title_global);
             message.setHint(R.string.info_xml_hint_status);
@@ -129,12 +125,10 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
             wrapInput.setVisibility(isWritable ? View.VISIBLE : View.GONE);
         }
 
-        // Setup the button click
         send.setOnClickListener(
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         String message = FeedFragment.this.message.getText().toString();
                         if ("".equals(message)) {
                             Toast.makeText(context, R.string.info_empty_msg,
@@ -142,7 +136,6 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
                             return;
                         }
 
-                        // Let's do it accordingly
                         if (feedType == FeedClient.TYPE_GLOBAL) {
                             new AsyncStatusUpdate(context, FeedFragment.this).execute(
                                     message, checksum());
