@@ -61,10 +61,10 @@ public class PlatoonActivity extends CustomFragmentActivity {
     public void onCreate(final Bundle icicle) {
         super.onCreate(icicle);
 
-        if (!getIntent().hasExtra("platoon")) {
+        /*if (!getIntent().hasExtra("platoon")) {
             finish();
         }
-        mPlatoonData = (PlatoonData) getIntent().getParcelableExtra("platoon");
+        mPlatoonData = (PlatoonData) getIntent().getParcelableExtra("platoon");*/
 
         setContentView(R.layout.viewpager_default);
         setup();
@@ -76,7 +76,7 @@ public class PlatoonActivity extends CustomFragmentActivity {
     @Override
     public void onResume() {
         super.onResume();
-        new AsyncCache(this).execute();
+        //new AsyncCache(this).execute();
     }
 
     public void reload() {
@@ -91,12 +91,12 @@ public class PlatoonActivity extends CustomFragmentActivity {
             mListFragments.add(mFragmentMember = (PlatoonMemberFragment) Fragment.instantiate(this, PlatoonMemberFragment.class.getName()));
             mListFragments.add(mFragmentFeed = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
 
+            //remove all these set data types, each fragment set its own view with provided data
             mFragmentOverview.setPlatoonData(mPlatoonData);
             mFragmentMember.setPlatoonData(mPlatoonData);
-
-            mFragmentFeed.setTitle(mPlatoonData.getName());
+            mFragmentFeed.setTitle(/*mPlatoonData.getName()*/platoon().getName());
             mFragmentFeed.setType(FeedClient.TYPE_PLATOON);
-            mFragmentFeed.setId(mPlatoonData.getId());
+            mFragmentFeed.setId(/*mPlatoonData.getId()*/platoon().getPlatoonId());
             mFragmentFeed.setCanWrite(false);
 
             mViewPager = (ViewPager) findViewById(R.id.viewpager);

@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.*;
+
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.datatype.PlatoonTopStatsItem;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
@@ -35,10 +36,10 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
     private LayoutInflater layoutInflater;
     private View cacheView;
     private RelativeLayout wrapGeneral;
-    private RelativeLayout wrapScore;
-    private RelativeLayout wrapSPM;
-    private RelativeLayout wrapTime;
-    private RelativeLayout wrapTopList;
+    private RelativeLayout scoreWrapper;
+    private RelativeLayout spmWrapper;
+    private RelativeLayout timeWrapper;
+    private RelativeLayout topListWrapper;
     private TableLayout scoresTable;
     private TableLayout SPMTable;
     private TableLayout timeTable;
@@ -54,91 +55,97 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
         return view;
     }
 
-    public void initFragment(View view) {}
+    public void initFragment(View view) {
+    }
 
     @Override
-    public void reload() {}
+    public void reload() {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showUI();
+    }
+
+    private void showUI() {
+        wrapGeneral = (RelativeLayout) getView().findViewById(R.id.wrap_general);
+        scoreWrapper = (RelativeLayout) getView().findViewById(R.id.wrap_score);
+        spmWrapper = (RelativeLayout) getView().findViewById(R.id.wrap_spm);
+        timeWrapper = (RelativeLayout) getView().findViewById(R.id.wrap_time);
+        topListWrapper = (RelativeLayout) getView().findViewById(R.id.wrap_toplist);
+        scoresTable = (TableLayout) scoreWrapper.findViewById(R.id.tbl_stats);
+        SPMTable = (TableLayout) spmWrapper.findViewById(R.id.tbl_stats);
+        timeTable = (TableLayout) timeWrapper.findViewById(R.id.tbl_stats);
+        topListTable = (TableLayout) topListWrapper.findViewById(R.id.tbl_stats);
+    }
 
     public void show(PlatoonStats stats) {
-    	if (context == null || stats == null ) {
-            return;
-        }
-    	Activity activity = (Activity) context;
-
-        if (wrapGeneral == null) {
-            wrapGeneral = (RelativeLayout) activity.findViewById(R.id.wrap_general);
-            wrapScore = (RelativeLayout) activity.findViewById(R.id.wrap_score);
-            wrapSPM = (RelativeLayout) activity.findViewById(R.id.wrap_spm);
-            wrapTime = (RelativeLayout) activity.findViewById(R.id.wrap_time);
-            scoresTable = (TableLayout) wrapScore.findViewById(R.id.tbl_stats);
-            SPMTable = (TableLayout) wrapSPM.findViewById(R.id.tbl_stats);
-            timeTable = (TableLayout) wrapTime.findViewById(R.id.tbl_stats);
-            wrapTopList = (RelativeLayout) activity.findViewById(R.id.wrap_toplist);
-            topListTable = (TableLayout) wrapTopList.findViewById(R.id.tbl_stats);
-        } else {
+        if (context != null && stats != null) {
             scoresTable.removeAllViews();
             SPMTable.removeAllViews();
             timeTable.removeAllViews();
             topListTable.removeAllViews();
+
+            PlatoonStatsItem generalSPM = stats.getGlobalTop().get(0);
+            PlatoonStatsItem generalKDR = stats.getGlobalTop().get(1);
+            PlatoonStatsItem generalRank = stats.getGlobalTop().get(2);
+
+            TableRow cacheTableRow = null;
+            ((TextView) wrapGeneral.findViewById(R.id.text_average_spm)).setText(String.valueOf(generalSPM.getAvg()));
+            ((TextView) wrapGeneral.findViewById(R.id.text_max_spm)).setText(String.valueOf(generalSPM.getMax()));
+            ((TextView) wrapGeneral.findViewById(R.id.text_mid_spm)).setText(String.valueOf(generalSPM.getMid()));
+            ((TextView) wrapGeneral.findViewById(R.id.text_min_spm)).setText(String.valueOf(generalSPM.getMin()));
+            ((TextView) wrapGeneral.findViewById(R.id.text_average_rank)).setText(String.valueOf(generalRank.getAvg()));
+            ((TextView) wrapGeneral.findViewById(R.id.text_max_rank)).setText(String.valueOf(generalRank.getMax()));
+            ((TextView) wrapGeneral.findViewById(R.id.text_mid_rank)).setText(String.valueOf(generalRank.getMid()));
+            ((TextView) wrapGeneral.findViewById(R.id.text_min_rank)).setText(String.valueOf(generalRank.getMin()));
+            ((TextView) wrapGeneral.findViewById(R.id.text_average_kdr)).setText(String.valueOf(generalKDR.getDAvg()));
+            ((TextView) wrapGeneral.findViewById(R.id.text_max_kdr)).setText(String.valueOf(generalKDR.getDMax()));
+            ((TextView) wrapGeneral.findViewById(R.id.text_mid_kdr)).setText(String.valueOf(generalKDR.getDMid()));
+            ((TextView) wrapGeneral.findViewById(R.id.text_min_kdr)).setText(String.valueOf(generalKDR.getDMin()));
+
+            List<PlatoonTopStatsItem> topStats = stats.getTopPlayers();
+            PlatoonTopStatsItem tempTopStats = null;
+
+            int numCols = 2;
+            for (int i = 0, max = topStats.size(); i < max; i++) {
+                cacheView = layoutInflater.inflate(R.layout.grid_item_platoon_top_stats, null);
+                if (cacheTableRow == null || (i % numCols) == 0) {
+                    topListTable.addView(cacheTableRow = new TableRow(context));
+                    cacheTableRow.setLayoutParams(
+                            new TableRow.LayoutParams(
+                                    TableLayout.LayoutParams.FILL_PARENT,
+                                    TableLayout.LayoutParams.WRAP_CONTENT
+                            )
+                    );
+                }
+                cacheTableRow.addView(cacheView);
+
+                tempTopStats = topStats.get(i);
+                if (tempTopStats.hasProfile()) {
+                    ((ImageView) cacheView.findViewById(R.id.image_avatar)).setImageBitmap(
+                            BitmapFactory.decodeFile(
+                                    PublicUtils.getCachePath(context) + tempTopStats.getProfile().getGravatarHash() + ".png"
+                            )
+                    );
+                } else {
+                    ((ImageView) cacheView.findViewById(R.id.image_avatar)).setImageResource(R.drawable.default_avatar);
+                }
+
+                ((TextView) cacheView.findViewById(R.id.text_label)).setText(tempTopStats.getLabel().toUpperCase());
+                if (tempTopStats.hasProfile()) {
+                    ((TextView) cacheView.findViewById(R.id.text_name)).setText(tempTopStats.getProfile().getUsername());
+                    ((TextView) cacheView.findViewById(R.id.text_spm)).setText(String.valueOf(tempTopStats.getSPM()));
+                } else {
+                    ((TextView) cacheView.findViewById(R.id.text_name)).setText("N/A");
+                    ((TextView) cacheView.findViewById(R.id.text_spm)).setText("0");
+                }
+            }
+            generateTableRows(scoresTable, stats.getScores(), false);
+            generateTableRows(SPMTable, stats.getSpm(), false);
+            generateTableRows(timeTable, stats.getTime(), true);
         }
-        PlatoonStatsItem generalSPM = stats.getGlobalTop().get(0);
-        PlatoonStatsItem generalKDR = stats.getGlobalTop().get(1);
-        PlatoonStatsItem generalRank = stats.getGlobalTop().get(2);
-
-        TableRow cacheTableRow = null;
-        ((TextView) wrapGeneral.findViewById(R.id.text_average_spm)).setText(String.valueOf(generalSPM.getAvg()));
-        ((TextView) wrapGeneral.findViewById(R.id.text_max_spm)).setText(String.valueOf(generalSPM.getMax()));
-        ((TextView) wrapGeneral.findViewById(R.id.text_mid_spm)).setText(String.valueOf(generalSPM.getMid()));
-        ((TextView) wrapGeneral.findViewById(R.id.text_min_spm)).setText(String.valueOf(generalSPM.getMin()));
-        ((TextView) wrapGeneral.findViewById(R.id.text_average_rank)).setText(String.valueOf(generalRank.getAvg()));
-        ((TextView) wrapGeneral.findViewById(R.id.text_max_rank)).setText(String.valueOf(generalRank.getMax()));
-        ((TextView) wrapGeneral.findViewById(R.id.text_mid_rank)).setText(String.valueOf(generalRank.getMid()));
-        ((TextView) wrapGeneral.findViewById(R.id.text_min_rank)).setText(String.valueOf(generalRank.getMin()));
-        ((TextView) wrapGeneral.findViewById(R.id.text_average_kdr)).setText(String.valueOf(generalKDR.getDAvg()));
-        ((TextView) wrapGeneral.findViewById(R.id.text_max_kdr)).setText(String.valueOf(generalKDR.getDMax()));
-        ((TextView) wrapGeneral.findViewById(R.id.text_mid_kdr)).setText(String.valueOf(generalKDR.getDMid()));
-        ((TextView) wrapGeneral.findViewById(R.id.text_min_kdr)).setText(String.valueOf(generalKDR.getDMin()));
-
-        List<PlatoonTopStatsItem> topStats = stats.getTopPlayers();
-        PlatoonTopStatsItem tempTopStats = null;
-
-        int numCols = 2;
-        for (int i = 0, max = topStats.size(); i < max; i++) {
-            cacheView = layoutInflater.inflate(R.layout.grid_item_platoon_top_stats, null);
-            if (cacheTableRow == null || (i % numCols) == 0) {
-                topListTable.addView(cacheTableRow = new TableRow(context));
-                cacheTableRow.setLayoutParams(
-                    new TableRow.LayoutParams(
-                        TableLayout.LayoutParams.FILL_PARENT,
-                        TableLayout.LayoutParams.WRAP_CONTENT
-                    )
-                );
-            }
-            cacheTableRow.addView(cacheView);
-
-            tempTopStats = topStats.get(i);
-            if (tempTopStats.hasProfile()) {
-                ((ImageView) cacheView.findViewById(R.id.image_avatar)).setImageBitmap(
-                    BitmapFactory.decodeFile(
-                        PublicUtils.getCachePath(context)+ tempTopStats.getProfile().getGravatarHash() + ".png"
-                    )
-                );
-            } else {
-                ((ImageView) cacheView.findViewById(R.id.image_avatar)).setImageResource(R.drawable.default_avatar);
-            }
-
-            ((TextView) cacheView.findViewById(R.id.text_label)).setText(tempTopStats.getLabel().toUpperCase());
-            if (tempTopStats.hasProfile()) {
-                ((TextView) cacheView.findViewById(R.id.text_name)).setText(tempTopStats.getProfile().getUsername());
-                ((TextView) cacheView.findViewById(R.id.text_spm)).setText(String.valueOf(tempTopStats.getSPM()));
-            } else {
-                ((TextView) cacheView.findViewById(R.id.text_name)).setText("N/A");
-                ((TextView) cacheView.findViewById(R.id.text_spm)).setText("0");
-            }
-        }
-        generateTableRows(scoresTable, stats.getScores(), false);
-        generateTableRows(SPMTable, stats.getSpm(), false);
-        generateTableRows(timeTable, stats.getTime(), true);
     }
 
     public void generateTableRows(TableLayout parent, List<PlatoonStatsItem> stats, boolean isTime) {
@@ -148,10 +155,10 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
         if (stats == null) {
             parent.addView(cacheTableRow = new TableRow(context));
             cacheTableRow.setLayoutParams(
-	            new TableRow.LayoutParams(
-		            TableRow.LayoutParams.FILL_PARENT,
-		            TableRow.LayoutParams.WRAP_CONTENT
-	            )
+                    new TableRow.LayoutParams(
+                            TableRow.LayoutParams.FILL_PARENT,
+                            TableRow.LayoutParams.WRAP_CONTENT
+                    )
             );
             cacheTableRow.addView(cacheView = new TextView(context));
             ((TextView) cacheView).setText(R.string.info_stats_not_found);
@@ -159,7 +166,7 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
         } else {
             int numItems = stats.size() - 1;
             int avg;
-            
+
             for (int i = 0, max = (numItems + 1); i < max; i++) {
                 avg = (i == 0) ? (stats.get(i).getAvg() / numItems) : stats.get(i).getAvg();
 
@@ -167,10 +174,10 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
                 if (cacheTableRow == null || (i % 3) == 0) {
                     parent.addView(cacheTableRow = new TableRow(context));
                     cacheTableRow.setLayoutParams(
-                        new TableRow.LayoutParams(
-                            TableRow.LayoutParams.FILL_PARENT,
-                            TableRow.LayoutParams.WRAP_CONTENT
-                        )
+                            new TableRow.LayoutParams(
+                                    TableRow.LayoutParams.FILL_PARENT,
+                                    TableRow.LayoutParams.WRAP_CONTENT
+                            )
                     );
                 }
                 cacheTableRow.addView(cacheView);
@@ -189,11 +196,6 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
                 }
             }
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     public Menu prepareOptionsMenu(Menu menu) {

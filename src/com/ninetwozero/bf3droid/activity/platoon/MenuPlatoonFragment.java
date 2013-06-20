@@ -83,18 +83,18 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
                 startActivity(new Intent(context, PlatoonCreateActivity.class));
             }
         });
-        view.findViewById(R.id.button_invites).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(context, ProfileSettingsActivity.class));
-            }
-        });
         view.findViewById(R.id.button_self).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (user().getPlatoons().size() > 0) {
                     startActivity(new Intent(context, PlatoonActivity.class));
                 }
+            }
+        });
+        view.findViewById(R.id.button_invites).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context, ProfileSettingsActivity.class));
             }
         });
         view.findViewById(R.id.button_settings).setOnClickListener(new OnClickListener() {
