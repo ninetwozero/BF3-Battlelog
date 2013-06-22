@@ -94,4 +94,9 @@ public class UriFactory {
     public static URI userFeeds(){
         return createUri("feed/homeevents/?start=0");
     }
+
+    public static URI platoonDossier(long platoonId){
+        String path = new StringBuilder("/platoon/").append(platoonId).toString();
+        return createUri(path);
+    }
 }

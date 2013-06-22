@@ -58,7 +58,7 @@ public class ProfileStatsLoader implements LoaderManager.LoaderCallbacks<Complet
     @Override
     public void onLoadFinished(Loader<CompletedTask> loader, CompletedTask completedTask) {
         if (isTaskSuccess(completedTask.result)) {
-             PersonaOverviewStatistics stats = processStatsLoaderResult(completedTask);
+            PersonaOverviewStatistics stats = processStatsLoaderResult(completedTask);
             stats.setUserType(user);
             callback.onLoadFinished(stats);
         } else {
@@ -92,11 +92,11 @@ public class ProfileStatsLoader implements LoaderManager.LoaderCallbacks<Complet
         return BF3Droid.getUserBy(user);
     }
 
-    private long selectedPersonaId(){
+    private long selectedPersonaId() {
         return user(user).selectedPersona().getPersonaId();
     }
 
-    private int platformId(){
+    private int platformId() {
         return Platform.resolveIdFromPlatformName(user(user).selectedPersona().getPlatform());
     }
 }
