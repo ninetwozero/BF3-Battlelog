@@ -1,12 +1,12 @@
 /*
-	This file is part of BF3 Battlelog
+	This file is part of BF3 Droid
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
+    BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
+    BF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -14,10 +14,6 @@
 
 package com.ninetwozero.bf3droid;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,12 +22,16 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.SlidingDrawer;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.coveragemapper.android.Map.ExternalCacheDirectory;
 import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
@@ -47,23 +47,23 @@ import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
+import java.io.File;
+import java.util.ArrayList;
+
 public class MainActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
-	private String[] mValueFields;
-	private PostData[] mPostDataArray;
+	private String[] valueFields;
+	private PostData[] postData;
 
 	private CheckBox agree;
 	private EditText emailField;
 	private EditText passwordField;
-	private SlidingDrawer mSlidingDrawer;
-	private OnDrawerOpenListener mOnDrawerOpenListener;
-	private OnDrawerCloseListener mOnDrawerCloseListener;
+	private SlidingDrawer slidingDrawer;
+	private OnDrawerOpenListener onDrawerOpenListener;
+	private OnDrawerCloseListener onDrawerCloseListener;
 	private static final String USER_AGREED = "user_agreed";
 	private RelativeLayout loginNotice;
 	private RelativeLayout loginForm;
@@ -93,20 +93,10 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 		defaultFileCheck();
 		createSession();
 
-		mPostDataArray = new PostData[Constants.FIELD_NAMES_LOGIN.length];
-		mValueFields = new String[2];
-
-		showChangeLogDialog();
-
+		postData = new PostData[Constants.FIELD_NAMES_LOGIN.length];
+		valueFields = new String[2];
 		init();
 		setupDrawer();
-	}
-
-	private void showChangeLogDialog() {
-		if (mSharedPreferences.getInt(Constants.SP_V_CHANGELOG,
-				Constants.CHANGELOG_VERSION - 1) < Constants.CHANGELOG_VERSION) {
-			createChangelogDialog().show();
-		}
 	}
 
 	public void init() {
@@ -191,23 +181,23 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 	}
 
 	private void setupDrawer() {
-		if (mSlidingDrawer == null) {
-			mSlidingDrawer = (SlidingDrawer) findViewById(R.id.about_slider);
-			mOnDrawerCloseListener = new OnDrawerCloseListener() {
+		if (slidingDrawer == null) {
+			slidingDrawer = (SlidingDrawer) findViewById(R.id.about_slider);
+			onDrawerCloseListener = new OnDrawerCloseListener() {
 				@Override
 				public void onDrawerClosed() {
-					mSlidingDrawer.setClickable(false);
+					slidingDrawer.setClickable(false);
 				}
 			};
-			mOnDrawerOpenListener = new OnDrawerOpenListener() {
+			onDrawerOpenListener = new OnDrawerOpenListener() {
 				@Override
 				public void onDrawerOpened() {
-					mSlidingDrawer.setClickable(true);
+					slidingDrawer.setClickable(true);
 				}
 			};
 
-			mSlidingDrawer.setOnDrawerOpenListener(mOnDrawerOpenListener);
-			mSlidingDrawer.setOnDrawerCloseListener(mOnDrawerCloseListener);
+			slidingDrawer.setOnDrawerOpenListener(onDrawerOpenListener);
+			slidingDrawer.setOnDrawerCloseListener(onDrawerCloseListener);
 			setup();
 		}
 	}
@@ -216,13 +206,13 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 	// http://stackoverflow.com/questions/6119722/how-to-check-edittexts-text-is-email-address-or-not
 	public void onClick(View v) {
 		if (v.getId() == R.id.button_login) {
-			mValueFields[0] = emailField.getText().toString();
-			mValueFields[1] = passwordField.getText().toString();
-			if (validateEmailAndPassword(mValueFields[0], mValueFields[1])) {
+			valueFields[0] = emailField.getText().toString();
+			valueFields[1] = passwordField.getText().toString();
+			if (validateEmailAndPassword(valueFields[0], valueFields[1])) {
 				for (int i = 0, max = Constants.FIELD_NAMES_LOGIN.length; i < max; i++) {
-					mPostDataArray[i] = new PostData(
+					postData[i] = new PostData(
 							Constants.FIELD_NAMES_LOGIN[i],
-							(Constants.FIELD_VALUES_LOGIN[i] == null) ? mValueFields[i]
+							(Constants.FIELD_VALUES_LOGIN[i] == null) ? valueFields[i]
 									: Constants.FIELD_VALUES_LOGIN[i]);
 				}
 			} else {
@@ -256,8 +246,8 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK && mSlidingDrawer.isOpened()) {
-			mSlidingDrawer.animateClose();
+		if (keyCode == KeyEvent.KEYCODE_BACK && slidingDrawer.isOpened()) {
+			slidingDrawer.animateClose();
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
@@ -286,35 +276,6 @@ public class MainActivity extends CustomFragmentActivity implements DefaultFragm
 			mViewPager.setCurrentItem(1);
 			mViewPager.setOffscreenPageLimit(2);
 		}
-	}
-
-	public final Dialog createChangelogDialog() {
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		final View layout = inflater.inflate(R.layout.changelog_dialog,
-				(ViewGroup) findViewById(R.id.dialog_root));
-
-		builder.setTitle(getString(R.string.general_changelog_version).replace(
-				"{version}", Constants.CHANGELOG_VERSION + ""));
-
-		// Grab the fields
-		final TextView textView = (TextView) layout
-				.findViewById(R.id.text_changelog);
-		textView.setText(Html.fromHtml(getString(R.string.changelog)));
-
-		// Set the button
-		builder.setPositiveButton(android.R.string.ok,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						mSharedPreferences
-								.edit()
-								.putInt(Constants.SP_V_CHANGELOG,
-										Constants.CHANGELOG_VERSION).commit();
-					}
-				});
-		AlertDialog theDialog = builder.create();
-		theDialog.setView(layout, 0, 0, 0, 0);
-		return theDialog;
 	}
 
 	@Override
