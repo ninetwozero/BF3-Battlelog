@@ -22,7 +22,7 @@ public class Platoon {
     @SerializedName("fanCounter")
     private int fanCounter;
     @SerializedName("creationDate")
-    private Date creationDate;
+    private int creationDate;
     @SerializedName("presentation")
     private String presentation;
     @SerializedName("id")
@@ -36,7 +36,7 @@ public class Platoon {
         this.tag = tag;
         this.members = members;
         this.fanCounter = fanCounter;
-        setCreationDate(creationDate);
+        this.creationDate = creationDate;
         this.presentation = presentation;
         this.id = id;
     }
@@ -69,13 +69,10 @@ public class Platoon {
         return fanCounter;
     }
 
-    private void setCreationDate(int creationDate) {
-        this.creationDate = new Date(creationDate);
-    }
-
     public String getCreationDate() {
+        long currentDate = new Date().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
-        return sdf.format(creationDate);
+        return sdf.format(new Date(currentDate - creationDate));
     }
 
     public String getPresentation() {

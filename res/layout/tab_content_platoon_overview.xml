@@ -101,11 +101,54 @@
           android:textSize="14sp"/>
     </RelativeLayout>
 
+
+    <RelativeLayout
+        android:id="@+id/wrap_members_count"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_web">
+
+      <TextView
+          android:id="@+id/text_header_members"
+          style="@style/FriendHeadingRow"
+          android:text="@string/info_xml_presentation"/>
+
+      <TextView
+          android:id="@+id/text_members_count"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/text_header_members"
+          android:padding="5dp"
+          android:text="N/A"
+          android:textSize="14sp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/wrap_fans_count"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_members_count">
+
+      <TextView
+          android:id="@+id/text_header_fans"
+          style="@style/FriendHeadingRow"
+          android:text="@string/info_xml_presentation"/>
+
+      <TextView
+          android:id="@+id/text_fans_count"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/text_header_fans"
+          android:padding="5dp"
+          android:text="N/A"
+          android:textSize="14sp"/>
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/wrap_presentation"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/wrap_web">
+        android:layout_below="@id/wrap_fans_count">
 
       <TextView
           android:id="@+id/text_header_presentation"

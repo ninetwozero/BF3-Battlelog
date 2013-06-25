@@ -14,7 +14,6 @@
 
 package com.ninetwozero.bf3droid.activity.platoon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,9 +37,13 @@ import com.ninetwozero.bf3droid.asynctask.AsyncPlatoonRequest;
 import com.ninetwozero.bf3droid.datatype.DefaultFragment;
 import com.ninetwozero.bf3droid.datatype.PlatoonData;
 import com.ninetwozero.bf3droid.datatype.PlatoonInformation;
+import com.ninetwozero.bf3droid.jsonmodel.platoon.Platoon;
+import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonDossier;
 import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
+import com.ninetwozero.bf3droid.provider.BusProvider;
+import com.squareup.otto.Subscribe;
 
 public class PlatoonOverviewFragment extends Fragment implements DefaultFragment {
 
@@ -56,6 +59,9 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
     private ImageView platoonBadge;
     private RelativeLayout websiteContainer;
     private TextView platoonPresentation;
+    private Platoon platoon;
+    private TextView membersCount;
+    private TextView fansCount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,6 +78,19 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
     public void onResume() {
         super.onResume();
         showUI();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void platoonDossier(PlatoonDossier platoonDossier) {
+        this.platoon = platoonDossier.getPlatoon();
+        updateUI();
     }
 
     public void initFragment(View v) {
@@ -95,36 +114,30 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         platoonBadge = (ImageView) getView().findViewById(R.id.image_badge);
         websiteContainer = (RelativeLayout) getView().findViewById(R.id.wrap_web);
         platoonPresentation = (TextView) getView().findViewById(R.id.text_presentation);
+        membersCount = (TextView) getView().findViewById(R.id.text_members_count);
+        fansCount = (TextView) getView().findViewById(R.id.text_fans_count);
     }
 
-    public final void show(PlatoonInformation data) {
-        if (data != null && context != null) {
-            platoonLabel.setText(data.getName() + " [" + data.getTag() + "]");
-            if (data.getDateCreated() == 0) {
-                dateLabel.setText(R.string.msg_unknown_time);
-            } else {
-                dateLabel.setText(
-                        getString(R.string.info_platoon_created)
-                                .replace("{DATE}",PublicUtils.getDate(data.getDateCreated()))
-                                .replace("{RELATIVE DATE}",PublicUtils.getRelativeDate(context, data.getDateCreated()))
-                );
-            }
-            platformBadge.setImageResource(platformImage(data.getPlatformId()));
+    public final void updateUI() {
+        platoonLabel.setText(platoon.getName() + " [" + platoon.getTag() + "]");
+        dateLabel.setText(platoon.getCreationDate());
+        platformBadge.setImageResource(platformImage(platoon.getPlatform()));
 
-            platoonBadge.setImageBitmap(BitmapFactory.decodeFile(PublicUtils.getCachePath(context) + data.getId() + ".jpeg"));
+        //platoonBadge.setImageBitmap(BitmapFactory.decodeFile(PublicUtils.getCachePath(context) + data.getId() + ".jpeg"));
 
-            if ("".equals(data.getWebsite())) {
-                websiteContainer.setVisibility(View.GONE);
-            } else {
-                ((TextView) getView().findViewById(R.id.text_web)).setText(data.getWebsite());
-                websiteContainer.setTag(data.getWebsite());
-            }
+        if ("".equals(platoon.getWebsite())) {
+            websiteContainer.setVisibility(View.GONE);
+        } else {
+            ((TextView) getView().findViewById(R.id.text_web)).setText(platoon.getWebsite());
+            websiteContainer.setTag(platoon.getWebsite());
+        }
+        membersCount.setText(String.valueOf(platoon.getMemberCounter()));
+        fansCount.setText(String.valueOf(platoon.getFanCounter()));
 
-            if (data.getPresentation().equals("")) {
-                platoonPresentation.setText(R.string.info_profile_empty_pres);
-            } else {
-                platoonPresentation.setText(data.getPresentation());
-            }
+        if (platoon.getPresentation().equals("")) {
+            platoonPresentation.setText(R.string.info_profile_empty_pres);
+        } else {
+            platoonPresentation.setText(platoon.getPresentation());
         }
     }
 
