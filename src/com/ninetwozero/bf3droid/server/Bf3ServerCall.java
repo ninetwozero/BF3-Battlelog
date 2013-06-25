@@ -3,14 +3,9 @@ package com.ninetwozero.bf3droid.server;
 import android.util.Log;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.ninetwozero.bf3droid.server.SimpleHttpCaller.SimpleHttpCallerCallback;
 
-import java.io.*;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -18,6 +13,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Bf3ServerCall implements SimpleHttpCallerCallback {
 
@@ -56,6 +59,9 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
 
     protected SimpleHttpCaller buildHttpGetCaller() throws Exception {
         HttpGet request = new HttpGet(httpData.getCall());
+        if(httpData.hasHeaders()){
+            request.setHeaders(httpData.getRequestHeaders());
+        }
         return new SimpleHttpCaller(httpClient, request, this);
     }
 
@@ -68,17 +74,11 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
     @Override
     public void onSimpleHttpCallSuccess(HttpResponse response) {
         if (httpData.isGetMethod() && httpData.doesReturnsJson()) {
-            doJsonCallback(response);
+            JsonObject jsonObject = JsonWorker.jsonFrom(response);
+            callback.onBf3CallSuccess(jsonObject);
         } else {
             doStringCallback(response);
         }
-    }
-
-    private void doJsonCallback(HttpResponse response) {
-        Reader reader = getJSONReader(response);
-        JsonParser parser = new JsonParser();
-        JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
-        callback.onBf3CallSuccess(overviewStatsObject(jsonObject));
     }
 
     private void doStringCallback(HttpResponse response) {
@@ -102,21 +102,6 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
         callback.onBf3CallFailure();
     }
 
-    private Reader getJSONReader(HttpResponse response) {
-        Reader reader = null;
-        try {
-            InputStream data = response.getEntity().getContent();
-            reader = new InputStreamReader(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return reader;
-    }
-
-    private JsonObject overviewStatsObject(JsonObject jsonObject) {
-        return jsonObject.getAsJsonObject("data");
-    }
-
     @SuppressWarnings("serial")
     public static class _403Exception extends IOException {
     }
@@ -126,20 +111,25 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
         private static List<NameValuePair> nameValuePairs;
         private static String method;
         private static boolean asJson;
+        private static Header[] requestHeaders;
 
         public HttpData(URI call, String method) {
-            this(call, new ArrayList<NameValuePair>(), method, true);
+            this(call, new ArrayList<NameValuePair>(), method, true, new Header[]{});
         }
 
         public HttpData(URI call, String method, boolean json) {
-            this(call, new ArrayList<NameValuePair>(), method, json);
+            this(call, new ArrayList<NameValuePair>(), method, json, new Header[]{});
+        }
+        public HttpData(URI call, String method, boolean json, Header[] requestHeaders) {
+            this(call, new ArrayList<NameValuePair>(), method, json, requestHeaders);
         }
 
-        public HttpData(URI uri, List<NameValuePair> list, String string, boolean json) {
-            call = uri;
-            nameValuePairs = list;
-            method = string;
-            asJson = json;
+        public HttpData(URI uri, List<NameValuePair> list, String string, boolean json, Header[] requestHeaders) {
+            this.call = uri;
+            this.nameValuePairs = list;
+            this.method = string;
+            this.asJson = json;
+            this.requestHeaders = requestHeaders.clone();
         }
 
         public URI getCall() {
@@ -152,6 +142,14 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
 
         public boolean isGetMethod() {
             return method.equals(HttpGet.METHOD_NAME);
+        }
+
+        public Header[] getRequestHeaders() {
+            return requestHeaders;
+        }
+
+        public boolean hasHeaders(){
+            return requestHeaders.length > 0;
         }
 
         public boolean doesReturnsJson() {

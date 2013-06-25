@@ -24,6 +24,7 @@ import com.ninetwozero.bf3droid.util.HtmlParsing;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -76,7 +77,7 @@ public class LoginActivity extends Bf3FragmentActivity {
     }
 
     private Bf3ServerCall.HttpData loginHttpData() {
-        return new Bf3ServerCall.HttpData(UriFactory.getLogginUri(), formData(), HttpPost.METHOD_NAME, false);
+        return new Bf3ServerCall.HttpData(UriFactory.getLogginUri(), formData(), HttpPost.METHOD_NAME, false, new Header[]{});
     }
 
     private Bf3ServerCall.HttpData userHttpData() {     //Replace BF3Droid.getUser() with a username to check app on different profile

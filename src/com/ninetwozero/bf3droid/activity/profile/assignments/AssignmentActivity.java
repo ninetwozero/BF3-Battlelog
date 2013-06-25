@@ -155,7 +155,7 @@ public class AssignmentActivity extends CustomFragmentActivity implements Loader
 
     private Assignments assignmentsFrom(CompletedTask task) {
         Gson gson = new Gson();
-        return gson.fromJson(task.jsonObject, Assignments.class);
+        return gson.fromJson(task.jsonObject.getAsJsonObject("data"), Assignments.class);
     }
 
     public void reload() {

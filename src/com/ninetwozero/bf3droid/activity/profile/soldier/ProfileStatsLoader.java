@@ -82,7 +82,7 @@ public class ProfileStatsLoader implements LoaderManager.LoaderCallbacks<Complet
 
     private PersonaOverviewStatistics personaStatsFrom(CompletedTask task) {
         Gson gson = new Gson();
-        PersonaInfo data = gson.fromJson(task.jsonObject, PersonaInfo.class);
+        PersonaInfo data = gson.fromJson(task.jsonObject.getAsJsonObject("data"), PersonaInfo.class);
         return new PersonaOverviewStatistics(RankProgressDAO.rankProgressFromJSON(data)
                 , PersonaStatisticsDAO.personaStatisticsFromJSON(data)
                 , ScoreStatisticsDAO.scoreStatisticsFromJSON(data));

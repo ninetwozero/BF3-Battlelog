@@ -11,9 +11,11 @@ import com.google.gson.JsonObject;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonDossier;
 import com.ninetwozero.bf3droid.loader.Bf3Loader;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
+import com.ninetwozero.bf3droid.misc.HttpHeaders;
 import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.server.Bf3ServerCall;
 
+import org.apache.http.Header;
 import org.apache.http.client.methods.HttpGet;
 
 public class PlatoonLoader implements LoaderManager.LoaderCallbacks<CompletedTask> {
@@ -35,19 +37,24 @@ public class PlatoonLoader implements LoaderManager.LoaderCallbacks<CompletedTas
         void onLoadFinished(PlatoonDossier platoonDossier);
     }
 
+    public void restart() {
+        loaderManager.restartLoader(LOADER_PLATOON, new Bundle(), this);
+    }
+
     @Override
     public Loader<CompletedTask> onCreateLoader(int i, Bundle bundle) {
         return new Bf3Loader(context, httpDataStats());
     }
 
     private Bf3ServerCall.HttpData httpDataStats() {
-        return new Bf3ServerCall.HttpData(UriFactory.platoonDossier(platoonId), HttpGet.METHOD_NAME);
+        Header[] requestHeaders = HttpHeaders.GET_HEADERS.get(HttpHeaders.AJAX_GET_HEADER);
+        return new Bf3ServerCall.HttpData(UriFactory.platoonDossier(platoonId), HttpGet.METHOD_NAME, true, requestHeaders );
     }
 
     @Override
     public void onLoadFinished(Loader<CompletedTask> completedTaskLoader, CompletedTask completedTask) {
         if(isTaskSuccess(completedTask.result)){
-            PlatoonDossier dossier = processLoaderResult(completedTask.response);
+            PlatoonDossier dossier = processLoaderResult(completedTask.jsonObject);
             callback.onLoadFinished(dossier);
         }else{
             Log.e(PlatoonLoader.class.getSimpleName(), "Platoon data extraction failed for " + platoonId);
@@ -63,9 +70,9 @@ public class PlatoonLoader implements LoaderManager.LoaderCallbacks<CompletedTas
         return result == CompletedTask.Result.SUCCESS;
     }
 
-    private PlatoonDossier processLoaderResult(String result){
+    private PlatoonDossier processLoaderResult(JsonObject jsonObject){
         Gson gson = new Gson();
-        PlatoonDossier dossier = gson.fromJson(result, PlatoonDossier.class);
+        PlatoonDossier dossier = gson.fromJson(jsonObject.getAsJsonObject("context"), PlatoonDossier.class);
         return dossier;
     }
 }

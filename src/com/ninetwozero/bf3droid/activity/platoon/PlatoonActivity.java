@@ -38,6 +38,7 @@ import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.datatype.WebsiteHandlerException;
 import com.ninetwozero.bf3droid.http.FeedClient;
 import com.ninetwozero.bf3droid.http.PlatoonClient;
+import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonDossier;
 import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
 import com.ninetwozero.bf3droid.model.User;
@@ -47,7 +48,7 @@ import java.util.ArrayList;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
-public class PlatoonActivity extends CustomFragmentActivity {
+public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLoader.Callback{
 
     private PlatoonOverviewFragment mFragmentOverview;
     private PlatoonStatsFragment mFragmentStats;
@@ -77,6 +78,7 @@ public class PlatoonActivity extends CustomFragmentActivity {
     public void onResume() {
         super.onResume();
         //new AsyncCache(this).execute();
+        new PlatoonLoader(this, getApplicationContext(), platoon().getPlatoonId(), getSupportLoaderManager()).restart();
     }
 
     public void reload() {
@@ -228,6 +230,11 @@ public class PlatoonActivity extends CustomFragmentActivity {
 
     private SimplePlatoon platoon() {
         return BF3Droid.getUserBy(User.USER).selectedPlatoon();
+    }
+
+    @Override
+    public void onLoadFinished(PlatoonDossier platoonDossier) {
+
     }
 
     @Deprecated
