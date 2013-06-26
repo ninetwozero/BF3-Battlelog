@@ -1,9 +1,7 @@
 package com.ninetwozero.bf3droid.jsonmodel.platoon;
 
 import com.google.gson.annotations.SerializedName;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.ninetwozero.bf3droid.util.DateTimeFormatter;
 
 public class Platoon {
 
@@ -22,13 +20,13 @@ public class Platoon {
     @SerializedName("fanCounter")
     private int fanCounter;
     @SerializedName("creationDate")
-    private int creationDate;
+    private long creationDate;
     @SerializedName("presentation")
     private String presentation;
     @SerializedName("id")
     private long id;
 
-    public Platoon(String website, int memberCounter, String name, int platform, String tag, PlatoonMembers members, int fanCounter, int creationDate, String presentation, long id) {
+    public Platoon(String website, int memberCounter, String name, int platform, String tag, PlatoonMembers members, int fanCounter, long creationDate, String presentation, long id) {
         this.website = website;
         this.memberCounter = memberCounter;
         this.name = name;
@@ -70,9 +68,7 @@ public class Platoon {
     }
 
     public String getCreationDate() {
-        long currentDate = new Date().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
-        return sdf.format(new Date(currentDate - creationDate));
+        return DateTimeFormatter.dateString(creationDate);
     }
 
     public String getPresentation() {

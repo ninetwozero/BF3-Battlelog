@@ -17,7 +17,7 @@ import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.jsonmodel.assignments.Criteria;
 import com.ninetwozero.bf3droid.jsonmodel.assignments.Mission;
 import com.ninetwozero.bf3droid.util.AssignmentsMap;
-import com.ninetwozero.bf3droid.util.TimeFormatter;
+import com.ninetwozero.bf3droid.util.DateTimeFormatter;
 
 import java.util.List;
 
@@ -107,9 +107,9 @@ public class AssignmentDialog extends DialogFragment {
     }
 
     private String timeValues(double actual, double completion) {
-        return new StringBuilder(TimeFormatter.timeString((int) actual))
+        return new StringBuilder(DateTimeFormatter.timeString((int) actual))
                 .append("/")
-                .append(TimeFormatter.timeString((int) completion))
+                .append(DateTimeFormatter.timeString((int) completion))
                 .toString();
     }
 }
