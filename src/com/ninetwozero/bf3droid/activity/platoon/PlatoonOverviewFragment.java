@@ -14,13 +14,11 @@
 
 package com.ninetwozero.bf3droid.activity.platoon;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,25 +31,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ninetwozero.bf3droid.R;
-import com.ninetwozero.bf3droid.asynctask.AsyncPlatoonRequest;
 import com.ninetwozero.bf3droid.datatype.DefaultFragment;
-import com.ninetwozero.bf3droid.datatype.PlatoonData;
 import com.ninetwozero.bf3droid.datatype.PlatoonInformation;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.Platoon;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonDossier;
-import com.ninetwozero.bf3droid.misc.Constants;
-import com.ninetwozero.bf3droid.misc.PublicUtils;
-import com.ninetwozero.bf3droid.misc.SessionKeeper;
 import com.ninetwozero.bf3droid.provider.BusProvider;
+import com.ninetwozero.bf3droid.util.ImageLoader;
 import com.squareup.otto.Subscribe;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class PlatoonOverviewFragment extends Fragment implements DefaultFragment {
 
-    private Context context;
+    private static final String EMBLEMS_URL = "http://static.cdn.ea.com/battlelog/prod/emblems/320/574/";
+    private static final String EXTENSION = ".jpeg";
+
     private LayoutInflater inflater;
-    private SharedPreferences sharedPreferences;
     private RelativeLayout layoutWrapper;
-    private PlatoonData mPlatoonData;
+    /*TODO replace platoon information with appropriate Platoon object equivalents*/
     private PlatoonInformation platoonInformation;
     private TextView platoonLabel;
     private TextView dateLabel;
@@ -65,8 +63,6 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        context = getActivity();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.inflater = inflater;
 
         View view = this.inflater.inflate(R.layout.tab_content_platoon_overview, container, false);
@@ -123,7 +119,10 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         dateLabel.setText(platoon.getCreationDate());
         platformBadge.setImageResource(platformImage(platoon.getPlatform()));
 
-        //platoonBadge.setImageBitmap(BitmapFactory.decodeFile(PublicUtils.getCachePath(context) + data.getId() + ".jpeg"));
+        Bitmap bitmap = fetchPlatoonBadge();
+        if (bitmap != null) {
+            platoonBadge.setImageBitmap(bitmap);
+        }
 
         if ("".equals(platoon.getWebsite())) {
             websiteContainer.setVisibility(View.GONE);
@@ -154,11 +153,21 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         }
     }
 
-    public void reload() {
+    private Bitmap fetchPlatoonBadge() {
+        Bitmap bitmap = null;
+        try {
+            InputStream is = ImageLoader.from(EMBLEMS_URL + platoon.getId() + EXTENSION);
+            if (is != null) {
+                bitmap = BitmapFactory.decodeStream(is);
+                is.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 
-    public void setPlatoonData(PlatoonData p) {
-        mPlatoonData = p;
+    public void reload() {
     }
 
     public Menu prepareOptionsMenu(Menu menu) {
@@ -204,12 +213,13 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         return true;
     }
 
+    /*TODO fix membership*/
     private void modifyMembership(boolean isJoining) {
-        new AsyncPlatoonRequest(
+        /*new AsyncPlatoonRequest(
                 context,
                 mPlatoonData,
                 SessionKeeper.getProfileData().getId(),
                 sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
-        ).execute(isJoining);
+        ).execute(isJoining);*/
     }
 }

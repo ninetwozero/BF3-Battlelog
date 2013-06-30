@@ -30,8 +30,6 @@ import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
 import com.ninetwozero.bf3droid.activity.feed.FeedFragment;
-import com.ninetwozero.bf3droid.datatype.PlatoonData;
-import com.ninetwozero.bf3droid.datatype.PlatoonInformation;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.http.FeedClient;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonDossier;
@@ -45,13 +43,10 @@ import java.util.ArrayList;
 
 public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLoader.Callback{
 
-    private PlatoonOverviewFragment mFragmentOverview;
-    private PlatoonStatsFragment mFragmentStats;
-    private PlatoonMemberFragment mFragmentMember;
-    private FeedFragment mFragmentFeed;
-
-    private PlatoonData mPlatoonData;
-    private PlatoonInformation mPlatoonInformation;
+    private PlatoonOverviewFragment platoonOverview;
+    private PlatoonStatsFragment platoonStats;
+    private PlatoonMemberFragment platoonMembers;
+    private FeedFragment platoonFeeds;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -76,18 +71,16 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
     private void setup() {
         if (mListFragments == null) {
             mListFragments = new ArrayList<Fragment>();
-            mListFragments.add(mFragmentOverview = (PlatoonOverviewFragment) Fragment.instantiate(this, PlatoonOverviewFragment.class.getName()));
-            mListFragments.add(mFragmentStats = (PlatoonStatsFragment) Fragment.instantiate(this, PlatoonStatsFragment.class.getName()));
-            mListFragments.add(mFragmentMember = (PlatoonMemberFragment) Fragment.instantiate(this, PlatoonMemberFragment.class.getName()));
-            mListFragments.add(mFragmentFeed = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
+            mListFragments.add(platoonOverview = (PlatoonOverviewFragment) Fragment.instantiate(this, PlatoonOverviewFragment.class.getName()));
+            mListFragments.add(platoonStats = (PlatoonStatsFragment) Fragment.instantiate(this, PlatoonStatsFragment.class.getName()));
+            mListFragments.add(platoonMembers = (PlatoonMemberFragment) Fragment.instantiate(this, PlatoonMemberFragment.class.getName()));
+            mListFragments.add(platoonFeeds = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
 
             //remove all these set data types, each fragment set its own view with provided data
-            mFragmentOverview.setPlatoonData(mPlatoonData);
-            mFragmentMember.setPlatoonData(mPlatoonData);
-            mFragmentFeed.setTitle(/*mPlatoonData.getName()*/platoon().getName());
-            mFragmentFeed.setType(FeedClient.TYPE_PLATOON);
-            mFragmentFeed.setId(/*mPlatoonData.getId()*/platoon().getPlatoonId());
-            mFragmentFeed.setCanWrite(false);
+            platoonFeeds.setTitle(/*mPlatoonData.getName()*/platoon().getName());
+            platoonFeeds.setType(FeedClient.TYPE_PLATOON);
+            platoonFeeds.setId(/*mPlatoonData.getId()*/platoon().getPlatoonId());
+            platoonFeeds.setCanWrite(false);
 
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
@@ -118,11 +111,11 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
     /*public void updatePlatoonInDB(PlatoonInformation p) {
 		ContentValues contentValues = PlatoonInformationDAO.platoonInformationForDB(p, System.currentTimeMillis());
     	try {
-	    	getContentResolver().insert(PlatoonInformationDAO.URI, contentValues); 
+	    	getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);
     	} catch(SQLiteConstraintException ex) {
     		getContentResolver().update(
 	    		PlatoonInformationDAO.URI,
-	    		contentValues,	    		
+	    		contentValues,
 	    		PlatoonInformationDAO.Columns.PLATOON_ID + "=?",
 	    		new String[] { String.valueOf(p.getId()) }
 			);
@@ -132,11 +125,11 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
 	@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (mViewPager.getCurrentItem() == 0) {
-            return super.onPrepareOptionsMenu(mFragmentOverview.prepareOptionsMenu(menu));
+            return super.onPrepareOptionsMenu(platoonOverview.prepareOptionsMenu(menu));
         } else if (mViewPager.getCurrentItem() == 1) {
-            return super.onPrepareOptionsMenu(mFragmentStats.prepareOptionsMenu(menu));
+            return super.onPrepareOptionsMenu(platoonStats.prepareOptionsMenu(menu));
         } else if (mViewPager.getCurrentItem() == 2) {
-            return super.onPrepareOptionsMenu(mFragmentMember.prepareOptionsMenu(menu));
+            return super.onPrepareOptionsMenu(platoonMembers.prepareOptionsMenu(menu));
         } else {
             menu.removeItem(R.id.option_friendadd);
             menu.removeItem(R.id.option_frienddel);
@@ -154,11 +147,11 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
             this.finish();
         } else {
             if (mViewPager.getCurrentItem() == 0) {
-                return mFragmentOverview.handleSelectedOption(item);
+                return platoonOverview.handleSelectedOption(item);
             } else if (mViewPager.getCurrentItem() == 1) {
-                return mFragmentStats.handleSelectedOption(item);
+                return platoonStats.handleSelectedOption(item);
             } else if (mViewPager.getCurrentItem() == 2) {
-                return mFragmentMember.handleSelectedOption(item);
+                return platoonMembers.handleSelectedOption(item);
             }
         }
         return true;
@@ -172,10 +165,10 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
             case 1:
                 break;
             case 2:
-                mFragmentMember.createContextMenu(menu, view, menuInfo);
+                platoonMembers.createContextMenu(menu, view, menuInfo);
                 break;
             case 3:
-                mFragmentFeed.createContextMenu(menu, view, menuInfo);
+                platoonFeeds.createContextMenu(menu, view, menuInfo);
                 break;
             default:
                 break;
@@ -194,9 +187,9 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
         
         switch (mViewPager.getCurrentItem()) {
             case 2:
-                return mFragmentMember.handleSelectedContextItem(info, item);
+                return platoonMembers.handleSelectedContextItem(info, item);
             case 3:
-                return mFragmentFeed.handleSelectedContextItem(info, item);
+                return platoonFeeds.handleSelectedContextItem(info, item);
             default:
                 break;
         }
@@ -204,7 +197,7 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
     }
     
     public void setFeedPermission(boolean c) {
-        mFragmentFeed.setCanWrite(c);
+        platoonFeeds.setCanWrite(c);
     }
 
     @Override

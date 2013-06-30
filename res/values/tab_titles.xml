@@ -32,8 +32,8 @@
 
   <string-array name="platoon_tab">
     <item>@string/overview_tab_title</item>
-    <item>@string/stats_tab_title</item>
     <item>@string/users_tab_title</item>
+    <item>@string/stats_tab_title</item>
     <item>@string/feed_tab_title</item>
   </string-array>
 

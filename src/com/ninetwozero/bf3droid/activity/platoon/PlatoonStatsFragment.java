@@ -14,20 +14,29 @@
 
 package com.ninetwozero.bf3droid.activity.platoon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.*;
-import android.widget.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ninetwozero.bf3droid.R;
-import com.ninetwozero.bf3droid.datatype.PlatoonTopStatsItem;
-import com.ninetwozero.bf3droid.misc.PublicUtils;
 import com.ninetwozero.bf3droid.datatype.DefaultFragment;
 import com.ninetwozero.bf3droid.datatype.PlatoonStats;
 import com.ninetwozero.bf3droid.datatype.PlatoonStatsItem;
+import com.ninetwozero.bf3droid.datatype.PlatoonTopStatsItem;
+import com.ninetwozero.bf3droid.misc.PublicUtils;
 
 import java.util.List;
 

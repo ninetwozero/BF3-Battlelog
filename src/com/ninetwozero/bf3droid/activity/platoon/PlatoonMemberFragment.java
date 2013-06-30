@@ -14,16 +14,9 @@
 
 package com.ninetwozero.bf3droid.activity.platoon;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -41,30 +34,27 @@ import android.widget.Toast;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.profile.soldier.ProfileActivity;
 import com.ninetwozero.bf3droid.adapter.PlatoonUserListAdapter;
-import com.ninetwozero.bf3droid.asynctask.AsyncPlatoonMemberManagement;
-import com.ninetwozero.bf3droid.asynctask.AsyncPlatoonRespond;
 import com.ninetwozero.bf3droid.datatype.DefaultFragment;
-import com.ninetwozero.bf3droid.datatype.PlatoonData;
 import com.ninetwozero.bf3droid.datatype.ProfileData;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonDossier;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonMember;
-import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.squareup.otto.Subscribe;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public class PlatoonMemberFragment extends ListFragment implements DefaultFragment {
 
     private Context context;
     private LayoutInflater inflater;
-    private SharedPreferences sharedPreferences;
     private TextView titleText;
     private ListView listView;
     private PlatoonUserListAdapter platoonUserListAdapter;
-    private PlatoonData platoonData;
     private List<PlatoonMember> membersList;
-    private List<ProfileData> fansList;
-    private List<ProfileData> friendsList;
-    private boolean mViewingMembers;
+    private List<PlatoonMember> fansList;
+    private boolean viewMembers;
     private boolean isAdmin = false;
 
     private final int MEMBER_FOUNDER = 256;
@@ -75,7 +65,6 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getActivity();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.inflater = inflater;
 
         View view = this.inflater.inflate(R.layout.tab_content_platoon_users, container, false);
@@ -113,7 +102,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
         platoonUserListAdapter = new PlatoonUserListAdapter(null, inflater);
         listView.setAdapter(platoonUserListAdapter);
 
-        mViewingMembers = true;
+        viewMembers = true;
 
         titleText = (TextView) v.findViewById(R.id.text_title_users);
     }
@@ -123,20 +112,16 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
             return;
         }
 
-        if (mViewingMembers) {
+        if (viewMembers) {
             titleText.setText(R.string.label_members);
             platoonUserListAdapter.setPlatoonMembers(membersList);
-        } /*else {
+        } else {
             titleText.setText(R.string.label_fans);
             platoonUserListAdapter.setPlatoonMembers(fansList);
-        }*/
+        }
     }
 
     public void reload() {
-    }
-
-    public void setPlatoonData(PlatoonData data) {
-        platoonData = data;
     }
 
     public void setAdmin(boolean isAdminValue) {
@@ -144,32 +129,35 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
     }
 
     public Menu prepareOptionsMenu(Menu menu) {
-        if (mViewingMembers) {
-            menu.findItem(R.id.option_join).setVisible(false);
-            menu.findItem(R.id.option_leave).setVisible(false);
+        menu.findItem(R.id.option_join).setVisible(false);
+        menu.findItem(R.id.option_leave).setVisible(false);
+        menu.findItem(R.id.option_invite).setVisible(true);
+        if (viewMembers) {
             menu.findItem(R.id.option_fans).setVisible(true);
-            menu.findItem(R.id.option_invite).setVisible(true);
             menu.findItem(R.id.option_members).setVisible(false);
         } else {
-            menu.findItem(R.id.option_join).setVisible(false);
-            menu.findItem(R.id.option_leave).setVisible(false);
             menu.findItem(R.id.option_fans).setVisible(false);
-            menu.findItem(R.id.option_invite).setVisible(true);
             menu.findItem(R.id.option_members).setVisible(true);
         }
         return menu;
     }
 
     public boolean handleSelectedOption(MenuItem item) {
-        if (item.getItemId() == R.id.option_members || item.getItemId() == R.id.option_fans) {
-            mViewingMembers = !mViewingMembers;
+        if (item.getItemId() == R.id.option_members){
+            viewMembers = true;
             show();
-        } else if (item.getItemId() == R.id.option_invite) {
-            startActivity(
+        } else if(item.getItemId() == R.id.option_fans) {
+            viewMembers = false;
+            if(fansList.isEmpty()){
+
+            }else{
+                show();
+            }
+        }else if (item.getItemId() == R.id.option_invite) {
+            /*startActivity(
                     new Intent(context, PlatoonInviteActivity.class)
                             .putExtra("platoon", platoonData)
-                            .putExtra("friends", (ArrayList<ProfileData>) friendsList)
-            );
+                            .putExtra("friends", (ArrayList<ProfileData>) friendsList));*/
         }
         return true;
     }
@@ -187,7 +175,7 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
         if (platoonMember.getMembershipLevel() == MEMBER_FOUNDER) {
             return;
         } else if (platoonMember.getMembershipLevel() >= MEMBER_NORMAL) {
-            if (isAdmin && mViewingMembers) {
+            if (isAdmin && viewMembers) {
                 if (platoonMember.getMembershipLevel() == MEMBER_ADMIN) {
                     menu.add(2, 1, 0, R.string.info_platoon_member_demote);
                 } else {
@@ -227,22 +215,23 @@ public class PlatoonMemberFragment extends ListFragment implements DefaultFragme
         return true;
     }
 
+    /*TODO fix platoon data object passing*/
     private void answerUserApplication(ProfileData user, boolean isAccepting) {
         int string = isAccepting ? R.string.info_platoon_member_new_ok : R.string.info_platoon_member_new_false;
         Toast.makeText(context, string, Toast.LENGTH_SHORT).show();
-        new AsyncPlatoonRespond(context, platoonData, user.getId(), isAccepting).execute(
+        /*new AsyncPlatoonRespond(context, platoonData, user.getId(), isAccepting).execute(
                 sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
-        );
+        );*/
     }
 
     private void kickUser(ProfileData data) {
         Toast.makeText(context, R.string.info_platoon_member_kicking, Toast.LENGTH_SHORT).show();
-        new AsyncPlatoonMemberManagement(context, data.getId(), platoonData).execute();
+        /*new AsyncPlatoonMemberManagement(context, data.getId(), platoonData).execute();*/
     }
 
     private void modifyMembership(ProfileData user) {
         int string = user.isAdmin() ? R.string.info_platoon_member_demoting : R.string.info_platoon_member_promoting;
         Toast.makeText(context, string, Toast.LENGTH_SHORT).show();
-        new AsyncPlatoonMemberManagement(context, user.getId(), platoonData).execute(!user.isAdmin());
+        /*new AsyncPlatoonMemberManagement(context, user.getId(), platoonData).execute(!user.isAdmin());*/
     }
 }
