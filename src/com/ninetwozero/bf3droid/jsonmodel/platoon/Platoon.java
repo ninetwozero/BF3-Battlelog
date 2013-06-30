@@ -3,6 +3,9 @@ package com.ninetwozero.bf3droid.jsonmodel.platoon;
 import com.google.gson.annotations.SerializedName;
 import com.ninetwozero.bf3droid.util.DateTimeFormatter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Platoon {
 
     @SerializedName("website")
@@ -16,7 +19,7 @@ public class Platoon {
     @SerializedName("tag")
     private String tag;
     @SerializedName("members")
-    private PlatoonMembers members;
+    private Map<Long, PlatoonMember> members = new HashMap<Long, PlatoonMember>();
     @SerializedName("fanCounter")
     private int fanCounter;
     @SerializedName("creationDate")
@@ -26,7 +29,7 @@ public class Platoon {
     @SerializedName("id")
     private long id;
 
-    public Platoon(String website, int memberCounter, String name, int platform, String tag, PlatoonMembers members, int fanCounter, long creationDate, String presentation, long id) {
+    public Platoon(String website, int memberCounter, String name, int platform, String tag, Map<Long, PlatoonMember> members, int fanCounter, long creationDate, String presentation, long id) {
         this.website = website;
         this.memberCounter = memberCounter;
         this.name = name;
@@ -59,7 +62,7 @@ public class Platoon {
         return tag;
     }
 
-    public PlatoonMembers getMembers() {
+    public Map<Long,PlatoonMember> getMembers() {
         return members;
     }
 
