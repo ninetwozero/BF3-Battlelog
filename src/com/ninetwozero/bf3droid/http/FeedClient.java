@@ -17,8 +17,8 @@ import org.json.JSONObject;
 public class FeedClient extends DefaultClient {
 
     // Attributes
-    private long mId;
-    private int mType;
+    private long feedQueryId;
+    private int feedType;
 
     // URLS
     public static final String URL_FEED = Constants.URL_MAIN + "feed/?start={NUMSTART}";
@@ -75,8 +75,8 @@ public class FeedClient extends DefaultClient {
 
     public FeedClient(long i, int t) {
         mRequestHandler = new RequestHandler();
-        mId = i;
-        mType = t;
+        feedQueryId = i;
+        feedType = t;
     }
 
     public boolean post(String checksum, String content) throws WebsiteHandlerException {
@@ -88,8 +88,8 @@ public class FeedClient extends DefaultClient {
                     FIELD_NAMES_POST,
                     content,
                     checksum,
-                    mType == TYPE_PLATOON ? null : mId,
-                    mType == TYPE_PLATOON ? mId : null
+                    feedType == TYPE_PLATOON ? null : feedQueryId,
+                    feedType == TYPE_PLATOON ? feedQueryId : null
                 ),
                 RequestHandler.HEADER_AJAX
             );
@@ -111,15 +111,15 @@ public class FeedClient extends DefaultClient {
             JSONArray jsonArray;
             String url;
             
-            switch (mType) {
+            switch (feedType) {
                 case TYPE_GLOBAL:
                     url = URL_FRIEND_FEED;
                     break;
                 case TYPE_PROFILE:
-                    url = RequestHandler.generateUrl(URL_PROFILE, mId);
+                    url = RequestHandler.generateUrl(URL_PROFILE, feedQueryId);
                     break;
                 case TYPE_PLATOON:
-                    url = RequestHandler.generateUrl(URL_PLATOON, mId);
+                    url = RequestHandler.generateUrl(URL_PLATOON, feedQueryId);
                     break;
                 default:
                     url = URL_FRIEND_FEED;
@@ -274,7 +274,7 @@ public class FeedClient extends DefaultClient {
     	try {
     		List<ProfileData> profiles = new ArrayList<ProfileData>();
     		String httpContent = mRequestHandler.get(
-    			RequestHandler.generateUrl(URL_HOOAH_LIST, mId),
+    			RequestHandler.generateUrl(URL_HOOAH_LIST, feedQueryId),
     			RequestHandler.HEADER_GZIP
 			);
 

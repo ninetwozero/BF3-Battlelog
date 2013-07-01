@@ -72,8 +72,8 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
         if (mListFragments == null) {
             mListFragments = new ArrayList<Fragment>();
             mListFragments.add(platoonOverview = (PlatoonOverviewFragment) Fragment.instantiate(this, PlatoonOverviewFragment.class.getName()));
-            mListFragments.add(platoonStats = (PlatoonStatsFragment) Fragment.instantiate(this, PlatoonStatsFragment.class.getName()));
             mListFragments.add(platoonMembers = (PlatoonMemberFragment) Fragment.instantiate(this, PlatoonMemberFragment.class.getName()));
+            mListFragments.add(platoonStats = (PlatoonStatsFragment) Fragment.instantiate(this, PlatoonStatsFragment.class.getName()));
             mListFragments.add(platoonFeeds = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
 
             //remove all these set data types, each fragment set its own view with provided data

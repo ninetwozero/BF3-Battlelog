@@ -55,7 +55,7 @@ import java.util.List;
 
 import org.apache.http.client.methods.HttpGet;
 
-public class FeedFragment extends ListFragment implements DefaultFragment, OnCloseProfileListDialogListener, LoaderManager.LoaderCallbacks<CompletedTask> {
+public class FeedFragment extends ListFragment implements DefaultFragment, OnCloseProfileListDialogListener/*, LoaderManager.LoaderCallbacks<CompletedTask>*/ {
     private Context context;
     private LayoutInflater layoutInflater;
 
@@ -163,24 +163,28 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
     }
 
     public void reload() {
-        new AsyncRefresh(context, user().getId(), personaId()).execute();
+        new AsyncRefresh(context, feedQueryId(), personaId()).execute();
         //getLoaderManager().restartLoader(FEED_ACTION, bundle, this);
     }
 
-    @Override
+    private long feedQueryId() {
+        return feedType == FeedClient.TYPE_PLATOON ? platoonId() : user().getId();
+    }
+
+    /*@Override
     public Loader<CompletedTask> onCreateLoader(int i, Bundle bundle) {
         return new Bf3Loader(getContext(), httpData());
     }
 
     private Bf3ServerCall.HttpData httpData() {
         return new Bf3ServerCall.HttpData(UriFactory.userFeeds(), HttpGet.METHOD_NAME);
-    }
+    }*/
 
     private Context getContext() {
         return getActivity().getApplicationContext();
     }
 
-    @Override
+    /*@Override
     public void onLoadFinished(Loader<CompletedTask> completedTaskLoader, CompletedTask completedTask) {
         if (completedTask.result == CompletedTask.Result.SUCCESS) {
             String response = completedTask.response;
@@ -189,11 +193,15 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
 
     @Override
     public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {
-    }
+    }*/
 
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
         getActivity().openContextMenu(v);
+    }
+
+    private long userId(){
+        return user().getId();
     }
 
     private long personaId(){
@@ -206,6 +214,10 @@ public class FeedFragment extends ListFragment implements DefaultFragment, OnClo
         } else {
             return BF3Droid.getUser();
         }
+    }
+
+    private long platoonId(){
+        return user().selectedPlatoon().getPlatoonId();
     }
 
     public void createContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {

@@ -111,7 +111,7 @@
       <TextView
           android:id="@+id/text_header_members"
           style="@style/FriendHeadingRow"
-          android:text="@string/info_xml_presentation"/>
+          android:text="@string/platoon_members_count"/>
 
       <TextView
           android:id="@+id/text_members_count"
@@ -132,7 +132,7 @@
       <TextView
           android:id="@+id/text_header_fans"
           style="@style/FriendHeadingRow"
-          android:text="@string/info_xml_presentation"/>
+          android:text="@string/platoon_fans_count"/>
 
       <TextView
           android:id="@+id/text_fans_count"

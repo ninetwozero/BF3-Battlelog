@@ -194,6 +194,8 @@
   <string name="info_xml_hint_feed">Write in feed</string>
   <string name="info_xml_website">Website</string>
   <string name="info_xml_presentation">Presentation</string>
+  <string name="platoon_members_count">Members</string>
+  <string name="platoon_fans_count">Fans</string>
   <string name="info_xml_badge">Badge</string>
   <string name="info_xml_general">General</string>
   <string name="info_xml_score_min">Score / Min</string>
