@@ -1,12 +1,12 @@
 /*
-	This file is part of BF3 Battlelog
+	This file is part of BF3 Droid
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
+    BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
+    BF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -26,6 +26,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.widget.RemoteViews;
+
 import com.ninetwozero.bf3droid.MainActivity;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.datatype.FriendListDataWrapper;
@@ -43,161 +44,96 @@ public class BattlelogAppWidgetProvider extends AppWidgetProvider {
     public static final String DEBUG_TAG = "WidgetProvider";
     public static final String ACTION_WIDGET_RECEIVER = "ActionReceiverWidget";
     public static final String ACTION_WIDGET_OPENAPP = "Main";
-    private SharedPreferences mSharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-                         int[] appWidgetIds) {
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
-        // Set the values
-        mSharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        // Set the session if needed
-        SessionKeeper.setProfileData(SessionKeeper
-                .generateProfileDataFromSharedPreferences(mSharedPreferences));
+        SessionKeeper.setProfileData(SessionKeeper.generateProfileDataFromSharedPreferences(sharedPreferences));
 
-        // if service == active
-        PublicUtils.setupSession(context, mSharedPreferences);
+        PublicUtils.setupSession(context, sharedPreferences);
 
-        // Let's call the AsyncTask
         new AsyncRefresh(context, appWidgetManager).execute();
-
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
         super.onReceive(context, intent);
-
-        AppWidgetManager appWidgetManager = AppWidgetManager
-                .getInstance(context);
-        ComponentName thisAppWidget = new ComponentName(context,
-                BattlelogAppWidgetProvider.class);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName thisAppWidget = new ComponentName(context, BattlelogAppWidgetProvider.class);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
 
-        // UPDATE IT !!!!
         onUpdate(context, appWidgetManager, appWidgetIds);
-
     }
 
     private class AsyncRefresh extends AsyncTask<Void, Void, Boolean> {
-
-        // Attributes
-        private Context mContext;
-        private AppWidgetManager mAppWidgetManager;
-        private int mNumFriendsOnline;
-        private PersonaStats mPlayerData;
-        private FriendListDataWrapper mFriends;
+        private Context context;
+        private AppWidgetManager appWidgetManager;
+        private int friendsOnline;
+        private PersonaStats personaStats;
+        private FriendListDataWrapper friendsDataWrapper;
 
         public AsyncRefresh(Context c, AppWidgetManager a) {
-
-            mContext = c;
-            mAppWidgetManager = a;
-
+            context = c;
+            appWidgetManager = a;
         }
 
         @Override
         protected Boolean doInBackground(Void... arg) {
-
             try {
-
-                PersonaData firstPersona = SessionKeeper.getProfileData()
-                        .getPersona(0);
-                mPlayerData = new ProfileClient(SessionKeeper.getProfileData())
+                PersonaData firstPersona = SessionKeeper.getProfileData().getPersona(0);
+                personaStats = new ProfileClient(SessionKeeper.getProfileData())
                         .getStats(
-
                                 firstPersona.getName(), firstPersona.getId(),
                                 firstPersona.getPlatformId()
-
                         );
 
-                mFriends = new COMClient(0, mSharedPreferences.getString(
+                friendsDataWrapper = new COMClient(0, sharedPreferences.getString(
                         Constants.SP_BL_PROFILE_CHECKSUM, ""))
-                        .getFriendsForCOM(mContext);
-                mNumFriendsOnline = mFriends.getNumTotalOnline();
+                        .getFriendsForCOM(context);
+                friendsOnline = friendsDataWrapper.getNumTotalOnline();
                 return true;
-
             } catch (WebsiteHandlerException ex) {
-
                 ex.printStackTrace();
                 return false;
-
             }
-
         }
 
         @Override
         protected void onPostExecute(Boolean results) {
+            if (context != null) {
+                RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.widget_dogtag);
 
-            if (mContext != null) {
-
-                // Let's init a RemoteViews
-                RemoteViews remoteView = new RemoteViews(
-                        mContext.getPackageName(), R.layout.widget_dogtag);
-
-                // Set the views
                 if (results) {
-
+                    remoteView.setTextViewText(R.id.label, personaStats.getPersonaName());
+                    remoteView.setTextViewText(R.id.title, context.getString(R.string.info_xml_rank) + personaStats.getRankId());
                     remoteView.setTextViewText(
+                            R.id.stats,
+                            ("W/L: " + Math.floor(personaStats.getWLRatio() * 100) / 100
+                                    + "  K/D: " + Math.floor(personaStats.getKDRatio() * 100) / 100));
 
-                            R.id.label, mPlayerData.getPersonaName()
-
-                    );
-                    remoteView.setTextViewText(
-
-                            R.id.title, mContext.getString(R.string.info_xml_rank)
-                            + mPlayerData.getRankId());
-                    remoteView
-                            .setTextViewText(
-
-                                    R.id.stats,
-                                    ("W/L: "
-                                            + Math.floor(mPlayerData
-                                            .getWLRatio() * 100) / 100
-                                            + "  K/D: " + Math
-                                            .floor(mPlayerData.getKDRatio() * 100) / 100));
-
-                    if (mNumFriendsOnline > 0) {
-
+                    if (friendsOnline > 0) {
                         remoteView.setTextColor(R.id.friends, Color.BLACK);
-                        remoteView.setTextViewText(R.id.friends,
-                                String.valueOf(mNumFriendsOnline));
-
+                        remoteView.setTextViewText(R.id.friends, String.valueOf(friendsOnline));
                     } else {
-
                         remoteView.setTextColor(R.id.friends, Color.RED);
                         remoteView.setTextViewText(R.id.friends, "0");
-
                     }
-
                 } else {
-
-                    remoteView.setTextViewText(R.id.label,
-                            Html.fromHtml("<b>Error</b>"));
-                    remoteView.setTextViewText(R.id.title,
-                            mContext.getString(R.string.general_no_data));
-                    remoteView.setTextViewText(R.id.stats,
-                            mContext.getString(R.string.info_connect_bl));
+                    remoteView.setTextViewText(R.id.label, Html.fromHtml("<b>Error</b>"));
+                    remoteView.setTextViewText(R.id.title, context.getString(R.string.general_no_data));
+                    remoteView.setTextViewText(R.id.stats, context.getString(R.string.info_connect_bl));
                     remoteView.setTextColor(R.id.friends, Color.RED);
                     remoteView.setTextViewText(R.id.friends, "0");
-
                 }
 
                 remoteView.setOnClickPendingIntent(R.id.widget_button,
-                        PendingIntent.getBroadcast(mContext, 0, new Intent(
-                                mContext, BattlelogAppWidgetProvider.class)
-                                .setAction(ACTION_WIDGET_RECEIVER), 0));
-                remoteView.setOnClickPendingIntent(R.id.widget_button2,
-                        PendingIntent.getActivity(mContext, 0, new Intent(
-                                mContext, MainActivity.class)
-                                .setAction(ACTION_WIDGET_OPENAPP), 0));
-                mAppWidgetManager.updateAppWidget(new ComponentName(mContext,
-                        BattlelogAppWidgetProvider.class), remoteView);
-
+                        PendingIntent.getBroadcast(context, 0, new Intent(context, BattlelogAppWidgetProvider.class).setAction(ACTION_WIDGET_RECEIVER), 0));
+                remoteView.setOnClickPendingIntent(R.id.widget_button2, PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class).setAction(ACTION_WIDGET_OPENAPP), 0));
+                appWidgetManager.updateAppWidget(new ComponentName(context, BattlelogAppWidgetProvider.class), remoteView);
             }
-
         }
     }
-
 }
