@@ -1,12 +1,12 @@
 /*
-	This file is part of BF3 Battlelog
+	This file is part of BF3 Droid
 
-    BF3 Battlelog is free software: you can redistribute it and/or modify
+    BF3 Droid is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    BF3 Battlelog is distributed in the hope that it will be useful,
+    BF3 Droid is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -47,19 +47,18 @@ import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 public class DashboardActivity extends CustomFragmentActivity implements DefaultFragmentActivity {
 
     // COM-related
-    private SlidingDrawer mSlidingDrawer;
-    private TextView mSlidingDrawerHandle;
+    private SlidingDrawer slidingDrawer;
+    private TextView slidingDrawerHandle;
 
-    // Fragment related
-    private SwipeyTabs mTabsCom;
-    private SwipeyTabsPagerAdapter mPagerAdapterCom;
-    private List<Fragment> mListFragmentsCom;
-    private MenuPlatoonFragment mFragmentMenuPlatoon;
-    private FeedFragment mFragmentFeed;
-    private ComFriendFragment mFragmentComFriends;
-    private ComNotificationFragment mFragmentComNotifications;
-    private ViewPager mViewPager;
-    private ViewPager mViewPagerCom;
+    private SwipeyTabs tabsCom;
+    private SwipeyTabsPagerAdapter pagerAdapterCom;
+    private List<Fragment> listFragmentsCom;
+    private MenuPlatoonFragment platoonMenuFragment;
+    private FeedFragment feedFragment;
+    private ComFriendFragment comFriendFragment;
+    private ComNotificationFragment comNotificationFragment;
+    private ViewPager viewPager;
+    private ViewPager viewPagerCom;
     private final int VIEWPAGER_POSITION_FEED = 4;
 
     @Override
@@ -73,14 +72,14 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
 
     private void handleIfOpenedViaNotification() {
 		if( getIntent().getBooleanExtra("openCOMCenter", false) ) {
-			mSlidingDrawer.open();
-			mViewPagerCom.setCurrentItem(1);
+			slidingDrawer.open();
+			viewPagerCom.setCurrentItem(1);
 		}
 	}
 
 	public final void init() {
-        mSlidingDrawer = (SlidingDrawer) findViewById(R.id.com_slider);
-        mSlidingDrawerHandle = (TextView) findViewById(R.id.com_slide_handle_text);
+        slidingDrawer = (SlidingDrawer) findViewById(R.id.com_slider);
+        slidingDrawerHandle = (TextView) findViewById(R.id.com_slide_handle_text);
     }
 
     @Override
@@ -93,73 +92,71 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             mListFragments = new ArrayList<Fragment>();
             mListFragments.add(Fragment.instantiate(this, NewsListFragment.class.getName()));
             mListFragments.add(Fragment.instantiate(this, MenuProfileFragment.class.getName()));
-            mListFragments.add(mFragmentMenuPlatoon = (MenuPlatoonFragment) Fragment.instantiate(this, MenuPlatoonFragment.class.getName()));
+            mListFragments.add(platoonMenuFragment = (MenuPlatoonFragment) Fragment.instantiate(this, MenuPlatoonFragment.class.getName()));
             mListFragments.add(Fragment.instantiate(this, MenuForumFragment.class.getName()));
-            mListFragments.add(mFragmentFeed = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
+            mListFragments.add(feedFragment = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
 
-            //mFragmentMenuPlatoon.setPlatoonData(SessionKeeper.getPlatoonData());
+            feedFragment.setType(FeedClient.TYPE_GLOBAL);
+            feedFragment.setCanWrite(true);
 
-            mFragmentFeed.setType(FeedClient.TYPE_GLOBAL);
-            mFragmentFeed.setCanWrite(true);
-
-            mViewPager = (ViewPager) findViewById(R.id.viewpager);
+            viewPager = (ViewPager) findViewById(R.id.viewpager);
             mTabs = (SwipeyTabs) findViewById(R.id.swipeytabs);
 
             mPagerAdapter = new SwipeyTabsPagerAdapter(
-                    mFragmentManager, tabTitles(R.array.dashboard_tab), mListFragments, mViewPager,
+                    mFragmentManager, tabTitles(R.array.dashboard_tab), mListFragments, viewPager,
                     mLayoutInflater);
-            mViewPager.setAdapter(mPagerAdapter);
+            viewPager.setAdapter(mPagerAdapter);
             mTabs.setAdapter(mPagerAdapter);
 
-            mViewPager.setOnPageChangeListener(mTabs);
-            mViewPager.setOffscreenPageLimit(4);
-            mViewPager.setCurrentItem(1);
+            viewPager.setOnPageChangeListener(mTabs);
+            viewPager.setOffscreenPageLimit(4);
+            viewPager.setCurrentItem(1);
         }
 
-        if (mListFragmentsCom == null) {
-            mListFragmentsCom = new ArrayList<Fragment>();
-            mListFragmentsCom.add(mFragmentComFriends = (ComFriendFragment) Fragment.instantiate(this, ComFriendFragment.class.getName()));
-            mListFragmentsCom.add(mFragmentComNotifications = (ComNotificationFragment) Fragment.instantiate(this, ComNotificationFragment.class.getName()));
+        if (listFragmentsCom == null) {
+            listFragmentsCom = new ArrayList<Fragment>();
+            listFragmentsCom.add(comFriendFragment = (ComFriendFragment) Fragment.instantiate(this, ComFriendFragment.class.getName()));
+            listFragmentsCom.add(comNotificationFragment = (ComNotificationFragment) Fragment.instantiate(this, ComNotificationFragment.class.getName()));
 
-            mViewPagerCom = (ViewPager) findViewById(R.id.viewpager_sub);
-            mTabsCom = (SwipeyTabs) findViewById(R.id.swipeytabs_sub);
+            viewPagerCom = (ViewPager) findViewById(R.id.viewpager_sub);
+            tabsCom = (SwipeyTabs) findViewById(R.id.swipeytabs_sub);
 
-            mPagerAdapterCom = new SwipeyTabsPagerAdapter(
+            pagerAdapterCom = new SwipeyTabsPagerAdapter(
                     mFragmentManager, 
                     tabTitles(R.array.dashboard_com_tab),
-                    mListFragmentsCom, 
-                    mViewPagerCom, 
+                    listFragmentsCom,
+                    viewPagerCom,
                     mLayoutInflater
             );
-            mViewPagerCom.setAdapter(mPagerAdapterCom);
-            mTabsCom.setAdapter(mPagerAdapterCom);
+            viewPagerCom.setAdapter(pagerAdapterCom);
+            tabsCom.setAdapter(pagerAdapterCom);
 
-            mViewPagerCom.setOnPageChangeListener(mTabsCom);
-            mViewPagerCom.setOffscreenPageLimit(1);
-            mViewPagerCom.setCurrentItem(0);
+            viewPagerCom.setOnPageChangeListener(tabsCom);
+            viewPagerCom.setOffscreenPageLimit(1);
+            viewPagerCom.setCurrentItem(0);
         }
     }
 
     @Override
     public void reload() {
-        mFragmentComFriends.reload();
-        mFragmentComNotifications.reload();
+        comFriendFragment.reload();
+        comNotificationFragment.reload();
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
-        if (mSlidingDrawer.isOpened()) {
-            switch (mViewPagerCom.getCurrentItem()) {
+        if (slidingDrawer.isOpened()) {
+            switch (viewPagerCom.getCurrentItem()) {
                 case 0:
-                    mFragmentComFriends.createContextMenu(menu, view, menuInfo);
+                    comFriendFragment.createContextMenu(menu, view, menuInfo);
                     break;
                 default:
                     break;
             }
         } else {
-            switch (mViewPager.getCurrentItem()) {
+            switch (viewPager.getCurrentItem()) {
                 case VIEWPAGER_POSITION_FEED:
-                    mFragmentFeed.createContextMenu(menu, view, menuInfo);
+                    feedFragment.createContextMenu(menu, view, menuInfo);
                     break;
                 default:
                     break;
@@ -176,18 +173,18 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
             e.printStackTrace();
             return false;
         }
-        if (mSlidingDrawer.isOpened()) {
-            switch (mViewPagerCom.getCurrentItem()) {
+        if (slidingDrawer.isOpened()) {
+            switch (viewPagerCom.getCurrentItem()) {
                 case 0:
-                    mFragmentComFriends.handleSelectedContextItem(info, item);
+                    comFriendFragment.handleSelectedContextItem(info, item);
                     break;
                 default:
                     break;
             }
         } else {
-            switch (mViewPager.getCurrentItem()) {
+            switch (viewPager.getCurrentItem()) {
                 case VIEWPAGER_POSITION_FEED:
-                    return mFragmentFeed.handleSelectedContextItem(info, item);
+                    return feedFragment.handleSelectedContextItem(info, item);
                 default:
                     break;
             }
@@ -220,17 +217,17 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
     }
 
     public void setComLabel(String str) {
-        mSlidingDrawerHandle.setText(str);
+        slidingDrawerHandle.setText(str);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mSlidingDrawer.isOpened()) {
-                mSlidingDrawer.animateClose();
+            if (slidingDrawer.isOpened()) {
+                slidingDrawer.animateClose();
                 return true;
-            } else if (mViewPager.getCurrentItem() != 1) {
-                mViewPager.setCurrentItem(1, true);
+            } else if (viewPager.getCurrentItem() != 1) {
+                viewPager.setCurrentItem(1, true);
                 return true;
             }
         } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {

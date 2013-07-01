@@ -95,7 +95,7 @@ public class ComFriendFragment extends Bf3ListFragment implements UserInfoLoader
     }
 
     public void reload() {
-        new AsyncRefresh().execute(sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, ""));
+        new AsyncRefresh().execute(BF3Droid.getCheckSum());
     }
 
     public Menu prepareOptionsMenu(Menu menu) {
@@ -224,6 +224,7 @@ public class ComFriendFragment extends Bf3ListFragment implements UserInfoLoader
                 friendListData = comClient.getFriendsForCOM(context);
                 return friendListData != null;
             } catch (WebsiteHandlerException e) {
+                Log.e(ComFriendFragment.class.getSimpleName(), e.getMessage());
                 return false;
             }
         }
@@ -231,9 +232,7 @@ public class ComFriendFragment extends Bf3ListFragment implements UserInfoLoader
         @Override
         protected void onPostExecute(Boolean results) {
             if (results) {
-                ((DashboardActivity) context)
-                        .setComLabel(context.getString(R.string.label_com_handle)
-                                .replace("{num}", String.valueOf(friendListData.getNumTotalOnline())));
+                ((DashboardActivity) context).setComLabel(context.getString(R.string.label_com_handle).replace("{num}", String.valueOf(friendListData.getNumTotalOnline())));
                 display(friendListData);
             }
         }
