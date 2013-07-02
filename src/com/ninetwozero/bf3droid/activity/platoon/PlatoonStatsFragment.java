@@ -18,6 +18,8 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,16 +33,29 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
+import com.ninetwozero.bf3droid.activity.Bf3Fragment;
 import com.ninetwozero.bf3droid.datatype.DefaultFragment;
 import com.ninetwozero.bf3droid.datatype.PlatoonStats;
 import com.ninetwozero.bf3droid.datatype.PlatoonStatsItem;
 import com.ninetwozero.bf3droid.datatype.PlatoonTopStatsItem;
+import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonStat;
+import com.ninetwozero.bf3droid.loader.Bf3Loader;
+import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
+import com.ninetwozero.bf3droid.model.User;
+import com.ninetwozero.bf3droid.provider.UriFactory;
+import com.ninetwozero.bf3droid.server.Bf3ServerCall;
+
+import org.apache.http.client.methods.HttpGet;
 
 import java.util.List;
 
-public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
+public class PlatoonStatsFragment extends Bf3Fragment implements LoaderManager.LoaderCallbacks<CompletedTask> {
+    private static final int PLATOON_STATS = 40;
+    private static final int BATTLEFIELD_3 = 2;
     private Context context;
     private LayoutInflater layoutInflater;
     private View cacheView;
@@ -74,6 +89,7 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
     @Override
     public void onResume() {
         super.onResume();
+        getLoaderManager().restartLoader(PLATOON_STATS, new Bundle(), this);
         showUI();
     }
 
@@ -221,5 +237,42 @@ public class PlatoonStatsFragment extends Fragment implements DefaultFragment {
             Toast.makeText(context, R.string.info_platoon_compare, Toast.LENGTH_SHORT).show();
         }
         return false;
+    }
+
+    @Override
+    public Loader<CompletedTask> onCreateLoader(int i, Bundle bundle) {
+
+        return new Bf3Loader(context, httpDataStats());
+    }
+
+    private Bf3ServerCall.HttpData httpDataStats() {
+        return new Bf3ServerCall.HttpData(UriFactory.platoonMemeberStats(platoonId(), BATTLEFIELD_3, platformId()), HttpGet.METHOD_NAME, true);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<CompletedTask> completedTaskLoader, CompletedTask completedTask) {
+        if(isTaskSuccess(completedTask.result)){
+            Gson gson = new Gson();
+            PlatoonStat platoonStat = gson.fromJson(completedTask.jsonObject, PlatoonStat.class);
+        }
+    }
+
+    private boolean isTaskSuccess(CompletedTask.Result result) {
+        return result == CompletedTask.Result.SUCCESS;
+    }
+
+    @Override
+    public void onLoaderReset(Loader<CompletedTask> completedTaskLoader) {}
+
+    private User user(){
+        return BF3Droid.getUserBy(User.USER);
+    }
+
+    private long platoonId(){
+        return user().selectedPlatoon().getPlatoonId();
+    }
+
+    private int platformId(){
+        return user().selectedPlatoon().platformId();
     }
 }

@@ -1,5 +1,7 @@
 package com.ninetwozero.bf3droid.datatype;
 
+import com.ninetwozero.bf3droid.util.Platform;
+
 public class SimplePlatoon {
 
     private final String name;
@@ -34,5 +36,9 @@ public class SimplePlatoon {
 
     public String getMembersCount() {
         return membersCount;
+    }
+
+    public int platformId(){
+        return Platform.resolveIdFromPlatformName(platform);
     }
 }

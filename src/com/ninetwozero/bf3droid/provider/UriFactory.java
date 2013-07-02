@@ -99,4 +99,9 @@ public class UriFactory {
         String path = new StringBuilder("/platoon/").append(platoonId).toString();
         return createUri(path);
     }
+
+    public static URI platoonMemeberStats(long platoonId, int gameId, int platformId){
+        String path = new StringBuilder("/platoonMemberStats/").append(platoonId).append("/").append(gameId).append("/").append(platformId).toString();
+        return createUri(path);
+    }
 }
