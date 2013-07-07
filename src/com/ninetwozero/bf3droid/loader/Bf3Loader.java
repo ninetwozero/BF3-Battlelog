@@ -8,8 +8,7 @@ import com.ninetwozero.bf3droid.server.Bf3ServerCall;
 import static com.ninetwozero.bf3droid.loader.CompletedTask.Result.FAILURE;
 import static com.ninetwozero.bf3droid.loader.CompletedTask.Result.SUCCESS;
 
-public class Bf3Loader extends AsyncTaskLoader<CompletedTask> implements
-        Bf3ServerCall.Bf3ServerCallCallback {
+public class Bf3Loader extends AsyncTaskLoader<CompletedTask> implements Bf3ServerCall.Bf3ServerCallCallback {
 
     private final Bf3ServerCall serverCall;
     private CompletedTask completedTask;

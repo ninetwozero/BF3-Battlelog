@@ -26,6 +26,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.CustomFragmentActivity;
@@ -35,10 +37,12 @@ import com.ninetwozero.bf3droid.http.FeedClient;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonDossier;
 import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
+import com.ninetwozero.bf3droid.provider.UriFactory;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLoader.Callback{
@@ -62,7 +66,11 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
     public void onResume() {
         super.onResume();
         startLoadingDialog(PlatoonActivity.class.getSimpleName());
-        new PlatoonLoader(this, getApplicationContext(), platoon().getPlatoonId(), getSupportLoaderManager()).restart();
+        new PlatoonLoader(this, getApplicationContext(), platoonDossierUri(), getSupportLoaderManager()).restart();
+    }
+
+    private URI platoonDossierUri() {
+        return UriFactory.platoonDossier(platoon().getPlatoonId());
     }
 
     public void reload() {
@@ -77,9 +85,9 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
             mListFragments.add(platoonFeeds = (FeedFragment) Fragment.instantiate(this, FeedFragment.class.getName()));
 
             //remove all these set data types, each fragment set its own view with provided data
-            platoonFeeds.setTitle(/*mPlatoonData.getName()*/platoon().getName());
+            platoonFeeds.setTitle(platoon().getName());
             platoonFeeds.setType(FeedClient.TYPE_PLATOON);
-            platoonFeeds.setId(/*mPlatoonData.getId()*/platoon().getPlatoonId());
+            platoonFeeds.setId(platoon().getPlatoonId());
             platoonFeeds.setCanWrite(false);
 
             mViewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -195,10 +203,6 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
         }
         return true;
     }
-    
-    public void setFeedPermission(boolean c) {
-        platoonFeeds.setCanWrite(c);
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -214,8 +218,13 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
     }
 
     @Override
-    public void onLoadFinished(PlatoonDossier platoonDossier) {
-        BusProvider.getInstance().post(platoonDossier);
+    public void onLoadFinished(JsonObject jsonObject) {
+        BusProvider.getInstance().post(processLoaderResult(jsonObject));
         closeLoadingDialog(PlatoonActivity.class.getSimpleName());
+    }
+
+    private PlatoonDossier processLoaderResult(JsonObject jsonObject){
+        Gson gson = new Gson();
+        return gson.fromJson(jsonObject.getAsJsonObject("context"), PlatoonDossier.class);
     }
 }

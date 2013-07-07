@@ -15,7 +15,9 @@ public class JsonWorker {
     public static JsonObject jsonFrom(HttpResponse response) {
         Reader reader = getJSONReader(response);
         JsonParser parser = new JsonParser();
-        return parser.parse(reader).getAsJsonObject();
+        JsonObject jsonResponse = parser.parse(reader).getAsJsonObject();
+        close(reader);
+        return jsonResponse;
     }
 
     private static Reader getJSONReader(HttpResponse response) {
@@ -27,5 +29,15 @@ public class JsonWorker {
             e.printStackTrace();
         }
         return reader;
+    }
+
+    private static void close(Reader reader){
+        if(reader != null){
+            try{
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

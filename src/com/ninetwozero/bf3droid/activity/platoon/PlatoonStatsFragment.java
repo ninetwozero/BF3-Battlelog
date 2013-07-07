@@ -44,11 +44,13 @@ import com.ninetwozero.bf3droid.datatype.PlatoonTopStatsItem;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonStat;
 import com.ninetwozero.bf3droid.loader.Bf3Loader;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
+import com.ninetwozero.bf3droid.misc.HttpHeaders;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
 import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.UriFactory;
 import com.ninetwozero.bf3droid.server.Bf3ServerCall;
 
+import org.apache.http.Header;
 import org.apache.http.client.methods.HttpGet;
 
 import java.util.List;
@@ -246,7 +248,8 @@ public class PlatoonStatsFragment extends Bf3Fragment implements LoaderManager.L
     }
 
     private Bf3ServerCall.HttpData httpDataStats() {
-        return new Bf3ServerCall.HttpData(UriFactory.platoonMemeberStats(platoonId(), BATTLEFIELD_3, platformId()), HttpGet.METHOD_NAME, true);
+        Header[] requestHeaders = HttpHeaders.GET_HEADERS.get(HttpHeaders.AJAX_GET_HEADER);
+        return new Bf3ServerCall.HttpData(UriFactory.platoonMemeberStats(platoonId(), BATTLEFIELD_3, platformId()), HttpGet.METHOD_NAME, true, requestHeaders);
     }
 
     @Override
