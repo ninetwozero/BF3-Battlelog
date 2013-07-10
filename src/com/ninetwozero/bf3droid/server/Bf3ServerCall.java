@@ -52,7 +52,7 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
                 buildHttpPostCaller().execute();
             }
         } catch (final Exception e) {
-            Log.e("Bf3ServerCall", "HttpClient exception " + e.toString());
+            Log.e(Bf3ServerCall.class.getSimpleName(), "HttpClient exception for uri " + httpData.getCall().toString() + e.toString());
             callback.onBf3CallError();
         }
     }
@@ -92,7 +92,7 @@ public class Bf3ServerCall implements SimpleHttpCallerCallback {
             }
             callback.onBf3CallSuccess(result.toString());
         } catch (IOException io) {
-            Log.e("Bf3ServerCall", io.toString());
+            Log.e(Bf3ServerCall.class.getSimpleName(), io.toString());
             callback.onBf3CallError();
         }
     }

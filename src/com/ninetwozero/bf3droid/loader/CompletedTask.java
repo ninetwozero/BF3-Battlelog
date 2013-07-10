@@ -12,6 +12,7 @@ public class CompletedTask {
     public final String response;
     public final Throwable exception;
     public final JsonObject jsonObject;
+    public int loaderID;
 
     public CompletedTask(Result result) {
         this.result = result;
@@ -41,4 +42,11 @@ public class CompletedTask {
         this.jsonObject = jsonObject;
     }
 
+    public int getLoaderID() {
+        return loaderID;
+    }
+
+    public void setLoaderID(int loaderID) {
+        this.loaderID = loaderID;
+    }
 }

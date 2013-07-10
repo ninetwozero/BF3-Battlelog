@@ -35,6 +35,8 @@ import com.ninetwozero.bf3droid.activity.feed.FeedFragment;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.http.FeedClient;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonDossier;
+import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonStat;
+import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.ninetwozero.bf3droid.provider.UriFactory;
@@ -45,8 +47,10 @@ import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsPagerAdapter;
 import java.net.URI;
 import java.util.ArrayList;
 
-public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLoader.Callback{
-
+public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLoader.Callback {
+    public static final int LOADER_PLATOON_OVERVIEW = 31;
+    public static final int LOADER_PLATOON_STATS = 32;
+    private static final int BATTLEFIELD_3 = 2;
     private PlatoonOverviewFragment platoonOverview;
     private PlatoonStatsFragment platoonStats;
     private PlatoonMemberFragment platoonMembers;
@@ -60,17 +64,14 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
         init();
     }
 
-    public void init() {}
+    public void init() {
+    }
 
     @Override
     public void onResume() {
         super.onResume();
         startLoadingDialog(PlatoonActivity.class.getSimpleName());
-        new PlatoonLoader(this, getApplicationContext(), platoonDossierUri(), getSupportLoaderManager()).restart();
-    }
-
-    private URI platoonDossierUri() {
-        return UriFactory.platoonDossier(platoon().getPlatoonId());
+        new PlatoonLoader(this, getApplicationContext(), platoonDossierUri(), getSupportLoaderManager(), LOADER_PLATOON_OVERVIEW).restart();
     }
 
     public void reload() {
@@ -117,7 +118,7 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
     }
 
     /*public void updatePlatoonInDB(PlatoonInformation p) {
-		ContentValues contentValues = PlatoonInformationDAO.platoonInformationForDB(p, System.currentTimeMillis());
+        ContentValues contentValues = PlatoonInformationDAO.platoonInformationForDB(p, System.currentTimeMillis());
     	try {
 	    	getContentResolver().insert(PlatoonInformationDAO.URI, contentValues);
     	} catch(SQLiteConstraintException ex) {
@@ -130,7 +131,7 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
     	}
 	}*/
 
-	@Override
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (mViewPager.getCurrentItem() == 0) {
             return super.onPrepareOptionsMenu(platoonOverview.prepareOptionsMenu(menu));
@@ -192,7 +193,7 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
             e.printStackTrace();
             return false;
         }
-        
+
         switch (mViewPager.getCurrentItem()) {
             case 2:
                 return platoonMembers.handleSelectedContextItem(info, item);
@@ -218,13 +219,33 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
     }
 
     @Override
-    public void onLoadFinished(JsonObject jsonObject) {
-        BusProvider.getInstance().post(processLoaderResult(jsonObject));
-        closeLoadingDialog(PlatoonActivity.class.getSimpleName());
+    public void onLoadFinished(CompletedTask completedTask) {
+        if (completedTask.getLoaderID() == LOADER_PLATOON_OVERVIEW) {
+            processPlatoonDossier(completedTask.jsonObject);
+            new PlatoonLoader(this, getApplicationContext(), platoonStatsUri(), getSupportLoaderManager(), LOADER_PLATOON_STATS).restart();
+        } else if (completedTask.getLoaderID() == LOADER_PLATOON_STATS) {
+            processPlatoonStats(completedTask.jsonObject);
+            closeLoadingDialog(PlatoonActivity.class.getSimpleName());
+        }
     }
 
-    private PlatoonDossier processLoaderResult(JsonObject jsonObject){
+    private void processPlatoonDossier(JsonObject jsonObject) {
         Gson gson = new Gson();
-        return gson.fromJson(jsonObject.getAsJsonObject("context"), PlatoonDossier.class);
+        PlatoonDossier dossier = gson.fromJson(jsonObject.getAsJsonObject("context"), PlatoonDossier.class);
+        BusProvider.getInstance().post(dossier);
+    }
+
+    private void processPlatoonStats(JsonObject jsonObject) {
+        Gson gson = new Gson();
+        PlatoonStat platoonStat = gson.fromJson(jsonObject.getAsJsonObject("data"), PlatoonStat.class);
+        BusProvider.getInstance().post(platoonStat);
+    }
+
+    private URI platoonDossierUri() {
+        return UriFactory.platoonDossier(platoon().getPlatoonId());
+    }
+
+    private URI platoonStatsUri() {
+        return UriFactory.platoonMemeberStats(platoon().getPlatoonId(), BATTLEFIELD_3, platoon().platformId());
     }
 }

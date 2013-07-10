@@ -101,7 +101,7 @@ public class UriFactory {
     }
 
     public static URI platoonMemeberStats(long platoonId, int gameId, int platformId){
-        String path = new StringBuilder("/platoonMemberStats/").append(platoonId).append("/").append(gameId).append("/").append(platformId).toString();
+        String path = new StringBuilder("/platoon/platoonMemberStats/").append(platoonId).append("/").append(gameId).append("/").append(platformId).toString();
         return createUri(path);
     }
 }

@@ -58,15 +58,6 @@ public class LoginActivity extends Bf3FragmentActivity {
     }
 
 
-    private List<NameValuePair> formData() {
-        List<NameValuePair> formData = new ArrayList<NameValuePair>();
-        formData.add(new BasicNameValuePair("email", getIntent().getExtras().getString(EMAIL)));
-        formData.add(new BasicNameValuePair("password", getIntent().getExtras().getString(PASSWORD)));
-        formData.add(new BasicNameValuePair("redirect", ""));
-        formData.add(new BasicNameValuePair("submit", "Sign+in"));
-        return formData;
-    }
-
     @Override
     public Loader<CompletedTask> onCreateLoader(int i, Bundle bundle) {
         if (i == LOGIN_ACTION) {
@@ -80,6 +71,15 @@ public class LoginActivity extends Bf3FragmentActivity {
         return new Bf3ServerCall.HttpData(UriFactory.getLogginUri(), formData(), HttpPost.METHOD_NAME, false, new Header[]{});
     }
 
+    private List<NameValuePair> formData() {
+        List<NameValuePair> formData = new ArrayList<NameValuePair>();
+        formData.add(new BasicNameValuePair("email", getIntent().getExtras().getString(EMAIL)));
+        formData.add(new BasicNameValuePair("password", getIntent().getExtras().getString(PASSWORD)));
+        formData.add(new BasicNameValuePair("redirect", ""));
+        formData.add(new BasicNameValuePair("submit", "Sign+in"));
+        return formData;
+    }
+
     private Bf3ServerCall.HttpData userHttpData() {     //Replace BF3Droid.getUser() with a username to check app on different profile
         return new Bf3ServerCall.HttpData(UriFactory.getProfileInformationUri(loggedUserName), HttpGet.METHOD_NAME, false);
     }
@@ -91,7 +91,7 @@ public class LoginActivity extends Bf3FragmentActivity {
         } else if (isTaskSuccess(completedTask.result) && completedTaskLoader.getId() == USER_DATA_ACTION) {
             processUserDataResult(completedTask.response);
         } else {
-            Log.e("MainActivity", "Login failed \n" + completedTask.response);
+            Log.e(LoginActivity.class.getSimpleName(), "Login failed \n" + completedTask.response);
         }
     }
 

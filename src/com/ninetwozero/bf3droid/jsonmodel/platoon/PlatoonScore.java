@@ -1,16 +1,45 @@
 package com.ninetwozero.bf3droid.jsonmodel.platoon;
 
-import java.util.Map;
+import com.google.gson.annotations.SerializedName;
 
 public class PlatoonScore {
 
-    private Map<String, Long> platoonScore;
+    @SerializedName("median")
+    private int medianScore;
+    @SerializedName("average")
+    private int averageScore;
+    @SerializedName("bestPersonaId")
+    private long bestPersonaId;
+    @SerializedName("best")
+    private int bestScore;
+    @SerializedName("min")
+    private int minScore;
 
-    public PlatoonScore(Map<String, Long> platoonScore) {
-        this.platoonScore = platoonScore;
+    public PlatoonScore(int medianScore, int averageScore, long bestPersonaId, int bestScore, int minScore) {
+        this.medianScore = medianScore;
+        this.averageScore = averageScore;
+        this.bestPersonaId = bestPersonaId;
+        this.bestScore = bestScore;
+        this.minScore = minScore;
     }
 
-    public Map<String, Long> getPlatoonScore() {
-        return platoonScore;
+    public int getMedianScore() {
+        return medianScore;
+    }
+
+    public int getAverageScore() {
+        return averageScore;
+    }
+
+    public long getBestPersonaId() {
+        return bestPersonaId;
+    }
+
+    public int getBestScore() {
+        return bestScore;
+    }
+
+    public int getMinScore() {
+        return minScore;
     }
 }
