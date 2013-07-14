@@ -2,30 +2,33 @@ package com.ninetwozero.bf3droid.jsonmodel.platoon;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MemberStats {
 
     @SerializedName("kitsVehicles")
     private KitsVehicles kitsVehicles;
-    /*@SerializedName("topPlayers")
-    private TopPlayers topPlayers;
+    @SerializedName("topPlayers")
+    private Map<String, PlatoonTopPlayer> topPlayers = new HashMap<String, PlatoonTopPlayer>();
     @SerializedName("general")
-    private GeneralStats generalStats;*/
+    private Map<String, PlatoonScore> generalStats = new HashMap<String, PlatoonScore>();
 
-    public MemberStats(KitsVehicles kitsVehicles/*, TopPlayers topPlayers, GeneralStats generalStats*/) {
+    public MemberStats(KitsVehicles kitsVehicles, Map<String, PlatoonTopPlayer> topPlayers, Map<String, PlatoonScore> generalStats) {
         this.kitsVehicles = kitsVehicles;
-        /*this.topPlayers = topPlayers;
-        this.generalStats = generalStats;*/
+        this.topPlayers = topPlayers;
+        this.generalStats = generalStats;
     }
 
     public KitsVehicles getKitsVehicles() {
         return kitsVehicles;
     }
 
-    /*public TopPlayers getTopPlayers() {
+    public Map<String, PlatoonTopPlayer> getTopPlayers() {
         return topPlayers;
     }
 
-    public GeneralStats getGeneralStats() {
+    public Map<String, PlatoonScore> getGeneralStats() {
         return generalStats;
-    }*/
+    }
 }

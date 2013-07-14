@@ -35,11 +35,14 @@ import com.ninetwozero.bf3droid.activity.Bf3Fragment;
 import com.ninetwozero.bf3droid.datatype.PlatoonStats;
 import com.ninetwozero.bf3droid.datatype.PlatoonStatsItem;
 import com.ninetwozero.bf3droid.datatype.PlatoonTopStatsItem;
+import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonStat;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
+import com.ninetwozero.bf3droid.provider.BusProvider;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
-public class PlatoonStatsFragment extends Bf3Fragment{
+public class PlatoonStatsFragment extends Bf3Fragment {
     private Context context;
     private LayoutInflater layoutInflater;
     private View cacheView;
@@ -52,6 +55,7 @@ public class PlatoonStatsFragment extends Bf3Fragment{
     private TableLayout SPMTable;
     private TableLayout timeTable;
     private TableLayout topListTable;
+    private PlatoonStat platoonStat;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,11 +63,7 @@ public class PlatoonStatsFragment extends Bf3Fragment{
         layoutInflater = inflater;
 
         View view = layoutInflater.inflate(R.layout.tab_content_platoon_stats, container, false);
-        initFragment(view);
         return view;
-    }
-
-    public void initFragment(View view) {
     }
 
     @Override
@@ -73,7 +73,20 @@ public class PlatoonStatsFragment extends Bf3Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        BusProvider.getInstance().register(this);
         showUI();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void platoonStats(PlatoonStat platoonStat) {
+        this.platoonStat = platoonStat;
+        show();
     }
 
     private void showUI() {
@@ -88,7 +101,11 @@ public class PlatoonStatsFragment extends Bf3Fragment{
         topListTable = (TableLayout) topListWrapper.findViewById(R.id.tbl_stats);
     }
 
-    public void show(PlatoonStats stats) {
+    private void show(){
+
+    }
+
+    public void showStats(PlatoonStats stats) {
         if (context != null && stats != null) {
             scoresTable.removeAllViews();
             SPMTable.removeAllViews();

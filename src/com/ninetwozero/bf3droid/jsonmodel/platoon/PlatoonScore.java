@@ -5,17 +5,17 @@ import com.google.gson.annotations.SerializedName;
 public class PlatoonScore {
 
     @SerializedName("median")
-    private int medianScore;
+    private double medianScore;
     @SerializedName("average")
-    private int averageScore;
+    private double averageScore;
     @SerializedName("bestPersonaId")
     private long bestPersonaId;
     @SerializedName("best")
-    private int bestScore;
+    private double bestScore;
     @SerializedName("min")
-    private int minScore;
+    private double minScore;
 
-    public PlatoonScore(int medianScore, int averageScore, long bestPersonaId, int bestScore, int minScore) {
+    public PlatoonScore(double medianScore, double averageScore, long bestPersonaId, double bestScore, double minScore) {
         this.medianScore = medianScore;
         this.averageScore = averageScore;
         this.bestPersonaId = bestPersonaId;
@@ -23,11 +23,11 @@ public class PlatoonScore {
         this.minScore = minScore;
     }
 
-    public int getMedianScore() {
+    public double getMedianScore() {
         return medianScore;
     }
 
-    public int getAverageScore() {
+    public double getAverageScore() {
         return averageScore;
     }
 
@@ -35,11 +35,11 @@ public class PlatoonScore {
         return bestPersonaId;
     }
 
-    public int getBestScore() {
+    public double getBestScore() {
         return bestScore;
     }
 
-    public int getMinScore() {
+    public double getMinScore() {
         return minScore;
     }
 }
