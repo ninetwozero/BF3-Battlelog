@@ -185,7 +185,7 @@
   <string name="info_xml_badge">Plakietka</string>
   <string name="info_xml_general">Ogólne</string>
   <string name="info_xml_score_min">Punkty na minutę</string>
-  <string name="info_xml_top_soldiers">Najlepsi żołnierze</string>
+  <string name="info_xml_top_players">Najlepsi żołnierze</string>
   <string name="info_xml_time">Czas</string>
   <string name="info_xml_score">Punkty</string>
   <string name="info_xml_no_users">Nie znaleziono użytkowników.</string>

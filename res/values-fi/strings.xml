@@ -181,7 +181,7 @@
   <string name="info_xml_badge">Merkki</string>
   <string name="info_xml_general">Yleinen</string>
   <string name="info_xml_score_min">Pisteet / minuutti</string>
-  <string name="info_xml_top_soldiers">Parhaat sotilaat</string>
+  <string name="info_xml_top_players">Parhaat sotilaat</string>
   <string name="info_xml_time">Aika</string>
   <string name="info_xml_score">Pisteet</string>
   <string name="info_xml_no_users">Yhtään käyttäjää ei löytynyt.</string>

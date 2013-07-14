@@ -181,7 +181,7 @@
   <string name="info_xml_badge">Odznak</string>
   <string name="info_xml_general">Obecné</string>
   <string name="info_xml_score_min">Skóre / Min</string>
-  <string name="info_xml_top_soldiers">Nejlepší vojáci</string>
+  <string name="info_xml_top_players">Nejlepší vojáci</string>
   <string name="info_xml_time">Čas</string>
   <string name="info_xml_score">Skóre</string>
   <string name="info_xml_no_users">Nenalezeni žádní uživatelé.</string>

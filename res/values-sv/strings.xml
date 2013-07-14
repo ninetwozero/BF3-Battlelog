@@ -182,7 +182,7 @@
   <string name="info_xml_badge">Banner</string>
   <string name="info_xml_general">Allmänt</string>
   <string name="info_xml_score_min">Poäng / Minut</string>
-  <string name="info_xml_top_soldiers">Toppsoldater</string>
+  <string name="info_xml_top_players">Toppsoldater</string>
   <string name="info_xml_time">Tid</string>
   <string name="info_xml_score">Poäng</string>
   <string name="info_xml_no_users">Inga användare hittades.</string>

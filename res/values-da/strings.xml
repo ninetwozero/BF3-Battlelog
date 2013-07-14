@@ -185,7 +185,7 @@
   <string name="info_xml_badge">Badge</string>
   <string name="info_xml_general">General</string>
   <string name="info_xml_score_min">Score / Min</string>
-  <string name="info_xml_top_soldiers">Top soldiers</string>
+  <string name="info_xml_top_players">Top soldiers</string>
   <string name="info_xml_time">Time</string>
   <string name="info_xml_score">Score</string>
   <string name="info_xml_no_users">No users found.</string>

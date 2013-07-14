@@ -198,7 +198,7 @@
   <string name="info_xml_badge">Abzeichen</string>
   <string name="info_xml_general">Allgemein</string>
   <string name="info_xml_score_min">Punkte / Minute</string>
-  <string name="info_xml_top_soldiers">Besten Soldaten</string>
+  <string name="info_xml_top_players">Besten Soldaten</string>
   <string name="info_xml_time">Zeit</string>
   <string name="info_xml_score">Punkte</string>
   <string name="info_xml_no_users">Keine Benutzer gefunden</string>

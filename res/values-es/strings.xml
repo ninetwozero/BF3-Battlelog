@@ -185,7 +185,7 @@
   <string name="info_xml_badge">Insignia</string>
   <string name="info_xml_general">Usual</string>
   <string name="info_xml_score_min">Puntuación / Min</string>
-  <string name="info_xml_top_soldiers">Soldados superior</string>
+  <string name="info_xml_top_players">Soldados superior</string>
   <string name="info_xml_time">Tiempo</string>
   <string name="info_xml_score">Puntuación</string>
   <string name="info_xml_no_users">No se encontraron usuarios.</string>

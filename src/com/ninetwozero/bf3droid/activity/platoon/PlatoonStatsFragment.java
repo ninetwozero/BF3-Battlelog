@@ -15,15 +15,12 @@
 package com.ninetwozero.bf3droid.activity.platoon;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -32,30 +29,31 @@ import android.widget.Toast;
 
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.Bf3Fragment;
-import com.ninetwozero.bf3droid.datatype.PlatoonStats;
-import com.ninetwozero.bf3droid.datatype.PlatoonStatsItem;
-import com.ninetwozero.bf3droid.datatype.PlatoonTopStatsItem;
+import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonScore;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonStat;
-import com.ninetwozero.bf3droid.misc.PublicUtils;
+import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonTopPlayer;
+import com.ninetwozero.bf3droid.jsonmodel.soldierstats.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.squareup.otto.Subscribe;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class PlatoonStatsFragment extends Bf3Fragment {
     private Context context;
     private LayoutInflater layoutInflater;
-    private View cacheView;
-    private RelativeLayout wrapGeneral;
-    private RelativeLayout scoreWrapper;
-    private RelativeLayout spmWrapper;
-    private RelativeLayout timeWrapper;
-    private RelativeLayout topListWrapper;
-    private TableLayout scoresTable;
-    private TableLayout SPMTable;
-    private TableLayout timeTable;
-    private TableLayout topListTable;
+    private TableLayout tableGeneral;
     private PlatoonStat platoonStat;
+    private final List<Integer> GENERAL_ROW_LABELS = Arrays.asList(R.string.info_xml_average, R.string.info_xml_best, R.string.info_xml_median, R.string.info_xml_min);
+    private final List<Integer> TOP_CLASSES_LABELS = Arrays.asList(R.string.platoon_stats_top_assault, R.string.platoon_stats_top_support, R.string.platoon_stats_top_recon, R.string.platoon_stats_top_engineer
+            , R.string.platoon_stats_top_tank_driver, R.string.platoon_stats_top_helicopter_pilot, R.string.platoon_stats_top_ifv_driver, R.string.platoon_stats_top_jet_pilot, R.string.platoon_stats_top_aa_driver);
+    private final List<String> TOP_CLASS_NAMES = Arrays.asList("assault", "support", "recon", "engineer", "tankdriver", "helipilot", "ifvdriver", "jetpilot", "aadriver");
+    private PlatoonScore scorePerMin;
+    private PlatoonScore rank;
+    private PlatoonScore killDeath;
+    private Map<String, PlatoonTopPlayer> topPlayers;
+    private Map<Long, User> platoonMembers;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,7 +72,6 @@ public class PlatoonStatsFragment extends Bf3Fragment {
     public void onResume() {
         super.onResume();
         BusProvider.getInstance().register(this);
-        showUI();
     }
 
     @Override
@@ -89,138 +86,90 @@ public class PlatoonStatsFragment extends Bf3Fragment {
         show();
     }
 
-    private void showUI() {
-        wrapGeneral = (RelativeLayout) getView().findViewById(R.id.wrap_general);
-        scoreWrapper = (RelativeLayout) getView().findViewById(R.id.wrap_score);
-        spmWrapper = (RelativeLayout) getView().findViewById(R.id.wrap_spm);
-        timeWrapper = (RelativeLayout) getView().findViewById(R.id.wrap_time);
-        topListWrapper = (RelativeLayout) getView().findViewById(R.id.wrap_toplist);
-        scoresTable = (TableLayout) scoreWrapper.findViewById(R.id.tbl_stats);
-        SPMTable = (TableLayout) spmWrapper.findViewById(R.id.tbl_stats);
-        timeTable = (TableLayout) timeWrapper.findViewById(R.id.tbl_stats);
-        topListTable = (TableLayout) topListWrapper.findViewById(R.id.tbl_stats);
+    private void show() {
+        populateGeneralStatsTable();
+        populateTopPlayerTable();
     }
 
-    private void show(){
-
-    }
-
-    public void showStats(PlatoonStats stats) {
-        if (context != null && stats != null) {
-            scoresTable.removeAllViews();
-            SPMTable.removeAllViews();
-            timeTable.removeAllViews();
-            topListTable.removeAllViews();
-
-            PlatoonStatsItem generalSPM = stats.getGlobalTop().get(0);
-            PlatoonStatsItem generalKDR = stats.getGlobalTop().get(1);
-            PlatoonStatsItem generalRank = stats.getGlobalTop().get(2);
-
-            TableRow cacheTableRow = null;
-            ((TextView) wrapGeneral.findViewById(R.id.text_average_spm)).setText(String.valueOf(generalSPM.getAvg()));
-            ((TextView) wrapGeneral.findViewById(R.id.text_max_spm)).setText(String.valueOf(generalSPM.getMax()));
-            ((TextView) wrapGeneral.findViewById(R.id.text_mid_spm)).setText(String.valueOf(generalSPM.getMid()));
-            ((TextView) wrapGeneral.findViewById(R.id.text_min_spm)).setText(String.valueOf(generalSPM.getMin()));
-            ((TextView) wrapGeneral.findViewById(R.id.text_average_rank)).setText(String.valueOf(generalRank.getAvg()));
-            ((TextView) wrapGeneral.findViewById(R.id.text_max_rank)).setText(String.valueOf(generalRank.getMax()));
-            ((TextView) wrapGeneral.findViewById(R.id.text_mid_rank)).setText(String.valueOf(generalRank.getMid()));
-            ((TextView) wrapGeneral.findViewById(R.id.text_min_rank)).setText(String.valueOf(generalRank.getMin()));
-            ((TextView) wrapGeneral.findViewById(R.id.text_average_kdr)).setText(String.valueOf(generalKDR.getDAvg()));
-            ((TextView) wrapGeneral.findViewById(R.id.text_max_kdr)).setText(String.valueOf(generalKDR.getDMax()));
-            ((TextView) wrapGeneral.findViewById(R.id.text_mid_kdr)).setText(String.valueOf(generalKDR.getDMid()));
-            ((TextView) wrapGeneral.findViewById(R.id.text_min_kdr)).setText(String.valueOf(generalKDR.getDMin()));
-
-            List<PlatoonTopStatsItem> topStats = stats.getTopPlayers();
-            PlatoonTopStatsItem tempTopStats = null;
-
-            int numCols = 2;
-            for (int i = 0, max = topStats.size(); i < max; i++) {
-                cacheView = layoutInflater.inflate(R.layout.grid_item_platoon_top_stats, null);
-                if (cacheTableRow == null || (i % numCols) == 0) {
-                    topListTable.addView(cacheTableRow = new TableRow(context));
-                    cacheTableRow.setLayoutParams(
-                            new TableRow.LayoutParams(
-                                    TableLayout.LayoutParams.FILL_PARENT,
-                                    TableLayout.LayoutParams.WRAP_CONTENT
-                            )
-                    );
-                }
-                cacheTableRow.addView(cacheView);
-
-                tempTopStats = topStats.get(i);
-                if (tempTopStats.hasProfile()) {
-                    ((ImageView) cacheView.findViewById(R.id.image_avatar)).setImageBitmap(
-                            BitmapFactory.decodeFile(
-                                    PublicUtils.getCachePath(context) + tempTopStats.getProfile().getGravatarHash() + ".png"
-                            )
-                    );
-                } else {
-                    ((ImageView) cacheView.findViewById(R.id.image_avatar)).setImageResource(R.drawable.default_avatar);
-                }
-
-                ((TextView) cacheView.findViewById(R.id.text_label)).setText(tempTopStats.getLabel().toUpperCase());
-                if (tempTopStats.hasProfile()) {
-                    ((TextView) cacheView.findViewById(R.id.text_name)).setText(tempTopStats.getProfile().getUsername());
-                    ((TextView) cacheView.findViewById(R.id.text_spm)).setText(String.valueOf(tempTopStats.getSPM()));
-                } else {
-                    ((TextView) cacheView.findViewById(R.id.text_name)).setText("N/A");
-                    ((TextView) cacheView.findViewById(R.id.text_spm)).setText("0");
-                }
-            }
-            generateTableRows(scoresTable, stats.getScores(), false);
-            generateTableRows(SPMTable, stats.getSpm(), false);
-            generateTableRows(timeTable, stats.getTime(), true);
+    private void populateGeneralStatsTable() {
+        tableGeneral = (TableLayout) getView().findViewById(R.id.table_stats_general);
+        for (int i = 0; i < 4; i++) {
+            TableRow tableRowLabels = getLabelRow(i);
+            tableGeneral.addView(tableRowLabels);
+            TableRow tableRowScores = getScoreRow(i);
+            tableGeneral.addView(tableRowScores);
         }
     }
 
-    public void generateTableRows(TableLayout parent, List<PlatoonStatsItem> stats, boolean isTime) {
-        TableRow cacheTableRow = null;
-        parent.removeAllViews();
+    private TableRow getLabelRow(int index) {
+        return createLabelRow(GENERAL_ROW_LABELS.get(index));
+    }
 
-        if (stats == null) {
-            parent.addView(cacheTableRow = new TableRow(context));
-            cacheTableRow.setLayoutParams(
-                    new TableRow.LayoutParams(
-                            TableRow.LayoutParams.FILL_PARENT,
-                            TableRow.LayoutParams.WRAP_CONTENT
-                    )
-            );
-            cacheTableRow.addView(cacheView = new TextView(context));
-            ((TextView) cacheView).setText(R.string.info_stats_not_found);
-            ((TextView) cacheView).setGravity(Gravity.CENTER);
-        } else {
-            int numItems = stats.size() - 1;
-            int avg;
-
-            for (int i = 0, max = (numItems + 1); i < max; i++) {
-                avg = (i == 0) ? (stats.get(i).getAvg() / numItems) : stats.get(i).getAvg();
-
-                cacheView = layoutInflater.inflate(R.layout.grid_item_platoon_stats, null);
-                if (cacheTableRow == null || (i % 3) == 0) {
-                    parent.addView(cacheTableRow = new TableRow(context));
-                    cacheTableRow.setLayoutParams(
-                            new TableRow.LayoutParams(
-                                    TableRow.LayoutParams.FILL_PARENT,
-                                    TableRow.LayoutParams.WRAP_CONTENT
-                            )
-                    );
-                }
-                cacheTableRow.addView(cacheView);
-
-                ((TextView) cacheView.findViewById(R.id.text_label)).setText(stats.get(i).getLabel().toUpperCase());
-                if (isTime) {
-                    ((TextView) cacheView.findViewById(R.id.text_average)).setText(PublicUtils.timeToLiteral(avg));
-                    ((TextView) cacheView.findViewById(R.id.text_max)).setText(PublicUtils.timeToLiteral(stats.get(i).getMax()));
-                    ((TextView) cacheView.findViewById(R.id.text_mid)).setText(PublicUtils.timeToLiteral(stats.get(i).getMid()));
-                    ((TextView) cacheView.findViewById(R.id.text_min)).setText(PublicUtils.timeToLiteral(stats.get(i).getMin()));
-                } else {
-                    ((TextView) cacheView.findViewById(R.id.text_average)).setText(String.valueOf(avg));
-                    ((TextView) cacheView.findViewById(R.id.text_max)).setText(String.valueOf(stats.get(i).getMax()));
-                    ((TextView) cacheView.findViewById(R.id.text_mid)).setText(String.valueOf(stats.get(i).getMid()));
-                    ((TextView) cacheView.findViewById(R.id.text_min)).setText(String.valueOf(stats.get(i).getMin()));
-                }
-            }
+    private TableRow getScoreRow(int index) {
+        scorePerMin = platoonStat.getMemberStats().getGeneralStats().get("scorePerMinute");
+        rank = platoonStat.getMemberStats().getGeneralStats().get("rank");
+        killDeath = platoonStat.getMemberStats().getGeneralStats().get("kd");
+        TableRow row;
+        switch (index) {
+            case 0:
+                row = createGeneralStatsRow(scorePerMin.getAverageScore(), rank.getAverageScore(), killDeath.getAverageScore());
+                break;
+            case 1:
+                row = createGeneralStatsRow(scorePerMin.getBestScore(), rank.getBestScore(), killDeath.getBestScore());
+                break;
+            case 2:
+                row = createGeneralStatsRow(scorePerMin.getMedianScore(), rank.getMedianScore(), killDeath.getMedianScore());
+                break;
+            case 3:
+                row = createGeneralStatsRow(scorePerMin.getMinScore(), rank.getMinScore(), killDeath.getMinScore());
+                break;
+            default:
+                row = new TableRow(getActivity().getApplicationContext());
         }
+        return row;
+    }
+
+    private TableRow createLabelRow(int resourceId) {
+        TableRow row = (TableRow) layoutInflater.inflate(R.layout.platoon_general_stats_table_row_labels, null);
+        ((TextView) row.findViewById(R.id.score_label_1)).setText(resourceId);
+        ((TextView) row.findViewById(R.id.score_label_2)).setText(resourceId);
+        ((TextView) row.findViewById(R.id.score_label_3)).setText(resourceId);
+        return row;
+    }
+
+    private TableRow createGeneralStatsRow(double score1, double score2, double score3) {
+        TableRow row = (TableRow) layoutInflater.inflate(R.layout.platoon_stats_table_row_scores, null);
+        ((TextView) row.findViewById(R.id.score_value_1)).setText(String.valueOf((int) score1));
+        ((TextView) row.findViewById(R.id.score_value_2)).setText(String.valueOf((int) score2));
+        ((TextView) row.findViewById(R.id.score_value_3)).setText(String.valueOf(score3));
+        return row;
+    }
+
+    private void populateTopPlayerTable() {
+        TableLayout topPlayersTable = (TableLayout) getView().findViewById(R.id.table_top_players);
+        topPlayers = platoonStat.getMemberStats().getTopPlayers();
+        platoonMembers = platoonStat.getPlatoonMembers();
+        for (int i = 0; i < TOP_CLASS_NAMES.size(); i++) {
+            TableRow row = createTopPlayerRow(i);
+            topPlayersTable.addView(row);
+        }
+    }
+
+    private TableRow createTopPlayerRow(int index) {
+        TableRow row = (TableRow) layoutInflater.inflate(R.layout.platoon_top_player_row, null);
+        ((TextView) row.findViewById(R.id.top_player_class_name)).setText(TOP_CLASSES_LABELS.get(index));
+        ((TextView) row.findViewById(R.id.top_player_name)).setText(topPlayerName(index));
+        ((TextView) row.findViewById(R.id.top_player_score_per_minute)).setText(String.valueOf(topPlayerAt(index).getScorePerMinute()));
+        return row;
+    }
+
+    private String topPlayerName(int index) {
+        PlatoonTopPlayer player = topPlayerAt(index);
+        return platoonMembers.get(player.getPersonaId()).getUserName();
+    }
+
+    private PlatoonTopPlayer topPlayerAt(int index) {
+        return topPlayers.get(TOP_CLASS_NAMES.get(index));
     }
 
     public Menu prepareOptionsMenu(Menu menu) {

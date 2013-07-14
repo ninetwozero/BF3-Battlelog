@@ -181,7 +181,7 @@
   <string name="info_xml_badge">Distintivo</string>
   <string name="info_xml_general">Generale</string>
   <string name="info_xml_score_min">Punteggio / Min</string>
-  <string name="info_xml_top_soldiers">Soldati migliori</string>
+  <string name="info_xml_top_players">Soldati migliori</string>
   <string name="info_xml_time">Tempo</string>
   <string name="info_xml_score">Punteggio</string>
   <string name="info_xml_no_users">Non sono stati trovati utenti.</string>

@@ -180,7 +180,7 @@
   <string name="info_xml_badge">Insigne / badge</string>
   <string name="info_xml_general">Général</string>
   <string name="info_xml_score_min">Score / Min</string>
-  <string name="info_xml_top_soldiers">Top des soldats</string>
+  <string name="info_xml_top_players">Top des soldats</string>
   <string name="info_xml_time">Temps</string>
   <string name="info_xml_score">Score</string>
   <string name="info_xml_no_users">Aucun utilisateur trouvé.</string>

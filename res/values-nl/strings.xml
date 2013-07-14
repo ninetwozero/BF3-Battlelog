@@ -192,7 +192,7 @@
   <string name="info_xml_badge">Badge</string>
   <string name="info_xml_general">Algemeen</string>
   <string name="info_xml_score_min">Score / Min</string>
-  <string name="info_xml_top_soldiers">Beste soldaten</string>
+  <string name="info_xml_top_players">Beste soldaten</string>
   <string name="info_xml_time">Tijd</string>
   <string name="info_xml_score">Score</string>
   <string name="info_xml_no_users">Geen gebruiker gevonden.</string>

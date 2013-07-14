@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+          style="@style/MatchWidth">
+
+  <TextView
+      android:id="@+id/score_value_1"
+      style="@style/Wrap"
+      android:gravity="center"
+      android:text="0"
+      android:textSize="20sp"/>
+
+  <TextView
+      android:id="@+id/score_value_2"
+      style="@style/Wrap"
+      android:gravity="center"
+      android:text="0"
+      android:textSize="20sp"/>
+
+  <TextView
+      android:id="@+id/score_value_3"
+      style="@style/Wrap"
+      android:gravity="center"
+      android:text="0"
+      android:textSize="20sp"/>
+</TableRow>

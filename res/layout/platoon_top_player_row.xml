@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+          style="@style/MatchWidth">
+
+  <ImageView
+      android:id="@+id/top_player_avatar"
+      style="@style/Wrap"
+      android:contentDescription="@string/platoon_stats_top_player_avatar"/>
+
+  <RelativeLayout
+      style="@style/MatchWidth">
+
+    <TextView
+        android:id="@+id/top_player_class_name"
+        android:textStyle="bold"
+        style="@style/MatchWidth"/>
+
+    <TextView
+        android:id="@+id/top_player_name"
+        style="@style/Wrap"
+        android:layout_below="@id/top_player_class_name"/>
+
+    <TextView
+        android:id="@+id/top_player_score_per_minute"
+        style="@style/Wrap"
+        android:layout_below="@id/top_player_name"/>
+  </RelativeLayout>
+
+</TableRow>
