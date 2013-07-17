@@ -36,7 +36,7 @@ import com.ninetwozero.bf3droid.datatype.PlatoonInformation;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.Platoon;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonDossier;
 import com.ninetwozero.bf3droid.provider.BusProvider;
-import com.ninetwozero.bf3droid.util.ImageLoader;
+import com.ninetwozero.bf3droid.util.ImageInputStream;
 import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
@@ -156,7 +156,7 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
     private Bitmap fetchPlatoonBadge() {
         Bitmap bitmap = null;
         try {
-            InputStream is = ImageLoader.from(EMBLEMS_URL + platoon.getId() + EXTENSION);
+            InputStream is = ImageInputStream.from(EMBLEMS_URL + platoon.getId() + EXTENSION);
             if (is != null) {
                 bitmap = BitmapFactory.decodeStream(is);
                 is.close();

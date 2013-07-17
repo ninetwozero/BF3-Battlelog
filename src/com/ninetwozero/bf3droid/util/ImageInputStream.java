@@ -5,7 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ImageLoader {
+public class ImageInputStream {
 
     public static InputStream from(String imageUrl){
         InputStream is = null;
