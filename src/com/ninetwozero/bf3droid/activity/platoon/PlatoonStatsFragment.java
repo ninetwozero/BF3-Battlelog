@@ -21,7 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -34,6 +34,10 @@ import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonStat;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonTopPlayer;
 import com.ninetwozero.bf3droid.jsonmodel.soldierstats.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
+import com.ninetwozero.bf3droid.util.ImageLoader;
+import com.novoda.imageloader.core.ImageManager;
+import com.novoda.imageloader.core.LoaderSettings;
+import com.novoda.imageloader.core.cache.LruBitmapCache;
 import com.squareup.otto.Subscribe;
 
 import java.util.Arrays;
@@ -54,6 +58,8 @@ public class PlatoonStatsFragment extends Bf3Fragment {
     private PlatoonScore killDeath;
     private Map<String, PlatoonTopPlayer> topPlayers;
     private Map<Long, User> platoonMembers;
+    private static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
+    private static final String BATTLELOG_SUFFIX = "?s=100&d=http%3A%2F%2Fbattlelog-cdn.battlefield.com%2Fcdnprefix%2Favatar1%2Fpublic%2Fbase%2Fshared%2Fdefault-avatar-100.png";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -157,6 +163,8 @@ public class PlatoonStatsFragment extends Bf3Fragment {
 
     private TableRow createTopPlayerRow(int index) {
         TableRow row = (TableRow) layoutInflater.inflate(R.layout.platoon_top_player_row, null);
+        ImageView imageView = (ImageView) row.findViewById(R.id.top_player_avatar);
+        provideImageLoader().loadImage(imageView, imagePath(gravatarId(index)));
         ((TextView) row.findViewById(R.id.top_player_class_name)).setText(TOP_CLASSES_LABELS.get(index));
         ((TextView) row.findViewById(R.id.top_player_name)).setText(topPlayerName(index));
         ((TextView) row.findViewById(R.id.top_player_score_per_minute)).setText(String.valueOf(topPlayerAt(index).getScorePerMinute()));
@@ -170,6 +178,11 @@ public class PlatoonStatsFragment extends Bf3Fragment {
 
     private PlatoonTopPlayer topPlayerAt(int index) {
         return topPlayers.get(TOP_CLASS_NAMES.get(index));
+    }
+
+    private String gravatarId(int index){
+        PlatoonTopPlayer player =  topPlayerAt(index);
+        return platoonMembers.get(player.getPersonaId()).getGravatarMd5();
     }
 
     public Menu prepareOptionsMenu(Menu menu) {
@@ -186,5 +199,22 @@ public class PlatoonStatsFragment extends Bf3Fragment {
             Toast.makeText(context, R.string.info_platoon_compare, Toast.LENGTH_SHORT).show();
         }
         return false;
+    }
+
+    private String imagePath(String gravatarId) {
+        return new StringBuilder(GRAVATAR_URL).append(gravatarId).append(BATTLELOG_SUFFIX).toString();
+    }
+
+    private ImageLoader provideImageLoader() {
+        Context appContext = getGontext();
+        LoaderSettings settings = new LoaderSettings.SettingsBuilder()
+                .withDisconnectOnEveryCall(true)
+                .withCacheManager(new LruBitmapCache(appContext))
+                .build(appContext);
+        return new ImageLoader(new ImageManager(appContext, settings));
+    }
+
+    private Context getGontext() {
+        return getActivity().getApplicationContext();
     }
 }

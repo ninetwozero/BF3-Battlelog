@@ -7,15 +7,15 @@ public class User {
     @SerializedName("createdAt")
     private long createdAt;
     @SerializedName("gravatarMd5")
-    private String md5;
+    private String gravatarMd5;
     @SerializedName("userId")
     private long id;
     @SerializedName("username")
     private String userName;
 
-    public User(long createdAt, String md5, long id, String userName) {
+    public User(long createdAt, String gravatarMd5, long id, String userName) {
         this.createdAt = createdAt;
-        this.md5 = md5;
+        this.gravatarMd5 = gravatarMd5;
         this.id = id;
         this.userName = userName;
     }
@@ -28,12 +28,12 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public String getMd5() {
-        return md5;
+    public String getGravatarMd5() {
+        return gravatarMd5;
     }
 
-    public void setMd5(String md5) {
-        this.md5 = md5;
+    public void setGravatarMd5(String gravatarMd5) {
+        this.gravatarMd5 = gravatarMd5;
     }
 
     public long getId() {
