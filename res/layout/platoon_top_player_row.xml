@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-          style="@style/MatchWidth">
-
-  <ImageView
-      android:id="@+id/top_player_avatar"
-      style="@style/Wrap"
-      android:layout_gravity="left"
-      android:layout_marginRight="@dimen/padding_xsmall"
-      android:contentDescription="@string/platoon_stats_top_player_avatar"/>
+          style="@style/MatchWidth"
+          android:gravity="left">
 
   <RelativeLayout
-      style="@style/Wrap"
+      style="@style/MatchWidth"
       android:layout_gravity="left"
       >
+
+    <ImageView
+        android:id="@+id/top_player_avatar"
+        style="@style/Wrap"
+        android:layout_gravity="left"
+        android:layout_marginRight="@dimen/padding_medium"
+        android:contentDescription="@string/platoon_stats_top_player_avatar"/>
+
 
     <TextView
         android:id="@+id/top_player_class_name"
         android:textStyle="bold"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/top_player_avatar"
         style="@style/Wrap"/>
 
     <TextView
         android:id="@+id/top_player_name"
         style="@style/Wrap"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/top_player_avatar"
         android:layout_below="@id/top_player_class_name"/>
 
     <TextView
         android:id="@+id/top_player_score_per_minute"
         style="@style/Wrap"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/top_player_avatar"
         android:layout_below="@id/top_player_name"/>
   </RelativeLayout>
 

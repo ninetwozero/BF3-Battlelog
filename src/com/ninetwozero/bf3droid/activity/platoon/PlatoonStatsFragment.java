@@ -47,15 +47,11 @@ import java.util.Map;
 public class PlatoonStatsFragment extends Bf3Fragment {
     private Context context;
     private LayoutInflater layoutInflater;
-    private TableLayout tableGeneral;
     private PlatoonStat platoonStat;
     private final List<Integer> GENERAL_ROW_LABELS = Arrays.asList(R.string.info_xml_average, R.string.info_xml_best, R.string.info_xml_median, R.string.info_xml_min);
     private final List<Integer> TOP_CLASSES_LABELS = Arrays.asList(R.string.platoon_stats_top_assault, R.string.platoon_stats_top_support, R.string.platoon_stats_top_recon, R.string.platoon_stats_top_engineer
             , R.string.platoon_stats_top_tank_driver, R.string.platoon_stats_top_helicopter_pilot, R.string.platoon_stats_top_ifv_driver, R.string.platoon_stats_top_jet_pilot, R.string.platoon_stats_top_aa_driver);
     private final List<String> TOP_CLASS_NAMES = Arrays.asList("assault", "support", "recon", "engineer", "tankdriver", "helipilot", "ifvdriver", "jetpilot", "aadriver");
-    private PlatoonScore scorePerMin;
-    private PlatoonScore rank;
-    private PlatoonScore killDeath;
     private Map<String, PlatoonTopPlayer> topPlayers;
     private Map<Long, User> platoonMembers;
     private static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
@@ -66,8 +62,7 @@ public class PlatoonStatsFragment extends Bf3Fragment {
         context = getActivity();
         layoutInflater = inflater;
 
-        View view = layoutInflater.inflate(R.layout.tab_content_platoon_stats, container, false);
-        return view;
+        return layoutInflater.inflate(R.layout.tab_content_platoon_stats, container, false);
     }
 
     @Override
@@ -98,7 +93,7 @@ public class PlatoonStatsFragment extends Bf3Fragment {
     }
 
     private void populateGeneralStatsTable() {
-        tableGeneral = (TableLayout) getView().findViewById(R.id.table_stats_general);
+        TableLayout tableGeneral = (TableLayout) getView().findViewById(R.id.table_stats_general);
         for (int i = 0; i < 4; i++) {
             TableRow tableRowLabels = getLabelRow(i);
             tableGeneral.addView(tableRowLabels);
@@ -112,9 +107,9 @@ public class PlatoonStatsFragment extends Bf3Fragment {
     }
 
     private TableRow getScoreRow(int index) {
-        scorePerMin = platoonStat.getMemberStats().getGeneralStats().get("scorePerMinute");
-        rank = platoonStat.getMemberStats().getGeneralStats().get("rank");
-        killDeath = platoonStat.getMemberStats().getGeneralStats().get("kd");
+        PlatoonScore scorePerMin = platoonStat.getMemberStats().getGeneralStats().get("scorePerMinute");
+        PlatoonScore rank = platoonStat.getMemberStats().getGeneralStats().get("rank");
+        PlatoonScore killDeath = platoonStat.getMemberStats().getGeneralStats().get("kd");
         TableRow row;
         switch (index) {
             case 0:
