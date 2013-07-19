@@ -1,6 +1,7 @@
 package com.ninetwozero.bf3droid.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -16,6 +17,10 @@ import com.ninetwozero.bf3droid.dialog.ProgressDialogFragment;
 import com.ninetwozero.bf3droid.loader.CompletedTask;
 import com.ninetwozero.bf3droid.loader.CompletedTask.Result;
 import com.ninetwozero.bf3droid.model.User;
+import com.ninetwozero.bf3droid.util.ImageLoader;
+import com.novoda.imageloader.core.ImageManager;
+import com.novoda.imageloader.core.LoaderSettings;
+import com.novoda.imageloader.core.cache.LruBitmapCache;
 
 import static com.ninetwozero.bf3droid.loader.CompletedTask.Result.FAILURE;
 import static com.ninetwozero.bf3droid.loader.CompletedTask.Result.SUCCESS;
@@ -23,6 +28,8 @@ import static com.ninetwozero.bf3droid.loader.CompletedTask.Result.SUCCESS;
 public class Bf3Fragment extends Fragment implements LoaderCallbacks<CompletedTask>, BF3Reload {
 
     private Handler handler = new Handler();
+    private static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
+    private static final String BATTLELOG_SUFFIX = "?s=100&d=http%3A%2F%2Fbattlelog-cdn.battlefield.com%2Fcdnprefix%2Favatar1%2Fpublic%2Fbase%2Fshared%2Fdefault-avatar-100.png";
 
     @Override
     public Loader<CompletedTask> onCreateLoader(int id, Bundle bundle) {
@@ -92,5 +99,22 @@ public class Bf3Fragment extends Fragment implements LoaderCallbacks<CompletedTa
 
     protected User user(String user){
         return BF3Droid.getUserBy(user);
+    }
+
+    protected String imagePath(String gravatarId) {
+        return new StringBuilder(GRAVATAR_URL).append(gravatarId).append(BATTLELOG_SUFFIX).toString();
+    }
+
+    protected ImageLoader provideImageLoader() {
+        Context appContext = getGontext();
+        LoaderSettings settings = new LoaderSettings.SettingsBuilder()
+                .withDisconnectOnEveryCall(true)
+                .withCacheManager(new LruBitmapCache(appContext))
+                .build(appContext);
+        return new ImageLoader(new ImageManager(appContext, settings));
+    }
+
+    private Context getGontext() {
+        return getActivity().getApplicationContext();
     }
 }

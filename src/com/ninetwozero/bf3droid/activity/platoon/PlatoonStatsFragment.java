@@ -34,10 +34,6 @@ import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonStat;
 import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonTopPlayer;
 import com.ninetwozero.bf3droid.jsonmodel.soldierstats.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
-import com.ninetwozero.bf3droid.util.ImageLoader;
-import com.novoda.imageloader.core.ImageManager;
-import com.novoda.imageloader.core.LoaderSettings;
-import com.novoda.imageloader.core.cache.LruBitmapCache;
 import com.squareup.otto.Subscribe;
 
 import java.util.Arrays;
@@ -54,8 +50,6 @@ public class PlatoonStatsFragment extends Bf3Fragment {
     private final List<String> TOP_CLASS_NAMES = Arrays.asList("assault", "support", "recon", "engineer", "tankdriver", "helipilot", "ifvdriver", "jetpilot", "aadriver");
     private Map<String, PlatoonTopPlayer> topPlayers;
     private Map<Long, User> platoonMembers;
-    private static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
-    private static final String BATTLELOG_SUFFIX = "?s=100&d=http%3A%2F%2Fbattlelog-cdn.battlefield.com%2Fcdnprefix%2Favatar1%2Fpublic%2Fbase%2Fshared%2Fdefault-avatar-100.png";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -194,22 +188,5 @@ public class PlatoonStatsFragment extends Bf3Fragment {
             Toast.makeText(context, R.string.info_platoon_compare, Toast.LENGTH_SHORT).show();
         }
         return false;
-    }
-
-    private String imagePath(String gravatarId) {
-        return new StringBuilder(GRAVATAR_URL).append(gravatarId).append(BATTLELOG_SUFFIX).toString();
-    }
-
-    private ImageLoader provideImageLoader() {
-        Context appContext = getGontext();
-        LoaderSettings settings = new LoaderSettings.SettingsBuilder()
-                .withDisconnectOnEveryCall(true)
-                .withCacheManager(new LruBitmapCache(appContext))
-                .build(appContext);
-        return new ImageLoader(new ImageManager(appContext, settings));
-    }
-
-    private Context getGontext() {
-        return getActivity().getApplicationContext();
     }
 }

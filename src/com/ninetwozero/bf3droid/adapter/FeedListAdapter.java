@@ -23,157 +23,135 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.datatype.CommentData;
 import com.ninetwozero.bf3droid.datatype.FeedItem;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
+import com.ninetwozero.bf3droid.util.ImageLoader;
+import com.novoda.imageloader.core.ImageManager;
+import com.novoda.imageloader.core.LoaderSettings;
+import com.novoda.imageloader.core.cache.LruBitmapCache;
 
 import java.util.List;
 
 public class FeedListAdapter extends BaseAdapter {
+    private Context context;
+    private List<FeedItem> feedItems;
+    private LayoutInflater layoutInflater;
+    private static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
+    private static final String BATTLELOG_SUFFIX = "?s=100&d=http%3A%2F%2Fbattlelog-cdn.battlefield.com%2Fcdnprefix%2Favatar1%2Fpublic%2Fbase%2Fshared%2Fdefault-avatar-100.png";
 
-	// Attributes
-	private Context mContext;
-	private List<FeedItem> mItems;
-	private LayoutInflater mLayoutInflater;
 
-	// Construct
-	public FeedListAdapter(Context c, List<FeedItem> fi, LayoutInflater l) {
-		mContext = c;
-		mItems = fi;
-		mLayoutInflater = l;
+    public FeedListAdapter(Context c, List<FeedItem> fi, LayoutInflater l) {
+        context = c;
+        feedItems = fi;
+        layoutInflater = l;
+    }
 
-	}
+    @Override
+    public int getCount() {
+        return (feedItems != null) ? feedItems.size() : 0;
+    }
 
-	@Override
-	public int getCount() {
-		return (mItems != null) ? mItems.size() : 0;
-	}
+    @Override
+    public FeedItem getItem(int position) {
+        return this.feedItems.get(position);
+    }
 
-	@Override
-	public FeedItem getItem(int position) {
-		return this.mItems.get(position);
-	}
+    @Override
+    public long getItemId(int position) {
+        return this.feedItems.get(position).getId();
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return this.mItems.get(position).getId();
-	}
+    public void setItems(List<FeedItem> ia) {
+        this.feedItems = ia;
+        this.notifyDataSetChanged();
+    }
 
-	public void setItems(List<FeedItem> ia) {
-		this.mItems = ia;
-		this.notifyDataSetChanged();
-	}
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        FeedItem currentItem = getItem(position);
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = layoutInflater.inflate(R.layout.list_item_feed, parent, false);
+        }
 
-		// Get the current item
-		FeedItem currentItem = getItem(position);
+        TextView viewAllText = (TextView) convertView.findViewById(R.id.text_comments_overflow);
 
-		// Recycle
-		if (convertView == null) {
-			convertView = mLayoutInflater.inflate(R.layout.list_item_feed,
-					parent, false);
-		}
+        ((TextView) convertView.findViewById(R.id.text_title)).setText(
+                !currentItem.isCensored() ? Html.fromHtml(currentItem.getTitle()): context.getString(R.string.general_censored)
+        );
 
-		// Grab a few views before we start
-		TextView viewAllText = (TextView) convertView
-				.findViewById(R.id.text_comments_overflow);
+        String textHooah = (currentItem.getNumLikes() == 1) ? context
+                .getString(R.string.info_hooah_s) : context
+                .getString(R.string.info_hooah_p);
+        String textComments = (currentItem.getNumComments() == 1) ? context
+                .getString(R.string.info_comment_s) : context
+                .getString(R.string.info_comment_p);
+        String content = textComments.replace("{num}",
+                currentItem.getNumComments() + "");
 
-		// Set the views
-		((TextView) convertView.findViewById(R.id.text_title)).setText(
+        ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.image_avatar);
+        provideImageLoader().loadImage(imageAvatar, imagePath(currentItem.getAvatarForPost()));
 
-		!currentItem.isCensored() ? Html.fromHtml(currentItem.getTitle())
-				: mContext.getString(R.string.general_censored)
+        ((TextView) convertView.findViewById(R.id.text_date))
+                .setText(PublicUtils.getRelativeDate(context, currentItem.getDate()));
+        ((TextView) convertView.findViewById(R.id.text_hooah))
+                .setText(textHooah.replace("{num}", currentItem.getNumLikes() + ""));
+        ((TextView) convertView.findViewById(R.id.text_comment)).setText(content);
 
-		);
+        if (currentItem.hasPreloadedComments()) {
+            List<CommentData> comments = currentItem.getPreloadedComments();
+            int numPreloaded = comments.size(); // 1:2
+            int[] commentWrappers = new int[]{R.id.wrap_comment2, R.id.wrap_comment1};
+            for (int i = 0, max = commentWrappers.length; i < max; i++) {
 
-		// How many likes/comments?
-		String textHooah = (currentItem.getNumLikes() == 1) ? mContext
-				.getString(R.string.info_hooah_s) : mContext
-				.getString(R.string.info_hooah_p);
-		String textComments = (currentItem.getNumComments() == 1) ? mContext
-				.getString(R.string.info_comment_s) : mContext
-				.getString(R.string.info_comment_p);
-		String content = textComments.replace("{num}",
-				currentItem.getNumComments() + "");
+                if (numPreloaded == i) {
+                    convertView.findViewById(commentWrappers[i]).setVisibility(View.GONE);
+                    continue;
+                }
 
-		// Set the ImageView
-		ImageView imageAvatar = (ImageView) convertView
-				.findViewById(R.id.image_avatar);
-		imageAvatar.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
-				.getCachePath(mContext)
-				+ currentItem.getAvatarForPost()
-				+ ".png"));
+                View commentRoot = convertView.findViewById(commentWrappers[i]);
+                CommentData comment = comments.get(i);
+                ImageView commentImageView = (ImageView) commentRoot.findViewById(R.id.image_avatar);
+                // Try to set the image first
+                commentImageView.setImageBitmap(BitmapFactory
+                        .decodeFile(PublicUtils.getCachePath(context)+ comment.getGravatar() + ".png"));
 
-		// Fill the actual content
-		((TextView) convertView.findViewById(R.id.text_date))
-				.setText(PublicUtils.getRelativeDate(mContext,
-						currentItem.getDate()));
-		((TextView) convertView.findViewById(R.id.text_hooah))
-				.setText(textHooah.replace("{num}", currentItem.getNumLikes()
-						+ ""));
-		((TextView) convertView.findViewById(R.id.text_comment))
-				.setText(content);
+                // Set the texts
+                ((TextView) commentRoot.findViewById(R.id.text_name)).setText(comment.getAuthor().getUsername());
+                ((TextView) commentRoot.findViewById(R.id.text_comment)).setText(comment.getContent());
+                ((TextView) commentRoot.findViewById(R.id.text_date)).setText(PublicUtils.getRelativeDate(context, comment.getTimestamp()));
+                commentRoot.setVisibility(View.VISIBLE);
+            }
 
-		// Do we need to populate comments?
-		if (currentItem.hasPreloadedComments()) {
-			List<CommentData> comments = currentItem.getPreloadedComments();
-			int numPreloaded = comments.size(); // 1:2
-			int[] commentWrappers = new int[] { R.id.wrap_comment2,
-					R.id.wrap_comment1 };
-			for (int i = 0, max = commentWrappers.length; i < max; i++) {
+            if (currentItem.getNumComments() > 2) {
+                viewAllText.setVisibility(View.VISIBLE);
+            } else {
+                viewAllText.setVisibility(View.GONE);
+            }
+        } else {
+            convertView.findViewById(R.id.wrap_comment1).setVisibility(View.GONE);
+            convertView.findViewById(R.id.wrap_comment2).setVisibility(View.GONE);
+            viewAllText.setVisibility(View.GONE);
+        }
 
-				// Do we have an item?
-				if (numPreloaded == i) {
-					convertView.findViewById(commentWrappers[i]).setVisibility(
-							View.GONE);
-					continue;
-				}
+        convertView.setTag(currentItem);
 
-				// Get
-				View commentRoot = convertView.findViewById(commentWrappers[i]);
-				CommentData comment = comments.get(i);
-				ImageView commentImageView = (ImageView) commentRoot
-						.findViewById(R.id.image_avatar);
+        return convertView;
+    }
 
-				// Try to set the image first
-				commentImageView.setImageBitmap(BitmapFactory
-						.decodeFile(PublicUtils.getCachePath(mContext)
-								+ comment.getGravatar() + ".png"));
+    private String imagePath(String gravatarId) {
+        return new StringBuilder(GRAVATAR_URL).append(gravatarId).append(BATTLELOG_SUFFIX).toString();
+    }
 
-				// Set the texts
-				((TextView) commentRoot.findViewById(R.id.text_name))
-						.setText(comment.getAuthor().getUsername());
-				((TextView) commentRoot.findViewById(R.id.text_comment))
-						.setText(comment.getContent());
-				((TextView) commentRoot.findViewById(R.id.text_date))
-						.setText(PublicUtils.getRelativeDate(mContext,
-								comment.getTimestamp()));
-
-				commentRoot.setVisibility(View.VISIBLE);
-			}
-
-			// We might have to show the "SinglePostView"-button!
-			if (currentItem.getNumComments() > 2) {
-				viewAllText.setVisibility(View.VISIBLE);
-			} else {
-				viewAllText.setVisibility(View.GONE);
-			}
-		} else {
-			convertView.findViewById(R.id.wrap_comment1).setVisibility(
-					View.GONE);
-			convertView.findViewById(R.id.wrap_comment2).setVisibility(
-					View.GONE);
-			viewAllText.setVisibility(View.GONE);
-		}
-
-		// Hook it up on the tag
-		convertView.setTag(currentItem);
-
-		// Send it back
-		return convertView;
-	}
-
+    private ImageLoader provideImageLoader() {
+        Context appContext = context;
+        LoaderSettings settings = new LoaderSettings.SettingsBuilder()
+                .withDisconnectOnEveryCall(true)
+                .withCacheManager(new LruBitmapCache(appContext))
+                .build(appContext);
+        return new ImageLoader(new ImageManager(appContext, settings));
+    }
 }

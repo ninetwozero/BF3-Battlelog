@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.http.COMClient;
 import com.ninetwozero.bf3droid.provider.table.UserProfileData;
+import com.ninetwozero.bf3droid.util.ImageLoader;
 
 import java.util.List;
 
@@ -138,8 +140,10 @@ public class ProfileOverviewFragment extends Bf3Fragment {
                 ((TextView) convertView.findViewById(R.id.text_name)).setText(platoon.getName());
                 ((TextView) convertView.findViewById(R.id.text_members)).setText(String.valueOf(platoon.getMembersCount()));
 
-                /*String image = PublicUtils.getCachePath(context)+ currentPlatoon.getImage();
-                ((ImageView) convertView.findViewById(R.id.image_badge)).setImageBitmap(BitmapFactory.decodeFile(image));*/
+                ImageView platoonAvatar = ((ImageView) convertView.findViewById(R.id.image_badge));
+                ImageLoader imageLoader = provideImageLoader();
+                imageLoader.setDefaultImages(R.drawable.default_platoon_100);
+                imageLoader.loadImage(platoonAvatar, platoon.getPlatoonBadge());
 
                 convertView.setTag(platoon);
                 convertView.setOnClickListener(onClickListener);

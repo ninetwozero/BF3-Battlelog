@@ -27,12 +27,9 @@ public class ImageLoader {
         this.imageHeight = height;
     }
 
-    public void setDefaulImageId(int defaulImageId) {
-        this.defaulImageId = defaulImageId;
-    }
-
-    public void setErrorImageId(int errorImageId) {
-        this.errorImageId = errorImageId;
+    public void setDefaultImages(int resourceId){
+        this.defaulImageId = resourceId;
+        this.errorImageId = resourceId;
     }
 
     public void loadImage(ImageView imageView, String gravatarUrl) {
