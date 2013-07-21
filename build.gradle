@@ -1,0 +1,26 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.5.1'
+    }
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
+        maven {
+            url "https://github.com/novoda/public-mvn-repo/raw/master/releases"
+        }
+    }
+}
+
+tasks.withType(Compile) {
+    options.encoding = "UTF-8"
+}
