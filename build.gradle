@@ -21,6 +21,10 @@ subprojects {
     }
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.6'
+}
+
 tasks.withType(Compile) {
     options.encoding = "UTF-8"
 }
