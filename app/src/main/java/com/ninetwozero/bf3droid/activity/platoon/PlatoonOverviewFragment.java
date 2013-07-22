@@ -14,6 +14,7 @@
 
 package com.ninetwozero.bf3droid.activity.platoon;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,6 +39,10 @@ import com.ninetwozero.bf3droid.jsonmodel.platoon.PlatoonDossier;
 import com.ninetwozero.bf3droid.provider.BusProvider;
 import com.ninetwozero.bf3droid.util.DateTimeFormatter;
 import com.ninetwozero.bf3droid.util.ImageInputStream;
+import com.ninetwozero.bf3droid.util.ImageLoader;
+import com.novoda.imageloader.core.ImageManager;
+import com.novoda.imageloader.core.LoaderSettings;
+import com.novoda.imageloader.core.cache.LruBitmapCache;
 import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
@@ -45,8 +50,8 @@ import java.io.InputStream;
 
 public class PlatoonOverviewFragment extends Fragment implements DefaultFragment {
 
-    private static final String EMBLEMS_URL = "http://static.cdn.ea.com/battlelog/prod/emblems/320/574/";
-    private static final String EXTENSION = ".jpeg";
+    private static final String EMBLEMS_URL = "http://static.cdn.ea.com/battlelog/prod/emblems/320/";
+    private static final String DEFAULT_BADGE = "http://battlelog-cdn.battlefield.com/cdnprefix/dab70dc9082526/public/platoon/default-emblem-320.png";
 
     private LayoutInflater inflater;
     private RelativeLayout layoutWrapper;
@@ -120,10 +125,11 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         dateLabel.setText(DateTimeFormatter.dateString(platoon.getCreationDate()));
         platformBadge.setImageResource(platformImage(platoon.getPlatform()));
 
-        Bitmap bitmap = fetchPlatoonBadge();
-        if (bitmap != null) {
-            platoonBadge.setImageBitmap(bitmap);
-        }
+        ImageLoader imageLoader = provideImageLoader();
+        imageLoader.setImageDimensions(320, 320);
+        imageLoader.setDefaultImages(R.drawable.default_platoon_100);
+        imageLoader.loadImage(platoonBadge, badgeUrl(platoon.getBadgePath()));
+
 
         if ("".equals(platoon.getWebsite())) {
             websiteContainer.setVisibility(View.GONE);
@@ -141,6 +147,14 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
         }
     }
 
+    private String badgeUrl(String badgePath) {
+        return badgePath.length() == 0 ? DEFAULT_BADGE : buildBadgeUrl(badgePath);
+    }
+
+    private String buildBadgeUrl(String badgePath) {
+        return EMBLEMS_URL + badgePath;
+    }
+
     private int platformImage(int platformId) {
         switch (platformId) {
             case 1:
@@ -152,20 +166,6 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
             default:
                 return R.drawable.logo_pc;
         }
-    }
-
-    private Bitmap fetchPlatoonBadge() {
-        Bitmap bitmap = null;
-        try {
-            InputStream is = ImageInputStream.from(EMBLEMS_URL + platoon.getId() + EXTENSION);
-            if (is != null) {
-                bitmap = BitmapFactory.decodeStream(is);
-                is.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
     }
 
     public void reload() {
@@ -222,5 +222,18 @@ public class PlatoonOverviewFragment extends Fragment implements DefaultFragment
                 SessionKeeper.getProfileData().getId(),
                 sharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
         ).execute(isJoining);*/
+    }
+
+    protected ImageLoader provideImageLoader() {
+        Context appContext = getGontext();
+        LoaderSettings settings = new LoaderSettings.SettingsBuilder()
+                .withDisconnectOnEveryCall(true)
+                .withCacheManager(new LruBitmapCache(appContext))
+                .build(appContext);
+        return new ImageLoader(new ImageManager(appContext, settings));
+    }
+
+    private Context getGontext() {
+        return getActivity().getApplicationContext();
     }
 }

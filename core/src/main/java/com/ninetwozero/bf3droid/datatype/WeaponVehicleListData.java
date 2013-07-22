@@ -14,7 +14,7 @@
 
 package com.ninetwozero.bf3droid.datatype;
 
-
+@Deprecated //Never used at all
 public class WeaponVehicleListData {
 
     // Attributes

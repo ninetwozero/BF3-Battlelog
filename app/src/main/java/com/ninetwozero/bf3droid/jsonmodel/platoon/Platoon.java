@@ -11,6 +11,8 @@ public class Platoon {
     private String website;
     @SerializedName("memberCounter")
     private int memberCounter;
+    @SerializedName("badgePath")
+    private String badgePath;
     @SerializedName("name")
     private String name;
     @SerializedName("platform")
@@ -28,9 +30,10 @@ public class Platoon {
     @SerializedName("id")
     private long id;
 
-    public Platoon(String website, int memberCounter, String name, int platform, String tag, Map<Long, PlatoonMember> members, int fanCounter, long creationDate, String presentation, long id) {
+    public Platoon(String website, int memberCounter, String badgePath, String name, int platform, String tag, Map<Long, PlatoonMember> members, int fanCounter, long creationDate, String presentation, long id) {
         this.website = website;
         this.memberCounter = memberCounter;
+        this.badgePath = badgePath;
         this.name = name;
         this.platform = platform;
         this.tag = tag;
@@ -47,6 +50,10 @@ public class Platoon {
 
     public int getMemberCounter() {
         return memberCounter;
+    }
+
+    public String getBadgePath() {
+        return badgePath;
     }
 
     public String getName() {

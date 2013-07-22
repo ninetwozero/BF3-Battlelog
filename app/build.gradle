@@ -11,21 +11,6 @@ apply plugin: 'android'
 
 project.archivesBaseName = "com.ninetwozero.bf3droid"
 
-/*configurations {
-    robolectric {
-        extendsFrom compile
-    }
-}
-
-sourceSets {
-    robolectric {
-        java.srcDir file('src/test/java')
-        resources.srcDir file('src/test/resources')
-        compileClasspath += configurations.robolectric
-        runtimeClasspath += compileClasspath
-    }
-}*/
-
 dependencies {
     compile project(':core')
 
@@ -47,22 +32,8 @@ android {
         versionCode 2000000
         versionName "2.0.0-alpha"
         minSdkVersion 8
-        targetSdkVersion 17
+        targetSdkVersion 10
     }
-
-    /*sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src/main/java']
-            resources.srcDirs = ['src/main/java']
-            aild.srcDirs = ['src/main/java']
-            renderscript.srcDirs = ['src/main/java']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
-        }
-
-        instrumentTest.setRoot('tests')
-    }*/
 
     /*signingConfigs {
 
