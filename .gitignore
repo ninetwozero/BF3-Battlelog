@@ -19,8 +19,9 @@ classes
 .classpath
 .project
 
-# PMD #
-reports
+#Gradle#
+#########
+./gradle
+app/build/*
+core/build/*
 
-# Credentials
-#res/values/credentials.xml
