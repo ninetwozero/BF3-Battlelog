@@ -34,7 +34,8 @@ dependencies {
             'com.novoda.imageloader:imageloader-core:1.5.9-SNAPSHOT',
             'org.jsoup:jsoup:1.7.2',
             'com.novoda:sqliteprovider-core:1.0.0',
-            'com.squareup:otto:1.3.4'
+            'com.squareup:otto:1.3.4',
+            'com.google.code.gson:gson:2.2.4'
 }
 
 android {
