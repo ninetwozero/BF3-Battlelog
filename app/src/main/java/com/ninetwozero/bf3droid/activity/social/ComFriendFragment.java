@@ -86,6 +86,12 @@ public class ComFriendFragment extends Bf3ListFragment implements UserInfoLoader
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        reload();
+    }
+
     public void initFragment(View view) {
         listView = (ListView) view.findViewById(android.R.id.list);
         listView.setAdapter(friendListAdapter = new FriendListAdapter(context, null, layoutInflater));
@@ -174,12 +180,7 @@ public class ComFriendFragment extends Bf3ListFragment implements UserInfoLoader
     }
 
     private void doCompare(ProfileData profileData) throws WebsiteHandlerException {
-        startActivity(
-                /*new Intent(context, CompareActivity.class)
-                        .putExtra("profile1", SessionKeeper.getProfileData())
-                        .putExtra("profile2", ProfileClient.resolveFullProfileDataFromProfileId(profileData.getId()))*/
-                new Intent(context, SoldierCompareActivity.class)
-        );
+        startActivity(new Intent(context, SoldierCompareActivity.class));
     }
 
     private void goToAssignments() {
@@ -271,11 +272,5 @@ public class ComFriendFragment extends Bf3ListFragment implements UserInfoLoader
         if (items != null) {
             friendListAdapter.setItemArray(items.getFriends());
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        reload();
     }
 }

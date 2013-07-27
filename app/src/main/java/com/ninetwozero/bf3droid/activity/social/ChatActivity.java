@@ -14,7 +14,6 @@
 
 package com.ninetwozero.bf3droid.activity.social;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -23,7 +22,11 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -77,8 +80,8 @@ public class ChatActivity extends ListActivity {
         }
         layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        activeUser = (ProfileData) getIntent().getParcelableExtra("activeUser");
-        otherUser = (ProfileData) getIntent().getParcelableExtra("otherUser");
+        activeUser = getIntent().getParcelableExtra("activeUser");
+        otherUser = getIntent().getParcelableExtra("otherUser");
 
         listView = getListView();
         listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
@@ -152,7 +155,7 @@ public class ChatActivity extends ListActivity {
         if (item.getItemId() == R.id.option_reload) {
             this.reload();
         } else if (item.getItemId() == R.id.option_back) {
-            ((Activity) this).finish();
+            this.finish();
         }
         return true;
     }
@@ -215,9 +218,7 @@ public class ChatActivity extends ListActivity {
                     public void run() {
                         reload();
                     }
-                }, 
-                0, 
-                sharedPreferences.getInt(Constants.SP_BL_INTERVAL_CHAT, 25) * 1000
+                },0, sharedPreferences.getInt(Constants.SP_BL_INTERVAL_CHAT, 10) * 1000
             );
         }
     }

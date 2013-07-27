@@ -28,19 +28,17 @@ import com.ninetwozero.bf3droid.http.COMClient;
 
 public class AsyncChatRefresh extends AsyncTask<COMClient, Integer, Boolean> {
 
-    // Attribute
-    private Context mContext;
-    private ChatSession mChat;
-    private ListView mListView;
+    private Context context;
+    private ChatSession chatSession;
+    private ListView listView;
 
-    // Constructor
     public AsyncChatRefresh(Context c, COMClient cc) {
-    	mContext = c;
-        mListView = ((ListActivity) mContext).getListView();
+    	context = c;
+        listView = ((ListActivity) context).getListView();
     }
     public AsyncChatRefresh(Context c, COMClient cc, ListView lv) {
-        mContext = c;
-        mListView = lv;
+        context = c;
+        listView = lv;
     }
 
     @Override
@@ -50,8 +48,8 @@ public class AsyncChatRefresh extends AsyncTask<COMClient, Integer, Boolean> {
     @Override
     protected Boolean doInBackground(COMClient... chat) {
         try {
-            mChat = chat[0].getChat();
-            return mChat != null;
+            chatSession = chat[0].getChat();
+            return chatSession != null;
         } catch (WebsiteHandlerException e) {
         	e.printStackTrace();
             return false;
@@ -61,12 +59,12 @@ public class AsyncChatRefresh extends AsyncTask<COMClient, Integer, Boolean> {
     @Override
     protected void onPostExecute(Boolean results) {
         if (results) {
-            ((ChatListAdapter) mListView.getAdapter()).setMessages(mChat.getMessages());
-            if (mContext instanceof ChatActivity) {
-                ((ChatActivity) mContext).notifyNewPost(mChat.getMessages());
+            ((ChatListAdapter) listView.getAdapter()).setMessages(chatSession.getMessages());
+            if (context instanceof ChatActivity) {
+                ((ChatActivity) context).notifyNewPost(chatSession.getMessages());
             }
         } else {
-            Toast.makeText(mContext, R.string.msg_chat_norefresh, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.msg_chat_norefresh, Toast.LENGTH_SHORT).show();
         }
     }
 }

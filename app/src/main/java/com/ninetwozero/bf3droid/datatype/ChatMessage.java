@@ -17,28 +17,27 @@ package com.ninetwozero.bf3droid.datatype;
 public class ChatMessage {
 
     // Attributes
-    private long mTimestamp;
-    private String mSender;
-    private String mMessage;
+    private long timestamp;
+    private String sender;
+    private String message;
 
     // Construct
     public ChatMessage(long t, String s, String m) {
-        mTimestamp = t;
-        mSender = s;
-        mMessage = m;
+        timestamp = t;
+        sender = s;
+        message = m;
     }
 
-    // Getters
     public long getTimestamp() {
-        return mTimestamp;
+        return timestamp;
     }
 
     public String getSender() {
-        return mSender;
+        return sender;
     }
 
     public String getMessage() {
-        return mMessage;
+        return message;
     }
 
 }

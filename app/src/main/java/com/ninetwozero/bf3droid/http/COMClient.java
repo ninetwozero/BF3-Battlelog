@@ -1,15 +1,5 @@
 package com.ninetwozero.bf3droid.http;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import com.ninetwozero.bf3droid.misc.Constants;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.util.Log;
 
@@ -21,6 +11,15 @@ import com.ninetwozero.bf3droid.datatype.ProfileComparator;
 import com.ninetwozero.bf3droid.datatype.ProfileData;
 import com.ninetwozero.bf3droid.datatype.RequestHandlerException;
 import com.ninetwozero.bf3droid.datatype.WebsiteHandlerException;
+import com.ninetwozero.bf3droid.misc.Constants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class COMClient extends DefaultClient {
 
@@ -80,19 +79,19 @@ public class COMClient extends DefaultClient {
             if ("".equals(httpContent)) {
                 throw new WebsiteHandlerException("Could not get the chat.");
             } else {
-                JSONObject tempObject;
+                JSONObject message;
                 JSONObject chatObject = new JSONObject(httpContent).getJSONObject("data").getJSONObject("chat");
                 JSONArray messages = chatObject.getJSONArray("messages");
 
                 mChatId = Long.parseLong(chatObject.getString("chatId"));
 
                 for (int i = 0, max = messages.length(); i < max; i++) {
-                    tempObject = messages.optJSONObject(i);
+                    message = new JSONObject(messages.getString(i));
                     messageArray.add(
                             new ChatMessage(
-                                    tempObject.getLong("timestamp"),
-                                    tempObject.getString("fromUsername"),
-                                    tempObject.getString("message")
+                                    message.getLong("timestamp"),
+                                    message.getString("fromUsername"),
+                                    message.getString("message")
                             )
                     );
                 }
@@ -184,10 +183,12 @@ public class COMClient extends DefaultClient {
                         String gravatarMd5 = tempObj.optString("gravatarMd5", "");
                         boolean isOnline = presenceObj.has("isOnline") ? presenceObj.getBoolean("isOnline") : false;
                         boolean isPlaying = presenceObj.has("isPlaying") ? presenceObj.getBoolean("isPlaying") : false;
+                        boolean isAway = presenceObj.has("isAway") ? presenceObj.getBoolean("isAway") : false;
                         ProfileData tempProfile = new ProfileData.Builder(userId, username)
                                 .gravatarHash(gravatarMd5)
                                 .isOnline(isOnline)
                                 .isPlaying(isPlaying)
+                                .isAway(isAway)
                                 .isFriend(true)
                                 .build();
 
