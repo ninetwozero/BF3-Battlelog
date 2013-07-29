@@ -16,13 +16,15 @@ package com.ninetwozero.bf3droid.activity.platoon;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,12 +33,15 @@ import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.profile.settings.ProfileSettingsActivity;
 import com.ninetwozero.bf3droid.datatype.DefaultFragment;
-import com.ninetwozero.bf3droid.datatype.ProfileData;
 import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.dialog.ListDialogFragment;
 import com.ninetwozero.bf3droid.model.SelectedOption;
 import com.ninetwozero.bf3droid.model.User;
 import com.ninetwozero.bf3droid.provider.BusProvider;
+import com.ninetwozero.bf3droid.util.ImageLoader;
+import com.novoda.imageloader.core.ImageManager;
+import com.novoda.imageloader.core.LoaderSettings;
+import com.novoda.imageloader.core.cache.LruBitmapCache;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
@@ -149,49 +154,30 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
         }
     }
 
-    private int indexOfPlatoon(long platoonId) {
-        for (int i = 0; i < user().getPlatoons().size(); i++) {
-            if (user().getPlatoons().get(i).getPlatoonId() == platoonId) {
-                return i;
-            }
-        }
-        Log.w(MenuPlatoonFragment.class.getSimpleName(), "Failed to find index of the platoon!");
-        return 0;
-    }
-
     public void setupPlatoonBox() {
         if (user().getPlatoons().size() > 0 && platoonText != null) {
-
-            platoonText.setText(user().selectedPlatoon().getName() + " [" + user().selectedPlatoon().getPlatform() + "]");
-           /* platoonImage.setImageBitmap(BitmapFactory.decodeFile(PublicUtils
-                    .getCachePath(context)
-                    + mPlatoonData.get(mSelectedPosition).getImage()));*/
+            platoonText.setText(selectedPlatoon().getName() + " [" + selectedPlatoon().getPlatform() + "]");
+            ImageLoader imageLoader = provideImageLoader();
+            imageLoader.setImageDimensions(48, 48);
+            imageLoader.setDefaultImages(R.drawable.default_platoon_100);
+            imageLoader.loadImage(platoonImage, selectedPlatoon().getPlatoonBadge());
         }
     }
 
-    @Deprecated
-    public class AsyncRefresh extends AsyncTask<ProfileData, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(ProfileData... arg0) {
-            /*try {
-                mPlatoonData = new ProfileClient(arg0[0]).getPlatoons(mContext);
-                return (mPlatoonData != null);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return false;
-            }*/
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (result) {
-                setupPlatoonBox();
-            }
-        }
+    private SimplePlatoon selectedPlatoon() {
+        return user().selectedPlatoon();
     }
 
-    private User user(){
+    protected ImageLoader provideImageLoader() {
+        Context appContext = context;
+        LoaderSettings settings = new LoaderSettings.SettingsBuilder()
+                .withDisconnectOnEveryCall(true)
+                .withCacheManager(new LruBitmapCache(appContext))
+                .build(appContext);
+        return new ImageLoader(new ImageManager(appContext, settings));
+    }
+
+    private User user() {
         return BF3Droid.getUser();
     }
 }
