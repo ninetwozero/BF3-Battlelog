@@ -14,7 +14,6 @@
 
 package com.ninetwozero.bf3droid.activity;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -23,11 +22,17 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.platoon.PlatoonActivity;
 import com.ninetwozero.bf3droid.activity.profile.soldier.ProfileActivity;
@@ -37,54 +42,50 @@ import com.ninetwozero.bf3droid.http.RequestHandler;
 import com.ninetwozero.bf3droid.http.WebsiteClient;
 import com.ninetwozero.bf3droid.misc.Constants;
 import com.ninetwozero.bf3droid.misc.PublicUtils;
+import com.ninetwozero.bf3droid.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends ListActivity {
 
-    // Attributes
-    private LayoutInflater mLayoutInflater;
-    private SharedPreferences mSharedPreferences;
-
-    // Elements
-    private ListView mListView;
-    private EditText mFieldSearch;
-    private Button mButtonSearch;
-
-    // Misc
-    private List<GeneralSearchResult> mSearchResults;
+    private LayoutInflater layoutInflater;
+    private SharedPreferences sharedPreferences;
+    private ListView searchResultList;
+    private EditText searchField;
+    private Button searchButton;
+    private List<GeneralSearchResult> searchResults;
 
     @Override
     public void onCreate(final Bundle icicle) {
         super.onCreate(icicle);
 
-        mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         PublicUtils.restoreCookies(this, icicle);
-        PublicUtils.setupFullscreen(this, mSharedPreferences);
-        PublicUtils.setupLocale(this, mSharedPreferences);
+        PublicUtils.setupFullscreen(this, sharedPreferences);
+        PublicUtils.setupLocale(this, sharedPreferences);
         
 	setContentView(R.layout.activity_search);
 
-        mButtonSearch = (Button) findViewById(R.id.button_search);
-        mFieldSearch = (EditText) findViewById(R.id.field_search);
+        searchButton = (Button) findViewById(R.id.button_search);
+        searchField = (EditText) findViewById(R.id.field_search);
 
-        mSearchResults = new ArrayList<GeneralSearchResult>();
-        setupList(mSearchResults);
+        searchResults = new ArrayList<GeneralSearchResult>();
+        setupList(searchResults);
     }
 
     public void setupList(List<GeneralSearchResult> results) {
-        if (mListView == null) {
-            mListView = getListView();
-            mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+        if (searchResultList == null) {
+            searchResultList = getListView();
+            searchResultList.setChoiceMode(ListView.CHOICE_MODE_NONE);
         }
 
-        if (mListView.getAdapter() == null) {
-            mListView.setAdapter(new SearchDataAdapter(results, mLayoutInflater));
+        if (searchResultList.getAdapter() == null) {
+            searchResultList.setAdapter(new SearchDataAdapter(results, layoutInflater));
         } else {
-            ((SearchDataAdapter) mListView.getAdapter()).setItemArray(results);
+            ((SearchDataAdapter) searchResultList.getAdapter()).setItemArray(results);
         }
     }
 
@@ -100,12 +101,10 @@ public class SearchActivity extends ListActivity {
     }
 
     public void onClick(View v) {
-
         if (v.getId() == R.id.button_search) {
-
             new AsyncForumSearch(this).execute(
-                mFieldSearch.getText().toString(),
-                mSharedPreferences.getString(Constants.SP_BL_PROFILE_CHECKSUM, "")
+                    searchField.getText().toString(),
+                    BF3Droid.getCheckSum()
             );
         }
     }
@@ -120,17 +119,14 @@ public class SearchActivity extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.option_back) {
-            ((Activity) this).finish();
+            this.finish();
         }
         return true;
     }
 
     public class AsyncForumSearch extends AsyncTask<String, Void, Boolean> {
-
-        // Attributes
         private Context context;
 
-        // Construct
         public AsyncForumSearch(Context c) {
             this.context = c;
         }
@@ -145,8 +141,8 @@ public class SearchActivity extends ListActivity {
         @Override
         protected Boolean doInBackground(String... arg0) {
             try {
-                mSearchResults = WebsiteClient.search(context, arg0[0], arg0[1]);
-                return mSearchResults != null;
+                searchResults = WebsiteClient.search(context, arg0[0], arg0[1]);
+                return searchResults != null;
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return false;
@@ -157,38 +153,36 @@ public class SearchActivity extends ListActivity {
         protected void onPostExecute(Boolean results) {
             if (results) {
                 if (context instanceof SearchActivity) {
-                    ((SearchActivity) context).setupList(mSearchResults);
+                    ((SearchActivity) context).setupList(searchResults);
                     ((SearchActivity) context).toggleSearchButton();
                 }
             } else {
                 if (context instanceof SearchActivity) {
                     ((SearchActivity) context).toggleSearchButton();
                 }
-                Toast.makeText(context, R.string.info_xml_generic_error,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.info_xml_generic_error, Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     public void toggleSearchButton() {
-        mButtonSearch.setEnabled(!mButtonSearch.isEnabled());
+        searchButton.setEnabled(!searchButton.isEnabled());
 
-        // Update the text
-        if (mButtonSearch.isEnabled()) {
-            mButtonSearch.setText(R.string.label_search);
+        if (searchButton.isEnabled()) {
+            searchButton.setText(R.string.label_search);
         } else {
-            mButtonSearch.setText(R.string.label_search_ongoing);
+            searchButton.setText(R.string.label_search_ongoing);
         }
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int p, long id) {
-        Intent intent = null;
+        Intent intent;
         GeneralSearchResult result = (GeneralSearchResult) v.getTag();
 
-        // Build the intent
         if (result.hasProfileData()) {
-            intent = new Intent(this, ProfileActivity.class).putExtra("profile", result.getProfileData());
+            BF3Droid.setGuest(new User(result.getProfileData().getUsername(), result.getProfileData().getId()));
+            intent = new Intent(this, ProfileActivity.class).putExtra("user", User.GUEST);
         } else {
             intent = new Intent(this, PlatoonActivity.class).putExtra("platoon", result.getPlatoonData());
         }
@@ -198,7 +192,7 @@ public class SearchActivity extends ListActivity {
     @Override
     public void onResume() {
         super.onResume();
-        PublicUtils.setupLocale(this, mSharedPreferences);
-        PublicUtils.setupSession(this, mSharedPreferences);
+        PublicUtils.setupLocale(this, sharedPreferences);
+        PublicUtils.setupSession(this, sharedPreferences);
     }
 }
