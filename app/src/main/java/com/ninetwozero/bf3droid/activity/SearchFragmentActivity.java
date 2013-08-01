@@ -92,21 +92,7 @@ public class SearchFragmentActivity extends Bf3FragmentActivity implements UserI
                 }
             }
         });
-        //setupList(searchResults);
     }
-
-    /*public void setupList(List<GeneralSearchResult> results) {
-        if (searchResultList == null) {
-            searchResultList = getListView();
-            searchResultList.setChoiceMode(ListView.CHOICE_MODE_NONE);
-        }
-
-        if (searchResultList.getAdapter() == null) {
-            searchResultList.setAdapter(new SearchDataAdapter(results, layoutInflater));
-        } else {
-            ((SearchDataAdapter) searchResultList.getAdapter()).setResultList(results);
-        }
-    }*/
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -170,10 +156,7 @@ public class SearchFragmentActivity extends Bf3FragmentActivity implements UserI
 
         @Override
         protected void onPostExecute(Boolean results) {
-            if(searchResults.size() == 0){
-                TextView emptyView = (TextView)layoutInflater.inflate(R.layout.empty_list_view, null);
-                searchResultList.setEmptyView(emptyView);
-            }
+            //emptyListViewVisibility();
             if (results) {
                 if (context instanceof SearchFragmentActivity) {
                     searchResultList.setAdapter(new SearchDataAdapter(searchResults, layoutInflater));
@@ -187,6 +170,16 @@ public class SearchFragmentActivity extends Bf3FragmentActivity implements UserI
             }
         }
     }
+
+    /*private void emptyListViewVisibility(){
+        if(searchResults.size() == 0){
+            TextView emptyView = (TextView)findViewById(android.R.id.empty);
+            searchResultList.setEmptyView(emptyView);
+        } else {
+            TextView emptyView = (TextView) searchResultList.getEmptyView();
+            emptyView.setVisibility(View.GONE);
+        }
+    }*/
 
     public void toggleSearchButton() {
         searchButton.setEnabled(!searchButton.isEnabled());
