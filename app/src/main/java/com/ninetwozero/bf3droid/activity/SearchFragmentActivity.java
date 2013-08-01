@@ -59,6 +59,7 @@ public class SearchFragmentActivity extends Bf3FragmentActivity implements UserI
     private EditText searchField;
     private Button searchButton;
     private List<GeneralSearchResult> searchResults;
+    private TextView emptyView;
 
     @Override
     public void onCreate(final Bundle icicle) {
@@ -92,6 +93,7 @@ public class SearchFragmentActivity extends Bf3FragmentActivity implements UserI
                 }
             }
         });
+        emptyView = (TextView)findViewById(android.R.id.empty);
     }
 
     @Override
@@ -156,7 +158,7 @@ public class SearchFragmentActivity extends Bf3FragmentActivity implements UserI
 
         @Override
         protected void onPostExecute(Boolean results) {
-            //emptyListViewVisibility();
+            emptyListViewVisibility();
             if (results) {
                 if (context instanceof SearchFragmentActivity) {
                     searchResultList.setAdapter(new SearchDataAdapter(searchResults, layoutInflater));
@@ -171,15 +173,15 @@ public class SearchFragmentActivity extends Bf3FragmentActivity implements UserI
         }
     }
 
-    /*private void emptyListViewVisibility(){
+    private void emptyListViewVisibility(){
         if(searchResults.size() == 0){
-            TextView emptyView = (TextView)findViewById(android.R.id.empty);
+            emptyView.setVisibility(View.VISIBLE);
             searchResultList.setEmptyView(emptyView);
         } else {
-            TextView emptyView = (TextView) searchResultList.getEmptyView();
-            emptyView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.INVISIBLE);
+            searchResultList.setEmptyView(emptyView);
         }
-    }*/
+    }
 
     public void toggleSearchButton() {
         searchButton.setEnabled(!searchButton.isEnabled());
