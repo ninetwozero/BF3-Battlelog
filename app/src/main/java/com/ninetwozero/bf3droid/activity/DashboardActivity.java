@@ -202,7 +202,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.option_search) {
-        	startActivity(new Intent(this, SearchActivity.class) );
+        	startActivity(new Intent(this, SearchFragmentActivity.class) );
         } else if (item.getItemId() == R.id.option_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             finish();
@@ -231,7 +231,7 @@ public class DashboardActivity extends CustomFragmentActivity implements Default
                 return true;
             }
         } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
-            startActivity(new Intent(this, SearchActivity.class));
+            startActivity(new Intent(this, SearchFragmentActivity.class));
         }
         return super.onKeyDown(keyCode, event);
     }

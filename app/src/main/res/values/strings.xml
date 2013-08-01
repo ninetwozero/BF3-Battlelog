@@ -1622,4 +1622,6 @@
   <string name="kit_unlocks_tab_title">KIT UNLOCKS</string>
   <string name="vehicle_addons_tab_title">VEHICLE ADDONS</string>
   <string name="skills_tab_title">SKILLS</string>
+  <string name="search_result_group_user">User</string>
+  <string name="search_result_group_platoon">Platoon</string>
 </resources>

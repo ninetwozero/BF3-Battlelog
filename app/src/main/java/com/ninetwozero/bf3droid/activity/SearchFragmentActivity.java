@@ -14,7 +14,6 @@
 
 package com.ninetwozero.bf3droid.activity;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,17 +26,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninetwozero.bf3droid.BF3Droid;
 import com.ninetwozero.bf3droid.R;
 import com.ninetwozero.bf3droid.activity.platoon.PlatoonActivity;
 import com.ninetwozero.bf3droid.activity.profile.soldier.ProfileActivity;
+import com.ninetwozero.bf3droid.activity.profile.soldier.UserInfoLoader;
+import com.ninetwozero.bf3droid.activity.profile.soldier.restorer.UserInfoRestorer;
 import com.ninetwozero.bf3droid.adapter.SearchDataAdapter;
 import com.ninetwozero.bf3droid.datatype.GeneralSearchResult;
+import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.http.RequestHandler;
 import com.ninetwozero.bf3droid.http.WebsiteClient;
 import com.ninetwozero.bf3droid.misc.Constants;
@@ -47,7 +51,7 @@ import com.ninetwozero.bf3droid.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchActivity extends ListActivity {
+public class SearchFragmentActivity extends Bf3FragmentActivity implements UserInfoLoader.Callback {
 
     private LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
@@ -66,17 +70,32 @@ public class SearchActivity extends ListActivity {
         PublicUtils.restoreCookies(this, icicle);
         PublicUtils.setupFullscreen(this, sharedPreferences);
         PublicUtils.setupLocale(this, sharedPreferences);
-        
-	setContentView(R.layout.activity_search);
+
+        setContentView(R.layout.activity_search);
 
         searchButton = (Button) findViewById(R.id.button_search);
         searchField = (EditText) findViewById(R.id.field_search);
 
         searchResults = new ArrayList<GeneralSearchResult>();
-        setupList(searchResults);
+        searchResultList = (ListView) findViewById(R.id.search_list);
+        searchResultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                GeneralSearchResult result = (GeneralSearchResult) view.getTag();
+
+                if (result.hasProfileData()) {
+                    BF3Droid.setGuest(new User(result.getProfileData().getUsername(), result.getProfileData().getId()));
+                    startUserInfoLoader();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), PlatoonActivity.class).putExtra("platoon", result.getPlatoonData());
+                    startActivity(intent);
+                }
+            }
+        });
+        //setupList(searchResults);
     }
 
-    public void setupList(List<GeneralSearchResult> results) {
+    /*public void setupList(List<GeneralSearchResult> results) {
         if (searchResultList == null) {
             searchResultList = getListView();
             searchResultList.setChoiceMode(ListView.CHOICE_MODE_NONE);
@@ -85,9 +104,9 @@ public class SearchActivity extends ListActivity {
         if (searchResultList.getAdapter() == null) {
             searchResultList.setAdapter(new SearchDataAdapter(results, layoutInflater));
         } else {
-            ((SearchDataAdapter) searchResultList.getAdapter()).setItemArray(results);
+            ((SearchDataAdapter) searchResultList.getAdapter()).setResultList(results);
         }
-    }
+    }*/
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -133,8 +152,8 @@ public class SearchActivity extends ListActivity {
 
         @Override
         protected void onPreExecute() {
-            if (context instanceof SearchActivity) {
-                ((SearchActivity) context).toggleSearchButton();
+            if (context instanceof SearchFragmentActivity) {
+                ((SearchFragmentActivity) context).toggleSearchButton();
             }
         }
 
@@ -151,14 +170,18 @@ public class SearchActivity extends ListActivity {
 
         @Override
         protected void onPostExecute(Boolean results) {
+            if(searchResults.size() == 0){
+                TextView emptyView = (TextView)layoutInflater.inflate(R.layout.empty_list_view, null);
+                searchResultList.setEmptyView(emptyView);
+            }
             if (results) {
-                if (context instanceof SearchActivity) {
-                    ((SearchActivity) context).setupList(searchResults);
-                    ((SearchActivity) context).toggleSearchButton();
+                if (context instanceof SearchFragmentActivity) {
+                    searchResultList.setAdapter(new SearchDataAdapter(searchResults, layoutInflater));
+                    ((SearchFragmentActivity) context).toggleSearchButton();
                 }
             } else {
-                if (context instanceof SearchActivity) {
-                    ((SearchActivity) context).toggleSearchButton();
+                if (context instanceof SearchFragmentActivity) {
+                    ((SearchFragmentActivity) context).toggleSearchButton();
                 }
                 Toast.makeText(context, R.string.info_xml_generic_error, Toast.LENGTH_SHORT).show();
             }
@@ -176,23 +199,32 @@ public class SearchActivity extends ListActivity {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int p, long id) {
-        Intent intent;
-        GeneralSearchResult result = (GeneralSearchResult) v.getTag();
-
-        if (result.hasProfileData()) {
-            BF3Droid.setGuest(new User(result.getProfileData().getUsername(), result.getProfileData().getId()));
-            intent = new Intent(this, ProfileActivity.class).putExtra("user", User.GUEST);
-        } else {
-            intent = new Intent(this, PlatoonActivity.class).putExtra("platoon", result.getPlatoonData());
-        }
-        startActivity(intent);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         PublicUtils.setupLocale(this, sharedPreferences);
         PublicUtils.setupSession(this, sharedPreferences);
+    }
+
+    private void startUserInfoLoader() {
+        startLoadingDialog(SearchFragmentActivity.class.getSimpleName());
+        new UserInfoLoader(this, getApplicationContext(), User.GUEST, getSupportLoaderManager()).restart();
+    }
+
+    @Override
+    public void onLoadFinished(UserInfo userInfo) {
+        saveToApp(userInfo);
+        new UserInfoRestorer(getApplicationContext(), User.GUEST).save(userInfo);
+        closeLoadingDialog(SearchFragmentActivity.class.getSimpleName());
+        startProfileActivity();
+    }
+
+    private void saveToApp(UserInfo userInfo) {
+        BF3Droid.getUserBy(User.GUEST).setPersonas(userInfo.getPersonas());
+        BF3Droid.getUserBy(User.GUEST).setPlatoons(userInfo.getPlatoons());
+    }
+
+    private void startProfileActivity() {
+        Intent intent = new Intent(this, ProfileActivity.class).putExtra("user", User.GUEST);
+        startActivity(intent);
     }
 }

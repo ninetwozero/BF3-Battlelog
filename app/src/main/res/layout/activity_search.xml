@@ -48,18 +48,10 @@
       android:hint="@string/info_forum_search_hint"/>
 
   <ListView
-      android:id="@android:id/list"
+      android:id="@+id/search_list"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:layout_below="@id/field_search"
       android:fastScrollEnabled="true"/>
-
-  <TextView
-      android:id="@android:id/empty"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerInParent="true"
-      android:layout_marginTop="30dp"
-      android:text="@string/info_xml_results_none"/>
 
 </RelativeLayout>

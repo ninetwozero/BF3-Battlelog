@@ -28,135 +28,70 @@ import java.util.List;
 
 public class SearchDataAdapter extends BaseAdapter {
 
-    // Attributes
-    private List<GeneralSearchResult> itemArray;
+    private List<GeneralSearchResult> resultList;
     private LayoutInflater layoutInflater;
 
-    // Construct
     public SearchDataAdapter(List<GeneralSearchResult> m, LayoutInflater l) {
-
-        itemArray = m;
+        resultList = m;
         layoutInflater = l;
-
     }
 
     @Override
     public int getCount() {
-
-        return (itemArray != null) ? itemArray.size() : 0;
-
+        return (resultList != null) ? resultList.size() : 0;
     }
 
     @Override
     public GeneralSearchResult getItem(int position) {
-
-        return this.itemArray.get(position);
-
+        return this.resultList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-
-        GeneralSearchResult temp = this.itemArray.get(position);
-        return (temp.hasProfileData() ? temp.getProfileData().getId() : temp
-                .getPlatoonData().getId());
-
+        GeneralSearchResult temp = this.resultList.get(position);
+        return (temp.hasProfileData() ? temp.getProfileData().getId() : temp.getPlatoonData().getId());
     }
 
     @Override
     public int getItemViewType(int position) {
-
         if (getItem(position).hasProfileData()) {
-
             return 0;
-
         } else {
-
             return 1;
-
         }
-
     }
 
     @Override
     public int getViewTypeCount() {
-
         return 2;
-
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        // Get the current item
+    public View getView(int position, View view, ViewGroup parent) {
         GeneralSearchResult currentItem = getItem(position);
-
-        // Recycle
-        if (getItemViewType(position) == 0) {
-
-            if (convertView == null) {
-
-                convertView = layoutInflater.inflate(
-                        R.layout.list_item_search_profile, parent, false);
-
-            }
-
-            // Get the ProfileData
-            ProfileData profileData = currentItem.getProfileData();
-
-            // Set the fields
-            ((TextView) convertView.findViewById(R.id.string_name))
-                    .setText(profileData.getUsername());
-            /*
-                * ((ImageView) convertView.findViewById( R.id.image_avatar
-                * )).setImageBitmap( BitmapFactory.decodeFile(
-                * PublicUtils.getCachePath( context ) +
-                * profileData.getGravatarHash() + ".png" ) );
-                */
-
-        } else {
-
-            if (convertView == null) {
-
-                convertView = layoutInflater.inflate(
-                        R.layout.list_item_search_platoon, parent, false);
-
-            }
-
-            // Get the PlatoonData
-            PlatoonData platoonData = currentItem.getPlatoonData();
-
-            // Set the fields
-            ((TextView) convertView.findViewById(R.id.string_name)).setText("["
-                    + platoonData.getTag() + "] " + platoonData.getName());
-            /*
-                * ((ImageView) convertView.findViewById( R.id.image_avatar
-                * )).setImageBitmap( BitmapFactory.decodeFile(
-                * PublicUtils.getCachePath( context ) + platoonData.getImage() +
-                * ".jpeg" ) );
-                */
-
+        if (view == null) {
+            view = layoutInflater.inflate(R.layout.list_item_search_profile, parent, false);
         }
 
-        // Store the object
-        convertView.setTag(currentItem);
-
-        // R-TURN
-        return convertView;
-
+        if (getItemViewType(position) == 0) {
+            ProfileData profileData = currentItem.getProfileData();
+            ((TextView) view.findViewById(R.id.result_item_name)).setText(profileData.getUsername());
+            ((TextView) view.findViewById(R.id.result_item_group)).setText(R.string.search_result_group_user);
+        } else {
+            PlatoonData platoonData = currentItem.getPlatoonData();
+            ((TextView) view.findViewById(R.id.result_item_name)).setText("[" + platoonData.getTag() + "] " + platoonData.getName());
+            ((TextView) view.findViewById(R.id.result_item_group)).setText(R.string.search_result_group_platoon);
+        }
+        view.setTag(currentItem);
+        return view;
     }
 
-    public void setItemArray(List<GeneralSearchResult> array) {
-
-        this.itemArray = array;
+    public void setResultList(List<GeneralSearchResult> array) {
+        this.resultList = array;
         this.notifyDataSetInvalidated();
-
     }
 
     public void addItem(List<GeneralSearchResult> array) {
-
-        this.itemArray.addAll(array);
-
+        this.resultList.addAll(array);
     }
-
 }

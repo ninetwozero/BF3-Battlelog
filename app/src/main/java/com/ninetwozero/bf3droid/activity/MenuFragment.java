@@ -80,7 +80,7 @@ public class MenuFragment extends Fragment implements DefaultFragment {
         MENU_INTENTS.put(R.id.button_assignments,
                 new Intent(mContext, AssignmentActivity.class).putExtra("profile",
                         SessionKeeper.getProfileData()));
-        MENU_INTENTS.put(R.id.button_search, new Intent(mContext, SearchActivity.class));
+        MENU_INTENTS.put(R.id.button_search, new Intent(mContext, SearchFragmentActivity.class));
         MENU_INTENTS.put(R.id.button_self,
                 new Intent(mContext, ProfileActivity.class).putExtra("profile",
                         SessionKeeper.getProfileData()));

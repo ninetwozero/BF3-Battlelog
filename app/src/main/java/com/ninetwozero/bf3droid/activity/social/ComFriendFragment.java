@@ -135,8 +135,7 @@ public class ComFriendFragment extends Bf3ListFragment implements UserInfoLoader
         ProfileData profileData = (ProfileData) selectedInfo.targetView.getTag();
         BF3Droid.setGuest(new User(profileData.getUsername(), profileData.getId()));
         startLoadingDialog(ComFriendFragment.class.getSimpleName());
-        restartLoader();
-
+        startUserInfoLoader();
         return true;
     }
 
@@ -191,8 +190,13 @@ public class ComFriendFragment extends Bf3ListFragment implements UserInfoLoader
         startActivity(new Intent(context, ProfileActivity.class).putExtra("user", User.GUEST));
     }
 
-    private void restartLoader() {
+    private void startUserInfoLoader() {
         new UserInfoLoader(this, context, User.GUEST, getLoaderManager()).restart();
+    }
+
+    @Override
+    public void onListItemClick(ListView lv, View v, int position, long id) {
+        getActivity().openContextMenu(v);
     }
 
     @Override
@@ -201,11 +205,6 @@ public class ComFriendFragment extends Bf3ListFragment implements UserInfoLoader
         new UserInfoRestorer(context, User.GUEST).save(userInfo);
         closeLoadingDialog(ComFriendFragment.class.getSimpleName());
         menuActionAfterLoad();
-    }
-
-    @Override
-    public void onListItemClick(ListView lv, View v, int position, long id) {
-        getActivity().openContextMenu(v);
     }
 
     private void saveToApp(UserInfo userInfo){

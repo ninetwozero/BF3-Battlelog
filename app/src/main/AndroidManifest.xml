@@ -116,7 +116,7 @@
         android:label="@string/title_unlocks"/>
 
     <activity
-        android:name=".activity.SearchActivity"
+        android:name=".activity.SearchFragmentActivity"
         android:configChanges="orientation"
         android:label="@string/title_search"/>
 
