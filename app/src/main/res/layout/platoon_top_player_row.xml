@@ -6,6 +6,8 @@
   <RelativeLayout
       style="@style/MatchWidth"
       android:layout_gravity="left"
+      android:paddingTop="@dimen/padding_small"
+      android:paddingBottom="@dimen/padding_small"
       >
 
     <ImageView
@@ -20,19 +22,24 @@
         android:id="@+id/top_player_class_name"
         android:textStyle="bold"
         android:layout_toRightOf="@id/top_player_avatar"
-        style="@style/Wrap"/>
+        style="@style/Wrap"
+        android:text="something"/>
 
     <TextView
         android:id="@+id/top_player_name"
         style="@style/Wrap"
         android:layout_toRightOf="@id/top_player_avatar"
-        android:layout_below="@id/top_player_class_name"/>
+        android:layout_below="@id/top_player_class_name"
+        android:text="something"/>
 
     <TextView
         android:id="@+id/top_player_score_per_minute"
         style="@style/Wrap"
-        android:layout_toRightOf="@id/top_player_avatar"
-        android:layout_below="@id/top_player_name"/>
+        android:layout_alignParentRight="true"
+        android:textSize="@dimen/text_l"
+        android:textStyle="bold"
+        android:layout_marginRight="@dimen/padding_xlarge"
+        android:text="score"/>
   </RelativeLayout>
 
 </TableRow>
