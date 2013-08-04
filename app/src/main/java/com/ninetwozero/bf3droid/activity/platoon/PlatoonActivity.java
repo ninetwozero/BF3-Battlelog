@@ -215,7 +215,7 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
     }
 
     private SimplePlatoon platoon() {
-        return BF3Droid.getUserBy(User.USER).selectedPlatoon();
+        return BF3Droid.getUserBy(userType()).selectedPlatoon();
     }
 
     @Override
@@ -247,5 +247,9 @@ public class PlatoonActivity extends CustomFragmentActivity implements PlatoonLo
 
     private URI platoonStatsUri() {
         return UriFactory.platoonMemeberStats(platoon().getPlatoonId(), BATTLEFIELD_3, platoon().platformId());
+    }
+
+    private String userType() {
+        return getIntent().hasExtra("userType")? getIntent().getStringExtra("userType") : User.USER;
     }
 }

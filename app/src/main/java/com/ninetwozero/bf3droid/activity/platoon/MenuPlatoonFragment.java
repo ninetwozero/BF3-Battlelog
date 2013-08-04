@@ -92,7 +92,7 @@ public class MenuPlatoonFragment extends Fragment implements DefaultFragment {
             @Override
             public void onClick(View view) {
                 if (user().getPlatoons().size() > 0) {
-                    startActivity(new Intent(context, PlatoonActivity.class));
+                    startActivity(new Intent(context, PlatoonActivity.class).putExtra("userType", User.USER));
                 }
             }
         });

@@ -41,6 +41,8 @@ import com.ninetwozero.bf3droid.activity.profile.soldier.UserInfoLoader;
 import com.ninetwozero.bf3droid.activity.profile.soldier.restorer.UserInfoRestorer;
 import com.ninetwozero.bf3droid.adapter.SearchDataAdapter;
 import com.ninetwozero.bf3droid.datatype.GeneralSearchResult;
+import com.ninetwozero.bf3droid.datatype.PlatoonData;
+import com.ninetwozero.bf3droid.datatype.SimplePlatoon;
 import com.ninetwozero.bf3droid.datatype.UserInfo;
 import com.ninetwozero.bf3droid.http.RequestHandler;
 import com.ninetwozero.bf3droid.http.WebsiteClient;
@@ -88,12 +90,13 @@ public class SearchFragmentActivity extends Bf3FragmentActivity implements UserI
                     BF3Droid.setGuest(new User(result.getProfileData().getUsername(), result.getProfileData().getId()));
                     startUserInfoLoader();
                 } else {
-                    Intent intent = new Intent(getApplicationContext(), PlatoonActivity.class).putExtra("platoon", result.getPlatoonData());
+                    setGuestPlatoon(result.getPlatoonData());
+                    Intent intent = new Intent(getApplicationContext(), PlatoonActivity.class).putExtra("userType", User.GUEST);
                     startActivity(intent);
                 }
             }
         });
-        emptyView = (TextView)findViewById(android.R.id.empty);
+        emptyView = (TextView) findViewById(android.R.id.empty);
     }
 
     @Override
@@ -105,6 +108,15 @@ public class SearchFragmentActivity extends Bf3FragmentActivity implements UserI
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+    }
+
+    private void setGuestPlatoon(final PlatoonData platoonData) {
+        List<SimplePlatoon> simplePlatoons = new ArrayList<SimplePlatoon>() {{
+            add(new SimplePlatoon(platoonData.getName(), platoonData.getId()));
+        }};
+        User searchUser = new User("SearchResult");
+        searchUser.setPlatoons(simplePlatoons);
+        BF3Droid.setGuest(searchUser);
     }
 
     public void onClick(View v) {
@@ -173,8 +185,8 @@ public class SearchFragmentActivity extends Bf3FragmentActivity implements UserI
         }
     }
 
-    private void emptyListViewVisibility(){
-        if(searchResults.size() == 0){
+    private void emptyListViewVisibility() {
+        if (searchResults.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
             searchResultList.setEmptyView(emptyView);
         } else {

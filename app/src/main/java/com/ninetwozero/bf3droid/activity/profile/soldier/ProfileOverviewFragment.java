@@ -125,9 +125,7 @@ public class ProfileOverviewFragment extends Bf3Fragment {
             final OnClickListener onClickListener = new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(
-                            new Intent(context, PlatoonActivity.class).putExtra("platoon", (PlatoonData) v.getTag())
-                    );
+                    startActivity(new Intent(context, PlatoonActivity.class).putExtra("userType", userFromArgument()));
                 }
             };
 

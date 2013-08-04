@@ -10,7 +10,11 @@ public class SimplePlatoon {
     private final String platform;
     private final String membersCount;
 
-    public SimplePlatoon(String name, long platoonId, String platoonBadge, String platform, String membersCount){
+    public SimplePlatoon(String name, long platoonId) {
+        this(name, platoonId, "", "", "");
+    }
+
+    public SimplePlatoon(String name, long platoonId, String platoonBadge, String platform, String membersCount) {
         this.name = name;
         this.platoonId = platoonId;
         this.platoonBadge = platoonBadge;
@@ -38,7 +42,7 @@ public class SimplePlatoon {
         return membersCount;
     }
 
-    public int platformId(){
+    public int platformId() {
         return Platform.resolveIdFromPlatformName(platform);
     }
 }
