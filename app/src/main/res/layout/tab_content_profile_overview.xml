@@ -39,7 +39,7 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:text="Last seen online N/A"
-        android:textSize="14sp"/>
+        android:textSize="@dimen/text_s"/>
 
     <RelativeLayout
         android:id="@+id/wrap_status"
@@ -50,6 +50,7 @@
       <TextView
           android:id="@+id/text_header_status"
           style="@style/FriendHeadingRow"
+          android:textSize="@dimen/text_s"
           android:text="@string/info_xml_latest_statusmsg"/>
 
       <TextView
@@ -59,7 +60,7 @@
           android:layout_below="@id/text_header_status"
           android:padding="5dp"
           android:text="N/A"
-          android:textSize="14sp"/>
+          android:textSize="@dimen/text_s"/>
 
       <TextView
           android:id="@+id/text_status_date"
@@ -71,7 +72,7 @@
           android:paddingRight="5dp"
           android:text="Last updated N/A"
           android:textColor="#c3c3c3"
-          android:textSize="12sp"/>
+          android:textSize="@dimen/text_xs"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -83,7 +84,8 @@
       <TextView
           android:id="@+id/text_header_presentation"
           style="@style/FriendHeadingRow"
-          android:text="@string/info_xml_presentation"/>
+          android:text="@string/info_xml_presentation"
+          android:textSize="@dimen/text_s"/>
 
       <TextView
           android:id="@+id/text_presentation"
@@ -94,7 +96,7 @@
           android:gravity="center"
           android:padding="5dp"
           android:text="N/A"
-          android:textSize="14sp"/>
+          android:textSize="@dimen/text_s"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -106,7 +108,8 @@
       <TextView
           android:id="@+id/text_header_platoon"
           style="@style/FriendHeadingRow"
-          android:text="@string/info_xml_platoons"/>
+          android:text="@string/info_xml_platoons"
+          android:textSize="@dimen/text_s"/>
 
       <LinearLayout
           android:id="@+id/list_platoons"

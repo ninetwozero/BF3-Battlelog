@@ -210,10 +210,9 @@ public class ProfileStatsFragment extends Bf3Fragment implements ProfileStatsLoa
         Set<String> keys = statistics.keySet();
         for (String key : keys) {
             Statistics ps = statistics.get(key);
-            View tr = layoutInflater.inflate(
-                    R.layout.list_item_assignment_popup, null);
-            ((TextView) tr.findViewById(R.id.text_obj_title)).setText(ps.getTitle());
-            ((TextView) tr.findViewById(R.id.text_obj_values)).setText(ps.getValue());
+            View tr = layoutInflater.inflate(R.layout.profile_statistics_table_row, null);
+            ((TextView) tr.findViewById(R.id.statistics_title)).setText(ps.getTitle());
+            ((TextView) tr.findViewById(R.id.statistics_values)).setText(ps.getValue());
             layout.addView(tr);
         }
     }

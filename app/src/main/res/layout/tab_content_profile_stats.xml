@@ -49,6 +49,7 @@
         android:id="@+id/string_rank_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/text_s"
         android:layout_below="@id/wrap_persona"
         android:text="PRIVATE FIRST CLASS 1 STAR"/>
 
@@ -58,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/string_rank_title"
         android:paddingRight="5dp"
+        android:textSize="@dimen/text_s"
         android:text="@string/info_xml_rank"/>
 
     <TextView
@@ -66,18 +68,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/string_rank_title"
         android:layout_toRightOf="@id/string_rank_literal"
+        android:textSize="@dimen/text_s"
         android:text="2"/>
 
     <RelativeLayout
         android:id="@+id/wrap_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/string_rank_short">
+        android:layout_below="@+id/string_rank_short"
+        android:layout_marginTop="@dimen/padding_small"
+        android:layout_marginBottom="@dimen/padding_small">
 
       <ProgressBar
           android:id="@+id/progress_level"
           style="?android:attr/progressBarStyleHorizontal"
           android:layout_width="fill_parent"
+          android:layout_marginBottom="@dimen/padding_small"
           android:layout_height="10dp"/>
 
       <TextView
