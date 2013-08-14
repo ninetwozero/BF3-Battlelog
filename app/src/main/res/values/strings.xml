@@ -5,7 +5,7 @@
   <string name="widget_name">Battlelog - Stats+Friends</string>
 
   <string name="changelog">To be determined... - @karllindmark</string>
-  <string name="notice_text">&lt;b>This app is NOT created nor endorsed by EA/DICE! &lt;/b>&lt;br />This is a
+  <string name="notice_text">&lt;b>This application is not endorsed by or affiliated with Electronic Arts Inc. &lt;/b>&lt;br />This is a
     third-party app developed by the Open Source Community.&lt;p>In order to use this application you will need to login
     using your Origin™ credentials, and the credentials will only be used in the login process you are about to
     undertake. We will &lt;b>NEVER &lt;/b> store or share your credentials in any way.&lt;p>By clicking on the checkbox
@@ -1557,7 +1557,7 @@
   <string name="info_p_gameaccess">&lt;b>{username}&lt;/b> now has access to &lt;b>{expansion}&lt;/b> for &lt;b>{game}&lt;/b>.</string>
   <string name="info_dialog_selection_profile">Select profile to view</string>
   <string name="info_feed_header_comments">View post to see the remaining comments</string>
-  <string name="info_about_copyright">This app was not created nor is endorsed by EA/DICE. All images are owned by their
+  <string name="info_about_copyright">This application is not endorsed by or affiliated with Electronic Arts Inc. All images are owned by their
     respective owners, and Battlefield is a registered trademark of EA Digital Illusions CE AB. No user account
     information is being stored and/or shared with third-parties.
   </string>
