@@ -55,7 +55,7 @@ public class PersonaStatsOverview {
     private long mcomDestroyed;
     @SerializedName("flagCaptures")
     private long flagCaptures;
-    @SerializedName("flagsDefend")
+    @SerializedName("flagDefend")
     private long flagsDefended;
 
     @SerializedName("vehiclesDestroyed")
@@ -95,7 +95,7 @@ public class PersonaStatsOverview {
     private int highestNemesisStreak;
     @SerializedName("nemesisKills")
     private long nemesisKills;
-    @SerializedName("suppresionAssists")
+    @SerializedName("suppressionAssists")
     private long suppresionsAssists;
 
     public PersonaStatsOverview(int rank, KitScores kitScores,

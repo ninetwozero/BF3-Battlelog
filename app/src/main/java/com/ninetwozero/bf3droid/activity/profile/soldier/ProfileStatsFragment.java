@@ -34,12 +34,13 @@ import com.ninetwozero.bf3droid.dialog.ListDialogFragment;
 import com.ninetwozero.bf3droid.misc.SessionKeeper;
 import com.ninetwozero.bf3droid.model.SelectedOption;
 import com.ninetwozero.bf3droid.provider.BusProvider;
+import com.ninetwozero.bf3droid.provider.table.PersonaStatistics;
 import com.ninetwozero.bf3droid.provider.table.RankProgress;
+import com.ninetwozero.bf3droid.provider.table.ScoreStatistics;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import static com.ninetwozero.bf3droid.misc.NumberFormatter.format;
 
@@ -184,11 +185,11 @@ public class ProfileStatsFragment extends Bf3Fragment implements ProfileStatsLoa
         if (personaStatisticsTable.getChildCount() > 0) {
             personaStatisticsTable.removeAllViews();
         }
-        populateStatistics(personaStatisticsMap, personaStatisticsTable);
+        populateStatistics(personaStatisticsMap, personaStatisticsTable, PersonaStatistics.PERSONA_STATISTICS);
         if (scoreStatisticsTable.getChildCount() > 0) {
             scoreStatisticsTable.removeAllViews();
         }
-        populateStatistics(scoreStatisticsMap, scoreStatisticsTable);
+        populateStatistics(scoreStatisticsMap, scoreStatisticsTable, ScoreStatistics.SCORE_STATISTICS);
     }
 
     private void populateRankProgress() {
@@ -206,9 +207,8 @@ public class ProfileStatsFragment extends Bf3Fragment implements ProfileStatsLoa
         pointsToMake.setText(format(rankProgress.getNextRankScore() - rankProgress.getScore()));
     }
 
-    private void populateStatistics(Map<String, Statistics> statistics, TableLayout layout) {
-        Set<String> keys = statistics.keySet();
-        for (String key : keys) {
+    private void populateStatistics(Map<String, Statistics> statistics, TableLayout layout, String[] keyOrder ) {
+        for (String key : keyOrder) {
             Statistics ps = statistics.get(key);
             View tr = layoutInflater.inflate(R.layout.profile_statistics_table_row, null);
             ((TextView) tr.findViewById(R.id.statistics_title)).setText(ps.getTitle());

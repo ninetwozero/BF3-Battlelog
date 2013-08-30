@@ -110,6 +110,6 @@ public class PersonaStatisticsDAO {
     }
 
     private static String kdRatio(long kills, long deaths) {
-        return NumberFormatter.format(kills / deaths);
+        return NumberFormatter.format((double)kills / deaths);
     }
 }
