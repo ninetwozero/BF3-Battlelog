@@ -31,6 +31,20 @@ public class PersonaStatistics extends Statistics {
         public static final String SKILLRATING = "skillrating";
         public static final String TIME_PLAYED = "timePlayed";
         public static final String SCORE_PER_MINUTE = "scorePerMinute";
+        public static final String MCOM_DEFENCE_KILLS = "mcomDefenceKills";
+        public static final String MCOM_DESTROYED = "mcomDestroyed";
+        public static final String CONQ_FLAG_CAPTURED = "coqFlagCaptured";
+        public static final String CONQ_FLAG_DEFENDED = "conqFlagDefended";
+        public static final String AVENGER_KILLS = "avengerKills";
+        public static final String SAVIOR_KILLS = "saviorKills";
+        public static final String DOGTAG_TAKEN = "dogtagTaken";
+        public static final String CTF_CAPTURE_FLAG = "ctfCaptureFlag";
+        public static final String SQUAD_SCORE_BONUS = "squadScoreBonus";
+        public static final String SHOT_FIRED = "shotFired";
+        public static final String HIG_NEMESIS_STREAK = "higNemesisStreak";
+        public static final String NEMESIS_KILLS = "nemesisKills";
+        public static final String SUPPRESSION_ASSISTS = "suppressionAssists";
+        public static final String QUITS = "quits";
     }
 
     public static final String[] PERSONA_STATS_PROJECTION = new String[]{Columns.ID, Columns.PERSONA_ID, Columns.KILLS,
